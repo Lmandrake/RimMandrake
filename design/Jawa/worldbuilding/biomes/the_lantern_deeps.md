@@ -228,6 +228,7 @@ Selling kyber is **extremely illegal to the Empire**: heat rises substantially p
 calling from the Moisture Farmers**, asking how it was obtained — and a small plot in
 which some kyber is **"donated to the cause" and smuggled offworld at a rendezvous** to
 help the Rebellion *elsewhere* (🔴 still no way to help it here: they lost, that's it).
+Full spec: `design/Jawa/kyber_trade_plot_spec.md`.
 
 ## 9. Artistic theme
 
@@ -257,6 +258,7 @@ help the Rebellion *elsewhere* (🔴 still no way to help it here: they lost, th
 - `MECHANOID_ORIGIN_CANON_1` — the mindstone race, the wild-cousins reading of the
   mechanoids, the production facility, the Cathedral's "true children."
 - `KYBER_TRADE_PLOT_1` — heat, Hutts, the alleged Jedi, the donation-and-smuggle plot.
+  Design spec written (`design/Jawa/kyber_trade_plot_spec.md`); implementation still owed.
 - **Names — RULED 2026-09-11**: the mindstone keeps its name (`RUT_Mindstone`);
   the new race is the Kindled (`RUT_Kindled`); the units are canonically the
   Forgotten Sentinels ("Sentries"/"Forsaken" live on only as in-world speech).

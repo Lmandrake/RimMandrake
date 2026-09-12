@@ -35,3 +35,11 @@ want it — at the risk of unleashing it across the planet.
 ## verify
 Landmark reads back from the live world; dungeon placed and screenshotted; plot weave
 written into the relevant faction/quest docs with the owner's name for the site.
+
+## Progress 2026-09-11 — design doc drafted (BENCH fan-out)
+`design/Jawa/worldbuilding/ashfall_research_base.md` + weaves into
+reconciled_lore 04/09 and INDEX. Held for the owner: reveal gating (datafiles
+vs helix_lineage/flesh-dungeon sequencing), canon.yml `helix_lineage`
+amendment (splice motive + outcome), the landmark's display name, and the
+campaign function (quest/prize/threat clock). Live half (landmark placement,
+dungeon build) is FOUNDRY work after those rulings.

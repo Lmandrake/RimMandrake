@@ -23,3 +23,10 @@ lost, that's it.**
 ## verify
 A sale raises heat and Hutt interest in a test; the visit fires once; the smuggle quest
 completes with the ruled non-outcome for the local Rebellion.
+
+## Progress 2026-09-11 — spec drafted (BENCH fan-out)
+Design spec: `design/Jawa/kyber_trade_plot_spec.md` (heat wiring on the GM
+blackboard, Hutt Interest mirror, the alleged-Jedi visit powers-free, the
+donate-and-smuggle quest). Cards K1 (who were the later parties in the old
+mines) and K2 (does the smuggle scrub heat) await the owner; implementation
+owed after his rulings.

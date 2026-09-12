@@ -68,6 +68,14 @@
   hazards, the densest Arsenal ground, and sacrilege against the Free Droid
   Enclaves (~10 sacred structures, −15 each, hostility hysteresis;
   `03_deep_history.md`).
+- **The Ashfall Research Base** (`OCULAR_OVERDRIVE_SITE_1`; owner-named
+  2026-09-06) — the Helix's live study of the Contagion, on a Contagion peak in
+  the Ashfall Range; its datafiles carry the Helix–Assailant reveal (the forged
+  adoption into the Rakatan line to control the Cathedral's old technology, and
+  the active attempt to make the Contagion more robust — at planet-scale risk).
+  The Helix call it the Overdrive. Design:
+  `worldbuilding/ashfall_research_base.md`; campaign function (quest / prize /
+  threat clock) held for the owner.
 - **Vault dungeons with the owner** (`VAULT_DUNGEON_CONCEPT_1`) — open design
   item.
 - v2 gravity wells: **the Sarlacc** (Anomaly pit-gate rebrand — confirmed
