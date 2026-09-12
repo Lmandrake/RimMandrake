@@ -11494,22 +11494,22 @@
     "sha": "67cbd7f5a"
   },
   "src/RimUtinni/RustCathedralWalls/Source/GenStep_ScatterCathedralWallTiers.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "6693e1ab93a3a0eb2f6407ee7ea0897955baf0a5ddbc44bdc0848e02add1dfba",
-    "sha": "67cbd7f5a"
+    "hash": "1bbac3a5ffc39115a4cd6cc2e67836f33079034aa637625454acfe9e68bfc814",
+    "sha": "1056c8a11"
   },
   "src/RimUtinni/RustCathedralWalls/Source/GenStep_ScatterSacredWalls.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "3d76b636ca23dbdac66998e9d5f43685842ea61fd6e01e8a4a31e1251680d453",
-    "sha": "67cbd7f5a"
+    "hash": "3ebb111581fc2c13c8202c932ea503ab7e057db89471b00a35740a17b58f44ca",
+    "sha": "1056c8a11"
   },
   "src/RimUtinni/RustCathedralWalls/Source/HarmonyPatch_GateLivePatternMetal.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "0f574ea5b7da67726f11147485aaed0f6e5d6eddc3c9327db8155708a3fb8eb9",
-    "sha": "67cbd7f5a"
+    "hash": "8df224d0f69645e49d02ad003c661248a793a5a616a7f62890bc3bcf18703760",
+    "sha": "1056c8a11"
   },
   "src/RimUtinni/ScarlandsLadder/About/About.xml": {
     "cleanCount": 1,
