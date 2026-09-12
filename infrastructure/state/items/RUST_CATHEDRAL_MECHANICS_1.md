@@ -78,3 +78,33 @@ will leave donor behaviour intact under a campaign name.
 - `the_rust_cathedral.md` §the coolant eels, §the living bolts.
 - Naming: new defNames take the tier grammar (`design/NAMING_SCHEME_PLAN.md`) —
   `RUT_` for campaign-specific, and "Jawa" is lore text only.
+
+## 2026-09-11 update — §6 (roaches) BUILT, rest of the kit (§1-5) not started
+
+`mandrake.rut.rustcathedralroaches` shipped: `RUT_ScarRoach` (organic,
+Scarlands) and `RUT_CathedralRoach` (synthetic mechanoid, "strangely tough"
+per the owner's own words — healthScale 1.6, armor 0.75/0.75 at bodySize
+0.22), plus `RUT_CathedralRoachShell` byproduct. Donor DLL independently
+re-verified via dnfile enumeration (5 TypeDefs, no Harmony/game-wide hooks —
+confirmed, not trusted from the spec). New generic mechanism landed in the
+shared `mandrake.rm.creaturebehaviors` engine: `RM_EatCleanableExtension` +
+`RM_ThinkNode_EatCleanable` + `RM_JobDriver_EatCleanable`, generalizing the
+donor's tamed-only wastepack-eating to wild pawns + filth. C# actually
+compiled (`dotnet.exe`, 0 errors), `validate_patch.py` clean on all XML.
+Rostered into both `the_rust_cathedral.json` and `the_scarlands.json`
+(split from a stale pre-2026-09-07 single organic-only entry). No hum
+wiring, per the owner's ruling — structurally enforced by omission.
+
+❓ **Not live-verified**: whether `RUT_CathedralRoach` actually spawns —
+mechanoid-fauna presence rides a separate spawn axis from `wildBiomes`
+(per the roster JSON's own note) and that wiring wasn't touched. Needs a
+quicktest once the game is next up.
+
+**Rest of the kit is untouched**: §1 hum-mood system (new C# MapComponent +
+Def type), §2 wall-tier mining defs, §3 living bolts, §4 eel-fishing, §5
+deep-drill response. Per the kit spec's own build order these come before
+step 6 normally, but §6 was picked first here because it's explicitly
+"independent of §1 by design; parallelizable any time" and was the only
+slice small enough to hand to one subagent in one clean pass tonight. Item
+stays `doing` — the big hum-mood C# system deserves its own focused session,
+not a rushed tack-on.
