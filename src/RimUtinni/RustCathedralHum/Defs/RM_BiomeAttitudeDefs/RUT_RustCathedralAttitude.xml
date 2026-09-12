@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §1 — the one content instance.
+
+    Band semantics (this build's own resolution of the spec's "composite band
+    0-4 = f(goodwill, irritation)", not literally specced): 0 = calmest (one
+    warm-drone layer), rising one hum layer per band, band 4 (the last
+    threshold, >= 80 composite) is the WORST band and goes SILENT — the
+    sheet's own "when the hum drops, stop moving" tell. composite =
+    irritation - goodwill*0.5, clamped 0-100; goodwill is LIVE faction-13
+    (Forsaken/Forgotten Arsenal) player goodwill, read every check, never
+    duplicated into savedata here.
+
+    Numbers below are the kit spec's own "INVENTED parameters (owner tunes)"
+    line for §1, carried over verbatim: decay half-life 1 day, thresholds
+    10/30/55/80, conversion -1 per 4h at the worst band capped -5/day,
+    commentary cooldown 12h.
+  -->
+
+  <RimMandrake.Utinni.RustCathedralHum.RM_BiomeAttitudeDef>
+    <defName>RUT_RustCathedralAttitude</defName>
+    <targetBiome>RUT_RustCathedral</targetBiome>
+
+    <bandThresholds>
+      <li>10</li>
+      <li>30</li>
+      <li>55</li>
+      <li>80</li>
+    </bandThresholds>
+    <bandHysteresisMargin>6</bandHysteresisMargin>
+    <goodwillCompositeWeight>0.5</goodwillCompositeWeight>
+
+    <irritationDecayHalfLifeDays>1</irritationDecayHalfLifeDays>
+    <checkIntervalTicks>250</checkIntervalTicks>
+
+    <worstBandGoodwillTickIntervalHours>4</worstBandGoodwillTickIntervalHours>
+    <worstBandGoodwillTickAmount>-1</worstBandGoodwillTickAmount>
+    <worstBandGoodwillCapPerDay>-5</worstBandGoodwillCapPerDay>
+
+    <commentaryCooldownHours>12</commentaryCooldownHours>
+
+    <humLayers>
+      <li>RUT_HumLayerDrone</li>
+      <li>RUT_HumLayerTense</li>
+      <li>RUT_HumLayerAlarm</li>
+    </humLayers>
+
+    <!--
+      Register law (sheet §6): every line here is §P. Ban 1 (no §GM truth) —
+      nothing below names goodwill, irritation, a band number, or the
+      Sentinels' faction status. Ban 2 (no mercy explanation) — nothing
+      explains WHY the hum calms or WHY it's angry, only what the droid
+      itself feels: confusion and fear, the sheet's own named exception to
+      that ban. Ban 6 (no deep-drill explanation) is not engaged here at all
+      (§5 territory) — nothing below mentions drilling or depth.
+
+      First-pass lines, reversible on one edit — not the owner's authored
+      prose, just enough to prove the mechanism fires with real text instead
+      of a stub.
+    -->
+    <commentary>
+      <li>
+        <band>1</band>
+        <lines>
+          <li>The droid's tone shifts, almost too low to hear. It doesn't say why.</li>
+          <li>Something in the walls just changed pitch. The droid noticed before you did.</li>
+        </lines>
+      </li>
+      <li>
+        <band>2</band>
+        <lines>
+          <li>"That second tone," the droid says. "That one is new. I don't like that one."</li>
+          <li>The droid stops what it's doing and listens. It doesn't start again for a while.</li>
+        </lines>
+      </li>
+      <li>
+        <band>3</band>
+        <lines>
+          <li>"Three tones now." The droid's voice has gone flat. "I would like to stop soon."</li>
+          <li>The droid backs itself against a wall, facing outward, and stays there.</li>
+        </lines>
+      </li>
+      <li>
+        <band>4</band>
+        <lines>
+          <li>The hum just stopped. The droid isn't moving either. "Why have you angered this place?" it asks no one.</li>
+          <li>Total silence, all at once. The droid says nothing at all -- which is worse.</li>
+        </lines>
+      </li>
+    </commentary>
+  </RimMandrake.Utinni.RustCathedralHum.RM_BiomeAttitudeDef>
+
+</Defs>
