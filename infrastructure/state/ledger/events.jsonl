@@ -7800,3 +7800,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"confirm research self-prereq crash fix","ts":"2026-09-12T12:44:54Z"}
 {"seat":"FOUNDRY","event":"close","id":"QUICKTEST_POSTSETUP_CRASH_1","sha":"fa95b3fdc93410c85a54f241e1c1be58b574ded9","ts":"2026-09-12T13:35:06Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T13:35:26Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-12T13:37:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify Webwork/Shrine/Shokkweave biome mechanics","ts":"2026-09-12T13:37:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T13:37:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T13:37:58Z"}
+{"seat":"FOUNDRY","event":"verify","id":"SHRINE_GUARDIAN_BIOME_GATE_1","result":"pass","config":"full-597","evidence":"jawa/list_things on Desert-regenerated tile 51056: 0 mech/fleshbeast/hive, ancient-hostile caskets + scavenged loot present","sha":"4d73c5a80","ts":"2026-09-12T13:44:28Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHRINE_GUARDIAN_BIOME_GATE_1","sha":"4d73c5a804e822a7390ab01ad32f98fd48417a71","ts":"2026-09-12T13:44:28Z"}

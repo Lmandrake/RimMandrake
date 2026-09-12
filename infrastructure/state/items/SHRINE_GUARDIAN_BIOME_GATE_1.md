@@ -1,3 +1,43 @@
+## 2026-09-12 (FOUNDRY, third pass) — LIVE-VERIFIED clean, CLOSING
+
+`QUICKTEST_POSTSETUP_CRASH_1`'s fix (commit `fa95b3fdc`) made a fresh
+`start_debug_game_ready` moot to chase further: instead of restarting into
+a random-biome map, painted the ALREADY-LOADED disposable quicktest map's
+own tile (51056, was `BiomeArcticOasis`) to `Desert` + `LargeHills` via
+`jawa/world_tile_set` + `jawa/world_commit` (raw read-back confirmed the
+write), then fired `Actions\Regenerate Current Map` via
+`execute_debug_action`. Since the map's tile is unchanged, `Map.IsStartingMap`
+(`Find.GameInfo.startingTile == Tile`) stayed true, which is what makes
+`GenStep_ScatterShrines.ShouldSkipMap` NEVER skip (`RimWorld/GenStep_ScatterShrines.cs:26`)
+— a more reliable route to a guaranteed shrine-generation attempt than hoping
+`start_debug_game_ready` happens to land on a Desert tile, which it cannot be
+steered to at all.
+
+`jawa/map_info` confirmed `mapBiome: "Desert"` post-regen. `jawa/list_things`
+on the regenerated map:
+- `AncientCryptosleepCasket` — 19 present (the doctrine's own extra
+  `PodContentsType.AncientHostile` watch caskets, plus the unchanged
+  `ancientShrinesGroup` sleepers)
+- `Mech_Centipede`/`Mech_Scyther`/`Mech_Lancer`/`Mech_Pikeman`/`MechCluster` — **0**
+- `Fleshbeast` — **0**
+- `Hive` — **0**
+- `AncientBarrel`, `AncientHermeticCrate`, `MedicineIndustrial` — present
+  (the swapped `MapGen_AncientComplexRoomLoot_Default` scavenged-loot table
+  and its Ideology hermetic-crate wrap, per `PushScavengedLoot`)
+
+This is exactly the substitution `AmbientShrineGuardians.cs` documents: the
+mechanoid/fleshbeast/hive guardian branch never fires on a DENY-side biome,
+replaced by the dead Rakatan watch + scavenged salvage, while the loot table
+swaps off the elite `MapGen_AncientTempleContents`. `Player.log` tail after
+the regen is clean of anything naming this patch, `Interior_AncientTemple`,
+or `AmbientDoctrine` — the only NREs anywhere in the log are pre-existing,
+unrelated third-party mod issues (RimFridge, GravTechBC, a Worldbuilder
+Harmony postfix), confirmed by reading their stack traces, not just grepping
+the string.
+
+**Criteria met**: quicktest-proven on Desert (one of the 8 candidate biomes,
+cheapest per the item's own spec). Closing.
+
 ## 2026-09-12 (FOUNDRY, later same night) — still blocked, but for a NEW reason: quicktest itself crashes
 
 Deploy confirmed already done tonight (`deploy_custom_mods.py --mod
