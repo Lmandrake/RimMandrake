@@ -57,6 +57,16 @@ REGISTRY_LOCK = common.QUEUE_ROOT / "registry.jsonl.lock"
 ART_STATUS_JSON = common.QUEUE_ROOT / "art_status.json"
 ART_STATUS_HTML = common.QUEUE_ROOT / "art_status.html"
 
+# HUB_TAB_PUBLISHER_MIGRATION_1: unlike health/maturity, the art tab has no
+# transform step — make_tab_data.py's own docstring says art_status.json
+# "already meets the contract ... published directly, not copied here", and
+# hub_check.py's TABS["art"] points straight at ART_STATUS_JSON. So there is
+# nothing here to regenerate; the only thing `render()` owes is the same
+# reminder codebase_health_publish.py / project_maturity_dashboard.py print
+# after their own regen step, since actually pushing the file to the hub
+# Artifact URL needs a session with the Artifact tool (no CLI exists for it).
+HUB_ARTIFACT_URL = "https://claude.ai/code/artifact/d066e619-b84d-479c-842f-a81b0182511c"
+
 WEEKLY_WINDOW_MINUTES = 10080  # the "secondary" codex meter window == 7 days
 PARK_AFTER_REJECTIONS = 4      # see module docstring — resolves design-vs-item wording
 
@@ -849,6 +859,10 @@ td,th{{border:1px solid #4a3a2a;padding:4px 8px;text-align:left;font-size:13px}}
 <p>{_esc(proj_line)}</p>
 </body></html>"""
     out_html.write_text(html)
+    if out_json == ART_STATUS_JSON:
+        print("  art tab source current -> %s (a session still owes a republish "
+              "of data/art.json against the hub Artifact URL: %s — "
+              "HUB_TAB_PUBLISHER_MIGRATION_1)" % (out_json, HUB_ARTIFACT_URL))
     return {"html": str(out_html), "json": str(out_json), "payload": payload}
 
 
