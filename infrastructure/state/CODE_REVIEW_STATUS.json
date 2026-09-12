@@ -11026,22 +11026,22 @@
     "sha": "6e65d276"
   },
   "src/RimUtinni/PlantGrowth/Source/JawaPlantGrowth.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "0da301198b04653ca987eacd45bc25424d1de69a76c517380913c480f148fad9",
-    "sha": "ff35f27f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "8bcaab916b6cd04393c9bd4a335e89774bf4e11d29a5039815ea9112c8ad91bf",
+    "sha": "5f995fb3f"
   },
   "src/RimUtinni/PlantGrowth/Source/Patch_Plant_GrowthRate.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "ebf273c74e351aa7898bd3228e2e7ee00156ba8a5e8f1ee1cbfb30ad860d102a",
-    "sha": "ff35f27f"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "f5f63067ff0886277451aa674ad282a428ae141d66e000ceabe7e4f3f2470bff",
+    "sha": "5f995fb3f"
   },
   "src/RimUtinni/PlantGrowth/Source/PlantGrowthConfig.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "709f8ffb2df281ae537de1f3343ccd49df636004c4cc27723f7f567a891d0bb2",
-    "sha": "ff35f27f"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "ba7e170a6b04e9fc54aee5b91f81bc8b3d6e4ceb4da42b2b70662d901b81bc21",
+    "sha": "5f995fb3f"
   },
   "src/RimUtinni/PlantGrowth/Source/PlantGrowthSettingsDef.cs": {
     "cleanCount": 2,
