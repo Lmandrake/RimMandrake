@@ -85,6 +85,15 @@ C# namespaces nested `RimMandrake[.StarWars|.Utinni].<Mod>` (never bare
 `RimStarWars`/`RimUtinni`). "Jawa" is lore text only. Dev tooling is exempt.
 Old names migrate under NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
 
+## Every mod ships superb Mod Settings — owner, 2026-09-12
+
+Every mod we ship carries a real settings screen: on/off per major
+feature/mechanic, tuning where a number is the experience, defaults = shipped
+behavior, all-off degrades gracefully, and worldgen-affecting toggles labeled
+as such. Biome-kit mechanics are feature-gated so they can be enabled in other
+biomes without the biome. Spec + retrofit of existing mods:
+`MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
+
 ## Queue items are NAMED, not numbered — owner, 2026-08-20
 
 `THREE_UPPER_SNAKE_WORDS_#`, guessable cold: `SANDSTORM_WEATHER_TUNING_1`. No new
