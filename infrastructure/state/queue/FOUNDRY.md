@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:02:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T07:13:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  TIBANNASOURCECUT1 — cut the non-beldon tibanna sources
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
-
-## HEALTH_UNMEASURED_HEADLINE_1 codebase_health headline lies on an all-unmeasured run: when git status fails during a build, every file drops to unmeasured and the callout reads '0 clean' as fact — detect the unmeasured-dominant case and say THE RUN COULD NOT MEASURE, plus consider auto-retry when index.lock caused it
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/HEALTH_UNMEASURED_HEADLINE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HEALTH_UNMEASURED_HEADLINE_1.md
 
 # IN PROGRESS
 
