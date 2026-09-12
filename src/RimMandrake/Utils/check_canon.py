@@ -134,13 +134,24 @@ class Rule:
 def rules(c):
     p, s, f = c["planet"], c["settlements"], c["factions"]
     return [
+        # 🔴 `tiles` was in this context list until 2026-09-12 and it was the wrong
+        # word: unlike `water`/`ocean`/`sea` it is not water-specific vocabulary, so
+        # its bare presence anywhere in the cell let TWO unrelated stats through as
+        # "water contradictions" — a gene's thirst-rate line ("...on desert tiles
+        # thirst +25%...", the_slime_gene_lists.md:45) and a doc's row-count cap
+        # ("tiles. No def exceeds 25% of a plan's row count.", enrichment/REVIEW.md:26).
+        # Neither cell says `water`/`ocean`/`sea`. Dropping `tiles` (and requiring
+        # word boundaries on the rest, so `underwater` cannot satisfy it either)
+        # closed both without touching `bad` — every genuine water-fraction
+        # statement in this corpus already pairs its percentage with the word
+        # `water` itself (see selftest_check_canon.py's water cases).
         Rule("water",
              r"(?<![\d.])(25\s*%|22\s*[-–]\s*28\s*%|6\.9\s*%|8\.6\s*%)(?=[^\w%]|$)",
              "%s%%" % p["water_pct"],
              "Water is %s%% — %d of %d tiles, measured. 25%%/22–28%% is the dead "
              "worldgen_sea_spec; 8.6%% was the target; 6.9%% measured a dead world."
              % (p["water_pct"], p["water_tiles"], p["tiles"]),
-             context=r"water|ocean|sea\b|tiles"),
+             context=r"\bwater\b|\bocean\b|\bsea\b|\baquifer\b|\bhydration\b|\bmoisture\b"),
 
         Rule("tiles",
              r"\b(21,?87[013-9]|2187[0-9]{2})\b(?:[ \t]+\w+){0,2}[ \t-]+tiles?\b",
