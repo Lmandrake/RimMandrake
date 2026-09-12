@@ -1,0 +1,13 @@
+{
+ "tabs/health.html": "Transient/codebase_health_artifact.html",
+ "tabs/maturity.html": "Transient/project_maturity_dashboard.html",
+ "tabs/sheets/creature_register.html": "design/Jawa/worldbuilding/review/creature_register.html",
+ "tabs/sheets/furniture_register.html": "design/Jawa/worldbuilding/review/furniture_register.html",
+ "tabs/sheets/weapon_register.html": "design/Jawa/worldbuilding/review/weapon_register.html",
+ "tabs/sheets/plant_register.html": "design/Jawa/worldbuilding/review/plant_register.html",
+ "tabs/sheets/fauna_assignment_register.html": "design/Jawa/worldbuilding/review/fauna_assignment_register.html",
+ "tabs/sheets/flora_assignment_register.html": "design/Jawa/worldbuilding/review/flora_assignment_register.html",
+ "tabs/sheets/homeless_disposition_register.html": "design/Jawa/worldbuilding/review/homeless_disposition_register.html",
+ "tabs/sheets/vehicle_register.html": "design/Jawa/worldbuilding/review/vehicle_register.html",
+ "data/artsheets.json": "infrastructure/dashboards/hub/data/artsheets.json"
+}

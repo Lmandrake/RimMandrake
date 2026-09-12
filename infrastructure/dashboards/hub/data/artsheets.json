@@ -1,0 +1,132 @@
+{
+ "generatedAt": "2026-09-12T06:39:52Z",
+ "source": "design/Jawa/worldbuilding/review/*.html + *.decisions.json, hand-classified for graphics content \u2014 see excluded{} for every sheet left out and why",
+ "inventoried": 19,
+ "resolved": [
+  {
+   "stem": "assailant_flesh_sheet",
+   "title": "Assailant Flesh Dungeon \u2014 art contact sheet",
+   "file": "design/Jawa/worldbuilding/review/assailant_flesh_sheet.html",
+   "bytes": 60417,
+   "total": 70,
+   "undecided": 0,
+   "published": "tabs/sheets/assailant_flesh_sheet.html"
+  }
+ ],
+ "excluded": [
+  {
+   "stem": "creature_art_register",
+   "reason": "retired 2026-09-11 (creature-art-register-retired doctrine) \u2014 must not be consumed"
+  },
+  {
+   "stem": "creature_triage",
+   "reason": "a SECOND instrument over creature_register.decisions.json (its own header says so) \u2014 same data as creature_register, not a distinct sheet"
+  },
+  {
+   "stem": "mech_register",
+   "reason": "static reference catalog (like species_register) \u2014 no decisions/ITEMS review plumbing at all, nothing to resolve"
+  },
+  {
+   "stem": "pawn_flavor_phase2_register",
+   "reason": "pure-text register (defName/proposed-prose rewrites) \u2014 no art content, checked: no thumb/img field"
+  },
+  {
+   "stem": "proposal_suite_review",
+   "reason": "text design-proposal review (cost/docs/oneLine fields) \u2014 no art content"
+  },
+  {
+   "stem": "species_register",
+   "reason": "static faction/species reference doc, prose only, no decisions mechanism"
+  },
+  {
+   "stem": "tile_structure_batch3_sheet",
+   "reason": "text layout descriptions (defs+meta, no per-row image) \u2014 checked: no thumb data in ITEMS rows; also has no decisions.json anywhere in the repo"
+  },
+  {
+   "stem": "tile_structure_batch4_sheet",
+   "reason": "same as batch3 \u2014 text layout description, no decisions.json in the repo"
+  },
+  {
+   "stem": "tile_structure_batch5_sheet",
+   "reason": "same as batch3 \u2014 text layout description, no decisions.json in the repo"
+  },
+  {
+   "stem": "tile_structure_batch6_sheet",
+   "reason": "same as batch3 \u2014 text layout description, no decisions.json in the repo"
+  }
+ ],
+ "rows": [
+  {
+   "stem": "creature_register",
+   "title": "Creature Register",
+   "file": "design/Jawa/worldbuilding/review/creature_register.html",
+   "bytes": 2114124,
+   "total": 1165,
+   "undecided": 1165,
+   "published": "tabs/sheets/creature_register.html"
+  },
+  {
+   "stem": "furniture_register",
+   "title": "Furniture Register",
+   "file": "design/Jawa/worldbuilding/review/furniture_register.html",
+   "bytes": 1716813,
+   "total": 980,
+   "undecided": 980,
+   "published": "tabs/sheets/furniture_register.html"
+  },
+  {
+   "stem": "weapon_register",
+   "title": "Weapon Register",
+   "file": "design/Jawa/worldbuilding/review/weapon_register.html",
+   "bytes": 1206641,
+   "total": 764,
+   "undecided": 764,
+   "published": "tabs/sheets/weapon_register.html"
+  },
+  {
+   "stem": "plant_register",
+   "title": "Plant Register",
+   "file": "design/Jawa/worldbuilding/review/plant_register.html",
+   "bytes": 1134871,
+   "total": 670,
+   "undecided": 670,
+   "published": "tabs/sheets/plant_register.html"
+  },
+  {
+   "stem": "fauna_assignment_register",
+   "title": "Fauna Assignment Register",
+   "file": "design/Jawa/worldbuilding/review/fauna_assignment_register.html",
+   "bytes": 757653,
+   "total": 828,
+   "undecided": 336,
+   "published": "tabs/sheets/fauna_assignment_register.html"
+  },
+  {
+   "stem": "flora_assignment_register",
+   "title": "Flora Assignment Register",
+   "file": "design/Jawa/worldbuilding/review/flora_assignment_register.html",
+   "bytes": 284255,
+   "total": 288,
+   "undecided": 130,
+   "published": "tabs/sheets/flora_assignment_register.html"
+  },
+  {
+   "stem": "homeless_disposition_register",
+   "title": "Homeless creatures \u2014 final disposition",
+   "file": "design/Jawa/worldbuilding/review/homeless_disposition_register.html",
+   "bytes": 1735373,
+   "total": 125,
+   "undecided": 107,
+   "published": "tabs/sheets/homeless_disposition_register.html"
+  },
+  {
+   "stem": "vehicle_register",
+   "title": "Vehicle Register",
+   "file": "design/Jawa/worldbuilding/review/vehicle_register.html",
+   "bytes": 248172,
+   "total": 98,
+   "undecided": 98,
+   "published": "tabs/sheets/vehicle_register.html"
+  }
+ ]
+}

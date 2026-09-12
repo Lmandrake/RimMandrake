@@ -14,6 +14,7 @@ Art tab: infrastructure/artpipe/art_status.json already meets the contract
 import hashlib
 import json
 import pathlib
+import re
 import sys
 from datetime import datetime, timezone
 
@@ -109,9 +110,136 @@ def worldmap() -> None:
     }, indent=1))
 
 
+# ---------------------------------------------------------------------------
+# artsheets: unresolved GRAPHICS review sheets under design/Jawa/worldbuilding/review.
+#
+# Every *.html there was inspected by hand (bytes, embedded ITEMS/decisions
+# schema, presence of a per-row "thumb"/"img" field) to sort graphics-review
+# sheets from text-only registers and static reference docs, which are not
+# what the owner asked this section for. See REVIEW_DIR_EXCLUDED below for
+# the full list and reason for every sheet that did NOT make the cut.
+REVIEW_DIR = REPO / "design/Jawa/worldbuilding/review"
+
+# stems that ARE graphics review sheets with a real per-row decision file —
+# confirmed by inspecting decisions.json rows for an "img"/"thumb"-bearing
+# ITEMS schema (creature/vehicle/weapon/furniture/plant/fauna/flora/homeless
+# registers show a def's art; assailant_flesh_sheet is a dungeon art contact
+# sheet). Excludes text-only registers and static docs — see EXCLUDED.
+GRAPHICS_SHEET_STEMS = [
+    "assailant_flesh_sheet",
+    "creature_register",
+    "fauna_assignment_register",
+    "flora_assignment_register",
+    "furniture_register",
+    "homeless_disposition_register",
+    "plant_register",
+    "vehicle_register",
+    "weapon_register",
+]
+
+# Every other *.html in the review dir, and why it is not in the list above.
+REVIEW_DIR_EXCLUDED = {
+    "creature_art_register": "retired 2026-09-11 (creature-art-register-retired doctrine) — must not be consumed",
+    "creature_triage": "a SECOND instrument over creature_register.decisions.json (its own header says so) — same data as creature_register, not a distinct sheet",
+    "mech_register": "static reference catalog (like species_register) — no decisions/ITEMS review plumbing at all, nothing to resolve",
+    "species_register": "static faction/species reference doc, prose only, no decisions mechanism",
+    "pawn_flavor_phase2_register": "pure-text register (defName/proposed-prose rewrites) — no art content, checked: no thumb/img field",
+    "proposal_suite_review": "text design-proposal review (cost/docs/oneLine fields) — no art content",
+    "tile_structure_batch3_sheet": "text layout descriptions (defs+meta, no per-row image) — checked: no thumb data in ITEMS rows; also has no decisions.json anywhere in the repo",
+    "tile_structure_batch4_sheet": "same as batch3 — text layout description, no decisions.json in the repo",
+    "tile_structure_batch5_sheet": "same as batch3 — text layout description, no decisions.json in the repo",
+    "tile_structure_batch6_sheet": "same as batch3 — text layout description, no decisions.json in the repo",
+}
+
+_GENERIC_TITLES = {"", "review sheet"}
+
+
+def _sheet_title(html_path: pathlib.Path, stem: str) -> str:
+    head = html_path.read_bytes()[:8192].decode("utf-8", "replace")
+    m = re.search(r"<title[^>]*>(.*?)</title>", head, re.S) or re.search(r"<h1[^>]*>(.*?)(?:<|$)", head, re.S)
+    if m:
+        t = re.sub(r"\s+", " ", m.group(1)).strip()
+        if t.lower() not in _GENERIC_TITLES:
+            return t
+    return " ".join(w.capitalize() for w in stem.split("_"))
+
+
+def _sheet_counts(doc: dict) -> tuple:
+    """Return (total, undecided) for one decisions.json's content.
+
+    undecided derivation, in order:
+    - dict of per-row decisions, any row carrying an "at" timestamp (the
+      project's own touchedByHuman = rec => !!(rec && rec.at), lifted
+      verbatim from creature_triage.html) -> total minus rows carrying "at".
+    - dict of per-row decisions, NO row anywhere uses "at" AND the sheet's
+      own top-level "savedBy" is unset -> the sidecar has never written this
+      file at all, so no row anywhere carries a recorded human verdict:
+      undecided == total.
+    - a blanket ruling (assailant_flesh_sheet's "decidedCount"/"blanket"
+      format, no per-row map) -> undecided = total - decidedCount.
+    - anything else this format doesn't let us attribute per row -> None.
+    """
+    decs = doc.get("decisions")
+    if isinstance(decs, dict) and decs:
+        total = len(decs)
+        rows = [v for v in decs.values() if isinstance(v, dict)]
+        if any("at" in v for v in rows):
+            touched = sum(1 for v in rows if v.get("at"))
+            return total, total - touched
+        if not doc.get("savedBy"):
+            return total, total
+        return total, None
+    if doc.get("blanket") and isinstance(doc.get("decidedCount"), int):
+        total = doc["decidedCount"]
+        return total, max(0, total - doc["decidedCount"])
+    return None, None
+
+
+def artsheets() -> None:
+    rows = []
+    excluded = dict(REVIEW_DIR_EXCLUDED)
+    resolved = []
+    for stem in GRAPHICS_SHEET_STEMS:
+        html_path = REVIEW_DIR / f"{stem}.html"
+        dec_path = REVIEW_DIR / f"{stem}.decisions.json"
+        if not html_path.exists():
+            excluded[stem] = "listed as a graphics sheet but the .html is gone — re-check GRAPHICS_SHEET_STEMS"
+            continue
+        if dec_path.exists():
+            doc = json.loads(dec_path.read_text())
+            total, undecided = _sheet_counts(doc)
+        else:
+            total, undecided = None, None
+        unresolved = (not dec_path.exists()) or undecided is None or (undecided or 0) > 0
+        row = {
+            "stem": stem,
+            "title": _sheet_title(html_path, stem),
+            "file": str(html_path.relative_to(REPO)),
+            "bytes": html_path.stat().st_size,
+            "total": total,
+            "undecided": undecided,
+            "published": f"tabs/sheets/{stem}.html",
+        }
+        if unresolved:
+            rows.append(row)
+        else:
+            resolved.append(row)
+    rows.sort(key=lambda r: (-(r["undecided"] or 0), r["stem"]))
+    OUT.joinpath("artsheets.json").write_text(json.dumps({
+        "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source": "design/Jawa/worldbuilding/review/*.html + *.decisions.json, hand-classified "
+                  "for graphics content — see excluded{} for every sheet left out and why",
+        "inventoried": len(GRAPHICS_SHEET_STEMS) + len(excluded),
+        "resolved": resolved,
+        "excluded": [{"stem": s, "reason": r} for s, r in sorted(excluded.items())],
+        "rows": rows,
+    }, indent=1))
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     only = sys.argv[1:] or ["health", "maturity", "worldmap"]
     for name in only:
-        {"health": health, "maturity": maturity, "worldmap": worldmap}[name]()
+        {"health": health, "maturity": maturity, "worldmap": worldmap,
+         "artsheets": artsheets}[name]()
         print(f"wrote data/{name}.json")
