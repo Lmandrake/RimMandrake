@@ -11302,10 +11302,10 @@
     "sha": "9a69acce"
   },
   "src/RimUtinni/RiverColors/Source/HarmonyPatch_RiverColors.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "effb3e6feae4bb44d946ed8e0cf3713c62a2a1c376bc010424dd4e6cb25ffd93",
-    "sha": "9a69acce"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2fd29f46cf8cfcbf4cd7a9b140fd451674983d2033098b64ab11787389b4a1f1",
+    "sha": "1cff9edb0"
   },
   "src/RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj": {
     "cleanCount": 1,
@@ -11620,10 +11620,10 @@
     "sha": "46cdec42"
   },
   "src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "a775fabc3b098c9f4e3198160ef337a059817a033899a8ec52208e3684215570",
-    "sha": "46cdec42"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "ff829775ce48df4f5e3ee966d1eac9c09cf8e8d253f31fd7a7fb52c30f33d1d6",
+    "sha": "1cff9edb0"
   },
   "src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj": {
     "cleanCount": 1,
