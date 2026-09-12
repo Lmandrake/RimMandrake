@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-12T00:29:34Z",
+  "generatedAt": "2026-09-12T06:26:52Z",
   "iterationsHistogram": {
-    "1": 129,
+    "1": 141,
     "2": 4,
     "3": 6,
     "4": 3,
@@ -596,6 +596,66 @@
       },
       "state": "generated"
     },
+    "dactillion/east": {
+      "iteration": 1,
+      "job_ids": [
+        "dactillion_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183856.9410148,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 2.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "dactillion/north": {
+      "iteration": 1,
+      "job_ids": [
+        "dactillion_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183847.1731248,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 2.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "dactillion/south": {
+      "iteration": 1,
+      "job_ids": [
+        "dactillion_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183840.1192672,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "dewback/east": {
       "iteration": 1,
       "job_ids": [
@@ -896,6 +956,66 @@
       },
       "state": "awaiting_verdict"
     },
+    "fanback/east": {
+      "iteration": 1,
+      "job_ids": [
+        "fanback_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183951.9779973,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "fanback/north": {
+      "iteration": 1,
+      "job_ids": [
+        "fanback_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183959.6202712,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "fanback/south": {
+      "iteration": 1,
+      "job_ids": [
+        "fanback_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789183969.247846,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "featherfeel/east": {
       "iteration": 1,
       "job_ids": [
@@ -1070,6 +1190,66 @@
       ],
       "spend": {
         "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "grank/east": {
+      "iteration": 1,
+      "job_ids": [
+        "grank_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789184054.002139,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "grank/north": {
+      "iteration": 1,
+      "job_ids": [
+        "grank_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789184041.8268166,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "grank/south": {
+      "iteration": 1,
+      "job_ids": [
+        "grank_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789184081.901871,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE9_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
         "note": null,
         "status": "MEASURED",
         "usd": 0.0
@@ -2429,19 +2609,19 @@
         "shiro_v1_east"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.8179326,
+      "last_ts": 1789184143.2720246,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "shiro/north": {
       "iteration": 1,
@@ -2449,19 +2629,19 @@
         "shiro_v1_north"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.860588,
+      "last_ts": 1789184159.113592,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "shiro/south": {
       "iteration": 1,
@@ -2469,19 +2649,19 @@
         "shiro_v1_south"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.7935503,
+      "last_ts": 1789184182.5355182,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "slagmaw/east": {
       "iteration": 1,
@@ -2966,44 +3146,44 @@
   },
   "projection": {
     "note": "no committed targets yet \u2014 no velocity to project from",
-    "remaining": 146,
+    "remaining": 155,
     "status": "UNMEASURED",
-    "totalTargets": 146
+    "totalTargets": 155
   },
   "sourceFingerprint": {
-    "bytes": 99805,
+    "bytes": 105931,
     "exists": true,
-    "lines": 676,
+    "lines": 718,
     "path": "infrastructure/artpipe/registry.jsonl",
-    "sha256_12": "868c5b8c0a0f"
+    "sha256_12": "4849a9439efc"
   },
   "spend": {
     "acceptedOrCommittedCount": 0,
-    "codexPctAllTime": 118.0,
+    "codexPctAllTime": 129.0,
     "geminiUsdTotal": 4.02,
     "geminiUsdWeek": 4.02,
-    "pctWeeklyWindow": 121.0,
+    "pctWeeklyWindow": 132.0,
     "status": "MEASURED"
   },
   "stateCounts": {
     "accepted": 0,
-    "awaiting_verdict": 135,
+    "awaiting_verdict": 147,
     "committed": 0,
     "deployed": 0,
     "generated": 7,
     "parked_at_cap": 0,
-    "queued": 4,
+    "queued": 1,
     "registered": 0,
     "rejected_in_retry": 0,
     "repurposed": 0,
     "unregistered": 0
   },
-  "targetCount": 146,
+  "targetCount": 155,
   "throughputFingerprint": {
-    "bytes": 160710,
+    "bytes": 172867,
     "exists": true,
-    "lines": 216,
+    "lines": 228,
     "path": "infrastructure/artpipe/throughput.jsonl",
-    "sha256_12": "6cb2fad10c42"
+    "sha256_12": "12649ee9fbc6"
   }
 }

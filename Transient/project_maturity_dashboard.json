@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-10 22:50",
- "head": "b40cadf8",
+ "generated": "2026-09-11 23:27",
+ "head": "e93f9b9fd",
  "systems": [
   {
    "system": "Aftermath",
@@ -739,7 +739,9 @@
    "updatedAt": "2026-09-09T03:09:01Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [],
+   "blocked": [
+    "OUTERRIM_DROIDDEPOT_PATCH_GUARD_1"
+   ],
    "awaiting": []
   },
   {
@@ -5127,21 +5129,22 @@
   "total": 135
  },
  "codeReview": {
-  "total": 1914,
-  "clean": 1911,
-  "dirty": 3,
+  "total": 2153,
+  "clean": 2149,
+  "dirty": 4,
   "unknown": 0,
-  "recidivists": 3,
+  "recidivists": 4,
   "dirtyPaths": [
-   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs",
-   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
-   "src/RimMandrake/Utils/check_config_errors.py"
+   "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs",
+   "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj",
+   "src/RimUtinni/UtinniPatches/About/About.xml",
+   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml"
   ]
  },
  "ledger": {
   "openItems": 129,
-  "openBugs": 7,
-  "needsOwner": 14
+  "openBugs": 11,
+  "needsOwner": 10
  },
  "movement": [
   {
