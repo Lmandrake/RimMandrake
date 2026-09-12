@@ -171,24 +171,17 @@ caveat verbatim; nothing here deepens it.
 
 ## Cards — for the owner
 
-- **CARD T1 — the live stack violates the beldons-only ban.** `neronix17.outerrim.core`
-  ships extractor buildings (`OuterRim_TibannaSiphon`, `OuterRim_TibannaExtractorLight`/
-  `Heavy`, per `research_review/restructured_model_v4.json`), and the LK
-  MineablesOR/Mines-2.0 pair patches `OuterRim_Tibanna` into a *mineable* route
-  (`sw_ownership_survey.md` §leutiankane rows). Both are non-beldon tibanna sources —
-  `the_forge.md` §6 ban 5 says they cannot exist. Options: **(a)** CherryPicker-cut the
-  extractor/mineable lanes, keep the item def (cheapest, survey warns the LK patches
-  no-op silently — verify live); **(b)** research-gate them out; **(c)** relax the ban to
-  "no *lawful* source but the meter." This spec assumes (a) — the ban is written as a
-  hard ban and hard bans win — but the cut is a mod-surgery act this item may not
-  perform.
-- **CARD T2 — the resolution's shape.** The owner ruled it must come; pick one:
-  **(a) Break the meter** — a one-time assault/heist chain on the station; the monopoly
-  ends, gas floods, Heat maxes, Act III arrives early. Trade: the loudest possible
-  player agency, and the garrison must be beatable. **(b) Bleed the meter** — the
-  Hutt lane, fed by the player, becomes structural; the embargo persists but no
-  longer bites; quiet, no climax. Trade: cheap to build, anticlimactic for a ruled
-  "must resolve." **(c) The Empire wins the clock** — if the player never intervenes,
-  the drought completes: resistance factions go quiet (stock/kit floors), and the
-  world is more Imperial. Trade: a real failure state with teeth; costs faction-state
-  work. (a)+(c) as the two ends of one clock is the spec's recommendation.
+- **CARD T1 — RULED 2026-09-12: (a), cut the violators.** CherryPicker-cut
+  the OuterRim extractor lanes (`OuterRim_TibannaSiphon`,
+  `OuterRim_TibannaExtractorLight`/`Heavy`) and the LK mineable route for
+  `OuterRim_Tibanna`; the item def itself stays. The beldons-only hard ban
+  stands. 🔴 Verify LIVE after the cut — the survey warns the LK patches
+  can no-op silently. Filed: TIBANNA_SOURCE_CUT_1 (FOUNDRY).
+- **CARD T2 — RULED 2026-09-12: (a)+(c), the two ends of one clock.** The
+  player can BREAK THE METER (assault/heist chain on the station; monopoly
+  ends, gas floods, Heat maxes, Act III early — the garrison must be
+  beatable), and if the player never intervenes THE EMPIRE WINS THE CLOCK
+  (the drought completes; resistance factions go quiet via stock/kit
+  floors; the world is more Imperial). Bleed-the-meter (b) exists only as
+  the Hutt lane's ongoing pressure valve, never as the resolution. Beldon
+  taming: brutal-but-possible (forge kit card 3, same sitting).
