@@ -1446,10 +1446,10 @@
     "sha": "629956d2"
   },
   "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_EMPIRE.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "c7c8f60f4f5308129bd1d206961049471b655516814a8fd9df9e6b8fd703f873",
-    "sha": "dfa5bdd3"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2f03b2fd39233aedaf2b0be167abab8a95e17d7fb7051fab9c58ce878f1b23f5",
+    "sha": "54ac7d7ee"
   },
   "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_GEONOSIAN.xml": {
     "cleanCount": 1,
@@ -2238,10 +2238,10 @@
     "sha": "e01583ae"
   },
   "src/RimMandrake/Pits/Defs/ThingDefs/Pit_OpenPits.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-07",
-    "hash": "f1de40ce489d82f1f477f4b4917b120f56028e4c900f719c41a015b05c4796e0",
-    "sha": "e3fe4617"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "fa568b06f24a4bf9698143080b0e90ad73d298a79c318ccb0ecb2142a677ea61",
+    "sha": "54ac7d7ee"
   },
   "src/RimMandrake/Pits/Defs/WorkGiverDefs/Pit_WorkGivers.xml": {
     "cleanCount": 1,
@@ -4912,10 +4912,10 @@
     "sha": "629956d2"
   },
   "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "9baac20f6263c7824f97640236f184e7f1de61167ed92d0c8dae9d5c32b75f67",
-    "sha": "629956d2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "abecdca3ca05c9d202666863daea6d05a08c07ac987c95389031c90fcd202c90",
+    "sha": "54ac7d7ee"
   },
   "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml": {
     "cleanCount": 1,
