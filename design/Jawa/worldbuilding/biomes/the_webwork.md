@@ -268,6 +268,11 @@ hediff carrier); 7 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
   maps, droid-priority targeting.
 - `SHOKKWEAVE_SOLE_SOURCE_1` — the economy ruling: rename, strip every trader
   table, add the three harvest routes; prove against live trader generation.
+  ⭐ **Economy spec DRAFTED 2026-09-11**: `kits/shokkweave_sole_source_spec.md`
+  — leak census MEASURED against the frozen dump (11 trader kinds, the
+  quest-reward tag, no producing recipe); the ruled fourth route (border
+  creep-web yields + emergent-Shokk spawn) wired to the built
+  `RSW_CompEmergentSpawnOnDestroy`; 1 owner card open (stuff-rolled gear).
 - **Roster** — rides the full assignment pass: the Wyyyschokk kinds (bestiary FJ
   clade names `nettik`/`chirrik`/`rothrik` available for the guilds), beetles,
   mites, the churning flora, the pale flowers; donor density correction.
