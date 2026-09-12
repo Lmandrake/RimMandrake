@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: The Kyber Trade</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.kybertradeplot</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Ash'karr campaign content: the alleged-Jedi Homestead visit and the
+  donate-and-smuggle plot (KYBER_TRADE_PLOT_1, design/Jawa/kyber_trade_plot_spec.md,
+  K1/K2 RULED 2026-09-11). Ships RUT_KyberHomesteadVisit (a one-shot conversation
+  quest: Homestead Defense League visitors ask how the kyber was obtained; accepting
+  is the Forthright branch, letting it expire is Evasive — no punishment either way)
+  and RUT_KyberDonationSmuggle (the donation-and-rendezvous quest: a fixer on the
+  smuggling lane asks for a real quantity of kyber, given not sold; completing it
+  pays a letter of thanks and a modest Homestead goodwill bump only — zero Heat
+  change, per K2, and no Rebellion faction or presence is ever created). Both quests
+  are pure vanilla QuestScriptDef/QuestNode content (no C#) and are never rolled by
+  the storyteller (rootSelectionWeight 0) — they fire only through the paired
+  RUT_GiveQuest_* IncidentDefs (baseChance 0), the deterministic dev-mode/bridge hook
+  already established by VAULT_THAW_QUEST_FAMILY_1. The GM-layer Heat/Hutt-Interest
+  blackboard that is meant to fire these on a real kyber-sale-count threshold does
+  not exist yet (M4 unstarted per build_plan.md) — see the item file for exactly
+  what that leaves undone. Requires RUT_Jawa_HuttCartel and the HomesteadDefenseLeague
+  patch (both UtinniPatches) to be loaded for their flavor text to make sense, but
+  has no hard load-order dependency on them (no defName from either is referenced).</description>
+</ModMetaData>

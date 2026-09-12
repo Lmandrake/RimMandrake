@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_KyberDonationSmuggle - KYBER_TRADE_PLOT_1 spec SS6, "The donation and the
+  smuggle". Written against skills/rimworld-quests/SKILL.md, reusing vanilla's own
+  TradeRequestComp/QuestNode_TradeRequest_* system - the exact mechanism Core uses
+  for "a settlement asks a caravan to bring specific goods within a time window,"
+  already proven in this repo by src/RimUtinni/FungalSoilTrade/Defs/QuestScriptDefs/
+  RUT_FungalSoilTradeRequest.xml (that file's own header cites Core's
+  Script_TradeRequest.xml). No node class or field below is guessed - QuestNode_
+  ChangeFactionGoodwill's field names were confirmed against decompiled source
+  (RimWorld/QuestGen/QuestNode_ChangeFactionGoodwill.cs) after an earlier draft of
+  this file had them wrong; the corrected names (canSendLetter, canSendMessage) are
+  what ships here.
+
+  THE TWO NAMED SIMPLIFICATIONS/SUBSTITUTIONS:
+
+  1. THE "SITE" IS A SETTLEMENT-SHAPED CONTACT, NOT A NEW SitePartDef. The spec
+     (SS6.2) calls for a rendezvous SITE from the "smuggler's cache" curated-ruin
+     template - that template does not exist as a SitePartDef/StructureLayoutDef in
+     this repo yet (grepped, absent), and authoring one from scratch is a much
+     larger, riskier task (see VAULT_THAW_QUEST_FAMILY_1 for how much a real
+     SitePartDef+GenStep costs) than this pass's scope. TradeRequestComp is
+     purpose-built for exactly the mechanical shape needed - "bring N of a named
+     Thing to a place within a time window, no payment goes back the other way
+     unless the def says so" - so it is reused wholesale via
+     QuestNode_GetNearbySettlement (any nearby visitable settlement stands in for
+     "wherever the smuggling lane's fixer currently is," the same open-question
+     simplification RUT_FungalSoilTradeRequest.xml already accepted and documented
+     for not gating to a specific faction - QuestNode_GetNearbySettlement has no
+     faction-filter field, confirmed by reading its source). Flavor text narrates
+     the contact as "someone working the same lanes the Hutts do," never claiming
+     the settlement itself is Hutt Cartel-owned.
+
+  2. NO SILVER OR GOODS COME BACK. K2 RULED 2026-09-11: "the smuggle scrubs
+     nothing - donation is pure cost, never laundering." Unlike
+     RUT_FungalSoilTradeRequest (which pays QuestNode_GiveRewards on fulfillment),
+     this quest's TradeRequestFulfilled branch adds ONLY a HistoryEventDef, a
+     modest OutlanderCivil (Homestead) goodwill bump, and a letter - no
+     QuestNode_GiveRewards node exists in this file at all, by design. Zero Heat
+     change is trivially true: nothing here touches Heat, because nothing in this
+     repo currently CAN (see the item file - the GM blackboard is unbuilt).
+
+  Fires only through RUT_GiveQuest_KyberDonationSmuggle (baseChance 0) - the real
+  trigger (either door from spec SS5/SS4c) lives on the same unbuilt GM layer as
+  RUT_KyberHomesteadVisit's trigger. rootSelectionWeight 0: never randomly offered.
+  QuestNode_QuestUnique blocks a second ONGOING copy only, same documented limit as
+  the vault-quest family - "one Rebellion cell, one chance" ever is the firer's
+  responsibility until the GM layer exists to enforce it itself.
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_KyberDonatedToCause</defName>
+    <label>donated kyber to a cause that will never come back for it</label>
+  </HistoryEventDef>
+
+  <QuestScriptDef>
+    <defName>RUT_KyberDonationSmuggle</defName>
+
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <expireDaysRange>3~5</expireDaysRange>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The ask: [settlement_label]</li>
+        <li>questName->Kyber for the cause</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Someone working the same lanes the Hutts do has a request, passed along quietly: [requestedThingCount]x [requestedThing_label] (worth [requestedThingMarketValue_money]), given rather than sold, to be smuggled offworld to a cause still fighting the Empire somewhere it hasn't already lost.\n\nThere is no payment coming back. What you get is the knowledge that it went somewhere the fight is still alive, and their thanks - nothing more, because there is still no way to help it here. Bring the kyber to [settlement_label] before the window closes, or don't; nobody will hold it against you either way.[travelTime]</li>
+        <li>travelTime(canCaravan==True,priority=1)-> The estimated travel time is [estimatedTravelTime_duration].</li>
+        <li>travelTime-></li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+
+        <li Class="QuestNode_QuestUnique">
+          <tag>RUT_KyberDonationSmuggle</tag>
+        </li>
+
+        <li Class="QuestNode_GetNearbySettlement">
+          <allowActiveTradeRequest>false</allowActiveTradeRequest>
+          <maxTileDistance>60</maxTileDistance>
+          <storeAs>settlement</storeAs>
+          <storeFactionLeaderAs>asker</storeFactionLeaderAs>
+          <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
+          <canBeSpace>false</canBeSpace>
+        </li>
+
+        <li Class="QuestNode_GetFactionOf">
+          <thing>$asker</thing>
+          <storeAs>faction</storeAs>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <label TKey="LetterLabelQuestFailed">Quest failed: [resolvedQuestName]</label>
+          <text TKey="LetterTextQuestFailed">[faction_name] became hostile to you.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_RandomOfferDuration">
+          <settlement>$settlement</settlement>
+          <storeAs>timeout</storeAs>
+          <storeEstimatedTravelTimeAs>estimatedTravelTime</storeEstimatedTravelTimeAs>
+        </li>
+
+        <!-- Named explicitly, not vanilla's random picker (which filters candidates
+             through PlayerItemAccessibilityUtility.PlayerCanMake and would never
+             pick a mined-only crystal). convertTo>ThingDef< is required so
+             [requestedThing_label] resolves in questDescriptionRules rather than
+             blanking the whole description - the exact trap
+             RUT_FungalSoilTradeRequest.xml's own header already documents.
+             Binds to the donor defName per crystal_mods_inventory.md SS4 (kyber
+             absorption owed separately); migrates under NAMING_SCHEME_EXECUTION_1
+             when that lands. -->
+        <li Class="QuestNode_Set">
+          <name>requestedThing</name>
+          <value>Force_KyberCrystal</value>
+          <convertTo>ThingDef</convertTo>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingCount</name>
+          <value>$(randInt(6,12))</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingMarketValue</name>
+          <value>$($requestedThingCount * 350)</value>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_Initiate">
+          <settlement>$settlement</settlement>
+          <requestedThingDef>$requestedThing</requestedThingDef>
+          <requestedThingCount>$requestedThingCount</requestedThingCount>
+          <duration>$timeout</duration>
+        </li>
+
+        <!-- Fulfillment: NO QuestNode_GiveRewards anywhere in this file (K2 - pure
+             cost, never laundering). Only the goodwill bump, the memory, and the
+             letter of thanks that is the reward the spec ruled. -->
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <faction>OutlanderCivil</faction>
+          <change>5</change>
+          <canSendMessage>false</canSendMessage>
+          <canSendLetter>false</canSendLetter>
+          <reason>RUT_KyberDonatedToCause</reason>
+        </li>
+
+        <li Class="QuestNode_RecordHistoryEvent">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <historyDef>RUT_KyberDonatedToCause</historyDef>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <letterDef>NeutralEvent</letterDef>
+          <label TKey="LetterLabelKyberDonationSmuggle">The crystals are gone</label>
+          <text TKey="LetterTextKyberDonationSmuggle">The kyber changed hands and kept moving - past whatever the Empire calls a blockade, on lanes the Hutts have used longer than the Empire has existed. A short message comes back, once, secondhand: thanks, and nothing else. No word of how it will be spent, no promise it will change anything here.\n\nIt won't. There is still no way to help it here. Whatever war that kyber buys, it is a war fought somewhere else, by people who will never send anyone back for you.\n\nThe Homestead sympathizers who arranged it will remember the gesture.</text>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- Refusing or failing closes this for good (spec SS6.5): the kyber is
+             lost with the caravan's normal fate, no revenge, no grudge - which is
+             exactly what a plain, unembellished Fail outcome already is. -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$timeout</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <outSignalComplete>TradeRequestTimeout</outSignalComplete>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TradeRequestTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

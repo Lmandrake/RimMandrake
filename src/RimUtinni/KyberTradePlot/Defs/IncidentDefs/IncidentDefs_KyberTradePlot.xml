@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- KYBER_TRADE_PLOT_1: a named GiveQuest incident per quest, baseChance 0 - never
+       rolled by the storyteller (both quests are also rootSelectionWeight 0). Same
+       shape and same purpose as VAULT_THAW_QUEST_FAMILY_1's IncidentDefs_Vaults.xml:
+       the deterministic trigger - dev mode -> Incidents -> the def, or a bridge call
+       - for a quest whose REAL trigger (a kyber-sale-count threshold on the Imperial
+       Heat GM blackboard) lives on infrastructure that does not exist yet
+       (build_plan.md SSM4 is unstarted). Whoever builds that layer fires these two
+       incidents; nothing here invents a parallel counter. -->
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_KyberHomesteadVisit</defName>
+    <label>kyber homestead visit</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_KyberHomesteadVisit</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_KyberDonationSmuggle</defName>
+    <label>kyber donation smuggle</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_KyberDonationSmuggle</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+</Defs>

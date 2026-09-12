@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_KyberHomesteadVisit - KYBER_TRADE_PLOT_1 spec SS5, "The alleged Jedi (the
+  Homestead visit)". Written against skills/rimworld-quests/SKILL.md, mirroring the
+  proven accept-or-let-expire shape of src/RimUtinni/LongHunger/Defs/QuestScriptDefs/
+  Quest_LongHunger.xml and src/RimUtinni/FungalSoilTrade/Defs/QuestScriptDefs/
+  RUT_FungalSoilTradeRequest.xml. No node class or field below is guessed - all read
+  via mcp__rimsage__read_file against decompiled 1.6 source, 2026-09-11.
+
+  THE TWO NAMED SIMPLIFICATIONS (record what you assumed, per FOUNDRY.md):
+
+  1. NO LIVE PAWN GROUP. The spec calls for "two or three Homestead pawns" walking
+     onto the map. Vanilla's QuestPart_Choice (RimWorld/QuestPart_Choice.cs, read in
+     full) is NOT a narrative-branch mechanism - its Choice class carries only
+     `questParts`/`rewards`, no label field, and PreQuestAccept resolves it BEFORE
+     the quest can even be accepted (it is the "pick your reward variant" UI, not a
+     mid-scene dialogue). Vanilla has no built-in multi-button "how was it obtained"
+     conversation node. The closest real vanilla mechanism for a labelled player
+     decision with consequences IS the quest's own Accept/let-expire choice, which
+     is exactly how every other narrative quest in this repo (LongHunger, Stranded,
+     FungalSoilTrade) represents a decision. So: ACCEPT = Forthright (you choose to
+     answer them), letting the short expireDaysRange lapse = Evasive (you decline to
+     engage) - the "conversation" itself is carried in questDescriptionRules prose,
+     not a separate node tree. Spawning an actual Homestead pawn group that walks in,
+     asks, and leaves is real, buildable v2 work (QuestNode_PawnsArrive exists and
+     was read; it needs a PawnKindDef for the visitors, which does not exist yet)
+     - named here, not hidden.
+
+  2. TRIGGER IS EXTERNAL AND NOT YET BUILT. The spec's real firing condition -
+     "after kyber sales cross a small cumulative threshold" - lives on the Imperial
+     Heat GM blackboard (build_plan.md SSM4, "Heat in shadow mode": unstarted, no
+     Python state machine exists in this repo as of 2026-09-11). This def is
+     deliberately rootSelectionWeight 0 (never randomly offered) and fires only
+     through RUT_GiveQuest_KyberHomesteadVisit (baseChance 0), the same deterministic
+     dev-mode/bridge hook VAULT_THAW_QUEST_FAMILY_1 established. Whoever builds the
+     GM layer wires the real trigger to that incident; nothing here invents a
+     parallel counter.
+
+  QuestNode_QuestUnique only blocks a second ONGOING copy (same documented limit as
+  RUT_VaultThaw) - true once-per-campaign-ever enforcement is the firer's job, since
+  only the firer (a human, dev mode, or eventually the GM layer) decides to raise the
+  incident at all, and the spec's own trigger ("the second sale") is external anyway.
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_KyberHomesteadDoorOpened</defName>
+    <label>answered the Homestead visitors straight about the kyber</label>
+  </HistoryEventDef>
+
+  <QuestScriptDef>
+    <defName>RUT_KyberHomesteadVisit</defName>
+
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <expireDaysRange>2~3</expireDaysRange>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Homestead visitors</li>
+        <li>questName->Questions about the kyber</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Three of the Homestead's own came in on foot, unannounced, and asked to speak with whoever is trading kyber. Two carry themselves like moisture farmers who have walked a long way. The third does not carry a weapon, stands very still, and says nothing while the others talk - nobody uses the word "Jedi," but nobody needs to.\n\nThey want a straight answer to one question: how was the kyber obtained? Mined free, taken from the dead, bought, or stolen - they say it does not change what they think of you, only whether they can trust what you say next.\n\nAnswer them and they leave satisfied, with a quiet warning that others are watching the same trades. Say nothing and they leave anyway - suspicion is not a crime, even to people who may or may not be what they are not claiming to be.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="QuestNode_QuestUnique">
+          <tag>RUT_KyberHomesteadVisit</tag>
+        </li>
+
+        <!-- ACCEPT = Forthright. No inSignal: these nodes run once the quest is
+             generated, which for a def with no PreventsAutoAccept mechanism means
+             "once the player accepts it from the letter/quest tab" - matching the
+             accept-gated pattern already shipped in Quest_Stranded and Quest_LongHunger. -->
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <faction>OutlanderCivil</faction>
+          <change>8</change>
+          <canSendMessage>false</canSendMessage>
+          <canSendLetter>false</canSendLetter>
+          <reason>RUT_KyberHomesteadDoorOpened</reason>
+        </li>
+
+        <li Class="QuestNode_RecordHistoryEvent">
+          <historyDef>RUT_KyberHomesteadDoorOpened</historyDef>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <label TKey="LetterLabelKyberHomesteadVisit">Homestead visitors: satisfied</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextKyberHomesteadVisit">You told them the truth, or something close enough to it. The quiet one never spoke. The two who did thanked you and said, on the way out, that word travels - others are watching the same trades, and not all of them will ask so politely.\n\nWhatever door that was, it is open now.</text>
+        </li>
+
+        <li Class="QuestNode_End">
+          <outcome>Success</outcome>
+        </li>
+
+        <!-- Fail-safe parity with every other quest in this repo; if the map is
+             lost before the player answers, the offer simply lapses with it. -->
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>
