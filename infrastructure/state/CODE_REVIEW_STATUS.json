@@ -1541,6 +1541,12 @@
     "hash": "72ed6076ed2dabacd77e7ade22f63fef21f2fb5149bf156a41c8683f8408a9aa",
     "sha": "2c8762586"
   },
+  "src/RimMandrake/Greentide/Source/RM_MapComponent_MudSwallow.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c98c20a28b1d7ed694da3eccd4c8b9d855b47c19390d17340d8bc60b3502c40b",
+    "sha": "7949f4eac"
+  },
   "src/RimMandrake/Greentide/Source/RM_MapComponent_TerrainMire.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -12094,10 +12100,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-11",
-    "hash": "1c20bf0e9d97efc341adc5d6918cf4b446d80c42ae7c9f37786d5e85841cb5f0",
-    "sha": "02bca50d1"
+    "hash": "59bf2e75dfe0a11d0b8f7fd70ddd061226d446ba5746d53e5953e1908a86714d",
+    "sha": "7949f4eac"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
