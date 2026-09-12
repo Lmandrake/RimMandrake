@@ -56,58 +56,24 @@ covers: design/**/*.md
 # Re-measure with the commands in `src:` — they are the whole provenance.
 # ===========================================================================
 planet:
-  # 🔴 THERE IS NO FROZEN WORLD — owner, 2026-08-22: "I am working with DECIDE to remake
-  # the planet an entirely different way, so there is no current frozen world."
-  # ⇒ Every number under `planet:` below, plus `settlements.count` and `lake_biome`,
-  # MEASURES A WORLD THAT IS BEING REPLACED. They are kept, not deleted: they are the
-  # record of what Ash'karr-as-painted was, and the remake will want to compare.
-  # 🔑 While this reads `remaking`, check_canon downgrades every planet-derived rule to
-  # ADVISORY — it reports the difference and never blocks a write. Enforcement was
-  # actively refusing DECIDE's remake at the write, using the dead world's numbers.
-  # ✅ Set it back to `frozen` when a new world is frozen, and the rules bite again.
-  # 🔴 `remaking` IS A FOUR-STEP SEQUENCE, NOT A MOOD — owner, 2026-08-22 10:57, to REP.
-  # It was being read as the binary "adopt Ash'karr or redraw it". It is neither. His words:
-  #   1. "DECIDE and I have an out of game map we are working on together. It is NOT
-  #      frozen/finalized" — the new map exists, OUT OF GAME, and is in progress.
-  #   2. "then we need to successfully show that it can survive a port into the game
-  #      through the live bridge" — 🔑 A PORT-SURVIVAL PROOF IS A GATE. Until the map has
-  #      been carried in through the bridge and read back, nothing downstream is real.
-  #   3. "Simultaneously, we are working to define the factions, leadernames,
-  #      ideoligions, etc. because those must be finalized and correct at game initiation
-  #      it turns out." — ⛔ these do NOT wait for the map. They are baked at initiation and
-  #      cannot be retrofitted, so they run in PARALLEL with steps 1-2.
-  #   4. "Once all that is done, then we can finally save a game and meaningfully freeze
-  #      it as the embodied world."
-  # ⇒ 🔑 **THE FREEZE IS A SAVEGAME.** Not a CSV, not a definition doc, not an approval of a
-  # render. Nothing is frozen until a game has been saved with the map ported, the factions
-  # settled and the ideoligions correct. Any doc that calls an artifact short of that "the
-  # frozen world" is wrong, and that is what this field exists to say.
-  # ✅ Set it back to `frozen` when step 4 has happened — a saved game, on disk — and the
-  # planet rules bite again.
-  status: remaking
-  # ⭐ THE MAP STANDS — owner, 2026-08-23, answering CANON_SUSPENDED_FOR_REMAKE_1.
-  # Asked whether the hand-remake was still happening, he chose "the current map stands".
-  # ⇒ 🔑 EVERY NUMBER UNDER `planet:` IS LIVE AGAIN. The comment above says they "MEASURE A
-  # WORLD THAT IS BEING REPLACED" — that is NO LONGER TRUE and must not be quoted forward.
-  # Ash'karr as painted, including the nightside layering of 2026-08-23
-  # (ashkarr_layer_nightside.py), IS the v1 planet. Nothing here is a record of a dead world.
-  # ⛔ BUT `status` STAYS `remaking`, and that is deliberate, not an oversight. The owner's
-  # own four-step sequence above makes THE FREEZE A SAVEGAME: map -> port-survival proof
-  # through the live bridge -> factions/leader names/ideoligions correct at initiation ->
-  # save the game. Step 1 is now settled; steps 2-4 have not happened. Setting `frozen`
-  # here would assert a saved world that does not exist.
-  # ✅ What changed in practice: check_canon's planet rules stay ADVISORY, but their reports
-  # are now MEANINGFUL rather than misleading — they compare against the live planet.
-  # 🔑 Flip to `frozen` when a game has been SAVED with the map ported. Not before, and not
-  # on the strength of a render or a CSV.
+  # 🔑 THE FREEZE IS A SAVEGAME — owner's law, 2026-08-22: nothing is frozen
+  # until a game has been saved with the map ported, the factions settled and
+  # the ideoligions correct at initiation. That four-step sequence COMPLETED:
+  # the owner declared the world frozen 2026-09-07 (frozen.json on the tiles
+  # CSV, "CANONICAL FROZEN WORLD"), embodied as the savegame
+  # CANONICAL_ASHKARR_2026-09-09.rws, verified against the CSV 0/21872 tiles
+  # differing (post_freeze_2026-09-11.json). Full remaking-era history: git,
+  # this block before 2026-09-12.
+  # ⇒ check_canon's planet rules BITE again — a write contradicting the
+  # frozen world is refused, not advised. A deliberate world edit goes
+  # through the freeze discipline (backup, edit, re-verify, re-stamp),
+  # never around it.
+  status: frozen
   status_src: >
-    Owner, 2026-08-22, to REP. Supersedes WORLD_FROZEN_RETHINK_PLANET_1 and every doc
-    saying the planet is frozen as-is for v1. The ACCEPTED_ON/ACCEPTED_BY fields below
-    describe the superseded world and are left untouched for the same reason.
-    Extended 2026-08-22 10:57 with the owner's own sequencing, quoted in the comment
-    above: out-of-game map -> port-survival proof through the live bridge -> factions,
-    leader names and ideoligions correct at initiation (in parallel) -> save the game,
-    and THAT is the freeze.
+    Owner card, 2026-09-12: "Flip to frozen" — confirming the 2026-09-07
+    freeze declaration and the saved CANONICAL_ASHKARR_2026-09-09.rws as the
+    embodied world. Supersedes the remaking status (owner 2026-08-22) whose
+    own flip condition — a saved game with the map ported — is met.
   name: "Ash'karr — The Sundered"
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
