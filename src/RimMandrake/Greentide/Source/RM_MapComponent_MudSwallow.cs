@@ -157,8 +157,13 @@ namespace RimMandrake.Greentide
 				}
 				Thing thing = ThingMaker.MakeThing(cache.thingDef, cache.stuffDef);
 				thing.stackCount = cache.stackCount;
-				GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near);
-				buried.RemoveAt(i);
+				// GenPlace.TryPlaceThing's bool return must be checked: on a fully
+				// blocked map it silently drops the Thing (see JawaBenchIncidentTools.cs
+				// for the same trap). Only clear the buried record once it actually lands.
+				if (GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near))
+				{
+					buried.RemoveAt(i);
+				}
 			}
 			Designation designation = map.designationManager.DesignationAt(cell, RM_DefOf.RM_DesignationDigOutBuried);
 			if (designation != null)
