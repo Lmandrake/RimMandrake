@@ -1541,6 +1541,12 @@
     "hash": "cef43af5e446ef2191b76e66e14af8360061bc16e53002bddf20075ecf40f401",
     "sha": "2c8762586"
   },
+  "src/RimMandrake/Greentide/Source/RM_Greentide.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d1331f33ef59a011367ed48e64c1b3a55651831a21ad16c01064839b8ded63e5",
+    "sha": "3b8e16ddf"
+  },
   "src/RimMandrake/Greentide/Source/RM_JobDriver_DigOutBuried.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1560,10 +1566,10 @@
     "sha": "7949f4eac"
   },
   "src/RimMandrake/Greentide/Source/RM_MapComponent_TerrainMire.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "5bbe79a8c77d461014e1d8533078dfa65a80284520f78940e79734c564b827a7",
-    "sha": "2c8762586"
+    "hash": "85f867b308bbd7179f41233649ecf66b02f7a5c2e16d2e8a4e0b57052405b88e",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/Greentide/Source/RM_MireExtension.cs": {
     "cleanCount": 1,
@@ -1914,10 +1920,10 @@
     "sha": "972818c70"
   },
   "src/RimMandrake/LoreStages/Source/GameComponent_LoreStage.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "c983eff39411aade4e0596848b3f42cfc55b3bbe1c063f565b14d3db0dec094e",
-    "sha": "972818c70"
+    "hash": "f9b56453c3aa2dc2e5098c59bdf3fa5bcecb46f6b43c4bd6c0635d30a032ecb9",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/LoreStages/Source/LoreStageApplier.cs": {
     "cleanCount": 1,
@@ -1954,6 +1960,12 @@
     "date": "2026-09-11",
     "hash": "afe73f093b9b8eb164f25a31a6fb18fff5047a99c48a22fdc196994218e72a4a",
     "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/RM_LoreStages.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "5cdcb4a1e74b876f680e39d30478d97098f8a6f46c1afcd6f34bd66b9d71b6a6",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/LoreStages/Source/SelfTest/Program.cs": {
     "cleanCount": 1,
@@ -2232,10 +2244,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "74cc7020c6c2bb36bbbd7881020e9fe5597789b632edf10b66f15b2fb3247346",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "a5b80c19311b307fbc6f685e8a7e88a4854bce0f88b6756c45db2592db2a45fb",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/Ninefold/Source/God.cs": {
     "cleanCount": 2,
@@ -2934,10 +2946,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/RaidRedesigner/Source/GameComponent_OldFriends.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "f39fb88bbdc494afca7bd1787964c70a07c578df77e60ea6e17df6014aba2b56",
-    "sha": "b87a3622"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "42c49836425d1ed0f152260b9167622ca5091391dc04bafedbdf5f9aab11be1b",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/RaidRedesigner/Source/OldFriendEntry.cs": {
     "cleanCount": 1,
@@ -2980,6 +2992,12 @@
     "date": "2026-09-07",
     "hash": "5706a4606c62036b77422eaddcb90d6983b58ec478679792ea003463c6d007c3",
     "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fc3d4116d23986ef7bba5230f0d4731be63a2af5619b66614e5225de7fdd7d1f",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/RaidRedesigner/Source/RaidRedesignerMod.cs": {
     "cleanCount": 2,
@@ -3354,10 +3372,16 @@
     "sha": "92e56d4f"
   },
   "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a343ce22617476e0fe883fcc4346fe17c6cc63a80eb0df9bffd0dad54906d88b",
+    "sha": "3b8e16ddf"
+  },
+  "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "145e87454f5a9423e01c8648cdc863934c520dbfea141846219e02ce4c3be6af",
-    "sha": "0fb4936c"
+    "date": "2026-09-11",
+    "hash": "5cf8d67beabbcc19c5836c635816a17243c47699c71326f44d8d443f5755f397",
+    "sha": "3b8e16ddf"
   },
   "src/RimMandrake/SacredGraffiti/art_bench/center_pad.py": {
     "cleanCount": 1,
@@ -8146,10 +8170,10 @@
     "sha": "77a61de0"
   },
   "src/RimStarWars/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "ccf074fece7b4d6d17fcb494cb2253357e12ed539ba617e8de24cfa1b5513793",
-    "sha": "77a61de0"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "8fb26de4b4926f7fd2cd87557c95f8744bc61e9428816e7544d916dae5bb7aec",
+    "sha": "3b8e16ddf"
   },
   "src/RimStarWars/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs": {
     "cleanCount": 1,
@@ -9748,10 +9772,16 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a2d7a607c6ba3977f0d2776c6dc7b8f3bf77317bc5e02c2203869dbc9b0991f8",
+    "sha": "fd3bafa39"
+  },
+  "src/RimStarWars/Shokk/Source/RSW_Shokk.csproj": {
     "cleanCount": 1,
     "date": "2026-09-11",
-    "hash": "ab95e87b5c9c1f9d859407797a8a75125d410aca5f8ffa8e571dfa097c0f5a57",
-    "sha": "6b397e6dd"
+    "hash": "804f31c624ea8081ed411119a409a6d230a5308a310891e2cc60409ac1c68a08",
+    "sha": "fd3bafa39"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 2,
@@ -10768,10 +10798,16 @@
     "sha": "1dc7382d"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "de9a652fe14a789d1dc3068efe3a25e34de768d4cd025b3bce0bc176b42df670",
+    "sha": "fd3bafa39"
+  },
+  "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-08",
-    "hash": "8190e074bf4c850a2c8c30cffbc10879020dbbb23bd6f2cabedd6c5a8c63f4ad",
-    "sha": "f658d7a0"
+    "date": "2026-09-11",
+    "hash": "432280564d2084bc8d6a1c130ed3dcd844853b9e36bdcdb782bc672516354458",
+    "sha": "fd3bafa39"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
@@ -11266,10 +11302,16 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/RestrainingBolts/Source/GoodwillSituationWorker_RestrainingBolts.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "6e3fc964e27f2c262fff98f5bf65c54d7e90ac11426294fae989da615e21c03a",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "b85ad25272ddd2b4146951b6ba92a74109fef70d25b32995aba6887040db54a2",
+    "sha": "fd3bafa39"
+  },
+  "src/RimUtinni/RestrainingBolts/Source/RimMandrake.Utinni.RestrainingBolts.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "73bcd2800c243451d785eca5feb92747dada10f38bf77c989d3a3b6f1bc11c4e",
+    "sha": "fd3bafa39"
   },
   "src/RimUtinni/Rites/About/About.xml": {
     "cleanCount": 2,
@@ -11967,6 +12009,12 @@
     "hash": "b1997b9fd744bb5cba8de8807b8cec480e301db47861479a5a6e72d613a8cfd2",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Source/RimMandrake.Utinni.StructureInjectionsRUT.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a624a96c86f918d93949841b67e70e907f898f0a31dbf2a24233e72ce2d834d9",
+    "sha": "fd3bafa39"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_layouts.py": {
     "cleanCount": 2,
     "date": "2026-09-10",
@@ -11992,10 +12040,10 @@
     "sha": "2c8762586"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/WarLabCraterMutation.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "eff36c1d8251e0e62cdfefe977d5f4b6e9a9a466e66e0b79cdd90f7ee20026c4",
-    "sha": "2c8762586"
+    "hash": "dac0bd80486919ff2f40e60798ad5ed3ffabedbeff063ba212d930c74cd422ae",
+    "sha": "fd3bafa39"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/gen_war_lab_layout.py": {
     "cleanCount": 1,
