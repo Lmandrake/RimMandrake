@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Borcatu creature port.
+  Ported from mlie.starwarsanimalcollection's `Borcatu` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body:
+  `Borcatu` (Bodies_Animal_StarWars.xml) is entirely vanilla-part composition
+  (Tail, Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/Skull/
+  Brain/Eye x2/Ear/Nose/AnimalJaw, 4x Leg/Paw) — no custom BodyPartDef/
+  GroupDef needed, so it needed only a defName rename, not a dependency
+  port, ported here as RSW_Borcatu (RSW_MlieWaveC_Bodies.xml).
+  `leatherDef` repoints to the newly-ported RSW_Leather_Tough
+  (RSW_MlieWaveC_Resources.xml, same swresource/Leather_Tough texPath the
+  donor used); `specificMeatDef` repoints to the already-ported
+  RSW_Tough_Meat (RSW_MlieWaveB_Resources.xml, same Tough_Meat Anooba
+  already uses). Sounds are vanilla Core (`Pawn_Boomrat_*` — this species'
+  own donor XML reuses vanilla Boomrat vocals verbatim, confirmed present in
+  Core's Pawn_Animal_Misc_Vox.xml, not Mlie content, left unprefixed
+  unchanged). The `Mlie.XNDNocturnalAnimals` modExtension is a MayRequire-
+  gated OPTIONAL cross-mod hook, not Mlie content itself — left unprefixed,
+  unchanged, matching precedent (Anooba). Its Odyssey `PorcupineBite` tool
+  capacity and `CompPorcupine` comp are vanilla Odyssey content, unchanged.
+  texPaths are unchanged text — extracted art sits at
+  Textures/swanimals/Borcatu/ (extract_bundle.py against the same
+  AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: Wasteland (per
+  cast_assignment.csv's current row for this species — the donor's own
+  wildBiomes weight list is preserved verbatim below, most entries inert
+  data for non-Ash'karr biomes, matching every prior wave's practice),
+  repointed from the bare "Borcatu" entry in cast_assignment.csv /
+  BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Borcatu</defName>
+    <label>Borcatu</label>
+    <description>Borcatu were small, bad-tempered scavengers originally found on the planet of Escabar. Borcatu had a scaly, thick hide which may have evolved to help resist sandstorms. They also have sharp teeth, claws and quills to defend themselves. They had a vicious temperament, biting anyone who came near them, and often fighting and cannibalizing one another when no other food source was available. Their hardiness resulted in them spreading to various world as 'stowaways' and adapting quite successfully to a wide range of habitats.</description>
+    <statBases>
+      <MoveSpeed>4.1</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>6</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">
+        <capacities>
+          <li>PorcupineBite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Crepuscular</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Borcatu</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.4</maxPreyBodySize>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Tough</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>8</lifeExpectancy>
+      <gestationPeriodDays>4.5</gestationPeriodDays>
+      <wildBiomes>
+        <AridShrubland>0.16</AridShrubland>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateForest>0.16</TemperateForest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.02</Tundra>
+        <ColdBog>0.02</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(1.0, 0)</li>
+          <li>(2.0, 1)</li>
+          <li>(3.0, 1)</li>
+          <li>(4.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Boomrat_Wounded</soundWounded>
+          <soundDeath>Pawn_Boomrat_Death</soundDeath>
+          <soundCall>Pawn_Boomrat_Call</soundCall>
+          <soundAngry>Pawn_Boomrat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+    <comps MayRequire="Ludeon.RimWorld.Odyssey">
+      <li>
+        <compClass>CompPorcupine</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Borcatu</defName>
+    <label>borcatu</label>
+    <race>RSW_Borcatu</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.9</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu</texPath>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu_Dessicated</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu</texPath>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu_Dessicated</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu</texPath>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Borcatu/Borcatu_Dessicated</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

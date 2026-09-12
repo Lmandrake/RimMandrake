@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Boma creature port.
+  Ported from mlie.starwarsanimalcollection's `Boma` ThingDef/PawnKindDef pair
+  (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the RSW_
+  tier prefix. Geometry/stats/comps copied verbatim. Custom body: `Boma`
+  (Bodies_Animal_StarWars.xml) needed a defName rename plus repointing its 2
+  horn parts/groups and tail group to the ALREADY-PORTED Wave B
+  BodyPartDefs/Groups (RSW_SW_LeftHorn/RSW_SW_RightHorn, RSW_SWHornAttackTool,
+  RSW_SWTailAttackTool, RSW_MlieWaveB_BodyParts.xml) — no new body part
+  needed, ported here as RSW_Boma (RSW_MlieWaveC_Bodies.xml). Its `Tusk`
+  part and `TuskAttackTool` group are vanilla Core, left bare.
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Saurian/RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml, same
+  Kashyyyk-family resources Bolotaur uses) — only its 2 eggs are newly
+  ported this pass (RSW_EggBomaFertilized/UnFertilized,
+  RSW_MlieWaveC_Resources.xml, texPath swresource/EggDapple, newly
+  extracted). Sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_Boma_*, 2026-09-02). Its Odyssey specialTrainable (AttackTarget)
+  is vanilla content, left unprefixed. texPaths are unchanged text —
+  extracted art sits at Textures/swanimals/Boma/ (extract_bundle.py against
+  the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: ZBiome_DesertOasis (per
+  cast_assignment.csv's current row for this species — the donor's own
+  wildBiomes weight list is preserved verbatim below, most entries inert
+  data for non-Ash'karr biomes, matching every prior wave's practice),
+  repointed from the bare "Boma" entry in cast_assignment.csv /
+  BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Boma</defName>
+    <label>boma</label>
+    <description>Bomas were ravenous beasts native to planet Onderon and its moon Dxun. In their native environment they hunted Cannoks with ease and were considered dangerous by several Mandalorian clans. They were sometimes introduced into ecosystems on other worlds where Cannoks had become established to help maintain their population.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>-7</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.20</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.20</ArmorRating_Heat>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.6</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBomaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBomaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Boma</body>
+      <predator>true</predator>
+      <baseBodySize>2.0</baseBodySize>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeExpectancy>20</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Boma_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Boma_Death</soundDeath>
+          <soundCall>RSW_Pawn_Boma_Call</soundCall>
+          <soundAngry>RSW_Pawn_Boma_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Boma</defName>
+    <label>boma</label>
+    <race>RSW_Boma</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Boma/Boma</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Boma/Boma_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Boma/Boma</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Boma/Boma_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Boma/Boma</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Boma/Boma_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
