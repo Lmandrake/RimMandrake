@@ -1,4 +1,39 @@
-## 2026-09-12 (FOUNDRY, routed from BENCH) — 2 of 4 new hooks LIVE-CONFIRMED with real satiation moves; 2 remain genuinely untestable without new tooling; ordinal contract clean
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — companion tools built for the last 2 gods, build clean, not deployed
+
+Built the `rimbridge-companion` gap this item's own prior note asked for:
+- `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeExecuteTools.cs`
+  — `jawa/trade_execute`: opens a headless `TradeSession`, sets a tradeable
+  count, calls `TradeDeal.TryExecute` directly (public, no reflection) — the
+  exact choke point `Patch_TradeCompleted` hooks for Mob'Unloo. Replicates
+  vanilla's affordability check itself first, since `TryExecute`'s own
+  cannot-afford branch NREs headless (`Dialog_Trade` window lookup with no
+  null guard). `dryRun` defaults true.
+- `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTransporterLaunchTools.cs`
+  — `jawa/transporter_launch`: spawns an `AncientTransportPod` (no fueling
+  port/research needed, infinite fuel), groups it via
+  `TransporterUtility.InitiateLoading`, calls `CompLaunchable.TryLaunch`
+  directly — the choke point `Patch_TransporterLaunched` hooks for Ta'Baa.
+  Correction to this item's own premise: `jawa/gravship_launch` already
+  exists and reaches `Patch_GravshipLaunched` via `InitiateTakeoff`, but only
+  with a real fuelled gravship and it destroys the origin map — this pod
+  tool is the cheap route to the *other* Ta'Baa patch. `dryRun` defaults
+  true.
+
+Both read the real success signal (`actuallyTraded` / `launched` via
+`lastLaunchTick` change), not the call's own void/success return, plus an
+independent instrument (map-stack/silver deltas; skyfaller+pod-destroyed
+counts) — per this repo's own history of bridge calls reporting success and
+changing nothing.
+
+`python.exe src/RimMandrake/bridgetools/build.py --gm` (no `--apply`): build
+succeeded, 0 errors, tool surface confirmed via `build.tool_surface()`
+(322 built vs 320 deployed, `NEW: ['jawa/trade_execute',
+'jawa/transporter_launch']`, `LOST: []`) and `selftest_tool_metadata.py`
+(1/1 passed). Not deployed — the running game locks the DLL; not live-tested.
+
+`needs`: routing to `deploy` (build clean, awaiting the game going down to
+deploy), then a bridge session to actually trigger a trade and a launch and
+close out 9/9.
 
 **Sh'kaar (battle) — LIVE-CONFIRMED, observed organically.** During this
 session's unrelated `WEBWORK_KIT_BUILD_1`/fast-forward testing, wildlife
