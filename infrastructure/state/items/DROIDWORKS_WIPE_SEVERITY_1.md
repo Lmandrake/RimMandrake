@@ -245,3 +245,89 @@ independent of the recipe firing (`RSW_DW_RecentlyWiped`'s capMods,
 correct, twice over now. Item stays `doing`+`needs bridge` — closing it
 without ever observing `ApplyOnPawn` run would be the exact failure mode
 this codebase's own review discipline exists to catch.
+
+## FOUNDRY, 2026-09-12 — root cause found and fixed, deploy blocked
+
+Reclaimed from a staleness audit's finding: "the wipe bill never completes
+in practice — `WorkGiver_DoBill` won't pick a roaming droid as a valid
+patient." Verified the actual mechanism from vanilla source (RimSage), not
+assumed. The theory recorded above ("vanilla medical work may expect the
+patient stationary") was directionally right but the specific gate is
+narrower and was mis-identified as a WorkGiver_DoBill/Bill_Medical
+patient-selection issue. It is neither:
+
+- `Recipe_Surgery.AvailableOnNow`, `WorkGiver_DoBill.JobOnThing`,
+  `Bill_Medical.ShouldDoNow`/`CompletableEver`, and
+  `ReservationManager.CanReserve` all read clean — none of them gate on
+  the patient being downed, bedridden, or stationary. A conscious, walking
+  colonist genuinely can receive vanilla surgery without a bed, by design.
+- **The actual gate: `Verse.Pawn.CurrentlyUsableForBills()`**
+  (`Source/Verse/Pawn.cs`), which `Pawn.UsableForBillsAfterFueling()` calls
+  verbatim and which `WorkGiver_DoBill.JobOnThing` checks before it will
+  ever build a job:
+  ```
+  if (!this.InBed()) { JobFailReason.Is(NotSurgeryReadyTrans); return false; }
+  if (!InteractionCell.IsValid) { ...; return false; }
+  return true;
+  ```
+  Every Pawn billGiver, no exceptions, must be `InBed()` for ANY bill
+  (ours or vanilla's) to ever be picked up by a doctor.
+- **And nothing ever puts a droid in a bed.** `Races_Base.xml` sets
+  `needsRest=false` (no organic drive to seek one), and
+  `WorkGiver_TakeToBedToOperate.HasJobOnThing` (the vanilla mechanism that
+  would otherwise HAUL a non-self-mobile patient to a bed) refuses
+  outright on `!pawn2.RaceProps.IsFlesh` — droids are
+  `RSW_DW_FleshType_Droid`, `isOrganic:false`, so `RaceProps.IsFlesh` is
+  false and no colonist will ever carry one to a bed either. A droid
+  patient is therefore permanently `!InBed()`, permanently
+  `!CurrentlyUsableForBills()`, and `WorkGiver_DoBill.JobOnThing` returns
+  null forever — silently: the WorkGiver bails out before reaching any of
+  the `JobFailReason`-setting branches inside `StartOrResumeBillJob`, which
+  is exactly why two live-verify passes saw a bill sit accepted on the
+  droid's BillStack for thousands of ticks with no visible reason and no
+  error. This blocks **every** whole-pawn Droidworks surgery recipe on a
+  droid patient (memory wipe, restraining bolt install/remove, reboot),
+  not just the wipe — B10 is just the packet that went looking.
+
+**Fix**: `Source/Droidworks/Patch_DroidBillGiverNoBed.cs` (new file, wired
+into `Droidworks.csproj`). A Harmony prefix on `Pawn.CurrentlyUsableForBills`
+that, for droid-fleshtype pawns only (`RaceProps.FleshType ==
+RSW_DW_FleshType_Droid` — the same signal `Patch_ShouldHaveNeed_Power`/
+`HediffComp_IonOverloadsDroid` already use), skips the `InBed()` half of
+vanilla's check and keeps the `InteractionCell.IsValid` half (a real
+reachability requirement — an unspawned or wall-embedded droid still fails
+cleanly). Every flesh/Humanlike pawn (real colonists, prisoners, animals)
+returns `true` from the prefix and runs vanilla completely unchanged.
+Same `[StaticConstructorOnStartup]` + try/catch bootstrap shape as the
+other three Droidworks Harmony patches (`DroidworksBillGiverBedGateMod`,
+its own Harmony instance `mandrake.rsw.droidworks.billgiverbed`) — a
+failed patch here logs an error naming exactly what breaks rather than
+silently corrupting behavior.
+
+**Build**: `dotnet build Droidworks.csproj -c Release` — 0 errors, 0
+warnings. Confirmed (not just trusted) the new types landed in the rebuilt
+`Assemblies/Droidworks.dll` via a literal-string presence check
+(`Patch_DroidBillGiverNoBed`, `DroidworksBillGiverBedGateMod`), timestamped
+to the build just run — not a prior stale copy.
+
+**Deploy: BLOCKED, game running.** `deploy_custom_mods.py --mod Droidworks
+--apply` refused: `Assemblies/Droidworks.dll` is locked by the running
+game (another FOUNDRY window's verification marathon holds the bridge this
+whole pass — this item deliberately stayed off it). `needs=deploy` —
+whoever next has a free game process should re-run
+`deploy_custom_mods.py --mod Droidworks --apply` and confirm the write
+lands before any live check.
+
+**Live proof still owed, unchanged in kind, now aimed at a real fix rather
+than a guess**: spawn a roaming, un-bedded droid with a pending
+`RSW_DW_MemoryWipe` bill next to an idle, Crafting-5+-skilled colonist
+(the recipe's own `skillRequirements` — earlier live attempts confirmed
+Doctor-skill and Doctor-priority on the colonist but this file has no
+record of ever checking the doctor's **Crafting** skill specifically,
+which the recipe actually gates on; worth ruling in or out alongside the
+bed fix) and confirm the operation is now picked up and completes:
+`ApplyOnPawn` firing (service record zeroed, quirk roll happening,
+`RSW_DW_RecentlyWiped` reapplied). Item stays `doing`+`needs=deploy` —
+this pass had no bridge access by design (another window mid marathon);
+closing without observing a completed wipe live would repeat the exact
+failure mode this file has flagged twice already.

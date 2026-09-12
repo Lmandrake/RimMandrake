@@ -89,6 +89,7 @@
     <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
     <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
+    <Compile Include="Patch_DroidBillGiverNoBed.cs" />
     <!-- DROIDWORKS_APPAREL_ISFLESH_GATE_1: droids are isOrganic:false, which made
          PawnApparelGenerator return on its first line for every droid pawn. -->
     <Compile Include="Patch_ApparelForDroids.cs" />

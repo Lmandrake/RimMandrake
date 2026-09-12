@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T09:18:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T09:25:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -390,7 +390,7 @@ prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 ## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    deploy
 target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
