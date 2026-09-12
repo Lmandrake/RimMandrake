@@ -16,20 +16,20 @@ this), and it should sell both faces at once — disaster and fertilizer; death,
 soil, then the bloom. Timing rides the plot, not weather RNG. Quest/plot machinery
 per `rimworld-quests` skill when it reaches authoring.
 
-## Design draft done 2026-09-12 (BENCH belt wave, Fable agent)
-`design/Jawa/flood_witness_event_draft.md` — 4 witness routes (Flood-News
-salvage strike / Road Catches You interception / Farmer's Gallery invitation /
-Layered offers-plus-backstop), phase-by-phase beat, plot integration, mechanism
-sketch parameterized over EXPLOSIVE_PLANT_GROWTH_1's four unruled terminal
-moments. Owner cards at the end (route choice + beats). Open engine questions
-named inside (does Odyssey floodwater harm pawns; does accelerated Flood read
-as a wall). Awaits the owner's cards; no build before the ruling.
+## Design state 2026-09-12 (corrected)
+The design already existed:
+`design/Jawa/worldbuilding/flood_witness_event_design.md` (2026-09-10) —
+including OWNER-RULED choices: lethality has an injury+knockdown ceiling (no
+outright deaths), and the witness route is the declinable Moisture Farmer
+INVITATION with a re-offering scheduler (not a forced interception). A
+duplicate draft made 2026-09-12 in ignorance of those rulings was deleted; its
+one real salvage (vanilla Odyssey `Flood.cs` machinery, CONFIRMED against 1.6
+source) is now the canonical file's machinery addendum.
 
 ## Restructured 2026-09-12 (owner): mechanism moves to a standalone mod
 Owner's word (verbatim on FLOOD_CANYON_BIOME_1's filing event): the flood
 mechanism becomes its own RimMandrake-tier biome mod — periodically flooded
 canyons, chime mechanic included, not Star Wars specific. Filed as
-FLOOD_CANYON_BIOME_1 (FOUNDRY). THIS item narrows to the campaign plot beat:
-the guaranteed first witnessing (routes/cards in
-design/Jawa/flood_witness_event_draft.md), consuming that mod as a dependency.
-Route cards still await the owner's sitting.
+FLOOD_CANYON_BIOME_1 (FOUNDRY). THIS item keeps the campaign plot beat per
+the canonical design above (ruled invitation route, ruled lethality ceiling),
+consuming that mod as a dependency.

@@ -317,3 +317,22 @@ any deploy; the known-expected warning is the firing route.
    above). Colors goodwill toward later Farmer content.
 4. **Trigger beat: first gravship landing within range** of the Cracked
    Lands — tied to player motion, not the calendar and not a held lever.
+
+## Machinery addendum 2026-09-12 — vanilla Odyssey flood system exists (CONFIRMED)
+
+Salvaged from a superseded duplicate draft before its deletion; verified
+against decompiled 1.6 source by that pass. This section adds engine facts to
+the machinery picture above; it changes no ruling.
+
+- Vanilla ALREADY ships a flood system, Odyssey-gated: `RimWorld/Flood.cs`
+  (`Flood : Thing`, subclasses `SeasonalFlood` / `TorrentialRainFlood`),
+  `IncidentDef SeasonalFlooding`, `floodTerrain` (`ShallowFloodwater` etc.),
+  guarded by `ModLister.CheckOdyssey("Flood")`. Real constants: flood width
+  10–12 cells, `MaxFloodDurationTicks` 120000 (~2 days).
+- Build fork this opens: subclass/accelerate vanilla `Flood` (custom pace,
+  color, terrain) vs a fully custom moving-wall front — decide by a quicktest
+  of whether vanilla flood-spread reads as a WALL and whether floodwater harms
+  pawns at all (UNMEASURED; the ruled injury-ceiling-no-death law bounds
+  whatever the answer is).
+- Proposal (unruled): gate the home-map "plant reached the tell" alert on
+  having witnessed this event — witnessing becomes the knowledge unlock.
