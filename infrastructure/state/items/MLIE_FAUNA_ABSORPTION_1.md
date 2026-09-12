@@ -656,3 +656,57 @@ mod found earlier is now baked into the current baseline): 0 errors, 1
 known pre-existing warning.
 
 **Remaining**: 77 of the Wave C worklist, plus Fambaa.
+
+## 2026-09-12 (FOUNDRY, offline subagent + parent review, belt mode) — 3 more species ported: Dianoga, Dragonsnake, Eopie (77 -> 74 remaining)
+
+🔴 **Real regression found and fixed during parent review before commit,
+plus a retroactive fix for an already-shipped instance from earlier
+tonight** — this is the most important thing in this note, read it before
+porting any of the 6 species named at the end:
+
+Several Star Wars species have their own dedicated `mandrake.rsw.
+<species>artoverride` mod (loose PNGs at `Textures/swanimals/<Species>/
+<Species>_<facing>.png`, deliberately at the SAME relative path the
+donor/`mandrake.rsw.swbestiary` use, so later load order wins the
+same-path resolution) shipping OWNER-APPROVED, already verified-live
+custom art redos (`ART_REGEN_WAVE1_WIRE_IN_1` and similar). **`mandrake.
+rsw.swbestiary` loads AFTER every one of these override mods** (e.g.
+index 560 vs 310-314 in the live 593-mod list). When a fauna-porting pass
+extracts and ships the DONOR's own old art at that same relative path
+under SWBestiary (the normal, correct thing to do for a species with NO
+override), it silently WINS the same-path resolution over the override —
+reverting an owner-approved custom art redo back to donor art, with no
+error, no warning, nothing in any log.
+
+**Confirmed and fixed for 2 species**:
+- `RSW_Dragonsnake` (this pass, batch 5) — caught before commit. Removed
+  `Dragonsnake_{east,north,south}.png` from SWBestiary's extraction
+  (`Dragonsnake_Dessicated`/`Dragonsnake_Swimming_*` are correctly kept —
+  `DragonsnakeArtOverride`'s own About.xml says explicitly it does NOT
+  touch those two).
+- `RSW_Anooba` (already shipped this session, commit `e62125946`) — caught
+  retroactively, fixed in a follow-up commit (`5a8fc8c1c`) removing
+  `Anooba_{m,f}_{east,north,south}.png` (Dessicated correctly kept, same
+  reasoning).
+
+**Standing caution for whoever ports these 6 remaining override-linked
+species from the worklist**: `Mynock`, `Kreetle`, `Horax`, `Fambaa`,
+`Zakkeg`, `Ronto` each have their own `mandrake.rsw.<name>artoverride`
+mod. Before shipping extracted art for any of them, check
+`src/RimStarWars/<Name>ArtOverride/About/About.xml` for which exact
+facings/textures it covers (the pattern varies — Dragonsnake's override
+skips Swimming+Dessicated, Anooba's skips only Dessicated; do not assume
+the same split) and do NOT extract/ship SWBestiary copies at the covered
+paths. `Insectomorph` and `Dewback` also have override mods but are
+already absent from the remaining worklist (already ported earlier,
+outside tonight's passes) — worth a quick verification pass that they
+don't have the same bug, but not confirmed either way here.
+
+**This pass's 3 new species**: `Dianoga`→`RSW_Dianoga`, `Dragonsnake`→
+`RSW_Dragonsnake` (art collision fixed, see above), `Eopie`→`RSW_Eopie` —
+none of these 3 (nor Dianoga/Eopie) have their own override mod, confirmed
+by checking for a matching `*ArtOverride` folder before porting.
+`validate_patch.py`: 0 errors on the authored/touched files.
+
+**Remaining**: 74 of the Wave C worklist, plus Fambaa (already flagged
+above as also needing the override check when its turn comes).

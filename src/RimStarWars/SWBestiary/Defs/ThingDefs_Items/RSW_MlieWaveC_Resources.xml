@@ -54,6 +54,16 @@
   only its 2 eggs are newly ported (RSW_EggDactillionFertilized/
   UnFertilized, texPath swresource/EggWiggly, newly extracted this pass).
 
+  Pass 6 (Dianoga/Dragonsnake/Eopie, same day): Dianoga needs no new leather
+  — repoints to vanilla Core `Leather_Light` — and its specificMeatDef
+  repoints to the already-ported RSW_Crustapod_Meat (Wave B, Acklay); no egg
+  comp. Dragonsnake's leatherDef/specificMeatDef repoint to the
+  already-ported RSW_Leather_Saurian/RSW_Saurian_Meat (Wave B); only its 2
+  eggs are newly ported (RSW_EggDragonsnakeFertilized/UnFertilized, texPath
+  swresource/EggSaurian — already extracted, Wave B, reused unchanged, no
+  new art). Eopie needs no new resource at all — leatherDef/specificMeatDef/
+  milkDef stay vanilla Core (Leather_Plain/Cameloid_Meat/Milk).
+
   Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
   flat-RSW_-prefixed. texPaths are UNCHANGED text.
@@ -506,6 +516,43 @@
     </graphicData>
     <statBases>
       <MarketValue>10</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggDragonsnakeFertilized</defName>
+    <label>dragonsnake egg (fert.)</label>
+    <description>A fertilized dragonsnake egg. If all goes well, it should hatch into a baby dragonsnake. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,100,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>80.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Dragonsnake</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggDragonsnakeUnFertilized</defName>
+    <label>dragonsnake egg (unfert.)</label>
+    <description>An unfertilized dragonsnake egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,100,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>80.0</MarketValue>
     </statBases>
   </ThingDef>
 </Defs>

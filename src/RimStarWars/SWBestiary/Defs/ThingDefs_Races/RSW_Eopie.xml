@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Eopie creature port.
+  Ported from mlie.starwarsanimalcollection's `Eopie` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body: the
+  donor's `Eopie` BodyDef is, like Anooba/Borcatu/Cannok/Clodhopper, entirely
+  vanilla-part composition (Spine, Stomach, Heart, Lung, Kidney, Liver, Neck,
+  Head, Skull, Brain, Eye, Ear, Trunk, AnimalJaw, Leg, Hoof, plus the vanilla
+  FrontLeftLeg/FrontRightLeg groups RSW_Dalgo's own tools already reuse) —
+  ported as RSW_Eopie (RSW_MlieWaveC_Bodies.xml), defName rename only, no new
+  body part needed.
+
+  `leatherDef`/`specificMeatDef` stay vanilla Core `Leather_Plain`/
+  `Cameloid_Meat` — no new resource needed. `CompProperties_Milkable`'s
+  `milkDef` stays vanilla Core `Milk`. Its Odyssey `SW_Spit` specialTrainable
+  is donor content (SW_Abilities.xml, NOT vanilla Odyssey content despite an
+  earlier wave's Dalgo/Corinathoth header comments calling the equivalent
+  SW_Spur "vanilla Core" — verified by reading SW_Abilities.xml directly this
+  pass) — left unprefixed, matching that same established precedent (Dalgo's
+  bare SW_Spur, Corinathoth's), safe only because Mlie stays active and
+  supplies it; a future gen_cast_patch.py-style cleanup pass should port
+  SW_Spit/SW_Spur properly once Mlie's retirement is scoped. Its 5
+  `alternateGraphics` color variants (EopieA-E) are all newly extracted this
+  pass. Sounds repoint to the already-absorbed sound wave (RSW_Pawn_Eopie_*,
+  2026-09-02). texPaths are unchanged text — extracted art (22 of 28 PNGs in
+  the donor's Eopie texture set: base body, calf/juvenile, dessicated, and
+  the 5 alternateGraphics variants, 3 directions each except the single
+  non-directional dessicated; the 6 "EopiePack"/"Eopie_jPack" textures are
+  unreferenced by any donor def — same precedent as Dactillion's excluded
+  "DactillionPack" textures — left unextracted) sits at
+  Textures/swanimals/Eopie/ (extract_bundle.py against the same AssetBundle
+  every prior wave used).
+
+  Wired into the live cast this same pass: AridShrubland, Desert,
+  ZBiome_Badlands, ZBiome_DesertOasis (per cast_assignment.csv's current rows
+  for this species), repointed from the bare "Eopie" entries in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Eopie</defName>
+    <label>eopie</label>
+    <description>Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported offworld as pack animals. The eopie's rough skin helped to protect it against the heat while its hooves were adapted to climbing rocky cliffs.</description>
+    <statBases>
+      <MoveSpeed>4.3</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-22</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>16</FilthRate>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.25</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>9</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Eopie</body>
+      <baseBodySize>1.4</baseBodySize>
+      <baseHealthScale>1.45</baseHealthScale>
+      <baseHungerRate>0.325</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>Cameloid_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <petness>0.60</petness>
+      <roamMtbDays>5</roamMtbDays>
+      <trainability>None</trainability>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <lifeExpectancy>34</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.2</Desert>
+        <ExtremeDesert>0.04</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.04</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Eopie_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Eopie_Death</soundDeath>
+          <soundCall>RSW_Pawn_Eopie_Call</soundCall>
+          <soundAngry>RSW_Pawn_Eopie_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Eopie</defName>
+    <label>eopie</label>
+    <labelPlural>eopies</labelPlural>
+    <race>RSW_Eopie</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+    </abilities>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Eopie/EopieA</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Eopie/EopieB</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Eopie/EopieC</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Eopie/EopieD</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Eopie/EopieE</texPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <label>eopie calf</label>
+        <labelPlural>eopie calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie_j</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Eopie/Eopie_Dessicated</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

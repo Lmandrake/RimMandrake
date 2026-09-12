@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Dianoga creature port.
+  Ported from mlie.starwarsanimalcollection's `Dianoga` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body: the
+  donor's `Dianoga` BodyDef is NOT vanilla Core — ported as RSW_Dianoga
+  (RSW_MlieWaveC_Bodies.xml), repointing its 7 tentacle parts and their
+  attack-tool group to the ALREADY-PORTED Wave B RSW_SW_LeftTentacle/
+  RSW_SW_RightTentacle/RSW_SW_DorsalTentacle/RSW_SWTentacleAttackTool (same
+  parts Beldon already reuses) — no new body part needed.
+
+  `leatherDef` stays vanilla Core `Leather_Light`; `specificMeatDef` repoints
+  to the already-ported RSW_Crustapod_Meat (Wave B, Acklay). No comps (no egg
+  layer). The `pathfinding.framework` MovementExtension (Amphibious) is a
+  MayRequire-gated modExtension, left as-is — matches the RSW_Nuna precedent,
+  not something to port since the extension only activates if that mod is
+  installed. Sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_Dianoga_*, 2026-09-02). texPaths are unchanged text — extracted
+  art (7 PNGs: base body + swimming variant + dessicated, 3 directions each
+  except the single non-directional dessicated) sits at
+  Textures/swanimals/Dianoga/ (extract_bundle.py against the same AssetBundle
+  every prior wave used).
+
+  Wired into the live cast this same pass: BiomeCypreJungle (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Dianoga" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Dianoga</defName>
+    <label>dianoga</label>
+    <description>Dianoga originated on the planet Vodran and were large cephalopods capable of growing to great sizes. They had a single eyestalk protruding from their mollusk-like bodies, and seven suckered tentacles surrounding a fanged maw containing a sharp serrated probe. Normally these creatures were restricted to bodies of water, but this variety seems just as comfortable dragging itself around on land.</description>
+    <statBases>
+      <ToxicResistance>1</ToxicResistance>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>750</MarketValue>
+      <ComfyTemperatureMin>-55</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.12</ArmorRating_Heat>
+      <FilthRate>24</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.90</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>21</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right tentacle</label>
+        <capacities>
+          <li>Poke</li>
+        </capacities>
+        <power>21</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+    </tools>
+    <comps />
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Dianoga</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>4.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>
+      <bloodDef>Filth_Slime</bloodDef>
+      <gestationPeriodDays>15</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1.7)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Dianoga_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Dianoga_Death</soundDeath>
+          <soundCall>RSW_Pawn_Dianoga_Call</soundCall>
+          <soundAngry>RSW_Pawn_Dianoga_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Dianoga</defName>
+    <label>dianoga</label>
+    <race>RSW_Dianoga</race>
+    <combatPower>280</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>dianoga larva</label>
+        <labelPlural>dianoga larvae</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga</texPath>
+          <drawSize>0.8</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga</texPath>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga</texPath>
+          <drawSize>3.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.8</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
