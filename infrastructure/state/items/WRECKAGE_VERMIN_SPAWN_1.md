@@ -62,10 +62,71 @@ gated by GetNamedSilentFail, Rat).
 Both `RM_CreatureBehaviors.csproj` and `RM_ShipVermin.csproj` build clean
 (0 warnings, 0 errors) via the Windows-native dotnet toolchain.
 
-**Not done — no bridge/game session this run** (`./game` reported DOWN,
-bridge FREE, no live RimWorld process): the item's own `## verify` — vermin
-appearing attributable to a placed wreck at the configured rate, the
-setting stopping it, no spawns on a wreckless map — has NOT been run live.
-Blocked rather than closed; the next session with the game up should drive
-a quicktest with a `ShipChunk_Mech` placed (or a real ground-hulk map) and
-run that verify before closing.
+## live verify attempted 2026-09-12, FOUNDRY — two real bugs found and fixed, RE-BLOCKING
+
+Built a lightweight custom quicktest mod list (minimal 25-mod base +
+`mandrake.rm.shipvermin` + `mandrake.rm.creaturebehaviors` + a session-only
+scratch mod carrying a byte-identical copy of `WreckVerminNest_ShipChunk.xml`,
+never committed) to avoid the full 597-mod campaign list — a
+`start_debug_game_ready` on the full list crashed the game outright
+mid-worldgen, matching the already-filed `NINEFOLD_DEBUG_GAME_READY_CRASH_1`
+signature.
+
+**Bug 1 — the wiring patch never actually attached the comp, on ANY mod
+list, ever.** `jawa/get_defs` on `ShipChunk_Mech` showed only
+`CompProperties_InspectString` — `RM_CompProperties_VerminNest` was absent.
+`Player.log`: `Patch operation Verse.PatchOperationConditional(...) failed`.
+Root cause: `ShipChunk_Mech`'s own raw XML (confirmed by reading
+`Defs/Odyssey/ThingDefs_Buildings/Buildings_Gravship.xml` directly) has NO
+literal `<comps>` element — `CompProperties_InspectString` is INHERITED from
+`ShipChunkBase`, and `PatchOperationAdd` targets the raw per-def XML tree,
+not the resolved/inherited one. The original patch comment's claim that
+"ShipChunk_Mech already ships its own `<comps>`" was wrong. **Fixed**: added
+the same check-or-create `<comps/>` dance `RSW_Mynock_ShipVermin.xml` already
+uses. Confirmed live after the fix: `get_defs` now shows
+`RM_CompProperties_VerminNest` attached.
+
+**Bug 2 — even attached, the comp could never tick.** `ShipChunk_Mech`
+inherits `tickerType` from `ShipChunkBase` -> `BuildingBase`
+(`Defs/Core/ThingDefs_Buildings/Buildings_Exotic.xml` /
+`Buildings_Base.xml`), and NEITHER declares one, so it resolves to the C#
+default `TickerType.Never` (confirmed via `Verse.TickerType`/`ThingDef.cs` —
+plain field, enum value 0). `ThingWithComps.Tick()` — and therefore every
+comp's `CompTick()`, including `RM_CompVerminNest`'s — is only invoked while
+the parent is on a tick list, which `Never` guarantees it never is. Proven
+live: with Bug 1 alone fixed but `tickerType` still `Never`, 0 spawns after
+270,190 ticks (already past the full 2-4 day / 240,000-tick worst case).
+**Fixed**: patch now also sets `tickerType` to `Normal` on `ShipChunk_Mech`
+specifically. Confirmed live: `get_defs` now shows `tickerType: Normal`.
+
+**Both fixes committed** to `src/RimUtinni/UtinniPatches/Patches/
+WreckVerminNest_ShipChunk.xml`, offline-validated (`validate_patch.py`, 0
+errors).
+
+**Still unresolved — RE-BLOCKING, not closing.** With BOTH fixes live (comp
+attached AND ticking confirmed), spawned a fresh `ShipChunk_Mech`, ran the
+population/species/reachability preconditions by code inspection (all
+clear: no `RM_VerminPressureExtension`-carrying pawn exists in this mod set
+so the population pool reads 0 of 12; `Rat` PawnKindDef exists and is
+settings-enabled; open desert terrain around the spawn point), then advanced
+the game (`rimworld/step_game_ticks` + `jawa/set_game_speed`) past 263,701
+ticks — comfortably past the documented 240,000-tick worst case — with
+`jawa/list_pawns` showing **zero** Rat (or any ship-vermin-band) pawn within
+the nest's own radius (6-cell check around the wreck) the entire time,
+while the wreck itself remained spawned and undamaged throughout. Two
+ambient wild Rats did spawn elsewhere on the map (biome wander, far from the
+wreck) — correctly NOT counted as nest output.
+
+⇒ **A third defect remains in `RM_CompVerminNest.TrySpawn()` or its
+`CellFinder.TryFindRandomCellNear` call**, not yet isolated (`TrySpawn`
+fails silently on every branch — no log line distinguishes population-cap /
+no-species / no-reachable-cell). Suspect candidates for the next pass: the
+2×2 footprint's exact anchor cell vs. `parent.Position` used as the
+reachability origin, or a live inspection of `nextSpawnTick`'s actual value
+(no debug-report hook exists for this comp the way `RM_FloodedCanyonDebugActions`
+has one — add one before the next attempt so the failing branch can be read
+directly instead of inferred from silence).
+
+Re-blocking rather than closing: the wiring is now measurably closer to
+correct (two real, previously-unknown, 100%-blocking defects fixed) but the
+item's own `## verify` — an actual observed spawn — is still not met.

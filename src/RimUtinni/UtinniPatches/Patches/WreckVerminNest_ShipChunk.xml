@@ -29,10 +29,34 @@
        touching its <comps>, same discipline as every other patch in this
        folder — defensive against Odyssey ever renaming or dropping it.
 
-     ShipChunk_Mech already ships its own <comps> (CompProperties_InspectString,
-     RimSage-verified get_def_details), so no check-or-create dance is
-     needed before the Add — unlike RSW_Mynock_ShipVermin.xml, which had to
-     create an empty <comps/> first.
+     CORRECTED 2026-09-12 (live quicktest, FOUNDRY): the original comment here
+     claimed ShipChunk_Mech "already ships its own <comps>" and needed no
+     check-or-create dance. That was wrong — `CompProperties_InspectString`
+     is real but INHERITED from ShipChunkBase; RimSage's get_def_details
+     showed the resolved/post-inheritance comps list, not ShipChunk_Mech's
+     own raw XML node (confirmed by reading Defs/Odyssey/ThingDefs_Buildings/
+     Buildings_Gravship.xml directly: ShipChunk_Mech's own ThingDef entry has
+     no literal <comps> element at all). PatchOperationAdd targets the RAW
+     per-def XML tree, not the inherited one, so `.../comps` resolved to
+     nothing and the Add failed silently-then-loudly (`Patch operation ...
+     failed` in Player.log) on every load — this patch never actually
+     attached the comp. Fixed with the same check-or-create dance
+     RSW_Mynock_ShipVermin.xml already uses.
+
+     SECOND BUG found the same session: attaching the comp was not enough
+     — `ShipChunk_Mech` inherits `tickerType` from `ShipChunkBase` ->
+     `BuildingBase`, and NEITHER declares one (confirmed by reading both
+     Defs/Core/ThingDefs_Buildings/Buildings_Exotic.xml and
+     Buildings_Base.xml directly), so it resolves to the C# default
+     `TickerType.Never` (`Verse.TickerType`, value 0). A comp's `CompTick`
+     is only ever invoked while its parent Thing is on a tick list, and
+     `Never` means it is on none — `RM_CompVerminNest.CompTick()` would
+     never fire even with the comp correctly attached. Confirmed live: 0
+     spawns after stepping past the full 240,000-tick (2-4 day) window,
+     with the comp verified present the whole time. Fixed by also setting
+     `tickerType` to `Normal` on `ShipChunk_Mech` specifically (not
+     `ShipChunkBase`, which the vanilla non-mechanoid `ShipChunk` also
+     uses and has no reason to tick).
 
      Tuning: left at RM_CompProperties_VerminNest's own defaults (2-4 day
      interval, radius 4, group tag "ShipVermin", hard cap 12) — the SAME
@@ -47,16 +71,42 @@
 
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.shipvermin,Ludeon.RimWorld.Odyssey">
     <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
-      <value>
-        <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
-          <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
-          <nestSpawnRadius>4</nestSpawnRadius>
-          <populationGroupTag>ShipVermin</populationGroupTag>
-          <populationHardCap>12</populationHardCap>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+            <value>
+              <comps />
+            </value>
+          </nomatch>
         </li>
-      </value>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+              <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+              <nestSpawnRadius>4</nestSpawnRadius>
+              <populationGroupTag>ShipVermin</populationGroupTag>
+              <populationHardCap>12</populationHardCap>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/tickerType</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+            <value>
+              <tickerType>Normal</tickerType>
+            </value>
+          </nomatch>
+        </li>
+
+      </operations>
     </match>
   </Operation>
 
