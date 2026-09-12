@@ -3414,16 +3414,16 @@
     "sha": "96156db67"
   },
   "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "f54464fb64696ae8c43c063ad3917e295883578db61a1b02e6f0f31b927a7a16",
-    "sha": "96156db67"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "d0e1a5037d5d9642ccc3cee900b6b4de1e6830ce653c6ad5a23af60ee3737c6e",
+    "sha": "daaf1cd31"
   },
   "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "edf96ea2d6cbda72659e1a746aff92598c0591d3be47e301021a5972bb22a7a3",
-    "sha": "96156db67"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "087658590ea5882673d99574485756a323b76e9eb98324ec41a9da1d2cd13337",
+    "sha": "daaf1cd31"
   },
   "src/RimMandrake/ShipVermin/Source/RM_ShipVerminMod.cs": {
     "cleanCount": 1,
