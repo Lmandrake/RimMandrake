@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adds both wall-tier scatter steps to the shared base generator, same shape
+  as FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml: both
+  genSteps self-gate to RUT_RustCathedral in their own Generate() override,
+  so adding them to the shared base generator is safe — they silently no-op
+  on every other biome's maps.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RUT_CathedralWallScatter</li>
+      <li>RUT_CathedralSacredWallScatter</li>
+    </value>
+  </Operation>
+
+</Patch>

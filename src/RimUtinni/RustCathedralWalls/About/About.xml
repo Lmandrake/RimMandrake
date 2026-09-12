@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — Rust Cathedral Walls</name>
+  <packageId>mandrake.rut.rustcathedralwalls</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>RUST_CATHEDRAL_MECHANICS_1 §2 (wall-tier mining defs — the wall
+ladder). Builds the four-tier economy the_rust_cathedral.md §5/§7 promises:
+endless deck plate anyone may strip, seams of dead smartsteel worth real
+trade, a sacred tier that costs goodwill to touch, and — deepest — metal
+that is still live, which only the drill finds.
+
+- RUT_CathedralDeckPlate (Tier 1): mineable wall, ParentName RockBase,
+  yields vanilla Steel at 35/cell, unowned — zero goodwill, zero hum input.
+- RUT_MineableDeadSmartsteel / RUT_DeadSmartsteel (Tier 2): mineable wall
+  yielding a new resource, 25/cell, MarketValue 8. DECIDED AT BUILD (the
+  spec's own ❓): trade-commodity only, not stuff-capable — see the item's
+  file header for why.
+- RUT_SacredWall_Conduit (Tier 3): one sacred wall variant (v1 scope; more
+  are explicitly deferred to a content pass), spawned owned by the vanilla
+  `Mechanoid` faction (the Forgotten/Forsaken Arsenal reskin,
+  Patches/ForgottenArsenal.xml in mandrake.rut.patches) — NOT mineable.
+  Destroying or claiming it costs goodwill via vanilla's own
+  AttackedBuilding hook, engine-default on any faction-owned building, no
+  new code needed for that part. The −15 magnitude and the hum-irritation
+  bump both ride §1 (hum-mood system), not yet built — noted, not stubbed.
+- RUT_LivePatternMetal (Tier 4): a deep-drill-only resource. Vanilla's
+  weighted deep-resource pick (CompDeepScanner.ChooseLumpThingDef) has no
+  biome axis at all, so a small Harmony postfix substitutes vanilla Steel
+  for this def whenever the scanning map is not the Rust Cathedral — the
+  one place this pass could not stay at "zero new C#" the spec hoped for
+  (same category of small, necessary deviation as the biome-gated GenStep
+  subclasses below).
+
+Placement: RUT_RustCathedral's BiomeDef gains a `forceRockTypes` entry
+(Tiers 1+2 — the same vanilla field Alpha Biomes' own donor def used for
+its now-absent GU_AncientMetals, read from
+vendor/mod_sources/AlphaBiomes_src) so any vanilla rock-formation code that
+runs on Cathedral maps uses these walls instead of default granite. Because
+the biome is 211/236 tiles dead flat, forceRockTypes alone is not proven
+sufficient density, so a small self-gating GenStep_ScatterGroup subclass
+(the same convention as FungalSoilTrade's GenStep_ScatterFungalGround and
+LanternDeeps' GenStep_ScatterCavePortal — "GenStepDef has no biome field and
+vanilla ships no ScattererValidator_Biome") guarantees baseline coverage of
+Tiers 1/2 and places the one Tier 3 variant, gated on map.Biome.defName ==
+"RUT_RustCathedral", added to the shared MapCommonBase genSteps list so it
+no-ops on every other biome's maps.
+
+Deferred (kit spec's own v1 line): the "rarer, stranger wall types" beyond
+one sacred wall variant (content pass, art-hungry), wall-linked art atlases
+(rides the art pipe — every texPath below is placeholder, reusing vanilla's
+RockFlecked_Atlas). §1/§3/§4/§5 of the kit are untouched by this mod.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

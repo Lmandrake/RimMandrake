@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 3. GenStep_ScatterSacredWalls is
+       a plain GenStep (not GenStep_ScatterGroup — it must call
+       .SetFaction(Faction.OfMechanoids) on what it spawns, which the
+       vanilla scatter classes have no hook for), self-gated on
+       RUT_RustCathedral the same way as the Tier 1/2 scatter step.
+
+       Density: LOW and deliberate. The frozen sheet's whole sacred tier is
+       ~10 buildings across the biome's 236 tiles (2026-08-19 sacrilege
+       economics), not one-per-map — chancePerMap 0.15 with countRange 1~1
+       is this build's own placeholder pick toward that order of magnitude,
+       pending the owner's actual per-map density call. "Rarer, stranger
+       wall types" beyond this one variant are explicitly deferred
+       (content pass, art-hungry). -->
+
+  <GenStepDef>
+    <defName>RUT_CathedralSacredWallScatter</defName>
+    <order>323</order>
+    <genStep Class="RimMandrake.Utinni.RustCathedralWalls.GenStep_ScatterSacredWalls">
+      <thingDef>RUT_SacredWall_Conduit</thingDef>
+      <chancePerMap>0.15</chancePerMap>
+      <countRange>1~1</countRange>
+      <minEdgeDistance>8</minEdgeDistance>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

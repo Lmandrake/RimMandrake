@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 2 resource. ParentName="ResourceBase"
+       (same parent Steel/RUT_FungalSoil/RUT_CathedralRoachShell use).
+
+       ❓ DECIDED AT BUILD (the kit spec's own open question — "stuff-capable
+       ❓ — decide at build whether it is a trade commodity only or a
+       buildable stuff; the sheet only requires 'distinctly valuable'"):
+
+       TRADE-COMMODITY ONLY, NOT STUFF-CAPABLE, this pass. Reasoning:
+       - "Distinctly valuable" is fully satisfied by MarketValue 8 (~4x
+         Steel's 1.9) and by supply being hard-capped per map (fixed vein
+         count x mineableYield 25, no craft recipe — same anti-exponential
+         floor RUT_FungalSoil's header describes) without needing a second,
+         larger design surface.
+       - Stuff-capability is its own commitment: stuffProps.categories,
+         commonality, constructEffect, a color, and — because this is a
+         WEAPON/ARMOR-GRADE alloy by implication — StuffPower_Armor_*/
+         StuffPower_Insulation_* balance numbers the kit spec names no
+         target for. Inventing those now risks a second silent "invented
+         parameter" nobody asked for, on an S-effort item whose own build
+         order note calls it the first, cheapest buildable step.
+       - Nothing about §P's "defunct alloy" register requires it to be
+         buildable; a trade good that funds the colony is exactly what
+         Tier 2's player experience line asks for ("seams of dead
+         smartsteel worth real trade").
+       - Reversible: stuffCategories/stuffProps can be added later in a
+         content pass without touching this def's identity or any existing
+         save, if a future sitting wants smartsteel gear.
+
+       PLACEHOLDER ART: reuses vanilla Steel's own item icon, tinted, same
+       "confirmed-real path, not invented" placeholder move RUT_FungalSoil
+       and RUT_CathedralRoachShell both use. Real bespoke item art is owed. -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_DeadSmartsteel</defName>
+    <label>dead smartsteel</label>
+    <description>A dense, oddly patterned alloy pulled from the walls of the plateau. It was smart once — self-assembling, self-repairing — and now it is just very good metal, still worth real money to anyone who deals in the strange.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,145,168)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Mass>0.5</Mass>
+      <Beauty>-2</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2. GenStep_ScatterCathedralWallTiers
+       self-gates to RUT_RustCathedral (same convention as
+       FungalSoilTrade's GenStep_ScatterFungalGround and LanternDeeps'
+       GenStep_ScatterCavePortal), so adding it to the shared base generator
+       (../../Patches/RUT_CathedralWallScatter_MapGenPatch.xml) is safe: it
+       no-ops on every other biome's maps.
+
+       Two groups, two densities, matching the "endless bulk vs. distinctly
+       valuable seam" player experience: Tier 1 (deck plate) is common,
+       Tier 2 (dead smartsteel) is a fraction of that. Both are placeholder
+       density pending the owner's actual call, same status LanternDeeps'
+       own chancePerMap and FungalSoilTrade's own coveredCellsPer10Cells
+       carry. -->
+
+  <GenStepDef>
+    <defName>RUT_CathedralWallScatter</defName>
+    <order>321</order>
+    <genStep Class="RimMandrake.Utinni.RustCathedralWalls.GenStep_ScatterCathedralWallTiers">
+      <minSpacing>10</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <RUT_CathedralDeckPlate>1</RUT_CathedralDeckPlate>
+          </things>
+          <coveredCellsPer10Cells>0.3~0.6</coveredCellsPer10Cells>
+          <clusterRectRadius>2~4</clusterRectRadius>
+        </li>
+        <li>
+          <things>
+            <RUT_MineableDeadSmartsteel>1</RUT_MineableDeadSmartsteel>
+          </things>
+          <coveredCellsPer10Cells>0.02~0.05</coveredCellsPer10Cells>
+          <clusterRectRadius>1~2</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

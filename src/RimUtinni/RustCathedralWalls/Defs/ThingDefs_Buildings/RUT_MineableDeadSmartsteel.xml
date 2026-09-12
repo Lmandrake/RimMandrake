@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 2. Same shape and same reasoning
+       as RUT_CathedralDeckPlate.xml (RockBase, veinMineable=false,
+       mineableScatterCommonality=0, placed by the dedicated scatter step,
+       also carried in RUT_RustCathedral's forceRockTypes) — sparser
+       (Defs/MapGeneration/RUT_CathedralWallScatter.xml gives this a much
+       lower coveredCellsPer10Cells than Tier 1) and yields the new
+       RUT_DeadSmartsteel resource (../ThingDefs_Items/RUT_DeadSmartsteel.xml)
+       instead of vanilla Steel. Still free to mine (§5: "mineable bulk
+       free") — the sacrilege ladder starts at Tier 3, not here.
+
+       §P REGISTER ONLY, checked against the_rust_cathedral.md ban 1 (no §GM
+       truth in player-facing text): "defunct alloy" and nothing about the
+       micromachines' true nature (self-assembling smart metal, §GM) beyond
+       what §P's own text already permits ("coolant that still runs to cool
+       nothing anyone can find" is the sheet's own register for this kind of
+       unexplained-but-visible strangeness).
+
+       INVENTED (kit spec): mineableYield 25.
+
+       PLACEHOLDER ART: RockFlecked_Atlas again, tinted sicklier/duller than
+       Tier 1 to read as "worked, then abandoned" rather than raw plate. -->
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_MineableDeadSmartsteel</defName>
+    <label>seam of dead smartsteel</label>
+    <description>A vein running through the deck plate, patterned in a way no natural rock ever is. Whatever it once did, it has stopped doing it — it is only a defunct alloy now, and a distinctly valuable one to anyone who can move it.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(150,145,168)</color>
+      <colorTwo>(84,80,96)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_DeadSmartsteel</mineableThing>
+      <mineableYield>25</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>
