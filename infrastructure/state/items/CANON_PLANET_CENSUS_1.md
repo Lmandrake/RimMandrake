@@ -26,3 +26,13 @@ differ, CSV vs CANONICAL save) makes the CSV the current instrument; the other
 two are superseded lineages. When this item lands, declare the frozen CSV the
 sole census source and delete the older counts — one ruling closes the
 three-way disagreement everywhere.
+
+## Sitting prep 2026-09-12 (BENCH belt wave) — block drafted, gaps honest
+`Transient/CANON_PLANET_CENSUS_1_replacement_block.md` — paste-ready YAML,
+delta table (24 rows, each `_src`-cited to the post-freeze audit), delete
+list, and the sole-census-source ruling draft. NOT forced: ~20 legacy
+per-biome counts are absent from the post-freeze audit (fresh re-census
+against the frozen CSV owed before the sitting), `rivers_tiles` has three
+disagreeing offline reads (326/217/298 vs recorded 254), biome arithmetic
+gives 30 vs the audit's 29 (one rename/retire unaccounted), water_pct not
+back-computed. Re-census spawned 2026-09-12.
