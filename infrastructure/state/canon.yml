@@ -318,36 +318,36 @@ planet:
     listed under their owned successors per the owner's 2026-09-12 card.
 
 settlements:
-  total: 120
+  total: 96
   src: >
-    🔴 RE-MEASURED 2026-08-23: world/ASHKARR_WORLDMAP_settlements.csv has 120 data rows.
-    Was 72, which was true when written and is now a count of an earlier state of THIS
-    world — not of a dead one. ⛔ Do not read settlements from meta.json; it is a build
-    output of an older pass and still says 72.
-  superseded:
-    - value: "72"
-      why: >
-        a correct count of this same world before the settlement passes of 2026-08-22/23.
-        Superseded by measurement, not by a ruling.
-    - value: "66"
-      why: "a count of an earlier paint of this world."
-    - value: "37"
-      why: >
-        a measurement of a DEAD world, quoted forward by worldgen_interactive_def.md's
-        banner as if it described the current one.
+    🔴 RE-MEASURED 2026-09-12 against the LIVE canonical world
+    (CANONICAL_ASHKARR_2026-09-09 loaded, full un-truncated world-object read,
+    Transient/worldreview/settlements.json; audit in
+    Transient/worldreview/audit_landmarks_settlements.md): 96 Settlement-def
+    world objects. Owner card 2026-09-12: land the live census, delete the
+    stale rows — the 120-era block (2026-08-23, pre-freeze lineage CSV) is
+    DELETED per the census-source discipline; git holds it. ⛔ Do not read
+    settlements from meta.json (still an older build output) or from the
+    2026-08-23 CSV.
   by_faction:
-    OutlanderCivil: 13
+    OutlanderCivil: 27
+    RUT_Jawa_HuttCartel: 12
+    RUT_Jawa_WildsteamClan: 9
     TribeCivil: 9
-    Jawa_HuttCartel: 8
-    Jawa_Junkers: 8
-    Jawa_IndigenousTribes: 7
-    Jawa_GeonosianFoundryHive: 5
-    Jawa_DeepwaterCompact: 5
+    RUT_Jawa_FreeDroidEnclaves: 7
+    RUT_Jawa_AscendantHelix: 7
+    RUT_Jawa_DeepwaterCompact: 6
+    RUT_Jawa_GeonosianFoundryHive: 5
     Pirate: 4
-    Jawa_WildsteamClan: 4
+    RUT_Jawa_Junkers: 4
     Empire: 3
-    Jawa_FreeDroidEnclaves: 3
-    Jawa_AscendantHelix: 3
+    RUT_Jawa_IndigenousTribes: 2
+    PlayerColony: 1
+  by_faction_src: >
+    Same instrument, per-faction Counter over the 96. Faction defNames as the
+    live world spells them (RUT_ tier). PlayerColony 1 is the player start
+    placemarker — owner named it "Zeddo's Salvage Yard" 2026-09-12
+    (WORLD_NAME_FIXES_1 lands the rename).
 
 # ===========================================================================
 # THE TEMPERATURE CURVES — settled 2026-08-20 from the mod's own C# source

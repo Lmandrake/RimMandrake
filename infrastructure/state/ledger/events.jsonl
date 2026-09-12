@@ -7686,3 +7686,10 @@
 {"seat":"FOUNDRY","event":"reclaim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T07:52:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T07:52:27Z"}
 {"seat":"FOUNDRY","event":"note","id":"MLIE_FAUNA_ABSORPTION_1","text":"defName-drift sweep done: 0 drift, corrected worklist is 91 measured species (cast_assignment.csv vs donor's live Races_Animal_SW.xml), superseding the stale ~135 guess. Ported+wired Iriaz+Mudhorn this pass (89 remain, see mlie_wave_c_worklist.json). Stays doing.","ts":"2026-09-12T07:53:38Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"TILE_STRUCTURE_DESIGNS_1","reason":"Stale-queue audit 2026-09-12: STILL LIVE, 16/22 promises covered but 0/22 whispers subsystem entirely unbuilt; owner AFK, reclaiming to keep BELT floor busy","ts":"2026-09-12T07:55:11Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-09-12T07:55:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-09-12T07:55:43Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-12T08:01:53Z"}
+{"seat":"OWNER","event":"file","id":"WORLD_NAME_FIXES_1","title":"World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline","kind":"task","target":"v1","needs":"bridge","caused_by":"WORLDMAP_FINAL_REVIEW_1","for":"FOUNDRY","ownerSaid":"Instead of colony name it Zeddo's salvage yard","ts":"2026-09-12T08:04:42Z"}
+{"seat":"FOUNDRY","event":"close","id":"TIBANNA_SOURCE_CUT_1","sha":"16ae5500fe21d599e13e2e3fa3c5fd4eae7f11eb","ts":"2026-09-12T08:04:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T08:04:53Z"}
