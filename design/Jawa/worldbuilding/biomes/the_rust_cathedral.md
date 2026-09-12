@@ -52,6 +52,20 @@ terrifying in their destructive capacity against any biological they spot.**
 Desiccated, cooked animals lie where they strayed in, mad with scaria to the
 last. And under everything, always, a hum.
 
+⭐ **AMENDMENT 2026-09-12 (plot sitting, owner verbatim — adds detail, changes
+no ruling): its name.** "The Rust Cathedral does not call itself that of
+course, and neither did the Rakatan. That is the local's name for it. It was
+called Archon by them, or would have been had it been completed. So Rakatan
+systems will refer to it as Archon. It greatly dislikes the name Rust
+Cathedral and sees that as what has become of its surface only: a placename,
+not itself." ⇒ **Archon** is the Rakatan name (the name it would have borne
+finished; every Rakatan system — the Spire's command center included — refers
+to it so). **The Rust Cathedral** stays the biome, the region and the locals'
+placename, exactly as this sheet uses it; the mind reads that name as naming
+its surface only. Register consequence: in-fiction Rakatan text (datafiles,
+ship systems, the Utinni's transponder band) says Archon; everyone alive says
+the Rust Cathedral; and the mind's dislike of the placename is a usable tell.
+
 ## 2. Planetary position
 
 Arc 5–17, hand-sited (one patch in the world): the anomaly here is not water,

@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T14:21:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T14:43:13Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
+prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 
 ## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
 state:    ready
@@ -84,16 +93,6 @@ prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-blocked:  Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner: site name, campaign function, reveal gating (cards ride MECHANICS_CARDS_SITTING_1); then landmark+dungeon build needs game up (FOUNDRY).
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
-prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing  (BLOCKED)
@@ -204,16 +203,6 @@ kind:     task
 blocked:  Owner picks the site (Zeddo's Yard vs Gorga's shadow) — card for his return; build is bridge work after.
 summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
 prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
-
-## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-blocked:  Needs the owner in person (verdict pass over served sheets); he is AFK 2026-09-12.
-summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
-prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 
 ## ECONOMY_TRADE_SWEEP_1 Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lanternstone) as expensive trader stock and loot
 state:    proposed  (BLOCKED)

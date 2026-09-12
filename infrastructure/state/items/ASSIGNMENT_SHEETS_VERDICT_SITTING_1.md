@@ -37,6 +37,21 @@ rows are bulk-agreeable per group.
   defNames to restore — the applier refuses the whole apply otherwise, nothing
   partial is written.
 
+## REVIEW HELD 2026-09-10 — the owner graded both sheets
+MEASURED via `serve_sheet.py --status` (2026-09-12): fauna 828 rows / 828
+decided / 291 overrides / 230 notes, 1134 sidecar writes; flora 288 rows / 288
+decided / 19 overrides / 60 notes, 273 sidecar writes. Both `touchedBySheet:
+true`, `savedBy: review-sheet-sidecar`, committed at `8dbc2e010` (fauna) and
+`96fa6392f` (flora). Neither is frozen yet.
+
+Consumed since: fauna moves (`688bddbb2`, ROSTER_MOVE_APPLY_1), homeless
+dispositions (`684f0a8df`/`fbe09dcf1`), fauna art redo/improve
+(ART_REGEN_WAVE1–9). **Five channels were never consumed** — filed as
+`SHEET_ORPHAN_CONSUMPTION_1`, which also carries the trap: the sheet is a
+superseded snapshot; later sittings overrode rows; it never overwrites a newer
+decision. This item's remaining work IS that item; freeze both decisions files
+when it closes.
+
 ## click-test PASSED 2026-09-09 (headless Linux Chrome in WSL)
 Fauna sheet: decision button, note, and 54-row bulk-apply all fired — sidecar wrote
 (savedBy/writeCount), header followed, reload agreed with the file; decisions file

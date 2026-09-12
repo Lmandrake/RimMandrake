@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T14:21:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T14:43:13Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1030,7 +1030,17 @@ prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 # NOT THIS TARGET
 
@@ -1038,4 +1048,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
+prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md

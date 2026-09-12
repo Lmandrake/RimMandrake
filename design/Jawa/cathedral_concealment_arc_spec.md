@@ -125,6 +125,20 @@ ways — no punishing clairvoyance).
   each boon's availability is inversely gated on current Imperial Heat — when the
   Empire is looking, it does not act. Fallback text ships first; the Oracle only
   upgrades voice (both laws, verbatim).
+- **The Mechanoid pass — a relationship instrument (RULED, plot sitting
+  2026-09-12).** Owner verbatim: "The Helix use their pseudo-genetic makeup to
+  appear as non-hostiles to the Mechanoids (but this can be overrided by the
+  Cathedral if it chooses to reveal itself). The Cathedral can also grant this
+  to the player jawas if it chooses." ⇒ Two verbs the arc owns: **GRANT** —
+  at VOUCHED or later the Cathedral may extend the pass to the clan (its
+  machines read them as non-hostile), priced like any boon against Imperial
+  Heat and revocable when the relationship cools or goes dark (§6); **REVOKE**
+  — the Helix's pass is the Cathedral's silent tolerance, and revealing itself
+  (§5) is what lets it strip that tolerance, so a revealed Cathedral turning
+  on the Helix is a legible consequence of the reveal, not a new mechanism.
+  What the pass does NOT do: open the antipode war lab — its command codes sit
+  on the Spire's isolated system, never ceded to the Cathedral and ungrantable
+  by it (`worldbuilding/ashfall_research_base.md` §6).
 - **Letters at stage transitions**: §P register only — the world describing
   behavior ("the ground here has been... easier, lately"), never intent.
 - **No gauge, ever**: the player reads the relationship the way the fiction does —
