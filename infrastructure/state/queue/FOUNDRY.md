@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:01:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:11:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1081,6 +1081,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HUB_LAMP_TIME_FIX_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  HUBLAMPTIMEFIX1 — hub freshness lamps compute age against mislabeled time
 prose:    infrastructure/state/items/HUB_LAMP_TIME_FIX_1.md
+
+## WRECKAGE_VERMIN_SPAWN_1 Ship vermin spawn FROM wreckage: wreck-anchored nest/spawn mechanism for the ship-vermin band (Fall Line hulks and wreck sites), on top of the biome-cast wildlife already deployed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WRECKAGE_VERMIN_SPAWN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
