@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — Rust Cathedral Hum</name>
+  <packageId>mandrake.rut.rustcathedralhum</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>RUST_CATHEDRAL_MECHANICS_1 §1 (the hum-mood system). Builds the
+attitude value, layered tones, droid commentary and hysteresis wiring
+the_rust_cathedral.md and its kit spec promise: mine the bulk freely and the
+hum stays a warm drone; hook an eel, crack a strange wall, or park a drill
+and a new tone slides in under the first, then another; push on and the hum
+drops to silence — the survival cue to stop moving.
+
+- RM_BiomeAttitudeDef (new Def type) + RM_MapComponent_BiomeAttitude (new
+  MapComponent, auto-added to every map, no-ops off the Rust Cathedral):
+  tracks a decaying "irritation" float, composites it against LIVE faction-13
+  (Forsaken/Forgotten Arsenal, vanilla Mechanoid) player goodwill into a 0-4
+  band, with a de-escalation-only hysteresis margin so the band doesn't
+  chatter at a cutoff.
+- Band drives: 1-3 layered ambient Sustainers (RUT_HumLayerDrone/Tense/Alarm,
+  placeholder audio reusing vanilla mechanoid-ambient clips — no audio
+  pipeline exists in this repo, same "placeholder, reuse vanilla" convention
+  RustCathedralWalls used for art), full silence at the worst band, a
+  cooldown-gated §P-register droid-commentary message on band transitions
+  (only fires with a player-faction mechanoid pawn on the map), and a capped
+  sustained-worst-band drain on faction-13 goodwill (the ledger's own
+  -75/0 hostility hysteresis is unmodified vanilla — this mod only nudges the
+  number that feeds it).
+- RUT_RustCathedralAttitude: the one content instance, targeting
+  RUT_RustCathedral.
+
+Public API for the rest of the kit to plug into (§3 living bolts read the
+band for their dance/freeze display; §4 eel-fishing and §5 deep-drill each
+call AddIrritation for their own inputs) — none of those call it yet, they
+remain unbuilt:
+  RM_MapComponent_BiomeAttitude.GetBand(Map)
+  RM_MapComponent_BiomeAttitude.AddIrritation(Map, float)
+
+Deferred (kit spec's own scope lines): the -15-per-sacred-building magnitude
+check on vanilla's AttackedBuilding goodwill hook (rides whichever mod ends
+up owning Tier 3 enforcement — noted, not stubbed, here); hum-literacy as a
+learnable/tradeable knowledge item; per-colonist mood thought; the
+line-cycle ambient dressing event; real authored hum audio (placeholder
+clips only). §2 (wall tiers) and §6 (roaches) are built in sibling mods;
+§3/§4/§5 of the kit are untouched by this mod.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rut.patches</li>
+    <li>mandrake.rut.rustcathedralwalls</li>
+  </loadAfter>
+</ModMetaData>

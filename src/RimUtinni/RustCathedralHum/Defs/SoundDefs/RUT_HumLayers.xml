@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §1 — the three layered hum tones.
+
+    🔴 PLACEHOLDER AUDIO. No audio pipeline exists anywhere in this repo (no
+    prior mod ships a custom .ogg/.wav; confirmed by search before writing
+    this file) — authoring real hum tones is out of this pass's reach the
+    same way real sprites were out of RustCathedralWalls'. Same convention:
+    reuse an existing vanilla clip as a structural placeholder rather than
+    inventing new audio content. Clip paths below are copied verbatim from
+    vanilla mechanoid-ambient SoundDefs (read whole via RimSage, not guessed):
+      RUT_HumLayerDrone  <- MechanoidRelay_Ambient's clip
+      RUT_HumLayerTense  <- MechanoidStabilizer_Ambient's clip
+      RUT_HumLayerAlarm  <- AncientVent_Ambient's clip
+    A real hum audio pass rides the (currently nonexistent) audio pipe;
+    swapping these three clipPaths is the entire migration.
+  -->
+
+  <SoundDef>
+    <defName>RUT_HumLayerDrone</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/MechanoidRelayIdle_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>40</volumeRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RUT_HumLayerTense</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Buildings/MechanoidStabilizerIdle_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>35</volumeRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RUT_HumLayerAlarm</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/AncientVent_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>30</volumeRange>
+        <pitchRange>0.85~1</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

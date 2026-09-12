@@ -185,3 +185,91 @@ deliberately left to the parent session, not done here). Not enabled in
 
 **Rest of the kit is still untouched**: §1 hum-mood system, §3 living bolts,
 §4 eel-fishing, §5 deep-drill response event.
+
+## 2026-09-12 update — §1 (hum-mood system) BUILT, §3/§4/§5 still not started
+
+Picked §1 over §3/§4/§5 for this pass because the kit spec's own build order
+says so directly ("everything else plugs into it" — §3 reads its band, §4
+and §5 call its irritation input) and it was named first in the item's own
+ask. New dedicated mod `mandrake.rut.rustcathedralhum`
+(`src/RimUtinni/RustCathedralHum/`), same one-mod-per-section pattern as
+walls (§2) and roaches (§6):
+
+- **`RM_BiomeAttitudeDef`** (new Def type, RM_ tier per the spec's own
+  naming note — a generic banded-biome-attitude description any biome could
+  reuse) + **`RM_MapComponent_BiomeAttitude`** (new MapComponent — an
+  ordinary, non-Custom subclass, so `Verse.Map.FillComponents` auto-adds it
+  to every map for free, confirmed via RimSage read of `Map.cs`; a no-op
+  everywhere except a map whose biome has a matching Def instance).
+- **Ledger, zero new C#**: reads LIVE faction-13 (Forsaken/Forgotten
+  Arsenal, `Faction.OfMechanoids`) player goodwill every check; vanilla's
+  own `FactionRelation.CheckKindThresholds` −75/0 hysteresis is untouched.
+- **Fast layer**: a decaying "irritation" float; composite =
+  `irritation − goodwill×0.5`, clamped 0–100, mapped to a 0–4 band via the
+  spec's own thresholds (10/30/55/80) with a **de-escalation-only hysteresis
+  margin** (6 points) — the spec's named "hysteresis wiring" mechanic,
+  implemented at the band layer on top of the ledger's own.
+- **Band semantics — this build's own resolution**, not literally specced
+  (the spec states inputs/outputs, not which end is "calm"): band 0 =
+  calmest (one warm-drone `Sustainer`), one more layer per band up through
+  3 layers (**exactly the v1 line's "3 sustainer layers"**), band 4 (the
+  worst) goes **totally silent** — the sheet's own "when the hum drops, stop
+  moving" survival tell, implemented as literal audio silence rather than a
+  bolt-only cue (the bolts themselves are §3, unbuilt, so nothing reads the
+  band for a visual tell yet).
+- **Layered tones — placeholder audio**: no audio pipeline exists anywhere
+  in this repo (checked before writing — zero `.ogg`/`.wav` in
+  `src/RimUtinni` or `src/RimMandrake`, zero prior custom SoundDef), so
+  `RUT_HumLayerDrone/Tense/Alarm` reuse three vanilla mechanoid-ambient clip
+  paths verbatim (`MechanoidRelay_Ambient`, `MechanoidStabilizer_Ambient`,
+  `AncientVent_Ambient`, all read whole via RimSage) — same "placeholder,
+  reuse vanilla" convention RustCathedralWalls used for art. A real hum
+  audio pass is a straight 3-clipPath swap later.
+- **Droid commentary**: cooldown-gated (12h) `Messages.Message` on band
+  transitions, only with a player-faction pawn on the map whose
+  `RaceProps.FleshType == FleshTypeDefOf.Mechanoid` — **ASSUMED** definition
+  of "a player droid," not specced; no droid-tag convention exists elsewhere
+  in this repo to reuse. Four bands of first-pass §P-register lines shipped
+  (register law checked line-by-line in the def's own header) — reversible
+  placeholder prose, not an authored sitting.
+- **Sustained-worst-band goodwill drain**: −1/4h capped at −5/day against
+  faction 13, all through vanilla's own `TryAffectGoodwillWith` — "the hum
+  never flips hostility by itself; the ledger does," per spec.
+- **Public API for §3/§4/§5 to plug into, unconsumed by anything yet**:
+  `RM_MapComponent_BiomeAttitude.GetBand(Map)` and
+  `.AddIrritation(Map, float)`.
+- Every mechanic gated in Mod Settings (`RustCathedralHumSettings`):
+  hum on/off, commentary on/off, goodwill-drain on/off, irritation-decay
+  speed slider — all-off degrades to true no-op, none of it worldgen-
+  affecting.
+
+**Deliberately deferred, per §1's own v1 scope line** (not gaps found late):
+the −15-per-sacred-building `AttackedBuilding` magnitude check (§2/§1
+boundary — still nobody's), hum-literacy as a knowledge item, per-colonist
+mood thought, the line-cycle ambient dressing event.
+
+C# compiled clean (`dotnet.exe`, 0 errors, 0 warnings — one live fix needed,
+an `IReadOnlyList<Pawn>` vs `List<Pawn>` mismatch on
+`map.mapPawns.AllPawnsSpawned`). Both XML files `validate_patch.py` clean
+against the **2026-09-12T08-25-24Z** live def dump (0 errors; an early pass
+had `--` inside XML comments, illegal and fixed). `RUT_RustCathedral`
+confirmed live in that same dump as `mandrake.rut.patches`'
+`BiomeDefs/RUT_RustCathedral.xml`, matching this mod's `targetBiome` string
+exactly.
+
+**Deployed** (`deploy_custom_mods.py --apply`, plan read first, additions
+only — no other window's files touched, no DLL was already loaded since
+this mod is brand new): 4 files written, `VERIFIED in sync`. **Left
+disabled in `ModsConfig.xml`** on purpose, same as walls/roaches — the
+running game (full 593-mod list, currently UP) is completely unaffected;
+turning it on and quicktesting rides the parent session's own call.
+
+❓ **Not live-verified**: whether the band/hysteresis math actually reads
+right in play, whether the placeholder audio layers audibly stack, whether
+`IsPlayerDroidOnMap` finds player mechs the way a real droid colonist would
+be represented once one exists. All need a quicktest once enabled — not
+done here per this pass's offline-authoring brief.
+
+**Rest of the kit is still untouched**: §3 living bolts, §4 eel-fishing, §5
+deep-drill response event. §3 in particular cannot fully land until
+something reads `GetBand()` for its dance/freeze display.
