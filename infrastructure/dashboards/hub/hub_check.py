@@ -37,21 +37,30 @@ def main() -> int:
         d = json.loads(path.read_text())
         try:
             ts = datetime.fromisoformat(d["generatedAt"].replace("Z", "+00:00"))
+            if ts.tzinfo is None:
+                # A naive stamp got through the contract (should be tz-aware
+                # UTC) — that is a real defect in the data, not a value we
+                # can silently compare against an aware "now". Treat it the
+                # same as unusable data below rather than raising.
+                raise ValueError(f"{tab}: generatedAt has no timezone: {d['generatedAt']!r}")
             hours = (datetime.now(timezone.utc) - ts).total_seconds() / 3600
             state = lamp(hours)
             age = f"{hours:6.1f} h"
         except (KeyError, ValueError):
             state, age = "GREY", "UNMEASURED"
+            bad = 1
         src = d.get("source") or d.get("sourceFingerprint") or {}
         fresh = ""
         if src.get("sha256_12") and src.get("path"):
             sp = REPO / src["path"]
-            if sp.exists():
+            if not sp.exists():
+                fresh = f"MISSING — source {src['path']} no longer exists"
+            else:
                 now = hashlib.sha256(sp.read_bytes()).hexdigest()[:12]
                 fresh = "source ok" if now == src["sha256_12"] else \
                         f"STALE — source is {now}, tab holds {src['sha256_12']}"
         print(f"{tab:9s} {state:5s} {age}  {fresh}")
-        if state == "RED" or fresh.startswith("STALE"):
+        if state in ("RED", "GREY") or fresh.startswith("STALE") or fresh.startswith("MISSING"):
             bad = 1
     return bad
 
