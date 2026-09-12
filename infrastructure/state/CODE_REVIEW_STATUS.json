@@ -11548,46 +11548,46 @@
     "sha": "60dd1ce2"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_Insect.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "cfe5b61bb8665e7335a80e21b83d2e0f7aaa139d55480ba49bee4dcc06264fea",
-    "sha": "c4a2ec83"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "e33ff6388c6b008fd33fec41ad3913d76c8aa745b881dbf8af16818ad7786dd4",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_Migration.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "e47d0ab4b5a3e25795e89c5d69282ecbf0507aa82d33fed56ba5e54990b510a5",
-    "sha": "60dd1ce2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "572d5e4a40a4348172b3265ee100ac425f228eb924a59a1ac8f8a424b990b054",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_PodCrashTribal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "79db0079a15750f885d7f3de4c8da72afedb4ea895530cc9380fe9471723484c",
-    "sha": "c4a2ec83"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "924ef723c15fe6621bc759367b279ba0219d6c7429dffab881e30328f55c7e87",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_ShipBreak.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "060802e001bba2453e57cd6046b296cbbb1223450f2a669b5e0da1a6a58834ec",
-    "sha": "c4a2ec83"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "381baad45d944fc6af1161386f4f0f1fbc22080d852fd267e4a96ead1bd30da7",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_Stroke.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "b830ec01a9d97fbf4f14d50196541f186eac910777a29a13afc231c2653169a1",
-    "sha": "60dd1ce2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a82f0a94774f58b8ff3c4031ed4374277037c0e3f9f8c678b70a4ce35dac247e",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_SurvivalPod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "cb3e2672600a778d32791e6dc81fc6e5938e848bd966e444c85d4563018ffa88",
-    "sha": "c4a2ec83"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "af47b776a72f710c59bcb70914e4a47bf5d4f307d1d347ecae0786fdc9fa101e",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_Thanksgiving.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "afac87efa706cdee71e1b8a13b90c974f0c6803e0a6f747a23b492f78bab8b77",
-    "sha": "60dd1ce2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "f4bb3d2b0357628e20cc8d0d84db45de9de510a7b89163507f1d6c3bd4a373d2",
+    "sha": "d2db1fa70"
   },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
