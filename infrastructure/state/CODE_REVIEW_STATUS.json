@@ -780,22 +780,22 @@
     "sha": "5ed4b469"
   },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "890ee09e21662dc3cd089dd9b47a7a5f252bfd7dd5eaf091499810a1d216e8a7",
-    "sha": "31e9db1cd"
+    "hash": "967794574c338487b1d6387da63aaef8c4bf07a8bb16edb0860bb0343e898f60",
+    "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "b16eab27f26a0d41cda5a073d2bae47fee900e2fda7262269c553854952afa1c",
-    "sha": "ab37da311"
+    "hash": "d75497f513b07a34c73832269e995d6c719b8d3a41664098be956374397c710c",
+    "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "d44e66078852c2cf129554b1233042920a8f48f2d8edd8e2d14e7f0c24b51bd3",
-    "sha": "ab37da311"
+    "hash": "3945a503986056aa3849e16c62b0d81e01b8df47470199032b07bbbb091b6d2d",
+    "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Alert_VerminPopulationBase.cs": {
     "cleanCount": 1,
@@ -821,6 +821,12 @@
     "hash": "75e01103618e979380f709a4a74b44a02a75aed1c152e8778d1fc98ffa811065",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "117fe9bfa2046e4ea25c25fcd76b45968064d0ff268c6e459388b7c87bf0202e",
+    "sha": "99a9e5cbc"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_GnawTargetExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -834,10 +840,16 @@
     "sha": "31e9db1cd"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "9486fcc05d525aaee3c5dcb574606a5676b2a32901e3081a3a284682740fe0af",
+    "sha": "99a9e5cbc"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_EatCleanable.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
-    "hash": "6e0029551267e20a90435add4d940458ee6381ff374464916464e0fd39d2fffc",
-    "sha": "31e9db1cd"
+    "hash": "357317f9514ab3036ba5644dac08833e445fa7036116e98af765ae2ce7f190e1",
+    "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_Gnaw.cs": {
     "cleanCount": 1,
@@ -892,6 +904,12 @@
     "date": "2026-09-11",
     "hash": "f3a9cb81c9dbd7d5f8db41bd5b24a482bc6291c8430274c9a12a3c1b38d7f72f",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ThinkNode_EatCleanable.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1d3265b6c02e6f9cb2cf1430a4317e04c032efddabb52f13cb1a97153a1056c0",
+    "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_VerminPressureExtension.cs": {
     "cleanCount": 1,
@@ -11342,6 +11360,30 @@
     "date": "2026-09-09",
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RustCathedralRoaches/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b685b055eb3fddd5410263fcf3ff0a5be93861b17b8e8971e19f76d4a18b4ac6",
+    "sha": "99a9e5cbc"
+  },
+  "src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Items/RUT_CathedralRoachShell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "7ed519c7dd33390b2972b6c03e6b57e8c2c1783e24c87a75a7f2c653731d83d8",
+    "sha": "99a9e5cbc"
+  },
+  "src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/RUT_CathedralRoach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b641b3f7c1fa7461b96357ba2b74c2c1831bbebb4f8998aadc492992cd84adc9",
+    "sha": "99a9e5cbc"
+  },
+  "src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/RUT_ScarRoach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0b37cdf297ca5944ddf041d0d1a84dea412ebaf880fd58790ec4844456256622",
+    "sha": "99a9e5cbc"
   },
   "src/RimUtinni/ScarlandsLadder/About/About.xml": {
     "cleanCount": 1,
