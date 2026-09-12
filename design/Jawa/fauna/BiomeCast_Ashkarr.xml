@@ -55,6 +55,7 @@
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
         <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep -->
+        <RSW_Eopie>0.3</RSW_Eopie> <!-- eopie - herd, keep -->
         <RSW_Nuna>0.2</RSW_Nuna> <!-- nuna - herd-small, keep -->
         <RSW_Clodhopper>0.1</RSW_Clodhopper> <!-- clodhopper - ambush-small, keep -->
       </value>
@@ -77,7 +78,6 @@
         <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
-        <Eopie>0.3</Eopie> <!-- eopie - herd, keep -->
         <Hrumph>0.3</Hrumph> <!-- hrumph - herd, import -->
         <IridonianReek>0.3</IridonianReek> <!-- iridonian reek - herd, import -->
         <Jimvu>0.3</Jimvu> <!-- jimvu - herd, import -->
@@ -178,6 +178,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
+        <RSW_Eopie>0.8</RSW_Eopie> <!-- eopie - medium-pack, keep -->
         <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - small-runway, keep -->
         <RSW_Corinathoth>0.4</RSW_Corinathoth> <!-- corinathoth - huge-grazer, keep -->
@@ -208,7 +209,6 @@
         <Gorg>1.0</Gorg> <!-- gorg - small-runway, keep -->
         <RSW_Iriaz>1.0</RSW_Iriaz> <!-- iriaz - small-herd, keep -->
         <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
-        <Eopie>0.8</Eopie> <!-- eopie - medium-pack, keep -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
         <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
         <RSW_Mudhorn>0.8</RSW_Mudhorn> <!-- mudhorn - huge-predator-exception, keep -->
@@ -379,6 +379,8 @@
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - brake, import -->
         <RSW_Convor>0.3</RSW_Convor> <!-- convor - flier, import -->
         <RSW_Dalgo>0.18</RSW_Dalgo> <!-- dalgo - brake, keep -->
+        <RSW_Dianoga>0.15</RSW_Dianoga> <!-- dianoga - lunger, adjust-keep -->
+        <RSW_Dragonsnake>0.12</RSW_Dragonsnake> <!-- Dragonsnake - lunger, adjust-keep -->
       </value>
     </match>
   </Operation>
@@ -403,8 +405,6 @@
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
         <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - flier-predator, keep -->
         <Hssiss>0.18</Hssiss> <!-- hssiss - lunger-junior, keep -->
-        <Dianoga>0.15</Dianoga> <!-- dianoga - lunger, adjust-keep -->
-        <Dragonsnake>0.12</Dragonsnake> <!-- Dragonsnake - lunger, adjust-keep -->
         <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
         <RSW_Beldon>0.008</RSW_Beldon> <!-- beldon - flier-giant, keep -->
       </value>
@@ -908,6 +908,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
+        <RSW_Eopie>0.25</RSW_Eopie> <!-- eopie - the-Patient, keep -->
         <RSW_CanCell>0.2</RSW_CanCell> <!-- can-cell - flier-commuter, keep -->
         <RSW_Convor>0.2</RSW_Convor> <!-- convor - flier-commuter, import -->
       </value>
@@ -920,7 +921,6 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
         <Gornt>0.3</Gornt> <!-- gornt - the-Patient, keep -->
-        <Eopie>0.25</Eopie> <!-- eopie - the-Patient, keep -->
         <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
       </value>
     </match>
@@ -1029,9 +1029,10 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
         <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import -->
-        <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
         <RSW_Boma>0.15</RSW_Boma> <!-- boma - large-margin, keep -->
         <RSW_Dactillion>0.15</RSW_Dactillion> <!-- dactillion - flier-mount, keep -->
+        <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
+        <RSW_Eopie>0.1</RSW_Eopie> <!-- eopie - pilgrim, import -->
       </value>
     </match>
   </Operation>
@@ -1043,7 +1044,6 @@
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
         <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
-        <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
         <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
       </value>
     </match>

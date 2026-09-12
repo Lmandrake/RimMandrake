@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Dragonsnake creature port.
+  Ported from mlie.starwarsanimalcollection's `Dragonsnake` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Custom body: the donor's `Dragonsnake` BodyDef uses vanilla Core's
+  `SnakeBody`/`SnakeHead`/`SnakeMouth` parts unchanged, plus one donor-custom
+  tail part (`SW_Club`) and its attack-tool group (`SWTailAttackTool`) —
+  both ALREADY PORTED in Wave B (RSW_SW_Club, RSW_SWTailAttackTool, the same
+  club/tail-tool Boma already reuses) — ported here as RSW_Dragonsnake
+  (RSW_MlieWaveC_Bodies.xml) with those 2 references repointed, no new body
+  part needed.
+
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Saurian/RSW_Saurian_Meat (Wave B). Its `CompProperties_EggLayer`
+  needed 2 new eggs, RSW_EggDragonsnakeFertilized/UnFertilized
+  (RSW_MlieWaveC_Resources.xml) — the donor's own egg ThingDefs reuse the
+  already-present texPath swresource/EggSaurian (no new art extraction
+  needed for the eggs themselves). Sounds repoint to the already-absorbed
+  sound wave (RSW_Pawn_Dragonsnake_*, 2026-09-02). texPaths are unchanged
+  text — extracted art (7 PNGs: base body + swimming variant + dessicated,
+  3 directions each except the single non-directional dessicated) sits at
+  Textures/swanimals/Dragonsnake/ (extract_bundle.py against the same
+  AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: BiomeCypreJungle (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Dragonsnake" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Dragonsnake</defName>
+    <label>Dragonsnake</label>
+    <description>The dragonsnake (also spelled 'dragon snake') were a large, semi-aquatic predatory reptiles that dwelled in the muddy waters of various planets, including Dagobah and Nal Hutta. Dragonsnakes were large serpentlike beasts with sharp fangs and biolumescent spots along their backs. Although voracious, they were incapable of digesting metal (a lucky escape for some heroic droids!). The dragonsnake "Bright-Eyes" displayed a degree of extreme intelligence and cunning.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <MarketValue>2000</MarketValue>
+      <FilthRate>16</FilthRate>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.25</ArmorRating_Heat>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.80</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>bodily constriction</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggDragonsnakeUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggDragonsnakeFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Dragonsnake</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseHungerRate>0.5</baseHungerRate>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>4.0</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <lifeExpectancy>60</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.70</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.2</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Dragonsnake_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Dragonsnake_Death</soundDeath>
+          <soundCall>RSW_Pawn_Dragonsnake_Call</soundCall>
+          <soundAngry>RSW_Pawn_Dragonsnake_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Dragonsnake</defName>
+    <label>dragonsnake</label>
+    <race>RSW_Dragonsnake</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>dragonsnake neonate</label>
+        <labelPlural>dragonsnake neonates</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
