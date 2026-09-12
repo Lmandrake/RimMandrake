@@ -7540,3 +7540,4 @@
 {"seat":"BENCH","event":"claim","id":"FAUNA_TOLERANCE_NORMALIZATION_1","ts":"2026-09-12T01:15:44Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T01:17:59Z"}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-12T01:18:06Z"}
+{"seat":"BENCH","event":"block","id":"FAUNA_TOLERANCE_NORMALIZATION_1","reason":"Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.","ts":"2026-09-12T01:26:39Z"}

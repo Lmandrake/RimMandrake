@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:15:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T01:26:39Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -20,17 +20,8 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     design
-summary:  (no items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md yet — write one when you have something to say)
+summary:  design/Jawa/cathedralconcealmentarcspec.md (drafted 2026-09-11). Shape:
 prose:    infrastructure/state/items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md
-
-## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
-prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 # IN PROGRESS
 
@@ -241,6 +232,16 @@ kind:     design
 blocked:  Options report written; awaits the owner's review sitting.
 summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
+
+## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.
+summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
+prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
 state:    ready  (BLOCKED)
