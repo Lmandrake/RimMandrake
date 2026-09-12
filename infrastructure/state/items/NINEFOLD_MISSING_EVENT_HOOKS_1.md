@@ -43,3 +43,9 @@ from the component's constructor as a cheap sanity net for future god-list edits
 
 Left `doing` — the harness verify (event actually moves the number) is real
 work still owed, distinct from "patch installed without exploding."
+
+## Routed 2026-09-12 (BENCH)
+Build half done at 98863702; the remaining verify is LIVE bridge work (trigger
+kill/trade/launch/droid-online, read satiation fields back) — reassigned to
+FOUNDRY, who holds the bridge on the current full-list load. Spawn-many rule
+applies: batch the four triggers, one driver.

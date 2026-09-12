@@ -39,3 +39,10 @@ Shutdown window: deploy Pyrelands + Chronicle DLLs together with their
 quicktests. Pre-freeze: rid/xtp regen (build_salvation_rid.py), Ashkarr
 tile switch to RM_FE_Pyrelands (PYRELANDS_WORLD_SWITCH_1). FOUNDRY queue
 carries its notices (swept WIP, smelt config, About XML `--` lesson).
+
+## Closed 2026-09-12 as a consumed record
+The reboot happened; the owed lines live elsewhere (FOUNDRY queue notices,
+PYRELANDS_WORLD_SWITCH_1, the shutdown-window deploys — Chronicle decouple
+recorded done in the 09-11 handoff). The dump-retake line: loads have occurred
+since (09-11 measured); whoever next consumes the dump re-checks its
+fingerprint per standing doctrine anyway.

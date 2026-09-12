@@ -45,3 +45,9 @@ registry.jsonl fingerprint, worldmap RED by age; shell lamps age-computed the
 same). Still open: the two-seat no-clobber republish proof, and migration —
 standalone publishers (codebase_health, maturity dashboard, artpipe) repoint
 to hub data files.
+
+## Status 2026-09-12
+Stale-lamp verify PROVEN twice more in live use (art STALE against a moving
+registry; worldmap RED until the post-freeze audit landed, then GREEN). Sheets
+are links only. Remaining: the two-seat no-clobber proof + publisher migration
+— both ride `HUB_TAB_PUBLISHER_MIGRATION_1` (FOUNDRY).
