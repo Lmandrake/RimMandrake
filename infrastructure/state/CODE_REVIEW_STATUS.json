@@ -11055,6 +11055,18 @@
     "hash": "1ed2c35c67eadd5489e649549112cd8158f766e5af2490bbc1403fbe982871a9",
     "sha": "8da0c5c8e"
   },
+  "src/RimUtinni/KyberTradePlot/Source/KyberTradePlotIncidentWorker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "cbbe271db48a5515cadef5938c8c14164f416f35d867ea104a1fcd4dbd50c9c5",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/KyberTradePlot/Source/KyberTradePlotSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "cabdf8033a2b5f5fe835bbe332cb5af1c47e6b436c407b54ff434e3e59abe809",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-10",
@@ -11127,6 +11139,12 @@
     "hash": "871253eb4902422674ed58a6ab18f1dce2867c21c163f8d4b76c34cf6d4badca",
     "sha": "1dc7382d"
   },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepMineshaft_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "25854dea820634317176e7a9c1ef9587361c89f5d336f8c87482eb20df593074",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/LanternDeeps/Patches/RUT_LanternstoneFictionRename.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -11144,6 +11162,18 @@
     "date": "2026-09-12",
     "hash": "97b8d7672ea776ad509b0ab8263a007180f3303f7a4be54e033cdd9cc4011b60",
     "sha": "7f2ff5541"
+  },
+  "src/RimUtinni/LanternDeeps/Source/LanternDeepsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ed5719dae94e63abe5c40e4dd41022547fec90c45de97065dd6fce88781f5452",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/LanternDeeps/Source/MapComponent_LanternDeepDarkness.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1ed26fd658bbf9ed75566674c09c31f4603d08a9833fada36957355b789a0a37",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
     "cleanCount": 2,
@@ -11198,6 +11228,12 @@
     "date": "2026-09-11",
     "hash": "806e2636cd92bfda02679877aac86b27584e3ff337de6438a636d59768cbc917",
     "sha": "e2333e565"
+  },
+  "src/RimUtinni/LongHunger/Source/LongHungerMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1e7c5b1bbf6e5d62a3f1193b0d51b2613b36ad720fb7bc5e55929eea615c846f",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/LongHunger/Source/LongHungerThing.cs": {
     "cleanCount": 3,
@@ -11421,6 +11457,12 @@
     "hash": "ba7e170a6b04e9fc54aee5b91f81bc8b3d6e4ceb4da42b2b70662d901b81bc21",
     "sha": "5f995fb3f"
   },
+  "src/RimUtinni/PlantGrowth/Source/PlantGrowthMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b30929f8919d6e881563e29b67ce7800662aa047f32103ca031c27876258649e",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/PlantGrowth/Source/PlantGrowthSettingsDef.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -11577,6 +11619,12 @@
     "hash": "37f153945276bf89ea0dc4b7f6beece17619e8103b1df8a2fe6398d18f1c7324",
     "sha": "187bf0389"
   },
+  "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "4ff1c125efb95cda400f9bd08201bde1e204521806a6a357bd947af967c4158a",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsTuning.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -11649,6 +11697,12 @@
     "hash": "b85ad25272ddd2b4146951b6ba92a74109fef70d25b32995aba6887040db54a2",
     "sha": "fd3bafa39"
   },
+  "src/RimUtinni/RestrainingBolts/Source/RestrainingBoltsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "03805167a9c6f3ef963f1bc1cb856f440873954297e3e6906679d3d5ec360953",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/RestrainingBolts/Source/RimMandrake.Utinni.RestrainingBolts.csproj": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -11696,6 +11750,12 @@
     "date": "2026-09-11",
     "hash": "e0f6ebf61717950811689f0c27950d88846b6b2a5fc83cf1451196a4b3292221",
     "sha": "53cb421d2"
+  },
+  "src/RimUtinni/RiverColors/Source/RiverColorsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "a7c6915fd1fb4620dc188911619fc7a79ef4bfad6fa961932c700d05fb6433bb",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
     "cleanCount": 1,
@@ -11793,6 +11853,78 @@
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RustCathedralHum/Defs/IncidentDefs/RUT_DeepDrillCathedralResponse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e6b7cf725d02df65859d4aa5d6450d44ce47a3af204acee48eb7bc3ff19416d4",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/Misc/RUT_NegativeFishingOutcomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c1c5de686e84833a75c638fc00710e788ac17eeff62294935cb69dc8f6e197b4",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/RM_BiomeAttitudeDefs/RUT_RustCathedralAttitude.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7a3d412168a7d42e7ecab41047f2e1ccfa850ec5a4c98b39168e0b62d5f9878f",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/SoundDefs/RUT_HumLayers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1fe10a85935639fcf2bae0a8a87037fd826437b3410f5a75d2c40ebc2a46a19d",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/ThingDefs_Items/RUT_BoltShedCuriosity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "400f6297dda109225a7ba45105b2a57bd6c57eaf1c57f07bca20f2e13dbc204c",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/ThingDefs_Items/RUT_CoolantEel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6025046d8095316088be9785f382a98e0583fe1be43a3a26d6531cec5bb05c67",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/ThingDefs_Races/RUT_LivingBolt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "aa08f6474c99a074c4ef2369b8c1de2763c0c7f89e7190f1b49d305aa1944834",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Defs/ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "85f2e61f97aaf2de06254e994cafa864237552257fe6dde18046871d23914c96",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Patches/RUT_RustCathedral_Fishing.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6e5b57bf22fc0c45dfc21ca71e811682d1ed0c6374b876b0752bdca2f5dd1b8c",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/HarmonyPatch_WatchedBolts.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c50292965b0d7d3197bb285854fca42df4632cd58eef189499bf1d8a987ed49c",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RM_BiomeAttitudeDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "34295f43e6cb90d48ee8371c86bfaa43b42ce6547e98d107cd5ee4781bcb74fe",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RM_CathedralFishing.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6c213512d9a4236441e515b7d5fc227cf9eab7c38e3992420244e9f290c213ac",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/RustCathedralHum/Source/RM_JobGiver_ResonantDance.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -11817,6 +11949,12 @@
     "hash": "7556837bf89418ae8325e3f2c14d0b626d19e2707d364ee764d4152c30b1cc6f",
     "sha": "e0f4ffdc7"
   },
+  "src/RimUtinni/RustCathedralHum/Source/RustCathedralHumSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "46d53e685fc9fe9cc5cd5b8352bed9ffe4538a38f686a3dc300df641f51948c5",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/RustCathedralRoaches/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -11840,6 +11978,12 @@
     "date": "2026-09-11",
     "hash": "0b37cdf297ca5944ddf041d0d1a84dea412ebaf880fd58790ec4844456256622",
     "sha": "99a9e5cbc"
+  },
+  "src/RimUtinni/RustCathedralRoaches/Defs/ThinkTreeDefs/RUT_ThinkTree_CathedralRoach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7099027684e458d87010467f4413f77dcb5c16827e0956fc7e2ec0e95ff5f3af",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RustCathedralWalls/About/About.xml": {
     "cleanCount": 1,
@@ -11919,6 +12063,12 @@
     "hash": "8df224d0f69645e49d02ad003c661248a793a5a616a7f62890bc3bcf18703760",
     "sha": "1056c8a11"
   },
+  "src/RimUtinni/RustCathedralWalls/Source/RustCathedralWallsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "bf4c595da5f6a130d58348b0f87720833c8812965584b70e33aae77f58e26045",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/ScarlandsLadder/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -11997,6 +12147,12 @@
     "hash": "f4bb3d2b0357628e20cc8d0d84db45de9de510a7b89163507f1d6c3bd4a373d2",
     "sha": "d2db1fa70"
   },
+  "src/RimUtinni/ScavengerEvents/Source/ScavengerEventsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9ece338325196542efdf5ae5c8c8591293954185aad3187c4a030f859f8b9f41",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -12038,6 +12194,12 @@
     "date": "2026-09-11",
     "hash": "2abfc6c31fa99a865cbf5b4a8ec5cbcdfa1f791b2284265547ddf124133183dc",
     "sha": "53cb421d2"
+  },
+  "src/RimUtinni/ShipMemory/Source/ShipMemorySettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b15c81e55a7ae87da45b211cd85a9fd3d5b1636bb634a75ed23d7fed51e74459",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
     "cleanCount": 2,
@@ -12153,6 +12315,18 @@
     "hash": "805bf674b49c81db104a543bc3b21cddca06f3ac346d5d40608f9bca652728f1",
     "sha": "5040448b5"
   },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveHarvestScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "765580a31bd5996a7308b24138a2c2e09bdec76abde579eb6d2dd592260926d1",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveNestScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3b7d6ed9ff48d94e8c3777a8463dc19d39df364effb893409ece647aba695aa2",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRename.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -12164,6 +12338,12 @@
     "date": "2026-09-11",
     "hash": "0aeff7f1b46bad081a40693cbd5214c5afa7fece1c3dcfe3b794127095de96cc",
     "sha": "5040448b5"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Source/GenStep_ScatterWebworkSilk.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9a1067826c3338b2cb2ef17ce2ff470a7fe53f4bc925cceec453ba8a82f87860",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/SpidercatArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -12242,6 +12422,12 @@
     "date": "2026-09-09",
     "hash": "9985f61974479c32ba1e31865e5983077f94bf9ff478cca10c89feb6c70704df",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Whisper_Batch1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "68f474c96dc6eab37438fe746b30a7b6b2f35d99016d9cfd302dc4fdbbda1ef9",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch3.xml": {
     "cleanCount": 1,
@@ -12357,6 +12543,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Patches/WhisperBatch1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "29cb3f95520b21ec13306b2bf42df04fe50dda015797a88a788366f898cd01af",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -12392,6 +12584,18 @@
     "date": "2026-09-12",
     "hash": "3ba8f3e7f3d9bbac4f93428350fb9bfad12dae29a6c1a6ceb1343dcdca146490",
     "sha": "02648abb2"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/StructureInjectionsRUTSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "8eb448359f14d93473d1c4aca46c4398365098b6fcb0c8287cacac7d1f05d154",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/MapComponent_VaultSleepers.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "2b33b5e73dc617acaf211c6a6ca73a751aeccfd7fc1ae1e35434b43bc7238aff",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_layouts.py": {
     "cleanCount": 2,
@@ -13245,6 +13449,18 @@
     "hash": "b62c41c681968a8acbee9890412a66dabf3087f083276e206c29b4cfa410ecaa",
     "sha": "7c80850cb"
   },
+  "src/RimUtinni/UtinniPatches/Patches/TibannaEmbargo_CutMineableRoute.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e06d324fe67ecaa8645d0e197e060d33226b27baec4b1246de35eb5b15fd1e43",
+    "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/UtinniWorldIcon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "acb10db9486f587e9d4ab091f5fa34fcad1c512a0ac89c58744990825bb57300",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -13269,6 +13485,12 @@
     "hash": "dfb7959378f72f7b16bf6355bfa981049a67bc9bb0c1d721151f66d4a66e5bd1",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/ZZZ_BiomeWildAnimalDuplicates_Generated.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "17e6677cd607256e99d1d1e28a04e56093a961994e77c7ea24ab5d142116ce05",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/UtinniPatches/Source/AmbientShrineGuardians.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -13281,11 +13503,23 @@
     "hash": "ef46ba6276e5bfef5c87f4afc8c81fa812e99954629c612d1a37161257ae6d8e",
     "sha": "4cd37218f"
   },
+  "src/RimUtinni/UtinniPatches/Source/PatchOperationSettingGate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "f2b587ebb7e53c4d94cae4b1655b38b78fb47e37e1e9a2f839d7ff2b806b5d6e",
+    "sha": "18e1ab1b6"
+  },
   "src/RimUtinni/UtinniPatches/Source/TwinkleFloraSpike.cs": {
     "cleanCount": 1,
     "date": "2026-09-10",
     "hash": "408ad5d1ee0b2b68125f282423502abec4ac2c44f1977104946c45a012fbeeb7",
     "sha": "0e94b4d2"
+  },
+  "src/RimUtinni/UtinniPatches/Source/UtinniPatchesSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3265dd1364960a1da56b933fe9f10472ba0270d6ec7c8715c405430b8d8049ce",
+    "sha": "18e1ab1b6"
   },
   "src/RimUtinni/UtinniPatches/Source/build_claim_rumour.py": {
     "cleanCount": 1,
