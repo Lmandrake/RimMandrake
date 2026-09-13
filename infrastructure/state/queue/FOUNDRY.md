@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:08:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T18:12:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -768,7 +768,7 @@ prose:    infrastructure/state/items/CATHEDRAL_REGARD_BLACKBOARD_1.md
 ## CATHEDRAL_STAGE_HUM_BRIDGE_1 Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 summary:  Arc §3 bullet 1: stage sets the baseline the kit's composite band recovers

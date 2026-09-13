@@ -39,6 +39,8 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	{
 		private float irritation;
 		private int currentBand = -1; // -1 = uninitialized; forces a sync on first tick
+		private int displayBand = -1; // currentBand clamped to the active stage's bandCeiling
+		private int stage; // CATHEDRAL_STAGE_HUM_BRIDGE_1: 0 = WARY (arc spec's own numbering), set by the bridge/GM blackboard, never ratcheted here
 		private int lastCommentaryTick = -999999;
 		private int worstBandGoodwillLastTickGametime = -999999;
 		private int goodwillDrainDayAnchorTick;
@@ -60,6 +62,8 @@ namespace RimMandrake.Utinni.RustCathedralHum
 			base.ExposeData();
 			Scribe_Values.Look(ref irritation, "irritation", 0f);
 			Scribe_Values.Look(ref currentBand, "currentBand", -1);
+			Scribe_Values.Look(ref displayBand, "displayBand", -1);
+			Scribe_Values.Look(ref stage, "stage", 0);
 			Scribe_Values.Look(ref lastCommentaryTick, "lastCommentaryTick", -999999);
 			Scribe_Values.Look(ref worstBandGoodwillLastTickGametime, "worstBandGoodwillLastTickGametime", -999999);
 			Scribe_Values.Look(ref goodwillDrainDayAnchorTick, "goodwillDrainDayAnchorTick", 0);
@@ -102,8 +106,9 @@ namespace RimMandrake.Utinni.RustCathedralHum
 			int band = ComputeBand(def);
 			bool bandChanged = band != currentBand || activeSustainers.Count == 0 && checksSinceStart <= 1;
 			currentBand = band;
+			displayBand = ClampToStage(def, band);
 
-			SyncSustainers(def, band);
+			SyncSustainers(def, displayBand);
 
 			// §4's line-in tell. The kit spec's own preferred, zero-Harmony
 			// route: read the FISHING STATE off this map's pawns on the same
@@ -125,11 +130,11 @@ namespace RimMandrake.Utinni.RustCathedralHum
 
 		// ---- public API for §3/§4/§5 to plug into ----
 
-		/// <summary>Current attitude band for this map, or -1 if the biome has no attitude def (never fires here).</summary>
+		/// <summary>The band this map's hum/bolts actually SHOW right now (raw band clamped to the active stage's ceiling), or -1 if the biome has no attitude def. This is "the on-map voice" -- what §3/§7/§8 consumers should read, not the raw internal composite.</summary>
 		public static int GetBand(Map map)
 		{
 			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
-			return comp?.currentBand ?? -1;
+			return comp?.displayBand ?? -1;
 		}
 
 		/// <summary>Bumps this map's irritation. Negative amounts are allowed (a mercy event), though nothing calls that yet.</summary>
@@ -142,6 +147,44 @@ namespace RimMandrake.Utinni.RustCathedralHum
 		public void Notify_Irritation(float amount)
 		{
 			irritation = Mathf.Max(0f, irritation + amount);
+		}
+
+		// ---- CATHEDRAL_STAGE_HUM_BRIDGE_1: the stage source's own lane ----
+
+		/// <summary>This map's current conduct-stage (0 WARY by default), or -1 if the biome has no attitude def.</summary>
+		public static int GetStage(Map map)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			return comp?.stage ?? -1;
+		}
+
+		/// <summary>Sets this map's conduct-stage. Not a second attitude system and not ratcheted here -- the arc's GM blackboard (item 1) owns the one-way-knowledge/two-way-standing rules; this is a dumb setter, including the dark-flip case (drive back to 0/WARY at any time, regardless of history).</summary>
+		public static void SetStage(Map map, int stage)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			comp?.Notify_StageChanged(stage);
+		}
+
+		public void Notify_StageChanged(int newStage)
+		{
+			stage = newStage;
+			RM_BiomeAttitudeDef def = GetDef();
+			if (def != null)
+			{
+				// Re-clamp immediately rather than waiting up to checkIntervalTicks
+				// for the next tick -- a stage change (especially the dark flip)
+				// should be audible/visible on the next sustainer sync, not lag
+				// behind by up to checkIntervalTicks worth of game time.
+				displayBand = ClampToStage(def, currentBand < 0 ? 0 : currentBand);
+				SyncSustainers(def, displayBand);
+			}
+		}
+
+		private int ClampToStage(RM_BiomeAttitudeDef def, int rawBand)
+		{
+			RM_StageAttitudeParams sp = def.GetStageParams(stage);
+			int ceiling = sp?.bandCeiling ?? def.WorstBand;
+			return Mathf.Clamp(rawBand, 0, ceiling);
 		}
 
 		// ---- internals ----
@@ -176,7 +219,10 @@ namespace RimMandrake.Utinni.RustCathedralHum
 			{
 				return;
 			}
-			float halfLifeDays = Mathf.Max(0.01f, def.irritationDecayHalfLifeDays / Mathf.Max(0.01f, RustCathedralHumSettings.irritationDecayRateMultiplier));
+			RM_StageAttitudeParams stageParams = def.GetStageParams(stage);
+			float stageDecayMultiplier = stageParams?.decayRateMultiplier ?? 1f;
+			float halfLifeDays = Mathf.Max(0.01f, def.irritationDecayHalfLifeDays
+				/ Mathf.Max(0.01f, RustCathedralHumSettings.irritationDecayRateMultiplier * stageDecayMultiplier));
 			float halfLifeTicks = halfLifeDays * GenDate.TicksPerDay;
 			float intervalTicks = def.checkIntervalTicks;
 			float decayFactor = Mathf.Pow(0.5f, intervalTicks / halfLifeTicks);

@@ -41,6 +41,32 @@
 
     <commentaryCooldownHours>12</commentaryCooldownHours>
 
+    <!--
+      CATHEDRAL_STAGE_HUM_BRIDGE_1: arc spec §1/§3's stage ladder (0 WARY,
+      1 TOLERATED, 2 VOUCHED). WARY caps the displayed band at 0 (the single
+      "warm drone" layer, never richer, regardless of raw irritation):
+      "reads flat and dull... audible as absence." TOLERATED/VOUCHED lift
+      the ceiling (no entry = unrestricted, def default) and recover 50%
+      faster: "breathes... faster recovery from low bands." Raw
+      irritation/goodwill/hysteresis math is untouched by any of this; only
+      the displayed band and decay speed move.
+    -->
+    <stageParams>
+      <li>
+        <stage>0</stage>
+        <bandCeiling>0</bandCeiling>
+        <decayRateMultiplier>1</decayRateMultiplier>
+      </li>
+      <li>
+        <stage>1</stage>
+        <decayRateMultiplier>1.5</decayRateMultiplier>
+      </li>
+      <li>
+        <stage>2</stage>
+        <decayRateMultiplier>1.5</decayRateMultiplier>
+      </li>
+    </stageParams>
+
     <humLayers>
       <li>RUT_HumLayerDrone</li>
       <li>RUT_HumLayerTense</li>
