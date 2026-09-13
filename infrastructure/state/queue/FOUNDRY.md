@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:11:53Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T09:18:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
+prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
 state:    ready
@@ -1261,6 +1270,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARTPIPE_FAILED_REQUEUE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  infrastructure/artpipe/failed/ held 46 job/manifest pairs at triage
 prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md

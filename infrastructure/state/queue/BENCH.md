@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:14:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T09:18:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -57,7 +57,7 @@ prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    owner
 target:   v1
 kind:     task
 summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
@@ -66,7 +66,7 @@ prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
@@ -105,7 +105,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DOING_ITEMS_RECONCILE_1.md yet — write one when you have something to say)
+summary:  Owner (2026-09-13, before going AFK): "What about examining the stuck queue
 prose:    infrastructure/state/items/DOING_ITEMS_RECONCILE_1.md
 
 # BLOCKED — something is WRONG and someone must act

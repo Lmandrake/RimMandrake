@@ -8126,3 +8126,12 @@
 {"seat":"BENCH","event":"file","id":"DOING_ITEMS_RECONCILE_1","title":"DOING_ITEMS_RECONCILE_1 reconcile the 102-item doing sediment: close the done, drop the dead, expose the truly stuck","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-13T09:14:32Z"}
 {"seat":"BENCH","event":"claim","id":"DOING_ITEMS_RECONCILE_1","ts":"2026-09-13T09:14:32Z"}
 {"seat":"BENCH","event":"start","id":"DOING_ITEMS_RECONCILE_1","ts":"2026-09-13T09:14:33Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"CATHEDRAL_REGARD_BLACKBOARD_1 shadow-mode live run","ts":"2026-09-13T09:16:13Z"}
+{"seat":"BENCH","event":"needs","id":"ASSIGNMENT_SHEETS_VERDICT_SITTING_1","to":"owner","ts":"2026-09-13T09:17:40Z"}
+{"seat":"BENCH","event":"needs","id":"WORLDMAP_FINAL_REVIEW_1","to":"owner","ts":"2026-09-13T09:17:41Z"}
+{"seat":"BENCH","event":"needs","id":"CAMPAIGN_STORY_SITTING_1","to":"owner","ts":"2026-09-13T09:17:41Z"}
+{"seat":"BENCH","event":"note","id":"GIZKA_TRIBBLE_ADAPTATION_1","text":"doing-audit 2026-09-13: correctly held on GIZKA_HOLD_HOOK_SPIKE_1 (FOUNDRY dependency), not needs-owner","ts":"2026-09-13T09:17:48Z"}
+{"seat":"BENCH","event":"note","id":"ART_PIPELINE_DAEMON_1","text":"doing-audit 2026-09-13: live and draining; genuinely held on CODEX_WORKER_SANDBOX_WRITE_1 (owner ruling 2026-09-10)","ts":"2026-09-13T09:17:48Z"}
+{"seat":"BENCH","event":"note","id":"EXPLOSIVE_PLANT_GROWTH_1","text":"doing-audit 2026-09-13: design ruled 4/4; open work = TPS perf benchmark (unrun) + per-biome roster still PROPOSED","ts":"2026-09-13T09:17:49Z"}
+{"seat":"BENCH","event":"reassign","id":"TECHPRINT_FACTION_GATING_1","to":"FOUNDRY","ts":"2026-09-13T09:17:55Z"}
+{"seat":"BENCH","event":"note","id":"TECHPRINT_FACTION_GATING_1","text":"doing-audit 2026-09-13: sat doing on OWNER seat 277h, abandoned mid-work (faction-tech alignment ruled 2026-09-04, no categoryTag/heldByFactionCategoryTags build landed). Reassigned to FOUNDRY ready.","ts":"2026-09-13T09:18:01Z"}
