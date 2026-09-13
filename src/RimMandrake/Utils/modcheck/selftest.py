@@ -196,24 +196,61 @@ def t_set_setting():
     @suite.chain("c1")
     def c1(t):
         with t.component("toggle_off", toggle="fooEnabled"):
-            t.set_setting("some.mod", {"fooEnabled": False})
+            t.set_setting("some.mod.Settings", {"fooEnabled": False})
 
     session = _fake_session()
-    session.call = lambda tool, **p: (
-        {"settings": {"fooEnabled": False}}
-        if tool == "rimworld/get_mod_settings" else {"success": True})
+
+    def _call_takes(tool, **p):
+        if tool == "jawa/mod_settings_field":
+            if p.get("action") == "get":
+                return {"success": True, "value": "False"}
+            return {"success": True, "valueAfter": "False"}
+        return {"success": True}
+    session.call = _call_takes
     result = runner.run_suite(suite, session)
     check("set_setting: passes when the read-back matches",
          result["all_green"] is True)
 
     session2 = _fake_session()
-    session2.call = lambda tool, **p: (
-        {"settings": {"fooEnabled": True}}   # did not take
-        if tool == "rimworld/get_mod_settings" else {"success": True})
+
+    def _call_does_not_take(tool, **p):
+        if tool == "jawa/mod_settings_field":
+            if p.get("action") == "get":
+                return {"success": True, "value": "True"}   # did not take
+            return {"success": True, "valueAfter": "True"}
+        return {"success": True}
+    session2.call = _call_does_not_take
     result2 = runner.run_suite(suite, session2)
     verdict = result2["chains"][0]["components"][0]["verdict"]
     check("set_setting: fails when the setting did not actually take",
          verdict == FAIL, verdict)
+
+    session3 = _fake_session()
+
+    def _call_set_refused(tool, **p):
+        if tool == "jawa/mod_settings_field" and p.get("action") == "set":
+            return {"success": False, "message": "no such field"}
+        return {"success": True}
+    session3.call = _call_set_refused
+    result3 = runner.run_suite(suite, session3)
+    verdict3 = result3["chains"][0]["components"][0]["verdict"]
+    check("set_setting: fails when the setter itself reports failure",
+         verdict3 == FAIL, verdict3)
+
+    suite_persist = Suite("t_mod")
+
+    @suite_persist.chain("c1")
+    def c1_persist(t):
+        with t.component("toggle_off", toggle="fooEnabled"):
+            t.set_setting("some.mod.Settings", {"fooEnabled": False},
+                         persist=True)
+
+    session4 = _fake_session()
+    session4.call = lambda tool, **p: {"success": True}
+    result4 = runner.run_suite(suite_persist, session4)
+    verdict4 = result4["chains"][0]["components"][0]["verdict"]
+    check("set_setting: persist=True is refused, never silently ignored",
+         verdict4 == FAIL, verdict4)
 
 
 def t_precondition_from_outside_the_script_is_refused():

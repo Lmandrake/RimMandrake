@@ -40,6 +40,21 @@ the same register Pits' own validation.py uses for its documented gaps --
 see "Still not proven" below for the complete list of what remains unproven
 and why.
 
+REAL DEPENDENCY, not a soft-hook (MODCHECK_DONOR_ENVIRONMENTS_1, confirmed
+2026-09-13, not guessed): the absorbed KotOR content directly references
+`kaitorisenkou.ModularWeapons2`'s types with no MayRequire gate
+(`Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/*.xml`), and
+`guy762.MM.KotORCore` (already this mod's own declared `<modDependencies>`
+entry, `About/About.xml:16`) is where every `kotorsound_*` SoundDef this
+mod's absorbed content plays actually lives
+(`Kotor_Misc_Sounds.xml:34`). On the min16 minimal test environment (which
+carries neither), the ModularWeapons2-donor ThingDefs get silently
+DISCARDED at load (missing-donor-type-eats-the-def) and a surviving
+recipeMaker def then NREs vanilla `RecipeDefGenerator.SetIngredients` --
+this mod's test environment MUST add both packageIds alongside
+`mandrake.rsw.armoury` itself, or this suite never gets past mod load to
+run at all.
+
 GROUNDING PER MECHANISM (source read, not guessed):
   - `CompExtraSounds/HarmonyCompExtraSounds.cs` -- Harmony id
     "jecstools.jecrell.comps.sounds", postfixes on `Verb_MeleeAttack`'s

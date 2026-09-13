@@ -33,11 +33,12 @@ returns nothing) and therefore no `TileMutatorDef`/`LandmarkDef` anywhere
 in THIS mod that would ever put a `GenStepDef` carrying `GenStep_
 RimplacePlan` in front of a real map generation to hit `Generate()` at
 all. `enabled` is a real, wired ModSettings field with genuinely nothing
-in this mod's own shipped content that would ever reach it. The toggle is
-therefore UNCOVERED -- see the "NOT a chain" register at the end of this
-file (BENCH edit 2026-09-13; the draft's set_setting write+read-back was
-shelved on the known static-field bridge limitation,
-BRIDGE_STATIC_SETTINGS_FIELDS_1).
+in this mod's own shipped content that would ever reach it. The toggle
+therefore carries a setting write+read-back component
+(`enabled_toggle_flips` below, restored by
+MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 once `jawa/mod_settings_field`
+learned static fields, BRIDGE_STATIC_SETTINGS_FIELDS_1) rather than a
+behavioral proof.
 
 WHY BOTH `replay_*` CHAINS USE THE DEBUG ACTION'S OWN SUMMARY LOG
 (`[RMInjectDebug] RAN ...`) FOR THE BULK OF THE PROOF, PLUS ONE
@@ -222,13 +223,19 @@ def replay_moisture_farm_plan(t):
         t.screenshot()
 
 
-# NOT a chain: the `enabled` toggle is UNCOVERED, deliberately (edited by
-# BENCH before the first live run, 2026-09-13). The draft proved it via a
-# `t.set_setting` write+read-back that near-certainly fails on the known
-# `public static`-field reflection limitation of `rimworld/update_mod_settings`
-# (measured live on Pits, same declaration shape here) -- a component that
-# fails every run on a KNOWN bridge gap keeps this mod permanently un-GREEN
-# and blocks its playtest gate on the wrong culprit. Recorded on
-# BRIDGE_STATIC_SETTINGS_FIELDS_1; restore the write+read-back component when
-# the tool learns static fields. Mirrors Pits' own uncovered toggles:
-# registered, not faked.
+@suite.chain("enabled_toggle_flips")
+def enabled_toggle_flips(t):
+    """Restored by MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 now that
+    `jawa/mod_settings_field` resolves static fields (BRIDGE_STATIC_
+    SETTINGS_FIELDS_1). Proves `enabled` is a real, live-flippable
+    setting -- see module docstring for why no further behavioral proof
+    exists (the debug action calls `ApplyPlan()` directly, bypassing
+    `Generate()`'s `enabled` check, and this mod ships no `Defs/` that
+    would ever reach `Generate()` for real)."""
+    with t.component("enabled_setting_flips", toggle="enabled"):
+        t.set_setting(
+            "RimMandrake.StructureInjections.RM_StructureInjectionsSettings",
+            {"enabled": False})
+        t.set_setting(
+            "RimMandrake.StructureInjections.RM_StructureInjectionsSettings",
+            {"enabled": True})
