@@ -53,13 +53,18 @@ stock on a map are explicitly NOT exposed as settings, per RM_InhabitedMod.cs's
 own comment, so they are not toggles this suite owes a component to).
 
 Still not proven / likely first-live-run corrections:
-  - The `_debug()` helper assumes Inhabited's plain (non-ToolMap) `Action`-type
-    debug actions resolve at path `Actions\\T: <label>` with no `x`/`z`
-    params, by ANALOGY to Pits' MEASURED finding for its ToolMap actions
-    (category is UI metadata there too) -- never independently confirmed for
-    a non-targeted action. If the path or the no-coordinate call shape is
-    wrong, every component in this file fails identically on first run,
-    which at least localises the fix to `_debug()` itself.
+  - MODCHECK_SUITE_CORRECTIONS_1 (2026-09-13): the first live wave ran 0/10
+    -- every component failed identically at `_debug()`, exactly as
+    predicted below. The `_debug()` helper's path guess (`Actions\\T:
+    <label>`, by ANALOGY to Pits' MEASURED ToolMap finding) was WRONG for
+    Inhabited's plain (non-ToolMap) `Action`-type debug actions -- MEASURED
+    live via `rimworld/get_debug_action`: the correct path drops the "T: "
+    prefix entirely (`Actions\\<label>`), since that prefix is RimWorld's UI
+    marker for a *targeted* action, not a generic path segment. Fixed in
+    `_debug()`; not yet re-run live end-to-end (no save/quicktest was loaded
+    at correction time -- `rimworld/get_debug_action` only proves the path
+    resolves and reports `execution.supported: true`, not that each
+    component's actual side effect still holds).
   - `robbed_threshold_not_spurious` only proves Menace()'s stock branch is
     silent once `stockSpawnedCount == 0`; the actual fraction threshold is
     unproven (see gap 1 above).
@@ -105,11 +110,20 @@ def _debug(t, label):
     actions: CreatePlaceHere/StuffRoster/AbsorbRoster/DrawFromPool/DumpStock/
     CollectStock/TestFate all resolve their own target (CurrentTile(),
     FindPlace(), Find.CurrentMap) rather than taking a cell argument, unlike
-    Pits' ToolMap-targeted actions -- so no x/z is passed. By analogy to the
-    Pits pilot's MEASURED finding, `category` ("RimMandrake.Inhabited") is UI
-    metadata, not a path segment; the real path is `Actions\\T: <label>`.
-    UNCONFIRMED for a non-targeted action -- see this file's own docstring."""
-    return t.bridge_call("rimworld/execute_debug_action", path="Actions\\T: " + label)
+    Pits' ToolMap-targeted actions -- so no x/z is passed.
+
+    MODCHECK_SUITE_CORRECTIONS_1 (2026-09-13): the `Actions\\T: <label>`
+    guess (by analogy to Pits' ToolMap finding) was WRONG for a plain
+    Action-type debug action, exactly as this file's own docstring
+    predicted -- MEASURED live via `rimworld/get_debug_action`:
+    `Actions\\T: Create place at current tile` 404s ("Could not find debug
+    action"), `Actions\\Create place at current tile` resolves with
+    `hasDirectAction: true, execution.kind: "Direct", execution.supported:
+    true`. The "T: " prefix is RimWorld's own UI marker for a *targeted*
+    (ToolMap) action, not something `category` or path-building adds
+    generically -- a plain `Action` gets no prefix at all. `category`
+    remains UI metadata either way, not a path segment."""
+    return t.bridge_call("rimworld/execute_debug_action", path="Actions\\" + label)
 
 
 @suite.chain("place_and_roster")
