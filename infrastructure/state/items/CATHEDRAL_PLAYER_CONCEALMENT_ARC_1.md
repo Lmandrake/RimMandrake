@@ -22,9 +22,11 @@ pools, bolt display) plus deniably-sourced missions/boons — text/menu only,
 game whole without the Oracle. Reveal beat (§5): one escorted descent showing
 SCALE and ALIVENESS only, scoped to the player, knowledge gate
 (`RUT_mechanoid_origin_canon.md` §5, hard) opens exactly there; bans 2/6 hold
-forever. Failure directions (§6): exposure → the Cathedral goes dark
-(asymptotic in v1, CARD A3); betrayal → rationed patience, never raids — the
-ruled −75/0 hysteresis bounds everything, and the arc closes for good. No new
+forever. Failure directions (§6): exposure → the Cathedral goes dark, and — RULED
+A3+A6 — full Imperial discovery CAN complete in v1, ending in the pyrrhic
+Hutt-extraction escape (spec §6.1 carries the owner's verbatim); betrayal →
+rationed patience, never raids — the ruled −75/0 hysteresis bounds
+everything, and the arc closes for good. No new
 defNames coined; every cited token binds at the kit's or origin canon's build.
 
 ## verify
@@ -50,25 +52,16 @@ defNames coined; every cited token binds at the kit's or origin canon's build.
 - No duplication of existing machinery: hum-mood, Heat blackboard, pursuit
   spine, restore-choice pricing are cited, not restated.
 
-## Owner cards
+## Owner cards — ALL RULED
 
-- **A1** — Does the Utinni know the Cathedral is alive? Her vouching vs the
-  hard knowledge gate: (a) she is the gate's sole exception and the reveal's
-  usher, or (b) she vouches into what she believes is dead protocol and learns
-  at the reveal beside the player. Spec survives either; recommends (b) as the
-  stronger scene.
-- **A2** — Reveal scope: §5 discloses aliveness + scale only. More of §GM in
-  the spoken reveal (Assailants, decline, reserves), or held for a later
-  sitting?
-- **A3** — Can exposure complete? Full Imperial discovery as a losable v1
-  thread, or asymptotic pressure narrated but never played? Spec assumes
-  asymptotic for v1.
-- **A4** — The Imperial-survey misdirection beat (spec §4): in or out? The one
-  place the player actively performs concealment; adds a quest surface. K2
-  anti-laundering symmetry already applied (protecting it scrubs no Heat).
-- **A5** — Where does selling the anomaly start counting as exposure:
-  Imperial-aligned buyers only, or any sale during high Heat? One sentence
-  rules it.
+A1–A5 ruled 2026-09-12 (mechanics-cards sitting), A6–A7 ruled 2026-09-12
+(bench sitting). The rulings and their scope live in ONE place: the spec's
+cards section, `design/Jawa/cathedral_concealment_arc_spec.md`. Headlines:
+A1 she KNOWS (Rakatan-band receiver); A2 aliveness+scale only; A3 exposure
+CAN complete; A4 survey-misdirection IN; A5 volume-not-identity; A6 the
+completion is a pyrrhic Hutt-extraction escape (ship mourns); A7 the descent
+is a real injected site in v1. No unruled card material remains — the build
+decomposition is unblocked.
 
 ## All five cards RULED — owner sitting 2026-09-12
 A1 she KNOWS (receives the Rakatan transponder on dead frequencies — new lore
