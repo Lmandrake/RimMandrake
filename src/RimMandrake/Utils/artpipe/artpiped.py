@@ -172,6 +172,33 @@ LEGIBILITY_THRESHOLDS = common.REPO_ROOT / "infrastructure" / "artpipe" / "legib
 # ARTPIPE_LEGIBILITY_MODEL overrides; empty string falls back to 2-band thresholds.
 LEGIBILITY_MODEL = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_model_fitted.json"
 LEGIBILITY_TIMEOUT_S = 60
+# Class + drawSize backfill (ART_QUEUE_DRAWSIZE_BACKFILL_1): jobs that carry
+# their own `drawsize`/`art_class` win; otherwise the backfill answers by
+# stem. Vanilla convention is MEASURED (2026-09-13): flora ships with no
+# outline (grass 0.00 coverage) while fauna/pawns ship at 1.00 — so FLORA is
+# exempt from the creature-calibrated fitted gate and from the stroke.
+LEGIBILITY_BACKFILL = common.REPO_ROOT / "infrastructure" / "artpipe" / "drawsize_backfill.json"
+_backfill_cache = {}
+
+
+def _job_art_info(job_id: str, job: dict):
+    """(art_class, drawsize) for a job: job fields first, backfill by stem."""
+    if job.get("art_class") or job.get("drawsize"):
+        return (job.get("art_class") or "creature", float(job.get("drawsize") or 1.0))
+    if not _backfill_cache and LEGIBILITY_BACKFILL.is_file():
+        try:
+            _backfill_cache.update(json.loads(LEGIBILITY_BACKFILL.read_text()).get("stems", {}))
+        except (OSError, ValueError):
+            _backfill_cache["__failed__"] = True
+    stem = job_id
+    changed = True
+    while changed:
+        s2 = re.sub(r"(_east|_north|_south|_west|_r\d+|_improve(_[a-z])?|_v\d+)$", "", stem)
+        changed = (s2 != stem); stem = s2
+    info = _backfill_cache.get(stem)
+    if isinstance(info, dict):
+        return (info.get("class") or "creature", float(info.get("drawsize") or 1.0))
+    return ("creature", 1.0)
 
 # Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
 # decided jobs are pruned once they're this old (the repo's own Transient/
@@ -1327,7 +1354,17 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     # transparent-bg sprites only: black-backdrop reference shots are never
     # downsampled onto the map, so play-zoom legibility is not their test.
     if (job.get("background") or "transparent") == "transparent":
-        job_ds = float(job.get("drawsize") or 1.0)
+        art_class, job_ds = _job_art_info(job.get("id") or out_png.stem, job)
+        if art_class == "flora":
+            # Flora has no calibrated bar yet (FLORA_LEGIBILITY_BAR_1) and the
+            # vanilla convention is outline-free — never gate flora on the
+            # creature model, never stroke it. Skipped is said, not silent.
+            result["legibility"] = "skipped (flora — no calibrated bar; creature model does not apply)"
+            result.update(status="ok", worker_status="ok",
+                           validator=("PASS" if verdict == "pass" else "skipped"),
+                           note=("validated" if verdict == "pass" else
+                                 "no reference to validate against") + "; flora ungated")
+            return result
         lverdict, lfindings = run_legibility_gate(out_png, drawsize=job_ds)
         result["legibility_findings"] = lfindings
         if lverdict == "reject":

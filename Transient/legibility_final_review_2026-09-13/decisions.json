@@ -1,772 +1,576 @@
 {
- "posture": "whitelist",
  "criterion": "Pre-filled 'good' for every row - the gate already passed them; your flags are the errors the locked rules still make.",
- "generatedBy": "bench final-review generator (locked rules)",
+ "decidedCount": 153,
  "decisions": {
   "aa_terramorph_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "aa_terramorph_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "aa_terramorph_v1_north_r2": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "aa_terramorph_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "aa_thunderox_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "aaklac_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "agaricusdomecap_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "agarilux_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "alientree_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "ambrosia_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "anooba_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "anooba_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "anooba_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "arbuscularmycorrhiza_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "aridgrass_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "bilespawn_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "bilespawn_v1_north_r2": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "bilespawn_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "bleedingtooth_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "bloddle_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "boma_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "boma_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "borcatu_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "borcatu_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "borcatu_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "brightbells_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "bush_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "chakroot_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "cinderwing_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "cinderwing_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "corronip_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "crimsoncap_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "crystalflower_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "crystalhorn_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "dactillion_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "dervish_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "dewback_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "dewback_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "dewshrooms_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "direwail_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "dribblingcap_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "duskram_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "duskram_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "duskram_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "fambaa_v1_north": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "featherfeel_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "felucianglowspore_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "fumeback_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "fumeback_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "fumeback_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "gargantuanlithops_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "giantagarilux_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "giantgamma_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "giantseptimum_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "gianttoxicflower_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "globularplant_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "glowingagarilux_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "glowstool_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grank_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grank_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grank_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "greaterkraytdragon_v1_north": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "greaterkraytdragon_v1_south": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "greenrockfern_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "grimmoss_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grithe_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grithe_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grutt_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grutt_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "grutt_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "halfalientree_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "hardygrass_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "healroot_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "hubbagourd_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "huskrunner_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "huskrunner_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "huskrunner_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "insectomorph_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "insectomorph_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kinrath_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kinrath_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kinrath_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kroffa_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kroffa_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kroffa_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "kroffa_v2_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "lilacbeacon_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r10_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "lockjaw_improve_a_r11_south": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r13_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r7": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r8_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r8_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r9_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "lockjaw_improve_a_r9_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "lockjaw_improve_b_r9_north": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "lockjaw_improve_b_r9_south": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "mireflit_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "mireflitwarden_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "miremoth_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "miremoth_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "miremoth_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "mortalmorel_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "mycolith_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "mycolith_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "nogtyl_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "nuitae_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "ollopom_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "ollopom_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "ollopom_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "oozemaw_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "oozemaw_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "oozemaw_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "orray_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "orray_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "orray_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "pekopeko_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "pekopeko_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "pekopeko_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "polux_v1": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "puffmite_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "puffmite_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "puffmite_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "pusmelon_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "pyrelands_furnacebeast_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "pyrelands_furnacebeast_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "rainbowtongue_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "reeds_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "rimenodules_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "ronto_v1_north": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "ronto_v1_south": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "scarrend_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "shinecap_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "skulltop_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "sugarfamewort_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "talltoxigrass_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "toxibulb_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "toxicgamma_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "toxicivy_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "tumorbulbhyacinth_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "twisteddandelion_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "violetwimple_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wastewing_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wastewing_v1_north_r2": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wastewing_v1_south_r2": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "whisperbird_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "whisperbird_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
-  },
-  "wrinklecap_v1": {
-   "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wyyyschokk_v1_east": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wyyyschokk_v1_north": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
   "wyyyschokk_v1_south": {
    "decision": "good",
-   "prefill": "good",
-   "note": ""
+   "note": "",
+   "prefill": "good"
   },
-  "zakkeg_v1_north": {
+  "aa_frostmite_v1_east": {
    "decision": "good",
    "prefill": "good",
    "note": ""
   },
-  "zakkeg_v1_south": {
+  "aa_thunderox_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "aa_thunderox_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "boma_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dactillion_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dactillion_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dewback_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "insectomorph_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "mantrap_improve_a_r7": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "mantrap_improve_b_r8": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "pyrelands_furnacebeast_v1": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "shiro_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "shiro_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_south": {
    "decision": "good",
    "prefill": "good",
    "note": ""
   }
- }
+ },
+ "generatedBy": "bench final-review generator (locked rules)",
+ "posture": "whitelist",
+ "savedAt": "2026-09-13T15:29:13-0700",
+ "savedBy": "review-sheet-sidecar",
+ "writeCount": 8
 }
