@@ -1,0 +1,22 @@
+{
+  "item": "FORSAKEN_CRAGS_PREDATORS_BUILD_1",
+  "note": "First real retrofit for MASS_VALIDATION_LADDER_1's manifest format/runner. Pins the item's own ## criteria: both creatures untameable (wildness=1.0, trainability=None), Cindermare's cold-drain-grip is a REAL mechanism (extraMeleeDamages -> RSW_ColdDrainDamage on the cold-drain grip tool, not flavor text), Skarnix's firelight valve is a REAL mechanism (CompProperties_LightAversion present with its tuning), plus labels/hediffClass/combatPower as cheap tautology-resistant sanity. Ground truth read directly from src/RimStarWars/SWBestiary/Defs/Livestock/{ThingDefs_Animals/ThingDefs_ForsakenCrags.xml, PawnKindDefs/PawnKindDefs_ForsakenCrags.xml, HediffDefs/HediffDefs_ColdDrain.xml} on 2026-09-13, not guessed.",
+  "checks": [
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "label", "expected": "cindermare"},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "race.trainability", "expected": "None"},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "statBases.Wildness", "expected": 1.0},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[2].extraMeleeDamages[0].def", "expected": "RSW_ColdDrainDamage"},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[2].extraMeleeDamages[0].amount", "expected": 6},
+
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "label", "expected": "skarnix"},
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "race.trainability", "expected": "None"},
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "statBases.Wildness", "expected": 1.0},
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "comps[1].fleeSearchRadius", "expected": 10},
+
+    {"defType": "PawnKindDef", "defName": "RSW_Cindermare", "path": "combatPower", "expected": 140},
+    {"defType": "PawnKindDef", "defName": "RSW_Skarnix", "path": "combatPower", "expected": 65},
+
+    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "hediffClass", "expected": "Hediff_Injury"},
+    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "injuryProps.painPerSeverity", "expected": 0.018}
+  ]
+}
