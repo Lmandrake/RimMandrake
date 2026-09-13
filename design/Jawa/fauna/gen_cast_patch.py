@@ -357,6 +357,25 @@ def main():
     if not PAWNKINDS:
         sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
                  'cannot be checked against the pawnkind roster')
+
+    # 🔴 LOADFOLDERS-GATED DONOR DEFS - GIDDYUP_NULLKEY_CRASH_1 (2026-09-12).
+    # ANIMALPKG gates an entry on the def's OWNING mod, but a mod can ship a def
+    # inside a LoadFolders.xml subfolder gated IfModActive on a THIRD mod - then
+    # the owning mod is active, MayRequire passes, and the def still never loads:
+    # BiomeAnimalRecord.animal stays null and CommonalityOfAnimal throws on the
+    # null key (the exact crash class the per-donor split defends against).
+    # Live case: Vanilla Genetics Expanded defines its nine Megafauna hybrids
+    # only under `<li IfModActive="Spino.Megafauna">1.6/Mods/Megafauna</li>`
+    # (workshop 2801160906 LoadFolders.xml), and Spino.Megafauna is not in the
+    # mod list - GR_Mantistanis in ZBiome_Grasslands crashed every wild-animal
+    # cache build on that biome. Derived by reading that LoadFolders.xml plus
+    # the subfolder's Races XML; no mechanical LoadFolders scan exists yet, so
+    # this table is maintained by hand - extend it if another donor's
+    # conditional-subfolder def is ever cast.
+    LOADFOLDERS_GATED = {d: 'Spino.Megafauna' for d in (
+        'GR_Boomnotherium', 'GR_Chickenlodon', 'GR_Doedicoon',
+        'GR_Elasmobearium', 'GR_Lizardochs', 'GR_Mantistanis',
+        'GR_Paraceramuffalo', 'GR_Thrumdraeodon', 'GR_WoolyWolf')}
     ENTITY = _anomaly_entity_pawnkinds()
     skipped = []
     cut_rows = []
@@ -450,7 +469,10 @@ def main():
         for r in byb[b]:
             apkg = ANIMALPKG.get(r['defName'])
             if apkg and not str(apkg).startswith('ludeon.rimworld'):
-                donor_rows[apkg].append(r)
+                # A LoadFolders-gated def needs BOTH its owner and the gating
+                # mod in MayRequire, so it groups under the full chain.
+                extra = LOADFOLDERS_GATED.get(r['defName'])
+                donor_rows[f'{apkg},{extra}' if extra else apkg].append(r)
             else:
                 base_rows.append(r)
 
