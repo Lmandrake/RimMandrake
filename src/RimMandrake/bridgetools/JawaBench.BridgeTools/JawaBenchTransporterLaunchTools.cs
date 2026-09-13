@@ -217,6 +217,39 @@ namespace JawaBench.BridgeTools
                 string podId = pod.ThingID;
                 IntVec3 launchCell = pod.Position;
 
+                // 🔴 The transporterId (existing-pod) path never took the spawn-branch's
+                // early dryRun return above, so without this check a dryRun=true call
+                // against an existing transporter would fall straight through to a real
+                // TryLaunch — exactly the "claims dry run, actually commits" trap this
+                // tool exists to avoid on the OTHER side (see file header). All the gate
+                // values needed for a full report are already computed above with no
+                // side effect, so a dry run here costs nothing but the actual call.
+                if (dryRun)
+                {
+                    return (object)new
+                    {
+                        success = true,
+                        launched = false,
+                        dryRun = true,
+                        podDefName = pod.def?.defName,
+                        podId,
+                        spawnedPod,
+                        cell = new { x = launchCell.x, z = launchCell.z },
+                        groupId,
+                        originTile = map.Tile.tileId,
+                        destinationTile = dest.tileId,
+                        distance,
+                        maxDistance,
+                        fuelLevel = fuelUnlimited ? -1f : fuel,
+                        fuelUnlimited,
+                        canLaunch = can.Accepted,
+                        canLaunchReason = can.Accepted ? null : can.Reason,
+                        lastLaunchTickBefore = before,
+                        nextState = "pass dryRun=false to actually launch",
+                        ticksGame = TicksGameSafe()
+                    };
+                }
+
                 launchable.TryLaunch(dest, null);
 
                 int after = launchable.lastLaunchTick;
