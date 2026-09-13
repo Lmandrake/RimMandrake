@@ -904,7 +904,8 @@ def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
         q.set_sandbox_fingerprint(base_version="0.153.4", template_version="0.153.1")
         make_job(q.pending, "codexstuck", q.reference, priority=1, channel="codex")
         make_job(q.pending, "geminifine", q.reference, priority=2, channel="gemini")
-        proc = q.run({"codexstuck": "ok", "geminifine": "ok"}, "--once", "--workers", "2")
+        proc = q.run({"codexstuck": "ok", "geminifine": "ok"}, "--once", "--workers", "2",
+                     "--gemini-budget-usd", "10")
 
         ok("sandbox-preflight mismatch: exits nonzero — codex work remains stuck",
            proc.returncode != 0, proc.stdout + proc.stderr)
@@ -1243,7 +1244,8 @@ def test_gemini_channel_routes_and_records_cost():
         q = Queue(Path(td))
         job_id = "geminijob"
         make_job(q.pending, job_id, q.reference, channel="gemini")
-        proc = q.run({job_id: "ok"}, "--once", "--workers", "1")
+        proc = q.run({job_id: "ok"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10")
         ok("gemini: daemon exits 0", proc.returncode == 0, proc.stderr)
         ok("gemini: job succeeds via the mock gemini worker", (q.done / f"{job_id}.json").is_file())
         manifest = q.done / f"{job_id}.manifest.json"
@@ -1269,7 +1271,8 @@ def test_gemini_bad_image_is_caught_by_revalidation_and_still_billed():
         q = Queue(Path(td))
         job_id = "geminibad"
         make_job(q.pending, job_id, q.reference, channel="gemini")
-        proc = q.run({job_id: "bad_image"}, "--once", "--workers", "1")
+        proc = q.run({job_id: "bad_image"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10")
         ok("gemini-bad: daemon exits 0", proc.returncode == 0, proc.stderr)
         ok("gemini-bad: job fails", (q.failed / f"{job_id}.json").is_file())
         manifest = q.failed / f"{job_id}.manifest.json"
@@ -1285,7 +1288,8 @@ def test_gemini_api_error_never_billed():
         q = Queue(Path(td))
         job_id = "geminierror"
         make_job(q.pending, job_id, q.reference, channel="gemini")
-        proc = q.run({job_id: "api_error"}, "--once", "--workers", "1")
+        proc = q.run({job_id: "api_error"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10")
         ok("gemini-error: daemon exits 0", proc.returncode == 0, proc.stderr)
         manifest = q.failed / f"{job_id}.manifest.json"
         ok("gemini-error: job fails", manifest.is_file())
@@ -1300,7 +1304,8 @@ def test_gemini_wrong_size_caught_independent_of_validator():
         q = Queue(Path(td))
         job_id = "geminiwrongsize"
         make_job(q.pending, job_id, None, channel="gemini")  # no reference — validator skipped
-        proc = q.run({job_id: "wrong_size"}, "--once", "--workers", "1")
+        proc = q.run({job_id: "wrong_size"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10")
         ok("gemini-size: daemon exits 0", proc.returncode == 0, proc.stderr)
         manifest = q.failed / f"{job_id}.manifest.json"
         ok("gemini-size: job fails on size, not a silent ok", manifest.is_file())
@@ -1351,11 +1356,31 @@ def test_gemini_budget_is_durable_across_restarts():
            "already at/over its $0.10 budget" in proc2.stderr, proc2.stderr)
 
 
+def test_gemini_default_budget_is_zero_and_refuses_the_channel():
+    """Owner, 2026-09-11: "Do not use Gemini anymore, only Codex please."
+    artpiped.py enforces the ruling as DEFAULT_GEMINI_BUDGET_USD = 0.0 —
+    with no explicit --gemini-budget-usd, a gemini job must never be
+    claimed, and the daemon exits nonzero because real work stays pending.
+    Every other gemini test here funds the channel EXPLICITLY, which is
+    exactly the human act re-funding it is supposed to take."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "defaultblocked", q.reference, channel="gemini")
+        proc = q.run({"defaultblocked": "ok"}, "--once", "--workers", "1")
+        ok("gemini-default: daemon exits nonzero — the job stays pending",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("gemini-default: job was never claimed — still in pending/",
+           (q.pending / "defaultblocked.json").is_file())
+        ok("gemini-default: the refusal names the $0.00 budget",
+           "$0.00 budget" in (proc.stderr or ""), proc.stderr)
+
+
 def test_gemini_never_touches_codex_homes():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
         make_job(q.pending, "onlygemini", q.reference, channel="gemini")
-        proc = q.run({"onlygemini": "ok"}, "--once", "--workers", "2")
+        proc = q.run({"onlygemini": "ok"}, "--once", "--workers", "2",
+                     "--gemini-budget-usd", "10")
         ok("gemini-isolation: daemon exits 0", proc.returncode == 0, proc.stderr)
         ok("gemini-isolation: the job succeeds", (q.done / "onlygemini.json").is_file())
         no_homes = not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir())
@@ -1371,7 +1396,7 @@ def test_mixed_channel_queue_codex_wedge_does_not_block_gemini():
         make_job(q.pending, "codexratelimited", q.reference, priority=1, channel="codex")
         make_job(q.pending, "geminihealthy", q.reference, priority=2, channel="gemini")
         proc = q.run({"codexratelimited": "rate_limited", "geminihealthy": "ok"},
-                     "--once", "--workers", "1")
+                     "--once", "--workers", "1", "--gemini-budget-usd", "10")
         # Finding 5: both jobs are fully accounted for (one failed, one
         # done) and nothing is left pending — a clean drain, exit 0, even
         # though the codex channel genuinely wedged along the way.
@@ -1493,6 +1518,7 @@ def test_gemini_validator_error_preserves_channel_and_bills_correctly():
         job_id = "geminivalidatorcrash"
         make_job(q.pending, job_id, q.reference, channel="gemini")
         proc = q.run({job_id: "ok"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10",
                      "--validator-script", str(crashy))
         ok("gemini-validator-crash: daemon exits 0", proc.returncode == 0, proc.stderr)
         manifest = q.failed / f"{job_id}.manifest.json"
@@ -1729,7 +1755,8 @@ def test_gemini_cost_billed_only_on_genuine_success_not_exit_0_alone():
         q = Queue(Path(td))
         job_id = "geminiexit0noimage"
         make_job(q.pending, job_id, q.reference, channel="gemini")
-        proc = q.run({job_id: "ok_no_image"}, "--once", "--workers", "1")
+        proc = q.run({job_id: "ok_no_image"}, "--once", "--workers", "1",
+                     "--gemini-budget-usd", "10")
         ok("no-image-billing: daemon exits 0", proc.returncode == 0, proc.stderr)
         manifest = q.failed / f"{job_id}.manifest.json"
         ok("no-image-billing: job fails (exit 0 but no image)", manifest.is_file())
@@ -2585,6 +2612,7 @@ def main() -> int:
         test_repair_leaves_genuinely_ambiguous_state_alone,
         test_repair_standalone_flag_works_without_reconcile_only,
         test_gemini_channel_routes_and_records_cost,
+        test_gemini_default_budget_is_zero_and_refuses_the_channel,
         test_gemini_bad_image_is_caught_by_revalidation_and_still_billed,
         test_gemini_api_error_never_billed,
         test_gemini_wrong_size_caught_independent_of_validator,

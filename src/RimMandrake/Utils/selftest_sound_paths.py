@@ -24,6 +24,20 @@ EXT = (".ogg", ".wav", ".mp3")
 
 CLIP_RE = re.compile(r"<clipPath>\s*([^<\s][^<]*?)\s*</clipPath>")
 
+# Clips that resolve inside the BASE GAME's packed resources.assets, which no
+# loose-file walk can see. A clipPath goes here ONLY when it is a verbatim copy
+# of a vanilla SoundDef's own clipPath, verified against the def (RimSage),
+# with that SoundDef named as the reason -- an entry without a donor SoundDef
+# is a typo waiting to pass.
+VANILLA_PACKED = {
+    # RustCathedralHum placeholder hums (RUST_CATHEDRAL_MECHANICS_1 §1),
+    # copied verbatim from vanilla mechanoid-ambient SoundDefs; verified via
+    # RimSage 2026-09-12. The Building/Buildings inconsistency is vanilla's own.
+    "Building/MechanoidRelayIdle_A": "vanilla MechanoidRelay_Ambient",
+    "Buildings/MechanoidStabilizerIdle_A": "vanilla MechanoidStabilizer_Ambient",
+    "Misc/AncientVent_A": "vanilla AncientVent_Ambient",
+}
+
 
 def mod_roots():
     for tier in TIERS:
@@ -61,6 +75,8 @@ def main():
         sounds_dir = os.path.join(mod_dir, "Sounds")
         for src_file, clip_path in clip_paths_in(defs_dir):
             total += 1
+            if clip_path in VANILLA_PACKED:
+                continue  # packed in the base game's resources.assets
             if not resolves(sounds_dir, clip_path):
                 bad.append((os.path.relpath(src_file, REPO_ROOT), clip_path))
 
