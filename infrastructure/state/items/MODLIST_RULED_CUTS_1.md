@@ -26,3 +26,51 @@ the three cut mods loading and no new Config errors.
 The three cuts are out of the live list, Jurassic's retirement is executed or
 its texPath check documented as blocking, MoEvents chances are zero, and no
 protected mod was disturbed.
+
+## 2026-09-13 (FOUNDRY) — all four actions done, one live check owed on next load
+
+**Jurassic reachability check, done first**: the 8 absorbed creatures live in
+`mandrake.rsw.swbestiary` (`RSW_Absorbed_*.xml`), each declaring its own
+`texPath` under `swanimals/absorbed/<Name>/` — 27 loose PNGs confirmed
+physically present in the repo AND `deploy_custom_mods.py --mod SWBestiary`
+confirmed already in sync (1571 files) — none reference Jurassic's own
+donor-mod texture path. Safe to deactivate; nothing depends on it staying up.
+
+**ModsConfig.xml, 4 packageIds deactivated** (backed up first to
+`Transient/ModsConfig_before_MODLIST_RULED_CUTS_1_20260913_001920.xml`,
+diffed after — only the `activeMods` line changed, 594 → 590 entries, exactly
+these four gone and nothing else moved):
+`dubwise.dubsperformanceanalyzer.steam`, `fuu.bloodanimations`,
+`arkymn.slowerpawntickrate`, `mlie.jurassicrimworlddinosaursonly` (executes
+the already-ruled retirement, closing the gap between the 2026-09-05 ruling
+and disk this item's own audit source flagged). Cross-checked against
+`infrastructure/state/facts/protected_mods.json` — no overlap. Game was up
+throughout; per `rimworld-start-prep`'s own §3 ("RimWorld does NOT rewrite
+ModsConfig.xml on exit"), this is safe and simply takes effect next load.
+
+**MoEvents, chances zeroed via a patch, not settings**: `rimworld/
+get_mod_settings` on its live settings surface
+(`mod-settings:mlie.moevents:93488948b97c9e6d`) returned an empty object
+(`topLevelSettingCount: 0`) — nothing there for a runtime settings write to
+reach, and no `Config/Mod_2035143365_*.xml` has ever been written for it
+either. Read the donor's own `Defs/IncidentDef/IncidentDefs.xml` directly
+instead (own copy in the Workshop folder, not guessed): 🔴 a naive grep found
+13 `MO_` defNames, but `xml.etree.ElementTree` parsing (which correctly
+skips XML comments, unlike grep) found only **10 real, live ones** — three
+(`MO_Recovery`, `MO_Calm`, `MO_GoodRest`) sit entirely inside the donor
+author's own `<!--` comment blocks ("Bugged", "Not working correctly right
+now") and never load. Wrote
+`src/RimUtinni/UtinniPatches/Patches/MoEventsChancesZeroed_RuledCut.xml`,
+`PatchOperationReplace` on all 10 real `baseChance` fields to `0`, gated by
+`PatchOperationFindMod`. `validate_patch.py --defs <Data+Workshop+Mods>
+--mods-config <live>`: 0 errors, 0 warnings, all 10 operations report exactly
+1 live match each. Deployed (`deploy_custom_mods.py --mod UtinniPatches
+--apply`), verified in sync.
+
+**Still owed**: this item's own `## verify` asks for confirmation in a fresh
+Player.log that none of the three cut mods load and no new Config errors
+appear — that needs an actual restart, not done this pass (batching with
+other game-up work rather than a solo restart for this alone, per standing
+doctrine). Fold into the next full-list load's run-sheet: grep the fresh log
+for the three deactivated packageIds (expect zero) and confirm 0 Config
+errors from the new MoEvents patch. Left `doing`.

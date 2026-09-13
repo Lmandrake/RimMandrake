@@ -8087,3 +8087,9 @@
 {"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_PRIMITIVE_TIER_1","text":"Live savegame delivered: Saves/REVIEW_DroidworksG2_2026-09-13.rws, screenshot confirms goose-necked silhouette not the DUM placeholder. Owner's own look still owed before closing.","ts":"2026-09-13T07:13:33Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:14:11Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_PRIMITIVE_TIER_1","text":"Live savegame look done: G2 body confirmed correct on a real spawn (DROIDWORKS_G2_REVIEW_2026-09-13.rws). New gap found: head renders as default human face, no custom head ever built/wired - flagged, not fixed.","ts":"2026-09-13T07:15:24Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:15:52Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MODLIST_RULED_CUTS_1","ts":"2026-09-13T07:17:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"MODLIST_RULED_CUTS_1","ts":"2026-09-13T07:17:04Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MODLIST_RULED_CUTS_1: zero MoEvents MO_ baseChances via live settings","ts":"2026-09-13T07:19:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:29:26Z"}
+{"seat":"FOUNDRY","event":"note","id":"MODLIST_RULED_CUTS_1","text":"3 ruled ModsConfig cuts + Jurassic retirement executed (594->590 mods); MoEvents baseChance zeroed via new patch (10 real defNames, validate_patch clean). Player.log confirmation owed on next full-list load.","ts":"2026-09-13T07:32:49Z"}
