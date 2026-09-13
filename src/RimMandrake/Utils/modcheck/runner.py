@@ -94,18 +94,65 @@ def restore_full():
     return r
 
 
-def swap_to_test_list():
-    """MINIMAL + the mod(s) under test is not a mode `modlist_swap.py` has
-    (its `--minimal` is the fixed captured list) -- composing MINIMAL with a
-    target mod's packageId(s) and writing that as the live ModsConfig is
-    owed to a follow-up once a real live run is scheduled (see the item
-    file). For now this calls the plain `--minimal` swap, which is correct
-    for a mod with no extra dependency beyond the minimal mechanism list."""
+def mod_package_id(mod_dir):
+    """The packageId from the mod's About/About.xml -- the FIRST <packageId>
+    in document order is the mod's own (later ones belong to <modDependencies>
+    entries, as in Pits' About.xml where Ludeon.RimWorld appears below)."""
+    import re
+    about = os.path.join(mod_dir, "About", "About.xml")
+    with open(about, encoding="utf-8") as f:
+        m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", f.read())
+    if not m:
+        raise RuntimeError("%s has no <packageId>" % about)
+    return m.group(1).lower()
+
+
+def compose_test_list(package_ids, config_path=None):
+    """Append `package_ids` (the mods under test) to the live ModsConfig's
+    <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
+    live. Appending at the END is deliberate: our mods patch/extend the
+    mechanism list, never the other way round, so they load after all of it
+    (rimworld-start-prep: a patch belongs after what it patches). Ids already
+    present are not duplicated. ⚠️ ModsConfig names the NEXT load only -- an
+    id whose mod folder is not deployed is silently dropped by RimWorld, so
+    `run()` deploys before composing."""
+    import re
+    if config_path is None:
+        sys.path.insert(0, _UTILS)
+        from game_paths import MODS_CONFIG
+        config_path = MODS_CONFIG
+    MODS_CONFIG = config_path
+    with open(MODS_CONFIG, encoding="utf-8") as f:
+        xml = f.read()
+    live = set(re.findall(r"<li>([^<]+)</li>", xml))
+    add = [p for p in package_ids if p not in live]
+    if add:
+        lis = "".join("    <li>%s</li>\n" % p for p in add)
+        xml = xml.replace("</activeMods>", lis + "  </activeMods>")
+        tmp = MODS_CONFIG + ".modcheck.tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(xml)
+        os.replace(tmp, MODS_CONFIG)
+    # read back -- ModsConfig is the instrument for the NEXT load
+    with open(MODS_CONFIG, encoding="utf-8") as f:
+        now = set(re.findall(r"<li>([^<]+)</li>", f.read()))
+    missing = [p for p in package_ids if p not in now]
+    if missing:
+        raise RuntimeError("compose_test_list read-back missing %s" % missing)
+    return add
+
+
+def swap_to_test_list(package_ids=()):
+    """MINIMAL + the mod(s) under test: `modlist_swap.py --minimal --apply`
+    (which captures FULL first), then `compose_test_list` appends the mods
+    under test. With no `package_ids` this is the plain minimal swap."""
     r = subprocess.run(["python3", MODLIST_SWAP, "--minimal", "--apply"],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --minimal --apply FAILED: %s"
                            % (r.stdout + r.stderr).strip())
+    if package_ids:
+        compose_test_list(list(package_ids))
     return r
 
 
@@ -208,6 +255,29 @@ def run(mods, debug=False, dry_run=False):
     if not dry_run:
         swap_to_test_list()
     try:
+        if not dry_run:
+            # Deploy each mod, THEN compose its packageId into the live
+            # list: ModsConfig names the next load only, and RimWorld
+            # silently drops an activeMods id whose folder is absent from
+            # the game's Mods directory (the repo is never what the game
+            # loads). Inside the try so any failure still restores FULL.
+            # ⚠️ Composition changes the NEXT load -- the caller owns the
+            # game restart between run()'s swap and the first Session, and
+            # a locked companion DLL (game still up) fails the deploy here
+            # loudly rather than the suite failing silently later.
+            package_ids = []
+            for mod_folder, _item in mods:
+                mod_dir = find_mod_dir(mod_folder)
+                r = subprocess.run(
+                    ["python3", os.path.join(_UTILS, "deploy_custom_mods.py"),
+                     "--mod", mod_folder, "--apply"],
+                    cwd=ROOT, capture_output=True, text=True)
+                if r.returncode != 0:
+                    raise RuntimeError(
+                        "deploy of %s FAILED: %s"
+                        % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
+                package_ids.append(mod_package_id(mod_dir))
+            compose_test_list(package_ids)
         for mod_folder, item_id in mods:
             if dry_run:
                 # Deliberately does not resolve the mod folder or import its

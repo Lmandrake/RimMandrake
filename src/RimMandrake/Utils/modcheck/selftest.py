@@ -373,8 +373,38 @@ def t_deploy_tool_already_skips_python_files():
          ".py" in deploy_custom_mods.EXCLUDE_EXTS)
 
 
+def t_compose_test_list_appends_once_and_reads_back():
+    """`compose_test_list` appends each mod under test to <activeMods>
+    exactly once (an id already live is left alone), writes atomically,
+    and FAILS LOUDLY if the read-back is missing an id -- it edits the
+    owner's live ModsConfig, so it earns its own test against a temp file."""
+    import tempfile
+    xml = ("<ModsConfigData><activeMods>\n"
+           "    <li>ludeon.rimworld</li>\n"
+           "    <li>mandrake.rm.pits</li>\n"
+           "  </activeMods></ModsConfigData>")
+    with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False,
+                                     encoding="utf-8") as f:
+        f.write(xml)
+        path = f.name
+    try:
+        added = runner.compose_test_list(
+            ["mandrake.rm.pits", "mandrake.rut.antiquities"], config_path=path)
+        check("compose: only the missing id is appended",
+             added == ["mandrake.rut.antiquities"], added)
+        with open(path, encoding="utf-8") as f:
+            out = f.read()
+        check("compose: no duplicate for an already-live id",
+             out.count("mandrake.rm.pits") == 1, out)
+        check("compose: appended id sits inside activeMods",
+             out.index("mandrake.rut.antiquities") < out.index("</activeMods>"))
+    finally:
+        os.unlink(path)
+
+
 TESTS = [
     t_floor_uncovered,
+    t_compose_test_list_appends_once_and_reads_back,
     t_floor_met_when_every_toggle_has_a_component,
     t_chain_happy_path_is_pass,
     t_chain_failure_marks_downstream_unmeasured_and_continues,
