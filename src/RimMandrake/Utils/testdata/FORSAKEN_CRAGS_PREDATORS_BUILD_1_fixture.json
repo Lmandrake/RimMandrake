@@ -1,0 +1,58 @@
+{
+  "ThingDef::RSW_Cindermare": {
+    "label": "cindermare",
+    "race": {
+      "trainability": "None",
+      "predator": true,
+      "petness": 0
+    },
+    "statBases": {
+      "Wildness": 1.0,
+      "Mass": 110,
+      "MoveSpeed": 4.6
+    },
+    "tools": [
+      {"label": "left claw"},
+      {"label": "right claw"},
+      {
+        "label": "cold-drain grip",
+        "extraMeleeDamages": [
+          {"def": "RSW_ColdDrainDamage", "amount": 6}
+        ]
+      }
+    ]
+  },
+  "ThingDef::RSW_Skarnix": {
+    "label": "skarnix",
+    "race": {
+      "trainability": "None",
+      "predator": true,
+      "petness": 0
+    },
+    "statBases": {
+      "Wildness": 1.0,
+      "Mass": 28,
+      "MoveSpeed": 5.4
+    },
+    "comps": [
+      {"compClass": "CompAttachBase"},
+      {"fleeSearchRadius": 10, "fleeExpiryTicks": 600}
+    ]
+  },
+  "PawnKindDef::RSW_Cindermare": {
+    "combatPower": 140,
+    "ecoSystemWeight": 0.35
+  },
+  "PawnKindDef::RSW_Skarnix": {
+    "combatPower": 65,
+    "ecoSystemWeight": 0.5
+  },
+  "HediffDef::RSW_ColdDrain": {
+    "label": "cold-drain wound",
+    "hediffClass": "Hediff_Injury",
+    "injuryProps": {
+      "painPerSeverity": 0.018,
+      "canMerge": false
+    }
+  }
+}
