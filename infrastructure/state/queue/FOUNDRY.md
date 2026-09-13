@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:29:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T18:34:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -255,7 +255,7 @@ prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
 ## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     task
 summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
@@ -1394,6 +1394,6 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
 prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
