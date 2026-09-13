@@ -423,15 +423,25 @@ def cmd_calibrate(args):
     return 0
 
 
-def fitted_score(im, model):
+def fitted_score(im, model, drawsize=1.0):
     """Score one sprite with the owner-grade-fitted linear model
     (legibility_model_fitted.json — ridge on the 2026-09-13 graded sheet,
-    LOO Spearman +0.81 vs his works/borderline/mud). Returns (score, parts)."""
+    LOO Spearman +0.81 vs his works/borderline/mud). Returns (score, parts).
+
+    `drawsize` scales the tier ladder to the creature's real on-screen size:
+    the model's tiers are per-CELL (96/32/18 px for a 1-cell creature), so a
+    drawSize-3 beast is judged at 3× those pixels — what the game actually
+    shows — never at vermin size. Effective tiers cap at the source's own
+    resolution (no upscale). The model was CALIBRATED at drawsize 1.0; for
+    other sizes this is the principled approximation until a size-stratified
+    regrading exists."""
     cache = {}
     total = model["intercept"]
     parts = {}
+    src_px = max(im.size)
     for f in model["features"]:
-        t = int(f["tier"])
+        t_nominal = int(f["tier"])
+        t = min(src_px, max(8, round(t_nominal * drawsize)))
         if t not in cache:
             cache[t] = zoo_metrics(im, t, chain="box")
         v = cache[t][f["metric"]]
@@ -450,7 +460,8 @@ def cmd_gate(args):
             model = json.load(fh)
     if model:
         im = trim(Image.open(args.path).convert("RGBA"))
-        s, parts = fitted_score(im, model)
+        ds = max(0.2, float(getattr(args, "drawsize", 1.0) or 1.0))
+        s, parts = fitted_score(im, model, drawsize=ds)
         detail = " ".join(f"{k}={v:.2f}" for k, v in sorted(parts.items())[:4])
         # Deterministic FLOORS under the fitted model (locked 2026-09-13).
         # The regression was trained only on real art; degenerate inputs sit
@@ -655,6 +666,8 @@ def main():
     p = sub.add_parser("gate")
     p.add_argument("path"); p.add_argument("--thresholds", required=True)
     p.add_argument("--model", help="fitted model JSON; when present, 3-band verdict (0 pass / 3 reinforce / 1 regen)")
+    p.add_argument("--drawsize", type=float, default=1.0,
+                   help="creature drawSize in cells; scales the tier ladder to real on-screen size")
     p.set_defaults(fn=cmd_gate)
     p = sub.add_parser("reinforce")
     p.add_argument("path"); p.add_argument("--out", required=True)

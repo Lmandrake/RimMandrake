@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T20:47:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T22:32:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -214,3 +214,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
 prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
+
+## PIT_TRAP_VISUAL_REDESIGN_1 Design the pit trap's real visual interface (covered/sprung/occupied, size) - owner wants a big dark pit, not the vanilla trap icon
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  A design session (BENCH) to dream up the real interface, not a solo art
+prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md

@@ -7,39 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T20:47:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T22:32:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
-prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
-
-## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Each round:
-prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
-
-## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
-prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    ready
@@ -413,6 +386,15 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+
+## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
+prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    doing  (BLOCKED)
@@ -954,6 +936,16 @@ blocked:  Step 1 census already flagged superseded (2026-09-08: checked-in world
 summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
 prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
 
+## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  round-4 chooser OPTIONS already produced (1664012fd, Fable design pass) and waiting on owner ruling; also gated behind owner keep/cut on today's fresh MAPGEN_GL_SHEET_1 v3 and MAPGEN_PAINTER_V1_1 v4 sheets. Nothing for FOUNDRY to build until a ruling lands.
+summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
+prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
+
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -963,6 +955,16 @@ kind:     bug
 blocked:  ledger/prose mismatch: item's own text ends 'Left doing, blocked. Recommend the owner rule on scope' — TryLaunch's gizmo path is disabled whenever CanLaunch() is false, so the item's own live-verify plan targets a gravship code path that doesn't exist in the shipped game; source-side fix (572413c0) still stands for pods/shuttles. Needs an owner scope ruling: rescope to pods/shuttles + file a new gravship-specific item, or move the patch target to Building_GravEngine.InitiateTakeoff.
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  own file's 2026-09-10 correction explicitly says do not resume without a fresh ruling; today's fresh MAPGEN_GL_SHEET_1 (8/8, v3 sheet) and MAPGEN_PAINTER_V1_1 (round 4, v4 sheet) are both sitting on needs:owner already - next convergence round is the owner's call, not FOUNDRY's to resume.
+summary:  Each round:
+prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    doing  (BLOCKED)
@@ -1455,3 +1457,13 @@ kind:     task
 thin:     no ## criteria
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
+
+## ART_QUEUE_DRAWSIZE_BACKFILL_1 Backfill drawsize onto every art queue row/target by joining the frozen def dump's graphicData.drawSize; regate the 353 backlog at true sizes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ART_QUEUE_DRAWSIZE_BACKFILL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ART_QUEUE_DRAWSIZE_BACKFILL_1.md
