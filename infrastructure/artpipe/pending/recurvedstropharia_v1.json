@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 384,
+    "width": 384
+  },
+  "channel": "codex",
+  "created": "2026-09-13T04:32:25Z",
+  "facing": null,
+  "facings": [],
+  "id": "recurvedstropharia_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a colossal, towering specimen dwarfing everything around it \u2014 a titanic mushroom with a huge, backward-curling recurved cap perched on a thick fibrous stalk, in a damp, spore-laden fungal rot. Single organism, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE1_QUEUE_1",
+  "style_notes": "Non-SW name, general kind fixed from the defName, flavor free per 'improve' semantics. Source row: flora:the_rot:AB_RecurvedStropharia, sizeBin titan, note: '7 cells'. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1. Filed under ART_REGEN_FLORA_WAVE1_QUEUE_1's final wave."
+}
