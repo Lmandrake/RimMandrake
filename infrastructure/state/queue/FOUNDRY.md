@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:31:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:33:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1298,8 +1298,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODCHECK_SUITE_CORRECTIONS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
 ## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
@@ -1308,6 +1308,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODCHECK_DONOR_ENVIRONMENTS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
+
+## RM_GENSTEP_PLACED_SETPIECES_1 Build RM_GenStep_PlacedSetPieces: the shared def-list set-piece scatterer (Miasma M6 + Sump S3/S4)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RM_GENSTEP_PLACED_SETPIECES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RM_GENSTEP_PLACED_SETPIECES_1.md
