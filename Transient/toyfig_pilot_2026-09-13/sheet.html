@@ -198,12 +198,12 @@ body.grid .row.sel-tint{border-color:currentColor}
 <script id="CONFIG" type="application/json">
 {
  "sheetId": "toyfig_pilot_2026_09_13",
- "title": "Toy-figurine law pilot \u2014 adopt, tune, or reject",
- "subtitle": "4 re-renders under the strict law vs current art",
- "briefHtml": "<p>Left three tiles: current art. Right three: the SAME creature re-generated under the toy-figurine law (calm planted pose, jointless limb shapes, flat cel shading, mass-first silhouette, vanilla wooden-game-piece read). All four passed the locked gate; boma arrived via the auto-stroke. If the law wins your eye, the clause enters every creature prompt and the mass regen gets scoped. <b>adopt</b> = law version wins; <b>tune</b> = right direction, note what to change; <b>keep-old</b> = current art wins here.</p>",
+ "title": "Toy-figurine law pilot v2 \u2014 leg-sparing dialect",
+ "subtitle": "OLD vs leggy-law A vs leg-sparing B; anooba retry incoming",
+ "briefHtml": "<p>Three versions per row: current art, the first law pass (A - correct pose/shading but too leggy), and B under YOUR leg policy: low-slung mass, belly near ground, at most two fused stub legs, quarter-height max - the MegaFauna/Alpha Animals dialect. The anooba retry lands shortly and joins the sheet. <b>adopt-b</b> = B is the law; <b>tune</b> = right direction, note what; <b>keep-old</b> = neither wins.</p>",
  "criterion": "Pre-filled 'adopt' - my eye says the law versions read more vanilla while keeping identity; your call is the ruling.",
  "invented": [
-  "Prompt clause wording (strict law text) - written by the agent, unruled until this sheet"
+  "Leg-budget clause wording (two fused stubs, quarter height) - distilled from the owner's screenshots, unruled until this sheet"
  ],
  "posture": {
   "mode": "whitelist",
@@ -211,8 +211,8 @@ body.grid .row.sel-tint{border-color:currentColor}
  },
  "options": [
   {
-   "key": "adopt",
-   "label": "Adopt",
+   "key": "adopt-b",
+   "label": "Adopt B",
    "hotkey": "1",
    "color": "#5ac37f",
    "counts": "in"
@@ -244,23 +244,13 @@ body.grid .row.sel-tint{border-color:currentColor}
 <script id="ITEMS" type="application/json">
 [
  {
-  "id": "anooba",
-  "label": "anooba",
-  "group": "pilot",
-  "thumb": "sprites/anooba_ab.png",
-  "effect": "gate: PASS - neutral planted pose, jointless limbs, flat cel, identity kept",
-  "meta": {},
-  "prefill": "adopt",
-  "contested": false
- },
- {
   "id": "boma",
   "label": "boma",
   "group": "pilot",
   "thumb": "sprites/boma_ab.png",
-  "effect": "gate: REINFORCED_PASS - neutral planted pose, jointless limbs, flat cel, identity kept",
+  "effect": "OLD vs A (first law pass, too leggy) vs B (leg-sparing dialect per your screenshots)",
   "meta": {},
-  "prefill": "adopt",
+  "prefill": "adopt-b",
   "contested": false
  },
  {
@@ -268,9 +258,9 @@ body.grid .row.sel-tint{border-color:currentColor}
   "label": "dewback",
   "group": "pilot",
   "thumb": "sprites/dewback_ab.png",
-  "effect": "gate: PASS - neutral planted pose, jointless limbs, flat cel, identity kept",
+  "effect": "OLD vs A (first law pass, too leggy) vs B (leg-sparing dialect per your screenshots)",
   "meta": {},
-  "prefill": "adopt",
+  "prefill": "adopt-b",
   "contested": false
  },
  {
@@ -278,9 +268,9 @@ body.grid .row.sel-tint{border-color:currentColor}
   "label": "fanback",
   "group": "pilot",
   "thumb": "sprites/fanback_ab.png",
-  "effect": "gate: PASS - neutral planted pose, jointless limbs, flat cel, identity kept",
+  "effect": "OLD vs A (first law pass, too leggy) vs B (leg-sparing dialect per your screenshots)",
   "meta": {},
-  "prefill": "adopt",
+  "prefill": "adopt-b",
   "contested": false
  }
 ]
