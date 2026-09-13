@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:51:50Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T19:11:05Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -792,15 +792,6 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
-## BRIDGE_STATIC_SETTINGS_FIELDS_1 BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  rimworld/updatemodsettings reflects INSTANCE fields on the ModSettings
-prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1396,3 +1387,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
 prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
+
+## MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 Restore the two shelved modcheck toggle-flip components (Graffiti, StructureInjections) now that jawa/mod_settings_field exists
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODCHECK_SHELVED_TOGGLE_COMPONENTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_SHELVED_TOGGLE_COMPONENTS_1.md
