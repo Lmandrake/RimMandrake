@@ -482,36 +482,46 @@ def cmd_gate(args):
 
 
 def cmd_reinforce(args):
-    """Synthetic keyline reinforcement — the one downscale-improvement the
-    graded data endorses (owner ruling 2026-09-13: build + A/B to his eye).
-    At STORED resolution: find the silhouette ring (width ~2-3% of body size
-    per the art direction), and darken its pixels toward black by `strength`,
-    weighted so already-dark outline pixels move little and pale rim pixels
-    move most. Premultiplied-safe by construction: only RGB inside the
-    existing alpha moves; alpha itself is untouched, so no halo can appear."""
+    """Synthetic keyline reinforcement, v2 — a real outline STROKE.
+
+    v1 darkened only fully-solid ring pixels, palest first, and was invisible
+    at play zoom (owner, 2026-09-13: "I literally can't see any difference")
+    because the anti-aliased fringe — which dominates the downscaled edge —
+    was untouched. v2 strokes the silhouette the way an artist would:
+
+      - the stroke band spans the VISIBLE edge (any alpha > 16), from just
+        inside the solid body to the outer fringe, width ~width_frac of body;
+      - stroke pixels' RGB moves toward near-black by `strength`;
+      - stroke pixels' alpha is SOLIDIFIED (raised toward opaque), so the
+        downscale blends a real dark line instead of a translucent fringe.
+
+    The silhouette can grow by the fringe width (that is what a drawn outline
+    is); no color halo is possible because the stroke is darker than anything
+    it replaces."""
     im = Image.open(args.path).convert("RGBA")
     arr = np.asarray(im, dtype=np.float32).copy()
     alpha = arr[..., 3]
-    mask = alpha > ALPHA_SOLID
-    if mask.sum() < 16:
+    vis = alpha > 16
+    solid = alpha > ALPHA_SOLID
+    if solid.sum() < 16:
         print("no solid silhouette — nothing to reinforce")
         return 1
-    body = int(max(np.ptp(np.nonzero(mask)[0]), np.ptp(np.nonzero(mask)[1])))
-    ring_w = max(1, round(body * args.width_frac))
-    ring = mask & ~_erode(mask)
-    er = mask
-    for _ in range(ring_w - 1):
-        er = _erode(er)
-        ring |= (mask & ~er)
+    body = int(max(np.ptp(np.nonzero(solid)[0]), np.ptp(np.nonzero(solid)[1])))
+    ring_w = max(2, round(body * args.width_frac))
+    inner = solid
+    for _ in range(ring_w):
+        inner = _erode(inner)
+    stroke = vis & ~inner                       # fringe + outer solid ring
     lum = _lum(arr[..., :3])
-    # pale ring pixels get the full push; near-black ones barely move.
-    pale = np.clip(lum / 160.0, 0.0, 1.0)
-    k = args.strength * pale
+    k = float(np.clip(args.strength, 0.0, 1.0))
+    target = 18.0                                # near-black, not pure black
     for c in range(3):
         ch = arr[..., c]
-        ch[ring] = ch[ring] * (1.0 - k[ring])
+        ch[stroke] = ch[stroke] * (1.0 - k) + target * k
+    a = arr[..., 3]
+    a[stroke] = np.maximum(a[stroke], 255.0 * k * (a[stroke] > 16))
     Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA").save(args.out)
-    print(f"reinforced: ring {ring_w}px of {body}px body, strength {args.strength} -> {args.out}")
+    print(f"stroked: band {ring_w}px of {body}px body, strength {k} -> {args.out}")
     return 0
 
 

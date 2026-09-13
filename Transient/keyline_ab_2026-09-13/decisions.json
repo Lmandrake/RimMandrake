@@ -1,7 +1,7 @@
 {
  "posture": "whitelist",
- "criterion": "Pre-filled 'better' where the fitted score rose by >0.1 \u2014 which measures the metric's own opinion of a metric-targeted edit, exactly the thing your eye must check.",
- "generatedBy": "bench keyline A/B generator",
+ "criterion": "Pre-filled 'better' where the fitted score rose by >0.1 - the metric's opinion of a metric-targeted edit; your eye is the approval.",
+ "generatedBy": "bench keyline A/B generator v2 (stroke 0.9/3%)",
  "decisions": {
   "miremoth_v1_east": {
    "decision": "better",
@@ -34,8 +34,8 @@
    "note": ""
   },
   "gr_saddle_muffalos_east": {
-   "decision": "same",
-   "prefill": "same",
+   "decision": "better",
+   "prefill": "better",
    "note": ""
   },
   "boma_v1_east": {
