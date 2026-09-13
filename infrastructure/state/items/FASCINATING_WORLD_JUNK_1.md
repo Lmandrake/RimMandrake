@@ -108,6 +108,35 @@ read it.
 - Full-list load, zero new Config errors; every retextured def renders (no magenta —
   prove the art is missing/present before generating, `prove-art-missing-first`).
 
+## status
+
+**Phase 1 (CENSUS) — complete, 2026-09-13.** Full writeup:
+`design/Jawa/worldbuilding/junk/junk_census_2026-09-13.md`. Summary: RimSage only
+indexes vanilla+DLC (`Defs/{Core,Royalty,Ideology,Biotech,Anomaly,Odyssey}`), never
+third-party or our own mods — the def dump (rebuilt this session from an
+already-captured `DefDump/`, 594 mods, offline, no bridge/game load) carried
+everything else. Found: the vanilla/DLC `AncientJunkClusters` GenStep family
+(wired into every common map generation via the active Ideology expansion) is the
+actual source of "crashed motorway" junk on every map — full def/texPath/GenStep
+detail in the census. `xmb.ancienturbanruins.mo` (735 ThingDefs) is confirmed as
+the prime Phase 2 donor. KOTOR core and Outer Rim core are **negative findings**
+(no wreck-scatter content — resource/apparel packs). VFE Props and Decor (1805
+ThingDefs) has no GenStep/TileMutator of its own — decoration catalog only.
+`mandrake.rut.injections` (StructureInjectionsRUT) is fully authored in the repo
+but **not in the currently active mod list**. `RSW_CrashedShip` / `RSW_PodracerWreck`
+are active but their own source comments say "NOT YET PLACED on any Ash'karr tile."
+Live per-map counts (Zeddo's Yard, Fall Line) and the contact sheet were **not**
+attempted — both need the bridge/more session time and are explicitly deferred,
+per the census's own "what Phase 2 needs" section.
+
+**Phase 2 needs**: mine `xmb.ancienturbanruins.mo` + its two patch add-ons,
+`neronix17.outerrim.furnitureanddecor` (1051 defs, unmined), and `mlie.dungeonpack`
+/ `gmmp.dungeon` (re-check "lands outdoors" against a live map, not just the dump —
+a patch injecting a GenStep elsewhere wouldn't show in the dump); confirm whether
+anything actually spawns VFEPD's junk-flavored PropDefs as map content vs.
+player-placed-only; then produce `donor_ideas.md` per the phase spec. Item left
+`doing`, not closed — multi-phase.
+
 ## traps
 - Donor art is **loose PNG vs AssetBundle** — a texture that "does not exist" on disk
   can still render; use `reading-rimworld-graphics` before declaring anything missing.
