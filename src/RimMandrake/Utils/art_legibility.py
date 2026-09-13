@@ -97,8 +97,39 @@ def _erode(mask):
     return e
 
 
-def tier_metrics(im, target_px):
-    """The four raw metrics at one tier, each normalized to 0..1."""
+def outline_coverage(im, target_px):
+    """What fraction of the silhouette's outer ring is a LEGIBLE DARK OUTLINE
+    at this render size? A ring pixel counts as outline when it is genuinely
+    dark — near-black in absolute terms AND clearly darker than both the
+    body and the terrain behind it (downscale blending lightens a surviving
+    black line; pure `lum < 60` would call every 18px outline dead).
+    Returns (coverage 0..1, boolean dark-ring map, mask) — the map is what
+    the diagnostic overlay renders, so a human can SEE what was counted."""
+    rgb, alpha = render_tier(im, target_px)
+    lum = _lum(rgb)
+    mask = alpha > ALPHA_SOLID
+    if int(mask.sum()) < 4:
+        return 0.0, np.zeros_like(mask), mask
+    inner = _erode(mask)
+    ring = (mask & ~_erode(inner)) if inner.sum() > 8 else (mask & ~inner)   # ~2px ring
+    interior = _erode(inner) if inner.sum() > 8 else inner
+    int_lum = float(lum[interior].mean()) if interior.any() else float(lum[mask].mean())
+    dark = ring & (lum < 110) & (lum < int_lum - 20) & (lum < BG_LUM - 20)
+    # coverage along the PERIMETER: a boundary position is covered if the
+    # 2px ring holds a dark pixel there; approximate by dark-ring area over
+    # single-boundary area, capped at 1.
+    boundary = mask & ~inner
+    nb = max(1, int(boundary.sum()))
+    return min(1.0, float(dark.sum()) / nb), dark, mask
+
+
+def tier_metrics(im, target_px, ref_outline_cov=None):
+    """The four raw metrics at one tier, each normalized to 0..1.
+    `ref_outline_cov` is the outline coverage measured at the 1:1 reference
+    tier — when given, keyline is OUTLINE SURVIVAL: does the black rim the
+    original art has still read here, like it does at 1:1? (Owner feedback,
+    2026-09-13: 'look harder for the outer black outline being legible like
+    the original art.')"""
     rgb, alpha = render_tier(im, target_px)
     lum = _lum(rgb)
     mask = alpha > ALPHA_SOLID
@@ -111,13 +142,18 @@ def tier_metrics(im, target_px):
     boundary = mask & ~inner
     interior = _erode(inner) if inner.sum() > 8 else inner
 
-    # keyline: the boundary ring should be DARKER than the interior (a drawn
-    # rim), and distinct from the terrain behind it. Both in 0..1.
-    int_lum = float(lum[interior].mean()) if interior.any() else float(lum[mask].mean())
-    bnd_lum = float(lum[boundary].mean()) if boundary.any() else int_lum
-    rim_dark = max(0.0, (int_lum - bnd_lum) / 96.0)            # ~96 lum drop = full marks
-    rim_vs_bg = abs(bnd_lum - BG_LUM) / 128.0
-    keyline = min(1.0, 0.6 * min(1.0, rim_dark) + 0.4 * min(1.0, rim_vs_bg))
+    # keyline = the dark outer outline, measured directly. Absolute half:
+    # how much of the ring is legible dark outline AT THIS SIZE (0.7
+    # coverage = full marks). Survival half: that coverage relative to what
+    # the SAME art shows at the 1:1 reference — an outline the original has
+    # must not dissolve on the way down.
+    cov, _, _ = outline_coverage(im, target_px)
+    abs_part = min(1.0, cov / 0.7)
+    if ref_outline_cov is not None and ref_outline_cov > 0.05:
+        surv_part = min(1.0, cov / ref_outline_cov)
+        keyline = 0.5 * abs_part + 0.5 * surv_part
+    else:
+        keyline = abs_part
 
     # structure: gradient energy + luminance spread INSIDE the silhouette
     # after downscale — grey mud has neither.
@@ -144,14 +180,19 @@ def tier_metrics(im, target_px):
 
     return {"keyline": round(keyline, 4), "structure": round(structure, 4),
             "ground": round(ground, 4), "coverage": round(coverage, 4),
-            "solid_px": n}
+            "outline_cov": round(cov, 4), "solid_px": n}
 
 
 def score_file(path, tiers):
+    """The LARGEST tier is the 1:1 reference: its outline coverage is what
+    the zoom-out tiers' keyline-survival is measured against."""
     im = trim(Image.open(path).convert("RGBA"))
     out = {"path": path, "src": list(im.size), "tiers": {}}
+    ref_tier = max(tiers)
+    ref_cov, _, _ = outline_coverage(im, ref_tier)
+    out["ref_outline_cov"] = round(ref_cov, 4)
     for t in tiers:
-        m = tier_metrics(im, t)
+        m = tier_metrics(im, t, ref_outline_cov=(None if t == ref_tier else ref_cov))
         m["score"] = round(100.0 * sum(W[k] * m[k] for k in W), 1)
         out["tiers"][str(t)] = m
     return out
@@ -268,8 +309,10 @@ def cmd_resexp(args):
             stored = im.resize((max(1, round(im.width * sc)),
                                 max(1, round(im.height * sc))), Image.LANCZOS)
             entry = {}
+            ref_cov, _, _ = outline_coverage(stored, max(tiers))
             for t in tiers:
-                m = tier_metrics(stored, t)
+                m = tier_metrics(stored, t,
+                                 ref_outline_cov=(None if t == max(tiers) else ref_cov))
                 m["score"] = round(100.0 * sum(W[k] * m[k] for k in W), 1)
                 entry[str(t)] = m["score"]
                 renders[(s, t)] = render_tier(stored, t)[0]
