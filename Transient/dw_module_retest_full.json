@@ -1,0 +1,1022 @@
+{
+ "before": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series37045",
+    "thingIdNumber": 37045,
+    "name": "Isabella 'Izzy' Green",
+    "nameShort": "Izzy",
+    "title": "warrior",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Female",
+    "ageBiologicalYears": 23,
+    "ageChronologicalYears": 23,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Solidarity Collective",
+    "childhood": "FireKeeper44",
+    "adulthood": "Warrior94",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Curly",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "DrugDesire",
+      "degree": 2,
+      "label": "Chemical fascination",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 5,
+      "levelEffective": 5,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_38284320779945c08ff40ccc8963aeb0",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:19.1210649+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:19.1631977+00:00",
+   "DurationMs": 42,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "wear_hardware": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "RSW_DW_Module_DroidHardware_agility",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 0,
+   "logs": [],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_3f5e4831782040feab3556e5a3fdd294",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:19.1651918+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:19.1834165+00:00",
+   "DurationMs": 18,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "wear_sensor": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidSensor_perception",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidSensor_perception",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "RSW_DW_Module_DroidSensor_perception",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 0,
+   "logs": [],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_d1b1aad88b8740488e68ab57036691ec",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:19.6850602+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:19.6970848+00:00",
+   "DurationMs": 12,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "wear_software": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidSoftware_lockout",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidSoftware_lockout",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "RSW_DW_Module_DroidSoftware_lockout",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 0,
+   "logs": [],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_838bdfe986284ed991f4caacd6bd0cb1",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:20.1986967+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:20.2144556+00:00",
+   "DurationMs": 15,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "after_wear_all": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series37045",
+    "thingIdNumber": 37045,
+    "name": "Isabella 'Izzy' Green",
+    "nameShort": "Izzy",
+    "title": "warrior",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Female",
+    "ageBiologicalYears": 23,
+    "ageChronologicalYears": 23,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Solidarity Collective",
+    "childhood": "FireKeeper44",
+    "adulthood": "Warrior94",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Curly",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "DrugDesire",
+      "degree": 2,
+      "label": "Chemical fascination",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 5,
+      "levelEffective": 5,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [
+     {
+      "def": "RSW_DW_Module_DroidSensor_perception",
+      "defName": "RSW_DW_Module_DroidSensor_perception",
+      "stuff": null,
+      "hp": 80
+     },
+     {
+      "def": "RSW_DW_Module_DroidSoftware_lockout",
+      "defName": "RSW_DW_Module_DroidSoftware_lockout",
+      "stuff": null,
+      "hp": 80
+     }
+    ],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     },
+     {
+      "def": "RSW_DW_Module_HardwareHediff_agility",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RSW_DW_Module_SensorHediff_perception",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RSW_DW_ModulePersonality_Paranoid",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RSW_DW_ModulePersonality_Pedantic",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_f1ff441f7a17426f86a1bef087933aea",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:20.7163212+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:20.763745+00:00",
+   "DurationMs": 47,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "remove": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\*Remove all apparel",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\*Remove all apparel",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "*Remove all apparel",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 0,
+   "logs": [],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_3f7dbde747cb45acae59e6b3ef274dbc",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:20.7667501+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:20.7807175+00:00",
+   "DurationMs": 13,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "after_remove": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series37045",
+    "thingIdNumber": 37045,
+    "name": "Isabella 'Izzy' Green",
+    "nameShort": "Izzy",
+    "title": "warrior",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Female",
+    "ageBiologicalYears": 23,
+    "ageChronologicalYears": 23,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Solidarity Collective",
+    "childhood": "FireKeeper44",
+    "adulthood": "Warrior94",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Curly",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "DrugDesire",
+      "degree": 2,
+      "label": "Chemical fascination",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 4,
+      "levelEffective": 4,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 5,
+      "levelEffective": 5,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 6,
+      "levelEffective": 6,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 2,
+      "levelEffective": 2,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     },
+     {
+      "def": "RSW_DW_Module_HardwareHediff_agility",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RSW_DW_Module_SensorHediff_perception",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_92ac676e81b3436f9e27247ef9160f77",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T03:04:21.2821457+00:00",
+   "CompletedAtUtc": "2026-09-10T03:04:21.3307057+00:00",
+   "DurationMs": 48,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

@@ -1,0 +1,134 @@
+{
+ "success": true,
+ "saveName": "CANONICAL_ASHKARR_2026-09-09",
+ "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\CANONICAL_ASHKARR_2026-09-09.rws",
+ "message": "RimWorld has a loaded playable game.",
+ "compatibilityCheckIgnored": true,
+ "compatibility": {
+  "status": "missing_mods",
+  "compatible": false,
+  "metadataStatus": "readable",
+  "metadataReadable": true,
+  "metadataError": null,
+  "recordedModCount": 578,
+  "activeModCount": 577,
+  "missingModCount": 1,
+  "missingMods": [
+   {
+    "name": "Star Wars KotOR Droids",
+    "packageId": "guy762.kotordroids",
+    "canonicalPackageId": "guy762.kotordroids"
+   }
+  ]
+ },
+ "state": {
+  "programState": "Playing",
+  "inEntryScene": false,
+  "hasCurrentGame": true,
+  "currentMapId": "Map_0",
+  "currentMapIndex": 0,
+  "mapCount": 1,
+  "longEventPending": false,
+  "paused": true,
+  "timeSpeed": "Paused",
+  "screenFading": false,
+  "fadeOverlayAlpha": 0.0,
+  "gameDataReady": true,
+  "mapDataReady": true,
+  "currentMapReady": true,
+  "screenFadeClear": true,
+  "playable": true,
+  "visualReady": true,
+  "automationReady": true
+ },
+ "load": {
+  "success": true,
+  "status": "queued",
+  "saveName": "CANONICAL_ASHKARR_2026-09-09",
+  "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\CANONICAL_ASHKARR_2026-09-09.rws",
+  "compatibilityCheckIgnored": true,
+  "compatibility": {
+   "status": "missing_mods",
+   "compatible": false,
+   "metadataStatus": "readable",
+   "metadataReadable": true,
+   "metadataError": null,
+   "recordedModCount": 578,
+   "activeModCount": 577,
+   "missingModCount": 1,
+   "missingMods": [
+    {
+     "name": "Star Wars KotOR Droids",
+     "packageId": "guy762.kotordroids",
+     "canonicalPackageId": "guy762.kotordroids"
+    }
+   ]
+  },
+  "state": {
+   "programState": "Entry",
+   "inEntryScene": true,
+   "hasCurrentGame": false,
+   "currentMapId": null,
+   "currentMapIndex": null,
+   "mapCount": 0,
+   "longEventPending": true,
+   "paused": false,
+   "timeSpeed": null,
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": false,
+   "mapDataReady": false,
+   "currentMapReady": false,
+   "screenFadeClear": true,
+   "playable": false,
+   "visualReady": false,
+   "automationReady": false
+  }
+ },
+ "wait": {
+  "success": true,
+  "satisfied": true,
+  "message": "RimWorld has a loaded playable game.",
+  "targetReadiness": "playable",
+  "blockingReason": null,
+  "elapsedMs": 27299,
+  "attempts": 237,
+  "probeFailureCount": 0,
+  "lastProbeError": null,
+  "state": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  }
+ },
+ "operation": {
+  "OperationId": "op_090778f888d74ec58803879bc3eb3c93",
+  "CapabilityId": "rimbridge.core/lifecycle/load-game-ready",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-09-10T08:40:07.4582197+00:00",
+  "CompletedAtUtc": "2026-09-10T08:40:34.9464903+00:00",
+  "DurationMs": 27488,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

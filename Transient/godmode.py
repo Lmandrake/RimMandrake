@@ -1,0 +1,14 @@
+import sys
+sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+from rimbridge_client import RimBridge, resolve_endpoint
+host, port, token = resolve_endpoint()
+with RimBridge(host, port, token) as rb:
+    ch = rb.call("rimworld/list_debug_action_children", {"path": "Settings"}).get("children", [])
+    god = [c["path"] for c in ch if "god" in c["path"].lower()]
+    print("god toggles:", god)
+    if god:
+        r = rb.call("rimworld/execute_debug_action", {"path": god[0]})
+        print("toggled:", r.get("success"))
+    ch2 = rb.call("rimworld/list_debug_action_children", {"path": "Actions"}).get("children", [])
+    hits = [c["path"] for c in ch2 if any(s in c["path"].lower() for s in ("fuel","refuel"))]
+    print("fuel tools now:", hits)

@@ -1,0 +1,135 @@
+{
+ "success": false,
+ "code": "save.missing_mods",
+ "message": "Save 'CANONICAL_ASHKARR_2026-09-09' cannot be loaded because 16 mod(s) recorded by the save are not currently active: Asimov (neronix17.asimov), Better Kibble (coldcrow.betterkibble), Choose Biome Commonality (mlie.choosebiomecommonality), Fists Aren't Made of Steel (aelanna.fistnerf), Harvest When Butchering (mlie.harvestwhenbutchering), Mechs and Animals for NPC Factions (samael.npcmechsandanimals), More Dangerous Game (zylle.moredangerousgame), MSE Droid North Fix \u2014 Outer Rim: Droid Depot (mandrake.rsw.msedroidfix), Quality Affects HP (fluxilis.germanquality), Rebalanced Ancient Junk (mosi.rebalancedancientjunk), Settlements buy more (victor.buymore), Turrets Shoot Hunting Predators (archie.turrettargetpatch), UnlimitedNuzzles (doomdrvk.unlimitednuzzles), Farhan's Warcasket Tweaks (Vacuum and Temperature) (farhanfair.warcaskettweakspatch), VVE - Deconstructable Vehicles Junk (farxmai2.vanilladeconstructablevehicles), Outer Rim - Droid Depot (neronix17.outerrim.droiddepot).",
+ "saveName": "CANONICAL_ASHKARR_2026-09-09",
+ "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\CANONICAL_ASHKARR_2026-09-09.rws",
+ "compatibilityCheckIgnored": false,
+ "compatibility": {
+  "status": "missing_mods",
+  "compatible": false,
+  "metadataStatus": "readable",
+  "metadataReadable": true,
+  "metadataError": null,
+  "recordedModCount": 590,
+  "activeModCount": 578,
+  "missingModCount": 16,
+  "missingMods": [
+   {
+    "name": "Asimov",
+    "packageId": "neronix17.asimov",
+    "canonicalPackageId": "neronix17.asimov"
+   },
+   {
+    "name": "Better Kibble",
+    "packageId": "coldcrow.betterkibble",
+    "canonicalPackageId": "coldcrow.betterkibble"
+   },
+   {
+    "name": "Choose Biome Commonality",
+    "packageId": "mlie.choosebiomecommonality",
+    "canonicalPackageId": "mlie.choosebiomecommonality"
+   },
+   {
+    "name": "Fists Aren't Made of Steel",
+    "packageId": "aelanna.fistnerf",
+    "canonicalPackageId": "aelanna.fistnerf"
+   },
+   {
+    "name": "Harvest When Butchering",
+    "packageId": "mlie.harvestwhenbutchering",
+    "canonicalPackageId": "mlie.harvestwhenbutchering"
+   },
+   {
+    "name": "Mechs and Animals for NPC Factions",
+    "packageId": "samael.npcmechsandanimals",
+    "canonicalPackageId": "samael.npcmechsandanimals"
+   },
+   {
+    "name": "More Dangerous Game",
+    "packageId": "zylle.moredangerousgame",
+    "canonicalPackageId": "zylle.moredangerousgame"
+   },
+   {
+    "name": "MSE Droid North Fix \u2014 Outer Rim: Droid Depot",
+    "packageId": "mandrake.rsw.msedroidfix",
+    "canonicalPackageId": "mandrake.rsw.msedroidfix"
+   },
+   {
+    "name": "Quality Affects HP",
+    "packageId": "fluxilis.germanquality",
+    "canonicalPackageId": "fluxilis.germanquality"
+   },
+   {
+    "name": "Rebalanced Ancient Junk",
+    "packageId": "mosi.rebalancedancientjunk",
+    "canonicalPackageId": "mosi.rebalancedancientjunk"
+   },
+   {
+    "name": "Settlements buy more",
+    "packageId": "victor.buymore",
+    "canonicalPackageId": "victor.buymore"
+   },
+   {
+    "name": "Turrets Shoot Hunting Predators",
+    "packageId": "archie.turrettargetpatch",
+    "canonicalPackageId": "archie.turrettargetpatch"
+   },
+   {
+    "name": "UnlimitedNuzzles",
+    "packageId": "doomdrvk.unlimitednuzzles",
+    "canonicalPackageId": "doomdrvk.unlimitednuzzles"
+   },
+   {
+    "name": "Farhan's Warcasket Tweaks (Vacuum and Temperature)",
+    "packageId": "farhanfair.warcaskettweakspatch",
+    "canonicalPackageId": "farhanfair.warcaskettweakspatch"
+   },
+   {
+    "name": "VVE - Deconstructable Vehicles Junk",
+    "packageId": "farxmai2.vanilladeconstructablevehicles",
+    "canonicalPackageId": "farxmai2.vanilladeconstructablevehicles"
+   },
+   {
+    "name": "Outer Rim - Droid Depot",
+    "packageId": "neronix17.outerrim.droiddepot",
+    "canonicalPackageId": "neronix17.outerrim.droiddepot"
+   }
+  ]
+ },
+ "state": {
+  "programState": "Entry",
+  "inEntryScene": true,
+  "hasCurrentGame": false,
+  "currentMapId": null,
+  "currentMapIndex": null,
+  "mapCount": 0,
+  "longEventPending": false,
+  "paused": false,
+  "timeSpeed": null,
+  "screenFading": false,
+  "fadeOverlayAlpha": 0.0,
+  "gameDataReady": false,
+  "mapDataReady": false,
+  "currentMapReady": false,
+  "screenFadeClear": true,
+  "playable": false,
+  "visualReady": false,
+  "automationReady": false
+ },
+ "operation": {
+  "OperationId": "op_66580528ef8f4667a285ae0bc38b6ced",
+  "CapabilityId": "rimbridge.core/lifecycle/load-game",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-09-10T06:23:09.1666326+00:00",
+  "CompletedAtUtc": "2026-09-10T06:23:09.1932514+00:00",
+  "DurationMs": 26,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

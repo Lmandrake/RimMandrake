@@ -1,0 +1,5 @@
+drwxrwxrwx 1 mandrake mandrake     4096 Sep  8 19:31 ..
+-rwxrwxrwx 1 mandrake mandrake 24675784 Sep  8 07:36 WORLDMAP_V23_dense_biomes_2026-09-08.rws
+-rwxrwxrwx 1 mandrake mandrake 24698852 Sep  8 20:13 WORLDMAP_V24_consolidated_names_2026-09-09.rws
+-rwxrwxrwx 1 mandrake mandrake 21998910 Sep  8 20:15 gravship_f_consolidated_names_2026-09-09.rws
+-rwxrwxrwx 1 mandrake mandrake 21818103 Sep  6 18:54 gravship_scratch_e.rws

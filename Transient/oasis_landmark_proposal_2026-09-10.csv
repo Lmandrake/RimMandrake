@@ -1,0 +1,187 @@
+tile,name,loadout,ladder_stage,faction_face,flavor
+10,Ossuvane,none,vane_true_running,Deepwater Compact,Warden post at a cold-running array; the draw ledger hangs on the truce-stone.
+83,Kelvarrin,none,natural_weep,none,Bare seep lines on a north shoulder; the pool is a dozen paces of black water.
+142,Threnn Comb,none,vane_fog_wild,none,Half-wild fins flood the canyon with fog at wind-hour; travelers navigate by its chord.
+144,Ummaris,none,shields_overhangs,Homestead Defense League,Stone lids over the catch; homesteads cluster a ridge away and walk in for market.
+632,Isk Vaal,none,natural_weep,Jawa,A lone slab weeping onto flat sand; the crawler's comb-sails are sighted from it first.
+762,Quellith,none,vane_true_running,none,The array runs cold and true; the cistern shaft rings when the wind is right.
+763,Dessarin Weep,none,natural_weep,none,"Mats ridged square to the wind, every ridge dripping to one basin."
+866,Vulla Catch,none,shields_overhangs,Jawa,Stretched awnings over the pool; a crawler market ring worn into the sand beside it.
+1172,Nhar Ellu,none,natural_weep,none,A hairline crack in bedrock sweats enough for one herd at a time.
+1301,Sillik Face,none,natural_weep,none,A vertical weep-face alive with weep-mice licking the film; the pool is an afterthought.
+1302,Orrindal,none,vane_leaking,none,A leaking array made a hanging marsh; blade-reeds stand thigh-deep in it.
+1303,Tessavorn,none,shields_overhangs,Deepwater Compact,"Walled windbreaks and a Compact ledger-house; draw is counted, never refused."
+1652,Kharrow Spire,none,natural_weep,Deep Desert Tribes,Bone-and-vane chimes hang on the cold face; no one has ever camped here.
+1653,Ulm Sedrath,none,vane_true_running,none,"Fins the height of towers, still turning to the wind; the pool below is deep and blue-shaded."
+1660,Vorsalla,none,full_enclosure,Deepwater Compact,The Compact's sealed grotto; servo-vents breathe at wind-hour and the ledger is law.
+1665,Ilvanne,none,natural_weep,none,Two weep-lines meet in a cleft and pool in a bowl the burrak keep dug.
+1667,Ghesh Ammar,none,vane_leaking,none,Cracked cistern walls bleed sideways; the marsh below hums with dew-smoke swarms.
+1985,Ennoril,none,shields_overhangs,Homestead Defense League,"Flat ground, a lidded pool, and homestead vaporators in a ring a mile out."
+2920,Tal Quarrow,none,natural_weep,none,Low stone near the terminator; the weep here is the coldest and the slowest.
+2921,Vessik,none,vane_true_running,none,"An array of only five fins, every one still sound; a small sure pool."
+2922,Marrukomb,none,natural_weep,none,The seep lines run in parallel like teeth; from the ridge the face reads as a comb.
+3153,Ossik Ring,none,vane_dead,none,A silent machine in a ring of bleached bone; the sand has taken the shaft.
+3178,Zhurr,none,natural_weep,Jawa,"A single black streak on a single standing stone, marked on every crawler chart."
+3272,Ashvaneth,none,vane_fog_wild,none,Fins run wild; whole afternoons vanish into ground-cloud and the pools overflow.
+3273,Orrekh,none,natural_weep,Deep Desert Tribes,Silent watering ground; a cairn of vane-chimes marks that the Tribes have passed.
+3274,Selvarrin,none,full_enclosure,Deepwater Compact,A sealed dome at the base of the rock; the warden's vents open only to the wet wind.
+3275,Quenth,none,shields_overhangs,none,Stone lids of unknown make over a pool nobody claims; everyone maintains them.
+3276,Ithravane,none,vane_true_running,none,Runs cold and true; the chord of its fins is the clearest on the Horn.
+3277,Nakkar Crest,none,natural_weep,none,Crest-line weep; the pool sits in a stone bowl at the top of the world.
+3469,Hurrimal,none,vane_leaking,none,A leaking array on low ground; the marsh spreads wider each year than the pool.
+3605,Cindravel,none,natural_weep,none,Black streaks on the whitest stone in the Belt; the signature mark at its plainest.
+4354,Ulvakarr,none,vane_true_running,none,High array that never falters; pilgrims from three biomes drink here in rotation.
+4372,Dhessa Comb,none,shields_overhangs,Jawa,"Awnings of dewsilk over the catch; the rare crawler that stays, stays here."
+4373,Ferrovane,none,vane_leaking,none,Verdigris fins leak into a hanging garden that drips onto the pool below.
+4527,Immeloth,none,natural_weep,none,Low hills catch a thin wind; the pool is shallow and warm and always crowded.
+4722,Skarrun,none,vane_dead,Ascendant Helix,Helix tents ring a dead machine on a hot mesa; they buy their water by the tanker.
+6215,Yeth Ammu,none,natural_weep,none,A seep in the lee of one boulder; the ring of green is ten paces across.
+6219,Kessarel,none,shields_overhangs,Jawa,Caravan lids and a camp ring; the bead-chain road turns here toward the Belt.
+6223,Rhon Tavar,none,natural_weep,none,A shaded cleft in red stone; the burrak dig has outlived the burrak.
+6227,Ghurrok Ring,none,vane_dead,none,"Dry ring around a silent array; the fins still turn, and comb nothing."
+6238,Karrabesh,none,full_enclosure,Jawa,"The rare settled Jawa oasis: a sealed grotto, a permanent market, and everyone notes it."
+6243,Sarrowen,none,natural_weep,none,"Flat, hot, and improbable; a stone lip weeps into a pool ringed by scrub."
+6456,Vrettik,none,vane_leaking,none,A cracked cistern leaks a green ribbon a hundred paces downslope.
+6975,Ammavane,none,vane_true_running,none,The fins sing a minor chord; the pool under them is cold enough to ache.
+6992,Terrin Weep,none,natural_weep,none,Coldest weep in the Belt; the mats here are thick as felt.
+6993,Ollun Catch,none,shields_overhangs,Homestead Defense League,"Awnings and a lidded shaft; three homesteads within sight, none on the water."
+6994,Vaskerrin,none,vane_true_running,Deepwater Compact,A warden post on a true-running array near the terminator; the ledger is old.
+6996,Hessamund,none,natural_weep,none,A weep-face a hundred paces long; the pool at its foot is a black mirror.
+6997,Quorrath,none,vane_leaking,none,The array leaks upward through split fins; a mist-garden grows on the fins themselves.
+6998,Brennivar,none,natural_weep,none,Fan-dancers hold their displays here; the rattle carries a mile downwind.
+6999,Ithlune,none,shields_overhangs,none,A stone lid over a pool nobody owns; pilgrims repair it as a courtesy.
+7000,Vorrakesh,none,natural_weep,none,Two burrak wallows joined into one broad shallow; the tirbak herds favor it.
+7001,Cindrakomb,none,vane_true_running,none,"Highest running array in the Belt; aching-cold water, verdigris fins."
+7002,Zoth Pallanne,none,full_enclosure,Hutt Cartel,"A gilded servo-dome; the water inside is free, the gate is not, and the Hutt lives here."
+7003,Merrowfin,none,natural_weep,none,Blade-plants stand in ranks on the shade side; the pool is small and always full.
+7342,Tannivar,none,shields_overhangs,Jawa,Flat ground under a single lid; the crawler market circuit's southern stop.
+7344,Essaline,none,natural_weep,none,Its twin sits across the line; this one keeps the wilder crowd.
+7657,Ghalluk,none,natural_weep,none,"Sand-buried stone that weeps into a bowl; found by ear, not by eye."
+7778,Norrin Seep,none,natural_weep,none,"Low stone, slow weep; the moss mats are the greenest near the terminator."
+7779,Kellumar,none,vane_leaking,none,"The oldest array on the map, by the ledgers; it leaks a hanging marsh into a gorge."
+7780,Sarrevane,none,vane_true_running,none,Runs cold and true in near-dusk light; the fins glow at the tips.
+7781,Umbrevesh,none,natural_weep,none,A seep in blue shadow; the pool never sees direct sun.
+7782,Corrindath,none,shields_overhangs,Deepwater Compact,"Windbreak walls and a warden's hut; draw is written, and the truce-stone is polished."
+8013,Rhessuk,none,natural_weep,Jawa,A crawler waypoint: the last reliable pool before the open sand.
+8014,Tallaquen,none,natural_weep,none,A stone tooth in the sand-sea; its pool is the size of a cart-bed.
+8132,Ilsevane,none,vane_fog_wild,none,Fog-wild; the canyon fills to the brim at wind-hour and every comb drinks.
+8133,Shaddrek,none,natural_weep,Deep Desert Tribes,Impassable stone; the Tribes reach it by routes nobody else knows.
+8134,Verrinal,none,natural_weep,none,A cold face thick with ridged mats; drip-tips feed a pool the shape of a blade.
+8135,Kaddoth,none,shields_overhangs,none,"Overhangs cut by hand, long ago; nobody remembers whose."
+8136,Ossendrel,none,vane_true_running,none,"A true-running array in impassable stone; heard, rarely reached."
+8137,Thurrakan,none,vane_dead,Ascendant Helix,Dead ring high on the Horn; a Helix camp with more instruments than tents.
+8146,Emmavane,none,vane_leaking,none,A leaking array; the marsh has climbed the fins and made them green.
+8149,Rukhessa,none,natural_weep,none,A weeping cliff; the pool lies in a burrak dig at its foot.
+8154,Lowthess,none,natural_weep,none,"Nearly flat, nearly hot; a lone stone slab weeps enough for a thin green ring."
+9213,Karrunveth,none,natural_weep,none,Weep-lines like strung wire down impassable rock; the pool is unreachable but seen.
+9214,Aeshvorn,none,vane_fog_wild,none,The highest fog-wild array; its cloud rolls off the summit like a slow wave.
+9230,Dhurrilene,none,shields_overhangs,Homestead Defense League,Lidded pool and a homestead ring; marriages are made here at wind-hour.
+9239,Vellomar,none,shields_overhangs,Galactic Empire,An Imperial garrison squats on the pool and meters its own water; despised past politics.
+9582,Skorrath,none,natural_weep,none,"High hot stone; the weep is thin and the ring is scrub, but it never fails."
+9583,Zarrukh Ring,none,vane_dead,none,A dead array on a mesa top; the bones ringing it are all of one kind.
+11075,Oon Sarrik,none,natural_weep,none,"One stone, one streak, one pool; the tirbak drink it dry and it refills by dusk."
+11077,Ellumen,none,natural_weep,Jawa,A crawler-chart waypoint; the market is a day long and then gone.
+11087,Khessrun,none,vane_dead,none,Silent fins on hot stone; the pool went with the machine.
+11098,Verrigal,none,natural_weep,none,A Verge seep on flat ground; the green ring is the only color for miles.
+11100,Ossumel,none,shields_overhangs,Jawa,Caravan lids and a truce-stone heaped with tokens; a crawler stops every circuit.
+11101,Kessukar,Stockpile,shields_overhangs,Blackstar Company,Blackstar cache under a stone lid; a team watering here quietly means a hunt nearby.
+11104,Thallumar,none,natural_weep,none,Low stone in the sand; the pool is warm and the ring is tight.
+11105,Ithekk,none,vane_leaking,none,A leaking array in the sand-sea; the marsh is a miracle nobody explains.
+11107,Ruvannak,none,natural_weep,none,A shaded cleft; fan-dancers display here in the cool of wind-hour.
+11852,Nessavane,none,vane_true_running,none,Cold and true near the terminator; the shaft rings like a bell.
+11853,Orrimund,none,natural_weep,none,A long weep-face; mats so thick the drip is a steady hiss.
+11854,Tessikar,none,natural_weep,none,A seep in a stone bowl; ssurr crests flash at the rim at wind-hour.
+11855,Wennoral,none,shields_overhangs,Deepwater Compact,Warden windbreaks; the ledger here is the oldest the Compact keeps.
+11856,Ilmarrow,none,vane_leaking,none,Leaking fins made a hanging marsh; dew-smoke swarms thick as cloth.
+11857,Quessadrin,none,natural_weep,none,The weep-face curves like a bowl; the pool at its foot catches its whole breath.
+11858,Kharrivane,none,vane_true_running,none,True-running; the chord is low and the water is the coldest in the Belt.
+11859,Ambrossek,none,natural_weep,none,A burrak well under a cold face; the elder dug it deep enough to last.
+11860,Ferrinesh,none,shields_overhangs,none,Overhangs of stone laid by no one anyone remembers; kept by everyone.
+11861,Sollumvane,none,vane_fog_wild,none,Fog-wild; the whole basin drinks at once when the fins run.
+11862,Vashkerel,none,natural_weep,none,A cleft weeps from both walls; the pool is narrow and black and deep.
+11863,Ennavorn,none,natural_weep,Homestead Defense League,Homesteads a ridge away; the pool is where the young come to court.
+11918,Sarrukesh,none,natural_weep,none,A lone stone at the Fever Wood's edge; the green ring here is thicker than any other.
+12474,Ollavane,none,vane_true_running,Deepwater Compact,A warden post on a running array; the draw is tallied on the fins themselves.
+12476,Heskumar,none,natural_weep,none,A short weep-face with a wide pool; a favorite of the tirbak herds.
+12477,Torrinel,none,shields_overhangs,Jawa,A dewsilk awning the crawler leaves behind each circuit; the market ring is permanent.
+12631,Vhelloth,none,natural_weep,none,Flat ground at the Wood's margin; the seep is slow but the green ring is wide.
+14312,Arrukesh,none,natural_weep,none,"One stone in the sand-sea, weeping onto its own shadow."
+14314,Nhessul,none,natural_weep,Jawa,Marked on the crawler charts as a two-day pool; it fills faster than that.
+14317,Ommarik,none,vane_leaking,none,A leaking array on flat sand; the marsh it made is a green scar visible from the ridges.
+14320,Skerrivane,none,vane_dead,none,The fins turned to rust and stopped; bones ring the dry basin.
+14338,Yallumar,none,natural_weep,none,A cleft in red rock; the burrak dig is fresh and the pool is new.
+14339,Ulloresh,none,shields_overhangs,none,Caravan lids over a pool on the bead-chain road; a cairn every mile out.
+14340,Zenniver,none,natural_weep,none,A stone tooth weeping a thin streak; the green is a single ring of blades.
+14346,Tarrukel,none,natural_weep,Blackstar Company,"A Blackstar rendezvous; nothing is cached, and the discipline is iron."
+15086,Ammeril,none,vane_true_running,none,"Near-terminator array, running true in perpetual half-light."
+15087,Corrovesh,none,natural_weep,none,Cold stone in blue shadow; the mats are ridged like corduroy and never dry.
+15090,Ilkessa,none,natural_weep,none,A weep-face with a burrak wallow at its foot; the pool is broad and shallow.
+15091,Thennoral,none,shields_overhangs,Homestead Defense League,Lidded pool; the homesteads hold their rituals here at wind-hour.
+15092,Ossimarr,none,vane_leaking,none,Leaking fins; the hanging marsh is where the dewsilk weavers gather cocoons.
+15093,Sedrakesh,none,full_enclosure,Deepwater Compact,A sealed grotto at the base of the rock; the Compact's largest ledger-house.
+15094,Vellarin,none,natural_weep,none,Two seep-lines cross on the face and pool below in a black lens.
+15095,Kessivar,AnimalHabitat,vane_true_running,Deepwater Compact,"The animal haven: every pilgrim beast on the dayside drinks here in rotation, and the wardens watch."
+15096,Rhennivane,none,natural_weep,none,A curving cliff that combs the wind into a pool the ssurr use for their displays.
+15097,Ulvamund,none,shields_overhangs,none,Windbreak walls of stacked stone; kept by whoever is passing.
+15098,Tarrivesh,none,vane_true_running,none,True-running; the chord is two notes and the pool is never low.
+15099,Nimmoral,none,natural_weep,none,A cleft weep; weep-mice by the thousand on the face.
+15101,Sarrivane,none,vane_fog_wild,none,Fog-wild; the array's cloud fills the cleft and pours out the mouth.
+15102,Hollunar,none,natural_weep,none,A weep-face under a natural overhang; the pool never sees sun.
+15103,Quorrivesh,none,shields_overhangs,Deepwater Compact,Warden windbreaks; the truce-stone here is a slab of pure verdigris.
+16483,Ekkumar,none,natural_weep,none,A stone in the sand-sea; the pool is a hand's depth and a herd's width.
+16622,Vrass Ullun,none,natural_weep,Jawa,The hottest pool on the crawler charts; the market here is held at wind-hour only.
+16628,Thossarek,none,natural_weep,none,Weeps from a buried shelf; the green ring outlines the stone below the sand.
+17192,Ashkorrin,none,vane_true_running,none,"High array, cold and true; the pool is blue in the shade of its own fins."
+17193,Ithravesh,none,natural_weep,Deep Desert Tribes,Tribal chimes on every ledge; the weep is thin and the reverence is thick.
+17195,Ommavane,none,vane_leaking,none,Leaking fins made a hanging marsh on the cliff; it drips into the pool in a steady curtain.
+17196,Kellorath,none,shields_overhangs,none,Stone lids of ancient cut; the pool is small and the shade is deep.
+17197,Vorrinesh,none,natural_weep,none,A weep-face with a hundred parallel streaks; the comb made plain.
+17198,Sessarune,none,natural_weep,none,Impassable stone; the pool is glimpsed from the pass and never reached.
+17199,Rakkavane,none,vane_fog_wild,none,Fog-wild; the canyon floods with cloud and the mirrik swarms come out.
+17200,Ennekesh,none,vane_true_running,none,A small true-running array; the water is sweet and the chord is high.
+17202,Ullavorn,none,natural_weep,none,A stone bowl at the top of a cleft; the weep fills it and the wind keeps it.
+17203,Zhol Marrane,none,full_enclosure,Hutt Cartel,"A perfumed servo-dome; the Hutt bathes in what pilgrims drink, just inside the law."
+17204,Tessavane,none,vane_leaking,none,Leaking array; the marsh is small and the blade-reeds are enormous.
+17205,Kharrosh,none,natural_weep,none,Impassable; the pool is heard from the pass by its drip-echo.
+17210,Ithrakel,none,shields_overhangs,Jawa,Low hills; awnings of dewsilk and a crawler market that lasts three days.
+17223,Sorrukesh,none,natural_weep,none,A high cold face; the mats are blue in the shade and the pool is black.
+17224,Aelvane,none,vane_true_running,none,"High array; runs true, and its chord is the one the pilgrims sing."
+17225,Ossurath,AncientUplink,vane_dead,Ascendant Helix,"The uplink: a dead ring on the summit, a silent machine still listening, and the Helix camped around it."
+17240,Verrukan,none,natural_weep,none,A weep in a cleft; fan-dancers hold their displays on the rim.
+17241,Ithamund,none,vane_leaking,none,A leaking array on the cliff; the hanging marsh glows green in blue shade.
+17242,Quellorath,none,shields_overhangs,none,Stone lids over a pool on the pass; kept by every traveler who uses it.
+17243,Nasserine,none,natural_weep,none,"A cold face weeping into a burrak well; the ring is scrub, then green, then water."
+17244,Ravvakesh,none,vane_true_running,none,"True-running; a small pool, a clear chord, and a truce-stone heaped with tokens."
+17245,Umberekh,none,natural_weep,none,A weep-face in a north cleft; the pool is deep enough to swim.
+17246,Sollarrin,none,vane_fog_wild,none,Fog-wild; the cloud spills over the pass and the far side drinks too.
+17248,Kellivesh,none,natural_weep,Homestead Defense League,Homesteads a ridge off; the pool is their market-day ground.
+17270,Orravane,none,vane_leaking,none,Leaking array; the marsh has climbed the fins and dew-smoke nests in them.
+17283,Dhessaroth,none,natural_weep,Deep Desert Tribes,Chimes on the face and no footprints; the Tribes water in silence here.
+17285,Thurrivane,none,vane_dead,none,Dead ring; the machine went silent and the pool went with it.
+17300,Ammukesh,none,shields_overhangs,Jawa,Flat ground under lids; the crawler circuit's northern stop.
+17330,Tessulmar,none,natural_weep,none,Flat and warm; one stone weeps into a pool ringed by blades.
+17331,Ollumar,none,natural_weep,none,A stone shelf on flat ground; the green ring is wider than the pool by ten times.
+18351,Ferrukel,none,vane_leaking,none,A leaking array on flat ground; the marsh is a green sheet on the sand.
+18355,Sarrekesh,none,natural_weep,none,"Low hills; the weep is thin, the crowd is thick."
+18361,Vullumar,none,shields_overhangs,Homestead Defense League,Lids and windbreaks; the homesteads come for market and marriage.
+18373,Fevrakesh,none,natural_weep,none,At the Fever Wood's edge; the ring of green is thick and strange.
+19185,Nessorath,none,natural_weep,none,A cold weep-face; the pool at its foot is a black lens in blue shade.
+19189,Ithravorn,none,vane_true_running,none,Runs true near the terminator; the fins glow at the tips at wind-hour.
+19190,Corrukesh,none,natural_weep,none,A curving weep-face; the mats are ridged and the pool is round.
+19191,Sallivane,none,shields_overhangs,Deepwater Compact,Warden windbreaks on flat ground; the ledger is kept in the shade of the lids.
+19192,Ummaresh,none,natural_weep,none,A weep-face under an overhang; the pool is cold and never sees sun.
+19193,Rhossumar,none,vane_leaking,none,Leaking array on flat ground; the marsh is a green sheet with the fins standing in it.
+19194,Tallivesh,none,natural_weep,none,One stone shelf weeps into a pool ringed by blades; fan-dancers display at its rim.
+19195,Quessumar,none,natural_weep,none,Flat ground and one stone; the pool is the size of a hall floor.
+19198,Orrukesh,none,vane_true_running,none,A true-running array on flat ground; the pool is broad and cold.
+19199,Vennorath,none,natural_weep,none,A cleft weep; weep-mice on the face and dew-smoke over the pool.
+19302,Skessumar,none,natural_weep,none,A shaded cleft in hot stone; the pool is warm and the ring is tight.
+19303,Zharrukel,none,shields_overhangs,Blackstar Company,"Blackstar rendezvous under a stone lid; nothing cached, iron truce."
+19406,Ullukesh,none,natural_weep,none,Hot stone in the north sand; the weep is thin but the burrak dig is deep.
+19408,Thessumar,none,vane_leaking,none,A leaking array; the marsh is a green ribbon down the slope.
+21296,Verrumesh,none,natural_weep,none,A Verge seep on flat ground; the pool is warm and the ring is wide.
+21301,Hollumar,none,shields_overhangs,Homestead Defense League,"Lids and windbreaks; homesteads a mile out, and the pool is their courting ground."
+21302,Sessukel,none,natural_weep,Jawa,A crawler waypoint on the Verge; the market is one day and then gone.
+21304,Ammuresh,none,vane_true_running,none,A small true-running array; the chord is high and the pool is sweet.
+21305,Torrukel,none,natural_weep,none,One stone shelf weeps into a pool on the Verge's edge; blades ring it.
+21432,Ossivane,none,vane_dead,none,Dead ring on the Horn; the fins still turn and comb nothing.

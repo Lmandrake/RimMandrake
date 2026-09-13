@@ -1,0 +1,1586 @@
+{
+ "success": true,
+ "message": "4 biome(s) probed",
+ "biomesProbed": 4,
+ "notFound": [],
+ "searched": [],
+ "absentFromEveryProbedBiome": [],
+ "biomes": [
+  {
+   "defName": "Desert",
+   "label": "the Desert",
+   "modName": "GRiNDTerra Terrain Retexture",
+   "implemented": true,
+   "generatesNaturally": true,
+   "canBuildBase": true,
+   "canAutoChoose": true,
+   "isExtremeBiome": false,
+   "isWaterBiome": false,
+   "impassable": false,
+   "animalDensity": 0.4,
+   "plantDensity": 0.45,
+   "diseaseMtbDays": 90.0,
+   "forageability": 0.25,
+   "foragedFood": "RawAgave",
+   "settlementSelectionWeight": 0.65,
+   "wildAnimalCount": 93,
+   "wildPlantCount": 5,
+   "animalsListed": 93,
+   "plantsListed": 5,
+   "animals": [
+    {
+     "defName": "Kreetle",
+     "commonality": 0.8
+    },
+    {
+     "defName": "RSW_Bantha",
+     "commonality": 0.8
+    },
+    {
+     "defName": "BMT_Jellypot",
+     "commonality": 0.7
+    },
+    {
+     "defName": "Scavrat",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Shyrack",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Gorg",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Gutkurr",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Jamel",
+     "commonality": 0.4
+    },
+    {
+     "defName": "LongtailGorg",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Ronto",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Sketto",
+     "commonality": 0.4
+    },
+    {
+     "defName": "WompRat",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Wraid",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Eopie",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Hrumph",
+     "commonality": 0.3
+    },
+    {
+     "defName": "IridonianReek",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Jimvu",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Kwi",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Mynock",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Skalder",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Uvak",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Varactyl",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Zeer",
+     "commonality": 0.3
+    },
+    {
+     "defName": "VFEI2_Fuelmite",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Nerf",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Falumpaset",
+     "commonality": 0.2
+    },
+    {
+     "defName": "FrilledGorg",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Jakobeast",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Nuna",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Shaak",
+     "commonality": 0.2
+    },
+    {
+     "defName": "TeeMuss",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Worrt",
+     "commonality": 0.2
+    },
+    {
+     "defName": "AA_DesertAve",
+     "commonality": 0.2
+    },
+    {
+     "defName": "RSW_Nuna",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Rat",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Gizka",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Bolotaur",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Clodhopper",
+     "commonality": 0.1
+    },
+    {
+     "defName": "FeralGrazer",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Iriaz",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Krykna",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Runyip",
+     "commonality": 0.1
+    },
+    {
+     "defName": "AA_Needleroll",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MSEDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_SalvageAssistDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DUMDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_GNKDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_RSeriesDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "Voorpak",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_Dewback",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MuckrakerDroid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_FX7Droid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "AA_Gigantelope",
+     "commonality": 0.025
+    },
+    {
+     "defName": "AA_SandProwler",
+     "commonality": 0.025
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DestroyerDroid",
+     "commonality": 0.02
+    },
+    {
+     "defName": "AA_Terramorph",
+     "commonality": 0.0175
+    },
+    {
+     "defName": "AA_SandSquid",
+     "commonality": 0.0125
+    },
+    {
+     "defName": "Horax",
+     "commonality": 0.01
+    },
+    {
+     "defName": "RSW_Acklay",
+     "commonality": 0.008
+    },
+    {
+     "defName": "AA_MammothWorm",
+     "commonality": 0.0075
+    },
+    {
+     "defName": "Megascarab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Iguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "HermitCrab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "StoneCrab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Rancor",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vulptex",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Akk",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Borcatu",
+     "commonality": 0.0
+    },
+    {
+     "defName": "EnergySpider",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Grank",
+     "commonality": 0.0
+    },
+    {
+     "defName": "GraniteSlug",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gundark",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Hawkbat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Insectomorph",
+     "commonality": 0.0
+    },
+    {
+     "defName": "KellDragon",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Kinrath",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Lylek",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Neebray",
+     "commonality": 0.0
+    },
+    {
+     "defName": "PaintedSpat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Scurrier",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Silooth",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tooke",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tukata",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Urusai",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vapaad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "VAEWaste_Toxiguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Polluwog",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_GastroToad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaphorid",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaroach",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_MutagenicNorphea",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_SludgeCrawler",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Swarmcaller",
+     "commonality": 0.0
+    }
+   ],
+   "plants": [
+    {
+     "defName": "AB_HardyGrass",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Plant_Chakroot_Wild",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Plant_HubbaGourd_Wild",
+     "commonality": 0.2
+    },
+    {
+     "defName": "AB_Aaklac",
+     "commonality": 0.12
+    },
+    {
+     "defName": "AB_DessertTree",
+     "commonality": 0.06
+    }
+   ],
+   "findResults": null
+  },
+  {
+   "defName": "ExtremeDesert",
+   "label": "the Deep Desert",
+   "modName": "GRiNDTerra Terrain Retexture",
+   "implemented": true,
+   "generatesNaturally": true,
+   "canBuildBase": true,
+   "canAutoChoose": true,
+   "isExtremeBiome": true,
+   "isWaterBiome": false,
+   "impassable": false,
+   "animalDensity": 0.1,
+   "plantDensity": 0.008,
+   "diseaseMtbDays": 90.0,
+   "forageability": 0.0,
+   "foragedFood": null,
+   "settlementSelectionWeight": 0.42,
+   "wildAnimalCount": 58,
+   "wildPlantCount": 2,
+   "animalsListed": 58,
+   "plantsListed": 2,
+   "animals": [
+    {
+     "defName": "Scavrat",
+     "commonality": 0.6
+    },
+    {
+     "defName": "WompRat",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Mynock",
+     "commonality": 0.3
+    },
+    {
+     "defName": "VFEI2_Fuelmite",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Kreetle",
+     "commonality": 0.2
+    },
+    {
+     "defName": "WarWyrm",
+     "commonality": 0.2
+    },
+    {
+     "defName": "KraytDragon",
+     "commonality": 0.15
+    },
+    {
+     "defName": "AA_Needleroll",
+     "commonality": 0.15
+    },
+    {
+     "defName": "Rat",
+     "commonality": 0.1
+    },
+    {
+     "defName": "GraniteSlug",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Scurrier",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MSEDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_SalvageAssistDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DUMDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_GNKDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_RSeriesDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "AA_Eyeling",
+     "commonality": 0.075
+    },
+    {
+     "defName": "AA_Dunealisk",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MuckrakerDroid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_FX7Droid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_Wampa",
+     "commonality": 0.02
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DestroyerDroid",
+     "commonality": 0.02
+    },
+    {
+     "defName": "AA_BoulderMit",
+     "commonality": 0.0125
+    },
+    {
+     "defName": "Gizka",
+     "commonality": 0.01
+    },
+    {
+     "defName": "GreaterKraytDragon",
+     "commonality": 0.001
+    },
+    {
+     "defName": "AA_TetraSlug",
+     "commonality": 0.00025
+    },
+    {
+     "defName": "Megascarab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Iguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "HermitCrab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Rancor",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vulptex",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Borcatu",
+     "commonality": 0.0
+    },
+    {
+     "defName": "EnergySpider",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gorg",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gutkurr",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Hawkbat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Insectomorph",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Kinrath",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Krykna",
+     "commonality": 0.0
+    },
+    {
+     "defName": "LavaFlea",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Lylek",
+     "commonality": 0.0
+    },
+    {
+     "defName": "PaintedSpat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Roggwart",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Shyrack",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Silooth",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Skalder",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tooke",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tukata",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Urusai",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vapaad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "VAEWaste_Toxiguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Polluwog",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_GastroToad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaphorid",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaroach",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_MutagenicNorphea",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_SludgeCrawler",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Swarmcaller",
+     "commonality": 0.0
+    }
+   ],
+   "plants": [
+    {
+     "defName": "Plant_Bloddle",
+     "commonality": 0.05
+    },
+    {
+     "defName": "AB_GiantStikehr",
+     "commonality": 0.04
+    }
+   ],
+   "findResults": null
+  },
+  {
+   "defName": "AridShrubland",
+   "label": "arid shrubland",
+   "modName": "GRiNDTerra Terrain Retexture",
+   "implemented": true,
+   "generatesNaturally": true,
+   "canBuildBase": true,
+   "canAutoChoose": true,
+   "isExtremeBiome": false,
+   "isWaterBiome": false,
+   "impassable": false,
+   "animalDensity": 1.8,
+   "plantDensity": 0.72,
+   "diseaseMtbDays": 65.0,
+   "forageability": 0.5,
+   "foragedFood": "RawAgave",
+   "settlementSelectionWeight": 0.95,
+   "wildAnimalCount": 101,
+   "wildPlantCount": 10,
+   "animalsListed": 100,
+   "plantsListed": 10,
+   "animals": [
+    {
+     "defName": "FrilledGorg",
+     "commonality": 1.0
+    },
+    {
+     "defName": "Gorg",
+     "commonality": 1.0
+    },
+    {
+     "defName": "Iriaz",
+     "commonality": 1.0
+    },
+    {
+     "defName": "LongtailGorg",
+     "commonality": 1.0
+    },
+    {
+     "defName": "Eopie",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Kreetle",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Lothcat",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Mudhorn",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Ronto",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Scurrier",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Sketto",
+     "commonality": 0.8
+    },
+    {
+     "defName": "Terrorworm",
+     "commonality": 0.7
+    },
+    {
+     "defName": "Igitz",
+     "commonality": 0.7
+    },
+    {
+     "defName": "Urusai",
+     "commonality": 0.7
+    },
+    {
+     "defName": "BMT_ImperialToad",
+     "commonality": 0.7
+    },
+    {
+     "defName": "Kybuck",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Massiff",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Scavrat",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Pufferpig",
+     "commonality": 0.5
+    },
+    {
+     "defName": "RSW_Bantha",
+     "commonality": 0.5
+    },
+    {
+     "defName": "Gizka",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Anooba",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Corinathoth",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Nuna",
+     "commonality": 0.4
+    },
+    {
+     "defName": "WompRat",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Worrt",
+     "commonality": 0.4
+    },
+    {
+     "defName": "RSW_Nuna",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Mynock",
+     "commonality": 0.3
+    },
+    {
+     "defName": "VFEI2_Fuelmite",
+     "commonality": 0.3
+    },
+    {
+     "defName": "BMT_MossBeetle",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Grank",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Qormot",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Strill",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Cannok",
+     "commonality": 0.16
+    },
+    {
+     "defName": "Whisperbird",
+     "commonality": 0.15
+    },
+    {
+     "defName": "AA_Cactipine",
+     "commonality": 0.125
+    },
+    {
+     "defName": "Rat",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Pikobis",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MSEDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "RSW_DW_OuterRim_SalvageAssistDroid",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Convor",
+     "commonality": 0.08
+    },
+    {
+     "defName": "Skalder",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_Vulptex",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DUMDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_GNKDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "RSW_DW_OuterRim_RSeriesDroid",
+     "commonality": 0.08
+    },
+    {
+     "defName": "AA_Needlepost",
+     "commonality": 0.05
+    },
+    {
+     "defName": "AA_Wildpawn",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_MuckrakerDroid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_DW_OuterRim_FX7Droid",
+     "commonality": 0.05
+    },
+    {
+     "defName": "FeralNerf",
+     "commonality": 0.04
+    },
+    {
+     "defName": "RSW_Porg",
+     "commonality": 0.04
+    },
+    {
+     "defName": "Voorpak",
+     "commonality": 0.02
+    },
+    {
+     "defName": "RSW_Dewback",
+     "commonality": 0.02
+    },
+    {
+     "defName": "RSW_DW_OuterRim_DestroyerDroid",
+     "commonality": 0.02
+    },
+    {
+     "defName": "RSW_Acklay",
+     "commonality": 0.014
+    },
+    {
+     "defName": "AA_Wildpod",
+     "commonality": 0.0125
+    },
+    {
+     "defName": "KowakianMonkeyLizard",
+     "commonality": 0.01
+    },
+    {
+     "defName": "Boomalope",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Megascarab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Boomrat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Iguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "WasteRat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Toxalope",
+     "commonality": 0.0
+    },
+    {
+     "defName": "HermitCrab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "StoneCrab",
+     "commonality": 0.0
+    },
+    {
+     "defName": "SeaTurtle",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Rancor",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vulptex",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Akk",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Boma",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Borcatu",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Clodhopper",
+     "commonality": 0.0
+    },
+    {
+     "defName": "GraniteSlug",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gundark",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gutkurr",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Hawkbat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Insectomorph",
+     "commonality": 0.0
+    },
+    {
+     "defName": "KellDragon",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Kinrath",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Krykna",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Lylek",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Neebray",
+     "commonality": 0.0
+    },
+    {
+     "defName": "PaintedSpat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Roggwart",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Shyrack",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Silooth",
+     "commonality": 0.0
+    },
+    {
+     "defName": "TeeMuss",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tooke",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vapaad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Veermok",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Zakkeg",
+     "commonality": 0.0
+    },
+    {
+     "defName": "VAEWaste_Toxiguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Polluwog",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_GastroToad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Glowtail",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaphorid",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaroach",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_MutagenicNorphea",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_SludgeCrawler",
+     "commonality": 0.0
+    }
+   ],
+   "plants": [
+    {
+     "defName": "Plant_ShrubLow",
+     "commonality": 0.9
+    },
+    {
+     "defName": "RG_Plant_AridGrass",
+     "commonality": 0.5
+    },
+    {
+     "defName": "Plant_Bush",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Plant_Ripthorn",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Plant_Brambles",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Plant_HealrootWild",
+     "commonality": 0.25
+    },
+    {
+     "defName": "Plant_Nysyllin_Wild",
+     "commonality": 0.22
+    },
+    {
+     "defName": "RG_Plant_CreepStern",
+     "commonality": 0.2
+    },
+    {
+     "defName": "RG_Plant_Dervish",
+     "commonality": 0.2
+    },
+    {
+     "defName": "RG_Plant_CrimsonCushion",
+     "commonality": 0.2
+    }
+   ],
+   "findResults": null
+  },
+  {
+   "defName": "AB_RockyCrags",
+   "label": "the Forsaken Crags",
+   "modName": "Alpha Biomes",
+   "implemented": true,
+   "generatesNaturally": true,
+   "canBuildBase": true,
+   "canAutoChoose": true,
+   "isExtremeBiome": false,
+   "isWaterBiome": false,
+   "impassable": false,
+   "animalDensity": 1.8,
+   "plantDensity": 0.085,
+   "diseaseMtbDays": 65.0,
+   "forageability": 0.5,
+   "foragedFood": "RawAgave",
+   "settlementSelectionWeight": 0.95,
+   "wildAnimalCount": 87,
+   "wildPlantCount": 8,
+   "animalsListed": 87,
+   "plantsListed": 8,
+   "animals": [
+    {
+     "defName": "Kreetle",
+     "commonality": 0.8
+    },
+    {
+     "defName": "RSW_Bantha",
+     "commonality": 0.8
+    },
+    {
+     "defName": "BMT_Jellypot",
+     "commonality": 0.7
+    },
+    {
+     "defName": "Scavrat",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Shyrack",
+     "commonality": 0.6
+    },
+    {
+     "defName": "Gorg",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Gutkurr",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Jamel",
+     "commonality": 0.4
+    },
+    {
+     "defName": "LongtailGorg",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Ronto",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Sketto",
+     "commonality": 0.4
+    },
+    {
+     "defName": "WompRat",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Wraid",
+     "commonality": 0.4
+    },
+    {
+     "defName": "Eopie",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Hrumph",
+     "commonality": 0.3
+    },
+    {
+     "defName": "IridonianReek",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Jimvu",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Kwi",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Mynock",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Skalder",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Uvak",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Varactyl",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Zeer",
+     "commonality": 0.3
+    },
+    {
+     "defName": "VFEI2_Fuelmite",
+     "commonality": 0.3
+    },
+    {
+     "defName": "AA_DuskRat",
+     "commonality": 0.25
+    },
+    {
+     "defName": "AA_Murkling",
+     "commonality": 0.25
+    },
+    {
+     "defName": "AA_NightMule",
+     "commonality": 0.25
+    },
+    {
+     "defName": "Nerf",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Falumpaset",
+     "commonality": 0.2
+    },
+    {
+     "defName": "FrilledGorg",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Jakobeast",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Nuna",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Shaak",
+     "commonality": 0.2
+    },
+    {
+     "defName": "TeeMuss",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Worrt",
+     "commonality": 0.2
+    },
+    {
+     "defName": "RSW_Nuna",
+     "commonality": 0.2
+    },
+    {
+     "defName": "AA_CrepuscularBeetle",
+     "commonality": 0.175
+    },
+    {
+     "defName": "Gizka",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Bolotaur",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Clodhopper",
+     "commonality": 0.1
+    },
+    {
+     "defName": "FeralGrazer",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Iriaz",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Krykna",
+     "commonality": 0.1
+    },
+    {
+     "defName": "Runyip",
+     "commonality": 0.1
+    },
+    {
+     "defName": "AA_DuskProwler",
+     "commonality": 0.1
+    },
+    {
+     "defName": "AA_NightAve",
+     "commonality": 0.1
+    },
+    {
+     "defName": "AA_Nightling",
+     "commonality": 0.1
+    },
+    {
+     "defName": "AA_DarkVandal",
+     "commonality": 0.075
+    },
+    {
+     "defName": "Voorpak",
+     "commonality": 0.05
+    },
+    {
+     "defName": "RSW_Dewback",
+     "commonality": 0.05
+    },
+    {
+     "defName": "AA_NightRam",
+     "commonality": 0.045
+    },
+    {
+     "defName": "AA_ShadowCharger",
+     "commonality": 0.045
+    },
+    {
+     "defName": "AA_Thunderox",
+     "commonality": 0.045
+    },
+    {
+     "defName": "AA_SandProwler",
+     "commonality": 0.0375
+    },
+    {
+     "defName": "AA_Frostling",
+     "commonality": 0.025
+    },
+    {
+     "defName": "Horax",
+     "commonality": 0.01
+    },
+    {
+     "defName": "RSW_Acklay",
+     "commonality": 0.008
+    },
+    {
+     "defName": "AA_Darkbeast",
+     "commonality": 0.0025
+    },
+    {
+     "defName": "Rancor",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vulptex",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Akk",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Borcatu",
+     "commonality": 0.0
+    },
+    {
+     "defName": "EnergySpider",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Grank",
+     "commonality": 0.0
+    },
+    {
+     "defName": "GraniteSlug",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Gundark",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Hawkbat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Insectomorph",
+     "commonality": 0.0
+    },
+    {
+     "defName": "KellDragon",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Kinrath",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Lylek",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Neebray",
+     "commonality": 0.0
+    },
+    {
+     "defName": "PaintedSpat",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Scurrier",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Silooth",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tooke",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Tukata",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Urusai",
+     "commonality": 0.0
+    },
+    {
+     "defName": "Vapaad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "VAEWaste_Toxiguana",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Polluwog",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_GastroToad",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaphorid",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Megaroach",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_MutagenicNorphea",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_SludgeCrawler",
+     "commonality": 0.0
+    },
+    {
+     "defName": "BMT_Swarmcaller",
+     "commonality": 0.0
+    }
+   ],
+   "plants": [
+    {
+     "defName": "AB_GlowingGrass",
+     "commonality": 1.0
+    },
+    {
+     "defName": "AB_ToxicGamma",
+     "commonality": 0.6
+    },
+    {
+     "defName": "AB_WildRadagast",
+     "commonality": 0.5
+    },
+    {
+     "defName": "AB_GiantGamma",
+     "commonality": 0.5
+    },
+    {
+     "defName": "AB_GiantStikehr",
+     "commonality": 0.3
+    },
+    {
+     "defName": "Plant_Chakroot_Wild",
+     "commonality": 0.3
+    },
+    {
+     "defName": "AB_GiantSeptimum",
+     "commonality": 0.2
+    },
+    {
+     "defName": "Plant_HubbaGourd_Wild",
+     "commonality": 0.2
+    }
+   ],
+   "findResults": null
+  }
+ ],
+ "ticksGame": 108956,
+ "operation": {
+  "OperationId": "op_f9af1ba48ba54ecba912f05fde5917ae",
+  "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-09-10T14:20:01.6518895+00:00",
+  "CompletedAtUtc": "2026-09-10T14:20:01.6795202+00:00",
+  "DurationMs": 27,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

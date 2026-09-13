@@ -1,0 +1,864 @@
+{
+ "before": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series39455",
+    "thingIdNumber": 39455,
+    "name": "Wouter Theys",
+    "nameShort": "Wouter",
+    "title": "corp researcher",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Male",
+    "ageBiologicalYears": 32,
+    "ageChronologicalYears": 32,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Stello-Archism",
+    "childhood": "CorpBredStudent54",
+    "adulthood": "CorpResearcher93",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Bowlcut",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "Transhumanist",
+      "degree": 0,
+      "label": "Body modder",
+      "forced": false
+     },
+     {
+      "def": "Pyromaniac",
+      "degree": 0,
+      "label": "Pyromaniac",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 9,
+      "levelEffective": 9,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 12,
+      "levelEffective": 12,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 16,
+      "levelEffective": 16,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "Bite",
+      "part": "Leg",
+      "severity": 2.0
+     },
+     {
+      "def": "Bite",
+      "part": "Eye",
+      "severity": 6.0
+     },
+     {
+      "def": "Gunshot",
+      "part": "Leg",
+      "severity": 5.0
+     },
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "Indoors",
+      "level": 1.0,
+      "pct": 1.0
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_1099c63519834178b171f53554579b5f",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T02:46:59.0075709+00:00",
+   "CompletedAtUtc": "2026-09-10T02:46:59.0186319+00:00",
+   "DurationMs": 11,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "wear": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "RSW_DW_Module_DroidHardware_agility",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 1,
+   "logs": [
+    {
+     "sequence": 21,
+     "level": "warning",
+     "message": "Wouter tried to wear RSW_DW_Module_DroidHardware_agility39456 but he has no body parts required to wear it.",
+     "source": "unity",
+     "repeatCount": 1,
+     "timestampUtc": "2026-09-10T02:46:59.0287523+00:00"
+    }
+   ],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_eba8efc795914838ad0427b252b7e98c",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T02:46:59.0231439+00:00",
+   "CompletedAtUtc": "2026-09-10T02:46:59.0297509+00:00",
+   "DurationMs": 6,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "after_wear": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series39455",
+    "thingIdNumber": 39455,
+    "name": "Wouter Theys",
+    "nameShort": "Wouter",
+    "title": "corp researcher",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Male",
+    "ageBiologicalYears": 32,
+    "ageChronologicalYears": 32,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Stello-Archism",
+    "childhood": "CorpBredStudent54",
+    "adulthood": "CorpResearcher93",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Bowlcut",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "Transhumanist",
+      "degree": 0,
+      "label": "Body modder",
+      "forced": false
+     },
+     {
+      "def": "Pyromaniac",
+      "degree": 0,
+      "label": "Pyromaniac",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 9,
+      "levelEffective": 9,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 12,
+      "levelEffective": 12,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 16,
+      "levelEffective": 16,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "Bite",
+      "part": "Leg",
+      "severity": 2.0
+     },
+     {
+      "def": "Bite",
+      "part": "Eye",
+      "severity": 6.0
+     },
+     {
+      "def": "Gunshot",
+      "part": "Leg",
+      "severity": 5.0
+     },
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "Indoors",
+      "level": 1.0,
+      "pct": 1.0
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_306f478d2f914a3f82538e953f1248c0",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T02:47:00.0357009+00:00",
+   "CompletedAtUtc": "2026-09-10T02:47:00.0432124+00:00",
+   "DurationMs": 7,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "remove": {
+  "success": true,
+  "path": "Actions\\Wear apparel (selected)...\\*Remove all apparel",
+  "node": {
+   "path": "Actions\\Wear apparel (selected)...\\*Remove all apparel",
+   "parentPath": "Actions\\Wear apparel (selected)...",
+   "label": "*Remove all apparel",
+   "category": null,
+   "actionType": "Action",
+   "isRoot": false,
+   "visible": true,
+   "active": true,
+   "on": false,
+   "displayPriority": 0,
+   "tabId": "actions",
+   "tabTitle": "Actions/tools",
+   "tabRootPath": "Actions",
+   "tabDefName": null,
+   "hasChildren": false,
+   "childCount": 0,
+   "visibleChildCount": 0,
+   "hasDirectAction": true,
+   "hasPawnAction": false,
+   "hasSettingsToggle": false,
+   "execution": {
+    "kind": "Direct",
+    "supported": true,
+    "reason": null,
+    "requiredTargetKind": null
+   },
+   "source": null
+  },
+  "targetPawn": null,
+  "mapTarget": null,
+  "stateBefore": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "stateAfter": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "effects": {
+   "logCount": 0,
+   "logs": [],
+   "windowCountDelta": 0,
+   "openedWindowTypes": [],
+   "closedWindowTypes": [],
+   "debugToolActiveBefore": false,
+   "debugToolActiveAfter": false,
+   "debugToolChanged": false
+  },
+  "followUp": null,
+  "operation": {
+   "OperationId": "op_b06e408454334c579f3606287ec62d64",
+   "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T02:47:00.0442129+00:00",
+   "CompletedAtUtc": "2026-09-10T02:47:00.0462125+00:00",
+   "DurationMs": 1,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "after_remove": {
+  "success": true,
+  "count": 1,
+  "pawns": [
+   {
+    "thingId": "RSW_DW_Race_guy762_DroidRace_T3series39455",
+    "thingIdNumber": 39455,
+    "name": "Wouter Theys",
+    "nameShort": "Wouter",
+    "title": "corp researcher",
+    "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "gender": "Male",
+    "ageBiologicalYears": 32,
+    "ageChronologicalYears": 32,
+    "developmentalStage": "Adult",
+    "xenotype": "Baseliner",
+    "ideo": "Stello-Archism",
+    "childhood": "CorpBredStudent54",
+    "adulthood": "CorpResearcher93",
+    "headType": "RSW_DW_HeadType_Blank",
+    "bodyType": "Male",
+    "hair": "Bowlcut",
+    "beard": "NoBeard",
+    "position": {
+     "x": 126,
+     "z": 124
+    },
+    "traits": [
+     {
+      "def": "TooSmart",
+      "degree": 0,
+      "label": "Too smart",
+      "forced": true
+     },
+     {
+      "def": "Transhumanist",
+      "degree": 0,
+      "label": "Body modder",
+      "forced": false
+     },
+     {
+      "def": "Pyromaniac",
+      "degree": 0,
+      "label": "Pyromaniac",
+      "forced": false
+     }
+    ],
+    "skills": [
+     {
+      "skill": "Shooting",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Melee",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Construction",
+      "levelRaw": 1,
+      "levelEffective": 1,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Mining",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Cooking",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Plants",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Animals",
+      "levelRaw": 3,
+      "levelEffective": 3,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Crafting",
+      "levelRaw": 9,
+      "levelEffective": 9,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Artistic",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "None",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Medicine",
+      "levelRaw": 12,
+      "levelEffective": 12,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     },
+     {
+      "skill": "Social",
+      "levelRaw": 0,
+      "levelEffective": 0,
+      "passion": "Minor",
+      "xpSinceLastLevel": 0.0,
+      "disabled": true
+     },
+     {
+      "skill": "Intellectual",
+      "levelRaw": 16,
+      "levelEffective": 16,
+      "passion": "Major",
+      "xpSinceLastLevel": 0.0,
+      "disabled": false
+     }
+    ],
+    "apparel": [],
+    "equipment": [],
+    "hediffs": [
+     {
+      "def": "Bite",
+      "part": "Leg",
+      "severity": 2.0
+     },
+     {
+      "def": "Bite",
+      "part": "Eye",
+      "severity": 6.0
+     },
+     {
+      "def": "Gunshot",
+      "part": "Leg",
+      "severity": 5.0
+     },
+     {
+      "def": "RSW_DW_FormatTier",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "needs": [
+     {
+      "need": "Mood",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RSW_DW_Power",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "Indoors",
+      "level": 1.0,
+      "pct": 1.0
+     },
+     {
+      "need": "DrugDesire",
+      "level": 0.5,
+      "pct": 0.5
+     },
+     {
+      "need": "RoomSize",
+      "level": 0.5,
+      "pct": 0.5
+     }
+    ]
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_26c7f54a39f945b59c72c039c3af443a",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-10T02:47:01.0470582+00:00",
+   "CompletedAtUtc": "2026-09-10T02:47:01.0525646+00:00",
+   "DurationMs": 5,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

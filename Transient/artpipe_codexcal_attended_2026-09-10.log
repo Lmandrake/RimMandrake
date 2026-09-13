@@ -1,0 +1,2 @@
+artpiped: codex sandbox preflight ok — sandbox seed template matches the installed build (codex-command-runner-0.153.4.exe)
+artpiped: stopped. hard_stop=False refuse_new=False stop_all=False gemini_hard_stop=False gemini_spent=$2.28 pending_remaining=False — CLEAN DRAIN (exit 0)

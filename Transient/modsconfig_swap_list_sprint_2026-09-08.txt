@@ -1,0 +1,15 @@
+<li>mandrake.rut.factionslate</li>
+<li>mandrake.rsw.beastnorm</li>
+<li>mandrake.rsw.seabeasts</li>
+<li>mandrake.rm.sauridfrillfix</li>
+<li>mandrake.rm.gravshipastronautfix</li>
+<li>mandrake.rm.toolbeltfix</li>
+<li>mandrake.rsw.blastdoorframeasyncfix</li>
+<li>mandrake.rm.researchkiteastfix</li>
+<li>mandrake.rm.desertvehiclereskin</li>
+<li>mandrake.rsw.jawaikee</li>
+<li>mandrake.rsw.fireecology</li>
+<li>mandrake.rut.fireecology</li>
+<li>mandrake.rm.salvageclaim</li>
+<li>mandrake.rm.theft_hauler</li>
+<li>mandrake.rut.shell</li>

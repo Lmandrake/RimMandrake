@@ -1,0 +1,179 @@
+{
+ "astromech": [
+  {
+   "id": "RSW_DW_Race_OuterRim_AstromechDroid37060",
+   "traits": [
+    "TooSmart",
+    "Kind",
+    "PsychicSensitivity"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_AstromechDroid37061",
+   "traits": [
+    "TooSmart"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_AstromechDroid37062",
+   "traits": [
+    "TooSmart",
+    "Undergrounder"
+   ]
+  }
+ ],
+ "battle": [
+  {
+   "id": "RSW_DW_Race_OuterRim_BattleDroid37063",
+   "traits": [
+    "ShootingAccuracy",
+    "DrugDesire",
+    "DislikesMen"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_BattleDroid37064",
+   "traits": [
+    "ShootingAccuracy"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_BattleDroid37065",
+   "traits": [
+    "ShootingAccuracy"
+   ]
+  }
+ ],
+ "heavy": [
+  {
+   "id": "RSW_DW_Race_OuterRim_SuperTacticalDroid37066",
+   "traits": [
+    "Tough",
+    "Beauty",
+    "Kind",
+    "Delicate"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_SuperTacticalDroid37067",
+   "traits": [
+    "Tough"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_SuperTacticalDroid37068",
+   "traits": [
+    "Tough",
+    "NaturalMood"
+   ]
+  }
+ ],
+ "labour": [
+  {
+   "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid37052",
+   "traits": [
+    "Industriousness",
+    "Nerves"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid37053",
+   "traits": [
+    "Industriousness",
+    "Wimp",
+    "Delicate"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid37054",
+   "traits": [
+    "Industriousness",
+    "Greedy",
+    "FastLearner"
+   ]
+  }
+ ],
+ "power": [
+  {
+   "id": "RSW_DW_Race_OuterRim_GNKDroid37074",
+   "traits": [
+    "Nerves",
+    "Delicate",
+    "Gourmand"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_GNKDroid37075",
+   "traits": [
+    "Nerves"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_GNKDroid37076",
+   "traits": [
+    "Nerves",
+    "Pyromaniac",
+    "Tough"
+   ]
+  }
+ ],
+ "probe": [
+  {
+   "id": "RSW_DW_Race_guy762_DroidRace_KX12UPD37069",
+   "traits": [
+    "GreatMemory",
+    "TorturedArtist",
+    "Kind"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_guy762_DroidRace_KX12UPD37070",
+   "traits": [
+    "GreatMemory",
+    "BodyPurist",
+    "CreepyBreathing"
+   ]
+  }
+ ],
+ "protocol": [
+  {
+   "id": "RSW_DW_Race_OuterRim_ProtocolDroid37055",
+   "traits": [
+    "Abrasive",
+    "RSW_DW_Trait_ProtocolPedantry"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_OuterRim_ProtocolDroid37059",
+   "traits": [
+    "Abrasive",
+    "RSW_DW_Trait_ProtocolPedantry"
+   ]
+  }
+ ],
+ "primitive": [
+  {
+   "id": "RSW_DW_Race_Primitive_G2Unit37077",
+   "traits": [
+    "SlowLearner",
+    "CreepyBreathing"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_Primitive_G2Unit37078",
+   "traits": [
+    "SlowLearner",
+    "Kind",
+    "PsychicSensitivity"
+   ]
+  },
+  {
+   "id": "RSW_DW_Race_Primitive_G2Unit37080",
+   "traits": [
+    "SlowLearner",
+    "Nerves",
+    "Neurotic"
+   ]
+  }
+ ]
+}
