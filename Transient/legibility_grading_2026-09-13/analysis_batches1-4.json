@@ -1,0 +1,484 @@
+{
+ "rows": [
+  {
+   "id": "hare_east",
+   "src": "vanilla",
+   "margin": 16.7,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "miremoth_v1_east",
+   "src": "artpipe",
+   "margin": 5.7,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "jogantree_v1",
+   "src": "artpipe",
+   "margin": -41.7,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "fumeback_v1_north",
+   "src": "artpipe",
+   "margin": 7.5,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "sagecrust_v1",
+   "src": "artpipe",
+   "margin": -8.2,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "iguana_east",
+   "src": "vanilla",
+   "margin": 5.5,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "husky_east",
+   "src": "vanilla",
+   "margin": 14.9,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_royalave6_east",
+   "src": "alpha_animals",
+   "margin": 1.9,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "wastewing_v1_north_r2",
+   "src": "artpipe",
+   "margin": -0.9,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_dessicated_bumbledronequeen_east",
+   "src": "alpha_animals",
+   "margin": 8.2,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "borcatu_v1_east",
+   "src": "artpipe",
+   "margin": 3.9,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "martyr_v1",
+   "src": "artpipe",
+   "margin": -15.1,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_engorgedtentacularaberration_east",
+   "src": "alpha_animals",
+   "margin": 8.4,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "megasloth_east",
+   "src": "vanilla",
+   "margin": 0.3,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "muffalo_east",
+   "src": "vanilla",
+   "margin": -2.3,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "dragonsnake_v1_east",
+   "src": "artpipe",
+   "margin": -25.5,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "gr_saddle_muffalos_east",
+   "src": "alpha_animals",
+   "margin": 4.2,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "globularplant_v1",
+   "src": "artpipe",
+   "margin": -2.0,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "eclipsusleaves_v1",
+   "src": "artpipe",
+   "margin": -14.1,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_frostlingsaddle_east",
+   "src": "alpha_animals",
+   "margin": 2.9,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "sludrin_v1_south",
+   "src": "artpipe",
+   "margin": -4.5,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "direwail_v1_east",
+   "src": "artpipe",
+   "margin": -2.9,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "boma_v1_east",
+   "src": "artpipe",
+   "margin": 1.4,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "lockjaw_improve_a_r12_south",
+   "src": "artpipe",
+   "margin": 2.0,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "boomrat_east",
+   "src": "vanilla",
+   "margin": 14.7,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "fenshear_v1_south",
+   "src": "artpipe",
+   "margin": -4.0,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "boma_v1_south",
+   "src": "artpipe",
+   "margin": 2.3,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "insectomorph_v1_north",
+   "src": "artpipe",
+   "margin": 2.5,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "anooba_v1_east",
+   "src": "artpipe",
+   "margin": 3.4,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "kroffa_v1_east",
+   "src": "artpipe",
+   "margin": 6.0,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "horax_v1_east",
+   "src": "artpipe",
+   "margin": -7.4,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_thermadon_east",
+   "src": "alpha_animals",
+   "margin": 9.1,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "cow_east",
+   "src": "vanilla",
+   "margin": 12.2,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "vornskyr_v1_north",
+   "src": "artpipe",
+   "margin": -6.7,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "graygrass_v1",
+   "src": "artpipe",
+   "margin": -17.2,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "cougar_east",
+   "src": "vanilla",
+   "margin": 9.7,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "corronip_v1_north",
+   "src": "artpipe",
+   "margin": 8.3,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "aa_dessicated_redspore_east",
+   "src": "alpha_animals",
+   "margin": 3.6,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "pyrelands_furnacebeast_v1",
+   "src": "artpipe",
+   "margin": -0.6,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "sporehulk_v1_south",
+   "src": "artpipe",
+   "margin": 6.9,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "legibility_known_good_256",
+   "src": "pilot",
+   "margin": 9.1,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "rat_east",
+   "src": "vanilla",
+   "margin": 9.4,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "aa_drainer_east",
+   "src": "alpha_animals",
+   "margin": -0.3,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "wyyyschokk_v1_north",
+   "src": "artpipe",
+   "margin": 7.7,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  },
+  {
+   "id": "pekopeko_v1_north",
+   "src": "artpipe",
+   "margin": 6.2,
+   "grade": 2,
+   "gname": "works",
+   "prefill": "works",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "tropicalchokevine_v1",
+   "src": "artpipe",
+   "margin": -10.5,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "zakkeg_v1_east",
+   "src": "artpipe",
+   "margin": -17.8,
+   "grade": 0,
+   "gname": "mud",
+   "prefill": "mud",
+   "override": false,
+   "note": ""
+  },
+  {
+   "id": "huskrunner_v1_south",
+   "src": "artpipe",
+   "margin": 4.7,
+   "grade": 1,
+   "gname": "borderline",
+   "prefill": "works",
+   "override": true,
+   "note": ""
+  }
+ ]
+}
