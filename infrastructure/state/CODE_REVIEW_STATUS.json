@@ -4272,10 +4272,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/ashkarr_settle.py": {
-    "cleanCount": 2,
-    "date": "2026-09-07",
-    "hash": "5ccf881e5d82c9f9b402d21975be9758d8ff3d6199f2cc7e9545c5cea89259e3",
-    "sha": "b8ec4d2a"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "43edee0f5d40c95330334cefef39706a0276cc1062a99d9a9ff2700e7eea2de7",
+    "sha": "e82a4ea05"
   },
   "src/RimMandrake/Utils/ashkarr_shore_and_ice.py": {
     "cleanCount": 2,
@@ -6034,10 +6034,10 @@
     "sha": "f10e21c4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSocietyTools.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-08",
-    "hash": "50ec0a6860040fed060cfc64201a62d56b7c8e51340d5f16936117e0284e04a6",
-    "sha": "2691a1e3"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "40c06ac983dfe81e4112a4bff1bd356825cded3731d815ac73ebc3c988772fc2",
+    "sha": "e82a4ea05"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs": {
     "cleanCount": 2,
