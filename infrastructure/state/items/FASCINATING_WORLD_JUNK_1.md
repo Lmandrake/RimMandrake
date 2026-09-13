@@ -129,13 +129,45 @@ Live per-map counts (Zeddo's Yard, Fall Line) and the contact sheet were **not**
 attempted — both need the bridge/more session time and are explicitly deferred,
 per the census's own "what Phase 2 needs" section.
 
-**Phase 2 needs**: mine `xmb.ancienturbanruins.mo` + its two patch add-ons,
-`neronix17.outerrim.furnitureanddecor` (1051 defs, unmined), and `mlie.dungeonpack`
-/ `gmmp.dungeon` (re-check "lands outdoors" against a live map, not just the dump —
-a patch injecting a GenStep elsewhere wouldn't show in the dump); confirm whether
-anything actually spawns VFEPD's junk-flavored PropDefs as map content vs.
-player-placed-only; then produce `donor_ideas.md` per the phase spec. Item left
-`doing`, not closed — multi-phase.
+**Phase 2 (IDEAS) — complete, 2026-09-13.** Appended to the same census doc
+(`design/Jawa/worldbuilding/junk/junk_census_2026-09-13.md`, "Phase 2 — ideas mined
+from retiring donors") rather than a separate `donor_ideas.md`, to keep one
+document per the "inaccurate material is deleted, not superseded" discipline and
+avoid a second file the owner has to cross-reference. Findings: read `xmb.
+ancienturbanruins.mo`'s own XML on disk directly (RimSage doesn't index it; a prior
+deep audit, `design/Jawa/mods/ancient_ruins_mod_audit.md`, already triaged its
+content as uniformly non-Star-Wars but hadn't looked at shape/silhouette value
+independent of the earth-flavor text — that's what this pass adds). **6 borrowable
+shapes found**, each with real def size/drawSize/texPath to bind a reskin to:
+`AM_AbandonedBus` (3×8, big single-orientation hull), `AM_FireTruck` (7×3, wide
+armored-vehicle silhouette), `AM_AncientTruckCarriages`/`AM_FreightTrainCarriages`
+(3×5, cargo-module/carriage shape), `AM_Amublance` (5×2, small vehicle,
+`Graphic_Single`), `AM_AbandonedForklift` (2×4, cargo-loader shape),
+`AM_AVendingMachine` (1×1, smallest tier, interior/kiosk dressing). Everything else
+in the mod (rubble/rebar, mall shells, modern firearms, CPU/GPU/credit-card loot,
+the body-horror faction) is confirmed dead weight, no shape worth a card.
+`mlie.dungeonpack` and `gmmp.dungeon` are **negative findings** — read their def
+files directly: Dungeon Pack has 7 ThingDefs total (traps/turrets, no wreck
+silhouette at all); GMMP Dungeon is fantasy-dungeon dressing (gibbet cages, bone
+piles, generic rubble) with no tech/vehicle register. Neither needs further mining.
+`neronix17.outerrim.furnitureanddecor` was explicitly **not** mined this pass —
+it's already Star-Wars-themed content, so mining it for "ideas to reskin as SW" is
+circular, and it isn't a near-term retirement (Wave 3, entangled with
+`DROID_SYSTEM_BUILD_1`); its Phase-1 open question (does anything actually spawn
+its junk PropDefs as map content) is a spawn-mechanism question, not a shape-mining
+one, and stays deferred. Added the item's requested non-mod references (Jawa
+sandcrawler yards, Jakku's Starship Graveyard, Raxus Prime, Bracca/Scrapper Guild,
+Lotho Minor) each tied to one of the three registers (Fall Line fresh / Zeddo's
+Yard accumulation / Rakatan ancient).
+
+**Phase 3 (ROSTER) and Phase 4 (RE-GRAPHIC + RE-TEXT) — not started, and Phase 3
+is explicitly NOT an agent's call.** The item's own ask is "card the roster to the
+owner, one card per junk kind... Let's get creative!" — a creative/design ruling
+that belongs to the owner at a sitting (per `ask-with-question-cards` and the
+`option-portfolio`/`review-sheets` pattern this repo already uses for exactly this
+kind of judgment call), not something FOUNDRY should pre-decide and hand him a
+fait accompli. Item left `doing`, not closed — multi-phase, and Phase 3 needs the
+owner present.
 
 ## traps
 - Donor art is **loose PNG vs AssetBundle** — a texture that "does not exist" on disk

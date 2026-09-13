@@ -219,6 +219,122 @@ census found already shipping.
    defName references should use the real names above, not the shorthand in the
    original ask.
 
+## Phase 2 — ideas mined from retiring donors
+
+Read-only pass, per the item spec: no new defs, no XML edits, no Cherry Picker or
+`ModsConfig` changes. Goal: borrow *shapes/silhouettes/naming patterns* from mods on
+their way out, before the art is gone for good. Method: read each donor's own XML on
+disk directly (`/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/
+<workshop id>/1.6/Defs/...`) — RimSage doesn't index these, per Phase 1.
+
+### 1. `xmb.ancienturbanruins.mo` — the confirmed prime donor
+
+Already Cherry-Picker-**cut** live (`ANCIENT_RUINS_FAMILY_CUT_1`, 2026-09-09 — 559 of
+1005 defs cut, the rest fall out of use with the 5 kill-switch QuestScriptDefs gone),
+but the mod is still installed and its XML still readable on disk for reference,
+which is exactly what this phase needs. A prior deep audit already exists —
+`design/Jawa/mods/ancient_ruins_mod_audit.md` — and ruled the *content* uniformly
+non-Star-Wars ("modern firearms, LEGO loot, credit cards, mall guards") while flagging
+its `ComplexLayoutDef`/`LayoutRoomDef` procedural-dungeon technique (not its assets)
+as the one reusable pattern. That audit did not, however, look at shape/silhouette
+value independent of the earth-flavor text — which is this phase's actual ask, since
+Phase 4 replaces every label/description/texPath anyway. Read directly from
+`ThingDef_NonfunctionalBuilding.xml`:
+
+| source def | size (cells) | drawSize | current label/desc | texPath | SW reskin idea |
+|---|---|---|---|---|---|
+| `AM_AbandonedBus` | (3,8) | (3.3,9) | "abandoned bus" / "Damaged ancient buses." | `Things/Building/AbandonedBus` | a beached repulsor-bus or troop transport hull — long, single-orientation, big enough to anchor a Zeddo's Yard "avenue" the way `AM_MALL` maps anchor a mall |
+| `AM_FireTruck` | (7,3) | (9,4) | "ancient fire truck" | `Things/Building/FireTruck` | a crashed light freighter or gunboat fuselage — wide, squat, cab-plus-tank silhouette reads as an armored vehicle hull without new art logic |
+| `AM_AncientTruckCarriages` / `AM_FreightTrainCarriages` | (3,5) | (4.8,6.9) | "ancient truck carriages" / "freight train carriages" | `Things/Building/AncientTruckCarriages`, `.../FreightTrainCarriages` | a snapped-off cargo module or shipping-crawler carriage — same footprint works for both a Hutt hauler wreck (Zeddo's Yard) and a derelict cargo skiff (Fall Line, if reskinned "fresh") |
+| `AM_Amublance` | (5,2) | (6.6,3.5) | "ancient amublance" (sic) | `Things/Building/Amublance` | a downed medbay speeder or evac pod — smaller vehicle silhouette, single-piece `Graphic_Single`, easy retexture target |
+| `AM_AbandonedForklift` | (2,4) | (2,4) | "abandoned forklift" | `Things/Building/AbandonedForklift` | a wrecked cargo-loader droid chassis or repulsor pallet-lifter — good small/medium filler between the bigger hulls above |
+| `AM_AVendingMachine` | (1,1) | (2.5,2.5) | "ancient vending machine" | `Things/Container/AVendingMachine` | a dead astromech charging alcove or ration dispenser — smallest tier, good for interior/kiosk dressing rather than open-field scatter |
+
+**Explicit rejects** (confirms the prior audit rather than repeating its work):
+`ThingDef_Ruins.xml`/`ThingDef_SalvagePoint.xml` (86 defs of generic concrete rebar
+rubble — no silhouette distinct enough to read as anything but rebar), the 83
+`ThingDef_NonfunctionalBuilding.xml` mall shells (vending-machine *variants* aside,
+arcade cabinets/escalators/ATMs read as contemporary retail, not vehicle or tech
+wreckage), `RangedIndustrial.xml`'s 48 modern-firearm defs, `ThingDef_HighValueItem.xml`'s
+48 defs (CPU/GPU/credit-card/LEGO loot — the single clearest "not Star Wars" evidence
+in the whole mod), the `AM_PlayerColony`/`SafeHouse` alternate-scenario defs, and the
+`AncientMallGuards`/`AM_RampageParasite` body-horror faction — none of these have a
+shape or concept worth reskinning; they're earth-flavor dead weight straight through,
+same verdict the prior audit already reached from the content side.
+
+### 2. `mlie.dungeonpack` — negative finding
+
+`Defs/Buildings/Buildings.xml` carries exactly 7 `ThingDef`s:
+`DP_Embrasure`/`DP_HiddenExplosive`/`DP_HiddenFire`/`DP_HiddenSpike`/
+`DP_GenPowerUnit`/`DP_MinigunTurret`/`DP_Automortar` — traps and turret/power-node
+mechanics for its own quest-triggered dungeon maps (Area 50, Area 52, Grand Walls,
+Ninja, Pirate Bay, Private, Sun Cult, Thrumbo Valley — all `QuestScriptDef`-entered
+hand-authored maps, same "prefab floor-plan" shape as Ancient Urban Ruins' technique
+(a)). **No wreck, vehicle, or debris ThingDef exists in this mod at all** — nothing
+to mine. The item's own trap ("re-check dungeon furniture landing outdoors against a
+live map, not just the dump") is now moot for the *donor-mining* question: even if a
+patch injects `DP_GenPowerUnit` outdoors somewhere, it's a turret/power prop, not a
+junk silhouette worth a card.
+
+### 3. `gmmp.dungeon` (GMMP: Dungeon) — negative finding
+
+`Defs/ThingDefs_Props/Buildings_DungeonProps*.xml` is a fantasy-dungeon prop catalog:
+gibbet cages (`GM_PropGibbet*`, 4 variants × top styles), bone piles
+(`GMMP_DankPyon_RuinedBonePile*`), and generic wood/stone debris
+(`GMMP_DankPyon_WoodenDebris`, `StoneDebris(Small)`). This reads as sword-and-sorcery
+dungeon dressing, not tech wreckage — cages and bone piles have no Star Wars register,
+and the "debris" defs are undifferentiated rubble piles with no silhouette distinct
+enough to be worth a card over what vanilla `AncientRuins*` rubble already provides.
+**No shapes worth borrowing.**
+
+### 4. `neronix17.outerrim.furnitureanddecor` — out of scope for THIS phase, not mined
+
+Per `STARWARS_DONOR_SUNSET_1`, this mod is Wave-3 (entangled with `DROID_SYSTEM_BUILD_1`'s
+port plan, gated on `neronix17.outerrim.core` staying active), not a near-term
+retirement, and — more to the point for Phase 2 — it is **already Star-Wars-themed**
+content (Outer Rim furniture/decor). Mining an SW mod for "ideas to reskin as SW
+wreckage" is circular; it belongs to the droid-porting items' own audit if anything,
+not this donor-ideas pass. Phase 1's open question #3 (does any GenStep/KCSG symbol
+actually spawn its 113 junk-flavored `PropDef`s as map content, vs. player-placed-only)
+remains genuinely unresolved and is **not** answered here — it's a spawn-mechanism
+question, not a shape-mining one, and belongs to Phase 3's roster-building pass if it
+turns out to matter.
+
+### 5. Non-mod references (owner's ask, Phase 2 spec)
+
+One line each, tied to the three registers `FASCINATING_WORLD_JUNK_1` already
+distinguishes (Fall Line fresh/Imperial, Zeddo's Yard Hutt-accumulation, Rakatan
+ancient-alien):
+
+- **Jawa sandcrawler yards** (OT concept art / Tatooine) — the reference for **Zeddo's
+  Yard** itself: junk sorted into rough piles by kind, nothing catalogued, scale
+  ranging from single droid parts to whole vehicle hulls in the same frame.
+- **Jakku's Starship Graveyard** (*The Force Awakens*) — half-buried capital-ship
+  hulls, dune-scoured, huge single silhouettes rather than piles; the register for a
+  "wreck too big to haul" landmark-scale piece, not a scatter object.
+- **Raxus Prime** (Legends) — an entire *planet* of junk; useful less as a shape
+  reference and more as the naming-convention reference: Raxus content is named for
+  function-before-damage ("crashed freighter," "discarded droid foundry"), which is
+  the register the roster's "what it was / what it yields / what it risks" naming
+  already follows.
+- **Bracca / the Scrapper Guild** (*Star Wars Jedi: Fallen Order*) — the reference for
+  **fresh, active salvage work**: cables, gantries, and half-stripped hulls mid-cut,
+  not decades-settled — closer to the Fall Line's "nothing here is old" register than
+  to Zeddo's Yard.
+- **Lotho Minor** (Legends, "the Slop") — a world literally made of compacted garbage;
+  reference for texture/ground-cover treatment (a junk-compacted terrain look) more
+  than for individual object shapes — worth flagging for Phase 4's terrain work, not
+  Phase 3's roster of discrete things.
+
+### Phase 2 handoff
+
+The roster material for Phase 3 is: 6 named shapes from Ancient Urban Ruins (table
+above, with real def sizes/texPaths a reskin can bind to), plus the five non-mod
+references above as tone/naming/terrain guides. Two donor mods (`mlie.dungeonpack`,
+`gmmp.dungeon`) are confirmed negative — no further mining owed there. One donor
+(`neronix17.outerrim.furnitureanddecor`) is explicitly out of scope for idea-mining
+(already SW-flavored) and its spawn-mechanism question is deferred, not answered.
+
 ## status
 
 **Phase 1 (CENSUS) — complete, 2026-09-13.** Rebuilt `defs.sqlite` from the latest
