@@ -495,11 +495,17 @@ def cmd_reinforce(args):
       - stroke pixels' alpha is SOLIDIFIED (raised toward opaque), so the
         downscale blends a real dark line instead of a translucent fringe.
 
-    The silhouette can grow by the fringe width (that is what a drawn outline
-    is); no color halo is possible because the stroke is darker than anything
-    it replaces."""
+    v3 (owner, 2026-09-13: v2's inward band "started to hurt... the black
+    outline should be on the OUTSIDE of the original graphic"): the stroke is
+    painted entirely OUTSIDE the existing silhouette — a black ring in the
+    dilated region — and the ORIGINAL image is composited on top of it.
+    Solid artwork pixels are byte-identical to before; the anti-aliased
+    fringe blends over black instead of over terrain (which is what a drawn
+    outline does); the silhouette grows by the stroke width. `strength` is
+    the outline's opacity. Clips at the canvas border if the art has no
+    margin — the stroke never resizes the canvas (drawSize maps to it)."""
     im = Image.open(args.path).convert("RGBA")
-    arr = np.asarray(im, dtype=np.float32).copy()
+    arr = np.asarray(im, dtype=np.float32)
     alpha = arr[..., 3]
     vis = alpha > 16
     solid = alpha > ALPHA_SOLID
@@ -507,21 +513,21 @@ def cmd_reinforce(args):
         print("no solid silhouette — nothing to reinforce")
         return 1
     body = int(max(np.ptp(np.nonzero(solid)[0]), np.ptp(np.nonzero(solid)[1])))
-    ring_w = max(2, round(body * args.width_frac))
-    inner = solid
+    ring_w = max(1, round(body * args.width_frac))
+    grown = vis.copy()
     for _ in range(ring_w):
-        inner = _erode(inner)
-    stroke = vis & ~inner                       # fringe + outer solid ring
-    lum = _lum(arr[..., :3])
+        grown = _dilate(grown)
     k = float(np.clip(args.strength, 0.0, 1.0))
-    target = 18.0                                # near-black, not pure black
-    for c in range(3):
-        ch = arr[..., c]
-        ch[stroke] = ch[stroke] * (1.0 - k) + target * k
-    a = arr[..., 3]
-    a[stroke] = np.maximum(a[stroke], 255.0 * k * (a[stroke] > 16))
-    Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA").save(args.out)
-    print(f"stroked: band {ring_w}px of {body}px body, strength {k} -> {args.out}")
+    outline = np.zeros_like(arr)
+    outline[..., :3] = 12.0                       # near-black
+    outline[..., 3] = np.where(grown, 255.0 * k, 0.0)
+    base = Image.fromarray(outline.astype(np.uint8), "RGBA")
+    base.alpha_composite(im)                      # ORIGINAL art over the ring
+    base.save(args.out)
+    clipped = bool((grown[0, :].any() or grown[-1, :].any()
+                    or grown[:, 0].any() or grown[:, -1].any()))
+    print(f"outside-stroked: ring {ring_w}px of {body}px body, opacity {k}"
+          f"{' (clipped at canvas edge)' if clipped else ''} -> {args.out}")
     return 0
 
 
