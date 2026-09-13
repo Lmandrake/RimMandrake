@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T08:50:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T08:52:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     task
 summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
 prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
 
+## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
+prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1246,13 +1255,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
-
-## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GM_BLACKBOARD_SHADOW_M4_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
