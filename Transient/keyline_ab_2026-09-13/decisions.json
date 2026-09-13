@@ -1,0 +1,102 @@
+{
+ "posture": "whitelist",
+ "criterion": "Pre-filled 'better' where the fitted score rose by >0.1 \u2014 which measures the metric's own opinion of a metric-targeted edit, exactly the thing your eye must check.",
+ "generatedBy": "bench keyline A/B generator",
+ "decisions": {
+  "miremoth_v1_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "fumeback_v1_north": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "iguana_east": {
+   "decision": "same",
+   "prefill": "same",
+   "note": ""
+  },
+  "aa_dessicated_bumbledronequeen_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "borcatu_v1_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "aa_engorgedtentacularaberration_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "gr_saddle_muffalos_east": {
+   "decision": "same",
+   "prefill": "same",
+   "note": ""
+  },
+  "boma_v1_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "lockjaw_improve_a_r12_south": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "boma_v1_south": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "insectomorph_v1_north": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "anooba_v1_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "kroffa_v1_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "aa_thermadon_east": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "corronip_v1_north": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "sporehulk_v1_south": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "legibility_known_good_256": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "wyyyschokk_v1_north": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  },
+  "huskrunner_v1_south": {
+   "decision": "better",
+   "prefill": "better",
+   "note": ""
+  }
+ }
+}
