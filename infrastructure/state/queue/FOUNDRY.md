@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T08:52:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T09:06:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     task
 summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
 prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
 
+## CATHEDRAL_REGARD_BLACKBOARD_1 Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Python, GM external blackboard alongside Imperial Heat and Hutt Interest
+prose:    infrastructure/state/items/CATHEDRAL_REGARD_BLACKBOARD_1.md
+
 ## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
 state:    doing
 row:      unassigned
@@ -1175,16 +1184,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CATHEDRAL_REGARD_BLACKBOARD_1 Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Python, GM external blackboard alongside Imperial Heat and Hutt Interest
-prose:    infrastructure/state/items/CATHEDRAL_REGARD_BLACKBOARD_1.md
 
 ## CATHEDRAL_STAGE_HUM_BRIDGE_1 Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
 state:    proposed
