@@ -1,0 +1,46 @@
+aa_terramorph_v1_north	codex_size_mismatch	tool returned oversize image ignoring requested canvas (1254x1254)
+ashrunner_v1_east	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+ashrunner_v1_south	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+bilespawn_v1_north	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+codexcal_lockjaw_a	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_lockjaw_a_r2	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_lockjaw_a_r3	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_lockjaw_b	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_lockjaw_b_r2	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_lockjaw_b_r3	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_mantrap	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_mantrap_r2	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+codexcal_mantrap_r3	codex_worker_error_no_output	worker exited 1, no image, ~240s x2 attempts, no stderr captured
+fenshear_v1_north	codex_size_mismatch	tool returned oversize image ignoring requested canvas (1254x1254)
+kroffa_v1_north	codex_size_mismatch	tool returned oversize image ignoring requested canvas (1254x1254)
+lockjaw_improve_a	gemini_banned_unreadable_png	gemini returned non-PNG file, header unreadable; channel now banned
+lockjaw_improve_a_r10_south	gemini_banned_validator_reject	subject width is 196px against the reference's 133px (+47%). A damaged variant may lose area but must still sp
+lockjaw_improve_a_r11_south	gemini_banned_validator_reject	subject width is 240px against the reference's 133px (+80%). A damaged variant may lose area but must still sp
+lockjaw_improve_a_r12_south	gemini_banned_validator_reject	subject width is 173px against the reference's 133px (+30%). A damaged variant may lose area but must still sp
+lockjaw_improve_a_r2	gemini_banned_validator_reject	no alpha channel - the background will render as an opaque block.
+lockjaw_improve_a_r6	gemini_banned_worker_crash	gemini worker exited 1, resource_tracker semaphore leak crash
+lockjaw_improve_a_r8_north	gemini_banned_validator_reject	subject width is 240px against the reference's 127px (+89%). A damaged variant may lose area but must still sp
+lockjaw_improve_a_r8_south	gemini_banned_validator_reject	subject width is 252px against the reference's 133px (+89%). A damaged variant may lose area but must still sp
+lockjaw_improve_a_r9_south	gemini_banned_validator_reject	subject width is 169px against the reference's 133px (+27%). A damaged variant may lose area but must still sp
+lockjaw_improve_b	gemini_banned_unreadable_png	gemini returned non-PNG file, header unreadable; channel now banned
+lockjaw_improve_b_r2	gemini_banned_validator_reject	no alpha channel - the background will render as an opaque block.
+lockjaw_improve_b_r6	gemini_banned_worker_crash	gemini worker exited 1, resource_tracker semaphore leak crash
+lockjaw_improve_b_r8_north	gemini_banned_validator_reject	subject width is 244px against the reference's 127px (+92%). A damaged variant may lose area but must still sp
+lockjaw_improve_b_r8_south	gemini_banned_validator_reject	subject width is 210px against the reference's 133px (+58%). A damaged variant may lose area but must still sp
+lockjaw_improve_b_r9_north	gemini_banned_validator_reject	subject height is 190px against the reference's 175px (+9%). A damaged variant may lose area but must still sp
+mantrap_improve_a	gemini_banned_unreadable_png	gemini returned non-PNG file, header unreadable; channel now banned
+mantrap_improve_a_r2	gemini_banned_validator_reject	no alpha channel - the background will render as an opaque block.
+mantrap_improve_a_r6	gemini_banned_worker_crash	gemini worker exited 1, resource_tracker semaphore leak crash
+mantrap_improve_a_r7	gemini_banned_validator_reject	subject width is 247px against the reference's 143px (+73%). A damaged variant may lose area but must still sp
+mantrap_improve_b	gemini_banned_unreadable_png	gemini returned non-PNG file, header unreadable; channel now banned
+mantrap_improve_b_r2	gemini_banned_size_mismatch	gemini returned 1024x1024 ignoring requested 256x256 canvas
+mantrap_improve_b_r3	gemini_banned_size_mismatch	gemini returned 1024x1024 ignoring requested 256x256 canvas
+mantrap_improve_b_r4	gemini_banned_size_mismatch	gemini returned 1024x1024 ignoring requested 256x256 canvas
+mantrap_improve_b_r5	gemini_banned_validator_reject	no alpha channel - the background will render as an opaque block.
+mantrap_improve_b_r6	gemini_banned_size_mismatch	gemini returned 1024x1024 ignoring requested 256x256 canvas
+mantrap_improve_b_r7	gemini_banned_size_mismatch	gemini returned 1024x1024 ignoring requested 256x256 canvas
+mantrap_improve_b_r8	gemini_banned_validator_reject	subject width is 242px against the reference's 143px (+69%). A damaged variant may lose area but must still sp
+mireflitwarden_v1_north	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+rotscythe_v1_south	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+wastewing_v1_north	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts
+wastewing_v1_south	codex_timeout_300s	codex exec exceeded 300s, no image reached generated_images/, 2 attempts

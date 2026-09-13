@@ -8122,3 +8122,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T09:04:20Z"}
 {"seat":"FOUNDRY","event":"claim","id":"CATHEDRAL_REGARD_BLACKBOARD_1","ts":"2026-09-13T09:06:33Z"}
 {"seat":"FOUNDRY","event":"start","id":"CATHEDRAL_REGARD_BLACKBOARD_1","ts":"2026-09-13T09:06:34Z"}
+{"seat":"BENCH","event":"file","id":"ARTPIPE_FAILED_REQUEUE_1","title":"ARTPIPE_FAILED_REQUEUE_1 clear the 46-job failed/ pile: drop 27 gemini-banned, requeue 16 codex transients, fix 3-job canvas-size bug","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T09:11:53Z"}

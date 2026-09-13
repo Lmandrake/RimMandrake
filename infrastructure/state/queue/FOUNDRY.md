@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:06:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T09:11:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1254,3 +1254,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
+
+## ARTPIPE_FAILED_REQUEUE_1 ARTPIPE_FAILED_REQUEUE_1 clear the 46-job failed/ pile: drop 27 gemini-banned, requeue 16 codex transients, fix 3-job canvas-size bug
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARTPIPE_FAILED_REQUEUE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md
