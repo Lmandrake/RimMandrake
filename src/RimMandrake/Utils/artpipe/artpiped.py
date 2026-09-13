@@ -1220,7 +1220,8 @@ def run_validator(validator_script: Path, reference, candidate: Path,
         f"problem here"]
 
 
-def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S):
+def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S,
+                         drawsize: float = 1.0):
     """Downscale-legibility gate, same error discipline as run_validator:
       None          — skipped (no thresholds file yet) — never a silent pass
       "pass"        — art_legibility.py gate exit 0
@@ -1248,6 +1249,8 @@ def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S):
            "--thresholds", str(thresholds)]
     if model is not None and model.is_file():
         cmd += ["--model", str(model)]
+        if drawsize and drawsize != 1.0:
+            cmd += ["--drawsize", str(drawsize)]
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -1324,7 +1327,8 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     # transparent-bg sprites only: black-backdrop reference shots are never
     # downsampled onto the map, so play-zoom legibility is not their test.
     if (job.get("background") or "transparent") == "transparent":
-        lverdict, lfindings = run_legibility_gate(out_png)
+        job_ds = float(job.get("drawsize") or 1.0)
+        lverdict, lfindings = run_legibility_gate(out_png, drawsize=job_ds)
         result["legibility_findings"] = lfindings
         if lverdict == "reject":
             result.update(status="failed", worker_status="legibility_below_gate",
@@ -1363,7 +1367,7 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                                note=("reinforce exited %d: " % rproc.returncode
                                      + ("; ".join(rout[-1:]) if rout else ""))[:300])
                 return result
-            rverdict, rfindings = run_legibility_gate(reinforced)
+            rverdict, rfindings = run_legibility_gate(reinforced, drawsize=job_ds)
             result["legibility_findings"] = lfindings + ["--- after stroke ---"] + rfindings
             if rverdict == "pass":
                 shutil.copy2(out_png, raw_keep)

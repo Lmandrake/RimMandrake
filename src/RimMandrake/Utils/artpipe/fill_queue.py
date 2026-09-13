@@ -108,14 +108,20 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     # wants 128-256, never 512. LOCKED as a refusal (owner, 2026-09-13, with
     # the resolution experiment: stored 128/256/512 identical within 0.1 at
     # every play zoom over 35 masters — resolution above the 1:1 tier buys
-    # nothing). 256 is the ceiling without a stated reason; below 128 is a
+    # nothing). The ceiling is ARITHMETIC when the row carries `drawsize`
+    # (cells): the law is canvas = drawSize×128, rounded up to the next power
+    # of two, floor 256. Without a drawsize, 256 is the ceiling. Exceeding
+    # the ceiling needs an explicit 'oversize_reason'. Below 128 is a
     # warning (a decor sprite may legitimately be small).
-    if max(canvas["width"], canvas["height"]) > 256 and not (row.get("oversize_reason") or "").strip():
+    import math
+    ds = float(row.get("drawsize") or 1.0)
+    ceiling = max(256, 2 ** math.ceil(math.log2(max(1.0, ds * 128))))
+    if max(canvas["width"], canvas["height"]) > ceiling and not (row.get("oversize_reason") or "").strip():
         raise ValueError(
-            f"row {base_id!r}: canvas {canvas['width']}x{canvas['height']} exceeds the locked 256 "
-            f"ceiling — MEASURED (35 masters, 2026-09-13): stored resolution above the 1:1 tier is "
-            f"pixel-identical at every play zoom and costs ~4x atlas VRAM. Set canvas to 256 "
-            f"(drawSize×128), or add an 'oversize_reason' naming the headliner/large drawSize.")
+            f"row {base_id!r}: canvas {canvas['width']}x{canvas['height']} exceeds the ceiling "
+            f"{ceiling} for drawsize {ds} — MEASURED (35 masters, 2026-09-13): stored resolution "
+            f"above the 1:1 tier is pixel-identical at every play zoom and costs ~4x atlas VRAM. "
+            f"Set canvas to drawSize×128 (next power of two), or add an 'oversize_reason'.")
     if max(canvas["width"], canvas["height"]) < 128:
         print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} is under the 128 floor "
               f"— fine for decor, mud for a creature (64-stored measurably drops at 1:1).",
@@ -151,6 +157,7 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
             "rimflow_item_id": row["rimflow_item_id"],
             "reference": reference,
             "canvas": canvas,
+            "drawsize": ds,
             "prompt": row["prompt"],
             "style_notes": row.get("style_notes") or "",
             "priority": priority,
