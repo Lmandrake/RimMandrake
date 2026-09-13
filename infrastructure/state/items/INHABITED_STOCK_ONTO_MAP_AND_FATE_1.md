@@ -340,3 +340,48 @@ ledger, and criterion 5 depends on it. This is a narrower gap than the one this
 item opened with — not "unreachable by construction", just "the one remaining
 untested code path" — but it is real and not this pass's to wave through on the
 strength of an adjacent proof.
+
+---
+
+## Closed 2026-09-13 (FOUNDRY) — the fate live-check, run exactly as spelled out above
+
+Bridge was free (`rimflow bridge who`); took it, started a fresh
+`rimworld/start_debug_game_ready` quicktest on the owner's full 599-mod list
+(polled a fresh connection per the skill's own warning — the start call times out
+at 35s and answers late), ran the six debug actions in the prescribed order:
+
+```
+PROVE    Create place at current tile -> Stock: dump onto this map -> spawn Fire
+         inside place.StockArea -> Fate: test the cause now -> Stock: collect
+         from this map -> Fate: fire the consequence now
+EXPECT   cause=InhabitedFateBurned; state resolves to Looted or Abandoned
+LIES     Fire landing outside StockArea reads as cause=none with no error;
+         an archetype other than Scrapyard has fate=Resident and never fires
+```
+
+Results, off the mod's own log lines (`Player.log`, this session):
+
+1. `Create place at current tile` -> **archetype RM_InhabitedPlace_Scrapyard**
+   picked by `FirstOrDefault()` on this def set (confirmed from the log line
+   itself, not assumed — "Set place archetype" was not needed).
+2. `Stock: dump onto this map` -> "dumped 145 goods in 3 stacks at (125, 0, 125)"
+   (Meal10+Chemfuel60+Steel75, matching the archetype's larder exactly, same as
+   the sibling item's 2026-09-05 proof).
+3. Spawned a `Fire` at (125,0,125) via `rimworld/spawn_thing` — the exact stock
+   spot, inside `StockArea` (`CellRect.CenteredOn(stockSpot, 8)`, logged as
+   `(117,117,133,133)`).
+4. `Fate: test the cause now` -> **`cause=InhabitedFateBurned`**. Matches
+   `EXPECT` exactly — burning the granary is detected live, as designed.
+5. `Stock: collect from this map` -> "took back 347 of 145" (the stock-area
+   sweep also picked up the quicktest map's own ambient loose items within the
+   17x17 radius — `IsPlaceGoods`'s documented area-based half, not a defect).
+6. `Fate: fire the consequence now` -> **"fate FleeIfThreatened fired ... state
+   now Abandoned"** (stock.Count was 347 > 0 post-collect, so Abandoned per
+   `Apply`'s own rule — one of the two valid outcomes named in `EXPECT`).
+
+**Criterion 3 is now live-proven**, closing the one gap the 2026-09-10 pass left
+open. Combined with criteria 1/2/4 (live-proven 2026-09-05 by the sibling item)
+and criterion 5 (both reachability gaps closed 2026-09-04/05, per the note
+above), **every criterion this item set for itself is now met, live, not just in
+code.** Bridge released immediately after. Quicktest map is scratch and was left
+for the next `start_debug_game_ready` to discard.
