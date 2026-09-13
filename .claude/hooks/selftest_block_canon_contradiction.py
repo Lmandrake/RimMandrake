@@ -41,6 +41,68 @@ def run(body, cmd_path="design/.selftest_probe/probe.md", write=True):
     return ALLOW, p.stderr
 
 
+def run_write(tool, rel, content=None, old=None, new=None, existing=None):
+    """Exercise the WRITE-time path (2026-08-22 ruling: refuse at the write, not
+    only at the commit) — `tool` is "Write", "Edit" or "MultiEdit".
+
+    🔴 Until this helper existed, every CASE below drove the hook with a bare
+    `{"tool_input": {"command": ...}}` event, which has no `tool_name` — so
+    `ev.get("tool_name") or ""` is always "" and main()'s `if tool in
+    ("Write", "Edit", "MultiEdit")` branch (block_canon_contradiction.py:144)
+    never ran under this selftest at all. A break in that branch — the one the
+    file's own docstring calls the primary defense — would still print
+    "N/N passed".
+    """
+    os.makedirs(PROBE_DIR, exist_ok=True)
+    full = os.path.join(ROOT, rel)
+    if existing is not None:
+        open(full, "w", encoding="utf-8").write(existing)
+    elif tool != "Write" and not os.path.exists(full):
+        open(full, "w", encoding="utf-8").write("")
+    ti = {"file_path": full}
+    if tool == "Write":
+        ti["content"] = content
+    else:
+        ti["old_string"], ti["new_string"] = old, new
+    env = dict(os.environ, CLAUDE_PROJECT_DIR=ROOT)
+    p = subprocess.run([sys.executable, HOOK],
+                       input=json.dumps({"tool_name": tool, "tool_input": ti}),
+                       capture_output=True, text=True, env=env, cwd=ROOT, timeout=90)
+    out = p.stdout.strip()
+    if out:
+        try:
+            d = json.loads(out)["hookSpecificOutput"]
+            return d["permissionDecision"], d["permissionDecisionReason"]
+        except Exception:
+            pass
+    return ALLOW, p.stderr
+
+
+WRITE_CASES = [
+    ("DENY  Write of a design/*.md with a dead water number", DENY, "water",
+     "design/.selftest_probe/write_probe.md",
+     dict(tool="Write", content="Water is ~25% of tiles, accept 22-28%.\n")),
+
+    ("ALLOW Write of a design/*.md with the current canon number", ALLOW, None,
+     "design/.selftest_probe/write_probe.md",
+     dict(tool="Write", content="The planet is 21,872 tiles and 8.14% water.\n")),
+
+    ("ALLOW Write outside design/ with a dead water number", ALLOW, None,
+     "src/.selftest_probe/write_probe.md",
+     dict(tool="Write", content="Water is ~25% of tiles, accept 22-28%.\n")),
+
+    ("DENY  Edit that introduces a dead water number", DENY, "water",
+     "design/.selftest_probe/edit_probe.md",
+     dict(tool="Edit", old="8.14%", new="25%, accept 22-28%",
+          existing="Water is 8.14% of tiles.\n")),
+
+    ("ALLOW Edit whose old_string is not in the file (cannot simulate)", ALLOW, None,
+     "design/.selftest_probe/edit_probe.md",
+     dict(tool="Edit", old="not-present-anywhere", new="25%, accept 22-28%",
+          existing="Water is 8.14% of tiles.\n")),
+]
+
+
 CASES = [
     # 🔴 PLANET NUMBERS ENFORCE AGAIN — `canon.yml planet.status: frozen` (owner
     # card 2026-09-12: "Flip to frozen"; start save CANONICAL_ASHKARR_START_2026-09-12).
@@ -84,9 +146,21 @@ CASES = [
 
 def main():
     fails = 0
+    total = 0
     try:
         for name, want, needle, body, path in CASES:
+            total += 1
             got, reason = run(body, path or "design/.selftest_probe/probe.md")
+            ok = got == want and (not needle or needle.lower() in (reason or "").lower())
+            print("%-5s %s" % ("ok" if ok else "FAIL", name))
+            if not ok:
+                fails += 1
+                print("        got=%s want=%s\n        %s"
+                      % (got, want, (reason or "")[:300].replace("\n", "\n        ")))
+
+        for name, want, needle, rel, kw in WRITE_CASES:
+            total += 1
+            got, reason = run_write(rel=rel, **kw)
             ok = got == want and (not needle or needle.lower() in (reason or "").lower())
             print("%-5s %s" % ("ok" if ok else "FAIL", name))
             if not ok:
@@ -96,7 +170,8 @@ def main():
     finally:
         import shutil
         shutil.rmtree(PROBE_DIR, ignore_errors=True)
-    print("\n%d/%d passed" % (len(CASES) - fails, len(CASES)))
+        shutil.rmtree(os.path.join(ROOT, "src", ".selftest_probe"), ignore_errors=True)
+    print("\n%d/%d passed" % (total - fails, total))
     return 1 if fails else 0
 
 
