@@ -1,30 +1,30 @@
 {
- "generatedAt": "2026-09-13T04:01:00Z",
+ "generatedAt": "2026-09-13T04:35:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 543531,
-  "sha256_12": "ae42b6f70dde"
+  "bytes": 574447,
+  "sha256_12": "94de56961100"
  },
- "head": "f3476da1c",
+ "head": "96cf1c4d3",
  "counts": {
   "red": 31,
-  "blue": 418,
-  "green": 1832,
-  "grey": 150,
-  "unmeasured": 0,
-  "total": 2431
+  "blue": 417,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 1982,
+  "total": 2430
  },
  "loc": {
   "red": 14077,
-  "blue": 223101,
-  "green": 639557,
-  "grey": 56119,
-  "unmeasured": 0,
-  "total": 932854
+  "blue": 220811,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 695676,
+  "total": 930564
  },
  "reviewEntries": 2360,
  "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 2431 files (1832 clean, 150 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }
