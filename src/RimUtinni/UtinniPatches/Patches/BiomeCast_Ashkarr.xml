@@ -1072,11 +1072,14 @@
 
   <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vgeneticse,Spino.Megafauna">   <!-- donor: vanillaexpanded.vgeneticse,Spino.Megafauna -->
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <GR_Mantistanis>0.05</GR_Mantistanis> <!-- mantistanis - large-predator, import -->
-      </value>
+    <match Class="PatchOperationConditional">   <!-- GIDDYUP_NULLKEY_CRASH_1: GR_Mantistanis confirmed absent from every active mod (incl. its stated donor, Vanilla Genetics Expanded), 2026-09-12; the MayRequire above evidently does not gate this out on the current mod list, so existence-guard the PawnKindDef itself so a null wildAnimals key can never reach BiomeDef.CommonalityOfAnimal again. Roster intent kept (not deleted): pending an Emberscythe re-author under a real defName, see MEGAFAUNAYIELD_DEAD_GR_TARGETS_1. -->
+      <xpath>/Defs/PawnKindDef[defName="GR_Mantistanis"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+        <value>
+          <GR_Mantistanis>0.05</GR_Mantistanis> <!-- mantistanis - large-predator, import -->
+        </value>
+      </match>
     </match>
   </Operation>
 
