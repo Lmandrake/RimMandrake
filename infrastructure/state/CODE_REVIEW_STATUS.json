@@ -3726,10 +3726,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 5,
-    "date": "2026-09-11",
-    "hash": "28ec6a5b094926fd9418f0fe9ab118a9f6ef9ca748c95a27aba1cd4bc2d7236c",
-    "sha": "15645eb3c"
+    "cleanCount": 6,
+    "date": "2026-09-12",
+    "hash": "0f2e8644f19f27aece91060e7a9b76e7a5bdac7f4fa89dec4d66f28ae9370f92",
+    "sha": "c8e2d629a"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
     "cleanCount": 3,
@@ -3762,10 +3762,10 @@
     "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "2fa87d863259c8a6a050a437d9183ea1dd926b7f9c6be16b6d8cb0a623266718",
-    "sha": "7dabaa86"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "724aa19b54fa6960f4d631f4396279eb6861a4f55dae405f8c0902fe4584536f",
+    "sha": "c8e2d629a"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
