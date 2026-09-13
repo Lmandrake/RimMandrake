@@ -1,9 +1,100 @@
 {
-  "Pits": {
-    "hash": "ef7b39b350462c587832ac9c93cf140528a33a3803fe847cc6a2605511027fbd",
+  "Aftermath": {
+    "hash": "4f1b294dc41144f8f0779739affc0dca0dc5f9f754cf4538938e12ae25c3f2d5",
     "minor": null,
-    "run_id": "Pits@live-2026-09-12",
+    "run_id": "Aftermath@1789295357",
+    "status": "RED",
+    "ts": 1789295359.3320925
+  },
+  "Antiquities": {
+    "hash": "108948cea6337e40d68e9d97eca6308f5d5e929688e26352ab3be97523b40ac9",
+    "minor": null,
+    "run_id": "Antiquities@1789295361",
+    "status": "RED",
+    "ts": 1789295361.399615
+  },
+  "Droidworks": {
+    "hash": "3a8fa5f03fb5c8871d0ba0f075ad8e5e547a3e05459becf040e2d2aa28c17d7f",
+    "minor": null,
+    "run_id": "Droidworks@1789295391",
+    "status": "RED",
+    "ts": 1789295394.5104144
+  },
+  "FluidCanals": {
+    "hash": "e9033a2a76d25b4eb0337d9340b5bbc6a8d2a27366d6dacecca3117151f5c0d8",
+    "minor": null,
+    "run_id": "FluidCanals@1789295363",
     "status": "GREEN",
-    "ts": 1789254765.777555
+    "ts": 1789295364.2275925
+  },
+  "Inhabited": {
+    "hash": "43f7825fc307142fe7683457f28eb2fb87b65079c79b1df74161a439335b4ef7",
+    "minor": null,
+    "run_id": "Inhabited@1789295350",
+    "status": "RED",
+    "ts": 1789295350.987889
+  },
+  "JawaIonWeapons": {
+    "hash": "bbb79956caf38b668a3eee9cda522c543113aa489f173f1bb724222bc1138fa3",
+    "minor": null,
+    "run_id": "JawaIonWeapons@1789295380",
+    "status": "RED",
+    "ts": 1789295382.3548174
+  },
+  "Ninefold": {
+    "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",
+    "minor": null,
+    "run_id": "Ninefold@1789295352",
+    "status": "RED",
+    "ts": 1789295353.327609
+  },
+  "PawnFlavor": {
+    "hash": "bd551ce7486c57f52d11e52ff660e23119a43663c50062b7b2d5ce70e4a26014",
+    "minor": null,
+    "run_id": "PawnFlavor@1789295395",
+    "status": "RED",
+    "ts": 1789295395.3677833
+  },
+  "Pits": {
+    "hash": "306ec9f29596914d444f0fbd1b3117a683d9dc696e6025d4d99afac0e105ee7e",
+    "minor": null,
+    "run_id": "Pits@1789295347",
+    "status": "GREEN",
+    "ts": 1789295348.6166
+  },
+  "Pyrelands": {
+    "hash": "4657ffdd57c8b6fa53a182aeba42ce04022714d9d094243d1b5098f01709b1a8",
+    "minor": null,
+    "run_id": "Pyrelands@1789295372",
+    "status": "RED",
+    "ts": 1789295372.7931364
+  },
+  "ResearchRetag": {
+    "hash": "33a9dfffdf765fee8c82020fe8af4092e4ad13120dcfc8affba61585ef61242c",
+    "minor": null,
+    "run_id": "ResearchRetag@1789295374",
+    "status": "RED",
+    "ts": 1789295375.0829787
+  },
+  "ShipMemory": {
+    "hash": "8239c11711e1ae72136a8e35e20a2cb2819363f8db1e0ad7b37057b1ffe11d0f",
+    "minor": null,
+    "run_id": "ShipMemory@1789295377",
+    "status": "RED",
+    "ts": 1789295377.7421901
+  },
+  "StarWarsRaces": {
+    "hash": "ed871ace83dddcf825848fb6f62f93f4702d53f172902b2a55cd1e4bfc2988ab",
+    "minor": null,
+    "run_id": "StarWarsRaces@1789295384",
+    "status": "RED",
+    "ts": 1789295390.2610657
+  },
+  "StructureInjections": {
+    "hash": "9ca37a3aa43813567bb2edf9e5d75ded5ea3f2765e0e36e90d91c4e2cc3bfa24",
+    "minor": null,
+    "run_id": "StructureInjections@1789295369",
+    "status": "RED",
+    "ts": 1789295369.928148
   }
 }

@@ -1,0 +1,18 @@
+Pits                   GREEN  3/3 pass  0 findings  8s
+Inhabited              RED  0/10 pass  2 findings  1s
+Ninefold               RED  3/6 pass  2 findings  34s
+RimProperty            LOAD/RUN ERROR: ExpectationFailed('set_thing_props(faction=Pirate) did not take -- read back faction=None')
+Aftermath              RED  0/3 pass  2 findings  5s
+Antiquities            RED  1/2 pass  1 findings  57s
+FluidCanals            GREEN  3/3 pass  0 findings  2s
+Graffiti               LOAD/RUN ERROR: RimBridgeError("unexpected response id 'a87a1c1e-4412-4801-85e4-a749b29f4bd6' (wanted 'f5592187-5a5f-4879-8afe-79b3e0cfc5f9')")
+StructureInjections    RED  1/2 pass  1 findings  2s
+Pyrelands              RED  3/6 pass  3 findings  33s
+ResearchRetag          RED  1/2 pass  1 findings  2s
+ShipMemory             RED  2/3 pass  1 findings  16s
+JawaIonWeapons         RED  2/10 pass  5 findings  4s
+StarWarsRaces          RED  1/4 pass  2 findings  2s
+Droidworks             RED  11/21 pass  6 findings  35s
+PawnFlavor             RED  6/14 pass  4 findings  5s
+
+==== BRIDGE HALF DONE: 16 mods ====

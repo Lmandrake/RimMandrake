@@ -1,0 +1,253 @@
+{
+ "chains": [
+  {
+   "name": "replay_dwelling_plan",
+   "components": [
+    {
+     "name": "dwelling_plan_replays_fully",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "expect_log_contains(dwelling_test.txt, foundationCells=0)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, terrainCells=130)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, things=73)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, roofCells=192)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, thingsSpawned=73)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Wall51764",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         },
+         {
+          "id": "Wall51765",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 126,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         },
+         {
+          "id": "Wall51771",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 125,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         }
+        ],
+        "scanned": 41171,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 55,
+        "perDef": {
+         "Wall": 3
+        },
+        "ticksGame": 3298,
+        "message": "3 of 3 matching thing(s) returned, 41171 examined.",
+        "operation": {
+         "OperationId": "op_00154894be9e4065ab85902bdfeac622",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:26:54.7560792+00:00",
+         "CompletedAtUtc": "2026-09-13T10:26:54.8050666+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "ElectricStove51833",
+          "def": "ElectricStove",
+          "label": "Electric stove",
+          "x": 138,
+          "z": 135,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 180,
+          "maxHitPoints": 180,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 41171,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 55,
+        "perDef": {
+         "ElectricStove": 1
+        },
+        "ticksGame": 3298,
+        "message": "1 of 1 matching thing(s) returned, 41171 examined.",
+        "operation": {
+         "OperationId": "op_3996d7b69edd411c861e8f0122b1e05e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:26:54.8060661+00:00",
+         "CompletedAtUtc": "2026-09-13T10:26:54.8552726+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\dwelling_plan_replays_fully_1789295214.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "replay_moisture_farm_plan",
+   "components": [
+    {
+     "name": "moisture_farm_plan_replays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: thingsSpawned expected >= 93 (all 99 plan things minus the 6 Armoury-only KotOR_MoistureVaporator_big lines this minimal run cannot resolve), got 92 (line='[RMInjectDebug] RAN C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\RimWorld\\\\Mods\\\\StructureInjections\\\\Templates\\\\moisture_farm_test.txt clicked=(125, 0, 125) offset=(25,25) foundationCells=0 terrainCells=9 things=99 roofCells=25 thingsBefore=41098 thingsAfter=41190 thingsSpawned=92')",
+     "evidence": [
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, foundationCells=0)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, terrainCells=9)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, things=99)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, roofCells=25)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "3 message(s) of 685 in the buffer.",
+        "totalInBuffer": 685,
+        "messages": [
+         {
+          "type": "Error",
+          "text": "[RimMandrake.StructureInjections] no ThingDef 'PrimitiveWell' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)",
+          "repeats": 6
+         },
+         {
+          "type": "Message",
+          "text": "[RMInjectDebug] RAN C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt clicked=(125, 0, 125) offset=(25,25) foundationCells=0 terrainCells=9 things=99 roofCells=25 thingsBefore=41098 thingsAfter=41190 thingsSpawned=92",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 3298,
+        "operation": {
+         "OperationId": "op_66ebe727d78d447d9d61e120fc14d065",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:26:55.4386605+00:00",
+         "CompletedAtUtc": "2026-09-13T10:26:55.4880046+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "moisture_farm_plan_replays"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\StructureInjections",
+ "wallSeconds": 2.5
+}

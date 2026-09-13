@@ -1,0 +1,390 @@
+{
+ "chains": [
+  {
+   "name": "own_tab_defs",
+   "components": [
+    {
+     "name": "research_tabs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "15 of 15 def(s) resolved",
+        "requested": 15,
+        "foundCount": 15,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "generalTitle"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Scavenging",
+          "found": true,
+          "defName": "RUT_Tree_Scavenging",
+          "defType": "ResearchTabDef",
+          "label": "jawa scavenging",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Jawa Scavenging",
+           "label": "jawa scavenging"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Refinery",
+          "found": true,
+          "defName": "RUT_Tree_Refinery",
+          "defType": "ResearchTabDef",
+          "label": "the refinery",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Refinery",
+           "label": "the refinery"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Workshop",
+          "found": true,
+          "defName": "RUT_Tree_Workshop",
+          "defType": "ResearchTabDef",
+          "label": "the workshop",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Workshop",
+           "label": "the workshop"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Hearth",
+          "found": true,
+          "defName": "RUT_Tree_Hearth",
+          "defType": "ResearchTabDef",
+          "label": "the hearth",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Hearth",
+           "label": "the hearth"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_PowderAndSlug",
+          "found": true,
+          "defName": "RUT_Tree_PowderAndSlug",
+          "defType": "ResearchTabDef",
+          "label": "powder & slug",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Powder & Slug",
+           "label": "powder & slug"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Utinni",
+          "found": true,
+          "defName": "RUT_Tree_Utinni",
+          "defType": "ResearchTabDef",
+          "label": "the utinni",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Utinni",
+           "label": "the utinni"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Shell",
+          "found": true,
+          "defName": "RUT_Tree_Shell",
+          "defType": "ResearchTabDef",
+          "label": "the shell",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Shell",
+           "label": "the shell"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Unbolting",
+          "found": true,
+          "defName": "RUT_Tree_Unbolting",
+          "defType": "ResearchTabDef",
+          "label": "the unbolting",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Unbolting",
+           "label": "the unbolting"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Blasterworks",
+          "found": true,
+          "defName": "RUT_Tree_Blasterworks",
+          "defType": "ResearchTabDef",
+          "label": "blasterworks",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Blasterworks",
+           "label": "blasterworks"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_WakingMind",
+          "found": true,
+          "defName": "RUT_Tree_WakingMind",
+          "defType": "ResearchTabDef",
+          "label": "the waking mind",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Waking Mind",
+           "label": "the waking mind"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Reach",
+          "found": true,
+          "defName": "RUT_Tree_Reach",
+          "defType": "ResearchTabDef",
+          "label": "the reach",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Reach",
+           "label": "the reach"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_AscendantLadder",
+          "found": true,
+          "defName": "RUT_Tree_AscendantLadder",
+          "defType": "ResearchTabDef",
+          "label": "the ascendant ladder",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Ascendant Ladder",
+           "label": "the ascendant ladder"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_StrangeSchools",
+          "found": true,
+          "defName": "RUT_Tree_StrangeSchools",
+          "defType": "ResearchTabDef",
+          "label": "the strange schools",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Strange Schools",
+           "label": "the strange schools"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_JunkerYards",
+          "found": true,
+          "defName": "RUT_Tree_JunkerYards",
+          "defType": "ResearchTabDef",
+          "label": "the junker yards",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Junker Yards",
+           "label": "the junker yards"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_FoundryHive",
+          "found": true,
+          "defName": "RUT_Tree_FoundryHive",
+          "defType": "ResearchTabDef",
+          "label": "the foundry hive",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Foundry Hive",
+           "label": "the foundry hive"
+          }
+         }
+        ],
+        "ticksGame": 5093,
+        "operation": {
+         "OperationId": "op_fef2dd31d9cb41a883ebc8037d547165",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:29.5612313+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:29.6097282+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\research_tabs_resolve_1789295249.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "core_rows_retagged",
+   "components": [
+    {
+     "name": "core_rows_match_manifest",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: Core research rows do not match the retag/tab-assign patches: AirConditioning.baseCost: expected '700', got 700.0; Autodoors.baseCost: expected '1700', got 1700.0; ColoredLights.baseCost: expected '700', got 700.0",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "5 of 5 def(s) resolved",
+        "requested": 5,
+        "foundCount": 5,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "baseCost",
+         "techLevel",
+         "tab",
+         "prerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/AirConditioning",
+          "found": true,
+          "defName": "AirConditioning",
+          "defType": "ResearchProjectDef",
+          "label": "air conditioning",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Scavenging"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Autodoors",
+          "found": true,
+          "defName": "Autodoors",
+          "defType": "ResearchProjectDef",
+          "label": "autodoor",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 1700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Scavenging"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/CarpetMaking",
+          "found": true,
+          "defName": "CarpetMaking",
+          "defType": "ResearchProjectDef",
+          "label": "carpet-making",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 800.0,
+           "prerequisites": null,
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Hearth"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/ColoredLights",
+          "found": true,
+          "defName": "ColoredLights",
+          "defType": "ResearchProjectDef",
+          "label": "advanced lights",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Hearth"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Cryptosleep",
+          "found": true,
+          "defName": "Cryptosleep",
+          "defType": "ResearchProjectDef",
+          "label": "cryptosleep casket",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 2000.0,
+           "prerequisites": [
+            "VitalsMonitor"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Reach"
+          }
+         }
+        ],
+        "ticksGame": 5093,
+        "operation": {
+         "OperationId": "op_fdf2889e279e4f949723bb972761f91e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:29.9613318+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:30.0103004+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "core_rows_match_manifest"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimUtinni\\ResearchRetag",
+ "wallSeconds": 1.5
+}

@@ -1,0 +1,112 @@
+{
+ "chains": [
+  {
+   "name": "harmony_patches_registered",
+   "components": [
+    {
+     "name": "patches_applied",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "UnknownParameterError: jawa/harmony_patches does not declare harmonyId. The bridge would DISCARD it silently and run on its defaults, returning success. Declared: methodName, typeName",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "battle_lifecycle_repelled",
+   "components": [
+    {
+     "name": "devmode_and_raid_fire",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/storyteller_fire did not report fired=true: {'success': False, 'message': \"FactionDef 'Pirate' exists but no such faction is in this world.\", 'details': None, 'operation': {'OperationId': 'op_c0b1f6663dd544e4aeb7133e07399b0c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/storyteller-fire', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-09-13T10:25:18.212891+00:00', 'CompletedAtUtc': '2026-09-13T10:25:18.2623637+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": true,
+        "ticksGame": 2105,
+        "operation": {
+         "OperationId": "op_ea71f149bc7e4b138038678a33146f4f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:25:18.1813289+00:00",
+         "CompletedAtUtc": "2026-09-13T10:25:18.2118906+00:00",
+         "DurationMs": 30,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/storyteller_fire",
+       "result": {
+        "success": false,
+        "message": "FactionDef 'Pirate' exists but no such faction is in this world.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_c0b1f6663dd544e4aeb7133e07399b0c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/storyteller-fire",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:25:18.212891+00:00",
+         "CompletedAtUtc": "2026-09-13T10:25:18.2623637+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "kill_all_raiders_closes_repelled",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "patches_applied",
+  "devmode_and_raid_fire"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Aftermath",
+ "wallSeconds": 4.9
+}

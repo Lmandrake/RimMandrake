@@ -1,0 +1,217 @@
+{
+ "chains": [
+  {
+   "name": "place_and_roster",
+   "components": [
+    {
+     "name": "place_created",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.Inhabited] created' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": false,
+        "message": "Could not find debug action 'Actions\\T: Create place at current tile'.",
+        "devModeEnabled": true,
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_e05f05d68e3447e68592c18fecd54734",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:37.8143221+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:37.8314505+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] created, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "roster_stuffed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "absorbed_into_pool",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "pool_ready_for_beggars_substitution",
+     "toggle": "beggarsFromPoolEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "drawn_from_pool",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "fate_and_stock",
+   "components": [
+    {
+     "name": "place_created",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.Inhabited] created' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": false,
+        "message": "Could not find debug action 'Actions\\T: Create place at current tile'.",
+        "devModeEnabled": true,
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_af27930445334046bf30f35aaaec1d49",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:37.9313236+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:37.9473498+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] created, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "stock_dumped",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "fate_detects_when_enabled",
+     "toggle": "fateEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "stock_collected",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "robbed_threshold_not_spurious",
+     "toggle": "robbedFraction",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "place_created",
+  "place_created"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Inhabited",
+ "wallSeconds": 1.2
+}

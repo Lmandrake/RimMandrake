@@ -1,0 +1,567 @@
+{
+ "chains": [
+  {
+   "name": "research_completed",
+   "components": [
+    {
+     "name": "research_completed_ledger",
+     "toggle": "engineEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": false,
+        "researcher": null,
+        "result": {
+         "defName": "Smithing",
+         "label": "Smithing",
+         "cost": 700.0,
+         "baseCost": 700.0,
+         "progress": 700.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_b69c7a649dcc4ed6b255ba68b9e0f883",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:39.0858763+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:39.1305629+00:00",
+         "DurationMs": 44,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ozzik satiation +15.0, None=None)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ohm satiation +3.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\research_completed_ledger_1789295079.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "mental_break_started",
+   "components": [
+    {
+     "name": "mental_break_ledger",
+     "toggle": "eventMagnitudeMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_force_mental_break",
+       "result": {
+        "success": true,
+        "started": true,
+        "breakDef": "InsultingSpree",
+        "reason": "Forced via bridge",
+        "mentalStateBefore": null,
+        "mentalStateAfter": "InsultingSpree",
+        "ticksGame": 302,
+        "operation": {
+         "OperationId": "op_9667d8cd2efb44238858e54587964d8e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-force-mental-break",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:39.6813699+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:39.7302444+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Zizzik satiation +15.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mental_break_ledger_1789295079.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "building_repaired_and_deconstructed",
+   "components": [
+    {
+     "name": "building_repaired",
+     "toggle": "firstContactLettersEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Rekko satiation +15.0 (repaired' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bomb 40.",
+        "damageDef": "Bomb",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Wall49586",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 195.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Wall49586",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 195.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 302,
+        "operation": {
+         "OperationId": "op_dbaf32e087d34b6fbd77f50fc379c31f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:40.4644443+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:40.5139461+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "Repair",
+        "afterJobDef": "Wait_MaintainPosture",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait_MaintainPosture', not 'Repair' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_13b0483477924be6996ed19e6fb43cc6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:40.5149406+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:40.5975694+00:00",
+         "DurationMs": 82,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5000)",
+       "result": {
+        "success": false,
+        "stepId": "step_7f3ab4eaa87f4db4893bd080f63c7d8b",
+        "status": "timedout",
+        "requestedTicks": 5000,
+        "completedTicks": 601,
+        "remainingTicks": 4399,
+        "startTicksGame": 302,
+        "endTicksGame": 903,
+        "advancedTicks": 601,
+        "initialFrame": 17146,
+        "lastFrame": 17747,
+        "advancedFrames": 602,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-09-13T10:24:40.6145991+00:00",
+        "completedAtUtc": "2026-09-13T10:24:50.6306393+00:00",
+        "message": "Timed out after advancing 601 of 5000 requested tick(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_aada230c87ee46cc92a3c9026eb8ac6a",
+         "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:40.6000766+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:50.6493085+00:00",
+         "DurationMs": 10049,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Rekko satiation +15.0 (repaired, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "building_deconstructed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "birth_outcome",
+   "components": [
+    {
+     "name": "birth_outcome_ledger",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Oomo satiation +15.0 (birth' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "start",
+        "notes": [
+         "pregnancy started with PregnantHuman, no father"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 0.001,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 903,
+        "operation": {
+         "OperationId": "op_7ca03726d3294762b173fe187c5546a2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:51.0667345+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:51.1134098+00:00",
+         "DurationMs": 46,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "progress",
+        "notes": [
+         "gestation (= hediff Severity) set to 1 - LABOUR WILL BEGIN ON THE NEXT TICK"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 1.0,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 903,
+        "operation": {
+         "OperationId": "op_06e1b46629e6457a87c4992038d30f72",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:51.11641+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:51.1644894+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(3000)",
+       "result": {
+        "success": false,
+        "stepId": "step_a22f0414d45843d49bc91dedfa3ead1b",
+        "status": "timedout",
+        "requestedTicks": 3000,
+        "completedTicks": 601,
+        "remainingTicks": 2399,
+        "startTicksGame": 903,
+        "endTicksGame": 1504,
+        "advancedTicks": 601,
+        "initialFrame": 17780,
+        "lastFrame": 18381,
+        "advancedFrames": 602,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-09-13T10:24:51.1806236+00:00",
+        "completedAtUtc": "2026-09-13T10:25:01.197432+00:00",
+        "message": "Timed out after advancing 601 of 3000 requested tick(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_805382e5aa014ca895226236625029f5",
+         "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:51.1644894+00:00",
+         "CompletedAtUtc": "2026-09-13T10:25:01.2133366+00:00",
+         "DurationMs": 10048,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Oomo satiation +15.0 (birth, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "mood_walk_tick",
+   "components": [
+    {
+     "name": "mood_walk_advances",
+     "toggle": "moodWalkMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2600)",
+       "result": {
+        "success": false,
+        "stepId": "step_583b86c493f34ffc9cad77e2e9a62f69",
+        "status": "timedout",
+        "requestedTicks": 2600,
+        "completedTicks": 601,
+        "remainingTicks": 1999,
+        "startTicksGame": 1504,
+        "endTicksGame": 2105,
+        "advancedTicks": 601,
+        "initialFrame": 18401,
+        "lastFrame": 19002,
+        "advancedFrames": 602,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-09-13T10:25:01.5306278+00:00",
+        "completedAtUtc": "2026-09-13T10:25:11.5467295+00:00",
+        "message": "Timed out after advancing 601 of 2600 requested tick(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_9b3b8f45784349be87b095816bd6da5b",
+         "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:25:01.5141415+00:00",
+         "CompletedAtUtc": "2026-09-13T10:25:11.5637087+00:00",
+         "DurationMs": 10049,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": false,
+        "ticksGame": 2105,
+        "operation": {
+         "OperationId": "op_a7bd2580351e497494b5448305ddc08f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:25:11.5647163+00:00",
+         "CompletedAtUtc": "2026-09-13T10:25:11.6138483+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mood_walk_advances_1789295111.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "building_repaired",
+  "birth_outcome_ledger"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Ninefold",
+ "wallSeconds": 33.9
+}

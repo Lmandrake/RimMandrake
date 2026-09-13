@@ -1,0 +1,18 @@
+
+==== WAVE ABORTED after 0s: RuntimeError('modlist_swap.py --minimal --apply FAILED: Traceback (most recent call last):\n  File "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Utils\\modlist_swap.py", line 22, in <module>\n    from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Utils\\atomic_copy.py", line 25, in <module>\n    import fcntl\nModuleNotFoundError: No module named \'fcntl\'') ====
+Traceback (most recent call last):
+  File "D:\Luke\dev\Rimworld\Transient\modcheck_wave_driver.py", line 13, in <module>
+    results = runner.run(pairs, debug=False)
+  File "D:\Luke\dev\Rimworld\src/RimMandrake/Utils/modcheck\runner.py", line 256, in run
+    swap_to_test_list()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\Luke\dev\Rimworld\src/RimMandrake/Utils/modcheck\runner.py", line 152, in swap_to_test_list
+    raise RuntimeError("modlist_swap.py --minimal --apply FAILED: %s"
+                       % (r.stdout + r.stderr).strip())
+RuntimeError: modlist_swap.py --minimal --apply FAILED: Traceback (most recent call last):
+  File "D:\Luke\dev\Rimworld\src\RimMandrake\Utils\modlist_swap.py", line 22, in <module>
+    from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\Rimworld\src\RimMandrake\Utils\atomic_copy.py", line 25, in <module>
+    import fcntl
+ModuleNotFoundError: No module named 'fcntl'

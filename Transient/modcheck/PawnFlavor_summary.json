@@ -1,0 +1,680 @@
+{
+ "chains": [
+  {
+   "name": "trait_defs_readback",
+   "components": [
+    {
+     "name": "rollable_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "commonality",
+         "degreeDatas"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RUT_Jawa_WaterDiscipline",
+          "found": true,
+          "defName": "RUT_Jawa_WaterDiscipline",
+          "defType": "TraitDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "degreeDatas": [
+            "TraitDegreeData"
+           ],
+           "commonality": 0.5
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_12bce19d870c48fe8c24f29ac1f70f08",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:28.9039224+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:28.9530135+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "TraitDef/RUT_Jawa_WaterDiscipline.commonality -> 0.5 (a numeric commonality)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "forced_only_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: TraitDef/RUT_Jawa_Numbered.commonality = 0.0, expected commonality 0 (forcedTraits-only)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "commonality"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RUT_Jawa_Numbered",
+          "found": true,
+          "defName": "RUT_Jawa_Numbered",
+          "defType": "TraitDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "commonality": 0.0
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_daf7be484b1647c8b79f6c186337b27a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:28.954014+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.0030661+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "TraitDef/RUT_Jawa_Numbered.commonality -> 0.0 (commonality 0 (forcedTraits-only))",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "backstory_defs_readback",
+   "components": [
+    {
+     "name": "backstory_RUT_Jawa_AcademyCadet",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "slot",
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_AcademyCadet",
+          "found": true,
+          "defName": "RUT_Jawa_AcademyCadet",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "slot": "Childhood",
+           "spawnCategories": [
+            "JawaBSC_Empire"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_7cd768b7ce154b7f82bda8848f6fb2c1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.0529613+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.1031484+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_AcademyCadet.slot -> 'Childhood' (slot=Childhood)",
+       "result": true
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_AcademyCadet.spawnCategories -> ['JawaBSC_Empire'] (category JawaBSC_Empire present)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_Majordomo",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "slot",
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_Majordomo",
+          "found": true,
+          "defName": "RUT_Jawa_Majordomo",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "slot": "Adulthood",
+           "spawnCategories": [
+            "JawaBSC_Hutt"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_c888637bf4064b29920838ad9a15d391",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.1031484+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.1521691+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_Majordomo.slot -> 'Adulthood' (slot=Adulthood)",
+       "result": true
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_Majordomo.spawnCategories -> ['JawaBSC_Hutt'] (category JawaBSC_Hutt present)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_PurificationEngineer",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "slot",
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_PurificationEngineer",
+          "found": true,
+          "defName": "RUT_Jawa_PurificationEngineer",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "slot": "Adulthood",
+           "spawnCategories": [
+            "JawaBSC_Deepwater"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_186e79e88e2c4ecea4162d7e47dfe2b6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.153172+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.2021293+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_PurificationEngineer.slot -> 'Adulthood' (slot=Adulthood)",
+       "result": true
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_PurificationEngineer.spawnCategories -> ['JawaBSC_Deepwater'] (category JawaBSC_Deepwater present)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_ColdForged",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: BackstoryDef/RUT_Jawa_ColdForged.slot = 'Childhood', expected slot=Adulthood",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "slot",
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_ColdForged",
+          "found": true,
+          "defName": "RUT_Jawa_ColdForged",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "slot": "Childhood",
+           "spawnCategories": [
+            "JawaBSC_FDENightside"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_08643ee5647f4265b05484010a9dc64c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.2031346+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.2529589+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_ColdForged.slot -> 'Childhood' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_AshSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_AshSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_MootSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_MootSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "backstory_RUT_Jawa_RetrievalAgent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RetrievalAgent.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "vqe_rakata_categories_readback",
+   "components": [
+    {
+     "name": "ancient_patient_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_RakataSiegeChild",
+          "found": true,
+          "defName": "RUT_Jawa_RakataSiegeChild",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "spawnCategories": [
+            "VQE_AncientPatient"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_f6abf150efbd4ede99f0d70c5636b936",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.3038899+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.3522858+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataSiegeChild.spawnCategories -> ['VQE_AncientPatient'] (VQE_AncientPatient present)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "experiment_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: BackstoryDef/RUT_Jawa_RakataLastGeneration.spawnCategories = ['VQE_AncientPatient'], expected VQE_Experiment present",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_RakataLastGeneration",
+          "found": true,
+          "defName": "RUT_Jawa_RakataLastGeneration",
+          "defType": "BackstoryDef",
+          "label": null,
+          "modName": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+          "packageId": "mandrake.rut.pawnflavor",
+          "fields": {
+           "spawnCategories": [
+            "VQE_AncientPatient"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_332bea2e949048c2970e66f8068992d8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.3535614+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.4023322+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataLastGeneration.spawnCategories -> ['VQE_AncientPatient'] (VQE_Experiment present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "faction_patch_wired_vanilla",
+   "components": [
+    {
+     "name": "empire_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: FactionDef/Empire.backstoryFilters = ['BackstoryCategoryFilter', 'BackstoryCategoryFilter'], expected JawaBSC_Empire present",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "backstoryFilters"
+        ],
+        "defs": [
+         {
+          "requested": "FactionDef/Empire",
+          "found": true,
+          "defName": "Empire",
+          "defType": "FactionDef",
+          "label": "shattered empire",
+          "modName": "Royalty",
+          "packageId": "ludeon.rimworld.royalty",
+          "fields": {
+           "backstoryFilters": [
+            "BackstoryCategoryFilter",
+            "BackstoryCategoryFilter"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7243,
+        "operation": {
+         "OperationId": "op_256e4630a4ea47f6acd21f8c87a02383",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:28:29.4533463+00:00",
+         "CompletedAtUtc": "2026-09-13T10:28:29.5022595+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "FactionDef/Empire.backstoryFilters -> ['BackstoryCategoryFilter', 'BackstoryCategoryFilter'] (JawaBSC_Empire present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    },
+    {
+     "name": "pirate_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "FactionDef/Pirate.backstoryFilters -> '(no such field)' (JawaBSC_Blackstar present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "empire_pawn_generation",
+   "components": [
+    {
+     "name": "empire_pawn_draws_flavor_backstory",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\empire_pawn_draws_flavor_backstory_1789295310.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "forced_only_trait_resolves",
+  "backstory_RUT_Jawa_ColdForged",
+  "experiment_pool_marked",
+  "empire_filter_wired"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimUtinni\\PawnFlavor",
+ "wallSeconds": 4.6
+}

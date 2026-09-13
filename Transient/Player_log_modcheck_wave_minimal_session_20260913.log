@@ -1,0 +1,1088 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.109 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.783900 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Lantern Deeps dependency (BiomesTeam.BiomesCaverns) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (zylle.morevanillabiomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (mandrake.rm.pyrelands) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000234F052CEF0.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000234F07D0450.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=126 elapsedMs=126
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=126
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=126 elapsedMs=126
+1.6.9701 ::
+<color=#00FFFFFF>:: Outer Rim - Core ::</color> 1.6.9306 ::
+Error while instantiating a mod of type OuterRimCore.OuterRimCoreMod: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object
+[Ref D3840D9A]
+  at OuterRimCore.OuterRimCoreMod.get_VersionDir () [0x0000b] in <f175bbca770d41f481b7d51826e7d2dd>:0 
+OuterRimCore.OuterRimCoreMod..ctor(ModContentPack content)
+(wrapper managed-to-native) System.Reflection.RuntimeConstructorInfo.InternalInvoke(System.Reflection.RuntimeConstructorInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeConstructorInfo.InternalInvoke (System.Object obj, System.Object[] parameters, System.Boolean wrapExceptions) [0x00005] in <51fded79cd284d4d911c5949aff4cb21>:0 
+   --- End of inner exception stack trace ---
+[Ref 63660D84]
+  at System.Reflection.RuntimeConstructorInfo.InternalInvoke (System.Object obj, System.Object[] parameters, System.Boolean wrapExceptions) [0x0001a] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeConstructorInfo.DoInvoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00086] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeConstructorInfo.Invoke (System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceImpl (System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Object[] args, System.Globalization.CultureInfo culture, System.Object[] activationAttributes, System.Threading.StackCrawlMark& stackMark) [0x0022b] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Object[] args, System.Globalization.CultureInfo culture, System.Object[] activationAttributes) [0x0009c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Object[] args) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.LoadedModManager.CreateModClasses () [0x00085] in <61e4173561894da49d210260257b5097>:0 
+Could not find a type named BigAndSmall.PawnRenderNode_FurSkinClr
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BetterPrerequisites.GeneExtension from node <li Class="BetterPrerequisites.GeneExtension"><applyPartHediff><li><hediff>RSW_GeneHediff_gandmask</hediff><bodyparts><li>Jaw</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2]
+  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_DefModExtension(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_Def(int,int,System.Xml.XmlNode,System.Type)
+  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BetterPrerequisites.GeneExtension from node <li Class="BetterPrerequisites.GeneExtension"><applyPartHediff><li><hediff>RSW_GeneHediff_kaleeshmask</hediff><bodyparts><li>Head</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BetterPrerequisites.GeneExtension from node <li Class="BetterPrerequisites.GeneExtension"><applyPartHediff><li><hediff>RSW_GeneHediff_keldormask</hediff><bodyparts><li>Jaw</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnExtension from node <li Class="BigAndSmall.PawnExtension"><headPaths><Female>RimMandrakeSW/SWX/Pawn/HeadType/gand/gand</Female><Male>RimMandrakeSW/SWX/Pawn/HeadType/gand/gand</Male></headPaths><headMaterial><shader>CutoutComplex</shader><overrideDesiccated>false</overrideDesiccated><colorA><skinColor>true</skinColor><altDefs><li>BS_CustomGlobalA</li></altDefs><alts><li><triggers><li>Dead</li></triggers><color>(0.2,0.05,0)</color></li></alts></colorA></headMaterial></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BetterPrerequisites.GeneExtension from node <li Class="BetterPrerequisites.GeneExtension"><headPosMultiplier>0.35</headPosMultiplier></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnExtension from node <li Class="BigAndSmall.PawnExtension"><headPaths><Female>RimMandrakeSW/SWX/Pawn/HeadType/selkath/fishy_female</Female><Male>RimMandrakeSW/SWX/Pawn/HeadType/selkath/fishy_male</Male></headPaths><headMaterial><shader>CutoutComplex</shader><overrideDesiccated>false</overrideDesiccated><colorA><skinColor>true</skinColor><altDefs><li>BS_CustomGlobalA</li></altDefs><alts><li><triggers><li>Dead</li></triggers><color>(0.2,0.05,0)</color></li></alts></colorA></headMaterial></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnExtension from node <li Class="BigAndSmall.PawnExtension"><applyPartHediff><li><hediff>RSW_Hediff_PsyHarmonize</hediff><bodyparts><li>Brain</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnExtension from node <li MayRequire="Ludeon.RimWorld.Royalty" Class="BigAndSmall.PawnExtension"><applyPartHediff><li><hediff>PsychicAmplifier</hediff><bodyparts><li>Brain</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Exception loading def from file SW_Genes.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnExtension from node <li Class="BigAndSmall.PawnExtension"><applyPartHediff><li><hediff>RSW_GeneHediff_claws</hediff><bodyparts><li>Hand</li><li>Hand</li><li>Hand</li><li>Hand</li><li>Hand</li><li>Hand</li></bodyparts></li></applyPartHediff></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+Type BigAndSmall.GraphicSetDef is not a Def type or could not be found, in file SW_Support.xml. Context: <BigAndSmall.GraphicSetDef><defName>RSW_GandMaskCustomization_default</defName><conditionalGraphics><triggerFlags><whitelist><guy762AltTag_GandMaskDefault /></whitelist></triggerFlags><texturePaths><li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li><li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li></texturePaths></conditionalGraphics></BigAndSmall.GraphicSetDef>
+Exception loading def from file SW_Support.xml: System.ArgumentException: Could not find type named BigAndSmall.PawnRenderingProps_Ultimate from node <li Class="BigAndSmall.PawnRenderingProps_Ultimate"><nodeClass>BigAndSmall.PawnRenderNode_Ultimate</nodeClass><workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass><parentTagDef>Head</parentTagDef><baseLayer>67</baseLayer><conditionalGraphics><texturePaths><li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li><li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li></texturePaths><altDefs><li>RSW_GandMaskCustomization_default</li><li>RSW_GandMaskCustomization_yuun</li><li>RSW_GandMaskCustomization_zuckuss</li></altDefs></conditionalGraphics><drawData><defaultData><layer>67</layer></defaultData></drawData></li>
+Parameter name: node
+[Ref 664522EF]
+  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_PawnRenderNodeProperties(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_Def(int,int,System.Xml.XmlNode,System.Type)
+  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 
+Exception loading def from file SW_Support.xml: System.ArgumentException: Could not find type named guy762_Ionization.ModExtension_HediffGiver from node <li Class="guy762_Ionization.ModExtension_HediffGiver"><hediffToAdd>RSW_hediff_ink</hediffToAdd><severityFixed>1</severityFixed></li>
+Parameter name: node
+[Ref 90D70BC2] Duplicate stacktrace, see ref for original
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_DeepwaterCompact"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_GeonosianFoundryHive"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_Junkers"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+[Jawa Pawn Flavor — faction backstories and traits] Patch operation Verse.PatchOperationConditional(/Defs/FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]/backstoryFilters) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\PawnFlavor\Patches\FactionBackstoryWiring.xml
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LatentPsychic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FastNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_RidgedSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FaceTendrils (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_RidgedSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_RidgedSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LowBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_hutt (wanter=requiredGenes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_selkath (wanter=requiredGenes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_gand (wanter=requiredGenes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_hutt (wanter=requiredGenes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_selkath (wanter=requiredGenes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Uncertain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_AgressionSubmissive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleLime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepGreen (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Viridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Azure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PalePurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Magenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleMagenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepPink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Pink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_SkinBrightOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Magenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FrailDigestion (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_CalmingPheromones (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationHigh (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_SlowNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_White (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_SlowNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_PsyHarmonize (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LatentPsychic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FastNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepLime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepGreen (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_BigEars (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationLow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_PsyHarmonize (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightMagenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PalePink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_CalmingPheromones (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Empathic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationLow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_LightBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference: No Verse.HediffDef named RSW_GeneHediff_gandmask found to give to Verse.DefHyperlink Verse.DefHyperlink
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_hutt (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named VU_Hermaphromorph (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepLime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DarklightAffinity (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_FireRed_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_MarsRed_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_BurntOrange_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_Tangerine_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_TaxiCab_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Eyes_MidasGold_Reptile (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FastNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Chest_Fur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Gray (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AllMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_HeadAttachment_kaleeshmask (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ChinHorns (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_JawTusks (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EyeVisual_Recessed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Nose_NoseSlits (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_Akhkharu (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_BiosculptAccelerated (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_BiosculptNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Cyan (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_HeadAttachment_keldormask (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LatentPsychic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FrailDigestion (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Voice_Insect (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_InsectBody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Chest_Fur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_PsyHarmonize (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Lime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleLime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Azure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PalePurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Pink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PalePink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationHigh (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sandstone (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Granite (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FreeSpirit (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_SvelteHead (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_SvelteHead (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Azure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Terrified (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepGreen (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleGreen (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Could not resolve cross-reference to Verse.ResearchProjectDef named VFE_Res_FarmingTechniques (wanter=prerequisites)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkRed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Orange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_SlowNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Uncertain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_Fleef (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Orange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_LightBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_SvelteHead (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_NaturalLeader (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LatentPsychic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Chest_Fur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkMagenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Black (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Could not resolve cross-reference to Verse.ResearchProjectDef named FT_Chemistry (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named FT_Concrete (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named Tinkering (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named guy762_ResearchKotOR_droidblasters (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named ScuttlebugsBiology (wanter=prerequisites)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference: No Verse.HediffDef named RSW_GeneHediff_gandmask found to give to Verse.RecipeDef RSW_InstallHediff_gandmask
+Could not resolve cross-reference to Verse.ThingDef named guy762_TuskenMask (wanter=apparel)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_White (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_PruningAccelerated (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_GauranlenNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LowBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Nose_Leathery (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_Teddy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Viridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_WebbedFeet (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_RidgedSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_CalmingPheromones (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Orange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Yellow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HerdMentality (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_gand (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_HeadAttachment_gandmask (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MeditationNeed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sandstone (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_VoiceDryad (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_InsectBody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Wings_Insect (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Voice_Insect (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_InsectBody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedAgeing (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationHigh (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LeaperLegs (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BodyScale_Large (wanter=genes)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Robes_jawa (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.ThingDef named guy762_JawaHood (wanter=apparelRequired)
+Could not resolve cross-reference to Verse.GeneDef named AG_UnderdevelopedTeeth (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named AG_SurvivalInstinct_High (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named AG_TableResistance (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named AG_Stinky (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named AG_FrailSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_EarlyMaturity (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named VRE_ShortPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named SEX_AlwaysAphrodor (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named SEX_Ovipositor (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Gray (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AllMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named VRE_Curiosity_Social (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PalePink (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_InsectBody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_BiosculptAccelerated (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_White (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Hands_Talons (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ElvenEars (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Furbody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_Large (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FreeSpirit (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Hands_Talons (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedAgeing (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_AcceleratedMaturation (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkOrange (wanter=genes)
+Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No Verse.HediffDef named RSW_GeneHediff_gandmask found to give to Verse.DefHyperlink Verse.DefHyperlink
+Could not resolve cross-reference: No Verse.HediffDef named RSW_GeneHediff_gandmask found to give to Verse.RecipeDef RSW_RemoveHediff_gandmask
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_CaptainFourteen
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_Wallop
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperHelmet (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19XTargetingBlaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_TrooperBoAnder
+Could not resolve cross-reference: No Verse.ThingDef named Force_Lightsaber_Inquisitor found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_InquisitorVaunt
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named DV_MeleeWeapon_SerratedScimitar found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Hutt_MargraveSarrick
+Could not resolve cross-reference: No Verse.ThingDef named GS_Gaffi found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_GhurrVex
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_A280Blaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Wildsteam_BoKesh
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.DamageDef named RSW_RangedDamage_ink found to give to Verse.ProjectileProperties Verse.ProjectileProperties
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Certain (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LowFertility (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightRed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightLime (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_DarkBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Red (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Azure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Teeth_Fangs (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Fast_TotalHealing (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_statgene_predator (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleSage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Could not resolve cross-reference to Verse.ResearchProjectDef named guy762_ResearchKotOR_blasters (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named guy762_ResearchKotOR_tusken (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named guy762_ResearchKotOR_tusken (wanter=prerequisites)
+Could not resolve cross-reference to Verse.ResearchProjectDef named guy762_ResearchKotOR_tusken (wanter=prerequisites)
+Could not resolve cross-reference: No Verse.GeneCategoryDef named Turn_GeneCategory_Slavery found to give to Verse.GeneDef RSW_Jawa_Skittish
+Could not resolve cross-reference: No Verse.GeneDef named RSW_Head_selkath found to give to Verse.GeneDef RSW_Beard_fishmouth
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.StatDef named SM_Cosmetic_BodySizeOffset found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No Verse.HediffDef named RSW_GeneHediff_gandmask found to give to Verse.DefHyperlink Verse.DefHyperlink
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_FlatPointed (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_UnusualSpeech (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_HighBeautyStandard (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ThickSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_MotivationLow (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Eye_Cyan (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_LatentPsychic (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_FastNeuralHeat (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_TraitGrandeur (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named BS_Diet_Carnivore (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Turn_Gene_Duelist (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Brown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_PaleBrown (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_WebbedFeet (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DeceleratedPregnancy (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_BaldMale (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_DistinctCheekbones (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_LongMouth (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightOrange (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightPurple (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_HairColor_BrightMagenta (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepBlue (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Ears_Curved (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Blood_Green (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_ScaleSkin (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_FamiliarScent (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Evasive (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named RSW_Head_selkath (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_EggLayer (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_Sage (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepViridian (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Skin_DeepAzure (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Hands_VenomTalons (wanter=genes)
+Could not resolve cross-reference to Verse.GeneDef named Outland_Scalebody (wanter=genes)
+Config error in TargetedInsultingSpree: label contains illegal character(s): "[]{}". This can cause issues during grammar resolution. If this was intended, you can use the "ignoreIllegalLabelCharacterConfigError" flag.
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Some descriptionHyperlinks in RSW_InstallHediff_gandmask had null def.
+Some descriptionHyperlinks in RSW_RemoveHediff_gandmask had null def.
+Config error in RSW_Body_gaunt: Node Fur: nodeClass is null.
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+RSW_Pawn_SandP_Call SubSound RSW_Pawn_SandP_Call_0 has no resolvedGrains.
+RSW_Pawn_SandP_Death SubSound RSW_Pawn_SandP_Death_0 has no resolvedGrains.
+RSW_Pawn_SandP_Wounded SubSound RSW_Pawn_SandP_Wounded_0 has no resolvedGrains.
+Translation data for language English has 30 errors. Generate translation report for more info.
+KCSG has Created 7272 symbolDefs for vanilla and DLCs
+[RimMandrake.Inhabited] ready: 2 patches, 294 characters, 4 places, 0 casts.
+Alien race successfully completed 280 patches (50 pre, 82 post, 148 trans) with harmony.
+[RimMandrake.Ninefold] subscribed to RimMandrake.Aftermath.ChronicleEvents.
+[RimMandrake.Ninefold] ready: 17 event-hook patches.
+[RimMandrake.Aftermath] ready: 5 battle-recorder patches.
+[RimMandrake.StarWars.FireEcology] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.StarWars.FireEcology] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+Unloading 5 Unused Serialized files (Serialized files now loaded: 8)
+MVCF successfully applied 0 patches
+Unloading 158 unused Assets to reduce memory usage. Loaded Objects now: 32481.
+Total: 185.457000 ms (FindLiveObjects: 1.920100 ms CreateObjectMapping: 1.143500 ms MarkObjects: 181.919400 ms  DeleteObjects: 0.473800 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=23 elapsedMs=34061
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=819 elapsedMs=34881
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=34882
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=34883
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=34883
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=34883
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=34883
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=34884
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=34887
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=34888
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=34888
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=34891
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=34910
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=849 elapsedMs=34911
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=20 elapsedMs=34911
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 7386f58cd28c4655bd5cb719f61e8ce3
+[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 8.0 [Neutral]
+[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 3.0 [Neutral]
+[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 16.0 [Neutral]
+[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 6.0 [Neutral]
+[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 6.0 [Neutral]
+Unloading 3 Unused Serialized files (Serialized files now loaded: 8)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.875200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 32679.
+Total: 161.556500 ms (FindLiveObjects: 1.951100 ms CreateObjectMapping: 1.347900 ms MarkObjects: 158.203400 ms  DeleteObjects: 0.053800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - brrainz.rimbridgeserver
+  - 7f.alienworlds
+  - 7f.alienworlds.tidallylocked
+  - sarg.alphabiomes
+  - Oblitus.MyLittlePlanet
+  - mandrake.rm.inhabited
+  - neronix17.toolbox
+  - Neronix17.OuterRim.Core
+  - erdelf.HumanoidAlienRaces
+  - mandrake.rsw.ionweapons
+  - mandrake.rsw.droidworks
+  - mandrake.rm.fluidcanals
+  - mandrake.rut.shipmemory
+  - rw.mod.simplestairs
+  - Kutte.Stairs
+  - Mlie.DecorativeCliffs
+  - mandrake.rm.pits
+  - mandrake.rm.ninefold
+  - mandrake.rm.property
+  - mandrake.rm.aftermath
+  - mandrake.rut.antiquities
+  - mandrake.rm.graffiti
+  - mandrake.rm.injections
+  - mandrake.rm.pyrelands
+  - mandrake.rut.researchretag
+  - mandrake.rsw.starwarsraces
+  - mandrake.rut.pawnflavor
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexFurniture) -> 21.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexFurniture) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: PassiveCooler) -> 36.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): PassiveCooler) -> 6.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Stonecutting) -> 51.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Stonecutting) -> 9.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexClothing) -> 66.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexClothing) -> 12.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Electricity) -> 81.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Electricity) -> 15.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: NutrientPaste) -> 96.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): NutrientPaste) -> 18.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: AirConditioning) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): AirConditioning) -> 21.0 [Content]
+Unloading 0 Unused Serialized files (Serialized files now loaded: 8)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 38363.
+Total: 189.327300 ms (FindLiveObjects: 1.151000 ms CreateObjectMapping: 1.255200 ms MarkObjects: 186.851500 ms  DeleteObjects: 0.069100 ms)
+
+[JawaBench] ready: 320 tools, build 8f4e8a0be187
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] context: modSet 35/b519817b, toolSet d2e6d828, defDump ARMED, engine 1.6.4871 rev591
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[RMPitsDebug] ARM RM_OpenPit_Bare covered=True coverTier=WovenScrap triggerMassKg=40.0
+[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare49553 pos=(125, 0, 125) size=(1, 1) covered=True coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none
+  STANDING_COUNT=0 SUMMED_MASS=0.00 THRESHOLD=40.0 WOULD_SPRING=False
+[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=False sprung=True
+[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare49553 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=True occupants=1 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none
+  STANDING_COUNT=0 SUMMED_MASS=0.00 THRESHOLD=40.0 WOULD_SPRING=False
+  HELD Human id=Human49554 mass=60.75 bodySize=1.00 dead=False downed=False healthPct=0.940 escapeChance=0.710 pinnedSev=0.100 exposureSev=none drowningSev=none toxicSev=none stunned=False hediffs=[Bruise:4.50,RM_PinnedInPit:0.10]
+[RMPitsDebug] STRUGGLE RM_OpenPit_Bare occupantsBefore=1 occupantsAfter=1
+[Ninefold] Shkaar satiation +8.0 (violent death: Patel<color=#999999FF>, Grunt</color>) -> 8.0 [Neutral]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[RMPitsDebug] ARM RM_OpenPit_Bare covered=True coverTier=WovenScrap triggerMassKg=40.0
+[RMPitsDebug] UNCOVER RM_OpenPit_Bare covered=False coverTier=None
+[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare49581 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=None triggerMassKg=340282300000000000000000000000000000000.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none
+  STANDING_COUNT=0 SUMMED_MASS=0.00 THRESHOLD=340282300000000000000000000000000000000.0 WOULD_SPRING=False
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Ozzik satiation +15.0 (research completed: Smithing) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Smithing) -> 24.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Zizzik satiation +15.0 (mental break: Eve -> InsultingSpree) -> 15.0 [Neutral]
+[Ninefold] Shkaar satiation +8.0 (violent death: Eve<color=#999999FF>, Teacher</color>) -> 16.0 [Neutral]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+MakeThing error: Wall is madeFromStuff but stuff=null. Assigning default.
+Exception in SetupToils for pawn Dan driver=JobDriver_Repair (toilIndex=-1) driver.job=(Repair (Job_147) A = (125, 0, 125) Giver = ThinkNode_QueuedJob [workGiverDef: null])
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B2C3B7FA]
+  at RimWorld.JobDriver_Repair.get_IsBuildingAttachment () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.JobDriver_Repair+<MakeNewToils>d__8.MoveNext () [0x0004d] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.AI.JobDriver.SetupToils () [0x00051] in <61e4173561894da49d210260257b5097>:0 
+[Ninefold] Shkaar satiation +8.0 (violent death: Dan<color=#999999FF>, Colonist</color>) -> 24.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Hairy<color=#999999FF>, Counselor</color>) -> 32.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+MakeThing error: Turret_MiniTurret is madeFromStuff but stuff=null. Assigning default.
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47535
+Tried to destroy non-destroyable thing SteamGeyser47535
+Tried to destroy non-destroyable thing SteamGeyser47535
+Tried to destroy non-destroyable thing SteamGeyser47535
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+MakeThing error: RUT_AntiquityReadingStation is madeFromStuff but stuff=null. Assigning default.
+Invalid count: -1, setting to 1. Job was RUT_ExamineAntiquity (Job_905) A = Thing_RUT_Antiquity_Urn49621 B = Thing_RUT_AntiquityReadingStation49620 Giver = ThinkNode_QueuedJob [workGiverDef: null]
+[Ninefold] Shkaar satiation +8.0 (violent death: Toad<color=#999999FF>, Builder</color>) -> 40.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+MakeThing error: RUT_AntiquityReadingStation is madeFromStuff but stuff=null. Assigning default.
+[Ninefold] Ozzik satiation +15.0 (research completed: RUT_Antiq_Language) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RUT_Antiq_Language) -> 27.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: RUT_Antiq_Religion) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RUT_Antiq_Religion) -> 30.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: RUT_Antiq_Culture) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RUT_Antiq_Culture) -> 33.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: RUT_Antiq_Cartography) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RUT_Antiq_Cartography) -> 36.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: RUT_Antiq_Voice) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RUT_Antiq_Voice) -> 39.0 [Content]
+[Ninefold] Shkaar satiation +8.0 (violent death: Dalton<color=#999999FF>, Grunt</color>) -> 48.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[RMFluidCanalsDebug] INSTANT_DIG at (126, 0, 125) terrainNow=RM_Channel_Empty
+[RMFluidCanalsDebug] REPORT_CELL pos=(125, 0, 125) terrain=Soil isWater=False tempTerrain=none underneath=Soil
+  THING RM_FluidSpring_Test id=RM_FluidSpring_Test51758 [reservoir primed=True seedCell=(126, 0, 125) fluid=RM_Fluid_Water dripVolume=3.0 nextDripTick=5798 reFloodVolume=60.0 nextReFloodTick=183298 nowTick=3298]
+[RMFluidCanalsDebug] REPORT_CELL pos=(126, 0, 125) terrain=RM_Channel_Empty isWater=False tempTerrain=none underneath=RM_Channel_Empty
+  THING RM_FluidCanalFlood id=RM_FluidCanalFlood51759 [flood spawned=True floodedTileCount=0 remainingVolume=60.0 expiresAtTick=10498 nowTick=3298]
+[RMFluidCanalsDebug] REPORT_CELL pos=(125, 0, 125) terrain=Soil isWater=False tempTerrain=none underneath=Soil
+  THING RM_FluidSpring_Test id=RM_FluidSpring_Test51758 [reservoir primed=True seedCell=(126, 0, 125) fluid=RM_Fluid_Water dripVolume=3.0 nextDripTick=5798 reFloodVolume=60.0 nextReFloodTick=183298 nowTick=3298]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Vick<color=#999999FF>, Minstrel</color>) -> 56.0 [Content]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[RMInjectDebug] RAN C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\dwelling_test.txt clicked=(125, 0, 125) offset=(25,25) foundationCells=0 terrainCells=130 things=73 roofCells=192 thingsBefore=41098 thingsAfter=41171 thingsSpawned=73
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[RimMandrake.StructureInjections] no ThingDef 'PrimitiveWell' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt)
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+MakeThing error: Sandbags is madeFromStuff but stuff=null. Assigning default.
+[RMInjectDebug] RAN C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\StructureInjections\Templates\moisture_farm_test.txt clicked=(125, 0, 125) offset=(25,25) foundationCells=0 terrainCells=9 things=99 roofCells=25 thingsBefore=41098 thingsAfter=41190 thingsSpawned=92
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 18.0 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 59.0 [Content]
+[Ninefold] Shkaar satiation +8.0 (violent death: Hare) -> 67.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Woodpecker<color=#999999FF>, Excavator</color>) -> 75.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Frog<color=#999999FF>, Treehouse builder</color>) -> 83.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Rat) -> 91.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Scyther) -> 99.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Leopard<color=#999999FF>, Plank cutter</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Rick<color=#999999FF>, Policeman</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Rick<color=#999999FF>, Policeman</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Shad<color=#999999FF>, Trafficker</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Saya<color=#999999FF>, Minstrel</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Conner<color=#999999FF>, Colonist</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Conner<color=#999999FF>, Colonist</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Shad<color=#999999FF>, Trafficker</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Saya<color=#999999FF>, Minstrel</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 2.2 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]
+[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 21.0 [Content]
+[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 97.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Flea<color=#999999FF>, Programmer</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 5.2 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]
+[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 24.0 [Content]
+[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 94.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Tolbar<color=#999999FF>, Logger</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Louis<color=#999999FF>, Grunt</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +3.0 (melee, the close exposed war) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Darklight<color=#999999FF>, Shaman</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Candice<color=#999999FF>, Reporter</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Barnett<color=#999999FF>, Manager</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Jet<color=#999999FF>, Officer</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Jet<color=#999999FF>, Officer</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Marjot<color=#999999FF>, Colonist</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Jacky<color=#999999FF>, Boss</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Mushinto<color=#999999FF>, Hunter</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Nanette<color=#999999FF>, Colonist</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Latch<color=#999999FF>, Smuggler</color>) -> 100.0 [Exalted]
+[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 8.2 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]
+[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 27.0 [Content]
+[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 91.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Callahan<color=#999999FF>, Boss</color>) -> 100.0 [Exalted]
+Tried to destroy non-destroyable thing SteamGeyser47532
+Tried to destroy non-destroyable thing SteamGeyser47532
+[Ninefold] Shkaar satiation +8.0 (violent death: Anthusa<color=#999999FF>, Brat</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Lisnekine<color=#999999FF>, Masseuse</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Kyros<color=#999999FF>, Paramedic</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Zenus<color=#999999FF>, Pyro</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Diogenes<color=#999999FF>, Drone</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Agatha<color=#999999FF>, Trooper</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Mozis<color=#999999FF>, Farmer</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Pyrrha<color=#999999FF>, Broker</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Lopho<color=#999999FF>, Brat</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Acominata<color=#999999FF>, Quartermaster</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Table<color=#999999FF>, Janitor</color>) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +8.0 (violent death: Sheet<color=#999999FF>, Marine</color>) -> 100.0 [Exalted]

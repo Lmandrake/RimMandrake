@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:25:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:31:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1291,3 +1291,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  rimworld/updatemodsettings reflects INSTANCE fields on the ModSettings
 prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md
+
+## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODCHECK_SUITE_CORRECTIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
+
+## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODCHECK_DONOR_ENVIRONMENTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md

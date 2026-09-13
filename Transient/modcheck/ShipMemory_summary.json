@@ -1,0 +1,708 @@
+{
+ "chains": [
+  {
+   "name": "bioferrite_stockpile_reveal",
+   "components": [
+    {
+     "name": "reveals_on_stockpile",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 21,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Ozzik the Shamed",
+           "Length": 16,
+           "StrippedLength": 16
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 0,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Patel",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Patel",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Insulting spree: Eve",
+           "Length": 20,
+           "StrippedLength": 20
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Eve",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Eve",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Dan",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 903,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dan",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 903,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Hairy(/Name) in labor!",
+           "Length": 29,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 905,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Hairy",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1504,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Hairy",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 1504,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Toad",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2698,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Toad",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 2698,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Dalton",
+           "Length": 43,
+           "StrippedLength": 43
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dalton",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Vick",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Vick",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 5693,
+        "operation": {
+         "OperationId": "op_bf99e45459a146429f9a15f43325045f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:41.9277393+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:41.9765691+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "assailant_signal_after_reveal",
+   "components": [
+    {
+     "name": "no_duplicate_reveal_once_discovered",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/signal_send",
+       "result": {
+        "success": true,
+        "tag": "RUT_ShipMemory_ContainmentTestSignal.RUT_ShipMemory_Containment",
+        "global": false,
+        "receiverCountAtSend": 3,
+        "subject": null,
+        "text": null,
+        "note": "Sent to 3 registered receiver(s). Whether any of them matched this exact tag is not observable from here - check the quest's own state (jawa/fire_quest / the save) for the effect.",
+        "ticksGame": 5693,
+        "operation": {
+         "OperationId": "op_bf9824dc2fd745db95d36841d344010d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/signal-send",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:45.4114525+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:45.4596927+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 22,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Ozzik the Shamed",
+           "Length": 16,
+           "StrippedLength": 16
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 0,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Patel",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Patel",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Insulting spree: Eve",
+           "Length": 20,
+           "StrippedLength": 20
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Eve",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Eve",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 302,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Dan",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 903,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dan",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 903,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Hairy(/Name) in labor!",
+           "Length": 29,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 905,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Hairy",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1504,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Hairy",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 1504,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 2105,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Toad",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 2698,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Toad",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 2698,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Dalton",
+           "Length": 43,
+           "StrippedLength": 43
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dalton",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archotechnic Requiem opportunity for Vick",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Vick",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 3298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "She remembers the chains",
+           "Length": 24,
+           "StrippedLength": 24
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 5693,
+          "lookTargets": null
+         }
+        ],
+        "ticksGame": 5693,
+        "operation": {
+         "OperationId": "op_4668ebd00dc94ee699024226c460f665",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:45.4616998+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:45.5105244+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\no_duplicate_reveal_once_discovered_1789295265.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "containment_gate_patch_wiring",
+   "components": [
+    {
+     "name": "seven_defs_gated_on_containment",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "researchPrerequisites",
+         "discoveryPrerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/HoldingPlatform",
+          "found": true,
+          "defName": "HoldingPlatform",
+          "defType": "ThingDef",
+          "label": "holding platform",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ElectricInhibitor",
+          "found": true,
+          "defName": "ElectricInhibitor",
+          "defType": "ThingDef",
+          "label": "electric inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ShardInhibitor",
+          "found": true,
+          "defName": "ShardInhibitor",
+          "defType": "ThingDef",
+          "label": "shard inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteHarvester",
+          "found": true,
+          "defName": "BioferriteHarvester",
+          "defType": "ThingDef",
+          "label": "bioferrite harvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/Electroharvester",
+          "found": true,
+          "defName": "Electroharvester",
+          "defType": "ThingDef",
+          "label": "electroharvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteGenerator",
+          "found": true,
+          "defName": "BioferriteGenerator",
+          "defType": "ThingDef",
+          "label": "bioferrite generator",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "TerrainDef/BioferritePlate",
+          "found": true,
+          "defName": "BioferritePlate",
+          "defType": "TerrainDef",
+          "label": "bioferrite plate",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         }
+        ],
+        "ticksGame": 5693,
+        "operation": {
+         "OperationId": "op_d76bd0e07a0e4672902d9b962bbbc039",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:27:45.8599658+00:00",
+         "CompletedAtUtc": "2026-09-13T10:27:45.9105785+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\seven_defs_gated_on_containment_1789295265.png"
+     ],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "reveals_on_stockpile"
+ ],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimUtinni\\ShipMemory",
+ "wallSeconds": 16.2
+}
