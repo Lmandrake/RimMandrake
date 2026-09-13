@@ -100,40 +100,36 @@ trade (Mob'Unloo), launch/rooted (Ta'Baa), droid-online (Ohm):
 
 ---
 
-## Narrator silent-god readouts — DRAFT, and now REGISTER-SUPERSEDED
-
-⚠️ 2026-09-11, later the same sitting: the owner ruled the Narrator's true
-register (canon.yml `narrator.butler_register_src`) — a mournful, bemused
-butler ghost, a REAL voice on the ship's speakers, never impersonal caption
-prose. The 18 lines below were drafted impersonal BEFORE that ruling: they
-need a butler-register redraft before any bless. Kept as content notes (the
-per-god environmental tells are still right); the voice is not.
+## Narrator silent-god readouts — DRAFT in the butler register, awaiting bless
 
 Owner asked (2026-09-11) for narrator descriptions of each god pleased /
 displeased "as they look on the events dominated by others but do not
-speak." Drafted at the same sitting; the owner moved on to dungeon text
-before ruling — **these 18 lines await his tune-or-bless and are NOT part of
-the blessed corpus above.** Narrator register: impersonal, environmental, no
-pidgin (pidgin is the gods' register, never his).
+speak." Redrafted 2026-09-12 into the ruled butler register (canon.yml
+`narrator.butler_register_src`: mournful, bemused butler ghost, a REAL
+voice on the ship's speakers, never impersonal caption prose; not a Jawa,
+no pidgin). Each line keeps its per-god environmental tell from the
+2026-09-11 sitting drafts (the tells stood; the impersonal voice did not —
+git holds those drafts). **These 18 lines await his tune-or-bless and are
+NOT part of the blessed corpus above.**
 
-- **Ishko** pleased: "Lamps burn low and nothing watches back. Whatever keeps to the dark is keeping to it comfortably."
-- **Ishko** displeased: "Every light in camp feels slightly too bright. Something that prefers not to be seen is being made to watch."
-- **Ohm** pleased: "The machines run a shade smoother than maintenance explains. The current is satisfied."
-- **Ohm** displeased: "Relays stutter without cause and tools sit wrong in the hand. The current has noticed the neglect."
-- **Oomo** pleased: "The water tastes better than it should. Whatever counts the family has finished counting, and the count pleased it."
-- **Oomo** displeased: "The cisterns sound hollow even when full. Something keeps recounting the family and arriving at the gaps."
-- **Mob'Unloo** pleased: "Small windfalls keep arriving — a fair price, a found coin. Somewhere a ledger has balanced, and approves."
-- **Mob'Unloo** displeased: "Everything traded lately feels a fraction underpaid. Somewhere a ledger is open, and the colony is on the wrong page."
-- **Rekko** pleased: "Old things hold. Hinges that should complain don't. The past is being kept, and it keeps back."
-- **Rekko** displeased: "Dust settles faster than it used to. What is not mended is being mourned, and mourning has a weight."
-- **Ta'Baa** pleased: "The wind carries road-smell through camp. Everything packable feels lighter than yesterday."
-- **Ta'Baa** displeased: "The horizon looks farther than it is. Something that lives at thresholds finds every door here closed."
-- **Zizzik** pleased: "Static crackles off blankets and small things fail amusingly. The spark is fed, and playing."
-- **Zizzik** displeased: "Nothing has gone wrong in days. The quiet has a coiled quality. The spark is saving up."
-- **Sh'kaar** pleased: "The heat lies flat and patient, like a fed animal. The sun's attention is elsewhere. This is what its approval feels like."
-- **Sh'kaar** displeased: "Shade feels thinner. The glare finds gaps it didn't find last week. Something overhead is running its schedule a little faster."
-- **Ozzik** pleased: "The camp's one fine thing catches the light and holds it. Old grandeur, briefly remembered, stands a little straighter."
-- **Ozzik** displeased: "Everything looks smaller than it did — the tents, the walls, the plans. A shamed thing is comparing, and the camp loses."
+- **Ishko** pleased: "The lamps are burning low tonight, and nothing watches back. I confess I find the dark rather companionable, when it is kept content."
+- **Ishko** displeased: "Every lamp in the house seems a touch too bright this evening. Something that would rather not be looked at is being made to watch, and I do not envy the short ones its attention."
+- **Ohm** pleased: "The machines are running a shade smoother than the little ones' maintenance could possibly explain. I shan't inquire; one learns not to."
+- **Ohm** displeased: "The relays stutter for no reason I can name, and the tools sit wrong in every small hand that lifts them. Neglect has been noticed, I'm afraid — and not by me."
+- **Oomo** pleased: "The water is tasting better than the pipes deserve. Whatever keeps count of the little family has finished its counting, and seems — for once — satisfied."
+- **Oomo** displeased: "The cisterns sound hollow tonight, though I assure you they are full. Something keeps recounting the household and arriving, each time, at the gaps."
+- **Mob'Unloo** pleased: "Small windfalls keep turning up — a fair price here, a found coin there. Somewhere in this house a ledger has balanced, and I have learned to be grateful when it does."
+- **Mob'Unloo** displeased: "Everything the short ones trade lately comes back a fraction underpaid. Somewhere a ledger lies open, and I regret to say this household is on the wrong page of it."
+- **Rekko** pleased: "The old things are holding: hinges that ought to complain have gone quite courteous. The past is being kept in this house, and it is keeping back — a fair arrangement, in my experience."
+- **Rekko** displeased: "The dust is settling faster than it used to, and I cannot keep ahead of it. What goes unmended here is being mourned, and mourning, I can tell you, has a weight."
+- **Ta'Baa** pleased: "The wind is carrying road-smell through my corridors again, and everything packable has grown lighter than it was yesterday. The little ones will be dreaming of doors."
+- **Ta'Baa** displeased: "The horizon looks farther off than it has any right to. Something that lives at thresholds has found every door in this house closed, and it is not a guest one keeps waiting."
+- **Zizzik** pleased: "Static leaps off the blankets, and the small things are failing in frankly amusing ways. I would tidy up, but I suspect the mess is the point."
+- **Zizzik** displeased: "Nothing has gone wrong in days, and I find I cannot enjoy it. The quiet in these halls has a coiled quality; something is saving up."
+- **Sh'kaar** pleased: "The heat lies flat and patient across the sand, like an animal that has eaten. The sun's attention is elsewhere, and one takes such approval as it comes."
+- **Sh'kaar** displeased: "The shade is thinner than last week, and the glare finds gaps it never used to find. Something overhead is running its schedule a little faster, and I would keep the short ones out of the open."
+- **Ozzik** pleased: "The camp's one fine thing is catching the light and holding it, rather well. Old grandeur, briefly remembered, does stand a little straighter — I have seen it before, in better houses than this."
+- **Ozzik** displeased: "Everything looks smaller today — the tents, the walls, the plans, the little ones themselves. A shamed thing somewhere is making comparisons, and I am sorry to report the household loses."
 
 ## Wiring owed (not this doc's work)
 - Def-side delivery (letters/fragments) rides the satiation engine build;
