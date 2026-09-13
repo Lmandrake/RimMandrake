@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T19:11:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T20:01:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -792,6 +792,15 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
+## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
+prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1268,16 +1277,6 @@ thin:     spec, verify and criteria all present
 summary:  DOINGITEMSRECONCILE1's audit (2026-09-13) found these 21 FOUNDRY items in
 prose:    infrastructure/state/items/DOING_SEDIMENT_RECLAIM_1.md
 
-## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
-prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
-
 ## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
 state:    proposed
 row:      unassigned
@@ -1388,12 +1387,12 @@ thin:     no ## criteria
 summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
 prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
 
-## MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 Restore the two shelved modcheck toggle-flip components (Graffiti, StructureInjections) now that jawa/mod_settings_field exists
+## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
 state:    proposed
 row:      unassigned
 needs:    bridge
 target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODCHECK_SHELVED_TOGGLE_COMPONENTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MODCHECK_SHELVED_TOGGLE_COMPONENTS_1.md
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  rimworld/searchdebugactions (ANY query, even "Inhabited") and
+prose:    infrastructure/state/items/DEBUG_ACTION_ENUM_CRASH_1.md
