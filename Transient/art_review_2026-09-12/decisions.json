@@ -1,745 +1,764 @@
 {
-  "posture": "whitelist",
+  "decidedCount": 148,
   "decisions": {
-    "bgtest_a_v1": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "bgtest_b_v1": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "bgtest_b_v2": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "lockjaw_improve_a_r7": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "lockjaw_improve_b_r7": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
     "aa_frostmite_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "at": "2026-09-12T21:51:12.941Z",
+      "decision": "redraw",
+      "note": "The\n  Frostmite is interesting and I like most of its body and alien\n  shape, but the mouth turning red suggests meat and oxygenated\n  iron based blood. It should keep the white and blue motif and\n  perhaps even tinge towards yellowish going inward. I like the\n  crystalline sharpness of its body plan. Also very nervous about needing thick black outlines and less detail to ensure we don't lose too much at various zooms. Needs \"mud/blur check\" for how it looks when zoomed out. ",
+      "prefill": "keep"
     },
     "aa_frostmite_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "at": "2026-09-12T21:51:13.621Z",
+      "decision": "redraw",
+      "note": "The\n  Frostmite is interesting and I like most of its body and alien\n  shape, but the mouth turning red suggests meat and oxygenated\n  iron based blood. It should keep the white and blue motif and\n  perhaps even tinge towards yellowish going inward. I like the\n  crystalline sharpness of its body plan. Also very nervous about needing thick black outlines and less detail to ensure we don't lose too much at various zooms. Needs \"mud/blur check\" for how it looks when zoomed out. ",
+      "prefill": "keep"
     },
     "aa_frostmite_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "gr_spidercat_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "gr_spidercat_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "gr_spidercat_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "insectomorph_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "insectomorph_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "insectomorph_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vaewaste_megatardi_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vaewaste_megatardi_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vaewaste_megatardi_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "anooba_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "anooba_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "anooba_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dewback_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dewback_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dewback_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grithe_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grithe_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grithe_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grutt_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grutt_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grutt_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kroffa_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kroffa_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kroffa_v2_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "puffmite_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "puffmite_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "puffmite_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ronto_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ronto_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ronto_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "aa_terramorph_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "aa_terramorph_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "duskram_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "duskram_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "duskram_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "featherfeel_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "featherfeel_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "featherfeel_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "greaterkraytdragon_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "greaterkraytdragon_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "greaterkraytdragon_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "orray_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "orray_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "orray_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "slagmaw_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "slagmaw_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "slagmaw_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vornskyr_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vornskyr_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "vornskyr_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "boma_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "boma_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "boma_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "cinderwing_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "cinderwing_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "cinderwing_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ollopom_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ollopom_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "ollopom_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "scarrend_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "scarrend_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "scarrend_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "sludrin_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "sludrin_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "sludrin_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "verdaunt_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "verdaunt_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "verdaunt_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "wyyyschokk_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "wyyyschokk_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "wyyyschokk_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "emberscythe_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "emberscythe_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "emberscythe_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "fenshear_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "fenshear_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grubhorn_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grubhorn_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grubhorn_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "hawkbat_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "hawkbat_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "hawkbat_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "mycolith_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "mycolith_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "mycolith_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "pekopeko_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "pekopeko_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "pekopeko_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "whisperbird_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "whisperbird_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "whisperbird_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "borcatu_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "borcatu_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "borcatu_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kinrath_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kinrath_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "kinrath_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "shiro_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "shiro_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "shiro_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dactillion_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dactillion_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "dactillion_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "fanback_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "fanback_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "fanback_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grank_v1_east": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grank_v1_north": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
-    },
-    "grank_v1_south": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "at": "2026-09-12T21:51:15.570Z",
+      "decision": "redraw",
+      "note": "The\n  Frostmite is interesting and I like most of its body and alien\n  shape, but the mouth turning red suggests meat and oxygenated\n  iron based blood. It should keep the white and blue motif and\n  perhaps even tinge towards yellowish going inward. I like the\n  crystalline sharpness of its body plan. Also very nervous about needing thick black outlines and less detail to ensure we don't lose too much at various zooms. Needs \"mud/blur check\" for how it looks when zoomed out. ",
+      "prefill": "keep"
     },
     "aa_shadowcharger_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "aa_shadowcharger_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "aa_shadowcharger_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "aa_terramorph_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "aa_terramorph_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "aa_thunderox_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "aa_thunderox_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "aa_thunderox_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "anooba_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "anooba_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "anooba_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "bgtest_a_v1": {
+      "at": "2026-09-12T21:45:55.614Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "bgtest_b_v1": {
+      "at": "2026-09-12T21:45:56.124Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "bgtest_b_v2": {
+      "at": "2026-09-12T21:45:56.696Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "keep"
+    },
+    "boma_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "boma_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "boma_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "borcatu_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "borcatu_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "borcatu_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "cinderwing_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "cinderwing_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "cinderwing_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dactillion_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dactillion_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dactillion_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dewback_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dewback_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "dewback_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "dragonsnake_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "dragonsnake_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "dragonsnake_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "duskram_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "duskram_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "duskram_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "emberscythe_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "emberscythe_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "emberscythe_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "fambaa_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "fambaa_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "fambaa_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "fanback_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "fanback_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "fanback_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "featherfeel_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "featherfeel_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "featherfeel_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "fenshear_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "fenshear_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "gr_spidercat_v1_east": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "gr_spidercat_v1_north": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "gr_spidercat_v1_south": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grank_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grank_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grank_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "greaterkraytdragon_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "greaterkraytdragon_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "greaterkraytdragon_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grithe_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grithe_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grithe_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grubhorn_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grubhorn_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grubhorn_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grutt_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grutt_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "grutt_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "hawkbat_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "hawkbat_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "hawkbat_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "horax_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "horax_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "horax_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "insectomorph_v1_east": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "insectomorph_v1_north": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "insectomorph_v1_south": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "kinrath_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "kinrath_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "kinrath_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "kreetle_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "kreetle_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "kreetle_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "zakkeg_v1_east": {
+    "kroffa_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "zakkeg_v1_north": {
+    "kroffa_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "zakkeg_v1_south": {
+    "kroffa_v2_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "lockjaw_improve_a_r13_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "lockjaw_improve_a_r7": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "lockjaw_improve_a_r9_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "lockjaw_improve_b_r10_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "lockjaw_improve_b_r7": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "lockjaw_improve_b_r9_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "pyrelands_firehawk_v1_north": {
+    "mycolith_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "pyrelands_firehawk_v1_south": {
+    "mycolith_v1_north": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "pyrelands_furnacebeast_v1_north": {
+    "mycolith_v1_south": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
-    "pyrelands_furnacebeast_v1_south": {
+    "ollopom_v1_east": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "ollopom_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ollopom_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "orray_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "orray_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "orray_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "pekopeko_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "pekopeko_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "pekopeko_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "puffmite_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "puffmite_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "puffmite_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "pyrelands_firehawk_v1": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "pyrelands_firehawk_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "pyrelands_firehawk_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     },
     "pyrelands_furnacebeast_v1": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "pyrelands_furnacebeast_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "pyrelands_furnacebeast_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ronto_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ronto_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ronto_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "scarrend_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "scarrend_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "scarrend_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "shiro_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "shiro_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "shiro_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "slagmaw_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "slagmaw_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "slagmaw_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "sludrin_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "sludrin_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "sludrin_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vaewaste_megatardi_v1_east": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vaewaste_megatardi_v1_north": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vaewaste_megatardi_v1_south": {
+      "at": "2026-09-12T21:51:12.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "verdaunt_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "verdaunt_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "verdaunt_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vornskyr_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vornskyr_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "vornskyr_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "whisperbird_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "whisperbird_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "whisperbird_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "wyyyschokk_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "wyyyschokk_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "wyyyschokk_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "zakkeg_v1_east": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "zakkeg_v1_north": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "zakkeg_v1_south": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
     }
-  }
+  },
+  "posture": "whitelist",
+  "savedAt": "2026-09-12T14:51:16-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 20
 }
