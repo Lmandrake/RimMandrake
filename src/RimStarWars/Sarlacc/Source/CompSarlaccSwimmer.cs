@@ -98,10 +98,13 @@ namespace RimMandrake.StarWars.Sarlacc
                 {
                     lastDigestingPawn = devourer.DigestingPawn;
                 }
-                else if (wasDigesting && lastDigestingPawn != null && !lastDigestingPawn.Dead)
+                else if (wasDigesting && lastDigestingPawn != null)
                 {
+                    // Any completed digestion is "a kill" for reserve purposes,
+                    // whether the prey died or (rarely) survived it — only a
+                    // miss (never entering Digesting) should not top up.
                     reserve += Props.reserveGainOnKill;
-                    if (RSW_SarlaccSettings.changedReturnHediffsEnabled)
+                    if (RSW_SarlaccSettings.changedReturnHediffsEnabled && !lastDigestingPawn.Dead)
                     {
                         GrantChangedReturn(lastDigestingPawn);
                     }
