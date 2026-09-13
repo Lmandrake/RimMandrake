@@ -10192,10 +10192,10 @@
     "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bantha.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "3c64248838987bda6bfc52907a8e57efa08b28e5650c1f08bc576bc395e47bd8",
-    "sha": "bd07c0e6"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "c22014d4248e7fefbc12ec9eadd869058d18a7d7a9a31163aa5bdcb484624f96",
+    "sha": "bfa7c2f92"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Beldon.xml": {
     "cleanCount": 1,
@@ -10306,16 +10306,16 @@
     "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "db0fdeae38567d7926ebac44e8c3b90cd7d937ea249b800dfd1f3e7f637e22a8",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "a0eb25aed9c38e873e87b2b80103d660d1a92edc34e4624204bbf4a9ff00cb72",
+    "sha": "bfa7c2f92"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "340f65eeb54aab43bb4f236c6d12efe87e701f92c3c4b6d8f3e93e2e022ad34d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "301aea375a1d11b02ed1788b34eb65451acd92ffdb13659d3def9f2fd0944480",
+    "sha": "bfa7c2f92"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandStalker.xml": {
     "cleanCount": 2,
@@ -10324,16 +10324,16 @@
     "sha": "ab37da311"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vulptex.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "9d79fa6c975b0539d83d0d5a7be544e2ef9d7512bf558e806e1b34ae88f683ad",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "d81c6f06190d919631e4c6bb7ecfe0ebce6c4e9be8ae2f35e9a5693e9d74bb3b",
+    "sha": "bfa7c2f92"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Wampa.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "2d47142c0f08cf7e11127f13c19850e12e190d283fb53b518d5eb219d4250e35",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "f60f200d8bc52d5b063b2e97c68a53c78ded9fe5761a03db536fb726307bc6d0",
+    "sha": "bfa7c2f92"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingSetMakerDefs/RSW_RareSandCatches.xml": {
     "cleanCount": 1,
@@ -11332,10 +11332,10 @@
     "sha": "4b81823b"
   },
   "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-10",
-    "hash": "ce0a79fa2d8c671efff3f2b1912d2b9046b4ae97c61d6f86f64d726a60aaf2ad",
-    "sha": "4b81823b"
+    "cleanCount": 5,
+    "date": "2026-09-12",
+    "hash": "eb8e4e903c5c799360313e1fb3f2644bf89adfdc34cfc6b88b7b3f6fd80151f3",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml": {
     "cleanCount": 1,
@@ -12556,16 +12556,16 @@
     "sha": "99a9e5cbc"
   },
   "src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/RUT_CathedralRoach.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "b641b3f7c1fa7461b96357ba2b74c2c1831bbebb4f8998aadc492992cd84adc9",
-    "sha": "99a9e5cbc"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "c463b783f564b21daf71e7288731102596a956e90b161de8a0032979c6be15d0",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/RUT_ScarRoach.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "0b37cdf297ca5944ddf041d0d1a84dea412ebaf880fd58790ec4844456256622",
-    "sha": "99a9e5cbc"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "ea2070545c79b698e569e0a345dca33d3bbc149a2231491ae1c1d6c6058de5c3",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/RustCathedralRoaches/Defs/ThinkTreeDefs/RUT_ThinkTree_CathedralRoach.xml": {
     "cleanCount": 1,
@@ -13744,10 +13744,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-12",
-    "hash": "952f31d325b7e5c8dd08ac28e9d4eb6748cbf5ec973f0e2574ee578f4672c3a2",
-    "sha": "1c0a5dcdb"
+    "hash": "8425a99344ddbb531a97ad88e9db6cfac810720c512192ec003cc21cde278e79",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
     "cleanCount": 3,
@@ -13756,10 +13756,10 @@
     "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "552f033235dbd82f890addcb17cd8c43a91b6304d5b7f6b8203e6cc5778332f5",
-    "sha": "d3ffec03"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "33885bd90279615e754edaa8c0a2fb1d8e957aa50e546881cd21c4dd2764576a",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
@@ -13786,10 +13786,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 7,
+    "cleanCount": 8,
     "date": "2026-09-12",
-    "hash": "ac065bb67c2d26a3bbb920bbf9b6f5e90a7a89d0cc3ca336021fbdbc1594c355",
-    "sha": "1c0a5dcdb"
+    "hash": "d9065ea5ee14df604ede58b00d71cdc99c2e0567c13cbfa63288b0d360d2dd80",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
     "cleanCount": 1,
@@ -13852,10 +13852,10 @@
     "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/CreatureResize_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "56fe2c1f2dc0338f7f71e5b4375880e39c328ada9d521abd716362e3c4117184",
-    "sha": "b87a3622"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "b6ac63cb6df909e778190a454b8a2912ee9c524616ad9f91d26959f158ac72e6",
+    "sha": "bfa7c2f92"
   },
   "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml": {
     "cleanCount": 2,
