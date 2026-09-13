@@ -984,6 +984,56 @@ value, because that value is shaped exactly like a real success and even varies
 plausibly between calls. Cross-check against an INDEPENDENT reader (`get_game_info`,
 `map_info`) that did not go through the same code path.
 
+## 🔴 A `world_tile_map_generate`'d map can render as a blank void — correct data, dead mesh
+
+Measured 2026-09-13 (RIVER_STEAM_ANIMATION_1). Founded a Player settlement at a
+fresh tile (`jawa/colony_found` + `jawa/world_tile_map_generate`, real
+`ZBiome_Grasslands` tile with real river — `riverCount: 2` confirmed live via
+`jawa/world_tile_get` before generating), switched to it (`Actions\Change Map`
+debug action, confirmed via `jawa/map_info` → correct `mapId`/`mapBiome`), and
+every DATA-level check was clean: `jawa/get_terrain_batch` read back real
+`WaterMovingShallow`/`VEE_FertileRiverbank` cells, `rimworld/get_cell_info`
+reported `"fogged": false` for the exact cell being screenshotted, and a
+full-map `jawa/set_fog {"action":"unfog","rect":"0,0,250,250"}` drove fogged
+cells to **0**. Every screenshot of that map (`take_screenshot`,
+`screenshot_cell_rect`, at multiple zooms and coordinates, after
+`jawa/refresh_rect` mesh-dirty calls) still rendered as a **uniform blank
+brown void** with the bottom-left status bar reading **"Not visible area"** —
+no terrain, no river, nothing recognisable. `get_camera_state` confirmed the
+camera WAS at the requested map/position throughout.
+
+**The very next screenshot, same session, same connection, on the PLAYER'S
+NORMAL colony map (`Map_3`, loaded the ordinary way at game start) was
+perfectly sharp** — full detail, correct lighting, no void. So this is not a
+bridge-wide rendering failure, a fog bug, or a stale-mesh issue fixable by
+`jawa/refresh_rect` (tried, no change). The one structural difference: Map_3
+went through the game's normal `EnterMap`/`Current.Game.CurrentMap` setter
+transition at world/game start; Map_4 was switched into via the **debug**
+`Actions\Change Map` action after a `world_tile_map_generate` call, which
+generates the `Map` object and its data but — on this evidence — does not
+trigger whatever `MapDrawer` section-mesh regeneration a normal map-enter
+does. The underlying `Map`/`FogGrid`/`TerrainGrid` are all genuinely correct;
+only the drawn mesh is dead.
+
+⇒ **Do not trust a screenshot of a `world_tile_map_generate`'d map you
+entered via the `Change Map` debug action to show anything.** If a live visual
+check is owed on such a map and it renders blank, this is very likely why —
+it is not proof the feature/terrain/mechanism is missing. **No workaround
+found this session** (tried: `jawa/refresh_rect` over the full map rect
+before AND after switching, full `unfogAll`, re-jumping the camera, multiple
+zoom levels). Candidates for a future session: look for a `[Tool]` that calls
+`MapDrawer.RegenerateEverythingIn(...)`/`MapDrawer.MapMeshDirty` across the
+WHOLE map (not just a rect — `refresh_rect` may only dirty the grid data
+layer a section reads, not force the section's mesh rebuild), or find whether
+entering via an actual caravan arrival (the normal `EnterMap` path) renders
+correctly where `Change Map` does not.
+
+**Generalises to:** any debug-shortcut that creates or switches to a map
+without going through the game's normal map-entry code path — verified data
+is not verified pixels; a screenshot of a debug-reached map needs its OWN
+positive sanity check (screenshot a KNOWN-good already-rendering map first,
+or a thing you spawned there, before trusting a blank result as meaningful).
+
 ## `rimworld/screenshot_cell_rect` cannot frame a whole 250x250+ map, even with zoom extension on
 
 Measured 2026-09-07 (MAPGEN_GL_SHEET_1 round 2). A bare `{"x":0,"z":0,"width":250,
