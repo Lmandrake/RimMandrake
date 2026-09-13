@@ -76,6 +76,8 @@
     <Compile Include="RUT_TenantEmergenceSpawner.cs" />
     <Compile Include="RM_CompGatherableCalmGated.cs" />
     <Compile Include="RUT_HaulPawnAndExit.cs" />
+    <Compile Include="RM_CompResourceCondenser.cs" />
+    <Compile Include="RUT_IncidentWorker_WalkerSurfacing.cs" />
   </ItemGroup>
 
   <ItemGroup>

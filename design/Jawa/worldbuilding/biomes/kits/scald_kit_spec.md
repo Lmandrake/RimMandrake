@@ -45,7 +45,7 @@ per-biome by XML; RM_ classes live in the ruled kit home
 
 | Ban | Where it binds |
 |---|---|
-| 1. Never potable | The steam-catch (S2) yields water AT the condenser, never a "purify scald water" recipe; no bill, def or tech in this kit takes scald water as an ingredient. `dbh_water` on the shipped terrains is the thirst-mod's contact tag, not potability — ❓ verify at build that the thirst mod does not let pawns DRINK from `dbh_water`-tagged burn terrain; if it does, the tag moves to the margin terrain only (S3) and the linter checks the six boil defs carry no drink route. |
+| 1. Never potable | **RESOLVED — SCALD_MECHANICS_1 spike, 2026-09-13.** CONFIRMED `dbh_water` does enable DBH thirst drinking (`BadHygiene.dll`, workshop/294100/836308268, 1.6 Assemblies, carries the literal alongside its own drink-tracking strings; `RUT_ScaldWater.xml`'s own prior header already stated the tag was placed there SO pawns could drink the boil, per R-B4a). That conflicted with this sheet's Ban 1, so the remedial action this row itself pre-ruled was taken: the tag is removed from all six `RUT_ScaldWater*` boil terrains and moved to the new `RUT_ScaldMargin` terrain (S3) — the boil now carries no drink route at all; the margin ring is the Scald's sole drink/draw source. |
 | 2. Never the terminator seas' biome | Every def this kit ships is `RUT_Scald*`-prefixed and referenced only from `RUT_TheScald`; no shared roster/weather/terrain with `RUT_TwilightSea`/`RUT_GreySea`. |
 | 3. No boiling-immune traversal for free | The shipped burn values stand — S3's bath margin is a NEW ring terrain at the cool edge, it repaints no boil cell; S6's wrecks are priced in burns precisely because no def removes them. No apparel/hediff in this kit grants burn immunity. |
 | 4. No macro-life in the boil itself | Bottom-walkers ship as a surfacing set-piece (S5), never a pawn swimming the surface layer; bubble-sailors are the ban's own carve-out ("nothing swims the roiling surface layer but bubbles and sails"). No wild-spawn commonality puts any kind IN boil cells. |
@@ -94,14 +94,22 @@ dossier owns the politics).
 
 **Engine route.** `RUT_SteamCatch` building, placement-locked to vents the
 way geothermal locks to geysers — crib `CompPowerPlantSteam` *(class
-verified, `Source/RimWorld/CompPowerPlantSteam.cs`)* and vanilla geothermal's
-geyser place-worker (❓ exact PlaceWorker class name — read the geothermal
-ThingDef at build). Production: `RM_CompResourceCondenser : ThingComp`
+verified, `RimWorld/CompPowerPlantSteam.cs`, decompile)* and vanilla
+geothermal's geyser place-worker — **RESOLVED**: `PlaceWorker_OnSteamGeyser`
+(`RimWorld/PlaceWorker_OnSteamGeyser.cs`, confirmed via the real 1.6
+decompile this pass): checks `map.thingGrid.ThingAt(loc, ThingDefOf.SteamGeyser)
+!= null`, a two-line pattern the S4 vent def's PlaceWorker crib follows
+directly. Production: `RM_CompResourceCondenser : ThingComp` — **BUILT AND
+COMPILING** this pass (`src/RimMandrake/EnvironmentalHazards/Source/
+RM_CompResourceCondenser.cs`), cribbing `CompPowerPlantSteam`'s own
+"re-check `ThingAt(parent.Position, requiredDef)` every tick, never cache"
+shape so a deconstructed vent silently stops production rather than erroring
 (generic — props: output ThingDef, stack per cycle, cycle ticks, requires
-being on a named vent/geyser def) — **INVENTED**: 25 water units/day
-equivalent. Output FORM is **owner card 2** (item water vs thirst-mod pipe
-network vs both); v1 default drafted as item-water so the comp has no
-cross-mod dependency, with the DBH-network variant behind the card.
+being on a named vent/geyser def, defaulting to vanilla `SteamGeyser` until
+S4's `RUT_ScaldVent` exists) — **INVENTED**: 25 water units/day equivalent.
+Output FORM is **owner card 2** (item water vs thirst-mod pipe network vs
+both); v1 default drafted as item-water so the comp has no cross-mod
+dependency, with the DBH-network variant behind the card.
 
 🔴 Ban 1 patrol: the condenser sits on a VENT and yields clean water from
 steam; it has no input, no bill, and cannot be placed on water terrain.
@@ -135,19 +143,28 @@ in-index this session:
   `FISH_BESTIARY_COMMISSION_1`'s; ban 6 keeps vanilla `Fish_*` out.
   Pollution→toxfish and population curves come free (`FishingUtility`,
   *verified*).
-- **The baths**: `RUT_ScaldMargin` TerrainDef — the authored cool ring:
-  burn **0/0**, `traversedThought HotSpring` (the comfort without the hurt),
-  swimmable, NOT `avoidWander`. Recreation is vanilla:
-  `JoyGiver_GoSwimming` *(read in full this session — Odyssey-gated
+- **The baths**: `RUT_ScaldMargin` TerrainDef — **BUILT** this pass
+  (`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldMargin.xml`), the
+  authored cool ring: burn **0/0**, `traversedThought HotSpring` (the
+  comfort without the hurt), swimmable, NOT `avoidWander`, and (per ban 1's
+  now-RESOLVED row above) the sole carrier of `dbh_water`. Recreation is
+  vanilla: `JoyGiver_GoSwimming` *(read in full this session — Odyssey-gated
   (`ModLister.CheckOdyssey`), cell validator requires `IsWater` +
   `toxicBuildupFactor == 0` + standable + not `KnownDangerAt`, outdoor temp
-  ≥ 10 °C — trivially met in the Anvil band)*. ❓ verify at build that the
-  burn terrains' `avoidWander`/danger reads as `KnownDangerAt` so pawns
-  never pick a swim path THROUGH boil cells to reach the margin; if not, the
-  margin ring must be pathable without crossing boil (authoring constraint,
-  not code). Placement of the ring on THE map is map-authoring (bridge), not
-  worldgen. Sacredness/pilgrimage/two-faith shore: story + sacred pass
-  (sheet Owed "canon sitting"), zero code here.
+  ≥ 10 °C — trivially met in the Anvil band)*. **RESOLVED, and NOT the
+  answer hoped for**: `PawnUtility.KnownDangerAt` (`RimWorld/PawnUtility.cs:619`,
+  decompile) is `c.GetEdifice(map)?.IsDangerousFor(forPawn) ?? false` —
+  edifice-only (traps/turrets), it never reads terrain `burnDamage` or
+  `avoidWander` at all. Neither `JoyGiver_GoSwimming`'s cell validator nor
+  `SwimPathFinder.TryFindSwimPath` (both read this session) check burn
+  damage by any other route either, so nothing in vanilla stops a swim path
+  from crossing open boil cells to reach the margin. **This is a real
+  map-authoring constraint, not fixable in code** (documented in
+  `RUT_ScaldMargin.xml`'s own header): the ring must be sited as a
+  geometrically isolated cove/inlet cut off from open boil water by land,
+  never a plain strip along an open shore. Placement of the ring on THE map
+  is map-authoring (bridge), not worldgen. Sacredness/pilgrimage/two-faith
+  shore: story + sacred pass (sheet Owed "canon sitting"), zero code here.
 
 **Effort**: **S** (one TerrainDef + one fishTypes block; everything else is
 engine). **v1: ships** — fishTypes lands when CARD-1 and the bestiary do.
@@ -163,13 +180,24 @@ builds among them, burns for whoever walks carelessly.
 ("high geothermal activity") *(all three verified via `search_defs`)*.
 Route: apply the mutator (or hand-place geyser density) on the Scald's shore
 tiles of THE fixed map — map/world authoring via the bridge on the frozen
-planet, **not worldgen** (❓ verify at build that a TileMutatorDef applied
-post-hoc to an existing tile runs its map-side worker on next map-gen of that
-tile; else hand-scatter `SteamGeyser` things at map author time). Geothermal
-power on them is vanilla (`CompPowerPlantSteam`, *verified*). S2's vents are
-these geysers' rim-side siblings (one def family, **INVENTED**: `RUT_ScaldVent`
-as a non-buildable spawned variant that S2's condenser and S5's bubble lines
-both key on).
+planet, **not worldgen**. **RESOLVED, decompile this pass**:
+`GenStep_ScatterGeysers.CalculateFinalCount` (`RimWorld/GenStep_ScatterGeysers.cs`)
+multiplies its base geyser count by `map.Biome.geyserCountFactor` and then
+`foreach (TileMutatorDef mutator in map.TileInfo.Mutators) num *=
+mutator.geyserCountFactor` — read LIVE at map-gen time from the tile's own
+`Mutators` list (`TileMutatorDef.geyserCountFactor`, confirmed field). No
+`TileMutatorWorker_SteamGeysers`-shaped class exists anywhere in the
+decompile's ~65 `TileMutatorWorker_*` files — this mutator is data-only, not
+worker-driven, so applying it to a tile's `Mutators` list BEFORE that tile's
+map generates is sufficient; no post-hoc worker re-run is needed or possible.
+⚠️ Timing constraint this resolves INTO, not out of: the mutator must land
+before the Scald's map is (re)generated — if the map already exists, a
+regen is required for the density bump to take effect; this is a
+sequencing note for whoever does the world-authoring pass, not a code
+question. Geothermal power on them is vanilla (`CompPowerPlantSteam`,
+*verified*). S2's vents are these geysers' rim-side siblings (one def
+family, **INVENTED**: `RUT_ScaldVent` as a non-buildable spawned variant
+that S2's condenser and S5's bubble lines both key on).
 
 **Effort**: **S** (defs + map authoring; no new C# unless the mutator route
 fails). **v1: ships.**
@@ -181,27 +209,45 @@ and drift back down — the biome's signature silhouette, readable traffic.
 And rarely, at the deep center, an enormous back breaks the surface and is
 gone: the herds are down there, mowing.
 
-**Engine route.** Reuses the miasma kit's two generics (their build is that
-kit's; this kit is their second customer — the reason they're RM_):
+**Engine route.** Partly reuses the miasma kit's generics (their build is
+that kit's; this kit is their second customer — the reason they're RM_).
+⚠️ **CORRECTION this pass**: only ONE of the two miasma generics actually
+exists yet. `RM_CompTerritorialAnchor` shipped for real
+(`MIASMA_MECHANICS_1`'s spike, `src/RimMandrake/EnvironmentalHazards/Source/
+RM_CompTerritorialAnchor.cs`) and is usable now. `RM_GenStep_PlacedSetPieces`
+does **not** exist — miasma's own item file lists it under its Spike 5
+"Owed, not done" line explicitly. The bubble-sailor placement route below is
+therefore blocked on that scatterer landing (miasma's own future work, not
+this kit's), not safely spikeable for real placement yet — only the anchor
+half is provably available today.
 
 - **Bubble-sailors**: placed at gen by `RM_GenStep_PlacedSetPieces`
-  (miasma M6's scatterer) keyed to `RUT_ScaldVent` sites — each vent gets a
-  sail cluster (kinds are roster content; `wildAnimals` stays the roster
-  pass's). Tethering: `RM_CompTerritorialAnchor` (miasma M6) anchored to the
-  vent — sails never leave their bubble line (**INVENTED**: radius 8),
-  ignore everything, flee nothing (they're the kindest resident; combat
-  stats near-nil in XML). Vertical tack/drift is presentation: ❓ whether a
-  float/hover render (fleck or `Graphic` bob) beats a swimming pawn — decide
-  at build; ban 4's carve-out allows them ON the surface either way.
+  (miasma M6's scatterer — **not yet built**, see correction above) keyed to
+  `RUT_ScaldVent` sites — each vent gets a sail cluster (kinds are roster
+  content; `wildAnimals` stays the roster pass's). Tethering:
+  `RM_CompTerritorialAnchor` (miasma M6, **built and available now**)
+  anchored to the vent — sails never leave their bubble line (**INVENTED**:
+  radius 8), ignore everything, flee nothing (they're the kindest resident;
+  combat stats near-nil in XML). Vertical tack/drift is presentation: ❓
+  whether a float/hover render (fleck or `Graphic` bob) beats a swimming
+  pawn — decide at build; ban 4's carve-out allows them ON the surface
+  either way.
 - **Bottom-walkers**: v1 is a **surfacing set-piece, not a resident pawn**
   (ban 4: the walkers live at depth; nothing swims the surface but bubbles
   and sails). `RUT_WalkerSurfacing` IncidentDef (weighted only into this
-  biome, cooldown days **INVENTED**: 8–20) + `RUT_IncidentWorker_WalkerSurfacing`:
-  picks a deep-water cell far from shore, plays an effecter sequence (spray,
-  wake, the back — art/effecter, no pawn spawned), Message not Letter after
-  the first sighting. Whether walkers ever become real huntable pawnkinds at
-  depth is **owner card 3**; the roster's "four sorts" can still assign
-  walker KINDS as flavor-census entries without map presence.
+  biome, cooldown days **INVENTED**: 8–20) + `RUT_IncidentWorker_WalkerSurfacing`
+  — **BUILT AND COMPILING this pass**
+  (`src/RimMandrake/EnvironmentalHazards/Source/
+  RUT_IncidentWorker_WalkerSurfacing.cs`): samples deep boil-water cells
+  (`terrain.IsWater && terrain.burnDamage > 0`, which excludes the margin
+  ring without needing to name it) and keeps the one furthest from a map
+  edge as a "deep center" stand-in, fires `Messages.Message` (not a Letter)
+  with no pawn spawned. Effecter choreography (spray, wake, the back) is
+  art content, explicitly left for the full build; so is the actual
+  `RUT_WalkerSurfacing` IncidentDef XML and its cooldown tuning. Whether
+  walkers ever become real huntable pawnkinds at depth is **owner card 3**;
+  the roster's "four sorts" can still assign walker KINDS as flavor-census
+  entries without map presence.
 
 **Effort**: **M** (incident worker S–M; scatterer/anchor are miasma builds;
 art/effecters are the real cost). **v1: ships** — sails at vents + the
@@ -215,12 +261,21 @@ burns per trip, by the water itself.
 
 **Engine route.** `RUT_ScaldWreck*` building defs (2–3 silhouettes, art
 pass) scattered at map-gen in shallow scald water —
-`GenStep_ScatterThings` *(verified, `Source/Verse/GenStep_ScatterThings.cs`,
+`GenStep_ScatterThings` *(verified, `Verse/GenStep_ScatterThings.cs`,
 subclass of `GenStep_Scatterer`)* with a terrain validator for
-`RUT_ScaldWaterShallow`/`OceanShallow` (❓ whether the stock scatterer takes
-a terrain predicate in XML or needs a 10-line subclass — read
-`GenStep_Scatterer.CanScatterAt` at build; worst case reuse
-`RM_GenStep_PlacedSetPieces` with a terrain-band validator). Salvage is
+`RUT_ScaldWaterShallow`/`OceanShallow`. **RESOLVED, decompile this pass, and
+NO C# needed**: `GenStep_ScatterThings` carries stock XML-settable
+`terrainValidationRadius`/`terrainValidationAllowed`/`terrainValidationDisallowed`
+fields; its `CanScatterAt` override (read in full) walks
+`GenRadial.RadialCellsAround(loc, terrainValidationRadius)` and checks
+`terrain.HasTag(tag)` for each listed tag — **TAG-based, not defName-based**.
+So the wreck scatter needs no subclass, only a shared tag on the shallow
+Scald terrains (e.g. an `RUT_ScaldShallow` tag added to
+`RUT_ScaldWaterShallow`/`RUT_ScaldWaterOceanShallow`/`RUT_ScaldWaterMovingShallow`
+at build, since none of the three currently carry a tag that distinguishes
+shallow from deep) fed into `terrainValidationAllowed`. This drops the S6
+class ledger row below from "S, subclass ONLY if stock can't" to **zero new
+C#** — confirmed possible, not guessed. Salvage is
 vanilla deconstruct/smash yields (`costList`-derived returns + a small
 `RUT_ScaldSalvage` loot ThingSetMaker ❓ crib the wreck/ancient-danger loot
 shape); the burn-pricing needs zero code — the shipped terrains charge per
@@ -249,23 +304,34 @@ the items pass's, per sheet economy convention.
 
 ## New-C# roster (beyond reuses)
 
-| Class | For | Effort |
-|---|---|---|
-| `RM_CompResourceCondenser` | S2 | S |
-| `RUT_IncidentWorker_WalkerSurfacing` | S5 | S–M |
-| terrain-validated scatter (subclass ONLY if stock scatterer can't) | S6 | S |
+| Class | For | Effort | Status |
+|---|---|---|---|
+| `RM_CompResourceCondenser` | S2 | S | **Built, compiling** (SCALD_MECHANICS_1 spike) |
+| `RUT_IncidentWorker_WalkerSurfacing` | S5 | S–M | **Built, compiling** (SCALD_MECHANICS_1 spike) |
+| ~~terrain-validated scatter subclass~~ | S6 | — | **RESOLVED: not needed.** Stock `GenStep_ScatterThings` handles it via `terrainValidationAllowed` tags. |
+
+Scoreboard correction (this pass): **2 new classes**, both built and
+compiling — down from the drafted 3, since S6 needs none.
 
 Reused: `RM_GameCondition_EnvironmentalWeather` (ruled, `ALPHA_MECHANICS_KIT_1`) ·
-`RM_WeatherOverlay_GroundFog` (greentide) · `RM_GenStep_PlacedSetPieces` +
-`RM_CompTerritorialAnchor` (miasma kit) · vanilla 1.6 fishing, swimming,
-geysers, geothermal.
+`RM_WeatherOverlay_GroundFog` (greentide) · `RM_CompTerritorialAnchor`
+(miasma kit, built and available) · `RM_GenStep_PlacedSetPieces` (miasma
+kit, **drafted only, not yet built** — blocks real bubble-sailor placement,
+see S5's correction above) · vanilla 1.6 fishing, swimming, geysers,
+geothermal.
 
 ## Build order
 
-1. **External dependencies land first**: `ALPHA_MECHANICS_KIT_1` (S1 lock);
-   miasma kit's scatterer/anchor generics (S5); `LIQUID_TYPES_MOD_1` +
-   its §9 CARD-1 ruling (S3 fishing bucket); `FISH_BESTIARY_COMMISSION_1`
-   (S3 fish defs).
+1. **External dependencies land first**: `ALPHA_MECHANICS_KIT_1` (S1 lock,
+   closed) — closed; miasma kit's scatterer/anchor generics (S5) — the
+   anchor half is built, the scatterer half is not (see S5's correction);
+   `LIQUID_TYPES_MOD_1` + its §9 CARD-1 ruling (S3 fishing bucket) — closed
+   tonight; `FISH_BESTIARY_COMMISSION_1` (S3 fish defs) — **checked this
+   pass, still `doing`**: it is a design/roster proposal awaiting owner
+   rulings on 8 cardable questions, no build item filed yet. This blocks
+   only `RUT_TheScald.fishTypes`' actual fish content (S3's fishing HALF);
+   it does not block S3's `RUT_ScaldMargin` terrain (built this pass, zero
+   dependency on the fish roster) or any other mechanic in this kit.
 2. **S1 steam sky** — biome instantly feels right; every later test happens
    under it.
 3. **S4 geyser/vent field** — S2 and S5 both key on the vent defs.

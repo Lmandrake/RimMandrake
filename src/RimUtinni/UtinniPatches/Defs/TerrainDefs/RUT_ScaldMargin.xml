@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldMargin.xml                    UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 S3 ("the baths") — scald_kit_spec.md's authored cool
+  ring at the Scald's shore: comfort without the boil's burn, and (per this
+  item's own spike pass, see RUT_ScaldWater.xml's header) the ONE Scald
+  terrain that carries `dbh_water`. Moving the tag here rather than leaving
+  it on the six boil terrains is how this kit satisfies the_scald.md's Ban 1
+  ("never potable... only its distilled breath") while still giving R-B4a's
+  "water is currency" economy a real drink source on this biome.
+
+  burn 0/0                — the comfort without the hurt; this is explicitly
+                             NOT boiling water, it is the authored cool edge.
+  traversedThought HotSpring — same comfort-without-hurt thought as the boil
+                             terrains (Odyssey's own, already loaded).
+  NOT avoidWander          — unlike the boil terrains, pawns should be happy
+                             to linger here (recreation, per JoyGiver_GoSwimming,
+                             confirmed real and Odyssey-gated this session).
+  dbh_water                — the sole Scald drink/draw source (see above).
+
+  ⚠️ Map-authoring constraint, confirmed this pass and NOT fixable in code:
+  `PawnUtility.KnownDangerAt` (RimWorld/PawnUtility.cs:619, decompile) is
+  edifice-only — `c.GetEdifice(map)?.IsDangerousFor(forPawn) ?? false` — it
+  never reads terrain burnDamage or avoidWander. `SwimPathFinder` and
+  `JoyGiver_GoSwimming`'s own cell validators both gate on `KnownDangerAt`
+  but NOT on burn damage directly, so nothing in vanilla stops a pawn's swim
+  path from crossing open boil cells to reach this ring. Whoever places this
+  terrain on the live map (S3's own map-authoring step, via the bridge, per
+  the kit spec) MUST site it as a geometrically isolated cove/inlet cut off
+  from open boil water by land — never a plain strip along an open shore —
+  or pawns will path straight through burning water to reach it.
+
+  What this file does NOT do: place this terrain on the Scald's world tiles.
+  That is map-authoring (bridge), not worldgen, per the kit spec's own S3
+  entry — this is just the terrain def, which parses and validates
+  standalone exactly like RUT_ScaldWater.xml's six siblings.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RUT_ScaldMargin</defName>
+    <label>bathing margin</label>
+    <description>The one ring of the Scald that only comforts. Rainbow mineral mats band the shallows, and the water here is cool enough to drink, draw, and swim without paying the boil's price.</description>
+    <renderPrecedence>393</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>Gravel</driesTo>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>1</glowRadius>
+    <burnDamage>0</burnDamage>
+    <traversedThought>HotSpring</traversedThought>
+    <tags>
+      <li>Water</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

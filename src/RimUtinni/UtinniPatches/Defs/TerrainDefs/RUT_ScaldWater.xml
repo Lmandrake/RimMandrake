@@ -61,14 +61,23 @@
       already loaded (Ludeon.RimWorld.Odyssey is active), reused rather than
       SoakingWet.
     avoidWander true                            — pawns should not idle in it.
-    dbh_water tag                               — dubwise.dubsbadhygiene.thirst
-      and .lite are ACTIVE (confirmed in the live ModsConfig.xml this pass);
-      without this tag DBH will not treat this as a drinkable/drawable water
-      source, silently breaking R-H1's "water is currency" economy the moment
-      the Scald is painted with these terrains instead of vanilla WaterDeep.
-      R-B4a's own caveat still holds: verify against DBH's own reader before
-      relying on it — a tag merely being present proves nothing about which
-      mod consumes it.
+    dbh_water tag REMOVED (SCALD_MECHANICS_1 spike, 2026-09-13) — R-B4a's
+      own caveat ("verify against DBH's own reader before relying on it")
+      is now resolved: BadHygiene.dll (workshop/294100/836308268, 1.6
+      Assemblies) carries both the `dbh_water` literal and the thirst
+      drink-tracking strings (DrankCleanWater/DrankDirtyWater/DrinkCount) in
+      the same assembly, and this file's OWN prior header already stated the
+      intended behaviour outright: "without this tag DBH will not treat this
+      as a drinkable... water source" — i.e. the tag was placed here
+      specifically so pawns COULD drink the boil. That is a direct conflict
+      with the_scald.md's frozen Ban 1 ("never potable... only its distilled
+      breath"), which governs this kit. Ban 1 wins (it is the later, frozen
+      lore ruling; R-B4a's "water is currency" economy is satisfied instead
+      by S2's steam-catch condenser and S3's margin ring). The tag now lives
+      ONLY on `RUT_ScaldMargin` (RUT_ScaldMargin.xml, this kit's S3) — the
+      one cool ring where pawns can actually drink and bathe; these six boil
+      terrains carry no drink route at all, matching scald_kit_spec.md §6
+      row 1's own pre-ruled remedial action.
     waterBodyType Saltwater + Ocean tag          — ocean-shallow/ocean-deep
       variants only, matching vanilla's own WaterOceanDeep/WaterOceanShallow
       pattern. The Lake-facing variants (Deep/Shallow/MovingShallow/
@@ -103,7 +112,6 @@
     <avoidWander>true</avoidWander>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -125,7 +133,6 @@
     <tags>
       <li>Water</li>
       <li>Ocean</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -152,7 +159,6 @@
     <tags>
       <li>Water</li>
       <li>River</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -173,7 +179,6 @@
     <avoidWander>true</avoidWander>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -197,7 +202,6 @@
     <tags>
       <li>Water</li>
       <li>Ocean</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -224,7 +228,6 @@
     <tags>
       <li>Water</li>
       <li>River</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
