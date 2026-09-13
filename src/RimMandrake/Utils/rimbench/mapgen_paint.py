@@ -262,6 +262,58 @@ def _organic_channel(x0, y0, x1, y1, seed, base_width, wander=0.4, notch_every=8
     return [(x, z, d) for (x, z), d in cells.items()]
 
 
+def _branch_channels(main_x0, main_y0, main_x1, main_y1, seed, base_width, count=3,
+                      length_frac=(0.3, 0.55), spread_deg=(28, 65), width_frac=0.55,
+                      wander=0.5, notch_every=6):
+    """Tributary channels forking off a main line at scattered points along
+    it, angled away from the main bearing -- the branching network
+    MAPGEN_GL_SHEET_1's comparator sheet showed every GL landform has
+    (cave tunnels radiating off every category, not just Canyon) and a
+    single wandering channel never produces on its own. Returns a flat
+    list of (x, z, density) cells, same shape as `_organic_channel`'s own
+    return, so callers just extend their existing cell list with it before
+    handing everything to `_terrace_paint` in one pass."""
+    dist = math.hypot(main_x1 - main_x0, main_y1 - main_y0) or 1.0
+    bearing = math.degrees(math.atan2(main_y1 - main_y0, main_x1 - main_x0))
+    out = []
+    for i in range(count):
+        t = 0.18 + 0.64 * ((i + 0.5) / count) + (scatter.noise(i, 3, seed + 501) - 0.5) * 0.12
+        px = main_x0 + (main_x1 - main_x0) * t
+        py = main_y0 + (main_y1 - main_y0) * t
+        side = 1 if scatter.noise(i, 7, seed + 502) > 0.5 else -1
+        spread = spread_deg[0] + (spread_deg[1] - spread_deg[0]) * scatter.noise(i, 11, seed + 503)
+        length = dist * (length_frac[0]
+                          + (length_frac[1] - length_frac[0]) * scatter.noise(i, 13, seed + 504))
+        ang = math.radians(bearing + side * spread)
+        ex = px + math.cos(ang) * length
+        ey = py + math.sin(ang) * length
+        out.extend(_organic_channel(px, py, ex, ey, seed + 600 + i * 11, base_width * width_frac,
+                                     wander=wander, notch_every=notch_every))
+    return out
+
+
+def _radiating_cracks(cx, cy, radius, seed, count=4, width_frac=0.14, length_frac=(0.5, 0.9),
+                       wander=0.5, notch_every=5):
+    """Short channels fanning outward from a radial/raised landform's own
+    rim -- the cave-tunnel branches MAPGEN_GL_SHEET_1's sheet shows
+    radiating off every GL sinkhole/crater/lone-mountain, which a bare
+    disc+rim (this painter's previous shape) never produces on its own.
+    Returns cells in the same (x, z, density) shape as `_organic_channel`."""
+    out = []
+    for i in range(count):
+        ang = (2.0 * math.pi * i / count) + (scatter.noise(i, 2, seed + 801) - 0.5) * 1.2
+        sx = cx + math.cos(ang) * radius * 0.82
+        sy = cy + math.sin(ang) * radius * 0.82
+        length = radius * (length_frac[0]
+                            + (length_frac[1] - length_frac[0]) * scatter.noise(i, 5, seed + 802))
+        ex = sx + math.cos(ang) * length
+        ey = sy + math.sin(ang) * length
+        out.extend(_organic_channel(sx, sy, ex, ey, seed + 850 + i * 13,
+                                     max(2.0, radius * width_frac),
+                                     wander=wander, notch_every=notch_every))
+    return out
+
+
 def _channel_bank_point(x0, y0, x1, y1, base_width, seed):
     """A point beside a carved-line channel's own midpoint, off the
     centreline -- round 3 fix. Point hydrology (spring/brine_seep/
@@ -447,6 +499,14 @@ def _paint_raised_blob(grid_rows, plan_dict, size):
             if 0 <= xi < size and 0 <= zi < size:
                 grid_rows[zi][xi] = _rock_fn(seed)(xi, zi)
 
+    # MAPGEN_GL_SHEET_1's finding (GL organic/branching vs painter's bare
+    # disc): a few cracks fanning off the rim, terraced with the same
+    # gravel/sand bands as the plateau's own lee side, not rock -- these
+    # read as the mountain's own weathering, never a second landform.
+    cracks = _radiating_cracks(cx, cy, radius, seed, count=4)
+    _terrace_paint(grid_rows, cracks, size, [(0.5, GRAVEL), (0.2, SAND), (0.0, SOFTSAND)],
+                    seed + 850, jitter=0.1, jitter_scale=7.0)
+
     _lee_deposit(grid_rows, cx, cy, radius, orient_deg, seed, size)
     _point_hydrology(grid_rows, cx, cy, radius, orient_deg, hydro, seed, size)
 
@@ -480,6 +540,14 @@ def _paint_radial(grid_rows, plan_dict, size):
         xi, zi = int(x), int(z)
         if 0 <= xi < size and 0 <= zi < size:
             grid_rows[zi][xi] = _roughhewn_fn(seed)(xi, zi)
+
+    # MAPGEN_GL_SHEET_1's comparator sheet: every GL crater/sinkhole is
+    # ringed by cave-tunnel branches, not a clean broken rim alone --
+    # radiating cracks past the outer rim, same bands as the pit's own
+    # outer terrace, give the disc a network silhouette instead of a disc.
+    cracks = _radiating_cracks(cx, cy, radius, seed, count=4)
+    _terrace_paint(grid_rows, cracks, size, [(0.55, GRAVEL), (0.25, GRAVEL), (0.0, SAND)],
+                    seed + 850, jitter=0.1, jitter_scale=7.0)
 
     if hydro in ("spring", "brine_seep"):
         fill = WATER_SHALLOW if hydro == "spring" else MARSH
@@ -517,6 +585,15 @@ def _paint_carved_line(grid_rows, plan_dict, size):
     bands = [(0.80, _rock_fn(seed)), (0.58, _roughhewn_fn(seed)), (0.38, GRAVEL),
              (0.20, GRAVEL if riverbed else SAND), (0.0, MUD if riverbed else SOFTSAND)]
     _terrace_paint(grid_rows, channel, size, bands, seed, jitter=0.14, jitter_scale=7.0)
+
+    # MAPGEN_GL_SHEET_1's finding, generalised across the whole category:
+    # every GL carved-line landform (not just Badlands) branches -- a
+    # single wandering band read as "a road" to the owner (round-3 verdict
+    # #2/#3). Tributaries off the main channel, terraced with the same
+    # bands so they read as the SAME canyon's own network, never a second
+    # landform (the plan's own deletions forbid that).
+    tributaries = _branch_channels(x0, y0, x1, y1, seed, base_width, count=3)
+    _terrace_paint(grid_rows, tributaries, size, bands, seed + 700, jitter=0.14, jitter_scale=7.0)
 
     if lf == "Badlands":
         for i in range(2):
