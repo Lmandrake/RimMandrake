@@ -12,8 +12,13 @@ step already useful alone): (1) universal cargo tank — minifiable, holds any
 draws from any cell whose terrain belongs to a row; (3) `RM_HoseSpool` —
 fast-deploy, cheap, fragile conduit-style hose with a length cap (NOT terrain,
 NOT a VE pipe), conduit-style network linking pump→tank; (4) the tanker loop:
-fly to a typed body, deploy, pump, retrieve, leave; (5) trade-from-tank
-(price = row marketValue × amount) + settlement price weighting by world tag.
+fly to a typed body, deploy, pump, retrieve, leave; (5) the BULK BROKER
+interface (owner-ruled 2026-09-13, both directions — nothing like it exists
+in game): a custom dialog on the tank/manifold, trader-in-range or
+settlement-docked → pump-to-sell AND pay-to-fill, price = row marketValue ×
+amount, weighted by settlement world tag. NO vanilla trade-window Harmony —
+rejected as the most conflict-prone patch surface on the 599-mod list; the
+vanilla-native route is barrels (LIQUID_BOTTLE_LOOP_1).
 ADAPTERS, owner-ruled: every supported pipe net (VE PipeSystem chemfuel/
 deepchem, VGE astrofuel) can feed FROM our tank and draw INTO it, and their
 pumps can pump from it. Adopt existing tank families — ship no other storage.
