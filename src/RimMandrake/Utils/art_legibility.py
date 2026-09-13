@@ -183,6 +183,164 @@ def tier_metrics(im, target_px, ref_outline_cov=None):
             "outline_cov": round(cov, 4), "solid_px": n}
 
 
+# ───────────────────────── metric zoo (ART_LEGIBILITY_GATE_1 follow-up) ─────
+# Owner, 2026-09-13: "build MANY potential metrics and find out which ones
+# correspond to my actual visual experience." Nothing here replaces the gate
+# metrics above; the zoo exists to be CORRELATED against the owner's graded
+# sheet, and the winners get promoted. Research grounding: DPID (Weber 2016),
+# PixelOE outline expansion, classic Lanczos+unsharp, edge-F1 / SSIM /
+# RMS-contrast / silhouette-IoU / HF-ratio candidates.
+
+def _premultiplied(im):
+    """Straight → premultiplied RGBA float array; zero RGB where alpha=0 so
+    no baked background bleeds into a blur/resample (the classic trap)."""
+    a = np.asarray(im, dtype=np.float32)
+    al = a[..., 3:4] / 255.0
+    return np.concatenate([a[..., :3] * al, a[..., 3:4]], axis=-1)
+
+
+def _unpremultiply(arr):
+    al = np.clip(arr[..., 3:4], 1e-6, 255.0) / 255.0
+    rgb = np.clip(arr[..., :3] / al, 0, 255)
+    return np.concatenate([rgb, arr[..., 3:4]], axis=-1).astype(np.uint8)
+
+
+def render_processed(im, target_px, chain):
+    """Alternate downscale chains, all alpha-correct (premultiplied space).
+    chain: 'box' (the plain GPU-like path), 'unsharp' (Lanczos + unsharp
+    mask), 'dpid' (detail-preserving weighted resample, λ=1)."""
+    if chain == "box":
+        return render_tier(im, target_px)
+    w, h = im.size
+    s = target_px / max(w, h)
+    tw, thh = max(1, round(w * s)), max(1, round(h * s))
+    pm = Image.fromarray(_premultiplied(im).astype(np.uint8), "RGBA")
+    if chain == "unsharp":
+        from PIL import ImageFilter
+        small = pm.resize((tw, thh), Image.LANCZOS)
+        small = small.filter(ImageFilter.UnsharpMask(radius=1, percent=120, threshold=0))
+    elif chain == "dpid":
+        src = np.asarray(pm, dtype=np.float32)
+        base = np.asarray(pm.resize((tw, thh), Image.BOX), dtype=np.float32)
+        guide = np.asarray(Image.fromarray(base.astype(np.uint8), "RGBA")
+                           .resize((w, h), Image.BILINEAR), dtype=np.float32)
+        dev = np.sqrt(((src - guide) ** 2).sum(axis=-1))          # per-pixel deviation
+        wgt = 1.0 + dev / (dev.mean() + 1e-6)                     # λ≈1 boost for outliers
+        acc = np.zeros((thh, tw, 4), np.float64)
+        wacc = np.zeros((thh, tw, 1), np.float64)
+        ys = (np.arange(h) * thh // h); xs = (np.arange(w) * tw // w)
+        np.add.at(acc, (ys[:, None], xs[None, :]), src * wgt[..., None])
+        np.add.at(wacc, (ys[:, None], xs[None, :]), wgt[..., None])
+        small = Image.fromarray(np.clip(acc / np.maximum(wacc, 1e-6), 0, 255)
+                                .astype(np.uint8), "RGBA")
+    else:
+        raise ValueError(chain)
+    st = Image.fromarray(_unpremultiply(np.asarray(small, dtype=np.float32)), "RGBA")
+    comp = Image.new("RGBA", st.size, BG + (255,))
+    comp.alpha_composite(st)
+    return np.asarray(comp.convert("RGB"), dtype=np.float32), \
+        np.asarray(st.split()[-1], dtype=np.float32)
+
+
+def _sobel_edges(lum, thresh):
+    gy, gx = np.gradient(lum)
+    mag = np.hypot(gx, gy)
+    return mag > thresh
+
+
+def _dilate(m):
+    d = m.copy()
+    d[1:, :] |= m[:-1, :]; d[:-1, :] |= m[1:, :]
+    d[:, 1:] |= m[:, :-1]; d[:, :-1] |= m[:, 1:]
+    return d
+
+
+def zoo_metrics(im, target_px, ref_px=96, chain="box"):
+    """MANY candidate metrics at one tier for one processing chain. The
+    reference is the SAME art rendered at ref_px then area-resized to the
+    tier's geometry — 'what a bigger view of this art shows, brought to this
+    size' — so every comparison is self-referential, needing no external
+    ground truth. Tuned for 32px-scale inputs (Sobel threshold 24, 1px edge
+    tolerance; photo-tuned defaults find nothing at this size)."""
+    rgb, alpha = (render_tier(im, target_px) if chain == "box"
+                  else render_processed(im, target_px, chain))
+    lum = _lum(rgb); mask = alpha > ALPHA_SOLID
+    ref_rgb, ref_alpha = render_tier(im, ref_px)
+    rH, rW = lum.shape
+    ref_small = np.asarray(Image.fromarray(ref_rgb.astype(np.uint8))
+                           .resize((rW, rH), Image.BOX), dtype=np.float32)
+    ref_lum = _lum(ref_small)
+    ref_mask = np.asarray(Image.fromarray((ref_alpha > ALPHA_SOLID))
+                          .resize((rW, rH), Image.NEAREST))
+
+    out = {}
+    # 1. edge-map F1: did the reference's edges survive at this size?
+    e_ref = _sobel_edges(ref_lum, 24); e_out = _sobel_edges(lum, 24)
+    tp = float((e_out & _dilate(e_ref)).sum())
+    prec = tp / max(1.0, float(e_out.sum()))
+    rec = float((e_ref & _dilate(e_out)).sum()) / max(1.0, float(e_ref.sum()))
+    out["edge_f1"] = round(2 * prec * rec / max(1e-6, prec + rec), 4)
+    # 2. SSIM (single-scale, 5px gaussian-ish box) on luminance
+    def _blur(a):
+        k = np.ones((3, 3)) / 9.0
+        from numpy.lib.stride_tricks import sliding_window_view
+        p = np.pad(a, 1, mode="edge")
+        return (sliding_window_view(p, (3, 3)) * k).sum(axis=(-1, -2))
+    mu_x, mu_y = _blur(lum), _blur(ref_lum)
+    var_x = _blur(lum * lum) - mu_x ** 2; var_y = _blur(ref_lum * ref_lum) - mu_y ** 2
+    cov = _blur(lum * ref_lum) - mu_x * mu_y
+    c1, c2 = (0.01 * 255) ** 2, (0.03 * 255) ** 2
+    ssim = ((2 * mu_x * mu_y + c1) * (2 * cov + c2)) / \
+           ((mu_x ** 2 + mu_y ** 2 + c1) * (var_x + var_y + c2))
+    out["ssim"] = round(float(ssim[mask].mean()) if mask.any() else 0.0, 4)
+    # 3. RMS local contrast inside the silhouette
+    local_sd = np.sqrt(np.maximum(var_x, 0))
+    out["rms_contrast"] = round(float(local_sd[mask].mean()) / 64.0, 4) if mask.any() else 0.0
+    # 4. silhouette IoU vs reference shape
+    inter = float((mask & ref_mask).sum()); union = float((mask | ref_mask).sum())
+    out["sil_iou"] = round(inter / max(1.0, union), 4)
+    # 5. high-frequency energy retention
+    gy, gx = np.gradient(lum); go = np.hypot(gx, gy)
+    gy, gx = np.gradient(ref_lum); gr = np.hypot(gx, gy)
+    out["hf_ratio"] = round(min(2.0, float(go[mask].mean() / max(1e-6, gr[ref_mask].mean()))
+                            if mask.any() and ref_mask.any() else 0.0), 4)
+    # 6-9. the gate's own four, on this chain's render — measured through the
+    # same code path so chains are comparable
+    m = tier_metrics(im, target_px, ref_outline_cov=outline_coverage(im, ref_px)[0])
+    out.update({f"gate_{k}": m[k] for k in ("keyline", "structure", "ground", "coverage")})
+    # 10. keyline v1 (the ORIGINAL contrast-based metric, kept per the owner)
+    inner = _erode(mask); boundary = mask & ~inner
+    interior = _erode(inner) if inner.sum() > 8 else inner
+    int_lum = float(lum[interior].mean()) if interior.any() else (float(lum[mask].mean()) if mask.any() else 0.0)
+    bnd_lum = float(lum[boundary].mean()) if boundary.any() else int_lum
+    rim_dark = max(0.0, (int_lum - bnd_lum) / 96.0)
+    rim_vs_bg = abs(bnd_lum - BG_LUM) / 128.0
+    out["keyline_v1"] = round(min(1.0, 0.6 * min(1.0, rim_dark) + 0.4 * min(1.0, rim_vs_bg)), 4)
+    return out
+
+
+def cmd_zoo(args):
+    """Compute the whole metric zoo (× processing chains) for files → JSON."""
+    tiers = [int(t) for t in args.tiers.split(",")]
+    chains = args.chains.split(",")
+    rows = []
+    for f in _collect(args.paths, args.glob):
+        try:
+            im = trim(Image.open(f).convert("RGBA"))
+            row = {"path": f, "chains": {}}
+            for ch in chains:
+                row["chains"][ch] = {str(t): zoo_metrics(im, t, chain=ch)
+                                     for t in tiers if t != 96}
+            rows.append(row)
+            print(f"zoo {os.path.basename(f)}")
+        except Exception as e:
+            print(f"  skip {f}: {e}")
+    with open(args.json, "w") as fh:
+        json.dump(rows, fh, indent=1)
+    print(f"written: {args.json} ({len(rows)} files)")
+    return 0
+
+
 def score_file(path, tiers):
     """The LARGEST tier is the 1:1 reference: its outline coverage is what
     the zoom-out tiers' keyline-survival is measured against."""
@@ -375,6 +533,9 @@ def main():
     p = sub.add_parser("resexp"); common(p)
     p.add_argument("--stored", default="128,256,512")
     p.set_defaults(fn=cmd_resexp)
+    p = sub.add_parser("zoo"); common(p)
+    p.add_argument("--chains", default="box,unsharp,dpid")
+    p.set_defaults(fn=cmd_zoo)
 
     args = ap.parse_args()
     sys.exit(args.fn(args))
