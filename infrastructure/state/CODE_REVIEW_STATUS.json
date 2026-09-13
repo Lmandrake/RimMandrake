@@ -4822,6 +4822,12 @@
     "hash": "13fa6022a09a3515e15655d36c4c24bd8962afe3a2be9452fab1e1517586505e",
     "sha": "f52addaf"
   },
+  "src/RimMandrake/Utils/modcheck/__init__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ecc6c23890fd65af05fd42dae0bf7da70f6d262cc119699f6cb50919df970c2b",
+    "sha": "d1c393c02"
+  },
   "src/RimMandrake/Utils/modcheck/cli.py": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -4840,11 +4846,29 @@
     "hash": "b054ced3f9aa565a717cb1e6ee97587154040a9a80606794eeffc6ac53acd1b5",
     "sha": "534c8feba"
   },
+  "src/RimMandrake/Utils/modcheck/runner.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "062f522e758341f2f8fc15171b2d1eac2d5587a897288d516d4c993a7128d1c3",
+    "sha": "d1c393c02"
+  },
+  "src/RimMandrake/Utils/modcheck/selftest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "97c94b1c40c9160f32323e7aa49026e06ad18e9c888020037bc802710c6da5a3",
+    "sha": "d1c393c02"
+  },
   "src/RimMandrake/Utils/modcheck/status.py": {
     "cleanCount": 1,
     "date": "2026-09-12",
     "hash": "91c830eb04beed8ac3de5617740b726b499704b09e50fcba971e6ab51422abb5",
     "sha": "534c8feba"
+  },
+  "src/RimMandrake/Utils/modcheck/suite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e504ac64ac897fc0dfbbdba4a7ef0951c9dee007611c7324e3e1622204785338",
+    "sha": "d1c393c02"
   },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
@@ -5102,6 +5126,24 @@
     "date": "2026-09-03",
     "hash": "586d7b8b69db21f96d885aa25ed5b6ac36be325c2ebc8fda592c37323ad5dbe6",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/rimdrive/__init__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "49ef69c34a62a048748c71198ab6caa866fc90ec963dcb58d76d70cfdc988214",
+    "sha": "d1c393c02"
+  },
+  "src/RimMandrake/Utils/rimdrive/selftest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "cad9ccf652ee22522123d77e77fd415f98656987dcdc7a0052a8eb6e1b40761a",
+    "sha": "d1c393c02"
+  },
+  "src/RimMandrake/Utils/rimdrive/session.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "17a85c1e366c701ecae84535f6c43f4813e344487acce2b2a6474fc888043068",
+    "sha": "d1c393c02"
   },
   "src/RimMandrake/Utils/rimdrive/verify.py": {
     "cleanCount": 1,
@@ -11079,6 +11121,12 @@
     "hash": "87c441c5c1a475ef5f604f3075fa5438b7031e51df62a89b4a0728b1a4cac146",
     "sha": "629956d2"
   },
+  "src/RimUtinni/Antiquities/Source/AntiquitiesMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5efc8bc681cba61a2b1ebba972aa6b3803a1fa86cd18070f48339bd759276d1b",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/Antiquities/Source/AntiquityStageExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -11204,6 +11252,12 @@
     "date": "2026-09-05",
     "hash": "0694fbe4b9547038683ae89d8d1bc75bad2881f5139e7a4659e470accc9fbc51",
     "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/make_ashfall_spire_icon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5cfc13c396016a549fd4c25f73e7f5e218798b7adb5c46720dceada7f2b5796b",
+    "sha": "d1c393c02"
   },
   "src/RimUtinni/AshkarrLandmarkArt/make_complex_structures_icon.py": {
     "cleanCount": 1,
@@ -11337,6 +11391,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "9445450d"
   },
+  "src/RimUtinni/DroidRepairJobs/Source/DroidRepairJobsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "93a45fd8608476f986c0f53db97bc8e76ea6bd380d5a491a0fe675364a91794c",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/DroidRepairJobs/Source/QuestNode_DroidRepairJob.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -11463,6 +11523,12 @@
     "hash": "2c2c462e29fe5b9b91950b9337f02cb79d9cfacd28b5cd5630dbef9bd7f18c1a",
     "sha": "8be234dd"
   },
+  "src/RimUtinni/FungalSoilTrade/Source/FungalSoilTradeOptions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1e19ab85867c469f098bef4b7fafa02a8d91789ec09ad8ca03933da824c67e5d",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/FungalSoilTrade/Source/GenStep_ScatterFungalGround.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -11535,6 +11601,30 @@
     "hash": "1ed2c35c67eadd5489e649549112cd8158f766e5af2490bbc1403fbe982871a9",
     "sha": "8da0c5c8e"
   },
+  "src/RimUtinni/KyberTradePlot/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e6106bf2c040bcbcaff9cfedeea9ea93039bb950274267cb319a35495178b507",
+    "sha": "d1c393c02"
+  },
+  "src/RimUtinni/KyberTradePlot/Defs/IncidentDefs/IncidentDefs_KyberTradePlot.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c2e041829d441c8f315c1d6f7e609a422659c66d9edeb5e9c68c782fb111b35f",
+    "sha": "d1c393c02"
+  },
+  "src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs/RUT_KyberDonationSmuggle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b66f284a4dc856e4b889ea261712a5792ba2a3c38dcb39030b5960053cf59825",
+    "sha": "d1c393c02"
+  },
+  "src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs/RUT_KyberHomesteadVisit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d5d69ec1ce658e66e715984dac9aaffc5fea43e48f72f504da57ee5eef0c0897",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/KyberTradePlot/Source/KyberTradePlotIncidentWorker.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -11571,6 +11661,12 @@
     "hash": "1280e3dd1c04262c7c45a41780e764147ffaa4b310290027b4e23d01d4916c40",
     "sha": "1dc7382d"
   },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepMineshaft_Scatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3472f5b77b7029fb71b95f847f997cd96c8651071e8ab35540aaa08a1323601c",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepPyrinthScatter.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -11582,6 +11678,12 @@
     "date": "2026-09-09",
     "hash": "696f2d1c63f6137b6671a9533ca3c7f8f65cb3003f7475c3a323da0250f056f2",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepMineshaft.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "4ae30a2586306f9ea409fa9a1dce7978f20dcb79eaecca2b10ccda1d3071507b",
+    "sha": "d1c393c02"
   },
   "src/RimUtinni/LanternDeeps/LICENSE": {
     "cleanCount": 1,
@@ -12333,6 +12435,12 @@
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RustCathedralHum/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "0cff988d7a6829b48c7b2894100e419f46dabd2af8ee38f15c24d8cb8156c35b",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/RustCathedralHum/Defs/IncidentDefs/RUT_DeepDrillCathedralResponse.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -12789,6 +12897,18 @@
     "hash": "38cda478f582f6d1374bd79203c1aa93ce5b701ae12c18d753e953b370c064ac",
     "sha": "b0d3ba6fc"
   },
+  "src/RimUtinni/ShokkweaveEconomy/Defs/MapGeneration/ShokkweaveHarvestScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6616e63603e0f5484a94a3abe9768c0dbb23778bbf5b4aa0fc157f0259bc939c",
+    "sha": "d1c393c02"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Defs/ThingDefs_Buildings/ShokkweaveHarvestNodes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "cf430d30d1186b7221bce47000d0842037a43f2319550b5b893170c201bf2b01",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveButcherYield.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -13016,6 +13136,12 @@
     "date": "2026-09-09",
     "hash": "771b6e5b14626253e03d8fb27acc399f4bd3c025a84e9078e63bcde2d9b8fbef",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ae5820d1b6c2478679f563a6db610d5d56a220491ef5fa8ac2afc80523c3dce5",
+    "sha": "d1c393c02"
   },
   "src/RimUtinni/StructureInjectionsRUT/LICENSE": {
     "cleanCount": 1,
@@ -13413,6 +13539,12 @@
     "hash": "a437559251e4d717244c8bb5af3538e353a430eae29ecbb8278b6ac45bde81dc",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "fb9ee47179e43d99478bb3236d71378b3d27ba02765ea8ed98340b4095a1d3c9",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_ComplexStructures.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -13479,6 +13611,12 @@
     "hash": "0d2e3ada309ddfabb0eafa1309bae980280e3c50bc95b54a02819b5c325e968d",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_AshfallSpire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "094b30fa7297d2313a53d04eb45a3408bad1689896280997e826aac787fb0a71",
+    "sha": "d1c393c02"
+  },
   "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_BlackstarCompany.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -13508,6 +13646,12 @@
     "date": "2026-09-07",
     "hash": "019632c0a716eeb1a5a8b013a60a18af71d52410edc6ff75945b4e009843dd2b",
     "sha": "a07448e6"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WebworkStructures.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7fbfd847fa51d774310a85a9e44977e791b1199191051c9fd797c8299a8cc1d1",
+    "sha": "d1c393c02"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/Jawa_ClaimRumour.xml": {
     "cleanCount": 2,
