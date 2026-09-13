@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T22:51:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T23:11:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -503,15 +503,6 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
-## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
-prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)

@@ -8321,3 +8321,4 @@
 {"seat":"BENCH","event":"claim","id":"TOYFIG_LAW_PILOT_1","ts":"2026-09-13T23:03:27Z"}
 {"seat":"BENCH","event":"start","id":"TOYFIG_LAW_PILOT_1","ts":"2026-09-13T23:03:27Z"}
 {"seat":"BENCH","event":"note","id":"TOYFIG_LAW_PILOT_1","text":"Owner ruled toy-figurine law in principle (neutral pose, jointless limbs, flat cel, mass-first) pending this pilot's A/B; prompt clause and mass regen wait on his approval. 4 jobs queued priority 1: anooba/boma/dewback/fanback toyfig_a east at 512 (ds 3.0-3.5). Vanilla evidence: animals DO have stub legs; only pawns are limbless; the muffalo hides legs under mass.","ts":"2026-09-13T23:03:43Z"}
+{"seat":"FOUNDRY","event":"close","id":"ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1","sha":"5d3a18555975dabda9ecae060a36cdf040ab5fb1","ts":"2026-09-13T23:11:15Z"}
