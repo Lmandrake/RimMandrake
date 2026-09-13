@@ -84,8 +84,12 @@ namespace RimMandrake.LiquidTypes
 
                 if (props.corrodesApparel && pawn.apparel != null)
                 {
+                    // Iterate backwards: WornApparel is the tracker's live list, and
+                    // pawn.apparel.Remove(piece) below shifts everything after the
+                    // removed index down by one — a forward loop would silently skip
+                    // the apparel that just slid into the removed slot for this pass.
                     List<Apparel> worn = pawn.apparel.WornApparel;
-                    for (int a = 0; a < worn.Count; a++)
+                    for (int a = worn.Count - 1; a >= 0; a--)
                     {
                         Apparel piece = worn[a];
                         // Proportional to pH distance from neutral (7), per
