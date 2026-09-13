@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:18:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T09:25:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
-prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
 state:    ready
@@ -125,6 +116,15 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
+prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing  (BLOCKED)
@@ -881,6 +881,16 @@ kind:     task
 blocked:  code CLEAN/deployed; threat-point Prefix + tile-memory round trip need a live game session (batching, not restarting solo)
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  faction-held class needs the owner to name which factions are tech-aligned and to what research domains (no such mapping exists in any design doc, investigation already exhaustive per the item's own file); the ship-only reveal-trigger is a separate, smaller follow-on but its exact in-fiction trigger event is also underspecified (research_normalization_principles.md only says 'the Narrator announces a remembered schematic' -- not which event maps to which of the 3 memory_core rows) -- not filed blind tonight
+summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
+prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing  (BLOCKED)

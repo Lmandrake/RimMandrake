@@ -8135,3 +8135,8 @@
 {"seat":"BENCH","event":"note","id":"EXPLOSIVE_PLANT_GROWTH_1","text":"doing-audit 2026-09-13: design ruled 4/4; open work = TPS perf benchmark (unrun) + per-biome roster still PROPOSED","ts":"2026-09-13T09:17:49Z"}
 {"seat":"BENCH","event":"reassign","id":"TECHPRINT_FACTION_GATING_1","to":"FOUNDRY","ts":"2026-09-13T09:17:55Z"}
 {"seat":"BENCH","event":"note","id":"TECHPRINT_FACTION_GATING_1","text":"doing-audit 2026-09-13: sat doing on OWNER seat 277h, abandoned mid-work (faction-tech alignment ruled 2026-09-04, no categoryTag/heldByFactionCategoryTags build landed). Reassigned to FOUNDRY ready.","ts":"2026-09-13T09:18:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T09:21:44Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-13T09:24:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TECHPRINT_FACTION_GATING_1","ts":"2026-09-13T09:25:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"TECHPRINT_FACTION_GATING_1","ts":"2026-09-13T09:25:37Z"}
+{"seat":"FOUNDRY","event":"block","id":"TECHPRINT_FACTION_GATING_1","reason":"faction-held class needs the owner to name which factions are tech-aligned and to what research domains (no such mapping exists in any design doc, investigation already exhaustive per the item's own file); the ship-only reveal-trigger is a separate, smaller follow-on but its exact in-fiction trigger event is also underspecified (research_normalization_principles.md only says 'the Narrator announces a remembered schematic' -- not which event maps to which of the 3 memory_core rows) -- not filed blind tonight","ts":"2026-09-13T09:25:37Z"}
