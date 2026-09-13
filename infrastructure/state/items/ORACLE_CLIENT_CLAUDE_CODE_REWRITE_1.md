@@ -48,3 +48,37 @@ EXPECT  a letter matching the register lint, OR the fallback text - never a
 LIES    the selftest validator (no network call either way) passing proves
         nothing about the transport; only the live "Test Ohm letter" action does
 ```
+
+## CLOSED 2026-09-13 — live-verified, one code bug fixed, one owner action owed
+
+Ran the live "Test Ohm letter" debug action on a dedicated 4-mod `oracle`
+quicktest tier (`modset_builder.py`; `start_debug_game_ready` is unreliable
+against the owner's full 590-mod stack for worldgen — WorldGenStep errors,
+`quicktest-crashes-full-modlist-use-cheap-mechanism-list`). Confirmed via
+`jawa/list_letters`: the fallback letter delivered correctly on the first
+run ("[FALLBACK] My spine settles where you touched it. Good work, small
+hands.") — the async call → subprocess → fallback → letter-stack path all
+work end to end, exactly per the verify bar. Never a raw HTTP-client path.
+
+**Bug found and fixed**: `OracleClient.cs`'s exit-code-!=0 branch only read
+`stderr` for the diagnostic. The real failure here — the Windows CLI's OAuth
+session expired — prints to **stdout**, so the fallback log showed an empty,
+useless message ("call failed: Oracle: claude -p exited 1 -- "). Fixed to
+fall back to stdout when stderr is empty; rebuilt (`dotnet build -c
+Release`, 0W/0E) and deployed. Re-ran live: the log now reads "call failed:
+Oracle: claude -p exited 1 -- Failed to authenticate: OAuth session expired
+and could not be refreshed" — the real cause, finally visible.
+
+**Also fixed in passing**: the owner's global `C:\Users\Mandrake\.claude\settings.json`
+had a stale `Write(~/.claude/**)` permission rule the CLI itself flags as
+invalid ("only Edit(path) rules are matched ... Use Edit(~/.claude/**)
+instead") — this was surfacing as noise on every `claude -p` call (harmless
+on exit 0, but confusing on exit 1). Removed the redundant entry (`Edit(~/.claude/**)`
+already covers it).
+
+**Owed, and it's his**: the Windows `claude.exe` (2.1.228,
+`C:\Users\Mandrake\.local\bin\claude.exe`) needs a fresh interactive login
+(`claude login` or equivalent) before any live Oracle call can actually
+succeed — that's an OAuth flow, not something an agent can do for him. Until
+then every consumer correctly ships its fallback text, per the spec's law #2
+("the game is whole with the LLM absent").

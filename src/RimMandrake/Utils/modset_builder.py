@@ -121,6 +121,15 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rut.injections", "sarg.alphaanimals"],
         "dlc": True,
     },
+    "oracle": {
+        "why": "Prove ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1's live 'Test Ohm "
+               "letter' debug action fires a real claude -p subprocess call "
+               "-- start_debug_game_ready is unreliable on the owner's full "
+               "590-mod stack (WorldGenStep errors, quicktest-crashes-full-"
+               "modlist-use-cheap-mechanism-list), so prove it here instead.",
+        "want": [BRIDGE, "mandrake.rm.oracle"],
+        "dlc": False,
+    },
 }
 
 
