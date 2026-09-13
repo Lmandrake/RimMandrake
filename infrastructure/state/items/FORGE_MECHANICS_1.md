@@ -29,5 +29,11 @@ Spec drafted 2026-09-11:
 - `the_forge.md` Owed entry carries a DRAFTED pointer; no ruling changed.
 - Owner cards (tower depth, rain lethality, penned beldons vs the embargo)
   reach a card sitting before the F1/F4 builds start.
+  **DONE — 2026-09-13 (FOUNDRY):** all three RULED 2026-09-12, at the same
+  sitting as Miasma/Fever Wood/Sump's cards (`MECHANICS_CARDS_SITTING_1`,
+  closed). `forge_kit_spec.md`'s own header was stale ("unruled — next card
+  sitting") despite every entry already reading "RULED 2026-09-12" —
+  fixed to match. Build phase (spike pass, then full wiring) is now
+  unblocked and owed.
 - Build phase closes only when the six mechanics ship per the spec's v1
   lines and the hard-ban linter checks pass.

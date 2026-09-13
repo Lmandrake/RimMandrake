@@ -27,9 +27,16 @@ Scald**.
 
 ## verify
 
-- [ ] The 2 owner cards in the kit spec are ruled (card sitting), and
-      `RM_liquid_types_mod.md` §9 CARD-1 (Scald salinity → fishing bucket)
-      is ruled before `RUT_TheScald.fishTypes` is wired.
+- [x] The 2 owner cards in the kit spec are ruled — **2026-09-13 (FOUNDRY)**:
+      `scald_kit_spec.md`'s own §"Owner cards" shows both RULED 2026-09-12
+      (card 2: item water default + dbh_water toggle behind Mod Settings;
+      card 3: diving interaction ships as v1 content, filed
+      `SCALD_DIVING_MOD_1`) — header fixed, was stale "Open owner cards"
+      with no ruled/unruled marker. `RM_liquid_types_mod.md` §9 CARD-1
+      (Scald salinity → FRESHWATER, rivers flow OUT) is also ruled, and
+      `LIQUID_TYPES_MOD_1` (the mod itself) shipped its full roster
+      tonight — `RUT_TheScald.fishTypes` wiring is now unblocked on both
+      fronts.
 - [ ] Every ❓ engine claim in the kit spec is re-checked against the live
       1.6 assembly before its C# is spent (in particular: the thirst-mod
       `dbh_water` drink route on burn terrain, geothermal's geyser

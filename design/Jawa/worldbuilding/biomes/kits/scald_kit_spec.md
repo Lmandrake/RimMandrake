@@ -276,11 +276,12 @@ geysers, geothermal.
 7. **S5 set-pieces** — after S4 (vents) and the miasma generics; incident
    last (pure presentation).
 
-## Open owner cards
+## Owner cards — RULED, sitting 2026-09-12
 
 *(Card 1 is deliberately NOT here: **the Scald salinity/fishing-bucket card
-is already open at `design/RimMandrake/RM_liquid_types_mod.md` §9 CARD-1**
-— this kit consumes its ruling.)*
+lived at `design/RimMandrake/RM_liquid_types_mod.md` §9 CARD-1** — this kit
+consumes its ruling, restated below alongside cards 2/3. All three cards are
+settled; nothing here still blocks the Scald kit.)*
 
 2. **RULED 2026-09-12 — (c) BOTH, behind a Mod Settings toggle.** Item
    water is the default; the `dbh_water` pipe-network source enables in

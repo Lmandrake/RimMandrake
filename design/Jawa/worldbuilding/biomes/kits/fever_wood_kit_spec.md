@@ -37,7 +37,8 @@ sheet's cross-flow ledger names that class as this biome's skeleton.
 
 Scoreboard: **9 mechanics** · **3 sibling-kit reuses** (causeway GenStep shape,
 LivingRegrowth/Greatbole class, growth-engine suppression grid) · **7 new RM_/
-RUT_ classes** (1 L, 4 M, 2 S) · 3 owner cards open.
+RUT_ classes** (1 L, 4 M, 2 S) · 3 owner cards, all RULED 2026-09-12 (see
+"Owner cards" below).
 
 ---
 
@@ -352,8 +353,11 @@ Greatbole class, F2 silence cue), `EXPLOSIVE_PLANT_GROWTH_1` v2 (moving lanes
 native kinds), `sarlacc_spec.md` (F4 family register), the plot (F4's
 emergence event — files there, never here).
 
-## Owner cards (open — this spec post-dates the closed
-`KIT_SPECS_CARD_SITTING_1`; BENCH routes these three to the next card sitting)
+## Owner cards — RULED, sitting 2026-09-12
+
+(This spec post-dated the closed `KIT_SPECS_CARD_SITTING_1`; these three
+were routed to and ruled at the next card sitting the same day. All three
+are settled — nothing here still blocks F1–F9.)
 
 1. **CARD — RULED 2026-09-12: hidden plumbing factions are FINE (A, spec as
    written).** Two hidden FactionDefs, vanilla-insectoid pattern, never

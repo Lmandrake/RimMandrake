@@ -319,7 +319,7 @@ greentide kit M3 (`RUT_Scald`, F1), miasma kit M6 scatterer (F4), roster pass
 economy), `VAPOR_EMITTER_PLACEMENT_1` (geyser density law — consumer, no
 blocker), `TIBANNA_EMBARGO_PLOT_1` (consumes F2; owns station, clock, trade).
 
-## Open owner cards (unruled — next card sitting)
+## Owner cards — RULED, sitting 2026-09-12
 
 1. **RULED 2026-09-12 — one large deep floor per tower in v1.** As
    drafted; portal-chained multi-floor lands later only if a quicktest

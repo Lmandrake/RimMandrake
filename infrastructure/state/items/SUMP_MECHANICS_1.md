@@ -38,5 +38,9 @@ shared class with Miasma M6 (`RM_GenStep_PlacedSetPieces`), 5 new RM_ classes
       order, owner cards).
 - [x] Frozen sheet untouched except a DRAFTED pointer in Owed.
 - [x] Kit registered in `design/INDEX.md` kits table.
-- [ ] Owner cards 1–3 ruled at `KIT_SPECS_CARD_SITTING_1`.
-- [ ] Build items filed once `ALPHA_MECHANICS_KIT_1` lands (FOUNDRY).
+- [x] Owner cards 1–3 ruled — the checklist named the wrong sitting;
+      `sump_kit_spec.md`'s own "Open owner cards" section rides
+      `MECHANICS_CARDS_SITTING_1` (closed), and all three entries there are
+      dated "RULED 2026-09-12" (header text fixed to match, was stale
+      "unruled" 2026-09-13 FOUNDRY).
+- [x] `ALPHA_MECHANICS_KIT_1` is closed. Build items may now be filed.

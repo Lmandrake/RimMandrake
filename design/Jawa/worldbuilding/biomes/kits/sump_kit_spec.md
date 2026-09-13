@@ -303,7 +303,7 @@ Cross-item dependencies restated: `ALPHA_MECHANICS_KIT_1` (S6),
 bumbledrones; Patient-family register), items pass (§7 economy — deliberately
 NOT in this kit), `sarlacc_spec.md` (family type specimen).
 
-## Open owner cards (unruled — rides `MECHANICS_CARDS_SITTING_1`)
+## Owner cards — RULED, sitting 2026-09-12 (`MECHANICS_CARDS_SITTING_1`)
 
 1. **RULED 2026-09-12 — the lit moat DOES catch adjacent natural tar
    pools.** The owner overrode the drafted poured-cells-only default: a
