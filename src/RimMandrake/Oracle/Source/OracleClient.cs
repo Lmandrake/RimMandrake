@@ -192,8 +192,18 @@ namespace RimMandrake.Oracle
 
                 if (proc.ExitCode != 0)
                 {
+                    // Verified 2026-09-13: an auth failure ("Failed to
+                    // authenticate: OAuth session expired") prints to STDOUT,
+                    // not stderr -- stderr-only produced an empty, useless
+                    // diagnostic. Fall back to stdout whenever stderr is
+                    // silent so a real failure reason is never dropped.
+                    string diagnostic = stderr.ToString().Trim();
+                    if (diagnostic.Length == 0)
+                    {
+                        diagnostic = stdout.ToString().Trim();
+                    }
                     throw new Exception(
-                        "Oracle: claude -p exited " + proc.ExitCode + " -- " + Truncate(stderr.ToString().Trim(), 300));
+                        "Oracle: claude -p exited " + proc.ExitCode + " -- " + Truncate(diagnostic, 300));
                 }
 
                 string content = stdout.ToString().Trim();
