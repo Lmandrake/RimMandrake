@@ -8,6 +8,9 @@ Filed by BENCH, 2026-09-13 (`design/RimMandrake/liquids_framework_design.md`
 Bottle chain: `RM_BottleEmpty` → fill job (terrain edge or tank) →
 `RM_Bottle<Liquid>` (generator-emitted per row) → use → `RM_BottleDirty` →
 wash job (consumes water) → empty. Buckets = larger bottle, same chain.
+BARRELS too (owner-ruled 2026-09-13, "very scavenger"): ~25-unit big sibling,
+same chain plus fill/empty bills at a tank; barrels are the vanilla-native
+bulk trade route — every trader buys/sells them with zero patches.
 Dirty stage behind a Mod Settings toggle, default ON in the campaign; off =
 use returns a clean empty. Special behaviors as row data, no per-liquid C#:
 revert timer (bottled boiling/icy → fresh), rot (bottled blood via

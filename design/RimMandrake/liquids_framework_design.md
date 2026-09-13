@@ -137,10 +137,20 @@ building: the **universal cargo tank** — minifiable, holds any (LiquidDef, amo
 plus a **universal pump**, and per-net ADAPTERS so every supported pipe network can
 feed from and draw into our tank, and existing pumps can pump from it.
 
-**Liquid trade.** Bottles trade natively (tradeTags per row). Bulk sells from the tank
-via a trade-from-tank interaction (price = row marketValue × amount) — no
-ten-thousand-bottle stacks. Settlements weight prices by their world tag (desert pays
-more for water). v1-thin.
+**Liquid trade** (owner-ruled 2026-09-13: BOTH routes — "it's that important").
+Nothing in vanilla or the mod list trades bulk liquid; this is new mechanism.
+Two routes, both v1:
+- **Barrels** — a real item family (~25 units, the bottle chain's big sibling:
+  fill/empty bills at the tank, dirty barrels pile up like dirty bottles, barrels
+  are loot). Trade stays 100% vanilla — every trader buys and sells barrels today,
+  zero patches. Owner: "barrels are also a thing to keep in the game. Very
+  scavenger."
+- **Bulk broker interface** — a custom dialog on the universal tank/manifold:
+  trader-in-range or settlement-docked → pump-to-sell AND pay-to-fill, both
+  directions, price = row marketValue × amount, weighted by the settlement's world
+  tag (desert pays more for water). No vanilla trade-window Harmony (rejected as
+  the most conflict-prone patch surface in a 599-mod list).
+Bottles trade natively as ThingDefs either way (tradeTags per row).
 
 **Typed worldmap → mapgen.** One authoring pass writes `worldTag` values onto the
 frozen Ash'karr map's water tiles/named bodies (WorldComponent keyed by tile ID,
