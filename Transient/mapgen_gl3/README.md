@@ -59,12 +59,34 @@ bad luck.
 Combined with round 2's already-proven 6 (Canyon x4, LoneMountain, Crater),
 **all 8 of the item's 8 landform categories now have a live-proven GL
 application** — the mechanism gap round 2 flagged as its biggest open item is
-closed. `comparator_gl_vs_painter_v2.png`'s two grey "no GL shot" tiles
-(RUT_Gen_05/06) can now be filled with these two screenshots to produce the
-8/8 comparator sheet the item's own `PROVE` line asks for — composing that
-final sheet image (cropping/framing to match the existing 6, running it
-through `compose_gl_vs_painter.py`) is the one step left before this item is
-ready for the owner's keep/cut.
+closed.
+
+**`comparator_gl_vs_painter_v3.png`** — the full 8/8 sheet this item's own
+`PROVE` line asks for, built by re-rendering all 8 painter grids fresh from
+`Transient/mapgen_v3/seed0N.grid.txt` (the current painter output, into
+`renders/`) and running `compose_gl_vs_painter.py` against round 2's 6
+existing GL screenshots plus this round's 2 new Sinkhole ones. All 8 rows
+report `APPLIED`. **The generalised convergence signal round 2 first named
+on Canyon holds across every category, not just Canyon**: GL's real terrain
+(top row) is organic, branching, cave-riddled and irregular everywhere;
+the painter's v3 output (bottom row) is still bold-outlined and comparatively
+geometric (near-perfect rings for Sinkhole/Crater/LoneMountain, a fairly
+straight diagonal band for Canyon) even after two painter rounds. This is
+exactly the kind of side-by-side evidence `MAPGEN_PAINTER_V1_1`'s next round
+and `MAPGEN_CONVERGENCE_LOOP_1` need — not a re-litigation of round 3's own
+"hold painter round 4" call, just the data that call was waiting on.
+
+`renders/seed0N.png` (fresh v3 painter renders) and
+`comparator_gl_vs_painter_v3.png` are committed. `shots/` (the working
+directory `compose_gl_vs_painter.py` reads) is NOT committed — it is exactly
+round 2's 6 `Transient/mapgen_gl2/RUT_Gen_0N.{png,log.txt}` files plus this
+round's `RUT_Gen_05fix.png`/`RUT_Gen_06fix.png` (already committed above)
+copied to the `RUT_Gen_0N.png`/`.log.txt` names `compose_gl_vs_painter.py`
+expects; reconstructible in one `cp` pass rather than duplicating six
+already-committed screenshots a second time.
+
+**Ready for the owner's keep/cut** on `comparator_gl_vs_painter_v3.png` —
+this item's own `PROVE` line is now fully met.
 
 ## Housekeeping
 

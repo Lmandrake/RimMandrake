@@ -56,11 +56,12 @@ writeup and evidence table in `Transient/mapgen_gl3/README.md`.
 
 Combined with round 2's already-proven 6 (Canyon x4, LoneMountain, Crater),
 **all 8 of 8 landform categories now have a live-proven GL application** —
-the mechanism gap is closed. **Not yet done:** compositing the final 8-image
-comparator sheet (swap the two grey "no GL shot" tiles in
-`comparator_gl_vs_painter_v2.png` for these two real screenshots via
-`compose_gl_vs_painter.py`) — that is the one step left before this item is
-ready for the owner's keep/cut per its own `PROVE` line. Housekeeping done:
-custom landform file removed, `ModsConfig.xml` restored to the full list, game
-relaunched via Steam (not the bare `.exe`), bridge to be released once the
-full-list reload is confirmed healthy.
+the mechanism gap is closed. Composed the full 8/8 sheet,
+`Transient/mapgen_gl3/comparator_gl_vs_painter_v3.png` (fresh v3 painter
+renders + all 8 GL screenshots, all rows `APPLIED`): the generalised
+convergence signal round 2 first named on Canyon alone (GL organic/branching,
+painter still comparatively geometric) holds across every category. **This
+item's own `PROVE` line is now fully met — ready for the owner's keep/cut.**
+Housekeeping: custom landform file removed, `ModsConfig.xml` restored to the
+full list, game relaunched via Steam (not the bare `.exe`); bridge held until
+the full-list reload is confirmed healthy, then released.
