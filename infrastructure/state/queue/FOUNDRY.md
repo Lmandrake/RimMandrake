@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:34:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-13T18:00:59Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Three outcomes, decided here because the item filed none.
-prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
-
-## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
-prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    ready
@@ -41,14 +23,14 @@ kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
 
-## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
+## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
 state:    ready
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
-prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+summary:  Each round:
+prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 
 ## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
 state:    ready
@@ -58,6 +40,15 @@ target:   v1
 kind:     task
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
+
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
 state:    ready
@@ -76,6 +67,15 @@ target:   v1
 kind:     feature
 summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
 state:    ready
@@ -386,6 +386,24 @@ target:   v1
 kind:     bug
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
+prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
+
+## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
+prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    doing  (BLOCKED)
@@ -756,15 +774,6 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
-## RM_GENSTEP_PLACED_SETPIECES_1 Build RM_GenStep_PlacedSetPieces: the shared def-list set-piece scatterer (Miasma M6 + Sump S3/S4)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  RMGenStepPlacedSetPieces : GenStepScatterer — base class already
-prose:    infrastructure/state/items/RM_GENSTEP_PLACED_SETPIECES_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -869,6 +878,16 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
+## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  rules 5/7/8 need owner design calls (arrival-mode restrictions + recall scoring; Rumor Has It's actual API; tributedemand's dialog API) or a filed decision item, not guessable wiring -- see item file's 2026-09-13 catch-up note
+summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
+prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -888,6 +907,16 @@ kind:     task
 blocked:  owner ruled 2026-09-09: hold the WHOLE item until HORRORWASTES_BIOME_DISSOLVE_1's owner-reviewed tile-reassignment render lands -- not stale, just not startable yet
 summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
 prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
+
+## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  Step 1 census already flagged superseded (2026-09-08: checked-in world/ASHKARR_WORLDMAP_mutators.csv commit 2026-08-23 disagrees with a later live V27 export, 88/6710 vs 163/14290) and re-deriving it plus steps 2-5 (owner picks on a contact sheet) are worldmap-domain work this repo's own doctrine says is never a solo sweep -- needs a pass WITH the owner, not FOUNDRY alone
+summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
+prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
@@ -1142,56 +1171,6 @@ kind:     task
 waiting:  needs `deploy`, game is UP
 summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
-
-## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
-prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
-
-## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
-prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
-
-## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  Each round:
-prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
-
-## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
-prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
