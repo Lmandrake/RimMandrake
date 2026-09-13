@@ -8150,3 +8150,14 @@
 {"seat":"FOUNDRY","event":"claim","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
 {"seat":"FOUNDRY","event":"start","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
 {"seat":"BENCH","event":"file","id":"BRIDGE_STATIC_SETTINGS_FIELDS_1","title":"BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T10:05:01Z"}
+{"seat":"BENCH","event":"file","id":"MODCHECK_MATURE_WAVE_1","title":"MODCHECK_MATURE_WAVE_1 live modcheck runs for the 18 mature-mod suites (owner 2026-09-13: validate all possible mature mods)","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-13T10:10:36Z"}
+{"seat":"BENCH","event":"claim","id":"MODCHECK_MATURE_WAVE_1","ts":"2026-09-13T10:10:37Z"}
+{"seat":"BENCH","event":"start","id":"MODCHECK_MATURE_WAVE_1","ts":"2026-09-13T10:10:38Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"MODCHECK_MATURE_WAVE_1: 18-suite live modcheck wave (swap minimal+mods, restart, quicktest, suites, restore full)","ts":"2026-09-13T10:11:19Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Please try to validate all possible mature mods using the new scripts","ts":"2026-09-13T10:12:58Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-13T10:13:26Z"}
+{"seat":"FOUNDRY","event":"note","id":"SCALD_MECHANICS_1","text":"Spike pass: resolved all 5 named engine ❓s (decompile + DBH assembly). Found+fixed a live Ban 1 violation (dbh_water on boil terrain → moved to new RUT_ScaldMargin). Built RM_CompResourceCondenser (S2) + RUT_IncidentWorker_WalkerSurfacing (S5), 0 warnings/errors. S6 needs zero new C#. FISH_BESTIARY_COMMISSION_1 confirmed still doing, blocks only S3 fish content. Full build still owed.","ts":"2026-09-13T10:17:55Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-13T10:23:30Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-13T10:23:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_MECHANICS_1","ts":"2026-09-13T10:23:55Z"}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_MECHANICS_1","ts":"2026-09-13T10:23:55Z"}

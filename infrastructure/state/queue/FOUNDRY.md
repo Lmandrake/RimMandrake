@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:05:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T10:23:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Engine-map the Sump's mechanics per the frozen sheet
-prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
 
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
 state:    ready
@@ -494,6 +485,15 @@ target:   v1
 kind:     task
 summary:  The authoritative brief is the FROZEN lore sheet
 prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Engine-map the Sump's mechanics per the frozen sheet
+prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
 
 ## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
 state:    doing
@@ -1300,6 +1300,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  rimworld/updatemodsettings reflects INSTANCE fields on the ModSettings
 prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md
