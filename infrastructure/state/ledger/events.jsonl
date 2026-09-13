@@ -8014,3 +8014,6 @@
 {"seat":"BENCH","event":"file","id":"GIDDYUP_NULLKEY_COLD_READING_1","title":"Cold-load log reading for the GR_Mantistanis null-key fix (1f222320b): add to the next run sheet","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T03:33:12Z"}
 {"seat":"BENCH","event":"note","id":"GIDDYUP_NULLKEY_CRASH_1","text":"Correction: cold-load reading rides GIDDYUP_NULLKEY_COLD_READING_1 (filed for FOUNDRY), not a run-sheet entry — the run sheet is FOUNDRY's item and BENCH's append was refused.","ts":"2026-09-13T03:33:34Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WORLD_NAME_FIXES_1 batch rename pass","ts":"2026-09-13T03:33:41Z"}
+{"seat":"BENCH","event":"claim","id":"ASSIGNMENT_SHEETS_VERDICT_SITTING_1","ts":"2026-09-13T03:35:05Z"}
+{"seat":"BENCH","event":"start","id":"ASSIGNMENT_SHEETS_VERDICT_SITTING_1","ts":"2026-09-13T03:35:05Z"}
+{"seat":"BENCH","event":"note","id":"ASSIGNMENT_SHEETS_VERDICT_SITTING_1","text":"Prep done while owner AFK: both sheets served and waiting. Fauna http://localhost:45973/?t=Qx1B6dQ-tYQgd499SrExTw · Flora http://localhost:43099/?t=e_LCARx9YlL7LQ8xyX0pSQ (URLs die with the BENCH session; re-serve with serve_sheet.py if stale). Sitting itself needs his eyes.","ts":"2026-09-13T03:35:06Z"}

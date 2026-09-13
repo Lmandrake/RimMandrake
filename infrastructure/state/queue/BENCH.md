@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T03:33:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T03:35:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
-prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 
 ## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
 state:    ready
@@ -80,6 +71,15 @@ target:   v1
 kind:     task
 summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
 prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
+
+## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
+prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 
 ## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
 state:    doing
