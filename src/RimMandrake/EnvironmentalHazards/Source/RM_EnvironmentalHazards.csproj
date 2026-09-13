@@ -64,6 +64,10 @@
     <Compile Include="DeathActionWorker_ScaledExplosion.cs" />
     <Compile Include="CompProperties_AbilityTargetedHediffAffliction.cs" />
     <Compile Include="CompAbilityEffect_TargetedHediffAffliction.cs" />
+    <Compile Include="RM_MapComponent_GradientAxis.cs" />
+    <Compile Include="RM_HediffComp_EnvironmentalExposure.cs" />
+    <Compile Include="RM_HediffComp_ForgeOnSurvival.cs" />
+    <Compile Include="RM_CompTerritorialAnchor.cs" />
   </ItemGroup>
 
   <ItemGroup>
