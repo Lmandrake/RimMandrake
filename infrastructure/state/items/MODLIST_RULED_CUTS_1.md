@@ -74,3 +74,18 @@ other game-up work rather than a solo restart for this alone, per standing
 doctrine). Fold into the next full-list load's run-sheet: grep the fresh log
 for the three deactivated packageIds (expect zero) and confirm 0 Config
 errors from the new MoEvents patch. Left `doing`.
+
+## 2026-09-13 (FOUNDRY) — game went DOWN mid-session, live list had drifted; restored and re-baselined
+
+Owner announced the game down. Found the LIVE `ModsConfig.xml` at only
+6-36 active mods — another window's `modcheck` tool had composed a
+MINIMAL+mods-under-test list for its own validation and never restored it
+before the game closed. Restored to the stored `FULL.LATEST` (594), then
+re-applied this item's own 4 deactivations on top (diffed clean — exactly
+those four gone, nothing else moved), then `modlist_swap.py --capture-full`
+so the ruled cuts are now baked into `FULL.LATEST` itself (590 active) as
+the permanent baseline — a plain `--restore` will no longer silently
+resurrect the three cut mods. **The next load will be the one this item's
+own verify check can finally read** (a Player.log captured during tonight's
+session predates both this deploy and the earlier deploy-blocked window, so
+it does not count — checked, correctly not used to close this item).
