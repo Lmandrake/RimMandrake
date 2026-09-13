@@ -1,0 +1,103 @@
+{
+ "generatedAt": "2026-09-13T08:46:28Z",
+ "status": "READY",
+ "totalBytes": 9845034,
+ "files": [
+  {
+   "published": "data/art.json",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/art_status.json",
+   "bytes": 147866,
+   "sha256_12": "938c07af0951"
+  },
+  {
+   "published": "data/artsheets.json",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/data/artsheets.json",
+   "bytes": 4316,
+   "sha256_12": "38b7fdcae958"
+  },
+  {
+   "published": "data/health.json",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/data/health.json",
+   "bytes": 612,
+   "sha256_12": "92d57bc3c046"
+  },
+  {
+   "published": "data/maturity.json",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/data/maturity.json",
+   "bytes": 10699,
+   "sha256_12": "19652eca91fa"
+  },
+  {
+   "published": "data/worldmap.json",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/data/worldmap.json",
+   "bytes": 716,
+   "sha256_12": "7dc27b3b6fda"
+  },
+  {
+   "published": "index.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/index.html",
+   "bytes": 15758,
+   "sha256_12": "f5c42f24d49a"
+  },
+  {
+   "published": "tabs/health.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/infrastructure/dashboards/hub/tabs/health.html",
+   "bytes": 329060,
+   "sha256_12": "ddeac226de54"
+  },
+  {
+   "published": "tabs/maturity.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/Transient/project_maturity_dashboard.html",
+   "bytes": 138106,
+   "sha256_12": "3ab669ff55e5"
+  },
+  {
+   "published": "tabs/sheets/creature_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/creature_register.html",
+   "bytes": 2114123,
+   "sha256_12": "36132c442a85"
+  },
+  {
+   "published": "tabs/sheets/fauna_assignment_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/fauna_assignment_register.html",
+   "bytes": 757653,
+   "sha256_12": "6016ee1bf864"
+  },
+  {
+   "published": "tabs/sheets/flora_assignment_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/flora_assignment_register.html",
+   "bytes": 284255,
+   "sha256_12": "23e31194c296"
+  },
+  {
+   "published": "tabs/sheets/furniture_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/furniture_register.html",
+   "bytes": 1716813,
+   "sha256_12": "3347e540f26f"
+  },
+  {
+   "published": "tabs/sheets/homeless_disposition_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/homeless_disposition_register.html",
+   "bytes": 1735373,
+   "sha256_12": "6bb9fa34ce79"
+  },
+  {
+   "published": "tabs/sheets/plant_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/plant_register.html",
+   "bytes": 1134871,
+   "sha256_12": "96e2af7c4bc9"
+  },
+  {
+   "published": "tabs/sheets/vehicle_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/vehicle_register.html",
+   "bytes": 248172,
+   "sha256_12": "e4601d45bac6"
+  },
+  {
+   "published": "tabs/sheets/weapon_register.html",
+   "source": "/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/weapon_register.html",
+   "bytes": 1206641,
+   "sha256_12": "2f09036d299e"
+  }
+ ]
+}

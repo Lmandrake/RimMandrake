@@ -36,7 +36,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 PER_TEST_TIMEOUT_S = 240
 SEQUENTIAL_ISOLATED = {"selftest_render.py"}
-SEARCH_ROOTS = ("src", ".claude/hooks", "skills")
+SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/dashboards/hub")
 SELFTEST_GLOB = "selftest*.py"
 
 # Selftests that exist and are real, but cannot be run as bare `python3 <file>`.
