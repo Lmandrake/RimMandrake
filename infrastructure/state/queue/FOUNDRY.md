@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T07:05:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T08:19:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
-prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
 
 ## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
 state:    ready
@@ -486,6 +477,15 @@ kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
+## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
+prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
+
 ## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
 state:    doing
 row:      unassigned
@@ -791,6 +791,15 @@ target:   v1
 kind:     task
 summary:  On the next full-list cold load, in the fresh Player.log:
 prose:    infrastructure/state/items/GIDDYUP_NULLKEY_COLD_READING_1.md
+
+## MODLIST_RULED_CUTS_1 Execute the 2026-09-12 bench modlist rulings: cut profiler + blood animations + slower pawn tickrate; Jurassic retirement lands after texPath check; MoEvents chances zeroed until port
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
+prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1157,26 +1166,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GRAVSHIP_MAP_SIZE_1 Unusually large default map sizes so the gravship makes sense on-tile — owner 2026-09-12; pick the size, find where default mapSize binds (scenario vs world vs settings), measure perf on the full list, and decide what happens to the already-generated canonical start map
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  RULED (owner cards, bench 2026-09-12): 325x325, FUTURE LANDINGS ONLY.
-prose:    infrastructure/state/items/GRAVSHIP_MAP_SIZE_1.md
-
-## MODLIST_RULED_CUTS_1 Execute the 2026-09-12 bench modlist rulings: cut profiler + blood animations + slower pawn tickrate; Jurassic retirement lands after texPath check; MoEvents chances zeroed until port
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
-prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
 
 ## CATHEDRAL_REGARD_BLACKBOARD_1 Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
 state:    proposed

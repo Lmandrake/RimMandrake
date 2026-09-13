@@ -8098,3 +8098,10 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:38:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"GRAVSHIP_MAP_SIZE_1","ts":"2026-09-13T07:38:13Z"}
 {"seat":"FOUNDRY","event":"close","id":"GRAVSHIP_MAP_SIZE_1","sha":"f81afa5f3c0032f715504d90b642c01305f3cabe","ts":"2026-09-13T07:39:17Z"}
+{"seat":"FOUNDRY","event":"note","id":"VQE_ANCIENTS_CURATION_1","text":"Step 4 done: new src/RimUtinni/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml relabels 9 'ancient'->'Forsaken' phrases across 5 of the 6 VQE quest chains + the chain label/description; no Assailant-register string exists anywhere in the donor's quest text. validate_patch.py clean, 7/7 ops 1 match each.","ts":"2026-09-13T07:53:07Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-13T08:08:29Z"}
+{"seat":"BENCH","event":"claim","id":"CATHEDRAL_ARC_OPEN_CARDS_1","ts":"2026-09-13T08:08:53Z"}
+{"seat":"BENCH","event":"start","id":"CATHEDRAL_ARC_OPEN_CARDS_1","ts":"2026-09-13T08:08:53Z"}
+{"seat":"FOUNDRY","event":"note","id":"LIQUID_TYPES_MOD_1","text":"Roster built: 14 new cloned suites + 2 compat-only rows (normal water baseline, slime onto RM_Slime_Liquid/AB_LiquidSlime) + 1 hand-authored (RM_Churnmud). validate_patch.py clean (0 errors) on all 16 TerrainDef files; compat patch's 2 flagged targets confirmed non-typo (GelatinousSlime deployed but inactive). Item stays doing — live-test is a separate deferred item.","ts":"2026-09-13T08:18:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-13T08:19:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-13T08:19:16Z"}

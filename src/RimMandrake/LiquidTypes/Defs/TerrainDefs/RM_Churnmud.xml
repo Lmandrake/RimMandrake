@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Churnmud.xml                          hand-authored, LIQUID_TYPES_MOD_1
+  ============================================================================
+  §6's "mud grades (churnmud)" row: native Mud/Marsh cover the light grades
+  directly (no clone needed — they are already exactly what they are), plus
+  ONE new grade, RM_Churnmud, for ground churned past what Marsh represents.
+
+  Hand-authored rather than run through generate_liquid_suite.py: it is a
+  single standalone terrain, not a shallow/deep pair, so it does not fit the
+  generator's per-row shape (see that script's module docstring) and one def
+  is not worth bending the generator for.
+
+  ParentName="MarshBase" is safe: vanilla's own concrete Marsh def carries
+  Name="MarshBase" on itself (Data/Core/Defs/TerrainDefs/Terrain_Water.xml,
+  line 163), so this clone inherits Marsh's FULL shape (texturePath,
+  statBases, generatedFilth, driesTo Soil, extinguishesFire true, the
+  WaterShallowBase/WaterBase chain's pathCost/affordances/tags) and only
+  overrides what actually differs — same pattern as RUT_ScaldWater cloning
+  off WaterDeepBase/WaterShallowBase, one level further down the tree.
+
+  Overrides [INVENTED unless noted]:
+    pathCost 60        — double Marsh's inherited 30; "churned" ground should
+                          cost more to cross than plain marsh, less than deep
+                          water's 300.
+    waterBodyType None — this is mud, not a salinity-bucketed water body;
+                          Marsh's own inherited Freshwater default would put
+                          it in the fishing/DBH salinity accounting, which a
+                          "wet-season crossing" hazard has no business in.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="MarshBase">
+    <defName>RM_Churnmud</defName>
+    <label>churned mud</label>
+    <description>Marsh ground stirred to slop by traffic that came before it — a wet-season crossing that punishes anyone who doesn't respect it.</description>
+    <pathCost>60</pathCost>
+    <waterBodyType>None</waterBodyType>
+    <modExtensions>
+      <li Class="RimMandrake.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>heavy</viscosityClass>
+        <pH>7</pH>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+</Defs>
