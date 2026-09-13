@@ -2231,6 +2231,12 @@
     "hash": "5cdcb4a1e74b876f680e39d30478d97098f8a6f46c1afcd6f34bd66b9d71b6a6",
     "sha": "3b8e16ddf"
   },
+  "src/RimMandrake/LoreStages/Source/RM_LoreStagesMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "892fe0cb06b1c3f0dea9f027b2f416c548447df2ba6b15d5ec1356fd5ea86999",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/LoreStages/Source/SelfTest/Program.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -2290,6 +2296,12 @@
     "date": "2026-09-05",
     "hash": "d25a9cd9a7b4137f7faf3fc4c2d8610526dae34df9bda2bcde47b8919443d576",
     "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/RRElectricityBasicsSelfPrereq_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9fa6fe00cdc74edbd3901008faa967a094a8c449576a0e8ee7b235a87b0b46a0",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml": {
     "cleanCount": 1,
@@ -2375,6 +2387,12 @@
     "hash": "fc1e668e63d1610e1e132221dd17e8d7b9573616e6fa1a02d1cc56a0fd43992a",
     "sha": "ce01a5a8a"
   },
+  "src/RimMandrake/ManyWaters/Source/RiverSteamSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "a42c5f077653b002bce4097aa9ea3ebce734b582d4ec3cb9d28268fc9e40828f",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/MovingDunes/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -2440,6 +2458,12 @@
     "date": "2026-09-09",
     "hash": "85360f6f84a806a8bcd9d70abb45a1073c61df6903d9e227ee48f1e680e1c0bb",
     "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/MovingDunesSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "0b8e9f4751c6aca2fb9fef618e0757be3300b1f165b126a9b1d8e675f7d401db",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/MovingDunes/Source/Patch_SandGrid.cs": {
     "cleanCount": 1,
@@ -2627,11 +2651,23 @@
     "hash": "62695440b1885fd84c02d21d0329d3391812c17d84a98500445f92c573ac6f0a",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_ResearchManager_NoSelfPrereq.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "09a19fd8f4dbf8d8a09c7d35e0c657fcd20305c6f9adebe46a40fb647c00e328",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_TradeCompleted.cs": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "0cd0ccf75fdff65739798c5af849ad727ce35561b598acfa4d6865dfe82f404b",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/Ninefold/Source/RM_NinefoldMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "fdcc65e9431bd774c1e7ac8a8b6dd50fbbdd5640b6c29dc4657734ad410fa110",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/Ninefold/Source/SatiationBand.cs": {
     "cleanCount": 1,
@@ -3035,6 +3071,12 @@
     "hash": "a71a47b8ab1c6742614c192e41d602523403f90b50bc3177ccb7964d4ff93e72",
     "sha": "2467e0a2d"
   },
+  "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e9c0c3365d19e78c44cdf7d59273a914c0b6a3a77556c659ad4c7b677bdf0089",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_FE_Pyrelands.png": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -3274,6 +3316,12 @@
     "date": "2026-09-09",
     "hash": "84c67f4d3c236e14a8ff2f2a05d9de22ef3d809d5621d71589c8c89ec7404243",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/RaidRedesignerSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "019b8e1154155a2af08cc0fee78a1944b6dd5b47bc46c39960ff3e3300bbb1ba",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/RaidRedesigner/Source/RoleTag.cs": {
     "cleanCount": 1,
@@ -3593,6 +3641,18 @@
     "hash": "882de71d89aa724a9bf79b393797c0a366e4ade02f38d5ba424eda22b57f62b2",
     "sha": "dad4e548"
   },
+  "src/RimMandrake/RimProperty/Source/WalkableCommerce/BuyMerchandiseUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "31171fd2bdb99c82e142e4b6dc56a1f2df335575b725810beb2ea6e0f9a794c0",
+    "sha": "f69955e42"
+  },
+  "src/RimMandrake/RimProperty/Source/WalkableCommerce/FloatMenuOptionProvider_BuyMerchandise.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ecd33b0f9a16bf60c2136200d94d325f942d5327a46557581d2aca288a682971",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/RimProperty/Source/WitnessEntry.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -3623,6 +3683,12 @@
     "hash": "29e89aa10afd32eae19ad5aac6fa7d8053becaf692ae8e9cc0b44849f0652415",
     "sha": "2467e0a2d"
   },
+  "src/RimMandrake/RustChrome/Source/RustChromeMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "838a0f3085fa86b0ca13dd95b1bbdc83b36026866c5e75029b644d5cd68ad5d6",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/SacredGraffiti/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -3646,6 +3712,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimMandrake/SacredGraffiti/Source/RM_SacredGraffitiMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e890bb13301095452107f0bac88c576d3dcf17e3cbc855f6b5b35abd451fcf62",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs": {
     "cleanCount": 2,
@@ -3676,6 +3748,12 @@
     "date": "2026-09-11",
     "hash": "b7465ac5874fd10be6b914e308c1855178fb44b661fadab160031aee5bf97e41",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/ShipVermin/Source/Debug/RM_ShipVerminDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "32ea27e04147fc8eb7c90386a8a9a519e39eed35ca97ddc3e5c810ad6ec7a049",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/ShipVermin/Source/RM_Alert_ShipVermin.cs": {
     "cleanCount": 3,
@@ -3748,6 +3826,18 @@
     "date": "2026-09-11",
     "hash": "9b680f4b12d63f1bf78e147a62197d99ed739592acaffce4cfefca2880360c86",
     "sha": "2467e0a2d"
+  },
+  "src/RimMandrake/StructureInjections/Source/GenStep_Whisper_NoOp.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "13612aed96dacb5944b9d38ddee87f822cac7dd652f4cbe83ffdd15b206632ce",
+    "sha": "f69955e42"
+  },
+  "src/RimMandrake/StructureInjections/Source/RM_StructureInjectionsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "18b154467dbb63a7073b9cedb01871a029467f10ed6804bdbc0c159e7c444a75",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/StructureInjections/Source/RimplacePlan.cs": {
     "cleanCount": 2,
@@ -3874,6 +3964,12 @@
     "date": "2026-09-09",
     "hash": "43cd00162fb13325bd3ffd7d5be1e1f00f7c848aa32e8c58f01edb4867ed4e9f",
     "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/RM_TitanicCreaturesSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d66f0a96f0984096d8d3a3e3b48876b62ef19e2fd84e83a7daacb00ade364e51",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/TitanicCreatures/Source/Tiering/RM_TitanicExtension.cs": {
     "cleanCount": 1,
@@ -5421,6 +5517,12 @@
     "hash": "f8c3294903417119837d3625622a8805fa5dc5503eb7b46fa4e70f6d66853f4b",
     "sha": "b4a195534"
   },
+  "src/RimMandrake/Visibility/Source/RM_VisibilityMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5d7b35e66fda15c913bf767f0a1506d07dfe215f3881dd44f3d9d5dc462d72cd",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/Visibility/Source/SelfTest/Program.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -5871,11 +5973,23 @@
     "hash": "ed0015c0887dc8b1776d94e90336caa3bf049f390c30c299dd1fc0b95e473d3b",
     "sha": "ef1525da6"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeExecuteTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9d77686e19d151be00f36c302465e87a23598adcb335335d4b0a7c70f337c08d",
+    "sha": "f69955e42"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeProbeTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "6d728d29e989ab36fb02175944d73767a05c5f7b0facea3459458fec5dc87d68",
     "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTransporterLaunchTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5cc91141d6c6eb88d4f6fc5912b9c7e9679c9a83dc537ded9947873f0180811c",
+    "sha": "f69955e42"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTypeInspect.cs": {
     "cleanCount": 1,
