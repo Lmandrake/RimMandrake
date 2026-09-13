@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T02:11:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T02:13:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -238,7 +238,7 @@ needs:    offline
 target:   v1
 kind:     design
 blocked:  Scheduled at the END of the world sweeps by its own spec; assignment verdicts + roster passes still pending.
-summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
+summary:  Full economic sweep of what is sold where and when — trader kinds, settlement
 prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
 
 ## CANON_STORAGE_ARCHITECTURE_1 Decide how to store the growing canon: options+tradeoffs report written (design/CANON_STORAGE_ARCHITECTURE_options.md) - recommends hybrid (prose canonical + derived claim/entity index + certainty tiers + self-healing checker); awaits owner review sitting
