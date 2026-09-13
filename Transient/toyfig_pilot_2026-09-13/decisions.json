@@ -1,0 +1,27 @@
+{
+ "posture": "whitelist",
+ "criterion": "Pre-filled 'adopt' - my eye says the law versions read more vanilla while keeping identity; your call is the ruling.",
+ "generatedBy": "bench toyfig pilot generator",
+ "decisions": {
+  "anooba": {
+   "decision": "adopt",
+   "prefill": "adopt",
+   "note": ""
+  },
+  "boma": {
+   "decision": "adopt",
+   "prefill": "adopt",
+   "note": ""
+  },
+  "dewback": {
+   "decision": "adopt",
+   "prefill": "adopt",
+   "note": ""
+  },
+  "fanback": {
+   "decision": "adopt",
+   "prefill": "adopt",
+   "note": ""
+  }
+ }
+}
