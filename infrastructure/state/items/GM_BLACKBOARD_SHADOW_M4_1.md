@@ -59,7 +59,7 @@ without firing anything. Live injection ("then flip... for real") is
 explicitly NOT this item's exit bar — that is M4's own later half, owed to
 a follow-up once the shadow log is trusted.
 
-## built (BENCH, 2026-09-13)
+## built (FOUNDRY, 2026-09-13)
 
 **`src/RimMandrake/Utils/gm_blackboard_shadow.py`** — the state machine. Flat
 single-file script, matching this repo's Python-tooling convention
