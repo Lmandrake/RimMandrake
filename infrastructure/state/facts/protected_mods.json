@@ -1,0 +1,16 @@
+{
+  "_what": "Mods the owner has explicitly PROTECTED from keep-or-cut audits. A future complexity/curation pass must not re-serve a cut card for these without a NEW owner ruling; their presence in a shortlist is a re-litigation, not a finding.",
+  "_authority": "MODLIST_COMPLEXITY_AUDIT_1 + GIDDYUP_KEEP_OR_CUT_1 bench sitting 2026-09-12; owner verbatim: 'Many of them I actively want. Protect facial animation for example, and RunAndGun stays for now.'",
+  "_rule": "Match on packageId. 'stays for now' entries may be re-carded only when NEW local evidence (a defect trail on this machine) exists; 'protected' entries only on the owner's own initiative.",
+  "protected": [
+    {"packageId": "nals.facialanimation", "level": "protected", "ruledOn": "2026-09-12"},
+    {"packageId": "nals.facialanimationexperimentals", "level": "protected", "ruledOn": "2026-09-12"},
+    {"packageId": "danzinagri.facialanimationcompatabilityproject", "level": "protected", "ruledOn": "2026-09-12"},
+    {"packageId": "reel.facialanims", "level": "protected", "ruledOn": "2026-09-12"},
+    {"packageId": "vanillaexpanded.vtexe.facialanims", "level": "protected", "ruledOn": "2026-09-12"},
+    {"packageId": "memegoddess.giddyup", "level": "stays-for-now", "ruledOn": "2026-09-12", "why": "third concurring KEEP analysis; healthy Owlchemist-line rewrite; content is the scenario's point"},
+    {"packageId": "memegoddess.runandgun", "level": "stays-for-now", "ruledOn": "2026-09-12", "why": "owner: 'RunAndGun stays for now' — analysis recommended cut; owner overrode"},
+    {"packageId": "mlie.yayoscombat3", "level": "stays-for-now", "ruledOn": "2026-09-12", "why": "owner cut only Blood Animations from the combat pile"},
+    {"packageId": "co.uk.epicguru.meleeanimation", "level": "stays-for-now", "ruledOn": "2026-09-12", "why": "owner cut only Blood Animations from the combat pile"}
+  ]
+}
