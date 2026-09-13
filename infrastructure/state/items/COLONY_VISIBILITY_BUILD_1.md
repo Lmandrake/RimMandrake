@@ -194,3 +194,47 @@ mods' fixes needed priority; a `deploy_custom_mods.py --mod Visibility
 --apply` + one more restart is owed before the threat-point Prefix can
 actually be swept live. Still blocked on the same live-check this item's
 own history already names.
+
+## 2026-09-13 (FOUNDRY) — threat-point Prefix LIVE-PROVEN, firing and multiplying for real
+
+`mandrake.rm.visibility` is enabled in the currently-live full modlist and
+`deploy_custom_mods.py --mod Visibility` reported already in sync (3 files) —
+the running game has this pass's code, no restart needed. Bridge session on
+the live campaign map (`Map_3`, tile 17007, `ticksGame ~127977`), paused
+throughout, no colonists touched:
+
+- `Actions\Set Colony Visibility (dev)` debug action swept the band ladder
+  live: `shipVisibility set 5 -> 0 (Hidden), ThreatFactor=0.55`, then
+  `0 -> 100 (Exposed), ThreatFactor=1.6` — both logged directly by the mod,
+  confirming `VisibilityToThreatCurve` evaluates correctly in the running
+  game (not just offline selftest).
+- **The Prefix itself, decisively proven**: with visibility forced to 100,
+  force-fired a real `IncidentWorker_RaidEnemy` execution via the vanilla
+  debug menu (`Actions\Do incident w/ points\RaidEnemy\200 points` — this
+  path bypasses the normal `CanFireNow` eligibility gate, which was blocking
+  every ThreatBig incident this session, RaidEnemy/ManhunterPack/MechCluster/
+  Infestation all included, almost certainly an early-colony grace period
+  unrelated to this mod). Log:
+  `[RimMandrake.Visibility] IncidentWorker_RaidEnemy points 200 -> 320
+  (visibility 100.0, factor 1.60)` — 200 × 1.60 = 320, exact. This is the
+  Prefix firing on a REAL `TryExecute` call, not a synthetic/offline
+  invocation. A separate mod's own log line one tick later
+  (`[RimMandrake.Aftermath] battle opened: Galactic Empire, 5 pawns, 288
+  pts.`) independently confirms the raid that actually resolved used the
+  scaled points, not the original 200 — a second system reading the same
+  post-Prefix value. No hostile pawns were left on the map afterward
+  (`jawa/list_pawns` — Aftermath resolves raids narratively, not by spawning
+  a physical raid party this pass observed), so nothing needed cleaning up.
+
+**Still open, explicitly**: the tile-memory round trip (launch, let a season+
+pass, return, confirm the dial decays/restores per the halved-per-season
+curve) needs real travel time this pass did not spend — that is a
+much longer live test (real or heavily time-skipped in-game seasons), left
+for a dedicated pass. Everything else this item's own history listed as
+"not wired" (spotted/raided-at-home, Renown, THE SHAMING, etc.) remains
+correctly unwired, out of this item's scope per its own `## Not done`
+section. Visibility dial was left at 100 (Exposed) from this test — a click
+to reset it to a lower band did not register in the log; low-stakes since
+in-game state is disposable per standing doctrine, but worth a note for
+whoever next reads the live dial. Left `doing` — the Prefix live-check
+criterion is now met; the tile-memory live-check criterion is not.
