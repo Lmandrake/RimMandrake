@@ -145,11 +145,13 @@ Two routes, both v1:
   are loot). Trade stays 100% vanilla — every trader buys and sells barrels today,
   zero patches. Owner: "barrels are also a thing to keep in the game. Very
   scavenger."
-- **Bulk broker interface** — a custom dialog on the universal tank/manifold:
-  trader-in-range or settlement-docked → pump-to-sell AND pay-to-fill, both
-  directions, price = row marketValue × amount, weighted by the settlement's world
-  tag (desert pays more for water). No vanilla trade-window Harmony (rejected as
-  the most conflict-prone patch surface in a 599-mod list).
+- **Bulk broker interface** — pump-to-sell AND pay-to-fill, both directions,
+  price = row marketValue × amount, weighted by the settlement's world tag
+  (desert pays more for water). **Ruled later the same day: the broker lives as
+  the Broker TAB of The Bazaar** (`design/RimMandrake/bazaar_trade_window_design.md`
+  §2), our own Dialog_Trade replacement — which also supersedes the "no
+  trade-window Harmony" caveat that applied when we only had a small rider
+  patch in mind. Liquid Logistics still owns the tank/pump/hose hardware.
 Bottles trade natively as ThingDefs either way (tradeTags per row).
 
 **Typed worldmap → mapgen.** One authoring pass writes `worldTag` values onto the
