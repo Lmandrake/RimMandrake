@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T08:39:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T08:47:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1246,13 +1246,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
-
-## HUB_URL_POINTER_FIX_1 HUB_URL_POINTER_FIX_1 update HUB_TAB_PUBLISHER_MIGRATION_1 to the new hub artifact URL
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HUB_URL_POINTER_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HUB_URL_POINTER_FIX_1.md

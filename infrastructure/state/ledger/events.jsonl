@@ -8110,3 +8110,8 @@
 {"seat":"FOUNDRY","event":"start","id":"MIASMA_MECHANICS_1","ts":"2026-09-13T08:32:27Z"}
 {"seat":"BENCH","event":"file","id":"HUB_URL_POINTER_FIX_1","title":"HUB_URL_POINTER_FIX_1 update HUB_TAB_PUBLISHER_MIGRATION_1 to the new hub artifact URL","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T08:39:56Z"}
 {"seat":"BENCH","event":"close","id":"CATHEDRAL_ARC_OPEN_CARDS_1","sha":"3f6f98cd24d58470cd4864e45e27043886fe6e7d","ts":"2026-09-13T08:39:56Z"}
+{"seat":"FOUNDRY","event":"note","id":"FEVER_WOOD_MECHANICS_1","text":"Spike pass: 6/9 mechanics (F1,F2,F3,F4,F8,F9) proved with compiling C# + live 1.6 decompile citations; F5 confirmed XML-only; F6/F7 blocked on GREENTIDE_MECHANICS_1's classes not existing (closed at spec-only, not built); the 3 owner cards are actually all ruled 2026-09-12, item's stale card-open note fixed. Two spec corrections found: Gathered() is non-virtual (gate via Active instead), KidnapAIUtility is humanlike-only (thornbug victim-finder needs a new predicate).","ts":"2026-09-13T08:44:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVER_WOOD_MECHANICS_1","ts":"2026-09-13T08:44:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HUB_URL_POINTER_FIX_1","ts":"2026-09-13T08:46:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"HUB_URL_POINTER_FIX_1","ts":"2026-09-13T08:46:14Z"}
+{"seat":"FOUNDRY","event":"close","id":"HUB_URL_POINTER_FIX_1","sha":"9f4c06b9acccae35e707139cf1c2ee93815bc469","ts":"2026-09-13T08:47:37Z"}
