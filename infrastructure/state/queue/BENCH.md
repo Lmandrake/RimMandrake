@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:25:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:32:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,15 +98,6 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
-
-## MODCHECK_MATURE_WAVE_1 MODCHECK_MATURE_WAVE_1 live modcheck runs for the 18 mature-mod suites (owner 2026-09-13: validate all possible mature mods)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/MODCHECK_MATURE_WAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MODCHECK_MATURE_WAVE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
