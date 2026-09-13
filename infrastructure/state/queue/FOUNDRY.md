@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:00:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T18:08:44Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -137,7 +137,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
+summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
 prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
@@ -765,6 +765,15 @@ kind:     task
 summary:  Python, GM external blackboard alongside Imperial Heat and Hutt Interest
 prose:    infrastructure/state/items/CATHEDRAL_REGARD_BLACKBOARD_1.md
 
+## CATHEDRAL_STAGE_HUM_BRIDGE_1 Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §3 bullet 1: stage sets the baseline the kit's composite band recovers
+prose:    infrastructure/state/items/CATHEDRAL_STAGE_HUM_BRIDGE_1.md
+
 ## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
 state:    doing
 row:      unassigned
@@ -1180,16 +1189,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## CATHEDRAL_STAGE_HUM_BRIDGE_1 Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §3 bullet 1: stage sets the baseline the kit's composite band recovers
-prose:    infrastructure/state/items/CATHEDRAL_STAGE_HUM_BRIDGE_1.md
-
 ## CATHEDRAL_MISSION_BOON_OFFERS_1 Deniably-sourced Assailant missions + Heat-gated gravtech boons
 state:    proposed
 row:      unassigned
@@ -1299,3 +1298,93 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
+
+## FLOOD_ENGINE_CORRECTIONS_1 Fix FluidCanals flood defects (permanent floors, boxed-in infinite tick, rate-divisor field), then one clean live pass — gates the liquids framework
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Fix the three defects FLUIDCANALFLOODTUNINGGAPS1 recorded (read that
+prose:    infrastructure/state/items/FLOOD_ENGINE_CORRECTIONS_1.md
+
+## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level def
+prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
+
+## SLIME_STREAM_ROWS_1 R/G/W mucosal slime as distinct viscous stream/pool rows + yellow snot example row; purple dropped (owner 2026-09-13)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Four slime rows: RED, GREEN, WHITE as distinct liquids (distinct hazards +
+prose:    infrastructure/state/items/SLIME_STREAM_ROWS_1.md
+
+## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
+prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
+
+## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
+prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
+
+## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  A new WreckedMachines module in the existing wreck-tier grammar
+prose:    infrastructure/state/items/WRECKED_DISTILLATION_MODULE_1.md
+
+## LIQUID_LOGISTICS_MOD_1 NEW Liquid Logistics mod: universal cargo tank + universal pump + deployable hoses + tanker raid loop + trade-from-tank; per-net adapters — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  NEW mod RimMandrake: Liquid Logistics. Build order inside the item (each
+prose:    infrastructure/state/items/LIQUID_LOGISTICS_MOD_1.md
+
+## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
+prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
+
+## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
+prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md

@@ -57,8 +57,10 @@
 
   Not authored here (explicitly deferred, per the design's §2 and the owner's
   ruling): the `temporary=true` canal-flood siblings and the FluidDefs that would
-  let FluidCanals carry these colours — those follow once the owner picks which
-  colours stay.
+  let FluidCanals carry these colours. That follow-up is now owned by the liquids
+  framework (design/RimMandrake/liquids_framework_design.md, ruled 2026-09-13):
+  these suites become adopted rows of the LiquidDef registry, and the canal-fluid
+  slot supplies the FluidDefs.
 -->
 <Defs>
 

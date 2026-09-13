@@ -6,7 +6,8 @@ numbered sections + a §28 "standalone candidates" list). Method: every
 section checked against (a) this sitting's sibling proposals —
 `tar_pits_deep_design.md`, `propane_gas_deep_design.md`,
 `fire_ecology_deep_design.md`, `ship_shields_deep_design.md`,
-`water_economy_deep_design.md`, `underground_caverns_deep_design.md`,
+`water_economy_deep_design.md` (since absorbed into
+`design/RimMandrake/liquids_framework_design.md`), `underground_caverns_deep_design.md`,
 `god_modes_deep_design.md`, `skyhook_deep_design.md`,
 `ludicrous_livestock_deep_design.md`, `high_cuisine_deep_design.md`,
 `llm_driven_mods_deep_design.md` (the last five landed mid-sitting, checked
@@ -51,7 +52,7 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | 6 | Sarlacc: Living Dungeon (entire section) | **COVERED** | Doc 2, this sitting: `sarlacc_deep_design.md`, plus the existing `research/Jawa/rimworld_sarlacc_encounter_current_design.md` and the `anomaly_content.boundary_ruled` canon exception |
 | 7 | Junk Is Civilization (salvage ontology, scavenger instinct, junkyard ecology, ownership-negotiable, Jawas steal) | **PARTIAL COVERED + LIVE → expanded** | "much of its spirit already ships (the economy, Rekko)"; the named-open v2 piece is provenance and the salvage-built weapon tier (`FUTURE_VECTORS.md`) — that's what's expanded below |
 | 8 | Sandcrawler Life (mobile settlement) | **DEAD as player mechanic, LIVE as flavor (one-liner only)** | `desert_world_design.md` §4B already assigns player vehicles to land skimmers + Bantha caravans; the house rule fixes the player's one home vessel as the gravship Utinni. A sandcrawler survives only as an NPC trader/rival-clan site visual — too thin to earn a full expansion here, noted for a future sitting |
-| 9 | Moisture, Water, and Desert Politics | **COVERED** | `water_economy_deep_design.md` (this sitting) + `water_doctrine.md` |
+| 9 | Moisture, Water, and Desert Politics | **COVERED** | `design/RimMandrake/liquids_framework_design.md` (absorbed the water-economy proposal, owner 2026-09-13) + `water_doctrine.md` |
 | 10 | Galactic Underworld Reputation (debts, favors, Hutt contracts, bounty hunters, capture-alive) | **LIVE → expanded** | confirmed open in `FUTURE_VECTORS.md`: "the natural deepening of the ledger pressure" |
 | 11 | Cantina Simulation (info/econ hub, music) | **PARTIAL COVERED + LIVE → expanded** | `cantina_kitchen_spec.md` owns the food/live-tank half ("the Jawa meet it in Hutt and Deepwater settlements rather than owning it"); the social/information/economy layer is untouched — expanded below |
 | 12 | Rumors, Information, and Maps | **LIVE → folded into §11 expansion** | becomes that expansion's information-economy engine, not a separate doc |
@@ -254,8 +255,9 @@ the Jawa a *destination*, not ownership. What's missing is what happens at
 the tables once the food's served.
 
 - **Rumor economy.** Tradeable information — wreck coordinates, bounty
-  targets, patrol schedules, hidden water (a direct hook into
-  `water_economy_deep_design.md`'s scarcity framing), suspected leviathan
+  targets, patrol schedules, hidden water (a direct hook into the liquids
+  framework's scarcity framing, `design/RimMandrake/liquids_framework_design.md`),
+  suspected leviathan
   pearls (a hook into §B above). Rumors carry a reliability rating and can
   simply be wrong — the interesting failure mode is a caravan chasing a
   bad map, not a binary refund.

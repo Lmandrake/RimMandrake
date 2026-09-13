@@ -1,0 +1,221 @@
+# Liquids Framework — one substance, many faces
+
+**Status: RULED (owner, 2026-09-13, bench session).** Core registry + client mods,
+campaign-first. Supersedes and absorbs `design/Jawa/proposals/water_economy_deep_design.md`
+(deleted this change; its detox chain survives here as the `thirstQuality` ladder).
+Naming per `design/NAMING_SCHEME_PLAN.md` — core and clients are RimMandrake tier;
+Ash'karr wiring lives in RimUtinni; cuisine consumers live in RimStarWars.
+
+The dream this scopes: every liquid in the game interchangeable across every place
+liquids appear — terrain (rivers/lakes/oceans), bottles and buckets, pipes, worldmap
+bodies, rain, canal flooding, and fluid-to-fluid transformation.
+
+## 1. Design pillars
+
+1. **One substance, many faces** — a liquid is defined once; terrain, bottle, canal,
+   pipe, weather, worldmap and recipes are optional *form slots* on that definition.
+2. **Pulsed spread only** — all map motion is event-shaped (flood, drip, spill,
+   seasonal) via the FluidCanals engine. No per-tick fluid sim, ever. (Owner ruling.)
+3. **TerrainDef stays the engine face** — the registry points *at* terrain suites
+   (including adopted vanilla/DLC/third-party terrains); it never replaces them.
+4. **Industry is found, not built** — crude conversions always buildable; household
+   tier by research; industrial scale only as pre-placed set-pieces. (Campaign law;
+   the public wave may allow building industrial via a settings switch.)
+5. **Every client ships alone** — the core is data + glue; each client mod is
+   independently playable and degrades gracefully when a sibling is absent.
+6. **Superb Mod Settings** — every feature a toggle, defaults = shipped behavior,
+   all-off is a working game (per the 2026-09-12 standing rule).
+
+## 2. Core: `RimMandrake: Liquids` (grows out of LiquidTypes)
+
+New top-level def type `RimMandrake.LiquidTypes.LiquidDef`, defNames `RM_Liquid_<Name>`
+(top-level custom def — avoids the `<li>` custom-loader trap). The existing
+`RM_LiquidProperties` DefModExtension stays as the *terrain-side* carrier, emitted by
+the generator from registry rows, so third-party terrains remain patchable without a
+LiquidDef.
+
+**Property block** (source of truth per liquid): `viscosityClass`
+(Thin/Water/Thick/Heavy — drives canal `ticksPerTile` defaults, later wade speed),
+`pH`, `damageOnContact/Immersion`, `corrodesApparel`, `flammable`, `igniteTemp`,
+`color` (tint for generated art, flecks, bottle fill).
+
+**Form slots** — each nullable (null = the liquid does not take that form; ConfigErrors
+requires at least one):
+
+| slot | meaning |
+|---|---|
+| `terrainSuite` | shallow/deep/chest-deep TerrainDef refs; may ADOPT existing terrains |
+| `canalFluid` | FluidCanals `FluidDef` ref (soft, MayRequire-style) — pulsed spread row |
+| `bottled` + `unitsPerBottle` | the item form |
+| `bottleBehavior` | `revertsTo`+`revertTicks` (boiling/icy → fresh); `rotsTo`+`rotTicks` (blood) |
+| `pipeResource` | VE PipeSystem net (patched in only when VE Framework loads) |
+| `weather` | WeatherDef for "rain of X" events (v2 for new ones) |
+| `worldTag` | typed worldmap bodies (authored onto the frozen map) |
+| `conversions` | list of {tier: Crude/Household/Industrial, product, recipe/building} |
+| `trade` | marketValue/unit + tradeTags |
+| `cuisineTags` | ingredient categories the RSW cuisine mod cooks against |
+| `thirstQuality` | Distilled/Potable/Fouled/Toxic (absorbed detox chain) |
+
+`Tools/generate_liquid_suite.py` grows to emit terrain suites, bottle ThingDefs and a
+compat index from rows.
+
+## 3. v1 roster (ruled)
+
+| Liquid | Notes |
+|---|---|
+| Fresh water | adopts vanilla waters; the product of most conversions |
+| Salt water | adopts vanilla ocean; → fresh at household still / found desal |
+| Boiling water | `RM_WaterBoiling`; bottled form reverts to fresh |
+| Icy water | `RM_WaterFrigid`; bottled form reverts to fresh |
+| Toxic water | `RM_WaterPoisoned` + adopted Odyssey toxic suites; → fresh (crude drip-filter slow / found detox) |
+| Acid water | `RM_AcidWater` (the wired corrosion liquid); → fresh (industrial only) |
+| Tar | `RM_Tar`; Heavy viscosity; → chemfuel at found refineries |
+| Slime RED / GREEN / WHITE | **distinct rows** (distinct hazards + cuisine tags) — the REALLY-want trio; viscous streams and pools via Heavy-viscosity canal fluids |
+| Slime YELLOW | actual human snot — kept as the documented **example row** others follow for disgusting uses in other scenarios |
+| Blood | **item-only in v1** — bottled, rots (CompRottable), household recipe → hemopack before spoil; map pooling is v2 |
+| Chemfuel | **adopts the vanilla item**; VE pipes carry it; tar cracks into it |
+| Astrofuel | **adopts Vanilla Gravship Expanded** — the `VGE_Astrofuel*` net (pipe/tap/valve/drain/giant tank/synthesizer) already exists in the campaign dump; optional-checked, supported when present |
+| Brine | **minimal row** (terrain + worldTag + canal only) — forced back into v1 by ruling 5: `LIQUID_BIOMES_MAP_1` already authored TWO brine seas onto the frozen world, and typed tiles must have rows. `RM_WaterBrine` terrain exists |
+| Propane | **minimal row** (terrain + worldTag + canal only) — same forcing: the frozen world holds a propane lake under Umbra. `RM_Propane` terrain exists |
+
+The frozen world's authored liquid bodies (boiling ocean, two brine seas, propane
+lake — `LIQUID_BIOMES_MAP_1`, done) are the floor of the roster: every authored body
+gets at least a minimal row, or ruling 5 cannot hold.
+
+**Dropped/cut**: purple slime (dropped, owner 2026-09-13). **v2+/deferred**: machine
+oil and cooking oil as distinct rows (chemfuel + cuisine tags cover the fantasy),
+nuclear wastewater, ammonia/coolant/brackish/mineral waters (the LiquidTypes terrains
+stay shipped, no registry rows yet), lava (STUDY Lava Must Flow first),
+hemogen/beer/milk adoption rows, basic (alkaline) water, kolto/bacta healing rows
+(see §8).
+
+## 4. Mechanics
+
+**Pulsed spread.** `Flood_FluidCanal` + `CompFluidReservoir` (drip + re-flood bursts;
+scarcity is rate, not stock) generalizes with one addition: a second priming path —
+reservoir comps on *natural sources* (slime vents, tar seeps, geysers, set-piece pump
+intakes) auto-prime on spawn, so natural bodies plug into canals with no player action.
+Spills are one-shot releases with small volume and short flood duration. Viscosity
+maps to `ticksPerTile` bands (Heavy = slow oozing — the slime look). ⚠️ **Engine
+status (ledger, 2026-09-13)**: it HAS run live once (`FLUID_CANAL_FLOOD_LIVE_CHECK_1`
+done — a flood was watched receding and giving the floor back), but
+`FLUID_CANAL_FLOOD_TUNING_GAPS_1` found real defects: floods are permanent and
+floor-destroying (undisclosed), can tick forever when boxed in, and
+`MaxFloodDurationTicks` is actually a rate divisor, not a duration. **Build-phase ①
+is therefore the flood-behavior correction pass, not a first live proof.** Nothing
+builds on the engine until those corrections land.
+
+**Bottles are real items** (scavenger law): `RM_BottleEmpty` → fill (at terrain edge or
+tank) → `RM_Bottle<Liquid>` (generator-emitted per row) → use produces `RM_BottleDirty`
+→ wash job (consumes water) → empty again. Buckets = bigger bottle, same chain.
+Dirty-bottle stage is a Mod Settings toggle; **default ON in the campaign** (it is the
+shipped behavior); off = use returns a clean empty. Bottles are loot, not free.
+
+**Special behaviors** — all data, no per-liquid C#: revert timer (boiling/icy → fresh
+bottle), rot (blood; convert to hemopack at household tier to stabilize), viscosity
+classes (data-only in v1 beyond canal speed).
+
+**Thirst chain.** Thirst is live in the campaign: `DBHThirst` NeedDef is in the frozen
+dump (MEASURED, capture 2026-08-29) via the "Dubs Bad Hygiene – Thirst" add-on riding
+DBH Lite. Chain: crude (solar still, drip filter — slow, free) → household (fueled
+still/boiling — research) → industrial (found desal/detox set-pieces — fast, powered).
+We register bottles as DBH drinkables and patch the water tag onto adopted terrains;
+with DBH absent (public), bottles are plain ingestibles with a hydration thought.
+Aquifer-remembers (draining degrades quality) deferred to v2.
+
+**Tanker raid** (pillar; lives in Liquid Logistics, §6): fly to a typed liquid body →
+deploy `RM_HoseSpool` (fast-build, cheap, fragile conduit-thing hose with a length cap
+— NOT terrain, NOT a VE pipe) from shore to ship tank → `RM_PumpPortable` (found or
+stolen, heavy) pulses N units per interval from any cell whose terrain belongs to a
+LiquidDef into `RM_ShipTank` → undeploy, fly away rich. Raid pressure = time on the
+ground while pumping. A "tanker ship" build is a first-class, highly viable player goal.
+
+**Universal tank interop** (owner ruling): the ecosystem's existing tank families are
+ADOPTED, never duplicated — VE PipeSystem (`PS_ChemfuelTank`, `PS_DeepchemTank`), VGE
+astrofuel, KotOR water/kolto, Rhydonium/Tibanna. We ship exactly ONE new storage
+building: the **universal cargo tank** — minifiable, holds any (LiquidDef, amount) —
+plus a **universal pump**, and per-net ADAPTERS so every supported pipe network can
+feed from and draw into our tank, and existing pumps can pump from it.
+
+**Liquid trade.** Bottles trade natively (tradeTags per row). Bulk sells from the tank
+via a trade-from-tank interaction (price = row marketValue × amount) — no
+ten-thousand-bottle stacks. Settlements weight prices by their world tag (desert pays
+more for water). v1-thin.
+
+**Typed worldmap → mapgen.** One authoring pass writes `worldTag` values onto the
+frozen Ash'karr map's water tiles/named bodies (WorldComponent keyed by tile ID,
+authored through the bridge — no worldgen, no re-render, per the no-worldgen law). On
+map generation, a GenStep reads the landing tile's tag and *repaints* the generated
+shores/lakes to that liquid's suite. Untyped tiles = vanilla, untouched. This is what
+makes "fly to that tar lake" true for the tanker raid.
+
+**Found industry.** `RM_GenStep_PlacedSetPieces` (exists) scatters authored set-pieces:
+desal plant on brine coasts, detox works near toxic bodies, tar-cracking refinery,
+pumping station — each WreckedMachines-tier (Wrecked→Kludged→Repaired), found broken,
+repaired into the industrial conversion tier, **never buildable from the menu** in the
+campaign. Set-pieces stock stealable pumps and tanks feeding the tanker pillar.
+**WreckedMachines gains a Distillation module** on the players' ship: clean water from
+appropriate sources (not oil).
+
+**Star Wars cuisine hook.** Core ships `cuisineTags` + ThingCategories on bottled rows;
+the RSW cuisine mod writes recipes against tags, never against defNames — new liquids
+auto-join the pantry.
+
+## 5. Client-mod map
+
+| Mod | Becomes |
+|---|---|
+| **LiquidTypes** → `RimMandrake: Liquids` | the core registry + generator; keeps `RM_LiquidProperties` for foreign terrains |
+| **FluidCanals** | flow engine client; + natural-source auto-prime, one-shot spills |
+| **ManyWaters** | data-pack client: colored waters/slimes become rows |
+| **GelatinousSlime** | slime-mechanics client: hediffs/genes stay; its terrains adopted |
+| **WreckedMachines** | + Distillation module; wreck-tier grammar for found industry |
+| **UtinniPatches (RUT)** | Ash'karr worldTag authoring pass; campaign settings defaults |
+| **NEW `RimMandrake: Liquid Logistics`** | hoses, portable pumps, universal cargo tank + universal pump + per-net adapters, trade-from-tank |
+
+**v1 third-party seams**: VE PipeSystem (pipe slot + tank adapters), DBH Lite + Thirst
+add-on (drinkables), VGE (astrofuel net adoption), Odyssey (Flood subclass, toxic-water
+adoption), Vanilla Fishing Expanded (`waterBodyType` per suite so typed waters fish
+sensibly), Alpha Biomes (slime/tar terrain adoption).
+**Deferred, seams documented only**: Rimefeller, No Water No Life, hemogen-pipe mods
+(none in the campaign list). STUDY: Lava Must Flow before any lava row.
+
+## 6. Fun expansions (accepted as candidates, not commitments)
+
+v1-cheap: weaponized canal gates (flood the raider approach with tar/boiling water);
+thrown flasks (bottled acid/boiling water as crude grenades); typed fishing exotics;
+spa/bathing thoughts. v2: slip hazards on slime/oil; blood/slime rain; spill-scent
+predator incidents; tank-mixing accidents (cross-connected tanks brew
+`RM_ReactionLiquor`, with a bang).
+
+## 7. Build phasing (each slice lands + quicktests alone)
+
+① **Flood-engine corrections** (fix the `FLUID_CANAL_FLOOD_TUNING_GAPS_1` defects:
+permanent/floor-destroying floods, boxed-in infinite tick, rate-divisor field; then a
+clean live pass: dig, prime, drip, re-flood, drain) → ② registry skeleton adopting
+existing terrains (def-load test only) →
+③ natural-source auto-prime + spills → ④ slime streams (Heavy FluidDefs, R/G/W/yellow
+rows) → ⑤ bottles + Mod Settings → ⑥ revert/rot specials → ⑦ thirst chain +
+WreckedMachines Distillation → ⑧ worldmap tags (bridge authoring) + landing paint
+GenStep → ⑨ Liquid Logistics (tank → pump → hose → tanker loop → trade, in that
+order — the tank alone is already useful) → ⑩ found-industry set-pieces.
+
+## 8. Measured facts this design leans on (frozen dump, capture 2026-08-29)
+
+- `DBHThirst` NeedDef present — thirst is live in the campaign.
+- The frozen world already holds four authored liquid bodies as worldmap tiles:
+  boiling ocean, two brine seas, propane lake (`LIQUID_BIOMES_MAP_1`, done) — the
+  worldTag authoring pass (§4) builds on them, and they force the brine/propane
+  minimal rows in §3.
+- `VGE_Astrofuel*` full pipe net present — astrofuel row adopts, builds nothing.
+- Tank families present: `PS_ChemfuelTank`/`PS_DeepchemTank`, VGE astrofuel, KotOR
+  water + `KoltoTank` (buildable; healing function UNMEASURED — KotOR C#, needs a live
+  look), Rhydonium/Tibanna, misc fuel/oxygen.
+- Bacta: NO tank exists — only `OuterRim_BactaSpray` + `OuterRim_ApplyBacta`. A
+  found/repairable bacta tank is a natural future healing-liquid set-piece; kolto and
+  bacta are future rows.
+- Workshop landscape: DBH and No Water No Life are incompatible incumbents each
+  hardcoding their liquids; VE PipeSystem is the one generic pipe library; Lava Must
+  Flow is the best liquid-as-terrain prior art; blood piping does not exist on the
+  Workshop; nobody types worldmap bodies. The gap this framework fills is the shared
+  substance model across terrain/worldmap/pipes/bottles/weather/transform.

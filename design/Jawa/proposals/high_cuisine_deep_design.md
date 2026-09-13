@@ -270,8 +270,9 @@ the way a stolen one reads as a gamble. See §7's Ninefold Feast course ④.
 ## 4. Ingredient rarity tied to world hazards — every dangerous biome is a pantry
 
 The same logic that makes half the hazard content worth visiting in
-`fire_ecology_deep_design.md`, `tar_pits_deep_design.md` and
-`water_economy_deep_design.md` (concurrent proposals in this same directory)
+`fire_ecology_deep_design.md`, `tar_pits_deep_design.md` (concurrent proposals
+in this same directory) and the liquids framework
+(`design/RimMandrake/liquids_framework_design.md`)
 applies to food: an ingredient that can ONLY be sourced from a genuinely
 dangerous place is worth more than one grown in a planter, and it's a
 standing reason to send a caravan somewhere it would otherwise have no

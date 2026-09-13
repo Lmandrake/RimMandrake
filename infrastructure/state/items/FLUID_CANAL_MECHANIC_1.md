@@ -1,5 +1,12 @@
 # FLUID_CANAL_MECHANIC_1 — general canal/fluid-flow mechanic, RimMandrake tier
 
+> 🔴 **Ruled 2026-09-13** (owner, liquids-framework bench sitting): FluidCanals
+> is the framework's FLOW ENGINE (`design/RimMandrake/liquids_framework_design.md`
+> §4) — pulsed spread only, plus two new asks: natural-source auto-prime and
+> one-shot spills. Gate first: `FLOOD_ENGINE_CORRECTIONS_1` (the
+> FLUID_CANAL_FLOOD_TUNING_GAPS_1 defects) before anything builds on the engine.
+> The six-fluid roster this item names now comes from the registry's rows.
+
 Owner, verbatim (2026-09-02, ruling on `design/Jawa/proposals/tar_pits_deep_design.md`'s
 `canal-flow-engineering` row, promoted out of the tar-pits proposal into its own
 item): *"This is a general new mechanic that we can use in many places. Dig
