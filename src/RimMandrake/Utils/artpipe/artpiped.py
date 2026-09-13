@@ -1051,9 +1051,11 @@ _SPRITE_ART_DIRECTION = (
     "keyline about 2-3% of the body width so its silhouette reads as one clean "
     "shape when small; carry the creature's identity in a few large distinct "
     "shapes, keeping surface detail broad, because anything finer than a few "
-    "percent of the body dissolves at play size; and hold the overall body "
+    "percent of the body dissolves at play size; hold the overall body "
     "value clearly lighter or darker than a mid-tone ground so it stands out "
-    "against terrain."
+    "against terrain; and leave a clear transparent margin of about three "
+    "percent of the canvas on every side of the creature, so the whole "
+    "silhouette sits free of the canvas edges."
 )
 
 
@@ -1332,16 +1334,50 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                                  + ("; ".join(lfindings[-1:]) if lfindings else "no detail"))[:300])
             return result
         if lverdict == "borderline":
-            # Owner ruling 2026-09-13: borderline art gets the keyline
-            # REINFORCEMENT pass, not regeneration — but reinforcement ships
-            # only after the owner approves the A/B sheet, so until then a
-            # borderline is a distinct failure kind the requeue can route.
-            result.update(status="failed", worker_status="legibility_borderline",
-                           validator=("PASS" if verdict == "pass" else "skipped"),
+            # Owner-APPROVED flow (A/B sheet, 2026-09-13): borderline art gets
+            # the OUTSIDE keyline stroke (opacity 1.0, 2% ring — the tool's
+            # locked defaults), is rescored, and promotes on a pass. Every
+            # outcome is a distinct deterministic status. The pre-stroke
+            # original is kept beside the output as *_prestroke.png.
+            raw_keep = out_png.with_name(out_png.stem + "_prestroke.png")
+            reinforced = out_png.with_name(out_png.stem + "_reinforced.png")
+            try:
+                rproc = subprocess.run(
+                    [sys.executable, str(LEGIBILITY_SCRIPT), "reinforce",
+                     str(out_png), "--out", str(reinforced)],
+                    capture_output=True, text=True, timeout=LEGIBILITY_TIMEOUT_S)
+            except (subprocess.TimeoutExpired, OSError) as exc:
+                result.update(status="failed", worker_status="reinforce_could_not_run",
+                               legibility="ERROR", note=f"reinforce failed to run: {exc}"[:200])
+                return result
+            rout = (rproc.stdout + rproc.stderr).strip().splitlines()
+            if rproc.returncode == 4:
+                result.update(status="failed", worker_status="insufficient_margin",
+                               legibility="BORDERLINE",
+                               note=("borderline art cannot take the outline stroke — "
+                                     + ("; ".join(rout[-1:]) if rout else ""))[:300])
+                return result
+            if rproc.returncode != 0:
+                result.update(status="failed", worker_status="reinforce_failed",
+                               legibility="ERROR",
+                               note=("reinforce exited %d: " % rproc.returncode
+                                     + ("; ".join(rout[-1:]) if rout else ""))[:300])
+                return result
+            rverdict, rfindings = run_legibility_gate(reinforced)
+            result["legibility_findings"] = lfindings + ["--- after stroke ---"] + rfindings
+            if rverdict == "pass":
+                shutil.copy2(out_png, raw_keep)
+                shutil.copy2(reinforced, out_png)
+                result.update(status="ok", worker_status="ok",
+                               validator=("PASS" if verdict == "pass" else "skipped"),
+                               legibility="REINFORCED_PASS",
+                               note="borderline promoted by the outside keyline stroke; "
+                                    "pre-stroke original kept beside it")
+                return result
+            result.update(status="failed", worker_status="legibility_borderline_unrescued",
                            legibility="BORDERLINE",
-                           note=("borderline band — reinforce the keyline and rescore "
-                                 "(pending owner A/B approval); "
-                                 + ("; ".join(lfindings[-1:]) if lfindings else ""))[:300])
+                           note=("still below the works line after the stroke — regenerate; "
+                                 + ("; ".join(rfindings[-1:]) if rfindings else ""))[:300])
             return result
         if lverdict == "gate_error":
             result.update(status="failed", worker_status="legibility_gate_could_not_run",
