@@ -166,7 +166,9 @@ one-time escorted descent — a site/mission on the fixed world, no worldgen —
 through the under-plate works: halls the size of canyons, a production line a
 mile long that the player has only ever *heard* cycle, the second coolant
 circuit running down toward the Scald, and Sentinels that walk past the party
-the way they have always walked past droids. At the bottom, the first direct
+the way they have always walked past droids. RULED (A7): this descent is a
+**real structure-injected site the player walks** in v1 — the scale is the
+payload; prose carries only the voice beat at the bottom. At the bottom, the first direct
 address: the whispered-voices register (`03_deep_history.md` — the enclaves'
 whispers "are real attention"), through the party's droid or comms gear, Shard-
 mind style (origin canon §3's channel grammar). Text/menu; prescribed fallback
@@ -200,10 +202,20 @@ it CAN complete: full discovery is a real, losable v1 outcome:
   posture regardless of history, boons suspended, hum flattened to the dull
   drone it shows strangers, missions stop. The relationship does not break; it
   hides from the player again — the arc's opening state, now legible as choice.
-- The canon endpoint, if it ever fires, is ruled: *"challenged, probed, and
-  forced to defend itself or self destruct... a losing battle"* (§GM). That is
-  a campaign-catastrophe register, not an incident — v1 builds the pressure
-  and the withdrawal, not the apocalypse.
+- The completion — RULED (owner card A6, bench sitting 2026-09-12, superseding
+  this spec's earlier pressure-and-withdrawal-only v1 scope): **there is a
+  "win" route here, but a pyrrhic one.** Owner verbatim: *"The rust cathedral
+  fights the Empire and slowly falls, the planet becomes a warzone again, and
+  in the confusion the Hutts might still be able to get the players
+  offworld... for the right price. But it won't feel very good. Something
+  ancient and wondrous is gone forever, and the ship mourns."* ⇒ v1 builds the
+  completion, not just the pressure: the slow fall (§GM's "losing battle",
+  witnessed rather than narrated), the planet flipping back to warzone
+  posture, a **priced Hutt extraction window** that is a real campaign ending,
+  and the **gravship's mourning register** (the ship feels the loss — kin to
+  A1's dead-Rakatan-band receiver lore). What it does NOT change: bans 2/3/6
+  hold through the fall, and the knowledge gate still opens for nobody but the
+  player.
 
 **6.2 Betrayal — the player exposes or despoils it deliberately.** Rationed
 patience, never raids (origin canon §4; sheet §6 ban 3):
@@ -269,6 +281,13 @@ origin canon's, and binds at their builds.
   safe with any buyer; selling IN BULK is what draws eyes, whoever buys.
   Exposure pricing keys off a running sales-volume counter, not the buyer's
   faction.
+- **A6 — RULED (bench sitting 2026-09-12): discovery completion is the pyrrhic
+  escape.** The ruling's full text and scope live in §6.1; the Hutt extraction
+  ending it creates belongs to the campaign-story pass
+  (`CAMPAIGN_STORY_SITTING_1`) as a ruled ending.
+- **A7 — RULED (bench sitting 2026-09-12): the §5 descent builds as a real
+  site in v1**, not a text sequence — smaller set-piece and text-only options
+  were declined.
 
 ---
 
