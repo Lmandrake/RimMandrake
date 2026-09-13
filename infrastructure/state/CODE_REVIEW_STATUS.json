@@ -767,6 +767,12 @@
     "hash": "52b756d66b290855e16d6c08dfe2e3b41fd7c7c0e4588c85bf1899329ec79104",
     "sha": "ce01a5a8a"
   },
+  "src/RimMandrake/Aftermath/Source/RM_AftermathMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "48ea7569b03a21f2fa9d831ca6545c339af79ebde5d33854f81843ceb7aa8119",
+    "sha": "47ae589d5"
+  },
   "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs": {
     "cleanCount": 3,
     "date": "2026-09-11",
@@ -941,11 +947,59 @@
     "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/DivingInteraction/Source/RM_DiveUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6482ee81a4387a51a846da141f3c698dc4d8943f6bec9266c69aae7c4b9fa58b",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_DivingDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "104667603c03d6f24a66310ff6bd84f99e043375e487efce5e8f301005b737b3",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_DivingSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c1c04212f0e9d8a89ed127da84fea21dabf91e29b5ea92b88cf61282b5237905",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_FloatMenuOptionProvider_Dive.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "50f37d2384345f2fbf6c75bd46189d40c43be65f4e2bae5f2039a5865fe2b928",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_JobDriver_DiveBase.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "6e8d8b534336b05a2476c7431dfe06303ac610fde8abecb4736284292cd16b8e",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_JobDriver_DiveCommune.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "71bf7d0f8f04072f134e71c1b9ea183a140d2bd3ced1f210a3e31e758a46929d",
+    "sha": "58720b3c2"
+  },
   "src/RimMandrake/DivingInteraction/Source/RM_JobDriver_DiveHunt.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
     "hash": "2abff0fb87b03f6f876855f9962c221e96ded1dab46bc17eb0be0fef64318a71",
     "sha": "7f2ff5541"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_MapComponent_DiveSites.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5a764d9137a93b11453fe20b3bdfbfc665c740f2e22c8d4009180e5a24315bb0",
+    "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_Thought_CommunedWithDeep.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "44221426ec1504073b851640b359f7b458ea6d316cfc1d49947b8d99d289e9f1",
+    "sha": "58720b3c2"
   },
   "src/RimMandrake/EnvironmentalHazards/About/About.xml": {
     "cleanCount": 1,
@@ -1066,6 +1120,48 @@
     "date": "2026-09-11",
     "hash": "5621b12ca1b902d1195e7d6023c23561b089fb9006476801c8ce360919776271",
     "sha": "0637431c1"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "08312e40d9b360f14ed6725a25375c4a1077dd2dbf5fd674daf36f1535263ff4",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/Debug/RM_FloodedCanyonDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3a7ce6cbba04abbee32de03dd7e00473ccd35fe672d4ce0a384bf7a0f989ff02",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/RM_BiomeWorker_FloodedCanyon.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "2147194a7c014adc07a214222aea69fe4dc2b8c82b4067f026036ff9d6945b5d",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyonDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d5fae834437351f3bf358abb47a50246c1d2c688f1fe31b050843d8205160e3d",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyonMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "55cd3c30d32c0bec2cd095fef771dbbfa01727ee47a92404bbd2e2097fd841cd",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/RM_MapComponent_CanyonFlood.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "94f4b1f133332f46cb6ae910344d295cfcaec808226de65c1f597601b6764833",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/FloodedCanyon/Source/RM_Patch_Plant_GrowthRate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "bad2bfa7b7ea109d0ad9326f99aa68e8f9b94032df4d487b0fab04885d5ebd5b",
+    "sha": "47ae589d5"
   },
   "src/RimMandrake/FluidCanals/About/About.xml": {
     "cleanCount": 1,
@@ -1439,6 +1535,12 @@
     "hash": "5be1e7a1b6babaa8e5c09c64e5fb55c967951926b9f63743027167c5aad8094f",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "fa3dce6ae75f2c060df3a470a059c8bcfb396a849883c1eac01cb82698344c35",
+    "sha": "47ae589d5"
+  },
   "src/RimMandrake/Graffiti/Source/ThoughtWorker_ViewedGraffitiMark.cs": {
     "cleanCount": 3,
     "date": "2026-09-11",
@@ -1480,6 +1582,18 @@
     "date": "2026-09-05",
     "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
     "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/GravshipLanding/Source/GravshipLandingMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "08197bcc55b71c10cbe814ff639d942730f2dca84c784608b3f292eca547734e",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/GravshipLanding/Source/Patch_GenStep_GravshipMarker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "be1203320b7109578db15e0fd4c6980f369a44e3c1402cf598d69a22c701d879",
+    "sha": "47ae589d5"
   },
   "src/RimMandrake/Greentide/About/About.xml": {
     "cleanCount": 1,
@@ -1889,6 +2003,12 @@
     "hash": "186d25b451da89ffbba1302cfd4bad426e550ee46520851815a8c104210a056f",
     "sha": "7b9f17a9"
   },
+  "src/RimMandrake/Inhabited/Source/RM_InhabitedMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "11d192c56041ce27624805aa41925b2f0e1b48165115346ba89816ab403dce9f",
+    "sha": "47ae589d5"
+  },
   "src/RimMandrake/Inhabited/Source/SecurityProfileDef.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1924,6 +2044,30 @@
     "date": "2026-09-03",
     "hash": "f6d218ea8490a3c48e1bf875f0ad26d9d63ae8023043aa5744267d012261350d",
     "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/LiquidTypes/Source/LiquidCorrosion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "95d15b46667f95d4d926080ea14f8fba5b504034345b3fc30191785e1c354ce2",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/LiquidTypes/Source/LiquidIgnition.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c094207ef2f56d3b8f6f8f05bf6e242eda29936e977fb3a4766db0331903c52f",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/LiquidTypes/Source/RM_LiquidProperties.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "09c6f86bfcc672a17c030b477a69084495960c0e0523a1a58c0ff402e13984dc",
+    "sha": "47ae589d5"
+  },
+  "src/RimMandrake/LiquidTypes/Tools/generate_liquid_suite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "bbf3ca0857925023013a3ca29d4512f349a222306233a5fc892768bcf4581608",
+    "sha": "47ae589d5"
   },
   "src/RimMandrake/LoadTracer/About/About.xml": {
     "cleanCount": 1,
