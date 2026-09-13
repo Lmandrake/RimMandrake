@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWood_MirrorList.xml    RimUtinni Patches · FEVER_WOOD_MECHANICS_1
+
+  Wires the F3 spike class (RM_CompUseEffect_RevealHazards, compiling and
+  proven `src/RimMandrake/EnvironmentalHazards/Source/`) into a real,
+  reachable ThingDef — the_fever_wood.md §8's "the mirrors... Sporefall
+  sells the list", fever_wood_kit_spec.md F3.
+
+  PATTERN BORROWED, NOT INVENTED, same disclosure as
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/Jawa_ClaimRumour.xml (a
+  shipped, owner-accepted precedent for exactly this shape: a one-shot
+  readable item, ParentName ResourceBase, CompProperties_Usable +
+  CompProperties_UseEffectDestroySelf, real classes confirmed against the
+  live 1.6 decompile — RimWorld/CompUsable.cs's UseJob calls
+  CompUseEffect.DoEffect on every attached use-effect comp, RimWorld/
+  CompUseEffect_DestroySelf.cs consumes the item after use). The engine
+  correction the spike pass's own header did not need to make explicit but
+  this wiring does: CompUseEffect.DoEffect (RimWorld/CompUseEffect.cs)
+  internally casts `props` to `CompProperties_UseEffect`, so the comp
+  MUST be declared with that CompProperties class (not plain
+  CompProperties) or `base.DoEffect` throws an InvalidCastException the
+  first time the item is used — RM_CompUseEffect_RevealHazards's own
+  DoEffect calls `base.DoEffect(usedBy)` before its own logic, so this is
+  load-bearing, not decorative.
+
+  MayRequire is load-bearing (see RUT_FeverWood_MirrorBreak.xml for the
+  same rationale) — mandrake.rm.environmentalhazards ships the compClass
+  this def names.
+
+  🔴 REAL SUPPLY LANE NOT WIRED, DOCUMENTED, NOT GUESSED: the spec says
+  "stocked at Sporefall/Wildsteam traders via trader-kind XML", but
+  Sporefall does not yet exist as an authored settlement or TraderKindDef
+  — the_fever_wood.md's own Owed section still lists "Sporefall's treetop
+  reframe into their faction canon" as a future canon sitting. Guessing a
+  TraderKindDef or a settlement to attach this to would be inventing the
+  exact shape the standing rule forbids. Ships the same way
+  RUT_Jawa_ClaimRumour shipped v1: a real, spawnable, usable item; trade
+  stock is a one-line follow-up once Sporefall exists as a trader.
+  Tradeability set to None for the same reason (nothing sells it yet).
+
+  ART: validate_patch.py's installed-defs cross-check caught a real defect in the first draft
+  of this file — a vanilla texPath (Things/Item/Special/
+  SubpersonaCoreTechprof, the GeneSeeker.xml placeholder route) reads as a
+  hard ERROR here rather than GeneSeeker's WARN, because this mod's own
+  Textures/ root already owns a "things/" namespace, so the validator
+  treats a miss inside it as this mod's own missing file rather than an
+  unverifiable vanilla bundle path. Fixed by reusing this mod's OWN already-
+  shipped loose texture, Textures/Things/Item/Special/JawaClaimRumour.png
+  (RUT_Jawa_ClaimRumour's own art, tinted differently here) — a real file
+  on disk, confirmed by the same validator. Real, distinct art rides the
+  standing art pipeline, not this pass.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FeverWood_MirrorList</defName>
+    <label>mirror list</label>
+    <description>A traders' ledger of which black pools have moved lately — ripples, silences, the mirrors that lied about where they were. Reading it marks the agitated pools on your map for a while. The list is a snapshot; the water keeps its own schedule.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(90, 130, 150)</color>
+    </graphicData>
+    <category>Item</category>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <selectable>true</selectable>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>180</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Read the mirror list</useLabel>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+      <li Class="CompProperties_UseEffect">
+        <compClass>RimMandrake.EnvironmentalHazards.RM_CompUseEffect_RevealHazards</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

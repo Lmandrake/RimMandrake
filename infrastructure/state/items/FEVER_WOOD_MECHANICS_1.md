@@ -232,3 +232,95 @@ attempted, per scope.
 - `src/RimMandrake/EnvironmentalHazards/Source/RUT_HaulPawnAndExit.cs` (F9)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (8 new `<Compile>` entries)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_FeverWood_MirrorBreak.xml` (F2, wired)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_FeverWood_MirrorList.xml` (F3, wired)
+- `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_FeverWoodMirrorPool.xml` (F1/F5 pt.3, wired)
+- `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_StiltPlatform.xml` (F5 pt.2, wired)
+
+## continuation pass — 2026-09-13, resuming after an interrupted run
+
+Picked up two files already sitting uncommitted from the prior pass
+(F2/F3, above) — validated clean (see below), not redone. Continued wiring
+per the spike roster (F1, F4, F5, F8, F9):
+
+- **F2/F3 (pre-existing, this pass's own finding)**: both validate 0
+  errors/0 warnings against `validate_patch.py` with the installed-defs
+  cross-check. `RUT_FeverWood_MirrorList.xml` had one real defect the
+  previous pass's own header claimed was already caught but the file on
+  disk still had: a literal `--` inside an XML comment body (naming the
+  validator's own `--defs` flag), which is illegal in XML and broke the
+  parse. Fixed by rephrasing the comment (no flag syntax inside the
+  comment body); no field/logic change.
+- **F1 (the Tenant, terrain half) — WIRED.** `RUT_FeverWoodMirrorPool.xml`:
+  new `TerrainDef` (`ParentName="WaterDeepBase"`, the same already-verified-
+  safe base `RUT_ScaldWater.xml` uses) carrying
+  `RM_LurkingWaterExtension` as a real `modExtensions` entry, `MayRequire`-
+  gated. Gives `RUT_MapComponent_TheTenant`'s terrain-grid scan (it auto-
+  attaches to every map — `Map.FillComponents()` instantiates every
+  `MapComponent` subclass automatically, no Def wiring needed for the
+  component itself) something real to find. Deliberately carries no
+  `<affordances>` (inherits `WaterDeepBase`'s none) and no `dbh_water` tag
+  (unlike `RUT_ScaldWater.xml`'s own precedent — marking it drinkable would
+  contradict §5/§7b's "nothing goes in the water here"). **Not done**:
+  painting this terrain onto any generated Fever Wood map. Editing the
+  already-shipped `RUT_FeverWood.xml` BiomeDef's `terrainsByFertility` to
+  reference a `MayRequire`-gated defName risks a dangling cross-reference if
+  `mandrake.rm.environmentalhazards` is ever absent, and the actual
+  fertility threshold is an unspecified tuning call the kit spec gives no
+  number for — left for a GenStep pass (F6's shape) or a deliberately-
+  guarded terrainsByFertility edit, not guessed here. `RM_TenantTruceExtension`
+  (native-pawn exemption) has no PawnKindDef to attach to yet — no Fever
+  Wood native roster (Wookiee/Ewok/Wildsteam kinds) exists in `src/` at all;
+  that's the roster pass's territory, not this item's.
+- **F4 (deep thing, dormant) — CONFIRMED, correctly left unwired.**
+  Re-checked: `RUT_TenantEmergenceSpawner` is still referenced by nothing.
+  It cannot be safely wired into even a dormant `BuildingDef` yet regardless
+  — its own class comment notes a `BuildingDef` needs a real
+  `groundSpawnerThingToSpawn` target, and `RUT_TenantEmergedMass` (the L-
+  effort remainder) does not exist. Ban §6.1 holds by construction; nothing
+  to do here until the roster/art pass lands the emerged-mass def.
+- **F5 (ground refusal + stilts) — PARTIALLY WIRED.** Point 3 (pool water
+  grants no affordance) ships in `RUT_FeverWoodMirrorPool.xml` above.
+  Point 2 (stilts): `RUT_StiltPlatform.xml`, a new `TerrainDef`
+  (`ParentName="Bridge"`, verified real via RimSage this pass — vanilla
+  `Bridge` carries `Name="Bridge"`), Heavy/Medium/Light/Walkable affordances
+  and construction shape copied from vanilla `HeavyBridge`'s own merged def,
+  costed at 30 wood (kit spec's own "INVENTED, >= 2x bridge" rule off
+  Bridge's 12-wood cost). Pure XML, no C#, no `MayRequire` needed. **Point 1
+  (ground refusal audit) NOT done, and a real gap found, not guessed away**:
+  `RUT_FeverWood.xml`'s own `terrainsByFertility` currently lists only
+  vanilla `Soil`/`SoilRich` — there is no biome-specific marsh/mud terrain
+  to audit yet, so ground-level Heavy building is NOT currently refused
+  anywhere in this biome, contradicting hard ban §6.4. Fixing it means
+  authoring real marsh terrain (texture, values, which fertility band) to
+  replace the shared vanilla terrain in this biome's own table — genuine
+  unspecified design, not touched this pass to avoid inventing it or
+  breaking the shipped, FROZEN-sheet biome's terrain table blind.
+- **F8 (thornbugs) — left as a compiling skeleton, not wired, on purpose.**
+  `RM_CompGatherableCalmGated` has no `ThingDef`/`PawnKindDef` to attach to.
+  The kit spec itself assigns "RUT_Thornbug PawnKindDef (roster pass owns
+  stats/art)" to a different pass — building a full animal def (body plan,
+  life stages, wildness, market value) here would be inventing content this
+  item does not own, the same category of gap the previous pass avoided for
+  Sporefall's trader lane. No repo precedent for
+  `CompProperties_HasGatherableBodyResource` exists yet to safely clone
+  from either (checked: zero hits in `src/RimUtinni`).
+- **F9 (two-front war) — left as a compiling skeleton, not wired, on
+  purpose.** `RUT_HaulPawnAndExit`'s own class comment already lists what's
+  missing (hidden FactionDef XML, LordJob/LordToil wiring, a new victim-
+  finder predicate, an "unclamp stun" job, the raid-back quest) — all
+  genuine new design/mechanism work at M/L effort, not a Def-wiring step
+  like F2/F3/F1/F5 were. Confirmed unchanged this pass; not attempted.
+
+Build: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0 errors,
+no new `.cs` files this pass (only existing spike classes wired into new
+XML). All four touched/added Fever Wood def files (`RUT_FeverWood_
+MirrorBreak.xml`, `RUT_FeverWood_MirrorList.xml`,
+`RUT_FeverWoodMirrorPool.xml`, `RUT_StiltPlatform.xml`) validate 0 errors/0
+warnings via `validate_patch.py` against the live 590-mod installed set.
+
+Remaining after this pass: F1's terrain-painting step, F4's L-effort
+remainder (off critical path by design), F5 point 1 (ground-refusal
+terrain), F6/F7 (blocked on `GREENTIDE_MECHANICS_1`'s own classes, still
+absent from `src/`), F8's content (roster pass), F9's Lord/Faction/quest
+build. Item stays in `doing`.

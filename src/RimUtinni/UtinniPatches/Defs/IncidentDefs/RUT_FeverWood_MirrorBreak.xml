@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWood_MirrorBreak.xml    RimUtinni Patches · FEVER_WOOD_MECHANICS_1
+
+  Wires the F2 spike class (RUT_IncidentWorker_MirrorBreak, compiling and
+  proven `src/RimMandrake/EnvironmentalHazards/Source/`) into a real,
+  reachable IncidentDef — the_fever_wood.md §4/§8's "a ripple crosses a
+  mirror that nothing touched": "a rare event on a random registered pool"
+  (fever_wood_kit_spec.md F2).
+
+  MayRequire is load-bearing: mandrake.rm.environmentalhazards ships the
+  class this workerClass names. Without the gate a mod list missing that
+  mod would discard this def silently (memory:
+  modextension-missing-type-discards-def) rather than erroring loudly.
+
+  Safe everywhere, not just the Fever Wood: RUT_IncidentWorker_MirrorBreak's
+  own TryExecuteWorker returns false (a silent no-op, never an error) on any
+  map with no terrain carrying RM_LurkingWaterExtension — which, pending the
+  donor terrain audit this item's spike pass flagged as owed (no vendored
+  COMIGO_GreaterSwamp_Tropical terrain defs in this repo to safely name),
+  is every map today. The def is real and reachable by the storyteller now;
+  it starts doing anything the moment F1's terrain-side hookup lands.
+
+  baseChance/minRefireDays: INVENTED tuning (kit spec's own vocabulary),
+  scaled down from RUT_FlameHarvest's baseChance 4 (RUT_PyrelandsIncidents.xml)
+  to match F2's own framing, "rare event" — an atmosphere beat, not a threat.
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FeverWood_MirrorBreak</defName>
+    <label>mirror break</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_MirrorBreak</workerClass>
+    <baseChance>1.2</baseChance>
+    <minRefireDays>8</minRefireDays>
+  </IncidentDef>
+
+</Defs>

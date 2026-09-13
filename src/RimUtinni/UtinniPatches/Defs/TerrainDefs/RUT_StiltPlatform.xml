@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_StiltPlatform.xml           RimUtinni Patches · FEVER_WOOD_MECHANICS_1
+
+  F5 point 2 (fever_wood_kit_spec.md): "Stilts: RUT_StiltPlatform TerrainDef
+  — buildable foundation in the TerrainDefOf.Bridge mold ... affordance
+  granted: Heavy ... costly wood, INVENTED: cost >= 2x bridge, so heavy
+  building on the ground level is possible, expensive, and deliberate. No
+  new C#." the_fever_wood.md §7b: "Base-building means trees and stilts."
+
+  Pure XML, no C# — this file has no MayRequire, since it names no class
+  this mod does not itself ship (ordinary TerrainDef inheritance only).
+
+  ParentName="Bridge" — verified real and safe: `mcp__rimsage__get_def_details`
+  this pass confirms vanilla `Bridge` carries `Name="Bridge"` on its own tag
+  (ParentName="BridgeBase"), so inheriting from it resolves. Bridge's own
+  terrainAffordanceNeeded ("Bridgeable", inherited from BridgeBase) carries
+  through unmodified: this stilt platform builds exactly where any vanilla
+  bridge already can (i.e. over Bridgeable ground/water) — never over the
+  registered mirror pools themselves, which grant no affordance at all
+  (RUT_FeverWoodMirrorPool.xml, same item, F5 point 3) — so "you do not
+  bridge the mirrors" holds for stilts too, by the same engine mechanism,
+  with no new logic to keep in sync.
+
+  Affordance set (Light/Medium/Heavy/Walkable) and construction shape
+  (ConstructWood, ConstructionHotKey) copied from vanilla HeavyBridge's own
+  merged def (read this pass via RimSage) rather than guessed — HeavyBridge
+  is the existing "Heavy affordance on a bridge-mold terrain" precedent, just
+  built from Steel where the sheet calls for wood. Cost: HeavyBridge's own
+  research-gated Steel cost is not reused (no HeavyBridges research
+  requirement fits this biome's "the marsh always refused you, stilts are
+  just expensive" framing); instead this scales Bridge's own WoodLog cost
+  (12) by the spec's own >= 2x rule, rounded up for a clean number: 30 wood
+  (INVENTED, kit spec's own vocabulary).
+
+  ART: no bespoke stilt texture commissioned this pass (rides the standing
+  art pipeline later, same disclosure as RUT_FeverWood_MirrorList.xml's
+  reused art) — reuses Bridge's own vanilla WoodFloor texture path
+  unmodified, which is real and already loaded (no missing-art risk).
+-->
+<Defs>
+
+  <TerrainDef ParentName="Bridge">
+    <defName>RUT_StiltPlatform</defName>
+    <label>stilt platform</label>
+    <description>A heavy timber platform raised on driven piles, built to carry real weight over ground the marsh itself refuses. Costlier than a plain bridge deck, and worth every log — this is the only way to build heavy structures at ground level in the Fever Wood.</description>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Walkable</li>
+    </affordances>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <statBases>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0.8</Flammability>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

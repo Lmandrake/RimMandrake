@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWoodMirrorPool.xml     RimUtinni Patches · FEVER_WOOD_MECHANICS_1
+
+  Wires the F1 spike class (RM_LurkingWaterExtension, compiling and proven
+  `src/RimMandrake/EnvironmentalHazards/Source/`) onto a real TerrainDef —
+  the_fever_wood.md §1/§4's "black mirror pools", fever_wood_kit_spec.md F1's
+  "registered pool terrain". RUT_MapComponent_TheTenant (auto-attached to
+  every map — RimWorld's Map.FillComponents() instantiates every non-abstract
+  MapComponent subclass automatically, no Def wiring needed for the component
+  itself) scans the terrain grid for this modExtension on init; this def is
+  what gives that scan something real to find, once painted onto a map.
+
+  ParentName safety follows the SAME already-verified precedent as
+  RUT_ScaldWater.xml in this folder: WaterDeepBase carries a real Name="..."
+  attribute (RUT_ScaldWater.xml's own header cites the direct read of Core/
+  Defs/TerrainDefs/Terrain_Water.xml, line 41), so ParentName against it
+  resolves.
+
+  F5 point 3 satisfied in the same file, not a second def: "registered pool
+  terrains grant NO buildable affordance at all — you do not bridge the
+  mirrors" (§5; the linter-checkable half of ban §6.4). Deliberately NO
+  <affordances> element here — WaterDeepBase itself defines none (confirmed:
+  vanilla WaterDeep, which also inherits from WaterDeepBase, carries no
+  <affordances> block either — Bridge/HeavyBridge's shared
+  terrainAffordanceNeeded="Bridgeable" therefore never resolves against this
+  terrain). Do not add one.
+
+  Deliberately NO dbh_water tag, unlike RUT_ScaldWater.xml's own precedent —
+  that tag tells Dubs Bad Hygiene this is safe drinkable/drawable water,
+  which directly contradicts the sheet's own "nothing goes in the water here"
+  (§7b) and "nothing native drinks at them" (§5). Omitted on purpose, not
+  missed.
+
+  MayRequire is load-bearing (same rationale as RUT_FeverWood_MirrorBreak.xml
+  and RUT_FeverWood_MirrorList.xml in this same item): mandrake.rm.
+  environmentalhazards ships RM_LurkingWaterExtension. Per memory
+  (modextension-missing-type-discards-def), an unresolvable modExtension
+  class silently discards the WHOLE def — MayRequire keeps that failure mode
+  a clean no-op rather than a load error.
+
+  🔴 NOT DONE THIS PASS, DOCUMENTED, NOT GUESSED: this terrain is not yet
+  painted onto any generated Fever Wood map. RUT_FeverWood.xml's own
+  terrainsByFertility currently lists only vanilla Soil/SoilRich — adding a
+  fertility band pointing at this MayRequire-gated terrain risks a dangling
+  cross-reference in that already-shipped, FROZEN-sheet biome if
+  mandrake.rm.environmentalhazards is ever absent from the active mod list;
+  deciding the actual fertility threshold is also an unspecified tuning call
+  the kit spec does not give a number for. The correct route is either a
+  GenStep pass (same shape as F6's boughway painting, itself blocked on
+  GREENTIDE_MECHANICS_1) or a carefully-guarded terrainsByFertility edit —
+  neither attempted here. This def is real, valid, and reachable via dev-mode
+  terrain placement today; it does nothing in ordinary generated play until
+  that painting step lands.
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterDeepBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FeverWoodMirrorPool</defName>
+    <label>black mirror pool</label>
+    <description>Still, black water, deep and unrippled. Big animals wander in to drink and are sometimes simply gone. Nothing sane touches it, and nothing explains why.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <color>(18,20,24)</color>
+    <tags>
+      <li>Water</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LurkingWaterExtension" />
+    </modExtensions>
+  </TerrainDef>
+
+</Defs>
