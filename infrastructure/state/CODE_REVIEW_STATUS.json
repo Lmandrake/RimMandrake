@@ -1565,6 +1565,12 @@
     "hash": "d1331f33ef59a011367ed48e64c1b3a55651831a21ad16c01064839b8ded63e5",
     "sha": "3b8e16ddf"
   },
+  "src/RimMandrake/Greentide/Source/RM_GreentideMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7e246bedf0aa3db3043f91d9e07d90f0a6d53f0975fee64fa53e5c8c38ced8cc",
+    "sha": "311d90fc5"
+  },
   "src/RimMandrake/Greentide/Source/RM_JobDriver_DigOutBuried.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1576,6 +1582,12 @@
     "date": "2026-09-11",
     "hash": "72ed6076ed2dabacd77e7ade22f63fef21f2fb5149bf156a41c8683f8408a9aa",
     "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_MapComponent_CrossBiomeChurnmud.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3ce25d28af69210a6099d62c78c76764cde8648c91d8c63c76a786d0601d3472",
+    "sha": "311d90fc5"
   },
   "src/RimMandrake/Greentide/Source/RM_MapComponent_MudSwallow.cs": {
     "cleanCount": 1,
@@ -2675,6 +2687,12 @@
     "hash": "cd5a4a604e846c65217d9b62d8e12e14f142a83c0b36b96b36ca0e6a82e3763f",
     "sha": "5f12f476e"
   },
+  "src/RimMandrake/ProximityHatch/Source/RM_ProximityHatchMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5c984187486f6813638e4f3f1ecb64f5d919993335c35354dd460913b969c045",
+    "sha": "311d90fc5"
+  },
   "src/RimMandrake/ProximityHatch/Source/RimMandrake_ProximityHatch.csproj": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -3250,6 +3268,12 @@
     "date": "2026-09-09",
     "hash": "64225870a9888201c8c1ec2f2a431c91283d2aed64815f47581189e6ebb07e18",
     "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/PropertySettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "8b842d126a38d3bf8b88e9f10a65f67b80171fb880f7850c981d2f7d3ec6a73b",
+    "sha": "311d90fc5"
   },
   "src/RimMandrake/RimProperty/Source/PropertyTuning.cs": {
     "cleanCount": 2,
@@ -5240,6 +5264,12 @@
     "date": "2026-09-11",
     "hash": "06a835bc4796029388b74076f29f2fe2868940fa55b7e432efc1416245a1a334",
     "sha": "2467e0a2d"
+  },
+  "src/RimMandrake/WeatherSuite/Source/WeatherSuiteSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c8f83f181e25f7cf22093b4ac82df5d75cee09af7f26db873fe731ecd63a90b5",
+    "sha": "311d90fc5"
   },
   "src/RimMandrake/WreckedMachines/About/About.xml": {
     "cleanCount": 1,
