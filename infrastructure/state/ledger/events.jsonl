@@ -8161,3 +8161,26 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-13T10:23:40Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_MECHANICS_1","ts":"2026-09-13T10:23:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_MECHANICS_1","ts":"2026-09-13T10:23:55Z"}
+{"seat":"OWNER","event":"reclaim","id":"MASS_VALIDATION_LADDER_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:41Z"}
+{"seat":"OWNER","event":"reclaim","id":"DROID_TILES_SOURED_TERRAIN_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:42Z"}
+{"seat":"OWNER","event":"reclaim","id":"INHABITED_STOCK_ONTO_MAP_AND_FATE_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:43Z"}
+{"seat":"OWNER","event":"reclaim","id":"PLOT_MECHANISM_MODS_WAVE_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:43Z"}
+{"seat":"OWNER","event":"reclaim","id":"MACRO_GENERATOR_V0_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:44Z"}
+{"seat":"OWNER","event":"reclaim","id":"MAPGEN_PAINTER_V1_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:45Z"}
+{"seat":"OWNER","event":"reclaim","id":"MAPGEN_GL_SHEET_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:45Z"}
+{"seat":"OWNER","event":"reclaim","id":"UNUSED_MUTATORS_WORLD_ASSIGNMENT_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:46Z"}
+{"seat":"OWNER","event":"reclaim","id":"MAPGEN_CONVERGENCE_LOOP_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:47Z"}
+{"seat":"OWNER","event":"reclaim","id":"ANCIENT_WAR_LAB_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:48Z"}
+{"seat":"OWNER","event":"reclaim","id":"DROID_REPAIR_FOR_PROFIT_EVENTS_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:49Z"}
+{"seat":"OWNER","event":"reclaim","id":"ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:50Z"}
+{"seat":"OWNER","event":"reclaim","id":"PITCELL_PRISONER_BED_BRIDGE_GAP_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:51Z"}
+{"seat":"OWNER","event":"reclaim","id":"DROIDWORKS_FORMAT_TIERS_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:52Z"}
+{"seat":"OWNER","event":"reclaim","id":"CHRONICLE_NINEFOLD_DECOUPLE_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:53Z"}
+{"seat":"OWNER","event":"reclaim","id":"MANYWATERS_COLOR_SUPPORT_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:53Z"}
+{"seat":"OWNER","event":"reclaim","id":"MOVING_DUNES_BUILD_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:54Z"}
+{"seat":"OWNER","event":"reclaim","id":"LANDMARK_NAMING_PASS_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:55Z"}
+{"seat":"OWNER","event":"reclaim","id":"OASIS_LANDMARK_PLACEMENT_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:55Z"}
+{"seat":"OWNER","event":"reclaim","id":"FISH_BESTIARY_COMMISSION_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:56Z"}
+{"seat":"OWNER","event":"reclaim","id":"CRYPTOFORGE_HARVEST_RETIRE_1","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:24:57Z"}
+{"seat":"OWNER","event":"needs","id":"MACRO_GENERATOR_V0_1","to":"owner","ownerSaid":"When you finish this select queu items that are stuck and see if you can advance them. Keep going.","ts":"2026-09-13T10:25:08Z"}
+{"seat":"BENCH","event":"note","id":"DOING_SEDIMENT_RECLAIM_1","text":"BENCH 2026-09-13 ~11:00Z: the reclaim half is DONE under the owner's direct instruction (all 21 -> ready; MACRO_GENERATOR_V0_1 also needs owner for his grade). What remains for FOUNDRY: verify each premise on claim per the item's own warning, and close any that turn out already-done.","ts":"2026-09-13T10:25:08Z"}

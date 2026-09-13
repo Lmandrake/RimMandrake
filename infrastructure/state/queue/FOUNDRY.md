@@ -7,12 +7,75 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:23:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:25:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Three outcomes, decided here because the item filed none.
+prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
+
+## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
+prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
+## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
+prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
+
+## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
+prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+
+## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
+prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
+
+## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
+prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
+
+## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     feature
+summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
+prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
 
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
 state:    ready
@@ -32,18 +95,63 @@ kind:     task
 summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
 prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
 
-# IN PROGRESS
-
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
-state:    doing  (BLOCKED)
+## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
+state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
+prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
+
+## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
+prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
+
+## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
+prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Source
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
+
+## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
+prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
+
+## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
+prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+
+# IN PROGRESS
+
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
 state:    doing
@@ -144,15 +252,6 @@ kind:     build
 summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
 prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
 
-## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
-prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
-
 ## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
 state:    doing
 row:      unassigned
@@ -198,15 +297,6 @@ kind:     task
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
-## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Three outcomes, decided here because the item filed none.
-prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
-
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
 state:    doing
 row:      unassigned
@@ -233,15 +323,6 @@ target:   v1
 kind:     task
 summary:  INHABITEDAUGMENTATIONBUILD1
 prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
-
-## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
-prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    doing
@@ -297,24 +378,6 @@ kind:     task
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
-## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
-prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
-
-## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
-prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
-
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -323,42 +386,6 @@ target:   v1
 kind:     bug
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
-
-## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
-prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
-
-## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Each round:
-prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
-
-## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
-prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
-prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    doing  (BLOCKED)
@@ -387,15 +414,6 @@ kind:     task
 summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
-## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
-prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
-
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -413,33 +431,6 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
-
-## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
-prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
-
-## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     feature
-summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
-prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    doing
@@ -513,15 +504,6 @@ kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
-## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
-prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
-
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -558,15 +540,6 @@ kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
-## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
-prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
-
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -585,15 +558,6 @@ kind:     task
 summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
 prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
 
-## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
-prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -602,24 +566,6 @@ target:   v1
 kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
-
-## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Source
-prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
-prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
@@ -630,15 +576,6 @@ kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
-## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
-prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
-
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -647,15 +584,6 @@ target:   v1
 kind:     build
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
-
-## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
-prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
 
 ## VQE_ANCIENTS_CURATION_1 Curate VQE Ancients per the ratified verdict: (1) CherryPicker-cut AbilityDefs Levitation/Invisibility/InfernoSpew + their granting GeneDefs + the hellsphere cannon (cut(deftype,name) never cut_name; prove by reading live config back; rebuild tag->surviving-item index after; validate live dump for silently-discarded defs referencing cut genes); (2) keep mid-tier stat genes (Herculean/Prowess) as scarce vault loot; (3) audit/strip its Empire FactionDef patch - nothing archite ships under our Galactic Empire reskin without a ruling; (4) string relabel pass: quest letters saying pre-collapse-human-civilization -> Forsaken/Assailant exonym register (same family as the six pawn-kind relabels); (5) keep all 6 quest chains; when VQE_AncientLabComplex fires (~day 118, self-scheduled in canonical save) verify the site tile lands in an ANCIENT-ALLOW biome (wasteland/desert), relocate via bridge if not; consider wiring later chain entries into vault_thaw_quest_family.md rather than VEF self-scheduling - decision point, flag when reached; (6) feed VQEA_Spliceling/Splicehulk/Splicefiend/Splicetoot into the dungeon-guardians draft roster, not biome fauna. Leave CookSpeed/dodge/disease/EnvironmentDark tweaks (note EnvironmentDark x permanent nightside - glance in play).
 state:    doing  (BLOCKED)
@@ -833,7 +761,7 @@ prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
-state:    doing  (BLOCKED)
+state:    ready  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1093,7 +1021,7 @@ summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Eve
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
 ## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
-state:    doing  (BLOCKED)
+state:    ready  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1194,7 +1122,67 @@ prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+waiting:  needs `deploy`, game is UP
+summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
+prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
+
+## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
+prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
+
+## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
+prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
+
+## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  Each round:
+prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
+
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
