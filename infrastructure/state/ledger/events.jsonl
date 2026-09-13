@@ -8085,3 +8085,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_PRIMITIVE_TIER_1: spawn G2 Primitive droid, screenshot, savegame for owner review","ts":"2026-09-13T07:11:08Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_PRIMITIVE_TIER_1 live savegame check for G2 droid art","ts":"2026-09-13T07:11:24Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_PRIMITIVE_TIER_1","text":"Live savegame delivered: Saves/REVIEW_DroidworksG2_2026-09-13.rws, screenshot confirms goose-necked silhouette not the DUM placeholder. Owner's own look still owed before closing.","ts":"2026-09-13T07:13:33Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:14:11Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_PRIMITIVE_TIER_1","text":"Live savegame look done: G2 body confirmed correct on a real spawn (DROIDWORKS_G2_REVIEW_2026-09-13.rws). New gap found: head renders as default human face, no custom head ever built/wired - flagged, not fixed.","ts":"2026-09-13T07:15:24Z"}

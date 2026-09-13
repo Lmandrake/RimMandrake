@@ -295,6 +295,52 @@ cited from any committed doc, human-look-once only.
 Item stays `doing`. Only the live-savegame look remains, and that needs the
 game up.
 
+## 2026-09-13 (FOUNDRY) — live savegame look done, G2 body confirmed, head flagged as a real gap
+
+Game was already up (canonical Ash'karr campaign, tile 17007). Spawned
+`RSW_DW_Primitive_G2` on the live map via the debug spawn menu (confirmed
+present via `jawa/list_pawns` before screenshotting, named "Toni" by the
+game's own name generator — not something this pass chose). Screenshot
+close-up: **the body IS the new goose-necked, tube-and-plate, rust-orange
+frame with exposed cabling and claw hands this item built** — visibly NOT
+the stocky mushroom-dome DUM placeholder silhouette. The wiring, canvas,
+alpha and footprint work this item already validated offline is confirmed
+live.
+
+**New finding, not previously flagged**: the pawn's HEAD renders as a
+default human face (brown hair, human skin, human eyes) sitting on top of
+the robot body, not the design brief's "twin lamp-eyes." Re-read this
+item's own history: every past pass ("Wired in") only ever names a **body**
+texture path (`DW/Primitive/G2`); no head art or head-texture wiring is
+mentioned anywhere in this file. So this isn't a regression from tonight's
+test — **no custom head has ever been built or wired for G2**, and the
+design brief's "twin lamp-eyes" head has been an unbuilt piece of the brief
+all along, just never previously surfaced because nobody had looked at a
+live spawn until now. Flagging rather than fixing — building head art is a
+separate, unscoped task (a new `generating-rimworld-sprites` pass plus
+whatever XML/head-texture wiring this race needs), not something to guess
+at inside this savegame-review pass.
+
+Saved for the owner per CLAUDE.md's "Options he must LOOK at ship as a
+savegame": `DROIDWORKS_G2_REVIEW_2026-09-13.rws` (confirmed a genuinely NEW
+file via `ls` before/after — 16,953,206 bytes — and that
+`CANONICAL_ASHKARR_START_2026-09-12.rws` is untouched, same size as before).
+Toni is standing inside "Zeddo's Salvage Yard," visible on load without
+needing to search.
+
+**Side note, not cleaned up**: this same bridge session's earlier
+`COLONY_VISIBILITY_BUILD_1` live-proof test force-fired a real
+`IncidentWorker_RaidEnemy` at visibility=100 to prove the threat-point
+Prefix; a "Raid: Galactic Empire" line is now showing in this save's HUD.
+`jawa/list_pawns` shows no actual Empire-faction pawns spawned on the map,
+and the game was left paused throughout, so nothing has happened — but
+whoever next unpauses this save (or the owner, if he loads it) should know
+that raid indicator traces to that unrelated test, not to anything this
+item did.
+
+Left `doing` — body art criterion is now genuinely met and live-observed;
+head art is a newly-named, real, separate gap.
+
 ## 2026-09-13 (FOUNDRY) — live savegame delivered, owner's own look owed
 
 Game was up (live campaign, tile 17007). Confirmed `mandrake.rsw.droidworks`
