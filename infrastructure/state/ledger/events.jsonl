@@ -8023,3 +8023,4 @@
 {"seat":"FOUNDRY","event":"file","id":"ART_REGEN_FLORA_WAVE1_QUEUE_1","title":"Queue 14 flora art:improve creatures from the orphaned SHEET_ORPHAN_CONSUMPTION_1 pool (daemon was drained empty)","kind":"build","target":"v1","needs":"offline","caused_by":"SHEET_ORPHAN_CONSUMPTION_1","for":"FOUNDRY","ts":"2026-09-13T03:41:01Z"}
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_FLORA_WAVE1_QUEUE_1","ts":"2026-09-13T03:41:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_FLORA_WAVE1_QUEUE_1","ts":"2026-09-13T03:41:04Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_FLORA_WAVE1_QUEUE_1","sha":"4e3af6dc6","ts":"2026-09-13T03:43:03Z"}
