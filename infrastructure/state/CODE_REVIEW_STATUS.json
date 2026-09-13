@@ -66,10 +66,10 @@
     "sha": "43f96b1b"
   },
   ".claude/hooks/selftest_block_canon_contradiction.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "7d8921d312d5ff52bf69d66d28a60e35b72743b2d2e664fae76d0a91319ec145",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "d9c20585ba698becf06df2fa4ea73df044f98acddd88340f47e807a92b1f6579",
+    "sha": "efb2f02ad"
   },
   ".claude/hooks/selftest_block_peer_messages.py": {
     "cleanCount": 1,
@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 5,
+    "cleanCount": 6,
     "date": "2026-09-12",
-    "hash": "730b5cc8a6dc46c10101c0874e89a92c476bc8d96fdbb09a00bb5eba817b61ef",
-    "sha": "1c0a5dcdb"
+    "hash": "5f6b7f8f75502ec8b4d255a269d0a780b04db8ddd05e43f689cd2ffba9fdced3",
+    "sha": "efb2f02ad"
   },
   "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
     "cleanCount": 1,
@@ -180,10 +180,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_cast_patch.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "ad46810900e0e1b34e2704f03cf10a9939412dc450d9ee4727d0cd3ba8c3303a",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "c7dc42d84b19d60a1b8b360f8318d3c256859a0f3568846d9c931c634d128630",
+    "sha": "efb2f02ad"
   },
   "design/Jawa/fauna/gen_creature_art_sheet.py": {
     "cleanCount": 1,

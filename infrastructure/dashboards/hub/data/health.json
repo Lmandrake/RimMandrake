@@ -1,36 +1,30 @@
 {
- "generatedAt": "2026-09-13T03:29:00Z",
+ "generatedAt": "2026-09-13T03:45:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 543408,
-  "sha256_12": "33575ab0f370"
+  "bytes": 574415,
+  "sha256_12": "dc45a482f5d1"
  },
- "head": "4fe0f502a",
+ "head": "efb2f02ad",
  "counts": {
-  "red": 33,
-  "blue": 413,
-  "green": 1832,
-  "grey": 153,
-  "unmeasured": 0,
-  "total": 2431
+  "red": 31,
+  "blue": 417,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 1982,
+  "total": 2430
  },
  "loc": {
-  "red": 16041,
-  "blue": 218293,
-  "green": 639588,
-  "grey": 58829,
-  "unmeasured": 0,
-  "total": 932751
+  "red": 14077,
+  "blue": 220811,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 695676,
+  "total": 930564
  },
  "reviewEntries": 2360,
- "recidivists": [
-  {
-   "path": ".claude/hooks/selftest_block_canon_contradiction.py",
-   "loc": 104,
-   "cycles": 1
-  }
- ],
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 2431 files (1832 clean, 153 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }

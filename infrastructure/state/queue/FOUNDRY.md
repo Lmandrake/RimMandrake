@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T03:33:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T03:48:43Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -665,15 +665,6 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
-
-## WORLD_NAME_FIXES_1 World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - One bridge pass, freeze discipline: Saves backup + stat-after, renames via
-prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
 
 ## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
 state:    doing
