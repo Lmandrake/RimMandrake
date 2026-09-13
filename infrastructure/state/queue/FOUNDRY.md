@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T08:47:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T08:50:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1246,3 +1246,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
+
+## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GM_BLACKBOARD_SHADOW_M4_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md

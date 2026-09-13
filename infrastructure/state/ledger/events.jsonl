@@ -8115,3 +8115,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"HUB_URL_POINTER_FIX_1","ts":"2026-09-13T08:46:13Z"}
 {"seat":"FOUNDRY","event":"start","id":"HUB_URL_POINTER_FIX_1","ts":"2026-09-13T08:46:14Z"}
 {"seat":"FOUNDRY","event":"close","id":"HUB_URL_POINTER_FIX_1","sha":"9f4c06b9acccae35e707139cf1c2ee93815bc469","ts":"2026-09-13T08:47:37Z"}
+{"seat":"FOUNDRY","event":"file","id":"GM_BLACKBOARD_SHADOW_M4_1","title":"Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/build_plan.md","caused_by":"CATHEDRAL_REGARD_BLACKBOARD_1","for":"FOUNDRY","ts":"2026-09-13T08:50:18Z"}
