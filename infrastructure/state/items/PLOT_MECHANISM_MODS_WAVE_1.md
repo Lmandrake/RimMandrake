@@ -275,6 +275,56 @@ it):**
 - Live proof (the item's own `## verify` section already marks this "owed,
   not blocking this item's close").
 
+## build log (2026-09-10/11, untracked here until now — caught up 2026-09-13 FOUNDRY)
+
+Two commits landed after the 2026-09-09 log entry above and were never
+recorded on this item file, so the criteria checklist below was stale against
+the actual code (`AftermathTriggerKind.cs`'s own comments already said "5 of 8
+wired" while this file still said 4). Caught up rather than left wrong, per
+this repo's own "inaccurate material is deleted" rule:
+
+- **`39da0b74f` (2026-09-10) — Rule 4 ("They come for their own") wired.**
+  Needs no new Harmony seam: `AftermathRuleRunner.PollPrisoners` polls
+  `Map.mapPawns.PrisonersOfColonySpawned` on the existing 5000-tick
+  housekeeping cadence, tracks a per-prisoner first-seen tick, fires
+  `OnPrisonerHeldTooLong` once an episode crosses a rule's `minHeldDays`
+  (checking `prisoner.HomeFaction` hostility and `FactionDef.raidsForbidden`).
+  `TryQueue` generalized to an explicit Faction/Map/points/actors tuple (the
+  prisoner trigger has no originating `BattleRecord`).
+  `AftermathRuleEligibility.IsEligiblePrisonerHeldDuration` added, same
+  offline-testable shape as the other two. 18/18 `selftest_aftermath.py`.
+  **5 of 8 aftermath rules now wired: 1, 2, 3, 4, 6.** Only 5, 7, 8 remain
+  data-only.
+- **`92b9cb7b3` (2026-09-11) — NRE fix.** `AftermathRuleRunner
+  .ResolveTargetFaction`'s `AllyOfTrigger` branch dereferenced
+  `record.RaidFaction.def` before the existing null check on `RaidFaction`
+  ran in one code path; added the missing null-conditional.
+
+**Rules 5, 7 and 8 checked again this pass and still correctly held, not
+picked up** — each is a bespoke mechanic, not a "queue an existing
+IncidentDef" job like 1-4/6:
+- **Rule 5** (Sh'kaar's escalation) needs restricting live arrival-mode
+  options and a one-shot "the sun's regard" raid that recalls every living
+  `OldFriendEntry` of the most-wronged faction at once — a real design
+  surface (which arrival modes are "gentle", how "most-wronged" is scored),
+  not a missing patch.
+- **Rule 7** (The rooted receipt) reads "Inhabited's rumor fabric" as the
+  doc's own name for the THIRD-PARTY `mlie.rfrumorhasit` ("Rumor Has It")
+  mod, confirmed by re-reading the doc's own text (line 165) — not our
+  `mandrake.rm.inhabited`. Wiring it means reading that mod's actual API
+  (unread so far) plus building a one-shot "next raid's arrival mode + letter
+  text" modifier that does not exist anywhere in this codebase yet.
+- **Rule 8** (The reckoning) forks into rule 2's Blackstar hire OR
+  `tributedemand`'s pay-or-raid dialog — reading `tributedemand`'s actual
+  dialog API first (named explicitly in the doc as a requirement) is
+  unstarted.
+
+None of these three is a guessable implementation detail; inventing one
+without reading the named third-party APIs first is exactly the failure mode
+this repo's `read-the-mechanism-before-filing-the-fix` and
+`instruments-that-lie-with-a-number` lessons warn against. Flagging again
+rather than re-deriving — same call as the two prior build passes.
+
 ## verify
 - `dotnet build` clean, 0 warnings/errors, for both new assemblies.
 - `validate_patch.py` clean on `rut.aftermath` defs.
@@ -303,12 +353,13 @@ it):**
       second patch on `Pawn.Kill` for a god-delta purpose). `f12c9bdb`,
       `2003769c`.
 - [~] All 8 `RM_AftermathRuleDef`s are BUILT (real payload IncidentDef, real
-      god tie, real telegraph/letter text per rule) — 4 of 8 (Regroup and
-      return, The allies arrive, Scavengers on the field, and — 2026-09-09 —
-      Zizzik's aftermath) now have a live trigger engine. Rules 4/5/7/8 ship
-      as data only; see the build log above and `AftermathTriggerKind.cs`
-      for exactly which engine piece each still needs. NOT fully closing
-      this criterion.
+      god tie, real telegraph/letter text per rule) — **5 of 8** (Regroup and
+      return, The allies arrive, Scavengers on the field, Zizzik's aftermath,
+      and — 2026-09-10 — They come for their own) now have a live trigger
+      engine. Rules 5/7/8 ship as data only, each blocked on a real design
+      call or an unread third-party API, not a missing patch; see the build
+      log above and `AftermathTriggerKind.cs` for exactly which piece each
+      still needs. NOT fully closing this criterion.
 - [x] `mlie.factionraidcooldown` bypass verified working via its own shipped
       DLL + the real vanilla call chain (not assumed) — see build log above.
 - [x] Nothing here requires `mandrake.rm.oracle` to be active to ship its
