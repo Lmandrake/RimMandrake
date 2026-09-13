@@ -294,3 +294,33 @@ cited from any committed doc, human-look-once only.
 
 Item stays `doing`. Only the live-savegame look remains, and that needs the
 game up.
+
+## 2026-09-13 (FOUNDRY) — live savegame delivered, owner's own look owed
+
+Game was up (live campaign, tile 17007). Confirmed `mandrake.rsw.droidworks`
+active in the live `ModsConfig.xml`, took the bridge, and spawned the real
+live PawnKindDef (`jawa/spawn_pawn {"kindDef":"RSW_DW_Primitive_G2",
+"faction":"player"}` — read the defName off `PawnKinds_Primitive.xml`
+first, not guessed) next to the colonists on the current campaign map for
+scale comparison. `kindActual` matched `kindRequested`, no substitution.
+Screenshot (`g2_droid_review_2026-09-13.png`) confirms it visually: **a
+clearly tall, thin, goose-necked silhouette** standing apart from the short
+round-headed Jawa colonists nearby — exactly the design brief, not the
+DUM/mushroom-dome placeholder shape this item's history already ruled out.
+
+Saved a dedicated review savegame, per CLAUDE.md's "Options he must LOOK at
+ship as a savegame": `Saves/REVIEW_DroidworksG2_2026-09-13.rws`. Verified
+per the same doctrine's own warning — a NEW file appeared
+(16,955,866 bytes) and the live campaign's own current slot,
+`CANONICAL_ASHKARR_START_2026-09-12.rws`, is byte-identical in size/mtime
+to before the save, so nothing was overwritten. Despawned the review pawn
+afterward (`Actions\T: Pass To World`) so the live colony roster is
+unaffected.
+
+**This item's own remaining verify line is now discharged**: G2 renders in
+a savegame, visibly not the placeholder silhouette. The palette (worn
+brass/rust) and pose are still this session's own calls per the prior
+note — reasonable for the owner to revise, not blocking. Left `doing`
+rather than closing solo — the owner's own look at the review save is the
+actual acceptance step CLAUDE.md's doctrine asks for; whoever next opens
+this item should confirm he's seen it before closing.
