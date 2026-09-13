@@ -95,10 +95,15 @@ guaranteed to exist in every generated world, so `faction="Pirate"` on
 
 Still not proven / likely first-live-run corrections (per this suite's
 own register, same practice as Pits):
-  1. `jawa/set_thing_props(faction="Pirate")` on a freshly `jawa/spawn_batch`'d
-     Building -- never exercised live. If a spawned Building already carries
-     a Faction (e.g. player) by default, the pre-check below will surface
-     that immediately as an ExpectationFailed rather than silently drift.
+  1. MODCHECK_SUITE_CORRECTIONS_1 (2026-09-13): the first live wave DID
+     abort here, exactly the risk this item flagged -- `set_thing_props`
+     itself was never checked for its own `success`, only the independent
+     `list_things` read-back, so the abort's real cause (setter failure,
+     e.g. no Pirate FACTION INSTANCE in this test world despite the
+     FactionDef being real, vs. a genuine read-back desync) was never
+     known. Both are now checked and raised with distinct messages below;
+     which one actually fires is still unmeasured (no save/quicktest was
+     loaded when this correction was made).
   2. Exact `wait_ticks` budgets (2400 for the uninstall+haul round trip,
      900 for the animal steal's goto+take+wander+drop) are estimates from
      reading `uninstallWork`/toil shapes, not measured against real tick
@@ -188,15 +193,33 @@ def theft_hauler_uninstall(t):
     # Give it a claim the acting colonist does NOT hold -- IsAuthorized
     # returns false only when the resolved claimant's Faction differs from
     # the actor's (PropertyEngine.IsAuthorized's Commons-same-faction
-    # carve-out). Pirate always exists (FactionDef requiredCountAtGameStart=1).
-    t.bridge_call("jawa/set_thing_props", thing=building_id, faction="Pirate")
+    # carve-out). "Pirate" is a real vanilla FactionDef (confirmed:
+    # Data/Core/Defs/FactionDefs/Factions_Misc.xml), but MODCHECK_SUITE_
+    # CORRECTIONS_1's first live run aborted here with read-back
+    # faction=None and no further detail -- `set_thing_props`'s own
+    # response (`success`, or its Fail message) was never inspected, only
+    # the independent `list_things` read-back, so the first run couldn't
+    # tell "the SET call itself failed" (JawaBenchStorytellerTools2.cs's
+    # `SetThingProps` returns `success: false` with a specific message if
+    # `Find.FactionManager.FirstFactionOfDef` finds no Pirate FACTION
+    # INSTANCE in this particular world -- possible on a quicktest/
+    # minimal-mod world even though the FactionDef itself is real) apart
+    # from "SET succeeded but the read-back disagrees". Both are now
+    # surfaced explicitly so the next live run is self-diagnosing.
+    set_result = t.bridge_call("jawa/set_thing_props", thing=building_id, faction="Pirate")
+    if t._guard() and not (set_result or {}).get("success"):
+        raise ExpectationFailed(
+            "set_thing_props(faction=Pirate) itself failed: %r" % set_result)
     got_faction = _first_faction(
         t.bridge_call("jawa/list_things", defName=THEFT_BUILDING_DEF, rect=rect),
         THEFT_BUILDING_DEF)
     if t._guard() and got_faction != "Pirate":
         raise ExpectationFailed(
-            "set_thing_props(faction=Pirate) did not take -- read back faction=%r"
-            % got_faction)
+            "set_thing_props(faction=Pirate) reported success and "
+            "changed=['faction'] (factionAfter=%r) but the independent "
+            "jawa/list_things read-back still shows faction=%r -- a real "
+            "read-back mismatch, not a setter failure"
+            % ((set_result or {}).get("factionAfter"), got_faction))
 
     actor = t.spawn_pawn("Colonist", hostile=False, beyond=[(x, z)])
 
