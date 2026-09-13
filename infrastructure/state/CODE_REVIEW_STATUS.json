@@ -4384,6 +4384,30 @@
     "hash": "13fa6022a09a3515e15655d36c4c24bd8962afe3a2be9452fab1e1517586505e",
     "sha": "f52addaf"
   },
+  "src/RimMandrake/Utils/modcheck/cli.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "89a3c3d60594f55a7af4ac19faf472df710a8775c9e391b2d032737b1e2555a9",
+    "sha": "534c8feba"
+  },
+  "src/RimMandrake/Utils/modcheck/floor.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "8a3fd4e7860ed1da87fbaa641e8d23e50754b2ce211169a40b24353774d417da",
+    "sha": "534c8feba"
+  },
+  "src/RimMandrake/Utils/modcheck/report.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b054ced3f9aa565a717cb1e6ee97587154040a9a80606794eeffc6ac53acd1b5",
+    "sha": "534c8feba"
+  },
+  "src/RimMandrake/Utils/modcheck/status.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "91c830eb04beed8ac3de5617740b726b499704b09e50fcba971e6ab51422abb5",
+    "sha": "534c8feba"
+  },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
     "hash": "9a81a9eabc448f87d4a39ca0925cd02d943f5f250363a88ac76faa051c1f7655",
@@ -4640,6 +4664,12 @@
     "date": "2026-09-03",
     "hash": "586d7b8b69db21f96d885aa25ed5b6ac36be325c2ebc8fda592c37323ad5dbe6",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/rimdrive/verify.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5c9ba8d7775f8c4853f9a73918c1ce1d4b025624c1a68aa5382e4fe8fbee5d0e",
+    "sha": "534c8feba"
   },
   "src/RimMandrake/Utils/rimplace/__init__.py": {
     "cleanCount": 1,
