@@ -228,7 +228,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 - First launch (getting it off the ground achieved): `TONE: GAP` — no source states the moment's experience.
 - Entering the war lab (post-crater, codes in hand): `TONE: GAP`.
 - Antiquities stage completions: theology register stated ("Rekko-tagged, pride-neutral — reading what was always written is restoration, not transcendence" — `antiquities_design.md` §3) but no per-stage MOMENT authored: `GAP`.
-- The droid-theft heist's payoff and the succession clock's crisis: no authored tone found this pass: `TONE: GAP` (`STATUS-DOUBT` — deeper sources may exist in `08_droids.md` / `05_the_clan.md`, not deep-read this pass).
+- The droid-theft heist's payoff and the succession clock's crisis: `TONE: GAP` CONFIRMED — `08_droids.md` and `05_the_clan.md` deep-read 2026-09-12 (BENCH follow-up): 08_droids has no heist/theft tone at all; 05_the_clan states the four pressure-clocks structurally (anti-exponential pillar, "the endgame IS the pride-crisis, by design") but no crisis-moment tone. Real Phase B cards, both.
 
 ---
 
@@ -250,7 +250,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 > "the campaign now has THREE canon layers moving at three speeds — canon.yml (days), reconciled_lore (frozen 2026-08-29), and the design docs (hours) — and the newest rulings live only in the fastest layer." — `design/Jawa/canon_reintegration_plan.md` §A. ¶ Verified still true this pass: `01_campaign.md`/`09_arcs` know nothing of the Spire-Key, Archon, T2, A1–A5 (all 2026-09-12). CANON_DRAIN_1 is the scheduled fix; the sitting's output (CAMPAIGN_ARC.md) must not fork a FOURTH layer — storage per `design/CANON_STORAGE_ARCHITECTURE_options.md` Phase 0+1 (certainty tiers + claim index, ADOPTED 2026-09-12).
 
 **G85 — the concealment spec's asymptotic-v1 line.** `SUPERSEDED-BY CARD A3 — propagation claimed done, verify`
-¶ CARD A3's text says "SUPERSEDES this spec's own asymptotic-v1 assumption everywhere it appears (§6.1 amended in the same change)". §6.1 as read this pass does carry the A3 ruling. Residual check for Phase B: no other doc found this pass still asserts exposure-cannot-complete; `STATUS-DOUBT` only for docs not deep-read (kyber spec).
+¶ CARD A3's text says "SUPERSEDES this spec's own asymptotic-v1 assumption everywhere it appears (§6.1 amended in the same change)". §6.1 as read this pass does carry the A3 ruling. Residual check CLOSED 2026-09-12 (BENCH follow-up): `kyber_trade_plot_spec.md` greps clean for asymptotic/exposure language — no doc anywhere still asserts exposure-cannot-complete. Doubt resolved; tag stands as SUPERSEDED-BY CARD A3, propagation verified.
 
 **G86 — ECONOMY_TRADE_SWEEP_1 exists in the ledger; its item FILE is missing.** `RULED (2026-09-10, ledger event, owner-said)`
 > "having them show up in trader inventories or as loot is very fun. It should be expensive indeed. Please make a ticket now to do a full economic sweep or what is sold where and when at the end of the world sweeps." — `infrastructure/state/ledger/events.jsonl` (OWNER file event, 2026-09-10T07:45:43Z, caused_by CRYSTAL_MODS_INGEST_1, for BENCH). No `items/ECONOMY_TRADE_SWEEP_1.md` exists — the known missing-file failure mode (`rimflow-item-files-live-under-state-items` memory), not a phantom item. Doubt resolved 2026-09-12 (BENCH follow-up). Owed: write the item file.
@@ -263,7 +263,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 ## STATUS-DOUBT ledger (two-blind-arms these before any SUPERSEDED verdict)
 
 - ~~G33~~ — RESOLVED 2026-09-12: the Tenant is ruled, home = `biomes/kits/fever_wood_kit_spec.md` §F1.
-- **G77 (partial)** — heist/succession tone: `08_droids.md`, `05_the_clan.md` not deep-read this pass.
-- **G85** — kyber spec not re-read for surviving asymptotic-exposure language.
+- ~~G77~~ — RESOLVED 2026-09-12: both files deep-read; no tone stated anywhere — TONE: GAP confirmed as a real card.
+- ~~G85~~ — RESOLVED 2026-09-12: kyber spec greps clean; A3 propagation verified complete.
 - ~~G86~~ — RESOLVED 2026-09-12: real ledger item (owner, 2026-09-10); only its item file is missing.
 - ~~G87~~ — RESOLVED 2026-09-12: sweep run; sole today-ruled hit is G80.
