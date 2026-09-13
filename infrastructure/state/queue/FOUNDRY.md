@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:36:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T18:49:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -792,6 +792,15 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
+## BRIDGE_STATIC_SETTINGS_FIELDS_1 BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  rimworld/updatemodsettings reflects INSTANCE fields on the ModSettings
+prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1267,16 +1276,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  DOINGITEMSRECONCILE1's audit (2026-09-13) found these 21 FOUNDRY items in
 prose:    infrastructure/state/items/DOING_SEDIMENT_RECLAIM_1.md
-
-## BRIDGE_STATIC_SETTINGS_FIELDS_1 BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  rimworld/updatemodsettings reflects INSTANCE fields on the ModSettings
-prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md
 
 ## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
 state:    proposed
