@@ -9795,6 +9795,24 @@
     "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/Sarlacc/Source/CompSarlaccAnchoredMouth.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "df276b780123cbea22b5ff2f9c454bd477ca709b321e60a2a7f6816d34029f53",
+    "sha": "e0f4ffdc7"
+  },
+  "src/RimStarWars/Sarlacc/Source/CompSarlaccCisternBreach.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7095d6fd73a1f89a91ab8785cf953d6537adc92de3857255343b73a0d36facbf",
+    "sha": "e0f4ffdc7"
+  },
+  "src/RimStarWars/Sarlacc/Source/CompSarlaccSwimmer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7c3ae13cc71a9076654291ca5a1940f440cbc40bb90ca31598e9923f3f4e51c2",
+    "sha": "e0f4ffdc7"
+  },
   "src/RimStarWars/Shokk/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -11510,6 +11528,30 @@
     "date": "2026-09-09",
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RM_JobGiver_ResonantDance.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "be84d181e11134605f06168fad03edc3315c63f5e3cebc257bcebc96f2ed32f9",
+    "sha": "e0f4ffdc7"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RM_MapComponent_BiomeAttitude.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "cb0ba0b0e7efd988d75e9e5cda0937bdde310aa88673e1109d84f3d667486258",
+    "sha": "e0f4ffdc7"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RM_ThinkNode_ConditionalAttitudeBand.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e5204943d36db1e0e764d6c19143ad258ca35e708a42ea95bfd17fb2737d78fb",
+    "sha": "e0f4ffdc7"
+  },
+  "src/RimUtinni/RustCathedralHum/Source/RUT_IncidentWorker_CathedralResponse.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7556837bf89418ae8325e3f2c14d0b626d19e2707d364ee764d4152c30b1cc6f",
+    "sha": "e0f4ffdc7"
   },
   "src/RimUtinni/RustCathedralRoaches/About/About.xml": {
     "cleanCount": 1,
