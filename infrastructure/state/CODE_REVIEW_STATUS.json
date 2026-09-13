@@ -869,6 +869,12 @@
     "hash": "782a998d1ef4d34d08511676b4bbdb3bb328565bbd22fefd97e50b1e48a9c001",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_ChewAnchors.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "23cd3f7965bbf1a9f2bf3d285840ab8084d9179b5ed7ce696a3e569f263ba828",
+    "sha": "7f2ff5541"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_GnawTargets.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -886,6 +892,12 @@
     "date": "2026-09-11",
     "hash": "4fa00c61c2a817bebf44f0f9bb9a7b5e9f8aeb74cc94b44371569f38737d02f7",
     "sha": "20ce46f24"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_FrontCreep.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ca509008fe7804d53bcf4539b65ae9721a007a782437398077a6098baa2cba27",
+    "sha": "7f2ff5541"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs": {
     "cleanCount": 2,
@@ -928,6 +940,12 @@
     "date": "2026-09-11",
     "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_JobDriver_DiveHunt.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "2abff0fb87b03f6f876855f9962c221e96ded1dab46bc17eb0be0fef64318a71",
+    "sha": "7f2ff5541"
   },
   "src/RimMandrake/EnvironmentalHazards/About/About.xml": {
     "cleanCount": 1,
@@ -3940,6 +3958,12 @@
     "date": "2026-09-04",
     "hash": "a212502e0c9b94bfdff06b9005fe28446ad02fb5406994bb075d3b635e12f160",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Utils/canon_consistency.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9f563e243da1d5e057fe939343d972f2dc2f883b97d1e79c4564b3cc76fbdd07",
+    "sha": "7f2ff5541"
   },
   "src/RimMandrake/Utils/cast_hook_audit.py": {
     "cleanCount": 1,
@@ -10832,6 +10856,12 @@
     "date": "2026-09-11",
     "hash": "de9a652fe14a789d1dc3068efe3a25e34de768d4cd025b3bce0bc176b42df670",
     "sha": "fd3bafa39"
+  },
+  "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterMineshaftPortal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "97b8d7672ea776ad509b0ab8263a007180f3303f7a4be54e033cdd9cc4011b60",
+    "sha": "7f2ff5541"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
     "cleanCount": 2,
