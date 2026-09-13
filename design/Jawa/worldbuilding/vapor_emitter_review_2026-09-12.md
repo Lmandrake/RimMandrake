@@ -171,7 +171,7 @@ Part 4 or a later quicktest builds.
 | `AB_MagmaVents` | 10 | 18.7–99.4 | ⚠️ **Whitelist mismatch**: engine restricts this mutator to biomes `AB_PyroclasticConflagration`/`BiomeGRimphire`, but only 5/10 current tiles carry those biomes — the other 5 sit on `AB_RockyCrags` (3) and `ZBiome_Badlands` (2), biomes NOT on the whitelist. Reads as an orphaned mutator surviving a biome repaint, not a fresh placement — a Part-4 cleanup candidate. |
 | `VEE_RotstinkVents` | 16 | 40.6–55.8 | 100% (16/16) in `Fever Wood` region, swamp biomes — matches the proposed swamp-keyed rule already. |
 | `VEE_ToxicVents` | 91 | 5.5–47.0 | 92% (84/91) on `AB_MechanoidIntrusion` — dayside-only here, no terminator issue. |
-| `VEE_SmokeVents` | 5 | 27.5–43.7 | Small sample, `Dune Sea`/`Scald Spine`/volcanic-adjacent biomes. |
+| `VEE_SmokeVents` | 5 | 27.5–43.7 | Small sample, `Dune Sea`/`Cratercrown`/volcanic-adjacent biomes. |
 | `VEE_DeadlifeVents` | 10 | 2.3–133.0 | Bimodal: 6 on Rust Cathedral (dayside ruin), 2 on nightside `RUT_BlueDesert`/Cinderdark (arc 133) — the nightside pair is a plausible existing example of a correctly cold-appropriate placement, not a violation (this family isn't steam-ruled). |
 | `VEE_Volcano` | 1 | 16.6 | Single instance, dayside, on `AB_MechanoidIntrusion` — too small a sample to judge. |
 | `VEE_VolcanicSandDesert(Flora)`, `VEE_VolcanicRichSoil`, `VEE_UndergroundGasDeposits` | 0 each | — | Present in the mod, unused anywhere on Ash'karr. |

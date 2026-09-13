@@ -811,7 +811,7 @@ but it does not block the worldgen run.**
 | geometry | TidallyLocked · subdivisions 7 · **coverage 1.0** · **21,872 tiles** |
 | climate | **−79.4 … +80.8 °C** · ~~water 6.9%~~ → **8.14%** · 2,550 polluted tiles |
 | biomes | `AB_RockyCrags` 6,526 (30%) · AridShrubland 5,290 · Desert 1,647 · Wasteland 1,213 · ExtremeDesert 971 · zero unresolved hashes |
-| regions | **28 named** — The Scald, The Rust Cathedral, The Scald Spine, The Twilight Sea, The Gray Sea, The Dew Belt, The Fall Line, The Salt, The Nightspill, The Sunreach, The Umbra … |
+| regions | **28 named** — The Scald, The Rust Cathedral, The Cratercrown, The Twilight Sea, The Gray Sea, The Dew Belt, The Fall Line, The Salt, The Nightspill, The Sunreach, The Umbra … |
 | people | ~~**37 settlements across 11 factions**~~ → **72 settlements across 12 map-holding factions (13 in the roster)**, every one ours |
 | integrity | 0 world objects in water · 0 non-ours owning anything · roads and rivers pruned of everything the repaint stranded |
 

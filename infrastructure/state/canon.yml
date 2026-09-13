@@ -102,7 +102,7 @@ planet:
   start_tile: 17007
   start_tile_src: >
     PLAYER_START_SITE_1 ruling (owner card 2026-09-08: Zeddo's Yard, tile 17007,
-    ExtremeDesert / Fall Line Barrens, one tile from Zeddo's Toll 17006); the
+    ExtremeDesert / The Breaks, one tile from Zeddo's Toll 17006); the
     START savegame's PlayerColony Settlement (world object 277) sits on it,
     read back live 2026-09-12.
 

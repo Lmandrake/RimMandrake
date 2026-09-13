@@ -55,7 +55,7 @@ _One table per undefined biome, ready to open its conversation loop. Sun elevati
 - arc: p10 26.3 / med 58.0 / p90 79.9  (sun med +32.0°)
 - temp med 35.5 °C (17.8..63.5); elev med 612 m; hilliness {1: 56, 2: 81, 3: 48, 4: 50, 5: 1}
 - water tiles 0, river tiles 1
-- regions: Dew Belt (92), Dew Horn (66), Dune Sea (36), Scald Spine (24), Anvil (11), Hollow Verge (7)
+- regions: Dew Belt (92), Dew Horn (66), Dune Sea (36), Cratercrown (24), Anvil (11), Hollow Verge (7)
 
 ## AB_MechanoidIntrusion — 236 tiles
 - arc: p10 4.8 / med 10.7 / p90 16.5  (sun med +79.3°)
@@ -73,13 +73,13 @@ _One table per undefined biome, ready to open its conversation loop. Sun elevati
 - arc: p10 27.8 / med 44.6 / p90 53.6  (sun med +45.4°)
 - temp med 44.8 °C (37.3..64.4); elev med 313 m; hilliness {1: 45, 2: 21, 3: 39, 4: 78, 5: 8}
 - water tiles 0, river tiles 191
-- regions: Dune Sea (70), Scald Spine (62), Dew Belt (31), Hollow Verge (13), Anvil (9), Dew Horn (6)
+- regions: Dune Sea (70), Cratercrown (62), Dew Belt (31), Hollow Verge (13), Anvil (9), Dew Horn (6)
 
 ## AB_FeraliskInfestedJungle — 172 tiles
 - arc: p10 21.1 / med 39.9 / p90 53.6  (sun med +50.1°)
 - temp med 47.5 °C (36.2..63.5); elev med 386 m; hilliness {1: 38, 2: 29, 3: 36, 4: 62, 5: 7}
 - water tiles 0, river tiles 0
-- regions: Dune Sea (73), Scald Spine (50), Dew Belt (19), Hollow Verge (16), Anvil (14)
+- regions: Dune Sea (73), Cratercrown (50), Dew Belt (19), Hollow Verge (16), Anvil (14)
 
 ## AB_GelatinousSuperorganism — 96 tiles
 - arc: p10 84.6 / med 90.0 / p90 99.1  (sun med +0.0°)

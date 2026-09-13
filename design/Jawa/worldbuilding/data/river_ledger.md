@@ -33,7 +33,7 @@ DATA are inferred from elevation only._
 
 1. Ash'karr does not rain. The dayside's water is made in one place: **the Scald**, a boiling
    crater sea in the substellar Anvil, fouled at heart and clean in its breath.
-2. Its steam climbs the **Scald Spine** and the **Dew Horn** and falls as the planet's only rain
+2. Its steam climbs the **Cratercrown** and the **Dew Horn** and falls as the planet's only rain
    on the Contagion's red peaks; the runoff leaves those valleys red and arrives below sterilized
    (R-H1, R-H7). And by the owner's ruling the Scald itself is **perched** — a lake a mile
    above the desert, spilling through **one notch in the Spine** as the largest river on the world.
@@ -55,27 +55,27 @@ DATA are inferred from elevation only._
 
 | id | lore name | class | source (lore) | fate | biomes threaded |
 |---|---|---|---|---|---|
-| R01 | **the Wynd** | LargeRiver, 102 t | Scald Spine peaks (Contagion, 2,021 m) | grave: **Ashgrave Pan**, Pyrelands, 1 m | Contagion → Greentide → Forge skirts → Greentide → Pyrelands |
+| R01 | **the Wynd** | LargeRiver, 102 t | Cratercrown peaks (Contagion, 2,021 m) | grave: **Ashgrave Pan**, Pyrelands, 1 m | Contagion → Greentide → Forge skirts → Greentide → Pyrelands |
 | R02 | **Duskflow** | HugeRiver, 91 t | **the Scald notch** + Dew Horn tributaries | **Twilight Sea** (tile 3450) | Greentide → Shrubland → Miasma → Greentide → Miasma |
 | R03 | **Rustwave** | HugeRiver, 32 t | Scald rim (Anvil) | grave: inland mangal sump, Dune Sea, 71 m | Greentide → Rust Cathedral canals → Scarlands → Greentide → Miasma |
 | R04 | **the Braid** | Creek, 11 t | three Dune Sea gorge heads (991 m) | grave, Greentide gorge, 84 m | Greentide |
 | R05 | **the Feverwash** | River, 11 t | Scald rim (Fever Wood side) | grave: Fever Wood mangal, 26 m | Greentide → Miasma |
 | R06 | **the Stiltwater** | River, 10 t | Scald rim (Fever Wood side) | grave: Fever Wood mangal, 13 m | Greentide → Miasma |
 | R07 | **the Redthread** | Creek, 7 t | Dew Horn peak (Contagion, 1,329 m) | grave: Long Sand, 459 m | Contagion → Shrubland |
-| R08 | **Dewdrop** | Creek, 7 t | Scald Spine, two heads (551 m) | grave: **Dew Belt pan** (11915, 1 m) | Greentide |
+| R08 | **Dewdrop** | Creek, 7 t | Cratercrown, two heads (551 m) | grave: **Dew Belt pan** (11915, 1 m) | Greentide |
 | R09 | **the Greyfall** | Creek, 6 t | Ashfall Range peak (Contagion, 1,720 m) | **Grey Sea** (16893) | Contagion → Shrubland |
 | R10 | **the Shortfall** | Creek, 6 t | Ashfall Range peak (Contagion, 1,342 m) | grave: Ashfall foot, 1 m — a sea's-width short | Contagion → Shrubland |
 | R11 | **the Chime** | Creek, 5 t | Ashfall Range peak (Contagion, 1,627 m) | **Grey Sea** (16897) | Contagion → Shrubland → Cracked Lands |
-| R12 | **the Catch** | Creek, 5 t | Scald Spine, two heads (1,587 m) | the Scald pan (11943) | Contagion → Greentide |
+| R12 | **the Catch** | Creek, 5 t | Cratercrown, two heads (1,587 m) | the Scald pan (11943) | Contagion → Greentide |
 | R13 | **the Hushwater** | Creek, 5 t | Anvil-edge hills (612 m) | grave: Dune Sea, 1 m | Shrubland |
 | R14 | **the Muck** | Creek, 5 t | Dune Sea gorge head (1,045 m) | grave, Greentide gorge, 99 m | Greentide |
-| R15 | **the Sprout** | Creek, 3 t | Scald Spine foot (392 m) | grave: **Dew Belt pan** (11914, 1 m) | Greentide |
+| R15 | **the Sprout** | Creek, 3 t | Cratercrown foot (392 m) | grave: **Dew Belt pan** (11914, 1 m) | Greentide |
 | R16 | **the Mist** | Creek, 2 t | Dew Belt bench (287 m) | grave, 145 m | Greentide |
 
 ## The rivers
 
 ### R01 — the Wynd · LargeRiver · 102 tiles · terminal basin
-**Source.** Twenty-two heads on the Scald Spine's Contagion peaks (highest 2,021 m) and the
+**Source.** Twenty-two heads on the Cratercrown's Contagion peaks (highest 2,021 m) and the
 Forge-type highs (Volcano/LavaField) — the Scald's breath, condensed, red, and sterilized on the
 way down. **Course.** The Greentide's spine: 74 of its tiles are this river — the living reach,
 steaming, Shatterers and Lungers, root causeways, the Wildsteam's home water. It brushes the
@@ -132,7 +132,7 @@ Shrubland's leaning fuzz and dies in the Long Sand at 459 m — a Cracked-Lands-
 water: Moisture Farmers' cistern country. Data and lore agree.
 
 ### R08 — Dewdrop · Creek · 7 tiles · terminal basin
-Two Scald Spine heads (551/387 m), a Greentide creek, dies at 1 m in the **Dew Belt pan**
+Two Cratercrown heads (551/387 m), a Greentide creek, dies at 1 m in the **Dew Belt pan**
 (tile 11915). Its grave is shared with R15's (11914) — one salt pan, two mouths; a droid
 enclave's obvious seat.
 
@@ -149,7 +149,7 @@ Ashfall Range peak (1,627 m) through Shrubland and one Cracked Lands tile — wa
 in the crack before the flood — to the Grey Sea at 16897. Agrees with lore.
 
 ### R12 — the Catch · Creek · 5 tiles · reaches the Scald
-Two heads on the Scald Spine (1,587/1,407 m) through the Contagion and Greentide into the
+Two heads on the Cratercrown (1,587/1,407 m) through the Contagion and Greentide into the
 pan at 11943 — the **steam-catch runnel**: the Scald's breath falling straight back into the
 Scald. ⚠️ Data: inflow. R1: outflow. Recommend it stays an INFLOW in the lore (a 5-tile creek
 climbing 1,900 m out of a lake cannot be told), the cleanest case for "the Scald's outflow is
@@ -163,7 +163,7 @@ silent, dies in sand. Agrees with lore.
 A Dune Sea gorge head (1,045 m) running a Greentide slot to 99 m. Sibling of R04.
 
 ### R15 — the Sprout · Creek · 3 tiles · terminal basin
-Scald Spine foot (392 m) to the Dew Belt pan (11914, 1 m) — R08's grave-mate.
+Cratercrown foot (392 m) to the Dew Belt pan (11914, 1 m) — R08's grave-mate.
 
 ### R16 — the Mist · Creek · 2 tiles · terminal basin
 Two tiles, 287 m to 145 m, Greentide. Two steps and it is gone.

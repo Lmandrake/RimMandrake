@@ -260,7 +260,7 @@ PROPOSAL — that flag is now stale; the table below is the accepted siting.
 | V1 | 678 | Rust Cathedral (core) | ① garrison | `AncientGarrison` | inside the 236-tile Cathedral biome, Arsenal's densest ground; 9.4° from **No Owner** (FDE) — desecration risk |
 | V2 | 4000 | Scorch (Cathedral halo) | ① outer works | `AncientLaunchSite` | pollution-halo ring; 3.1° from **No Owner** — the vault the Enclaves actively contest; pairs with V1 as an outer-works/core demo if wanted |
 | V3 | 9167 | Fall Line | ① garrison, route-spread | `AncientGarrison` | 49° of arc from V1, independent of the Cathedral trip; sits on the Empire's Ashgarrison chokepoint — Imperial patrol territory |
-| V4 | 17461 | Deadstone | ② flesh loose | `AncientWarehouse` | `HorrorWastes` bioweapon-class ground, warm edge of the band (−35.5 °C) — reachable without a deep-nightside trip; 15.0° from the Ascendant Helix's Specimen Hall |
+| V4 | 17461 | Deadstone | ② flesh loose | `AncientWarehouse` | `HorrorWastes` bioweapon-class ground, warm edge of the band (−35.5 °C) — reachable without a deep-nightside trip; 15.0° from the Ascendant Helix's Site Aurek |
 | V5 | 37 | Slough | ② flesh loose, second instance | none pre-placed | `AB_GelatinousSuperorganism`, exactly on the terminator (arc 90.0°) — a second ② from the opposite play route; 10.4° from Dripstone (Homestead Defense League); needs a landmark authored |
 | V6 | 20853 | **Umbra** | ③ frozen Rakata (the one) | `AncientWarehouse` | deepest nightside of all six (−70.2 °C, arc 159.7°); farthest from any road/settlement (20.3°) — the rare scene is not a stop on the way to anywhere. Adjacent to the Assailant complex (§2.2) |
 

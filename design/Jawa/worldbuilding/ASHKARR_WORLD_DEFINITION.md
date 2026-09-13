@@ -139,7 +139,7 @@ arithmetic target was **~8.6%** and the painted result is **8.14%**. The west
 ### Ranges — a ridge is a LINE, so it inherits the line's shape
 | name | anchors (arc, bear) | crest |
 |---|---|---|
-| **Scald Spine** | ring at (35,185), r 15.5, **notched** | 2050 m |
+| **Cratercrown** | ring at (35,185), r 15.5, **notched** | 2050 m |
 | **The Ashteeth** | (21.5,116) (23.5,142) (24.5,168) (24,203) (22,230) (19.5,254) | 1450 m |
 | **Fall Line** | (26,352) (34,357) (43,2) (52,6) (61,9) | 780 m |
 | **Dew Horn** | (58,148) (64,162) (67,178) (63,196) (57,210) | 1850 m |
@@ -584,7 +584,7 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 | Wildsteam Clan | `Jawa_WildsteamClan` | **9** ⚠️ *(this column said 4; the live planet measured 6 before today's additions)* | 2 on the Scald's jungles, 1 in the meridian's poison marsh, and ***Sporefall* in the Fever Wood on the road** (owner, 2026-08-24) — tropical swamp at 47 °C. 🔴 **Three added 2026-08-26 on the owner's coordinates**, each vetted with `jawa/tile_settleable` before placement and read back after: ***Bitterleaf*** (4.53S 73.71E → tile 6645, `AB_MiasmicMangrove`, 29 m, 27 °C) — ⚠️ **the clan's first COASTAL and by far its coolest seat**, on the Grey Sea shore; the other eight are 38–58 °C jungle. ***Oilpalm*** (23.38N 0.00E → tile 4271, `BiomeCypreJungle`, 204 m, **58.6 °C**, on a river) — now the clan's hottest. ***Warthorn*** (19.96S 5.54W → tile 16641, `BiomeCypreJungle`, **1,128 m**, Mountainous, on a river with `CaveLakes`) — a jungle massif hold, 17.1° out from Distant Scream and the remotest seat the clan holds |
 | Blackstar Company | `Pirate` | 4 | road junctions and ruins; they follow the money |
 | Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 8 — halved around the Cathedral 2026-08-24, see §7d | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
-| Ascendant Helix | `Jawa_AscendantHelix` | 7 | 🔴 **RULED 2026-08-24, owner: the Helix sits where the BIOWEAPON is.** `HorrorWastes`, the mycoid tiles and the poison forests of the terminator host them — *Cold Archive* and *The Revision* in the Horror Wastes, *The Fair Copy* in poison forest, *Specimen Hall* on mycoid, and *The Coil* and *Quiet Lab* moved out of the Homestead belt onto terminator mycoid. ⭐ **One outpost holds the new ocular forest on the Scald's mountainous shore** (*Helix Landing*) — see §7c |
+| Ascendant Helix | `Jawa_AscendantHelix` | 7 | 🔴 **RULED 2026-08-24, owner: the Helix sits where the BIOWEAPON is.** `HorrorWastes`, the mycoid tiles and the poison forests of the terminator host them — *Cold Stores* and *Farside Station* in the Horror Wastes, *Site Cresh* in poison forest, *Site Aurek* on mycoid, and *The Coil* and *Quiet Lab* moved out of the Homestead belt onto terminator mycoid. ⭐ **One outpost holds the new ocular forest on the Scald's mountainous shore** (*Helix Landing*) — see §7c |
 | the Forgotten Arsenal | `Mechanoid` | 0 | hidden; no world-map site, which is the intent |
 
 Every holding's tile and its one-line reason are in `ASHKARR_WORLDMAP_settlements.csv`.
@@ -593,7 +593,7 @@ Every holding's tile and its one-line reason are in `ASHKARR_WORLDMAP_settlement
 
 🔴 **Owner, 2026-08-24: *"There is no canon start colony for the player yet, strike that
 from the lore docs."*** This section used to site THE SETDOWN at tile 2476 / lat −1.028,
-lon +56.867 in the Fall Line Barrens, and to hand that lat/lon to the recipe as
+lon +56.867 in the Breaks, and to hand that lat/lon to the recipe as
 `HOME_LATLON` / `HOME_NAME`. **That siting is withdrawn.** Nothing on the map is the
 player's home, no doc may name one, and any generator key still carrying those
 coordinates is stale rather than authoritative.
@@ -1109,7 +1109,7 @@ p80 = 231, p90 = 325, p95 = 439, so cuts at **110 / 210 / 380** give
 planet and its relief p50 is only 140 — by relief alone, most of the broken country
 printed *Flat*. Biome sets a floor; relief only raises it.
 
-🔴 **Impassable exists in exactly one place: the Scald Spine crest, outside the Gate.**
+🔴 **Impassable exists in exactly one place: the Cratercrown crest, outside the Gate.**
 It makes the Spine expensive to cross and bends traffic toward the one breach.
 ⚠️ **It does not seal the crater, and this file will not pretend it does** — the ring is
 broken, and manufacturing a contiguous wall would be inventing terrain to serve a

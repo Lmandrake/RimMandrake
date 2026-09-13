@@ -685,7 +685,7 @@ and then simply adapt the map the best Rimworld can handle, ok?"*
   every upstream height are consequences of [R1]'s rendering constraint. "R12
   would have to climb 1587 m" is not an objection; it is the artifact talking.
 - The ring-mountain **inflow is not currently drawn as rivers**, and does not
-  need to be — the Scald Spine sheds into the crater whether or not the engine
+  need to be — the Cratercrown sheds into the crater whether or not the engine
   draws a link.
 - 🔑 **Method: author the lore truth, then adapt the map to whatever RimWorld can
   hold.** Not the reverse.
@@ -737,13 +737,13 @@ Pyrelands) — rulings the sheets have not absorbed until the Wednesday sitting.
 ## R35 — R01 DRAINS THE SPINE'S OUTER FLANK
 
 **Ruled:** R01 (**The Long Green**, 102 tiles — the planet's largest river) drains
-the **OUTER face of the Scald Spine**: the same ring of mountains, the same rain,
+the **OUTER face of the Cratercrown**: the same ring of mountains, the same rain,
 the slope that faces away from the crater. It is the Scald's water without being
 the Scald's outflow.
 
 - ✅ **[R1] holds with no map surgery and no exception.** No links are added.
 - 🔑 It also explains why R01 is the biggest: it takes the whole outer catchment.
-- ⭐ **The Scald Spine is the planet's true water engine** — the crater and the
+- ⭐ **The Cratercrown is the planet's true water engine** — the crater and the
   outer flank are two faces of one mountain ring. "Nourish the world" is about
   the Spine as much as the Scald.
 

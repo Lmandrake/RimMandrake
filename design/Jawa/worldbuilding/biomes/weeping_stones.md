@@ -37,7 +37,7 @@ high. Hilliness genuinely mixed: 61 small-hill, 60 mountainous, 54 flat, 38
 large-hill, 10 impassable of 223. **Water tiles 0, river
 tiles 1** — the biome named for water has almost none at world scale; the pools are
 map-scale. Regions: **Dew Belt 83, Dew Horn 54** (three-fifths of the biome — the
-map's own names voted for the engine), Dune Sea 39, **Scald Spine 24, Anvil 13** (the
+map's own names voted for the engine), Dune Sea 39, **Cratercrown 24, Anvil 13** (the
 hot aberrants, §2b), Hollow Verge 7.
 
 Not a rung on the dryland ladder (ExtremeDesert 47° → Cracked Lands 22° → Desert 14° →
@@ -70,7 +70,7 @@ substellar heat, and that wind crosses the torn seas on its way in — it arrive
 dayside *wet*. Two-thirds of these tiles sit in the Dew Belt and Dew Horn because that
 is the corridor. The anomaly is high stone (median 612 m) forcing the wet wind up.
 
-**2b. The seep oases (owner, 2026-09-06).** The Scald Spine and Anvil tiles (37 of
+**2b. The seep oases (owner, 2026-09-06).** The Cratercrown and Anvil tiles (37 of
 223, up to 63.5 °C) are too hot for the dew engine. These — and others near vulcanism —
 are **seep oases**: fed from *below*, groundwater and vent-warmed springs rising
 through the rock, often on open flat ground with no adjacent stone at all. Especially

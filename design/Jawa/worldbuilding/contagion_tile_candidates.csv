@@ -1,42 +1,42 @@
 tile,lat,lon,arc,elev_m,rain_mm,biome,region,hilliness,source_rule
-777,-7.6333,-47.6515,48.11,861.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-1316,-15.6498,-44.1726,46.32,1208.0,0.0,Volcano,Scald Spine,5,scald_core
-1317,-11.6402,-45.8941,47.03,1204.0,0.0,LavaField,Scald Spine,5,scald_core
-1321,-15.9276,-39.5513,42.14,1143.0,0.0,Volcano,Scald Spine,5,scald_core
-2936,-14.5426,-41.6497,43.67,501.0,0.0,Volcano,Scald Spine,4,scald_core
-2937,-13.1125,-43.7643,45.3,550.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-7044,5.0917,-47.376,47.58,202.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-7045,6.4801,-45.3518,45.71,164.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-7076,-14.1791,-46.2826,47.93,1227.0,0.0,Volcano,Scald Spine,5,scald_core
-7077,-12.6947,-48.3642,49.6,1167.0,0.0,LavaField,Scald Spine,5,scald_core
-7084,-10.1696,-47.9789,48.78,1546.0,0.0,LavaField,Scald Spine,5,scald_core
-7101,-17.3007,-37.4117,40.68,2001.0,0.0,Volcano,Scald Spine,5,scald_core
-7107,-17.0864,-42.0599,44.79,1177.0,0.0,Volcano,Scald Spine,5,scald_core
-7108,-18.5041,-39.9142,43.34,1307.0,0.0,Volcano,Scald Spine,5,scald_core
-11904,6.4027,-46.7929,47.13,715.0,54.0,ZBiome_Badlands,Scald Spine,4,scald_core
-11944,-8.9578,-47.0746,47.72,861.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-11947,-6.3228,-48.2175,48.53,780.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-15176,-14.4427,-43.1872,45.08,1190.0,0.0,Volcano,Scald Spine,5,scald_core
-15177,-14.3185,-44.7363,46.51,1446.0,0.0,Volcano,Scald Spine,5,scald_core
-15181,-15.7645,-42.6238,44.92,1306.0,0.0,Volcano,Scald Spine,5,scald_core
-15184,-12.9818,-45.3101,46.74,1354.0,0.0,LavaField,Scald Spine,5,scald_core
-15185,-12.8429,-46.843,48.17,1427.0,0.0,LavaField,Scald Spine,5,scald_core
-15186,-10.2955,-46.4865,47.36,914.0,60.0,ZBiome_Badlands,Scald Spine,5,scald_core
-15187,-11.5048,-47.4102,48.46,1539.0,0.0,LavaField,Scald Spine,5,scald_core
-15206,-15.8572,-41.083,43.52,1170.0,0.0,Volcano,Scald Spine,5,scald_core
-15207,-14.6119,-40.1346,42.29,1018.0,0.0,Volcano,Scald Spine,4,scald_core
-15208,-14.6572,-38.6331,40.91,483.0,0.0,Volcano,Scald Spine,4,scald_core
-15209,-15.9773,-38.0274,40.77,1131.0,0.0,Volcano,Scald Spine,5,scald_core
-15210,-17.1775,-40.5055,43.41,1448.0,0.0,Volcano,Scald Spine,5,scald_core
-15211,-17.2485,-38.9564,42.04,1685.0,0.0,Volcano,Scald Spine,5,scald_core
-17290,-11.3621,-48.9128,49.88,1250.0,0.0,LavaField,Scald Spine,5,scald_core
-17339,-3.695,-50.7074,50.8,333.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-17340,-5.0267,-48.7734,48.97,398.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-17349,3.7952,-47.9526,48.07,76.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-17353,5.0267,-48.7734,48.97,507.0,54.0,ZBiome_Badlands,Scald Spine,4,scald_core
-17357,5.1547,-45.962,46.19,79.0,60.0,ZBiome_Badlands,Scald Spine,4,scald_core
-21322,-18.5737,-38.3492,41.98,1426.0,0.0,Volcano,Scald Spine,5,scald_core
-21323,-18.624,-36.7893,40.63,1650.0,0.0,Volcano,Scald Spine,5,scald_core
+777,-7.6333,-47.6515,48.11,861.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+1316,-15.6498,-44.1726,46.32,1208.0,0.0,Volcano,Cratercrown,5,scald_core
+1317,-11.6402,-45.8941,47.03,1204.0,0.0,LavaField,Cratercrown,5,scald_core
+1321,-15.9276,-39.5513,42.14,1143.0,0.0,Volcano,Cratercrown,5,scald_core
+2936,-14.5426,-41.6497,43.67,501.0,0.0,Volcano,Cratercrown,4,scald_core
+2937,-13.1125,-43.7643,45.3,550.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+7044,5.0917,-47.376,47.58,202.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+7045,6.4801,-45.3518,45.71,164.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+7076,-14.1791,-46.2826,47.93,1227.0,0.0,Volcano,Cratercrown,5,scald_core
+7077,-12.6947,-48.3642,49.6,1167.0,0.0,LavaField,Cratercrown,5,scald_core
+7084,-10.1696,-47.9789,48.78,1546.0,0.0,LavaField,Cratercrown,5,scald_core
+7101,-17.3007,-37.4117,40.68,2001.0,0.0,Volcano,Cratercrown,5,scald_core
+7107,-17.0864,-42.0599,44.79,1177.0,0.0,Volcano,Cratercrown,5,scald_core
+7108,-18.5041,-39.9142,43.34,1307.0,0.0,Volcano,Cratercrown,5,scald_core
+11904,6.4027,-46.7929,47.13,715.0,54.0,ZBiome_Badlands,Cratercrown,4,scald_core
+11944,-8.9578,-47.0746,47.72,861.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+11947,-6.3228,-48.2175,48.53,780.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+15176,-14.4427,-43.1872,45.08,1190.0,0.0,Volcano,Cratercrown,5,scald_core
+15177,-14.3185,-44.7363,46.51,1446.0,0.0,Volcano,Cratercrown,5,scald_core
+15181,-15.7645,-42.6238,44.92,1306.0,0.0,Volcano,Cratercrown,5,scald_core
+15184,-12.9818,-45.3101,46.74,1354.0,0.0,LavaField,Cratercrown,5,scald_core
+15185,-12.8429,-46.843,48.17,1427.0,0.0,LavaField,Cratercrown,5,scald_core
+15186,-10.2955,-46.4865,47.36,914.0,60.0,ZBiome_Badlands,Cratercrown,5,scald_core
+15187,-11.5048,-47.4102,48.46,1539.0,0.0,LavaField,Cratercrown,5,scald_core
+15206,-15.8572,-41.083,43.52,1170.0,0.0,Volcano,Cratercrown,5,scald_core
+15207,-14.6119,-40.1346,42.29,1018.0,0.0,Volcano,Cratercrown,4,scald_core
+15208,-14.6572,-38.6331,40.91,483.0,0.0,Volcano,Cratercrown,4,scald_core
+15209,-15.9773,-38.0274,40.77,1131.0,0.0,Volcano,Cratercrown,5,scald_core
+15210,-17.1775,-40.5055,43.41,1448.0,0.0,Volcano,Cratercrown,5,scald_core
+15211,-17.2485,-38.9564,42.04,1685.0,0.0,Volcano,Cratercrown,5,scald_core
+17290,-11.3621,-48.9128,49.88,1250.0,0.0,LavaField,Cratercrown,5,scald_core
+17339,-3.695,-50.7074,50.8,333.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+17340,-5.0267,-48.7734,48.97,398.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+17349,3.7952,-47.9526,48.07,76.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+17353,5.0267,-48.7734,48.97,507.0,54.0,ZBiome_Badlands,Cratercrown,4,scald_core
+17357,5.1547,-45.962,46.19,79.0,60.0,ZBiome_Badlands,Cratercrown,4,scald_core
+21322,-18.5737,-38.3492,41.98,1426.0,0.0,Volcano,Cratercrown,5,scald_core
+21323,-18.624,-36.7893,40.63,1650.0,0.0,Volcano,Cratercrown,5,scald_core
 143,-6.5828,-67.4227,67.58,1387.0,193.0,ZBiome_Badlands,Dew Horn,4,widened_elev1200_rain
 259,-22.6644,-50.4835,54.04,1202.0,417.0,ZBiome_Badlands,Dew Horn,4,widened_elev1200_rain
 313,0.0,64.3501,64.35,1923.0,395.0,AridShrubland,Ashfall Range,4,widened_elev1200_rain

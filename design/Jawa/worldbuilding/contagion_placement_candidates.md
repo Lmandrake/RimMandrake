@@ -16,7 +16,7 @@ or the live game/savegame).
 
 Operationalized here as four conditions on a candidate tile, all required:
 1. **Dayside**: `arc < 75` (matching the item's own "MEASURED candidate bands" framing;
-   Scald Spine itself sits at arc ~48, "mid-dayside").
+   Cratercrown itself sits at arc ~48, "mid-dayside").
 2. **Non-green**: `biome` not in `{BiomeCypreJungle, AB_FeraliskInfestedJungle,
    ZBiome_DesertOasis}` — the three defNames `the_contagion.md` §230 names as "the green
    below" wanting their own definitions, and hard ban #1 protects. 🔴 **Judgment call,
@@ -27,20 +27,20 @@ Operationalized here as four conditions on a candidate tile, all required:
    further. Worth the owner's eye on the render.
 3. **High**: `elev_m >= 1200` — reusing the sheet's own worked threshold for Ashfall Range
    (35 tiles) and Dew Horn (137 tiles), applied uniformly to every OTHER region as the
-   "local peak band" operational proxy. **Except Scald Spine**, see below.
+   "local peak band" operational proxy. **Except Cratercrown**, see below.
 4. **Rains**: `rain_mm > 0` — the widened rule's own instrument, read literally.
 
-## Scald Spine is kept as the sheet's own unconditional core, not re-derived
+## Cratercrown is kept as the sheet's own unconditional core, not re-derived
 
-`the_contagion.md` §0 names Scald Spine's "38 non-green tiles" as *the core* without an
+`the_contagion.md` §0 names Cratercrown's "38 non-green tiles" as *the core* without an
 elevation qualifier (unlike Ashfall Range and Dew Horn, both stated with an explicit
-`≥1,200 m`). Reproducing "all non-green tiles in the Scald Spine region" against the live
+`≥1,200 m`). Reproducing "all non-green tiles in the Cratercrown region" against the live
 CSV gives exactly 38 (Volcano 18, ZBiome_Badlands 13, LavaField 7) — an exact match to the
 sheet's own count, which calibrates this script against a known answer before trusting it
 on the wider planet.
 
 🔴 **Found and NOT silently resolved**: applying the widened rain-gate (`rain_mm > 0`)
-*inside* Scald Spine's own 38-tile core would drop 25 of them — all 18 Volcano and all 7
+*inside* Cratercrown's own 38-tile core would drop 25 of them — all 18 Volcano and all 7
 LavaField tiles read `rain_mm = 0` in this CSV; only the 13 ZBiome_Badlands tiles show
 rain. That contradicts the sheet's own narrative ("a red valley... roofed by a
 thunderstorm that has not stopped in a thousand years") for 66% of its own named core.
@@ -58,7 +58,7 @@ measured fact, and the owner may rule the other way.
 
 | source | tiles | region breakdown |
 |---|---|---|
-| Scald Spine core (unconditional) | 38 | Scald Spine 38 |
+| Cratercrown core (unconditional) | 38 | Cratercrown 38 |
 | Widened (elev≥1200, non-green, dayside, rain>0) | 135 | Dew Horn 87, Ashfall Range 24, Dune Sea 17, Fall Line 5, Anvil 2 |
 | **Total** | **173** | 6 regions |
 
@@ -103,7 +103,7 @@ does not assume the file survives past the standard ~14-day sweep.
 ## What's still owed (not this pass)
 
 - The owner's look at the render and the two flagged judgment calls (the green-def
-  exclusion set; whether Scald Spine's rain=0 tiles stay in the core).
+  exclusion set; whether Cratercrown's rain=0 tiles stay in the core).
 - Painting: `world_mutators`-style bridge calls + `world_commit` against the REAL
   savegame, once the render is approved (or the tile list is adjusted and re-rendered).
 - Savegame re-freeze, Saves-keeper backup first (this repo's standing worldmap-repair

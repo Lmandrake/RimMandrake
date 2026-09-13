@@ -33,7 +33,7 @@ territory Cindermare and Skarnix live in, one biome-split away. That is
 almost certainly why Tellurox's source art (`karrask_opt3.png`) got grouped
 into the same mockup batch as the two Rocky Crags creatures in the first
 place: it reads as crags-adjacent stock, now claimed and re-bred by the
-Helix. Their two named `HorrorWastes` holdings (*Cold Archive*, *The
+Helix. Their two named `HorrorWastes` holdings (*Cold Stores*, *The
 Revision*) are the plausible breeding/holding sites. If a future pass finds
 a stronger owner-named pin (e.g. specifically `PoisonForest` or mycoid),
 that overrides this — this is FOUNDRY's best-evidence read, not an owner

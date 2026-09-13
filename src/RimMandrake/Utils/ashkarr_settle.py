@@ -118,7 +118,7 @@ DROID_NAMES = [
     "Second Speaker", "Vent Forty", "The Long Charge",
 ]
 HELIX_NAMES = [
-    "The Draft", "Cold Archive", "The Revision", "Specimen Hall", "The Fair Copy",
+    "The Draft", "Cold Stores", "Farside Station", "Site Aurek", "Site Cresh",
     "Second Reading",
 ]
 

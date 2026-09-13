@@ -34,8 +34,8 @@ horrible," Ascendant Helix territory and a live bioweapon test ground).
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
 plans): the planet's median rainfall is **0 mm**; one region rains prolifically —
-**Scald Spine**: 174 tiles, rain median 973 mm (max 1,529), 73 river tiles, elevation
-to 2,001 m, 41 °C, arc 48. Now painted onto **179 tiles** (Dew Horn 87, Scald Spine 44,
+**Cratercrown**: 174 tiles, rain median 973 mm (max 1,529), 73 river tiles, elevation
+to 2,001 m, 41 °C, arc 48. Now painted onto **179 tiles** (Dew Horn 87, Cratercrown 44,
 Ashfall Range 24, Dune Sea 17, Fall Line 5, Anvil 2), arc 18→69 (median 59), temp
 p10/median/p90 25 / 32 / 45 °C (max 57), elevation median 1,387 m (max 2,190), rain
 median 60 mm (max 1,529), 23 river tiles, zero standing water — the wrong-home donor
@@ -44,7 +44,7 @@ placement (3 tiles in the Ashfall Range) is superseded.
 🔴 **Placement ruling (owner):** the Contagion lives on the **peaks above the green** and
 **takes NO green squares** — the jungle/oasis defs below (CypreJungle, Feralisk jungle,
 Desert Oasis) are precious and get their own definition. Candidate set (MEASURED,
-non-green only): Scald Spine's 38 high tiles (Volcano 18, Badlands 13, LavaField 7; elev
+non-green only): Cratercrown's 38 high tiles (Volcano 18, Badlands 13, LavaField 7; elev
 median 1,170 m), plus — for presence, at the owner's option — the neighboring ranges'
 tops: Ashfall Range 35 tiles ≥1,200 m, Dew Horn 137 tiles ≥1,200 m (70 at ≥1,500). Exact
 list ruled in `CONTAGION_BIOME_PLACEMENT_1`.

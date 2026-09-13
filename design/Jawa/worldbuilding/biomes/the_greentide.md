@@ -30,7 +30,7 @@ keeps no surface river — dayside river lines are the Greentide's by the lush r
 Extreme Desert energy). Temp median **45.5 °C** (35.5..64.4 — the floor dropped with
 the 8 arrivals). Elevation median
 287 m, but nearly half the tiles are large-hill/mountainous/impassable (39+78+8) —
-**gorge country**, not flat jungle. Regions: Dune Sea 83, Scald Spine 60, Dew Belt
+**gorge country**, not flat jungle. Regions: Dune Sea 83, Cratercrown 60, Dew Belt
 43, Hollow Verge 13, Anvil 15, Dew Horn 11, Fever Wood 10 *(+2 each to Dune Sea, Scald
 Spine, Dew Belt, Anvil — the Webwork's river tiles, 2026-09-08)* — two green groves
 flanking the Scald plus ribbons out into open sand. Wildsteam holds two seats here

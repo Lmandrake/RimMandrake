@@ -32,8 +32,8 @@ on the map. Saved as `WORLDMAP_V26_webwork_rivers_2026-09-09`.)* Sun median **+5
 than the Greentide. Temp p10/median/p90 38.6 / 49.2 / 58.2 °C (max 63.9).
 High-relief: 34 mountainous + 9 impassable + 56 large-hill of 169 (55 flat, 15
 small-hill); elevation median 361 m,
-to 1,255 m. Regions: **Dune Sea 79, Scald Spine 41**, Dew Belt 14, Hollow Verge
-16, Anvil 10, Dew Horn 1. *(Amendment 2026-09-08: −2 each from Dune Sea, Scald Spine,
+to 1,255 m. Regions: **Dune Sea 79, Cratercrown 41**, Dew Belt 14, Hollow Verge
+16, Anvil 10, Dew Horn 1. *(Amendment 2026-09-08: −2 each from Dune Sea, Cratercrown,
 Dew Belt and Anvil — the 8 through-river tiles transferred to the Greentide.)*
 
 🔴 **The rain is bimodal and it is the biome's skeleton: 96 tiles get ZERO rain;
@@ -65,7 +65,7 @@ discover a shadow, seconds before it lands upon them, and know nothing more.
 
 ## 2. Planetary position
 
-Mid-dayside, arc 21–53, lobed across the Scald Spine's wet highs and down into the
+Mid-dayside, arc 21–53, lobed across the Cratercrown's wet highs and down into the
 Dune Sea's edge. The reasoned intersection: **maximum solar energy × a stolen
 river × an engineer species.** It can even compete with the Contagion in ferocity
 — though in truth it is mostly **UV exposure that keeps the highest peaks clear**.
