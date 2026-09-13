@@ -8193,6 +8193,12 @@
     "hash": "7ebfe56f04ad135611cc8d905f319c240a0b1e6f82edb587913ec15600814486",
     "sha": "831201d4c"
   },
+  "src/RimStarWars/Armoury/Source/RSW_ArmourySettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "f70ff3b127ff8e114a8131e82ea049fe3649c1e64419ff931ee42a07f5659b5f",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/Armoury/Source/SecondaryMineableYield/ModExtension_SecondaryMineableYield.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -8541,6 +8547,12 @@
     "hash": "f0e8f2eafdaa08b8b0367905ea5703077f788c004345492e9ca0d6a14aae4826",
     "sha": "6e94c55d0"
   },
+  "src/RimStarWars/BrainWorms/Source/RSW_BrainWormsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9aeb873fade0c78a8cd577ab30164f72af0ad294588733e891762f394a9fbe0a",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/Cuisine/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -8660,6 +8672,12 @@
     "date": "2026-09-09",
     "hash": "78065176bfb6b6d97f8881266f975d534a984572a50318f00f0af0bfa986b4ca",
     "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/RSW_DesertVehicleReskinSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d81909282ffd7be9b2196e32f79f2937cd61db20ffcc1b2cd4ac01635a58eb61",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs": {
     "cleanCount": 2,
@@ -9249,6 +9267,12 @@
     "hash": "1bac4b9232016c236db8f6fd004b1d2e4eeb19184c4dad0dfdc4afe3d058eb0f",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Patch_DroidBillGiverNoBed.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "a3479776d07cf0f1f4eba2e861681deafcb48015a839c35a6847dc14ec832de8",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ProtocolTradeAdvantage.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -9260,6 +9284,12 @@
     "date": "2026-09-11",
     "hash": "07f4fee48599708015e4a2071cfea992dbd1db0e19fba8e539b8fab3bbbd6b81",
     "sha": "d0c985e6a"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/RSW_DroidworksSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "44acdeb99e6ee77a04164a3643023c066d3edc2c6cf8f5ab8344a23f767ced0f",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_AssembleDroid.cs": {
     "cleanCount": 1,
@@ -9447,6 +9477,12 @@
     "hash": "ed6518b6fe2b9fea7054975a753400fd851ca0a08fb581d51d64e537c67d744c",
     "sha": "635efab7f"
   },
+  "src/RimStarWars/JawaIonWeapons/Source/RSW_JawaIonWeaponsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "771042594189170136f2e699fa07ece16196111b300a8eff1dba532aacc9d457",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/JawaIonWeapons/Source/SelfTest/JawaIonWeapons.SelfTest.csproj": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -9500,6 +9536,12 @@
     "date": "2026-09-11",
     "hash": "a2be5d507d1d8b71626dbcaa0783d774207537f908439f1d9a1632705cb49869",
     "sha": "2467e0a2d"
+  },
+  "src/RimStarWars/JawaRules/Source/RSW_JawaRulesSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ca02b90aebcd943defb1fa37a420cbe808bf3a299885189ff594495c8a75309a",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/JawaVoice/About/About.xml": {
     "cleanCount": 1,
@@ -10167,6 +10209,12 @@
     "hash": "75ffab558da1c78ad9a13996febbbbf74b91afa18101e41c2b37d3b20a52db9a",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Source/JawaIkee/RSW_JawaIkeeSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7c0e6f8ba8ac3919fe4387178454779288d4a41e6b2ebbb12cc9ea3274fb5ad4",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/SWBestiary/Source/JawaIkee/ThoughtWorker_IkeeNearby.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -10184,6 +10232,12 @@
     "date": "2026-09-11",
     "hash": "2b5ad91e09dbe0d90ff8a4c71dcd68e63b999047606881c2171d9756c1e45b0f",
     "sha": "4b5c50715"
+  },
+  "src/RimStarWars/SWBestiary/Source/Livestock/RSW_LivestockSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "30de0f8f171ce0c1efd4fc748fe8337e8435ad5915433a6beaac296e1e8612a3",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/SWBestiary/art/Livestock/gen_livestock_mockups.py": {
     "cleanCount": 1,
@@ -10233,6 +10287,48 @@
     "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/Sarlacc/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d5f160411e54eb6457996b8110fb6effcd6580686dddf381884d79f55ecde1eb",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/Defs/HediffDefs_ChangedReturn.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "64669375bea39ef73af3a727a9bac85492e4c3523f1efe1913e063867f565c10",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/Defs/ThingDefs_SarlaccAnchored.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "364213028e39df5e32bdb731332f89e400ccf9222c22e37439cd73573e7c53b6",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/Defs/ThingDefs_SarlaccCistern.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "04def35ae8d5c9c96591625df97c8410855000d91b07229de5ac51224de23b6e",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/Defs/ThingDefs_SarlaccSeep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "eb510905ed6740f61148986314e9af30172cd561b77775177883329dcf837485",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/Defs/ThingDefs_SarlaccSwimmer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "02339b7f5676cde53f4258057f34e02abd5177eb742cffd8e4e7cf3422bb2564",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/Sarlacc/LoadFolders.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "4d610b9862873cdf4e77f7252b57614b27fe5cbde5075d5ca869d83d185a4d81",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/Sarlacc/Source/CompSarlaccAnchoredMouth.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -10250,6 +10346,12 @@
     "date": "2026-09-12",
     "hash": "7c3ae13cc71a9076654291ca5a1940f440cbc40bb90ca31598e9923f3f4e51c2",
     "sha": "e0f4ffdc7"
+  },
+  "src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e14867408aca2afaef9d30d4e8b82638a3bd0e9e2d71c20fe8c10f8c2ec06e20",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/Shokk/About/About.xml": {
     "cleanCount": 1,
@@ -10292,6 +10394,12 @@
     "date": "2026-09-11",
     "hash": "804f31c624ea8081ed411119a409a6d230a5308a310891e2cc60409ac1c68a08",
     "sha": "fd3bafa39"
+  },
+  "src/RimStarWars/Shokk/Source/RSW_ShokkSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "afc26cc1b92083db83ff8fc1bd826a739ab358449c195a6ff3f1dc543927ca0f",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 2,
@@ -10641,6 +10749,36 @@
     "hash": "50f046277a1e0dffa6ea44fc149be88d3c8ecb847cf423903fb409836aba1bbf",
     "sha": "629956d2"
   },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_BeastLair.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "50ae3d5681bca95693891a7538f217750033a1c50185afb9e5f071904acc02c1",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_BeastPens.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "76c0bf31abbb9cea3c390768803c54897e53d9f59fcd134f3e6e6e0c874dc6c3",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_CrashedShip.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "bc177e195a08f5c446eb6093892c6452c853301e14ab15052b1f201e79a6035f",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_DeadCaravan.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "be0139cfad29dbd5a85e81d0cc510521fbc30fa7c9d714163c7d49643e0ca3ef",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_GarrisonTiny.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c423a96b515bdd0bd211e02f5ffb1876d8f115a8d8d6c38607ae93db92b2ace0",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MiningSite.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -10659,6 +10797,12 @@
     "hash": "7f57ae8bb904af49bf9d1cfbe1e5acd2f7ec3157bfb8bbbbd4fd896456b16f62",
     "sha": "2f8d4a99a"
   },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_TradingPost.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1cef44a3574a0fc1ee8496156362ffd463ae3f03af19c386e6c21e38cd63034e",
+    "sha": "c4858101e"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -10670,6 +10814,36 @@
     "date": "2026-09-05",
     "hash": "450f4beb9fc6213ec29d22aed5491a7d3c0bf9c22225ebd5a1ea008d6ec743a6",
     "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_BeastLair.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "2a66567f7e17413c9cb33293f03d79adcf692034665d63e12e482754d2972617",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_BeastPens.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ce0bc7932f6c03adbbac659c600f46f33a41b0541796dba657dd7a88abde8de3",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_CrashedShip.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "35be883fb9ffdf8cef372c548c0a45150c09edb694a60ded8519b32a39c936a8",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_DeadCaravan.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e2601d1110b94efe8c4ae98261f30f5bf5aaaa37da396799615f68739da4d204",
+    "sha": "c4858101e"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_GarrisonTiny.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "64ef03d31e428dcbbeb14f055f1abd3bf850bf1deeed41eddd3afad391fee03e",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_MiningSite.xml": {
     "cleanCount": 1,
@@ -10688,6 +10862,12 @@
     "date": "2026-09-11",
     "hash": "d5d01f244acd8effc9e70d3a970397f10bc32da2db93641cdb141058129ff20b",
     "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_TradingPost.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "613532c5ef5a9017ded35139b94f3124e6861989c7c05c7129c934130092f700",
+    "sha": "c4858101e"
   },
   "src/RimStarWars/StructureInjectionsSW/LICENSE": {
     "cleanCount": 1,
