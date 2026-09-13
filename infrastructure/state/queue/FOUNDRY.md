@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T18:12:11Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T18:29:40Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -251,6 +251,15 @@ target:   v1
 kind:     build
 summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
 prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
+
+## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
+prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
 
 ## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
 state:    doing
@@ -1169,17 +1178,7 @@ prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-waiting:  needs `deploy`, game is UP
-summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
-prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1388,3 +1387,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
 prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
+
+## MODCHECK_RUNNER_SWAP_LIVE_PROOF_1 cli.py run <mod>: first live proof of the fixed subprocess swap path (modcheck runner)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
