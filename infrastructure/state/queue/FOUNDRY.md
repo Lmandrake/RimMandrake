@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:57:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:03:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -40,15 +40,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
 prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  SCALDMECHANICS1 — the Scald C kit
-prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 # IN PROGRESS
 
@@ -503,6 +494,15 @@ target:   v1
 kind:     task
 summary:  The authoritative brief is the FROZEN lore sheet
 prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SCALDMECHANICS1 — the Scald C kit
+prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing

@@ -8146,3 +8146,6 @@
 {"seat":"FOUNDRY","event":"note","id":"FEVER_WOOD_MECHANICS_1","text":"Continuation: validated F2/F3 (fixed a literal -- in MirrorList's XML comment), wired F1's pool terrain + F5's stilt/pool-refusal into real Defs, confirmed F4 stays correctly unwired, left F8/F9 as documented skeletons (content/design owned elsewhere). Build 0/0.","ts":"2026-09-13T09:56:07Z"}
 {"seat":"FOUNDRY","event":"claim","id":"FEVER_WOOD_MECHANICS_1","ts":"2026-09-13T09:57:47Z"}
 {"seat":"FOUNDRY","event":"start","id":"FEVER_WOOD_MECHANICS_1","ts":"2026-09-13T09:57:48Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-13T09:58:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
