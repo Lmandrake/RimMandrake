@@ -208,26 +208,43 @@ class TestContext(object):
         self._record("wait_ticks(%d)" % n, r)
         return r
 
-    def set_setting(self, mod_id, values, persist=False):
+    def set_setting(self, type_name, values, persist=False):
         """Flip a mod's Mod Settings field(s) for the duration of THIS live
-        session -- `rimworld/update_mod_settings`. `persist=False` (the
-        default) applies the change in-memory only (`write=False`): a
-        test toggling `trapTriggerEnabled` off must never leave that
-        written to the owner's actual `ModSettings.xml` on disk. Verified
-        via an independent read-back (`rimworld/get_mod_settings`), never
-        the setter's own echoed values."""
+        session -- `jawa/mod_settings_field` (BRIDGE_STATIC_SETTINGS_FIELDS_1:
+        resolves the field as STATIC first, falling back to INSTANCE; our
+        own mods' settings classes are almost all `public static`, which
+        `rimworld/update_mod_settings` could never reach at all).
+        `type_name` is the settings class's `Type.FullName`
+        (e.g. `"RimMandrake.Pits.PitsSettings"`), not a mod packageId. The
+        tool never calls `ModSettings.Write()` -- a static-field write is
+        never serialized to `ModSettings.xml` in the first place, so
+        `persist=True` is refused rather than silently ignored. Verified
+        via an independent read-back (`action="get"`), never the setter's
+        own echoed `valueAfter`."""
         if not self._guard():
             return None
-        self.session.call("rimworld/update_mod_settings", modId=mod_id,
-                          values=values, write=persist)
-        got = self.session.call("rimworld/get_mod_settings", modId=mod_id)
-        settings = (got or {}).get("settings") or {}
-        ok = all(settings.get(k) == v for k, v in values.items())
-        self._record("set_setting(%s, %s)" % (mod_id, values), ok)
+        if persist:
+            raise ValueError(
+                "jawa/mod_settings_field never persists to ModSettings.xml "
+                "-- persist=True is not supported")
+        for field, value in values.items():
+            r = self.session.call("jawa/mod_settings_field", typeName=type_name,
+                                  action="set", field=field, value=str(value))
+            if not (r or {}).get("success"):
+                raise ExpectationFailed(
+                    "mod_settings_field(set, %s.%s=%r) failed: %s"
+                    % (type_name, field, value, r))
+        settings = {}
+        for field in values:
+            got = self.session.call("jawa/mod_settings_field", typeName=type_name,
+                                    action="get", field=field)
+            settings[field] = (got or {}).get("value")
+        ok = all(settings.get(k) == str(v) for k, v in values.items())
+        self._record("set_setting(%s, %s)" % (type_name, values), ok)
         if not ok:
             raise ExpectationFailed(
-                "update_mod_settings(%s, %s) did not take -- read back %s"
-                % (mod_id, values, settings))
+                "mod_settings_field(%s, %s) did not take -- read back %s"
+                % (type_name, values, settings))
         return ok
 
     def bridge_call(self, tool, **params):

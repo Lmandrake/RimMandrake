@@ -49,13 +49,12 @@ mod to exercise them:
   Building a real functional test for either would require a test-only
   `ThingDef`/`ThoughtDef` this mod does not ship (the `RM_FluidSpring_
   Test` precedent in FluidCanals) -- out of scope for a validation.py-only
-  pass. Both toggles are therefore UNCOVERED -- see the "NOT a chain"
-  register at the end of this file (BENCH edit 2026-09-13: the draft's
-  set_setting write+read-back components were shelved because they fail
-  every run on the KNOWN static-field bridge limitation,
-  BRIDGE_STATIC_SETTINGS_FIELDS_1, which would hold this mod un-GREEN on
-  the wrong culprit). Flagged, not faked -- same practice as Pits' own two
-  uncovered toggles and RimProperty/validation.py's this same wave.
+  pass. Both toggles therefore carry a setting write+read-back component
+  (`viewer_reaction_toggle_flips`/`breach_bias_toggle_flips` below,
+  restored by MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 once `jawa/mod_settings_
+  field` learned static fields, BRIDGE_STATIC_SETTINGS_FIELDS_1) rather
+  than a behavioral proof -- same practice as Pits' own two toggle-only
+  components.
 
 WHY `jawa/ordered_job` AND `jawa/pawn_force_mental_break` (not a debug
 action) ARE THE VERBS HERE: `jawa/ordered_job` dispatches
@@ -182,16 +181,31 @@ def mental_break_spree(t):
         t.screenshot()
 
 
-# NOT a chain: `viewerReactionEnabled` and `breachBiasEnabled` are UNCOVERED,
-# deliberately (edited by BENCH before the first live run, 2026-09-13). The
-# draft proved them via `t.set_setting` write+read-back, accepting a
-# near-certain failure: RM_GraffitiMod.cs declares both fields
-# `public static` (line ~31), the EXACT shape `rimworld/update_mod_settings`
-# refused live for Pits ("reflection walks INSTANCE fields"). A component
-# that fails every run on a KNOWN bridge limitation keeps this mod
-# permanently un-GREEN and blocks its playtest gate on the wrong culprit --
-# the gap is the bridge tool's, already recorded on
-# MOD_VALIDATION_PIT_PILOT_1 and now BRIDGE_STATIC_SETTINGS_FIELDS_1. When
-# that tool learns static fields, restore the two write+read-back
-# components here (the draft's shape was right); until then this mirrors
-# Pits' own two uncovered toggles: registered, not faked.
+_GRAFFITI_SETTINGS = "RimMandrake.Graffiti.RM_GraffitiSettings"
+
+
+@suite.chain("viewer_reaction_toggle_flips")
+def viewer_reaction_toggle_flips(t):
+    """Restored by MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 now that
+    `jawa/mod_settings_field` resolves static fields (BRIDGE_STATIC_
+    SETTINGS_FIELDS_1). Proves `viewerReactionEnabled` is a real,
+    live-flippable setting -- see module docstring for why no further
+    behavioral proof exists for this field (`ThoughtWorker_
+    ViewedGraffitiMark` is unreachable dead code with this mod's own
+    shipped Defs)."""
+    with t.component("viewer_reaction_setting_flips", toggle="viewerReactionEnabled"):
+        t.set_setting(_GRAFFITI_SETTINGS, {"viewerReactionEnabled": False})
+        t.set_setting(_GRAFFITI_SETTINGS, {"viewerReactionEnabled": True})
+
+
+@suite.chain("breach_bias_toggle_flips")
+def breach_bias_toggle_flips(t):
+    """Restored by MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 (see
+    `viewer_reaction_toggle_flips` above). Proves `breachBiasEnabled` is a
+    real, live-flippable setting -- see module docstring for why no
+    further behavioral proof exists (no shipped ThingDef carries the
+    `modExtensions` block `BreachBiasHookMod`'s postfix needs to run past
+    the toggle check)."""
+    with t.component("breach_bias_setting_flips", toggle="breachBiasEnabled"):
+        t.set_setting(_GRAFFITI_SETTINGS, {"breachBiasEnabled": False})
+        t.set_setting(_GRAFFITI_SETTINGS, {"breachBiasEnabled": True})
