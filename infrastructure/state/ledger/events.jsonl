@@ -8012,3 +8012,5 @@
 {"seat":"BENCH","event":"claim","id":"MODLIST_COMPLEXITY_AUDIT_1","ts":"2026-09-13T03:31:32Z"}
 {"seat":"BENCH","event":"start","id":"MODLIST_COMPLEXITY_AUDIT_1","ts":"2026-09-13T03:31:33Z"}
 {"seat":"BENCH","event":"file","id":"GIDDYUP_NULLKEY_COLD_READING_1","title":"Cold-load log reading for the GR_Mantistanis null-key fix (1f222320b): add to the next run sheet","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T03:33:12Z"}
+{"seat":"BENCH","event":"note","id":"GIDDYUP_NULLKEY_CRASH_1","text":"Correction: cold-load reading rides GIDDYUP_NULLKEY_COLD_READING_1 (filed for FOUNDRY), not a run-sheet entry — the run sheet is FOUNDRY's item and BENCH's append was refused.","ts":"2026-09-13T03:33:34Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WORLD_NAME_FIXES_1 batch rename pass","ts":"2026-09-13T03:33:41Z"}
