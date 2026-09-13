@@ -177,6 +177,7 @@ class Queue:
         control_path = self.root / "control.json"
         control_path.write_text(json.dumps(control))
         env = dict(os.environ)
+        env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(self.codex_sandbox_template)
         return subprocess.run(self.daemon_args(*extra), capture_output=True,
@@ -539,6 +540,7 @@ def test_two_concurrent_daemons_claim_atomically():
         control_path = q.root / "control.json"
         control_path.write_text(json.dumps(control))
         env = dict(os.environ)
+        env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
@@ -1926,6 +1928,7 @@ def test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end():
         control_path = q.root / "control.json"
         control_path.write_text(json.dumps({"livereread1": "ok", "livereread2": "ok"}))
         env = dict(os.environ)
+        env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
@@ -2023,6 +2026,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
             "wedgejob2": "ok",
         }))
         env = dict(os.environ)
+        env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
@@ -2569,9 +2573,70 @@ def test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end():
         ok("quota-backoff: quotajob2 was never billed", not (q.done / "quotajob2.json").is_file())
 
 
+def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
+    """ART_LEGIBILITY_GATE_1: the downscale-legibility gate must (a) reject the
+    pilot's known-bad frostmite, (b) pass the known-good fixed one, (c) skip —
+    never silently pass — when disabled by env, and (d) actually wire into
+    _check_size_and_validate as a failure kind. Fixtures are the real pilot
+    pair, committed under testdata/ (the _artsrc originals are gitignored)."""
+    td = Path(__file__).resolve().parent / "testdata"
+    bad = td / "legibility_known_bad_256.png"
+    good = td / "legibility_known_good_256.png"
+    thresholds = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_thresholds.json"
+    ok("legibility: fixtures + calibrated thresholds exist",
+       bad.is_file() and good.is_file() and thresholds.is_file())
+
+    saved = os.environ.get("ARTPIPE_LEGIBILITY_THRESHOLDS")
+    try:
+        os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = str(thresholds)
+        v_bad, f_bad = artpiped.run_legibility_gate(bad)
+        v_good, f_good = artpiped.run_legibility_gate(good)
+        ok("legibility: known-bad frostmite REJECTED", v_bad == "reject",
+           "; ".join(f_bad))
+        ok("legibility: reject names its weakest metric",
+           any("weakest metric" in ln for ln in f_bad))
+        ok("legibility: known-good frostmite PASSES", v_good == "pass",
+           "; ".join(f_good))
+
+        os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""
+        v_off, f_off = artpiped.run_legibility_gate(bad)
+        ok("legibility: env-disabled is SKIPPED, never a silent pass",
+           v_off is None and any("skipped" in ln for ln in f_off))
+
+        # (d) the daemon wiring: a size-correct, reference-less transparent
+        # job must FAIL with the legibility failure kind on the bad fixture
+        # and stay ok on the good one.
+        from PIL import Image
+        os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = str(thresholds)
+        for fixture, want_fail in ((bad, True), (good, False)):
+            w, h = Image.open(fixture).size
+            job = {"canvas": {"width": w, "height": h}, "background": "transparent"}
+            result = artpiped._check_size_and_validate(
+                {}, job, None, fixture, artpiped.LEGIBILITY_SCRIPT)  # validator skips (no reference)
+            if want_fail:
+                ok("legibility wiring: bad fixture fails as legibility_below_gate",
+                   result.get("status") == "failed"
+                   and result.get("worker_status") == "legibility_below_gate",
+                   str(result.get("worker_status")))
+            else:
+                ok("legibility wiring: good fixture stays ok with legibility PASS",
+                   result.get("status") == "ok"
+                   and result.get("legibility") == "PASS",
+                   str(result.get("legibility")))
+    finally:
+        if saved is None:
+            os.environ.pop("ARTPIPE_LEGIBILITY_THRESHOLDS", None)
+        else:
+            os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = saved
+
+
 def main() -> int:
+    # Gate off by default for every in-process test — synthetic fixtures are
+    # not art. The legibility test opts back in around its own calls.
+    os.environ.setdefault("ARTPIPE_LEGIBILITY_THRESHOLDS", "")
     for fn in (
         test_crash_reconciliation,
+        test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly,
         test_claim_next_stamps_fresh_mtime_not_filing_time,
         test_row5_no_manifest_fails_request_not_account,
         test_row1_rate_limit_hard_stop,

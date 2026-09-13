@@ -55,8 +55,27 @@ now shape every transparent-background sprite job:
   ground — so a job author no longer has to remember it. It is skipped for
   black-backdrop reference jobs, which are not downsampled onto the map.
 
-The gate itself: run any candidate through `art_zoom_sim.py` against a
-same-tier vanilla control before calling it validated.
+The gate is now AUTOMATED (ART_LEGIBILITY_GATE_1, owner-ruled 2026-09-13):
+`src/RimMandrake/Utils/art_legibility.py` scores every transparent-bg sprite
+at 96/32/18 px (the requested 1:1 plus two zoom-outs) on keyline, structure,
+ground separation and coverage; `artpiped.py` runs it after the geometry
+validator and fails a candidate below the calibrated line
+(`legibility_thresholds.json` here — p25 of Alpha Animals' 471 shipping
+sprites minus margin; recalibrate with `art_legibility.py calibrate` if the
+corpus moves; `ARTPIPE_LEGIBILITY_THRESHOLDS=` empty disables). The gate
+separates the pilot pair: bad frostmite FAILS naming keyline as weakest,
+fixed frostmite passes with margin. `art_zoom_sim.py` remains the EYE for
+borderline calls.
+
+**Resolution verdict (MEASURED, 2026-09-13, `art_legibility.py resexp`, 35
+hi-res _artsrc masters stored at 64/128/256/512 then BOX-rendered to
+96/32/18 px):** stored resolution above 128 changes NOTHING measurable at
+any tier — 128/256/512 scores are identical within 0.1 points at 32 and 18
+px and within 0.1 at 96 px; only 64-stored drops (−5 at 96 px). Legibility
+at play zoom is design (keyline/shapes/contrast), not pixels. The owner's
+"will the gate push us above native resolution?" is REFUTED: the 256
+default already carries 2× headroom over the measured knee.
+Raw data: Transient/legibility_resexp_2026-09-13.json (14-day shelf).
 
 ## Who writes here
 

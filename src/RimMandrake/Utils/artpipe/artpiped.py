@@ -160,6 +160,15 @@ def _looks_gemini_quota_error(text: str) -> bool:
 
 VALIDATOR_TIMEOUT_S = 60  # run_validator's own subprocess.run ceiling.
 
+# Downscale-legibility gate (ART_LEGIBILITY_GATE_1, owner-ruled 2026-09-13):
+# score every transparent-bg sprite at 1:1 + two zoom-outs and refuse mud
+# BEFORE it reaches the owner's review sheet. Thresholds are CALIBRATED
+# (p25 of Alpha Animals' 471 shipping sprites, minus margin), never guessed;
+# regenerate them with `art_legibility.py calibrate` if the corpus moves.
+LEGIBILITY_SCRIPT = common.REPO_ROOT / "src" / "RimMandrake" / "Utils" / "art_legibility.py"
+LEGIBILITY_THRESHOLDS = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_thresholds.json"
+LEGIBILITY_TIMEOUT_S = 60
+
 # Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
 # decided jobs are pruned once they're this old (the repo's own Transient/
 # convention is ~14 days; matching it here for consistency).
@@ -1205,6 +1214,46 @@ def run_validator(validator_script: Path, reference, candidate: Path,
         f"problem here"]
 
 
+def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S):
+    """Downscale-legibility gate, same error discipline as run_validator:
+      None          — skipped (no thresholds file yet) — never a silent pass
+      "pass"        — art_legibility.py gate exit 0
+      "reject"      — exit 1: the sprite scores under the calibrated line
+      "gate_error"  — the gate itself could not run/finish; infrastructure,
+                       never blamed on the job
+    """
+    # ARTPIPE_LEGIBILITY_THRESHOLDS overrides the thresholds path; set EMPTY
+    # to disable the gate (the e2e selftests do — their synthetic fixtures
+    # are not art and must not be judged as art). Read per call, not at
+    # import, so a test can flip it without reimporting the module.
+    env_th = os.environ.get("ARTPIPE_LEGIBILITY_THRESHOLDS")
+    thresholds = LEGIBILITY_THRESHOLDS if env_th is None else (Path(env_th) if env_th else None)
+    if thresholds is None:
+        return None, ["gate disabled via ARTPIPE_LEGIBILITY_THRESHOLDS='' — "
+                      "skipped, not a pass"]
+    if not thresholds.is_file():
+        return None, [f"no thresholds file at {thresholds} — "
+                      f"legibility gate skipped, not a pass"]
+    if not LEGIBILITY_SCRIPT.is_file():
+        return "gate_error", [f"gate script does not exist: {LEGIBILITY_SCRIPT}"]
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(LEGIBILITY_SCRIPT), "gate", str(candidate),
+             "--thresholds", str(thresholds)],
+            capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return "gate_error", [f"art_legibility.py did not finish within {timeout}s"]
+    except OSError as exc:
+        return "gate_error", [f"could not run art_legibility.py: {exc}"]
+    findings = (proc.stdout + proc.stderr).strip().splitlines()
+    if proc.returncode == 0:
+        return "pass", findings
+    if proc.returncode == 1:
+        return "reject", findings
+    return "gate_error", findings + [
+        f"art_legibility.py exited {proc.returncode} — not its documented 0/1"]
+
+
 def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                               validator_script: Path) -> dict:
     """Common tail for BOTH channels once a real image file exists: read its
@@ -1259,6 +1308,28 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                             "(exit 2, unusable input) — most likely a bad or "
                             "missing reference path on the job, not an image defect")
         return result
+
+    # Geometry/alpha passed (or had no reference). Now the legibility gate —
+    # transparent-bg sprites only: black-backdrop reference shots are never
+    # downsampled onto the map, so play-zoom legibility is not their test.
+    if (job.get("background") or "transparent") == "transparent":
+        lverdict, lfindings = run_legibility_gate(out_png)
+        result["legibility_findings"] = lfindings
+        if lverdict == "reject":
+            result.update(status="failed", worker_status="legibility_below_gate",
+                           validator=("PASS" if verdict == "pass" else "skipped"),
+                           legibility="REJECT",
+                           note=("below the calibrated downscale-legibility line — "
+                                 + ("; ".join(lfindings[-1:]) if lfindings else "no detail"))[:300])
+            return result
+        if lverdict == "gate_error":
+            result.update(status="failed", worker_status="legibility_gate_could_not_run",
+                           validator=("PASS" if verdict == "pass" else "skipped"),
+                           legibility="ERROR",
+                           note=("art_legibility.py could not be run/finish — "
+                                 + ("; ".join(lfindings[-2:]) if lfindings else "no detail"))[:200])
+            return result
+        result["legibility"] = "PASS" if lverdict == "pass" else "skipped"
 
     result.update(status="ok", worker_status="ok",
                    validator=("PASS" if verdict == "pass" else "skipped"),

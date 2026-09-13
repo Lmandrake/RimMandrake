@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T20:03:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T20:42:15Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -98,6 +98,15 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
+
+## ART_LEGIBILITY_GATE_1 Numeric legibility gate: score sprites at 1:1 + two zoom-outs with clear metrics, wire into artpiped accept path; prove or refute 'quality at zoom-out pushes source resolution above native'
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/ART_LEGIBILITY_GATE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ART_LEGIBILITY_GATE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

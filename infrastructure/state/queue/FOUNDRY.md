@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T20:06:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T20:42:15Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -801,6 +801,15 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
+## MODCHECK_RUNNER_SWAP_LIVE_PROOF_1 cli.py run <mod>: first live proof of the fixed subprocess swap path (modcheck runner)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
+prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1377,16 +1386,6 @@ thin:     no ## criteria
 summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
 prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
 
-## MODCHECK_RUNNER_SWAP_LIVE_PROOF_1 cli.py run <mod>: first live proof of the fixed subprocess swap path (modcheck runner)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
-prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
-
 ## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
 state:    proposed
 row:      unassigned
@@ -1454,5 +1453,5 @@ needs:    owner
 target:   v1
 kind:     task
 thin:     no ## criteria
-summary:  When The Bazaar's slices 1–2 are live-proven: deactivate Trade UI Revised
+summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
