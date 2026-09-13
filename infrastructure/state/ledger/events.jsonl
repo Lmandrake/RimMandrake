@@ -8207,3 +8207,6 @@
 {"seat":"FOUNDRY","event":"file","id":"RM_GENSTEP_PLACED_SETPIECES_1","title":"Build RM_GenStep_PlacedSetPieces: the shared def-list set-piece scatterer (Miasma M6 + Sump S3/S4)","kind":"task","target":"v1","needs":"offline","caused_by":"SUMP_MECHANICS_1","for":"FOUNDRY","ts":"2026-09-13T10:33:44Z"}
 {"seat":"FOUNDRY","event":"claim","id":"RM_GENSTEP_PLACED_SETPIECES_1","ts":"2026-09-13T10:34:29Z"}
 {"seat":"FOUNDRY","event":"start","id":"RM_GENSTEP_PLACED_SETPIECES_1","ts":"2026-09-13T10:34:30Z"}
+{"seat":"FOUNDRY","event":"note","id":"RM_GENSTEP_PLACED_SETPIECES_1","text":"Built RM_GenStep_PlacedSetPieces (GenStep_Scatterer subclass) + RM_SetPieceElement hook (ScattererValidator-style, XML Class=-instantiated per site content); reuses inherited count/validators, no commonality field anywhere. dotnet build 0W/0E.","ts":"2026-09-13T10:40:11Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Please try to validate all possible mature mods using the new scripts. Keep going.","ts":"2026-09-13T10:48:48Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-13T10:48:49Z"}
