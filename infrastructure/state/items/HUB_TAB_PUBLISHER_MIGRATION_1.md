@@ -1,6 +1,6 @@
 # HUB_TAB_PUBLISHER_MIGRATION_1 — standalone dashboard publishers repoint to the hub
 
-The hub is live and pinned: https://claude.ai/code/artifact/d066e619-b84d-479c-842f-a81b0182511c
+The hub is live and pinned: https://claude.ai/code/artifact/ec893765-f01c-4cd8-a0b2-58e5b0bf2257
 (`DASHBOARD_HUB_ARTIFACT_1`; source `infrastructure/dashboards/hub/`). Each tab
 reads ONE data file; a seat republishes ONLY its own file against that URL
 (pass it as `url`; unpassed files are kept).
