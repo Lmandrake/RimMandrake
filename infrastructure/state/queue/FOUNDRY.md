@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T23:20:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T02:01:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -251,6 +251,15 @@ target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
+
+## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
+prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
 
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    doing
@@ -675,6 +684,15 @@ kind:     task
 summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
 prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
 
+## BIOME_WORLD_SWITCH_WAVE_1 World-switch every donor/vanilla-painted tile to its owned RUT_ successor: MEASURED 2026-09-12 live export, 17,889 of 21,872 tiles (82%) still on 23 donor/vanilla defs (ExtremeDesert 3969, AB_PropaneLakes 2531, Desert 2390, AB_MycoticJungle 2204, Wasteland 1853 ...) — BIOME_OWNERSHIP_WAVE_1 closed on def authoring only, the tile switch was never filed
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Template: PYRELANDSWORLDSWITCH1 (batches, getter read-back, CSV re-export + LOSS
+prose:    infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md
+
 ## UTINNI_WORLDMAP_FLIGHT_ICON_1 Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
 state:    doing
 row:      unassigned
@@ -692,6 +710,24 @@ target:   v1
 kind:     bug
 summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
+
+## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
+prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
+
+## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
+prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -798,12 +834,12 @@ summary:  Owner, verbatim (filed on the item): "Rather than use the whole Coming
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
 
 ## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
-state:    proposed  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  recon done, not stale: donor Factions_Horrors.xml read (settlementGenerationWeight 1, permanentEnemy already true, allowedArrivalTemperatureRange 0..45 -- warm-gated, not cold); vanilla FactionDef Mechanoid is the right template for 'no settlements, still raids' (hidden=true, no settlementGenerationWeight, raidCommonalityFromPointsCurve drives selection independent of world-map presence) -- Horrors donor has NO raidCommonalityFromPointsCurve at all, meaning its raids likely fire through the mod's OWN storyteller/incident C# (item spec: 'own storyteller + map generation + think trees'), not vanilla's generic faction-vs-points selection. Gating those by nightside/cold reach needs that DLL understood first (unstarted -- separate decompile from EDIBLE_GENEPACK_NATIVE_1's). Real blocker: this item's own dungeon-injection half ('nests/sinkholes/crysalises... on nightside tiles') is explicitly entangled with sibling HORRORWASTES_BIOME_DISSOLVE_1 ('The Horrors content is NOT lost -- it moves to HORRORS_RAIDING_FACTION_1'), and that item's own spec requires an owner-reviewed worldview.py render BEFORE painting the tile reassignment -- not done. Building dungeon content now risks placing it on tiles that land somewhere else post-dissolve. A shallow FactionDef-only patch would also be inert on its own: the frozen Ash'karr world already generated once, so a def change has zero observable effect without live world-editing (bridge-checked: game UP, bridge FREE, but a live settlement-removal now would front-run the same still-pending owner render). KEEP for whoever does the biome-dissolve render pass, or clears the storyteller gating question with the owner directly.
+blocked:  owner ruled 2026-09-09: hold the WHOLE item until HORRORWASTES_BIOME_DISSOLVE_1's owner-reviewed tile-reassignment render lands -- not stale, just not startable yet
 summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
 prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
 
@@ -1037,6 +1073,16 @@ blocked:  creature/mechanics built + pushed (swimmer/rooting/anchored/7 hediffs/
 summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
 prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
+## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  still correctly blocked: sole gate is owner ratifying the modcheck sheet FORMAT (Transient/modcheck/Pits_20260912T231116Z.html), not whether the pilot works -- MOD_VALIDATION_PIT_PILOT_1 ran GREEN 3/3 live 2026-09-12
+summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
+prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1047,44 +1093,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BIOME_WORLD_SWITCH_WAVE_1 World-switch every donor/vanilla-painted tile to its owned RUT_ successor: MEASURED 2026-09-12 live export, 17,889 of 21,872 tiles (82%) still on 23 donor/vanilla defs (ExtremeDesert 3969, AB_PropaneLakes 2531, Desert 2390, AB_MycoticJungle 2204, Wasteland 1853 ...) — BIOME_OWNERSHIP_WAVE_1 closed on def authoring only, the tile switch was never filed
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Template: PYRELANDSWORLDSWITCH1 (batches, getter read-back, CSV re-export + LOSS
-prose:    infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md
-
-## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## criteria
-summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
-prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
-
-## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
-prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
-
-## GIDDYUP_NULLKEY_CRASH_1 Giddy-Up BuildAnimalBiomeCache also throws ArgumentNullException (key) at BiomeDef.CommonalityOfAnimal -- a NULL PawnKindDef reference, not a duplicate key. Found in Player.log alongside GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1's crashes but a different mechanism: some biome's wildAnimals list or some PawnKindDef's race.wildBiomes holds a null/unresolved animal reference. Needs identifying which biome/record via the def dump before a fix is possible.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GIDDYUP_NULLKEY_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GIDDYUP_NULLKEY_CRASH_1.md
+_none._

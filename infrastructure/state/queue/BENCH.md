@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T01:46:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T02:01:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,6 +89,24 @@ target:   v1
 kind:     task
 summary:  Division of labor (the design decision, incl. the ruled pushback):
 prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
+
+## DUNGEON_SETPIECE_TEXT_1 Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  DUNGEONSETPIECETEXT1 — the held-for-owner dungeon prose
+prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
+
+## CAMPAIGN_STORY_SITTING_1 The formal campaign-story pass: gather EVERY campaign-arc fragment from the earliest notes to today (dungeons and their purposes, the floating station(s), the asteroid belt, the reveal moments and their gaps, tone/experience of each transition), stitch them into one arc document for an owner sitting — the wander-through scenario stays primary; the campaign is what's there if the player digs — then design the human interaction that makes the owner generate the knitting content without spawning a whole new game
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
+prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
 
 ## GIDDYUP_NULLKEY_CRASH_1 Giddy-Up BuildAnimalBiomeCache also throws ArgumentNullException (key) at BiomeDef.CommonalityOfAnimal -- a NULL PawnKindDef reference, not a duplicate key. Found in Player.log alongside GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1's crashes but a different mechanism: some biome's wildAnimals list or some PawnKindDef's race.wildBiomes holds a null/unresolved animal reference. Needs identifying which biome/record via the def dump before a fix is possible.
 state:    doing
@@ -275,32 +293,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
 
-## DUNGEON_SETPIECE_TEXT_1 Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  DUNGEONSETPIECETEXT1 — the held-for-owner dungeon prose
-prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
-
-## CAMPAIGN_STORY_SITTING_1 The formal campaign-story pass: gather EVERY campaign-arc fragment from the earliest notes to today (dungeons and their purposes, the floating station(s), the asteroid belt, the reveal moments and their gaps, tone/experience of each transition), stitch them into one arc document for an owner sitting — the wander-through scenario stays primary; the campaign is what's there if the player digs — then design the human interaction that makes the owner generate the knitting content without spawning a whole new game
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## criteria
-summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
-prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
-
 ## CORRECT_GIDDYUP_NULLKEY_1 GIDDYUP_NULLKEY_CRASH_1's null key is GR_Mantistanis (dead ref), not the RSW_ Wave-C names; fix applied, needs claim+close
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CORRECT_GIDDYUP_NULLKEY_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  What was wrong with the filed description: GIDDYUPNULLKEYCRASH1 as
 prose:    infrastructure/state/items/CORRECT_GIDDYUP_NULLKEY_1.md
