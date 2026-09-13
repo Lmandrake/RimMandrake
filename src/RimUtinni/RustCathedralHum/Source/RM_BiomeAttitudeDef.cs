@@ -71,14 +71,51 @@ namespace RimMandrake.Utinni.RustCathedralHum
 		public List<RM_BandCommentaryEntry> commentary = new List<RM_BandCommentaryEntry>();
 		public float commentaryCooldownHours = 12f;
 
+		// CATHEDRAL_STAGE_HUM_BRIDGE_1: the arc's conduct-stage (0 WARY, 1
+		// TOLERATED, 2 VOUCHED -- see design/Jawa/cathedral_concealment_arc_spec.md
+		// §1/§3) sets the baseline the composite band recovers toward. One
+		// entry per stage that departs from "no restriction, normal decay";
+		// a stage with no entry here is unrestricted (bandCeiling ==
+		// WorstBand) at the def's own base decay rate (multiplier 1). This
+		// is data, not a hardcoded stage table, per the item's own criteria
+		// -- a biome that wants a different ladder just lists different
+		// entries.
+		public List<RM_StageAttitudeParams> stageParams = new List<RM_StageAttitudeParams>();
+
 		public int BandCount => bandThresholds.Count + 1;
 
 		public int WorstBand => bandThresholds.Count;
+
+		/// <summary>The stage's own params, or null if this stage has no entry (caller treats null as "unrestricted, normal decay").</summary>
+		public RM_StageAttitudeParams GetStageParams(int stage)
+		{
+			for (int i = 0; i < stageParams.Count; i++)
+			{
+				if (stageParams[i].stage == stage)
+				{
+					return stageParams[i];
+				}
+			}
+			return null;
+		}
 	}
 
 	public class RM_BandCommentaryEntry
 	{
 		public int band;
 		public List<string> lines = new List<string>();
+	}
+
+	// A stage's own hum-baseline shaping: how high the DISPLAYED band can
+	// rise (the ceiling the arc spec's "reads flat and dull" / "breathes"
+	// language describes) and how much faster irritation recovers at this
+	// stage. Never touches the raw composite/hysteresis math -- that stays
+	// stage-blind so goodwill drain and commentary (kit §1's own machinery,
+	// explicitly out of this item's scope) are unaffected.
+	public class RM_StageAttitudeParams
+	{
+		public int stage;
+		public int bandCeiling = int.MaxValue;
+		public float decayRateMultiplier = 1f;
 	}
 }
