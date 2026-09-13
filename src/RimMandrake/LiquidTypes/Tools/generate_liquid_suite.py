@@ -20,13 +20,16 @@ decay, the official one is the design target and only the owner re-freezes it.
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 
-DUMP_PATH = (
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-    "RimWorld by Ludeon Studios/DefDump/captures/2026-08-29T13-30-02Z/defs/TerrainDef.json"
-)
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "RimMandrake" / "Utils"))
+from game_paths import CAPTURES  # the seam owns the LocalLow root
+
+# Pinned to the FROZEN capture on purpose (see docstring) — only the capture
+# id is hardcoded, the LocalLow root comes from the seam.
+DUMP_PATH = os.path.join(CAPTURES, "2026-08-29T13-30-02Z", "defs", "TerrainDef.json")
 
 # The four leaves RUT_ScaldWater cloned by hand. A moving-water liquid would
 # add WaterMovingShallow/WaterMovingChestDeep the same way; the acid pool

@@ -42,14 +42,14 @@ def run(body, cmd_path="design/.selftest_probe/probe.md", write=True):
 
 
 CASES = [
-    # 🔴 WATER IS ADVISORY WHILE THE PLANET IS BEING REMADE — owner, 2026-08-22:
-    # *"I am working with DECIDE to remake the planet an entirely different way, so
-    # there is no current frozen world."* `canon.yml planet.status: remaking` downgrades
-    # every planet-derived rule, because enforcing the dead world's water percentage
-    # refused the seat DRAFTING its replacement — at the write, mid-sentence.
-    # ⚠️ This case asserted DENY until then. Flip it back the day a new world is frozen
-    # and `planet.status` returns to `frozen`; the rule itself never changed.
-    ("ALLOW a planet number while planet.status is `remaking`", ALLOW, None,
+    # 🔴 PLANET NUMBERS ENFORCE AGAIN — `canon.yml planet.status: frozen` (owner
+    # card 2026-09-12: "Flip to frozen"; start save CANONICAL_ASHKARR_START_2026-09-12).
+    # While the planet was `remaking` (owner, 2026-08-22) this case asserted ALLOW,
+    # because enforcing the dead world's water percentage refused the seat drafting
+    # its replacement mid-sentence. The flip-back was scheduled in that comment and
+    # executed 2026-09-12. If the owner ever declares another remake, flip to ALLOW
+    # again; the rule itself never changes.
+    ("DENY  a wrong planet water number now planet.status is `frozen`", DENY, "water",
      "Water is ~25% of tiles, accept 22-28%.\n", None),
     # ✅ The suspension must NOT leak. A faction count is not planet-derived and still
     # blocks — this is the case that proves the downgrade is scoped.
