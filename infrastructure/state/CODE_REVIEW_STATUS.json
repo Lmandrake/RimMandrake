@@ -9867,6 +9867,12 @@
     "hash": "e293c7bb81b8718811c481713bbfd110a7046f54bebd22f508966414aee39d9a",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveC_Abilities.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "97d3584611acb1ca2345ba92ef4da5f3028f5ce8a0cbf06d9db58aaae913c093",
+    "sha": "032461ff4"
+  },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/Bodies/RSW_BiomesTeamPort_Bodies.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -9908,6 +9914,12 @@
     "date": "2026-09-09",
     "hash": "e3322bea02cab5b30acf8ef7b1810ad50d22139ae6b27ce97b951fbf2301c828",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveC_Bodies.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "8c537e85b5a15853d8912a8567e81a4f5f1c6ae6706b310c2803acacea58844b",
+    "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
     "cleanCount": 1,
@@ -9974,6 +9986,12 @@
     "date": "2026-09-09",
     "hash": "0c07be20346f9ea2374004deb0bafa2f368a9ab623eedf9f62e67dc7829c6e52",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/PawnRenderTreeDefs/RSW_MlieWaveC_RenderTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5155593bf13de1b89d8e19f880177c74fc1e0074b3d10707785d60480ae3075c",
+    "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml": {
     "cleanCount": 1,
@@ -10053,6 +10071,12 @@
     "hash": "68753f908fa25083d5e7dc1f2f589e1e2cae73b571c5b6c8e184bb7df12aa3fc",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5ae4bd476dd192da58fa2f8649f34308870a2a360dd6ba906b7be133bf8bc4de",
+    "sha": "032461ff4"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -10119,11 +10143,83 @@
     "hash": "1599f09004f1e3032423feb575de7c414d5bee92c01bb648a62c1fb8c38cbf2e",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Anooba.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b0529d960950a336ff85964882ca4b86a6b63cd232131fd78925397a13c0408d",
+    "sha": "032461ff4"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bantha.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
     "hash": "3c64248838987bda6bfc52907a8e57efa08b28e5650c1f08bc576bc395e47bd8",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Beldon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "53ca64b08741687b83829345ad17b1c836a4984d88fc29f527fb96b390ccc429",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bolotaur.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "108aa659c85a06fe833b4393bc3819662883e5c588be23f36ab277a40f2cf4dd",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Boma.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ee0facda2ad053d5f44c9ff476c2994cae7a0f215c21ba0dee9e05c8468951ff",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Borcatu.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "98f8b84af33d2fdde946d30b0a8f8d078ade6e41f8d117fbee1b6dac4b1db81e",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_CanCell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "e477001e6aa9255afeb60b03d72dbd1ac520e4e15d1ede6d310296fb624c04a9",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Cannok.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "3310fe89a7d4bfe9f3699cd7bfb88661a32fb19da509a66a0b48c04d39d783e1",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Clodhopper.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d1a4733eb6e7fcc7143174565ecd71adc085b89ecdd9530bd554a12d6f85c52e",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Convor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b20e119d419edbbd362209695d67f60aad578a7fcdb7b0ce89e31db462899815",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Corinathoth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b19f81de92499058bbeabc5a3715a3c447e86f47564c29a958510830a1291712",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dactillion.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "71d97d2a83469e4ed7154f6e104cbc6592645fe6f8db997eefed2f2c067a446b",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dalgo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "13ce9cc4fb7f5de9afdc60df128a022c5a8ed723ad26191e29e6705d29157a2b",
+    "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dewback.xml": {
     "cleanCount": 1,
@@ -10131,11 +10227,41 @@
     "hash": "eaeb14f6cfeb571f857baf7b5dbff8e0ac89e24578e5164b7ca80d44d40179f8",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dianoga.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "977619fb7d4d8393e71fa331acdd7dbbe3e20a90b414020c2480394edf409f16",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dragonsnake.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "a3feb4364d276a235a31a323c012c3399612f17ac5d844173db34378087c9f0e",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Eopie.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "ebe1da0f9460be093df6e345c3237991a8b533865ce88b0c3db3643dca3e54e8",
+    "sha": "032461ff4"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Iriaz.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "df06ead4fe138a3e99e778df7ef0833a32935349b6ecc97d5bf6966b8a298146",
+    "sha": "032461ff4"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jerba.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
     "hash": "b4a35657a08f413293dd5e058afe62c6869f56d17ee493ed5d61675a26d27b7c",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Mudhorn.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9493637bfc4ddc965c980783949ffeb1a4325c0d6e392fdac73e0b683fe2c04b",
+    "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml": {
     "cleanCount": 1,
