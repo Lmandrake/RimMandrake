@@ -827,11 +827,23 @@
     "hash": "9d47ff4d41db73084f410be3652ca2249c58db13cf2aa84313f93b5ce0b59c13",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_ChewableExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9ea8f313fecbdfe2a1ae048ca5f9d6f15084e106682c70c67b4fd15037b66360",
+    "sha": "d8a0b9b7d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "d5c4672f24db1dd7ec730a74cbccd2a2938825ea4cf966ac5ac01236e3210f2a",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompSenseWebNode.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d7de2164c1064b2bd58aee90afcdf980792c8c759071e3310206a69331baa387",
+    "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompVerminBreeder.cs": {
     "cleanCount": 2,
@@ -839,11 +851,23 @@
     "hash": "8169cbfbc6a2aa9099e22e674d4da0334f1ab30e7416374baf411c27ec832bc4",
     "sha": "20ce46f24"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "722f12d28f04f8f12db04a27e00203c5cc72101603e1e9737abff038128550e2",
+    "sha": "d8a0b9b7d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "117fe9bfa2046e4ea25c25fcd76b45968064d0ff268c6e459388b7c87bf0202e",
     "sha": "99a9e5cbc"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_FrontCreepExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "01e6007edac25bb47aca2c201b0e6c0cf36f672fef76e31d5ffcf048ce21b04a",
+    "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_GnawTargetExtension.cs": {
     "cleanCount": 1,
@@ -905,6 +929,12 @@
     "hash": "ca509008fe7804d53bcf4539b65ae9721a007a782437398077a6098baa2cba27",
     "sha": "7f2ff5541"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SenseWeb.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "1eff87c2394cb70c864740c73c0497e4d6fc658e62a8bdc3eed13416c7c345a7",
+    "sha": "d8a0b9b7d"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -946,6 +976,42 @@
     "date": "2026-09-11",
     "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/DivingInteraction/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "532f33541734a8d983da5cc1159d93c3f23ca7333ff73f42920ed764c86077d1",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/JobDefs/RM_DivingJobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "76f38fa906558f39e8722cba56c90d7a9cbccdb17aac126d23b732aa23be9dc2",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/Patches/RM_ScaldDiveEligibleTerrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "180e9128d1d9f69fa0f2b4fc57eba0155712f0fc36f90e9c953fd024b79fb1b5",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/ThingDefs_Items/RM_ScaldWalkerChitin.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "7b929a931d4b9b7ab3c82a15e53af04971b128ae96a1972ef4d778a54306ed65",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/ThoughtDefs/RM_DivingThoughtDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d7ebe3d4eb77b6b107fdcb40a64a1f7f9ddf85c2142142fd4943e18b2dfe3098",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/DivingInteraction/Languages/English/Keyed/RM_DivingInteraction_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d2e18516e2c2d307d276a88118807c05f5ee2868be3ec7f74fb27876fb605143",
+    "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_DiveUtility.cs": {
     "cleanCount": 1,
@@ -1127,6 +1193,24 @@
     "hash": "08312e40d9b360f14ed6725a25375c4a1077dd2dbf5fd674daf36f1535263ff4",
     "sha": "47ae589d5"
   },
+  "src/RimMandrake/FloodedCanyon/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c48773af848af9e9b6d143a8b67ca08959e5ab44dcda149d37cc9135217190ec",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "730bf3a09a294b1806e117622047308131ddfc1fb377d959e1b4a9aa613219ae",
+    "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/FloodedCanyon/Defs/GameConditionDefs/RM_FloodedCanyon_GameConditionDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "951471f25a307e1f66ea0e439d47c6877f56e4fff19ef4d56cdc6013708e5301",
+    "sha": "d8a0b9b7d"
+  },
   "src/RimMandrake/FloodedCanyon/Source/Debug/RM_FloodedCanyonDebugActions.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -1258,6 +1342,12 @@
     "date": "2026-09-04",
     "hash": "1f1af27a77ca0c170c34d7cbe4f9098bfbc2f1e0a41df6806d23d85471658ebe",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/RimMandrakeFluidCanalsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "9516989fb06b16c38246349158bf88f0592d29969782b101928b1e180a321f78",
+    "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/FluidCanals/Source/RimMandrakeFluidCanals_DefOf.cs": {
     "cleanCount": 1,
@@ -13202,5 +13292,11 @@
     "date": "2026-09-05",
     "hash": "92022fea04bd02a399078fd26fe0d1754534686b427ee387b37c2815ff582f3a",
     "sha": "8994703f"
+  },
+  "src/RimUtinni/UtinniPatches/Source/make_utinni_worldicon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "b57597465f751a859c09999687879934a9b5f6d2743c31a333abca435ecd3168",
+    "sha": "d8a0b9b7d"
   }
 }
