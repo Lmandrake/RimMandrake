@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T06:57:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T07:05:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  design/Jawa/cathedralconcealmentarcspec.md (drafted 2026-09-11). Shape:
-prose:    infrastructure/state/items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -223,3 +214,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
 prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
+
+## CATHEDRAL_ARC_OPEN_CARDS_1 Two owner sentences the Cathedral arc build needs: (1) the warzone posture flip surface if GM+pursuit prove insufficient, (2) mechanoid-pass scope at the edge (faction-13 only assumed) — flags from the 2026-09-12 decomposition
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  Card 1 — WARZONE FLIP SURFACE: A6 says "the planet becomes a warzone again";
+prose:    infrastructure/state/items/CATHEDRAL_ARC_OPEN_CARDS_1.md

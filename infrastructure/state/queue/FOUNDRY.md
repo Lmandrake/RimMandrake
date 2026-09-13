@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T06:57:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T07:05:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1177,3 +1177,83 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
 prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
+
+## CATHEDRAL_REGARD_BLACKBOARD_1 Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Python, GM external blackboard alongside Imperial Heat and Hutt Interest
+prose:    infrastructure/state/items/CATHEDRAL_REGARD_BLACKBOARD_1.md
+
+## CATHEDRAL_STAGE_HUM_BRIDGE_1 Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §3 bullet 1: stage sets the baseline the kit's composite band recovers
+prose:    infrastructure/state/items/CATHEDRAL_STAGE_HUM_BRIDGE_1.md
+
+## CATHEDRAL_MISSION_BOON_OFFERS_1 Deniably-sourced Assailant missions + Heat-gated gravtech boons
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §3 bullet 3. TOLERATED: first mission offers against the Assailant
+prose:    infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md
+
+## CATHEDRAL_STAGE_COMMENTARY_POOLS_1 Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
+prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
+
+## CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §4, RULED IN. An Imperial survey/research party works Cathedral-adjacent
+prose:    infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md
+
+## CATHEDRAL_DESCENT_REVEAL_SITE_1 The A7 real under-plate descent site + reveal beat + A1 Utinni-receiver lore propagation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §5, A7 RULED: a real structure-injected site the player walks in v1 —
+prose:    infrastructure/state/items/CATHEDRAL_DESCENT_REVEAL_SITE_1.md
+
+## CATHEDRAL_MECHANOID_PASS_VERBS_1 GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Two verbs:
+prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
+
+## CATHEDRAL_EXPOSURE_COMPLETION_1 The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
+prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
