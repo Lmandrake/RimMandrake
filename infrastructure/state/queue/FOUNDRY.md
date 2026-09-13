@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T22:34:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T22:50:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -67,15 +67,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
 prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
-prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
 ## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
 state:    ready
@@ -512,6 +503,15 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
+prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
@@ -1458,12 +1458,12 @@ thin:     no ## criteria
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
 
-## ART_QUEUE_DRAWSIZE_BACKFILL_1 Backfill drawsize onto every art queue row/target by joining the frozen def dump's graphicData.drawSize; regate the 353 backlog at true sizes
+## FLORA_LEGIBILITY_BAR_1 Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## criteria
-summary:  Join every art target/queue row (artstatus perTarget, pending/ rows, wave
-prose:    infrastructure/state/items/ART_QUEUE_DRAWSIZE_BACKFILL_1.md
+summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
+prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md

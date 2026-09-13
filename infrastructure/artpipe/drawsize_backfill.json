@@ -1,0 +1,1028 @@
+{
+ "generatedBy": "ART_QUEUE_DRAWSIZE_BACKFILL_1 v5 (+donor SWAC pawnkinds)",
+ "rule": "PawnKindDef lifeStages bodyGraphicData drawSize (adult) > ThingDef graphicData; class from plant/category/race; absent=1.0",
+ "stems": {
+  "aa_frostmite": {
+   "defName": "AA_Frostmite",
+   "class": "creature",
+   "drawsize": 1.6,
+   "ds_source": "pawnkind-xml"
+  },
+  "aa_shadowcharger": {
+   "defName": "AA_ShadowCharger",
+   "class": "creature",
+   "drawsize": 2.5,
+   "ds_source": "pawnkind-xml"
+  },
+  "aa_terramorph": {
+   "defName": "AA_Terramorph",
+   "class": "creature",
+   "drawsize": 2.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "aa_thunderox": {
+   "defName": "AA_Thunderox",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "agarilux": {
+   "defName": "AA_AgariluxRawFungus",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "aliengrass": {
+   "defName": "AA_AlienGrass",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "alientree": {
+   "defName": "AA_AlienTree",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "alientreepolluted": {
+   "defName": "AA_AlienTree",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "ambrosia": {
+   "defName": "AA_Heat_Ambrosia",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "anooba": {
+   "defName": "RSW_Anooba",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "arpeau": {
+   "defName": "RUT_Arpeau",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "bleedingtooth": {
+   "defName": "RUT_BleedingTooth",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "boma": {
+   "defName": "RSW_Boma",
+   "class": "creature",
+   "drawsize": 3.5,
+   "ds_source": "pawnkind-xml"
+  },
+  "borcatu": {
+   "defName": "RSW_Borcatu",
+   "class": "creature",
+   "drawsize": 1.6,
+   "ds_source": "pawnkind-xml"
+  },
+  "brightbells": {
+   "defName": "RUT_Brightbell",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "crimsoncap": {
+   "defName": "RUT_CrimsonCap",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "dactillion": {
+   "defName": "RSW_Dactillion",
+   "class": "creature",
+   "drawsize": 3.5,
+   "ds_source": "pawnkind-xml"
+  },
+  "dewback": {
+   "defName": "RSW_Dewback",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "dewshrooms": {
+   "defName": "RUT_Dewshrooms",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "dragonsnake": {
+   "defName": "RSW_Dragonsnake",
+   "class": "creature",
+   "drawsize": 4.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "flakespirefungus": {
+   "defName": "RUT_FlakespireFungus",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "fruitingbodies": {
+   "defName": "RUT_FruitingBodies",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "greylady": {
+   "defName": "RUT_GreyLady",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "halfalientree": {
+   "defName": "AA_AlienTree",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "lockjaw": {
+   "defName": "AA_Lockjaw",
+   "class": "creature",
+   "drawsize": 3.75,
+   "ds_source": "pawnkind-xml"
+  },
+  "mantrap": {
+   "defName": "AA_Mantrap",
+   "class": "creature",
+   "drawsize": 2.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "mortalmorel": {
+   "defName": "RUT_MortalMorelPlant",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "nogtyl": {
+   "defName": "RUT_Nogtyl",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "nuitae": {
+   "defName": "RUT_Nuitae",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "pusmelon": {
+   "defName": "RUT_Pusmelon",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "pyrelands_firehawk": {
+   "defName": "RUT_FireHawk",
+   "class": "creature",
+   "drawsize": 1.1,
+   "ds_source": "pawnkind-xml"
+  },
+  "pyrelands_furnacebeast": {
+   "defName": "RUT_FurnaceBeast",
+   "class": "creature",
+   "drawsize": 3.2,
+   "ds_source": "pawnkind-xml"
+  },
+  "redleaves": {
+   "defName": "AA_RedLeaves",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "redplantstall": {
+   "defName": "AA_RedPlantsTall",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "sagecrust": {
+   "defName": "RUT_Sagecrust",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "shinecap": {
+   "defName": "RUT_Shinecap",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "skulltop": {
+   "defName": "RUT_Skulltop",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "tentacular": {
+   "defName": "AA_EngorgedTentacularAberration",
+   "class": "creature",
+   "drawsize": 4.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "vaewaste_megatardi": {
+   "defName": "VAEWaste_Megatardi",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "pawnkind-xml"
+  },
+  "violetwimple": {
+   "defName": "RUT_VioletWimple",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "wrinklecap": {
+   "defName": "RUT_Wrinklecap",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "default-1.0"
+  },
+  "aaklac": {
+   "defName": "AB_Aaklac",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "abtoxigrass": {
+   "defName": "AB_ToxiGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "agaricusdomecap": {
+   "defName": "AB_AgaricusDomeCap",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "agariluxprime": {
+   "defName": "AB_AgariluxPrime",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "arbuscularmycorrhiza": {
+   "defName": "AB_ArbuscularMycorrhiza",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "aridgrass": {
+   "defName": "RG_Plant_AridGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "bindweed": {
+   "defName": "IronScruff_Bindweed",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "bloddle": {
+   "defName": "Plant_Bloddle",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "bloodbouquet": {
+   "defName": "AB_BloodBouquet",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "brambles": {
+   "defName": "Plant_Brambles",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "bryolux": {
+   "defName": "AB_Bryolux",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "bubblespore": {
+   "defName": "Plant_Bubblespore_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "bush": {
+   "defName": "Plant_Bush",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "chakroot": {
+   "defName": "Plant_Chakroot_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "creepstern": {
+   "defName": "RG_Plant_CreepStern",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "crimsoncushion": {
+   "defName": "RG_Plant_CrimsonCushion",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "crystalflower": {
+   "defName": "AB_CrystalFlower",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "crystalhorn": {
+   "defName": "AB_CrystalHorn",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "dervish": {
+   "defName": "RG_Plant_Dervish",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "doomsprout": {
+   "defName": "BMT_Plant_Doomsprout",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "dribblingcap": {
+   "defName": "AB_DribblingCap",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "eclipsusflower": {
+   "defName": "BMT_Plant_EclipsusFlower",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "eclipsusleaves": {
+   "defName": "BMT_Plant_EclipsusLeaves",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "felucianglowspore": {
+   "defName": "Plant_FelucianGlowspore_Wild",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "firelavender": {
+   "defName": "BMT_FireLavender",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "firevine_fireweed": {
+   "defName": "Plant_Fireweed",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "firevinetree": {
+   "defName": "AB_FirevineTree",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "frostleaf": {
+   "defName": "AB_FrostLeaf",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "gargantuanlithops": {
+   "defName": "AB_GargantuanLithops",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "giantagarilux": {
+   "defName": "AB_GiantAgarilux",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "giantagaritox": {
+   "defName": "AB_GiantAgariTox",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "giantgamma": {
+   "defName": "AB_GiantGamma",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "giantleaf": {
+   "defName": "BMT_GiantLeaf",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "giantseptimum": {
+   "defName": "AB_GiantSeptimum",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "giantstikehr": {
+   "defName": "AB_GiantStikehr",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "gianttoxicflower": {
+   "defName": "AB_GiantToxicFlower",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "globularplant": {
+   "defName": "AB_GlobularPlant",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "glowingagarilux": {
+   "defName": "AB_GlowingAgarilux",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "glowinggrass": {
+   "defName": "AB_GlowingGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "glowstool": {
+   "defName": "AB_Glowstool",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "gomphoeria": {
+   "defName": "AB_Gomphoeria",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "graygrass": {
+   "defName": "Plant_GrayGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "greenrockfern": {
+   "defName": "AB_GreenRockFern",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "grimmoss": {
+   "defName": "GRimMoss",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "gutterplantain": {
+   "defName": "BMT_Plant_GutterPlantain",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "hardygrass": {
+   "defName": "AB_HardyGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "healroot": {
+   "defName": "Plant_HealrootWild",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "heatsinkfungus": {
+   "defName": "BMT_HeatsinkFungus",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "hubbagourd": {
+   "defName": "Plant_HubbaGourd_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "hydenocktree": {
+   "defName": "Plant_HydenockTree_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "iashiphus": {
+   "defName": "AB_Iashiphus",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "jogantree": {
+   "defName": "Plant_JoganTree_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "jungletree": {
+   "defName": "AB_JungleTree",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "keeningcordax": {
+   "defName": "AB_KeeningCordax",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "largeslimytree": {
+   "defName": "AB_LargeSlimyTree",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "lilacbeacon": {
+   "defName": "AB_LilacBeacon",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "magmacactus": {
+   "defName": "Plant_MagmaCactus",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "mangrovepalm": {
+   "defName": "AB_MangrovePalm",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "mangrovetree": {
+   "defName": "AB_MangroveTree",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "martyr": {
+   "defName": "BMT_Plant_TreeMartyr",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "mujafruit": {
+   "defName": "Plant_MujaFruit_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "nysyllin": {
+   "defName": "Plant_Nysyllin_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "parasiticmangrove": {
+   "defName": "AB_ParasiticMangrove",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "poisonplanttallgrass": {
+   "defName": "PoisonPlantTallGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "poisonshrub": {
+   "defName": "PoisonShrub",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "poxsorghum": {
+   "defName": "BMT_Plant_PoxSorghum",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "primordialgrass": {
+   "defName": "IronScruff_PrimordialGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "primordialtallgrass": {
+   "defName": "IronScruff_PrimordialTallGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "rainbowtongue": {
+   "defName": "BMT_RainbowTongue",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "ravennettle": {
+   "defName": "AB_RavenNettle",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "recurvedstropharia": {
+   "defName": "AB_RecurvedStropharia",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:titan"
+  },
+  "redbugloss": {
+   "defName": "AB_RedBugloss",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "reeds": {
+   "defName": "Plant_Reeds",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "rgtoxigrass": {
+   "defName": "AB_ToxiGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "rimenodules": {
+   "defName": "AB_RimeNodules",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "ripthorn": {
+   "defName": "Plant_Ripthorn",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "scorchedstars": {
+   "defName": "BMT_Plant_ScorchedStars",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "sewerreed": {
+   "defName": "BMT_Plant_SewerReed",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "shrublow": {
+   "defName": "Plant_ShrubLow",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "slimecasia": {
+   "defName": "AB_Slimecasia",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "slimyfern": {
+   "defName": "AB_SlimyFern",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "slimytree": {
+   "defName": "AB_SlimyTree",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "snaketails": {
+   "defName": "BMT_Plant_Snaketails",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "sugarfamewort": {
+   "defName": "AB_SugarFamewort",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "tallslimygrass": {
+   "defName": "AB_TallSlimyGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "talltoxigrass": {
+   "defName": "RG_Plant_TallToxiGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "tanglerootmangrove": {
+   "defName": "BMT_Plant_TreeTanglerootMangrove",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "tangletea": {
+   "defName": "AB_TangleTea",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "tinklegrass": {
+   "defName": "AB_TinkleGrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "tooketrap": {
+   "defName": "Plant_TookeTrap_Wild",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "toxibulb": {
+   "defName": "AB_ToxiBulb",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "toxicgamma": {
+   "defName": "AB_ToxicGamma",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "toxicivy": {
+   "defName": "BMT_Plant_ToxicIvy",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "toxipotato": {
+   "defName": "Plant_Toxipotato",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "tropicalchokevine": {
+   "defName": "RG_Plant_TropicalChokevine",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "tumorbulbhyacinth": {
+   "defName": "BMT_Plant_TumorbulbHyacinth",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "twisteddandelion": {
+   "defName": "BMT_Plant_TwistedDandelion",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "twistingthorngrass": {
+   "defName": "BMT_Plant_TwistingThorngrass",
+   "class": "flora",
+   "drawsize": 0.8,
+   "ds_source": "flora-sizebin:small"
+  },
+  "twistingthornweed": {
+   "defName": "BMT_Plant_TwistingThornweed",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "twistingthornwood": {
+   "defName": "BMT_Plant_TreeTwistingThornwood",
+   "class": "flora",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large"
+  },
+  "weepingtoxberry": {
+   "defName": "AB_WeepingToxberry",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "wildradagast": {
+   "defName": "AB_WildRadagast",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "wildrashroot": {
+   "defName": "BMT_Plant_WildRashroot",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "witchesoyster": {
+   "defName": "AB_WitchesOyster",
+   "class": "flora",
+   "drawsize": 1.0,
+   "ds_source": "flora-sizebin:medium"
+  },
+  "fambaa": {
+   "defName": "Fambaa",
+   "class": "creature",
+   "drawsize": 8.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "fanback": {
+   "defName": "Fanback",
+   "class": "creature",
+   "drawsize": 3.5,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "grank": {
+   "defName": "Grank",
+   "class": "creature",
+   "drawsize": 1.75,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "greaterkraytdragon": {
+   "defName": "GreaterKraytDragon",
+   "class": "creature",
+   "drawsize": 10.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "hawkbat": {
+   "defName": "Hawkbat",
+   "class": "creature",
+   "drawsize": 2.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "horax": {
+   "defName": "Horax",
+   "class": "creature",
+   "drawsize": 8.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "insectomorph": {
+   "defName": "Insectomorph",
+   "class": "creature",
+   "drawsize": 2.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "kinrath": {
+   "defName": "Kinrath",
+   "class": "creature",
+   "drawsize": 2.5,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "kreetle": {
+   "defName": "Kreetle",
+   "class": "creature",
+   "drawsize": 1.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "ollopom": {
+   "defName": "Ollopom",
+   "class": "creature",
+   "drawsize": 1.75,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "orray": {
+   "defName": "Orray",
+   "class": "creature",
+   "drawsize": 2.75,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "pekopeko": {
+   "defName": "PekoPeko",
+   "class": "creature",
+   "drawsize": 3.5,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "ronto": {
+   "defName": "Ronto",
+   "class": "creature",
+   "drawsize": 7.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "shiro": {
+   "defName": "Shiro",
+   "class": "creature",
+   "drawsize": 1.5,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "vornskyr": {
+   "defName": "Vornskyr",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "whisperbird": {
+   "defName": "Whisperbird",
+   "class": "creature",
+   "drawsize": 2.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "wyyyschokk": {
+   "defName": "Wyyyschokk",
+   "class": "creature",
+   "drawsize": 3.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "zakkeg": {
+   "defName": "Zakkeg",
+   "class": "creature",
+   "drawsize": 5.0,
+   "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  }
+ },
+ "unresolved": [
+  "ashrunner",
+  "bgtest_a",
+  "bgtest_b",
+  "bilespawn",
+  "cinderwing",
+  "corronip",
+  "direwail",
+  "duskram",
+  "emberscythe",
+  "featherfeel",
+  "fenshear",
+  "fumeback",
+  "gorewalker",
+  "gr_spidercat",
+  "grithe",
+  "grubhorn",
+  "grutt",
+  "huskrunner",
+  "kroffa",
+  "mireflit",
+  "mireflitwarden",
+  "miremoth",
+  "mycolith",
+  "nyssylin",
+  "oozemaw",
+  "polux",
+  "poluxbush",
+  "puffmite",
+  "rotscythe",
+  "scarrend",
+  "septimum",
+  "slagmaw",
+  "sludrin",
+  "sporehulk",
+  "verdaunt",
+  "wastewing"
+ ],
+ "sizebin_ds_rule": {
+  "small": 0.8,
+  "medium": 1.0,
+  "large": 1.6,
+  "huge": 2.2
+ }
+}
