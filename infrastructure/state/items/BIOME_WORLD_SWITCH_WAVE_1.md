@@ -129,12 +129,82 @@ every link with no re-authoring.
   the donor allowed roads and 34 tiles use them. Flagged as possibly unintended — a
   one-line def change would restore them.
 
+### follow-up 2026-09-12 (offline bookkeeping, no bridge) — wildBiomes eviction + icons
+
+**wildBiomes eviction/de-dup: ran successfully, output NOT shipped (stale input found).**
+No code change was needed or made — `biome_wildbiomes_evictions.py`'s dedup logic is
+untouched. Root cause of the ">300s timeout": the animal-side scan
+(`gen_cast_patch._animal_side_biomes()`) walks every INSTALLED mod's raw XML across
+`/mnt/c/...` (WSL→Windows drive, ~1,254 mods, pruned to skip Textures/Sounds/etc. per
+its own comment) plus the newest def-dump capture; that cross-filesystem walk is
+genuinely ~10 minutes end to end (measured: started 18:53, cache file written 19:03),
+not a bug — the tool already documents exactly why it can't be capture-only (a
+disk-only or capture-only source each miss real collisions; see its docstring's
+2026-08-26/2026-08-22 incident history). The only "fix" applied was operational: run
+in the background with `--cache <path>` instead of under a short synchronous timeout;
+a second run now reuses the cache and returns instantly. **Not** changed: which mods
+it walks, what counts as a collision, any filtering logic.
+
+Ran it for real against the post-switch painted set (fresh capture
+`2026-09-12T22-49-15Z`): **688 eviction pairs found, but 686 of them are noise**, not
+signal. `painted_defs()` unions the live tile CSV (correctly all-`RUT_` now) with
+`design/Jawa/worldbuilding/biomes/rosters/*.json`'s `defNames` field — and **at least
+20 of those 22 roster files still name the OLD DONOR bare defName**
+(`arid_shrubland.json`→`AridShrubland`, `desert.json`→`Desert`,
+`dune_sea_deep_desert.json`→`ExtremeDesert`, `fall_line.json`→ all three,
+`forsaken_crags.json`→`AB_RockyCrags`, `poison_forest.json`→`PoisonForest`, etc. —
+only `the_lantern_deeps.json` and `the_propane_lakes.json` already carry a `RUT_`
+name). That's why the run's 4 non-empty biome buckets were `AridShrubland` 256,
+`Desert` 232, `ExtremeDesert` 198 (all bare donor names, now painted on **zero**
+tiles per this item's own verification — so these 686 ops would be dead weight
+against the tool's own stated rule, "an unpainted biome ... is none of our
+business") and `RUT_Scarlands` 2 (the one **genuine** new pair, reached via the live
+CSV directly, not the roster). Also seen: 103 rostered pairs left to the de-dup
+union, 17 already shipped there, 194 skipped as installed-but-not-in-the-live-mod-set.
+
+Checked whether this also threatens the actual fauna CAST (not just the eviction
+step): it doesn't. `cast_assignment.csv` (the source `gen_cast_patch.py` reads for
+`BiomeCast_Ashkarr.xml`) is *also* 22/23 donor-named, and the shipped
+`BiomeCast_Ashkarr.xml` itself patches 0 `RUT_` defs / 23 donor defs — but every
+`RUT_*.xml` (e.g. `RUT_Desert.xml` line 34) says its `wildAnimals`/`wildPlants` were
+**transplanted in at authoring time** (`BIOME_OWNERSHIP_WAVE_1`, 2026-09-09) from
+that same patch/roster snapshot. So the live cast is intact and baked into the def
+itself; `BiomeCast_Ashkarr.xml` is now a harmless no-op for these 22 biomes (correct
+by the design comment, not a bug) — flagged and verified, not left as a scare.
+
+**Decision: did not write/ship the eviction XML this pass.** Regenerating
+`BiomeCastEvictions_WildBiomes.xml` today would bake the 686 dead-donor-name ops into
+a file whose own header says "GENERATED — do not hand-edit," permanently encoding the
+roster staleness as if it were real Ash'karr content. Real next step, NOT done here
+(roster content edits are a design call, not this task's "input-fetch only" mandate):
+rename the `defNames` entries in the ~20 stale roster JSON files above to their
+`RUT_` counterparts (the same 1:1 mapping already established in this item's own
+mapping table), then re-run `biome_wildbiomes_evictions.py --cache <fresh path> --xml
+src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml` — at that point
+it should cleanly find only the real cross-biome pairs (starting from `RUT_Scarlands`'s
+2, likely joined by a few more once the other 19 defs are correctly named).
+
+**Icon regen: there is no script to re-run.** Rechecked `WORLDMAP_BIOME_ICONS_REGEN_1`
+(closed `a0728d4be8`, 2026-09-07 MEASURED): worldmap decoration icons are picked by
+Biomes Kit's (`zal.biomeskit`) `BiomesKitControls` modExtension — hand-authored
+forest/hill/mountain threshold flags on each `BiomeDef` selecting one of several baked
+PNG sheets — with **zero code path from `wildPlants`/`wildAnimals`**, so "regenerate
+after reassignment" was never a real mechanism to begin with; that finding stands
+unchanged by today's tile-paint switch. Checked whether it's moot now anyway: **none**
+of the 20 new `RUT_*.xml` biome defs carry a `BiomesKitControls` modExtension at all
+(grepped all 20), so tiles painted with them get Biomes Kit's default icon behaviour
+for an unflagged biome, not the donor's icon set and not a matched one either. Fixing
+this is a manual per-def authoring pass (pick forest/hill/mountain thresholds per
+`RUT_*` biome) needing the owner's call on target icon sets — exactly the kind of
+"needs a fresh item, not a re-run" case `WORLDMAP_BIOME_ICONS_REGEN_1` already
+recommended in 2026-09-07; not attempted here (design authoring, not bookkeeping).
+
 ### owed, not done here
-- **De-dup union / animal-side `wildBiomes` strip not regenerated.**
-  `biome_wildbiomes_evictions.py` walks every installed mod's XML and exceeded a
-  300 s timeout; it is not the cheap step the spec hoped for. The painted set changed
-  under it, so it needs a real run.
-- `WORLDMAP_BIOME_ICONS_REGEN_1`.
+- **wildBiomes eviction patch not regenerated/shipped** — blocked on the ~20 stale
+  roster `defNames` above; see follow-up section for the exact rename list and rerun
+  command.
+- **Worldmap biome icons for all 20 new `RUT_` defs** — none carry `BiomesKitControls`;
+  needs a manual authoring pass with the owner's icon-set call, not a script.
 - Full-list cold load + per-batch quicktest (this item's third verify line) — not run.
 - The links CSV was **not** rebased. `ashkarr_rebase_from_save.py` would have written
   1,235 road edges over the canonical 1,387: that 152-edge delta is **pre-existing
