@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T23:34:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T23:48:30Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -774,15 +774,6 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
-## MODCHECK_RUNNER_SWAP_LIVE_PROOF_1 cli.py run <mod>: first live proof of the fixed subprocess swap path (modcheck runner)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Run python3 src/RimMandrake/Utils/modcheck/cli.py run <mod for a real,
-prose:    infrastructure/state/items/MODCHECK_RUNNER_SWAP_LIVE_PROOF_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1458,3 +1449,43 @@ kind:     task
 thin:     no ## criteria
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
+
+## CANON_REFERENCE_LIBRARY_1 Permanent SW-canon visual reference library: text + candidate images per creature, donor art included, owner rules disagreements — gates all canon regens
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Location (permanent, committed): design/RimStarWars/canonreferences/<creature/
+prose:    infrastructure/state/items/CANON_REFERENCE_LIBRARY_1.md
+
+## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
+prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
+
+## PYRELANDS_CREATURE_RERENDER_1 One dayside biome fully re-rendered: ALL Pyrelands creatures under the full 2026-09-13 lawset, deployed, owner walks it in game — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Roster derivation (measure, never remember): the biome's creature list
+prose:    infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md
+
+## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
+prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
