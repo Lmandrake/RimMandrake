@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-13T04:22:15Z",
+  "facing": null,
+  "facings": [],
+  "id": "wrinklecap_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a small mushroom with a heavily wrinkled, crinkled cap surface and a short thick stalk, textured and gnarled. Single fungus, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE1_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (small wrinkled-cap mushroom, per its own name) fixed, flavor free per 'improve' semantics. Source row: flora:the_rot:BMT_Wrinklecap, sizeBin small. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

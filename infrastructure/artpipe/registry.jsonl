@@ -1000,3 +1000,33 @@
 {"by": "artpiped", "event": "validated", "job_id": "mangrovetree_v1", "target": "mangrovetree", "ts": 1789272382.3496404, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 76.16678540298017, "event": "generated", "job_id": "sugarfamewort_v1", "target": "sugarfamewort", "ts": 1789272459.074598}
 {"by": "artpiped", "event": "validated", "job_id": "sugarfamewort_v1", "target": "sugarfamewort", "ts": 1789272459.0835435, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "bryolux", "ts": 1789273334.8832543}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "bryolux_v1", "notes": "", "target": "bryolux", "ts": 1789273334.8923328}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "glowstool", "ts": 1789273334.9002607}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "glowstool_v1", "notes": "", "target": "glowstool", "ts": 1789273334.9091318}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "witchesoyster", "ts": 1789273334.9238029}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "witchesoyster_v1", "notes": "", "target": "witchesoyster", "ts": 1789273334.932462}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "bleedingtooth", "ts": 1789273334.9401567}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "bleedingtooth_v1", "notes": "", "target": "bleedingtooth", "ts": 1789273334.9486961}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "brightbells", "ts": 1789273334.9564593}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "brightbells_v1", "notes": "", "target": "brightbells", "ts": 1789273334.9636836}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "crimsoncap", "ts": 1789273334.9716394}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "crimsoncap_v1", "notes": "", "target": "crimsoncap", "ts": 1789273334.979647}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "dewshrooms", "ts": 1789273334.9874473}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "dewshrooms_v1", "notes": "", "target": "dewshrooms", "ts": 1789273334.996007}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "fruitingbodies", "ts": 1789273335.0036082}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fruitingbodies_v1", "notes": "", "target": "fruitingbodies", "ts": 1789273335.0123937}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "greylady", "ts": 1789273335.019956}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greylady_v1", "notes": "", "target": "greylady", "ts": 1789273335.0275064}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "mortalmorel", "ts": 1789273335.035014}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "mortalmorel_v1", "notes": "", "target": "mortalmorel", "ts": 1789273335.0433433}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "nuitae", "ts": 1789273335.051425}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "nuitae_v1", "notes": "", "target": "nuitae", "ts": 1789273335.0599127}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "pusmelon", "ts": 1789273335.0675662}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pusmelon_v1", "notes": "", "target": "pusmelon", "ts": 1789273335.0757365}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "skulltop", "ts": 1789273335.083266}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "skulltop_v1", "notes": "", "target": "skulltop", "ts": 1789273335.0915217}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "violetwimple", "ts": 1789273335.0996165}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "violetwimple_v1", "notes": "", "target": "violetwimple", "ts": 1789273335.1074}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "wrinklecap", "ts": 1789273335.1162684}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "wrinklecap_v1", "notes": "", "target": "wrinklecap", "ts": 1789273335.1239104}
