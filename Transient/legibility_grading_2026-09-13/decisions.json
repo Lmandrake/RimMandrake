@@ -1,357 +1,380 @@
 {
- "posture": "whitelist",
- "criterion": "Pre-filled from the current legibility gate (pass=works, fail=mud) \u2014 which ranks measured outline/contrast survival, not your visual experience. Your overrides ARE the calibration data.",
- "generatedBy": "bench legibility grading generator 2026-09-13",
- "decisions": {
-  "hare_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "miremoth_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "jogantree_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "fumeback_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "sagecrust_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "iguana_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "husky_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "aa_royalave6_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "wastewing_v1_north_r2": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "aa_dessicated_bumbledronequeen_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "borcatu_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "martyr_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "aa_engorgedtentacularaberration_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "megasloth_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "muffalo_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "dragonsnake_v1_east": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "gr_saddle_muffalos_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "globularplant_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "eclipsusleaves_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "aa_frostlingsaddle_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "sludrin_v1_south": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "direwail_v1_east": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "boma_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "lockjaw_improve_a_r12_south": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "boomrat_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "fenshear_v1_south": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "boma_v1_south": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "insectomorph_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "anooba_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "kroffa_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "horax_v1_east": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "aa_thermadon_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "cow_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "vornskyr_v1_north": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "graygrass_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "cougar_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "corronip_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "aa_dessicated_redspore_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "pyrelands_furnacebeast_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "sporehulk_v1_south": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "legibility_known_good_256": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "rat_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "aa_drainer_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "wyyyschokk_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "pekopeko_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "tropicalchokevine_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "zakkeg_v1_east": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "huskrunner_v1_south": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "tortoise_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "alpaca_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "chakroot_v1": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "warg_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "frostleaf_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "mantrap_improve_a": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "shiro_v1_north": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "scarrend_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "mantrap_improve_b_r6": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "redplantstall_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "kreetle_v1_north": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "mireflit_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "bear_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "emberscythe_v1_south": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "bilespawn_v1_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "legibility_known_bad_256": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "twistingthorngrass_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "glowinggrass_v1": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "mantrap_improve_b": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "thrumbo_east": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  },
-  "grubhorn_v1_north": {
-   "decision": "mud",
-   "prefill": "mud",
-   "note": ""
-  },
-  "grutt_v1_north": {
-   "decision": "works",
-   "prefill": "works",
-   "note": ""
-  }
- }
+  "criterion": "Pre-filled from the current legibility gate (pass=works, fail=mud) — which ranks measured outline/contrast survival, not your visual experience. Your overrides ARE the calibration data.",
+  "decidedCount": 70,
+  "decisions": {
+    "aa_dessicated_bumbledronequeen_east": {
+      "at": "2026-09-13T21:31:43.911Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_dessicated_redspore_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_drainer_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_engorgedtentacularaberration_east": {
+      "at": "2026-09-13T21:32:24.955Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_frostlingsaddle_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_royalave6_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "aa_thermadon_east": {
+      "at": "2026-09-13T21:34:56.865Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "alpaca_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "anooba_v1_east": {
+      "at": "2026-09-13T21:34:43.757Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "bear_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "bilespawn_v1_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "boma_v1_east": {
+      "at": "2026-09-13T21:33:47.473Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "boma_v1_south": {
+      "at": "2026-09-13T21:34:21.575Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "boomrat_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "borcatu_v1_east": {
+      "at": "2026-09-13T21:31:50.705Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "chakroot_v1": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "corronip_v1_north": {
+      "at": "2026-09-13T21:35:15.699Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "cougar_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "cow_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "direwail_v1_east": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "dragonsnake_v1_east": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "eclipsusleaves_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "emberscythe_v1_south": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "fenshear_v1_south": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "frostleaf_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "fumeback_v1_north": {
+      "at": "2026-09-13T21:30:03.262Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "globularplant_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "glowinggrass_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "gr_saddle_muffalos_east": {
+      "at": "2026-09-13T21:32:42.069Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "graygrass_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "grubhorn_v1_north": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "grutt_v1_north": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "hare_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "horax_v1_east": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "huskrunner_v1_south": {
+      "at": "2026-09-13T21:36:36.463Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "husky_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "iguana_east": {
+      "at": "2026-09-13T21:30:19.209Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "insectomorph_v1_north": {
+      "at": "2026-09-13T21:34:30.510Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "jogantree_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "kreetle_v1_north": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "kroffa_v1_east": {
+      "at": "2026-09-13T21:34:49.853Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "legibility_known_bad_256": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "legibility_known_good_256": {
+      "at": "2026-09-13T21:36:07.546Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "lockjaw_improve_a_r12_south": {
+      "at": "2026-09-13T21:34:11.412Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "mantrap_improve_a": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "mantrap_improve_b": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "mantrap_improve_b_r6": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "martyr_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "megasloth_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "mireflit_v1_north": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "miremoth_v1_east": {
+      "at": "2026-09-13T21:29:41.756Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "muffalo_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "pekopeko_v1_north": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "pyrelands_furnacebeast_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "rat_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "redplantstall_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "sagecrust_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "scarrend_v1_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "shiro_v1_north": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "sludrin_v1_south": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "sporehulk_v1_south": {
+      "at": "2026-09-13T21:36:02.035Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "thrumbo_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "tortoise_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "tropicalchokevine_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "twistingthorngrass_v1": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "vornskyr_v1_north": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "warg_east": {
+      "decision": "works",
+      "note": "",
+      "prefill": "works"
+    },
+    "wastewing_v1_north_r2": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    },
+    "wyyyschokk_v1_north": {
+      "at": "2026-09-13T21:36:18.615Z",
+      "decision": "borderline",
+      "note": "",
+      "prefill": "works"
+    },
+    "zakkeg_v1_east": {
+      "decision": "mud",
+      "note": "",
+      "prefill": "mud"
+    }
+  },
+  "generatedBy": "bench legibility grading generator 2026-09-13",
+  "posture": "whitelist",
+  "savedAt": "2026-09-13T14:36:37-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 19
 }
