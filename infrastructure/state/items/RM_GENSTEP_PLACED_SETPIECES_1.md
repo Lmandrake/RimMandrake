@@ -54,3 +54,52 @@ both `MIASMA_MECHANICS_1`'s M6 and `SUMP_MECHANICS_1`'s S3/S4 can consume it
 without forking it — re-read both kit specs' own description of the class
 before finalizing the shape, since they are the two customers whose actual
 needs define "generic enough."
+
+## built, 2026-09-13
+
+`src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_PlacedSetPieces.cs`.
+Confirmed against the live decompile
+(`/mnt/d/Luke/dev/reference/rimworld-decompiled/Verse/GenStep_Scatterer.cs`,
+`GenStep_ScatterThings.cs`) that the base class already does almost
+everything the spec asked this item to expose as fields:
+
+- **Site count** — inherited `count` / `countPer10kCellsRange`, already
+  XML-settable per `GenStepDef` instance. No new field needed.
+- **Validity predicate** — inherited `validators` / `fallbackValidators`
+  (`List<Verse.ScattererValidator>`), also already per-instance XML content.
+  Each kit writes its own `ScattererValidator` subclass (brine-shallow-water
+  for Miasma, deep-tar-far-from-edge for Sump) and lists it in its own
+  `GenStepDef` — this class never references either.
+- **What gets spawned** — the one real gap in the base class, filled by a
+  new hook: `public List<RM_SetPieceElement> elements`, where
+  `RM_SetPieceElement` is a new abstract one-method class
+  (`abstract void SpawnAt(IntVec3 loc, Map map, GenStepParams parms)`)
+  modeled deliberately on `Verse.ScattererValidator`'s own pattern — XML
+  `Class=`-instantiated per `<li>`, so the framework class never sees kit
+  content. `ScatterAt` just iterates `elements` and calls `SpawnAt` on each.
+  Miasma's `GenStepDef` would list a warden-mother-pawn element + a
+  juvenile-cluster element + a `RUT_CrecheMarker` element; Sump's would list
+  one dormant-beast element. No `PawnKindDef` or `ThingDef` appears in this
+  file — only in each kit's own `RM_SetPieceElement` subclass, which is
+  M6/S3's own remaining build scope, not this item's.
+
+Surveyed and rejected vanilla's own "configurable content" subclasses
+(`GenStep_ScatterGroup`, `GenStep_ScatterGroupPrefabs`) as the model: both
+pick ONE weighted-random group per site (`RandomElementByWeight`), which is
+exactly the "sometimes random" shape both kits' ban text forbids. This
+class's `elements` list spawns everything named, every time, at every site
+— no roll.
+
+**Never random is structural, not disciplined**: no commonality/chance field
+exists anywhere in this class or its `GenStep_Scatterer` base, no faction is
+assigned, and the only entry point is `Generate()` being called by the
+`GenStepDef` pipeline like any other GenStep.
+
+No divergence found — both kits' own spec language ("pick N valid sites,
+spawn what's asked at each") maps directly onto one class; the
+`RM_SetPieceElement` hook is the seam that made a shared class possible
+without forcing Miasma's multi-part site (pawn + cluster + marker) and
+Sump's single-Thing site into the same shape.
+
+`dotnet build RM_EnvironmentalHazards.csproj -c Release`: **0 warnings, 0
+errors.**
