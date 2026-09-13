@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T07:05:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-13T08:39:56Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -214,13 +214,3 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
 prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
-
-## CATHEDRAL_ARC_OPEN_CARDS_1 Two owner sentences the Cathedral arc build needs: (1) the warzone posture flip surface if GM+pursuit prove insufficient, (2) mechanoid-pass scope at the edge (faction-13 only assumed) — flags from the 2026-09-12 decomposition
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  Card 1 — WARZONE FLIP SURFACE: A6 says "the planet becomes a warzone again";
-prose:    infrastructure/state/items/CATHEDRAL_ARC_OPEN_CARDS_1.md

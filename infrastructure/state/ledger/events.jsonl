@@ -8105,3 +8105,8 @@
 {"seat":"FOUNDRY","event":"note","id":"LIQUID_TYPES_MOD_1","text":"Roster built: 14 new cloned suites + 2 compat-only rows (normal water baseline, slime onto RM_Slime_Liquid/AB_LiquidSlime) + 1 hand-authored (RM_Churnmud). validate_patch.py clean (0 errors) on all 16 TerrainDef files; compat patch's 2 flagged targets confirmed non-typo (GelatinousSlime deployed but inactive). Item stays doing — live-test is a separate deferred item.","ts":"2026-09-13T08:18:44Z"}
 {"seat":"FOUNDRY","event":"claim","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-13T08:19:15Z"}
 {"seat":"FOUNDRY","event":"start","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-13T08:19:16Z"}
+{"seat":"FOUNDRY","event":"note","id":"MIASMA_MECHANICS_1","text":"Spike pass (LIQUID_TYPES_SPIKES_1 methodology): all 4 named engine claims + M1's river/coast fields resolved against the real 1.6/Odyssey decompile (none blocked); 4 compiling C# proofs added to RM_EnvironmentalHazards (gradient axis, exposure comp, forge-on-survival comp, territorial anchor comp+JobGivers), 0 warnings/errors. Full 6-mechanic build + live verify still owed, separate item.","ts":"2026-09-13T08:32:04Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_MECHANICS_1","ts":"2026-09-13T08:32:26Z"}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_MECHANICS_1","ts":"2026-09-13T08:32:27Z"}
+{"seat":"BENCH","event":"file","id":"HUB_URL_POINTER_FIX_1","title":"HUB_URL_POINTER_FIX_1 update HUB_TAB_PUBLISHER_MIGRATION_1 to the new hub artifact URL","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T08:39:56Z"}
+{"seat":"BENCH","event":"close","id":"CATHEDRAL_ARC_OPEN_CARDS_1","sha":"3f6f98cd24d58470cd4864e45e27043886fe6e7d","ts":"2026-09-13T08:39:56Z"}

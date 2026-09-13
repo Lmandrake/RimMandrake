@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T08:19:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T08:39:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MIASMAMECHANICS1 — the Miasma C kit
-prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
 
 ## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
 state:    ready
@@ -494,6 +485,15 @@ target:   v1
 kind:     task
 summary:  spec — the C kit
 prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
+
+## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MIASMAMECHANICS1 — the Miasma C kit
+prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
@@ -1234,7 +1234,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Two verbs:
+summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
 prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
 
 ## CATHEDRAL_EXPOSURE_COMPLETION_1 The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
@@ -1246,3 +1246,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
+
+## HUB_URL_POINTER_FIX_1 HUB_URL_POINTER_FIX_1 update HUB_TAB_PUBLISHER_MIGRATION_1 to the new hub artifact URL
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HUB_URL_POINTER_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HUB_URL_POINTER_FIX_1.md
