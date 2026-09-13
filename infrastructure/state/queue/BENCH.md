@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T22:51:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T23:03:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,6 +98,15 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
+
+## TOYFIG_LAW_PILOT_1 Toy-figurine law pilot: 4 creatures re-rendered under the law (neutral pose, jointless limbs, flat cel) for the owner's A/B before any mass regen
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TOYFIG_LAW_PILOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TOYFIG_LAW_PILOT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
