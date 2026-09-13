@@ -423,7 +423,44 @@ def cmd_calibrate(args):
     return 0
 
 
+def fitted_score(im, model):
+    """Score one sprite with the owner-grade-fitted linear model
+    (legibility_model_fitted.json — ridge on the 2026-09-13 graded sheet,
+    LOO Spearman +0.81 vs his works/borderline/mud). Returns (score, parts)."""
+    cache = {}
+    total = model["intercept"]
+    parts = {}
+    for f in model["features"]:
+        t = int(f["tier"])
+        if t not in cache:
+            cache[t] = zoo_metrics(im, t, chain="box")
+        v = cache[t][f["metric"]]
+        total += f["weight"] * (v - f["mean"]) / f["std"]
+        parts[f"{f['metric']}@{f['tier']}"] = v
+    return total, parts
+
+
 def cmd_gate(args):
+    """3-band verdict per the owner's 2026-09-13 rulings when a fitted model
+    exists (exit 0 = pass, 3 = borderline/reinforce, 1 = mud/regen);
+    threshold-file 2-band behavior otherwise (0/1)."""
+    model = None
+    if args.model and os.path.isfile(args.model):
+        with open(args.model) as fh:
+            model = json.load(fh)
+    if model:
+        im = trim(Image.open(args.path).convert("RGBA"))
+        s, parts = fitted_score(im, model)
+        detail = " ".join(f"{k}={v:.2f}" for k, v in sorted(parts.items())[:4])
+        if s >= model["works_line"]:
+            print(f"LEGIBILITY PASS fitted={s:.2f} >= works {model['works_line']} ({detail})")
+            return 0
+        if s >= model["mud_line"]:
+            print(f"LEGIBILITY BORDERLINE fitted={s:.2f} in [{model['mud_line']}, "
+                  f"{model['works_line']}) — reinforce the keyline, then rescore ({detail})")
+            return 3
+        print(f"LEGIBILITY FAIL fitted={s:.2f} < mud {model['mud_line']} — regenerate ({detail})")
+        return 1
     with open(args.thresholds) as fh:
         th = json.load(fh)
     tiers = [int(t) for t in th["tiers"]]
@@ -433,7 +470,6 @@ def cmd_gate(args):
         m = r["tiers"][str(t)]
         line = th["tiers"][str(t)]["gate"]
         if m["score"] < line:
-            worst = min(W, key=lambda k: m[k] * W[k] / max(W[k], 1e-9))
             weakest = min(W, key=lambda k: m[k])
             fails.append(f"{t}px: score {m['score']} < gate {line} "
                          f"(weakest metric: {weakest}={m[weakest]})")
@@ -442,6 +478,40 @@ def cmd_gate(args):
         return 1
     print("LEGIBILITY PASS " + "  ".join(
         f"{t}px={r['tiers'][str(t)]['score']}" for t in tiers))
+    return 0
+
+
+def cmd_reinforce(args):
+    """Synthetic keyline reinforcement — the one downscale-improvement the
+    graded data endorses (owner ruling 2026-09-13: build + A/B to his eye).
+    At STORED resolution: find the silhouette ring (width ~2-3% of body size
+    per the art direction), and darken its pixels toward black by `strength`,
+    weighted so already-dark outline pixels move little and pale rim pixels
+    move most. Premultiplied-safe by construction: only RGB inside the
+    existing alpha moves; alpha itself is untouched, so no halo can appear."""
+    im = Image.open(args.path).convert("RGBA")
+    arr = np.asarray(im, dtype=np.float32).copy()
+    alpha = arr[..., 3]
+    mask = alpha > ALPHA_SOLID
+    if mask.sum() < 16:
+        print("no solid silhouette — nothing to reinforce")
+        return 1
+    body = int(max(np.ptp(np.nonzero(mask)[0]), np.ptp(np.nonzero(mask)[1])))
+    ring_w = max(1, round(body * args.width_frac))
+    ring = mask & ~_erode(mask)
+    er = mask
+    for _ in range(ring_w - 1):
+        er = _erode(er)
+        ring |= (mask & ~er)
+    lum = _lum(arr[..., :3])
+    # pale ring pixels get the full push; near-black ones barely move.
+    pale = np.clip(lum / 160.0, 0.0, 1.0)
+    k = args.strength * pale
+    for c in range(3):
+        ch = arr[..., c]
+        ch[ring] = ch[ring] * (1.0 - k[ring])
+    Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA").save(args.out)
+    print(f"reinforced: ring {ring_w}px of {body}px body, strength {args.strength} -> {args.out}")
     return 0
 
 
@@ -529,7 +599,15 @@ def main():
     p.set_defaults(fn=cmd_calibrate)
     p = sub.add_parser("gate")
     p.add_argument("path"); p.add_argument("--thresholds", required=True)
+    p.add_argument("--model", help="fitted model JSON; when present, 3-band verdict (0 pass / 3 reinforce / 1 regen)")
     p.set_defaults(fn=cmd_gate)
+    p = sub.add_parser("reinforce")
+    p.add_argument("path"); p.add_argument("--out", required=True)
+    p.add_argument("--strength", type=float, default=0.65,
+                   help="0..1 how far ring pixels move toward black")
+    p.add_argument("--width-frac", type=float, default=0.025,
+                   help="ring width as a fraction of body size (art direction says 2-3%%)")
+    p.set_defaults(fn=cmd_reinforce)
     p = sub.add_parser("resexp"); common(p)
     p.add_argument("--stored", default="128,256,512")
     p.set_defaults(fn=cmd_resexp)

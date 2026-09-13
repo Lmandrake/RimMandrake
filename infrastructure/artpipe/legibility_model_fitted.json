@@ -1,0 +1,80 @@
+{
+ "kind": "fitted_v1",
+ "graded_rows": 48,
+ "loo_spearman": 0.807,
+ "lambda": 8,
+ "agreement": 0.875,
+ "features": [
+  {
+   "metric": "keyline_v1",
+   "tier": "32",
+   "mean": 0.394,
+   "std": 0.2445,
+   "weight": 0.2561
+  },
+  {
+   "metric": "keyline_v1",
+   "tier": "18",
+   "mean": 0.2917,
+   "std": 0.1829,
+   "weight": 0.1216
+  },
+  {
+   "metric": "gate_keyline",
+   "tier": "32",
+   "mean": 0.7645,
+   "std": 0.3077,
+   "weight": 0.2613
+  },
+  {
+   "metric": "rms_contrast",
+   "tier": "32",
+   "mean": 0.3808,
+   "std": 0.1502,
+   "weight": 0.0524
+  },
+  {
+   "metric": "rms_contrast",
+   "tier": "18",
+   "mean": 0.3664,
+   "std": 0.1676,
+   "weight": 0.069
+  },
+  {
+   "metric": "gate_structure",
+   "tier": "32",
+   "mean": 0.4589,
+   "std": 0.157,
+   "weight": 0.0054
+  },
+  {
+   "metric": "gate_ground",
+   "tier": "32",
+   "mean": 0.6637,
+   "std": 0.1968,
+   "weight": 0.0266
+  },
+  {
+   "metric": "gate_coverage",
+   "tier": "32",
+   "mean": 0.9938,
+   "std": 0.0119,
+   "weight": 0.0264
+  },
+  {
+   "metric": "hf_ratio",
+   "tier": "32",
+   "mean": 1.0014,
+   "std": 0.0226,
+   "weight": -0.0702
+  }
+ ],
+ "intercept": 0.9375,
+ "works_line": 1.318,
+ "mud_line": 0.63,
+ "bands": {
+  "pass": ">= works_line",
+  "reinforce": "mud_line..works_line",
+  "regen": "< mud_line"
+ }
+}

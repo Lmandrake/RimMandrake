@@ -2587,8 +2587,10 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
        bad.is_file() and good.is_file() and thresholds.is_file())
 
     saved = os.environ.get("ARTPIPE_LEGIBILITY_THRESHOLDS")
+    saved_model = os.environ.get("ARTPIPE_LEGIBILITY_MODEL")
     try:
         os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = str(thresholds)
+        os.environ["ARTPIPE_LEGIBILITY_MODEL"] = ""   # 2-band threshold mode first
         v_bad, f_bad = artpiped.run_legibility_gate(bad)
         v_good, f_good = artpiped.run_legibility_gate(good)
         ok("legibility: known-bad frostmite REJECTED", v_bad == "reject",
@@ -2597,6 +2599,19 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
            any("weakest metric" in ln for ln in f_bad))
         ok("legibility: known-good frostmite PASSES", v_good == "pass",
            "; ".join(f_good))
+
+        # fitted 3-band model mode (owner-graded, 2026-09-13): the bad
+        # fixture regens, and the good one lands exactly where the OWNER
+        # graded it — borderline, not pass.
+        model = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_model_fitted.json"
+        if model.is_file():
+            os.environ["ARTPIPE_LEGIBILITY_MODEL"] = str(model)
+            v_bad3, _ = artpiped.run_legibility_gate(bad)
+            v_good3, f_good3 = artpiped.run_legibility_gate(good)
+            ok("legibility 3-band: known-bad is REJECT (regen band)", v_bad3 == "reject")
+            ok("legibility 3-band: known-good is BORDERLINE — the owner's own grade",
+               v_good3 == "borderline", "; ".join(f_good3))
+            os.environ["ARTPIPE_LEGIBILITY_MODEL"] = ""
 
         os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""
         v_off, f_off = artpiped.run_legibility_gate(bad)
@@ -2608,6 +2623,7 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
         # and stay ok on the good one.
         from PIL import Image
         os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = str(thresholds)
+        os.environ["ARTPIPE_LEGIBILITY_MODEL"] = ""   # wiring test in 2-band mode
         for fixture, want_fail in ((bad, True), (good, False)):
             w, h = Image.open(fixture).size
             job = {"canvas": {"width": w, "height": h}, "background": "transparent"}
@@ -2628,6 +2644,10 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
             os.environ.pop("ARTPIPE_LEGIBILITY_THRESHOLDS", None)
         else:
             os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = saved
+        if saved_model is None:
+            os.environ.pop("ARTPIPE_LEGIBILITY_MODEL", None)
+        else:
+            os.environ["ARTPIPE_LEGIBILITY_MODEL"] = saved_model
 
 
 def main() -> int:

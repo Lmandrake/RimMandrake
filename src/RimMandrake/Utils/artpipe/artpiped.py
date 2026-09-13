@@ -167,6 +167,10 @@ VALIDATOR_TIMEOUT_S = 60  # run_validator's own subprocess.run ceiling.
 # regenerate them with `art_legibility.py calibrate` if the corpus moves.
 LEGIBILITY_SCRIPT = common.REPO_ROOT / "src" / "RimMandrake" / "Utils" / "art_legibility.py"
 LEGIBILITY_THRESHOLDS = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_thresholds.json"
+# Owner-grade-fitted 3-band model (2026-09-13 graded sheet): pass / borderline
+# (reinforce the keyline, pending the owner's A/B approval) / regen.
+# ARTPIPE_LEGIBILITY_MODEL overrides; empty string falls back to 2-band thresholds.
+LEGIBILITY_MODEL = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_model_fitted.json"
 LEGIBILITY_TIMEOUT_S = 60
 
 # Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
@@ -1236,11 +1240,14 @@ def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S):
                       f"legibility gate skipped, not a pass"]
     if not LEGIBILITY_SCRIPT.is_file():
         return "gate_error", [f"gate script does not exist: {LEGIBILITY_SCRIPT}"]
+    env_model = os.environ.get("ARTPIPE_LEGIBILITY_MODEL")
+    model = LEGIBILITY_MODEL if env_model is None else (Path(env_model) if env_model else None)
+    cmd = [sys.executable, str(LEGIBILITY_SCRIPT), "gate", str(candidate),
+           "--thresholds", str(thresholds)]
+    if model is not None and model.is_file():
+        cmd += ["--model", str(model)]
     try:
-        proc = subprocess.run(
-            [sys.executable, str(LEGIBILITY_SCRIPT), "gate", str(candidate),
-             "--thresholds", str(thresholds)],
-            capture_output=True, text=True, timeout=timeout)
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return "gate_error", [f"art_legibility.py did not finish within {timeout}s"]
     except OSError as exc:
@@ -1250,8 +1257,10 @@ def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S):
         return "pass", findings
     if proc.returncode == 1:
         return "reject", findings
+    if proc.returncode == 3:
+        return "borderline", findings
     return "gate_error", findings + [
-        f"art_legibility.py exited {proc.returncode} — not its documented 0/1"]
+        f"art_legibility.py exited {proc.returncode} — not its documented 0/1/3"]
 
 
 def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
@@ -1321,6 +1330,18 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                            legibility="REJECT",
                            note=("below the calibrated downscale-legibility line — "
                                  + ("; ".join(lfindings[-1:]) if lfindings else "no detail"))[:300])
+            return result
+        if lverdict == "borderline":
+            # Owner ruling 2026-09-13: borderline art gets the keyline
+            # REINFORCEMENT pass, not regeneration — but reinforcement ships
+            # only after the owner approves the A/B sheet, so until then a
+            # borderline is a distinct failure kind the requeue can route.
+            result.update(status="failed", worker_status="legibility_borderline",
+                           validator=("PASS" if verdict == "pass" else "skipped"),
+                           legibility="BORDERLINE",
+                           note=("borderline band — reinforce the keyline and rescore "
+                                 "(pending owner A/B approval); "
+                                 + ("; ".join(lfindings[-1:]) if lfindings else ""))[:300])
             return result
         if lverdict == "gate_error":
             result.update(status="failed", worker_status="legibility_gate_could_not_run",
