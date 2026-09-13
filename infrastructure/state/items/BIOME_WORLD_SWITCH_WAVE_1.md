@@ -199,10 +199,74 @@ this is a manual per-def authoring pass (pick forest/hill/mountain thresholds pe
 "needs a fresh item, not a re-run" case `WORLDMAP_BIOME_ICONS_REGEN_1` already
 recommended in 2026-09-07; not attempted here (design authoring, not bookkeeping).
 
+### follow-up 2026-09-12 part 2 (offline bookkeeping, no bridge) — roster rename, eviction rerun, STILL not shipped
+
+**Renamed 19 stale roster `defNames` entries to their `RUT_` successors** (pure key
+rename, nothing else touched — checked with a post-edit grep sweep, clean):
+`arid_shrubland.json`→`RUT_AridShrubland`, `desert.json`→`RUT_Desert`,
+`dune_sea_deep_desert.json`→`RUT_ExtremeDesert`, `forsaken_crags.json`→`RUT_ForsakenCrags`,
+`poison_forest.json`→`RUT_PoisonForest`, `the_contagion.json`→`RUT_Contagion`,
+`the_cracked_lands.json`→`RUT_CrackedLands`, `the_fever_wood.json`→`RUT_FeverWood`,
+`the_forge.json`→`RUT_TheForge` (its 3-donor list `AB_PyroclasticConflagration`/
+`LavaField`/`Volcano` collapsed to the one owned def), `the_greentide.json`→`RUT_Greentide`,
+`the_miasma.json`→`RUT_Miasma`, `the_rot.json`→`RUT_TheRot`,
+`the_rust_cathedral.json`→`RUT_RustCathedral`, `the_scarlands.json`→`RUT_Scarlands`,
+`the_slime.json`→`RUT_Slime`, `the_sump.json`→`RUT_Sump`, `the_webwork.json`→`RUT_Webwork`,
+`wasteland.json`→`RUT_Wasteland`, `weeping_stones.json`→`RUT_WeepingStones`.
+
+**Deliberately NOT touched** (per this pass's explicit scope): `fall_line.json`
+(`ExtremeDesert`/`Desert`/`AridShrubland` — rides a separate item), `the_pyrelands.json`
+(`ZBiome_Grasslands` — `PYRELANDS_WORLD_SWITCH_1`), `the_lantern_deeps.json` and
+`the_propane_lakes.json` (both still carry bare `AB_PropaneLakes`, left as-is on
+explicit instruction), `the_blue_desert.json` (`BiomeGRimond` — already-switched per
+this item's own spec line), and the already-`RUT_`-only files (`nightside_ice.json`,
+`the_grey_sea.json`, `the_scald.json`, `the_twilight_sea.json`, `wreck_fields.json`
+which is empty).
+
+**Reran `biome_wildbiomes_evictions.py --cache <scratch> --xml
+.../BiomeCastEvictions_WildBiomes.xml` with a fresh cache (no prior cache existed;
+full ~1,254-mod walk, ran to completion, no timeout).** Result: **still 690 pairs
+across 4 biomes** — `AridShrubland` 256, `Desert` 234, `ExtremeDesert` 199,
+`RUT_Scarlands` 1 (down from 2 pre-rename; the scarlands roster's own fauna-admission
+key changed from `Scarlands` to `RUT_Scarlands`, shifting which pairs count as
+already-rostered — not investigated further, flagged only).
+
+**Root cause of why the noise didn't clear: `fall_line.json`.** `painted_defs()`
+(`src/RimMandrake/Utils/biome_wildbiomes_evictions.py` line 79-83) unions the live
+tile CSV with **every** roster file's `defNames` unconditionally — it has no concept
+of `"injection_layer": true` and cannot distinguish "this name is a currently-painted
+BiomeDef" from "this name identifies a host biome an injection layer overlays."
+`fall_line.json` is exactly the second kind (its own `note` field: *"NOT a BiomeDef...
+entries are ADDITIONS injected over the underlying defs"*) and its `defNames` are
+still the three bare donor names by this pass's explicit instruction not to touch it.
+Because those three names are still real strings in the union, `painted_defs()`
+reports `AridShrubland`/`Desert`/`ExtremeDesert` as "painted" even though the live
+tile export shows **zero** tiles for all three — reproducing the exact 3-bucket noise
+pattern from the pre-rename run (686 pairs then, 690 now), just with slightly
+different counts because the OTHER 19 files no longer double-contribute fauna
+admissions under those bare keys.
+
+**Decision: did NOT ship the regenerated XML.** Per this pass's own stop condition
+("suspiciously large counts against biomes that should be zero-tile now"), the run
+was reverted (`git checkout -- .../BiomeCastEvictions_WildBiomes.xml`) rather than
+committed — the working tree is back to the pre-run committed content, unchanged from
+before this session.
+
+**Real next step, NOT done here** (a scope/design call, not this pass's bookkeeping
+mandate): either (a) rename `fall_line.json`'s three host names to their `RUT_`
+successors too — but that was explicitly out of scope this pass and its "rides a
+separate item" framing needs resolving first — or (b) teach `painted_defs()` (and
+`rostered()`) to skip `"injection_layer": true` rosters when computing the painted
+set, since an injection layer's `defNames` are host references, not paint. Either
+fix, alone, should collapse the run to `RUT_Scarlands`' handful of genuine pairs.
+Not attempted here: a tool-logic change is outside "input-fetch only" bookkeeping,
+and renaming `fall_line.json` contradicts this pass's own explicit instruction.
+
 ### owed, not done here
-- **wildBiomes eviction patch not regenerated/shipped** — blocked on the ~20 stale
-  roster `defNames` above; see follow-up section for the exact rename list and rerun
-  command.
+- **wildBiomes eviction patch still not regenerated/shipped**, even after the 19-file
+  roster rename above — now blocked on `fall_line.json` (out of this pass's scope) and/or
+  a `painted_defs()`/`rostered()` fix to exclude `injection_layer` rosters; see
+  "part 2" follow-up above for the exact root cause and the two candidate fixes.
 - **Worldmap biome icons for all 20 new `RUT_` defs** — none carry `BiomesKitControls`;
   needs a manual authoring pass with the owner's icon-set call, not a script.
 - Full-list cold load + per-batch quicktest (this item's third verify line) — not run.

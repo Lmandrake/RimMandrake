@@ -1,6 +1,6 @@
 {
   "sheet": "weeping_stones",
-  "defNames": ["ZBiome_DesertOasis"],
+  "defNames": ["RUT_WeepingStones"],
   "tiles": 223,
   "authored": "2026-09-09",
   "law_sources": ["weeping_stones.md §4-§6, §10 (enriched bestiary — the grading standard)", "_freeze_rulings_2026-09-07.md R21 (condensate, no rain), R17 (fliers)", "WEEPING_STONES_ROSTER_1 (dewback move RULED)", "owner cards 2026-09-09"],
