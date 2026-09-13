@@ -7,12 +7,75 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T04:35:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T06:57:45Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
+prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
+
+## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MIASMAMECHANICS1 — the Miasma C kit
+prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
+
+## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  The authoritative brief is the FROZEN lore sheet
+prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Engine-map the Sump's mechanics per the frozen sheet
+prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
+
+## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Map the FROZEN design/Jawa/worldbuilding/biomes/theforge.md sheet's
+prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
+
+## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
+prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
+
+## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SCALDMECHANICS1 — the Scald C kit
+prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 # IN PROGRESS
 
@@ -1093,4 +1156,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## GRAVSHIP_MAP_SIZE_1 Unusually large default map sizes so the gravship makes sense on-tile — owner 2026-09-12; pick the size, find where default mapSize binds (scenario vs world vs settings), measure perf on the full list, and decide what happens to the already-generated canonical start map
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  RULED (owner cards, bench 2026-09-12): 325x325, FUTURE LANDINGS ONLY.
+prose:    infrastructure/state/items/GRAVSHIP_MAP_SIZE_1.md
+
+## MODLIST_RULED_CUTS_1 Execute the 2026-09-12 bench modlist rulings: cut profiler + blood animations + slower pawn tickrate; Jurassic retirement lands after texPath check; MoEvents chances zeroed until port
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
+prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md

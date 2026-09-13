@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T04:35:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-13T06:57:45Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -108,24 +108,6 @@ kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
 
-## GIDDYUP_KEEP_OR_CUT_1 Giddy-Up keep-or-cut ruling: pros/cons analysis of the mounted-animal mods (fun to ride Star Wars animals; historically a bug confounder) — background analysis first, owner rules on the card
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  Background analysis (BENCH, Fable agent), then owner cards:
-prose:    infrastructure/state/items/GIDDYUP_KEEP_OR_CUT_1.md
-
-## MODLIST_COMPLEXITY_AUDIT_1 Keep-or-cut shortlist beyond Giddy-Up: which other mods in the full stack carry outsized breakage/complexity risk relative to their contribution to the Jawa scenario — ranked candidates with evidence, owner rules per card
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  Background analysis (BENCH, Fable agent), then owner cards. NOT a 594-row
-prose:    infrastructure/state/items/MODLIST_COMPLEXITY_AUDIT_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -149,76 +131,6 @@ kind:     task
 blocked:  Design + quest spec done (invitation quest authored, alert-unlock flagged unruled); waits on FLOOD_CANYON_BIOME_1 (the mechanism mod, FOUNDRY) and its one production arm-the-flood verb, then quest def build (on FLOOD_CANYON_BIOME_1)
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
-
-## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Design brief drafted; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY spikes+build.
-summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
-prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
-
-## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  MIASMAMECHANICS1 — the Miasma C kit
-prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
-
-## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  The authoritative brief is the FROZEN lore sheet
-prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
-
-## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  Engine-map the Sump's mechanics per the frozen sheet
-prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
-
-## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  Map the FROZEN design/Jawa/worldbuilding/biomes/theforge.md sheet's
-prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
-
-## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
-prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
-summary:  SCALDMECHANICS1 — the Scald C kit
-prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 ## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
 state:    proposed  (BLOCKED)
@@ -301,3 +213,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
+
+## MODLIST_DEFERRED_CARDS_1 Deferred modlist cards (owner 2026-09-12: not for right now): romance pile trim, VGE census-then-port, Biomes Caverns justify-or-cut, tree retexture pick — evidence in Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-12.md, reserve for a future sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     spec, verify and criteria all present
+summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
+prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
