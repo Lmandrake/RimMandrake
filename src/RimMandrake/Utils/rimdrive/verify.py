@@ -82,7 +82,10 @@ def mutate(session, what, do, verify, idempotent=False):
 
     if reconnected and got is not UNVERIFIED and not got:
         if idempotent:
-            do()
+            try:
+                do()
+            except Reconnected:
+                pass
             got = verify()
         if got is not UNVERIFIED and not got:
             raise Indeterminate(

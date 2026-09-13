@@ -78,10 +78,10 @@ def mod_hash(mod_dir):
     stable regardless of filesystem walk order."""
     parts = []
     for root, dirs, files in os.walk(mod_dir):
-        dirs[:] = [d for d in dirs if d not in _EXCLUDED_BASENAMES
+        dirs[:] = [d for d in dirs if d.lower() not in _EXCLUDED_BASENAMES
                   and d != ".git"]
         for name in sorted(files):
-            if name in _EXCLUDED_BASENAMES or name.endswith(".pyc"):
+            if name.lower() in _EXCLUDED_BASENAMES or name.endswith(".pyc"):
                 continue
             path = os.path.join(root, name)
             rel = os.path.relpath(path, mod_dir).replace(os.sep, "/")
