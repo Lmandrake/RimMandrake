@@ -1,422 +1,77 @@
 {
  "docs": {
-  "design/Jawa/proposals/README.md": {
-   "hash": "4f70983cdbfc44ad5c0f411db60ded0e31857b4002e4e01b8d8d600ade0981c9",
+  "design/RimMandrake/bazaar_trade_window_design.md": {
+   "hash": "0a8622046ce9d5d0ab8d4e58772d0a904d361ab62169545184e94eb1a0fcfcd2",
    "ruled_triples": [
     [
-     "fourteen",
-     "from the 2026-08-31 brainstorm sitting. **the sitting is",
-     "complete (2026-09-02, 124 rows): every doc's head carries its ruled table with the owner's verbatim notes.** highlights: tar all-v1; gas six-v1/two-cut; skyhook's premise superseded (bespin-style repulsorlift stations, rename owed, six rows cut); a handful of rows are v1-pending-explanation — the table intros flag them"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/fire_ecology_deep_design.md": {
-   "hash": "88843e082c931c686a542931b0291feee4f388026a61e156101f0e472d872bc6",
-   "ruled_triples": [
-    [
-     "draft proposal",
+     "claude -p",
      null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. --> <!-- v1 slice green-lit by the owner 2026-09-01 (items fire_ecology_loop_1 / weather_suite_slice_1 / livestock_starter_trio_1); the remainder of this doc still awaits proposal_suite_review_1. -->"
+     "rides the `claude -p` subprocess transport (the ruled cli-only in-game llm access; `src/rimmandrake/oracle/source/oracleclient.cs`)"
     ],
     [
-     "property_fabric_build_1",
+     "determinism / anti-save-scum",
      null,
-     "add the tribes' observable controlled-burn behavior and unplanned-burn-as-violation event, wired into the already-ruled ownership/perception fabric (§5) — mostly data once `property_fabric_build_1` lands"
+     "no per-item micro-loop exists at all. - **determinism / anti-save-scum**: every roll seeded from (world seed, trader stock seed, push index) — reload and re-push replays identically, the same trick vanilla uses for tradeable price randomness"
     ],
     [
-     "r",
-     "(ablative hide, per l11 — desert megafauna are",
-     "naturally thermal-resistant) that doesn't merely tolerate fire, it **carries a bed of slow-burning material in a dorsal hump or shell cavity**, permanently smoldering at low intensity, which it uses to pre-cook and soften the tough, ash-fertilized grass (r-h5) it grazes — a literal walking compost-and-hearth"
-    ],
-    [
-     "why the sand-camps make sense.",
+     "dialog_trade",
      null,
-     "it propagates through the same faction-record pipe as a stolen good — cooling relations, a confrontation party, potentially a raid, read from the record, never a ui meter (that spec's ruling 6) — applying the already-ruled fabric to fire instead of goods, no new mechanism. - **why the sand-camps make sense.** canon's addendum — *\"it doesn't burn"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/god_modes_deep_design.md": {
-   "hash": "fc4573df7d980adbab3162631ed09dca85bd646a216e4f0eec82bde864a721e7",
-   "ruled_triples": [
+     "verify at quicktest: multipletraders' picker and trader ships' trade action both end in vanilla `dialog_trade`. **gift mode (owner-ruled): the bazaar with haggling greyed** — one window everywhere; gifts show grid + intel, no duel"
+    ],
     [
-     "anger",
+     "haggle",
      null,
-     "anger as withdrawal of love.\""
+     "haggle = whole-deal only (per-item rejected as monotonous) · banter dormant until oracle proof · public seeding = procedural locality · gift mode = bazaar with haggle greyed · economy = own engine, vte rejected and scheduled for deactivation · intel gating = social + found artifacts · build order = grid+intel → duel → broker → banter"
     ],
     [
-     "audit result (2026-09-02):",
-     "⑥-a ta'baa already obeyed the law and are",
-     "unchanged. ①-a ishko, ②-a ohm, ④-a mob'unloo and ⑤-a rekko granted the ugly opposite and are rewritten below to withhold instead"
-    ],
-    [
-     "divine_satiation_engine.md",
-     "(zizzik, sh'kaar) invert the law, and this is",
-     "already in `divine_satiation_engine.md`:** their love is our misfortune, so to anger them is to make them *go silent / slumber"
-    ],
-    [
-     "draft proposal",
+     "name canonized by the owner:",
      null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
+     "status: ruled (owner, 2026-09-13, bench sitting — same day as the liquids framework, which this integrates with).** name canonized by the owner: **the bazaar**"
     ],
     [
-     "hungry",
-     "but slumber is",
-     "itself a rising pressure — *\"kept sleeping too long, when he finally wakes he will be hungry and eager... explosive when he inevitably awakens"
+     "oracle_experiment_spike_1",
+     "live proof lands** — the authored pools are",
+     "the day-one experience; the llm consumer flips on afterward"
     ],
     [
-     "instead",
-     "instead it must",
-     "be denying the jawa the thing the god loves, not granting its opposite"
+     "otherwise",
+     "happens at the deal stage — confirm-time is",
+     "the dramatic moment"
     ],
     [
-     "landed",
+     "patience meter p",
      null,
-     "✅ the strain-meter and exit/stacking/scars explanations landed (owner card, 2026-09-02) — both rows stand as plain v1, nothing further owed"
+     "- one trader session holds one **patience meter p** (4–9: base by trader kind ± personality, +1 per 25 goodwill band; numbers visible only with a1, else a vague face icon at social 7+)"
     ],
     [
-     "look",
+     "personality",
      null,
-     "look: exterior light caps at dusk-level, permanently blue-grey noon"
+     "traders become a social training ground. - **personality** (deterministic per trader seed; persisted in the ledger): stingy (+2 p, 2% concessions), desperate (−2 p, 5% concessions, worse base prices), gullible (+0.10 p, low-grade rumor crits), volatile (10% crit-fail band, 20% crit band — the gambler's trader)"
     ],
     [
-     "ohm",
-     "ohm angry does not",
-     "sabotage the machines (that is malfunction, zizzik's domain) — the ship simply *goes cold and inert*, the help withdrawn. 2. **the world notices the absence — the gap itself bites, but nothing actively punishes.** no malus is the god striking you; the crops starve because oomo's water no longer blesses, the ship freezes because ohm's warmth withdrew"
+     "push",
+     "water's dear at kesh crossing\" — which is",
+     "literally the engine's multiplier speaking). 50/50, weighted by personality. - **fail**: no move, costs 2 patience, trader claws back your last concession. - **critical fail** (bottom 5%): patience floors → **session lockout** (haggle controls grey until the trader leaves); concessions won so far survive; small stinger −2% on the final balance"
     ],
     [
-     "rules",
+     "re-basketing",
+     "lockout, no stinger. - **re-basketing** after pushes is",
+     "allowed; concessions are a % on the deal, so they scale with what's in it — but push count (and its diminishing returns) does not reset"
+    ],
+    [
+     "repeat",
      null,
-     "rules: battle-fervor toughness permanently active on every pawn; animal/brute aggression fires on a predictable schedule instead of randomly; all stealth/ambush tooling disabled — ishko's tricks don't work here"
+     "repeat traders remember: lockout → −1 p next visit; big purchase → +1 p"
     ],
     [
-     "scar",
+     "xp",
      null,
-     "scar: one hearth/forge permanently flagged as never having gone cold since"
-    ],
-    [
-     "scar",
-     null,
-     "scar: one item permanently flagged \"unbreakable-in-spirit\" (flavor only)"
-    ],
-    [
-     "scar",
-     null,
-     "scar: one masterwork permanently displayed and named in colony flavor text"
-    ],
-    [
-     "scar",
-     null,
-     "scar: one permanently misrouted power junction (flavor only)"
-    ],
-    [
-     "scar",
-     null,
-     "scar: one room permanently reads \"shadowed\" (stealth-pawn mood only)"
-    ],
-    [
-     "scar",
-     null,
-     "scar: one trade route permanently favors the colony by a small margin"
-    ],
-    [
-     "scar",
-     null,
-     "scar: the tile marked sh'kaar-adjacent in sacred-sites (f16), permanently a little more exposed"
-    ],
-    [
-     "scar",
-     "scar: the found oasis is",
-     "permanently promoted to a sacred site"
-    ],
-    [
-     "scar",
-     "scar: the item/work given away or restored is",
-     "permanently recorded — future narrator text can cite it by name"
-    ],
-    [
-     "three",
-     null,
-     "three clauses, ruled in a bench session 2026-09-02:"
-    ],
-    [
-     "verbatim",
-     "verbatim: *\"god punishment must",
-     "not be the opposite of what they love, because that just makes the world be more ugly to them"
-    ],
-    [
-     "withholds",
-     "the gift's ugly opposite.** ishko angry does not",
-     "flood the map with light (that is exposure, sh'kaar's domain) — his darkness simply *stops hiding you"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/high_cuisine_deep_design.md": {
-   "hash": "923e05a73153b230085113e29949e792df796cb50ff58fe224240bc8b523724d",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "livestock_trade_utility_pets_v1.md",
-     "shaak, nerf, bantha, tip-yip, gorg, mynock meat/milk) are",
-     "products of animals already covered by `livestock_trade_utility_pets_v1.md` and the adopted star wars animal collection roster — rimworld already grants meat/milk/wool/eggs from a tamed or hunted animal without a bespoke ingredient def"
-    ],
-    [
-     "ruled",
-     "✅ **ruled: that existing feasting ideoligion is",
-     "replaced entirely** — stripped, not kept alongside"
-    ],
-    [
-     "the exotic-animal tender.",
-     "creatures (§4, and the ruled live-ingredient tanks) are",
-     "tended by the feastboss's own hand — the squirming, dangerous, wondrous bestiary is *their* husbandry burden, not a separate animal-hauler's. 2. **the cook.** they prepare the courses themselves — no delegating the knife. 3. **the impresario.** they read the room, reach for the dangerous gods, and perform"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/llm_driven_mods_deep_design.md": {
-   "hash": "f70091fdc87e9e73a9f36bf0f27c4563a00e681ce905cb04ec1dfb099e716b26",
-   "ruled_triples": [
-    [
-     "budget.",
-     "back**; the player never sees \"the shrine is",
-     "busy,\" they see the prescripted fragment the shrine would have shown anyway, and the felt-not-heard boundary (v1's dormant-ship posture) means this whole section can ship off with zero play impact until the owner rules the v1 posture live"
-    ],
-    [
-     "c",
-     "answers — it only speaks once c# has",
-     "already decided that"
-    ],
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "oracle_experiment_spike_1` is closed.",
-     "oracle_experiment_spike_1` is",
-     "closed.** the thin openai-compatible client (`rimmandrake.oracle` — `oracleclient`, async, fire-and-forget, hard timeout + one retry, `mainthreadqueue` delivery) plus one god-letter consumer already ran end-to-end on the 22s minimal list, mock-endpoint gate first, then the cloud key. **every design below assumes this client exists and slots a new consumer into it — none of them re-propose the plumbing"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/ludicrous_livestock_deep_design.md": {
-   "hash": "e248e320d9db3d32c9c9034f142f51bae5f754e072df5108463e5ea77de8968a",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. --> <!-- v1 slice green-lit by the owner 2026-09-01 (items fire_ecology_loop_1 / weather_suite_slice_1 / livestock_starter_trio_1); the remainder of this doc still awaits proposal_suite_review_1. -->"
-    ],
-    [
-     "explanations",
-     null,
-     "✅ explanations delivered and ruled on (owner card, 2026-09-02): drassik, duskhide and coo'la accepted (drassik glands steel/plasteel/slag; coo'la upgraded — see its row); ⛔ grubbin dropped"
-    ],
-    [
-     "livestock_trade_utility_pets_v1.md",
-     null,
-     "surveyed against the adopted stack (full detail in `livestock_trade_utility_pets_v1.md`):"
-    ],
-    [
-     "ruled",
-     "✅ **ruled (owner cards, 2026-09-02): the creature is",
-     "the coo'la; its product is \"wise milk\"** — increases learning > rate and soothes emotions when drunk; very expensive; the valve is the > constant social labor of entertaining the animal"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/plot_mechanisms_wave.md": {
-   "hash": "04c34be4590a79f5bb2a42984c9162775dd24990d8759e92d93cd73f3cc84540",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — written afk 2026-09-05 on the owner's brief, not ruled"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/propane_gas_deep_design.md": {
-   "hash": "81c5ccc5785a736cb4f90ae0e62c91f17c98560054d06a551ddcb30fce09c7fb",
-   "ruled_triples": [
-    [
-     "2026-09-06:",
-     "--> > 🔑 **2026-09-06:** the biome itself is",
-     "now defined in > `design/jawa/worldbuilding/biomes/the_propane_lakes.md`, which houses the six v1 rows > ruled below and adds the aurora physics, the terramanufacture history and the war lab. > where the two disagree, the sheet is the successor"
-    ],
-    [
-     "cut and not built:",
-     null,
-     "⛔ **cut and not built:** tanker-run economy (§6) and the tar/propane dual-hazard map (§8) — see the ruled table. §6 and §8 stay in the doc as design record only; nothing downstream may cite them as planned work"
-    ],
-    [
-     "lake",
-     null,
-     "lake-margin creature (§7): often-but-not-guaranteed, visible submerged v-wake, attacks pawns/pipe on sight, agitated by pump noise; not the lake's origin. 6"
-    ],
-    [
-     "nightside",
-     null,
-     "nightside propane lake (§2) refueled **in place by long flexible pipes from the grounded ship** (thruster standoff) — no tanker runs; plus the ruled exotic in-lake creature population and the submerged-adventure framing (ocean-biome tech, fuel medium). 5"
-    ],
-    [
-     "rut_gasvent",
-     "running (negative — or positive when it was",
-     "the mission). 4"
-    ],
-    [
-     "saturation",
-     null,
-     "saturation heist (§5) with the ruled enemy loadout: strictly non-flammable / non-thermal / non-explosive — geonosian sonic, javelins, catapults, vibro-weaponry"
-    ],
-    [
-     "sequence",
-     null,
-     "a build sequence over the six live rows (foundry orders it):"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/sarlacc_deep_design.md": {
-   "hash": "182438694d8be03ade97ca2cf79cea774cdd5933eabe337431b77f5cac0de0ab",
-   "ruled_triples": [
-    [
-     "disposal.",
-     null,
-     "- **disposal.** the oldest and simplest use: things you want to be genuinely, permanently gone go into the pit"
-    ],
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "what crosses the boundary",
-     null,
-     "flagged here as a possibility, not claimed as decided — the two docs' authors should reconcile this specific overlap before either builds it. - **what crosses the boundary**: light, air, and structural collapse rules stay `underground_caverns_deep_design.md`'s (§1, §7 of that doc — the ship-stays-surface and expedition-loadout rules apply here without exception, root-system access included); tremor/disturbance behavior and casting/evidence content (§6, §10 above) stay this doc's"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/ship_shields_deep_design.md": {
-   "hash": "8e2eeb89d0bea2c0ce676caa5d1d9a70d633555161bfa3ec9422e744c5213a68",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "memory core chain",
-     "per `research_tree_taxonomy.md` §1, the ship is",
-     "already the ruled non-linear research tab carrying gravtech, vge systems, and the **memory core chain** — \"hidden until the ship surfaces them — research as revelation.\" environmental shields belong here, not in a generic industrial-tech line, for the same reason the tab exists: **the ship should reveal its own late-game capability through play**, not through a linear unlock ladder visible from turn one"
-    ],
-    [
-     "thermal veil and particulate screen",
-     "thermal veil and particulate screen** are",
-     "the two \"common-access\" shields per the taxonomy's four access classes (§7: common / faction-held via techprints / jawa-special / ship-only) — reachable through ordinary ship-tab research once the tree surfaces them, priced at t2–t3 cost bands (1600–5000, per the ruled cost table), because they gate hazards the player can already see and choose to approach (fire, dust) rather than hazards discovered by crossing an unknown line. - **cryo envelope** sits slightly higher — it is what makes r-h10's terminator crossing possible at all, and the taxonomy's t3 spacer band (\"steep + visibility cost\") fits: crossing the terminator is itself a visibility-costing act (per the theology-drip mechanism already ruled for the tab), so gating the tool behind a comparable cost keeps the two consistent. - **spore membrane is `jawa-special` or ship-only-gated**, per §2d's recommendation above — surfaced through a memory core revelation or an ascendant helix contact beat (r-h8's gene-cult, already ruled as present near the strange biomes specifically), so the player earns entry to the planet's most horror-coded biome through a story beat rather than a research-point grind"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/skyhook_deep_design.md": {
-   "hash": "4ce21548268a704310bbc284bee04d81af8f282b92f55940cc8c5f0f77ec0556",
-   "ruled_triples": [
-    [
-     "\"repulsor spires\" ruled as the name",
-     null,
-     "✅ **\"repulsor spires\" ruled as the name** (owner, 2026-09-02, question card)"
-    ],
-    [
-     "v2",
-     "everything here is",
-     "v2** — no spire content ships in v1"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/sw_mod_concepts_triage.md": {
-   "hash": "002265a8939ebb76dfece8036b7bbef750ce33dfccb27bd8e731ac55bb789cad",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/tar_pits_deep_design.md": {
-   "hash": "c4b836588d21f8aca0c04a16df7e77f4557bcd825595c9aa791d940bd69543b2",
-   "ruled_triples": [
-    [
-     "built, not automatic.",
-     "direction on the channel; true elevation-driven flow is",
-     "a v2+ ask if the layout tooling grows one. - ~~**volume is finite per pit.**~~ ⛔ superseded by the 2026-09-02 ruling: *\"don't make it finite, just make it slow to refill.\"* reservoirs refill slowly from the deep sources; scarcity is rate, not stock"
-    ],
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "mechanics sketch:",
-     null,
-     "mechanics sketch:** `pawnkinddef` (placeholder prefix only) with a dormancy comp on anomaly's hidden-entity pattern; `comptarreservoir` refill tick if reading a adopted (data-only, reuses §4a)"
-    ],
-    [
-     "recommendation, offered not ruled:",
-     null,
-     "recommendation, offered not ruled:** a explains the renewable economy (§7 needs it), b delivers the horror beat directly, and they layer — one planetary-scale secretor (a), several small ambush tenants living in its output like barnacles on a whale (b)"
-    ],
-    [
-     "rut_fire_tar",
-     null,
-     "canal engineering (§4a) — 🔴 build as the general rimmandrake-tier fluid/canal mod per the ruling (water, ooze, slime, oil, tar, propane), with tar as its first client; `rut_fire_tar` flood-and-ignite (§4c: normal-fire lethality, toxic obscuring smoke); moats fall out of it (§4b). 3"
-    ],
-    [
-     "rut_tardigsite",
-     null,
-     "archaeology: `rut_tardigsite` stratified digs (§3) **plus the ruled tar-removal pump prerequisite** (dig enabled only while pumping against deep-source ooze-in). 4"
-    ],
-    [
-     "rut_tarstuck",
-     null,
-     "creatures: tar-secretor (§5a, slow non-magical excretion in captivity), ambush lurker (§5b); chemfuel refinery (§7.3: slow, gross, oozing joints); sinking-render for `rut_tarstuck` — ruled a showcase: invest in real animation, study animation mods first. 5. \"the pit wakes\" set-piece (§6) with the ruled additions: tar-beast eggs that hatch on disturbance, maliciously buried ordnance, vindictive-faction territory flavor"
-    ],
-    [
-     "three",
-     null,
-     "three readings, not mutually exclusive, offered rather than ruled:"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/underground_caverns_deep_design.md": {
-   "hash": "22563ac0284acf5d8ce0d78eca1c7788160fe671c26f08c71216e0820df31868",
-   "ruled_triples": [
-    [
-     "as hazard",
-     "a doc-1-style drained aquifer, where the rock has",
-     "lost whatever the water was holding up) — a real risk to weigh against speed, and a reason \"rope/climbing kit\" belongs in the expedition loadout (§1) alongside light and air. - **as tool**: a deliberate collapse (an explosive charge, or a mined support beam) can seal a pursuing enemy behind the player, cut off a layer's connection entirely (permanently, per the persistent-state rule in §3 — a collapsed passage stays collapsed), or open a shortcut between two otherwise-distant rooms"
-    ],
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. -->"
-    ],
-    [
-     "explicitly\nnot",
-     "\"let players configure their own dungeon\" feature becomes",
-     "later"
-    ]
-   ]
-  },
-  "design/Jawa/proposals/weather_suite_deep_design.md": {
-   "hash": "b603c6fda3ae0d9160b571ebebd9e16779f1421352bc0f6ee38d3ffe47521d99",
-   "ruled_triples": [
-    [
-     "draft proposal",
-     null,
-     "<!-- status: draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. --> <!-- v1 slice green-lit by the owner 2026-09-01 (items fire_ecology_loop_1 / weather_suite_slice_1 / livestock_starter_trio_1); the remainder of this doc still awaits proposal_suite_review_1. -->"
+     "said out loud in settings. - **xp**: each push grants social xp (~150; ×2 crit, ×0.5 fail — you learn from being laughed at)"
     ]
    ]
   },
   "design/RimMandrake/liquids_framework_design.md": {
-   "hash": "2dcc7280795ca172156c3b965ace95fdc6de7d9a32bfdb2c15d6d128185111b9",
+   "hash": "6fba8dca6373d9ed8326766e5b053f76f92ec36010c4fc2fb259671b36603e4b",
    "ruled_triples": [
     [
      "dbh",
@@ -427,6 +82,16 @@
      "dropped/cut",
      "no registry rows yet), lava (study lava must",
      "flow first), hemogen/beer/milk adoption rows, basic (alkaline) water, kolto/bacta healing rows (see §8)"
+    ],
+    [
+     "liquid trade",
+     null,
+     "liquid trade** (owner-ruled 2026-09-13: both routes — \"it's that important\")"
+    ],
+    [
+     "liquid_biomes_map_1",
+     "brine seas, propane lake — `liquid_biomes_map_1`, done) are",
+     "the floor of the roster: every authored body gets at least a minimal row, or ruling 5 cannot hold"
     ],
     [
      "terraindef stays the engine face",

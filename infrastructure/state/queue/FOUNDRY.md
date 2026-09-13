@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T20:01:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T20:03:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1396,3 +1396,63 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  rimworld/searchdebugactions (ANY query, even "Inhabited") and
 prose:    infrastructure/state/items/DEBUG_ACTION_ENUM_CRASH_1.md
+
+## BAZAAR_WINDOW_GRID_1 The Bazaar slice 1: Dialog_Trade replacement via WindowStack.Add intercept + virtualized grid, presets, wishlist, plugin defs — silver math identical to vanilla — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  New mod src/RimMandrake/TheBazaar/ (mandrake.rm.bazaar). RMWindowBazaar
+prose:    infrastructure/state/items/BAZAAR_WINDOW_GRID_1.md
+
+## BAZAAR_PRICE_ENGINE_1 The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
+prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
+
+## BAZAAR_HAGGLE_DUEL_1 The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; deterministic seeding — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
+prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
+
+## BAZAAR_BANTER_LINES_1 The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Part A (ships alone, complete): authored line pools per (personality × event
+prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
+
+## BAZAAR_BROKER_TAB_1 The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
+prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
+
+## BAZAAR_DISPLACEMENT_PASS_1 Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  When The Bazaar's slices 1–2 are live-proven: deactivate Trade UI Revised
+prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
