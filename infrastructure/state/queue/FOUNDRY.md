@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:33:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:34:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -756,6 +756,15 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
+## RM_GENSTEP_PLACED_SETPIECES_1 Build RM_GenStep_PlacedSetPieces: the shared def-list set-piece scatterer (Miasma M6 + Sump S3/S4)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  RMGenStepPlacedSetPieces : GenStepScatterer — base class already
+prose:    infrastructure/state/items/RM_GENSTEP_PLACED_SETPIECES_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1311,13 +1320,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
-
-## RM_GENSTEP_PLACED_SETPIECES_1 Build RM_GenStep_PlacedSetPieces: the shared def-list set-piece scatterer (Miasma M6 + Sump S3/S4)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RM_GENSTEP_PLACED_SETPIECES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RM_GENSTEP_PLACED_SETPIECES_1.md
