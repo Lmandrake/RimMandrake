@@ -2611,6 +2611,40 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
             ok("legibility 3-band: known-bad is REJECT (regen band)", v_bad3 == "reject")
             ok("legibility 3-band: known-good is BORDERLINE — the owner's own grade",
                v_good3 == "borderline", "; ".join(f_good3))
+
+            # the APPROVED borderline flow end-to-end (owner A/B, 2026-09-13):
+            # borderline art gets the OUTSIDE stroke and promotes on a pass.
+            # Run on a tmp copy — the flow REPLACES the candidate file.
+            from PIL import Image as _Img
+            with tempfile.TemporaryDirectory() as td2:
+                cand = Path(td2) / "good.png"
+                shutil.copy2(good, cand)
+                w, h = _Img.open(cand).size
+                job = {"canvas": {"width": w, "height": h}, "background": "transparent"}
+                res = artpiped._check_size_and_validate({}, job, None, cand,
+                                                         artpiped.LEGIBILITY_SCRIPT)
+                ok("borderline flow: known-good promotes via the outside stroke",
+                   res.get("status") == "ok" and res.get("legibility") == "REINFORCED_PASS",
+                   f"{res.get('worker_status')}/{res.get('legibility')}")
+                ok("borderline flow: pre-stroke original kept beside the output",
+                   (Path(td2) / "good_prestroke.png").is_file())
+
+                # deterministic margin failure: a sprite flush to the canvas
+                # edge cannot take an outside stroke — exit 4 → its own status.
+                flush = Path(td2) / "flush.png"
+                imf = _Img.new("RGBA", (128, 128), (0, 0, 0, 0))
+                for x in range(128):
+                    for y in range(128):
+                        imf.putpixel((x, y), (200, 180, 150, 255))
+                imf.save(flush)
+                jobf = {"canvas": {"width": 128, "height": 128}, "background": "transparent"}
+                resf = artpiped._check_size_and_validate({}, jobf, None, flush,
+                                                          artpiped.LEGIBILITY_SCRIPT)
+                ok("borderline flow: edge-flush art fails as insufficient_margin "
+                   "(or regen if it never reaches the stroke)",
+                   resf.get("status") == "failed" and resf.get("worker_status")
+                   in ("insufficient_margin", "legibility_below_gate"),
+                   str(resf.get("worker_status")))
             os.environ["ARTPIPE_LEGIBILITY_MODEL"] = ""
 
         os.environ["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""

@@ -452,6 +452,29 @@ def cmd_gate(args):
         im = trim(Image.open(args.path).convert("RGBA"))
         s, parts = fitted_score(im, model)
         detail = " ".join(f"{k}={v:.2f}" for k, v in sorted(parts.items())[:4])
+        # Deterministic FLOORS under the fitted model (locked 2026-09-13).
+        # The regression was trained only on real art; degenerate inputs sit
+        # outside its manifold and can score high on coverage/ground alone —
+        # measured: a flat featureless color block scored 2.84 (a clean pass).
+        # Floors, checked before the fitted bands:
+        #   structure AND contrast both ~zero  -> featureless: REGEN, always
+        #     (an outline stroke would only make an outlined blob);
+        #   both keyline metrics ~zero         -> no outline at all: at BEST
+        #     borderline, so the stroke gets its chance but a pass is
+        #     impossible without a rim.
+        structure = parts.get("gate_structure@32", 1.0)
+        contrast = parts.get("rms_contrast@32", 1.0)
+        key_a = parts.get("keyline_v1@32", 1.0)
+        key_b = parts.get("gate_keyline@32", 1.0)
+        if structure < 0.05 and contrast < 0.05:
+            print(f"LEGIBILITY FAIL floor: featureless (structure={structure:.2f}, "
+                  f"rms_contrast={contrast:.2f}) — regenerate; fitted={s:.2f} ignored")
+            return 1
+        if key_a < 0.05 and key_b < 0.05 and s >= model["works_line"]:
+            print(f"LEGIBILITY BORDERLINE floor: no outline at all "
+                  f"(keyline_v1={key_a:.2f}, gate_keyline={key_b:.2f}) — a pass "
+                  f"needs a rim; reinforce then rescore; fitted={s:.2f}")
+            return 3
         if s >= model["works_line"]:
             print(f"LEGIBILITY PASS fitted={s:.2f} >= works {model['works_line']} ({detail})")
             return 0
@@ -518,16 +541,32 @@ def cmd_reinforce(args):
     for _ in range(ring_w):
         grown = _dilate(grown)
     k = float(np.clip(args.strength, 0.0, 1.0))
+    # Deterministic margin check (locked 2026-09-13): the ring the stroke
+    # WANTED is the dilation on an edge-padded copy; the ring it can HAVE is
+    # the in-canvas dilation. Lost fraction above --max-clip-frac = exit 4,
+    # a distinct routable failure ("insufficient margin"), never a silent
+    # flat-sided outline.
+    pad = ring_w + 1
+    vis_p = np.pad(vis, pad)
+    grown_p = vis_p.copy()
+    for _ in range(ring_w):
+        grown_p = _dilate(grown_p)
+    wanted = int(grown_p.sum() - vis_p.sum())
+    have = int(grown.sum() - vis.sum())
+    clip_frac = 0.0 if wanted <= 0 else max(0.0, (wanted - have) / wanted)
+    if clip_frac > args.max_clip_frac:
+        print(f"INSUFFICIENT MARGIN: {clip_frac:.0%} of the outline ring falls "
+              f"outside the canvas (limit {args.max_clip_frac:.0%}) — the master "
+              f"needs ~{ring_w}px of transparent margin; regenerate with margin")
+        return 4
     outline = np.zeros_like(arr)
     outline[..., :3] = 12.0                       # near-black
     outline[..., 3] = np.where(grown, 255.0 * k, 0.0)
     base = Image.fromarray(outline.astype(np.uint8), "RGBA")
     base.alpha_composite(im)                      # ORIGINAL art over the ring
     base.save(args.out)
-    clipped = bool((grown[0, :].any() or grown[-1, :].any()
-                    or grown[:, 0].any() or grown[:, -1].any()))
-    print(f"outside-stroked: ring {ring_w}px of {body}px body, opacity {k}"
-          f"{' (clipped at canvas edge)' if clipped else ''} -> {args.out}")
+    print(f"outside-stroked: ring {ring_w}px of {body}px body, opacity {k}, "
+          f"ring clipped {clip_frac:.0%} -> {args.out}")
     return 0
 
 
@@ -619,10 +658,12 @@ def main():
     p.set_defaults(fn=cmd_gate)
     p = sub.add_parser("reinforce")
     p.add_argument("path"); p.add_argument("--out", required=True)
-    p.add_argument("--strength", type=float, default=0.65,
-                   help="0..1 how far ring pixels move toward black")
-    p.add_argument("--width-frac", type=float, default=0.025,
-                   help="ring width as a fraction of body size (art direction says 2-3%%)")
+    p.add_argument("--strength", type=float, default=1.0,
+                   help="outline opacity 0..1 (owner-approved default 1.0, 2026-09-13)")
+    p.add_argument("--width-frac", type=float, default=0.02,
+                   help="outside ring width as a fraction of body size (approved 2%%)")
+    p.add_argument("--max-clip-frac", type=float, default=0.05,
+                   help="fail (exit 4) when more than this fraction of the ring is lost at the canvas edge")
     p.set_defaults(fn=cmd_reinforce)
     p = sub.add_parser("resexp"); common(p)
     p.add_argument("--stored", default="128,256,512")

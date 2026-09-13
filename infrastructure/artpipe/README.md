@@ -77,6 +77,22 @@ at play zoom is design (keyline/shapes/contrast), not pixels. The owner's
 default already carries 2× headroom over the measured knee.
 Raw data: Transient/legibility_resexp_2026-09-13.json (14-day shelf).
 
+**LOCKED RULES (owner, 2026-09-13, after the graded sheet + A/B approval):**
+- Canvas ceiling 256 is a REFUSAL in `fill_queue.py` without an
+  `oversize_reason`; under-128 warns (decor only). Prompt direction now also
+  demands ~3% transparent margin on every side (the outside stroke needs it).
+- The gate is the owner-grade-FITTED 3-band model
+  (`legibility_model_fitted.json`, LOO ρ=0.81): pass ≥ works_line /
+  borderline / regen < mud_line, with deterministic FLOORS the regression
+  cannot express (featureless block → regen; zero-keyline → borderline max).
+- Borderline art auto-takes the OUTSIDE keyline stroke
+  (`art_legibility.py reinforce`, opacity 1.0, 2% ring — approved on the A/B
+  sheet; the stroke never touches original pixels) and promotes on rescore;
+  outcomes are distinct statuses: `REINFORCED_PASS` ·
+  `legibility_borderline_unrescued` · `insufficient_margin` (exit 4, ring
+  >5% clipped) · `reinforce_failed`. Pre-stroke originals kept as
+  `*_prestroke.png`.
+
 ## Who writes here
 
 - `fill_queue.py` writes `pending/` only, refusing a duplicate id.
