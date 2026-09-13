@@ -8093,3 +8093,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MODLIST_RULED_CUTS_1: zero MoEvents MO_ baseChances via live settings","ts":"2026-09-13T07:19:45Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:29:26Z"}
 {"seat":"FOUNDRY","event":"note","id":"MODLIST_RULED_CUTS_1","text":"3 ruled ModsConfig cuts + Jurassic retirement executed (594->590 mods); MoEvents baseChance zeroed via new patch (10 real defNames, validate_patch clean). Player.log confirmation owed on next full-list load.","ts":"2026-09-13T07:32:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GRAVSHIP_MAP_SIZE_1","ts":"2026-09-13T07:33:40Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GRAVSHIP_MAP_SIZE_1: verify initialMapSize mechanism live before any save edit","ts":"2026-09-13T07:34:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-13T07:38:02Z"}
+{"seat":"FOUNDRY","event":"start","id":"GRAVSHIP_MAP_SIZE_1","ts":"2026-09-13T07:38:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"GRAVSHIP_MAP_SIZE_1","sha":"f81afa5f3c0032f715504d90b642c01305f3cabe","ts":"2026-09-13T07:39:17Z"}
