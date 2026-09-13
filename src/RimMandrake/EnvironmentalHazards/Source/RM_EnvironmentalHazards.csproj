@@ -68,6 +68,14 @@
     <Compile Include="RM_HediffComp_EnvironmentalExposure.cs" />
     <Compile Include="RM_HediffComp_ForgeOnSurvival.cs" />
     <Compile Include="RM_CompTerritorialAnchor.cs" />
+    <Compile Include="RM_LurkingWaterExtension.cs" />
+    <Compile Include="RM_TenantTruceExtension.cs" />
+    <Compile Include="RUT_MapComponent_TheTenant.cs" />
+    <Compile Include="RUT_IncidentWorker_MirrorBreak.cs" />
+    <Compile Include="RM_CompUseEffect_RevealHazards.cs" />
+    <Compile Include="RUT_TenantEmergenceSpawner.cs" />
+    <Compile Include="RM_CompGatherableCalmGated.cs" />
+    <Compile Include="RUT_HaulPawnAndExit.cs" />
   </ItemGroup>
 
   <ItemGroup>
