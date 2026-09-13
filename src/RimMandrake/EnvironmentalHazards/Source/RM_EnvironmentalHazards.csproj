@@ -78,6 +78,9 @@
     <Compile Include="RUT_HaulPawnAndExit.cs" />
     <Compile Include="RM_CompResourceCondenser.cs" />
     <Compile Include="RUT_IncidentWorker_WalkerSurfacing.cs" />
+    <Compile Include="RM_LotteryTableDef.cs" />
+    <Compile Include="RM_CompWorkedLottery.cs" />
+    <Compile Include="RM_CompFloodIgniter.cs" />
   </ItemGroup>
 
   <ItemGroup>
