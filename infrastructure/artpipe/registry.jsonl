@@ -884,3 +884,31 @@
 {"by": "artpiped", "event": "validated", "job_id": "wastewing_v1_north", "target": "wastewing/north", "ts": 1789252068.7488964, "verdict": "fail"}
 {"by": "artpiped", "elapsed_s": 641.4320835740073, "event": "generated", "job_id": "wastewing_v1_south", "target": "wastewing/south", "ts": 1789252710.2488997}
 {"by": "artpiped", "event": "validated", "job_id": "wastewing_v1_south", "target": "wastewing/south", "ts": 1789252710.2578819, "verdict": "fail"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "wildradagast", "ts": 1789270870.7491724}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "wildradagast_v1", "notes": "", "target": "wildradagast", "ts": 1789270870.7618268}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "globularplant", "ts": 1789270870.7840953}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "globularplant_v1", "notes": "", "target": "globularplant", "ts": 1789270870.7946064}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "firevine_fireweed", "ts": 1789270870.8094049}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "firevine_fireweed_v1", "notes": "", "target": "firevine_fireweed", "ts": 1789270870.8210118}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "giantgamma", "ts": 1789270870.8381686}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "giantgamma_v1", "notes": "", "target": "giantgamma", "ts": 1789270870.8501108}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "toxicgamma", "ts": 1789270870.862701}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "toxicgamma_v1", "notes": "", "target": "toxicgamma", "ts": 1789270870.8727975}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "tanglerootmangrove", "ts": 1789270870.885795}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "tanglerootmangrove_v1", "notes": "", "target": "tanglerootmangrove", "ts": 1789270870.895763}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "crystalhorn", "ts": 1789270870.911549}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "crystalhorn_v1", "notes": "", "target": "crystalhorn", "ts": 1789270870.9252641}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "twistingthornwood", "ts": 1789270870.9414384}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "twistingthornwood_v1", "notes": "", "target": "twistingthornwood", "ts": 1789270870.9531362}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "agariluxprime", "ts": 1789270870.9707696}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "agariluxprime_v1", "notes": "", "target": "agariluxprime", "ts": 1789270870.983929}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "giantagarilux", "ts": 1789270870.9979582}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "giantagarilux_v1", "notes": "", "target": "giantagarilux", "ts": 1789270871.0092232}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "firevinetree", "ts": 1789270871.023507}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "firevinetree_v1", "notes": "", "target": "firevinetree", "ts": 1789270871.0348866}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "giantagaritox", "ts": 1789270871.0502677}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "giantagaritox_v1", "notes": "", "target": "giantagaritox", "ts": 1789270871.0611656}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "largeslimytree", "ts": 1789270871.0766048}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "largeslimytree_v1", "notes": "", "target": "largeslimytree", "ts": 1789270871.0909867}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "greenrockfern", "ts": 1789270871.1057851}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greenrockfern_v1", "notes": "", "target": "greenrockfern", "ts": 1789270871.1175637}
