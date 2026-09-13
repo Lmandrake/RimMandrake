@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:36:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T09:37:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,15 +98,6 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
-
-## DOING_ITEMS_RECONCILE_1 DOING_ITEMS_RECONCILE_1 reconcile the 102-item doing sediment: close the done, drop the dead, expose the truly stuck
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner (2026-09-13, before going AFK): "What about examining the stuck queue
-prose:    infrastructure/state/items/DOING_ITEMS_RECONCILE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
