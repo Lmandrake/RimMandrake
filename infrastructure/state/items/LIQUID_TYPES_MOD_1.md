@@ -1,5 +1,12 @@
 # LIQUID_TYPES_MOD_1 — one liquid system, many liquids
 
+> 🔴 **Ruled 2026-09-13** (owner, liquids-framework bench sitting): this mod's
+> shape is now specified by `design/RimMandrake/liquids_framework_design.md` —
+> LiquidTypes grows into the CORE REGISTRY (`LiquidDef` + form slots), and the
+> roster below is superseded by that design's §3 (brine/propane minimal rows in,
+> ammonia/coolant/etc. terrains stay shipped without rows). Concrete first slice:
+> `LIQUID_REGISTRY_CORE_1`. Read the design before continuing this item.
+
 Owner, at the Rust Cathedral sitting 2026-09-06 (verbatim on the filing event).
 A mod defining liquid VARIETIES as data: per-liquid **viscosity (move cost),
 damage type on contact/immersion, acidity vs basicity, color, opacity,

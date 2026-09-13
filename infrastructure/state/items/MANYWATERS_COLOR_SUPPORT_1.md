@@ -1,3 +1,10 @@
+> 🔴 **Ruled 2026-09-13** (owner, liquids-framework bench sitting): ManyWaters
+> becomes a DATA-PACK CLIENT of the liquids framework
+> (`design/RimMandrake/liquids_framework_design.md` §5) — its colored waters and
+> slimes become adopted rows of the `LiquidDef` registry
+> (`LIQUID_REGISTRY_CORE_1`); slime R/G/W go distinct via `SLIME_STREAM_ROWS_1`,
+> purple is dropped. Read the design before continuing this item.
+
 ## spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
 
 **Reading the brief.** ManyWaters' own About.xml says it "gathers all water

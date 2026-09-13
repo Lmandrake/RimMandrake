@@ -1,7 +1,8 @@
 <!-- status: DRAFT PROPOSAL for owner review — brainstorm sitting 2026-08-31, not ruled. -->
 # Underground caverns deep design — the desert's dungeon vocabulary
 
-Companion to `design/Jawa/proposals/water_economy_deep_design.md` (Doc 1),
+Companion to the former water-economy proposal (Doc 1, since absorbed into
+`design/RimMandrake/liquids_framework_design.md`),
 which this doc cross-cites directly — a drained aquifer from Doc 1's water
 heist is one of this doc's cavern entrances, not a separate invention. Reads
 against `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md` R-H7 (the

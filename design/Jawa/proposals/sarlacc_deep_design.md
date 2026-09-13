@@ -99,7 +99,8 @@ there.
 
 This is the section that turns the sarlacc from "monster on the map" into
 "an institution the surrounding factions have built a relationship with,"
-and it's where this doc earns its place next to `water_economy_deep_design.md`
+and it's where this doc earns its place next to the liquids framework
+(`design/RimMandrake/liquids_framework_design.md`)
 and `underground_caverns_deep_design.md` rather than standing apart from
 them.
 
@@ -113,7 +114,8 @@ them.
 - **Tribute.** Factions and settlements near the pit (§5) have their own
   standing relationship with it — a scheduled offering, a first-kill
   tithe, a "the pit gets a share before we eat" custom. This gives the
-  sarlacc the same texture `water_economy_deep_design.md` gives water: not
+  sarlacc the same texture the liquids framework
+  (`design/RimMandrake/liquids_framework_design.md`) gives water: not
   a hazard to route around, but **infrastructure with a social contract
   attached**, one that predates the player and that the player can honor,
   ignore, or exploit.
