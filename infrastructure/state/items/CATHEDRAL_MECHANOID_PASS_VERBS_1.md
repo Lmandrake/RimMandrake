@@ -3,7 +3,11 @@
 
 
 ## spec
-Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Two verbs:
+Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
+(owner card, 2026-09-13, via CATHEDRAL_ARC_OPEN_CARDS_1): the NARROWEST
+reading — faction-13 Sentinels + Cathedral-controlled machines, Cathedral
+ground only; other mechanoid factions are NOT covered, and the pass does
+nothing off Cathedral maps. No longer an assumption. Two verbs:
 - **GRANT** — at VOUCHED+, the Cathedral may extend the Helix-style pass to
   the clan: its machines read pass-holders as non-hostile. Priced like any
   boon against Imperial Heat (offer rides item 4's lane); revocable when the

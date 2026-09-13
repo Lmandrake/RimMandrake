@@ -13,8 +13,18 @@ pressure (pressure + dark flip are item 1's):
   narrated* — staged events on/around Cathedral ground (§GM "losing battle"
   register), bans 2/3/6 holding throughout: no Sentinel-raid story against
   the player, no mercy/drill text even in death.
-- **Warzone posture flip** — planet-level posture change via the GM layer +
-  existing pursuit/raid pacing surfaces; no worldgen, no map regeneration.
+- **Warzone posture flip** — RULED (owner card, 2026-09-13, via
+  CATHEDRAL_ARC_OPEN_CARDS_1: "And the mechanoids go all out hostile, plus all
+  of the above"). The flip uses ALL of: (a) GM layer + existing pursuit/raid
+  pacing surfaces, (b) faction-hostility flips — named factions re-align at the
+  flip, scoped and reversible, (c) a harsher storyteller/difficulty swap, and
+  (d) mechanoid factions go all-out hostile. Still no worldgen, no map
+  regeneration. Edge the builder must hold: the arc law binds faction-13
+  conduct throughout (bans 2/3/6, §8 seed 4 hysteresis — no authored
+  Sentinel-raid story against the player), so the all-out-hostile arm is the
+  mechanoid factions at large; if faction-13's own posture at the fall cannot
+  be reconciled with seed 4, that single edge escalates back to the owner
+  rather than being improvised.
 - **Priced Hutt extraction window** — a real, losable campaign ENDING: offer
   rides Hutt Interest (kyber §4's fixer lane); price scales with Interest/
   standing; registration as a ruled campaign ending belongs to

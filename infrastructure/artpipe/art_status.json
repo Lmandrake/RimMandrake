@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-12T07:19:23Z",
+  "generatedAt": "2026-09-13T08:32:41Z",
   "iterationsHistogram": {
-    "1": 141,
+    "1": 224,
     "2": 4,
     "3": 6,
     "4": 3,
@@ -249,6 +249,186 @@
       },
       "state": "awaiting_verdict"
     },
+    "aaklac": {
+      "iteration": 1,
+      "job_ids": [
+        "aaklac_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789274160.7139018,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "abtoxigrass": {
+      "iteration": 1,
+      "job_ids": [
+        "abtoxigrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789274240.581398,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "agaricusdomecap": {
+      "iteration": 1,
+      "job_ids": [
+        "agaricusdomecap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271786.1410873,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 2.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "agarilux": {
+      "iteration": 1,
+      "job_ids": [
+        "agarilux_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271774.3391726,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "agariluxprime": {
+      "iteration": 1,
+      "job_ids": [
+        "agariluxprime_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789270987.6802871,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "aliengrass": {
+      "iteration": 1,
+      "job_ids": [
+        "aliengrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789274324.4511802,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "alientree": {
+      "iteration": 1,
+      "job_ids": [
+        "alientree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789274410.0800762,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "alientreepolluted": {
+      "iteration": 1,
+      "job_ids": [
+        "alientreepolluted_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.5101314,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "ambrosia": {
+      "iteration": 1,
+      "job_ids": [
+        "ambrosia_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.5455396,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "anooba/east": {
       "iteration": 1,
       "job_ids": [
@@ -309,6 +489,126 @@
       },
       "state": "awaiting_verdict"
     },
+    "arbuscularmycorrhiza": {
+      "iteration": 1,
+      "job_ids": [
+        "arbuscularmycorrhiza_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271794.1923723,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "aridgrass": {
+      "iteration": 1,
+      "job_ids": [
+        "aridgrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.9147396,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "arpeau": {
+      "iteration": 1,
+      "job_ids": [
+        "arpeau_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.0157785,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "ashrunner/east": {
+      "iteration": 1,
+      "job_ids": [
+        "ashrunner_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250144.9916437,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "ashrunner/north": {
+      "iteration": 1,
+      "job_ids": [
+        "ashrunner_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249594.2854614,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "ashrunner/south": {
+      "iteration": 1,
+      "job_ids": [
+        "ashrunner_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250144.9080334,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
     "bgtest_a": {
       "iteration": 1,
       "job_ids": [
@@ -349,6 +649,146 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "bilespawn/east": {
+      "iteration": 1,
+      "job_ids": [
+        "bilespawn_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249605.2050886,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "bilespawn/north": {
+      "iteration": 1,
+      "job_ids": [
+        "bilespawn_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250144.965981,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "bilespawn/south": {
+      "iteration": 1,
+      "job_ids": [
+        "bilespawn_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249583.8258352,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "bindweed": {
+      "iteration": 1,
+      "job_ids": [
+        "bindweed_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.4948838,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "bleedingtooth": {
+      "iteration": 1,
+      "job_ids": [
+        "bleedingtooth_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273416.3670442,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "bloddle": {
+      "iteration": 1,
+      "job_ids": [
+        "bloddle_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.563704,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "bloodbouquet": {
+      "iteration": 1,
+      "job_ids": [
+        "bloodbouquet_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.526742,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "boma/east": {
       "iteration": 1,
@@ -469,6 +909,126 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "brambles": {
+      "iteration": 1,
+      "job_ids": [
+        "brambles_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.5808346,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "brightbells": {
+      "iteration": 1,
+      "job_ids": [
+        "brightbells_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273507.6620207,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "bryolux": {
+      "iteration": 1,
+      "job_ids": [
+        "bryolux_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273597.0191038,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "bubblespore": {
+      "iteration": 1,
+      "job_ids": [
+        "bubblespore_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.5965493,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "bush": {
+      "iteration": 1,
+      "job_ids": [
+        "bush_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.613901,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "chakroot": {
+      "iteration": 1,
+      "job_ids": [
+        "chakroot_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.630697,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "cinderwing/east": {
       "iteration": 1,
@@ -596,6 +1156,166 @@
       },
       "state": "generated"
     },
+    "corronip/east": {
+      "iteration": 1,
+      "job_ids": [
+        "corronip_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249699.3815305,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "corronip/north": {
+      "iteration": 1,
+      "job_ids": [
+        "corronip_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249729.85875,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "corronip/south": {
+      "iteration": 1,
+      "job_ids": [
+        "corronip_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249758.1730883,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "creepstern": {
+      "iteration": 1,
+      "job_ids": [
+        "creepstern_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.9317956,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "crimsoncap": {
+      "iteration": 1,
+      "job_ids": [
+        "crimsoncap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273675.4495544,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "crimsoncushion": {
+      "iteration": 1,
+      "job_ids": [
+        "crimsoncushion_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.9491792,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "crystalflower": {
+      "iteration": 1,
+      "job_ids": [
+        "crystalflower_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.5444303,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "crystalhorn": {
+      "iteration": 1,
+      "job_ids": [
+        "crystalhorn_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789270968.9149895,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "dactillion/east": {
       "iteration": 1,
       "job_ids": [
@@ -655,6 +1375,26 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "dervish": {
+      "iteration": 1,
+      "job_ids": [
+        "dervish_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.9670622,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "dewback/east": {
       "iteration": 1,
@@ -716,6 +1456,106 @@
       },
       "state": "awaiting_verdict"
     },
+    "dewshrooms": {
+      "iteration": 1,
+      "job_ids": [
+        "dewshrooms_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273765.3871908,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "direwail/east": {
+      "iteration": 1,
+      "job_ids": [
+        "direwail_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249768.074219,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "direwail/north": {
+      "iteration": 1,
+      "job_ids": [
+        "direwail_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249814.7022388,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "direwail/south": {
+      "iteration": 1,
+      "job_ids": [
+        "direwail_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249834.6778133,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "doomsprout": {
+      "iteration": 1,
+      "job_ids": [
+        "doomsprout_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.1127255,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "dragonsnake/east": {
       "iteration": 1,
       "job_ids": [
@@ -770,6 +1610,26 @@
       ],
       "spend": {
         "codexPctWindow": 2.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "dribblingcap": {
+      "iteration": 1,
+      "job_ids": [
+        "dribblingcap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271880.95571,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
         "note": null,
         "status": "MEASURED",
         "usd": 0.0
@@ -835,6 +1695,46 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "eclipsusflower": {
+      "iteration": 1,
+      "job_ids": [
+        "eclipsusflower_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.130324,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "eclipsusleaves": {
+      "iteration": 1,
+      "job_ids": [
+        "eclipsusleaves_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.147661,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "emberscythe/east": {
       "iteration": 1,
@@ -1076,6 +1976,26 @@
       },
       "state": "awaiting_verdict"
     },
+    "felucianglowspore": {
+      "iteration": 1,
+      "job_ids": [
+        "felucianglowspore_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.6477134,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "fenshear/east": {
       "iteration": 1,
       "job_ids": [
@@ -1130,6 +2050,506 @@
       ],
       "spend": {
         "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "firelavender": {
+      "iteration": 1,
+      "job_ids": [
+        "firelavender_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.0341012,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "firevine_fireweed": {
+      "iteration": 1,
+      "job_ids": [
+        "firevine_fireweed_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789270980.3363674,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "firevinetree": {
+      "iteration": 1,
+      "job_ids": [
+        "firevinetree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271068.8972857,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "flakespirefungus": {
+      "iteration": 1,
+      "job_ids": [
+        "flakespirefungus_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.0528314,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "frostleaf": {
+      "iteration": 1,
+      "job_ids": [
+        "frostleaf_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.5619106,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "fruitingbodies": {
+      "iteration": 1,
+      "job_ids": [
+        "fruitingbodies_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273867.4957058,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "fumeback/east": {
+      "iteration": 1,
+      "job_ids": [
+        "fumeback_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249842.9718175,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "fumeback/north": {
+      "iteration": 1,
+      "job_ids": [
+        "fumeback_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249914.2999666,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "fumeback/south": {
+      "iteration": 1,
+      "job_ids": [
+        "fumeback_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249919.4906201,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "gargantuanlithops": {
+      "iteration": 1,
+      "job_ids": [
+        "gargantuanlithops_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.577948,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "giantagarilux": {
+      "iteration": 1,
+      "job_ids": [
+        "giantagarilux_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271085.5370553,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "giantagaritox": {
+      "iteration": 1,
+      "job_ids": [
+        "giantagaritox_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271100.157108,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 2.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "giantgamma": {
+      "iteration": 1,
+      "job_ids": [
+        "giantgamma_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271170.8698406,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "giantleaf": {
+      "iteration": 1,
+      "job_ids": [
+        "giantleaf_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271897.082416,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "giantseptimum": {
+      "iteration": 1,
+      "job_ids": [
+        "giantseptimum_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.594035,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "giantstikehr": {
+      "iteration": 1,
+      "job_ids": [
+        "giantstikehr_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6098046,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "gianttoxicflower": {
+      "iteration": 1,
+      "job_ids": [
+        "gianttoxicflower_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6252437,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "globularplant": {
+      "iteration": 1,
+      "job_ids": [
+        "globularplant_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271192.374993,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "glowingagarilux": {
+      "iteration": 1,
+      "job_ids": [
+        "glowingagarilux_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272114.7176054,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "glowinggrass": {
+      "iteration": 1,
+      "job_ids": [
+        "glowinggrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6422594,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "glowstool": {
+      "iteration": 1,
+      "job_ids": [
+        "glowstool_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.0180113,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "gomphoeria": {
+      "iteration": 1,
+      "job_ids": [
+        "gomphoeria_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272109.2975729,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "gorewalker/east": {
+      "iteration": 1,
+      "job_ids": [
+        "gorewalker_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249688.9325309,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "gorewalker/north": {
+      "iteration": 1,
+      "job_ids": [
+        "gorewalker_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249935.196938,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "gorewalker/south": {
+      "iteration": 1,
+      "job_ids": [
+        "gorewalker_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789249995.929773,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
         "note": null,
         "status": "MEASURED",
         "usd": 0.0
@@ -1256,6 +2676,26 @@
       },
       "state": "awaiting_verdict"
     },
+    "graygrass": {
+      "iteration": 1,
+      "job_ids": [
+        "graygrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.6636596,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "greaterkraytdragon/east": {
       "iteration": 1,
       "job_ids": [
@@ -1315,6 +2755,66 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "greenrockfern": {
+      "iteration": 1,
+      "job_ids": [
+        "greenrockfern_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271187.2918751,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "greylady": {
+      "iteration": 1,
+      "job_ids": [
+        "greylady_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789274053.8868504,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "grimmoss": {
+      "iteration": 1,
+      "job_ids": [
+        "grimmoss_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.4783769,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "grithe/east": {
       "iteration": 1,
@@ -1496,6 +2996,66 @@
       },
       "state": "awaiting_verdict"
     },
+    "gutterplantain": {
+      "iteration": 1,
+      "job_ids": [
+        "gutterplantain_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.1754375,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "halfalientree": {
+      "iteration": 1,
+      "job_ids": [
+        "halfalientree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6592472,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "hardygrass": {
+      "iteration": 1,
+      "job_ids": [
+        "hardygrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6772134,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "hawkbat/east": {
       "iteration": 1,
       "job_ids": [
@@ -1555,6 +3115,46 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "healroot": {
+      "iteration": 1,
+      "job_ids": [
+        "healroot_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.6804419,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "heatsinkfungus": {
+      "iteration": 1,
+      "job_ids": [
+        "heatsinkfungus_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.0764575,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "horax/east": {
       "iteration": 1,
@@ -1616,6 +3216,126 @@
       },
       "state": "awaiting_verdict"
     },
+    "hubbagourd": {
+      "iteration": 1,
+      "job_ids": [
+        "hubbagourd_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.6963613,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "huskrunner/east": {
+      "iteration": 1,
+      "job_ids": [
+        "huskrunner_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250012.2911048,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "huskrunner/north": {
+      "iteration": 1,
+      "job_ids": [
+        "huskrunner_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250045.6169403,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "huskrunner/south": {
+      "iteration": 1,
+      "job_ids": [
+        "huskrunner_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250103.6748354,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "hydenocktree": {
+      "iteration": 1,
+      "job_ids": [
+        "hydenocktree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272158.7814043,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "iashiphus": {
+      "iteration": 1,
+      "job_ids": [
+        "iashiphus_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272206.2823012,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "insectomorph/east": {
       "iteration": 1,
       "job_ids": [
@@ -1667,6 +3387,66 @@
       "renders": 1,
       "sources": [
         "backfill"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "jogantree": {
+      "iteration": 1,
+      "job_ids": [
+        "jogantree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272202.222674,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "jungletree": {
+      "iteration": 1,
+      "job_ids": [
+        "jungletree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272266.5718644,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "keeningcordax": {
+      "iteration": 1,
+      "job_ids": [
+        "keeningcordax_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272300.897864,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
       ],
       "spend": {
         "codexPctWindow": 1.0,
@@ -1858,6 +3638,46 @@
       },
       "state": "awaiting_verdict"
     },
+    "largeslimytree": {
+      "iteration": 1,
+      "job_ids": [
+        "largeslimytree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271279.3856988,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "lilacbeacon": {
+      "iteration": 1,
+      "job_ids": [
+        "lilacbeacon_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272298.208654,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "lockjaw_improve_a": {
       "iteration": 4,
       "job_ids": [
@@ -2013,6 +3833,66 @@
       },
       "state": "awaiting_verdict"
     },
+    "magmacactus": {
+      "iteration": 1,
+      "job_ids": [
+        "magmacactus_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.7139087,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "mangrovepalm": {
+      "iteration": 1,
+      "job_ids": [
+        "mangrovepalm_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.6957216,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "mangrovetree": {
+      "iteration": 1,
+      "job_ids": [
+        "mangrovetree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272382.3496404,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
     "mantrap_improve_a": {
       "iteration": 4,
       "job_ids": [
@@ -2062,6 +3942,246 @@
         "usd": 1.072
       },
       "state": "generated"
+    },
+    "martyr": {
+      "iteration": 1,
+      "job_ids": [
+        "martyr_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.3091214,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "mireflit/east": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflit_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250107.0566146,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "mireflit/north": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflit_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250151.461927,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "mireflit/south": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflit_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250216.0806592,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "mireflitwarden/east": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflitwarden_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250190.3770962,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "mireflitwarden/north": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflitwarden_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250786.1534579,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "mireflitwarden/south": {
+      "iteration": 1,
+      "job_ids": [
+        "mireflitwarden_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250246.06921,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "miremoth/east": {
+      "iteration": 1,
+      "job_ids": [
+        "miremoth_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250280.918132,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "miremoth/north": {
+      "iteration": 1,
+      "job_ids": [
+        "miremoth_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250305.5131464,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "miremoth/south": {
+      "iteration": 1,
+      "job_ids": [
+        "miremoth_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250345.7986326,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "mortalmorel": {
+      "iteration": 1,
+      "job_ids": [
+        "mortalmorel_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.0433433,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "mujafruit": {
+      "iteration": 1,
+      "job_ids": [
+        "mujafruit_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.7311418,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "mycolith/east": {
       "iteration": 1,
@@ -2123,6 +4243,66 @@
       },
       "state": "awaiting_verdict"
     },
+    "nogtyl": {
+      "iteration": 1,
+      "job_ids": [
+        "nogtyl_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.0953078,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "nuitae": {
+      "iteration": 1,
+      "job_ids": [
+        "nuitae_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.0599127,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "nysyllin": {
+      "iteration": 1,
+      "job_ids": [
+        "nysyllin_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.7485654,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "ollopom/east": {
       "iteration": 1,
       "job_ids": [
@@ -2174,6 +4354,66 @@
       "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "oozemaw/east": {
+      "iteration": 1,
+      "job_ids": [
+        "oozemaw_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250457.365326,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "oozemaw/north": {
+      "iteration": 1,
+      "job_ids": [
+        "oozemaw_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250533.0906088,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "oozemaw/south": {
+      "iteration": 1,
+      "job_ids": [
+        "oozemaw_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250636.1791277,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
       ],
       "spend": {
         "codexPctWindow": 0.0,
@@ -2243,6 +4483,26 @@
       },
       "state": "awaiting_verdict"
     },
+    "parasiticmangrove": {
+      "iteration": 1,
+      "job_ids": [
+        "parasiticmangrove_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.7135959,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "pekopeko/east": {
       "iteration": 1,
       "job_ids": [
@@ -2303,6 +4563,146 @@
       },
       "state": "awaiting_verdict"
     },
+    "poisonplanttallgrass": {
+      "iteration": 1,
+      "job_ids": [
+        "poisonplanttallgrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.8690727,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "poisonshrub": {
+      "iteration": 1,
+      "job_ids": [
+        "poisonshrub_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.8949184,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "polux": {
+      "iteration": 1,
+      "job_ids": [
+        "polux_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.853188,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "poluxbush": {
+      "iteration": 1,
+      "job_ids": [
+        "poluxbush_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273947.037571,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "poxsorghum": {
+      "iteration": 1,
+      "job_ids": [
+        "poxsorghum_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.201246,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "primordialgrass": {
+      "iteration": 1,
+      "job_ids": [
+        "primordialgrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.5117612,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "primordialtallgrass": {
+      "iteration": 1,
+      "job_ids": [
+        "primordialtallgrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.5290504,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "puffmite/east": {
       "iteration": 1,
       "job_ids": [
@@ -2362,6 +4762,26 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "pusmelon": {
+      "iteration": 1,
+      "job_ids": [
+        "pusmelon_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.0757365,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "pyrelands_firehawk": {
       "iteration": 1,
@@ -2483,6 +4903,206 @@
       },
       "state": "awaiting_verdict"
     },
+    "rainbowtongue": {
+      "iteration": 1,
+      "job_ids": [
+        "rainbowtongue_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.4166985,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "ravennettle": {
+      "iteration": 1,
+      "job_ids": [
+        "ravennettle_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.731084,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "recurvedstropharia": {
+      "iteration": 1,
+      "job_ids": [
+        "recurvedstropharia_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.7478333,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "redbugloss": {
+      "iteration": 1,
+      "job_ids": [
+        "redbugloss_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.7645645,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "redleaves": {
+      "iteration": 1,
+      "job_ids": [
+        "redleaves_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.7812314,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "redplantstall": {
+      "iteration": 1,
+      "job_ids": [
+        "redplantstall_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.7975395,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "reeds": {
+      "iteration": 1,
+      "job_ids": [
+        "reeds_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.7663357,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "rgtoxigrass": {
+      "iteration": 1,
+      "job_ids": [
+        "rgtoxigrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273947.0026107,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "rimenodules": {
+      "iteration": 1,
+      "job_ids": [
+        "rimenodules_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.8148248,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "ripthorn": {
+      "iteration": 1,
+      "job_ids": [
+        "ripthorn_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.783316,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "ronto/east": {
       "iteration": 1,
       "job_ids": [
@@ -2542,6 +5162,86 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "rotscythe/east": {
+      "iteration": 1,
+      "job_ids": [
+        "rotscythe_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250716.6402092,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "rotscythe/north": {
+      "iteration": 1,
+      "job_ids": [
+        "rotscythe_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250804.9855359,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "rotscythe/south": {
+      "iteration": 1,
+      "job_ids": [
+        "rotscythe_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789251427.2742956,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "sagecrust": {
+      "iteration": 1,
+      "job_ids": [
+        "sagecrust_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.442576,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "scarrend/east": {
       "iteration": 1,
@@ -2603,6 +5303,86 @@
       },
       "state": "awaiting_verdict"
     },
+    "scorchedstars": {
+      "iteration": 1,
+      "job_ids": [
+        "scorchedstars_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.2370527,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "septimum": {
+      "iteration": 1,
+      "job_ids": [
+        "septimum_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.9984741,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "sewerreed": {
+      "iteration": 1,
+      "job_ids": [
+        "sewerreed_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.2549734,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "shinecap": {
+      "iteration": 1,
+      "job_ids": [
+        "shinecap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.4611266,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "shiro/east": {
       "iteration": 1,
       "job_ids": [
@@ -2662,6 +5442,46 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "shrublow": {
+      "iteration": 1,
+      "job_ids": [
+        "shrublow_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.800535,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "skulltop": {
+      "iteration": 1,
+      "job_ids": [
+        "skulltop_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.0915217,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "slagmaw/east": {
       "iteration": 1,
@@ -2723,6 +5543,66 @@
       },
       "state": "awaiting_verdict"
     },
+    "slimecasia": {
+      "iteration": 1,
+      "job_ids": [
+        "slimecasia_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.8310447,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "slimyfern": {
+      "iteration": 1,
+      "job_ids": [
+        "slimyfern_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.8474584,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "slimytree": {
+      "iteration": 1,
+      "job_ids": [
+        "slimytree_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.8637803,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "sludrin/east": {
       "iteration": 1,
       "job_ids": [
@@ -2774,6 +5654,446 @@
       "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "snaketails": {
+      "iteration": 1,
+      "job_ids": [
+        "snaketails_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.2725737,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "sporehulk/east": {
+      "iteration": 1,
+      "job_ids": [
+        "sporehulk_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789250918.709088,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "sporehulk/north": {
+      "iteration": 1,
+      "job_ids": [
+        "sporehulk_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789251059.7966702,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "sporehulk/south": {
+      "iteration": 1,
+      "job_ids": [
+        "sporehulk_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789251152.0694294,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "sugarfamewort": {
+      "iteration": 1,
+      "job_ids": [
+        "sugarfamewort_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789272459.0835435,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE2_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "tallslimygrass": {
+      "iteration": 1,
+      "job_ids": [
+        "tallslimygrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.8801506,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "talltoxigrass": {
+      "iteration": 1,
+      "job_ids": [
+        "talltoxigrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.985085,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tanglerootmangrove": {
+      "iteration": 1,
+      "job_ids": [
+        "tanglerootmangrove_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271286.4565036,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "tangletea": {
+      "iteration": 1,
+      "job_ids": [
+        "tangletea_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.897939,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tentacular": {
+      "iteration": 1,
+      "job_ids": [
+        "tentacular_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.9135647,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tinklegrass": {
+      "iteration": 1,
+      "job_ids": [
+        "tinklegrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.929673,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tooketrap": {
+      "iteration": 1,
+      "job_ids": [
+        "tooketrap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.8177383,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "toxibulb": {
+      "iteration": 1,
+      "job_ids": [
+        "toxibulb_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.9472156,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "toxicgamma": {
+      "iteration": 1,
+      "job_ids": [
+        "toxicgamma_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271289.458006,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "toxicivy": {
+      "iteration": 1,
+      "job_ids": [
+        "toxicivy_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.291008,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "toxipotato": {
+      "iteration": 1,
+      "job_ids": [
+        "toxipotato_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.8345191,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tropicalchokevine": {
+      "iteration": 1,
+      "job_ids": [
+        "tropicalchokevine_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273947.0202694,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "tumorbulbhyacinth": {
+      "iteration": 1,
+      "job_ids": [
+        "tumorbulbhyacinth_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.328314,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "twisteddandelion": {
+      "iteration": 1,
+      "job_ids": [
+        "twisteddandelion_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.3485155,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "twistingthorngrass": {
+      "iteration": 1,
+      "job_ids": [
+        "twistingthorngrass_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.3651736,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "twistingthornweed": {
+      "iteration": 1,
+      "job_ids": [
+        "twistingthornweed_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.3825052,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "twistingthornwood": {
+      "iteration": 1,
+      "job_ids": [
+        "twistingthornwood_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271371.709891,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
         "codexPctWindow": 1.0,
@@ -2903,6 +6223,26 @@
       },
       "state": "awaiting_verdict"
     },
+    "violetwimple": {
+      "iteration": 1,
+      "job_ids": [
+        "violetwimple_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.1074,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "vornskyr/east": {
       "iteration": 1,
       "job_ids": [
@@ -2963,6 +6303,86 @@
       },
       "state": "awaiting_verdict"
     },
+    "wastewing/east": {
+      "iteration": 1,
+      "job_ids": [
+        "wastewing_v1_east"
+      ],
+      "last_notes": null,
+      "last_ts": 1789251241.971775,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "wastewing/north": {
+      "iteration": 1,
+      "job_ids": [
+        "wastewing_v1_north"
+      ],
+      "last_notes": null,
+      "last_ts": 1789252068.7488964,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "wastewing/south": {
+      "iteration": 1,
+      "job_ids": [
+        "wastewing_v1_south"
+      ],
+      "last_notes": null,
+      "last_ts": 1789252710.2578819,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_WAVE10_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": "partial: one or more codex rows had no usable meter pair",
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "generated"
+    },
+    "weepingtoxberry": {
+      "iteration": 1,
+      "job_ids": [
+        "weepingtoxberry_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273945.9821258,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
     "whisperbird/east": {
       "iteration": 1,
       "job_ids": [
@@ -3022,6 +6442,86 @@
         "usd": 0.0
       },
       "state": "awaiting_verdict"
+    },
+    "wildradagast": {
+      "iteration": 1,
+      "job_ids": [
+        "wildradagast_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789271433.8353407,
+      "rejected_count": 0,
+      "renders": 1,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 1.0,
+        "note": null,
+        "status": "MEASURED",
+        "usd": 0.0
+      },
+      "state": "awaiting_verdict"
+    },
+    "wildrashroot": {
+      "iteration": 1,
+      "job_ids": [
+        "wildrashroot_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273946.3992908,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "witchesoyster": {
+      "iteration": 1,
+      "job_ids": [
+        "witchesoyster_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273334.932462,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
+    },
+    "wrinklecap": {
+      "iteration": 1,
+      "job_ids": [
+        "wrinklecap_v1"
+      ],
+      "last_notes": null,
+      "last_ts": 1789273335.1239104,
+      "rejected_count": 0,
+      "renders": 0,
+      "sources": [
+        "ART_REGEN_FLORA_WAVE1_QUEUE_1"
+      ],
+      "spend": {
+        "codexPctWindow": 0.0,
+        "note": null,
+        "status": "UNMEASURED",
+        "usd": 0.0
+      },
+      "state": "queued"
     },
     "wyyyschokk/east": {
       "iteration": 1,
@@ -3146,44 +6646,44 @@
   },
   "projection": {
     "note": "no committed targets yet \u2014 no velocity to project from",
-    "remaining": 155,
+    "remaining": 330,
     "status": "UNMEASURED",
-    "totalTargets": 155
+    "totalTargets": 330
   },
   "sourceFingerprint": {
-    "bytes": 105931,
+    "bytes": 181142,
     "exists": true,
-    "lines": 718,
+    "lines": 1234,
     "path": "infrastructure/artpipe/registry.jsonl",
-    "sha256_12": "4849a9439efc"
+    "sha256_12": "13e30f7153ac"
   },
   "spend": {
     "acceptedOrCommittedCount": 0,
-    "codexPctAllTime": 129.0,
+    "codexPctAllTime": 192.0,
     "geminiUsdTotal": 4.02,
     "geminiUsdWeek": 4.02,
-    "pctWeeklyWindow": 132.0,
+    "pctWeeklyWindow": 203.0,
     "status": "MEASURED"
   },
   "stateCounts": {
     "accepted": 0,
-    "awaiting_verdict": 147,
+    "awaiting_verdict": 223,
     "committed": 0,
     "deployed": 0,
-    "generated": 7,
+    "generated": 14,
     "parked_at_cap": 0,
-    "queued": 1,
+    "queued": 93,
     "registered": 0,
     "rejected_in_retry": 0,
     "repurposed": 0,
     "unregistered": 0
   },
-  "targetCount": 155,
+  "targetCount": 330,
   "throughputFingerprint": {
-    "bytes": 172867,
+    "bytes": 261946,
     "exists": true,
-    "lines": 228,
+    "lines": 320,
     "path": "infrastructure/artpipe/throughput.jsonl",
-    "sha256_12": "12649ee9fbc6"
+    "sha256_12": "4705035dcbad"
   }
 }

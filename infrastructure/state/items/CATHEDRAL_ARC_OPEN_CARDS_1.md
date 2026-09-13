@@ -1,4 +1,14 @@
 
+## RULED (owner cards, 2026-09-13, BENCH)
+Card 1 — warzone flip: "And the mechanoids go all out hostile, plus all of the
+above" — GM+existing surfaces AND faction-hostility flips AND storyteller/
+difficulty swap AND all-out-hostile mechanoid factions. Propagated into
+CATHEDRAL_EXPOSURE_COMPLETION_1 (warzone bullet rewritten; faction-13 stays
+under the arc law, edge escalates if irreconcilable).
+Card 2 — mechanoid pass scope: NARROWEST confirmed (faction-13 Sentinels +
+Cathedral machines, Cathedral ground only). Propagated into
+CATHEDRAL_MECHANOID_PASS_VERBS_1 (assumption converted to ruling).
+
 ## spec
 Card 1 — WARZONE FLIP SURFACE: A6 says "the planet becomes a warzone again";
 no ruled surface defines planet-level posture (raid pacing? faction hostility

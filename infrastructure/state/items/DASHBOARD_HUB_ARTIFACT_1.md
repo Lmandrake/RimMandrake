@@ -33,7 +33,7 @@ freshness lamp per tab; no dashboard ships standalone after migration.
 
 ## Built and published 2026-09-11 (BENCH)
 
-**URL (stable, pinned): https://claude.ai/code/artifact/d066e619-b84d-479c-842f-a81b0182511c**
+**URL (stable, pinned): https://claude.ai/code/artifact/ec893765-f01c-4cd8-a0b2-58e5b0bf2257**
 Shell + checker + generator: `infrastructure/dashboards/hub/` (index.html,
 make_tab_data.py, hub_check.py, data/). Tabs: art (fed directly by
 `infrastructure/artpipe/art_status.json`), health, maturity, worldmap, sheets

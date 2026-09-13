@@ -65,7 +65,7 @@ ART_STATUS_HTML = common.QUEUE_ROOT / "art_status.html"
 # reminder codebase_health_publish.py / project_maturity_dashboard.py print
 # after their own regen step, since actually pushing the file to the hub
 # Artifact URL needs a session with the Artifact tool (no CLI exists for it).
-HUB_ARTIFACT_URL = "https://claude.ai/code/artifact/d066e619-b84d-479c-842f-a81b0182511c"
+HUB_ARTIFACT_URL = "https://claude.ai/code/artifact/ec893765-f01c-4cd8-a0b2-58e5b0bf2257"
 
 WEEKLY_WINDOW_MINUTES = 10080  # the "secondary" codex meter window == 7 days
 PARK_AFTER_REJECTIONS = 4      # see module docstring — resolves design-vs-item wording
