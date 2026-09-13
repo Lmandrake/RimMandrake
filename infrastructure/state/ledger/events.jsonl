@@ -8300,3 +8300,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"MODCHECK_RUNNER_SWAP_LIVE_PROOF_1","ts":"2026-09-13T20:40:16Z"}
 {"seat":"FOUNDRY","event":"start","id":"MODCHECK_RUNNER_SWAP_LIVE_PROOF_1","ts":"2026-09-13T20:40:17Z"}
 {"seat":"FOUNDRY","event":"verify","id":"MODCHECK_RUNNER_SWAP_LIVE_PROOF_1","result":"pass","config":"min+Pits","evidence":"D:\\Luke\\dev\\Rimworld\\Transient\\modcheck\\Pits_20260913T204215Z.html","sha":"83196c8bb","ts":"2026-09-13T20:42:15Z"}
+{"seat":"BENCH","event":"close","id":"ART_LEGIBILITY_GATE_1","sha":"b2d7ea116618ba8a5191851a17dec437cf7494ea","ts":"2026-09-13T20:47:31Z"}
