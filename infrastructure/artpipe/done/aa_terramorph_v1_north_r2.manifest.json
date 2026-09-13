@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 97.93754258600529,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.93754258600529,
+  "height": 512,
+  "id": "aa_terramorph_v1_north_r2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T20-56-35-01a098e8-e602-7c03-a49f-f10f28ca5ecd.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T20-54-52-01a098e7-55e2-72b1-b3dd-5a0960f96e49.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "aa_terramorph_v1_north_r2",
+    "note": "Full regen via built-in imagegen; copied into the workspace and resized to the exact 512\u00d7512 canvas while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\aa_terramorph_v1_north_r2\\aa_terramorph_v1_north_r2.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/aa_terramorph_v1_north_r2/aa_terramorph_v1_north_r2.png\n    512x512  rgba  283,447 bytes  (97s)\n"
+}

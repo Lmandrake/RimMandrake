@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:54:49Z",
+  "facing": null,
+  "facings": [],
+  "id": "agarilux_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a small cluster of slender glowing mushrooms with faintly luminous pale caps, growing in a tight huddle on rotten ground. Single fungus clump, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE2_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (small glowing fungus cluster, 'agari' + 'lux' read as mushroom + light) fixed, flavor free per 'improve' semantics; sibling of the already-built larger AgariluxPrime/GiantAgarilux from wave 1 but sized down per its own medium sizeBin. Source row: flora:the_rot:AB_Agarilux, sizeBin medium, note: '4 cells'. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

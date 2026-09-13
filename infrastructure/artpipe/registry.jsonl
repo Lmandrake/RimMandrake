@@ -936,3 +936,47 @@
 {"by": "artpiped", "event": "validated", "job_id": "tanglerootmangrove_v1", "target": "tanglerootmangrove", "ts": 1789271286.4565036, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 96.47801285103196, "event": "generated", "job_id": "toxicgamma_v1", "target": "toxicgamma", "ts": 1789271289.4486227}
 {"by": "artpiped", "event": "validated", "job_id": "toxicgamma_v1", "target": "toxicgamma", "ts": 1789271289.458006, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.56819194898708, "event": "generated", "job_id": "twistingthornwood_v1", "target": "twistingthornwood", "ts": 1789271371.7017026}
+{"by": "artpiped", "event": "validated", "job_id": "twistingthornwood_v1", "target": "twistingthornwood", "ts": 1789271371.709891, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 146.34961776301498, "event": "generated", "job_id": "wildradagast_v1", "target": "wildradagast", "ts": 1789271433.8254554}
+{"by": "artpiped", "event": "validated", "job_id": "wildradagast_v1", "target": "wildradagast", "ts": 1789271433.8353407, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "keeningcordax", "ts": 1789271689.0372212}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "keeningcordax_v1", "notes": "", "target": "keeningcordax", "ts": 1789271689.051636}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "gomphoeria", "ts": 1789271689.0741777}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "gomphoeria_v1", "notes": "", "target": "gomphoeria", "ts": 1789271689.0869238}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "iashiphus", "ts": 1789271689.1078644}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "iashiphus_v1", "notes": "", "target": "iashiphus", "ts": 1789271689.1203663}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "giantleaf", "ts": 1789271689.141862}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "giantleaf_v1", "notes": "", "target": "giantleaf", "ts": 1789271689.1545079}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "hydenocktree", "ts": 1789271689.1756713}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "hydenocktree_v1", "notes": "", "target": "hydenocktree", "ts": 1789271689.1892757}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "jogantree", "ts": 1789271689.2105675}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "jogantree_v1", "notes": "", "target": "jogantree", "ts": 1789271689.224791}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "jungletree", "ts": 1789271689.247026}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "jungletree_v1", "notes": "", "target": "jungletree", "ts": 1789271689.2600508}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "sugarfamewort", "ts": 1789271689.2812452}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sugarfamewort_v1", "notes": "", "target": "sugarfamewort", "ts": 1789271689.295528}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "mangrovetree", "ts": 1789271689.3158543}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "mangrovetree_v1", "notes": "", "target": "mangrovetree", "ts": 1789271689.3300364}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "agaricusdomecap", "ts": 1789271689.3522136}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "agaricusdomecap_v1", "notes": "", "target": "agaricusdomecap", "ts": 1789271689.3663616}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "agarilux", "ts": 1789271689.386343}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "agarilux_v1", "notes": "", "target": "agarilux", "ts": 1789271689.4000516}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "arbuscularmycorrhiza", "ts": 1789271689.4199262}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "arbuscularmycorrhiza_v1", "notes": "", "target": "arbuscularmycorrhiza", "ts": 1789271689.4344246}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "dribblingcap", "ts": 1789271689.4561555}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "dribblingcap_v1", "notes": "", "target": "dribblingcap", "ts": 1789271689.4713428}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "glowingagarilux", "ts": 1789271689.4951344}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "glowingagarilux_v1", "notes": "", "target": "glowingagarilux", "ts": 1789271689.5088964}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE2_QUEUE_1", "target": "lilacbeacon", "ts": 1789271689.5298228}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "lilacbeacon_v1", "notes": "", "target": "lilacbeacon", "ts": 1789271689.54334}
+{"by": "artpiped", "elapsed_s": 83.05399531696457, "event": "generated", "job_id": "agarilux_v1", "target": "agarilux", "ts": 1789271774.330533}
+{"by": "artpiped", "event": "validated", "job_id": "agarilux_v1", "target": "agarilux", "ts": 1789271774.3391726, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.87268950499129, "event": "generated", "job_id": "agaricusdomecap_v1", "target": "agaricusdomecap", "ts": 1789271786.1316829}
+{"by": "artpiped", "event": "validated", "job_id": "agaricusdomecap_v1", "target": "agaricusdomecap", "ts": 1789271786.1410873, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.80216151900822, "event": "generated", "job_id": "arbuscularmycorrhiza_v1", "target": "arbuscularmycorrhiza", "ts": 1789271794.184064}
+{"by": "artpiped", "event": "validated", "job_id": "arbuscularmycorrhiza_v1", "target": "arbuscularmycorrhiza", "ts": 1789271794.1923723, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.17798303300515, "event": "generated", "job_id": "dribblingcap_v1", "target": "dribblingcap", "ts": 1789271880.9469068}
+{"by": "artpiped", "event": "validated", "job_id": "dribblingcap_v1", "target": "dribblingcap", "ts": 1789271880.95571, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.46458594501019, "event": "generated", "job_id": "giantleaf_v1", "target": "giantleaf", "ts": 1789271897.0674703}
+{"by": "artpiped", "event": "validated", "job_id": "giantleaf_v1", "target": "giantleaf", "ts": 1789271897.082416, "verdict": "pass"}

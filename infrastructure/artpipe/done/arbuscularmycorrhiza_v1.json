@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 384,
+    "width": 384
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:54:49Z",
+  "facing": null,
+  "facings": [],
+  "id": "arbuscularmycorrhiza_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: an enormous sprawling fungal growth of thick branching root-like mycelial cords fanning out from a swollen central mass, dominating the ground it grows from. Single fungal organism, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE2_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (sprawling mycelial/root-fungus mass, per its own biological name) fixed, flavor free per 'improve' semantics. Source row: flora:the_rot:AB_ArbuscularMycorrhiza, sizeBin titan, note: '10 cells'. 384x384 per art-downscale-legibility guard's titan-sizeBin exception (matches wave 1's 3 titan picks). Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

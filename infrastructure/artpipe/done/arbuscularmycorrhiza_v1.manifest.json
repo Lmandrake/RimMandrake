@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 102.80216151900822,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.80216151900822,
+  "height": 384,
+  "id": "arbuscularmycorrhiza_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T20-54-52-01a098e7-55e2-72b1-b3dd-5a0960f96e49.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T20-48-08-01a098e1-2b6e-7211-a452-6355b853c509.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 19.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 384,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 384,
+    "id": "arbuscularmycorrhiza_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 384x384 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\arbuscularmycorrhiza_v1\\arbuscularmycorrhiza_v1.png",
+    "status": "ok",
+    "width": 384
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/arbuscularmycorrhiza_v1/arbuscularmycorrhiza_v1.png\n    384x384  rgba  241,983 bytes  (102s)\n"
+}

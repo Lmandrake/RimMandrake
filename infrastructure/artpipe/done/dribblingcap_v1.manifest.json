@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 106.17798303300515,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 106.17798303300515,
+  "height": 384,
+  "id": "dribblingcap_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T20-56-15-01a098e8-9801-7dc0-8a41-d575693f8c0f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 32.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T20-54-52-01a098e7-555c-7421-8d3b-5ff90a66dd2f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 384,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 384,
+    "id": "dribblingcap_v1",
+    "note": "Built-in imagegen; generated the specified titan-scale dripping mushroom, then resized the workspace copy to exactly 384\u00d7384 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\dribblingcap_v1\\dribblingcap_v1.png",
+    "status": "ok",
+    "width": 384
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/dribblingcap_v1/dribblingcap_v1.png\n    384x384  rgba  246,550 bytes  (106s)\n"
+}

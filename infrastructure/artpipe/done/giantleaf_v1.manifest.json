@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 110.46458594501019,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.46458594501019,
+  "height": 256,
+  "id": "giantleaf_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T20-56-27-01a098e8-c66f-7ca2-957f-17dce119c146.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 32.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T20-54-52-01a098e7-556e-77b2-ae65-47697438b1a0.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "giantleaf_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256; one file-processing retry was needed after a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\giantleaf_v1\\giantleaf_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/giantleaf_v1/giantleaf_v1.png\n    256x256  rgba  80,137 bytes  (110s)\n"
+}

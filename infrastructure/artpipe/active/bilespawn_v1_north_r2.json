@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:56:29Z",
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "bilespawn_v1_north_r2",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Bilespawn \u2014 a titan-sized viscous ooze mass native to the slime biome, a towering heap of corrosive green-yellow sludge with dripping tendril-limbs and faint bubbling pockmarks across its surface, radiating an unmistakable sense of scale and danger. Reads as an apex slime-biome titan, not a puddle. Single creature, centered, looming upright stance with tendrils partly extended, no ground shadow, no background scenery, no drip/splash effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (AA_GreenGoo, Alpha Animals prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_slime:AA_GreenGoo, titan sizeBin, no note. General kind kept (titan ooze mass), invented name/character: Bilespawn. Explicit outline-thickness requirement per the ruling."
+}
