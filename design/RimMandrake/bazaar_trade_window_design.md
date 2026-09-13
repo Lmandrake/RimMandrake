@@ -228,8 +228,11 @@ crit spoils on/off · banter (hard off switch; auto-off without CLI) · broker t
 ## 8. Displacement & compat
 
 **Deactivate when The Bazaar lands** (a mod-list change scheduled with the
-owner, rimworld-start-prep discipline): Trade UI Revised, Utility Columns,
-Vanilla Trading Expanded. **VTE unwind**: it substitutes MarketValue globally
+owner, rimworld-start-prep discipline — and only AFTER absorbing what each
+does well, per the owner): Trade UI Revised and Vanilla Trading Expanded.
+(Utility Columns was wrongly listed here at first — it is a BUILDING mod,
+structural roof-bearing columns, despite its `nephlite.orbitaltradecolumn`
+packageId; it stays untouched.) **VTE unwind**: it substitutes MarketValue globally
 and holds state in its own components — mid-save removal snaps prices to
 vanilla (wealth/raid points will step visibly for a few days) and the next load
 logs missing-component Scribe warnings — **rehearse on a save copy first**

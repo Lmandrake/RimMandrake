@@ -1,4 +1,4 @@
-# BAZAAR_DISPLACEMENT_PASS_1 — retire Trade UI Revised, Utility Columns, VTE from the campaign list
+# BAZAAR_DISPLACEMENT_PASS_1 — retire Trade UI Revised and VTE from the campaign list
 
 Filed by BENCH, 2026-09-13. Spec: `design/RimMandrake/bazaar_trade_window_design.md`
 §8. needs: owner (a campaign mod-list change is his call and his RimSort
@@ -6,9 +6,12 @@ session; rimworld-start-prep discipline applies).
 
 ## spec
 
-When The Bazaar's slices 1–2 are live-proven: deactivate Trade UI Revised
-(hobtook.tradeui), Utility Columns (nephlite.orbitaltradecolumn), and Vanilla
-Trading Expanded (vanillaexpanded.vanillatradingexpanded). KEEP TraderGen,
+When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
+absorbed (owner: retire only after we absorb what we need and improve it):
+deactivate Trade UI Revised (hobtook.tradeui) and Vanilla Trading Expanded
+(vanillaexpanded.vanillatradingexpanded). NOT Utility Columns
+(nephlite.orbitaltradecolumn) — despite the packageId it is a BUILDING mod
+(structural roof-bearing columns), no trade UI at all; leave it. KEEP TraderGen,
 Better Traders, GTG framework, MultipleTraders, Trader Ships. TradeHelper
 stays inactive.
 
