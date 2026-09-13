@@ -123,18 +123,37 @@ on `LIQUID_BIOMES_MAP_1` freezing the propane lake's exact tile footprint. Do no
 build the crater hook against an unfrozen footprint.
 
 ## criteria
-- [ ] Three-band layout authored as `KCSG.StructureLayoutDef`(s) with real (not
+- [x] Three-band layout authored as `KCSG.StructureLayoutDef`(s) with real (not
   placeholder) shielding/prop defNames, proven on a quicktest by LOOKING
   (`take_screenshot`) per the vault quicktest-proven bar (`dungeons_arc_spec.md` §3.7).
-- [ ] `AA_Slurrypede` present as lab fauna via a `KCSG.SymbolDef`+`pawnKindDef`
-  (never a bare ThingDef for a live pawn).
-- [ ] Lab guardians read as mechanoid/ancient, never Assailant-flesh material (hard
+  **DONE 2026-09-13**: `jawa/kcsg_place` (layoutType=structure, rect 95,95,61,61) on
+  a fresh `warlab` 12-mod quicktest, screenshot
+  `Transient/ancient_war_lab/warlab_quicktest_proof_2026-09-13.png` — three
+  concentric bands read clearly (approach ring / lab-interior ring / core room),
+  doors between bands visible.
+- [x] `AA_Slurrypede` present as lab fauna via a `KCSG.SymbolDef`+`pawnKindDef`
+  (never a bare ThingDef for a live pawn). **CONFIRMED live**: 2×`AA_Slurrypede`
+  spawned inside the lab-interior band, faction null, `intelligence: Animal`
+  (`jawa/list_pawns`).
+- [x] Lab guardians read as mechanoid/ancient, never Assailant-flesh material (hard
   ban #8, `the_propane_lakes.md` §6) — no Assailant fauna roams; live specimens exist
   only as sealed containment props/props-with-pawn, never a spawned hostile faction.
+  **CONFIRMED live**: 2×`Mech_Lancer` + 2×`Mech_Centurion`, faction "Kiliri
+  Mechhive", `hostile: true`, `isMechanoid: true`; zero Assailant-kind pawns in the
+  spawn (`jawa/list_pawns` census of the full placed structure).
 - [ ] Reachable only via the submerged route (ship lowered into fuel) — no ordinary
-  overland entrance.
+  overland entrance. **STILL OPEN**: `RUT_WarLabSite` (`gravShipsCanLandOn=false`)
+  is authored but was never sited on an actual world tile this pass — proving this
+  needs the real world-tile siting (propane lake, Umbra, over the Impact Site) plus
+  whatever mechanism actually gates a caravan from walking in overland, which does
+  not exist as a built mechanism yet. `LIQUID_BIOMES_MAP_1`'s footprint IS frozen
+  now, so this is unblocked to attempt, just not attempted this pass.
 - [ ] Ignition/crater ending is NOT built here — tracked separately in
-  `WAR_LAB_CRATER_HOOK_1`, blocked on `LIQUID_BIOMES_MAP_1`.
+  `WAR_LAB_CRATER_HOOK_1`. No longer blocked on `LIQUID_BIOMES_MAP_1` (closed
+  2026-09-07); that item's own C# is wired and deployed (08b909d33) but its live
+  ignition/save-load/world_commit quicktest is still owed — not attempted this
+  pass (needs a world tile that actually carries `RUT_PropaneLake`, which a fresh
+  quicktest world does not; the campaign's own frozen world does).
 
 ## Watch out
 🔶 Same discipline as the sibling dungeons in `dungeons_arc_spec.md`: this stays

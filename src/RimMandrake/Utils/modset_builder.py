@@ -113,6 +113,14 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "warlab": {
+        "why": "Prove ANCIENT_WAR_LAB_1's KCSG dungeon (RUT_WarLab_Complex) "
+               "spawns, guardians/fauna present, connectivity holds -- "
+               "mandrake.rut.injections is NOT in the owner's live FULL list "
+               "yet, so this is the smallest closure that loads it.",
+        "want": [BRIDGE, "mandrake.rut.injections", "sarg.alphaanimals"],
+        "dlc": True,
+    },
 }
 
 
