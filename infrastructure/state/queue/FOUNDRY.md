@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T10:03:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T10:05:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1293,3 +1293,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  DOINGITEMSRECONCILE1's audit (2026-09-13) found these 21 FOUNDRY items in
 prose:    infrastructure/state/items/DOING_SEDIMENT_RECLAIM_1.md
+
+## BRIDGE_STATIC_SETTINGS_FIELDS_1 BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_STATIC_SETTINGS_FIELDS_1.md

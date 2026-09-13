@@ -8149,3 +8149,4 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-13T09:58:11Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
 {"seat":"FOUNDRY","event":"start","id":"SCALD_MECHANICS_1","ts":"2026-09-13T10:03:33Z"}
+{"seat":"BENCH","event":"file","id":"BRIDGE_STATIC_SETTINGS_FIELDS_1","title":"BRIDGE_STATIC_SETTINGS_FIELDS_1 update_mod_settings cannot flip public-static settings fields — measured on Pits, blocks toggle-flip components in 6+ modcheck suites","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-13T10:05:01Z"}
