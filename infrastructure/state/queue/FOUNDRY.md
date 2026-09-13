@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T09:25:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-13T09:36:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1283,3 +1283,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  infrastructure/artpipe/failed/ held 46 job/manifest pairs at triage
 prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md
+
+## DOING_SEDIMENT_RECLAIM_1 DOING_SEDIMENT_RECLAIM_1 reclaim 21 zombie doing items to ready (dead-session starts, last touch 2026-09-06..10)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DOING_SEDIMENT_RECLAIM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DOING_SEDIMENT_RECLAIM_1.md
