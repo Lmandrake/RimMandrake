@@ -182,7 +182,7 @@ def file_findings(item_id, mod, findings, dry_run=False):
     a rimflow finding (screenshot attached) and CONTINUE the run"."""
     filed = []
     for c in findings:
-        name = "MODCHECK_%s_%s" % (mod.upper(), c.name.upper())[:60]
+        name = ("MODCHECK_%s_%s" % (mod.upper(), c.name.upper()))[:60]
         cmd = ["python3", RIMFLOW_CLI, "finding", "--from", item_id,
               "--name", name, "--type", "modcheck-failure",
               "--severity", "major"]
