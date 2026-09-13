@@ -473,6 +473,18 @@
     "hash": "3cd38a326a1c215ac75d5ca2675c9ed9257e8b8c7c967467757ea4d90f6681d5",
     "sha": "9e5089f22"
   },
+  "infrastructure/dashboards/hub/regen_hub.py": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c169dc537bf64fa4ca5e7df07b5da0728f900aa68d9d0d10d779fc4843e49726",
+    "sha": "32637c842"
+  },
+  "infrastructure/dashboards/hub/selftest_regen_hub.py": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "3e9394115bdd259af5c52fbc6b019a6bb525168c3b5bc369dd9dc6884694a900",
+    "sha": "32637c842"
+  },
   "infrastructure/output/pawn_flavor_phase2_census_gen.py": {
     "cleanCount": 1,
     "date": "2026-09-09",
