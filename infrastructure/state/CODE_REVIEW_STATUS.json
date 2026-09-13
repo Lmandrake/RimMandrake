@@ -1673,6 +1673,12 @@
     "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/GravshipLanding/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "5b5c8e60956a47825c73a66fc05823693a1d70a17a6eb32bfbcbf7a7ea6b4905",
+    "sha": "bda42ac64"
+  },
   "src/RimMandrake/GravshipLanding/Source/GravshipLandingMod.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -2134,6 +2140,24 @@
     "date": "2026-09-03",
     "hash": "f6d218ea8490a3c48e1bf875f0ad26d9d63ae8023043aa5744267d012261350d",
     "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/LiquidTypes/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "12ef2c140bec8f13f04417830f7c6c4ed3650f5dca2017e6e648a8a80d544cfb",
+    "sha": "bda42ac64"
+  },
+  "src/RimMandrake/LiquidTypes/Defs/Patches/RM_LiquidProperties_CompatIndex.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "958fe3228137afccb2f0ea3b6d17f820fdb53800adf739bf211d880fa8d3aecb",
+    "sha": "bda42ac64"
+  },
+  "src/RimMandrake/LiquidTypes/Defs/TerrainDefs/RM_AcidWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "c15685301d149e843a6c19131777071c3f905b5ccad082a5bbbc36b23bf543b2",
+    "sha": "bda42ac64"
   },
   "src/RimMandrake/LiquidTypes/Source/LiquidCorrosion.cs": {
     "cleanCount": 1,
@@ -4276,6 +4300,12 @@
     "date": "2026-09-09",
     "hash": "0e39618d35a3def3efce4bcc9c25d52b19fb21378d6ac4df26adbce49329bdb6",
     "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/biome_wildanimals_inlist_dupes.py": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "d0a3cbf7e2c49998cebc1390f52787759a7c36cf6d5664265e6f89818dcd9853",
+    "sha": "bda42ac64"
   },
   "src/RimMandrake/Utils/biome_wildbiomes_evictions.py": {
     "cleanCount": 1,
