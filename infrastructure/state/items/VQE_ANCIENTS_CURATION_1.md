@@ -50,35 +50,89 @@ recorded as the mechanism VQE_AncientLabComplex uses too.
   than blended into the original `fauna_assignment_register.decisions.json`
   extraction (VQE Ancients wasn't in that review pool).
 
-## NOT done — step 2, step 4, rest of step 5
+## NOT done — step 2, rest of step 5
 - **Step 2**: no action needed — Herculean/Prowess were never touched.
   Not separately re-verified as "still present" against a live dump this
   session; low risk since nothing in this pass could have cut them.
-- **Step 4 (string relabel)**: the literal phrase "pre-collapse-human-
-  civilization" does not exist anywhere in the donor mod (checked
-  `Languages/`, `Defs/Quests/`, `Defs/RulePackDefs/`) — it's the owner's
-  own paraphrase, not a quotable string. Found the real target: e.g.
-  `Quest_AncientLabComplex.xml`'s `questDescriptionRules` says "injecting
-  archites directly into human subjects." Read
-  `AncientsAreRakata.xml` (the existing "six pawn-kind relabels" mechanism)
-  to resolve the register properly: Rakata is the ENDONYM, **Forsaken**
-  is the exonym for the ancients/survivors, and (confirmed from
-  `reserved_groups_draft.md` §1 and Boomalope's own cut note, "Convert to
-  a twisted thing the Assailants make in their dungeons") **Assailant** is
-  the exonym for whatever attacked them with "self-replicating flesh."
-  Register now understood, but applying it correctly across 6 quest
-  chains' worth of `RulePackDefs`/`questDescriptionRules` — deciding which
-  specific phrase becomes which exonym, and writing it as our own
-  LanguageData/patch override rather than editing the donor — is a real
-  text-curation pass, not a quick swap. Left for its own pass rather than
-  guessing wrong on which lines get which register.
 - **Rest of step 5**: the actual site-tile-biome check, owed once the
   quest fires for real (~day 30-118 depending which chain). Not
   chaseable before then.
 
+## done this session (2026-09-13) — step 4 (string relabel)
+Read the donor mod's actual quest XML off disk (found via `About.xml`
+matching packageId `vanillaquestsexpanded.ancients`, display name "Vanilla
+Quests Expanded - Ancients", at
+`C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3618306875`
+— same Workshop tree `AncientsAreRakata.xml`'s own guard string points at):
+all 6 `Defs/Quests/Quest_*.xml` chains (`AncientLabComplex`,
+`AncientResearchVault`, `ArchiteArraySite`, `ArchiteControlVault`,
+`InhibitorResearchLab`, `SpliceframeBlacksite`) plus the
+`QuestChain_TheAncientLab.xml` wrapper — `questNameRules`,
+`questDescriptionRules`, and the `QuestChainDef`'s own label/description.
+Confirmed the item's own earlier note: no literal "pre-collapse-human-
+civilization" phrase, and also no "self-replicating flesh" phrase — that's
+all owner paraphrase, not donor text.
+
+Read `AncientsAreRakata.xml` for the register (Rakata endonym / **Forsaken**
+exonym for the ancients-survivors / **Assailant** exonym for their attacker)
+and its mechanism: our own `PatchOperation*` file in
+`src/RimUtinni/UtinniPatches/Patches/`, guarded by
+`PatchOperationFindMod` on the donor's display name, never touching the
+donor's own files.
+
+**New file: `src/RimUtinni/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml`**
+(guarded `PatchOperationFindMod` / "Vanilla Quests Expanded - Ancients", same
+as `VQEPatients_AreRakata.xml`). 7 `PatchOperationReplace` ops, each
+targeting one exact `<li>`/`<label>`/`<description>` node by xpath (the
+`rulesStrings` lists have no dictionary keys to collide on and no other mod
+patches this donor's quest text, so a positional `li[n]` xpath is the
+smallest safe surface — full rationale in the file's header comment).
+Relabeled every literal "ancient" (adjective for the pre-collapse
+civilization/its works) → **Forsaken** ("an ancient X" → "a Forsaken X"):
+  - `Quest_AncientLabComplex`: "an ancient military supersoldier program",
+    "some kind of ancient broadcasting station", "ancient traps may still
+    be functional", "producing ancient supersoldiers" (2 `<li>`s, 4 phrases)
+  - `Quest_AncientResearchVault`: "loot the site for ancient technology"
+  - `Quest_ArchiteControlVault`: "an additional ancient laboratory site"
+  - `Quest_InhibitorResearchLab`: "some ancient network...", "that of an
+    ancient reconnaissance worker" (2 phrases, 1 `<li>`)
+  - `QuestChain_TheAncientLab`: label "The Ancient Lab" → "The Forsaken
+    Lab"; description "created by the ancient military" → "...Forsaken
+    military"
+
+**Left as-is, explicitly, per the item's own warning against guessing
+wrong:**
+  - `Quest_ArchiteArraySite.xml` and `Quest_SpliceframeBlacksite.xml` — zero
+    occurrences of "ancient" in their quest text; nothing to relabel.
+  - `Quest_AncientResearchVault`'s four "story" `<li>`s (patient-uprising /
+    cult / telepath / shapeshifter vignettes) — never say "ancient", never
+    name an attacker; read as the program's own internal staff-vs-patients
+    conflict. Relabeling "doctors"/"patients"/"executives"/"monstrosities"
+    would be inventing a register the text never invokes.
+  - "injecting archites directly into human subjects"
+    (`Quest_AncientLabComplex`) — describes the Archogen Injector's general
+    function, ambiguous whether historical (the ancients' own victims) or
+    prospective (the player's future use). Left alone.
+  - **The Assailant register was not used anywhere** — none of the six
+    quest chains names or describes whatever attacked the ancients; the
+    donor's own text never invokes an attacker at all, so there was no
+    correct place to apply it. Not a gap; a finding.
+
+Validated: `validate_patch.py` (see `## verify`) — 0 errors, 0 warnings, all
+7 ops hit exactly 1 live node each in the donor's quest XML.
+
 ## verify
 Step 1: `cherrypicker.py --source live --is-cut`, all 9 → CUT (done).
 Step 3: read the donor's patch file directly, confirmed no archite
-content (done). Step 5: `ticksGame` read via bridge, confirmed quest
-hasn't fired (done, partial). Step 6: entry added to the roster doc
-(done). Steps 2/4/rest-of-5: not started.
+content (done). Step 4: `python3 skills/rimworld-modding/scripts/validate_patch.py
+src/RimUtinni/UtinniPatches/Patches/VQEQuestText_AreForsaken.xml --defs
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" --defs
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100" --defs
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
+--mods-config "<LocalLow>/Config/ModsConfig.xml"` → OK, 0 errors, 0
+warnings, 7/7 ops 1 match each (done). Step 5: `ticksGame` read via bridge,
+confirmed quest hasn't fired (done, partial). Step 6: entry added to the
+roster doc (done). Steps 2/rest-of-5: not started. Step 4's live-game
+liveness (deploy + Player.log check) is unverified — this pass only wrote
+and offline-validated the patch; it has not been deployed to the Mods
+folder or loaded in-game.

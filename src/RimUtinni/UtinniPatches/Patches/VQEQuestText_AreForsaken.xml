@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  VQEQuestText_AreForsaken.xml              Jawa_Patches - new file 2026-09-13
+  ============================================================================
+
+  VQE_ANCIENTS_CURATION_1 step 4 (the "string relabel pass"). Same register as
+  AncientsAreRakata.xml, same mechanism (PatchOperationReplace against the
+  donor's own quest text, guarded by PatchOperationFindMod - never editing the
+  donor mod's files), same technique for the Register:
+
+    Rakata     = the ancients' own name for themselves (endonym, untouched here)
+    Forsaken   = the exonym our people use for them (owner, 2026-08-20)
+    Assailant  = the exonym for whatever attacked them with "self-replicating
+                 flesh" (owner, per ANCIENTS_AS_RAKATA_SPEC.md / the
+                 Boomalope cut note in reserved_groups_draft.md)
+
+  SCOPE. Read all six of "Vanilla Quests Expanded - Ancients"'s quest chains
+  end to end (Defs/Quests/Quest_AncientLabComplex.xml, Quest_AncientResearch-
+  Vault.xml, Quest_ArchiteArraySite.xml, Quest_ArchiteControlVault.xml,
+  Quest_InhibitorResearchLab.xml, Quest_SpliceframeBlacksite.xml, plus the
+  QuestChain_TheAncientLab.xml wrapper) - questNameRules, questDescriptionRules
+  and the QuestChainDef's own label/description. Every literal occurrence of
+  "ancient" as an adjective for the pre-collapse civilization/its works is
+  relabeled Forsaken below. Word-for-word list, so a future re-read of the
+  donor can diff against it:
+
+    Quest_AncientLabComplex   "an ancient military supersoldier program"
+                               "some kind of ancient broadcasting station"
+                               "ancient traps may still be functional"
+                               "producing ancient supersoldiers"
+    Quest_AncientResearchVault "loot the site for ancient technology"
+    Quest_ArchiteControlVault "an additional ancient laboratory site"
+    Quest_InhibitorResearchLab "some ancient network has mistaken your radio"
+                               "that of an ancient reconnaissance worker"
+    QuestChain_TheAncientLab  label "The Ancient Lab" -> "The Forsaken Lab"
+                               "created by the ancient military"
+
+  NOT relabeled, on purpose:
+    * Quest_ArchiteArraySite.xml and Quest_SpliceframeBlacksite.xml contain
+      ZERO occurrences of "ancient" in their quest text - nothing to change.
+    * Quest_AncientResearchVault.xml's four "story" rules (the patient-uprising
+      / cult / telepath / shapeshifter vignettes) never say "ancient" and never
+      name an attacker either - they read as the ancient program's own internal
+      staff-vs-patients conflict, not an external assault. Left as-is rather
+      than guessing which nouns ("doctors", "executives", "patients",
+      "monstrosities") would need a register they never textually invoke.
+    * "injecting archites directly into human subjects" (AncientLabComplex) -
+      describes the Archogen Injector's general function, not specifically the
+      ancients' own victims; ambiguous whether historical or prospective (the
+      player's own future use). Left as-is rather than guessing wrong.
+    * NO Assailant-register string exists anywhere in this donor's quest text.
+      None of the six chains ever names or describes whatever attacked the
+      ancients - "self-replicating flesh" is not a phrase this donor uses at
+      all. The Assailant register from AncientsAreRakata.xml's header has no
+      home in this mod's own text; nothing here was forced into it.
+
+  "an ancient X" -> "a Forsaken X" throughout (indefinite article follows the
+  new word's sound, not the old one's).
+
+  MECHANISM NOTE (why per-li PatchOperationReplace here, unlike AncientsAre-
+  Rakata.xml's whole-subtree Remove+Add): `questDescriptionRules/rulesStrings`
+  is a plain ordered `<li>` list with no dictionary keys to collide on and no
+  other mod known to patch this donor's own quest text, so a positional
+  `li[n]` xpath is safe and the smallest possible surface - it touches exactly
+  the strings being relabeled and nothing else in the same rule pack.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Quests Expanded - Ancients</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Quest_AncientLabComplex: both questDescriptionRules lines -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/QuestScriptDef[defName="VQE_AncientLabComplex"]/questDescriptionRules/rulesStrings/li[1]</xpath>
+          <value>
+            <li>questDescription(asker_factionLeader==True)-&gt;[asker_nameDef], [asker_faction_leaderTitle] of [asker_faction_name], has intercepted a mysterious broadcast. The signal carries encryption markers associated with a Forsaken military supersoldier program, and appears to have been transmitted from a site not far from our colony. \n\n[asker_nameDef] believes that tracking this signal will reveal the location of a hidden installation. On arrival, scouts reported finding a small, abandoned surface outpost with an open vault entrance leading deep underground.\n\nBeneath lies a sealed laboratory complex. Inside must be some kind of Forsaken broadcasting station - intercepting the signal from it will allow us to trace its destination. \n\nThe underground vault also contains something invaluable: an intact Archogen Injector. This rare device can be used to begin creating supersoldiers by injecting archites directly into human subjects. The injector, along with any other surviving lab equipment, should be claimed and brought back to the colony. \n\nThe lab itself shows no active defenders, but Forsaken traps may still be functional and must be navigated with care.</li>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/QuestScriptDef[defName="VQE_AncientLabComplex"]/questDescriptionRules/rulesStrings/li[2]</xpath>
+          <value>
+            <li>questDescription(askerIsNull==True)-&gt;We've intercepted an unstable remote broadcast, requesting reinforcements for some unknown event. While seemingly not intended for us, the signal appears to originate from a laboratory responsible for producing Forsaken supersoldiers. \n\nThe site must contain the broadcasting station responsible for the message. It is imperative that we intercept the broadcast on-site, to track where it is broadcasting to. \n\nThis trek might be dangerous, as we have no way of knowing what lies at the site. Remaining technology at the site could prove useful, we should look at each piece of equipment carefully to take back with us if we dream of creating supersoldiers of our own.</li>
+          </value>
+        </li>
+
+        <!-- Quest_AncientResearchVault: the questDescription line only - the
+             four "story" lines below it in the same list are untouched. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/QuestScriptDef[defName="VQE_AncientResearchVault"]/questDescriptionRules/rulesStrings/li[1]</xpath>
+          <value>
+            <li>questDescription-&gt;Your radio lights up with another request for E352. The automated satellite tells you of another vault, lurking somewhere in the distance. This vault is marked one of many in a series of "seized vaults", where supersoldier patients sealed off the genetic monstrosities underground. \n\nThe site briefing attatched reads as follows:\n[story]\n\n The satellite wants you to take care of the supersoldiers, then reopen the vault door. It refuses to elaborate on what the purpose of the mission is. Your only directive is to re-open the underground section of the vault. Once it has been unsealed, you may leave or loot the site for Forsaken technology.</li>
+          </value>
+        </li>
+
+        <!-- Quest_ArchiteControlVault -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/QuestScriptDef[defName="VQE_ArchiteControlVault"]/questDescriptionRules/rulesStrings/li[1]</xpath>
+          <value>
+            <li>questDescription(askerIsNull==True)-&gt;After intercepting the broadcasting station, we have identified an additional Forsaken laboratory site communicating with the previous. The lab is transmitting a code red signal, likely signifying an even stronger threat presence. It appears some of the monstrosities might have even escaped underground containment and broken onto the surface.\n\nThe site must contain an additional broadcasting station responsible for the message. It is imperative that we also intercept this broadcast on-site, to track where it is broadcasting to. Functioning technology at the site may prove useful in the improvement of supersoldier production. We should look at each piece of equipment carefully to take back with us if we intend to reliably produce supersoldiers of our own.</li>
+          </value>
+        </li>
+
+        <!-- Quest_InhibitorResearchLab -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/QuestScriptDef[defName="VQE_InhibitorResearchLab"]/questDescriptionRules/rulesStrings/li[1]</xpath>
+          <value>
+            <li>questDescription(askerIsNull==True)-&gt;Garbled through the static, it seems some Forsaken network has mistaken your radio for that of a Forsaken reconnaissance worker after detecting your travels through an automated satellite.\n\nThe message harshly refers to you as E352, and tasks you with scouting another supersoldier laboratory. Though this broadcast seems to have been running from some time now, it warns of a major uprising event within the lab. Supersoldiers had risen out of containment, and now roam the facility locked inside. The reconnaissance task states that the site was evacuated, yet the uprising was never contained and it is likely some may have escaped.\n\nThe broadcast also contains schematics of the location including your real objective. A device called the mutagen inhibitor core. Though just a prototype prior to its sudden abandonment, it is built to suppress unstable genetic mutations. It is likely that other valuable equipment remains here as well. offering transparent probabilities on genetic experiments. Our objective will be to locate the uplink and uninstall it for use in our own laboratory.</li>
+          </value>
+        </li>
+
+        <!-- QuestChain_TheAncientLab: the chain's own visible label + description -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/VEF.Storyteller.QuestChainDef[defName="VQE_TheAncientLab"]/label</xpath>
+          <value>
+            <label>The Forsaken Lab</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/VEF.Storyteller.QuestChainDef[defName="VQE_TheAncientLab"]/description</xpath>
+          <value>
+            <description>This quest chain will have you explore several underground lab complexes created by the Forsaken military to try and create supersoldiers through something called archite injection. You may be able to retrieve valuable lab equipment for yourself, to eventually create your own super soldiers, horrible abominations, or both.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
