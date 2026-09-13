@@ -75,6 +75,11 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
+        // TILEGEN_SILENT_REUSE_1 - per-process, per-call sequence number for the
+        // WorldTileMapGenerate diagnostic logging below. Deliberately NOT reset per
+        // session/tool-call; a live repro greps Player.log for consecutive numbers.
+        private static int _mapGenCallSeq = 0;
+
         // ================================================================
         //  Ideology, precepts & rituals
         // ================================================================
@@ -642,10 +647,33 @@ namespace JawaBench.BridgeTools
                         mapSize = new { x = size.x, z = size.z }
                     };
 
+                // TILEGEN_SILENT_REUSE_1 - diagnostic instrumentation, not a fix. Three
+                // sessions of static tracing (culminating in a full decompile of the
+                // closed-source GABP transport/dispatch layers) found no static,
+                // cached, or shared-mutable field anywhere in the deterministic call
+                // chain (tool method -> RimBridgeMainThread's per-call TCS ->
+                // GetOrGenerateMapUtility -> MapGenerator, all synchronous, no
+                // yield/coroutine) that could explain the original 2026-09-04
+                // measurement. The cheapest remaining diagnostic (named 2026-09-10,
+                // never actually run) is to log a per-process call sequence + managed
+                // thread id immediately before and after GetOrGenerateMap, then
+                // reproduce live and grep Player.log for this tag - it answers
+                // directly whether call 2's body runs with its own 'tile' in scope at
+                // all, or is somehow hit with call 1's state before GetOrGenerateMap
+                // for tile 2 is even invoked.
+                int callSeq = Interlocked.Increment(ref _mapGenCallSeq);
+                int callThreadId = Thread.CurrentThread.ManagedThreadId;
+                Log.Message("[TILEGEN_SILENT_REUSE_1] call #" + callSeq + " thread=" + callThreadId +
+                            " requesting tile=" + pt + " BEFORE GetOrGenerateMap");
+
                 Map map;
                 try { map = GetOrGenerateMapUtility.GetOrGenerateMap(pt, size, wod); }
                 catch (Exception e) { return Fail("GetOrGenerateMap threw: " + e.GetType().Name + ": " + e.Message); }
                 if (map == null) return Fail("GetOrGenerateMap returned null - no MapParent exists at this tile and '" + wod.defName + "' could not be created there. Check the game log.");
+
+                Log.Message("[TILEGEN_SILENT_REUSE_1] call #" + callSeq + " thread=" + callThreadId +
+                            " AFTER GetOrGenerateMap requested=" + pt + " got map.Tile=" + map.Tile +
+                            " map.uniqueID=" + map.uniqueID + " map.Index=" + map.Index);
 
                 // TILEGEN_SILENT_REUSE_1 - measured 2026-09-04: a second call at a
                 // DIFFERENT tile, same session, has returned a Map whose own .Tile
