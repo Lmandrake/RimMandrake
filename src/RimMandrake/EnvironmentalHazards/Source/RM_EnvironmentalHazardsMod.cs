@@ -85,6 +85,29 @@ namespace RimMandrake.EnvironmentalHazards
     //      (no further decay, no despawn fallback, no return-to-water jobs)
     //      until this is turned back on — never a silent despawn just from
     //      toggling the option off.
+    //  17. livingBolesEnabled — RM_GenStep_LivingBoles (GREENTIDE_MECHANICS_2
+    //      M12). WORLDGEN-AFFECTING: off means no Greatbole is placed on any
+    //      map generated while it is off. Maps already generated keep
+    //      whatever bole they already have.
+    //  18. livingRegrowthEnabled — RM_MapComponent_LivingRegrowth
+    //      (GREENTIDE_MECHANICS_2 M12). Off: every already-registered bole
+    //      freezes exactly where it is — no new regrow timer is scheduled,
+    //      no creak warning fires, no crush/eject pulse lands — until this
+    //      is back on. Mining, sealing and the bole's own presence are
+    //      unaffected either way.
+    //  19. rootCausewaysEnabled — RM_GenStep_RootCauseways
+    //      (GREENTIDE_MECHANICS_2 M9). WORLDGEN-AFFECTING: off means no
+    //      causeway network is painted on any map generated while it is
+    //      off. Maps already generated keep whatever network they already
+    //      have.
+    //  20. wetBulbOverwhelmEnabled — RM_GameCondition_WetBulb
+    //      (GREENTIDE_MECHANICS_2 M1). Off: a biome carrying the wet-bulb
+    //      condition stops ramping the overwhelm hediff on anyone at all.
+    //  21. dryAirBlowerEnabled — RM_CompDryFieldEmitter
+    //      (GREENTIDE_MECHANICS_2 M2). Off: a built dry-air blower stops
+    //      drying its room (M1's clock keeps running there) and stops
+    //      repelling wild animals from its doorway arc; it still draws
+    //      power/fuel and pushes heat like any running machine.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -104,6 +127,11 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool crecheDespoilMemoryEnabled = true;
         public static bool bubbleSailorScattererEnabled = true;
         public static bool strandingPoolsEnabled = true;
+        public static bool livingBolesEnabled = true;
+        public static bool livingRegrowthEnabled = true;
+        public static bool rootCausewaysEnabled = true;
+        public static bool wetBulbOverwhelmEnabled = true;
+        public static bool dryAirBlowerEnabled = true;
 
         public override void ExposeData()
         {
@@ -124,6 +152,11 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref crecheDespoilMemoryEnabled, "crecheDespoilMemoryEnabled", true);
             Scribe_Values.Look(ref bubbleSailorScattererEnabled, "bubbleSailorScattererEnabled", true);
             Scribe_Values.Look(ref strandingPoolsEnabled, "strandingPoolsEnabled", true);
+            Scribe_Values.Look(ref livingBolesEnabled, "livingBolesEnabled", true);
+            Scribe_Values.Look(ref livingRegrowthEnabled, "livingRegrowthEnabled", true);
+            Scribe_Values.Look(ref rootCausewaysEnabled, "rootCausewaysEnabled", true);
+            Scribe_Values.Look(ref wetBulbOverwhelmEnabled, "wetBulbOverwhelmEnabled", true);
+            Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -175,6 +208,22 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built to leave cut-off water pools behind a receding surge stops detecting new "
               + "ones, stops spawning anything stranded in them, and freezes every pool already tracked "
               + "(no further shrinking, no return-to-water jobs, no despawn) until this is back on.");
+            list.CheckboxLabeled("Living-tower bole placement (WORLDGEN-AFFECTING)", ref livingBolesEnabled,
+                "A biome built to place a mineable living-tower bole stops placing new ones on any map "
+              + "generated while this is off. Maps already generated keep whatever bole they already have.");
+            list.CheckboxLabeled("Living-tower regrowth", ref livingRegrowthEnabled,
+                "A placed bole stops scheduling new regrowth, stops warning, and stops crushing/ejecting "
+              + "whatever is in the way — every chamber freezes exactly as it is until this is back on. "
+              + "Mining and sealing chambers is unaffected either way.");
+            list.CheckboxLabeled("Root causeway network (WORLDGEN-AFFECTING)", ref rootCausewaysEnabled,
+                "A biome built to paint a causeway network stops painting one on any map generated while "
+              + "this is off. Maps already generated keep whatever network they already have.");
+            list.CheckboxLabeled("Wet-bulb overwhelm", ref wetBulbOverwhelmEnabled,
+                "A biome built to overwhelm pawns with saturated heat stops ramping that hediff on "
+              + "anyone at all.");
+            list.CheckboxLabeled("Dry-air blower drying and animal repel", ref dryAirBlowerEnabled,
+                "A built dry-air blower stops drying its room and stops repelling wild animals from its "
+              + "doorway arc; it still draws power/fuel and pushes heat like any running machine.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WetBulbOverwhelm.xml                UtinniPatches - GREENTIDE_MECHANICS_2 M1
+
+  Ramped by RM_GameCondition_WetBulb (RimMandrake.EnvironmentalHazards),
+  wired onto RUT_Greentide via RUT_GreentideWetBulbLock (this file's own
+  sibling GameConditionDef) - see greentide_kit_spec.md "M1. Wet-bulb
+  overwhelm + the gear tree".
+
+  Stage shape cribbed from vanilla Heatstroke (RimWorld/Hediffs, read via
+  RimSage this pass): escalating Consciousness/Moving capMods, a final
+  stage that sets Consciousness's max low enough to collapse the pawn
+  (rather than a literal death threshold below lethalSeverity), lethalSeverity
+  1 for the same "keeps getting worse until death if exposure continues"
+  behavior the donor stat describes. Distinct label/description text - this
+  is saturated-air heat, not sun exposure, and sweat does nothing against it
+  (the sheet's whole point, see the GameConditionDef's own description).
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_WetBulbOverwhelm</defName>
+    <label>wet-bulb overwhelm</label>
+    <description>The air here holds more heat than the body can shed — sweat does nothing when the air itself is already saturated. Shade and a roof do not help; only sealed or wicking gear, or a truly dried room, slow it. Left unchecked, it collapses the victim and, if exposure continues, kills.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.35, 0.55, 0.8)</defaultLabelColor>
+    <lethalSeverity>1</lethalSeverity>
+    <stages>
+      <li>
+        <label>sweat-slicked</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <label>sweat-slicked</label>
+        <minSeverity>0.08</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>overwhelmed</label>
+        <minSeverity>0.3</minSeverity>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>collapsing</label>
+        <minSeverity>0.62</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.4</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.1</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <tendable>true</tendable>
+  </HediffDef>
+
+</Defs>

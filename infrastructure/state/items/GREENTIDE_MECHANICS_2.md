@@ -205,6 +205,119 @@ stays in `doing`.
 - `src/RimMandrake/Greentide/Assemblies/RimMandrake.Greentide.dll` (rebuilt, 0 warnings/errors)
 - `design/Jawa/worldbuilding/biomes/kits/greentide_kit_spec.md` (M2/M3/M4/M5/M6/M8/M10/M11/M12 sections reconciled/resolved)
 
+## M1/M2 build pass — 2026-09-14
+
+Full build of M1 (wet-bulb overwhelm + the gear tree) and M2 (the dry-air
+blower), per the kit spec's own build order (item 3, "one unit"). Built in
+`src/RimMandrake/EnvironmentalHazards/` (the RM_ mechanism classes, per the
+roster table's own "ruled kit's home" placement) and
+`src/RimUtinni/UtinniPatches/` (the RUT_ content defs, matching the exact
+precedent `RUT_ScaldSteamLock`/`RUT_Scald` already set for M3's damage
+trio — mechanism in EnvironmentalHazards, content in UtinniPatches, wired
+onto the frozen campaign biome `RUT_Greentide` via a MayRequire-gated
+patch, never a direct BiomeDef edit).
+
+**M1 — wet-bulb overwhelm.** `RM_GameCondition_WetBulb : GameCondition`
+(new) + `RM_WetBulbExtension : DefModExtension` (new) ramp
+`RUT_WetBulbOverwhelm` severity on an interval, cribbing
+`HediffGiver_Heat.OnIntervalPassed`'s `HealthUtility.AdjustSeverity` shape
+per the spec, with the three named gates: (1) gain scaled by
+`max(0, 1 - protection/protectionHoldThreshold)` against the new
+`RM_WetBulbProtection` StatDef, summed across worn apparel by the condition
+itself (an "Apparel"-category stat has no vanilla pawn-level
+auto-aggregation — `ArmorUtility` is the only vanilla reader, and it reads
+per-apparel, not per-pawn); (2) zero gain while `pawn.GetRoom()` reads dry
+in the new `RM_MapComponent_DryRooms` (M2's own registry); (3) species
+exemption via the kit's existing shared `HazardTargeting.Affects`, not a
+fourth bespoke gate. Attached to `RUT_Greentide` via
+`RUT_GreentideWetBulbLock` (GameConditionDef) +
+`RUT_GreentideWetBulbLock_BiomeWiring.xml` (patch). Ships
+`RUT_WetBulbOverwhelm` (HediffDef, 4-stage escalation to collapse, stage
+shape cribbed from vanilla `Heatstroke`), `RM_WetBulbProtection` (StatDef,
+`ParentName="ArmorRatingBase"` crib, same shape `RM_ArmorRating_Scald`
+already established in this mod), and three `RUT_` apparel defs
+(`RUT_WickingWrap` 0.3, `RUT_SealedSuit` 0.6, `RUT_DryHood` 0.2 — stacking
+any two of the heavier pieces already reaches the 0.8 hold threshold). All
+three apparel defs reuse a real, already-shipping vanilla texPath verbatim
+(`Apparel_TribalA`/`Apparel_Vacsuit`/`Apparel_HatHood`, confirmed via
+RimSage raw fetch) — real art on day one, no DEPLOY_HOLD entry needed, 0
+validate_patch.py errors on all three (only the expected "cannot verify a
+packed vanilla texture from here" WARN, not an ERROR).
+
+**M2 — the dry-air blower.** `RUT_DryAirBlower` ThingDef (new building)
+composed of vanilla `CompPowerTrader`/`CompRefuelable`(Chemfuel)/
+`CompFlickable`/`CompHeatPusher`, plus one new comp,
+`RM_CompDryFieldEmitter : ThingComp` (+ its `CompProperties_DryFieldEmitter`),
+on `CompTickRare` (vanilla's own 250-tick cadence, matching the spec's own
+named animal-scan interval exactly):
+
+1. **Dries the room** — registers `parent.GetRoom()` into
+   `RM_MapComponent_DryRooms` every active tick rather than once at spawn,
+   because a `Room` object is not durable (vanilla regenerates it on any
+   wall/door change); re-registering on a cadence is self-healing across a
+   geometry change with no spawn/despawn bookkeeping. Dryness is a decaying
+   grant (`dryUntilTick`), not a boolean, so a fuel-starved blower simply
+   stops refreshing it and the room reverts on its own — "the green notices
+   within hours" for free, no explicit stop path.
+2. **Repels encroachment — FLAGGED, not built, exactly as the calling
+   brief specified.** Confirmed by grep before this pass started
+   (`grep -r "PlantSuppression\|ExplosivePlantGrowth" src/`, zero hits):
+   `EXPLOSIVE_PLANT_GROWTH_1`'s suppression grid does not exist anywhere in
+   `src/` yet. `RM_CompDryFieldEmitter.SuppressPlantGrowth()` is a
+   documented no-op method with a `TODO(EXPLOSIVE_PLANT_GROWTH_1)` comment
+   naming exactly what it should call once that engine ships — building the
+   grid itself here would be doing a different item's whole job.
+3. **Repels animals — built for real**, per the spike pass's own
+   resolution (`AvoidGrid` confirmed absent as a route; the fallback scan
+   is the only one). A 90°-arc, radius-3 scan (both **INVENTED** per the
+   spec) applies the new short `RUT_DryAirAversion` hediff (a
+   `HediffCompProperties_Disappears` marker, 2500–3500 ticks — doubles as
+   the re-trigger cooldown) to non-immune wild animals and starts vanilla
+   `MentalStateDefOf.PanicFlee` on them in the same call.
+
+Two new Mod Settings toggles (`wetBulbOverwhelmEnabled`,
+`dryAirBlowerEnabled`), following this mod's existing one-master-switch-
+per-mechanism convention — added as entries 20/21 after the M9/M12 build
+pass's own 17–19, which landed in this same file concurrently (another
+window, same repo, no file collision: confirmed by reading the live file
+before editing rather than assuming the numbering this item's own spike
+pass left off at).
+
+**Build/validate**: `RimMandrake.EnvironmentalHazards.dll` rebuilt, 0
+warnings/0 errors (`RM_EnvironmentalHazards.csproj`, 4 new `<Compile>`
+entries appended after the M9/M12 pass's own). `validate_patch.py` against
+the live 99-mod list: 0 errors on 8 of 9 new/changed def files; the ninth
+(`RUT_DryAirBlower.xml`) carries the one expected error — its own new
+texPath has no art yet — held in `DEPLOY_HOLD.txt` exactly like every
+sibling kit's own missing-building-art entries (Scald/Sump/Forge).
+
+**Owed**: M2's plant-suppression write (blocked on `EXPLOSIVE_PLANT_GROWTH_1`
+existing at all — not this item's job to unblock); `RUT_DryAirBlower`'s own
+sprite; M1's `immunePawnKinds`/`immuneThingDefs` lists (empty this pass —
+Greentide's own fauna roster, including which species count as
+"elevated-thirst" or "native", is a follow-on item, same gap M5/M7 already
+carry). No bridge/game access this pass, same posture as the spike.
+
+## files (M1/M2 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WetBulb.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DryRooms.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompDryFieldEmitter.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (2 new settings toggles)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (4 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_WetBulbProtection.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WetBulbOverwhelm.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_DryAirAversion.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GreentideWetBulbLock.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_WickingWrap.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_SealedSuit.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_DryHood.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml` (new, held — no art)
+- `src/DEPLOY_HOLD.txt` (1 new entry, `RUT_DryAirBlower.xml`)
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside

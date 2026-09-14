@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DryHood.xml                         UtinniPatches - GREENTIDE_MECHANICS_2 M1
+
+  greentide_kit_spec.md M1's gear tree, headgear piece ("dry-hood"). Shape
+  and texPath/wornGraphicPath cribbed verbatim from vanilla Apparel_HatHood
+  (RimSage raw fetch this pass) - a real, already-shipping Overhead
+  garment - so this ships with real art on day one. RM_WetBulbProtection is
+  this build pass's own addition; the donor's SocialImpact offset is kept
+  (a sealed hood reads as unfriendly, same as the donor's own hood).
+-->
+<Defs>
+
+  <ThingDef ParentName="HatMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_DryHood</defName>
+    <label>dry-hood</label>
+    <description>A close-drawn hood sealed at the collar, lined to wick sweat off the scalp and neck rather than let it sit against saturated air. Cuts visibility at the edges — most people who wear one draw it back the moment they step indoors.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Hood/Hood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <uiIconScale>1.15</uiIconScale>
+    <techLevel>Industrial</techLevel>
+    <costStuffCount>50</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToMake>4000</WorkToMake>
+      <Mass>0.1</Mass>
+      <EquipDelay>0.8</EquipDelay>
+      <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.1</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.15</StuffEffectMultiplierInsulation_Heat>
+      <RM_WetBulbProtection>0.2</RM_WetBulbProtection>
+    </statBases>
+    <equippedStatOffsets>
+      <SocialImpact>-0.1</SocialImpact>
+    </equippedStatOffsets>
+    <apparel>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Hood/Hood</wornGraphicPath>
+      <bodyPartGroups>
+        <li>UpperHead</li>
+      </bodyPartGroups>
+      <layers>
+        <li>Overhead</li>
+      </layers>
+      <tags>
+        <li>IndustrialBasic</li>
+      </tags>
+    </apparel>
+    <recipeMaker>
+      <displayPriority>125</displayPriority>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DryAirAversion.xml                  UtinniPatches - GREENTIDE_MECHANICS_2 M2
+
+  Applied by RM_CompDryFieldEmitter (RimMandrake.EnvironmentalHazards) to a
+  wild animal caught in a running RUT_DryAirBlower's doorway arc - see
+  greentide_kit_spec.md M2 piece 3, "a periodic scan applying a short
+  RUT_DryAirAversion hediff (flee-inducing mental state) to non-immune wild
+  animals in the arc."
+
+  Mechanically inert on its own (no capMods/stages) - it is BOTH the
+  cooldown marker the comp checks before re-triggering (RM_CompDryFieldEmitter.
+  TryRepel skips an animal that already carries it) AND the thing that
+  actually causes the flee: the comp starts vanilla's own
+  MentalStateDefOf.PanicFlee on the animal in the same call, and this
+  hediff's own short lifetime (HediffCompProperties_Disappears,
+  vanilla/Verse, confirmed real via decompile this pass) is what lets the
+  same animal be re-triggered on a later pass rather than being ignored
+  forever after its first encounter.
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_DryAirAversion</defName>
+    <label>dry-air aversion</label>
+    <description>A blast of bone-dry heat off a dry-air blower — uncomfortable enough that a wild animal wants nothing more to do with wherever it came from.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>2500~3500</disappearsAfterTicks>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

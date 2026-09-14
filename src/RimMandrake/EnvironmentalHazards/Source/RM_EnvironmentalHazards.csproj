@@ -123,6 +123,16 @@
     <Compile Include="RM_StrandingPoolsExtension.cs" />
     <Compile Include="RM_MapComponent_StrandingPools.cs" />
     <Compile Include="RM_JobGiver_ReturnToWater.cs" />
+    <Compile Include="RM_LivingBoleBiomeExtension.cs" />
+    <Compile Include="RM_RootCausewayBiomeExtension.cs" />
+    <Compile Include="RM_MapComponent_LivingRegrowth.cs" />
+    <Compile Include="RM_CompLivingBoleMarker.cs" />
+    <Compile Include="RM_GenStep_LivingBoles.cs" />
+    <Compile Include="RM_GenStep_RootCauseways.cs" />
+    <Compile Include="RM_WetBulbExtension.cs" />
+    <Compile Include="RM_GameCondition_WetBulb.cs" />
+    <Compile Include="RM_MapComponent_DryRooms.cs" />
+    <Compile Include="RM_CompDryFieldEmitter.cs" />
   </ItemGroup>
 
   <ItemGroup>

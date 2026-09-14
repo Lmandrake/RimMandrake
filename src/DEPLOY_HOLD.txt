@@ -323,3 +323,20 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: no art 
 #    and art deploy together in one --apply, same pattern as the holds above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   # BENCH: no art yet, 2026-09-14
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml    # BENCH: no art yet, 2026-09-14
+
+# --- GREENTIDE_MECHANICS_2 M1/M2 build pass: RUT_DryAirBlower, no art yet --
+# 2026-09-14, GREENTIDE_MECHANICS_2 M1/M2 build pass. RUT_DryAirBlower.xml
+# (the dry-air blower building, M2) is new this pass with a texPath under
+# UtinniPatches/Textures/ that does not exist yet — same missing-art shape
+# as every other new-art hold above (validate_patch.py refuses a cross-mod
+# vanilla-art reuse as a hard ERROR once a mod ships any of its own
+# Textures/Things/ tree — F2/F5/F6's hold above documents this in full — so
+# a new RUT_-named path was chosen over borrowing a vanilla icon).
+# M1's three apparel defs (RUT_WickingWrap/RUT_SealedSuit/RUT_DryHood) are
+# NOT held: each reuses a real, already-shipping vanilla apparel texPath
+# (Apparel_TribalA/Apparel_Vacsuit/Apparel_HatHood) verbatim, the same
+# legitimate-reuse shape RUT_TarMoat/RUT_TarBlaze already established —
+# real art, not a placeholder.
+# => LIFT when the sprite lands under UtinniPatches/Textures/ — def and art
+#    deploy together in one --apply, same pattern as the holds above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml   # BENCH: no art yet, 2026-09-14

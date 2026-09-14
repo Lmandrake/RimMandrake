@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_GreentideWetBulbLock.xml           UtinniPatches · GREENTIDE_MECHANICS_2 M1
+  ============================================================================
+  greentide_kit_spec.md "M1. Wet-bulb overwhelm + the gear tree" — "New
+  RM_GameCondition_WetBulb : GameCondition, attached via biomeMapConditions."
+
+  conditionClass = RimMandrake.EnvironmentalHazards.RM_GameCondition_WetBulb
+  (this build pass, EnvironmentalHazards mod) — this def only configures it
+  via RM_WetBulbExtension. Wired onto RUT_Greentide via a MayRequire-gated
+  PatchOperationConditional/PatchOperationAdd
+  (Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml), not a direct XML edit
+  to RUT_Greentide.xml's own biomeMapConditions field — same caution
+  RUT_ScaldSteamLock_BiomeWiring.xml already applies to its own sibling
+  file: a bare <li> baked directly into the BiomeDef would be a dangling
+  cross-reference if mandrake.rm.environmentalhazards is ever absent.
+
+  immunePawnKinds/immuneThingDefs (the spec's "elevated-thirst races and
+  native fauna are immune") are left empty this build pass — Greentide's own
+  fauna roster is a follow-on item (per GREENTIDE_MECHANICS_2's own
+  reconciliation notes on M5/M7), so there is no roster to name here yet.
+  The lists exist on RM_WetBulbExtension and are ready for that pass to
+  populate without touching this file's own structure.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GreentideWetBulbLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WetBulb</conditionClass>
+    <label>wet-bulb overwhelm</label>
+    <description>The Greentide's saturated air holds heat against the skin no matter how deep the shade — sweat does nothing here. Only sealed or wicking gear, or a dried room, keeps the collapse clock from running.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_WetBulbExtension">
+        <hediffDef>RUT_WetBulbOverwhelm</hediffDef>
+        <protectionStat>RM_WetBulbProtection</protectionStat>
+        <intervalTicks>600</intervalTicks>
+        <severityPerInterval>0.00667</severityPerInterval>
+        <protectionHoldThreshold>0.8</protectionHoldThreshold>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>
