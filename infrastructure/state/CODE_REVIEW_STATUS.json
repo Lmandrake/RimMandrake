@@ -1097,6 +1097,12 @@
     "hash": "0b579fa6c3ba1ddda69fe745a97b243c4e7e4cdc1000ddddb256490822bdef57",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_StationEater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "24833767bf463677142664b54394925d5c741435b1c819248e8b32b7d0d6a972",
+    "sha": "212775b67"
+  },
   "src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1223,6 +1229,12 @@
     "hash": "5621b12ca1b902d1195e7d6023c23561b089fb9006476801c8ce360919776271",
     "sha": "0637431c1"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "6ba3de8da4eb183696a8c866f7dff6bd4df1e79b6d187f78cf1d3d23fc268a4d",
+    "sha": "212775b67"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompCrecheMarker.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1240,6 +1252,12 @@
     "date": "2026-09-13",
     "hash": "fcb139ea2310504d9ae4e8b1d916a502534dab4cacea990e4c3cc28bd6946b39",
     "sha": "1ae30640a"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "0ff48769ed7d666c2a37ee93c1515e4f4f0cb58fa8f343d61ee36c1712441490",
+    "sha": "212775b67"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs": {
     "cleanCount": 1,
@@ -13845,6 +13863,12 @@
     "hash": "5df94702da39fc52b792aee0213d21c18fb894e07bb3c332440e4e925fee84f8",
     "sha": "50af6a2b"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "763ed4f262dbf9a04ef8351fc489fb0f29702afbd217e196fbb9526b0cc8295f",
+    "sha": "212775b67"
+  },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -13910,6 +13934,12 @@
     "date": "2026-09-13",
     "hash": "732a183f08d633d8a86a7d0f35790de99fc05f86a2aca34ce4ee60642323985e",
     "sha": "670da445d"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "11e967a166985ac443f7979b2ea644b214f79a84123ce288c001d7f5be02de7c",
+    "sha": "212775b67"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml": {
     "cleanCount": 1,
@@ -14474,6 +14504,12 @@
     "date": "2026-09-13",
     "hash": "c59be6b987550c2e0989928f3acab780f0d3d2084d6762f016674e085dbe2f79",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "50d6c02236e742d002b9913216afbb819778b3b48bea4fcc806dba5329ab1df9",
+    "sha": "212775b67"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
     "cleanCount": 1,
