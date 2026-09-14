@@ -239,6 +239,9 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public static JobDef RM_EatStructure;
 
+        // GREENTIDE_MECHANICS_2 M6, feller 3 — see RM_JobGiver_GnawTreeBase.cs.
+        public static JobDef RM_GnawTreeBase;
+
         static RM_EnvironmentalHazardsJobDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_EnvironmentalHazardsJobDefOf));

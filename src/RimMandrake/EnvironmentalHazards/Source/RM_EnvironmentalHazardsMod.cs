@@ -108,6 +108,13 @@ namespace RimMandrake.EnvironmentalHazards
     //      drying its room (M1's clock keeps running there) and stops
     //      repelling wild animals from its doorway arc; it still draws
     //      power/fuel and pushes heat like any running machine.
+    //  22. treeFallEnabled — RM_TreeFallUtility.FellTree (GREENTIDE_MECHANICS_2
+    //      M6). Single choke point for all three fellers: off means a
+    //      cracking giant tree stops rolling/warning, the Shatterer's own
+    //      area aura stops felling trees it damages, and a Gnawer stops
+    //      seeking a trunk to chew — an already-falling/mid-chew tree at the
+    //      moment this is toggled off simply never completes; nothing is
+    //      forced upright again.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -132,6 +139,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool rootCausewaysEnabled = true;
         public static bool wetBulbOverwhelmEnabled = true;
         public static bool dryAirBlowerEnabled = true;
+        public static bool treeFallEnabled = true;
 
         public override void ExposeData()
         {
@@ -157,6 +165,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref rootCausewaysEnabled, "rootCausewaysEnabled", true);
             Scribe_Values.Look(ref wetBulbOverwhelmEnabled, "wetBulbOverwhelmEnabled", true);
             Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
+            Scribe_Values.Look(ref treeFallEnabled, "treeFallEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -224,6 +233,9 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Dry-air blower drying and animal repel", ref dryAirBlowerEnabled,
                 "A built dry-air blower stops drying its room and stops repelling wild animals from its "
               + "doorway arc; it still draws power/fuel and pushes heat like any running machine.");
+            list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
+                "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
+              + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

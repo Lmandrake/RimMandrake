@@ -167,9 +167,42 @@ namespace RimMandrake.EnvironmentalHazards
 
                 t.TakeDamage(new DamageInfo(Props.damageDef, amount, Props.armorPenetration, -1f, carrier));
                 touchedAnything = true;
+
+                TryFellTree(t, carrier);
             }
 
             return touchedAnything;
+        }
+
+        // GREENTIDE_MECHANICS_2 M6 feller 2 hook — see
+        // HediffCompProperties_PeriodicAreaAttack.fellsTreesBelowHealthFraction's
+        // own header for why this lives here (a Props-driven on-threshold
+        // check) rather than a separate damage-watcher. No-op unless the
+        // carrying HediffDef explicitly opts in.
+        private void TryFellTree(Thing t, Pawn carrier)
+        {
+            if (Props.fellsTreesBelowHealthFraction <= 0f)
+            {
+                return;
+            }
+
+            if (!(t is Plant plant) || plant.Destroyed || !plant.Spawned)
+            {
+                return;
+            }
+
+            if (plant.def.GetModExtension<RM_FellableTreeExtension>() == null)
+            {
+                return; // untagged plants never fall from this hook — tagging is the opt-in
+            }
+
+            if (plant.HitPoints > plant.MaxHitPoints * Props.fellsTreesBelowHealthFraction)
+            {
+                return;
+            }
+
+            Rot4 dir = carrier != null ? Rot4.FromAngleFlat((plant.Position - carrier.Position).AngleFlat) : Rot4.Random;
+            RM_TreeFallUtility.FellTree(plant, dir, RM_TreeFallUtility.FallCause.Shattered);
         }
 
         // Returns 0 for "this hazard does not touch that at all".

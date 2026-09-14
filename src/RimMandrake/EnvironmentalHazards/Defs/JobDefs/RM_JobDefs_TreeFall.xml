@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M6 build, feller 3 ("gnawed from below"). Driven
+     by RM_JobDriver_GnawTreeBase, requested by RM_JobGiver_GnawTreeBase
+     whenever a pawn's race carries RM_GnawTreeBaseExtension. Generic RM_-
+     tier (this assembly's own kit-home posture), not Greentide-specific —
+     any biome's Gnawer-shaped creature can use it. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_GnawTreeBase</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RM_JobDriver_GnawTreeBase</driverClass>
+    <reportString>gnawing at the base of TargetA.</reportString>
+  </JobDef>
+
+</Defs>

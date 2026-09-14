@@ -16,4 +16,9 @@
   <RM_MoatIgniting>Igniting, cells queued</RM_MoatIgniting>
   <RM_TarBlazeBurnsFor>Burns for</RM_TarBlazeBurnsFor>
 
+  <!-- GREENTIDE_MECHANICS_2 M6 build. RM_CompCrackFall's own creak warning
+       and inspect string. -->
+  <RM_TreeFallCreak>A crack echoes from {0} — it's coming down.</RM_TreeFallCreak>
+  <RM_TreeFallCracking>Cracking, about to fall</RM_TreeFallCracking>
+
 </LanguageData>

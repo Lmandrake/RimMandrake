@@ -105,6 +105,21 @@ namespace RimMandrake.EnvironmentalHazards
         // true (the donor's own gate; a sleeping hazard is not a hazard).
         public bool requiresAwake = true;
 
+        // GREENTIDE_MECHANICS_2 M6 feller 2 ("shattered from the side") —
+        // build-time decision recorded here: the spec's own text left the
+        // hook shape open ("a damage-watcher on tagged tree defs, or the
+        // comp exposes an on-kill callback — decide at build against the
+        // comp's final shape"). Chosen: an on-threshold Props field, not a
+        // watcher. A watcher would mean a second scanning system (Harmony
+        // patch or MapComponent tick) duplicating work this comp's own
+        // DamageCell already does every burst; a Props field is zero-cost
+        // when unset (0, the default — every other consumer of this ruled
+        // comp is unaffected) and generic (any RM_FellableTreeExtension-
+        // tagged Plant this comp damages below the fraction falls,
+        // regardless of biome, not a Greentide-specific override class).
+        // 0 disables the behavior entirely.
+        public float fellsTreesBelowHealthFraction;
+
         public HediffCompProperties_PeriodicAreaAttack()
         {
             compClass = typeof(HediffComp_PeriodicAreaAttack);
