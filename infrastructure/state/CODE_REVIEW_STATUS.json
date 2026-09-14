@@ -1307,6 +1307,12 @@
     "hash": "f01523044bc8326027b71e2ada1706a0306080bac4fcaff789d2eb98e5e1d28a",
     "sha": "b1a2aa399"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_TerrainChannels.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "61f826a98f60418152f0e1f768054328cc128bab957662c08db3447392fab8dd",
+    "sha": "378f67436"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1372,6 +1378,12 @@
     "date": "2026-09-13",
     "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
     "sha": "f4d5c1714"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_Biome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "60b5124a2c9c505bdb11e659d865170ce33b1736ce576ec4c07cbbef7cd92e1c",
+    "sha": "378f67436"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_BrineShallowWater.cs": {
     "cleanCount": 1,
@@ -13875,6 +13887,36 @@
     "hash": "ef8d8ad4f08a0046fe3d6b5724a8ea7dcc5906fbecedd6e13f3b636f3b4c63ad",
     "sha": "b62604fad"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "7a3a77a650e0cce62ac2a398fe960e7ee6736cb2c44abe306480db5d67b7b9e0",
+    "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_MeltChannels.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "8c0c853fe82cdde44c0cd11f32331459a5e5fe1f604e0c35eac52ad6f423c1c8",
+    "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "540e646ac91bc6eb7ea259983a8b2973707dbaf9da9be25a708ca13326bf7b41",
+    "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_TenderSpawn.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "64b97730e4beb84c2d9ba1997aeaa25b11894b26f239bd80532e8f558c70c607",
+    "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "334bca2ca4c1e1496f58fa0dfc60b832289a9166757b6545a6c799299ea18635",
+    "sha": "378f67436"
+  },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_GradientAxisGenStep.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13970,6 +14012,18 @@
     "date": "2026-09-14",
     "hash": "11e967a166985ac443f7979b2ea644b214f79a84123ce288c001d7f5be02de7c",
     "sha": "212775b67"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "3a6b55f1b9a9204be0c98ea2f35b714d85a1adbe3ec08edb249c23c2bcfd314c",
+    "sha": "378f67436"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "664bdb82e100a62eb5f0869d2486df65a7d7d6b25e62cdee4e26dcec3cd11f4a",
+    "sha": "378f67436"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml": {
     "cleanCount": 1,
@@ -14504,6 +14558,12 @@
     "date": "2026-09-13",
     "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "d9221628b3437c84fab504ddc15716a6702be14fca8d8ee67a31d851eedcda0a",
+    "sha": "378f67436"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml": {
     "cleanCount": 1,
