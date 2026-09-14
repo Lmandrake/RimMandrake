@@ -24,11 +24,11 @@ CANON_REFERENCE_LIBRARY_1.
    the Pyrelands kit/spec docs + `decisions_propagated.json` assignments).
    Cross-check against the frozen dump; UNMEASURED beats guessed. List the
    roster in this file before generating anything.
-2. **Every creature re-rendered under the full 2026-09-13 lawset**:
-   - toy-figurine law: calm neutral pose, flat side profile, flat cel shading,
-     no anatomy detail;
-   - leg budget: low-slung mass, ≤2 fused stub legs, quarter-height, EXCEPT
-     identity limbs (birds, spiders, wings, tentacles) kept prominent-simple;
+2. **Every creature re-rendered under the restored painterly style**
+   (ART_PAINTERLY_RESTORATION_1 — the wave-4/5 prompt family is canonical;
+   the toy-figurine law and leg budget that stood here 2026-09-13 are
+   stood down, preserved only as a selectable option in
+   `infrastructure/artpipe/STYLE_CARTOONISH.md`, never default):
    - vivid distinctive coloration — no dull-brown collapse (owner ruling; the
      peko-peko cobalt render is the exemplar);
    - canon creatures: prompts authored FROM the canon reference library
@@ -37,10 +37,11 @@ CANON_REFERENCE_LIBRARY_1.
    - true drawSize canvases (drawsize×128 → next pow2) via
      `infrastructure/artpipe/drawsize_backfill.json` (extend it for any
      roster creature it lacks — dump drops drawSize, use PawnKindDef
-     lifeStages bodyGraphicData from mod XML);
+     lifeStages bodyGraphicData from mod XML) — a sizing rule of thumb, not a
+     refusal; errs GENEROUS until re-measured at the modded maximum zoom-in;
    - all facings each creature ships with (east/north/south minimum), through
-     the artpipe daemon and the locked legibility gate (fitted model +
-     floors + auto outside-stroke on borderline).
+     the artpipe daemon; the legibility gate is advisory-only, never a
+     rejector (ART_PAINTERLY_RESTORATION_1).
 3. **The goal state is the WALK**: after renders pass and deploy, the owner
    walks Pyrelands in game. Deliver via the options-as-savegame rule if a
    staged review map helps, but the real acceptance is his in-game feel.
@@ -51,8 +52,10 @@ CANON_REFERENCE_LIBRARY_1.
 ## verify
 
 Roster listed with sources; every roster creature has all facings generated,
-gate-passed (band recorded), deployed; a quicktest or the owner's walk
-confirms in-game appearance; canon rows cite their library entries.
+deployed; a quicktest or the owner's walk confirms in-game appearance; canon
+rows cite their library entries. (The legibility gate is advisory-only per
+ART_PAINTERLY_RESTORATION_1 — a band recorded is informative, not a
+pass/fail condition.)
 
 ## Watch out
 

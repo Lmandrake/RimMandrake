@@ -39,59 +39,46 @@ the proven wording — reference-less jobs skip the validator entirely, so
 that wording was tested empirically, not just written; see
 `BACKGROUND_TEMPLATE_LOG.md` for the raw results.
 
-## Sprite defaults — legibility and resolution (frostmite pilot, 2026-09-12)
+## Art style — painterly, restored (owner ruling, ART_PAINTERLY_RESTORATION_1, 2026-09-14)
 
-Two findings from `src/RimMandrake/Utils/art_zoom_sim.py` (the downscale gate)
-now shape every transparent-background sprite job:
+**The wave-4/5 prompt family is the canonical style.** Exemplar: `ronto_v1_east`
+(`done/ronto_v1_east.json`, ART_REGEN_WAVE4_QUEUE_1, 2026-09-11, canvas 512).
+Shape:
 
-- **Resolution: default `canvas` 256×256 for a ~1-cell creature** (`drawSize×128`,
-  the owner's 2026-08-23 ruling). A 512² source is *pixel-identical on screen*
-  to 256² at every play zoom (RMSE 5-7) yet costs ~4× the atlas VRAM — a real
-  OOM axis on the full mod list. `fill_queue.py` warns past 256 unless the row
-  carries an `oversize_reason` (a headliner or a genuinely large `drawSize`).
-- **Legibility direction is now automatic.** `build_job_prompt` appends a
-  downscale-readability block to every transparent-bg prompt — thick dark
-  keyline, a few bold shapes over fine detail, body value contrasting the
-  ground — so a job author no longer has to remember it. It is skipped for
-  black-backdrop reference jobs, which are not downsampled onto the map.
+> "RimWorld creature sprite, side view, **painterly vanilla-RimWorld animal art
+> style**: [canon identity + rich anatomical description — legs, hide, folds,
+> real creature]. Single creature, centered, standing pose, no ground shadow,
+> no background scenery. Heavy, clean black outline around the whole silhouette
+> and all major internal linework, thick enough to read clearly at standard
+> RimWorld zoom and below."
 
-The gate is now AUTOMATED (ART_LEGIBILITY_GATE_1, owner-ruled 2026-09-13):
-`src/RimMandrake/Utils/art_legibility.py` scores every transparent-bg sprite
-at 96/32/18 px (the requested 1:1 plus two zoom-outs) on keyline, structure,
-ground separation and coverage; `artpiped.py` runs it after the geometry
-validator and fails a candidate below the calibrated line
-(`legibility_thresholds.json` here — p25 of Alpha Animals' 471 shipping
-sprites minus margin; recalibrate with `art_legibility.py calibrate` if the
-corpus moves; `ARTPIPE_LEGIBILITY_THRESHOLDS=` empty disables). The gate
-separates the pilot pair: bad frostmite FAILS naming keyline as weakest,
-fixed frostmite passes with margin. `art_zoom_sim.py` remains the EYE for
-borderline calls.
+Real anatomy (legs included) and high resolution are back — "as long as the
+user will actually see the resolution" (owner's words). The calm-flat-cel
+toy-figurine lawset, the ≤2-fused-stub leg budget, and the "no painterly"
+word-ban are gone as REQUIREMENTS; that craft is preserved as a selectable
+style option, never default — see `STYLE_CARTOONISH.md`.
 
-**Resolution verdict (MEASURED, 2026-09-13, `art_legibility.py resexp`, 35
-hi-res _artsrc masters stored at 64/128/256/512 then BOX-rendered to
-96/32/18 px):** stored resolution above 128 changes NOTHING measurable at
-any tier — 128/256/512 scores are identical within 0.1 points at 32 and 18
-px and within 0.1 at 96 px; only 64-stored drops (−5 at 96 px). Legibility
-at play zoom is design (keyline/shapes/contrast), not pixels. The owner's
-"will the gate push us above native resolution?" is REFUTED: the 256
-default already carries 2× headroom over the measured knee.
-Raw data: Transient/legibility_resexp_2026-09-13.json (14-day shelf).
+**Resolution: `canvas` sizing is a rule of thumb, not a refusal.**
+`drawSize×128`, rounded up to the next power of two (floor 256), stays the
+sizing heuristic (owner's 2026-08-23 ruling) — but `fill_queue.py` no longer
+REFUSES a row that exceeds it; it warns and files the job. The 2026-09-13
+"stored resolution above 128 changes nothing measurable" finding was measured
+at VANILLA zoom tiers only (96/32/18 px); the owner is not convinced it holds
+at the enhanced zoom levels in the current mod stack, so canvas sizing errs
+**GENEROUS** until re-measured at the modded maximum zoom-in (512 is fine for
+a large `drawSize`) — never quote that finding against a high-res request.
 
-**LOCKED RULES (owner, 2026-09-13, after the graded sheet + A/B approval):**
-- Canvas ceiling 256 is a REFUSAL in `fill_queue.py` without an
-  `oversize_reason`; under-128 warns (decor only). Prompt direction now also
-  demands ~3% transparent margin on every side (the outside stroke needs it).
-- The gate is the owner-grade-FITTED 3-band model
-  (`legibility_model_fitted.json`, LOO ρ=0.81): pass ≥ works_line /
-  borderline / regen < mud_line, with deterministic FLOORS the regression
-  cannot express (featureless block → regen; zero-keyline → borderline max).
-- Borderline art auto-takes the OUTSIDE keyline stroke
-  (`art_legibility.py reinforce`, opacity 1.0, 2% ring — approved on the A/B
-  sheet; the stroke never touches original pixels) and promotes on rescore;
-  outcomes are distinct statuses: `REINFORCED_PASS` ·
-  `legibility_borderline_unrescued` · `insufficient_margin` (exit 4, ring
-  >5% clipped) · `reinforce_failed`. Pre-stroke originals kept as
-  `*_prestroke.png`.
+**The legibility gate is advisory only, never a rejector.**
+`src/RimMandrake/Utils/art_legibility.py` can still score a transparent-bg
+sprite at 96/32/18 px on keyline, structure, ground separation and coverage,
+and `art_zoom_sim.py` remains a useful EYE for a borderline call by hand — but
+`artpiped.py` no longer fails a candidate on that score ("the whole scoring
+metric nonsense", owner's words). The fitted 3-band model, the auto-reinforce
+stroke, and their distinct statuses (`REINFORCED_PASS` ·
+`legibility_borderline_unrescued` · `insufficient_margin` · `reinforce_failed`)
+are dead code paths, not deleted, kept only in case the gate is ever re-funded
+as a REPORTED number. A running daemon process needs a restart to pick this
+up — it's a code change, not a config flip.
 
 ## Who writes here
 
