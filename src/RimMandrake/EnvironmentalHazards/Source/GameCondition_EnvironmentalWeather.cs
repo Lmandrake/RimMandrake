@@ -61,7 +61,13 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            if (ext.damageDef == null && ext.hediffToApply == null)
+            // MIASMA_MECHANICS_1 M4 build: carrierHediff must also keep this
+            // tick alive — RUT_MiasmaWeatherLock sets neither damageDef nor
+            // hediffToApply (the spec's own "no damage fields"), so without
+            // this check DoPawnEffects (and EnsureCarrierHediff inside it)
+            // would never run at all. Caught in self-review: this early
+            // return predates carrierHediff and had not been updated for it.
+            if (ext.damageDef == null && ext.hediffToApply == null && ext.carrierHediff == null)
             {
                 return;
             }
@@ -84,14 +90,19 @@ namespace RimMandrake.EnvironmentalHazards
         // without waiting out damageIntervalTicks.
         public void DoPawnEffects(Map map, EnvironmentalWeatherExtension ext)
         {
-            if (!RM_EnvironmentalHazardsSettings.environmentalDamageEnabled)
-            {
-                return; // mod option: environmental weather damage disabled
-            }
             if (map == null || ext == null)
             {
                 return;
             }
+
+            // MIASMA_MECHANICS_1 M4 build: the carrier-hediff grant below is
+            // NOT "environmental weather damage" (it adds a near-zero-severity
+            // hediff, deals no damage itself) and must keep running even when
+            // the player has turned that setting off — same as this method's
+            // pre-existing temperature/weather-forcing effects, which the
+            // setting's own tooltip already promises stay unaffected. Only the
+            // damage-dealing half below is gated on the flag.
+            bool damageEnabled = RM_EnvironmentalHazardsSettings.environmentalDamageEnabled;
 
             // Snapshot: damage can kill, and a kill mutates AllPawnsSpawned.
             List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
@@ -103,6 +114,13 @@ namespace RimMandrake.EnvironmentalHazards
                 if (!HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
                 {
                     continue;
+                }
+
+                EnsureCarrierHediff(pawn, ext);
+
+                if (!damageEnabled)
+                {
+                    continue; // mod option: environmental weather damage disabled
                 }
 
                 if (ext.onlyUnroofed && pawn.Position.Roofed(map))
@@ -122,6 +140,29 @@ namespace RimMandrake.EnvironmentalHazards
                     HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerInterval * mult);
                 }
             }
+        }
+
+        // MIASMA_MECHANICS_1 M4 build. See EnvironmentalWeatherExtension.
+        // carrierHediff for why this exists: bootstraps ext.carrierHediff
+        // onto the pawn at a near-zero severity if absent, so the hediff's
+        // OWN comp (e.g. RM_HediffComp_EnvironmentalExposure) can take over
+        // the real severity math from here on. Idempotent — does nothing
+        // once the pawn already carries it.
+        private static void EnsureCarrierHediff(Pawn pawn, EnvironmentalWeatherExtension ext)
+        {
+            if (ext.carrierHediff == null || pawn.Dead || pawn.health == null)
+            {
+                return;
+            }
+
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(ext.carrierHediff) != null)
+            {
+                return;
+            }
+
+            Hediff hediff = HediffMaker.MakeHediff(ext.carrierHediff, pawn);
+            hediff.Severity = Mathf.Max(0.0001f, ext.carrierHediffSeverity);
+            pawn.health.AddHediff(hediff);
         }
 
         public override void DoCellSteadyEffects(IntVec3 c, Map map)

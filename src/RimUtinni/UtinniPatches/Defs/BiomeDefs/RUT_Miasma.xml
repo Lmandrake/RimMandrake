@@ -18,13 +18,16 @@
     crowding (SS3 "the lifeboat"), 4 is the root-maze and muck, 15 is "the Working's
     failures leaking out" (SS4b, fever-forged).
 
-    Weather: ban 5 ("No rain — the swamp is fed by river and sea only") is read
-    here as banning RAIN AS THE WATER SOURCE, not the WeatherDef slot itself — the
-    donor's own Rain/RainyThunderstorm/FoggyRain commonalities are kept as the
-    mechanical stand-in for the surge/breath-tide (SS3, "when the terminator storms
-    pile the Grey Sea against the Salt Gate shore, the sea surges") pending a real
-    surge WeatherDef (SS Owed, `MIASMA_MECHANICS_1`) — flagged, not silently
-    invented. Snow zeroed (42.8 C median).
+    Weather: MIASMA_MECHANICS_1's M4 build pass (2026-09-13) landed the real lock —
+    biomeMapConditions below now forces RUT_MiasmaWeather permanently via
+    GameCondition.ForcedWeather(), which overrides vanilla's WeatherDecider outright.
+    The donor's own Rain/RainyThunderstorm/FoggyRain/DryThunderstorm/Fog/Clear
+    baseWeatherCommonalities entries below are now INERT — ForcedWeather() always
+    wins regardless of what WeatherDecider rolls internally — kept only because
+    removing them changes nothing observable and a biome with an empty
+    baseWeatherCommonalities list is itself a latent config-error risk. Ban 5
+    ("No rain") is now actually, mechanically true, not merely read that way.
+    Snow zeroed (42.8 C median).
 
     diseases: the three Alpha Biomes-specific entries (BacterialGangrene/
     ViralAbasia/RavagingIntestinalParasites) kept MayRequire-gated — these ARE
@@ -34,9 +37,15 @@
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/the_miasma.json.
 
-    NOT this pass's scope: `MIASMA_MECHANICS_1` (surge/salt-line system, fever-forged
-    boon tables, warden-mother set-piece placement); the attar refinement chain; any
-    world repaint.
+    MIASMA_MECHANICS_1 M4/M1 build pass (2026-09-13): biomeMapConditions +
+    modExtensions below wire the weather lock/light/exposure (M4) and the
+    fresh->brine gradient axis (M1, RM_GenStep_GradientAxis registered onto
+    Base_Player in Patches/RUT_Miasma_GradientAxis_Register.xml). Full details
+    and honest gaps: infrastructure/state/items/MIASMA_MECHANICS_1.md.
+
+    STILL NOT this pass's scope: M2 (breath-tide surge), M3 (stranding pools),
+    M5 (fever-forged boon tables), M6 (warden-mother set-piece placement); the
+    attar refinement chain; any world repaint.
 
     MIASMA_NURSERY_KINDS_1 (2026-09-10): the nursery-band RSW_* entries below spawn
     the *Juv defNames (SWBestiary SeaBeasts_NurseryJuveniles.xml (moved 2026-09-11: cross-mod ParentName inheritance is unsupported, defs now live beside their parents)), not the base
@@ -61,6 +70,44 @@
     <movementDifficulty>4</movementDifficulty>
     <texture>Biomes/AB_MiasmicMangrove</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards">RUT_MiasmaWeatherLock</li>
+    </biomeMapConditions>
+    <modExtensions>
+      <!-- M4: "seen through breath", not the Lantern's dark (kit spec's own INVENTED 0.85). -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+        <glowMultiplier>0.85</glowMultiplier>
+      </li>
+      <!-- M1: the fresh->brine axis. Fresh band left unnamed (leaves vanilla
+           water untouched); brackish/brine grades from LIQUID_TYPES_MOD_1
+           (mandrake.rm.liquidtypes); the driest brine-adjacent band reuses
+           this same mod's own RUT_Jawa_SaltCrust (no new terrain def), only
+           ever repainting the two muck terrains RUT_Miasma's own
+           terrainsByFertility already uses below. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
+        <waterBands>
+          <li>
+            <max>0.34</max>
+          </li>
+          <li MayRequire="mandrake.rm.liquidtypes">
+            <max>0.66</max>
+            <terrainShallow>RM_WaterBrackishShallow</terrainShallow>
+            <terrainDeep>RM_WaterBrackishDeep</terrainDeep>
+          </li>
+          <li MayRequire="mandrake.rm.liquidtypes">
+            <max>1</max>
+            <terrainShallow>RM_WaterBrineShallow</terrainShallow>
+            <terrainDeep>RM_WaterBrineDeep</terrainDeep>
+          </li>
+        </waterBands>
+        <landRepaintMinSalinity>0.85</landRepaintMinSalinity>
+        <landRepaintSource>
+          <li>Mud</li>
+          <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
+        </landRepaintSource>
+        <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
+      </li>
+    </modExtensions>
     <diseases>
       <li MayRequire="sarg.alphabiomes">
         <diseaseInc>AB_Disease_BacterialGangrene</diseaseInc>

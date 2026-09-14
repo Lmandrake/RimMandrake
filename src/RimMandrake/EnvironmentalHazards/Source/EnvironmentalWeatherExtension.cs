@@ -55,6 +55,21 @@ namespace RimMandrake.EnvironmentalHazards
         public HediffDef hediffToApply;
         public float hediffSeverityPerInterval;
 
+        // MIASMA_MECHANICS_1 M4 build. Some hazards (e.g.
+        // RM_HediffComp_EnvironmentalExposure) read weather/roof/map state
+        // from INSIDE the hediff's own comp rather than from the periodic
+        // hediffToApply loop above — but a HediffComp can only run once the
+        // pawn already carries the parent hediff. When set, every eligible
+        // pawn (same HazardTargeting.Affects gate as everything else here,
+        // NOT gated by onlyUnroofed — the carrier must persist indoors too,
+        // so the comp's own severityPerDayUnexposed can decay it) is granted
+        // carrierHediff at carrierHediffSeverity if they don't have it yet,
+        // once per damageIntervalTicks. Deliberately separate from
+        // hediffToApply/hediffSeverityPerInterval, which drives severity
+        // directly and would double-apply if pointed at the same hediff.
+        public HediffDef carrierHediff;
+        public float carrierHediffSeverity = 0.0001f;
+
         // Only pawns under open sky are hit when true — the whole point of
         // a weather hazard is that a roof is the answer to it.
         public bool onlyUnroofed = true;
@@ -123,9 +138,14 @@ namespace RimMandrake.EnvironmentalHazards
                 && itemRotProgressPerCellEffect <= 0f && plantKillChancePerCellEffect <= 0f
                 && animalDensityFactor == 1f && plantDensityFactor == 1f
                 && tempOffset == 0f && dayTempOffset == 0f && nightTempOffset == 0f
-                && allowEnjoyableOutside && !electricityDisabled)
+                && allowEnjoyableOutside && !electricityDisabled && carrierHediff == null)
             {
                 yield return "EnvironmentalWeatherExtension has no effect configured at all.";
+            }
+
+            if (carrierHediff != null && carrierHediff == hediffToApply)
+            {
+                yield return "EnvironmentalWeatherExtension carrierHediff and hediffToApply are the same def — this double-applies severity (the carrier grant plus the periodic hediffToApply adjustment). Point them at different hediffs, or drop one.";
             }
 
             if (animalDensityFactor < 0f || plantDensityFactor < 0f)

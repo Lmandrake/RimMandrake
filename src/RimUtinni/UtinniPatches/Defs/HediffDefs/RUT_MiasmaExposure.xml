@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MiasmaExposure.xml               UtinniPatches - MIASMA_MECHANICS_1 M4 build pass
+
+  miasma_kit_spec.md M4, "Exposure": "unroofed pawns during miasma weather
+  accumulate RUT_MiasmaExposure (mild: breath/consciousness shading),
+  severity rate x M1's salinity-band multiplier ... It is the ambient tax;
+  the real diseases stay vanilla's, priced by diseaseMtbDays 15 in biome XML
+  - no new disease system." Wires the already-spiked, already-compiling
+  RM_HediffComp_EnvironmentalExposure (spike pass, MIASMA_MECHANICS_1.md
+  Spike 3) onto a real hediff for the first time.
+
+  severityPerDayExposed/Unexposed and the three salinity multipliers below
+  are the kit spec's own INVENTED values (M1's own text: brine x0.6, mid
+  x1.0, fresh x0.8), written out explicitly for citation even though they
+  equal the comp's own C# defaults.
+
+  Granting: this hediff does nothing to a pawn who never carries it. The
+  carrier grant is RUT_MiasmaWeatherLock.xml's own EnvironmentalWeatherExtension.
+  carrierHediff (see that file) - a new field/mechanism added this pass to
+  the shared, already-ruled GameCondition_EnvironmentalWeather class,
+  covering the spike's own "Owed, not done: giving the standing carrier
+  hediff to every pawn on a Miasma map" line.
+
+  "Mild" (spec's own word) shapes the stages below: two small capMods, no
+  lethalSeverity anywhere in this def - this hediff cannot itself kill a
+  pawn, on purpose, matching "the real diseases stay vanilla's ... no new
+  disease system."
+
+  immuneThingDefs/immunePawnKinds intentionally empty: the spec's "native
+  fauna and listed races immune (XML)" needs an actual roster of which
+  RUT_Miasma wildAnimals entries count as native/immune, a content judgement
+  this item does not own (no such roster exists anywhere in src/ yet) -
+  left empty and flagged, not guessed at.
+
+  MayRequire is load-bearing: the compClass and HediffCompProperties type
+  both live in mandrake.rm.environmentalhazards. Per memory
+  (modextension-missing-type-discards-def), an unresolvable comp class risks
+  discarding the whole def silently; MayRequire keeps that failure mode a
+  clean no-op.
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_MiasmaExposure</defName>
+    <label>miasma exposure</label>
+    <description>A low-grade accumulation of the miasma's breath - fermentation gases and worse, settling in the lungs and blood. Mild on its own; it fades fast once you're out of the haze or under a roof.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.66,0.72,0.4)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <label>onset</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.15</minSeverity>
+        <label>mild exposure</label>
+        <painOffset>0.02</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.03</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.03</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>heavy exposure</label>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.08</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.06</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_EnvironmentalExposure">
+        <onlyDuringWeather>RUT_MiasmaWeather</onlyDuringWeather>
+        <severityPerDayExposed>0.05</severityPerDayExposed>
+        <severityPerDayUnexposed>-0.2</severityPerDayUnexposed>
+        <freshMultiplier>0.8</freshMultiplier>
+        <midMultiplier>1.0</midMultiplier>
+        <brineMultiplier>0.6</brineMultiplier>
+        <affects>Flesh</affects>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

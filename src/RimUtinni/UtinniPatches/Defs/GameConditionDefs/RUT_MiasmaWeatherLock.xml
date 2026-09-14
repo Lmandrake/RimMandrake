@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MiasmaWeatherLock.xml            UtinniPatches - MIASMA_MECHANICS_1 M4 build pass
+
+  miasma_kit_spec.md M4, "The lock": "reuse ruled RM_GameCondition_EnvironmentalWeather
+  as a permanent biomeMapConditions entry ... forced RUT_MiasmaWeather, no
+  damage fields." Attached in RUT_Miasma.xml's own biomeMapConditions list
+  (BiomeConditionMapComponent.MapGenerated -> GameConditionMaker.
+  MakeConditionPermanent, confirmed against the live 1.6 decompile - no
+  extra Def field needed to make a biomeMapConditions entry permanent).
+
+  plantDensityFactor 1.15 is the spec's own INVENTED value for "the mangals'
+  visible thriving" (M4: "plant growth bonus while miasma runs ... so a
+  clear spell visibly stalls the green" - PlantDensityFactor is a virtual
+  GameCondition.cs already reads, ruled-kit wiring, zero new code).
+
+  carrierHediff/carrierHediffSeverity/damageIntervalTicks: this pass's own
+  addition to EnvironmentalWeatherExtension (see that file's header),
+  bootstrapping RUT_MiasmaExposure onto every eligible pawn on the map so its
+  own comp can run at all. 2500 ticks (~1 in-game hour) is this pass's own
+  INVENTED-BUILD scan cadence, not a value the kit spec gives a number for.
+
+  No damageDef/hediffToApply set: the spec is explicit ("no damage fields")
+  - the lock only forces weather, dims/lights nothing itself (that is the
+  separate BiomeGlowMultiplierExtension on the BiomeDef), and bootstraps the
+  exposure carrier. animalDensityFactor/allowEnjoyableOutside/
+  electricityDisabled are left at their un-invented defaults (1 / true /
+  false) - the spec names no figure for any of them.
+
+  MayRequire is load-bearing: conditionClass and the modExtension both live
+  in mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_MiasmaWeatherLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the miasma's breath</label>
+    <description>The green-gold haze that never lifts over the Miasma - the delta's permanent weather, and the standing tax of living in it.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <forcedWeather>RUT_MiasmaWeather</forcedWeather>
+        <plantDensityFactor>1.15</plantDensityFactor>
+        <carrierHediff>RUT_MiasmaExposure</carrierHediff>
+        <carrierHediffSeverity>0.0001</carrierHediffSeverity>
+        <damageIntervalTicks>2500</damageIntervalTicks>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>
