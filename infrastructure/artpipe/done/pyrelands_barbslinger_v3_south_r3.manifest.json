@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 105.67718085500019,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.67718085500019,
+  "height": 256,
+  "id": "pyrelands_barbslinger_v3_south_r3",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789421524,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/14/rollout-2026-09-14T11-10-21-01a0a11c-e9d1-7971-b527-406e09244e9d.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 5.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789421524,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/14/rollout-2026-09-14T11-00-42-01a0a114-11c3-7301-9c5c-92c8e6231d32.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 5.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_barbslinger_v3_south_r3",
+    "note": "Generated a full-regeneration south-facing frontal sprite, then resized the project copy to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_barbslinger_v3_south_r3\\pyrelands_barbslinger_v3_south_r3.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_barbslinger_v3_south_r3/pyrelands_barbslinger_v3_south_r3.png\n    256x256  rgba  79,326 bytes  (105s)\n"
+}
