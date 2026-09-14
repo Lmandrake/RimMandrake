@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T06:53:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T07:57:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## BACTA_PAWNINTANK_RECON_1 Find and evaluate the visible-pawn-in-tank rendering technique: locate BioReactor mod source (workshop id/GitHub; not installed locally), read how it composites the pawn into the tank graphic, report the classes/approach and license; fallback techniques if unusable
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/BACTA_PAWNINTANK_RECON_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BACTA_PAWNINTANK_RECON_1.md
 
 ## ART_PAINTERLY_RESTORATION_1 MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled
 state:    ready
@@ -125,6 +116,15 @@ target:   v1
 kind:     task
 summary:  (no items/TOYFIG_LAW_PILOT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TOYFIG_LAW_PILOT_1.md
+
+## BACTA_PAWNINTANK_RECON_1 Find and evaluate the visible-pawn-in-tank rendering technique: locate BioReactor mod source (workshop id/GitHub; not installed locally), read how it composites the pawn into the tank graphic, report the classes/approach and license; fallback techniques if unusable
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BACTA_PAWNINTANK_RECON_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_PAWNINTANK_RECON_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
