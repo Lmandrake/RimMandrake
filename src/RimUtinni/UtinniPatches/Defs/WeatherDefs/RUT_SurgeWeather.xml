@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SurgeWeather.xml                 UtinniPatches - MIASMA_MECHANICS_1 M2 build pass
+
+  miasma_kit_spec.md M2: "forced RUT_SurgeWeather during ramp-in (seaward
+  exhale: wind sound, thick air)". Forced by RM_GameCondition_GradientSurge's
+  own ForcedWeather() override for the whole of the surge's ramp-in Duration
+  (see that class's header) - never a scheduled/standing weather like
+  RUT_MiasmaWeather, only live while a surge is actively shoving.
+
+  rainRate/snowRate/sandRate all 0, same as RUT_MiasmaWeather.xml - ban #5
+  ("no rain") binds every weather this biome can ever roll, not just the
+  standing one.
+
+  accuracyMultiplier/moveSpeedMultiplier: INVENTED-BUILD (this pass's own,
+  not the kit spec's, which gives no figures for this weather specifically -
+  it only names RUT_MiasmaWeather's). Slightly worse than the standing haze
+  (0.80 vs 0.85 accuracy, 0.9 vs 1.0 move) - "the sea shoves miles up the
+  channels" reads as harder going and harder sighting than the ordinary haze,
+  not a new mechanic, just a worse version of the same one.
+
+  windSpeedFactor/windSpeedOffset: the spec's own "wind sound" - a real,
+  audible gust during the shove (RUT_MiasmaWeather sets neither, so this is
+  the surge's own distinguishing note).
+
+  Overlay: reuses vanilla's own WeatherOverlay_NoxiousHaze class again
+  (RimWorld/WeatherOverlay_NoxiousHaze.cs, confirmed real, same class
+  RUT_MiasmaWeather.xml already reuses this item) rather than commissioning
+  new "seaward exhale" art this pass - a documented, zero-new-art
+  substitution matching that file's own precedent, not a silently different
+  one.
+
+  Sky colours: a darker, greyer cast than RUT_MiasmaWeather's green-gold -
+  INVENTED-BUILD, "the sea's own weather" reading as colder/greyer than the
+  delta's ordinary breath. All four sets carry nonzero saturation per
+  WeatherDef.ConfigErrors.
+
+  ambientSounds intentionally empty, same reasoning/gap as RUT_MiasmaWeather.xml
+  (a real SoundDef for "wind sound" is a sound-design content call this pass
+  doesn't invent a name for).
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RUT_SurgeWeather</defName>
+    <label>the breath-tide</label>
+    <description>The sea shoves miles up the channels. Wind carries the smell of open brine ahead of the water itself, and the light goes flat and grey while the tide climbs.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <accuracyMultiplier>0.80</accuracyMultiplier>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <windSpeedFactor>1.3</windSpeedFactor>
+    <windSpeedOffset>0.4</windSpeedOffset>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <overlayClasses>
+      <li>WeatherOverlay_NoxiousHaze</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.55,0.56,0.54)</sky>
+      <shadow>(0.45,0.46,0.44)</shadow>
+      <overlay>(0.4,0.42,0.4)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.5,0.48,0.42)</sky>
+      <shadow>(0.4,0.4,0.36)</shadow>
+      <overlay>(0.34,0.34,0.3)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsDusk>
+    <skyColorsNightMid>
+      <sky>(0.16,0.18,0.2)</sky>
+      <shadow>(0.22,0.24,0.26)</shadow>
+      <overlay>(0.14,0.16,0.18)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsNightMid>
+    <skyColorsNightEdge>
+      <sky>(0.22,0.24,0.26)</sky>
+      <shadow>(0.26,0.28,0.3)</shadow>
+      <overlay>(0.18,0.2,0.22)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsNightEdge>
+  </WeatherDef>
+
+</Defs>

@@ -780,6 +780,249 @@ anything.
 With M1/M4/M5/M6 landed, only `M2` (surge) and `M3` (stranding pools,
 blocked on M2) remain of this item's 6 mechanics. Item stays in `doing`.
 
+## M2 build pass — 2026-09-14
+
+Kit spec's own **L**-effort item, "the breath-tide surge" — strictly after
+M1 (read in full first), separate from M3 (stranding pools, a later task
+that needs M2's own recede signal). No bridge/game/quicktest access this
+pass, same gap every prior pass in this item has flagged.
+
+**M1's real API, confirmed before building on it.** `RM_MapComponent_
+GradientAxis` already had a public `ShiftAxis(float delta, int
+durationTicks)` from the M1 spike — its own header already named this as
+"M2's entry point" but explicitly did NOT walk it per-tick or repaint
+anything (that was this pass's job). Kept the original 2-arg signature
+untouched (nothing outside this pass called it yet, but widening the diff
+for no reason was avoided) and added a 3-arg overload
+(`ShiftAxis(delta, durationTicks, isRecede)`) for the recede's own
+bookkeeping.
+
+**The ❓ this item's own assignment called out, resolved against the live
+1.6 decompile (`Source/Verse/TerrainGrid.cs`, read directly this pass) —
+not guessed.** `TerrainGrid` stores three parallel per-cell arrays:
+`topGrid` (what renders/what a pawn walks on), `underGrid` (natural ground
+a player-placed LAYERABLE terrain displaced — only ever populated by
+`TerrainGrid.SetTerrain`'s own layerable branch when a floor/bridge is
+built over existing ground), and `foundationGrid` (constructed hull
+terrain, e.g. gravship floors). `TerrainGrid.SetTerrain(c, newTerr)` for a
+non-layerable `newTerr` — every terrain M1/M2 ever paint (brine/brackish/
+salt-crust are all natural ground, never floors) — unconditionally
+overwrites `topGrid` **and clears `underGrid` to null**. Calling it blind
+on a cell holding a player floor would therefore silently **destroy that
+floor**, replacing it with raw surge terrain, and simultaneously erase the
+record of what natural ground used to sit under it — exactly the bug class
+this item's assignment named. `TerrainGrid.RemoveTopLayer` confirms the
+read side of the fix: removing a floor promotes `underGrid` → `topGrid`.
+So the correct write is `TerrainGrid.SetUnderTerrain` (never touches
+`topGrid`) whenever `UnderTerrainAt(c) != null`; a bare foundation cell
+(`FoundationAt(c) != null`, `underGrid` empty — e.g. a gravship hull tile
+with nothing built on it) is skipped outright rather than guessed at.
+Shipped as `RM_GradientAxisRepaint.SetTerrainFloorSafe`, a small standalone
+helper (deliberately NOT an extract-and-share refactor of M1's own
+`RM_GenStep_GradientAxis` — this item's assignment: "Do NOT touch M1" —
+so the ~20-line water-band/shallow-water pick logic is a fresh, small
+duplicate there, not shared).
+
+**A second, related defect caught in self-review, not by the assignment's
+own prompt.** The repaint's band DECISION (is this cell water? which
+band?) was first written against `TerrainGrid.TerrainAt(c)` — the
+rendered TOP terrain — mirroring M1's own GenStep exactly. But for a cell
+with a player-built bridge over water, `TerrainAt` returns the bridge, not
+the water: `current.IsWater` reads false, the cell falls into neither the
+water-band nor the land-repaint branch, and nothing happens — meaning a
+bridged water cell's hidden `underGrid` never gets updated as the surge
+passes through, so removing the bridge later would reveal **pre-surge**
+terrain instead of the correct post-surge band, a real gap against this
+item's own "confirm reflow-on-floor-removal reads the new band" success
+condition. Fixed by making the band DECISION against `TerrainGrid.
+BaseTerrainAt(c)` (returns `underGrid` when a floor/bridge is present,
+else the same value `TerrainAt` would) instead of `TerrainAt` — the WRITE
+still goes through `SetTerrainFloorSafe`, which independently re-checks
+`UnderTerrainAt`/`FoundationAt`. For the common no-floor case this is
+byte-identical to the original logic (`BaseTerrainAt` == `TerrainAt` when
+`underGrid` is empty). A third, smaller thing also caught this pass:
+`SetTerrainFloorSafe` now skips the `SetUnderTerrain` write when the
+target terrain is already what's stored there, since a floored cell
+sitting inside the same salinity band gets re-evaluated every ~250 ticks
+for the whole multi-hour length of a shift — a same-value write every pass
+is not a one-off cost.
+
+**The shift walk.** `RM_MapComponent_GradientAxis` gained a
+`MapComponentTick()` (throttled to `GenTicks.TickRareInterval`, 250 ticks,
+jittered per-map at construction), doing one of two things each throttled
+step: if a shift is in progress, `TickShift()` advances it by a
+PROPORTIONAL slice of whatever delta/ticks remain
+(`deltaThisStep = shiftDeltaRemaining * step/shiftTicksRemaining`), so the
+steps telescope to exactly the original total with no rounding drift and
+no separate start-of-shift snapshot of the whole grid is needed — the two
+already-scribed "remaining" counters are sufficient. `ApplyDeltaToAllCells`
+does the actual per-cell work: bump `salinity[]` (clamped 0..1, ALWAYS,
+floor or no floor — salinity itself is a background field M4's exposure
+reads, independent of terrain painting), repaint via `RM_GradientAxisRepaint`
+when M1's `RM_GradientAxisExtension` is present, and a sparse per-cell roll
+(1% chance within a ±0.03 salinity band of the salt line) throws a pale
+`FleckMaker.ThrowDustPuffThick` — the spec's own "salt line drawn as a
+subtle ground fleck line while the condition runs", read generously as
+"while the terrain is actually moving" so it also covers the recede
+(which continues after the GameCondition itself has ended and stopped
+drawing anything).
+
+**"Direction" is not a stored `Rot4`.** M1's GenStep already baked the
+spatial gradient direction into the per-cell salinity field at map-gen
+(brine toward the coast/lake). A uniform scalar delta applied to every
+cell shoves that existing gradient's isolines by an amount proportional to
+the delta — positive = the salt line crawls toward fresh (the shove);
+negative = it crawls back (the recede) — so M2 needs no separate direction
+field or geometry of its own.
+
+**"Storm weather active", resolved concretely, not invented.** The kit
+spec's own M2 text says MTB ×0.25 "while storm weather active" without
+naming a mechanism. M4's `RUT_MiasmaWeatherLock` forces exactly ONE
+permanent `WeatherDef` via `GameCondition.ForcedWeather()`
+(M4 build pass: "ban #5 is now mechanically true") — meaning the vanilla
+`WeatherManager`'s own current-weather state can **never** distinguish
+"storming" from "calm" on a Miasma map; there is no second, reachable
+weather left to check. The nearest EXISTING, non-invented engine signal
+that still varies under one locked weather is real map wind gust strength
+(`Verse/WindManager.cs`'s own public `WindSpeed`, range `[0.04, 2.0]`,
+Perlin-driven independent of the current `WeatherDef`, confirmed against
+the live decompile) — thresholded (INVENTED: 1.2, upper ~35% of that real
+range) rather than inventing a new "storm" flag/mechanism.
+
+**The MTB clock itself, and why `RUT_Surge`'s category is `Misc` not
+`ThreatSmall`.** `IncidentDef` (confirmed against the live decompile) has
+**no** period/schedule field of its own at all — periodic cadence is
+entirely a `StorytellerComp`-side concept, shared category-wide, not
+settable per-incident. So "MTB 5 days ×0.25 during storm" cannot be
+expressed as an `IncidentDef` field regardless, satisfying ban #4's linter
+check trivially (grepped `RUT_Surge.xml` for `mtbDays`/`period`: no
+matches outside prose comments). The actual clock lives in code —
+`RM_MapComponent_GradientAxis.TickSurgeRoll`, same throttled tick as the
+shift walk, gated on `RM_GradientSurgeExtension` being present on the
+biome (same "extension absent = mechanism does nothing" fail-safe pattern
+M1's own gate uses) — and fires by building `IncidentParms` via
+`StorytellerUtility.DefaultParmsNow` and calling `incidentDef.Worker.
+CanFireNow(parms)` then `.TryExecute(parms)` directly, the same manual-fire
+pattern this repo's own `src/RimUtinni/EmpirePursuit/Source/
+RuthlessPursuingMechanoids.cs:741` already uses. `category=Misc` (not
+`ThreatSmall`) is deliberate: this repo already has an established
+pattern for "an incident that must never be rolled by the Storyteller's
+own periodic category queue, only fired manually" — `RUT_ContagionProbe.xml`
+and `RUT_FeverWood_MirrorBreak.xml` both use `Misc` for exactly this
+reason, cited directly in `RUT_Surge.xml`'s own header. The spec's
+"ThreatSmall-adjacent" phrasing is read as describing this incident's
+TONE, not literally wiring it into vanilla's `ThreatSmall` comp (which
+would reintroduce an indirect schedule this ban rules out). `CanFireNow`
+still runs (not bypassed by the manual call) so `allowedBiomes` and
+`IncidentWorker_MakeGameCondition.CanFireNowSub`'s "already active"/
+"can coexist" checks are real gates on the manual path too, verified
+against the live decompile, not assumed.
+
+**No new `IncidentWorker` C# class needed.** `RUT_Surge`'s `workerClass`
+is vanilla's own `RimWorld.IncidentWorker_MakeGameCondition`
+(confirmed real) — it already does exactly what's needed: build a
+`GameCondition` with a random `Duration` from `durationDays`, register it,
+send a letter. `RUT_Surge.durationDays` (`0.1667~0.3333`, i.e. 4-8 in-game
+hours, the spec's own INVENTED ramp-in figure converted to the days unit
+that field actually uses) IS the ramp-in — `RM_GameCondition_
+GradientSurge.Init()` reads it back via its own inherited `Duration`
+property rather than re-picking or duplicating it.
+
+**The condition itself is a thin driver, by design.** `RM_GameCondition_
+GradientSurge : GameCondition` does three things only: at `Init()`, rolls
+a front-cell magnitude (`RM_GradientSurgeExtension.frontCellsRange`,
+INVENTED 15-35 per the spec), converts it to a salinity delta
+(`frontCells / (2 * halfExtent)`, `halfExtent` computed the same way M1's
+own GenStep does), and calls `axis.ShiftAxis(delta, Duration, isRecede:
+false)`; `ForcedWeather()` returns `def.weatherDef` (a real, existing
+`GameConditionDef` field, `Verse/GameConditionDef.cs` — reused directly
+rather than adding a bespoke extension field, since unlike F1's
+`WeatherPulseExtension` this condition never switches between two
+weathers); at `End()`, sizes the recede as
+`-totalDelta * (1 - residualFraction)` (INVENTED `residualFraction=0.15`
+— the spec's own "never quite to the old line... so no two maps age
+alike", a value the spec left unpicked and this pass picked and recorded)
+over `recedeDaysRange.RandomInRange` days (INVENTED 2-4, spec's own
+figure) and calls `axis.ShiftAxis(recedeDelta, recedeTicks, isRecede:
+true)`. The actual walk for BOTH calls runs on the MapComponent (see
+above), independent of this condition's own lifetime — load-bearing,
+since the recede must keep moving for days after this short-lived
+condition object is destroyed by `GameConditionManager` the moment its
+`Duration` (the ramp-in) elapses; a `GameCondition`, unlike a
+`MapComponent`, does not tick once it has Ended.
+
+**The M3 handoff signal (this item's own assignment: "expose whatever
+signal/state M3 will need to read later").** `RM_MapComponent_
+GradientAxis` gained a scribed `private int lastRecedeCompletedTick = -1`
+(public getter `LastRecedeCompletedTick`), set to `Find.TickManager.
+TicksGame` the moment a shift flagged `isRecede: true` finishes ticking
+down inside `TickShift()`. A plain scribed tick number rather than a C#
+event: M3 is a separate, later build, and an event/callback wouldn't
+survive a save/load the way M3 needs to detect "did a recede finish while
+I wasn't watching" — M3 reads this value and compares it against its own
+last-seen tick, the same shape `RM_MapComponent_FlashCycle`'s window state
+already models for a similar "state that must survive past the object
+that started it" problem.
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0
+errors, with this pass's own 3 new `<Compile>` entries. Another window
+(`FORGE_MECHANICS_1` F4) was concurrently committing its own csproj change
+to the same shared file while this pass ran; its commit (`378f67436`)
+swept up this pass's 3 already-edited-but-uncommitted lines along with its
+own 2 — checked directly (`git show 378f67436 -- ...csproj`, `git diff` on
+the file now shows nothing pending): the merged result is correct and
+complete, all 5 lines present, nothing lost or duplicated, so nothing
+further was needed for that file. **The rebuilt `Assemblies/RimMandrake.
+EnvironmentalHazards.dll` is deliberately NOT part of this pass's
+commit**, same reasoning every prior pass in this item has given — a
+shared, actively-built assembly, regenerable any time from committed
+source; a fresh local rebuild after the floor-exclusion fix above still
+produces 0/0.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` against
+the live 99-active-mod set (`--defs` Data + Mods + Workshop root,
+`--mods-config` the real `ModsConfig.xml`): all 4 new/changed XML files,
+**0 errors, 0 warnings**. The "no def in the load set uses that class"
+info line for `RM_GradientSurgeExtension` is expected (the tool cannot see
+a just-built DLL); the clean build above is what actually confirms the
+class resolves.
+
+**Not done this pass, explicitly**: `M3` (stranding pools) — a separate,
+later task per this item's own assignment, needs M2's recede signal
+(`LastRecedeCompletedTick`, now available). No dedicated Mod Settings
+toggle for the surge mechanism — same precedent M4's own pass already set
+(`MOD_OPTIONS_RETROFIT_1`'s territory, not scope-crept into here); it
+always runs, ungated, once a Miasma map's biome carries
+`RM_GradientSurgeExtension`. `RM_MapComponent_GradientAxis`'s per-cell
+salinity grid still has no Scribe save of its own absolute values (same
+gap the M1 spike/M4 pass already flagged) — M2 does not need it, since the
+per-tick walk only ever ADDS a delta to whatever `salinity[]` already
+holds and the shift's own progress (`shiftDeltaRemaining`/
+`shiftTicksRemaining`/`shiftIsRecede`) IS scribed, so a save mid-shift
+resumes the SHIFT correctly even though the grid's own absolute per-cell
+values don't survive a save/load (unchanged risk, not a new one this pass
+introduced). No sound design (ambient wind sound) — same gap M4's own
+`RUT_MiasmaWeather.xml` already flagged, no `SoundDef` named by the spec.
+`ModsConfig.xml` untouched. No bridge/game/quicktest — a live map actually
+showing the salt line crawl, a floor/bridge surviving a surge intact, and
+the recede leaving residual drift are all still owed, same as every prior
+pass in this item.
+
+With M1/M2/M4/M5/M6 landed, only `M3` (stranding pools) remains of this
+item's 6 mechanics. Item stays in `doing`.
+
+## files (M2 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisRepaint.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GradientSurgeExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_GradientSurge.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GradientAxis.cs` (modified: `MapComponentTick`/`TickShift`/`ApplyDeltaToAllCells`/`TickSurgeRoll`, `ShiftAxis` 3-arg overload, `LastRecedeCompletedTick`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (modified: 3 new `<Compile>` entries — committed by another concurrent window's commit, `378f67436`, see Build note above)
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_SurgeWeather.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GradientSurge.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_Surge.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` (modified: `RM_GradientSurgeExtension` added to `modExtensions`)
+
 ## files (M6 build pass)
 
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_BrineShallowWater.cs` (new)

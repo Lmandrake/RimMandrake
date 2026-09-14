@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GradientSurge.xml                UtinniPatches - MIASMA_MECHANICS_1 M2 build pass
+
+  miasma_kit_spec.md M2: "RM_GameCondition_GradientSurge : GameCondition
+  (generic - parameterized on direction, magnitude, ramp)". Fired by
+  RUT_Surge.xml's IncidentDef (Defs/IncidentDefs/); see that file and
+  RM_GameCondition_GradientSurge.cs's own header for the full mechanism -
+  this def is deliberately thin, since the class reads its tuning from
+  RM_GradientSurgeExtension on the BiomeDef (RUT_Miasma.xml), not from a
+  modExtension here.
+
+  weatherDef: a real, existing GameConditionDef field (Verse/
+  GameConditionDef.cs) read directly by RM_GameCondition_GradientSurge.
+  ForcedWeather() - no bespoke extension needed for a single forced weather
+  (contrast RUT_ForgePulse's WeatherPulseExtension, which needs two).
+
+  canBePermanent left at its default (false, unset): unlike
+  RUT_MiasmaWeatherLock this condition is never attached via
+  biomeMapConditions - it only ever exists as a temporary, incident-fired
+  condition whose Duration IS the surge's ramp-in (RUT_Surge.xml's own
+  durationDays).
+
+  MayRequire is load-bearing: conditionClass lives in
+  mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GradientSurge</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_GradientSurge</conditionClass>
+    <label>the breath-tide surge</label>
+    <description>The sea is shoving up the channels. Ground that was dry an hour ago may not be by the time you cross it back.</description>
+    <startMessage>Far off, you hear the tide start to climb the Salt Gate's channels. The Miasma's shoreline is about to move.</startMessage>
+    <endMessage>The surge weather has passed - but the water it pushed inland is only just beginning to pull back, over the days ahead.</endMessage>
+    <letterText>The breath-tide is surging. Over the next several hours the salt line will crawl inland, redrawing ground you may already have built on - and it will only partly recede once the surge itself has passed.</letterText>
+    <weatherDef>RUT_SurgeWeather</weatherDef>
+    <allowUnderground>false</allowUnderground>
+  </GameConditionDef>
+
+</Defs>

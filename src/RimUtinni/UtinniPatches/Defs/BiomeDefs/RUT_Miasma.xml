@@ -107,6 +107,22 @@
         </landRepaintSource>
         <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
       </li>
+      <!-- M2: the breath-tide surge's own MTB/magnitude tuning, shared by
+           RM_MapComponent_GradientAxis.TickSurgeRoll (fires RUT_Surge) and
+           RM_GameCondition_GradientSurge (sizes the shove/recede). Every
+           figure here is the kit spec's own INVENTED number except
+           stormWindSpeedThreshold/residualFraction, which the spec left
+           unspecified and this build pass picked and recorded (see
+           RM_GradientSurgeExtension.cs's own header for why). -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
+        <incidentDef>RUT_Surge</incidentDef>
+        <baseMtbDays>5</baseMtbDays>
+        <stormMtbMultiplier>0.25</stormMtbMultiplier>
+        <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
+        <frontCellsRange>15~35</frontCellsRange>
+        <recedeDaysRange>2~4</recedeDaysRange>
+        <residualFraction>0.15</residualFraction>
+      </li>
     </modExtensions>
     <diseases>
       <li MayRequire="sarg.alphabiomes">
