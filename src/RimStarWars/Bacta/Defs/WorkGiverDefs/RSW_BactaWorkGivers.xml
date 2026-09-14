@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Carrying a downed pawn into the tank.
+
+  Building_Enterable.SelectPawn only orders JobDefOf.EnterBuilding for a pawn who can walk.
+  A downed pawn — the whole point of this building — has to be carried, and vanilla does
+  that through WorkGiver_CarryToBuilding + JobDefOf.CarryToBuilding, with one WorkGiverDef
+  per building (CarryToGrowthVat, CarryToGeneExtractor, CarryToSubcoreScanner). This is ours.
+
+  Shape and priorityInType copied from Biotech's CarryToGrowthVat WorkGiverDef.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RSW_CarryToBactaTank</defName>
+    <label>carry to bacta tank</label>
+    <giverClass>RimMandrake.StarWars.Bacta.WorkGiver_CarryToBactaTank</giverClass>
+    <workType>Hauling</workType>
+    <verb>immerse</verb>
+    <gerund>immersing</gerund>
+    <priorityInType>95</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>

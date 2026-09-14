@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One project, gating the tank.
+
+  NAME: "bacta immersion", not "bacta farming". Card 3 of BACTA_TANK_CORE_1 rules bacta
+  trade-scarce with no crafting in v1 — there is nothing to farm, and a research project
+  called farming would promise a production chain this mod deliberately does not have.
+
+  PREREQ: vanilla VitalsMonitor, which is the "vitals-monitor-tier prereq" the item file
+  asks for. Read off Core/Defs/ResearchProjectDefs/ResearchProjects_4_MultiAnalyzer.xml —
+  VitalsMonitor sits downstream of MicroelectronicsBasics already, so gating on it also
+  satisfies the microelectronics tier.
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RSW_BactaImmersion</defName>
+    <label>bacta immersion</label>
+    <description>Build a pressure cylinder that can hold a body suspended in bacta without drowning it, and keep the fluid circulating, warm and oxygenated while it works. Making bacta is somebody else's trade secret; this is only how to use it.</description>
+    <baseCost>1600</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>VitalsMonitor</li>
+    </prerequisites>
+    <researchViewX>7.00</researchViewX>
+    <researchViewY>1.90</researchViewY>
+    <tab>Main</tab>
+  </ResearchProjectDef>
+
+</Defs>

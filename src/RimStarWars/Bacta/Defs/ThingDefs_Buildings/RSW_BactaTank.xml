@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_BactaTank — the immersion tank.
+
+  Chassis: Building_Enterable (vanilla abstract, RimWorld/Building_Enterable.cs), the same
+  base the growth vat, gene extractor and subcore scanner use. It is an ISuspendableThingHolder
+  whose innerContainer holds the occupant, and we override IsContentsSuspended => false so the
+  pawn keeps ticking and can actually heal. The held pawn is rendered by vanilla via
+  IThingHolderWithDrawnPawn + DynamicDrawPhaseAt, which is the 1.6 replacement for the manual
+  RenderPawnAt/wiggler pattern the BioReactor (Continued) mod (MIT,
+  github.com/emipa606/BioReactor) had to hand-roll — same visible-suspended-pawn result, no
+  Harmony, no reflection, nothing to break next patch.
+
+  Zero Harmony patches in this mod.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_BactaTank</defName>
+    <label>bacta tank</label>
+    <description>An upright pressure cylinder of transparent duraplast, filled with bacta and fitted with a breathing mask and a suspension harness. A wounded body floats in it while the fluid does the work.\n\nWounds and burns close many times faster than in any bed. Left in long enough, old scars and permanent injuries fade out, and damaged organs mend. It will not grow back what is gone — a missing limb or organ stays missing — and it does nothing at all for the brain or the mind.\n\nIt needs power, and it needs bacta, and it drinks the bacta while it runs.</description>
+    <thingClass>RimMandrake.StarWars.Bacta.Building_BactaTank</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Bacta/RSW_BactaTank</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 0.9, 1.6)</volume>
+      </shadowData>
+      <damageData>
+        <rect>(0.1,0.1,0.8,1.8)</rect>
+      </damageData>
+    </graphicData>
+    <castEdgeShadows>false</castEdgeShadows>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>50</pathCost>
+    <blockWind>true</blockWind>
+    <canOverlapZones>false</canOverlapZones>
+    <rotatable>true</rotatable>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <size>(1,2)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(1,0,0)</interactionCellOffset>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <WorkToBuild>7000</WorkToBuild>
+      <Mass>70</Mass>
+      <Flammability>0.4</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <building>
+      <isPlayerEjectable>true</isPlayerEjectable>
+      <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
+      <buildingSizeCategory>Medium</buildingSizeCategory>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+        <idlePowerDraw>20</idlePowerDraw>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <!--
+        Fluid store. MEASURED composition, not invented: CompRefuelable is a plain
+        ThingComp (RimWorld/CompRefuelable.cs) with a public ConsumeFuel(float), and
+        WorkGiver_Refuel finds its parent through ThingRequestGroup.Refuelable, which is
+        keyed on the comp being present — so a Building_Enterable carries it fine and
+        haulers will top the tank up with RSW_Bacta on their own.
+
+        consumeFuelOnlyWhenUsed is true so vanilla never drains it on its own: draining is
+        CompBactaImmersion's job, once per 250 ticks, only while a pawn is actually
+        immersed. (It also keeps CompProperties_Refuelable.ConfigErrors quiet, which
+        demands tickerType Normal for per-tick consumption.)
+      -->
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <fuelCapacity>30</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>true</showFuelGizmo>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>30</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+        <fuelLabel>Bacta</fuelLabel>
+        <fuelGizmoLabel>Bacta</fuelGizmoLabel>
+        <outOfFuelMessage>Out of bacta</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>RSW_Bacta</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+      <!--
+        The facility hook BACTA_SIDE_ITEMS_1 needs: the 2-1B-style medical droid will be
+        added to this list as a linkable facility. VitalsMonitor is vanilla and already
+        does the right thing (its tend-quality and immunity offsets are read off the pawn's
+        stats, which is what CompBactaImmersion's tend pass uses).
+      -->
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>VitalsMonitor</li>
+        </linkableFacilities>
+      </li>
+      <!-- The glass shell, drawn OVER the suspended pawn. -->
+      <li Class="RimMandrake.StarWars.Bacta.CompProperties_BactaShell">
+        <graphicData>
+          <texPath>Things/Building/Bacta/RSW_BactaTankShell</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(1,2)</drawSize>
+        </graphicData>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+      </li>
+      <!-- The mechanism. -->
+      <li Class="RimMandrake.StarWars.Bacta.CompProperties_BactaImmersion">
+        <fluidBarSize>(0.55, 1.45)</fluidBarSize>
+        <fluidBarOffset>(0, 0)</fluidBarOffset>
+      </li>
+    </comps>
+    <designationCategory>Misc</designationCategory>
+    <designationHotKey>Misc6</designationHotKey>
+    <researchPrerequisites>
+      <li>RSW_BactaImmersion</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <techLevel>Spacer</techLevel>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+</Defs>

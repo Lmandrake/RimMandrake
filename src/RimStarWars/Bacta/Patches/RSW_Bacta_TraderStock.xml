@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Who sells bacta.
+
+  The ExoticMisc tradeTag on RSW_Bacta already puts it in the pool that Orbital_Exotic,
+  Caravan_Outlander_Exotic and Base_Outlander_Standard roll through StockGenerator_Tag —
+  but that is a roll: the tag generator picks a handful of def kinds out of a large pool
+  (thingDefCountRange 3~5 on Orbital_Exotic), so relying on the tag alone means a colony
+  can go a whole year without ever being offered any.
+
+  Card 3 rules bacta TRADE-SCARCE, not trade-absent. So these three trader kinds also get
+  an explicit single-def row with a small countRange: whenever one of them shows up there
+  is some bacta, and never much. Core has no "medical" tradeTag to use instead — medicine
+  in vanilla is stocked by StockGenerator_SingleDef and StockGenerator_Category, verified
+  against Core/Defs/TraderKindDefs — so an explicit row IS the medical-trader mechanism.
+
+  PatchOperationAdd into an existing <stockGenerators> list: safe on no-match only in the
+  sense that it logs. If a later mod renames these trader kinds this file will complain
+  loudly in the log, which is the correct outcome — silence would mean bacta unbuyable.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_Exotic"]/stockGenerators</xpath>
+    <value>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_Bacta</thingDef>
+        <countRange>4~14</countRange>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TraderKindDef[defName="Caravan_Outlander_Exotic"]/stockGenerators</xpath>
+    <value>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_Bacta</thingDef>
+        <countRange>2~8</countRange>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TraderKindDef[defName="Base_Outlander_Standard"]/stockGenerators</xpath>
+    <value>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_Bacta</thingDef>
+        <countRange>0~6</countRange>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
