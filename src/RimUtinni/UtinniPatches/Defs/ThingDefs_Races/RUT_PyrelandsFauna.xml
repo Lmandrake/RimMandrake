@@ -167,15 +167,22 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_FurnaceBeast</defName>
     <label>furnace-beast</label>
-    <description>A migratory megafauna whose banded mineral hide stores heat like a stove: weeks basking in the deep dayside, then walking out across the grass radiating warmth from glowing seams between its plates. Travelers follow the herds for warmth in the cold and give them a wide, respectful berth in the dry -- their bed-down grounds have been known to smolder alight on their own. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight.</description>
+    <description>A migratory megafauna whose banded mineral hide stores heat like a stove — a slow thermal capacitor on legs. It charges in the Deep Desert, basking for weeks, then walks into the Pyrelands on purpose when the grass burns: it helps the fire along and drinks the heat of it, glowing brighter at the seams between its plates. Fully charged, a herd marches all the way out to the near terminator and eats everything in sight — it is one of the only things that will strip a thornvine patch — bleeding its banked warmth into the cold air for weeks before turning back to charge again. Fire cannot touch it. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed>
       <MarketValue>900</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
-      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <!-- Owner 2026-09-14: "totally resistant to fire and heat based
+           attacks with a very high maximum temperature well beyond what
+           they will experience normally." 1000C clears any burning grass
+           cell; Flammability 0 stops ignition; ArmorRating_Heat 2.0 is the
+           XML ceiling — TRUE immunity to Flame/heat damage is the C# half,
+           FURNACEBEAST_THERMAL_CYCLE_1. -->
+      <ComfyTemperatureMax>1000</ComfyTemperatureMax>
+      <Flammability>0</Flammability>
       <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
       <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
-      <ArmorRating_Heat>0.6</ArmorRating_Heat>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
       <Wildness>0.97</Wildness>
     </statBases>
     <tools>

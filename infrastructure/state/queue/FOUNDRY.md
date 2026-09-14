@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T16:33:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T16:49:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1557,3 +1557,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_FIRE_CADENCE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FIRE_CADENCE_1.md
+
+## FURNACEBEAST_THERMAL_CYCLE_1 Furnace-beast thermal capacitor cycle: migration AI, true heat immunity, thornvine diet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FURNACEBEAST_THERMAL_CYCLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FURNACEBEAST_THERMAL_CYCLE_1.md
+
+## RAZORJACK_IDENTITY_RESTYLE_1 Razorjack restyle: grass-camo art, our-modspace description, new SW name
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RAZORJACK_IDENTITY_RESTYLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RAZORJACK_IDENTITY_RESTYLE_1.md
+
+## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BOOMALOPE_CUT_EVERYWHERE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md

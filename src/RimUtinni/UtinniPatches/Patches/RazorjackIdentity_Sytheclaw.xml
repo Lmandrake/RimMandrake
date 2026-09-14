@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    RAZORJACK_IDENTITY_RESTYLE_1 — owner 2026-09-14: "Our razorjack looks
+    strange to me. like a lava beast. It should not. It should look
+    semi-camoulflaged with the tall grasses, like a predator might. Underside
+    can be red, but above should be the same yellow-gold as the grasses.
+    Needs regenerated description into our own modspace and a new Star
+    Wars-esque name generated." Name picked by owner card the same day:
+    SYTHECLAW.
+
+    defName stays AA_Razorjack until NAMING_SCHEME_EXECUTION_1 — this patch
+    moves only the player-facing identity (labels + description) into our
+    modspace. The art restyle (yellow-gold grass camo above, red underside)
+    rides the same item through artpipe, no reference=.
+  -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Razorjack"]/label</xpath>
+          <value><label>sytheclaw</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Razorjack"]/description</xpath>
+          <value><description>A low-slung pack predator built for the tall gold grass of the burning plains. Above, its plates are the same dry yellow-gold as the standing quickgrass, so a hunting sytheclaw is a ripple in the field and nothing more; below, its underside is a raw furnace red that the prey only sees late. It trails the fire fronts the way other things trail water, taking whatever the smoke pushes out of cover, and its serrated forelimb blades leave a wound that ash gets into and keeps.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Razorjack"]/label</xpath>
+          <value><label>sytheclaw</label></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
