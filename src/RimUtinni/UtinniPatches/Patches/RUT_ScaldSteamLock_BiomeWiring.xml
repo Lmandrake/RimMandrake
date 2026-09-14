@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldSteamLock_BiomeWiring.xml     UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S1. Wires the permanent steam lock
+  (Defs/GameConditionDefs/RUT_ScaldSteamLock.xml) onto RUT_TheScald as a
+  PATCH rather than a direct edit to RUT_TheScald.xml's own
+  biomeMapConditions field — RUT_ScaldSteamLock only exists when
+  mandrake.rm.environmentalhazards is active (MayRequire-gated def), so a
+  bare <li> baked directly into the BiomeDef would be a dangling
+  cross-reference the moment that mod is absent. MayRequire on the Operation
+  itself makes this patch a true no-op (not merely a silently-false match)
+  when the mod is missing.
+
+  RUT_TheScald.xml carries no <biomeMapConditions> node at all today (only
+  wildAnimals/baseWeatherCommonalities/terrainsByFertility), so this adds
+  the whole element rather than appending an <li> to an existing one.
+  -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/biomeMapConditions</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
+      <value>
+        <biomeMapConditions>
+          <li>RUT_ScaldSteamLock</li>
+        </biomeMapConditions>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

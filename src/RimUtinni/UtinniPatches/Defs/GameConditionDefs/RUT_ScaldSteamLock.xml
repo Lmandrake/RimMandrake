@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldSteamLock.xml                 UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S1 "the boil layer — standing steam" (spec
+  §S1: "the ruled RM_GameCondition_EnvironmentalWeather... as a permanent
+  biomeMapConditions entry... forced RUT_ScaldSteam... No damage fields — the
+  steam is clean; the WATER burns.").
+
+  conditionClass = RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather
+  (ALPHA_MECHANICS_KIT_1, ruled and already shipped/built — this def only
+  configures it via EnvironmentalWeatherExtension). Wired onto RUT_TheScald
+  via a MayRequire-gated PatchOperationAdd
+  (Patches/RUT_ScaldSteamLock_BiomeWiring.xml), not a direct XML edit to the
+  BiomeDef — a plain <li>RUT_ScaldSteamLock</li> baked into
+  RUT_TheScald.xml's biomeMapConditions would be a dangling cross-reference
+  if mandrake.rm.environmentalhazards is ever absent from the active mod
+  list (same caution FEVER_WOOD_MECHANICS_1's continuation pass already
+  applied to this exact file family, for the same reason).
+
+  🔴 "Configured clear spells" (spec's own S1 text, citing §9's "a still day
+  that shows the wrecks"): GameCondition_EnvironmentalWeather.ForcedWeather()
+  was read in full this pass (Source/GameCondition_EnvironmentalWeather.cs)
+  and returns `ext.forcedWeather` UNCONDITIONALLY — there is no randomized
+  or periodic lapse hook in the shipped, ALREADY-RULED class. Adding one
+  would mean changing shared behaviour used by every other kit that consumes
+  this same generic (miasma, forge, scarlands, sump all reference
+  EnvironmentalWeatherExtension in their own kit specs) for one biome's
+  flavor beat — out of this pass's scope, and not done blind. "Still day"
+  ships as flavor description only this pass; a literal periodic weather
+  lapse is an honest gap, not silently added to the shared class or silently
+  dropped from the record.
+
+  No damage/hediff/rot/plant-kill/density fields set (all left at their
+  EnvironmentalWeatherExtension defaults, i.e. no effect) — the sheet is
+  explicit the steam itself is clean; only the water burns.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScaldSteamLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the boil's breath</label>
+    <description>Standing steam over the Scald, endless and clean — it never rains here, and it never stops.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <forcedWeather>RUT_ScaldSteam</forcedWeather>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

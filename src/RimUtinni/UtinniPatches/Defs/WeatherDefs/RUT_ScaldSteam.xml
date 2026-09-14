@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldSteam.xml                     UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S1 "the boil layer — standing steam"
+  (design/Jawa/worldbuilding/biomes/kits/scald_kit_spec.md §S1, the_scald.md
+  §9 "cyan glow under white steam"). The Scald's default sky: the boil's own
+  breath, not weather-rain — zero precipitation, a standing haze that dulls
+  ranged accuracy the way any thick air would, and slows nothing (the sheet
+  never asks for a move penalty here; that's Rain's job elsewhere).
+
+  overlayClasses -> RUT_WeatherOverlay_ScaldSteam
+  (src/RimMandrake/EnvironmentalHazards/Source/RUT_WeatherOverlay_ScaldSteam.cs).
+  That class's own header explains why this is a Scald-scoped one-off rather
+  than the spec's named "RM_WeatherOverlay_GroundFog": that shared class does
+  not exist anywhere in the repo (checked), and vanilla's own overlay pattern
+  (WeatherOverlay_Fog et al) hardcodes one texture per subclass with no
+  XML-configurable texture field, so a literal shared class could not serve
+  two different biomes' art anyway. MayRequire-gated: the overlay class and
+  RM_GameCondition_EnvironmentalWeather (the lock, RUT_ScaldSteamLock.xml)
+  both live in mandrake.rm.environmentalhazards.
+
+  accuracyMultiplier 0.9: INVENTED, deliberately milder than Fog's 0.5 — this
+  is standing steam over calm water, not a blind. moveSpeedMultiplier 1.0
+  (unset/default): the sheet's only traversal penalty is the water's own
+  burn, never the air above it. rainRate/snowRate explicit 0: the steam
+  layer is presentation, not the R-B rain family (FORGE_MECHANICS_1's own
+  scope, not this kit's).
+
+  ambientSounds: Ambient_Wind_Fog reused as-is (real vanilla SoundDef, not
+  invented) rather than a bespoke "boil's breath" cue — the sheet's §9 sound
+  direction ("the boil's endless breath") is real content the audio/art
+  pipeline still owes; this is the nearest already-shipped loop, flagged
+  here rather than left silent or given a guessed defName.
+
+  Texture: RUT_WeatherOverlay_ScaldSteam's own hardcoded path
+  ("Weather/ScaldSteamOverlayWorld") does not exist under any Textures/
+  folder yet — OWED to the art pipeline. Loading with it absent logs an
+  error and shows no overlay panner rather than failing to load.
+  ============================================================================
+-->
+<Defs>
+
+  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScaldSteam</defName>
+    <label>the boil's breath</label>
+    <description>Standing white steam over the Scald's cyan boil — the lake's own exhale, thick enough to soften a shot but never enough to slow a step.</description>
+    <repeatable>true</repeatable>
+    <windSpeedFactor>0.3</windSpeedFactor>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>RimMandrake.EnvironmentalHazards.RUT_WeatherOverlay_ScaldSteam</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.86,0.90,0.90)</sky>
+      <shadow>(0.90,0.93,0.93)</shadow>
+      <overlay>(0.75,0.85,0.85)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.95,0.92,0.88)</sky>
+      <shadow>(0.90,0.90,0.90)</shadow>
+      <overlay>(0.70,0.78,0.78)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.40,0.48,0.50)</sky>
+      <shadow>(0.85,0.88,0.88)</shadow>
+      <overlay>(0.55,0.60,0.60)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.40,0.48,0.50)</sky>
+      <shadow>(0.80,0.83,0.83)</shadow>
+      <overlay>(0.55,0.60,0.60)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

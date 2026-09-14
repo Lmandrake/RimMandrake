@@ -194,6 +194,169 @@ to a later, separate FOUNDRY item — item stays in `doing`.
 - `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldMargin.xml` (new)
 - `design/Jawa/worldbuilding/biomes/kits/scald_kit_spec.md` (❓s resolved, corrections recorded)
 
+## S1/S4/S2 build pass — 2026-09-13
+
+Ran the spec's own build order steps 2-4 (S1 steam sky, S4 geyser/vent
+field, S2 steam-catch), per the spike pass's own "owed, not done" list.
+S3/S5/S6 untouched, as scoped.
+
+🔴 **Correction against my own task brief, checked directly against the
+spec**: the brief said S4 reuses `RM_CompActiveGasEmitter` ("the ruled
+kit's harmless-gas emitter"). Grepped `scald_kit_spec.md` for
+"CompActiveGasEmitter"/"GasEmitter"/"harmless gas" — zero hits. §S4's own
+text is vanilla-geyser reuse (`SteamGeyser`, `GenStep_ScatterGeysers`,
+`SteamGeysers_Increased`) plus one new ThingDef, nothing else; its own
+Effort line says "no new C# unless the mutator route fails" (it didn't —
+spike finding 3). Built to the spec's actual text, not the brief's
+paraphrase — no gas emitter shipped on the vent this pass.
+
+**S1 — steam sky.**
+- `RUT_WeatherOverlay_ScaldSteam.cs` (new,
+  `src/RimMandrake/EnvironmentalHazards/Source/`) — a Scald-scoped
+  `WeatherOverlayDualPanner` subclass, NOT the spec's named
+  `RM_WeatherOverlay_GroundFog`. Checked first: that class does not exist
+  anywhere in `src/` (zero hits), and `GREENTIDE_STANDALONE_MOD_1.md` never
+  mentions it either — the spec's "(verified, greentide)" tag was citing the
+  CRIB TARGET (`WeatherOverlay_Fog : WeatherOverlayDualPanner`, confirmed
+  real via decompile) as verified, not an RM_ class that has actually been
+  built. Also confirmed via the real decompile: `WeatherOverlay_Fog`'s
+  Material is hardcoded in its own constructor
+  (`MatLoader.LoadMat("Weather/FogOverlayWorld")`) — vanilla's overlay
+  fields carry no XML-configurable texture, so one shared class genuinely
+  could not serve two biomes' different art. Built a one-off in the same
+  shape vanilla itself uses per look, instead of presuming to build and name
+  the shared generic on greentide kit's behalf.
+- `RUT_ScaldSteam.xml` WeatherDef (new,
+  `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/`) — zero rain/snow,
+  accuracyMultiplier 0.9 (INVENTED, milder than Fog's 0.5), overlayClasses
+  -> the class above, ambientSounds reuses real vanilla `Ambient_Wind_Fog`
+  (no bespoke "boil's breath" SoundDef exists; flagged, not guessed).
+- `RUT_ScaldSteamLock.xml` GameConditionDef (new,
+  `.../Defs/GameConditionDefs/`) — `RM_GameCondition_EnvironmentalWeather`
+  + `EnvironmentalWeatherExtension` (forcedWeather only, no damage/hediff/
+  density fields — "the steam is clean" per spec).
+- `RUT_ScaldSteamLock_BiomeWiring.xml` (new,
+  `.../Patches/`) — wires the lock onto `RUT_TheScald.biomeMapConditions`
+  via `PatchOperationConditional`/`PatchOperationAdd` (add-if-missing),
+  MayRequire-gated, rather than a direct XML edit to `RUT_TheScald.xml` —
+  that field only exists when `mandrake.rm.environmentalhazards` is active,
+  and a bare `<li>` baked into the BiomeDef would be a dangling
+  cross-reference the moment it is not (same caution
+  FEVER_WOOD_MECHANICS_1's continuation pass already applied to this exact
+  file family).
+- 🔴 **"Configured clear spells" (§9's "a still day that shows the
+  wrecks") — an honest gap, not shipped.** Read `GameCondition_
+  EnvironmentalWeather.ForcedWeather()` in full: it returns
+  `ext.forcedWeather` UNCONDITIONALLY — no randomized/periodic lapse hook
+  exists in the shipped, ALREADY-RULED class. Adding one would change
+  shared behaviour every other kit consuming this same generic depends on
+  (miasma, forge, scarlands, sump all reference `EnvironmentalWeatherExtension`
+  in their own kit specs, and — confirmed live this pass — a concurrent
+  FOUNDRY session is actively extending this exact class for
+  `MIASMA_MECHANICS_1` right now). Not touched. "Still day" ships as flavor
+  text only; a literal periodic weather lapse is owed, not silently
+  dropped.
+
+**S4 — geyser/vent field.**
+- `RUT_ScaldVent.xml` ThingDef (new, `.../Defs/ThingDefs_Buildings/`) — a
+  near-exact clone of vanilla `SteamGeyser` (`ParentName="BuildingNaturalBase"`,
+  `thingClass Building_SteamGeyser`, read in full: generic, not
+  geyser-specific, so reuse needed zero new C#), own defName so S2's
+  condenser (and later S5's anchor/scatterer) can key on it without
+  touching vanilla SteamGeyser or any shared-biome def (ban 2).
+  `relatedBuildCommands` points at `RUT_SteamCatch` only — NOT vanilla
+  `GeothermalGenerator`, whose own `PlaceWorker_OnSteamGeyser` hardcodes
+  `ThingDefOf.SteamGeyser` (spike finding 2) and could never actually
+  place on this def.
+- Placement onto the actual Scald map (density via `TileMutatorDef.
+  geyserCountFactor` on `map.TileInfo.Mutators`, spike finding 3, or
+  hand-placement) is map/world-authoring via the bridge on the frozen
+  planet per the spec's own text, NOT worldgen — **not done this pass**, no
+  bridge access in this task. Same posture `RUT_ScaldMargin.xml` already
+  established for its own terrain.
+
+**S2 — steam-catch.**
+- `RM_PlaceWorker_OnRequiredVentComp.cs` (new,
+  `src/RimMandrake/EnvironmentalHazards/Source/`) — generic crib of the
+  confirmed-real `PlaceWorker_OnSteamGeyser`, reading its required ThingDef
+  off the checking building's own `CompProperties_ResourceCondenser` (via
+  `ThingDef.GetCompProperties<T>()`, confirmed real) instead of hardcoding
+  `RUT_ScaldVent` — keeps the shared RM_ mod campaign-agnostic (its own
+  About.xml's stated design), matching `RM_CompResourceCondenser`'s
+  existing XML-configurable-required-def pattern exactly.
+- `RUT_SteamCatch.xml` ThingDef (new, `.../Defs/ThingDefs_Buildings/`) —
+  `RM_CompResourceCondenser` wired with `requiredThingAtPosition` repointed
+  from its C# default (vanilla `SteamGeyser`) to `RUT_ScaldVent`, exactly
+  the "S4 repoints it per-building via XML the day that def ships" step the
+  spec's own S2 text called for. Costs/stats INVENTED (scaled down from
+  `GeothermalGenerator`'s 340 Steel/8 Component — this has no power
+  output).
+- 🔴 **`outputDef` intentionally LEFT UNSET.** Card 2 (output FORM) is
+  RULED — (c) BOTH, item water default behind a Mod Settings toggle — but
+  no concrete item-water ThingDef exists anywhere in this repo or in
+  `RM_liquid_types_mod.md`'s own roster (checked: zero ThingDef hits for
+  any "item water"/"WaterPurified"-shaped def). Per this pass's own brief:
+  shipped the comp attached with a placeholder/default output rather than
+  inventing the ThingDef myself. `RM_CompResourceCondenser.ProduceCycle()`
+  already no-ops cleanly on `outputDef == null` (no `ConfigErrors` rejects
+  it either) — the building is fully wired and placement-gated, and
+  visibly produces nothing (its own `CompInspectStringExtra` shows
+  progress/off-vent) until the items pass ships a real water-item ThingDef
+  and this file's `outputDef` is set to it. Ban 1 patrol holds regardless:
+  no bill, no ingredient, no recipe.
+
+**Validate/build.**
+```
+"C:\Users\Mandrake\.dotnet\dotnet.exe" build .../RM_EnvironmentalHazards.csproj -c Release
+```
+→ 0 warnings, 0 errors (both new .cs files + the 2 new `<Compile>` entries).
+
+`validate_patch.py` against the live 589-mod set, all 5 touched/added XML
+files: **3 clean at 0/0** (`RUT_ScaldSteam.xml`, `RUT_ScaldSteamLock.xml`,
+`RUT_ScaldSteamLock_BiomeWiring.xml` — the Patch file's one WARN on the
+first run, "inner xpath differs from the conditional test", was fixed by
+switching to the repo's own add-if-missing idiom
+(`PatchOperationConditional`/`nomatch PatchOperationAdd`), confirmed by the
+validator itself: "Intentional for add-if-missing patterns"). **2 genuine
+errors, both art-only**: `RUT_ScaldVent.xml` and `RUT_SteamCatch.xml` each
+fail on one missing `texPath` — every other field checks clean. Both
+textures are OWED to the art pipeline (never generated this pass — out of
+scope, no game/bridge access either). Held via `src/DEPLOY_HOLD.txt`
+(`UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml` and
+`.../RUT_SteamCatch.xml`), same pattern as today's own
+`PYRELANDS_FLORA_ART_IDENTITY_1` hold — defs ship, deploy is held until art
+lands. The two "no def in the load set uses that class" info lines
+(`EnvironmentalWeatherExtension`, `CompProperties_ResourceCondenser`) are
+expected boilerplate: both classes are real, compile clean, and this pass
+is simply the FIRST XML consumer of each in the live scan.
+
+⚠️ **Concurrent-edit note**: `GameCondition_EnvironmentalWeather.cs` and
+`EnvironmentalWeatherExtension.cs` were found mid-edit by another live
+FOUNDRY session (`MIASMA_MECHANICS_1`, a `carrierHediff` addition,
+unrelated to `ForcedWeather()`/weather-locking) while this pass was
+running — re-checked after the fact: the "no clear-spell hook" finding
+above still holds against the current working tree, the Miasma change
+doesn't touch `ForcedWeather()`. Neither file is part of this commit (never
+edited by this pass). The rebuilt `Assemblies/RimMandrake.EnvironmentalHazards.dll`
+is **also not part of this commit** for the same reason — the build that
+produced it pulled in that concurrent session's uncommitted source
+(`RM_GradientAxisExtension.cs`/`RM_GenStep_GradientAxis.cs`, the
+`carrierHediff` diff) alongside this pass's own two classes, so committing
+it now would ship binary content with no single matching committed source
+snapshot. `RM_EnvironmentalHazards.csproj` is committed as a **partial
+diff** (this pass's own 2 `<Compile>` lines only, via a targeted patch) for
+the same reason — the working-tree file also carries the other session's 2
+uncommitted `<Compile>` lines, left untouched for that session to commit
+itself.
+
+**Owed, not done, explicitly**: S4's actual vent placement onto the Scald
+map (bridge/world-authoring); art for `RUT_ScaldVent`/`RUT_SteamCatch`
+(DEPLOY_HOLD'd meanwhile); a real item-water `outputDef` for the condenser
+(items pass); S1's literal "clear spell" weather lapse; S3 (margin/baths
+fishing content), S5 (bubble-sailor/walker set-pieces), S6 (wrecks) — all
+explicitly out of this pass's scope, untouched; any live/quicktest
+verification (no bridge access this task). Item stays in `doing`.
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside
