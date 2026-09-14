@@ -63,3 +63,31 @@ confirms in-game appearance; canon rows cite their library entries.
   2026-09-13 lesson; inspiration is prompt text + library images).
 - model: opus for the roster derivation + walk verification judgment; sonnet
   fine for prompt authoring against ruled library entries.
+
+## Roster (derived 2026-09-13, BENCH, owner present)
+
+Sources: `design/Jawa/worldbuilding/review/round2/decisions_propagated.json`
+(fauna:the_pyrelands rows + moves routed here), fire-web commission close
+(`PYRELANDS_FIRE_WEB_COMMISSION_1`), live BiomeDef
+`src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml`.
+
+**Non-canon / invented — regenerate immediately (owner's word this sitting):**
+1. `AA_Razorjack` — fire-follower recast (Alpha Animals donor art = reference)
+2. `AA_Barbslinger` — ash-grazer (Alpha Animals)
+3. `AA_FireWasp` — (Alpha Animals)
+4. `GR_Mantistanis`
+5. `GR_Boomsnake`
+6. `RUT_FireHawk` — ours; currently single east-facing sprite
+7. `RUT_FurnaceBeast` — ours; currently single east-facing sprite
+
+**SW-canon — gated on CANON_REFERENCE_LIBRARY_1 + pilot grades:**
+Anooba, Iriaz, Nuna, Orray, Zeer, Dalgo.
+
+**Not in the roster:** Boomalope (moved out — Assailant dungeon twist),
+Gizka (owner: "not here"). Burrower slot deliberately open (commission close);
+Orray covers the burrows band.
+
+**Known gap (filed as PYRELANDS_FAUNA_WIRING_1):** the shipped BiomeDef's
+`wildAnimals` is the core-only vanilla placeholder; NONE of the roster above
+is wired into the biome. The walk shows vanilla animals until wiring lands.
+`drawsize_backfill.json` has zero roster entries — worker derives from mod XML.

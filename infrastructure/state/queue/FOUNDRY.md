@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T23:48:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-14T00:00:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
-prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
 state:    ready
@@ -40,15 +31,6 @@ target:   v1
 kind:     feature
 summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
 state:    ready
@@ -774,6 +756,15 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
+## CANON_REFERENCE_LIBRARY_1 Permanent SW-canon visual reference library: text + candidate images per creature, donor art included, owner rules disagreements — gates all canon regens
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Location (permanent, committed): design/RimStarWars/canonreferences/<creature/
+prose:    infrastructure/state/items/CANON_REFERENCE_LIBRARY_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1180,7 +1171,27 @@ prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
@@ -1450,16 +1461,6 @@ thin:     no ## criteria
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 
-## CANON_REFERENCE_LIBRARY_1 Permanent SW-canon visual reference library: text + candidate images per creature, donor art included, owner rules disagreements — gates all canon regens
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Location (permanent, committed): design/RimStarWars/canonreferences/<creature/
-prose:    infrastructure/state/items/CANON_REFERENCE_LIBRARY_1.md
-
 ## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
 state:    proposed
 row:      unassigned
@@ -1469,16 +1470,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
 prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
-
-## PYRELANDS_CREATURE_RERENDER_1 One dayside biome fully re-rendered: ALL Pyrelands creatures under the full 2026-09-13 lawset, deployed, owner walks it in game — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Roster derivation (measure, never remember): the biome's creature list
-prose:    infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md
 
 ## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
 state:    proposed

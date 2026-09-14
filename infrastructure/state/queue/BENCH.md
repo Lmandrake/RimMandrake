@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-13T23:48:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-14T00:00:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -194,7 +194,17 @@ prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+waiting:  needs `deploy`, game is UP
+summary:  (no items/PYRELANDS_FAUNA_WIRING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
 # NOT THIS TARGET
 
@@ -233,3 +243,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  A design session (BENCH) to dream up the real interface, not a solo art
 prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
+
+## PYRELANDS_CREATURE_RERENDER_1 One dayside biome fully re-rendered: ALL Pyrelands creatures under the full 2026-09-13 lawset, deployed, owner walks it in game — model: opus
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Roster derivation (measure, never remember): the biome's creature list
+prose:    infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md
