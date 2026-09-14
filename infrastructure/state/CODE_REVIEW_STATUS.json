@@ -1122,10 +1122,10 @@
     "sha": "670da445d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/ArmLatentHazardExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "8b041882bec6f93d35a5fdb2587d2e9868cae3bbce978ea51327b98bad798769",
-    "sha": "2eee1995f"
+    "cleanCount": 2,
+    "date": "2026-09-14",
+    "hash": "2b8462cc950bbae1169b26ab79ba7302041cde1ffdc7e4052a506b461cce4b90",
+    "sha": "8801d8429"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowMultiplierExtension.cs": {
     "cleanCount": 1,
@@ -1182,10 +1182,10 @@
     "sha": "b1a2aa399"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_ArmLatentHazard.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "85432d35ac09d104e97461b21491dfd02780a3741c0e1c4b31621a32ddbb8bf5",
-    "sha": "0637431c1"
+    "cleanCount": 3,
+    "date": "2026-09-14",
+    "hash": "5e27ae3df518c0823000d326da89982f8180d57485ad12ad4998fca69a2b2238",
+    "sha": "8801d8429"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_EnvironmentalWeather.cs": {
     "cleanCount": 3,
@@ -1324,6 +1324,18 @@
     "date": "2026-09-13",
     "hash": "a4b317f1af09cc9ba9e346a8748870a260a51468baca79fd1c6e70b962c34e13",
     "sha": "346490000"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_SeverityFloor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "3c9b632313a8792bf1577bba1005bd649ef415f8b702315712414eb9d94b8068",
+    "sha": "8801d8429"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_LordJob_DefendPerimeter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "8335817cd10461f33606dfac71a1ed7df82e9e2ea76f8866ee061dd277b3b37c",
+    "sha": "8801d8429"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs": {
     "cleanCount": 1,
