@@ -1230,10 +1230,10 @@
     "sha": "1ae30640a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-13",
-    "hash": "46ccb7e245b9ef3b369e2b95bd885637d2866182086d4f1b324515927ff6928a",
-    "sha": "0e38767e7"
+    "hash": "516e88fb818a9f7123482e1d4df79fdeb31b6a0b4d216763a0c0b6c612e68a44",
+    "sha": "346490000"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs": {
     "cleanCount": 1,
@@ -1252,6 +1252,18 @@
     "date": "2026-09-13",
     "hash": "04d83688614685243f0c1c743aca59b0a0f06a5bb9faf45b03c79e49ab3831b2",
     "sha": "b1a2aa399"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_LocalGrowthAura.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "8ed27645b0e951c00e2ce773a186aa9c8e92fd949801555af11d5493779f2dfd",
+    "sha": "346490000"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_PeriodicInspiration.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a4b317f1af09cc9ba9e346a8748870a260a51468baca79fd1c6e70b962c34e13",
+    "sha": "346490000"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
     "cleanCount": 1,
@@ -13665,6 +13677,24 @@
     "hash": "c49939ad424b32f578c2164f04d7f2ac653aaf391d30c44ea70f1ca06a89ed57",
     "sha": "b1a2aa399"
   },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_FeverForgedMinor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "44104275e6a7c482d7a2c2f9223664dfa735919c832ecac4f7a53b09872ab7d1",
+    "sha": "346490000"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_HardenedImmunity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "39efb3c38673bd7dc9743723d8bae2a3cac3790b4a329d3cd568f2f0ddfd3a14",
+    "sha": "346490000"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_StrangeTier.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "def1fa9a1fbd881815b94125f8901d641725ed56bc539cdf50b7c733472845bf",
+    "sha": "346490000"
+  },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -14258,6 +14288,12 @@
     "date": "2026-09-13",
     "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "d1509570300ab4fae687057b81d5c05ec2cfcecf62779774b75b385de2466d97",
+    "sha": "346490000"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_GradientAxis_Register.xml": {
     "cleanCount": 1,
