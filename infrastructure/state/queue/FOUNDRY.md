@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T17:49:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T19:10:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
+## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner card, 2026-09-14, verbatim: "Absolutely no boomalopes." Reverses the
+prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1577,16 +1586,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RAZORJACK_IDENTITY_RESTYLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RAZORJACK_IDENTITY_RESTYLE_1.md
 
-## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BOOMALOPE_CUT_EVERYWHERE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
-
 ## PYRELANDS_FACING_REGRESSION_1 Creature facing inverted on both axes despite FACING_COMPLETE closed
 state:    proposed
 row:      unassigned
@@ -1646,3 +1645,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCORCHFRUIT_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCORCHFRUIT_ART_REGEN_1.md
+
+## BOOMSNAKE_CUT_CONFLICT_1 GR_Boomsnake wired live while its ThingDef is Cherry Picker cut
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## verify, no ## criteria
+summary:  GRBoomsnake's ThingDef was Cherry-Picker cut by BOOMFAMILYCUT1
+prose:    infrastructure/state/items/BOOMSNAKE_CUT_CONFLICT_1.md
+
+## MANTISTANIS_CAMO_REGEN_1 Mantistanis eco-camouflage regen all facings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MANTISTANIS_CAMO_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MANTISTANIS_CAMO_REGEN_1.md
+
+## BARBSLINGER_REDESIGN_1 Barbslinger redesigned: domed scorpion form with bifurcated double tail
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BARBSLINGER_REDESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BARBSLINGER_REDESIGN_1.md

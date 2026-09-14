@@ -183,9 +183,9 @@
     {
       "action": "adjust-keep",
       "band": "grain",
-      "commonality": 0.3,
+      "commonality": 1.0,
       "def": "Gizka",
-      "law": "small quick forager between burns; MEASURED bs 0.18 spd 3.0; trimmed from 1.0 — second home beside ExtremeDesert (not a ubiquity-25 row, ≤2 homes fine)"
+      "law": "small quick forager between burns; MEASURED bs 0.18 spd 3.0; restored to 1.0 by ECOSYSTEM_PYRAMID_LAW_1 (owner 'Yes on Gizka', 2026-09-14) — the grain outnumbers everything, beating Zeer 0.6; second home beside ExtremeDesert (not a ubiquity-25 row, ≤2 homes fine)"
     },
     {
       "action": "import",
