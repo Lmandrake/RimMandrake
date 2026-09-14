@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WalkerSurfacing.xml                UtinniPatches · SCALD_MECHANICS_1 S5
+  ============================================================================
+  scald_kit_spec.md S5 "bottom-walkers": "RUT_WalkerSurfacing IncidentDef
+  (weighted only into this biome, cooldown days INVENTED: 8-20) +
+  RUT_IncidentWorker_WalkerSurfacing." The worker itself was BUILT AND
+  COMPILING in this item's own earlier spike pass
+  (RUT_IncidentWorker_WalkerSurfacing.cs,
+  src/RimMandrake/EnvironmentalHazards/Source/, read in full before writing
+  this file); that pass explicitly left "the real RUT_WalkerSurfacing
+  IncidentDef XML and its cooldown tuning" owed to the full build. This file
+  ships it — completing the bottom-walker half of S5.
+
+  category Misc, allowedBiomes RUT_TheScald — same shape RUT_Surge.xml
+  (MIASMA_MECHANICS_1 M2, this same folder) already established for "an
+  incident weighted only into one biome": Misc keeps it out of the vanilla
+  Storyteller's ThreatSmall/ThreatBig queues (this is atmosphere, not a
+  threat, same reasoning RUT_ContagionProbe.xml/RUT_FeverWood_MirrorBreak.xml
+  already give); allowedBiomes (a real, confirmed vanilla IncidentDef field,
+  RUT_Surge.xml's own header cites it against the live decompile) rejects
+  CanFireNow on every non-Scald map.
+
+  minRefireDays 14 — the spec's own "8-20" INVENTED range collapses to its
+  midpoint as a single float (IncidentDef.minRefireDays has no range type;
+  confirmed, RimWorld/IncidentDef.cs:28, read this pass), the same "a range
+  narrated in prose becomes one picked value" collapse this item's own S6
+  pass already used for its wreck-count "1-2" -> count 1. baseChance 1.0
+  (INVENTED) — the low end of this mod's own established range for
+  "ambient atmosphere beat, no bespoke gate beyond the biome" incidents
+  (RUT_ContagionProbe 1.5, RUT_FeverWood_MirrorBreak 1.2): a rare distant
+  sighting is lower-stakes than either of those two.
+
+  No letter fields set: RUT_IncidentWorker_WalkerSurfacing.TryExecuteWorker
+  fires a Messages.Message itself, not a Letter — the spec's own words,
+  "Message not Letter after the first sighting." An IncidentDef's own
+  letterLabel/letterText fields feed the DEFAULT IncidentWorker.
+  PostFireResult path this custom worker's own override never calls, so
+  leaving them unset is correct, not an oversight.
+
+  MayRequire mandrake.rm.environmentalhazards: workerClass lives there.
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_WalkerSurfacing</defName>
+    <label>walker surfacing</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_WalkerSurfacing</workerClass>
+    <baseChance>1.0</baseChance>
+    <minRefireDays>14</minRefireDays>
+    <allowedBiomes>
+      <li>RUT_TheScald</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>

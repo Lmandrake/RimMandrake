@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Scald_Mechanics.xml                UtinniPatches · SCALD_MECHANICS_1 S5
+
+  Translate key for the bottom-walker surfacing Message
+  (RUT_IncidentWorker_WalkerSurfacing.cs, RUT_WalkerSurfacing.xml).
+-->
+<LanguageData>
+
+  <RUT_WalkerSurfacingSighting>Far out on the boil, something enormous breaks the surface — a back, wet and vast — and is gone before the wave from it reaches shore.</RUT_WalkerSurfacingSighting>
+
+</LanguageData>
