@@ -1951,6 +1951,7 @@
 			<li>ThingDef/LEGO_MediumCrane_Accomplish</li>
 			<li>ThingDef/Techprint_AM_RecyclingAssembly</li>
 			<li>ThingDef/Boomalope</li>
+			<li>PawnKindDef/Boomalope</li>
 			<li>ThingDef/Boomrat</li>
 			<li>ThingDef/VFEI2_Boomtick</li>
 			<li>ThingDef/GR_Bearalope</li>

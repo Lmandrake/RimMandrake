@@ -69,8 +69,8 @@
     },
     {
       "def": "Boomalope",
-      "disposition": "move:ZBiome_Grasslands",
-      "reason": "water-based organic at -42 °C (§6 ban 1); the in-joke KEEP (ubiquity §9) is honoured elsewhere"
+      "disposition": "cut:BOOMALOPE_CUT_EVERYWHERE_1 (owner card 2026-09-14, \"Absolutely no boomalopes\")",
+      "reason": "water-based organic at -42 °C (§6 ban 1) — moot now: the in-joke KEEP (ubiquity §9) is reversed, no home anywhere"
     }
   ],
   "fauna": [
