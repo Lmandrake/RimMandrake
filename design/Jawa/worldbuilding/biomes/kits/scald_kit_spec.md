@@ -209,29 +209,43 @@ and drift back down — the biome's signature silhouette, readable traffic.
 And rarely, at the deep center, an enormous back breaks the surface and is
 gone: the herds are down there, mowing.
 
-**Engine route.** Partly reuses the miasma kit's generics (their build is
-that kit's; this kit is their second customer — the reason they're RM_).
-⚠️ **CORRECTION this pass**: only ONE of the two miasma generics actually
-exists yet. `RM_CompTerritorialAnchor` shipped for real
-(`MIASMA_MECHANICS_1`'s spike, `src/RimMandrake/EnvironmentalHazards/Source/
-RM_CompTerritorialAnchor.cs`) and is usable now. `RM_GenStep_PlacedSetPieces`
-does **not** exist — miasma's own item file lists it under its Spike 5
-"Owed, not done" line explicitly. The bubble-sailor placement route below is
-therefore blocked on that scatterer landing (miasma's own future work, not
-this kit's), not safely spikeable for real placement yet — only the anchor
-half is provably available today.
+**Engine route.** Reuses the miasma kit's two generics fully — both are
+built and shipped: `RM_CompTerritorialAnchor` (`MIASMA_MECHANICS_1` spike)
+and `RM_GenStep_PlacedSetPieces` (`MIASMA_MECHANICS_1` M6 build pass,
+`src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_PlacedSetPieces.cs`
+— a generic `GenStep_Scatterer` subclass with an abstract `RM_SetPieceElement`
+hook). **RESOLVED, SCALD_MECHANICS_1 S5 build pass**: the correction this
+spec previously carried here ("only the anchor half is provably available
+today... blocked on that scatterer landing") is stale — `SUMP_MECHANICS_1`'s
+own S3 pass already reused the scatterer as a second customer before this
+kit did, confirming it as a real, shared, multi-consumer class, not a
+one-off. S5 is its third consumer: `RUT_GenStep_ScaldSailScatterer`
+(`src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldSailScatterer.xml`)
+reuses `RM_SetPieceElement_AnchoredPawn` verbatim (also shipped, M6) behind a
+new site validator, `RM_ScattererValidator_NearThingDef` (S5's own only new
+class — no stock `ScattererValidator` does proximity-TO a `ThingDef`, only
+the mirror-image avoid case).
 
-- **Bubble-sailors**: placed at gen by `RM_GenStep_PlacedSetPieces`
-  (miasma M6's scatterer — **not yet built**, see correction above) keyed to
-  `RUT_ScaldVent` sites — each vent gets a sail cluster (kinds are roster
-  content; `wildAnimals` stays the roster pass's). Tethering:
-  `RM_CompTerritorialAnchor` (miasma M6, **built and available now**)
-  anchored to the vent — sails never leave their bubble line (**INVENTED**:
-  radius 8), ignore everything, flee nothing (they're the kindest resident;
-  combat stats near-nil in XML). Vertical tack/drift is presentation: ❓
-  whether a float/hover render (fleck or `Graphic` bob) beats a swimming
-  pawn — decide at build; ban 4's carve-out allows them ON the surface
-  either way.
+- **Bubble-sailors**: placed at gen by `RM_GenStep_PlacedSetPieces` keyed to
+  `RUT_ScaldVent` sites via the new proximity validator — each vent gets a
+  sail cluster (kinds are roster content; `wildAnimals` stays the roster
+  pass's). Tethering: `RM_CompTerritorialAnchor` anchored to the vent —
+  sails never leave their bubble line (**INVENTED**: radius 8), ignore
+  everything, flee nothing (they're the kindest resident; combat stats
+  near-nil in XML). **Confirmed structural, no new C# needed**: the comp
+  itself never calls a JobGiver, only sets `pawn.mindState.duty` — which
+  behavior runs is entirely the pawn's own `ThinkTreeDef`'s choice between
+  the independent `RM_JobGiver_AnchorDefense`/`RM_JobGiver_AnchorWander`
+  pair. A future sail `ThinkTreeDef` that includes only the wander half gets
+  "never fights" for free; no props flag or third JobGiver class is needed.
+  That `ThinkTreeDef`/`DutyDef` pairing is real content tied to the real
+  sail `PawnKindDef` — roster-pass work, not buildable against a borrowed
+  placeholder kind (S5's own build pass used vanilla `Penguin` as the
+  wiring placeholder, distinct from every other kit's own `RM_
+  SetPieceElement_AnchoredPawn` placeholder choice). Vertical tack/drift is
+  presentation: ❓ whether a float/hover render (fleck or `Graphic` bob)
+  beats a swimming pawn — decide at build; ban 4's carve-out allows them ON
+  the surface either way.
 - **Bottom-walkers**: v1 is a **surfacing set-piece, not a resident pawn**
   (ban 4: the walkers live at depth; nothing swims the surface but bubbles
   and sails). `RUT_WalkerSurfacing` IncidentDef (weighted only into this
@@ -242,10 +256,13 @@ half is provably available today.
   (`terrain.IsWater && terrain.burnDamage > 0`, which excludes the margin
   ring without needing to name it) and keeps the one furthest from a map
   edge as a "deep center" stand-in, fires `Messages.Message` (not a Letter)
-  with no pawn spawned. Effecter choreography (spray, wake, the back) is
-  art content, explicitly left for the full build; so is the actual
-  `RUT_WalkerSurfacing` IncidentDef XML and its cooldown tuning. Whether
-  walkers ever become real huntable pawnkinds at depth is **owner card 3**;
+  with no pawn spawned. **RESOLVED, S5 build pass**: `RUT_WalkerSurfacing.xml`
+  IncidentDef ships (`category Misc`, `allowedBiomes RUT_TheScald`,
+  `minRefireDays 14` — the spec's own "8-20" collapsed to its midpoint,
+  `baseChance 1.0` INVENTED) — the incident is real and reachable by the
+  storyteller now. Effecter choreography (spray, wake, the back) is still
+  art content, explicitly left for the full build. Whether walkers ever
+  become real huntable pawnkinds at depth is **owner card 3**;
   the roster's "four sorts" can still assign walker KINDS as flavor-census
   entries without map presence.
 
@@ -307,25 +324,28 @@ the items pass's, per sheet economy convention.
 | Class | For | Effort | Status |
 |---|---|---|---|
 | `RM_CompResourceCondenser` | S2 | S | **Built, compiling** (SCALD_MECHANICS_1 spike) |
-| `RUT_IncidentWorker_WalkerSurfacing` | S5 | S–M | **Built, compiling** (SCALD_MECHANICS_1 spike) |
+| `RUT_IncidentWorker_WalkerSurfacing` | S5 | S–M | **Built, compiling, wired to a real IncidentDef** (spike + S5 build pass) |
+| `RM_ScattererValidator_NearThingDef` | S5 | S | **Built, compiling, shipped** (SCALD_MECHANICS_1 S5 build pass) |
 | ~~terrain-validated scatter subclass~~ | S6 | — | **RESOLVED: not needed.** Stock `GenStep_ScatterThings` handles it via `terrainValidationAllowed` tags. |
 
-Scoreboard correction (this pass): **2 new classes**, both built and
-compiling — down from the drafted 3, since S6 needs none.
+Scoreboard correction (S5 pass): **3 new classes** total for this kit, all
+built and compiling — the drafted 3 stands, but S6 needed none while S5
+needed one the original draft didn't foresee (the proximity validator).
 
 Reused: `RM_GameCondition_EnvironmentalWeather` (ruled, `ALPHA_MECHANICS_KIT_1`) ·
 `RM_WeatherOverlay_GroundFog` (greentide) · `RM_CompTerritorialAnchor`
 (miasma kit, built and available) · `RM_GenStep_PlacedSetPieces` (miasma
-kit, **drafted only, not yet built** — blocks real bubble-sailor placement,
-see S5's correction above) · vanilla 1.6 fishing, swimming, geysers,
-geothermal.
+kit, **built and shipped — SCALD_MECHANICS_1 is its third consumer after
+MIASMA_MECHANICS_1 and SUMP_MECHANICS_1**) ·
+`RM_SetPieceElement_AnchoredPawn` (miasma kit, built and shipped) · vanilla
+1.6 fishing, swimming, geysers, geothermal.
 
 ## Build order
 
 1. **External dependencies land first**: `ALPHA_MECHANICS_KIT_1` (S1 lock,
-   closed) — closed; miasma kit's scatterer/anchor generics (S5) — the
-   anchor half is built, the scatterer half is not (see S5's correction);
-   `LIQUID_TYPES_MOD_1` + its §9 CARD-1 ruling (S3 fishing bucket) — closed
+   closed) — closed; miasma kit's scatterer/anchor generics (S5) — both
+   built and shipped, confirmed by the S5 build pass; `LIQUID_TYPES_MOD_1` +
+   its §9 CARD-1 ruling (S3 fishing bucket) — closed
    tonight; `FISH_BESTIARY_COMMISSION_1` (S3 fish defs) — **checked this
    pass, still `doing`**: it is a design/roster proposal awaiting owner
    rulings on 8 cardable questions, no build item filed yet. This blocks
@@ -340,7 +360,10 @@ geothermal.
    two dependencies.
 6. **S6 wrecks** — independent, any time after terrain overrides land.
 7. **S5 set-pieces** — after S4 (vents) and the miasma generics; incident
-   last (pure presentation).
+   last (pure presentation). **Wiring shipped, SCALD_MECHANICS_1 S5 build
+   pass** — real vent placement (S4's own owed step) is the last thing
+   standing between this wiring and a live sail cluster; see S5's own
+   section above.
 
 ## Owner cards — RULED, sitting 2026-09-12
 

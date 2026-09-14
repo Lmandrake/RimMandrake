@@ -471,6 +471,150 @@ this task); S3 (margin/baths fishing content, blocked on
 remaining mechanics in the kit, both explicitly out of this pass's scope.
 Item stays in `doing`.
 
+## S5 build pass — 2026-09-14
+
+Build order step 7 (S5, bubble-sailor and bottom-walker set-pieces) — the
+**last unblocked v1 mechanic in this kit**: S3 (margin fishing) stays
+blocked on `FISH_BESTIARY_COMMISSION_1`, still `doing`, not touched or
+re-checked this pass beyond what S3's own prior pass already found. No
+bridge, no game, no quicktest this pass — offline only (build + `validate_
+patch.py`), same gap every prior pass in this item has flagged.
+
+**Precondition check: the prior "blocked on `RM_GenStep_PlacedSetPieces`"
+correction is stale, confirmed and fixed in place.** Read
+`RM_GenStep_PlacedSetPieces.cs`, `RM_SetPieceElement_AnchoredPawn.cs`, and
+`RM_CompTerritorialAnchor.cs` in full before writing anything (all three
+shipped by `MIASMA_MECHANICS_1`'s M6 pass). `SUMP_MECHANICS_1`'s own S3 pass
+already reused the scatterer as a second customer before this pass started —
+so this kit is its **third**, not its first. `scald_kit_spec.md`'s own S5
+section and New-C# roster table are corrected in the same pass (no more
+"drafted only, not yet built").
+
+**No new C# needed for "never flees, never fights."** This item's own task
+brief asked whether `RM_CompTerritorialAnchor`'s `RM_JobGiver_AnchorDefense`/
+`RM_JobGiver_AnchorWander` pair needs a third passive variant or a props flag
+to suppress combat. Read the comp in full: it never calls a JobGiver at
+all — `SetAnchor`/`PostSpawnSetup` only set `pawn.mindState.duty`. Which
+JobGiver actually runs is entirely the pawn's own `ThinkTreeDef`'s choice
+between the two independent JobGiver classes. A future sail `ThinkTreeDef`
+that includes only `RM_JobGiver_AnchorWander` (gated on its own `DutyDef`)
+and never references `RM_JobGiver_AnchorDefense` gets "wander in the radius,
+never fight" for free — no comp change required. That `ThinkTreeDef`/
+`DutyDef` pairing is real content tied to the real sail `PawnKindDef`
+(roster-pass work) and is not buildable against a borrowed placeholder kind,
+so it is not shipped this pass — flagged, not silently skipped.
+
+**1. Bubble-sailor placement.** `RUT_GenStep_ScaldSailScatterer`
+(`src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldSailScatterer.xml`,
+new) — an `RM_GenStep_PlacedSetPieces` instance reusing `RM_SetPieceElement_
+AnchoredPawn` verbatim. **One new class**: `RM_ScattererValidator_
+NearThingDef` (new,
+`src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_
+NearThingDef.cs`) — no stock `ScattererValidator` does proximity-TO a
+`ThingDef` (only the mirror-image avoid case,
+`Verse.ScattererValidator_AvoidThingsOfDef`, read in full and inverted).
+Configured `thingDef RUT_ScaldVent`, `radius 6` (INVENTED). Generic by
+mechanism (not Scald-specific in signature), but — matching `RM_
+ScattererValidator_BrineShallowWater`'s own precedent shape — checks a new
+Mod Settings toggle inline (`bubbleSailorScattererEnabled`, WORLDGEN-
+AFFECTING, item 15 in `RM_EnvironmentalHazardsMod.cs`'s own numbered list),
+documented in its own header as the deliberate one-consumer coupling this
+choice makes.
+
+🔴 **Honest limitation, flagged in the file's own header, not discovered
+after the fact**: `RUT_ScaldVent` placement is map/world-authoring via the
+bridge, POST-map-generation (that def's own header: "NOT worldgen... NOT
+done this pass") — never a GenStep. So `RUT_GenStep_ScaldSailScatterer`
+finds **zero** valid sites on the Scald's map exactly as it exists today.
+It is real, reachable, wired content that starts doing anything the moment
+S4's own vent placement lands — the same "wired ahead of its own
+precondition" posture this item's own S1 pass already used for
+`RUT_FeverWood_MirrorBreak.xml`-style siblings. `warnOnFail false` for
+precisely this reason.
+
+`anchorMarkerDef` deliberately left unset — anchoring directly onto the
+vent's own 2x2 footprint risked a standability conflict with the building
+itself; the element's own documented fallback (anchor to the scattered cell
+itself, already inside the vent's proximity ring) is simpler and safer.
+`pawnKind Penguin` (vanilla Core) is the WIRING PLACEHOLDER — chosen
+distinct from every other `RM_SetPieceElement_AnchoredPawn` placeholder
+already claimed in this repo (`RSW_OpeeSeaKiller`, `MIASMA_MECHANICS_1` M6;
+`Mech_Pikeman`, `FORGE_MECHANICS_1` F4) to avoid an ambiguous cross-
+reference. Real anchoring does not occur with this placeholder — Penguin's
+own ThingDef carries no `RM_CompTerritorialAnchor`, so the element's own
+`WarningOnce`/no-op path fires, the same expected-not-a-bug outcome every
+prior `AnchoredPawn` placeholder consumer already documents. Radius 8 (the
+spec's own INVENTED tether value) is recorded in the XML's own header as
+the value the real sail `ThingDef`'s `CompProperties_TerritorialAnchor.
+anchorRadius` should carry once authored — not wired live this pass.
+
+`RUT_ScaldSailScatterer_Register.xml` (new,
+`.../Patches/`) registers the GenStepDef onto `Base_Player` globally, safe
+for the same reason `RUT_ScaldWreckScatter_Register.xml`'s own header gives
+for its own global registration: the validator itself is the scope (every
+biome but the Scald has zero `RUT_ScaldVent` Things on it).
+
+**2. Bottom-walker completion.** `RUT_WalkerSurfacing.xml` (new,
+`.../Defs/IncidentDefs/`) wires the already-shipped `RUT_IncidentWorker_
+WalkerSurfacing` (this item's own earlier spike, confirmed real and
+untouched this pass) to a real IncidentDef: `category Misc`, `allowedBiomes
+RUT_TheScald` (crib: `RUT_Surge.xml`, `MIASMA_MECHANICS_1` M2, same shape),
+`minRefireDays 14` (the spec's own "8-20" INVENTED range collapsed to its
+midpoint — `IncidentDef.minRefireDays` has no range type, confirmed against
+the live decompile), `baseChance 1.0` (INVENTED, the low end of this mod's
+own established range for a biome-gated atmosphere incident). No letter
+fields — the worker fires its own `Messages.Message`, not the default
+`IncidentWorker` letter path. `RUT_Scald_Mechanics.xml` (new,
+`.../Languages/English/Keyed/`) adds the `RUT_WalkerSurfacingSighting`
+translate key the worker already referenced but that had no Languages entry
+yet — this half of S5 is now genuinely complete, not just compiling.
+
+**Build.**
+```
+"C:\Users\Mandrake\.dotnet\dotnet.exe" build .../RM_EnvironmentalHazards.csproj -c Release
+```
+→ 0 warnings, 0 errors, with this pass's own new file
+(`RM_ScattererValidator_NearThingDef.cs`) plus a concurrent `MIASMA_
+MECHANICS_1` M3 session's own files (stranding pools) built into the same
+pass — that session's own `git add` on the shared `RM_
+EnvironmentalHazardsMod.cs`/`RM_EnvironmentalHazards.csproj` (both edited by
+this pass too, for the new `bubbleSailorScattererEnabled` toggle) swept up
+this pass's own lines into ITS commit
+(`c76fc40a0 MIASMA_MECHANICS_1 M3 build pass`, later marked clean at
+`92a5c740c`) before this pass could commit them separately — confirmed, not
+assumed: `git show HEAD:.../RM_EnvironmentalHazardsMod.cs` carries this
+pass's own item-15 toggle intact, and `code_review_status.py check` already
+reports both files CLEAN at that commit. No further action needed on either
+file this pass. The rebuilt `Assemblies/RimMandrake.EnvironmentalHazards.dll`
+is **not part of this pass's own commit**, same reasoning every prior pass
+in this item has given — a shared, actively-being-built assembly,
+regenerable from committed source.
+
+**Validate.** `skills/rimworld-modding/scripts/validate_patch.py` against
+the live 99-active-mod set (`--defs` Data + Mods + Workshop root): all 4 new
+files (`RUT_ScaldSailScatterer.xml`, `RUT_ScaldSailScatterer_Register.xml`,
+`RUT_WalkerSurfacing.xml`, `RUT_Scald_Mechanics.xml`) — **0 errors, 0
+warnings**. The "no def in the load set uses that class" info lines for
+`RM_GenStep_PlacedSetPieces`/`RM_ScattererValidator_NearThingDef`/`RM_
+SetPieceElement_AnchoredPawn` are expected boilerplate (the tool cannot see
+a just-built DLL); the clean build is what actually confirms those classes
+resolve. One unrelated WARN (`mandrake.rut.vaultdungeons` has no folder
+under `--defs`) is a pre-existing install-scope quirk, not from this pass's
+files.
+
+**Not done this pass, explicitly**: S3 (margin/baths fishing content,
+blocked on `FISH_BESTIARY_COMMISSION_1`, unchanged this pass) — the one
+mechanic in this kit still genuinely blocked. Real `RUT_ScaldVent`
+placement onto the Scald's map (S4's own owed step, bridge/world-
+authoring) — until it lands, the sail scatterer built this pass places
+nothing live. The real bubble-sailor `PawnKindDef`/`ThinkTreeDef`/`DutyDef`
+(roster-pass work) and its art/effecter choreography for both the sails and
+the walker sighting. Live/quicktest verification of any of this (no bridge
+access this task). **With S1/S2/S4/S5/S6 all landed and S3 alone blocked on
+a sibling item's own rulings, this is the kit's last unblocked v1
+mechanic — said plainly, per this pass's own brief.** Item stays in
+`doing`; not closed by this pass.
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside
