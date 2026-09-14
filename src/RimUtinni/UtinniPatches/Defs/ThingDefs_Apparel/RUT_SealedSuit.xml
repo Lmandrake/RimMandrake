@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SealedSuit.xml                      UtinniPatches - GREENTIDE_MECHANICS_2 M1
+
+  greentide_kit_spec.md M1's gear tree, heaviest piece ("sealed suit").
+  Shape and texPath/wornGraphicPath cribbed from vanilla Apparel_Vacsuit
+  (RimSage raw fetch this pass) - a real, already-shipping full-coverage
+  Middle+Shell garment - so this ships with real art on day one. Combat
+  armor stats and the vacuum-specific equippedStatOffset (VacuumResistance)
+  are deliberately NOT copied: this is a heat/humidity seal, not space
+  armor, and giving it vacuum resistance for free would be an undeserved
+  side effect of the crib, not a design choice. RM_WetBulbProtection is
+  this build pass's own addition.
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_SealedSuit</defName>
+    <label>sealed suit</label>
+    <description>A full-body suit of rubberized fabric over a sweat-wicking lining, cinched tight at the wrists, neck and ankles — cuts off the saturated outside air almost entirely. Hot, heavy and slow to put on, but nothing else worn keeps the wet-bulb clock as still.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <tradeability>Sellable</tradeability>
+    <costStuffCount>60</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costList>
+      <Steel>10</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToMake>20000</WorkToMake>
+      <Mass>6</Mass>
+      <Flammability>0.4</Flammability>
+      <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.3</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.3</StuffEffectMultiplierInsulation_Heat>
+      <EquipDelay>6</EquipDelay>
+      <RM_WetBulbProtection>0.6</RM_WetBulbProtection>
+    </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-0.4</MoveSpeed>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>IndustrialAdvanced</li>
+      </tags>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+      </recipeUsers>
+      <displayPriority>230</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

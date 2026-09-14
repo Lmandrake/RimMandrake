@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DryAirBlower.xml                    UtinniPatches - GREENTIDE_MECHANICS_2 M2
+
+  greentide_kit_spec.md "M2. The dry-air blower". Comps: three vanilla,
+  XML-configured (CompPowerTrader/CompRefuelable/CompFlickable, plus
+  CompHeatPusher for the "gushing hot ... air" flavor), one new
+  (RimMandrake.EnvironmentalHazards.CompProperties_DryFieldEmitter, this
+  build pass) carrying the room-dry/plant-suppression-stub/animal-repel
+  mechanism. Comp shape cribbed from RimStarWars/Bacta/Defs/ThingDefs_Buildings/
+  RSW_BactaTank.xml's own CompProperties_Power/Refuelable/Flickable block
+  (this repo's own established pattern for a fueled+powered building),
+  minus its bacta-specific comps.
+
+  Fuel is vanilla Chemfuel (no new resource item — out of this build pass's
+  scope; a Greentide-specific fuel is a flavor pass, not core mechanism).
+  consumeFuelOnlyWhenUsed=false: this machine drains fuel continuously
+  while switched on and powered, not just "while used" by a pawn — matching
+  the sheet's "when it runs out of fuel, the green notices within hours."
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_DryAirBlower</defName>
+    <label>dry-air blower</label>
+    <description>A fueled doorway machine that gushes hot, bone-dry air downward across its threshold. Run continuously, it holds the room behind it dry — the wet-bulb clock stops indoors — and the shimmer of heat off its vents sends anything wild-skinned looking for another way round. Fire is not the tool here; dry heat is the one alien thing the green has no answer for. Starve it of fuel and the room notices within hours.</description>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_DryAirBlower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>true</rotatable>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>2200</WorkToBuild>
+      <Mass>18</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <building>
+      <isPlayerEjectable>false</isPlayerEjectable>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingSizeCategory>Small</buildingSizeCategory>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+        <idlePowerDraw>10</idlePowerDraw>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>3.5</fuelConsumptionRate>
+        <fuelCapacity>50</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>true</showFuelGizmo>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>50</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.4</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>Chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <outOfFuelMessage>Dry-air blower out of chemfuel</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+      <li Class="CompProperties_HeatPusher">
+        <heatPerSecond>12</heatPerSecond>
+        <heatPushMaxTemperature>200</heatPushMaxTemperature>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DryFieldEmitter">
+        <dryRoomHoldTicks>15000</dryRoomHoldTicks>
+        <animalRepelRadius>3</animalRepelRadius>
+        <animalRepelArcDegrees>90</animalRepelArcDegrees>
+        <aversionHediff>RUT_DryAirAversion</aversionHediff>
+      </li>
+    </comps>
+    <designationCategory>Production</designationCategory>
+    <designationHotKey>Misc6</designationHotKey>
+    <techLevel>Industrial</techLevel>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+</Defs>

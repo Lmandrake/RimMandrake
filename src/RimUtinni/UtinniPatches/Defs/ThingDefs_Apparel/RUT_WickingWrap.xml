@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WickingWrap.xml                     UtinniPatches - GREENTIDE_MECHANICS_2 M1
+
+  greentide_kit_spec.md M1's gear tree, lightest piece ("wicking wrap").
+  Shape and texPath/wornGraphicPath cribbed verbatim from vanilla
+  Apparel_TribalA (RimSage raw fetch this pass) - a real, already-shipping
+  torso/legs OnSkin garment - so this ships with real art on day one rather
+  than a placeholder pink rectangle or a DEPLOY_HOLD entry. RM_WetBulbProtection
+  is this build pass's own addition; every other field is the donor's own
+  tuning, lightly retouched (Mass/EquipDelay) for a lighter garment than a
+  full tribalwear robe.
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_WickingWrap</defName>
+    <label>wicking wrap</label>
+    <description>Layered fabric wound loose around the torso and legs, cut to pull sweat off the skin and let it evaporate — the one thing that still works once the air itself is already saturated. Light enough to wear under a sealed suit.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/TribalA/TribalA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <costStuffCount>40</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+    </stuffCategories>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToMake>1800</WorkToMake>
+      <Mass>0.3</Mass>
+      <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.2</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.2</StuffEffectMultiplierInsulation_Heat>
+      <EquipDelay>1.2</EquipDelay>
+      <RM_WetBulbProtection>0.3</RM_WetBulbProtection>
+    </statBases>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/TribalA/TribalA</wornGraphicPath>
+      <layers>
+        <li>OnSkin</li>
+      </layers>
+      <tags>
+        <li>IndustrialBasic</li>
+      </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <defaultOutfitTags>
+        <li>Worker</li>
+        <li>Soldier</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+      <displayPriority>200</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

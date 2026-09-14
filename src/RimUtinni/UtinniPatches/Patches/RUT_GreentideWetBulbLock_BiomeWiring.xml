@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_GreentideWetBulbLock_BiomeWiring.xml   UtinniPatches · GREENTIDE_MECHANICS_2 M1
+  ============================================================================
+  Wires the permanent wet-bulb condition (Defs/GameConditionDefs/
+  RUT_GreentideWetBulbLock.xml) onto RUT_Greentide as a PATCH rather than a
+  direct edit to RUT_Greentide.xml's own biomeMapConditions field —
+  RUT_GreentideWetBulbLock only exists when mandrake.rm.environmentalhazards
+  is active (MayRequire-gated def), so a bare <li> baked directly into the
+  BiomeDef would be a dangling cross-reference the moment that mod is
+  absent. MayRequire on the Operation itself makes this patch a true no-op
+  (not merely a silently-false match) when the mod is missing. Same shape
+  as RUT_ScaldSteamLock_BiomeWiring.xml (SCALD_MECHANICS_1 S1).
+
+  RUT_Greentide.xml carries no <biomeMapConditions> node at all today (only
+  wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so
+  this adds the whole element rather than appending an <li> to an existing
+  one.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]</xpath>
+      <value>
+        <biomeMapConditions>
+          <li>RUT_GreentideWetBulbLock</li>
+        </biomeMapConditions>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>
