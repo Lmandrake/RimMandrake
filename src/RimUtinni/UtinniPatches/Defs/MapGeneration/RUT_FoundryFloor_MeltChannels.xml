@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FoundryFloor_MeltChannels.xml      UtinniPatches · FORGE_MECHANICS_1 F4
+  ============================================================================
+  forge_kit_spec.md F4: "melt channels (impassable)... heat as the wall."
+  Uses RM_GenStep_TerrainChannels (new this pass,
+  src/RimMandrake/EnvironmentalHazards/Source/ — see that class's own header)
+  to paint vanilla LavaDeep — CONFIRMED via RimSage this pass:
+  ParentName="LavaBase", passability Impassable, dangerous true, native
+  burnDamage/burnIntervalTicks/ignitePawnsIntervalTicks fields (read by the
+  stock Verse/HediffGiver_Terrain.cs every tick, no C# of this mod's own
+  involved) — exactly the "open melt as the wall" framing this same item's
+  own spike pass already resolved (FORGE_MECHANICS_1.md spike finding 1:
+  "any walkable melt/scald surface in the tower floors should crib
+  LavaShallow's own field values... No C# needed for either behaviour").
+  LavaDeep, not LavaShallow, chosen specifically because it is Impassable:
+  GenStep_Scatterer's own `spotMustBeStandable` field (Verse/
+  GenStep_Scatterer.cs, read this pass) rejects any cell that fails
+  IntVec3.Standable, and Impassable terrain always fails that check — so
+  painting LavaDeep here is what makes the hard-ban-#1 guard on
+  RUT_FoundryFloor_SalvageCache.xml / RUT_FoundryFloor_TenderSpawn.xml
+  actually effective, not merely decorative. No existing lava/melt
+  TerrainDef found anywhere in this repo's own RUT_/RM_ content (checked
+  this pass) — LavaDeep is a vanilla Odyssey def already searched for and
+  confirmed present (RimSage), so nothing new was invented here.
+
+  order 300 — after Terrain (210, vanilla, base ground already painted) and
+  before ScatterRuinsSimple (750, vanilla) and this floor's own two
+  set-piece scatterers (850/860), so every later genStep's own site search
+  already sees the melt on the terrain grid.
+
+  Tuning (channel count/length/width, turn chance) is entirely this pass's
+  own INVENTED choice — the spec names no channel geometry, only "open
+  melt... heat as the wall." A live/quicktest pass is owed to judge the
+  actual density/legibility of the result (no bridge access this task).
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundryFloor_MeltChannels</defName>
+    <order>300</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_TerrainChannels">
+      <terrainDef>LavaDeep</terrainDef>
+      <channelCountRange>3~5</channelCountRange>
+      <channelLengthRange>30~55</channelLengthRange>
+      <channelWidthRange>1~2</channelWidthRange>
+      <turnChancePerStep>0.35</turnChancePerStep>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

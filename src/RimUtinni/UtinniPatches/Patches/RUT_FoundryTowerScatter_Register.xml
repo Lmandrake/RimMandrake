@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FoundryTowerScatter_Register.xml   UtinniPatches — FORGE_MECHANICS_1 F4
+
+  Registers RUT_FoundryTowerScatter onto Base_Player, the player's home-map
+  generator — same PatchOperationConditional/PatchOperationAdd shape and
+  same reasoning as this folder's own precedent,
+  Patches/RUT_SumpTarBeastGenStep_Register.xml (read directly before writing
+  this).
+
+  MayRequire on the added <li> itself (not just on the GenStepDef's own
+  declaration) — same pattern as that precedent — so the cross-reference
+  cannot dangle if mandrake.rm.environmentalhazards is absent from the
+  active mod list. Safe to register globally: RUT_FoundryTowerScatter's own
+  RM_ScattererValidator_Biome gate makes it a no-op on every map that isn't
+  RUT_TheForge.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards">RUT_FoundryTowerScatter</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

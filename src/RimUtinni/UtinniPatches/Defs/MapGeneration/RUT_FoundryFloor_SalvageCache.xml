@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FoundryFloor_SalvageCache.xml      UtinniPatches · FORGE_MECHANICS_1 F4
+  ============================================================================
+  forge_kit_spec.md F4: "GenSteps lay... salvage caches..." — places
+  RUT_FoundrySalvageCache (this pass, ThingDefs_Buildings/) via
+  RM_GenStep_PlacedSetPieces / RM_SetPieceElement_SpawnMarker, the same
+  shared marker-spawn machinery every sibling kit in this mod already
+  reuses (Miasma M6, Sump S3).
+
+  Listed only in RUT_FoundryFloor.xml's OWN genSteps — NOT registered onto
+  Base_Player (unlike the outer-map tower scatter,
+  RUT_FoundryTowerScatter.xml, which needs that global registration). This
+  GenStepDef only ever runs when RUT_FoundryFloor generates a pocket map,
+  which itself only ever happens when a player enters an
+  RUT_FoundryTowerEntrance — so no biome gate is needed here at all, unlike
+  the outer scatter.
+
+  spotMustBeStandable true — hard-ban-#1 guard (forge_kit_spec.md hard-ban
+  table: "no PawnKindDef this kit places may spawn on lava terrain"; this
+  element places a Thing, not a Pawn, but the same guard is applied for
+  consistency and so a cache can never wedge itself into the melt where a
+  player could not reach it). RM_FoundryFloor_MeltChannels.xml (order 300)
+  runs first, so LavaDeep's native Impassable already fails this check by
+  the time this GenStepDef's own site search runs (order 850).
+
+  count 2 (INVENTED, this pass — the spec names no cache count, only "the
+  prize") — a real live-tuned figure is owed to a later pass.
+
+  order 850 — after ScatterRuinsSimple (750, vanilla — "forge-works rooms")
+  so a cache doesn't spawn inside a ruin wall's own footprint
+  (ScattererValidator_NoNonNaturalEdifices below catches that), before the
+  tender spawn (860) so tenders don't crowd out cache placement first.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundryFloor_SalvageCache</defName>
+    <order>850</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>2</count>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>15</minSpacing>
+      <minEdgeDistPct>0.08</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="Verse.ScattererValidator_Buildable">
+          <affordance>Light</affordance>
+        </li>
+        <li Class="Verse.ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RUT_FoundrySalvageCache</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -110,6 +110,11 @@
     <Compile Include="RM_LordJob_DefendPerimeter.cs" />
     <Compile Include="RM_MapComponent_VaporColumns.cs" />
     <Compile Include="RM_CompVaporDrifter.cs" />
+    <Compile Include="RM_GenStep_TerrainChannels.cs" />
+    <Compile Include="RM_ScattererValidator_Biome.cs" />
+    <Compile Include="RM_GradientAxisRepaint.cs" />
+    <Compile Include="RM_GradientSurgeExtension.cs" />
+    <Compile Include="RM_GameCondition_GradientSurge.cs" />
   </ItemGroup>
 
   <ItemGroup>

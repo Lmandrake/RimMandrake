@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    ============================================================================
+    RUT_FoundrySalvageCache             UtinniPatches · FORGE_MECHANICS_1 F4
+    ============================================================================
+    forge_kit_spec.md F4 player-experience line: "forge-tech salvage as the
+    prize." This pass ships the SHELL only, same explicit scope every other
+    F4 piece carries here — a visible, inert set-piece marker at the site
+    where a real lootable stash belongs, not a populated loot table. Real
+    contents (a ThingSetMaker / storage comp with actual forge-tech items)
+    are items-pass work, owed — marking a spot without inventing salvage
+    economy content this task was never scoped to author.
+
+    Shape follows this mod's own RUT_CrecheMarker.xml precedent (read in
+    full before writing this) for the destroyable/useHitPoints/Flammability
+    pairing — ThingDef.ConfigErrors flags Flammability > 0 paired with
+    useHitPoints false as an error, so both are zeroed/false together, same
+    as that def's own header already explains. Unlike CrecheMarker this one
+    IS drawn (drawerType left at its BuildingBase default) — a "prize"
+    should be visibly present, not textually invisible ground-memory.
+
+    Spawned via RM_GenStep_PlacedSetPieces / RM_SetPieceElement_SpawnMarker
+    (Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml), same shared
+    marker-spawn element every sibling kit in this mod already reuses.
+
+    PLACEHOLDER ART, DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt) — no sprite yet.
+    ============================================================================
+  -->
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundrySalvageCache</defName>
+    <label>forge-tech salvage</label>
+    <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever — whatever — stacked it here clearly meant to come back.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <tickerType>Never</tickerType>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.2</fillPercent>
+    <!-- PLACEHOLDER ART, DEPLOY_HOLD'd — no sprite yet; real loot content is
+         items-pass work, also owed. -->
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Production/RUT_FoundrySalvageCache</texPath>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+  </ThingDef>
+
+</Defs>

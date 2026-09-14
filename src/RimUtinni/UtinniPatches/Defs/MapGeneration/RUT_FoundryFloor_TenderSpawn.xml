@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FoundryFloor_TenderSpawn.xml       UtinniPatches · FORGE_MECHANICS_1 F4
+  ============================================================================
+  forge_kit_spec.md F4: "the glowing tenders as the garrison... Tender kinds
+  are mechanoid-family, roster/faction pass; their strings reveal nothing
+  (ban #2)." This item's own task brief: "use an EXISTING shipped mechanoid
+  PawnKindDef as a clearly-commented PLACEHOLDER, do not invent tender
+  content."
+
+  Placeholder kind: vanilla Mech_Pikeman (Biotech). Chosen for zero new
+  strings — every label/description a player can see comes straight from
+  vanilla's own mechanoid flavor text ("pikeman"), which says nothing about
+  the Forge, the towers, or what these things actually run below. Ban #2
+  check for this file: no label, description, letter or quest string
+  anywhere in this def or its GenStepDef names what the tenders are running
+  — the placeholder is a bare cross-reference to an unmodified vanilla
+  PawnKindDef, nothing here writes new text about it at all.
+
+  Placed via RM_GenStep_PlacedSetPieces / RM_SetPieceElement_AnchoredPawn
+  (RimMandrake.EnvironmentalHazards, MIASMA_MECHANICS_1 M6 build, read in
+  full before writing this) — faction is always null on that element
+  ("true wildlife... zero biome wild-spawn commonality; the GenStep is
+  their only entry"), the SAME accepted placeholder-wiring shape its own
+  header already documents for exactly this case ("a placeholder PawnKindDef
+  wired in ahead of the roster pass... does not carry
+  RM_CompTerritorialAnchor... EXPECTED, not a bug"). Real tender
+  faction/hostility/AI behaviour is roster/faction-pass work, explicitly not
+  this kit's job per the spec's own line — owed.
+
+  spotMustBeStandable true — hard-ban-#1 guard (forge_kit_spec.md: "no
+  PawnKindDef this kit places may spawn on lava terrain"). This is the ONE
+  GenStepDef in this build pass that actually places a PawnKindDef, so this
+  field is load-bearing for the ban, not merely tidy: LavaDeep (painted by
+  RUT_FoundryFloor_MeltChannels.xml, order 300, before this GenStepDef's own
+  850/860) is Impassable and therefore always fails IntVec3.Standable, so a
+  tender can never land on the melt.
+
+  count 3 (INVENTED, this pass — "the garrison," no figure named) — a real
+  live-tuned figure is owed to a later pass, alongside the roster's own real
+  tender kind.
+
+  order 860 — after the salvage cache (850) so tenders spawn with the cache
+  sites already reserved (NoNonNaturalEdifices below also guards against
+  the reverse case, a cache overlapping an already-placed tender's cell).
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundryFloor_TenderSpawn</defName>
+    <order>860</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>3</count>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>10</minSpacing>
+      <minEdgeDistPct>0.05</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="Verse.ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
+          <!-- PLACEHOLDER — roster/faction pass replaces with the real
+               tender kind. Vanilla, unmodified; no new string anywhere
+               names what it runs (ban #2). -->
+          <pawnKind>Mech_Pikeman</pawnKind>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
