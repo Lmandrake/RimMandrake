@@ -267,6 +267,22 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml            # BENCH: no
 UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml         # BENCH: held with the ThingDef it scatters, 2026-09-13
 UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held with the ThingDef it scatters, 2026-09-13
 
+# SUMP_MECHANICS_1 S4 (2026-09-14): a 4th file added to the same hold group
+# above — patches RM_CompDreadSource onto RUT_BeastBulge's own comps list,
+# meaningless while the bulge itself is undeployed. Lift together with the
+# three files above.
+UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: held with RUT_BeastBulge.xml, 2026-09-14
+
+# SUMP_MECHANICS_1 S4 (2026-09-14): RUT_Filth_MouseTrack.xml repointed to
+# Things/Filth/RUT_MouseTrack after validate_patch.py refused a reuse of
+# vanilla's own Things/Filth/Grainy as a hard ERROR — this mod already
+# ships content under Textures/Things/, so validate_patch.py treats
+# Things/ as OUR namespace and requires a real file (same F2/F5/F6 shape
+# documented above, first time this item hit it).
+# => LIFT when a real low-alpha track sprite lands under
+#    UtinniPatches/Textures/Things/Filth/RUT_MouseTrack.png.
+UtinniPatches/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art yet, 2026-09-14
+
 # --- FORGE_MECHANICS_1 F2/F5/F6: six new ThingDefs, no art yet ---------------
 # 2026-09-13, FORGE_MECHANICS_1 F2/F5/F6 build pass. All six intended to
 # reuse an existing vanilla texPath as a placeholder (Chemfuel/Filth_Blood/

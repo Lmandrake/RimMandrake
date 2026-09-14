@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Placeholder_SumpMouse.xml   UtinniPatches — SUMP_MECHANICS_1 S4
+
+  PLACEHOLDER PawnKindDef for RUT_Placeholder_SumpMouseRace (ThingDefs_Races/,
+  this same pass) — see that file's own header for why a new child ThingDef
+  rather than patching vanilla Squirrel directly. ParentName="AnimalKindBase"
+  and combatPower/ecoSystemWeight match Squirrel's own real PawnKindDef
+  values exactly (read via mcp__rimsage__get_def_details) — this stub should
+  behave like an ordinary small critter in every respect this pass does not
+  deliberately change.
+
+  lifeStages: three entries matching Squirrel's own life-stage count and
+  drawSize progression, reusing its real texPath
+  (Things/Pawn/Animal/Squirrel/Squirrel — confirmed real, already-loaded)
+  with a near-black recolor — the "recolored placeholder" the kit spec's
+  own S4 text calls for. No new art, no DEPLOY_HOLD needed.
+
+  NOT added to RUT_Sump's own wildAnimals list and not wired into any
+  GenStep — this pass's own scope is proving the wander-validator and
+  filth-deposit mechanism compiles and is reachable, not populating the
+  Sump biome with live wildlife (that is roster-pass content authoring,
+  same "compiles now, first live spawn later" posture this item's own S1/S2
+  spike pass already used for RM_CompFloodIgniter/RM_CompWorkedLottery).
+-->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Placeholder_SumpMouse</defName>
+    <label>sump mouse (placeholder)</label>
+    <race>RUT_Placeholder_SumpMouseRace</race>
+    <combatPower>33</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>1</drawSize>
+          <color>(25,22,20)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>1.25</drawSize>
+          <color>(25,22,20)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <drawSize>1.5</drawSize>
+          <color>(25,22,20)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

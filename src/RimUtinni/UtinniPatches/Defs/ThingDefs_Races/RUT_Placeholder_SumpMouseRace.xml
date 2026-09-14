@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Placeholder_SumpMouseRace.xml   UtinniPatches — SUMP_MECHANICS_1 S4
+
+  "roster's mouse kind can stub as a recolored placeholder for the filth
+  test" (sump_kit_spec.md S4). This is that stub — NOT the real sump-mouse
+  the roster pass eventually authors (this task's own brief explicitly
+  forbids authoring that here).
+
+  🔴 ParentName correction made THIS pass, caught by validate_patch.py, not
+  guessed around: Squirrel itself carries no `Name="..."` attribute (only
+  vanilla defs that explicitly declare one are legal ParentName targets —
+  confirmed the hard way, `validate_patch.py` refused a first draft of this
+  file with "ParentName=\"Squirrel\" resolves to no def carrying
+  Name=\"Squirrel\""). ParentName="AnimalThingBase" instead — the real,
+  Name-tagged abstract Squirrel's OWN ParentName points to
+  (Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml, read in full) —
+  with every Squirrel-specific field AnimalThingBase does not already
+  provide copied down directly (body, baseBodySize, baseHealthScale,
+  baseHungerRate, foodType, leatherDef, gestationPeriodDays, lifeStageAges,
+  sounds, headPosPerRotation, tools, and the four statBases AnimalThingBase
+  itself does not set: MoveSpeed/MarketValue/ComfyTemperatureMin/Wildness).
+  Deliberately NOT ParentName off Squirrel even if it were legal: Squirrel
+  is a SHARED vanilla race spawning in every biome that lists it, and this
+  mechanic's own comps (filth deposit, dread-avoidance wander opt-in) are
+  Sump-specific — patching the shared def would give every wild squirrel in
+  every save this behavior, an unwanted global side effect this repo's own
+  posture (every other biome-scoped mechanic in this mod gates explicitly:
+  RM_GenStep_EdgeBandFilth's own biomes list, RM_GameCondition_
+  WeatherPulse's biomeMapConditions) argues against.
+
+  No new art: recolored via the PawnKindDef's own lifeStages
+  (RUT_Placeholder_SumpMouse.xml, PawnKindDefs/) reusing Squirrel's own
+  real texPath with a darker tint — the "recolored placeholder" the spec's
+  own text calls for, zero new sprites.
+
+  comps: REPLACES (does not extend) Squirrel's own inherited list —
+  Squirrel's own comps are three Anomaly-only entries (CompAttachBase,
+  HoldingPlatformTarget, Studiable), all optional/inert without that DLC
+  and irrelevant to this placeholder's purpose; dropping them is a
+  deliberate simplification, not an oversight. RM_CompFilthTrail is
+  individually MayRequire-gated per the modExtension-missing-type-discards-
+  def lesson (infrastructure memory) even though the whole ThingDef itself
+  needs no gate (ParentName="AnimalThingBase" is base-game, always
+  resolvable).
+
+  modExtensions: RM_DreadAvoidWanderExtension is the presence-only marker
+  RM_JobGiver_DreadAvoidWander.TryGiveJob checks for (RM_JobGiver_
+  DreadAvoidWander.cs) — see that class's own header for why the wander
+  seam is a globally-inserted, marker-gated JobGiver rather than a
+  per-race ThinkTreeDef override.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Placeholder_SumpMouseRace</defName>
+    <label>sump mouse (placeholder)</label>
+    <description>PLACEHOLDER — a recolored squirrel standing in for the real sump-mouse (roster pass owed). Runs the black tar flats, leaving faint tracks except where something keeps it away.</description>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <soundEating>Rodent_Eat</soundEating>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.8, 1)</li>
+          <li>(2.4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.11</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.17)</li>
+        <li>(0.2, 0, 0)</li>
+        <li>(0.0, 0, -0.15)</li>
+        <li>(-0.2, 0, 0)</li>
+      </headPosPerRotation>
+    </race>
+    <statBases>
+      <MoveSpeed>5.1</MoveSpeed>
+      <MarketValue>35</MarketValue>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail" MayRequire="mandrake.rm.environmentalhazards">
+        <filthDef>RUT_Filth_MouseTrack</filthDef>
+        <validTerrains>
+          <li>RM_TarShallow</li>
+        </validTerrains>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_DreadAvoidWanderExtension" MayRequire="mandrake.rm.environmentalhazards" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
