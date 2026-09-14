@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ThinkTree_GreentideGnawerFell.xml   UtinniPatches — GREENTIDE_MECHANICS_2 M6
+
+  Wires RM_JobGiver_GnawTreeBase (RM_JobGiver_GnawTreeBase.cs) onto every
+  animal via insertTag="Animal_PreMain" — the SAME global, safe-by-
+  construction extension point RUT_ThinkTree_SumpMouseWander.xml already
+  established in this repo for the identical situation (read in full before
+  writing this file). Safe because RM_JobGiver_GnawTreeBase.TryGiveJob's own
+  first real check returns null for any pawn whose race lacks
+  RM_GnawTreeBaseExtension — every animal that is not
+  RUT_Placeholder_GreentideGnawerRace (ThingDefs_Races/, this same pass)
+  falls through to its own ordinary main tree, same tick, zero behavior
+  change. A SEPARATE ThinkTreeDef from RUT_ThinkTree_SumpMouseWander (and
+  from SHIP_VERMIN_MOD_1's own RM_ThinkTree_VerminBehaviors) — ThinkNode_
+  SubtreesByTag tries every ThinkTreeDef sharing an insertTag independently
+  (verified there), so no coordination between these Defs is needed.
+
+  Whole-Def MayRequire: this Def's own thinkRoot instantiates a class that
+  only exists when mandrake.rm.environmentalhazards is active — same
+  posture RUT_ThinkTree_SumpMouseWander.xml already uses.
+-->
+<Defs>
+
+  <ThinkTreeDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ThinkTree_GreentideGnawerFell</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_GnawTreeBase" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

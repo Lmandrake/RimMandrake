@@ -471,6 +471,220 @@ carry). No bridge/game access this pass, same posture as the spike.
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml` (new, held — no art)
 - `src/DEPLOY_HOLD.txt` (1 new entry, `RUT_DryAirBlower.xml`)
 
+## M6 build pass — 2026-09-14
+
+Full build of M6 (three-feller tree fall), per the kit spec's own M6
+section, resolved 2026-09-13 by this item's own spike pass ("no falling-
+tree machinery exists ... `RM_TreeFallUtility` must be built from scratch
+exactly as this section already assumed" — re-cited, not re-verified).
+
+**`RM_TreeFallUtility.FellTree(Plant tree, Rot4 dir, FallCause cause)`**
+(`src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs`, new,
+generic RM_-tier — not Greentide-hardcoded, matches this assembly's own
+"build once, pay three times" kit-home posture every prior M-pass in this
+item used). Walks `ext.fellLength` cells from the trunk in `dir` (an
+`RM_FellableTreeExtension` on the Plant def supplies every number below;
+an untagged Plant falls back to a conservative built-in default so the
+utility never throws on an arbitrary vanilla tree): each cell takes one
+Blunt hit (`ext.fallDamageRange.RandomInRange`, **INVENTED** 30-120 per the
+spec's own range, tiered by `isGiantClass` — placeholder giant ships
+70-120, the utility's own untagged fallback is 20-40) against every Thing
+there except the tree itself; the first `heartRadius` cells roll one
+`hardwoodDef` drop total (giants only); every cell independently rolls a
+`greenwoodDef` drop at `greenwoodDropChancePerCell` (**INVENTED** 0.5,
+stack 5-15, giant placeholder overrides to 0.6/10-25); a dust puff throws
+at every cell. `SoundDefOf.Roof_Collapse` (a real vanilla crash cue) plays
+once at the trunk unless `ext.crashSound` overrides it — no new SoundDef
+authored, matching M9/M12's own "reuse before invent" precedent for
+cues. Distant-crash ambience is free from that alone, per the spec — a
+plain map-volume `PlayOneShot` needs no falloff/sustainer work. The tree
+is then `Destroy(DestroyMode.Vanish)`d explicitly, not killed by its own
+swath. Gated by one new settings toggle, `treeFallEnabled` (#22) — the
+single choke point all three fellers route through, so turning it off
+mid-game freezes a cracking/mid-chew tree exactly where it is rather than
+forcing anything back upright.
+
+**`RM_FellableTreeExtension`** (new, same file's sibling
+`RM_FellableTreeExtension.cs`) — the opt-in tag `FellTree`, feller 1's own
+comp, feller 2's hook and feller 3's JobGiver all key off. Carries
+`isGiantClass`, `fellLength`, `fallDamageRange`, `heartRadius`,
+`hardwoodDropRange`, `greenwoodDef`/`hardwoodDef` (generic `ThingDef`
+fields, same idiom `RM_LivingBoleBiomeExtension`'s own
+heartwoodThing/coreMarkerThing already set in this assembly — a different
+biome's giant tree names its own resource defs, not a hardcoded
+RUT_Greenwood/RUT_Hardwood lookup), `greenwoodStackRange`/
+`greenwoodDropChancePerCell`, `crashSound`, `dustPuffScale`.
+
+**Feller 1 — cracked from within.** `RM_CompCrackFall : ThingComp` +
+`CompProperties_CrackFall` (new, same file). `CompTickRare` (250-tick
+cadence, matching every other interval roll in this assembly). Below
+`minGrowthFraction` (**INVENTED** 0.9 — "past a growth/age threshold" per
+the spec) the tree never rolls at all; at/above it, MTB scales linearly
+from `mtbDaysAtFullGrowth * 2` at the threshold down to
+`mtbDaysAtFullGrowth` (**INVENTED** 8 days, the spec's own named figure) at
+full growth — "scaling down at lower growth if that reads better
+mechanically" per the build brief's own discretion, recorded here as the
+exact formula (`RM_CompCrackFall.EffectiveMtbDays`) rather than left
+implicit. On a hit: creak sound (`Props.creakSound` or
+`SoundDefOf.Building_Complete` — the same fallback
+`RM_MapComponent_LivingRegrowth`'s own creak cue already uses in this
+assembly) + a `RM_TreeFallCreak` message, then `FellTree` after
+`fallDelayTicksRange` (**INVENTED** 300-900 ticks, "a few hundred" per the
+spec).
+
+**Feller 2 — shattered from the side.** Build-time decision the spec left
+open ("a damage-watcher on tagged tree defs, or the comp exposes an
+on-kill callback — decide at build against the comp's final shape"):
+**chose the callback, as a Props field, not a watcher.** Added
+`fellsTreesBelowHealthFraction` (float, default 0 = off) to
+`HediffCompProperties_PeriodicAreaAttack`, and a `TryFellTree` check inside
+`HediffComp_PeriodicAreaAttack.DamageCell`, called right after its existing
+`t.TakeDamage` for every Thing the burst touches. Read the comp's real
+current shape before deciding (its `DamageCell` already snapshots the cell,
+already computes a per-category multiplier including `plantMultiplier`,
+already TakeDamages each Thing individually) — a watcher would stand up a
+second scanning system (a Harmony patch or a MapComponent tick) duplicating
+work this method already does every burst; the Props field is zero-cost
+when unset (every other consumer of this ruled comp — SUMP_MECHANICS_1,
+MIASMA, FORGE etc. — is unaffected, since the default is 0) and generic
+(any `RM_FellableTreeExtension`-tagged Plant this comp damages below the
+fraction falls, not a Greentide-specific subclass). `TryFellTree` fires
+`RM_TreeFallUtility.FellTree` with `Rot4.FromAngleFlat((plant.Position -
+carrier.Position).AngleFlat)` (away from the carrier) once a tagged
+Plant's `HitPoints` drops to/below `fellsTreesBelowHealthFraction *
+MaxHitPoints`; untagged plants are never affected by this hook regardless
+of the fraction. Not wired onto a live Shatterer HediffDef this pass — no
+such HediffDef exists yet in `src/` (the Shatterer itself is roster/design
+content, out of this item's scope) — the field and hook are proven to
+compile and are ready for that def to set
+`<fellsTreesBelowHealthFraction>` whenever it ships.
+
+**Feller 3 — gnawed from below.** `RM_JobGiver_GnawTreeBase` +
+`RM_JobDriver_GnawTreeBase` (new, `EnvironmentalHazards/Source/`, not
+`CreatureBehaviors` — it calls `RM_TreeFallUtility`/
+`RM_FellableTreeExtension` directly, so it lives in the same assembly as
+what it drives rather than adding a new cross-project reference). Written
+directly for this one job, not through the generic `RM_JobGiver_
+GnawTargets` extension-scanner already in `CreatureBehaviors` — same
+posture `RM_JobGiver_ChewAnchors` already set in this repo for
+`JobGiver_Mine`-shaped work ("write it directly per creature", per that
+item's own review note the spec's M6 text explicitly points back to). The
+JobGiver (~30 lines) finds the nearest `RM_FellableTreeExtension`-tagged
+Plant within `RM_GnawTreeBaseExtension.searchRadius` (**INVENTED** 40) via
+`GenClosest.ClosestThingReachable`; the driver walks to it and runs one
+toil that counts down `chewTicksToFell` (**INVENTED** 2400 ticks — no
+figure named in the spec's own text for this duration) with a progress
+bar, then calls `FellTree(tree, Rot4.Random, FallCause.Gnawed)`. Cribbed
+structurally from `RM_JobDriver_Gnaw` (SHIP_VERMIN_MOD_1, same assembly
+family) but ends in a real fall rather than a generic bite-kill, per the
+spec's own explicit distinction.
+
+**Gnawer PawnKindDef — confirmed absent, placeholder shipped.** Grep
+before this pass started (`grep -rn "Gnawer" src/`) found none. Per the
+build brief's own fallback: `RUT_Placeholder_GreentideGnawerRace.xml` +
+`RUT_Placeholder_GreentideGnawer.xml` (new, `UtinniPatches/`) — a
+recolored Squirrel, the exact same placeholder shape
+`RUT_Placeholder_SumpMouseRace`/`RUT_Placeholder_SumpMouse`
+(SUMP_MECHANICS_1) already established in this repo for the identical
+situation, read in full before writing these. Carries the marker/tuning
+extension `RM_GnawTreeBaseExtension` (new). Wired via
+`RUT_ThinkTree_GreentideGnawerFell.xml` (new) — the same globally-inserted,
+marker-gated `insertTag="Animal_PreMain"` idiom
+`RUT_ThinkTree_SumpMouseWander.xml` already set, safe-by-construction for
+every other animal (the JobGiver's own first real check returns null for
+any race without the extension). Neither def is added to `RUT_Greentide`'s
+own `wildAnimals` list or any GenStep — proving the mechanism compiles and
+is reachable, not populating the biome, same posture the SumpMouse
+precedent itself used.
+
+**Content.** `RUT_Greenwood.xml` (new item, `ParentName="ResourceBase"`,
+same shape `RUT_Hardwood.xml` already set — MarketValue 1.8, Mass 1.5,
+**INVENTED** both) and `RUT_Placeholder_GreentideGiantTree.xml` (new Plant,
+`ParentName="TreeBase"`, MaxHitPoints 900/visualSizeRange 3.5-5.0/drawSize
+(6,6), all **INVENTED**, sized for the spec's own "a giant comes down
+across ten tiles" line — matches `fellLength` exactly). Both new files —
+placeholder giant tree + Greenwood item — ship genuine flat-color
+placeholder PNGs (64×64/128×128 RGBA, same discipline `RUT_Hardwood.png`
+already set), **not** a real donor texPath: `Textures/Things/Plants/
+AB_JungleTree` and its siblings already sit in this repo as real, unused
+art, but `infrastructure/artpipe/done/jungletree_v1.json` and the flora
+roster docs already track them for the real roster pass's own giant —
+poaching that file here risked a defName/asset collision with that future
+real def, so a fresh placeholder was authored instead. Real bespoke art
+for both is owed, same posture as every sibling placeholder this session.
+
+**Self-review (build brief's own instruction: the fall-damage swath
+directly damages player structures/pawns — review the targeting logic
+carefully).** `RM_TreeFallUtility.DamageCell` snapshots each cell's Thing
+list before damaging (`new List<Thing>(cell.GetThingList(map))`), same
+defensive shape `HediffComp_PeriodicAreaAttack.DamageCell` already uses,
+so destroying a Thing mid-loop cannot corrupt the live list — and skips
+only the falling tree itself (`t == tree`), meaning every pawn, building
+and item in the swath, including the player's own, takes the hit, which is
+the spec's own explicit intent ("crushing what it lands on"), not an
+oversight. Two accepted (not fixed) simplifications, both flagged rather
+than engineered around, matching this item's own M12 self-review posture:
+(1) no `sparedNaturalRock`/`sparedUnderThickRoof` check — a swath that
+runs into a mountain edifice can chip it once; low risk relative to
+M12's own concern (that hazard is a long-lived repeating aura, this is a
+single one-time pass); (2) feller 2's `TryFellTree` hook is called from
+inside the ruled comp's own per-Thing loop, but `RM_TreeFallUtility.
+DamageCell`'s own internal swath damage does **not** itself call
+`TryFellTree` — confirmed deliberately non-recursive: a Shatterer's aura
+felling one tagged tree cannot chain-trigger a second fell even if that
+tree's own swath crosses another tagged tree, which would otherwise be a
+real chain-reaction risk in a dense stand.
+
+**Mod Settings.** One new toggle, `treeFallEnabled` (entry #22,
+`RM_EnvironmentalHazardsMod.cs`) — the single master switch for all three
+fellers, per this mod's established one-master-switch-per-mechanism
+convention.
+
+**Build/validate.** `RimMandrake.EnvironmentalHazards.dll` rebuilt, 0
+warnings/0 errors (6 new `<Compile>` entries; `HediffCompProperties_
+PeriodicAreaAttack.cs`/`HediffComp_PeriodicAreaAttack.cs`/`RM_
+CompStationEater.cs` edited in place for the feller-2 hook and the shared
+`RM_EnvironmentalHazardsJobDefOf` class). `validate_patch.py` against the
+live 99-active-mod installed set: 0 errors on all 6 new/changed def files
+(the usual "no def in the load set uses that class" info-lines for brand-
+new C# classes, and the usual "cannot verify a packed vanilla texture"
+WARNs on the Squirrel-reuse texPaths — both the same expected shape every
+prior placeholder in this repo produces, not a real error).
+
+**Owed.** Real bespoke art for `RUT_Placeholder_GreentideGiantTree`/
+`RUT_Greenwood` (flat-color placeholders ship, not held from deploy — they
+compile and validate clean, same as `RUT_Hardwood`'s own precedent); the
+real Shatterer HediffDef to actually set
+`fellsTreesBelowHealthFraction` (feller 2's hook is proven, unwired to
+live content); the real Gnawer/giant-tree roster content (both
+placeholders explicitly out of scope, same as every prior placeholder this
+item shipped); no bridge/quicktest verification (no game access in this
+task, same posture as every build pass in this item).
+
+## files (M6 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_FellableTreeExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompCrackFall.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GnawTreeBaseExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_GnawTreeBase.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_GnawTreeBase.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/HediffCompProperties_PeriodicAreaAttack.cs` (feller 2 hook field)
+- `src/RimMandrake/EnvironmentalHazards/Source/HediffComp_PeriodicAreaAttack.cs` (feller 2 hook call)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs` (shared JobDefOf class, 1 new entry)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle, #22)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (6 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_TreeFall.xml` (new)
+- `src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml` (2 new keys)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Greenwood.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Placeholder_GreentideGiantTree.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_GreentideGnawerRace.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_GreentideGnawer.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_GreentideGnawerFell.xml` (new)
+- `src/RimUtinni/UtinniPatches/Textures/Things/Plant/GreentideGiantTree/RUT_Placeholder_GreentideGiantTree.png` (new, placeholder)
+- `src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_Greenwood.png` (new, placeholder)
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside

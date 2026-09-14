@@ -133,6 +133,12 @@
     <Compile Include="RM_GameCondition_WetBulb.cs" />
     <Compile Include="RM_MapComponent_DryRooms.cs" />
     <Compile Include="RM_CompDryFieldEmitter.cs" />
+    <Compile Include="RM_FellableTreeExtension.cs" />
+    <Compile Include="RM_TreeFallUtility.cs" />
+    <Compile Include="RM_CompCrackFall.cs" />
+    <Compile Include="RM_GnawTreeBaseExtension.cs" />
+    <Compile Include="RM_JobGiver_GnawTreeBase.cs" />
+    <Compile Include="RM_JobDriver_GnawTreeBase.cs" />
   </ItemGroup>
 
   <ItemGroup>
