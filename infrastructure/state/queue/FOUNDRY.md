@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T02:02:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T02:15:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -756,6 +756,15 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
+## ARMOURY_MW2_CUT_1 Cut ModularWeapons2 out of Armoury entirely: strip 181 comps + 92 graphicClass swaps, delete 21 root-tag defs + workbench + 3 research + 2 gadgets, remove MW2 from ModsConfig, RESTORE SMYH as final step, cold-load verify + resave canonical (owner ruled CUT 2026-09-13; spec in item)
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  ARMOURYMW2CUT1 — cut ModularWeapons2 out of the KotOR Armoury entirely
+prose:    infrastructure/state/items/ARMOURY_MW2_CUT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1471,23 +1480,3 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
-
-## ARMOURY_MW2_DEP_UNGATED_1 Armoury undeclaredly hard-depends on ModularWeapons2: 21 root-tag ModularParts/Mount defs + gunsmith workbench thingClass discarded if MW2 absent, 44 KotOR weapon/apparel files degrade to non-modular; About.xml declares MW2 nowhere and there's no LoadFolders gate — ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 gated VEF/EBSG/AdaptiveStorage/kotorcore but MISSED MW2. Fix: gate the MW2 content like kotorcore's own LoadFolders IfModActive does, OR declare the dep
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_MW2_DEP_UNGATED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_MW2_DEP_UNGATED_1.md
-
-## ARMOURY_MW2_CUT_1 Cut ModularWeapons2 out of Armoury entirely: strip 181 comps + 92 graphicClass swaps, delete 21 root-tag defs + workbench + 3 research + 2 gadgets, remove MW2 from ModsConfig, RESTORE SMYH as final step, cold-load verify + resave canonical (owner ruled CUT 2026-09-13; spec in item)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  ARMOURYMW2CUT1 — cut ModularWeapons2 out of the KotOR Armoury entirely
-prose:    infrastructure/state/items/ARMOURY_MW2_CUT_1.md
