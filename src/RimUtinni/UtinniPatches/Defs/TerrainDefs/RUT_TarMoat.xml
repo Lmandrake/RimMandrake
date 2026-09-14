@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TarMoat.xml                        UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SUMP_MECHANICS_1 S1 build pass (sump_kit_spec.md "the poured moat + command
+  ignition" — build order step 4). "You lay a tar perimeter like flooring;
+  raiders path around it or mire in it. On command, it lights... Burnt tar is
+  spent tar."
+
+  RUT_TarMoat: player-buildable floor terrain. `pathCost 100` is this pass's
+  own INVENTED "high deterrent" value (spec: "High pathCost + movement
+  penalty is the unlit deterrent... vanilla pathfinding prices pathCost
+  natively, no C#") — pathCost does double duty in the real engine as both
+  the pathfinding-preference weight AND the realtime movement-speed
+  divisor, so one field is the whole deterrent, deliberately well above
+  RM_Churnmud's own 34 (a "brutally slow" mire) since the moat's fiction is
+  stronger: raiders should visibly prefer routing around it. `Flammability
+  1.0` — it is tar. `burnedDef RUT_TarSpent` satisfies TerrainDef's own
+  ConfigErrors requirement (verified, Verse/TerrainDef.cs:542, "flammable
+  but burnedDef is null") and is the engine's real burn-swap target
+  (TerrainGrid.SetTerrain on Notify_TerrainBurned, verified,
+  Verse/TerrainGrid.cs:599-611).
+
+  Texture: texturePath reuses RM_TarDeep's own real, already-loaded path
+  (LiquidTypes' RM_Tar.xml) — deliberately, not a placeholder-of-convenience:
+  poured tar IS the same substance as a natural tar pool, so the reuse is
+  a content choice, not a missing-art stand-in, and needs no DEPLOY_HOLD.
+
+  costList: "barreled tar" per the spec's own S1 text ("cost paid in
+  barreled tar, the §7 export consuming itself") — CHECKED, does not exist
+  yet: LIQUID_TYPES_MOD_1.md and grep across src/ for any "barrel"/"Barreled"
+  defName both come up empty (the items pass, which owns §7's economy per
+  the kit spec's own "XML-only ledger", has not shipped it). Per this task's
+  own instruction: use a placeholder cost in an EXISTING resource rather than
+  invent the items pass's own economy def. Chemfuel (vanilla) — a real,
+  tradeable, flammable liquid resource — is the least-arbitrary stand-in
+  available; 4/cell is this pass's own INVENTED placeholder quantity, not a
+  pricing call. ⚠️ OWED: re-point this costList at the real "barreled tar"
+  ThingDef the moment the items pass ships one — this is a flagged
+  placeholder, not a design decision.
+
+  RUT_TarSpent: the burn byproduct. Cheap, walkable, re-pourable (its own
+  affordances include Light, which is all RUT_TarMoat's own
+  terrainAffordanceNeeded asks for — re-pouring the moat directly onto spent
+  ground needs no extra code). Texture reuses vanilla's own real burnt-floor
+  path (BurnedWoodPlankFloor's texturePath, confirmed via
+  mcp__rimsage__get_def_details this pass) — a legitimate "burnt ground"
+  reuse, not a missing-art placeholder.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef>
+    <defName>RUT_TarMoat</defName>
+    <label>poured tar moat</label>
+    <description>Tar poured and packed flat, a black band nothing wants to cross. Unlit, it is just brutally slow going and grip that does not let go easily. Lit, on command, it is a wall of fire and blinding smoke a day's travel can see burning.</description>
+    <renderPrecedence>250</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <fertility>0</fertility>
+    <layerable>true</layerable>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>false</takeSplashes>
+    <pathCost>100</pathCost>
+    <designationCategory>Floors</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <affordances>
+      <li>Light</li>
+      <li>Walkable</li>
+    </affordances>
+    <burnedDef>RUT_TarSpent</burnedDef>
+    <costList>
+      <Chemfuel>4</Chemfuel>
+    </costList>
+    <statBases>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-3</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef>
+    <defName>RUT_TarSpent</defName>
+    <label>spent tar</label>
+    <description>Tar burned down to a dark, cracked crust. Walkable, worthless as a barrier, and ready to be poured over again.</description>
+    <renderPrecedence>251</renderPrecedence>
+    <texturePath>Terrain/Surfaces/BurnedWoodFloor</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <fertility>0</fertility>
+    <layerable>true</layerable>
+    <pathCost>14</pathCost>
+    <affordances>
+      <li>Light</li>
+      <li>Walkable</li>
+    </affordances>
+    <statBases>
+      <Beauty>-6</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

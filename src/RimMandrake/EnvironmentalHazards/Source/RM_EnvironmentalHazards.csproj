@@ -94,6 +94,8 @@
     <Compile Include="RM_GenStep_GradientAxis.cs" />
     <Compile Include="RM_HediffComp_LocalGrowthAura.cs" />
     <Compile Include="RM_HediffComp_PeriodicInspiration.cs" />
+    <Compile Include="RM_CompTimedTerrainBurn.cs" />
+    <Compile Include="RM_MapComponent_ThresholdSmokeColumn.cs" />
   </ItemGroup>
 
   <ItemGroup>

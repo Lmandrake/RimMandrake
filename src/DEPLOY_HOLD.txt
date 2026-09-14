@@ -217,6 +217,21 @@ Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still a
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml    # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   # BENCH: no art yet, 2026-09-13
 
+# --- SUMP_MECHANICS_1 S1: RUT_MoatFusePost, no art yet ------------------------
+# 2026-09-13, SUMP_MECHANICS_1 build pass. RUT_MoatFusePost.xml is a genuinely
+# new bespoke fixture (a small hand-cranked trigger post) with no vanilla or
+# existing-mod texture that fits as a reuse — unlike RUT_TarMoat/RUT_TarSpent
+# (reuse RM_TarDeep's and BurnedWoodPlankFloor's own real texturePaths, both
+# legitimate content reuses, no hold needed) and RUT_TarBlaze (reuses vanilla
+# Fire's own real texPath, Things/Special/Fire — also no hold needed).
+# validate_patch.py: 0 errors on every other field; the ONLY failure is the
+# missing texPath (Things/Building/Production/RUT_MoatFusePost resolves
+# nowhere under any Textures/ root in the live scan). Deploying now renders a
+# pink placeholder.
+# => LIFT when the sprite lands under UtinniPatches/Textures/ — def and art
+#    deploy together in one --apply, same pattern as the Scald hold above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 2026-09-13
+
 # --- SCALD_MECHANICS_1 S6: RUT_ScaldWreck* + scatter wiring, no art yet -------
 # 2026-09-13, SCALD_MECHANICS_1 build pass. RUT_ScaldWrecks.xml's three
 # ThingDefs (RUT_ScaldWreckHull/Tank/Frame) are new this pass, each with a

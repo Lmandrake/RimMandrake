@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SUMP_MECHANICS_1 S1 build pass. RM_IgniteMoat/RM_IgniteMoatDesc/
+  RM_MoatIgniting were already referenced by RM_CompFloodIgniter.cs (spike
+  pass) via .Translate() with no Keyed file backing them yet — a missing key
+  falls back to showing the raw key text, not a load error, but this is the
+  first content pass to actually wire the comp onto a real building
+  (RUT_MoatFusePost), so the fallback would otherwise ship to players.
+  RM_TarBlazeBurnsFor is new this pass (RM_CompTimedTerrainBurn's inspect
+  string).
+-->
+<LanguageData>
+
+  <RM_IgniteMoat>Ignite moat</RM_IgniteMoat>
+  <RM_IgniteMoatDesc>Light the poured tar moat. Fire spreads along every connected tar cell — poured or natural — at a staggered pace. Burnt tar is spent; re-pour to re-arm.</RM_IgniteMoatDesc>
+  <RM_MoatIgniting>Igniting, cells queued</RM_MoatIgniting>
+  <RM_TarBlazeBurnsFor>Burns for</RM_TarBlazeBurnsFor>
+
+</LanguageData>

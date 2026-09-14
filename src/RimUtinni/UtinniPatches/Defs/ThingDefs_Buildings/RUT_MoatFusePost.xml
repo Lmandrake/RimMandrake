@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_MoatFusePost.xml                   UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SUMP_MECHANICS_1 S1 build pass. First real XML consumer of
+  RM_CompFloodIgniter (RimMandrake.EnvironmentalHazards, spiked and
+  compiling since the spike pass) — a small buildable fuse post whose gizmo
+  floods ignition across every contiguous conducting-terrain cell from its
+  own position.
+
+  conductingTerrains lists RUT_TarMoat AND the natural tar pools
+  (RM_TarShallow/RM_TarDeep, LiquidTypes' RM_Tar.xml) together — this IS
+  owner card 1 (RULED 2026-09-12, sump_kit_spec.md "Owner cards": "the lit
+  moat DOES catch adjacent natural tar pools... a defensive burn can
+  cascade into a map-scale fire"). The spike pass's own note said this
+  needs no extra code, only listing the TerrainDefs here at content-
+  authoring time — done.
+
+  cellsPerSecond 10 is the spec's own INVENTED S1 value ("~10 cells/sec"),
+  passed straight through rather than re-invented.
+
+  MayRequire on the whole ThingDef (not per-<li>): this def's only content
+  is the comp itself, so unlike a BiomeDef (which must always load) or a
+  biomeMapConditions <li> (a dangling cross-reference if absent), gating
+  the entire def is correct and matches this session's own
+  RUT_SteamCatch.xml precedent (SCALD_MECHANICS_1, same file, same MayRequire
+  posture).
+
+  Texture: genuinely new bespoke fixture (a small trigger post), no vanilla
+  or existing-mod reuse fits. OWED to the art pipeline — DEPLOY_HOLD'd
+  (src/DEPLOY_HOLD.txt), same pattern as RUT_ScaldVent.xml/RUT_SteamCatch.xml.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_MoatFusePost</defName>
+    <label>moat fuse post</label>
+    <description>A hand-cranked igniter staked at the edge of a poured tar moat. One pull sends fire racing down every connected cell of tar — poured or natural — in a staggered front.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_MoatFusePost</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>0.3</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FloodIgniter">
+        <conductingTerrains>
+          <li>RUT_TarMoat</li>
+          <li>RM_TarShallow</li>
+          <li>RM_TarDeep</li>
+        </conductingTerrains>
+        <cellsPerSecond>10</cellsPerSecond>
+        <fireSize>1</fireSize>
+        <maxCells>4000</maxCells>
+      </li>
+    </comps>
+    <designationCategory>Production</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+  </ThingDef>
+
+</Defs>
