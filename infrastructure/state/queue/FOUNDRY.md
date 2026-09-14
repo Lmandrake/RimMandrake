@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:00:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T00:14:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1480,3 +1480,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
+
+## SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1 ShowMeYourHands DrawHandsOnWeapon patch emits invalid IL into ModularWeapons2 type-init: PawnGenerator crashes, ANY new map on the current list dies at starting-pawn gen (quicktest map-gen error modal, Player.log 12297-12409, 2026-09-13)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
