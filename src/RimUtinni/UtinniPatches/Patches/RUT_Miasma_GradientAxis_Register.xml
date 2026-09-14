@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_GradientAxis_Register.xml   UtinniPatches - MIASMA_MECHANICS_1 M1 build pass
+
+  Registers RUT_GenStep_GradientAxis (Defs/MapGeneration/
+  RUT_Miasma_GradientAxisGenStep.xml) onto Base_Player, the player's home-map
+  generator — same target, same PatchOperationConditional/PatchOperationAdd
+  shape, same "Base_Player ONLY, deliberate" scoping reasoning as this
+  folder's own precedent, Patches/JawaResource_Scrapfields.xml (read
+  directly before writing this: Core/Defs/MapGeneration/
+  BasePlayerMapGenerator.xml:4-15 confirms genSteps is a plain <li> list).
+
+  MayRequire on the added <li> itself (not just on the GenStepDef's own
+  declaration) — same pattern as Core's own AnimaTrees/Royalty entry in that
+  same genSteps list — so the cross-reference cannot dangle if
+  mandrake.rm.environmentalhazards is absent from the active mod list.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards">RUT_GenStep_GradientAxis</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

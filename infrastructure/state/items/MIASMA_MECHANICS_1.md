@@ -39,9 +39,11 @@ Slime's); warden mothers are **placed set-pieces, never random spawns**.
       1.5-era RimSage index). See "Spike 1 — engine ground-truth" below for
       all findings with file:line citations.
 - [ ] Build lands per the spec's build order, after `ALPHA_MECHANICS_KIT_1`
-      (closed) — **not done this pass.** This item ran the spikes only, per
-      `LIQUID_TYPES_SPIKES_1`'s own precedent; the full 6-mechanic build is
-      later, separate FOUNDRY work.
+      (closed). **Steps 2-3 (M4 weather+light+exposure, M1 gradient axis)
+      landed 2026-09-13** — see "## M4/M1 build pass" below for the full
+      detail, honest gaps included. **Steps 4-7 (M2 surge, M3 stranding
+      pools, M6 warden placement, M5 fever-forged) remain undone** — later,
+      separate FOUNDRY work, not blocked by anything found in either pass.
 - [ ] A quicktest map in the biome shows: forced miasma weather with no rain
       reachable; the salt line drawn and moving during a surge; a pool with a
       stranded spawn after a recede; a placed warden that never leaves its
@@ -228,3 +230,194 @@ separate FOUNDRY work, not blocked by anything found here.
   surge, no gene in any boon table, no medical trade good from this kit).
 - Naming per `design/NAMING_SCHEME_PLAN.md`: mechanisms `RM_`, Miasma content
   `RUT_`; "Jawa" is lore text only.
+
+## M4/M1 build pass — 2026-09-13
+
+Kit spec's own build order steps 2-3 (`miasma_kit_spec.md` "Build order"),
+per `ALPHA_MECHANICS_KIT_1` (step 1) already closed. No bridge/game access
+this pass — offline only, per the assignment; **no live/quicktest
+verification, same gap the spike pass itself already flagged as owed.**
+
+**M4 (weather + light + exposure) — shipped, not just defined:**
+
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_MiasmaWeather.xml` (new)
+  — `WeatherDef`, kit spec's own INVENTED figures (accuracy 0.85, move 1.0),
+  `rainRate`/`snowRate`/`sandRate` all 0 (ban §5's linter-checkable half).
+  Overlay reuses vanilla's own `WeatherOverlay_NoxiousHaze` class (confirmed
+  real, `RimWorld/WeatherOverlay_NoxiousHaze.cs` in the live 1.6 decompile) —
+  **no new art this pass**; the kit spec's alternate route
+  (`RM_WeatherOverlay_GroundFog`) does not exist anywhere in `src/` yet, so
+  this is a documented, zero-new-art substitution, not a silent one. Sky
+  colours (green-gold cast) are this pass's own INVENTED-BUILD tuning, not
+  the spec's.
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_MiasmaWeatherLock.xml`
+  (new) — `GameConditionDef` on ruled `RM_GameCondition_EnvironmentalWeather`,
+  `forcedWeather=RUT_MiasmaWeather`, no damage fields (spec's own words),
+  `plantDensityFactor 1.15` (spec's INVENTED value, "the mangals' visible
+  thriving"). Attached via `RUT_Miasma.xml`'s new `biomeMapConditions`
+  (`BiomeConditionMapComponent.MapGenerated` → `GameConditionMaker.
+  MakeConditionPermanent`, confirmed against the live decompile — no extra
+  Def field needed for "permanent").
+- **Ban §5 ("no rain") is now mechanically true**, not merely read that way:
+  `ForcedWeather()` overrides vanilla's `WeatherDecider` outright, so
+  `RUT_Miasma.xml`'s kept `Rain`/`RainyThunderstorm`/`FoggyRain` commonalities
+  are now provably inert. Updated that file's own header note to say so
+  (the prior note, "kept anyway ... pending a real surge WeatherDef", is now
+  stale and was corrected in place, not left to mislead the next reader).
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_MiasmaExposure.xml` (new)
+  — wires the already-spiked `RM_HediffComp_EnvironmentalExposure` onto a
+  real `HediffDef` for the first time. `severityPerDayExposed/Unexposed` and
+  the three salinity multipliers are the spec's own INVENTED values, written
+  explicit for citation. Two visible stages ("mild"/"heavy exposure"), small
+  Breathing/Consciousness `capMods`, **no `lethalSeverity` anywhere** — this
+  hediff cannot itself kill, matching the spec's "ambient tax ... no new
+  disease system."
+- **The carrier-hediff grant — the spike's own named gap, closed this
+  pass.** The spike explicitly flagged "giving the standing carrier hediff to
+  every pawn on a Miasma map" as owed and non-blocking. Closed generically,
+  not Miasma-specifically: `EnvironmentalWeatherExtension.cs` gained
+  `carrierHediff`/`carrierHediffSeverity` fields (+ a `ConfigErrors` check
+  that `carrierHediff != hediffToApply`, since pointing both at the same def
+  would double-apply severity), and `GameCondition_EnvironmentalWeather.cs`
+  gained `EnsureCarrierHediff` — bootstraps the hediff at near-zero severity
+  onto every `HazardTargeting.Affects`-eligible pawn once, idempotently, so
+  the hediff's own comp can take over the real severity math. **Caught and
+  fixed in self-review**: the grant was originally placed after this
+  method's `environmentalDamageEnabled` mod-setting gate, which would have
+  silently disabled Miasma exposure whenever a player turned off "Environmental
+  weather damage" — contradicting that setting's own tooltip ("temperature
+  and weather-forcing are unaffected"). Restructured so only the actual
+  damage-dealing half stays gated; the carrier grant always runs. **A second
+  bug caught the same way**: `GameConditionTick()`'s own early return
+  (`if (ext.damageDef == null && ext.hediffToApply == null) return;`,
+  written before `carrierHediff` existed) would have skipped calling
+  `DoPawnEffects` — and therefore `EnsureCarrierHediff` — entirely for
+  `RUT_MiasmaWeatherLock`, since it sets neither field (the spec's own "no
+  damage fields"). The carrier grant would never have fired in a live game.
+  Fixed by adding `&& ext.carrierHediff == null` to that same check. Rebuilt
+  clean (0/0) after both fixes. **Not done**: no dedicated Mod Settings
+  toggle for the new carrier-hediff mechanism itself
+  (`MOD_OPTIONS_RETROFIT_1`'s territory, not scope-crept into here) — it
+  currently always runs, ungated, same as this class's pre-existing
+  temperature/weather-forcing effects.
+- Light: `RUT_Miasma.xml` gained a `BiomeGlowMultiplierExtension`
+  (`glowMultiplier 0.85`, the spec's own INVENTED value) — zero new code,
+  pure XML onto the already-ruled Harmony patch.
+- **Sound not done**: the spec's "ambient sound set muted/thick"
+  (`BiomeDef.soundsAmbient`, confirmed distinct from `WeatherDef.
+  ambientSounds`) needs a real `SoundDef` neither field names — left empty
+  and flagged, not guessed.
+- **Native-fauna immunity not done**: the spec's "native fauna and listed
+  races immune (XML)" needs a roster of which `RUT_Miasma` `wildAnimals`
+  entries count as native/immune — no such roster exists in `src/` yet
+  (content judgement, not this item's to invent) — `immuneThingDefs`/
+  `immunePawnKinds` left empty on `RUT_MiasmaExposure`.
+
+**M1 (gradient axis) — real content, not a stub.** The spec's own permitted
+fallback ("defs can stub as recolors first") was **not needed**: real grade
+terrain already exists — `RM_WaterBrackishShallow`/`Deep` and
+`RM_WaterBrineShallow`/`Deep` (`LIQUID_TYPES_MOD_1`, `mandrake.rm.liquidtypes`,
+read directly from disk, not assumed) and `RUT_Jawa_SaltCrust` (an existing,
+unrelated V1 desert terrain, reused here for the driest brine-adjacent band —
+no new terrain def needed).
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs`
+  (new) — generic `DefModExtension`: ordered `waterBands` (salinity → shallow/
+  deep `TerrainDef` pair; a band with no terrain is a deliberate no-op, how
+  "fresh" stays whatever vanilla painted), plus a guarded `landRepaintSource`/
+  `landTerrain`/`landRepaintMinSalinity` for the muck→salt-crust band — it can
+  **only ever** repaint terrain explicitly listed in `landRepaintSource`,
+  never rock/stone/anything else. `ConfigErrors` checks band ordering and
+  coverage to 1.0.
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GradientAxis.cs`
+  (new) — the spec's own named GenStep, order 225 (after vanilla `Terrain`
+  210 and `MutatorPostTerrain` 220, both read from the live defs this pass,
+  not assumed). Computes a signed-distance-with-Perlin-noise salinity field
+  ("a wandering front, not a ruler," the spec's own words) and repaints water
+  cells by band (shallow vs deep picked via the `ShallowWater` terrain
+  affordance, a heuristic, not a stored engine flag) and, above
+  `landRepaintMinSalinity`, the biome's own `Mud`/`AB_FertileMud` cells to
+  `RUT_Jawa_SaltCrust`.
+- **A real correction to the spike's own write-up, found reading the SAME
+  live decompile again this pass**: Spike 1 finding 5 claimed
+  `SurfaceTile.RiverLink` carries a per-link angle. It does not —
+  `RimWorld.Planet/SurfaceTile.cs`'s `RiverLink` struct carries only
+  `neighbor` (a `PlanetTile`) and `river` (a `RiverDef`), no angle field, in
+  the actual 1.6/Odyssey decompile. Rather than derive a bearing from
+  neighbor-tile world positions (real complexity, uncertain payoff — a river
+  can run toward OR away from the coast), this build uses
+  `World.CoastDirectionAt(tile)` / `LakeDirectionAt(tile)` alone — both
+  confirmed real (`RimWorld.Planet/World.cs:316`), both already return a
+  `Rot4` pointing from the tile toward the adjacent sea/lake tile, which is
+  exactly the "brine is toward the water" signal M1 needs, for a biome the
+  sheet's own SS0 already measures as coastal (93 tiles, 6 sea tiles, 32
+  river tiles). A fixed default + one-time `Log.WarningOnce` covers the case
+  neither resolves, so map-gen can never hard-fail over it.
+- Registered onto `Base_Player` only (same scope discipline as this folder's
+  own `JawaResource_Scrapfields.xml` precedent, not the abstract
+  `MapCommonBase`): `src/RimUtinni/UtinniPatches/Defs/MapGeneration/
+  RUT_Miasma_GradientAxisGenStep.xml` (new `GenStepDef`) +
+  `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_GradientAxis_Register.xml`
+  (new `PatchOperationConditional`/`PatchOperationAdd`, same shape/target
+  verified against Core's own `BasePlayerMapGenerator.xml`). The class
+  always records a salinity value for every cell on every map it runs on
+  (harmless — it only paints terrain when the map's biome carries an
+  `RM_GradientAxisExtension`), so registering it globally is safe for every
+  other biome too.
+- **Not done, flagged, not silently skipped**: per-cell Scribe save of the
+  salinity grid (same gap the spike itself already named — `TerrainGrid.
+  ExposeTerrainGrid`'s per-cell pattern is the model to crib, not yet built;
+  needed before M2 can trust axis state surviving a save/load); the "coarse
+  grid downsample" the spec calls perf tuning, not an engine fact
+  (unbuilt, `RM_MapComponent_GradientAxis`'s grid is still full-resolution);
+  no live verification that `CoastDirectionAt`/`LakeDirectionAt` actually
+  resolve on the real authored Miasma tiles (no bridge access this task —
+  the `Log.WarningOnce` fallback means this fails safe, not silently, if
+  they don't).
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0
+errors, with the two new files above added as `<Compile>` entries (that edit
+landed inside a concurrently-committed change from another window,
+`FORGE_MECHANICS_1` commit `0e38767e7` — confirmed both new entries survived
+in it; nothing further to commit there). **The rebuilt
+`Assemblies/RimMandrake.EnvironmentalHazards.dll` is deliberately NOT part of
+this pass's commit** — this is a shared, actively-being-built assembly (the
+same FORGE_MECHANICS_1 window rebuilt and committed it mid-session with its
+own, different new classes already folded in); committing it here risked
+either clobbering their already-committed binary or shipping a DLL whose
+bytes include other windows' not-yet-committed source. Source-level
+correctness is what this item's own review depends on; the DLL is
+regenerable from committed source by the one-line build command in this same
+file's own spike-pass section, any time.
+
+**Validate**: `validate_patch.py` (via `skills/rimworld-modding/scripts/`,
+the actual live script — `src/RimMandrake/Utils/validate_patch.py` does not
+exist) against the live 589-mod installed set (`--defs` Data + Mods +
+Workshop root, `--mods-config` the real `ModsConfig.xml`): all 6 new/changed
+files, **0 errors, 0 warnings**. First run caught 3 real defects — the exact
+"comment body contains '--'" XML trap `FEVER_WOOD_MECHANICS_1`'s own
+continuation pass already hit once (`RUT_MiasmaWeather.xml`,
+`RUT_MiasmaWeatherLock.xml`, `RUT_MiasmaExposure.xml` all used "--" as prose
+em-dashes inside `<!-- -->` header comments); fixed by replacing every
+instance with a single hyphen, re-ran clean.
+
+**Not done this pass, explicitly**: M2 (breath-tide surge), M3 (stranding
+pools), M5 (fever-forged boon tables), M6 (warden-mother placement) — none
+touched, per assignment scope. No `PawnKindDef`/creature/roster content
+authored. `ModsConfig.xml` untouched. No bridge/game/quicktest — everything
+above is offline-verified only (build + `validate_patch.py`); a live map in
+the Miasma to actually SEE the haze, the salt line, and the exposure hediff
+accruing is still owed, same as the spike pass's own "not done" line said.
+
+## files (M4/M1 build pass)
+
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_MiasmaWeather.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_MiasmaWeatherLock.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_MiasmaExposure.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` (modified: `biomeMapConditions`, `modExtensions`, header notes)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GradientAxis.cs` (new)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_GradientAxisGenStep.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_GradientAxis_Register.xml` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/EnvironmentalWeatherExtension.cs` (modified: `carrierHediff`/`carrierHediffSeverity`)
+- `src/RimMandrake/EnvironmentalHazards/Source/GameCondition_EnvironmentalWeather.cs` (modified: `EnsureCarrierHediff`, settings-gate fix)

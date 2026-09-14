@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MiasmaWeather.xml                UtinniPatches - MIASMA_MECHANICS_1 M4 build pass
+
+  miasma_kit_spec.md M4: "RUT_MiasmaWeather WeatherDef - native fields for
+  accuracy/movement (INVENTED: accuracy 0.85, move 1.0 - the muck, not the
+  air, is the movement story; movementDifficulty 4 already prices that in
+  biome XML)." Those two figures are the kit spec's own INVENTED values,
+  carried over verbatim, not re-invented here.
+
+  Zero rainRate/snowRate/sandRate is ban #5's linter-checkable half ("no rain
+  weather reachable") - this weather itself can never produce rain or snow
+  regardless of anything else. Ban #5 is fully closed this pass by
+  RUT_MiasmaWeatherLock.xml (GameConditionDefs/) forcing this weather
+  permanently via GameCondition.ForcedWeather(), which overrides vanilla's
+  WeatherDecider outright - see that file and RUT_Miasma.xml's own updated
+  header note for why the biome's kept Rain/RainyThunderstorm
+  baseWeatherCommonalities entries are now inert.
+
+  canOccurAsRandomForcedEvent=false (this pass's own INVENTED-BUILD choice,
+  not the kit spec's): keeps this biome-specific haze from being rolled by
+  some OTHER biome's "force a random applicable weather" incident.
+
+  Overlay: reuses vanilla's own WeatherOverlay_NoxiousHaze class
+  (RimWorld/WeatherOverlay_NoxiousHaze.cs, confirmed real against the live
+  1.6 decompile - a WeatherOverlayDualPanner using the game's shipped
+  "Weather/NoxiousHazeOverlayWorld" material) rather than commissioning new
+  haze art this pass. The kit spec names this as an acceptable route
+  ("via a WeatherOverlayDualPanner subclass or the greentide's
+  RM_WeatherOverlay_GroundFog with warm textures - share the class, ship
+  new art"); RM_WeatherOverlay_GroundFog does not exist anywhere in src/ yet
+  (checked), so the WeatherOverlayDualPanner-subclass half of that sentence
+  is what ships here, with vanilla's own hazy-green art rather than new art
+  - a real, documented, zero-new-art reuse, not silently substituted.
+
+  Sky colours below are this pass's own INVENTED-BUILD tuning (not the kit
+  spec's, which gives no colour values): a green-gold cast at every time of
+  day, all four sets carrying nonzero saturation per WeatherDef.ConfigErrors.
+
+  ambientSounds intentionally empty: the kit spec's "ambient sound set
+  muted/thick" (soundsAmbient) lives on the BIOME def
+  (RimWorld/BiomeDef.cs:59 soundsAmbient, distinct from this WeatherDef's own
+  ambientSounds field, RimWorld/AmbientSoundManager.cs:58-61) - picking a
+  real SoundDef for either is a sound-design content call the spec gives no
+  name for, left undone and flagged, not guessed.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RUT_MiasmaWeather</defName>
+    <label>miasma haze</label>
+    <description>A green-gold haze hangs permanently over the delta, thick with the Working's breath. Sound is muted, light is soft, and every lungful carries a trace of the muck's fermentation. It never, ever rains here.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <accuracyMultiplier>0.85</accuracyMultiplier>
+    <moveSpeedMultiplier>1.0</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <overlayClasses>
+      <li>WeatherOverlay_NoxiousHaze</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.72,0.70,0.48)</sky>
+      <shadow>(0.6,0.58,0.4)</shadow>
+      <overlay>(0.55,0.52,0.3)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.68,0.6,0.32)</sky>
+      <shadow>(0.55,0.5,0.3)</shadow>
+      <overlay>(0.5,0.42,0.22)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightMid>
+      <sky>(0.22,0.26,0.2)</sky>
+      <shadow>(0.3,0.32,0.24)</shadow>
+      <overlay>(0.2,0.24,0.16)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightMid>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.32,0.22)</sky>
+      <shadow>(0.35,0.36,0.26)</shadow>
+      <overlay>(0.26,0.28,0.18)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightEdge>
+  </WeatherDef>
+
+</Defs>

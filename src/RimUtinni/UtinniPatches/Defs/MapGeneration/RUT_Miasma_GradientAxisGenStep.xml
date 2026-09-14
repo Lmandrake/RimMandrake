@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_GradientAxisGenStep.xml   UtinniPatches - MIASMA_MECHANICS_1 M1 build pass
+
+  Declares the GenStepDef for RM_GenStep_GradientAxis (already-spiked
+  RM_MapComponent_GradientAxis's map-gen driver, this pass's own new class —
+  src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GradientAxis.cs).
+  A GenStepDef on its own runs on no map (same pattern/comment as
+  Defs/MapGeneration/JawaScrapfields.xml in this folder); registration is the
+  separate Patches/RUT_Miasma_GradientAxis_Register.xml.
+
+  order 225: after vanilla Terrain (210) and MutatorPostTerrain (220, both
+  read from the live 1.6 Defs via RimSage this pass) — miasma_kit_spec.md
+  M1's own text: "ordered after GenStep_Terrain".
+
+  The class always records a salinity value for every cell on every map it
+  runs on (harmless elsewhere), but only ever repaints terrain when the
+  map's biome carries an RM_GradientAxisExtension — so registering it
+  globally (see the Patches file) is safe for every OTHER biome too, not
+  just the Miasma.
+
+  MayRequire is load-bearing: genStep Class lives in
+  mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_GradientAxis</defName>
+    <order>225</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_GradientAxis" />
+  </GenStepDef>
+
+</Defs>
