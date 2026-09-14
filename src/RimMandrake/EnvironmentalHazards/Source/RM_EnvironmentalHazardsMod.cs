@@ -61,6 +61,17 @@ namespace RimMandrake.EnvironmentalHazards
     //  12. periodicInspirationEnabled — RM_HediffComp_PeriodicInspiration
     //      (MIASMA_MECHANICS_1 M5, "Mother-dreamed"). Off: a carrier stops
     //      rolling for a random vanilla Inspiration.
+    //  13. wardenCrecheScattererEnabled — RM_ScattererValidator_
+    //      BrineShallowWater (MIASMA_MECHANICS_1 M6). WORLDGEN-AFFECTING:
+    //      off means RUT_GenStep_CrecheScatterer finds no valid site on any
+    //      map generated while it is off, so no crèche marker or anchored
+    //      pawn is ever placed on that map — already-generated maps and
+    //      their existing markers/pawns are unaffected either way.
+    //  14. crecheDespoilMemoryEnabled — RM_CompCrecheMarker /
+    //      RM_MapComponent_CrecheMemory (MIASMA_MECHANICS_1 M6, §8). Off:
+    //      a despoiled marker still flips its own despoiled flag (flavor,
+    //      inspect string), but the map-wide manhunter-chance factor is
+    //      never registered or applied.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -76,6 +87,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool weatherPulseEnabled = true;
         public static bool localGrowthAuraEnabled = true;
         public static bool periodicInspirationEnabled = true;
+        public static bool wardenCrecheScattererEnabled = true;
+        public static bool crecheDespoilMemoryEnabled = true;
 
         public override void ExposeData()
         {
@@ -92,6 +105,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref weatherPulseEnabled, "weatherPulseEnabled", true);
             Scribe_Values.Look(ref localGrowthAuraEnabled, "localGrowthAuraEnabled", true);
             Scribe_Values.Look(ref periodicInspirationEnabled, "periodicInspirationEnabled", true);
+            Scribe_Values.Look(ref wardenCrecheScattererEnabled, "wardenCrecheScattererEnabled", true);
+            Scribe_Values.Look(ref crecheDespoilMemoryEnabled, "crecheDespoilMemoryEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -130,6 +145,12 @@ namespace RimMandrake.EnvironmentalHazards
                 "A hediff built to slightly speed up plant growth around its carrier stops doing so.");
             list.CheckboxLabeled("Periodic inspiration dreams", ref periodicInspirationEnabled,
                 "A hediff built to rarely grant its carrier a random Inspiration stops rolling for one.");
+            list.CheckboxLabeled("Warden/crèche placement (WORLDGEN-AFFECTING)", ref wardenCrecheScattererEnabled,
+                "A biome built to place guarded crèche sites stops placing new ones on any map generated "
+              + "while this is off. Maps already generated keep whatever they already have.");
+            list.CheckboxLabeled("Crèche despoil memory", ref crecheDespoilMemoryEnabled,
+                "Killing a placed crèche's warden stops raising manhunter-pack odds on that map afterward. "
+              + "The marker itself still remembers it was despoiled either way.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

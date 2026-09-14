@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    MIASMA_MECHANICS_1 M6 build pass. The DutyDef RM_CompTerritorialAnchor's
+    own header comment already sketches by name (<dutyDef>RM_AnchorGuard</dutyDef>)
+    built here so the roster pass has a ready-made duty to reference,
+    generic across any future anchored creature (Sump's own S3 tar beast
+    included), not Miasma-specific.
+
+    ThinkNode_Priority tries IN ORDER, same convention as this repo's own
+    Duties_Inhabited.xml precedent: fight anything hostile-or-harvesting
+    inside the anchor radius first, else wander near the anchor. Both
+    JobGivers are this mod's own generalization of vanilla's hive-defense
+    pair (RM_CompTerritorialAnchor.cs's own header: RimWorld/
+    JobGiver_HiveDefense.cs / JobGiver_WanderHive.cs, confirmed against the
+    live 1.6 decompile at that file's own spike pass), reading
+    pawn.mindState.duty.focus/radius for whatever Thing
+    RM_CompTerritorialAnchor.SetAnchor() was given, not a hardcoded Hive.
+
+    NOT wired to any PawnKindDef here: assigning this DutyDef to a pawn
+    requires that pawn's own ThinkTreeDef to actually consult
+    mindState.duty (vanilla's plain Animal ThinkTreeDef does not; only
+    Insect-shaped trees do, per RimWorld/JobGiver_HiveDefense.cs's own
+    Hive-only callers). That ThinkTreeDef assignment is the roster pass's
+    own content decision for RUT_WardenMother
+    (miasma_kit_spec.md M6's own already-flagged gap), explicitly out of
+    this item's scope.
+  -->
+  <DutyDef>
+    <defName>RM_AnchorGuard</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_AnchorDefense" />
+
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_AnchorWander" />
+
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

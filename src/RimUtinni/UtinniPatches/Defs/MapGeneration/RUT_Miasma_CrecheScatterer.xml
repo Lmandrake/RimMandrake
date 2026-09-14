@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_CrecheScatterer.xml   UtinniPatches - MIASMA_MECHANICS_1 M6 build pass
+
+  Declares the GenStepDef for RM_GenStep_PlacedSetPieces (the shared,
+  already-built set-piece scatterer, RimMandrake.EnvironmentalHazards),
+  configured per miasma_kit_spec.md M6: N sites (INVENTED 2-4 per map) on
+  brine-side shallow water, each spawning a RUT_CrecheMarker + one anchored
+  warden pawn. Registration onto Base_Player is the separate Patches/
+  RUT_Miasma_CrecheScatterer_Register.xml file, same split this folder's
+  own RUT_Miasma_GradientAxisGenStep.xml/Patches/RUT_Miasma_GradientAxis_
+  Register.xml pair already established for M1.
+
+  order 235: strictly after RUT_GenStep_GradientAxis (225) — the spec's own
+  words, "validator reads M1's axis — strict ordering after
+  RM_GenStep_GradientAxis" — with headroom before the 320+ range this
+  folder's other scatter GenSteps already occupy.
+
+  countPer10kCellsRange 0.4~0.6 is this repo's own already-established
+  reading of "2-4 per map": RUT_ScaldWreckScatter.xml (SCALD_MECHANICS_1,
+  same folder) uses the identical 0.4~0.6 range for its own "a few per
+  map" set pieces — for a 250-cell-side map, GenStep_Scatterer.
+  CountFromPer10kCells resolves that to ~2.5-3.75 sites, i.e. 2-4 after
+  rounding. Reused rather than re-derived.
+
+  validators: RM_ScattererValidator_BrineShallowWater (this pass's own new
+  class) reads RM_MapComponent_GradientAxis (M1) directly — the strict
+  ordering above is what makes that axis already-painted when this GenStep
+  runs. warnOnFail false: this GenStepDef is registered globally onto
+  Base_Player (below), and the validator legitimately rejects every cell on
+  every non-Miasma map (no RM_GradientAxisExtension on that map's biome) —
+  without this, every OTHER biome's map-gen would log a spurious "could not
+  find cell to generate at" warning.
+
+  elements: RM_SetPieceElement_SpawnMarker places RUT_CrecheMarker first,
+  then RM_SetPieceElement_AnchoredPawn spawns the warden pawn and anchors it
+  to that same marker (anchorMarkerDef, found by def at the shared site
+  cell — see that class's own header for why this ordering matters).
+
+  pawnKind RSW_OpeeSeaKiller (mandrake.rsw.swbestiary) is a WIRING
+  PLACEHOLDER — see the pawnKind element's own inline comment. Full
+  reasoning: infrastructure/state/items/MIASMA_MECHANICS_1.md's M6 build
+  pass section.
+
+  MayRequire is load-bearing on the GenStepDef itself (not per-<li>): every
+  referenced Class/def in this file lives in mandrake.rm.environmentalhazards
+  or mandrake.rsw.swbestiary, so the whole def is gated on both being
+  active, same posture as this folder's own RUT_MoatFusePost.xml precedent
+  ("gating the entire def is correct... this def's only content is the
+  comp itself").
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rsw.swbestiary">
+    <defName>RUT_GenStep_CrecheScatterer</defName>
+    <order>235</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_ScattererValidator_BrineShallowWater">
+          <minSalinity>0.6</minSalinity>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RUT_CrecheMarker</markerDef>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
+          <!-- PLACEHOLDER - roster pass replaces with the real warden-mother
+               kind. sea_beasts_roster.md's nursery/adult pairing owns this
+               content (miasma_kit_spec.md M6's own scope line: "The
+               warden/juvenile PawnKindDefs are roster content ... this kit
+               ships the scatterer and the marker"). RSW_OpeeSeaKiller
+               chosen as the WIRING placeholder because it is thematically
+               closest among everything already shipped: an ambush sea
+               predator whose own juvenile (RSW_OpeeSeaKillerJuv,
+               SeaBeasts_NurseryJuveniles.xml) is already described as
+               lingering "at the crèche mouths where it hatched" — the
+               crèche framing already exists on this exact species pair,
+               it is simply the wrong scale/species for a "warden mother." -->
+          <pawnKind>RSW_OpeeSeaKiller</pawnKind>
+          <anchorMarkerDef>RUT_CrecheMarker</anchorMarkerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

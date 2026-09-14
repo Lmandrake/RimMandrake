@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T06:41:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T06:53:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -762,7 +762,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/GREENTIDE_MECHANICS_2.md yet — write one when you have something to say)
+summary:  Per design/Jawa/worldbuilding/biomes/thegreentide.md (FROZEN, §4b, §4c,
 prose:    infrastructure/state/items/GREENTIDE_MECHANICS_2.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -1480,3 +1480,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
+
+## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md

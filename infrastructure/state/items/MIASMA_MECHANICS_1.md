@@ -613,3 +613,185 @@ and M6 (warden placement, blocked on roster content) remain of this item's
 - `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_FeverForgedMinor.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_StrangeTier.xml` (new)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml` (new)
+
+## M6 build pass — 2026-09-13
+
+Kit spec's own build order step 6, "warden placement" — the kit's last v1
+mechanic. Consumed `RM_GenStep_PlacedSetPieces` (built concurrently by
+another window, already on `main` before this pass started — read in full
+first, not rebuilt) rather than re-inventing a scatterer. No bridge/game
+access this pass — offline only (build + `validate_patch.py`), same gap
+every prior pass in this item has flagged.
+
+**Scope line honored, quoted back**: "The warden/juvenile PawnKindDefs are
+roster content (`sea_beasts_roster.md`'s nursery↔adult pairing) — this kit
+ships the scatterer and the marker." No warden or juvenile PawnKindDef was
+authored. One existing, already-shipped PawnKindDef (`RSW_OpeeSeaKiller`,
+`mandrake.rsw.swbestiary`) is wired in as a WIRING PLACEHOLDER only,
+flagged inline in the XML itself, not just here — chosen because it is
+already the thematically closest shipped species: an ambush sea predator
+whose own juvenile (`RSW_OpeeSeaKillerJuv`) is already described in
+`SeaBeasts_NurseryJuveniles.xml` as lingering "at the crèche mouths where
+it hatched" — the crèche framing already exists on this exact species
+pair, it is simply the wrong scale/species for a "warden mother."
+
+**1. Site validator** — `RM_ScattererValidator_BrineShallowWater.cs` (new).
+Reads `RM_MapComponent_GradientAxis.SalinityAt` (M1) for brine-side
+shallow water (`minSalinity 0.6`, INVENTED — a full salt-line-band clear of
+the 0.5 line, not merely past it), gated on `RM_GradientAxisExtension`
+presence rather than bare biome identity so it stays genuinely reusable for
+any future two-water biome, not Miasma-coupled. Registered via the
+`RUT_GenStep_CrecheScatterer` GenStepDef at `order 235` — strictly after
+`RUT_GenStep_GradientAxis` (225), the spec's own required ordering.
+
+**2. The marker** — `RUT_CrecheMarker` ThingDef (new,
+`ThingDefs_Buildings/RUT_CrecheMarker.xml`) + `RM_CompCrecheMarker.cs` /
+`CompProperties_CrecheMarker` (new). Genuinely invisible (`drawerType
+None`, no `graphicData` at all — the spec's own word, not a placeholder
+awaiting art), not player-placeable (map-gen only, no `designationCategory`
+or `costList`), `destroyable false` so a player cannot dodge the
+despoiled-memory mechanic by demolishing the marker itself.
+
+**3. Two `RM_SetPieceElement` subclasses** (new): `RM_SetPieceElement_
+SpawnMarker.cs` (spawns any configured `markerDef`) and
+`RM_SetPieceElement_AnchoredPawn.cs` (spawns any configured `pawnKind`,
+finds the Thing named by `anchorMarkerDef` at the shared site cell, calls
+`RM_CompTerritorialAnchor.SetAnchor()` on it if the spawned pawn carries
+that comp — logs `WarningOnce` and no-ops, never errors, if it doesn't,
+which is the expected/correct outcome for this pass's placeholder
+PawnKindDef). Built generically per this item's own instruction, confirmed
+NOT a duplicate of any sibling window's work: `SUMP_MECHANICS_1.md`'s own
+S1 spike pass (same day) states S3/S4 are "BLOCKED on
+`RM_GenStep_PlacedSetPieces`, confirmed still unbuilt" — this is genuinely
+the first build of the "spawn a pawn and anchor it to the site" shape, left
+ready for Sump's own S3 tar-beast placement to reuse without any C# change.
+
+**4. Wiring** — `RUT_GenStep_CrecheScatterer` GenStepDef (new,
+`Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml`) +
+`Patches/RUT_Miasma_CrecheScatterer_Register.xml` (new), registered onto
+`Base_Player` globally (safe — the validator rejects every cell on every
+non-Miasma map, same "gate internally, register globally" pattern M1's own
+`RUT_GenStep_GradientAxis` already established). `countPer10kCellsRange
+0.4~0.6` for the spec's own INVENTED "2-4 per map": not re-derived, reused
+directly from this repo's own `RUT_ScaldWreckScatter.xml` precedent, which
+already uses the identical range for its own "a few per map" set pieces
+and resolves to ~2-4 on a 250-cell-side map via `GenStep_Scatterer.
+CountFromPer10kCells`. `warnOnFail false` on the genStep instance, since
+global registration means every other biome's map-gen legitimately finds
+zero valid cells every time — without it, every non-Miasma map would log a
+spurious warning.
+
+**5. Despoiled-memory mechanic (§8)** — built, not stubbed, per this
+item's own explicit instruction that it was in scope even though the spec
+allows v1 to ship without it. Two new classes:
+- `RM_MapComponent_CrecheMemory.cs` (new) — per-map, auto-instantiated
+  (`Map.FillComponents()`, same as this mod's own `RM_MapComponent_
+  GradientAxis`). Holds a list of timed despoil-window entries
+  (expire tick + factor); `ManhunterChanceFactor()` multiplies every
+  still-active entry together (two simultaneously despoiled crèches on one
+  map stack multiplicatively — an honest, undocumented-by-the-spec default
+  for "more than one," not guessed at beyond that). Scribe-saved.
+- `RM_CompCrecheMarker.Despoil()` registers a `10`-day (INVENTED, the
+  spec's own number, read as `GenDate.TicksPerDay * 10`),
+  `1.5`x (INVENTED, the spec's own number) window onto that map component.
+  Triggered generically: `RM_CompTerritorialAnchor` (already-shipped spike
+  class, extended this pass) gained a real `Notify_Killed(Map, DamageInfo?)`
+  override — the dedicated vanilla `ThingComp` seam for "the pawn I'm
+  attached to was actually killed," confirmed distinct from `PostDestroy`
+  (which also fires on ordinary despawn/vanish) — that walks `AllComps` on
+  whatever Thing the pawn is anchored to and calls a new, Miasma-free
+  `IRM_AnchorDeathListener.Notify_AnchorPawnKilled` interface method on any
+  comp that implements it. `RM_CompTerritorialAnchor.cs` itself still never
+  references `RUT_CrecheMarker` or any Miasma type by name — Sump's own
+  future anchored beast gets the identical "tell my anchor point I died"
+  behavior for free if it anchors to a Thing rather than a bare cell.
+- The map-wide effect: `RM_Patch_CrecheDespoilManhunterFactor.cs` (new) —
+  a Harmony postfix on `IncidentWorker.ChanceFactorNow(IIncidentTarget)`,
+  the real vanilla multiplier seam the storyteller itself consults when
+  weighing whether to fire an incident (confirmed against the live
+  1.6/Odyssey decompile: `StorytellerComp.cs` calls it; vanilla already
+  overrides it on real IncidentWorkers, e.g. `IncidentWorker_
+  FarmAnimalsWanderIn`, for the identical "multiply this incident's chance
+  by a map-state factor" purpose). Filtered to `IncidentDefOf.
+  ManhunterPack`/`FrenziedAnimals` only; multiplies by `RM_MapComponent_
+  CrecheMemory.ManhunterChanceFactor()`. Registered via its own small
+  `[StaticConstructorOnStartup]` bootstrap (`RM_
+  CrecheDespoilManhunterFactorPatch`), deliberately not folded into the
+  already code-review-clean `BiomeGlowPatches.cs` — a second `new
+  Harmony("mandrake.rm.environmentalhazards")` instance patching a third,
+  unrelated method is exactly Harmony's own supported multi-patch model.
+- **Honest scope limit on "clearing a crèche"**: only killing THIS
+  marker's own anchored warden despoils THIS marker — a broader "hunted
+  the juveniles too" signal would need a real juvenile PawnKindDef to
+  watch for (roster-content-shaped, not built here), and owner card 3
+  ("marked sites only") already rules out the wider "hunted in open water"
+  case this mechanic must never fire on, which it does not.
+
+**Mod Settings** — two new toggles per this file's own established
+one-per-mechanism convention: `wardenCrecheScattererEnabled`
+(WORLDGEN-AFFECTING, labeled as such — off means the validator never
+allows a site, so no marker/warden is placed on any newly-generated map)
+and `crecheDespoilMemoryEnabled` (off: the marker still flips its own
+despoiled flag, but the map-wide manhunter factor is never registered or
+applied).
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0
+errors, with this pass's own 6 new `<Compile>` entries. Another window was
+concurrently adding its own 4 new files
+(`RM_CompCanBeDormant_Emergent.cs`, `RM_CompStationEater.cs`,
+`RM_GenStep_EdgeBandFilth.cs`, `RUT_IncidentWorker_ContagionProbe.cs`) to
+this same shared `.csproj` while this pass ran — staged with `git apply
+--cached` against a hand-crafted patch covering only this pass's own 6
+lines (the "whole staged index" trap this repo's own memory names; `git
+add -p` could not cleanly split one contiguous 10-line insertion, so the
+patch was hand-written instead), leaving the other window's 4 lines and
+new files uncommitted on disk for it to commit itself. **The rebuilt
+`Assemblies/RimMandrake.EnvironmentalHazards.dll` is deliberately NOT part
+of this pass's commit**, same reasoning every prior pass in this item has
+given: a shared, actively-being-built assembly, regenerable any time from
+committed source.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` (the
+actual live script — `src/RimMandrake/Utils/validate_patch.py` does not
+exist, same gap the M4/M1 pass already flagged) against the live 99-active-
+mod set (`--defs` Data + Mods + Workshop root, `--mods-config` the real
+`ModsConfig.xml`): all 4 new XML files, **0 errors, 0 warnings**. First run
+caught the exact "comment body contains '--'" trap this item's own M4/M1
+pass already hit once (`RM_AnchorGuard.xml`'s header prose used "--" as an
+em-dash); fixed, re-ran clean. The "no def in the load set uses that
+class" info lines for every new `RimMandrake.EnvironmentalHazards.*` Class
+reference are expected (the tool cannot see a just-built DLL) — the clean
+build is what actually confirms those classes resolve.
+
+**Not done this pass, explicitly**: `M2` (surge), `M3` (stranding pools) —
+untouched, per assignment scope (both already landed/owed independently of
+this pass). No warden or juvenile `PawnKindDef` authored — placeholder
+only, flagged inline. `ModsConfig.xml` untouched. No bridge/game/
+quicktest — a live map showing a placed crèche, a killed warden actually
+raising manhunter odds, and (once the roster pass lands) the real warden
+ThinkTreeDef reaching `RM_JobGiver_AnchorDefense`/`AnchorWander` are all
+still owed, same as every prior pass in this item. Translation keys
+(`RUT_CrecheMarkerDespoiled`/`RUT_CrecheMarkerIntact`) are referenced but
+not yet added to a Languages/ folder — same owed shape this item's own
+M4/M5 passes already flagged for their own letter keys; `.Translate()`
+falls back to the raw key rather than erroring, so this does not block
+anything.
+
+With M1/M4/M5/M6 landed, only `M2` (surge) and `M3` (stranding pools,
+blocked on M2) remain of this item's 6 mechanics. Item stays in `doing`.
+
+## files (M6 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_BrineShallowWater.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_SpawnMarker.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompCrecheMarker.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_CrecheDespoilManhunterFactor.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs` (modified: `Notify_Killed` override, `IRM_AnchorDeathListener`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (modified: `wardenCrecheScattererEnabled`/`crecheDespoilMemoryEnabled` settings)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (modified: 6 new `<Compile>` entries — this pass's own only)
+- `src/RimMandrake/EnvironmentalHazards/Defs/DutyDefs/RM_AnchorGuard.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_CrecheMarker.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_CrecheScatterer_Register.xml` (new)
