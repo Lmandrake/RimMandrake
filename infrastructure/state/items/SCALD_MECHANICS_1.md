@@ -357,6 +357,120 @@ fishing content), S5 (bubble-sailor/walker set-pieces), S6 (wrecks) — all
 explicitly out of this pass's scope, untouched; any live/quicktest
 verification (no bridge access this task). Item stays in `doing`.
 
+## S6 build pass — 2026-09-13
+
+Ran the spec's own build order step 6 (S6, burning-shallows wreck salvage —
+independent, any time after terrain overrides land, per the spec's own
+build-order note). S1-S5 untouched, as scoped. No bridge, no game, no
+quicktest — no live access in this task.
+
+**Terrain tag.** `RUT_ScaldWater.xml` (already-shipped terrain, edited
+in place) — added `RUT_ScaldShallow` to the `<tags>` of the three shallow
+variants only (`RUT_ScaldWaterShallow`/`OceanShallow`/`MovingShallow`), the
+spec's own resolved §S6 finding: `GenStep_ScatterThings.CanScatterAt` is
+tag-based (`terrain.HasTag(tag)`), not defName-based, so this one shared tag
+is the entire terrain-validation half of the mechanic. Deep/chest-deep
+variants do not carry it — wrecks sit in the shallows per the sheet's own
+§8 text.
+
+**Wreck buildings.** `RUT_ScaldWrecks.xml` (new,
+`src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/`) — three
+`RUT_ScaldWreck*` ThingDefs (`Hull`/`Tank`/`Frame`), all `ParentName=
+"ShipChunkBase"`, Core's own stock abstract for a static, non-buildable
+(no `designationCategory`), non-claimable, always-deconstructible salvage
+building with no comps beyond a flavor inspect string — read in full this
+pass (`Core/Defs/ThingDefs_Buildings/Buildings_Exotic.xml:130-180`).
+Structurally satisfies S6's "cooked clean: no rot, no corpses, no
+hostiles" — nothing here can spawn a pawn or leave a corpse, by the shape
+of the crib, not by a linter rule bolted on after. Costs/yields **INVENTED**
+(Steel 15-30, one `ComponentIndustrial` on the hull only, `ChunkSlagSteel`
+killed-leavings), sized down from vanilla `ShipChunk_Mech`'s fresh-wreck
+40 Steel/15 GravlitePanel on the reasoning that these have sat cooking in
+near-boiling water. Considered JawaGroundHulk's `PrefabDef` route and
+rejected it — that is a hand-placed one-off stamp keyed to a specific ship
+export, not a repeatable map-gen scatter candidate; `GenStep_ScatterThings`
+needs an ordinary `ThingDef`.
+
+🔴 **Terrain affordance override, verified by direct read, not assumed.**
+`BuildingBase`'s default `terrainAffordanceNeeded` is `Light`
+(`Core/Defs/ThingDefs_Buildings/Buildings_Base.xml:11`).
+`WaterShallowBase`'s own affordance list
+(`Core/Defs/TerrainDefs/Terrain_Water.xml:103-112`) is `ShallowWater`/
+`WaterproofConduitable`/`Bridgeable`/`Walkable` — no `Light`. Left at the
+inherited default, none of these three defs could ever pass a placement
+affordance check on the very terrain they scatter onto. All three
+explicitly override `terrainAffordanceNeeded` to `Walkable`, confirmed
+present on every `RUT_ScaldWater*Shallow` terrain. Not independently
+verified live (no bridge access this task) that `GenStep_ScatterThings`'
+placement path actually consults this field the way ordinary construction
+placement does — flagged, not guessed past.
+
+**Scatter wiring.** `RUT_ScaldWreckScatter.xml` (new,
+`.../Defs/MapGeneration/`) — three `GenStepDef`s (one per silhouette; the
+class's `<thingDef>` field is singular, so one shared `GenStepDef` cannot
+carry all three), each wrapping stock `GenStep_ScatterThings` with
+`terrainValidationAllowed` -> `RUT_ScaldShallow`, `terrainValidationRadius`
+2 (covers a wreck's 2x2 footprint plus one ring), `allowInWaterBiome` true.
+Same crib shape as this mod's own `JawaScrapfields.xml` (V1 row 4), not
+re-derived from nothing. **INVENTED** density: `countPer10kCellsRange`
+0.4~0.6 per silhouette, `minSpacing` 6 (clear of `GenStep_ScatterThings`'
+engine-hardcoded cluster radius of 4 — see `JawaScrapfields.xml`'s own
+header for the failure mode of not doing that). Stated plainly as a
+CEILING on scatter attempts, not a promise: `terrainValidationAllowed`
+rejects every candidate outside the Scald's shallow band, so the realized
+per-map count is expected well under the arithmetic ceiling and is
+otherwise unproven — owed to a live/quicktest pass.
+
+`RUT_ScaldWreckScatter_Register.xml` (new, `.../Patches/`) — adds the
+three `GenStepDef` names to `Base_Player`'s `genSteps` globally (not
+gated to the Scald biome), on the same reasoning the tag-based terrain
+validator already gives: the tag itself is the scope, since no other
+terrain in the load order carries `RUT_ScaldShallow`. No `MayRequire`
+needed — this mod's own defs only. `validate_patch.py` confirms 1 xpath
+match on both the conditional test and the add.
+
+**No loot `ThingSetMaker`.** The spec's own §S6 text names one
+("`RUT_ScaldSalvage` loot ThingSetMaker") with a ❓, not a ✅ — an open idea
+alongside the *resolved* claim that S6 needs zero new C# for the scatter
+mechanism. A `ThingSetMaker` that fires bonus loot ON deconstruction would
+need a comp hooking the deconstruct callback, which is new C# the spec's
+own "S" effort rating and build-order step never asked for. v1 ships only
+vanilla `costList`/`killedLeavings` salvage — the same mechanism
+`ShipChunk` itself already uses. §S6's own text assigns the loot
+REGISTER to "the items pass", so this is deferred there by the spec's own
+words, not dropped silently.
+
+**Validate.** `validate_patch.py` against the live 98-mod set (`--defs`
+Data/Mods/Workshop): `RUT_ScaldWater.xml`, `RUT_ScaldWreckScatter.xml`,
+`RUT_ScaldWreckScatter_Register.xml` all **0 errors, 0 warnings**.
+`RUT_ScaldWrecks.xml`: **3 errors, all the same missing-`texPath` shape**
+as `RUT_ScaldVent.xml`/`RUT_SteamCatch.xml` in the prior S1/S4/S2 pass —
+every other field on all three wreck defs checks clean. No C# added, so
+no `.csproj`/build step this pass.
+
+**Deploy hold.** `src/DEPLOY_HOLD.txt` — held `RUT_ScaldWrecks.xml`
+TOGETHER with `RUT_ScaldWreckScatter.xml` and
+`RUT_ScaldWreckScatter_Register.xml`: deploying the scatter/patch files
+without the ThingDefs they name would add three `GenStepDef`s referencing
+defNames absent from the deployed game — a dangling cross-reference on
+every map generation, not a smaller failure than the missing art itself.
+Same "hold interdependent files together" pattern this repo's own
+`DEPLOY_HOLD.txt` already documents for the Inhabited cast-roster/DLL pair.
+=> Lift all three at once when the three wreck sprites land under
+`UtinniPatches/Textures/`.
+
+**Owed, not done, explicitly**: art for the three wreck sprites (DEPLOY_HOLD'd
+meanwhile); the loot `ThingSetMaker` bonus-loot idea (deferred to the items
+pass by the spec's own words); live/quicktest proof of actual scatter
+density and of the `terrainAffordanceNeeded` override actually gating
+`GenStep_ScatterThings` placement the way it's assumed to (no bridge access
+this task); S3 (margin/baths fishing content, blocked on
+`FISH_BESTIARY_COMMISSION_1`, still `doing` as of the last check) and S5
+(bubble-sailor/walker set-pieces, blocked on the miasma kit's
+`RM_GenStep_PlacedSetPieces` scatterer half, not yet built) — the two
+remaining mechanics in the kit, both explicitly out of this pass's scope.
+Item stays in `doing`.
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside

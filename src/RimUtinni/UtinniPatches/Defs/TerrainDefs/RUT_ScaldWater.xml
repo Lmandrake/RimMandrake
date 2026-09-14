@@ -61,6 +61,14 @@
       already loaded (Ludeon.RimWorld.Odyssey is active), reused rather than
       SoakingWet.
     avoidWander true                            — pawns should not idle in it.
+    RUT_ScaldShallow tag ADDED (SCALD_MECHANICS_1 S6 build pass, 2026-09-13)
+      to the three shallow variants only (RUT_ScaldWaterShallow/
+      OceanShallow/MovingShallow) — scald_kit_spec.md §S6's own resolved
+      finding: stock GenStep_ScatterThings.CanScatterAt is TAG-based, not
+      defName-based, so the burning-shallows wreck scatter needs exactly one
+      shared tag on these three terrains and zero new C#. Deep/chest-deep
+      variants do NOT carry it — wrecks sit in the shallows, per the sheet's
+      own §8 text, not the boil's open water.
     dbh_water tag REMOVED (SCALD_MECHANICS_1 spike, 2026-09-13) — R-B4a's
       own caveat ("verify against DBH's own reader before relying on it")
       is now resolved: BadHygiene.dll (workshop/294100/836308268, 1.6
@@ -179,6 +187,7 @@
     <avoidWander>true</avoidWander>
     <tags>
       <li>Water</li>
+      <li>RUT_ScaldShallow</li>
     </tags>
   </TerrainDef>
 
@@ -202,6 +211,7 @@
     <tags>
       <li>Water</li>
       <li>Ocean</li>
+      <li>RUT_ScaldShallow</li>
     </tags>
   </TerrainDef>
 
@@ -228,6 +238,7 @@
     <tags>
       <li>Water</li>
       <li>River</li>
+      <li>RUT_ScaldShallow</li>
     </tags>
   </TerrainDef>
 
