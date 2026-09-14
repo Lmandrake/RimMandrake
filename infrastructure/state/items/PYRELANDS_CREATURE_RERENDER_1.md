@@ -83,9 +83,11 @@ Sources: `design/Jawa/worldbuilding/review/round2/decisions_propagated.json`
 **SW-canon — gated on CANON_REFERENCE_LIBRARY_1 + pilot grades:**
 Anooba, Iriaz, Nuna, Orray, Zeer, Dalgo.
 
-**Not in the roster:** Boomalope (moved out — Assailant dungeon twist),
-Gizka (owner: "not here"). Burrower slot deliberately open (commission close);
-Orray covers the burrows band.
+**Also in the roster** (per the later, authoritative
+`design/Jawa/worldbuilding/biomes/rosters/the_pyrelands.json`, Sep 11 — it
+post-dates and supersedes the Sep 10 sheet moves): Gizka (grain 0.3),
+Boomalope (0.3, reskin rides the in-joke lane art pass). Burrower slot
+deliberately open (commission close); Orray covers the burrows band.
 
 **Known gap (filed as PYRELANDS_FAUNA_WIRING_1):** the shipped BiomeDef's
 `wildAnimals` is the core-only vanilla placeholder; NONE of the roster above
