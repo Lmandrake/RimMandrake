@@ -37,7 +37,6 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -90,7 +89,6 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -124,7 +122,6 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

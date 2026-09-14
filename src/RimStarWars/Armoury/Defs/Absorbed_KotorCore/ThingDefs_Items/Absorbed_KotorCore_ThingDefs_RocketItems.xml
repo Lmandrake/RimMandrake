@@ -38,7 +38,6 @@
     <techLevel>Spacer</techLevel>
     <!--recipeMaker>
 		  <recipeUsers>
-			<li>guy762_KotORWorkbench</li>
 			<li>kotor_DrugLab</li>
 		  </recipeUsers>
 		  <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -135,7 +134,6 @@
     <researchPrerequisite>KOTOR_Research_AdvMunitions</researchPrerequisite>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li>guy762_KotORWorkbench</li>
       <li>kotor_DrugLab</li>
     </recipeUsers>
     <skillRequirements>
@@ -230,7 +228,6 @@
     </researchPrerequisites>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li>guy762_KotORWorkbench</li>
       <li>kotor_DrugLab</li>
     </recipeUsers>
     <skillRequirements>
@@ -325,7 +322,6 @@
     </researchPrerequisites>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li>guy762_KotORWorkbench</li>
       <li>kotor_DrugLab</li>
     </recipeUsers>
     <skillRequirements>
@@ -427,7 +423,6 @@
     <researchPrerequisite>KOTOR_Research_Baradium</researchPrerequisite>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li>guy762_KotORWorkbench</li>
       <li>kotor_DrugLab</li>
     </recipeUsers>
     <skillRequirements>

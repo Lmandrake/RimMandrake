@@ -70,3 +70,66 @@ current-slot overwrite).
 - The deployed Armoury (2026-09-05) and the active kotorcore donor both define
   the same parts; last-loaded wins and the current log shows no dup lines —
   but re-check after the cut that nothing re-introduces them.
+
+## Step 8 verify — done 2026-09-14
+
+Prior session's steps 1-7 had committed the content strip but never DEPLOYED
+it — the restart it triggered booted against a stale `Mods/Armoury` still
+holding all 25 pruned files, so its own "0 TypeInitializationException"
+reading was against the wrong tree. Re-verified properly this session:
+
+1. `deploy_custom_mods.py --mod Armoury --apply --prune` synced the repo
+   deletions to the live Mods folder (66 files deployed, 25 orphaned MW2
+   files pruned) — confirmed via a `no_game` bridge check first, then a
+   fresh Steam relaunch on the full 594-mod list.
+2. Cold load: 0 `TypeInitializationException`, 0 `modularweapons2` hits.
+3. Quicktest map, spawned pawns, equipped `guy762_brifle` and
+   `guy762_vblade` — both resolve correctly (`jawa/pawn_get` confirms the
+   equipped defNames), zero new log errors. Positive sighting: drafted the
+   rifle-holder, ordered `AttackStatic` against an adjacent hostile — it
+   fired and downed the target (`[Ninefold] ... downed in battle: Kit`),
+   confirming render+fire, not just equip.
+4. **A second, unfiled class of defect found while chasing "no lingering
+   issues"**: 86 dangling `<li>guy762_KotORWorkbench</li>` (recipeUsers) /
+   `<ThingDef>guy762_KotORWorkbench</ThingDef>` (descriptionHyperlinks)
+   references across 18 Armoury def files — step 2 deleted the workbench
+   ThingDef but never swept the ~90 items whose recipeUsers/hyperlinks
+   pointed at it, which is what the boot log's 24 "Could not resolve
+   cross-reference ... wanter=recipeUsers" lines and 1
+   `DefHyperlink` line were. Removed all of them (verified every candidate
+   defName absent from the whole repo first). Of the 18 files, only 6 are
+   actually deployed (`Absorbed_KotorWeapons/*`) — the other 12 live under
+   `Absorbed_KotorCore/`, held/undeployed while the kotorcore donor mod
+   stays subscribed, so those fixes have no live effect today but stop the
+   bug from resurfacing if that donor is ever retired. Also removed 50
+   dead `<li>` loot-table entries in `Absorbed_KotorCore_KotORResource_
+   JunkPile.xml` (`<mineableThing>` pointing at deleted MW2 part defs,
+   e.g. `guy762_scopeitem_accuracy`) — same held/undeployed caveat.
+   **Not re-verified against a second cold boot** (defs only parse at
+   startup, and a third ~20min restart wasn't spent proving a log line
+   silences) — logically sound (every removed defName confirmed absent
+   repo-wide, XML re-validated well-formed, `validate_patch.py` shows 0 new
+   errors) but worth a glance at the next natural boot's log.
+5. The 3 `guy762_ResearchKotOR_workbench/advupgrade/exupgrade` research
+   projects and `guy762_armband_wristgun` "Could not load reference to"
+   lines during save-load were investigated and are SAVE-side residue only
+   (the research projects are confirmed already absent from the live
+   DefDatabase via an earlier unrelated research-tree ruling, not this
+   item; the wristgun/blueprint refs are dead Scribe references with no
+   live-def counterpart) — exactly what step 8's resave exists to clear,
+   not a defs-side bug.
+6. Backed up `CANONICAL_ASHKARR_START_2026-09-12.rws` (md5
+   `ff87730ff0ca1304b8a8aa0e5befb380`, 16000222 bytes) to
+   `Transient/saves_backup_2026-09-14_mw2cut/`, loaded it with
+   `ignoreModCompatibility` (594 recorded mods vs 589 active — MW2 is 1 of
+   5 expected-missing, the other 4 are pre-existing unrelated gaps outside
+   this item's scope), resaved to the SAME name. New file: 16372486 bytes,
+   md5 `c7595e68e272b9e70c16bd09394585d9` — genuinely rewritten, same
+   single slot (no stray file created). Confirmed 0 mentions of
+   `modularweapons2`/`guy762_KotORWorkbench`/`guy762_armband_wristgun` in
+   the resaved file (down from 14 in the backup); the `Techprint_guy762_
+   ResearchKotOR_*` hits that remain are a different, still-valid ThingDef
+   family (techprint items), not the cut research projects.
+7. `SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1`'s own verify criteria (map+pawn
+   gen with 0 `InvalidProgramException`, a pawn spawns holding a weapon)
+   are satisfied by steps 2-3 above — closing it alongside this item.
