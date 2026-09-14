@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T06:53:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T07:57:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -764,6 +764,24 @@ target:   v1
 kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thegreentide.md (FROZEN, §4b, §4c,
 prose:    infrastructure/state/items/GREENTIDE_MECHANICS_2.md
+
+## BIOME_KITS_PUSH_TO_TEST_1 Push every biome mechanics kit (Forge/Scald/Miasma/Sump/FeverWood/RustCathedral/Greentide/Scarlands) through spike+build passes toward live-test readiness, offline only, placeholder creature content until the roster pass
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Umbrella tracking item for a multi-wave push (started 2026-09-14, BENCH+FOUNDRY
+prose:    infrastructure/state/items/BIOME_KITS_PUSH_TO_TEST_1.md
+
+## SCARLANDS_MECHANICS_2 The Scarlands C# kit build: Scarlands mark hediff+severity floor, plated-grazer scaria onset, Forgotten Sentinel defend-only AI, pre-sprung danger dressing (PrefabDef hp field, zero C#) — spec scarlands_kit_spec.md; mynock ship-infestation (board/breed/eat/hunt-out) already shipped by SHIP_VERMIN_MOD_1/WRECKAGE_VERMIN_SPAWN_1, RC4 hediff fields already shipped by MIASMA_MECHANICS_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
+prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
 # BLOCKED — something is WRONG and someone must act
 
