@@ -57,4 +57,6 @@ prominently for the owner's ruling.
 - `comic_cover_agesolo.jpg` — official comic cover art, wampa lunging at a dangling Luke Skywalker, clean modern illustrated take on the same design
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox_esb.jpg`
+
+> "Correct. Giant ape-like predator, capable of standing upright."

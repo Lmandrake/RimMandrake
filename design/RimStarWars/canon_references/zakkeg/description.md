@@ -89,4 +89,4 @@ one both an in-universe character quote AND an image agree on.
   installed locally or a labeled preview surfaces.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_kotor2_juvenile.png`

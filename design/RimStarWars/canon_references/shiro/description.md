@@ -117,4 +117,6 @@ would risk exactly the kind of fabrication this library exists to prevent.
 - `shirotrap_retracted_legends.jpg` — Legends "Shiro-trap" close-up, fully withdrawn into shell, same camouflage caveat
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `shiros_group_legends.jpg`
+
+> "There is donor art for this too. There is also Shiro-Trap that looks like (#3, symbiotic pairing) that could be its own creature (and was in the donor mod)"

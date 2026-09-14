@@ -81,4 +81,4 @@ sprite.
   and the curious/shiny-object-seeking behavior from the text
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-13, review sheet): `wookieepedia_infobox.jpg`

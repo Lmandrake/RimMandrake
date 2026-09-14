@@ -62,4 +62,6 @@ real canon image contradicts it.
   with the one image found on color.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`
+
+> "The images for the source material are all over the place. I think this is a pretty good rendition of it. https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest?cb=20070123191252 was clearly its inspiration, please see that and reproduce it rimworld-style."

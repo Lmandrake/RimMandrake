@@ -68,4 +68,6 @@ underside palette and dorsal crest.
   blade-like tail tip
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_sot_art.png`
+
+> "But the Donor mod really isn't too bad this time."

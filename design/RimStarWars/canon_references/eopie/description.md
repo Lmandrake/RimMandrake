@@ -61,4 +61,6 @@ distinctive trunk-like snout reading clearly against the body.
 - `wookieepedia_herd.jpg` — stylized cartoon still (SW Kids "EOPIES!" video thumbnail), lower fidelity but agrees on pale tan color and trunk-snout shape, shows big prominent eyes
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`
+
+> "We have a regenerated Eopie that is pretty good, but it has legs. We should remove and regenerate it to the new spec level."

@@ -81,4 +81,6 @@ appearances."
   skull-like head with venom-dripping fangs.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_huntforziro.jpg`
+
+> "#2 for coloration and glowing-seeming spots. But much less cartoonish, more like seriousness of #3."

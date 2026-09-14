@@ -106,4 +106,6 @@ off-canon for color and should not be used as color references.
   locally or a labeled preview surfaces.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_fieldguide.jpg`
+
+> "Follow #3 closely."
