@@ -1265,6 +1265,12 @@
     "hash": "19f49194330012b379e9eca5a9f285f4551cbb06c80841bf1f20226b14797fe9",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_EdgeBandFilth.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "33ffa4fe582371e0ee2592954b069cb15a9b7aef935fdd0b14e3819d1688b091",
+    "sha": "b62604fad"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GradientAxis.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1336,6 +1342,12 @@
     "date": "2026-09-13",
     "hash": "5811041ee4e9ae0f952b0cb867be5e021bd220a9c71fa67eaa50cffa89429a5a",
     "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_ContagionProbe.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "24e20772e73769a2f2c791c9fe93afc991f86bd01d5bc4950943363f11bf9a50",
+    "sha": "b62604fad"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,
@@ -13761,6 +13773,12 @@
     "hash": "def1fa9a1fbd881815b94125f8901d641725ed56bc539cdf50b7c733472845bf",
     "sha": "346490000"
   },
+  "src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_ContagionProbe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "f95715f79ece8598c8d24267b9ea477f43919a825d63f8b9be53a6c64aaf7ec9",
+    "sha": "b62604fad"
+  },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -13802,6 +13820,12 @@
     "date": "2026-09-09",
     "hash": "1a2bae355f4a9364933aa3e5e70901dc7cf4fdb42584129273caf93ee2d4ae27",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ContagionRingScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "ef8d8ad4f08a0046fe3d6b5724a8ea7dcc5906fbecedd6e13f3b636f3b4c63ad",
+    "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_GradientAxisGenStep.xml": {
     "cleanCount": 1,
@@ -13917,6 +13941,24 @@
     "hash": "156efd6cbedc1dde363960de3c2e20a434dc34271197fc7a10c0f07aebab4ca8",
     "sha": "670da445d"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "929c9bae9045a51064204f5e9bdf6b0277856351d9c519ba29a810bbc2647a4e",
+    "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c6eb5e1baa8878b8953b0797727430653bc62048fa98e32f17bd86282739a0d7",
+    "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "ef7e285fcb92445ada773cf20430cfea1c78eb912e7311beec9627e7515a865e",
+    "sha": "b62604fad"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WebworkStructures.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -13929,17 +13971,35 @@
     "hash": "8061fd856d4a6f02ba3b276ec92178b4fcc930ec252367b6f3a4df24cef69748",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_DeadCreep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "226ab3c064f939e8895e3fb2ff2703ee9c468b0f06d516a2705ad5624773ddf5",
+    "sha": "b62604fad"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_FurnaceHide.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "2f500169cb05f97c9328fe249844a465854a689394b95167bd42d848da5cfba4",
     "sha": "f4b18455a"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_TibannaGas.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "9f94d0cacb0307afc832d036789e8ffeb490c34abfaa5365b85d687ee9f9142f",
+    "sha": "b62604fad"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "35cb60514b893aacb350496c46b7b84dfc09b6501fcb458b81f4a7bdbad4a098",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "e2f320ffb74c66447041a03841a5ed97b7db63c287558ed6415999ef7bcc2f6e",
+    "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Plant_Wick.xml": {
     "cleanCount": 1,
@@ -14012,6 +14072,12 @@
     "date": "2026-09-04",
     "hash": "0b798e077e23af3339912e2370d62389f2abcceb58dea3345e9c16963954c2fd",
     "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Languages/English/Keyed/RUT_Forge_Mechanics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a5ec4b9c8057be1679621708d5a61415e1c5d19aab4d46109e188865680cd58b",
+    "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Patches/Absorbed_Cephaloids/Absorbed_Cephaloids_Patches.xml": {
     "cleanCount": 1,
@@ -14367,6 +14433,12 @@
     "hash": "d3b92ca056d90019a1210a1483e5b6ac9e62049a3057c6b516e9fdcb3c058f55",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c8e1f49b9cf1b0ca8c8141bcf9d42817206ca01f2a919c6d27faeea91b51e3bf",
+    "sha": "b62604fad"
+  },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -14402,6 +14474,24 @@
     "date": "2026-09-13",
     "hash": "c59be6b987550c2e0989928f3acab780f0d3d2084d6762f016674e085dbe2f79",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "ed883e63d6ca30e1351543e732f2074431dedd30054b5f80dce6097fabec87f8",
+    "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "e18ef320d0c4cecd269ac2cd2b0c8fa4e2dde4186bd9bc0a20d7d7c874dc9c82",
+    "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a48cd21d95c49daa349e5a7d1f5a2efb652f830cf0eb263746db9516f159c708",
+    "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
     "cleanCount": 1,
