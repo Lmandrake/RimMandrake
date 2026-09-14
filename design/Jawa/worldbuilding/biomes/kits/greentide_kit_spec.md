@@ -97,12 +97,16 @@ comp**, `RM_CompDryFieldEmitter : ThingComp`:
    (**INVENTED**: radius 3, 90° arc facing outward). The growth engine is the
    parent item; this kit only defines the write. "Dry heat is the one alien
    thing" — the blower and M8's grazing write into the same grid.
-3. **Repels animals**: ❓ no verified vanilla "wild-animal avoid grid" —
-   vanilla's `AvoidGrid` is faction-pathing, and whether wild fauna consult
-   anything similar needs a source read before build. Fallback that needs no
-   engine favor: a periodic scan (interval 250 ticks) applying a short
+3. **Repels animals**: **RESOLVED 2026-09-13 (GREENTIDE_MECHANICS_2 spike
+   pass), against the real 1.6/Odyssey decompile — CONFIRMED ABSENT.**
+   `Verse.AI/AvoidGrid.cs` read in full: it is built exclusively from
+   `map.listerBuildings.allBuildingsColonist` with `ai_combatDangerous`
+   turrets (`PrintAvoidGridAroundTurret`), then expanded into edifices — a
+   colonist-pathing/combat-danger grid, with no wild-fauna consultation
+   route anywhere in the class or its known callers. The fallback stands as
+   the only route: a periodic scan (interval 250 ticks) applying a short
    `RUT_DryAirAversion` hediff (flee-inducing mental state) to non-immune wild
-   animals in the arc. Decide at build time, whichever the source supports.
+   animals in the arc.
 
 *Why not a ruled comp*: nothing ruled touches rooms or the growth grid;
 `RM_CompActiveGasEmitter` emits things, it doesn't suppress them.
@@ -111,6 +115,28 @@ comp**, `RM_CompDryFieldEmitter : ThingComp`:
 sheet's "fire is not the tool" makes it the only defense line).
 
 ## M3. Scald damage + steam devils (§4c)
+
+**Reconciled 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass): the damage-type
+half already shipped, elsewhere, under FORGE_MECHANICS_1's own explicit
+contingency.** `forge_kit_spec.md` F1 states verbatim: "using RUT_Scald (the
+greentide kit M3's DamageDef with its RM_ScaldArmor armor category;
+cross-kit reuse — if the greentide build slips, the def is XML and ships
+here first)." It slipped (this item wasn't even filed until today), so F1
+shipped it first, exactly as its own contingency named:
+
+- `RUT_Scald` DamageDef —
+  `src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml`
+- `RM_ScaldArmor` DamageArmorCategoryDef —
+  `src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/RM_ScaldArmor.xml`
+- `RM_ArmorRating_Scald` StatDef —
+  `src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml`
+
+Do NOT re-ship these — the below `armorCategory`/DamageWorker ❓ is already
+settled by the shipped def's own header (`DamageArmorCategoryDef.
+armorRatingStat` is plain data, no DamageWorker override needed; vanilla's
+`ArmorUtility` reads `DamageDef.armorCategory` directly). **Only the steam
+devil vortex (`RUT_SteamDevil` ThingDef + `RM_WanderingVortex` class) remains
+unbuilt** — zero hits for either name anywhere in `src/` as of this pass.
 
 **Player experience.** A wandering white column of boiling vapor spins off the
 river — a steam devil. It scalds what it crosses (a wet burn that armor built
@@ -146,6 +172,24 @@ Tornado is the correct vanilla crib and vanilla already proves the shape.
 event; also the named carrier of the Scald def every other piece references).
 
 ## M4. The Roil — standing ground-fog weather (§4c)
+
+**Corrected 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass):** the
+"`RM_WeatherOverlay_GroundFog`" class named below as *(verified, greentide)*
+does not and cannot exist as a SHARED class — `SCALD_MECHANICS_1`'s own
+spike pass (2026-09-13, this repo) hit the identical assumption first and
+resolved it against the real decompile: vanilla's own crib target
+(`WeatherOverlay_Fog`) hardcodes its Material in the constructor, and
+`WeatherDef.overlayClasses` carries no per-instance config, so one class
+cannot serve two biomes' different looks. Re-verified independently this
+pass. Shipped as the Greentide's own one-off instead:
+`RM_WeatherOverlay_GreentideRoil`
+(`src/RimMandrake/Greentide/Source/RM_WeatherOverlay_GreentideRoil.cs`,
+`mandrake.rm.greentide` — Greentide's own standalone mod per
+`GREENTIDE_STANDALONE_MOD_1`, not the shared EnvironmentalHazards home this
+spec originally named), in the same shape
+`RUT_WeatherOverlay_ScaldSteam` already established for its sibling kit.
+Compiles clean; texture owed to the art pipeline (DEPLOY_HOLD posture, same
+as Scald's).
 
 **Player experience.** A hot, roiling, waist-deep fog hides the floor while the
 canopy stands clear. Shooting past a few tiles is guesswork, movement is
@@ -185,6 +229,19 @@ aren't. It is always on; its absence (M5's Breaklight) is the event.
 
 ## M5. Breaklight — clarity as the disaster (§4c)
 
+**Reconciled 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass): the
+seek-shade-AI half already shipped.** `GREENTIDE_STANDALONE_MOD_1` (closed
+2026-09-11, sha `c71fb0fbf`) built `RM_JobGiver_SeekShade` in the shared
+`mandrake.rm.creaturebehaviors` assembly
+(`src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs`,
+extension `RM_SeekShadeExtension.cs`), wired live onto vanilla Muffalo/Warg
+pending Greentide's own fauna roster — that item's own commit message
+states this satisfies owner ruling #3 below ("both in v1"). **Still unbuilt:
+the weather/light half** — `RUT_BreaklightClear` WeatherDef, the
+`tempOffset`/duration preset, and the glow-override extension (no
+`GlowMultiplierOverride`-named class exists anywhere in `src/` as of this
+pass) — and the wet-bulb pause hookup (M1 doesn't exist yet either).
+
 **Player experience.** The inversion breaks: the fog blanket lifts at once and
 the biome stands naked under the full +45° sun for a few hours. Temperatures
 spike, the wet-bulb clock pauses but a dry-heat clock starts, accuracy snaps to
@@ -220,8 +277,14 @@ biome's percussion; a fall next to you is a hit.
 
 **Engine route.** No falling-tree machinery exists in the indexed source
 (searched `FallingTree|TreeFall`; only `MinifiedTree` transport exists —
-*verified absence, with the 1.5-index ❓ above*). Build once, pay three times,
-exactly as the sheet orders:
+*verified absence, with the 1.5-index ❓ above*). **Re-verified 2026-09-13
+(GREENTIDE_MECHANICS_2 spike pass) against the real 1.6/Odyssey decompile**
+(`/mnt/d/Luke/dev/reference/rimworld-decompiled`): zero hits for
+`FallingTree|TreeFall` there either; only `MinifiedTree`/
+`Alert_MinifiedTreeAboutToDie` exist. Absence CONFIRMED on the actual
+current assembly, not just the stale 1.5 index — `RM_TreeFallUtility` must
+be built from scratch exactly as this section already assumed. Build once,
+pay three times, exactly as the sheet orders:
 
 - **`RM_TreeFallUtility.FellTree(Plant tree, Rot4 dir, FallCause cause)`** —
   static routine: pick fall direction (away from feller / random), deal Blunt
@@ -281,23 +344,63 @@ this manages the caster's own stealth state — different shape.
 
 ## M8. Churnmud: swallow + mire (§8b)
 
+**Reconciled 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass): already shipped
+in full, live-verified.** `GREENTIDE_STANDALONE_MOD_1` (closed 2026-09-11,
+sha `c71fb0fbf`, bridge-verified the same pass) built both pieces below in
+`src/RimMandrake/Greentide/Source/` (`mandrake.rm.greentide`), plus
+`RM_Churnmud_Terrains.xml`, `RM_MireExtension.cs`, `RM_BuriedCache.cs`, the
+designation and jobdefs, and `RM_MapComponent_CrossBiomeChurnmud.cs` (lets
+other biomes opt into churnmud without the rest of the Greentide). Owner
+ruling 1 below (no stockpile exemption) is enforced structurally —
+`RM_MapComponent_MudSwallow`'s own header states it "deliberately never
+consults `map.haulDestinationManager` or `SlotGroup` at all." Swallow ships
+in the spec's own "minimal form" (bury + dig, no decay while buried) exactly
+as scoped below.
+
+- **Mire**: `RM_MapComponent_TerrainMire.cs` +
+  `RM_JobDriver_FreeMired.cs`/`RM_WorkGiver_FreeMired.cs` (the "pull free"
+  interaction — NOT a crib of vanilla `JobDriver_Rescue`/`JobDefOf.Rescue`
+  (→ `JobDriver_TakeToBed`, confirmed via decompile this pass: bed-specific,
+  reserves a bed, wrong shape for an in-place free) — built fresh, correctly
+  per the ❓ below's own fallback.
+- **Swallow**: `RM_MapComponent_MudSwallow.cs` +
+  `RM_JobDriver_DigOutBuried.cs`/`RM_WorkGiver_DigOutBuried.cs`.
+
+Do NOT re-ship — this section's engine route below is historical record of
+the design, not open work.
+
 **Player experience.** The ground between the giants is torn mud: brutally slow,
 it swallows what you drop (dig it back out), and the unlucky pawn mires —
 slowed, then stuck, until pulled free. Under the Roil you can't see which mud
 is the hungry kind.
 
-**Engine route.** `RUT_Churnmud` TerrainDef (high pathCost — XML) plus two
-small new pieces (no verified vanilla harm-on-terrain machinery in the index —
-❓ re-check the 1.6 assembly for Odyssey terrain-hazard hooks first; if 1.6
-added one, use it and delete piece 1):
+**Engine route (historical — already shipped, see reconciliation above).**
+`RUT_Churnmud` TerrainDef (high pathCost — XML) plus two small new pieces.
+**❓s resolved 2026-09-13 against the real 1.6/Odyssey decompile
+(`/mnt/d/Luke/dev/reference/rimworld-decompiled`):**
+
+- **Terrain-hazard hooks in 1.6 — CONFIRMED PRESENT but wrong shape for
+  mire.** `Verse/HediffGiver_Terrain.cs` is real: `OnIntervalPassed` reads
+  `pawn.Position.GetTerrain(pawn.Map)` and applies Burn damage from
+  `TerrainDef.burnDamage`/`burnIntervalTicks`. But it is a `HediffGiver` —
+  it only fires for a pawn already carrying a qualifying Hediff, it doesn't
+  ambient-harm every pawn standing on the terrain — and `TerrainDef` has no
+  slow/immobilize field to crib for mire. The shipped
+  `RM_MapComponent_TerrainMire`'s own per-interval map-wide scan (not a
+  hediff-gated giver) is confirmed the correct, in fact only, route.
+- **Rescue/carry crib for the pull-free job — CONFIRMED the vanilla shape
+  doesn't fit, custom was correct.** `JobDefOf.Rescue` resolves to
+  `JobDriver_TakeToBed` (`RimWorld/WorkGiver_RescueDowned.cs`) — carries a
+  downed pawn to a reserved bed, an entirely different shape from "free an
+  adjacent pawn in place." The shipped `RM_JobDriver_FreeMired`/
+  `RM_WorkGiver_FreeMired` built fresh, exactly the spec's own fallback.
 
 1. **Mire**: `RM_MapComponent_TerrainMire` — interval scan of pawns standing on
    terrains carrying `RM_MireExtension` (DefModExtension: severity/tick,
    escape-chance curve); applies escalating `RUT_Mired` hediff (moving penalty →
    immobilized). Cleared by leaving the terrain or by an adjacent pawn's
-   pull-free job (reuse vanilla rescue/carry interaction shape ❓ — verify a
-   crib exists, else a simple custom JobDef). Animals native to the biome are
-   immune (XML list).
+   pull-free job (custom `RM_JobDriver_FreeMired`, confirmed above — no vanilla
+   crib fit). Animals native to the biome are immune (XML list).
 2. **Swallow**: `RM_MapComponent_MudSwallow` — items lying on mire-extension
    terrain for N ticks (**INVENTED**: ~2500, so battlefield drops vanish but
    hauling is safe) despawn into a per-cell buried registry (Scribe-saved); a
@@ -344,22 +447,43 @@ notices within days.
 
 **Engine route.** A hook, not a system: grazing events write suppression into
 the **same `EXPLOSIVE_PLANT_GROWTH_1` suppression grid** the blower (M2) writes.
-Implementation is a Harmony postfix on plant-consumption (❓ exact seam —
-`Plant` ingestion/`FoodUtility` path; identify the single choke-point method in
-source at build time) recording cell + radius 1 suppression with a decay of a
-few days (**INVENTED**). The kit item owns the postfix; the growth engine owns
-the grid and its decay math. Zero new defs — any plant-eater suppresses, which
-is exactly the sheet's ecology ("a jungle that must be eaten").
+Implementation is a Harmony postfix on plant-consumption. **Choke-point
+CONFIRMED 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass), against the real
+1.6/Odyssey decompile**: `Plant.IngestedCalculateAmounts(Pawn ingester,
+float nutritionWanted, out int numTaken, out float nutritionIngested)`
+(`RimWorld/Plant.cs:603`, `protected override`, called by the base
+`Thing.Ingested` for every plant-eating pawn — grazing animal or player
+alike, no separate route) is the single seam; a Harmony postfix there reads
+`__instance.Position`/`.Map` for the write. Recording cell + radius 1
+suppression with a decay of a few days (**INVENTED**). The kit item owns
+the postfix; the growth engine owns the grid and its decay math. Zero new
+defs — any plant-eater suppresses, which is exactly the sheet's ecology ("a
+jungle that must be eaten"). **Not built this pass**: `EXPLOSIVE_PLANT_GROWTH_1`
+is still unfiled-to-build (`infrastructure/state/queue/BENCH.md`, not
+FOUNDRY) — the suppression grid this postfix must write into does not exist
+yet, so shipping the postfix now would have nothing to call, matching M2's
+own "if the growth engine slips, ships with the write stubbed" posture.
 
 **Effort**: **S** (given the parent engine exists — hard dependency, build
 after it). **v1: ships with/after `EXPLOSIVE_PLANT_GROWTH_1`.**
 
 ## M11. The silence cue (§9)
 
+**Reconciled 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass): already shipped,
+per owner ruling 3 below (ships in v1, not deferred).**
+`GREENTIDE_STANDALONE_MOD_1` (closed 2026-09-11, sha `c71fb0fbf`) built
+`RM_MapComponent_SilenceCue`
+(`src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs`,
+shared `mandrake.rm.creaturebehaviors`) and `RM_SilenceAuraExtension.cs`,
+wired live. It resolved the ❓ below by taking the honest end-and-respawn
+route (its own header cites the same `Sustainer`/`SustainerManager`/
+`AmbientSoundManager` sources named below) rather than the volume-ramp this
+spec speculated might not exist.
+
 **Player experience.** The loudest biome on the planet goes quiet moments
 before the apex predator arrives. Players learn to fear a silent jungle.
 
-**Engine route.** `RM_MapComponent_SilenceCue`: predators tagged with
+**Engine route (historical).** `RM_MapComponent_SilenceCue`: predators tagged with
 `RM_SilenceAuraExtension` trigger, on hunt-job start within player-home range, a
 fade-out of the biome's ambient sustainers for a window, then restore.
 `AmbientSoundManager` spawns those sustainers from `Biome.soundsAmbient`
@@ -369,9 +493,26 @@ externally (end-and-respawn may pop audibly; a volume ramp needs a source read
 of `Sustainer`/`SoundParams`). Honest sizing: an audio-polish mechanic with an
 unverified seam.
 
-**Effort**: **M**. **Deferred to v1.1** — the only sheet mechanic deferred
-whole. It is §9 *artistic theme*, not §5 *always true*; no other mechanic
-depends on it, and shipping it badly (popping audio) reads worse than absence.
+**❓ RESOLVED 2026-09-13, and it's better than the shipped code used**: a live
+per-tick volume duck IS possible, verified this pass against the real
+decompile — `Sustainer.externalParams` (`Verse.Sound/Sustainer.cs:22`, a
+public, freely-mutable `SoundParams`) feeds every `SubSustainer`/
+`SampleSustainer` update (`SubSustainer.ExternalParams => parent.
+externalParams`), and `SoundParamTarget_Volume`
+(`Verse.Sound/SoundParamTarget_Volume.cs`) maps a named external parameter
+straight onto a sample's volume — provided the target `SoundDef`'s own
+subSounds declare a `paramTargets` entry keyed to that name (XML, not
+touched by any shipped Greentide def yet). The live `Sustainer` instances
+themselves are reachable via `Find.SoundRoot.sustainerManager.AllSustainers`
+(public; the shipped `RM_MapComponent_SilenceCue` already walks this exact
+list to call `.End()`). **Not rebuilt this pass** — the shipped end-and-
+respawn behavior is a real, owner-accepted v1 trade (ruling 3 below), and
+reworking a live, working, already-verified mechanic on an unrequested
+refinement is out of this spike's scope; flagged here as a genuine future
+improvement (a true fade instead of a pop) for whoever next touches this
+file, not a defect.
+
+**Effort**: **M**. **Ships in v1 per owner ruling 3 below — and already has.**
 
 ## M12. The Greatbole — mineable living tower (§7b)
 
@@ -393,8 +534,18 @@ with a component-driven life:
   natural-roof patch, plus a `RUT_GreatboleCore` marker building holding the
   tree's identity and its component state. Exterior art: an over-sized
   `RUT_GreatboleCrown` drawn above (multi-cell visual, no collision beyond the
-  heartwood blob) ❓ — verify large-graphic draw route (building drawSize vs a
-  skyfaller-style overlay) at build.
+  heartwood blob). **RESOLVED 2026-09-13 (GREENTIDE_MECHANICS_2 spike
+  pass): plain building `drawSize` is sufficient, no skyfaller-style overlay
+  needed.** `GraphicData.drawSize` (`Verse/GraphicData.cs:29`, `public
+  Vector2 drawSize = Vector2.one`) is independent of a `ThingDef`'s
+  collision `size` — vanilla already draws many 1×1-footprint things with a
+  larger-than-1×1 `drawSize` (this is the standard route for any
+  larger-than-footprint sprite, trees included). `RUT_GreatboleCrown` ships
+  as an ordinary `GraphicData.drawSize` override on the marker building, not
+  a Skyfaller subclass (that machinery — `RimWorld/Skyfaller.cs` et al. — is
+  for descending/ascending things, an unrelated mechanic; confirmed by
+  reading its own draw-pos utility, which is time-of-flight-driven, not a
+  fit for a static structure).
 - **`RM_MapComponent_LivingRegrowth`** (generic RM_ — any future living-dungeon
   wants it): per registered bole, on a slow interval, pick interior cells that
   are empty, enclosed by the bole's footprint, and **not sealed** → schedule
