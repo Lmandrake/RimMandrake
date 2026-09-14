@@ -1,4 +1,10 @@
-# SCARLANDS_MECHANICS_1 — C# mechanics kit spec (DRAFT)
+# Scarlands C# mechanics kit spec
+
+Build/spike item: `SCARLANDS_MECHANICS_2` (`SCARLANDS_MECHANICS_1`, filed
+2026-09-07, closed 2026-09-11 at spec-only — that ID is permanently closed,
+append-only ledger, never reused; see `infrastructure/state/items/
+SCARLANDS_MECHANICS_2.md` for the 2026-09-14 spike pass that reconciled §1
+and §2 against code shipped elsewhere and resolved the remaining ❓s below).
 
 Engine mapping for the five mechanics fixed in
 `design/Jawa/worldbuilding/biomes/the_scarlands.md` (frozen sheet — §4 mynock,
@@ -19,7 +25,56 @@ kinds, the mark) at **RSW_/RUT_** per `design/NAMING_SCHEME_PLAN.md`.
 
 ---
 
-## 1. Mynock ship-infestation (board / breed / eat / hunt-out)
+## 1. Mynock ship-infestation (board / breed / eat / hunt-out) — SHIPPED, see below
+
+**🔴 SCARLANDS_MECHANICS_2 (2026-09-14): this entire mechanic is already
+built and closed.** `SHIP_VERMIN_MOD_1` (closed 2026-09-11) and
+`WRECKAGE_VERMIN_SPAWN_1` (closed 2026-09-12) shipped board/breed/eat/
+hunt-out in full, under different class names than this section originally
+drafted, in `mandrake.rm.creaturebehaviors` +
+`mandrake.rm.shipvermin` rather than this kit's own mod — an owner ruling
+(2026-09-11 card sitting, "gather all the ship-infesting critters into a
+single mod") made after this section was first written. **Do not rebuild
+any of it.** Real shipped shape:
+
+- **Board** — `RM_SeekTargetExtension` (`seekSubstructure` field, generic
+  "walk toward data-tagged terrain") + `RM_JobGiver_SeekMarkedTerrain`
+  (`src/RimMandrake/CreatureBehaviors/Source/`), attached to `RSW_Mynock`
+  with `seekSubstructure=true` via
+  `src/RimMandrake/ShipVermin/Patches/RSW_Mynock_ShipVermin.xml`. Vanilla
+  `Gravship.ShouldBringOnGravship`/`ThingDef.bringAlongOnGravship` (default
+  `true`) does the actual carry, as this section originally predicted —
+  confirmed zero C# for that half.
+- **Breed** — `RM_CompVerminBreeder`/`RM_CompProperties_VerminBreeder`,
+  lord-free exactly as drafted below, population-capped via the shared
+  `RM_MapComponent_VerminPopulation` (soft/hard cap curve, group tag
+  `ShipVermin`) rather than a per-race count — a generalization beyond this
+  section's own draft, reused by every future ship-vermin species.
+- **Eat** — `RM_GnawTargetExtension` + `RM_JobGiver_GnawTargets` +
+  `RM_JobDriver_Gnaw` (JobDef `RM_Gnaw`), same building-defName/comp-type/
+  floor-terrain data-driven shape drafted below (`PowerConduit`,
+  `CompGlower`, `TerrainGrid.RemoveTopLayer`), with bite damage additionally
+  scaling with population pressure (the "nuisance unless there are many"
+  ruling as an actual curve, not flat).
+- **Hunt out** — `RM_Alert_ShipVermin` + `RM_Alert_VerminPopulationBase`;
+  mynocks stay ordinary wild pawns, vanilla hunting/shooting ends it.
+- **Wreck-anchored spawning** (owner ruling 2026-09-12, not in this
+  section's original scope): `RM_CompProperties_VerminNest`/
+  `RM_CompVerminNest`, live-verified with an actual observed spawn.
+- **`RSW_Mynock`** (`src/RimStarWars/SWBestiary/Defs/ShipVermin/`) is our
+  own clone, resolving the ❓ below outright, and already ships
+  vacuum-capable (`canBeVacuumBurnt=false`, `canFlyInVacuum=true`,
+  `VacuumResistance 1`) — resolving the vacuum ❓ too: `RaceProps` already
+  handles it, no per-map special-casing needed.
+
+**❓s below are RESOLVED by the above, kept for the historical record:**
+~~whether the donor mynock race def tolerates a patch~~ — moot, `RSW_Mynock`
+is our own clone (owner ruling 3, below). ~~whether vacuum movement needs
+special-casing~~ — resolved no, `VacuumResistance 1` on the race handles it
+with zero new code.
+
+<details>
+<summary>Original draft (2026-09-11), superseded by the shipped code above — kept for provenance only</summary>
 
 **Player experience.** Park the gravship in the Scarlands and mynocks start
 drifting toward the hull. Any still aboard at launch ride home for free — then
@@ -78,13 +133,9 @@ map; bite damage 8 HP/toil-cycle; nutrition 0.2/bite.
 **Deferred:** mynock nests as placeable Things, damage-sparks fleck work,
 external-hull clinging visuals, mynock-vs-vacuum rules.
 
-**❓ Unverified:** whether the donor (Star Wars Animal Collection) mynock race
-def tolerates an XML patch swapping `thinkTreeMain` in place, vs. our shipping
-an `RSW_Mynock` clone kind — decide at build, rides the roster re-cast pass
-the sheet already owes. ❓ whether pawn movement between substructure rooms
-mid-flight (vacuum) needs special-casing on Odyssey space maps.
-
 **Effort: M** overall (the Gnaw driver is the only M piece; the rest are S).
+
+</details>
 
 ---
 
@@ -98,25 +149,37 @@ Jawa were right.
 **Engine route.** One `HediffDef` (`RUT_ScarlandsMark`), severity-staged,
 **almost entirely XML on top of ruled comp RC4:**
 
-- **Application:** extend **RC4 `RM_GameCondition_EnvironmentalWeather`** with
-  two fields — `hediffToApply` + `severityPerInterval` (a natural sibling of
-  its existing damage-per-interval field; flagged in the alpha review §5 as
-  the kind of one-field broadening RC4 was built for). A permanent instance of
-  it runs on Scarlands maps. Attachment route for "permanent condition on this
-  biome's maps": simplest is a tiny `MapComponent` that instantiates the
-  condition when `map.Biome == Scarlands` — ❓ verify at build whether an
-  Odyssey `TileMutatorDef`/GenStep can attach a permanent `GameCondition`
-  without C#, which would delete even that.
+- **Application — RESOLVED, both halves already exist, zero RC4 changes
+  needed (SCARLANDS_MECHANICS_2, 2026-09-14).** `EnvironmentalWeatherExtension`
+  already carries `hediffToApply`/`hediffSeverityPerInterval` AND
+  `carrierHediff`/`carrierHediffSeverity` — added by `MIASMA_MECHANICS_1`'s
+  M4 build (after this section was first drafted), which is exactly the
+  "extend RC4 with two fields" this section originally asked for. A
+  Scarlands mark hediff instance rides `carrierHediff`, matching the
+  pattern `RUT_MiasmaExposure` already uses. **Attachment route also
+  RESOLVED, and a live shipped example exists to copy**: no `MapComponent`
+  is needed at all — `RUT_MiasmaWeatherLock.xml`
+  (`src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/`) attaches its
+  permanent `GameCondition_EnvironmentalWeather` instance purely via
+  `<canBePermanent>true</canBePermanent>` listed in the biome's own
+  `<biomeMapConditions>` (`BiomeConditionMapComponent.MapGenerated ->
+  GameConditionMaker.MakeConditionPermanent`, decompile-confirmed by that
+  pass) — `RUT_ScarlandsMarkLock` copies that file's shape onto
+  `RUT_Scarlands.xml`'s own `biomeMapConditions`, pure XML.
 - **Mood:** vanilla `ThoughtWorker_Hediff` (VERIFIED class) — a `ThoughtDef`
   keyed to the hediff, stage per severity band. Zero new C#.
 - **Nightmares:** vanilla `HediffStage.mentalStateGivers` (VERIFIED:
   `Hediff.cs:463` rolls them every 60 ticks when not already in a state) — the
   upper stages carry a low-MTB `Wander_Sad`/`Berserk`-family giver as "bad
   nights." Zero new C#.
-- **Never fully fades:** `severityPerDay` negative off-map with a floor —
-  vanilla severity math has no floor concept, so the one line of new C# here
-  is a trivial `HediffComp` (`RM_HediffComp_SeverityFloor`, S) clamping
-  severity at a minimum once a threshold was ever crossed.
+- **Never fully fades — BUILT (SCARLANDS_MECHANICS_2, 2026-09-14):**
+  `severityPerDay` negative off-map with a floor — vanilla severity math has
+  no floor concept, so the one line of new C# here is `RM_HediffComp_SeverityFloor`
+  (+ `HediffCompProperties_SeverityFloor`,
+  `src/RimMandrake/EnvironmentalHazards/Source/`), a `HediffComp` clamping
+  severity at a configured minimum once `floorTriggerThreshold` was ever
+  crossed. Compiles clean, 0 warnings/0 errors; not yet wired onto
+  `RUT_ScarlandsMark` (that HediffDef is content, owed to the full build).
 
 **Reuse:** RC4 (extended, 2 fields). New C#: `RM_HediffComp_SeverityFloor`
 only.
@@ -165,10 +228,15 @@ NOT vanilla behavior and is the gap this mechanic fills:
   ("add hediff X to every animal on the map periodically", data-driven —
   exactly its donor's `GameCondition_ExplodingAnimals` shape). Configure it to
   apply `RUT_ScariaIncubation` to pawns of the grazer kind that already carry
-  `Scaria`. Needs one small extension: a `pawnKindFilter`/`requiredHediff`
-  gate (two fields) so it arms only scaria-positive grazers, not every animal.
+  `Scaria`. **BUILT (SCARLANDS_MECHANICS_2, 2026-09-14):** the
+  `pawnKindFilter`/`requiredHediff` gate (2 fields) on
+  `ArmLatentHazardExtension`, wired into `GameCondition_ArmLatentHazard.
+  Eligible()` — both optional and additive to the existing `targets`/
+  `affects` gates. Compiles clean, 0 warnings/0 errors.
 
-**Reuse:** RC5's arming condition (extended, 2 fields). New C#: none.
+**Reuse:** RC5's arming condition (extended, 2 fields, shipped). New C#:
+none further — `RUT_ScariaIncubation` itself is pure XML, owed to the full
+build.
 
 **INVENTED parameters:** incubation 4–12 days (severity 0.1–0.25/day,
 randomized per pawn); final-stage giver MTB 0.5 days.
@@ -217,17 +285,26 @@ production line — keep `spawnablePawnKinds` counts/points cap at ward scale.
   lords through (VERIFIED `Activator.CreateInstance(lordJobType,
   SpawnedPawnParams)`), so spawner-driven Sentinel structures can't use it.
 
-New class **`RM_LordJob_DefendPerimeter`** (S): `LordJob_DefendPoint`'s
-single-toil graph plus (a) a `SpawnedPawnParams` ctor, (b) never-flee
-(`AddFleeToil => false`), (c) no exit, no assault, ever — ~30 lines, the ban
-made structural. Chase bounding is then XML: `LordToil_DefendPoint` assigns
-`DutyDefOf.Defend`, whose VERIFIED def carries `JobGiver_AIDefendPoint` with
-`targetAcquireRadius 65 / targetKeepRadius 72` — clone it as
-`RUT_SentinelDefend` DutyDef with tightened radii so Sentinels drop targets
-that leave their lines. ❓ One build-time check owed: that
-`LordToil_DefendPoint` accepts a custom DutyDef or that the radii can be
-bounded another way (the toil may hardcode `DutyDefOf.Defend`; if so the
-subclassed toil is another ~10 lines).
+**BUILT (SCARLANDS_MECHANICS_2, 2026-09-14):** `RM_LordJob_DefendPerimeter` +
+`RM_LordToil_DefendPerimeter`
+(`src/RimMandrake/EnvironmentalHazards/Source/RM_LordJob_DefendPerimeter.cs`):
+(a) a `SpawnedPawnParams` ctor, (b) never-flee (`AddFleeToil => false`
+override), (c) no exit, no assault, ever — a single-toil `CreateGraph` with
+no signal handler wired to anything, so there is nothing for a later edit to
+accidentally route into an assault toil. Chase bounding: **the ❓ this
+section carried is RESOLVED — `LordToil_DefendPoint.UpdateAllDuties()`
+(decompile, `Verse.AI.Group/LordToil_DefendPoint.cs`) hardcodes
+`new PawnDuty(DutyDefOf.Defend, ...)` directly, no override seam.** The
+~10-line subclassed-toil fallback this section already anticipated is what
+shipped: `RM_LordToil_DefendPerimeter` overrides `UpdateAllDuties()` to
+assign a caller-supplied `DutyDef` instead (defaulting to
+`DutyDefOf.Defend` when none given, so the class is a strict superset of
+vanilla behavior — never a change by omission). `RUT_SentinelDefend`
+(the tightened-radius `DutyDef` clone this section still calls for) is
+passed in by whoever spawns the lord — the RM_ class stays content-blind.
+Compiles clean, 0 warnings/0 errors; `RUT_SentinelDefend` itself and the
+Sentinel PawnKindDef/spawner-building content are pure XML, owed to the
+full build.
 
 Sentinel spawning rides existing vanilla plumbing: repair alcoves / grave-wards
 as buildings carrying vanilla `CompSpawnerPawn` with
@@ -235,7 +312,8 @@ as buildings carrying vanilla `CompSpawnerPawn` with
 def-driven (`spawnablePawnKinds`, `defendRadius`, interval, points cap).
 
 **Reuse:** vanilla `CompSpawnerPawn` (as designed); no RC comp applies. New
-C#: `RM_LordJob_DefendPerimeter` (+ possible toil subclass).
+C#: `RM_LordJob_DefendPerimeter` + `RM_LordToil_DefendPerimeter` (shipped
+this pass).
 
 **Parameters (RULED 2026-09-11, owner: "Double them, then accept"):** defend
 radius 80, wander radius 24, acquire/keep radii 72/80; spawner points cap per
@@ -273,10 +351,14 @@ layouts and crater gen-steps, kept whole per the sheet's donor inventory):
   destroyed mech shells, scorch filth, opened caskets — scattered by a
   GenStep in the biome's map generation. No live threats inside; loot per §6
   ban 4 (stripped surfaces, sealed prizes elsewhere).
-- **One small C# piece if needed**: `RUT_GenStep_SprungDanger` (S) — only if
-  prefab fields can't express "pre-damaged/opened" (❓ verify at build whether
-  `PrefabDef` entries can set hit points / opened states declaratively; if
-  yes, this class evaporates and the mechanic is **zero C#**).
+- **RESOLVED YES (SCARLANDS_MECHANICS_2, 2026-09-14): `RUT_GenStep_SprungDanger`
+  is not needed, the mechanic is zero C#.** `PrefabThingData`
+  (decompile, `RimWorld/PrefabThingData.cs` — the per-entry payload
+  `PrefabDef.things` is a list of) carries a plain `public int hp` field,
+  read straight off the XML via `XmlHelper.ParseElements`. Pre-damaged/
+  opened dressing is fully declarative: a `PrefabDef` entry's `<hp>` sets
+  the spawned thing's hit points directly. §5 ships entirely as `RUT_`
+  PrefabDef content + a scatter GenStep, owed to the full build.
 
 This is map generation for a biome, not planet worldgen — the worldgen ban
 (`CLAUDE.md`) does not apply; the frozen world already fixes where Scarlands

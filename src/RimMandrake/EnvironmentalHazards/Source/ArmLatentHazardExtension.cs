@@ -29,6 +29,16 @@ namespace RimMandrake.EnvironmentalHazards
         public List<ThingDef> immuneThingDefs;
         public List<PawnKindDef> immunePawnKinds;
 
+        // SCARLANDS_MECHANICS_1 §3 (plated-grazer scaria onset): the sweep
+        // must arm only scaria-positive grazers, never every animal on the
+        // map. Null/empty = no filter (existing behavior, unchanged for
+        // every other consumer of this extension). When set, BOTH gates
+        // apply (a pawn must pass every non-null filter) — kept as separate
+        // fields rather than one combined "eligibility" flag so a future
+        // consumer can use either alone.
+        public List<PawnKindDef> pawnKindFilter;
+        public HediffDef requiredHediff;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string err in base.ConfigErrors())
