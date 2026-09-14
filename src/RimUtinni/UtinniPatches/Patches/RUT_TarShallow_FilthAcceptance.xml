@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarShallow_FilthAcceptance.xml   UtinniPatches — SUMP_MECHANICS_1 S4
+
+  🔴 Real engine block found this pass, not previously visible anywhere in
+  the kit spec or any prior build pass — read directly against the live
+  install, not assumed: RM_TarShallow (LIQUID_TYPES_MOD_1's own generated
+  Defs/TerrainDefs/RM_Tar.xml, ParentName="WaterShallowBase") inherits
+  `filthAcceptanceMask: [None]` UNCHANGED from vanilla's own abstract
+  WaterBase (Data/Core/Defs/TerrainDefs/Terrain_Water.xml — checked
+  directly, RM_TarShallow overrides neither field). RimWorld/FilthMaker.cs's
+  own TerrainAcceptsFilth (read in full) returns false outright whenever
+  `terrainDef.filthAcceptanceMask == FilthSourceFlags.None`, before any
+  other check runs — so EVERY call to FilthMaker.TryMakeFilth for
+  RUT_Filth_MouseTrack on natural tar would silently fail, logging nothing,
+  the mechanic's own defining surface producing zero tracks forever. This is
+  the actual named ❓ the spec flagged ("verify filth-per-cell caps don't
+  erase the pattern at low mouse counts") landing on a DIFFERENT and more
+  fundamental block than the one the spec anticipated — see
+  RM_CompFilthTrail.cs's own header for the full finding, including why the
+  thickness-cap concern itself turned out to be a non-issue.
+
+  A PATCH, not an edit to LIQUID_TYPES_MOD_1's own generated RM_Tar.xml
+  ("regenerate only against a re-frozen official dump, never a live
+  capture... edit the table, never this file" — that file's own header).
+  No MayRequire/FindMod gate against mandrake.rm.liquidtypes: every other
+  Sump-side reference to RM_TarShallow/RM_TarDeep in this item (S1's
+  RUT_MoatFusePost.xml conductingTerrains list) already assumes it is a
+  live, always-loaded dependency with no gating — matching that precedent
+  rather than inventing a new posture. A patch matching nothing logs
+  nothing, so this is still a safe no-op on a mod list without liquidtypes.
+
+  RM_TarDeep is deliberately NOT touched here: it is WaterDeepBase-derived,
+  Impassable, and a wandering placeholder mouse's own path can never enter
+  an Impassable cell — patching it would have no observable effect on this
+  mechanic, so it is left alone rather than "fixed" for its own sake.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TerrainDef[defName="RM_TarShallow"]</xpath>
+    <value>
+      <filthAcceptanceMask>
+        <li>Terrain</li>
+      </filthAcceptanceMask>
+    </value>
+  </Operation>
+
+</Patch>

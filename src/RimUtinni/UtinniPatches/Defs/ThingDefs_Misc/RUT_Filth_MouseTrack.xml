@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Filth_MouseTrack.xml   UtinniPatches — SUMP_MECHANICS_1 S4 build pass
+
+  "Mice deposit RUT_Filth_MouseTrack (low-alpha filth, slow dissipation) on
+  tar cells they cross" (sump_kit_spec.md S4, "Mouse-line telegraphy"). No
+  new C# — plain FilthDef, ParentName="BaseFilth" (vanilla's own abstract
+  parent, Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml, read directly).
+
+  🔴 Texture path corrected this pass, caught by validate_patch.py, not
+  guessed around: a first draft reused vanilla's own Things/Filth/Grainy
+  (Filth_Dirt/Filth_AnimalFilth's own texture) verbatim, matching this
+  item's own S1/S6/S5 posture of reusing existing vanilla art as a
+  placeholder — but validate_patch.py refused it as a hard ERROR, not the
+  WARN that pattern got for RUT_TarBlaze/RUT_WickStem: this mod
+  (UtinniPatches) already ships its own content under Textures/Things/,
+  which flips the validator's heuristic from "ambiguous vanilla, can't
+  tell" to "this mod's own claimed namespace, must resolve for real" — the
+  SAME "validate_patch.py refuses a cross-mod vanilla-art reuse as a hard
+  ERROR" shape src/DEPLOY_HOLD.txt's own F2/F5/F6 hold block already
+  documents for RUT_TibannaGas/RUT_DeadCreep/etc. Repointed to a new
+  RUT_-named path under the same vanilla-mirroring folder
+  (Things/Filth/RUT_MouseTrack) and DEPLOY_HOLD'd — same fix, same
+  pattern, this item's first time hitting it. Color is
+  a much lower alpha than either vanilla filth (Dirt: 91,75,65,97 / ~38%
+  opaque) — (20,18,16,42), ~16% opaque — for the spec's own "low-alpha,
+  faint tracery" framing: legible up close, easy to miss at a glance,
+  exactly the "the player who looks sees the gap" register.
+
+  placementMask [Terrain] (matching Filth_Dirt/Filth_AnimalFilth's own
+  choice, not the "Unnatural" default most incident-caused filth uses — a
+  mouse's own footprint is closer to those two than to blood/vomit/wreckage).
+  ignoreFilthMultiplierStat true — NOT a fix for an engine block
+  (StatDefOf.FilthMultiplier defaults to 1/100% and nothing in this chain
+  overrides it, confirmed against Stats_Basics_Special.xml) but a
+  deliberate choice so RM_CompFilthTrail.chancePerCellMoved is the ONLY
+  density knob in the deposit path, not diluted by an unrelated per-terrain
+  stat a future terrain edit could silently change — see
+  RM_CompFilthTrail.cs's own header for the full filth-cap finding this
+  pass made (Filth.cs's hardcoded 5-thickness cap does NOT erase the
+  pattern; the real engine block found was RM_TarShallow's inherited
+  filthAcceptanceMask=None, fixed by RUT_TarShallow_FilthAcceptance.xml,
+  this same pass, a separate file).
+
+  disappearsInDays 6~10 — INVENTED, this pass's own tuning value (the spec
+  names no figure beyond "slow dissipation"). Vanilla's own ambient filth
+  (Filth_Dirt/Filth_AnimalFilth) uses 45~50 days, but that is filth players
+  actively clean or ignore for a whole colony's lifetime; a MUCH slower
+  cycle here would mean the tracery essentially never redraws, so an old
+  gap (from a bulge that has since re-submerged elsewhere, per owner card 3)
+  could read as a false warning for weeks. 6~10 days is fast enough that the
+  pattern regenerates within roughly a week of mouse traffic — fast enough
+  to stay honest, still "slow" next to a single day/night cycle.
+  canFilthAttach/rainWashes are both left at their FilthProperties defaults
+  (false / false) — rainWashes is moot regardless, since ban #4 (S6, the
+  weather lock) means the Sump never rolls rain that could wash anything.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RUT_Filth_MouseTrack</defName>
+    <label>mouse track</label>
+    <description>A faint smear in the black — a sump-mouse's own trail, crossing the tar. Where the tracks stop, something else has been through first.</description>
+    <graphicData>
+      <texPath>Things/Filth/RUT_MouseTrack</texPath>
+      <color>(20,18,16,42)</color>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+      </placementMask>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>6~10</disappearsInDays>
+      <cleaningWorkToReduceThickness>10</cleaningWorkToReduceThickness>
+    </filth>
+  </ThingDef>
+
+</Defs>

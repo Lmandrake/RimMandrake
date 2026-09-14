@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ThinkTree_SumpMouseWander.xml   UtinniPatches — SUMP_MECHANICS_1 S4
+
+  Wires RM_JobGiver_DreadAvoidWander (RM_JobGiver_DreadAvoidWander.cs) onto
+  every animal in the game via insertTag="Animal_PreMain" — the SAME
+  global, safe-by-construction extension point SHIP_VERMIN_MOD_1's own
+  RM_ThinkTree_VerminBehaviors.xml
+  (src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/) already
+  established in this repo, read in full before writing this file. Safe
+  because RM_JobGiver_DreadAvoidWander.TryGiveJob's own first line returns
+  null for any pawn whose race lacks RM_DreadAvoidWanderExtension — every
+  animal that is not RUT_Placeholder_SumpMouseRace (ThingDefs_Races/, this
+  same pass) falls through to its own ordinary wander node, same tick, with
+  zero behavior change. A SEPARATE ThinkTreeDef from RM_ThinkTree_
+  VerminBehaviors, not an addition to its subNodes — that file belongs to
+  SHIP_VERMIN_MOD_1, and ThinkNode_SubtreesByTag (Verse.AI, read in full)
+  tries every ThinkTreeDef sharing an insertTag independently, so a second
+  Def at the same tag needs no coordination with the first.
+
+  Whole-Def MayRequire: this Def's own thinkRoot instantiates a class that
+  only exists when mandrake.rm.environmentalhazards is active — same
+  posture RUT_SumpDuskLock.xml (S6, this same folder) already uses for its
+  own conditionClass reference.
+
+  wanderRadius set directly in XML on the JobGiver instance (10, INVENTED —
+  the spec names no figure) rather than in the class's own constructor,
+  matching the established idiom this mod's own RM_CompVaporDrifter.cs
+  header already documents: "a concrete kind's ThinkTreeDef XML can tune it
+  per the vanilla idiom stock animal wander JobGivers already use (e.g.
+  JobGiver_WanderHive's own XML sets <wanderRadius> directly)." RimWorld's
+  XML deserializer sets protected fields via reflection regardless of C#
+  access modifiers — confirmed by that same precedent already compiling and
+  shipping in this mod.
+-->
+<Defs>
+
+  <ThinkTreeDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ThinkTree_SumpMouseWander</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_DreadAvoidWander">
+          <wanderRadius>10</wanderRadius>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

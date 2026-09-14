@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_BeastBulge_DreadRegistration.xml   UtinniPatches — SUMP_MECHANICS_1 S4
+
+  Registers RUT_BeastBulge (S3, already shipped, DEPLOY_HOLD'd — see
+  src/DEPLOY_HOLD.txt) as a dread source for RM_MapComponent_DreadField
+  (S4, RM_MapComponent_DreadField.cs). A PATCH, not an edit to
+  RUT_BeastBulge.xml itself — this pass's own scope says "do not touch
+  S1/S2/S3/S5/S6," and the registration comp (RM_CompDreadSource) is
+  designed exactly for this: any dread source attaches it without the
+  MapComponent (or S3's own def) needing to know about the other.
+
+  MayRequire on the Operation: RM_CompDreadSource only exists when
+  mandrake.rm.environmentalhazards is active — same "MayRequire on the
+  Operation itself makes this a true no-op, not a dangling cross-reference"
+  posture RUT_SumpDuskLock_BiomeWiring.xml already documents in this same
+  folder. (RUT_BeastBulge.xml's own ThingDef is itself MayRequire-gated at
+  the top level, so this patch only ever matches when both are already
+  present together.)
+
+  Radius 8 is the spec's own S4 text verbatim: "radius INVENTED: 8 cells."
+
+  DEPLOY_HOLD: grouped into RUT_BeastBulge's own existing hold entry in
+  src/DEPLOY_HOLD.txt (this pass appends this filename to that same block)
+  — this patch is meaningless without RUT_BeastBulge actually being live,
+  same reasoning as every other file already held with it.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/ThingDef[defName="RUT_BeastBulge"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DreadSource">
+        <radius>8</radius>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>

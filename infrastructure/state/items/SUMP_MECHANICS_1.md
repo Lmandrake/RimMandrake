@@ -849,3 +849,205 @@ a future pass). S1/S2/S5/S6 untouched. Item stays in `doing`.
 - `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml` (new, `DEPLOY_HOLD`'d)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml` (new, `DEPLOY_HOLD`'d)
 - `src/DEPLOY_HOLD.txt` (edited: 3-file `RUT_BeastBulge` entry)
+
+## S4 build pass — 2026-09-14
+
+Build order step 7 (S4, "mouse-line telegraphy" — the LAST of the spec's 6
+numbered mechanics), per `sump_kit_spec.md`'s own "Build order": "strictly
+after S3 (dread sources must exist)." S3 (`RUT_BeastBulge`) already shipped
+its own pass. **With this pass, S1–S6 have all landed at least one build
+pass** — the kit spec's full v1 mechanic roster is built, not just spiked.
+No bridge, no game, no quicktest this pass, per task scope.
+
+**Registration seam: a generic comp, not a hardcoded defName scan.**
+`RM_MapComponent_DreadField` (per-map avoid-cell set) exposes `Register`/
+`Deregister`/`IsDreaded` and is populated by `RM_CompDreadSource` — a small
+`ThingComp` any dread source attaches via its own def or a patch
+(`radius` INVENTED 8 cells, the spec's own figure). `RUT_BeastBulge` (S3,
+already shipped) is wired on THIS pass via `RUT_BeastBulge_
+DreadRegistration.xml`, a `PatchOperationAdd` onto its `comps` list — S3's
+own def file was not touched, per this pass's own "do not touch S1/S2/S3/
+S5/S6" scope. Field shape (flat `bool[]` over map cells, `GenRadial.
+RadialCellsAround` painting) is cribbed from `RM_MapComponent_VaporColumns`
+(FORGE_MECHANICS_1 F3), but event-driven off Register/Deregister rather
+than VaporColumns' own periodic rescan — dread sources are few and always
+know their own spawn/despawn moment, so a push beats a pull here.
+
+**Wander-seam decision, the spec's own named ❓ ("ThinkTree wander-node
+validator vs pathfinder cost injection — read the wander JobGiver family at
+build and crib the smaller"), resolved with a real precedent already in
+this mod, not re-derived from scratch:** `RM_JobGiver_DreadAvoidWander`
+cribs `RM_JobGiver_ColumnWander` (FORGE_MECHANICS_1 F3,
+`RM_CompVaporDrifter.cs`) verbatim — a `JobGiver_Wander` subclass setting
+`wanderDestValidator` in its own constructor. `Verse.AI/JobGiver_Wander.cs`
+(read in full) already threads that validator through
+`RCellFinder.RandomWanderDestFor` for every candidate cell — confirms the
+"wander-node validator" arm as the smaller one, no pathfinder-cost-grid
+code needed. **Insertion seam, also resolved against a real precedent**:
+NOT a per-race `ThinkTreeDef` override (too large a surface for this
+mechanic) but `insertTag="Animal_PreMain"`
+(`RUT_ThinkTree_SumpMouseWander.xml`) — the SAME global, safe-by-
+construction extension point `SHIP_VERMIN_MOD_1`'s own
+`RM_ThinkTree_VerminBehaviors.xml` already established in this repo, read
+in full before reusing it. Safety is structural: `RM_JobGiver_
+DreadAvoidWander.TryGiveJob`'s own first line checks for
+`RM_DreadAvoidWanderExtension` (a presence-only marker) on the pawn's race
+and returns `null` instantly if absent — every animal in the game that is
+not the new placeholder mouse race falls through to its own ordinary
+wander node, same tick, zero behavior change.
+
+**Filth-cap finding, the spec's own named ❓ ("verify filth-per-cell caps
+don't erase the pattern at low mouse counts"), resolved against the live
+1.6/Odyssey decompile (`RimWorld/Filth.cs`, `RimWorld/FilthMaker.cs`, both
+read in full) — and the real block turned out to be a DIFFERENT, more
+fundamental one than the spec anticipated:**
+- `Filth.CanBeThickened` caps at a hardcoded 5 (`Filth.cs`'s own `private
+  const int MaxThickness = 5`, distinct from and stricter than
+  `FilthProperties.maxThickness`, which defaults to 100 and only gates
+  `ThickenFilth()`'s own increment). Once a cell hits that cap,
+  `FilthMaker.TryMakeFilth` does NOT drop the deposit — it walks the 8
+  neighbouring cells looking for room (`FilthMaker.cs:98-124`). **The
+  pattern does not erase at low mouse counts; it spreads outward,** which
+  if anything reinforces a tracery rather than overloading one cell. The
+  spec's own named risk turned out to be a non-issue.
+- 🔴 **The real, previously-invisible block: `RM_TarShallow`/`RM_TarDeep`
+  (LIQUID_TYPES_MOD_1's own generated `RM_Tar.xml`) inherit
+  `filthAcceptanceMask: [None]` unchanged from vanilla's own abstract
+  `WaterBase`** (`Data/Core/Defs/TerrainDefs/Terrain_Water.xml`, checked
+  directly — neither tar grade overrides the field).
+  `FilthMaker.TerrainAcceptsFilth` returns `false` outright on a `None`
+  mask, before any other check — every deposit onto natural tar would have
+  silently failed forever, logging nothing, the mechanic's own defining
+  surface producing zero tracks. Fixed by `RUT_TarShallow_
+  FilthAcceptance.xml`, a patch (not an edit to LIQUID_TYPES_MOD_1's own
+  generated file) adding `filthAcceptanceMask: [Terrain]` onto
+  `RM_TarShallow` only — `RM_TarDeep` is Impassable and was left untouched,
+  a patch there would have no observable effect.
+- `ignoreFilthMultiplierStat true` on `RUT_Filth_MouseTrack` — not a fix
+  for a real block (`StatDefOf.FilthMultiplier` defaults to 1/100% and
+  nothing in this chain overrides it) but a deliberate choice so
+  `chancePerCellMoved` (~1/40 cells, the spec's own figure, implemented as
+  a 0.025 per-cell-moved-into Bernoulli trial) is the ONLY density knob in
+  the deposit path.
+
+**New C# (all generic, `RM_`, matching this mod's own posture):**
+- `RM_MapComponent_DreadField.cs` — the MapComponent plus
+  `CompProperties_DreadSource`/`RM_CompDreadSource` (the registration
+  interface).
+- `RM_JobGiver_DreadAvoidWander.cs` — the JobGiver plus
+  `RM_DreadAvoidWanderExtension` (the opt-in marker).
+- `RM_CompFilthTrail.cs` — the ~one-comp filth-deposit hook (`CompTick`
+  watches for a cell change, rolls the Bernoulli trial, calls
+  `FilthMaker.TryMakeFilth`) — a comp rather than a JobDriver hook: it
+  rides whatever job the pawn is already doing (wander, flee, forage), not
+  just an explicit wander job, matching "mice run the black everywhere."
+
+**New content XML:**
+- `RUT_Filth_MouseTrack.xml` — the FilthDef. 🔴 texPath corrected mid-pass:
+  a first draft reused vanilla's own `Things/Filth/Grainy` verbatim
+  (matching S1/S6/S5's own "reuse vanilla art as placeholder" posture) but
+  `validate_patch.py` refused it as a hard ERROR, not the WARN that pattern
+  got for `RUT_TarBlaze`/`RUT_WickStem` — this mod already ships its own
+  content under `Textures/Things/`, which flips the validator's heuristic
+  from "ambiguous vanilla" to "this mod's own claimed namespace, must
+  resolve for real." Repointed to `Things/Filth/RUT_MouseTrack` and
+  `DEPLOY_HOLD`'d — same shape `DEPLOY_HOLD.txt`'s own F2/F5/F6 block
+  already documents, this item's first time hitting it.
+  `disappearsInDays 6~10` is this pass's own INVENTED tuning ("slow
+  dissipation" per the spec, but fast enough — against vanilla's own
+  45~50-day ambient filth — that the tracery actually redraws within about
+  a week rather than reading a stale gap as a live warning for a month).
+- `RUT_TarShallow_FilthAcceptance.xml` — the filth-acceptance fix, above.
+- `RUT_BeastBulge_DreadRegistration.xml` — the dread-source registration
+  patch onto `RUT_BeastBulge`, above. `DEPLOY_HOLD`'d together with
+  `RUT_BeastBulge.xml`'s own existing hold group (appended, not a new
+  group) — meaningless while the bulge itself is undeployed.
+- `RUT_Placeholder_SumpMouseRace.xml` + `RUT_Placeholder_SumpMouse.xml` —
+  the placeholder mouse, per this task's own brief ("roster's mouse kind
+  can stub as a recolored placeholder for the filth test"; the real
+  sump-mouse `PawnKindDef` stays the roster pass's own work, not authored
+  here). 🔴 `ParentName` corrected mid-pass: a first draft used
+  `ParentName="Squirrel"`, but `validate_patch.py` refused it —
+  vanilla's own `Squirrel` carries no `Name="..."` attribute and is
+  therefore not a legal `ParentName` target at all (only vanilla's real
+  Name-tagged abstract, `AnimalThingBase`, is). Rebuilt off
+  `AnimalThingBase` with every Squirrel-specific field it needs copied
+  down directly (race/body/statBases/tools), reusing Squirrel's own real
+  texPath with a darker tint via the `PawnKindDef`'s own `lifeStages` — no
+  new art, no hold needed for the pawn itself (only a WARN, the same
+  "ambiguous vanilla texPath" class this item's own S1 pass already
+  accepted for `RUT_TarBlaze`/vanilla `Fire`). Deliberately a NEW race
+  ThingDef rather than patching comps onto the shared vanilla `Squirrel`
+  directly — that would have given every wild squirrel in every save this
+  behavior, an unwanted global side effect this mod's own posture (every
+  other mechanic in this kit gates explicitly by biome/marker) argues
+  against.
+- `RUT_ThinkTree_SumpMouseWander.xml` — the `insertTag="Animal_PreMain"`
+  wiring, above.
+
+**Build.**
+```
+"C:\Users\Mandrake\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj -c Release
+```
+→ 0 warnings, 0 errors (3 new `.cs` files + 3 new `<Compile>` entries).
+
+**Validate.** `validate_patch.py` against the live 99-mod set (`--defs`
+Data + Mods + Workshop, 3,065 def files scanned): 6 files. `RUT_Placeholder_
+SumpMouseRace.xml` and `RUT_ThinkTree_SumpMouseWander.xml`: clean, 0
+errors/0 warnings (plus expected "no def in the load set uses that class"
+info lines for this pass's own new classes). `RUT_TarShallow_
+FilthAcceptance.xml` and `RUT_BeastBulge_DreadRegistration.xml`: 0 errors,
+2 expected WARNs each (the same documented "MayRequire-only guard is never
+recognized as Conditional/FindMod" false positive `XML_PATCH_VALIDATION_
+SWEEP_1.md` already records, plus a "0 on-disk matches, probably
+runtime-created" note the validator itself cannot resolve since these
+targets ARE on-disk in this mod's own load set). `RUT_Placeholder_
+SumpMouse.xml`: 0 errors, 6 WARNs, the same "ambiguous vanilla texPath"
+class as `RUT_TarBlaze` — accepted, not held. `RUT_Filth_MouseTrack.xml`:
+1 real ERROR, the `DEPLOY_HOLD`'d missing texPath (every other field
+clean) — same posture as every other held file in this item.
+
+**Self-review.** All 9 new/touched files (3 `.cs`, 6 XML) read in full,
+cross-checked against the live decompile for every engine claim above
+(`Filth`/`FilthMaker`/`FilthProperties`, `TerrainDef.filthAcceptanceMask`,
+`JobGiver_Wander`/`RCellFinder`, `ThinkNode_SubtreesByTag`,
+`ThingComp.PostSpawnSetup`/`PostDeSpawn` signatures) — two real defects
+caught and fixed before marking clean (the `ParentName="Squirrel"` illegal
+target, the `Things/Filth/Grainy` namespace-collision texPath), both
+surfaced by `validate_patch.py` rather than guessed at. All 9 marked
+`CLEAN` in `CODE_REVIEW_STATUS.json`. `RM_EnvironmentalHazards.csproj` and
+`DEPLOY_HOLD.txt` left unmarked (shared/multi-author and ledger files, same
+posture every prior pass in this item has used).
+
+**Owed, not done, explicitly**: the real sump-mouse `PawnKindDef`/`ThingDef`
+(roster pass — replaces the placeholder, and wires the real Patient-family
+mouse art); wiring the placeholder mouse onto any live GenStep or biome
+`wildAnimals` list (this pass proves the mechanism compiles and is
+reachable, it does not populate the Sump with wildlife — same "compiles
+now, first live spawn later" posture S1/S2's own spike pass already used);
+`RUT_BeastBulge`'s own art and the whole S3 hold group (untouched, still
+owed); `RUT_Filth_MouseTrack`'s own art (newly held this pass); any
+live/quicktest proof that a placeholder mouse actually avoids a dread
+radius in play, that tracks actually appear on `RM_TarShallow`, or that the
+`Animal_PreMain` insertion does not visibly change any OTHER animal's
+wander behavior (all explicitly out of this pass's no-bridge scope). S1/S2/
+S3/S5/S6 untouched (S3's own `RUT_BeastBulge.xml` gained a comp via patch
+only, per above). **With S4 landed, `sump_kit_spec.md`'s full 6-mechanic v1
+roster (S1–S6) has now had at least one build pass each** — the item is not
+closed (owed: the live/quicktest pass this task's own scope excludes
+throughout, and every "owed" line accumulated across all six passes above).
+
+## files (S4 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DreadField.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_DreadAvoidWander.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompFilthTrail.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (edited: 3 new `<Compile>` entries, shared/multi-author this pass)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml` (new, `DEPLOY_HOLD`'d)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml` (new, `DEPLOY_HOLD`'d)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_SumpMouseRace.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_SumpMouse.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml` (new)
+- `src/DEPLOY_HOLD.txt` (edited: 2 new hold entries appended)
