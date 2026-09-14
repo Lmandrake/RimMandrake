@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-14T17:54:58Z",
+  "drawsize": 2.0,
+  "facing": "east",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_barbslinger_v3_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Pyrelands' ash-grazer \u2014 a heavy-bodied grazer of the great post-burn herds, built to eat the regrowth sprint in the fertilized ash. Sturdy legs support a low-slung barrel body; ash-grey hide, deeply creased and dusty, with bold streaks of vivid red across the back; a low head built for grazing, and a pair of red-tipped barbed pincers flanking its jaw. Reads as a calm, heavy-set herd animal, not a predator. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_FACING_REGRESSION_1",
+  "style_notes": "PYRELANDS_FACING_REGRESSION_1 regen, painterly style (ART_PAINTERLY_RESTORATION_1). Root cause of the prior wrong facings (v1/v2, toy-figurine era) was artpiped.py's bare 'Facing:' tag giving the model no camera convention, MEASURED as all 3 facings rendering the same side-profile pose with no back/front distinction \u2014 fixed in build_job_prompt as of c6e21d2d2, so the daemon now supplies the facing convention itself; this prompt intentionally says nothing about facing/orientation. Full regen, no reference (not a reskin \u2014 a reference here would validate against the old wrong art). Same individual creature identity across all three jobs/facings."
+}
