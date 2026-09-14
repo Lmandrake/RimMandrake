@@ -659,6 +659,12 @@
     "hash": "a312db69586ffa5573396b4033288d17f673245bc7bc8c6374b447b87ec93feb",
     "sha": "43f96b1b"
   },
+  "src/DEPLOY_HOLD.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "56c17c264a7f5222ee7ee6258e1217bc19fd08fbd6cc0da466b6ff20f59e8132",
+    "sha": "e7810e12f"
+  },
   "src/RimMandrake/Aftermath/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -13707,6 +13713,12 @@
     "hash": "3f2f30cbae097eb4f673f352e9b8460a46faeef97a385cdfdfd096113abd41a1",
     "sha": "b1a2aa399"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldWreckScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "8a5ca7fdbeb26a121260460d4e55117ff792cf7c83bd07f0368858c25b22a4ec",
+    "sha": "e7810e12f"
+  },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScatterShrinesRare.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -13768,16 +13780,22 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-07",
-    "hash": "019632c0a716eeb1a5a8b013a60a18af71d52410edc6ff75945b4e009843dd2b",
-    "sha": "a07448e6"
+    "cleanCount": 2,
+    "date": "2026-09-13",
+    "hash": "b32b2ad7c73d2e6983ed818fb3f0bc360d056504177e1ab48f7ae7bfca720db0",
+    "sha": "e7810e12f"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "a43656905573ff87694fd668dffe281b824dbc5705e20472cbaedf486edae372",
     "sha": "f4d5c1714"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldWrecks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "007c48e81cc0481f371b186736810da17fcd2581b49cbe48705d67d406a4261f",
+    "sha": "e7810e12f"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml": {
     "cleanCount": 1,
@@ -14252,6 +14270,12 @@
     "date": "2026-09-13",
     "hash": "9188a42c80fff4c0f116e61149007daa9f5e8a7f304fbacb7262fbf10c2cb81a",
     "sha": "f4d5c1714"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldWreckScatter_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "f4fd09b11e91dbddc0a75ede0d0cae895df94fa9629ff6dda907b8fdb000b0e3",
+    "sha": "e7810e12f"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_SumpDuskLock_BiomeWiring.xml": {
     "cleanCount": 1,
