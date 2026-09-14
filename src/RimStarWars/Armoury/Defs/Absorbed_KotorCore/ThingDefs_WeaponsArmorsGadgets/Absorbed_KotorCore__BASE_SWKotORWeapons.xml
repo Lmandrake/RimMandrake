@@ -74,7 +74,6 @@
       <soundWorking>Recipe_Smith</soundWorking>
       <recipeUsers Inherit="False">
         <li>FabricationBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
@@ -100,7 +99,6 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <researchPrerequisite>guy762_ResearchKotOR_uncraftable</researchPrerequisite>
     </recipeMaker>
@@ -111,7 +109,6 @@
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
     </costList>
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->
@@ -139,13 +136,11 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers Inherit="False">
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <weaponTags Inherit="False" />
     <inspectorTabs Inherit="False" />
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->
@@ -197,7 +192,6 @@
       <soundWorking>Recipe_Smith</soundWorking>
       <recipeUsers Inherit="False">
         <li>FabricationBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
@@ -219,12 +213,10 @@
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers Inherit="False">
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <weaponTags Inherit="False" />
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->
@@ -316,7 +308,6 @@
       <soundWorking>Recipe_Smith</soundWorking>
       <recipeUsers>
         <li>FabricationBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
     </recipeMaker>
@@ -333,7 +324,6 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <researchPrerequisite>guy762_ResearchKotOR_uncraftable</researchPrerequisite>
     </recipeMaker>
@@ -344,7 +334,6 @@
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
     </costList>
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->
@@ -372,14 +361,12 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers Inherit="False">
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <weaponTags Inherit="False" />
     <thingSetMakerTags Inherit="False" />
     <inspectorTabs Inherit="False" />
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->
@@ -420,13 +407,11 @@
       <effectWorking>Smith</effectWorking>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers Inherit="False">
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
     </recipeMaker>
     <thingSetMakerTags Inherit="False" />
     <descriptionHyperlinks>
-      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <!-- <equippedStatOffsets> NO LONGER NECESSARY IN MW2 -->
     <!-- <MoveSpeed>0.000001</MoveSpeed> -->

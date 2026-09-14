@@ -60,7 +60,6 @@
       <guy762_energyshield>4</guy762_energyshield>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisite>guy762_ResearchKotOR_eshields</researchPrerequisite>
     <skillRequirements>
@@ -116,7 +115,6 @@
       <guy762_energyshield_sith>4</guy762_energyshield_sith>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_sith</li>
@@ -175,7 +173,6 @@
       <guy762_energyshield_arkanian>4</guy762_energyshield_arkanian>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_eshields</li>
@@ -233,7 +230,6 @@
       <guy762_energyshield_echaniLte>4</guy762_energyshield_echaniLte>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_echanishields</li>
@@ -291,7 +287,6 @@
       <guy762_energyshield_echaniHvy>4</guy762_energyshield_echaniHvy>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_echanishields</li>
@@ -358,7 +353,6 @@
       <guy762_energyshield_mandoLte>4</guy762_energyshield_mandoLte>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_mando</li>
@@ -426,7 +420,6 @@
       <guy762_energyshield_mandoHvy>4</guy762_energyshield_mandoHvy>
     </products>
     <recipeUsers>
-      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_mando</li>

@@ -50,7 +50,6 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>
@@ -144,7 +143,6 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>
@@ -244,7 +242,6 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>
@@ -320,7 +317,6 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>
