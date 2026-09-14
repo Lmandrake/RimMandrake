@@ -295,3 +295,15 @@ UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml          # BENCH: no art 
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml        # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: no art yet, 2026-09-13
+
+# --- FORGE_MECHANICS_1 F4: tower entrance + salvage cache marker, no art yet --
+# 2026-09-14, FORGE_MECHANICS_1 F4 build pass. RUT_FoundryTowerEntrance.xml
+# (the tower door, MapPortal) and RUT_FoundrySalvageCache.xml (the salvage
+# marker inside the pocket floor) are both new this pass, each repointed to
+# its own new RUT_-named texPath — same "validate_patch.py refuses a
+# cross-mod vanilla-art reuse as a hard ERROR" shape the F2/F5/F6 hold above
+# already documents in full. Independent of each other and of that hold.
+# => LIFT each when its own sprite lands under UtinniPatches/Textures/ — def
+#    and art deploy together in one --apply, same pattern as the holds above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   # BENCH: no art yet, 2026-09-14
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml    # BENCH: no art yet, 2026-09-14

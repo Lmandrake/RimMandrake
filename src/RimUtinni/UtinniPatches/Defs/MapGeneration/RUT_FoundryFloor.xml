@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FoundryFloor.xml                   UtinniPatches · FORGE_MECHANICS_1 F4
+  ============================================================================
+  forge_kit_spec.md F4: "RUT_FoundryFloor MapGeneratorDef with
+  pocketMapProperties — per-generator ambient temperature is native
+  (verified Source/Verse/MapTemperature.cs:33-36): INVENTED 70 C — 'heat as
+  the wall' is a def field, no C#. GenSteps lay forge-works rooms, melt
+  channels (impassable), salvage caches, tender spawns."
+
+  Shape follows this mod's own working pocket-map precedent,
+  RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepGenerator.xml
+  (read in full before writing this) — same MapGeneratorDef/genSteps-list
+  posture, content differs (an industrial floor, not a cave).
+
+  pocketMapProperties.biome: RUT_TheForge (this mod's own already-shipped,
+  always-active merged Forge BiomeDef — BIOME_OWNERSHIP_WAVE_1), not
+  vanilla LavaField. Deliberate: LavaField.xml lives under Data/Odyssey/,
+  DLC-folder-gated (FORGE_MECHANICS_1.md's own spike-pass finding), so
+  citing it here would make this floor generator silently unable to
+  resolve on any install without Odyssey active — a fragility this mod's
+  own always-shipped biome doesn't carry. The Terrain genStep reads
+  BiomeDef.terrainsByFertility for its base ground look
+  (AB_BlackPebbles/AB_HardenedGrass, ties back to the Forge's own surface
+  identity); "open melt" itself is NOT this biome's terrainPatchMakers (it
+  has none) — it is RUT_FoundryFloor_MeltChannels below, painting vanilla
+  LavaDeep explicitly (native Impassable + burn hazard, RimSage-confirmed,
+  see that GenStepDef's own header).
+
+  temperature 70 — INVENTED, per the spec's own line, native pocket-map
+  ambient (MapTemperature.cs:33-36, no C# needed).
+
+  disableCallAid + ignoreAreaRevealedLetter: same posture as
+  RUT_LanternDeepGenerator's own precedent — an isolated dungeon floor, "you
+  leave the way you came" (spec's own player-experience line), not a place
+  the game's normal aid/reveal letters make sense for.
+
+  genSteps, in engine execution order (GenStepDef.order, not list position):
+    ElevationFertility (10, vanilla) -> Terrain (210, vanilla) ->
+    RUT_FoundryFloor_MeltChannels (300, this pass — the open melt) ->
+    ScatterRuinsSimple (750, vanilla — "forge-works rooms": a ruin-shell
+      scatterer standing in for authored room content, honest SHELL-only
+      substitution, real forge-works room content owed) ->
+    RUT_FoundryFloor_SalvageCache (850, this pass) ->
+    RUT_FoundryFloor_TenderSpawn (860, this pass) ->
+    Fog (1500, vanilla, must run last).
+  Melt channels run BEFORE every scatterer so LavaDeep's native
+  Impassable/Standable=false is already on the terrain grid when
+  ScatterRuinsSimple's own base-class site search, and this pass's own
+  `spotMustBeStandable` guard on the cache/tender GenStepDefs, read it —
+  the hard-ban-#1 mechanism, see RM_GenStep_TerrainChannels.cs's own header.
+  ============================================================================
+-->
+<Defs>
+
+  <MapGeneratorDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundryFloor</defName>
+    <label>foundry tower floor</label>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>RUT_TheForge</biome>
+      <temperature>70</temperature>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>Terrain</li>
+      <li>RUT_FoundryFloor_MeltChannels</li>
+      <li>ScatterRuinsSimple</li>
+      <li>RUT_FoundryFloor_SalvageCache</li>
+      <li>RUT_FoundryFloor_TenderSpawn</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

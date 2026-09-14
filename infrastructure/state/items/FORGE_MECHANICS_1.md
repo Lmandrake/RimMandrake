@@ -720,3 +720,185 @@ scald-immunity exemption are all owed to a live quicktest pass.
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_VaporDrifter_AerofleetWiring.xml` (new, F3 — PLACEHOLDER wiring pattern)
+
+## F4 build pass — 2026-09-14
+
+Build order step 7, last (forge_kit_spec.md's own "Build order": F1/F2/F5/F6
+already shipped; F3 landed concurrently this same day). Wires F4 "the
+foundry tower dungeon shell" — single-floor towers only, per owner card 1
+(RULED 2026-09-12: "one large deep floor per tower in v1. Portal-chained
+multi-floor lands later only if a quicktest proves the seam clean" — no
+bridge access this pass, so no chaining was attempted or designed, exactly
+as ruled).
+
+**The portal shell — nearly free, as the spec predicted.** `MapPortal`/
+`PocketMapExit`/`pocketMapProperties` are entirely stock (verified
+`Source/RimWorld/MapPortal.cs`, `MapPortalProperties.cs`,
+`Source/Verse/PocketMapUtility.cs`, `Verse/PocketMapExit.cs:8` this pass);
+the whole shape was already proven working precedent in this same repo —
+`RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepMineshaft.xml`
+/ `RUT_LanternDeepEmergence.xml` + `Defs/MapGeneration/
+RUT_LanternDeepGenerator.xml` — read in full before writing anything, and
+cribbed directly rather than re-derived. `RUT_FoundryTowerEntrance.xml`
+(ThingDefs_Buildings/) is the door: `ParentName="BuildingBase"`,
+`thingClass MapPortal`, `portal.pocketMapGenerator RUT_FoundryFloor`,
+`portal.pocketMapSize 80`, `portal.exitDef CaveExit` — the exit is vanilla
+`CaveExit` reused AS-IS, same "no new exit def, loosely-thematic borrowed
+art" posture LanternDeeps' own two entrances already established. Owner
+card 1 followed exactly: one deep floor, no chaining.
+
+**The floor — `RUT_FoundryFloor` MapGeneratorDef**
+(Defs/MapGeneration/RUT_FoundryFloor.xml), `pocketMapProperties.temperature
+70` (INVENTED per spec, native field per `Source/Verse/
+MapTemperature.cs:33-36`, no C#). `pocketMapProperties.biome` is
+**`RUT_TheForge`, not vanilla `LavaField`** — a deliberate departure from
+what a literal reading of the spec's own donor-biome list might suggest:
+`LavaField.xml` lives under `Data/Odyssey/`, DLC-folder-gated (this item's
+own spike-pass finding), so citing it here would make the whole floor
+generator unable to resolve without Odyssey active. `RUT_TheForge` is this
+mod's own always-shipped merged Forge biome (`BIOME_OWNERSHIP_WAVE_1`) —
+carries no fragility, and ties the floor's base ground look back to the
+Forge's own already-established terrain identity
+(`AB_BlackPebbles`/`AB_HardenedGrass`, confirmed reading the raw def this
+pass). "Open melt" itself does NOT come from this biome's own
+`terrainPatchMakers` (it has none) — it comes from the new GenStep below,
+painting vanilla `LavaDeep` explicitly.
+
+**GenSteps, four new/reused per the spec's own "forge-works rooms, melt
+channels, salvage caches, tender spawns" line:**
+
+1. **Melt channels** — `RM_GenStep_TerrainChannels` (new C#, generic: a
+   random-walk terrain painter — terrainDef + channel count/length/width,
+   all XML-settable — not Forge-specific, reusable by any future kit
+   wanting a scripted vein/crack/channel). Paints vanilla **`LavaDeep`**
+   (searched this pass: no existing lava/melt TerrainDef anywhere in this
+   repo's own RUT_/RM_ content — confirmed via RimSage `search_defs`
+   before writing anything). LavaDeep, CONFIRMED via RimSage raw read this
+   pass: `ParentName="LavaBase"`, `passability Impassable`, `dangerous
+   true`, native `burnDamage`/`burnIntervalTicks`/
+   `ignitePawnsIntervalTicks` fields read every tick by the stock
+   `Verse/HediffGiver_Terrain.cs` — no C# of this mod's own involved,
+   exactly the spike pass's own already-resolved finding 1 ("open melt as
+   the wall... no C# needed for either behaviour"). LavaDeep chosen over
+   the walkable `LavaShallow` specifically because it is Impassable — see
+   the ban #1 mechanism below. `RUT_FoundryFloor_MeltChannels.xml`, order
+   300 (after vanilla `Terrain` 210, before every later scatterer).
+2. **Forge-works rooms** — vanilla `ScatterRuinsSimple` (order 750,
+   unmodified, listed by defName only) stands in for authored room
+   content: an honest SHELL-only substitution, not a new room-layout
+   system — real forge-works room content is owed, named here rather than
+   silently substituted.
+3. **Salvage caches** — `RUT_FoundrySalvageCache` (new ThingDef, inert
+   visible marker, no loot table — same "shell, not content" scope as
+   every other placeholder this item has shipped) placed via the already-
+   built `RM_GenStep_PlacedSetPieces` / `RM_SetPieceElement_SpawnMarker`
+   (`RUT_FoundryFloor_SalvageCache.xml`, order 850, count 2 INVENTED).
+4. **Tender spawns** — `RM_GenStep_PlacedSetPieces` /
+   `RM_SetPieceElement_AnchoredPawn` (both already built, MIASMA_MECHANICS_1
+   M6 — consumed, not rebuilt) spawning **`Mech_Pikeman`** (vanilla
+   Biotech, unmodified) as the PLACEHOLDER tender kind
+   (`RUT_FoundryFloor_TenderSpawn.xml`, order 860, count 3 INVENTED).
+   Faction null (`RM_SetPieceElement_AnchoredPawn`'s own fixed shape) — the
+   same accepted "wiring placeholder ahead of the roster pass" posture its
+   own header already documents.
+
+**Hard-ban #1 (nothing lives in the lava) — PASS, mechanism-checked.**
+`GenStep_Scatterer.spotMustBeStandable` (`Verse/GenStep_Scatterer.cs`, read
+in full this pass) defaults to **false** — NOT automatically enforced, a
+finding worth stating plainly since an unchecked assumption here would have
+been a silent ban violation. Set `<spotMustBeStandable>true</
+spotMustBeStandable>` explicitly on both `RUT_FoundryFloor_SalvageCache.xml`
+and `RUT_FoundryFloor_TenderSpawn.xml` (the tender one is the only
+GenStepDef in this pass that places a PawnKindDef, so this field is
+load-bearing there, not tidy) — combined with melt channels running first
+(order 300, before 850/860) and LavaDeep's native `Impassable` always
+failing `IntVec3.Standable`, no PawnKindDef this kit places can land on the
+melt. Verified by mechanism, not merely asserted.
+
+**Hard-ban #2 (lava-machines never revealed) — PASS, string-checked.** The
+tender GenStepDef carries exactly one new field value,
+`<pawnKind>Mech_Pikeman</pawnKind>` — a bare cross-reference to an
+unmodified vanilla PawnKindDef, no new label/description/letter/quest
+string written anywhere about it. `RUT_FoundryTowerEntrance.xml`'s and
+`RUT_FoundrySalvageCache.xml`'s own flavor text ("whatever forged the tower
+above is still forging, somewhere below"; "whoever — whatever — stacked it
+here") were written deliberately vague, naming no mechanism or identity.
+Grepped this pass's own new files for the tender/mechanoid content: no
+other string touches them.
+
+**Placement (outer map) — `RUT_FoundryTowerScatter.xml`.** Gated on
+**`RUT_TheForge` only**, not the three donor defNames the spec names
+(`Volcano`/`LavaField`/`AB_PyroclasticConflagration`) — this item's own
+F2/F5/F6 build pass already found, and this pass rechecked directly against
+`RUT_TheForge.xml`, that `BIOME_OWNERSHIP_WAVE_1` merged all three into one
+owned BiomeDef; the donor defNames back no BiomeDef any map in this
+campaign can actually generate with, so gating on them would gate on dead
+references, not "the real biome defNames." New C# this pass:
+`RM_ScattererValidator_Biome` (generic biome-membership gate, the exact
+extension point `RM_GenStep_PlacedSetPieces.cs`'s own header invites — "each
+kit writes its own ScattererValidator subclass"). **The spec's own "0-2
+Volcano/LavaField vs 0-1 Pyroclastic" split collapses to one uniform count
+(2, the higher figure, as a ceiling) for the whole biome** — stated
+plainly, not silently dropped: `RUT_TheForge.xml`'s own header records the
+three donor zones as an ELEVATION split (Volcano median 1,875m/LavaField
+2,010m/Pyroclastic 1,382m, "all inside this ONE def now"), and this def
+carries no elevation or TileMutatorDef signal to re-derive that split from
+— the exact same situation F5's own edge-band ring (`RUT_ContagionRingScatter.xml`)
+already hit and collapsed for, restated here rather than re-litigated.
+Re-splitting by zone is owed to a future pass once a zone signal exists on
+`RUT_TheForge`. Registered onto `Base_Player` via
+`RUT_FoundryTowerScatter_Register.xml` (same `PatchOperationConditional`/
+`PatchOperationAdd` shape as every sibling registration this item ships;
+validator confirms the patch matches 1 site in `Core: BasePlayerMapGenerator.xml`).
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean with 2 new
+`<Compile>` entries (`RM_GenStep_TerrainChannels.cs`,
+`RM_ScattererValidator_Biome.cs`) — **0 warnings, 0 errors**. (This shared
+`.csproj` had three more entries land from a concurrent agent — `RM_GradientAxisRepaint.cs`
+/ `RM_GradientSurgeExtension.cs` / `RM_GameCondition_GradientSurge.cs` —
+between this pass's edit and its build; left untouched, this pass's own two
+entries confirmed present and compiling.)
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` on all 8
+new files against the live installed set (`--defs` Data + Mods + Workshop
+root + `src/RimMandrake` + `src/RimUtinni`, 99 active mods on the
+currently-live list) — **2 errors** (the two new visible ThingDefs'
+placeholder texPaths, held below — the same accepted shape every prior
+DEPLOY_HOLD in this item's own history), 0 warnings, several expected
+pre-deploy "class not yet resolvable" info lines (assembly freshly rebuilt
+in `src/`, not yet deployed to the live `Mods/` folder — deployment is
+explicitly out of this task's scope). `RUT_FoundryTowerScatter_Register.xml`
+confirmed its `Base_Player` xpath matches live.
+
+**Art.** `RUT_FoundryTowerEntrance` and `RUT_FoundrySalvageCache` both
+repointed to their own new RUT_-named texPaths and DEPLOY_HOLD'd
+(`src/DEPLOY_HOLD.txt`) — same "validate_patch.py refuses a cross-mod
+vanilla-art reuse as a hard ERROR" shape the F2/F5/F6 hold already
+documents in full, not re-litigated here.
+
+**Explicitly NOT done, per this item's own scope and owner card 1**:
+multi-floor/portal-chaining (ruled out — no bridge access to prove the seam
+clean, exactly as the ruling anticipated); real forge-works room content
+(vanilla `ScatterRuinsSimple` stands in); real salvage loot content (marker
+only); the real tender PawnKindDef/faction (roster/faction pass); tower
+exterior art (explicitly not this kit's C#, per the spec's own line); F1-F3/
+F5/F6 — untouched. `ModsConfig.xml` untouched. No bridge/game/quicktest run
+— offline only. Live verification of channel density/legibility, the
+salvage/tender site counts, and the outer-map tower placement rate are all
+owed to a live quicktest pass.
+
+### files (F4 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_TerrainChannels.cs` (new, F4)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_Biome.cs` (new, F4)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_MeltChannels.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_TenderSpawn.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml` (new, F4)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml` (new, F4)
+- `src/DEPLOY_HOLD.txt` (edit — 2 new held entries)

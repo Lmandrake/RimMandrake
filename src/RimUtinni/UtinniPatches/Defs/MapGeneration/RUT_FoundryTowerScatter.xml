@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FoundryTowerScatter.xml            UtinniPatches · FORGE_MECHANICS_1 F4
+  ============================================================================
+  forge_kit_spec.md F4 "Placement": "reuse the miasma kit's
+  RM_GenStep_PlacedSetPieces with a Forge def-list entry (INVENTED: 0-2 tower
+  entrances per Volcano/LavaField-zone map, 0-1 on Pyroclastic skirts)."
+
+  Biome gate — RUT_TheForge only, NOT the three donor defNames the spec
+  names (Volcano/LavaField/AB_PyroclasticConflagration). This item's own
+  F2/F5/F6 build pass already found, and this pass rechecked directly
+  against RUT_TheForge.xml, that BIOME_OWNERSHIP_WAVE_1 merged all three
+  into one owned BiomeDef — the donor defNames back no BiomeDef any map in
+  this campaign can actually generate with, so gating on them would be
+  gating on dead references, not "using the real biome defNames" the task
+  asked for. RUT_TheForge IS the real, live biome defName.
+
+  Count collapse, stated plainly: the spec's own "0-2 Volcano/LavaField vs
+  0-1 Pyroclastic" is a split across sub-zones (elevation-based per
+  RUT_TheForge.xml's own header: "Volcano median 1,875 m... LavaField median
+  2,010 m... Pyroclastic median 1,382 m — all inside this ONE def now"), and
+  this def carries no elevation/TileMutatorDef signal to re-derive that
+  split from — same situation F5's own edge-band ring already hit and
+  collapsed to one uniform biome-wide rate (RUT_ContagionRingScatter.xml's
+  own header, read before writing this). This file makes the identical
+  collapse, for the identical reason, not a new judgment call: count 2 (the
+  higher of the spec's own two figures) is the ceiling for the WHOLE
+  biome — GenStep_Scatterer naturally delivers fewer, even zero, on a map
+  too small or too crowded to fit that many (its own CalculateFinalCount/
+  TryFindScatterCell loop, not a promise). Re-splitting by elevation zone is
+  owed to a future pass once a zone signal exists on RUT_TheForge.
+
+  Uses RM_ScattererValidator_Biome (new this pass, src/RimMandrake/
+  EnvironmentalHazards/Source/ — see that class's own header) rather than a
+  terrain-tag validator (Sump/Contagion's own precedent): RUT_TheForge's own
+  terrainsByFertility carries no lava-family terrain of its own (AB_BlackPebbles/
+  AB_HardenedGrass only, confirmed reading the raw def this pass) — a
+  terrain-based gate would not fire on this biome's own OUTER map at all
+  (the melt only exists inside the pocket floor, painted by
+  RUT_FoundryFloor_MeltChannels.xml). A direct biome check is therefore the
+  correct gate here, not a substitute for one.
+
+  Registered globally onto Base_Player (Patches/
+  RUT_FoundryTowerScatter_Register.xml) — safe everywhere per the
+  validator's own biome check, same "global registration, self-gating
+  GenStepDef" pattern this mod's own RM_GenStep_GradientAxis precedent
+  already documents.
+
+  terrainAffordanceNeeded Heavy on the entrance ThingDef itself
+  (RUT_FoundryTowerEntrance.xml) is mirrored here via
+  ScattererValidator_Buildable's own affordance field, same pairing the
+  LanternDeeps mineshaft scatterer (RUT_LanternDeepMineshaft_Scatter.xml)
+  already establishes for the identical Heavy-affordance MapPortal shape.
+
+  minSpacing 60 — mirrors the LanternDeeps mineshaft scatterer's own value
+  for the same "large, singular set-piece, never clustered" posture; RUT_
+  TheForge is a small biome (44 tiles, one compact massif per that def's own
+  header), so towers should read as rare landmarks, not a field of them.
+
+  order 322 — one past the LanternDeeps mineshaft scatterer's own 321
+  (Patches/RUT_LanternDeepMineshaft_MapGenPatch.xml), same family of
+  "portal entrance scatterers" registered on Base_Player, kept adjacent
+  rather than picked arbitrarily.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_FoundryTowerScatter</defName>
+    <order>322</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>2</count>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <minSpacing>60</minSpacing>
+      <minEdgeDistPct>0.06</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_ScattererValidator_Biome">
+          <allowedBiomes>
+            <li>RUT_TheForge</li>
+          </allowedBiomes>
+        </li>
+        <li Class="Verse.ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="Verse.ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RUT_FoundryTowerEntrance</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    ============================================================================
+    RUT_FoundryTowerEntrance               UtinniPatches · FORGE_MECHANICS_1 F4
+    ============================================================================
+    forge_kit_spec.md F4 "the foundry tower dungeon shell": "A dark tower's
+    door at the base of a cone... RUT_FoundryTowerEntrance ThingDef with a
+    MapPortal-family building class... `portal.pocketMapGenerator`/
+    `pocketMapSize` set" (verified Source/RimWorld/MapPortal.cs:324-333,
+    Source/RimWorld/MapPortalProperties.cs). Shape cribbed directly from this
+    mod's own working precedent for the same mechanic,
+    RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepMineshaft.xml
+    (read before writing this) — same portal/building/statBases/inspectorTabs
+    skeleton, size and art choices are this def's own (a tower base door, not
+    a mineshaft).
+
+    Exit: stock PocketMapExit family, reusing vanilla CaveExit AS-IS — same
+    posture LanternDeeps' own two entrances already established (neither
+    authors its own exit ThingDef; "the way back" is loosely-thematic
+    borrowed art, not a new def). Owner card 1 (RULED 2026-09-12): "one large
+    deep floor per tower in v1" — no multi-floor/portal chaining attempted,
+    per this item's own scope.
+
+    The tower EXTERIOR (the vertical skyline) is explicitly NOT this kit's
+    job (forge_kit_spec.md F4: "art/def work on the entrance building, not
+    this kit's C#") — texPath repointed to its own new RUT_-named path and
+    DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt), same shape validate_patch.py already
+    forced on every other new visible ThingDef this item has shipped
+    (F2/F5/F6 build pass, six DEPLOY_HOLD'd defs, same reasoning restated
+    there).
+
+    terrainAffordanceNeeded Heavy + destroyable false + isInert true: same
+    "permanent world feature, not a buildable/destructible player structure"
+    posture as the mineshaft/geode precedent.
+    ============================================================================
+  -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_FoundryTowerEntrance</defName>
+    <label>foundry tower door</label>
+    <description>A dark iron door set into the base of a cone of black stone, vent-steam bleeding from the seams around its frame. The metal is warm to the touch even from a stride away. Whatever forged the tower above is still forging, somewhere below.</description>
+    <size>(3,3)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <!-- PLACEHOLDER ART, DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt) — no sprite yet.
+         Real foundry-tower-door art (and the tower's own exterior skyline) is
+         owed, outside this kit's own scope per the spec's own line. -->
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Production/RUT_FoundryTowerEntrance</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RUT_FoundryFloor</pocketMapGenerator>
+      <exitDef>CaveExit</exitDef>
+      <pocketMapSize>80</pocketMapSize>
+    </portal>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+  </ThingDef>
+
+</Defs>
