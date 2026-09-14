@@ -32,6 +32,11 @@
       "reason": "owner card 3 (2026-09-09): Scurrier trimmed to comm ≤0.1 grain-scale in ExtremeDesert — its ruled home"
     },
     {
+      "def": "VFEI2_Boomtick",
+      "disposition": "cut:BOOM_FAMILY_CUT_1 (BOOMFAMILY_PAWNKIND_CUTS_1, 2026-09-14)",
+      "reason": "ThingDef cut by the 2026-09-10 boom-family cut and its RUT_Scarlands.xml/BiomeCast_Ashkarr.xml wiring removed same day; this roster row was never reconciled — stale 'keep' left the design doc disagreeing with the live cut for four days"
+    },
+    {
       "def": "BMT_ColonyPustuleHornet",
       "disposition": "homeless-reserve",
       "note": "Wasteland import candidate — that batch rules it",
@@ -353,13 +358,6 @@
       "commonality": 0.08,
       "def": "AA_Helixien",
       "law": "§4: the Mortuary Guild — corpse decayer special (MEASURED), slow (spd 0.6), uncannily calm where everything else is mad; the one safe animal here and the most disturbing"
-    },
-    {
-      "action": "keep",
-      "band": "weapon-descendant",
-      "commonality": 0.4,
-      "def": "VFEI2_Boomtick",
-      "law": "§4: feral living munitions breeding true — pops on death, small blast (MEASURED special); §GM meaning stays out of def text (ban 1)"
     },
     {
       "action": "keep",
