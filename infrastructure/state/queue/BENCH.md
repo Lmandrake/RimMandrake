@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:37:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T00:41:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,15 @@ target:   v1
 kind:     bug
 summary:  (no items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
+
+## BACTA_PAWNINTANK_RECON_1 Find and evaluate the visible-pawn-in-tank rendering technique: locate BioReactor mod source (workshop id/GitHub; not installed locally), read how it composites the pawn into the tank graphic, report the classes/approach and license; fallback techniques if unusable
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BACTA_PAWNINTANK_RECON_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_PAWNINTANK_RECON_1.md
 
 # IN PROGRESS
 
@@ -215,6 +224,16 @@ waiting:  needs `deploy`, game is UP
 summary:  (no items/PYRELANDS_FAUNA_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
+## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+waiting:  needs `deploy`, game is UP
+summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
+prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+
 # NOT THIS TARGET
 
 _none._
@@ -262,3 +281,33 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Roster derivation (measure, never remember): the biome's creature list
 prose:    infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md
+
+## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_REVIVAL_MECHANIC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_REVIVAL_MECHANIC_1.md
+
+## BACTA_TANK_ART_1 Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building sprite set, visible-pawn overlay layers per RECON findings, fluid item + patches/spray icons, droid sprite
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_TANK_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_TANK_ART_1.md
+
+## BACTA_SIDE_ITEMS_1 Bacta full-kit satellites: 2-1B-style medical droid linkable facility (KR pattern), bacta patch + bacta spray consumables (field heal items), trader-tag wiring for all bacta goods
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BACTA_SIDE_ITEMS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
