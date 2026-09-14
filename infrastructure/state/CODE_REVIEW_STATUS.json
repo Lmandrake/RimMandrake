@@ -1115,6 +1115,12 @@
     "hash": "052f18793fbb98eed58afb6442532ee17435cbeb839668c0229d8bd8b9a88e00",
     "sha": "2eee1995f"
   },
+  "src/RimMandrake/EnvironmentalHazards/Defs/ThinkTreeDefs/RM_ThinkTree_StrandingBehaviors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "12ade765d6e602644233dd3fdb3ed2188c4b4632780857ca290defdd73d73a46",
+    "sha": "c76fc40a0"
+  },
   "src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1278,16 +1284,16 @@
     "sha": "0cdbc22b8"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-14",
-    "hash": "4c6098e2713dafd3170bad67bd3227a8386f0fc32d12db2cda2d676e1235b01f",
-    "sha": "0cdbc22b8"
+    "hash": "13d2574604bd4bb8e53fcfd174df51251af3311d69ab80b06834f410a29d1d00",
+    "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-13",
-    "hash": "f86eadd2160a990b8df4a15acbd7a2a418d13df67b7737a629c23888937a8afc",
-    "sha": "ce17e0865"
+    "cleanCount": 5,
+    "date": "2026-09-14",
+    "hash": "c7e96f2014ab0a23dd36dffbbf47b846c4b753be73209c05acd559ee0fcd082c",
+    "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_GradientSurge.cs": {
     "cleanCount": 1,
@@ -1355,6 +1361,12 @@
     "hash": "3c9b632313a8792bf1577bba1005bd649ef415f8b702315712414eb9d94b8068",
     "sha": "8801d8429"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_ReturnToWater.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "391f852fb030b3f3eb6a09e9a35fe0f90041a2561b9c9d1db48840540b3df067",
+    "sha": "c76fc40a0"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_LordJob_DefendPerimeter.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1378,6 +1390,12 @@
     "date": "2026-09-14",
     "hash": "c46811ada2e049847e23bf331f56e97581a309c53c8cd8fd27dce5c01821b373",
     "sha": "3901f320b"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "1ca1bca87aa051798b4a78c00574a24a9d195c2034f59ab62f84c888c278e25d",
+    "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_ThresholdSmokeColumn.cs": {
     "cleanCount": 1,
@@ -1426,6 +1444,12 @@
     "date": "2026-09-13",
     "hash": "5811041ee4e9ae0f952b0cb867be5e021bd220a9c71fa67eaa50cffa89429a5a",
     "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_StrandingPoolsExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "ff8351497694b423011bfe30d32ccd113f1bf753bf80fa285744110d771b09df",
+    "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_ContagionProbe.cs": {
     "cleanCount": 1,
@@ -13654,10 +13678,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-13",
-    "hash": "3dcb0a54070834ced3caa38b148c2d3d23b531990b37da6df0b5aa0d89c62519",
-    "sha": "b1a2aa399"
+    "cleanCount": 5,
+    "date": "2026-09-14",
+    "hash": "909607c0aff39ff98db84f6eb4b25c52063f527522bbfd0808f508a1efe3fcda",
+    "sha": "c76fc40a0"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 2,
