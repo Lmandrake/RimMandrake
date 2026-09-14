@@ -118,3 +118,15 @@ is wired into the biome. The walk shows vanilla animals until wiring lands.
 1. **Iriaz identity conflict**: `design/RimStarWars/canon_references/iriaz/description.md` exists (four-legged Dantooine antelope, olive-teal + orange spots, one horn, ruling field EMPTY) and contradicts the two-legged Dathomir identity used by both regen waves. No Iriaz art regenerated until ruled.
 2. **AA_GreenGoo north**: faceless amorphous slime — its _north reads frontal but there is no rear cue possible. Does the facing law apply to it? (Owner praised this art; untouched.)
 3. Anooba + Orray painterly norths are FACE-VISIBLE; corrected rear-view derivations queue on the Codex reset.
+
+## Painterly wave 2 tally (2026-09-14 ~02:30, BENCH, owner AFK) — Codex WEEKLY quota now walled until Sep 19 ~13:01 PDT
+
+**DEPLOYED to the game folder (visible after next restart), all owner-verified-by-eye painterly with rear-view norths unless noted:**
+Razorjack (full set) · Zeer (full set) · Dalgo (full set) · Nuna (f full; m north/south are INTERIM COPIES of the f derivations) · EmberGrass A/B/C flora · plus the earlier reverts: Anooba, Orray (norths still FACE-VISIBLE — fix queued), FireHawk, FurnaceBeast.
+
+**In repo only, deploy HELD (incomplete sets would style-flip when turning):**
+Mantistanis E+N (south missing) · Boomsnake E (N/S missing) · Gizka + GizkaW easts (N/S missing).
+
+**Not started:** Barbslinger, FireWasp, Quickgrass/Leafless/ScorchFruit/Fulgurite flora, Anooba+Orray rear-view norths, Iriaz (owner identity ruling owed).
+
+**DECISION OWED (owner):** Codex imagegen weekly cap exhausted (plan_type plus, resets Sep 19 ~13:01 PDT). Remaining work waits ~5 days on the Codex-only ruling, or the owner re-rules the channel. The 18 reverted Gemini renders remain in git history if ever wanted.
