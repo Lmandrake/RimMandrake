@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- MIASMA_MECHANICS_1 M3 build. insertTag="Animal_PreMain" is vanilla's own
+     extension point (Verse.AI.ThinkNode_SubtreesByTag) — every ThinkTreeDef
+     sharing this insertTag is tried, in insertPriority order, for EVERY
+     animal in the game whose think tree includes the tag, which the vanilla
+     "Animal" tree does unconditionally. Same pattern src/RimMandrake/
+     CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml
+     already uses, and required for the identical reason: RM_JobGiver_
+     ReturnToWater must reach a stranded pawn spawned from whatever EXISTING
+     PawnKindDef RM_StrandingPoolsExtension.strandedSpawnList names, without
+     this item touching that kind's own ThinkTreeDef (RUT_Miasma.xml's own
+     placeholder wiring is an unmodified shipped kind, not Miasma-specific
+     content). RM_JobGiver_ReturnToWater itself no-ops instantly for any pawn
+     RM_MapComponent_StrandingPools does not recognize as a tracked stranded
+     occupant — the overwhelming majority of animals in the game — so this is
+     safe to insert globally. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_StrandingBehaviors</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_ReturnToWater" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

@@ -123,6 +123,32 @@
         <recedeDaysRange>2~4</recedeDaysRange>
         <residualFraction>0.15</residualFraction>
       </li>
+      <!-- M3: stranding pools and the stranded, armed by M2's own recede
+           signal (RM_MapComponent_GradientAxis.LastRecedeCompletedTick).
+           strandedSpawnList below is a PLACEHOLDER — the real
+           RUT_StrandedSpawnList roster (gills-going-leathery, fins-splaying-
+           to-feet transitional endemics, the sheet's own §4) is the roster
+           pass's to author, not this kit's; ONE existing shipped
+           PawnKindDef is wired here only so the spawner/lifecycle actually
+           runs end-to-end rather than compiling against an empty list. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+        <strandedSpawnList>
+          <!-- PLACEHOLDER: an existing shipped aquatic kind already listed
+               in this biome's own wildAnimals below, wired here only to
+               prove the weighted spawn roll compiles and runs — not a
+               roster decision. -->
+          <li MayRequire="mlie.starwarsanimalcollection">Yobshrimp</li>
+        </strandedSpawnList>
+        <emptyWeight>40</emptyWeight>
+        <smallWeight>50</smallWeight>
+        <bigWeight>10</bigWeight>
+        <strandedCountSmall>1~2</strandedCountSmall>
+        <strandedCountBig>3~5</strandedCountBig>
+        <decayDaysRange>3~8</decayDaysRange>
+        <poolSizeThreshold>4</poolSizeThreshold>
+        <searchRadius>60</searchRadius>
+        <dryTerrain>RUT_Jawa_SaltCrust</dryTerrain>
+      </li>
     </modExtensions>
     <diseases>
       <li MayRequire="sarg.alphabiomes">

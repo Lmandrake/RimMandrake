@@ -108,13 +108,21 @@
     <Compile Include="RUT_IncidentWorker_ContagionProbe.cs" />
     <Compile Include="RM_HediffComp_SeverityFloor.cs" />
     <Compile Include="RM_LordJob_DefendPerimeter.cs" />
+    <Compile Include="RUT_LordJob_SentinelDefend.cs" />
     <Compile Include="RM_MapComponent_VaporColumns.cs" />
     <Compile Include="RM_CompVaporDrifter.cs" />
     <Compile Include="RM_GenStep_TerrainChannels.cs" />
     <Compile Include="RM_ScattererValidator_Biome.cs" />
+    <Compile Include="RM_ScattererValidator_NearThingDef.cs" />
     <Compile Include="RM_GradientAxisRepaint.cs" />
     <Compile Include="RM_GradientSurgeExtension.cs" />
     <Compile Include="RM_GameCondition_GradientSurge.cs" />
+    <Compile Include="RM_MapComponent_DreadField.cs" />
+    <Compile Include="RM_JobGiver_DreadAvoidWander.cs" />
+    <Compile Include="RM_CompFilthTrail.cs" />
+    <Compile Include="RM_StrandingPoolsExtension.cs" />
+    <Compile Include="RM_MapComponent_StrandingPools.cs" />
+    <Compile Include="RM_JobGiver_ReturnToWater.cs" />
   </ItemGroup>
 
   <ItemGroup>
