@@ -8402,3 +8402,28 @@
 {"seat":"BENCH","event":"needs","id":"PYRELANDS_FLORA_ART_IDENTITY_1","to":"deploy","ts":"2026-09-14T04:42:27Z"}
 {"seat":"BENCH","event":"claim","id":"PYRELANDS_FLORA_ART_IDENTITY_1","ts":"2026-09-14T04:42:28Z"}
 {"seat":"FOUNDRY","event":"note","id":"FORGE_MECHANICS_1","text":"Spike pass done 2026-09-13: 5 engine ❓s resolved (source/binary-cited), RM_CompGatherableGas + RM_CompScriptedDieOff compiling (0 warn/err); F4 portal-chaining stays ❓, needs live quicktest. Full 6-mechanic build still owed.","ts":"2026-09-14T04:49:57Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ownerSaid":"Please deploy to the live game now and start booting towards the Pyrelands","ts":"2026-09-14T05:54:37Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is going down","ts":"2026-09-14T05:54:59Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"start booting towards the Pyrelands","ts":"2026-09-14T05:55:03Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"start booting towards the Pyrelands","ts":"2026-09-14T05:55:05Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-14T05:55:22Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-14T05:55:24Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"game is up","ts":"2026-09-14T05:57:30Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up","ts":"2026-09-14T05:57:34Z"}
+{"seat":"BENCH","event":"file","id":"ARTPIPE_FACING_COHERENCE_1","title":"Facing sets are three independent side-profiles: no view direction in north/south prompts, no cross-facing consistency chain - north shows a face, turning flips art styles (owner eyes, first walk 2026-09-14)","kind":"build","target":"v1","for":"BENCH","ts":"2026-09-14T06:08:19Z"}
+{"seat":"BENCH","event":"needs","id":"ARTPIPE_FACING_COHERENCE_1","to":"owner","ts":"2026-09-14T06:08:20Z"}
+{"seat":"BENCH","event":"needs","id":"ARTPIPE_FACING_COHERENCE_1","to":"offline","ts":"2026-09-14T06:10:35Z"}
+{"seat":"BENCH","event":"file","id":"ART_PAINTERLY_RESTORATION_1","title":"MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled","kind":"decision","target":"v1","for":"BENCH","ts":"2026-09-14T06:21:35Z"}
+{"seat":"BENCH","event":"claim","id":"ART_PAINTERLY_RESTORATION_1","ts":"2026-09-14T06:21:36Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ownerSaid":"Go ahead do a full restart","ts":"2026-09-14T06:28:28Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Go ahead do a full restart","ts":"2026-09-14T06:28:32Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is going down","ts":"2026-09-14T06:28:32Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Go ahead do a full restart","ts":"2026-09-14T06:28:35Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-14T06:28:43Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-14T06:28:51Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-14T06:32:04Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-14T06:32:05Z"}
+{"seat":"FOUNDRY","event":"file","id":"GREENTIDE_MECHANICS_2","title":"The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/biomes/kits/greentide_kit_spec.md","caused_by":"GREENTIDE_MECHANICS_1","for":"FOUNDRY","ts":"2026-09-14T06:41:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_MECHANICS_2","ts":"2026-09-14T06:41:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_MECHANICS_2","ts":"2026-09-14T06:41:22Z"}
+{"seat":"FOUNDRY","event":"note","id":"GREENTIDE_MECHANICS_1","text":"Closed at spec-only (0167e7af); this ID will never be offered again (append-only ledger). The build/spike work for the kit this spec describes is tracked at GREENTIDE_MECHANICS_2 (filed 2026-09-13), since GREENTIDE_MECHANICS_1 cannot be reopened or reused. Note also: GREENTIDE_STANDALONE_MOD_1 (closed 2026-09-11, sha c71fb0fbf) already shipped M8 (churnmud mire+swallow), M11 (silence cue), and M5's seek-shade half before GREENTIDE_MECHANICS_2 existed — see that item and GREENTIDE_MECHANICS_2's own write-up for the reconciliation.","ts":"2026-09-14T06:41:31Z"}

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T04:16:37Z (the last event's own timestamp, not the render clock)
-game:  GOING_DOWN   bridge: free
+as-of: 2026-09-14T06:41:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  (no items/BACTA_PAWNINTANK_RECON_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BACTA_PAWNINTANK_RECON_1.md
+
+## ART_PAINTERLY_RESTORATION_1 MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     decision
+summary:  ARTPAINTERLYRESTORATION1 — MAJOR RULING: the painterly style returns, the cartoonish pipeline stands down
+prose:    infrastructure/state/items/ART_PAINTERLY_RESTORATION_1.md
 
 # IN PROGRESS
 
@@ -203,7 +212,7 @@ prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is GOING_DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
 state:    ready
@@ -211,8 +220,8 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is GOING_DOWN
-summary:  (no items/PYRELANDS_FAUNA_WIRING_1.md yet — write one when you have something to say)
+waiting:  needs `deploy`, game is UP
+summary:  PYRELANDSFAUNAWIRING1 — wire ruled fauna roster into RMFEPyrelands
 prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
@@ -221,9 +230,19 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is GOING_DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+
+## PYRELANDS_FLORA_ART_IDENTITY_1 Pyrelands flora own art identity: 5 defs off vanilla texPaths, 11 sprites via artpipe, leafless states included (owner word 2026-09-14: regenerate the plants now too)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+waiting:  needs `deploy`, game is UP
+summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
 # NOT THIS TARGET
 
@@ -302,3 +321,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BACTA_SIDE_ITEMS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BACTA_SIDE_ITEMS_1.md
+
+## ARTPIPE_FACING_COHERENCE_1 Facing sets are three independent side-profiles: no view direction in north/south prompts, no cross-facing consistency chain - north shows a face, turning flips art styles (owner eyes, first walk 2026-09-14)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## criteria
+summary:  1. The hook lives in the regeneration pass itself (fillqueue.py /
+prose:    infrastructure/state/items/ARTPIPE_FACING_COHERENCE_1.md
