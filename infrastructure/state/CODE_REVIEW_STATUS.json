@@ -1433,6 +1433,12 @@
     "hash": "54224ae035009fbc716d22b5e40e82c0f27bbba684853d0b375a68ccd0252ea5",
     "sha": "ce17e0865"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_NearThingDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "471acab8b4ff20e4b6a0eb0070a4de8d5c65cf626aa88984de6fe0435e98ff3c",
+    "sha": "a90656d07"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13887,6 +13893,12 @@
     "hash": "f95715f79ece8598c8d24267b9ea477f43919a825d63f8b9be53a6c64aaf7ec9",
     "sha": "b62604fad"
   },
+  "src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_WalkerSurfacing.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "d170d02cbab98447084046068cde78a05290512e7a9b71711eb0d6441190f99e",
+    "sha": "a90656d07"
+  },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -13970,6 +13982,12 @@
     "date": "2026-09-13",
     "hash": "3f2f30cbae097eb4f673f352e9b8460a46faeef97a385cdfdfd096113abd41a1",
     "sha": "b1a2aa399"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldSailScatterer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "a1de40466cd06e59deb3f3982c0949df5c76aa1ed4419f366ecc8b95a5d65267",
+    "sha": "a90656d07"
   },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldWreckScatter.xml": {
     "cleanCount": 1,
@@ -14240,6 +14258,12 @@
     "date": "2026-09-13",
     "hash": "a5ec4b9c8057be1679621708d5a61415e1c5d19aab4d46109e188865680cd58b",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Languages/English/Keyed/RUT_Scald_Mechanics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "d1afd7d927f7dc4a4c16322fc1d4ec7161bc65a175cccec8c8cca16b4fe54bd8",
+    "sha": "a90656d07"
   },
   "src/RimUtinni/UtinniPatches/Patches/Absorbed_Cephaloids/Absorbed_Cephaloids_Patches.xml": {
     "cleanCount": 1,
@@ -14624,6 +14648,12 @@
     "date": "2026-09-13",
     "hash": "8affa61555610f7f27720bd33ba75532553ed63bfc8110d1f2332b62bd823553",
     "sha": "b1a2aa399"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSailScatterer_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "cf4c532d5ce9bcf9234eda783322bd6d1abbe7975fcc0a3b91c239759b2f0214",
+    "sha": "a90656d07"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSteamLock_BiomeWiring.xml": {
     "cleanCount": 1,
