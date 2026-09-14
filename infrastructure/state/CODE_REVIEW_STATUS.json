@@ -1937,6 +1937,12 @@
     "hash": "9a2e1146eaf998af470a9ea699fcdd77f861edfee246b4fbceeffb3645eb8cbc",
     "sha": "2c8762586"
   },
+  "src/RimMandrake/Greentide/Source/RM_WeatherOverlay_GreentideRoil.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "93ad3bd2eacc7723e1dba5d79400cbd3e607e2aed32a11a0354d8cb5e2fe1a5b",
+    "sha": "dd56bb453"
+  },
   "src/RimMandrake/Greentide/Source/RM_WorkGiver_DigOutBuried.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
