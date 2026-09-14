@@ -1,0 +1,52 @@
+{
+  "attempt_elapsed_s": 104.56875795199994,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 104.56875795199994,
+  "height": 256,
+  "id": "pyrelands_barbslinger_v3_east_r2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789421524,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/14/rollout-2026-09-14T10-58-56-01a0a112-75ce-7632-b8ba-3e11cff5fb8d.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 4.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/14/rollout-2026-09-14T10-56-36-01a0a110-52f2-7863-bee2-39631557f6f5.jsonl"
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_barbslinger_v3_east_r2",
+    "note": "Generated via built-in imagegen, copied into the workspace, and resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_barbslinger_v3_east_r2\\pyrelands_barbslinger_v3_east_r2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_barbslinger_v3_east_r2/pyrelands_barbslinger_v3_east_r2.png\n    256x256  rgba  71,659 bytes  (104s)\n"
+}

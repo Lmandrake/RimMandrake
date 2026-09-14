@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-14T17:54:58Z",
+  "drawsize": 2.5,
+  "facing": "north",
+  "facings": [
+    "north"
+  ],
+  "id": "pyrelands_boomsnake_v3_north_r2",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a large legless explosive-venting snake of the Pyrelands' burn margins. Long sinuous body coiled low to the ground, banded in vivid sulfur-yellow and ash-black scales with a molten red underbelly glowing between the coils; a wedge-shaped head with vent-slits along the jaw. No legs of any kind \u2014 the entire form is one continuous serpentine mass. Single creature, centered, low coiled resting pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_FACING_REGRESSION_1",
+  "style_notes": "PYRELANDS_FACING_REGRESSION_1 regen, painterly style (ART_PAINTERLY_RESTORATION_1). East and south are already correct (east's mirror was fixed in-repo directly, 1f1b8ab19); only north is wrong \u2014 MEASURED as a face-toward-viewer pose when north should read as a back view, no swap target existed with correct back-view content. Root cause (bare 'Facing:' tag, no camera convention) fixed in build_job_prompt as of c6e21d2d2; this prompt intentionally says nothing about facing/orientation. Full regen, no reference (not a reskin). Same individual creature identity as the existing east/south art."
+}
