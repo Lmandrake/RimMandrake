@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_VentSmelter.xml                    UtinniPatches · FORGE_MECHANICS_1 F6
+  ============================================================================
+  forge_kit_spec.md F6 "geothermal industry — XML only". "Smelters, kilns and
+  forges built directly over vents run with no fuel and no power line."
+
+  Crib: vanilla ElectricSmelter (Core/Defs/ThingDefs_Buildings/
+  Buildings_Production.xml) — the only smelter family vanilla ships. Its own
+  <recipes> list (ExtractMetalFromSlag/SmeltOrDestroyThing/SmeltWeapon/
+  SmeltApparel/DestroyWeapon/DestroyApparel) is copied here VERBATIM per this
+  task's own instruction ("recipes mirror the fueled vanilla equivalent...
+  don't invent recipe lists from scratch") — ElectricSmelter lists its
+  recipes directly on itself (not via the recipeUsers/recipeMaker pattern
+  RUT_VentForge/RUT_VentKiln's own recipe-wiring patches use), so a direct
+  copy is the correct crib here, not a patch.
+
+  No CompProperties_Power / CompProperties_Flickable / CompHeatPusherPowered
+  / CompProperties_Breakdownable — ElectricSmelter's own power/heat/
+  breakdown apparatus is exactly what this kit strips (F6: "no fuel and no
+  power line"). thingClass plain Building_WorkTable, not
+  Building_WorkTable_HeatPush — that class exists to push extra heat while
+  ElectricSmelter's power comp is active; with no power comp there is
+  nothing for it to gate on.
+
+  Placement: size (2,2) matching vanilla SteamGeyser's own footprint exactly
+  (confirmed via RimSage, SteamGeyser <size>(2,2)</size>) rather than
+  GeothermalGenerator's 6x6 — PlaceWorker_OnSteamGeyser.AllowsPlacing
+  (decompile-read this pass) checks `map.thingGrid.ThingAt(loc,
+  ThingDefOf.SteamGeyser).Position == loc`, i.e. this building's own anchor
+  cell must BE the geyser's anchor cell; matching its footprint size exactly
+  is the simplest way to satisfy that, same shape RUT_ScaldVent.xml/
+  RUT_SteamCatch.xml already use for their own geyser-locked buildings.
+  placeWorkers -> stock PlaceWorker_OnSteamGeyser (verified real class,
+  RimWorld/PlaceWorker_OnSteamGeyser.cs) — the actual vanilla class, NOT the
+  RM_PlaceWorker_OnRequiredVentComp used for RUT_ScaldVent's own vent-alike:
+  this kit gates onto REAL vanilla steam geysers (the planet's geyser
+  density is VAPOR_EMITTER_PLACEMENT_1's law), not a Forge-specific vent
+  building.
+
+  WorkTableWorkSpeedFactor 1.2 (+20%, INVENTED per this task's own brief —
+  "free heat is also good heat") — BenchBase's own CompProperties_ReportWorkSpeed
+  (workSpeedStat WorkTableWorkSpeedFactor) already reports this stat to the
+  player, confirmed reading BenchBase's raw XML this pass; no new comp
+  needed to surface it.
+
+  Costs/stats: INVENTED, scaled down from ElectricSmelter's own 170
+  Steel/2 ComponentIndustrial — no power hookup to pay for, but still a real
+  construction (higher than RUT_SteamCatch's condenser since this is a
+  working smelter, not a passive drip).
+
+  🔴 Texture: intended to reuse vanilla ElectricSmelter's own art
+  (Things/Building/Production/ElectricSmelter) as a placeholder — this
+  building is a stripped-down smelter, not a wholly new silhouette — but
+  validate_patch.py flags that choice as a hard ERROR under its own-
+  namespace heuristic (UtinniPatches already ships its own
+  Things/Building/* tree elsewhere, so it cannot distinguish a deliberate
+  cross-mod reuse from a typo in this mod's own art). Points at its own new
+  texPath instead (Things/Building/Production/RUT_VentSmelter) and is held
+  via src/DEPLOY_HOLD.txt until art lands.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RUT_VentSmelter</defName>
+    <label>vent smelter</label>
+    <description>A smelter built directly over a steam vent — no fuel, no power line, the vent alone runs it hot enough. The one place fire costs nothing.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_VentSmelter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <constructEffect>ConstructMetal</constructEffect>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <WorkTableWorkSpeedFactor>1.2</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <recipes>
+      <li>ExtractMetalFromSlag</li>
+      <li>SmeltOrDestroyThing</li>
+      <li>SmeltWeapon</li>
+      <li>SmeltApparel</li>
+      <li>DestroyWeapon</li>
+      <li>DestroyApparel</li>
+    </recipes>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>PlaceWorker_OnSteamGeyser</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

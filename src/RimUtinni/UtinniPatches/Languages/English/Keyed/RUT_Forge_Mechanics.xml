@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Forge_Mechanics.xml                UtinniPatches · FORGE_MECHANICS_1 F2/F5
+
+  Translate keys for the F2 tibanna-tap inspect line
+  (CompProperties_GatherableGas.fullnessLabelKey, RUT_TibannaTap_BeldonWiring.xml)
+  and the F5 Contagion-probe arrival letter (RUT_IncidentWorker_ContagionProbe.cs).
+-->
+<LanguageData>
+
+  <RUT_TibannaPressure>tibanna pressure</RUT_TibannaPressure>
+
+  <RUT_ContagionProbe>Contagion probe</RUT_ContagionProbe>
+  <RUT_ContagionProbeDesc>A tongue of red creep has pushed up the slope at the map's edge. It will not hold — within hours it blackens and dies, leaving the ground it failed to take.</RUT_ContagionProbeDesc>
+
+</LanguageData>

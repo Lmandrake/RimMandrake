@@ -102,6 +102,10 @@
     <Compile Include="RM_CompCrecheMarker.cs" />
     <Compile Include="RM_MapComponent_CrecheMemory.cs" />
     <Compile Include="RM_Patch_CrecheDespoilManhunterFactor.cs" />
+    <Compile Include="RM_CompBeastWakeRelay.cs" />
+    <Compile Include="RM_CompStationEater.cs" />
+    <Compile Include="RM_GenStep_EdgeBandFilth.cs" />
+    <Compile Include="RUT_IncidentWorker_ContagionProbe.cs" />
   </ItemGroup>
 
   <ItemGroup>

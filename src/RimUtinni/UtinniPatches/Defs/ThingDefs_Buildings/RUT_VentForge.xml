@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_VentForge.xml                      UtinniPatches · FORGE_MECHANICS_1 F6
+  ============================================================================
+  forge_kit_spec.md F6 "geothermal industry — XML only". The smithing leg of
+  the family: "smelters, kilns and forges built directly over vents run with
+  no fuel and no power line."
+
+  Crib: vanilla FueledSmithy (Core/Defs/ThingDefs_Buildings/
+  Buildings_Production.xml) for its statBases/size/build shape — but NOT its
+  <comps> (drops CompProperties_Refuelable entirely, per F6's own "no fuel"
+  requirement) and NOT its recipe route directly: vanilla smithing recipes
+  are not listed on the smithy ThingDef itself. They are each individual
+  weapon/apparel ThingDef's own <recipeMaker><recipeUsers> entry (confirmed
+  this pass reading Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml:125-135,
+  the BaseMeleeWeapon abstract — recipeUsers lists ElectricSmithy +
+  FueledSmithy there, NOT a standalone RecipeDef). So "recipes mirror the
+  fueled vanilla equivalent" for THIS building is a patch
+  (RUT_VentForge_RecipeWiring.xml, this same pass) appending RUT_VentForge
+  to every <recipeMaker><recipeUsers> list that already names FueledSmithy —
+  a live xpath match rather than a hand-copied list, so it also mirrors any
+  DLC/future weapon or apparel ThingDef using the same recipeUsers entry,
+  not just today's roster.
+
+  No CompProperties_Power / CompProperties_Flickable / CompProperties_Refuelable
+  / CompHeatPusherPowered — this kit strips all of them (F6: "no fuel and no
+  power line"). thingClass plain Building_WorkTable (FueledSmithy's own
+  choice already, unlike ElectricSmelter's HeatPush variant).
+
+  Placement/size/placeWorkers/WorkTableWorkSpeedFactor: same shape and same
+  reasoning as RUT_VentSmelter.xml's own header — see that file, not
+  re-derived here.
+
+  researchPrerequisites keeps Smithing (FueledSmithy's own prereq: knowing
+  HOW to smith is independent of the power source) but drops Electricity
+  (irrelevant — this building has no power comp to need it, and
+  ElectricSmithy's own Electricity gate existed only for that reason).
+
+  Costs/stats: INVENTED, scaled down from FueledSmithy's own 100 Steel (no
+  fuel-hopper plumbing to build).
+
+  🔴 Texture: intended to reuse vanilla FueledSmithy's own art
+  (Things/Building/Production/TableSmithingFueled) as a placeholder, but
+  validate_patch.py flags that choice as a hard ERROR under its own-
+  namespace heuristic — see RUT_VentSmelter.xml's own header for the full
+  reasoning. Points at its own new texPath instead
+  (Things/Building/Production/RUT_VentForge) and is held via
+  src/DEPLOY_HOLD.txt until art lands.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RUT_VentForge</defName>
+    <label>vent forge</label>
+    <description>A smithing forge built directly over a steam vent — no fuel, no power line, the vent alone runs it hot enough. The one place fire costs nothing.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_VentForge</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <constructEffect>ConstructMetal</constructEffect>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Cleanliness>-3</Cleanliness>
+      <WorkTableWorkSpeedFactor>1.2</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <costList>
+      <Steel>80</Steel>
+    </costList>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>PlaceWorker_OnSteamGeyser</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>Smithing</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

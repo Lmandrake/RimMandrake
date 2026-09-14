@@ -1223,6 +1223,12 @@
     "hash": "5621b12ca1b902d1195e7d6023c23561b089fb9006476801c8ce360919776271",
     "sha": "0637431c1"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompCrecheMarker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "af1c7c77cd8f9d5d830620626ce92ba2f15c90f21f55037f36209d958cae3929",
+    "sha": "ce17e0865"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1235,6 +1241,12 @@
     "hash": "fcb139ea2310504d9ae4e8b1d916a502534dab4cacea990e4c3cc28bd6946b39",
     "sha": "1ae30640a"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "b2fa400898149d8101961885c25ad30e021af0a8228f63e32916679f5fa96635",
+    "sha": "ce17e0865"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTimedTerrainBurn.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1242,10 +1254,10 @@
     "sha": "670da445d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-13",
-    "hash": "516e88fb818a9f7123482e1d4df79fdeb31b6a0b4d216763a0c0b6c612e68a44",
-    "sha": "346490000"
+    "hash": "f86eadd2160a990b8df4a15acbd7a2a418d13df67b7737a629c23888937a8afc",
+    "sha": "ce17e0865"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs": {
     "cleanCount": 1,
@@ -1277,6 +1289,12 @@
     "hash": "a4b317f1af09cc9ba9e346a8748870a260a51468baca79fd1c6e70b962c34e13",
     "sha": "346490000"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "1522ccb726e620fae59634a127e4d976885efbf6a9034d2bd14c017f97fd17b7",
+    "sha": "ce17e0865"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1289,11 +1307,35 @@
     "hash": "854689af88cc53017989f7c903e12e73c536d75e77145f5b82133221ef6eb106",
     "sha": "670da445d"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_CrecheDespoilManhunterFactor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a8f59a4f457c4bea541aa7f92eda6681d458c79036c96e9223ef9fb2793550a6",
+    "sha": "ce17e0865"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_PlaceWorker_OnRequiredVentComp.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
     "sha": "f4d5c1714"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_BrineShallowWater.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "54224ae035009fbc716d22b5e40e82c0f27bbba684853d0b375a68ccd0252ea5",
+    "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "426ab3f1813e48d6589589ecef6e6dacab23bed198355818a7f3951854c2177a",
+    "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_SpawnMarker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "5811041ee4e9ae0f952b0cb867be5e021bd220a9c71fa67eaa50cffa89429a5a",
+    "sha": "ce17e0865"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,

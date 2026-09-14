@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_DyingCreep.xml                     UtinniPatches · FORGE_MECHANICS_1 F5
+  ============================================================================
+  forge_kit_spec.md F5 "the Contagion die-off ring". The living tongue of
+  red creep pushed up the slope by RUT_ContagionProbe (this pass) — carries
+  the F5 spike's already-compiling RM_CompScriptedDieOff
+  (src/RimMandrake/EnvironmentalHazards/Source/RM_CompScriptedDieOff.cs),
+  left at its INVENTED F5-spec defaults (spreadAttemptCountRange 6~10 over
+  spreadDurationHours 4, lifetimeHours 8) — no override needed here, only
+  deadThingDef is set (RUT_DeadCreep.xml, this pass). spreadThingDef is left
+  UNSET so the comp clones this same def outward (the comp's own documented
+  "null means my own def" default) — the ring spreads as more RUT_DyingCreep,
+  not a different thing.
+
+  ============================================================================
+  THE BAN EDGE (ban 5-adjacent, F5's own "physics as def structure")
+  ============================================================================
+  forge_kit_spec.md's ❓5 resolution (spike pass, this item): RimWorld/
+  PlantProperties.cs carries no "reproduces"/"spreads"/"multiplies" field at
+  all — the real gate is that a plant absent from every BiomeDef's own
+  wildPlants dict gets commonality 0 and WildPlantSpawner never spreads it.
+  So the linter check is "RUT_DyingCreep appears in no BiomeDef's
+  wildPlants," satisfied here by simple omission: this file does NOT touch
+  RUT_TheForge.xml or any other BiomeDef's wildPlants list, and never will
+  as part of this kit. No <sowTags> either (unsowable — the player cannot
+  plant it), harvestable false (no yield), so there is no route for a copy
+  to exist on a map except this comp's own scripted spread and
+  RUT_ContagionProbe's initial spawn. "It can never establish" is enforced
+  structurally, not by a flag that does not exist on the engine class.
+
+  growDays kept low (0.1) purely cosmetic — it dies on the comp's own
+  lifetimeHours countdown regardless of its growth-stage read, but a
+  near-instant "grown" visual matches the sheet's own "grows almost while
+  you watch" framing better than a plant stuck at seedling size for its
+  whole 8-hour life.
+
+  🔴 Texture: intended to reuse vanilla Filth_Blood's own art
+  (Things/Filth/Spatter) at full vivid red — the LIVING half of the
+  red/black pair RUT_DeadCreep.xml is the dead half of — but
+  validate_patch.py flags that choice as a hard ERROR under its own-
+  namespace heuristic; see RUT_TibannaGas.xml's own header for the full
+  reasoning. Points at its own new texPath instead
+  (Things/Plant/RUT_DyingCreep, matching this mod's existing Things/Plant/
+  convention) and is held via src/DEPLOY_HOLD.txt until art lands.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_DyingCreep</defName>
+    <label>dying creep</label>
+    <description>A tongue of red Contagion-creep, pushed up the slope. It will not hold this ground — within hours it blackens and dies, leaving only a dead mat behind.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <ingestible></ingestible>
+    <graphicData>
+      <texPath>Things/Plant/RUT_DyingCreep</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <color>(196, 30, 30, 255)</color>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>0.1</growDays>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <maxGrowthTemperature>200</maxGrowthTemperature>
+      <minGrowthTemperature>-200</minGrowthTemperature>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ScriptedDieOff">
+        <deadThingDef>RUT_DeadCreep</deadThingDef>
+        <deadThingIsFilth>true</deadThingIsFilth>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
