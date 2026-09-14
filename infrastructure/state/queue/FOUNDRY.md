@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:41:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T01:33:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1471,3 +1471,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
+
+## ARMOURY_MW2_DEP_UNGATED_1 Armoury undeclaredly hard-depends on ModularWeapons2: 21 root-tag ModularParts/Mount defs + gunsmith workbench thingClass discarded if MW2 absent, 44 KotOR weapon/apparel files degrade to non-modular; About.xml declares MW2 nowhere and there's no LoadFolders gate — ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 gated VEF/EBSG/AdaptiveStorage/kotorcore but MISSED MW2. Fix: gate the MW2 content like kotorcore's own LoadFolders IfModActive does, OR declare the dep
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_MW2_DEP_UNGATED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_MW2_DEP_UNGATED_1.md
