@@ -109,18 +109,25 @@ OUT_FILE_PREFIX = "Absorbed_KotorCore_"
 # Namespaces confirmed (by full-tree Class=/compClass=/verbClass=/driverClass=/
 # thingClass= sweep) to be guy762.mm.kotorcore's OWN classes that this pass
 # does NOT port -- see module docstring for why each is deferred rather than
-# guessed at. Genuinely external frameworks (EBSGFramework, ModularWeapons2,
+# guessed at. Genuinely external frameworks (EBSGFramework,
 # AthenaFramework, VanillaApparelExpanded, ArtificialBeings, BigAndSmall,
 # SaveOurShip2, Vehicles, XmlExtensions, MechHumanlikes, ATReforged,
 # lee.theforce.lightsaber's Lightsaber.*) are NOT in this list -- they stay
 # active regardless, same treatment gen_kotorweapons_absorption.py already
 # established, not this generator's concern.
+#
+# ModularWeapons2. -- BLOCKED 2026-09-14 (ARMOURY_MW2_CUT_1, owner ruling
+# 2026-09-13: cut MW2 out entirely). Used to be classified with the
+# "genuinely external, stays active regardless" group above -- no longer
+# true, MW2 is fully removed from ModsConfig, so any element referencing it
+# must be excluded here too or a rerun regenerates the deleted MW2 content.
 BLOCKED_NAMESPACES = (
     "AthenaPort.",
     "taranchuk_homingprojectiles.",
     "SWCP.Core.",
     "SWCP.Currencies.",
     "SWCP.RimframeGrineerDoors.",
+    "ModularWeapons2.",
 )
 
 
