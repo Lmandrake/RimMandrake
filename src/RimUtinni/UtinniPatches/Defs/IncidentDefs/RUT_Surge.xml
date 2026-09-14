@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Surge.xml                        UtinniPatches - MIASMA_MECHANICS_1 M2 build pass
+
+  miasma_kit_spec.md M2: "RUT_Surge IncidentDef (category ThreatSmall-
+  adjacent weighted only into this biome) firing RM_GameCondition_
+  GradientSurge". Ban #4 ("no clockwork tide"): this def carries NO
+  period/schedule field of any kind (no mtbDays, no mtbDaysByBiome) - a
+  linter/grep of this file for either name should find nothing, which is
+  the point.
+
+  category=Misc, not ThreatSmall: this repo already has an established
+  pattern for "an incident that must NEVER be rolled by the Storyteller's
+  own periodic category queue, only fired manually on the mod's own timer" -
+  RUT_ContagionProbe.xml and RUT_FeverWood_MirrorBreak.xml both use Misc for
+  exactly this reason. "ThreatSmall-adjacent" (the spec's own phrase) reads
+  as describing this incident's TONE/threat-level, not literally wiring it
+  into vanilla's ThreatSmall Storyteller comp - doing that WOULD reintroduce
+  a schedule (however indirect) this ban explicitly rules out, and there is
+  no fixed-cadence field on IncidentDef to set regardless (verified against
+  the live decompile's IncidentDef - it has no such field at all; periodic
+  incident cadence is entirely a StorytellerComp-side concept).
+
+  workerClass=RimWorld.IncidentWorker_MakeGameCondition: vanilla's own
+  "create a GameCondition with a random Duration from durationDays, register
+  it, send a letter" worker (confirmed real, RimWorld/
+  IncidentWorker_MakeGameCondition.cs) - no bespoke IncidentWorker subclass
+  needed for the firing side at all.
+
+  The actual firing: RM_MapComponent_GradientAxis.TickSurgeRoll (on every
+  Miasma map, once per RM_GradientSurgeExtension's own baseMtbDays/
+  stormMtbMultiplier roll) manually builds IncidentParms via
+  StorytellerUtility.DefaultParmsNow(category, map) and calls
+  incidentDef.Worker.CanFireNow(parms) then .TryExecute(parms) - the same
+  manual-fire pattern this repo's src/RimUtinni/EmpirePursuit/Source/
+  RuthlessPursuingMechanoids.cs:741 already uses
+  (IncidentDefOf.RaidEnemy.Worker.TryExecute). CanFireNow still runs (not
+  bypassed) so allowedBiomes below and the "already active"/"can coexist"
+  checks IncidentWorker_MakeGameCondition.CanFireNowSub provides are real
+  gates, not just documentation.
+
+  durationDays 0.1667~0.3333 = 4-8 in-game hours (spec's own INVENTED
+  ramp-in figure, converted to the days unit IncidentWorker_
+  MakeGameCondition.TryExecuteWorker actually consumes) - this IS the
+  ramp-in duration RM_GameCondition_GradientSurge.Init() reads back via its
+  own inherited Duration property; not re-picked or duplicated there.
+
+  allowedBiomes=[RUT_Miasma]: "weighted only into this biome" (spec's own
+  words) - and IncidentWorker.CanFireNow enforces this even on a manually
+  built IncidentParms (verified against the live decompile).
+
+  MayRequire is load-bearing even though workerClass itself is vanilla:
+  gameCondition points at RUT_GradientSurge, which IS MayRequire-gated on
+  mandrake.rm.environmentalhazards (its conditionClass lives there) - without
+  this def carrying the same gate, a mod list missing that mod would leave
+  this IncidentDef's gameCondition field pointing at a def that was silently
+  discarded, a dangling cross-reference rather than a clean absence.
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_Surge</defName>
+    <label>the breath-tide surge</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimWorld.IncidentWorker_MakeGameCondition</workerClass>
+    <gameCondition>RUT_GradientSurge</gameCondition>
+    <durationDays>0.1667~0.3333</durationDays>
+    <allowedBiomes>
+      <li>RUT_Miasma</li>
+    </allowedBiomes>
+    <letterLabel>The breath-tide surges</letterLabel>
+    <letterDef>NegativeEvent</letterDef>
+  </IncidentDef>
+
+</Defs>
