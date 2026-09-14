@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TarBlaze.xml                       UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SUMP_MECHANICS_1 S1 build pass. The burning-wall Thing RM_CompFloodIgniter
+  spawns into every ignited tar cell (spawned by code via
+  FireUtility.TryStartFireIn today — see the C# note below on why that call
+  is being repointed) and self-manages for its own burn duration.
+
+  🔴 FIRE-AVOIDANCE / PATHING DECISION (resolves the spike pass's own named
+  build-shape gap, SUMP_MECHANICS_1.md "spike pass" > "Engine ground-truth"
+  #1 — see RM_CompTimedTerrainBurn.cs's header for the full citation trail):
+  RUT_TarBlaze is NOT a Fire subclass. It is a plain vanilla `Building` with
+  two ThingDef fields doing the entire block, both re-confirmed this pass
+  against the live 1.6 decompile:
+
+    - `passability Impassable` — Verse.AI/PathGrid.cs:140-148's per-Thing
+      cost loop reads `thing.def.passability`/`thing.def.pathCost` for ANY
+      spawned Thing on a cell, not just the Fire-specific perceivedStatic
+      branch further down (:179-204, the one the spike pass already found
+      only matches runtime type RimWorld.Fire). This makes the cell a flat
+      10000 (ImpassableCost) for literally any pawn's path search — a
+      genuinely IMPASSABLE wall, stronger than what real Fire gets (Fire
+      only adds +1000 own-cell / +150 adjacent, an avoid-if-possible
+      preference, not a hard block) — which matches the sheet's own "a wall
+      of flame and smoke nothing crosses" framing better than subclassing
+      Fire would have.
+    - `pathfinderDangerous true` — a SECOND, independent, fully generic
+      ThingDef flag (Verse/ThingDef.cs:175) this pass found beyond what the
+      spike pass's own finding named: consumed by
+      Verse/PersistentDangerSource.cs and Verse/PathFinderMapData.cs:111 to
+      mark the cell in a separate "persistent danger" grid the smarter
+      long-range pathfinder search avoids before it even reaches local step
+      costing. Vanilla Fire itself does NOT set this flag (confirmed —
+      Fire's own def carries no pathfinderDangerous), so this is additional
+      avoidance strength real fire doesn't have.
+
+  Why not subclass Fire instead: Fire's own Tick/TickInterval carries a lot
+  of behavior this content does not want inheriting unmodified — random
+  spread to unrelated cells (TrySpread), pawn ignition on proximity,
+  rain/vacuum extinguishing, and its own independent 7500-tick auto-burn-
+  floor timer that would race against this def's own INVENTED 12-24h
+  lifecycle. A plain Building with two XML fields is simpler, fully
+  reviewable, and (per above) gives a STRONGER, more spec-faithful block
+  than inheriting Fire would have — a genuine improvement the spike
+  pass's own "or carry pathCost/impassable directly" fallback undersold as
+  a hedge; it is the better answer, not the fallback one.
+
+  Lifecycle: RM_CompTimedTerrainBurn (new this pass, RM_EnvironmentalHazards
+  Source/RM_CompTimedTerrainBurn.cs) — starts the sibling CompReleaseGas on
+  spawn (vanilla's own comp never auto-starts), counts down
+  durationTicksRange (INVENTED, spec's own "12-24 in-game hours" = 30000-
+  60000 ticks), then explicitly calls TerrainGrid.Notify_TerrainBurned on
+  its own cell (NOT automatic without a real Fire instance — see that
+  class's header) before self-destructing. marksColumnSource true feeds
+  RM_MapComponent_ThresholdSmokeColumn (new this pass) for the spec's own
+  "distant column... while >= N blaze cells live" cosmetic, INVENTED N=20.
+
+  CompReleaseGas: stock, GasType.BlindSmoke (verified,
+  RimWorld/CompReleaseGas.cs / Verse/GasType.cs) — already blocks shooting
+  (ShotReport) and AI target LOS (AttackTargetFinder), per the kit spec's
+  own citations; no new code needed for that half. cellsToFill/durationSeconds
+  are this pass's own INVENTED placeholder tuning (not spec-named beyond
+  "blinding smoke").
+
+  Sight/graphic: texPath reuses vanilla Fire's OWN real texPath
+  (Things/Special/Fire, Graphic_Flicker, TransparentPostLight shaderType —
+  confirmed this pass via mcp__rimsage__get_def_details("Fire")) — a
+  deliberate, literal reuse (this thing IS meant to read as fire), not a
+  missing-art placeholder; no DEPLOY_HOLD needed.
+
+  Never player-buildable (spawned only by RM_CompFloodIgniter's own
+  FireUtility.TryStartFireIn call): no costList, no designationCategory.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_TarBlaze</defName>
+    <label>tar blaze</label>
+    <description>A cell of poured tar, burning. Blinding smoke pours off it; nothing crosses while it burns.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Special/Fire</texPath>
+      <graphicClass>Graphic_Flicker</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <altitudeLayer>PawnState</altitudeLayer>
+    <passability>Impassable</passability>
+    <pathfinderDangerous>true</pathfinderDangerous>
+    <pathCost>10000</pathCost>
+    <fillPercent>0.3</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <destroyable>true</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <comps>
+      <li Class="RimWorld.CompProperties_ReleaseGas">
+        <gasType>BlindSmoke</gasType>
+        <cellsToFill>9</cellsToFill>
+        <durationSeconds>60</durationSeconds>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TimedTerrainBurn">
+        <durationTicksRange>30000~60000</durationTicksRange>
+        <autoStartReleaseGas>true</autoStartReleaseGas>
+        <convertTerrainOnExpiry>true</convertTerrainOnExpiry>
+        <destroyOnExpiry>true</destroyOnExpiry>
+        <marksColumnSource>true</marksColumnSource>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
