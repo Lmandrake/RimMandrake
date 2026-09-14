@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ForgeStill.xml                     UtinniPatches - FORGE_MECHANICS_1 F1
+
+  forge_kit_spec.md F1 ("The lock + the pulse"): "Forces RUT_ForgeStill
+  (hot haze, vent-steam ambient, zero rain)." The Forge's calm state -
+  forced permanently by RUT_ForgePulse (Defs/GameConditionDefs/
+  RUT_ForgePulse.xml) whenever no burst is running. Never reachable via
+  natural weather-commonality rolls (RUT_TheForge.xml's own
+  baseWeatherCommonalities does not list it) - only ForcedWeather() ever
+  selects it, matching ban #6's "no ordinary rain reachable" structure.
+
+  rainRate 0 (the spec's own line). accuracyMultiplier/windSpeedFactor
+  cribbed from AB_VolcanicAsh (vendor/mod_sources/AlphaBiomes_src/1.6/Defs/
+  WeatherDefs/Weathers.xml), the donor stand-in this build supersedes per
+  RUT_TheForge.xml's own header note - closest existing "thick hot haze"
+  precedent. skyColors likewise cribbed from AB_VolcanicAsh's dark-ash
+  palette with a warmer red-shifted tint (sky reds bumped) for "hot haze"
+  over "volcanic ash cloud".
+-->
+<Defs>
+
+  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ForgeStill</defName>
+    <label>forge still</label>
+    <description>Long, still, baking heat under a haze of vent-steam. The mountain is between rains.</description>
+    <repeatable>true</repeatable>
+    <accuracyMultiplier>0.75</accuracyMultiplier>
+    <windSpeedFactor>0.6</windSpeedFactor>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.68,0.56,0.50)</sky>
+      <shadow>(0.92,0.85,0.82)</shadow>
+      <overlay>(0.55,0.45,0.42)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.58,0.44,0.38)</sky>
+      <shadow>(0.92,0.80,0.78)</shadow>
+      <overlay>(0.55,0.42,0.40)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.34,0.24,0.22)</sky>
+      <shadow>(0.85,0.70,0.68)</shadow>
+      <overlay>(0.5,0.38,0.36)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.22,0.15,0.14)</sky>
+      <shadow>(0.8,0.6,0.58)</shadow>
+      <overlay>(0.5,0.35,0.33)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

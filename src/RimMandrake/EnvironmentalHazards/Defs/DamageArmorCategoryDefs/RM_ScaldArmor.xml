@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldArmor.xml                      EnvironmentalHazards - FORGE_MECHANICS_1 F1
+
+  greentide_kit_spec.md M3 ("Scald damage + steam devils") calls for a
+  dedicated `RM_ScaldArmor` DamageArmorCategoryDef so heat/flame armor
+  stats give no protection against a scalding wet burn - "if the greentide
+  build slips, the def is XML and ships here first." Checked this pass:
+  no `RUT_Scald`/`RM_ScaldArmor` def exists anywhere in the repo yet
+  (greentide's own M3 has not landed), so FORGE_MECHANICS_1's own F1 ships
+  it, generic and RM_-tier (this mod - mandrake.rm.environmentalhazards -
+  is exactly where an RM_-prefixed def belongs per the naming scheme, not
+  the RUT_-tier UtinniPatches mod that ships RUT_Scald itself).
+
+  DamageArmorCategoryDef (Verse/DamageArmorCategoryDef.cs, verified this
+  pass): armorRatingStat + optional multStat, no DamageWorker override
+  needed - vanilla's own ArmorUtility reads DamageDef.armorCategory to
+  pick which armor StatDef applies, plain data end to end (settles
+  greentide_kit_spec.md's own open ❓ on this point, for whichever kit
+  ships the def first).
+
+  multStat left unset - no vendored material in this repo grants scald
+  resistance as a Stuff property (unlike vanilla ArmorRating_Heat's own
+  StuffPower_Armor_Heat), so there is nothing to multiply by; apparel
+  grants this stat via a plain <statBases> entry instead (the wet-kit gear
+  the greentide sheet's §7 fireweed-fiber tree owns, not this file).
+-->
+<Defs>
+
+  <DamageArmorCategoryDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_ScaldArmor</defName>
+    <armorRatingStat>RM_ArmorRating_Scald</armorRatingStat>
+  </DamageArmorCategoryDef>
+
+</Defs>

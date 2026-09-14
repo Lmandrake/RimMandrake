@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Scald.xml                          UtinniPatches - FORGE_MECHANICS_1 F1
+
+  forge_kit_spec.md F1 ("The scald"): "using RUT_Scald (the greentide kit
+  M3's DamageDef with its RM_ScaldArmor armor category; cross-kit reuse -
+  if the greentide build slips, the def is XML and ships here first)."
+  Checked this pass: no def named RUT_Scald exists anywhere in the repo
+  (greentide's own M3 has not landed) - shipped here, first, as the spec's
+  own contingency names. armorCategory -> RM_ScaldArmor
+  (src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/
+  RM_ScaldArmor.xml, this same pass).
+
+  Not Flame-class (no ParentName="Flame", no DamageWorker_Flame): the
+  spec's own line is explicit - "Not a Flame-class damage -> no ignition,
+  so 'ignores flammability' is free." Cribbed instead from vanilla
+  Frostbite's own posture (RimSage-verified this pass: a weather/
+  environmental injury, externalViolence false, no ignition) rather than
+  Burn's (Burn inherits Flame). workerClass DamageWorker_AddInjury (plain
+  injury, not Frostbite's own specialized progressive-severity worker,
+  since scald is a one-shot wound per interval, not an escalating cold
+  hediff) with hediff=Burn - the wound reads as an ordinary burn to the
+  player and the health system; only armorCategory makes it scald-typed
+  rather than heat-typed for defense purposes.
+
+  defaultDamage/defaultArmorPenetration mirror RUT_ForgePulse's own
+  scaldDamageAmount/armorPenetration (WeatherPulseExtension, F1's INVENTED
+  ~4 dmg/60-tick-interval unroofed/unarmored figure) so a bare "attack with
+  this DamageDef" (debug tools, a future non-weather consumer) behaves
+  consistently with the weather condition's own tuning.
+-->
+<Defs>
+
+  <DamageDef>
+    <defName>RUT_Scald</defName>
+    <label>scald</label>
+    <description>A wound from scalding steam and boiling water - a wet burn. Ordinary heat- or flame-rated armor gives no protection against it; only apparel built specifically for it does.</description>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <hediff>Burn</hediff>
+    <externalViolence>false</externalViolence>
+    <canUseDeflectMetalEffect>false</canUseDeflectMetalEffect>
+    <armorCategory MayRequire="mandrake.rm.environmentalhazards">RM_ScaldArmor</armorCategory>
+    <defaultDamage>4</defaultDamage>
+    <defaultArmorPenetration>0</defaultArmorPenetration>
+    <deathMessage>{0} has been scalded to death.</deathMessage>
+  </DamageDef>
+
+</Defs>

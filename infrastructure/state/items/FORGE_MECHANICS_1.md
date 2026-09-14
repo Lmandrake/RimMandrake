@@ -202,10 +202,189 @@ read surfaced rather than assumed. Full 6-mechanic build, F1/F3/F4/F6
 content authoring, and any live/quicktest pass are explicitly owed to a
 later, separate FOUNDRY item.
 
+## F1 build pass — 2026-09-13
+
+Build order step 2 (forge_kit_spec.md's own "Build order": step 1
+`ALPHA_MECHANICS_KIT_1` already shipped). Wires F1 "The closed boiling
+rain" — weather pulse, scald damage, flash-interval growth — into real,
+shippable classes and XML content, per the spike pass's own resolutions
+above. Followed the write-up style of `FEVER_WOOD_MECHANICS_1.md`'s own
+"continuation pass" section (own real defs, no invented roster/creature
+content).
+
+**C# — 4 new classes, `src/RimMandrake/EnvironmentalHazards/Source/`:**
+
+- **`WeatherPulseExtension : DefModExtension`** — the data side of the new
+  condition (GameConditionDef has no props object, same reason
+  `EnvironmentalWeatherExtension` exists). Generic: `baseWeather`,
+  `burstWeather`, `burstMtbHours`, `burstDurationMinutesRange`,
+  `flashWindowHoursAfterBurstStart`, plus a scald-damage field set that
+  mirrors `EnvironmentalWeatherExtension`'s own shape
+  (`scaldDamageDef`/`scaldDamageAmount`/`armorPenetration`/
+  `scaldDamageIntervalTicks`/`onlyUnroofed`/`affects`/`immuneThingDefs`/
+  `immunePawnKinds`). `ConfigErrors()` guards every INVENTED range.
+- **`RM_GameCondition_WeatherPulse : GameCondition`** — forces
+  `ext.baseWeather` via the vanilla `GameCondition.ForcedWeather()`
+  override point (verified `Source/RimWorld/GameCondition.cs:345`, same
+  hook `GameCondition_EnvironmentalWeather` already uses); rolls
+  `Rand.MTBEventOccurs(burstMtbHours, 2500f /*ticks/hour*/, 1f)` once per
+  `GameConditionTick` while not already in a burst; on a hit, switches
+  `ForcedWeather()` to `ext.burstWeather` for a randomized
+  `burstDurationMinutesRange` window and starts the flash window (below)
+  on every affected map. While a burst runs, deals scald damage on
+  `scaldDamageIntervalTicks` — a **reparameterized copy of
+  `GameCondition_EnvironmentalWeather.DoPawnEffects`'s own damage shape**
+  (same `HazardTargeting.Affects` gate, same `onlyUnroofed` check, same
+  `RM_EnvironmentalHazardsSettings.hazardDamageMultiplier`/
+  `environmentalDamageEnabled` gates), not a call into that class — it
+  forces one weather and damages continuously, this condition must gate
+  the identical shape to "currently in a burst" only, so the donor class
+  itself is left untouched (it is shared by every other kit referencing
+  `EnvironmentalWeatherExtension`: miasma, scald, sump, fever wood).
+  `ExposeData` Scribes `inBurst`/`burstWeatherEndTick`/
+  `ticksUntilScaldDamage`.
+- **`RM_MapComponent_FlashCycle : MapComponent`** — generic
+  `StartWindow(startTick, durationTicks)` / `InFlashWindow()` pair (same
+  posture as `RM_MapComponent_GradientAxis`). Auto-instantiates on every
+  map via `Map.FillComponents()`'s reflection scan (verified decompile,
+  no XML wiring needed for the component itself). The window is set to
+  `flashWindowHoursAfterBurstStart` from burst **start**, deliberately
+  independent of the burst weather's own shorter duration — it is meant
+  to outlast the rain itself, per the spec's own "until 2 in-game hours
+  after" line.
+- **`RUT_Plant_FlashFlora : Plant`** — overrides `Plant.GrowthRate`
+  (`public virtual`, verified `Source/RimWorld/Plant.cs:289`),
+  multiplying `base.GrowthRate` (so blight/season/fertility/temperature/
+  light/drought all still apply — only the result is scaled) by ×8.0
+  inside the flash window, ×0.05 outside it (both INVENTED, F1 spec,
+  overridable via `protected virtual` properties for a future biome).
+  Named `RUT_` (not `RM_`) per this task's own instruction even though it
+  carries no Forge-specific data — reusable base class, no concrete Plant
+  ThingDef needed to compile, matching `RM_CompScriptedDieOff`'s own
+  posture from the spike.
+- **Mod option** (`RM_EnvironmentalHazardsMod.cs`): new
+  `weatherPulseEnabled` toggle (default on). Off: the condition never
+  starts a new burst (a burst already running finishes rather than
+  snapping off) and stays on its base weather permanently; the plant
+  class returns `base.GrowthRate` unmultiplied instead of being stuck at
+  the "outside window" ×0.05 forever with no burst ever able to lift it —
+  required for MOD_OPTIONS_RETROFIT_1's all-off-degrades-gracefully rule,
+  not merely nice-to-have (without this special case, turning the toggle
+  off would silently cripple every flash-flora plant on the map).
+
+**Cross-kit reuse landed, not deferred**: `forge_kit_spec.md` F1's own
+"the scald" line says `RUT_Scald`/`RM_ScaldArmor` are the greentide kit's
+M3 DamageDef/DamageArmorCategoryDef, "cross-kit reuse — if the greentide
+build slips, the def is XML and ships here first." Checked this pass: no
+`RUT_Scald`/`RM_ScaldArmor` def exists anywhere in the repo (confirmed via
+grep across `src/` and `design/` — `GREENTIDE_MECHANICS_1`'s own M3 has
+not landed) — so this pass ships them, per the spec's own named
+contingency:
+
+- **`RM_ScaldArmor.xml`** (`DamageArmorCategoryDef`,
+  `src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/`,
+  RM_-tier home matching its RM_ prefix) — `armorRatingStat
+  RM_ArmorRating_Scald`, no `multStat` (no vendored Stuff in this repo
+  grants scald resistance, unlike vanilla's Sharp/Blunt/Heat trio each
+  citing a `StuffPower_Armor_*` stat).
+- **`RM_ArmorRating_Scald.xml`** (`StatDef ParentName="ArmorRatingBase"`,
+  same folder family, `Defs/StatDefs/`) — cribs the vanilla
+  `ArmorRating_Sharp`/`Heat` shape (RimSage-verified: category, value
+  range, `toStringStyle` all inherited from the abstract base; only the
+  quality-scaling `StatPart` repeated, no `StatPart_Stuff`).
+- **`RUT_Scald.xml`** (`DamageDef`, `src/RimUtinni/UtinniPatches/Defs/
+  DamageDefs/`, RUT-tier — campaign content, not generic) — **not**
+  Flame-class (no `ParentName="Flame"`, no `DamageWorker_Flame`) per the
+  spec's own "not a Flame-class damage → no ignition" line; cribbed
+  vanilla `Frostbite`'s posture instead (RimSage-verified: environmental
+  injury, `externalViolence false`, no ignition) with `workerClass
+  DamageWorker_AddInjury` and `hediff Burn` (an ordinary burn wound to the
+  player/health system; only `armorCategory` makes it scald-typed for
+  defense). `armorCategory` cross-references `RM_ScaldArmor` with its own
+  `MayRequire="mandrake.rm.environmentalhazards"` so the field degrades to
+  unset rather than a dangling cross-reference if that mod is absent.
+
+**Forge-specific content, `src/RimUtinni/UtinniPatches/`:**
+
+- **`Defs/WeatherDefs/RUT_ForgeStill.xml`** — the calm state (`rainRate
+  0`), ambient/sky values cribbed from the biome's own already-shipped
+  `AB_VolcanicAsh` donor stand-in (warmer/redder tint). Never reachable
+  via natural weather-commonality rolls (`RUT_TheForge.xml`'s
+  `baseWeatherCommonalities` does not list it) — only
+  `ForcedWeather()` ever selects it.
+- **`Defs/WeatherDefs/RUT_BoilingRain.xml`** — the burst state
+  (`rainRate 1`, real driving rain per the spec's own "WeatherDef.rainRate
+  is a native field" line), `moveSpeedMultiplier`/`accuracyMultiplier`
+  mirroring vanilla `RainyThunderstorm`'s own figures (a real storm).
+  Carries no damage fields itself — `WeatherDef` has none in the live
+  decompile; scald damage is `RUT_ForgePulse`'s own
+  `WeatherPulseExtension.scaldDamageDef`, ticking independently of which
+  weather is currently drawn.
+- **`Defs/GameConditionDefs/RUT_ForgePulse.xml`** — the concrete
+  `GameConditionDef` (`canBePermanent true`, matching the donor
+  `AB_VolcanicHeatWave`'s own field — required because
+  `BiomeDef.biomeMapConditions` entries are always made permanent by the
+  engine, verified `RimWorld/BiomeConditionMapComponent.cs`). Tuning: MTB
+  mean 10h, burst 20–40min, flash window 2h from burst start, ~4 scald
+  dmg/60-tick interval unroofed-only — all INVENTED per the spec's own
+  figures, matching owner card 2 ("boiling rain is survivable once...
+  never instant death from one burst").
+- **`Patches/RUT_ForgePulse_BiomeWiring.xml`** — wires `RUT_ForgePulse`
+  onto `RUT_TheForge` via `PatchOperationAdd` (`RUT_TheForge.xml` carries
+  no `<biomeMapConditions>` node today), **not** a direct edit to the
+  BiomeDef — exactly the caution `SCALD_MECHANICS_1`'s own
+  `RUT_ScaldSteamLock_BiomeWiring.xml` already established for this exact
+  file family (built the same day, found while surveying precedent for
+  this pass): a bare `<li>` baked into the BiomeDef would be a dangling
+  cross-reference the moment `mandrake.rm.environmentalhazards` is absent.
+  `RUT_TheForge.xml` itself is **not edited** — its own
+  `baseWeatherCommonalities` (AB_VolcanicAsh/AB_VolcanicAshRain/
+  RSW_SW_RedFog/Clear) is left as-is; once `RUT_ForgePulse` registers,
+  `ForcedWeather()` overrides natural selection unconditionally for as
+  long as the (permanent) condition runs, so those entries go
+  structurally unreachable rather than wrong — re-tuning that table is
+  biome-authoring judgment outside this build pass's scope.
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean with the 4 new
+`<Compile>` entries — **0 warnings, 0 errors**.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` on all 7
+new/changed files against the live 589-mod installed set (`--defs` Data +
+Mods + Workshop root + both source mods) — **0 errors**, 1 advisory
+warning (the `PatchOperationAdd` not wrapped in `PatchOperationConditional`
+— the same advisory the `RUT_ScaldSteamLock_BiomeWiring.xml` precedent
+produces for the identical shape; the Operation's own `MayRequire` is the
+real guard). One info-level note on `RUT_ForgePulse.xml` flagging that
+`WeatherPulseExtension`'s `Class` isn't yet visible to the validator's
+installed-mod scan — expected: the assembly is freshly rebuilt in `src/`,
+not yet deployed to the live `Mods/` folder (deployment is explicitly out
+of this task's scope).
+
+**Explicitly NOT done, per this task's own scope**: F2 (tibanna tap), F3
+(vapor columns), F4 (towers), F5 (die-off ring), F6 (geothermal) —
+untouched, separate build-order steps. No PawnKindDef/creature/roster
+content authored. `ModsConfig.xml` untouched. No bridge/game/quicktest run
+— offline only, as instructed; the scald gear-gate live-fire verification
+the spec's own "verify" section calls for (`unroofed unarmored pawn takes
+scald, geared pawn survivable, roofed pawn untouched`) is still owed to a
+live quicktest pass, not attempted here.
+
 ## files
 
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompScriptedDieOff.cs` (new)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Source/WeatherPulseExtension.cs` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (edit, F1: `weatherPulseEnabled` toggle)
+- `src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/RM_ScaldArmor.xml` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml` (new, F1)
+- `src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml` (new, F1)
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_ForgeStill.xml` (new, F1)
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_BoilingRain.xml` (new, F1)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ForgePulse.xml` (new, F1)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml` (new, F1)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries from the spike, 4 more from F1)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
 - `design/Jawa/worldbuilding/biomes/kits/forge_kit_spec.md` (5 ❓s resolved/narrowed in place)

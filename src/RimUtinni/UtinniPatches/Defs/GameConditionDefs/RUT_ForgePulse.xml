@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ForgePulse.xml                     UtinniPatches - FORGE_MECHANICS_1 F1
+
+  forge_kit_spec.md F1 ("The closed boiling rain"). The Forge's own weather
+  cycle: still hot haze (RUT_ForgeStill) broken by MTB-rolled bursts of
+  scalding rain (RUT_BoilingRain), scald damage (RUT_Scald) ticking while a
+  burst runs, and a flash-growth window (RM_MapComponent_FlashCycle,
+  RUT_Plant_FlashFlora) that outlasts the burst itself.
+
+  conditionClass = RimMandrake.EnvironmentalHazards.
+  RM_GameCondition_WeatherPulse (this same build pass - see that class and
+  WeatherPulseExtension for the engine mapping). Wired onto RUT_TheForge
+  via a PatchOperationAdd (Patches/RUT_ForgePulse_BiomeWiring.xml), not a
+  direct edit to RUT_TheForge.xml's own biomeMapConditions field - same
+  caution SCALD_MECHANICS_1's RUT_ScaldSteamLock_BiomeWiring.xml already
+  applied to this exact file family: a bare <li> baked directly into the
+  BiomeDef would be a dangling cross-reference the moment
+  mandrake.rm.environmentalhazards is absent from the active mod list.
+  canBePermanent: BiomeDef.biomeMapConditions entries are always made
+  permanent by the engine (BiomeConditionMapComponent.MapGenerated ->
+  GameConditionMaker.MakeConditionPermanent, verified this build pass) -
+  required for a permanent condition to pass its own ConfigErrors,
+  matching the donor AB_VolcanicHeatWave's own field.
+
+  Tuning (all INVENTED, forge_kit_spec.md F1's own figures): burst MTB mean
+  10 in-game hours; burst duration 20-40 in-game minutes; flash window 2
+  in-game hours from burst start; scald damage ~4 per 60-tick interval,
+  unroofed only (fireweed-fiber gear via RM_ArmorRating_Scald is the
+  admission ticket, per RM_ScaldArmor.xml and owner card 2: "boiling rain
+  is survivable once... never instant death from one burst" - the ~4/60
+  cadence unroofed/unarmored is brutal but not lethal in one pass).
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ForgePulse</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
+    <label>the mountain's breath</label>
+    <description>The Forge rains on itself: long still heat, broken by sudden violent bursts of scalding rain that flash back to steam off the hot rock within seconds.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.WeatherPulseExtension">
+        <baseWeather>RUT_ForgeStill</baseWeather>
+        <burstWeather>RUT_BoilingRain</burstWeather>
+        <burstMtbHours>10</burstMtbHours>
+        <burstDurationMinutesRange>20~40</burstDurationMinutesRange>
+        <flashWindowHoursAfterBurstStart>2</flashWindowHoursAfterBurstStart>
+        <scaldDamageDef>RUT_Scald</scaldDamageDef>
+        <scaldDamageAmount>4</scaldDamageAmount>
+        <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
+        <onlyUnroofed>true</onlyUnroofed>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>
