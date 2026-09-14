@@ -19,15 +19,19 @@
   PYRELANDS_FIRE_WEB_COMMISSION_1 igniter builds, and the round-2 move-mapping
   imports of Dalgo/GR_Boomsnake) — NOT re-derived or rescaled here. That JSON
   is the actual ruling; this file only wires it into the def the game reads.
-  The 15-animal sum is 4.51, not the placeholder's ~5.8 — a deliberate
+  The 14-animal sum is 4.21, not the placeholder's ~5.8 — a deliberate
   consequence of using the owner's real per-species numbers rather than
   matching the placeholder's total.
 
+  🔴 2026-09-14 (BOOMALOPE_CUT_EVERYWHERE_1): vanilla Boomalope, originally
+  wired here 2026-09-13 under the 2026-09-09 KEEP-reskinned card, is cut —
+  owner ruling "Absolutely no boomalopes," reversing that card. Removed from
+  the unconditional block and the roster below; counts corrected to 14/4.21.
+
   🔑 STRUCTURE: one PatchOperationConditional-guarded PatchOperationReplace
-  swaps the WHOLE node for the two commissioned igniters plus vanilla
-  Boomalope (all three always loaded — the igniters are this mod's own defs,
-  Boomalope is Core) — no PatchOperationFindMod needed for any of the three.
-  Three more PatchOperationFindMod blocks then splice each donor mod's animals
+  swaps the WHOLE node for the two commissioned igniters (both always
+  loaded — this mod's own defs) — no PatchOperationFindMod needed for
+  either. Three more PatchOperationFindMod blocks then splice each donor mod's animals
   in via PatchOperationAdd on the now-existing node, shorthand-dictionary form
   throughout — the whole biome's own wildAnimals list already uses that form
   (`<Hare>1.2</Hare>` etc.), and it is the ONLY form
@@ -45,12 +49,9 @@
   ROSTER AND VERIFICATION
   ============================================================================
 
-  UNCONDITIONAL (this mod's own defs + vanilla Core — always loaded):
+  UNCONDITIONAL (this mod's own defs — always loaded):
     RUT_FireHawk       0.15  igniter-flier      — RUT_PyrelandsFauna.xml (this mod)
     RUT_FurnaceBeast   0.08  igniter-megafauna  — RUT_PyrelandsFauna.xml (this mod)
-    Boomalope          0.30  medium (in-joke)   — vanilla Core, verified
-                             Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml:217
-                             (ThingDef) and :336 (PawnKindDef)
 
   Alpha Animals (mod name string "Alpha Animals", packageId sarg.alphaanimals
   — confirmed active in ModsConfig.xml). All three defNames verified directly
@@ -112,17 +113,17 @@
     Gizka               0.30  grain
 
   ============================================================================
-  LEFT OUT: none. Every name in the item's checklist resolved to a real
+  LEFT OUT: vanilla Boomalope only (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14 —
+  see above). Every other name in the item's checklist resolved to a real
   defName in a real, active mod — RUT_FireHawk, RUT_FurnaceBeast, AA_Razorjack,
   AA_Barbslinger, AA_FireWasp, GR_Mantistanis, GR_Boomsnake, Anooba, Iriaz,
-  Nuna, Orray, Zeer, Dalgo. Two more names not in the item's own checklist but
-  present in the_pyrelands.json's ruled "fauna" array — Gizka and vanilla
-  Boomalope — are wired too, because the item's brief was to wire "the ruled
-  fauna roster" and the JSON is that roster; leaving them out would silently
-  under-wire a roster the owner already ruled complete. GR_Mantistanis/
-  GR_Boomsnake looked riskiest at first (their defining XML sits inside a
-  workshop download whose internal folder is named "Megafauna") but resolved
-  cleanly: see the Megafauna-folder note above.
+  Nuna, Orray, Zeer, Dalgo. One more name not in the item's own checklist but
+  present in the_pyrelands.json's ruled "fauna" array — Gizka — is wired too,
+  because the item's brief was to wire "the ruled fauna roster" and the JSON
+  is that roster; leaving it out would silently under-wire a roster the owner
+  already ruled complete. GR_Mantistanis/GR_Boomsnake looked riskiest at first
+  (their defining XML sits inside a workshop download whose internal folder is
+  named "Megafauna") but resolved cleanly: see the Megafauna-folder note above.
   ============================================================================
 -->
 <Patch>
@@ -143,7 +144,6 @@
         <wildAnimals>
           <RUT_FireHawk>0.15</RUT_FireHawk>
           <RUT_FurnaceBeast>0.08</RUT_FurnaceBeast>
-          <Boomalope>0.3</Boomalope>
         </wildAnimals>
       </value>
     </match>

@@ -134,7 +134,7 @@
     {
       "def": "GR_Boombeetle",
       "disposition": "homeless-reserve",
-      "reason": "no §4 sort fits — the detonator niche is Boomalope’s ruled in-joke slot; too slow for the flame-edge hunter sort (spd 3.0 MEASURED predator)"
+      "reason": "no §4 sort fits — the detonator niche was Boomalope's in-joke slot (now cut, BOOMALOPE_CUT_EVERYWHERE_1); too slow for the flame-edge hunter sort (spd 3.0 MEASURED predator)"
     },
     {
       "def": "GR_Chickenspider",
@@ -145,6 +145,11 @@
       "def": "GR_Bearodile",
       "disposition": "homeless-reserve",
       "reason": "no §4 sort fits — ambush predator body (bs 3.5 MEASURED) on a coverless burn plain; flame-edge sort is cast"
+    },
+    {
+      "def": "Boomalope",
+      "disposition": "cut:BOOMALOPE_CUT_EVERYWHERE_1 (owner card 2026-09-14, \"Absolutely no boomalopes\")",
+      "reason": "reverses the 2026-09-09 KEEP-reskinned card (ubiquity-25 §9) — the in-joke lane is dead, no named home anywhere"
     }
   ],
   "fauna": [
@@ -198,14 +203,6 @@
       "commonality": 0.4,
       "def": "AA_FireWasp",
       "law": "incumbent; 'burning bite that feeds on the wound' (MEASURED special) — a fire-armed native in the fire biome; slow (spd 1.5), no pursuit read"
-    },
-    {
-      "action": "import",
-      "band": "medium",
-      "commonality": 0.3,
-      "def": "Boomalope",
-      "law": "owner card 2026-09-09: KEEP reskinned, in-joke lane (ubiquity-25 §9); detonating chemfuel fauna belongs in the standing burn — one of its ≤2 named homes",
-      "note": "reskin rides the in-joke lane art pass"
     },
     {
       "action": "import",

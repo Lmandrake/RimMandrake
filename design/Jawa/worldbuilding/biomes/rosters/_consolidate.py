@@ -24,7 +24,6 @@ RULED = {
                        'GR_* = Vanilla Genetics Expanded chimeras, judged per sheet law '
                        '(prefix corrected 2026-09-09)',
     'in_jokes_kept_reskinned': {
-        'Boomalope': 'homed: the_pyrelands (ash-grazer read); reskin rides the art lane',
         'Muffalo': 'NO wild home landed — reserve + reskin; doctrine calibration animal. '
                    'Owner review sheet decides if it gets a home.',
     },
