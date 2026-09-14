@@ -1199,6 +1199,18 @@
     "hash": "5621b12ca1b902d1195e7d6023c23561b089fb9006476801c8ce360919776271",
     "sha": "0637431c1"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "e6565186b9c0c7752103041ca224f610c2ac11f61dc6b633e6ea5c28f477279e",
+    "sha": "1ae30640a"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompScriptedDieOff.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "fcb139ea2310504d9ae4e8b1d916a502534dab4cacea990e4c3cc28bd6946b39",
+    "sha": "1ae30640a"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
