@@ -195,3 +195,15 @@ Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still a
 # validate_patch.py: 0 errors on all 4 files. Live re-verify (AlphaGenes
 # sweep clean, RUT_Miasma's 9 dangling wildAnimals refs resolve again) owed
 # on the next full load — this hold is lifted, not superseded.
+
+# --- Pyrelands flora defs: texPaths rebound to OWN art that is still rendering --
+# 2026-09-14 (BENCH), PYRELANDS_FLORA_ART_IDENTITY_1. EmberGrass/Quickgrass/
+# ScorchFruit/Fulgurite no longer point at vanilla Grass/Ambrosia/Berries/Jade;
+# the 11 replacement sprites are in the artpipe queue. Deploying these defs
+# before the PNGs land in Textures/ renders every Pyrelands plant as the
+# missing-texture placeholder.
+# => LIFT when the flora sprites are installed under Pyrelands/Textures/ - the
+#    defs and their art deploy together in one --apply.
+Pyrelands/Defs/ThingDefs_Plants/*      # BENCH: art still rendering, 2026-09-14
+Pyrelands/Defs/ThingDefs_ScorchFruit/* # BENCH: art still rendering, 2026-09-14
+Pyrelands/Defs/ThingDefs_Fulgurite/*   # BENCH: art still rendering, 2026-09-14
