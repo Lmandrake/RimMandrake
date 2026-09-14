@@ -69,19 +69,31 @@ Protosolpuga, Protovermes, Segnosaurus, Termitotron — absorbed "Jurassic
 Rimworld" dinosaurs, zero SW content) plus `RSW_SandStalker` (texPath
 `Things/Pawn/Animal/Skarnix/Skarnix`, absent from the 160-name master list —
 almost certainly an absorbed BiomesTeam creature, not SW; build its folder
-last and verify before ruling). **True roster: 43.**
+last and verify before ruling). **True roster: 43. Progress: 43/43 built 2026-09-13.** All folders present at
+`design/RimStarWars/canon_references/` (14MB total, every image ≤300KB).
 
-Progress: **9/43 built** 2026-09-13 (priority wave — wyyyschokk, dragonsnake,
-pekopeko, dactillion, anooba, greaterkraytdragon, dewback, bantha, wampa).
-Remaining 34: Acklay, Beldon, Bolotaur, Boma, Borcatu, CanCell, Cannok,
-Clodhopper, Convor, Corinathoth, Dalgo, Dianoga, Eopie, Iriaz, Jerba, Mudhorn,
-Nuna, Porg, Vulptex (SWBestiary-vendored) + Fambaa, Fanback, Grank, Hawkbat,
-Horax, Insectomorph, Kinrath, Kreetle, Ollopom, Orray, Ronto, Shiro, Vornskyr,
-Whisperbird, Zakkeg (donor-external, `mlie.starwarsanimalcollection` not
-locally installed — that mod's 1.6 release packs art in Unity AssetBundles,
-not loose PNGs, so "donor sprite" candidates for these come from a Steam
-Workshop screenshot where findable, noted as a substitute when used) +
-SandStalker (verify-first, see above).
+**SandStalker correction**: not excluded for the reason first guessed above.
+Verified by reading `src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+RSW_SandStalker.xml` directly (queue item `SAND_SWIMMERS_MOD_1`) — it is an
+**originally invented creature** built by this repo, explicitly documented in
+its own header as "an invented analog, not an Earth animal and not iconic
+Star Wars." It was never SW-canon-claiming, so it correctly has no library
+entry — not because it's absorbed foreign content like the 8 `Absorbed_*`
+dinosaurs, but because it was never real-world SW in the first place. The
+`Skarnix` texPath is a documented placeholder (reuses another shipped
+creature's art pending its own sprite).
+
+Multiple entries found the SAME failure pattern as the Wyyyschokk exemplar
+(text undersells or misdescribes canon vs. images) — notably **Dianoga**
+(donor sprite is a legged tailed creature vs. canon's legless tentacled
+cephalopod, high-confidence body-plan mismatch), **Vulptex** (donor is
+low-slung/smooth-furred vs. canon's tall crystal-bristled fox), **Jerba**
+(donor reuses smooth Bantha art with ram horns vs. canon's shaggy fur/small
+horns), and **Hawkbat** (task brief itself conflated it with the unrelated
+Loth-bat — corrected by the building agent, not silently propagated).
+**Whisperbird** surfaced a genuine Wookieepedia naming collision (a Chiss
+board-game piece shares the name with the actual bird creature) — resolved
+in-file, flagged for owner awareness.
 
 ## Watch out
 
