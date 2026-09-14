@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:54:49Z",
+  "facing": null,
+  "facings": [],
+  "id": "mangrovetree_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a large alien mangrove-style tree with a tangle of arching prop roots at its base and a broad canopy of waxy leaves, adapted to wet miasmic ground. Single tree, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE2_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (mangrove tree, per its own name) fixed, flavor free per 'improve' semantics. Source row: flora:the_miasma:AB_MangroveTree, sizeBin large, note: '9 wide'. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

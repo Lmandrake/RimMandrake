@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 111.19814330700319,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.19814330700319,
+  "height": 512,
+  "id": "oozemaw_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261297,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T14-59-06-01a097a1-9e9d-7db2-840c-0f6e4c5fd4be.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T14-56-31-01a0979f-3f87-7e42-8e1a-76655d478e98.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 11.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "oozemaw_v1_east",
+    "note": "Generated with built-in imagegen from the supplied Oozemaw prompt, then resized to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\oozemaw_v1_east\\oozemaw_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/oozemaw_v1_east/oozemaw_v1_east.png\n    512x512  rgba  212,620 bytes  (111s)\n"
+}

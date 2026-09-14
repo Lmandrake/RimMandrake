@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 86.84037766698748,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 86.84037766698748,
+  "height": 512,
+  "id": "sludrin_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-35-04-01a0929c-2ddd-7b91-8b6c-fd7278de8fe3.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 56.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-33-47-01a0929b-014b-7751-85cc-f13171f85890.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "sludrin_v1_south",
+    "note": "Generated in built-in imagegen mode and resized to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\sludrin_v1_south\\sludrin_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/sludrin_v1_south/sludrin_v1_south.png\n    512x512  rgba  315,314 bytes  (87s)\n"
+}

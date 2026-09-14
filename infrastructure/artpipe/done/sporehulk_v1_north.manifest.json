@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 140.66633599298075,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 140.66633599298075,
+  "height": 512,
+  "id": "sporehulk_v1_north",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 87.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T15-08-39-01a097aa-5c39-7cb0-b9c4-5cf44799a0df.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261297,
+    "primary_used_percent": 80.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T15-03-57-01a097a6-0c98-7ad3-8aaf-e012a09e84fc.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "sporehulk_v1_north",
+    "note": "Generated via built-in imagegen, extracted the backdrop to true transparency, and resized to exactly 512x512 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\sporehulk_v1_north\\sporehulk_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/sporehulk_v1_north/sporehulk_v1_north.png\n    512x512  rgba  398,958 bytes  (140s)\n"
+}

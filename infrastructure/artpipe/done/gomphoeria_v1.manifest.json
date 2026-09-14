@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 84.89510185399558,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 84.89510185399558,
+  "height": 256,
+  "id": "gomphoeria_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T21-00-24-01a098ec-6743-79d2-86c1-3f85cb9c0939.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 22.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T20-58-17-01a098ea-7748-7a20-ac87-3c3eaed3de78.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 21.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "gomphoeria_v1",
+    "note": "Generated full replacement with a heavy black outline and transparent background; resized to exactly 256x256. First resize utility was unavailable, so the platform image library was used.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\gomphoeria_v1\\gomphoeria_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/gomphoeria_v1/gomphoeria_v1.png\n    256x256  rgba  87,897 bytes  (84s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 109.61348618601914,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 109.61348618601914,
+  "height": 512,
+  "id": "huskrunner_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-52-17-01a0979b-5eaa-7bb1-997a-d1316f28ddaa.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261297,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-50-43-01a09799-f243-73e2-9ae6-7d5dab6000bf.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 8.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "huskrunner_v1_north",
+    "note": "Generated via built-in imagegen, copied into the workspace, and normalized from 1254px to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\huskrunner_v1_north\\huskrunner_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/huskrunner_v1_north/huskrunner_v1_north.png\n    512x512  rgba  199,422 bytes  (109s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 96.14443523000227,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.14443523000227,
+  "height": 256,
+  "id": "witchesoyster_v1",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 81.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T07-11-11-01a09b1b-96fc-7c20-b666-237cb4f2141c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 56.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 75.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T07-05-23-01a09b16-472c-74e1-9e0c-a16bf149ca69.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "witchesoyster_v1",
+    "note": "Generated a dark, outlined oyster bracket-fungus cluster on rotten wood; resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\witchesoyster_v1\\witchesoyster_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/witchesoyster_v1/witchesoyster_v1.png\n    256x256  rgba  51,141 bytes  (96s)\n"
+}

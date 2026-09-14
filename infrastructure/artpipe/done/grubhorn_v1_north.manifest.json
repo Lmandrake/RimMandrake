@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 80.59227755200118,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 80.59227755200118,
+  "height": 512,
+  "id": "grubhorn_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T16-00-23-01a092b3-5ce1-70f1-9695-5a9c56f8e11b.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 60.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T15-59-04-01a092b2-28c2-70f1-b0bd-f175ba941e08.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 59.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "grubhorn_v1_north",
+    "note": "Generated via built-in imagegen, then resized to exactly 512\u00d7512 while preserving transparent alpha. One file-processing command required correction.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grubhorn_v1_north\\grubhorn_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grubhorn_v1_north/grubhorn_v1_north.png\n    512x512  rgba  292,830 bytes  (80s)\n"
+}

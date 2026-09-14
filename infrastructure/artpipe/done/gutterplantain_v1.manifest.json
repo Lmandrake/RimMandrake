@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 96.8232256170013,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.8232256170013,
+  "height": 256,
+  "id": "gutterplantain_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-56-38-01a099fb-99e8-7f21-bcb0-0a55460e24ce.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-54-48-01a099f9-eb8c-7ab2-86f1-8a28f745f6a2.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "gutterplantain_v1",
+    "note": "Generated via built-in imagegen; resized to exactly 256x256 while preserving transparent alpha and clean outlined plant silhouette.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\gutterplantain_v1\\gutterplantain_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/gutterplantain_v1/gutterplantain_v1.png\n    256x256  rgba  78,388 bytes  (96s)\n"
+}

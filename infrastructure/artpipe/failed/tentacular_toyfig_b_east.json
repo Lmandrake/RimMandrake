@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-13T23:30:06Z",
+  "drawsize": 4.0,
+  "facing": "east",
+  "facings": [
+    "east"
+  ],
+  "id": "tentacular_toyfig_b_east",
+  "priority": 1,
+  "prompt": "RimWorld creature sprite, flat cel-shaded vanilla-RimWorld toy-figurine art style: an engorged tentacular aberration - a bloated pallid horror-mass trailing thick rubbery tentacles, sickly bioluminescent accents glowing between folds of flesh; unsettling and special, tentacles ARE its identity so they stay prominent, drawn as bold simple curling shapes. Single creature, centered, no ground shadow, no background. Keep the creature's own distinctive coloration VIVID and saturated - this creature must not collapse into dull earth-brown; its strangeness is the point. Toy-figurine convention, strict: calm neutral pose, pure flat side profile, no visible musculature or anatomy detail, flat cel shading with large simple color areas, clean vanilla-RimWorld style, heavy clean black outline. Leg policy: the body is a low-slung ground-hugging mass; legs, when present at all, are at most two short fused stubs.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_EngorgedTentacularAberration/AA_EngorgedTentacularAberration_east.png",
+  "rimflow_item_id": "TOYFIG_LAW_PILOT_1",
+  "style_notes": ""
+}

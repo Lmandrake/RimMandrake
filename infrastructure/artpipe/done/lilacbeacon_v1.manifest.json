@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 91.52611177798826,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.52611177798826,
+  "height": 256,
+  "id": "lilacbeacon_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T21-03-27-01a098ef-2eef-7a40-a56d-51a982bc0687.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 24.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T21-01-50-01a098ed-b4bf-7a51-a150-7a76fada113c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "lilacbeacon_v1",
+    "note": "Generated via built-in imagegen, copied into the workspace, and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\lilacbeacon_v1\\lilacbeacon_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lilacbeacon_v1/lilacbeacon_v1.png\n    256x256  rgba  22,568 bytes  (91s)\n"
+}

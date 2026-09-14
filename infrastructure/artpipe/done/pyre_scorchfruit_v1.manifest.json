@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 107.55534866004018,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.55534866004018,
+  "height": 128,
+  "id": "pyre_scorchfruit_v1",
+  "legibility": "PASS",
+  "legibility_findings": [
+    "LEGIBILITY PASS fitted=1.47 >= works 1.318 (gate_coverage@32=1.00 gate_ground@32=0.62 gate_keyline@32=1.00 gate_structure@32=0.66)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T22-01-47-01a09e4a-f2d8-7ec1-9189-813f60a6f2f2.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 78.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T21-56-48-01a09e46-637e-7b40-8525-2f98e5e4d8c9.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "pyre_scorchfruit_v1",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 128x128 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyre_scorchfruit_v1\\pyre_scorchfruit_v1.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyre_scorchfruit_v1/pyre_scorchfruit_v1.png\n    128x128  rgba  24,146 bytes  (105s)\n"
+}

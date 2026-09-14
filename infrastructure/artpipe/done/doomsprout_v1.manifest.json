@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 114.19361039099749,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.19361039099749,
+  "height": 256,
+  "id": "doomsprout_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-49-20-01a099f4-ec98-77b1-869d-744ae23e89cb.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-47-54-01a099f3-9bfd-7453-be1d-4d7e490863c8.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "doomsprout_v1",
+    "note": "Generated with built-in imagegen, preserved transparent alpha, and resized to exactly 256x256.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\doomsprout_v1\\doomsprout_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/doomsprout_v1/doomsprout_v1.png\n    256x256  rgba  71,309 bytes  (114s)\n"
+}

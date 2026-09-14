@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 92.70934782503173,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 92.70934782503173,
+  "height": 256,
+  "id": "heatsinkfungus_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-59-40-01a099fe-62f8-7e01-871c-13639cc10051.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-57-21-01a099fc-44cd-7803-9954-e5af71132797.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "heatsinkfungus_v1",
+    "note": "Generated via built-in imagegen and resized to exact 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\heatsinkfungus_v1\\heatsinkfungus_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/heatsinkfungus_v1/heatsinkfungus_v1.png\n    256x256  rgba  46,779 bytes  (92s)\n"
+}

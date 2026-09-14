@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 111.12956188601675,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.12956188601675,
+  "height": 256,
+  "id": "rimenodules_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T06-47-28-01a09b05-e0f1-7cd0-bbbd-ce2da0303713.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 47.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T06-45-41-01a09b04-3d38-78e0-8a67-ff7842d0d2f0.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rimenodules_v1",
+    "note": "Generated via built-in imagegen, preserved transparent alpha, and resized to the required 256x256 canvas.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rimenodules_v1\\rimenodules_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rimenodules_v1/rimenodules_v1.png\n    256x256  rgba  94,312 bytes  (111s)\n"
+}

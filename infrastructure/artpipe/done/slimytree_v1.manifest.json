@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 110.3174301959807,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.3174301959807,
+  "height": 256,
+  "id": "slimytree_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T06-54-19-01a09b0c-24e9-7051-94a9-37f4dbde8e62.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 50.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T06-52-16-01a09b0a-43ad-7e11-8a1d-40ac1ec85c89.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "slimytree_v1",
+    "note": "Generated a centered, painterly slime-coated tree with bold black linework and transparent background; resized to exactly 256x256.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\slimytree_v1\\slimytree_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/slimytree_v1/slimytree_v1.png\n    256x256  rgba  132,001 bytes  (110s)\n"
+}

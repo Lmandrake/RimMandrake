@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 228.26256564399227,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 228.26256564399227,
+  "height": 128,
+  "id": "pyre_fulgurite_v1",
+  "legibility": "REINFORCED_PASS",
+  "legibility_findings": [
+    "LEGIBILITY BORDERLINE fitted=1.10 in [0.63, 1.318) \u2014 reinforce the keyline, then rescore (gate_coverage@32=1.00 gate_ground@32=0.60 gate_keyline@32=0.66 gate_structure@32=0.63)",
+    "--- after stroke ---",
+    "LEGIBILITY PASS fitted=2.03 >= works 1.318 (gate_coverage@32=0.98 gate_ground@32=0.32 gate_keyline@32=1.00 gate_structure@32=0.94)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-51-11-01a09e41-3eb8-7551-acec-0ae6cae11811.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 32.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-46-13-01a09e3c-b28b-77a1-a7ff-c2680caaf3b0.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 75.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "borderline promoted by the outside keyline stroke; pre-stroke original kept beside it",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "pyre_fulgurite_v1",
+    "note": "Built-in imagegen; generated from the supplied RimWorld fulgurite prompt, then downsampled to exactly 128\u00d7128 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyre_fulgurite_v1\\pyre_fulgurite_v1.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyre_fulgurite_v1/pyre_fulgurite_v1.png\n    128x128  rgba  21,066 bytes  (227s)\n"
+}

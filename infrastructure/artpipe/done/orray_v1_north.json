@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T20:31:30Z",
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "orray_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Orray \u2014 a large, aggressive multi-legged reptavian native to Geonosis-like arid worlds, sometimes used as a mount or arena beast. Long low horizontal body carried on six short stout legs, a long flexible neck ending in a narrow birdlike beaked head with small alert eyes, a short bristling frill or ridge of spines along the back of the neck, tough leathery hide in dusty ochre-brown tones. Reads as a fast, ill-tempered pack/mount beast. Single creature, centered, standing alert pose, no ground shadow, no background scenery, no saddle or riding gear. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+  "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Orray's name means the canonical Geonosis arena/mount beast \u2014 converge on its known look (six-legged, long-necked, birdlike-headed reptavian). Medium sizeBin, the_pyrelands biome. Full regen. Explicit outline-thickness requirement per the same ruling."
+}

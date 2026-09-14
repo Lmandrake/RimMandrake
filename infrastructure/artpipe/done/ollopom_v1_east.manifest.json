@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 67.72321619698778,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 67.72321619698778,
+  "height": 512,
+  "id": "ollopom_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 14.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-31-18-01a09298-bc8c-72c1-8ecf-934229837faa.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 54.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-29-59-01a09297-8892-7ac0-bfcb-8946e15b72a2.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "ollopom_v1_east",
+    "note": "Generated east-facing Ollopom sprite with heavy black linework; resized to exactly 512\u00d7512 while preserving transparent alpha. One post-processing retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\ollopom_v1_east\\ollopom_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/ollopom_v1_east/ollopom_v1_east.png\n    512x512  rgba  218,536 bytes  (68s)\n"
+}

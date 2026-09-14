@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:56:29Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rotscythe_v1_south_r2",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Rotscythe \u2014 a large fungus-camouflaged mantis-like ambush predator native to a rot/decay biome, mottled brown-purple chitin crusted with lichen-like spore growths, oversized serrated scythe-forelimbs, a triangular head with large compound eyes. Reads as a decay-biome ambush predator. Single creature, centered, raised-forelimb ambush stance, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (BMT_FungalMantis, BiomesTeam prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_rot:BMT_FungalMantis, large sizeBin, no note. General kind kept (fungal mantis ambush predator), invented name/character: Rotscythe. Explicit outline-thickness requirement per the ruling."
+}

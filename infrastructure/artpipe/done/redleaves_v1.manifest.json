@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 103.9598978079739,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.9598978079739,
+  "height": 256,
+  "id": "redleaves_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-45-32-01a09b04-1878-7841-871b-8f33e4e3669d.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-43-37-01a09b02-58ab-72f3-a2b8-903f4418d032.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "redleaves_v1",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 256\u00d7256, and preserved transparent alpha with fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\redleaves_v1\\redleaves_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/redleaves_v1/redleaves_v1.png\n    256x256  rgba  100,035 bytes  (103s)\n"
+}

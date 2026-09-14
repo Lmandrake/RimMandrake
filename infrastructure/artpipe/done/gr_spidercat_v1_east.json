@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T14:25:12Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "gr_spidercat_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a spindly, alien-looking insectoid-feline hybrid (spidercat). Long thin multi-jointed legs like a spider's, a lean sinewy feline torso and tail, hard glossy insectoid plating over its back and shoulders, a narrow feline head with large multifaceted insect-like eyes and short mandible-like jaw parts framing a cat's muzzle. Reads as unsettling and quick, not a cuddly pet. Single creature, centered, alert crouched pose, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE2_QUEUE_1",
+  "style_notes": "Owner's explicit direction for this redo: 'spindly, alien-like spidercat thing' \u2014 lean into the spider-leg alien silhouette, away from a normal housecat body. Medium-small predator scale (lynx/fox tier), painterly vanilla RimWorld art, not photorealistic."
+}

@@ -1,0 +1,12 @@
+artpiped: NOTE artreg event skipped for aa_terramorph_v1_north_r2: no 'queued' event found for job_id='aa_terramorph_v1_north_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for ashrunner_v1_east_r2: no 'queued' event found for job_id='ashrunner_v1_east_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for ashrunner_v1_south_r2: no 'queued' event found for job_id='ashrunner_v1_south_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for bilespawn_v1_north_r2: no 'queued' event found for job_id='bilespawn_v1_north_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for fenshear_v1_north_r2: no 'queued' event found for job_id='fenshear_v1_north_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for mireflitwarden_v1_north_r2: no 'queued' event found for job_id='mireflitwarden_v1_north_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for rotscythe_v1_south_r2: no 'queued' event found for job_id='rotscythe_v1_south_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for wastewing_v1_south_r2: no 'queued' event found for job_id='wastewing_v1_south_r2' — pass --target explicitly
+artpiped: NOTE artreg event skipped for wastewing_v1_north_r2: no 'queued' event found for job_id='wastewing_v1_north_r2' — pass --target explicitly
+artpiped: signal 15 received, draining in-flight work then exiting
+artpiped: codex sandbox preflight ok — sandbox seed template matches the installed build (codex-command-runner-0.153.4.exe)
+artpiped: stopped. hard_stop=False refuse_new=False stop_all=False gemini_hard_stop=False gemini_spent=$4.02 pending_remaining=False — CLEAN DRAIN (exit 0)

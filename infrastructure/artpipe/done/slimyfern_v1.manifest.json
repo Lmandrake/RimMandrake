@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 114.78989860397996,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.78989860397996,
+  "height": 256,
+  "id": "slimyfern_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 46.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-53-56-01a09b0b-cc86-75d3-81c3-f6f1b7411b59.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 50.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-52-33-01a09b0a-84d7-71b2-95fd-b65dfd8e5b7c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "slimyfern_v1",
+    "note": "Generated one dominant mucus-coated fern with heavy black linework; resized the transparent master to exactly 256\u00d7256.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\slimyfern_v1\\slimyfern_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/slimyfern_v1/slimyfern_v1.png\n    256x256  rgba  141,466 bytes  (114s)\n"
+}

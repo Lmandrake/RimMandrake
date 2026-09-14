@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-09-14T04:43:13Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "pyre_fulgurite_v1",
+  "priority": 100,
+  "prompt": "A single hollow, branching shard of fulgurite lightning-glass lying on the ground \u2014 pale frosted white-blue glass with dark scorched sand fused at its base, faceted and root-like where the lightning bolt burrowed down. RimWorld top-down item sprite, flat cel-shaded illustration, thick dark keyline around the whole silhouette and every major internal shape, a few bold simple shapes over fine detail, vivid distinctive coloration, single fixed view, centered on a transparent background with about 3% clear margin around the silhouette, no ground shadow, no scenery.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_FLORA_ART_IDENTITY_1",
+  "style_notes": "RM_FE_Fulgurite, Graphic_Single item at Things/Item/Resource/RM_FE_Fulgurite (graphicClass moved Graphic_StackCount\u2192Graphic_Single \u2014 decorative one-off curio, not a scaling ore pile). 'Fulgurite white in the black' per the_pyrelands.md \u00a79 palette."
+}

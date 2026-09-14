@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-13T23:03:28Z",
+  "drawsize": 3.5,
+  "facing": "east",
+  "facings": [
+    "east"
+  ],
+  "id": "boma_toyfig_a_east",
+  "priority": 1,
+  "prompt": "RimWorld creature sprite, side view, flat cel-shaded vanilla-RimWorld toy-figurine art style: the Star Wars canon Boma beast \u2014 a large, thick-hided draft and warfare beast bred for hauling and battle on a hostile jungle/rock moon. Massive barrel-shaped body low on four short powerful legs, a broad low-slung head with small deep-set eyes and a blunt tusked jaw, thick plated grey-brown hide scarred and calloused from labor, a heavy low tail. Reads as a slow, immensely strong beast of burden that can also fight. Single creature, centered, standing pose, no ground shadow, no background scenery, no harness or cargo rigging. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Toy-figurine convention, strict: calm neutral standing pose with all feet planted and legs hanging straight - never mid-stride, stalking, leaping or rearing; pure flat side profile with no three-quarter perspective or foreshortening; limbs drawn as simple bold jointless shapes with no visible musculature, tendon or anatomy detail; the body reads as one bold mass-first silhouette, like a painted wooden game piece; flat cel shading with large simple color areas and minimal surface texture, clean vanilla-RimWorld style.",
+  "reference": null,
+  "rimflow_item_id": "TOYFIG_LAW_PILOT_1",
+  "style_notes": ""
+}

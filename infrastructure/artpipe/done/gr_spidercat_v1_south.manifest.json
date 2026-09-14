@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 87.02198468099232,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 87.02198468099232,
+  "height": 512,
+  "id": "gr_spidercat_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T07-34-53-01a090e4-917d-7a53-8c3e-de6eddec36ae.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T07-29-35-01a090df-b6c4-71e2-a090-6d0c557e52e9.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "gr_spidercat_v1_south",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 512\u00d7512, and preserved genuine transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\gr_spidercat_v1_south\\gr_spidercat_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/gr_spidercat_v1_south/gr_spidercat_v1_south.png\n    512x512  rgba  208,191 bytes  (87s)\n"
+}

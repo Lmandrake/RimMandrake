@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-12T21:44:54Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "sporehulk_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Sporehulk \u2014 a titan-sized lumbering fungal beast native to a rot/decay biome, a hulking quadruped body encrusted with bulbous mushroom-cap growths and pod-like spore sacs along its spine, dark loamy brown-purple coloring, a wide low-slung stance built for sheer mass. Reads as a colossal fungal titan, not a walking mushroom joke. Single creature, centered, standing four-legged stance, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (AA_Agaripod, Alpha Animals prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_rot:AA_Agaripod, titan sizeBin, note '8 squares' (large body footprint). General kind kept (fungal/pod titan), invented name/character: Sporehulk. Explicit outline-thickness requirement per the ruling."
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 98.26035857002717,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 98.26035857002717,
+  "height": 256,
+  "id": "keeningcordax_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T21-03-23-01a098ef-1f82-7c01-91d1-10c734d004db.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 24.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T21-01-55-01a098ed-ca05-7b63-944c-2f04e2a76bb4.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "keeningcordax_v1",
+    "note": "Generated via built-in imagegen and downsampled to exactly 256x256, preserving transparent alpha and clean outlined sprite detail.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\keeningcordax_v1\\keeningcordax_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/keeningcordax_v1/keeningcordax_v1.png\n    256x256  rgba  47,131 bytes  (98s)\n"
+}

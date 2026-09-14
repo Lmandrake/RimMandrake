@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-12T21:46:34Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "corronip_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Corronip \u2014 a medium armored crustacean-like scavenger native to a toxic miasma-gas biome, a corroded rust-orange carapace with pitted, flaking plates, a single pair of heavy asymmetric pincers, multiple short jointed legs. Reads as a corrosion-adapted scavenging arthropod. Single creature, centered, mid-stride stance with one pincer raised, no ground shadow, no background scenery, no gas/vapor effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (RSW_RustNipper, RimStarWars-tier donor prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_miasma:RSW_RustNipper, medium sizeBin, no note. General kind kept (armored corroded-carapace pincer scavenger \u2014 the 'rust' flavor of the donor name carried into the redesign), invented name/character: Corronip. Explicit outline-thickness requirement per the ruling."
+}

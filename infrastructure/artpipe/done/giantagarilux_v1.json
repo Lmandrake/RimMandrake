@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 384,
+    "width": 384
+  },
+  "channel": "codex",
+  "created": "2026-09-13T03:41:10Z",
+  "facing": null,
+  "facings": [],
+  "id": "giantagarilux_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a large luminous fungal growth, a smaller relative of a titan fungus line \u2014 ribbed stalk, rounded domed cap with a gentler pale-green bioluminescent glow, growing in a fetid rot-biome setting. Single organism, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE1_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (titan-tier luminous fungus, mid family) fixed, flavor free per 'improve' semantics. Source row: flora:the_rot:AB_GiantAgarilux, sizeBin titan, note: '15 cells'. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

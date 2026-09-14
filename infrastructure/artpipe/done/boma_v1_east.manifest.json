@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 115.11106811399804,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 115.11106811399804,
+  "height": 512,
+  "id": "boma_v1_east",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 80.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T16-46-50-01a092dd-e346-7f53-a980-736b7cf77fa3.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 64.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 74.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T16-08-20-01a092ba-a459-7353-9222-0477d24124f4.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 63.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "boma_v1_east",
+    "note": "Generated via built-in imagegen and normalized to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\boma_v1_east\\boma_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/boma_v1_east/boma_v1_east.png\n    512x512  rgba  286,305 bytes  (113s)\n"
+}

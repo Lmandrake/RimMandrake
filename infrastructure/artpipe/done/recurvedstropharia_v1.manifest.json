@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 114.05171814298956,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.05171814298956,
+  "height": 384,
+  "id": "recurvedstropharia_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-43-37-01a09b02-58ab-72f3-a2b8-903f4418d032.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-41-45-01a09b00-a391-7750-8e4a-d770768602c1.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 384,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 384,
+    "id": "recurvedstropharia_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 384x384. First local resize command failed; one corrected retry succeeded.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\recurvedstropharia_v1\\recurvedstropharia_v1.png",
+    "status": "ok",
+    "width": 384
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/recurvedstropharia_v1/recurvedstropharia_v1.png\n    384x384  rgba  238,517 bytes  (114s)\n"
+}

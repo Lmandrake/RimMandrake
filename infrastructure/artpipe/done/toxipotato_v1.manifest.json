@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 119.45950858405558,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.45950858405558,
+  "height": 256,
+  "id": "toxipotato_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T07-00-13-01a09b11-8cb3-7492-b27c-34af3de26734.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T06-58-19-01a09b0f-ccbb-7161-bb41-665f60d05c92.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "toxipotato_v1",
+    "note": "Generated with built-in imagegen and saved as a 256\u00d7256 RGBA PNG with fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\toxipotato_v1\\toxipotato_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/toxipotato_v1/toxipotato_v1.png\n    256x256  rgba  88,745 bytes  (119s)\n"
+}

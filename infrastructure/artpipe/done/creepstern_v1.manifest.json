@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 92.8416240689694,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 92.8416240689694,
+  "height": 256,
+  "id": "creepstern_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-46-41-01a099f2-7fc7-7450-98c6-2b8435373207.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 18.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-44-48-01a099f0-c6c4-76d0-882e-ec057561341b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "creepstern_v1",
+    "note": "Generated with built-in imagegen and resampled to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\creepstern_v1\\creepstern_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/creepstern_v1/creepstern_v1.png\n    256x256  rgba  72,700 bytes  (92s)\n"
+}

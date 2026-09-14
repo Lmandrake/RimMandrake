@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 116.49994815600803,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 116.49994815600803,
+  "height": 512,
+  "id": "featherfeel_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 64.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T13-35-23-01a0922e-9ddb-74f3-b194-3ea96ac3e904.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 48.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T13-33-30-01a0922c-e218-7fc2-a173-30333fde52d4.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 47.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "featherfeel_v1_south",
+    "note": "Built-in imagegen; prompt normalized as a south-angled side-profile FeatherFeel with bold linework. Resized to exactly 512x512 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\featherfeel_v1_south\\featherfeel_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/featherfeel_v1_south/featherfeel_v1_south.png\n    512x512  rgba  331,424 bytes  (116s)\n"
+}

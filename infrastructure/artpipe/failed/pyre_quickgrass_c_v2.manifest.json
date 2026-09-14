@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 119.82820144499419,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.82820144499419,
+  "height": 256,
+  "id": "pyre_quickgrass_c_v2",
+  "legibility": "REJECT",
+  "legibility_findings": [
+    "LEGIBILITY FAIL fitted=0.36 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.36 gate_keyline@32=0.63 gate_structure@32=0.64)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 79.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T22-35-21-01a09e69-af4c-72c3-9028-fd806f489d30.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 73.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T22-25-26-01a09e60-9c0c-7a81-88d9-e54c0c99a04a.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 82.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "below the calibrated downscale-legibility line \u2014 LEGIBILITY FAIL fitted=0.36 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.36 gate_keyline@32=0.63 gate_structure@32=0.64)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "[artpipe job pyre_quickgrass_c_v2]",
+    "note": "Generated with built-in imagegen, resized to exactly 256x256, and preserved transparent alpha. One retry followed a resize command error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyre_quickgrass_c_v2\\pyre_quickgrass_c_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "legibility_below_gate",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyre_quickgrass_c_v2/pyre_quickgrass_c_v2.png\n    256x256  rgba  82,983 bytes  (119s)\n"
+}

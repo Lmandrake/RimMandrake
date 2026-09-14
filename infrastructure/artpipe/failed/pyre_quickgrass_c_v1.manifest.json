@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 86.57144072902156,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 86.57144072902156,
+  "height": 256,
+  "id": "pyre_quickgrass_c_v1",
+  "legibility": "REJECT",
+  "legibility_findings": [
+    "LEGIBILITY FAIL fitted=0.05 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.37 gate_keyline@32=0.43 gate_structure@32=0.61)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-58-36-01a09e48-0b10-7060-8c55-981f70b2ea6f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-51-11-01a09e41-3eb8-7551-acec-0ae6cae11811.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "below the calibrated downscale-legibility line \u2014 LEGIBILITY FAIL fitted=0.05 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.37 gate_keyline@32=0.43 gate_structure@32=0.61)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyre_quickgrass_c_v1",
+    "note": "Generated with built-in imagegen, copied into the workspace, resized to exactly 256\u00d7256, and confirmed transparent alpha at all corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyre_quickgrass_c_v1\\pyre_quickgrass_c_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "legibility_below_gate",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyre_quickgrass_c_v1/pyre_quickgrass_c_v1.png\n    256x256  rgba  67,061 bytes  (84s)\n"
+}

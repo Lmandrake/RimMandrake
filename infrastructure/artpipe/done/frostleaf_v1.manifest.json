@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 81.24525567895034,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.24525567895034,
+  "height": 256,
+  "id": "frostleaf_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 41.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-52-48-01a099f8-175a-78e1-8626-011da0fe7606.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-51-20-01a099f6-c11a-7223-8935-dcc426f51d4d.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "frostleaf_v1",
+    "note": "Built-in imagegen; generated the specified outlined frost-rimed shrub with chemical sheen, then resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\frostleaf_v1\\frostleaf_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/frostleaf_v1/frostleaf_v1.png\n    256x256  rgba  106,277 bytes  (80s)\n"
+}

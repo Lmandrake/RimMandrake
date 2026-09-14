@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 103.01034599501872,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.01034599501872,
+  "height": 256,
+  "id": "pyre_embergrass_c_v1",
+  "legibility": "REJECT",
+  "legibility_findings": [
+    "LEGIBILITY FAIL fitted=0.56 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.27 gate_keyline@32=0.57 gate_structure@32=0.00)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T21-47-51-01a09e3e-30ab-7523-8e47-575204027e7d.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 75.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 29.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T21-42-18-01a09e39-1c7b-7cb1-bf51-b484d777704a.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 75.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "below the calibrated downscale-legibility line \u2014 LEGIBILITY FAIL fitted=0.56 < mud 0.63 \u2014 regenerate (gate_coverage@32=1.00 gate_ground@32=0.27 gate_keyline@32=0.57 gate_structure@32=0.00)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyre_embergrass_c_v1",
+    "note": "Generated via built-in imagegen from the supplied sparse ember-grass sprite prompt; resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyre_embergrass_c_v1\\pyre_embergrass_c_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "legibility_below_gate",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyre_embergrass_c_v1/pyre_embergrass_c_v1.png\n    256x256  rgba  43,476 bytes  (102s)\n"
+}

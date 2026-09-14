@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 89.50630382000236,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 89.50630382000236,
+  "height": 256,
+  "id": "dewshrooms_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 79.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T21-27-56-01a09905-9a5b-7042-8cad-0d7e9350bb4d.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 74.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T21-23-38-01a09901-a932-77d0-ad38-f621c20d6466.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "dewshrooms_v1",
+    "note": "Built-in imagegen; normalized prompt preserved the requested dew-beaded mushroom clump, vanilla-style painterly finish, heavy black linework, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\dewshrooms_v1\\dewshrooms_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/dewshrooms_v1/dewshrooms_v1.png\n    256x256  rgba  39,968 bytes  (89s)\n"
+}

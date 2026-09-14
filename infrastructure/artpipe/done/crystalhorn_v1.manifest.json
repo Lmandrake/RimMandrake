@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 94.8899387959973,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.8899387959973,
+  "height": 256,
+  "id": "crystalhorn_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T20-41-17-01a098da-e699-7e31-99e4-1bb41bab507c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 88.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T15-11-00-01a097ac-8488-77b3-9be2-977daa4ed6d9.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "crystalhorn_v1",
+    "note": "Generated with built-in imagegen; resized to exactly 256\u00d7256 while preserving transparent alpha. Second attempt followed a local image-processing command error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\crystalhorn_v1\\crystalhorn_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/crystalhorn_v1/crystalhorn_v1.png\n    256x256  rgba  68,091 bytes  (93s)\n"
+}

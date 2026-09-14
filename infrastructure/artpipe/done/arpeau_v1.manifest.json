@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 100.46660045097815,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.46660045097815,
+  "height": 256,
+  "id": "arpeau_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-43-00-01a099ef-2158-7581-b266-87d506420b0c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-41-33-01a099ed-cb6a-7461-a68d-80090b84f088.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "arpeau_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256 with alpha preserved. One post-processing retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\arpeau_v1\\arpeau_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/arpeau_v1/arpeau_v1.png\n    256x256  rgba  115,684 bytes  (100s)\n"
+}

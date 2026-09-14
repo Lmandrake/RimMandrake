@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-12T21:44:54Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "gorewalker_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Gorewalker \u2014 a large segmented crustacean-like predator native to a blighted/contagion biome, an armored exoskeleton in dull rust-red plating, multiple jointed legs, and a pair of prominent oversized red ocular stalks as its most distinctive feature. Reads as a large plague-adapted arthropod hunter. Single creature, centered, mid-stride stance, no ground shadow, no background scenery, no ooze/particle effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (AA_BloodShrimp, Alpha Animals prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_contagion:AA_BloodShrimp, large sizeBin, note 'ocular only' (prominent eye feature carried into the design as the oversized ocular stalks). General kind kept (segmented crustacean predator), invented name/character: Gorewalker. Explicit outline-thickness requirement per the ruling."
+}
