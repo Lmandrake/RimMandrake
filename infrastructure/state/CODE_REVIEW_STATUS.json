@@ -1350,10 +1350,10 @@
     "sha": "07118c4e6"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-14",
-    "hash": "0206622ddcba4b79d06b9fafa89a0326285ea81a60478666356a58f7993fc6c2",
-    "sha": "07118c4e6"
+    "hash": "5e38db4e1bdbb5523176f62e8e57f8ead550d3155af0680b659e4cd66915483a",
+    "sha": "1741b389a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_TerrainChannels.cs": {
     "cleanCount": 1,
@@ -1488,10 +1488,10 @@
     "sha": "f4d5c1714"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_RootCausewayBiomeExtension.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-14",
-    "hash": "77fc8448ee7a169b1da1c9c1e88795cf35b9709febc8f3514ee88b5e4e916631",
-    "sha": "07118c4e6"
+    "hash": "cf62f9eaa6bca2133e5eaec44ce9ba49d7a50f7e3158e883883e3de4e3956a03",
+    "sha": "1741b389a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_Biome.cs": {
     "cleanCount": 1,
@@ -13744,10 +13744,10 @@
     "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "7c5ef8658b3fa1360dff621da98fcb8e120d25da7645afbe7eb77f9c7c86f4c5",
-    "sha": "0221f34fb"
+    "cleanCount": 3,
+    "date": "2026-09-14",
+    "hash": "9552ed51573a01d1062cb622d08382adab41b5a18643d9268924d2406d1b2683",
+    "sha": "1741b389a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 1,
@@ -14193,6 +14193,12 @@
     "hash": "477c9ca14c45252113c0929de75fc3da7a94b76d64d7b625f4eb50a91fb1e0f2",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_Boughway.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "75edab82f1ff62b83fcc1ece5e093128d8c47c4e62b00bc45e66343080c79cec",
+    "sha": "1741b389a"
+  },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml": {
     "cleanCount": 2,
     "date": "2026-09-13",
@@ -14210,6 +14216,18 @@
     "date": "2026-09-14",
     "hash": "11e967a166985ac443f7979b2ea644b214f79a84123ce288c001d7f5be02de7c",
     "sha": "212775b67"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "6a007e69cfd62c87b97cbab3088bac6c1baac37d70d2601ca7e62daa723f654e",
+    "sha": "1741b389a"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkHeartwood.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "607e889c4e5dd75b68ce97849e26223ff8d22a89521f863817fc3f24f784dcad",
+    "sha": "1741b389a"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml": {
     "cleanCount": 1,
