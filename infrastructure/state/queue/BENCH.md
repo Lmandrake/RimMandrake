@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:14:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T00:37:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1 ShowMeYourHands DrawHandsOnWeapon patch emits invalid IL into ModularWeapons2 type-init: PawnGenerator crashes, ANY new map on the current list dies at starting-pawn gen (quicktest map-gen error modal, Player.log 12297-12409, 2026-09-13)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
 
 # IN PROGRESS
 

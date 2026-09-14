@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:14:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T00:37:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -756,15 +756,6 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
-## CANON_REFERENCE_LIBRARY_1 Permanent SW-canon visual reference library: text + candidate images per creature, donor art included, owner rules disagreements — gates all canon regens
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Location (permanent, committed): design/RimStarWars/canonreferences/<creature/
-prose:    infrastructure/state/items/CANON_REFERENCE_LIBRARY_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1480,13 +1471,3 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
-
-## SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1 ShowMeYourHands DrawHandsOnWeapon patch emits invalid IL into ModularWeapons2 type-init: PawnGenerator crashes, ANY new map on the current list dies at starting-pawn gen (quicktest map-gen error modal, Player.log 12297-12409, 2026-09-13)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
