@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T16:28:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T16:33:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1547,3 +1547,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/QUICKGRASS_GROWTH_STAGES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/QUICKGRASS_GROWTH_STAGES_1.md
+
+## PYRELANDS_FIRE_CADENCE_1 Pyrelands fires arrive every few days as the biome clock
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_FIRE_CADENCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FIRE_CADENCE_1.md
