@@ -59,3 +59,66 @@ here.
   (scaffold), Greentide filed as `GREENTIDE_MECHANICS_2` + spike. In
   flight as of this entry: Forge F3/F4, Miasma M2, and filing+spiking
   Scarlands.
+
+- 2026-09-14, later (owner AFK, BENCH stepped away, worked solo per
+  "keep your queue filled"): pushed through to the following state.
+  **Offline build passes are effectively exhausted for this push** — what
+  remains everywhere is either roster/creature content this item's own
+  scope explicitly excludes, an external design-only dependency
+  (`EXPLOSIVE_PLANT_GROWTH_1`), a genuine unresolved design call
+  (Fever Wood's marsh terrain), or live/quicktest proof needing bridge
+  access nobody currently holds.
+
+  - `FORGE_MECHANICS_1` — **F1–F6 all shipped.** Offline-complete.
+  - `MIASMA_MECHANICS_1` — **M1–M6 all shipped.** Offline-complete.
+  - `SUMP_MECHANICS_1` — **S1–S6 all shipped.** Offline-complete.
+  - `SCALD_MECHANICS_1` — S1/S2/S4/S5/S6 shipped. S3 (margin fishing)
+    still blocked on `FISH_BESTIARY_COMMISSION_1` (external, not this
+    push's to close).
+  - `SCARLANDS_MECHANICS_2` — §1 (mynock) already shipped elsewhere,
+    §2–§5 wired this push. Offline-complete as far as this push's scope
+    goes; `SCARLANDS_MECHANICS_1` (spec-only) superseded by this ID.
+  - `GREENTIDE_MECHANICS_2` — M1, M2, M3 (vortex), M4, M5, M6, M7, M8,
+    M9, M11, M12 all shipped this push or found already shipped
+    elsewhere. Only M10 remains, externally blocked on
+    `EXPLOSIVE_PLANT_GROWTH_1` not existing yet. One small loose end:
+    M3's steam devil isn't yet wired to spawn rarely from the Roil
+    condition (M4) — both landed in the same wave and the hook was left
+    honestly unbuilt rather than guessed at; small, safe pickup for
+    whoever's next. `GREENTIDE_MECHANICS_1` (spec-only, closed) superseded
+    by this ID.
+  - `FEVER_WOOD_MECHANICS_1` — F1–F4, F6, F7 shipped (F6/F7 unblocked
+    mid-push once Greentide's M9/M12 landed, and consumed them as the
+    first real customer — confirms that generic surface actually works).
+    F5 (ground-refusal terrain) needs a real design call — a new
+    biome-specific marsh TerrainDef — against the FROZEN sheet's own
+    terrain table; deliberately not guessed blind by a build agent. F8/F9
+    remain roster/L-effort design work (a new faction, quest, Lord/Job
+    wiring), not a "wire the spec's own numbers" task like everything
+    else in this push.
+  - `RUST_CATHEDRAL_MECHANICS_1` — was already 6/6 offline-complete
+    before this push started; untouched, still just needs a live test.
+
+  Repeated finding worth recording once, here, since it happened across
+  ~20 agents this push: the shared `RM_EnvironmentalHazards.csproj` and
+  its compiled `.dll` produced git-index collisions constantly under this
+  much concurrency (`git commit -- <pathspec>` sweeping a concurrent
+  window's uncommitted edits into an unrelated commit, stale
+  `.git/index.lock` files, a whole-staged-index sweep more than once).
+  Every single time, the content landed correctly and nothing was lost —
+  but at least one commit (`6f7f5ff61`) is missing its attribution
+  trailer as a result and wasn't worth a corrective commit. If this
+  volume of parallel agents on one shared assembly becomes routine, a
+  real fix (smaller shared-file surface, or a lock/queue around the
+  `.csproj`) is worth a design pass of its own — noted, not filed, since
+  it's tooling, not a biome.
+
+  Also several real bugs were caught and fixed in self-review across this
+  push, not just wiring — worth naming since it's the actual proof the
+  discipline held under pressure: Miasma's under-floor repaint clobber,
+  a second Miasma band-pick bug (bridged water misread), Sump's
+  `filth-acceptance mask` silently blocking every deposit, Fever Wood's
+  `GetModExtension` single-instance trap on a second GenStepDef pass, two
+  order-dependent `PatchOperationAdd`s missing `<match>` branches, and a
+  Scarlands `wildAnimalScariaChance` that would've left its own arm-gate
+  with nothing to ever trigger.
