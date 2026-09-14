@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -118,6 +119,45 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_TargetInfo.Look(ref anchor, "anchor", LocalTargetInfo.Invalid);
             Scribe_Values.Look(ref anchorSet, "anchorSet", false);
         }
+
+        // MIASMA_MECHANICS_1 M6 build, §8 "everything living remembers it":
+        // "killing a warden ... flips the site's marker to despoiled."
+        // Notify_Killed is the real, dedicated vanilla seam for exactly
+        // this (Verse/ThingComp.cs — distinct from PostDestroy, which also
+        // fires on ordinary despawn/vanish; this one fires only when
+        // Pawn.Kill() actually kills the parent). Deliberately generic:
+        // this class never references RUT_CrecheMarker or any Miasma type
+        // by name — it only notifies whatever comps the anchor Thing
+        // itself carries that opt in via IRM_AnchorDeathListener, so
+        // Sump's own future anchored set-piece (S3, same shared
+        // RM_GenStep_PlacedSetPieces prerequisite) gets the identical
+        // "tell my anchor point I died" behavior for free if it anchors to
+        // a Thing rather than a bare cell.
+        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
+        {
+            base.Notify_Killed(prevMap, dinfo);
+
+            if (!anchor.HasThing || !(anchor.Thing is ThingWithComps anchorThing))
+            {
+                return; // anchored to a bare cell (no markerDef configured) — nothing to notify
+            }
+
+            List<ThingComp> comps = anchorThing.AllComps;
+            for (int i = 0; i < comps.Count; i++)
+            {
+                (comps[i] as IRM_AnchorDeathListener)?.Notify_AnchorPawnKilled(parent as Pawn);
+            }
+        }
+    }
+
+    // The generic death-notification contract RM_CompTerritorialAnchor
+    // calls on whatever Thing it is anchored to (see Notify_Killed above).
+    // Kept independent of any specific marker class so this file — the
+    // shared anchor mechanism — never needs to know RUT_CrecheMarker (or
+    // any future Sump equivalent) exists.
+    public interface IRM_AnchorDeathListener
+    {
+        void Notify_AnchorPawnKilled(Pawn anchoredPawn);
     }
 
     // Crib: RimWorld/JobGiver_HiveDefense.cs, generalized off Hive onto

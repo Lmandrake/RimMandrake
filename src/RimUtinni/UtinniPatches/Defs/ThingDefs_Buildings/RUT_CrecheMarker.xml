@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_CrecheMarker.xml                   UtinniPatches · authored 2026-09-13
+  ============================================================================
+  MIASMA_MECHANICS_1 M6 build pass (miasma_kit_spec.md M6, "Warden mothers
+  and the crèches"). The "named area marker" the spec calls out by name:
+  "a RUT_CrecheMarker invisible building holding the site identity; gives
+  the 'mapped and named' ground." Placed by RM_SetPieceElement_SpawnMarker
+  (RimMandrake.EnvironmentalHazards), one per site, via
+  RUT_GenStep_CrecheScatterer (Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml).
+
+  Genuinely invisible, not "awaiting art": drawerType None + no graphicData
+  at all, same shape as this mod's own RM_Dunes_BuriedCache.xml precedent
+  ("a texPath that does not resolve renders nothing and reports nothing,
+  which is the exact silent failure this mod's whole discipline is
+  against" — so this def names no texture rather than a fake one). This is
+  the correct end state, not a placeholder: the spec's own text calls it
+  "invisible."
+
+  Not player-placeable (map-gen only): no designationCategory, no costList,
+  no constructEffect — ParentName="BuildingBase" is used only for the
+  Building-category defaults (altitudeLayer, tickerType shape), same as
+  BuriedCache's own reasoning for its own parent choice, not because this
+  is meant to be built.
+
+  destroyable false + useHitPoints false: this is map STATE, not a prop a
+  raid or a mishap can casually erase — the despoiled-memory mechanic
+  (RM_CompCrecheMarker) is keyed on the WARDEN pawn's death, never on the
+  marker's own, so a marker that could be destroyed independently would
+  let a player dodge the memory mechanic entirely by demolishing it. This
+  mirrors ThingDef.ConfigErrors' own flammability/useHitPoints pairing
+  BuriedCache's own header already flags — Flammability 0 avoids that trap
+  here too.
+
+  selectable true (unlike BuriedCache) so RM_CompCrecheMarker.
+  CompInspectStringExtra's despoiled/intact line is actually visible to a
+  player who clicks the crèche shallows — "mapped and named" ground should
+  read as inspectable, not merely present.
+
+  despoiledManhunterFactorDurationDays 10 / despoiledManhunterChanceFactor
+  1.5 are the spec's own INVENTED M6 §8 values, passed straight through
+  ("manhunter-chance factor x1.5 for 10 days — a factor, not an event").
+
+  Translation keys RUT_CrecheMarkerDespoiled/RUT_CrecheMarkerIntact are
+  referenced by RM_CompCrecheMarker.CompInspectStringExtra but not yet
+  added to a Languages/ folder — same owed shape this item's own M4/M5
+  build passes already flagged for their own letter keys (.Translate()
+  falls back to the raw key rather than erroring; does not block anything).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_CrecheMarker</defName>
+    <label>crèche marker</label>
+    <description>An unmarked stretch of brine shallows that the map itself remembers as a warden's nursery ground. Nothing here looks different to a stranger — the memory belongs to the site, not to anything built on it.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <coversFloor>false</coversFloor>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_CrecheMarker">
+        <despoiledManhunterFactorDurationDays>10</despoiledManhunterFactorDurationDays>
+        <despoiledManhunterChanceFactor>1.5</despoiledManhunterChanceFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

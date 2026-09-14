@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_CrecheScatterer_Register.xml   UtinniPatches - MIASMA_MECHANICS_1 M6 build pass
+
+  Registers RUT_GenStep_CrecheScatterer (Defs/MapGeneration/
+  RUT_Miasma_CrecheScatterer.xml) onto Base_Player — identical shape to
+  this same folder's own M1 precedent, Patches/
+  RUT_Miasma_GradientAxis_Register.xml (PatchOperationConditional/
+  PatchOperationAdd onto MapGeneratorDef[Base_Player]/genSteps, MayRequire
+  on the added <li> itself so the cross-reference cannot dangle if either
+  mandrake.rm.environmentalhazards or mandrake.rsw.swbestiary is absent
+  from the active mod list).
+
+  Global registration is deliberate and safe, mirroring that same file's
+  own reasoning: RM_ScattererValidator_BrineShallowWater rejects every
+  cell on every map whose biome carries no RM_GradientAxisExtension (i.e.
+  every biome but the Miasma today), so this GenStep places nothing on any
+  other biome's map — registering it once here, rather than needing a
+  biome-specific MapGeneratorDef, is what lets a future second
+  gradient-axis biome (M1's own header: "any future two-water biome does")
+  get crèche placement for free too.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rsw.swbestiary">RUT_GenStep_CrecheScatterer</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
