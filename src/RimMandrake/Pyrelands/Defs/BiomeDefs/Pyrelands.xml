@@ -34,6 +34,14 @@
     <workerClass>RimMandrake.StarWars.FireEcology.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_FE_Pyrelands</texture>
 
+    <!-- Owner 2026-09-14: no ancient dangers and no scattered rock chunks on
+         Pyrelands maps. Same list-filter GlacialPlain and the AncientRuins
+         mutator use (MapGenerator honors biome preventGenSteps). -->
+    <preventGenSteps>
+      <li>RockChunks</li>
+      <li>ScatterShrines</li>
+    </preventGenSteps>
+
     <modExtensions>
       <li Class="RimMandrake.StarWars.FireEcology.PyrelandsBiomeRanges">
         <!-- Mean annual tile temperature, degC. Below min the tile is not
