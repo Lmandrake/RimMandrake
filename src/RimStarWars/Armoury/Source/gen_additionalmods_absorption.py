@@ -66,6 +66,12 @@ TEX_ROOT = os.path.join(ARMOURY_ROOT, "Textures")
 WORKSHOP_ROOT = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 
 # (pack label, workshop folder id, expected packageId, [(subfolder, dest label), ...])
+#
+# ModularWeapons2 subfolder REMOVED 2026-09-14 (ARMOURY_MW2_CUT_1, owner
+# ruling 2026-09-13: cut MW2 out of the Armoury entirely). This pack's
+# absorbed output (Absorbed_AdditionalMods/kotorcore/ModularWeapons2/, 9
+# files) was deleted from the repo; leaving the tuple here would silently
+# regenerate it on the next run against the still-live donor mod.
 PACKS = [
     ("kotorcore", "3254370945", "guy762.MM.KotORCore", [
         ("VEF", "VEF"),
@@ -76,7 +82,6 @@ PACKS = [
         ("AdaptiveStorageFramework", "AdaptiveStorageFramework"),
         ("_BTDKotORGravships", "BTDKotORGravships"),
         ("EBSG", "EBSG"),
-        ("ModularWeapons2", "ModularWeapons2"),
     ]),
     ("kotorweapons", "2938932438", "guy762.KotORWeapons", [
         ("ShowMeYourHands", "ShowMeYourHands"),

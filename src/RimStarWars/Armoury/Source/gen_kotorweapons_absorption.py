@@ -152,12 +152,21 @@ OUT_FILE_PREFIX = "Absorbed_KotorWeapons_"
 # guessed at. SWCP.Core is the only one of the 5 actually referenced by
 # kotorweapons' own Defs (measured); the rest are named for completeness/
 # consistency with gen_kotorcore_absorption.py's own block list.
+#
+# ModularWeapons2. -- BLOCKED 2026-09-14 (ARMOURY_MW2_CUT_1, owner ruling
+# 2026-09-13: "remove those two gadgets, cut the mod thoroughly"). Was
+# previously treated as an independent framework that "stays active
+# regardless" -- no longer true, MW2 is fully removed from ModsConfig and
+# every MW2-referencing element this generator would otherwise absorb must
+# be dropped, or a rerun silently regenerates the deleted
+# Absorbed_KotorWeapons/ModularPartDefs/ pack from the untouched donor XML.
 BLOCKED_NAMESPACES = (
     "AthenaPort.",
     "SWCP.Core.",
     "SWCP.Currencies.",
     "SWCP.RimframeGrineerDoors.",
     "taranchuk_homingprojectiles.",
+    "ModularWeapons2.",
 )
 
 
