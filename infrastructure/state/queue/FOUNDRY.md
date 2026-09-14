@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T02:54:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-14T04:16:37Z (the last event's own timestamp, not the render clock)
+game:  GOING_DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -774,15 +774,6 @@ kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
 
-## ARMOURY_MW2_CUT_1 Cut ModularWeapons2 out of Armoury entirely: strip 181 comps + 92 graphicClass swaps, delete 21 root-tag defs + workbench + 3 research + 2 gadgets, remove MW2 from ModsConfig, RESTORE SMYH as final step, cold-load verify + resave canonical (owner ruled CUT 2026-09-13; spec in item)
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  ARMOURYMW2CUT1 — cut ModularWeapons2 out of the KotOR Armoury entirely
-prose:    infrastructure/state/items/ARMOURY_MW2_CUT_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1478,33 +1469,3 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
-
-## SELFTEST_GIT_FIXTURE_TEMPLATE_1 Selftest git fixtures spawn ~185 git processes per pre-commit run: .claude/hooks/selftest_queue_lint.py (~29 cases x5 spawns) + selftest_warn_unclosed_queue_item.py (~8 cases) + rimflow/selftest_undocumented_work.py each do full git init/config/config/add/commit per case on a fresh mkdtemp. Build ONE committed template repo once, shutil.copytree per case (or reuse one repo + git stash/reset) — cut spawns ~10x. Disposable temp repos, no entanglement, but sits in the path every seat runs every cycle
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SELFTEST_GIT_FIXTURE_TEMPLATE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SELFTEST_GIT_FIXTURE_TEMPLATE_1.md
-
-## MIGRATE_NAMES_BATCH_MV_1 migrate_names.py stage_folders() does per-row 'git mv' (~71 rows in naming_rename_map.csv) against the SHARED repo cwd=ROOT — serial spawns AND index.lock collision risk with live agents (S1+E2). Replace with filesystem rename (os.replace/Path.rename) per row then ONE batched 'git add -A <explicit-paths>' at the end; or git mv all in one invocation. The only finding with real cross-agent exposure; fix before NAMING_SCHEME_EXECUTION runs it at scale
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MIGRATE_NAMES_BATCH_MV_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MIGRATE_NAMES_BATCH_MV_1.md
-
-## CODE_REVIEW_STATUS_MIGRATE_BATCH_1 code_review_status.py migrate-hashes backfill (lines ~783-795) does per-entry 'git show' — collapse to one 'git cat-file --batch'. One-time migration path, low priority/trivial; file for completeness
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CODE_REVIEW_STATUS_MIGRATE_BATCH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CODE_REVIEW_STATUS_MIGRATE_BATCH_1.md
