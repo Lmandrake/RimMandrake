@@ -203,19 +203,6 @@ UPGRADE SLOTS:
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Visas/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -298,19 +285,6 @@ UPGRADE SLOTS:
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Jolee/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -394,19 +368,6 @@ UPGRADE SLOTS:
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Bastila/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -493,19 +454,6 @@ UPGRADE SLOTS:
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Juhani/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

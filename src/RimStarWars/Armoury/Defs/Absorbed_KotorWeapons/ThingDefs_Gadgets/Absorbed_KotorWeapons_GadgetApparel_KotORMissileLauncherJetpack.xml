@@ -111,25 +111,6 @@
       </li>
     </verbs>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/Jetpacks/jetpack_mid</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_jetpackmissile</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-        <defaultParts>
-          <li>
-            <partsDef>guy762_KotORpartJetpackMissile_highex</partsDef>
-            <attachMountDef>guy762_KotORMount_jetpackmissile</attachMountDef>
-          </li>
-        </defaultParts>
-      </li>
       <li Class="CompProperties_ApparelReloadable">
         <maxCharges>1</maxCharges>
         <soundReload>Standard_Reload</soundReload>

@@ -128,7 +128,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorhvyrepeater_mando</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -217,24 +217,6 @@
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
       </li> -->
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorhvyrepeater_mando</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_hvyrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -351,7 +333,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorhvyrepeater_baragwin</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -423,29 +405,6 @@
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
       </li> -->
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorhvyrepeater_baragwin</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_hvyrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -456,7 +415,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorhvyrepeater_ordo</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -540,34 +499,6 @@
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
       </li> -->
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorhvyrepeater_ordo</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_hvyrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

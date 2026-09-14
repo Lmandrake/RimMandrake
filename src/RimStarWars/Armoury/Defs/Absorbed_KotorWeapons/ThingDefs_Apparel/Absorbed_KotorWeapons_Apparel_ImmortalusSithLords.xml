@@ -82,19 +82,6 @@
       <li>guy762TT_KotORCharacterItem</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Malak/apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -309,24 +296,6 @@
       <wornGraphicPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Revan/apparel</wornGraphicPath>
     </apparel>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Revan/apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -375,24 +344,6 @@
       <canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
     </apparel>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Revan/hood</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hat</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_visortech</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -502,19 +453,6 @@
       <wornGraphicPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Nihilus/apparel</wornGraphicPath>
     </apparel>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Nihilus/apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -697,24 +635,6 @@
       <li>guy762TT_KotORCharacterItem</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/JediRevan/apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -765,24 +685,6 @@
       <li>guy762TT_KotORCharacterItem</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/JediRevan/hood</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hat</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_visortech</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -890,24 +792,6 @@
       <li>guy762TT_KotORCharacterItem</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Sion/apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -972,19 +856,6 @@
       <wornGraphicPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Traya/Traya</wornGraphicPath>
     </apparel>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Traya/Traya</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -1073,24 +944,6 @@
       <li>guy762TT_KotORLegendary</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/ExarKun/Exar</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_robe</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -1176,29 +1029,6 @@ UPGRADE SLOTS:
       <li>guy762TT_KotORLegendary</li>
     </tradeTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Malgus/Malgus</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_armortech</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

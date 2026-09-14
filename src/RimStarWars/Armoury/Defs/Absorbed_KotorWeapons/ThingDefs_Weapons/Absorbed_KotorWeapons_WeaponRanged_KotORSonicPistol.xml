@@ -111,7 +111,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonpistol_bothan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -178,19 +178,6 @@
       <li>RewardStandardHighFreq</li>
     </thingSetMakerTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonpistol_bothan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -204,7 +191,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonpistol_heavy</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -269,24 +256,6 @@
       <li>RewardStandardLowFreq</li>
     </thingSetMakerTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonpistol_heavy</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -377,7 +346,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonpistol_dashade</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -441,19 +410,6 @@
       <li>RewardStandardLowFreq</li>
     </thingSetMakerTags>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonpistol_dashade</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

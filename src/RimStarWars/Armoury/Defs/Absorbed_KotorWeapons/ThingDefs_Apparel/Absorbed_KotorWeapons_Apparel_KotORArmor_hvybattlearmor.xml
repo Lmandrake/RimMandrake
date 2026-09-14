@@ -151,24 +151,6 @@
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/HeavyBattleArmor/matrix/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -241,24 +223,6 @@
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/HeavyBattleArmor/durasteel/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -329,24 +293,6 @@
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/HeavyBattleArmor/durasteel/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -418,29 +364,6 @@
       </options>
     </colorGenerator>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>SWApparel/HeavyBattleArmor/matrix/Apparel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_underlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_overlay_hvy</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_armortech</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

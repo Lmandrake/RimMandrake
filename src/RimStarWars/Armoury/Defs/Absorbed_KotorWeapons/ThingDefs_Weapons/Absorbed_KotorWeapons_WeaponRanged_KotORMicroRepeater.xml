@@ -110,7 +110,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotormicrorepeater_narshaddaa</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_slug</soundInteract>
@@ -182,19 +182,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotormicrorepeater_narshaddaa</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_lgtrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -206,7 +193,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotormicrorepeater_mando</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_slug</soundInteract>
@@ -276,24 +263,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotormicrorepeater_mando</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_lgtrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -305,7 +274,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotormicrorepeater_trandoshan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_slug</soundInteract>
@@ -362,24 +331,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotormicrorepeater_trandoshan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -391,7 +342,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotormicrorepeater_mira</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_slug</soundInteract>
@@ -446,29 +397,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotormicrorepeater_mira</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_lgtrep</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

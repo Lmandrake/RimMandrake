@@ -40,20 +40,24 @@ the same register Pits' own validation.py uses for its documented gaps --
 see "Still not proven" below for the complete list of what remains unproven
 and why.
 
-REAL DEPENDENCY, not a soft-hook (MODCHECK_DONOR_ENVIRONMENTS_1, confirmed
-2026-09-13, not guessed): the absorbed KotOR content directly references
-`kaitorisenkou.ModularWeapons2`'s types with no MayRequire gate
-(`Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/*.xml`), and
+MW2 IS GONE, NOT A DEPENDENCY (ARMOURY_MW2_CUT_1, 2026-09-13, owner ruled cut
+over gate): `kaitorisenkou.ModularWeapons2` was previously a real
+undeclared dependency -- the absorbed KotOR content referenced its types
+with no MayRequire gate, and a min16 test environment missing it saw those
+ThingDefs silently DISCARDED at load (missing-donor-type-eats-the-def),
+NREing vanilla `RecipeDefGenerator.SetIngredients`. That is no longer true:
+every `ModularWeapons2.*` reference, comp block and root-tag part/mount def
+was stripped from this pack's XML (0 remain; verified by grep). This mod's
+test environment must NOT carry `kaitorisenkou.ModularWeapons2` for this
+suite to describe the shipped game -- if it is present, the weapons/armour
+under test render and behave with an inert donor mod alongside them, which
+proves nothing this suite claims to prove.
+
 `guy762.MM.KotORCore` (already this mod's own declared `<modDependencies>`
-entry, `About/About.xml:16`) is where every `kotorsound_*` SoundDef this
-mod's absorbed content plays actually lives
-(`Kotor_Misc_Sounds.xml:34`). On the min16 minimal test environment (which
-carries neither), the ModularWeapons2-donor ThingDefs get silently
-DISCARDED at load (missing-donor-type-eats-the-def) and a surviving
-recipeMaker def then NREs vanilla `RecipeDefGenerator.SetIngredients` --
-this mod's test environment MUST add both packageIds alongside
-`mandrake.rsw.armoury` itself, or this suite never gets past mod load to
-run at all.
+entry, `About/About.xml:16`) remains a REAL dependency, unrelated to MW2:
+it is where every `kotorsound_*` SoundDef this mod's absorbed content plays
+actually lives (`Kotor_Misc_Sounds.xml:34`). The min16 test environment
+must still add that one packageId alongside `mandrake.rsw.armoury` itself.
 
 GROUNDING PER MECHANISM (source read, not guessed):
   - `CompExtraSounds/HarmonyCompExtraSounds.cs` -- Harmony id

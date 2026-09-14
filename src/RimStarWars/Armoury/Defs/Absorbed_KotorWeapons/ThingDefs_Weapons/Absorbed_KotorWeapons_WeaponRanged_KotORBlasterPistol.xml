@@ -116,7 +116,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_republic</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -187,24 +187,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_republic</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -216,7 +198,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_mandalorian</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -290,24 +272,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_mandalorian</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -319,7 +283,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_genoharadan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -376,29 +340,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_genoharadan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -554,7 +495,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_micropulse</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -614,24 +555,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_micropulse</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>
@@ -646,7 +569,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_onasi</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -720,29 +643,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_onasi</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -754,7 +654,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorpistol_bendak</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_pistol</soundInteract>
@@ -814,29 +714,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorpistol_bendak</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

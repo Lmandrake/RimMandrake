@@ -122,7 +122,7 @@
     <soundInteract>Interact_ZeusHammer</soundInteract>
     <graphicData>
       <texPath>stunbaton_vulkar</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <drawSize>2</drawSize>
     </graphicData>
@@ -204,29 +204,6 @@
         <soundHitPawn>kotorsound_blunt_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blunt_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>stunbaton_vulkar</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_stunbaton</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -238,7 +215,7 @@
     <soundInteract>Interact_ZeusHammer</soundInteract>
     <graphicData>
       <texPath>stunbaton_gand</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <drawSize>2</drawSize>
     </graphicData>
@@ -308,29 +285,6 @@
         <soundHitPawn>kotorsound_blunt_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blunt_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>stunbaton_gand</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_stunbaton</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -342,7 +296,7 @@
     <soundInteract>Interact_ZeusHammer</soundInteract>
     <graphicData>
       <texPath>stunbaton_bothan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <drawSize>2</drawSize>
     </graphicData>
@@ -423,29 +377,6 @@
         <soundHitPawn>kotorsound_blunt_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blunt_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>stunbaton_bothan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_stunbaton</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -457,7 +388,7 @@
     <soundInteract>Interact_ZeusHammer</soundInteract>
     <graphicData>
       <texPath>stunbaton_rakatan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <drawSize>2</drawSize>
     </graphicData>
@@ -536,29 +467,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blunt_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blunt_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>stunbaton_rakatan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_stunbaton</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>

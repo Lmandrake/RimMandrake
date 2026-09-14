@@ -117,7 +117,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_dmr</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -190,29 +190,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_dmr</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -224,7 +201,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_mando</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -299,29 +276,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_mando</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -333,7 +287,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_arkanian</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -398,19 +352,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_arkanian</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -492,7 +433,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_zersium</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -553,34 +494,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_zersium</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
       <li Class="CompProperties_Art">
         <nameMaker>NamerArtWeaponGun</nameMaker>
         <descriptionMaker>ArtDescription_WeaponGun</descriptionMaker>
@@ -599,7 +512,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_zabrak</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -659,24 +572,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_zabrak</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>
@@ -698,7 +593,7 @@ UPGRADE SLOTS:
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorrifle_kalta</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_brifle</soundInteract>
@@ -758,39 +653,6 @@ UPGRADE SLOTS:
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorrifle_kalta</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_beam_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_trigger_blasterDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 

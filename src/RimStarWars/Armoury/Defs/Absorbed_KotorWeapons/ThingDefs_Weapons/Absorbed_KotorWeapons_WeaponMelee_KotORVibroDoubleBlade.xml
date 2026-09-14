@@ -119,7 +119,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrodoubleblade_sith</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>4</drawSize>
     </graphicData>
     <equippedAngleOffset>-30</equippedAngleOffset>
@@ -201,29 +201,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrodoubleblade_sith</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrodubblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -235,7 +212,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrodoubleblade_zabrak</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>4</drawSize>
     </graphicData>
     <equippedAngleOffset>-30</equippedAngleOffset>
@@ -303,29 +280,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrodoubleblade_zabrak</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrodubblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>
@@ -422,7 +376,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrodoubleblade_yusanis</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>4</drawSize>
     </graphicData>
     <equippedAngleOffset>-30</equippedAngleOffset>
@@ -512,34 +466,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrodoubleblade_yusanis</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrodubblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>

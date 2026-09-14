@@ -125,7 +125,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorbowcaster_war</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -200,35 +200,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorbowcaster_war</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_bowcaster</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-        <defaultParts>
-          <li>
-            <partsDef>guy762_KotORpartPCell_bowcastercharge</partsDef>
-            <attachMountDef>guy762_KotORMount_power_bowcaster</attachMountDef>
-          </li>
-        </defaultParts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -240,7 +211,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorbowcaster_chuundar</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -338,24 +309,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorbowcaster_chuundar</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>
@@ -489,7 +442,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotorbowcaster_zaalbar</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>45</equippedAngleOffset>
@@ -564,35 +517,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorbowcaster_zaalbar</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_power_bowcaster</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-        <defaultParts>
-          <li>
-            <partsDef>guy762_KotORpartPCell_bowcastercharge</partsDef>
-            <attachMountDef>guy762_KotORMount_power_bowcaster</attachMountDef>
-          </li>
-        </defaultParts>
-      </li>
     </comps>
   </ThingDef>
 
