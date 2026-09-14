@@ -124,7 +124,8 @@ calibrated against vanilla's own −70 for a harvested organ), plus a
 and the running game deliberately untouched (another window may hold the live
 session). Packet B1's own verify line is still entirely owed:
 
-- [ ] a **programmable** droid shows Mood and **no** Joy in the needs tab
+- [x] a **programmable** droid shows Mood and **no** Joy in the needs tab
+      — **CONFIRMED 2026-09-14**, see live re-test section below
 - [ ] a **mindless** droid shows **Power only**
 - [ ] a **sapient** droid breaks (i.e. mental breaks actually fire at tier 4)
 - [ ] a **blank** droid is genuinely inert and is not stuck in a job-loop error
@@ -265,3 +266,66 @@ what it can prove about needs specifically, not a bug in it.)
   `DROID_FACTION_LOADOUTS_1` (packet C1).
 - Packet B8 (`DROIDWORKS_RESEARCH_ROWS_1`) owes `RSW_DW_Research_Formatting` as a
   `researchPrerequisite` on the three recipes.
+
+## live re-test 2026-09-14 (FOUNDRY) — box 1 CONFIRMED PASS for real; boxes 2/3/6/7 need a different tool, root cause is now structural not circumstantial
+
+Bridge taken, game was already UP on a live map with 57 pre-existing pawns
+(another window's creature-review rig — confirmed via `jawa/list_pawns`
+before touching anything, zero player colonists, time left PAUSED the whole
+pass). Spawned `RSW_DW_KotORDroidColonist_ADMkI` via debug action at an empty
+cell, read it, destroyed it with `Actions\T: Destroy` targeted at its exact
+cell, and re-ran `jawa/list_pawns` to confirm the map was back to its
+original 57 — twice (once per droid spawned this pass), never trusting
+`success: true` alone. Never unpaused; nothing else on the map was touched.
+
+**Box 1 — CONFIRMED PASS, this time with an actually-correct tool.**
+`jawa/pawn_need` (action=`list`) — NOT `jawa/pawn_health`, which has no
+`list` action at all (its declared actions are `add`/`remove`/`bionic`/
+`restore` only; the 2026-09-08 test's read step must have gone through a
+different, unrecorded route) — on a freshly-spawned droid at its genuine
+spawn-time default tier (Programmable, via `CompDWFormatTier`'s real
+`SetTier` call, no bridge poke involved) returned exactly `['Mood',
+'RSW_DW_Power']`. Joy/Beauty/Comfort/Outdoors absent, Mood present — precisely
+what ruling 4 asks for at Programmable. This also stands as confirmation of
+box 5 (the comp does put the hediff on a spawned droid): if it hadn't,
+`ShouldHaveNeed` would have left the full Humanlike need set instead of this
+narrower one.
+
+**Boxes 2/3/6/7 — still NOT live-tested, and now for a structural reason, not
+just "wasn't attempted."** Read `jawa/pawn_health`'s C# in full
+(`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnTools.cs`,
+the `PawnHealth` method) before touching it again: its `action=add` path
+calls `p.health.AddHediff(hd, part)` — which creates the hediff at
+`hd.initialSeverity` (3.0 = Programmable for `RSW_DW_FormatTier`) and is
+exactly where vanilla's `AddOrRemoveNeedsAsAppropriate` needs-rebuild fires
+— and **only afterward**, if `severity >= 0f` was passed, does `h.Severity =
+severity` as a bare post-add poke. That poke changes the hediff's stage but,
+per this item's own 2026-09-09 root-cause read, a bare `Hediff.Severity`
+setter never re-triggers the needs rebuild. **This means `jawa/pawn_health`
+cannot EVER correctly test a non-default format tier, for any severity value
+passed to it, on this or any hediff whose gate depends on
+`AddOrRemoveNeedsAsAppropriate` reading the CURRENT stage** — not a mistake
+in how the 2026-09-08 test drove it, a hard ceiling in the tool's own code.
+Confirmed by reading the method start-to-finish, not inferred.
+
+**What actually needs to happen, for whoever has bridge time next:**
+1. Fastest, most correct: a new companion tool (`jawa/droid_format_tier` or
+   similar, per the `rimbridge-companion` skill's own pattern) that calls
+   `DroidFormatTierUtility.SetTier(pawn, tier)` directly — the exact
+   already-shipped, already-correct method, no workaround needed. One-minute
+   edit→build→deploy→test cycle on the minimal list per that skill; **not
+   attempted this pass** because it needs a restart and this pass found the
+   game already up and in active use by another window's creature-review
+   work — restarting it to save a few minutes of companion-tool build time
+   was judged the wrong trade this session, not because the fix is hard.
+2. Slower but mechanically faithful: drive the real `Recipe_DWFormat` bill
+   with an actual player colonist at a real bench — needs a colonist and an
+   unpause, neither available on this pass's shared map without disturbing
+   the other window's pawn census further.
+
+Boxes 2 (mindless=Power only), 3 (sapient mental breaks fire), 6 (recipe
+eligibility gating per tier), 7 (deformat goodwill+witness-thought) all still
+require one of the two routes above. **Item stays in `doing`, not closed** —
+one of seven boxes moved from "not attempted" to "confirmed," and the
+remaining six now have a precise, actionable path instead of an open
+question.
