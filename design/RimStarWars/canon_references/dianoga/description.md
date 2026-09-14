@@ -75,4 +75,6 @@ visible toothed central mouth.
   color-changing camouflage ability
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`
+
+> "Yup. Mixture of #2 dominant with some hints of #1 is needed on how to Rimworld-ify it. And #3/#4 are inspiration for the Star Wars Cuisine mod!"

@@ -104,4 +104,6 @@ range of variation (or inconsistent non-canon art), not settled fact.
   installed locally or a labeled preview surfaces.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_alienarchive.jpg`
+
+> "#1 and #3 are compatible and correct, the shaggy #2 is rejected as non-canon."

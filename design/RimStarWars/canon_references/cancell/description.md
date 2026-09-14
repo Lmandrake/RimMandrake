@@ -77,4 +77,6 @@ washed-out pink-tan toward that stronger red/blue/green palette.
   blue" coloration; included as a documented outlier, not a recommendation.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_teth_tcw.jpg`
+
+> "Rename to Can-cell. Follow this render: https://static.wikia.nocookie.net/starwars/images/9/94/Can-cell.png/revision/latest/scale-to-width-down/1000?cb=20220914023816 (same as #3)"

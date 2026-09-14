@@ -63,4 +63,6 @@ Infinity figure.
   design; no color information given.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`
+
+> "Appears to be a very rare creature reference image-wise. Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore."

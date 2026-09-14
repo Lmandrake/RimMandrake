@@ -130,4 +130,6 @@ library's own rule about disagreement.
   labeled donor preview turns up).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_legends_infobox.jpg`
+
+> "Original donor mod isn't that bad, #3 is canon. Notable hooks on end of wings and "feet""

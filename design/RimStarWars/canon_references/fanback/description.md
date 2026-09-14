@@ -96,4 +96,6 @@ thick tail; desert/mudflat nesting habitat with a large speckled egg.
   either.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`
+
+> "But it's supposed to be olive green, not just brown. That's a sepia picture for some reason. Make it Olive colored."

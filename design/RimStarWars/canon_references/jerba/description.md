@@ -61,4 +61,6 @@ straighter/ridged horns rather than the bantha's heavy curled horns.
 - `wookieepedia_cantina_tethered.jpg` — comic panel, jerba tethered outside Chalmun's Cantina with a saddle pack, low detail but consistent coloring
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_alienarchive.jpg`
+
+> "Definitely shaggy, huge mouth, long ears. Confirmed. NOT the Bantha picture (#1)."

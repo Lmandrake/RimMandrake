@@ -104,4 +104,4 @@ a scavenger/pest-scale creature, not anything human-sized.
   mod is ever installed locally or a labeled preview surfaces.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-13, review sheet): `wookieepedia_infobox.jpg`

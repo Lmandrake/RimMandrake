@@ -54,4 +54,6 @@ scaled hide.
 - `wookieepedia_behindthemagic.jpg` — sandtrooper close-up astride a dewback, shows scale texture and eye/head detail against blue sky
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`
+
+> "I think the Donor white shading means it can come in a variety of colors or something, Rimworld seems to do this sometimes. Follow #4 closest."

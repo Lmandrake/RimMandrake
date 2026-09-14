@@ -154,4 +154,6 @@ mantis-like neck-appendage (KOTOR/Legends) — neither has a cross marking.
   if the mod is ever installed locally or a labeled preview surfaces.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `unfinished_tcw_netcasters_conceptclip.png`
+
+> "https://www.starwars-holonet.com/holonet/images/5/5e/16407/crea_kinrath_nc_1.webp more like that. Same as 2 and 3."

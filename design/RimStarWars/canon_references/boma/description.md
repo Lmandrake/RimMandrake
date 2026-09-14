@@ -64,4 +64,4 @@ not attempt the large-mount variant seen in image 2.
   the small predatory-boma reading (image 1 + infobox skincolor).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-13, review sheet): `boma_wookieepedia_1.jpg`

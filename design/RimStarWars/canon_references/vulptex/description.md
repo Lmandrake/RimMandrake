@@ -86,4 +86,4 @@ longer-legged stance.
 - `wookieepedia_battlescreencap.jpg` — in-film screencap, Battle of Crait daylight scene with Millennium Falcon overhead, clearly blue eyes
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`

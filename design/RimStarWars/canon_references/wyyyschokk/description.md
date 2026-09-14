@@ -66,3 +66,5 @@ is ever installed locally.
 above): blue-grey body, yellow-orange abdomen cross, spiky bristle tufts,
 blue-black legs, clustered black eyes. This is the acceptance exemplar for
 `CANON_CREATURE_REGEN_1` — a regen without the abdomen cross fails review.
+
+**Owner confirmation, 2026-09-14** (review sheet): picked `wookieepedia_jfo_infobox.jpg` as the strongest match to the ruling above.

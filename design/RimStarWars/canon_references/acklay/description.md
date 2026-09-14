@@ -67,4 +67,6 @@ color should very likely be corrected to green on any regen.
   see Visual brief disagreement above.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `acklay_wookieepedia_2.jpg`
+
+> "Yes, let's regenerate to something more like #2. But the donor current is really quite good. It would just be nice to get more of that surface texture on it."

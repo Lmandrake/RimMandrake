@@ -88,4 +88,6 @@ illustration respectively, likely a coincidental filename collision) — they
 were discarded and are not included here.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`
+
+> "E3 is canon. May need suggestion of thick bird-like legs to avoid making it look like a frog."
