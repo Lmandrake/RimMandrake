@@ -1247,6 +1247,12 @@
     "hash": "af1c7c77cd8f9d5d830620626ce92ba2f15c90f21f55037f36209d958cae3929",
     "sha": "ce17e0865"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFilthTrail.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "defb5a7560899c40f68bf0d3e5beca24655696e219ca0df79994c6a8e7d4b585",
+    "sha": "b3a646c3f"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1361,6 +1367,12 @@
     "hash": "3c9b632313a8792bf1577bba1005bd649ef415f8b702315712414eb9d94b8068",
     "sha": "8801d8429"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_DreadAvoidWander.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "1426103df2a032fa2a63b2abf90cb9f9324b55dce5db9c5fa9b5da9f75c54a7a",
+    "sha": "b3a646c3f"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_ReturnToWater.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1378,6 +1390,12 @@
     "date": "2026-09-13",
     "hash": "1522ccb726e620fae59634a127e4d976885efbf6a9034d2bd14c017f97fd17b7",
     "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DreadField.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "9e12f2c8067607d4c1a9541d494147851b54e1241a17e3382b10c120adaa4563",
+    "sha": "b3a646c3f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
     "cleanCount": 1,
@@ -14019,6 +14037,12 @@
     "hash": "047b9f0d7658ae37f13dc4209e705f1e65b5777d0948790dd9d92888851b4639",
     "sha": "e2fec3c99"
   },
+  "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_SumpMouse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "3970935d7d05811196f8aae97a3e96b6c6de64a2566b3896b4300d4da17296de",
+    "sha": "b3a646c3f"
+  },
   "src/RimUtinni/UtinniPatches/Defs/PrefabDefs/JawaGroundHulk.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -14175,6 +14199,12 @@
     "hash": "35cb60514b893aacb350496c46b7b84dfc09b6501fcb458b81f4a7bdbad4a098",
     "sha": "779a079ab"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "dc6b850a8fb9fbd770979b5c9c8354d79e3934993297aa123832729953284fe2",
+    "sha": "b3a646c3f"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -14193,11 +14223,23 @@
     "hash": "e943b5a5158ae0c6fc8e1c88731c07352a466830509a8bdc48f9081ec02032b5",
     "sha": "0e94b4d2"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_SumpMouseRace.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "aac7e1fa5e2f7b92b3a5965dd84d1319f74b63c42c9416ba64b60de12dc58a20",
+    "sha": "b3a646c3f"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {
     "cleanCount": 2,
     "date": "2026-09-11",
     "hash": "aa5e96934f525ef95303aac6077dd51afe5e8feab808adab12e7cca198bcc077",
     "sha": "774ed90f1"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "b27a315e240fa4f5c2dcc7731a358d6d484992a57dd533a8f41382f37e2be9cc",
+    "sha": "b3a646c3f"
   },
   "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
     "cleanCount": 1,
@@ -14619,6 +14661,12 @@
     "hash": "d3b92ca056d90019a1210a1483e5b6ac9e62049a3057c6b516e9fdcb3c058f55",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "9f26d02171c6749c94654c40f6e5339cd517fa6a180dc539b73e1fed6ec1f002",
+    "sha": "b3a646c3f"
+  },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -14678,6 +14726,12 @@
     "date": "2026-09-14",
     "hash": "50d6c02236e742d002b9913216afbb819778b3b48bea4fcc806dba5329ab1df9",
     "sha": "212775b67"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "a7e2d02dfdcd2425e1640a51720720d0a00149167bc3684b09476dcfa34c1a5e",
+    "sha": "b3a646c3f"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
     "cleanCount": 1,
