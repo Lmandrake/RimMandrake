@@ -763,16 +763,45 @@ def cmd_list(show_untracked=False):
     return 0
 
 
+def _batch_cat_file(specs):
+    """Resolve many `sha:path` object specifiers in ONE `git cat-file --batch`
+    call instead of one `git show` subprocess per entry — migrate-hashes is a
+    one-time pass but was still doing a full git spawn per pre-rewrite entry.
+    Returns {spec: bytes-or-None} (None means the object does not resolve).
+    Binary-safe: reads exactly the declared byte count per object rather than
+    splitting on newlines, so a PNG's own embedded newlines can't desync the
+    parse."""
+    if not specs:
+        return {}
+    stdin = ("\n".join(specs) + "\n").encode("utf-8", errors="surrogateescape")
+    r = subprocess.run(["git", "cat-file", "--batch"], cwd=ROOT, input=stdin,
+                        capture_output=True, timeout=GIT_TIMEOUT)
+    out, results, pos = r.stdout, {}, 0
+    for spec in specs:
+        nl = out.index(b"\n", pos)
+        header = out[pos:nl].decode("utf-8", errors="surrogateescape")
+        pos = nl + 1
+        parts = header.split(" ")
+        if parts[-1] == "missing":
+            results[spec] = None
+            continue
+        size = int(parts[-1])
+        results[spec] = out[pos:pos + size]
+        pos += size + 1  # the single trailing newline cat-file appends per object
+    return results
+
+
 def cmd_migrate_hashes():
     """One-time backfill for entries recorded before this rewrite (they have
     {sha, date, cleanCount} but no {hash}). For each, hash the file's
-    content AS IT WAS AT THE RECORDED SHA (`git show sha:path`) — not the
-    current working-tree copy, which may have already drifted since. An
-    entry whose sha no longer resolves is left without a hash, which
-    `clean_state` correctly reads as DIRTY ("needs re-verification"), the
-    same outcome the pre-rewrite tool gave for "recorded sha not found".
-    Safe to run more than once: an entry that already has a hash is
-    skipped, never re-derived."""
+    content AS IT WAS AT THE RECORDED SHA — not the current working-tree
+    copy, which may have already drifted since. Resolved via a single
+    `git cat-file --batch` call for every entry at once (see
+    `_batch_cat_file`), not a `git show` subprocess per entry. An entry whose
+    sha no longer resolves is left without a hash, which `clean_state`
+    correctly reads as DIRTY ("needs re-verification"), the same outcome the
+    pre-rewrite tool gave for "recorded sha not found". Safe to run more than
+    once: an entry that already has a hash is skipped, never re-derived."""
     data = load()
     todo = {rel: entry for rel, entry in data.items() if not entry.get("hash")}
     if not todo:
@@ -780,18 +809,21 @@ def cmd_migrate_hashes():
         return 0
     print(f"Migrating {len(todo)} entr{'y' if len(todo) == 1 else 'ies'} without a recorded hash...")
     migrated, unresolvable = 0, 0
+    resolvable = {}
     for rel, entry in todo.items():
         sha = entry.get("sha")
         if not sha or sha == "unknown":
             unresolvable += 1
             continue
-        r = git_bytes(["show", "%s:%s" % (sha, rel)])
-        if r.returncode != 0:
+        resolvable[rel] = "%s:%s" % (sha, rel)
+    blobs = _batch_cat_file(list(resolvable.values()))
+    for rel, spec in resolvable.items():
+        content = blobs.get(spec)
+        if content is None:
             unresolvable += 1
-            print(f"  UNRESOLVABLE  {rel}  (sha {sha} no longer resolves for this path — stays DIRTY until re-reviewed)")
+            print(f"  UNRESOLVABLE  {rel}  (sha {todo[rel]['sha']} no longer resolves for this path — stays DIRTY until re-reviewed)")
             continue
-        h = hashlib.sha256(r.stdout).hexdigest()
-        entry["hash"] = h
+        todo[rel]["hash"] = hashlib.sha256(content).hexdigest()
         migrated += 1
     if migrated:
         with locked():

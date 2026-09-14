@@ -74,17 +74,35 @@ def stage_text(apply):
     print(f"text: {touched} files changed; hits {hits} ({'APPLIED' if apply else 'dry'})")
 
 def stage_folders(apply):
+    # `git mv` per row (~71 rows) against the SHARED repo cwd=ROOT was 71 serial
+    # git spawns, each touching the index -- real collision risk with a live
+    # agent's own commit/add landing between rows. Do the filesystem rename
+    # ourselves (no git needed for that part) and stage all 71 in exactly two
+    # git calls, both with EXPLICIT paths -- never `-A`/`.`/`-u`, per CLAUDE.md
+    # ("Explicit paths, never git add -A") and enforced by
+    # .claude/hooks/block_blanket_git_stage.py, which blocks a bare `-A` token
+    # even with a pathspec attached.
     rows = load()
+    pairs = []
     for old, new in sorted(rows["mod"]):
         src, dst = ROOT / old, ROOT / new
         if not src.exists():
             print(f"  SKIP (missing) {old}")
             continue
-        print(f"  git mv {old} -> {new}")
-        if apply:
+        print(f"  {old} -> {new}")
+        pairs.append((old, new, src, dst))
+    if apply:
+        for old, new, src, dst in pairs:
             dst.parent.mkdir(parents=True, exist_ok=True)
-            subprocess.run(["git", "mv", str(src), str(dst)], cwd=ROOT, check=True)
-    print(f"folders: {'APPLIED' if apply else 'dry'}")
+            src.rename(dst)
+        if pairs:
+            old_paths = [old for old, new, src, dst in pairs]
+            new_paths = [new for old, new, src, dst in pairs]
+            subprocess.run(["git", "rm", "-r", "--cached", "--quiet", "--", *old_paths],
+                            cwd=ROOT, check=True)
+            subprocess.run(["git", "add", "--", *new_paths], cwd=ROOT, check=True)
+    print(f"folders: {'APPLIED' if apply else 'dry'} "
+          f"({len(pairs)} renamed, {'2' if pairs else '0'} git call(s))")
 
 def stage_modsconfig(apply):
     rows = load()

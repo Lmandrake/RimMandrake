@@ -77,9 +77,20 @@ def git(root, *a):
     subprocess.run(["git", "-C", root, *a], capture_output=True, text=True, check=True)
 
 
-def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
-    root = tempfile.mkdtemp(prefix="selftest_ql_")
-    try:
+# Every case starts from the identical BASE tree committed as HEAD. Building
+# that with 5 git spawns (init/config/config/add/commit) PER CASE was the
+# bulk of this file's ~145 git processes; the fixture is otherwise immutable,
+# so it is built once here and copied (no subprocess) into each case's own
+# throwaway dir instead. `git diff HEAD` inside the hook still runs against a
+# real, independent repo — copytree preserves .git, so each copy has its own
+# history and committing/editing one never touches the template.
+_TEMPLATE = None
+
+
+def _template_repo():
+    global _TEMPLATE
+    if _TEMPLATE is None:
+        root = tempfile.mkdtemp(prefix="selftest_ql_template_")
         for rel, body in BASE.items():
             full = os.path.join(root, rel)
             os.makedirs(os.path.dirname(full) or root, exist_ok=True)
@@ -89,6 +100,15 @@ def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
         git(root, "config", "user.name", "t")
         git(root, "add", "-A")
         git(root, "commit", "-qm", "base")
+        _TEMPLATE = root
+    return _TEMPLATE
+
+
+def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
+    root = tempfile.mkdtemp(prefix="selftest_ql_")
+    try:
+        shutil.rmtree(root)
+        shutil.copytree(_template_repo(), root)
         for rel, body in (edits or {}).items():
             full = os.path.join(root, rel)
             os.makedirs(os.path.dirname(full) or root, exist_ok=True)
@@ -286,15 +306,19 @@ CASES = [
 
 def main():
     fails = 0
-    for case in CASES:
-        name, want, needle, edits, cmd, seat, new = case[:7]
-        got, reason = run(edits, cmd, seat, new, case[7] if len(case) > 7 else None)
-        ok = got == want and (not needle or needle.lower() in (reason or "").lower())
-        print("%-5s %s" % ("ok" if ok else "FAIL", name))
-        if not ok:
-            fails += 1
-            print("        got=%s want=%s\n        %s"
-                  % (got, want, (reason or "")[:300].replace("\n", "\n        ")))
+    try:
+        for case in CASES:
+            name, want, needle, edits, cmd, seat, new = case[:7]
+            got, reason = run(edits, cmd, seat, new, case[7] if len(case) > 7 else None)
+            ok = got == want and (not needle or needle.lower() in (reason or "").lower())
+            print("%-5s %s" % ("ok" if ok else "FAIL", name))
+            if not ok:
+                fails += 1
+                print("        got=%s want=%s\n        %s"
+                      % (got, want, (reason or "")[:300].replace("\n", "\n        ")))
+    finally:
+        if _TEMPLATE:
+            shutil.rmtree(_TEMPLATE, ignore_errors=True)
     print("\n%d/%d passed" % (len(CASES) - fails, len(CASES)))
     return 1 if fails else 0
 
