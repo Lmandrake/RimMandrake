@@ -32,8 +32,8 @@
     <drawerType>MapMeshOnly</drawerType>
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
-      <texPath>Things/Item/Resource/Jade</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>Things/Item/Resource/RM_FE_Fulgurite</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(210, 225, 235, 235)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>
