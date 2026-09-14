@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.bumbledroneartoverride</packageId>
+  <name>Bumbledrone Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces sarg.alphaanimals's AA_Bumbledrone art (adult lifeStage look, south/east/north
+facings only - any alternate-skin or dessicated-corpse textures stay on donor
+art) with an invented-recast render generated for this campaign. LABEL/ART
+ONLY - no defName touched, no Defs, no Patches, loose Textures/ only, same
+relative path (Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone_&lt;facing&gt;) the donor uses so this mod's later
+load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>

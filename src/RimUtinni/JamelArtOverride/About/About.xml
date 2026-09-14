@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.jamelartoverride</packageId>
+  <name>Jamel Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Jamel art (adult lifeStage look, south/east/north
+facings only - the dessicated-corpse texture stays on donor art) with an
+invented-recast render generated for this campaign. Donor ships this texture
+packed in an AssetBundle, not as a loose PNG - a loose PNG at the same
+texPath wins over the AssetBundle asset by load order (confirmed live
+2026-09-11 for this same mod, Star Wars Animal Collection). LABEL/ART
+ONLY - no defName touched, no Defs, no Patches, loose Textures/ only, same
+relative path (swanimals/Jamel/Jamel_&lt;facing&gt;) the donor uses.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

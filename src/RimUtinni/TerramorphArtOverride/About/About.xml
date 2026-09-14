@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.terramorphartoverride</packageId>
+  <name>Terramorph Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces sarg.alphaanimals' AA_Terramorph art (all lifeStages
+share this one texPath; the dessicated-corpse texture stays on donor art)
+with custom generated art. LABEL/ART ONLY - no defName touched, no Defs,
+no Patches, loose Textures/ only, same relative path
+(Things/Pawn/Animal/AA_Terramorph/AA_Terramorph_&lt;facing&gt;) the donor
+uses so this mod's later load order wins the same-path resolution.
+
+Donor ships this art as loose PNGs already (not AssetBundle-packed), so
+this is a plain file overwrite by load order.</description>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>
