@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SumpTarBeastGenStep.xml   UtinniPatches — SUMP_MECHANICS_1 S3 build pass
+
+  GenStepDef for RM_GenStep_PlacedSetPieces (already built,
+  src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_PlacedSetPieces.cs —
+  NOT rebuilt this pass, per this item's own scope), placing RUT_BeastBulge
+  via the shared Miasma-built RM_SetPieceElement_SpawnMarker element. A
+  GenStepDef on its own runs on no map; registration is the separate
+  Patches/RUT_SumpTarBeastGenStep_Register.xml (same split this folder's own
+  precedent uses, e.g. RUT_Miasma_GradientAxisGenStep.xml /
+  RUT_Miasma_GradientAxis_Register.xml, both read before writing this).
+
+  Site validator: entirely stock Verse.ScattererValidator_TerrainDef
+  (terrainDef=RM_TarDeep, radius=2 — "deep-tar regions," not a single cell).
+  RM_TarDeep only generates within the Sump biome, so this validator is ALSO
+  this GenStepDef's biome gate — same pattern RM_GenStep_GradientAxis's own
+  header already documents for this mod ("registering it globally is safe
+  for every OTHER biome too... only ever repaints... when the map's biome
+  carries [the relevant extension]"). warnOnFail is false below because "no
+  deep tar on this biome" is the expected case on every non-Sump map, not an
+  exceptional one.
+
+  "Far from map edge" is ALSO stock — GenStep_Scatterer's own
+  minEdgeDistPct field (Verse/GenStep_Scatterer.cs, verified); no new
+  validator class needed for either half of the spec's placement ask.
+
+  count: the spec's own "N dormant beasts (INVENTED: 1-2)" ships here as a
+  fixed 1 — GenStep_Scatterer has no IntRange count field (only a fixed int
+  or a density-based countPer10kCellsRange), and "1-2" is itself INVENTED
+  tuning the spec names no mechanism for; collapsing to a deterministic 1 is
+  this pass's own simplification, not a silent drop — widening to a density
+  range is a one-line change later, flagged in the item file.
+
+  order 780: after vanilla terrain/mutator gen (210/220, per this mod's own
+  M1 precedent) and the generic ScatterRuinsSimple (750, read via RimSage
+  this pass), ahead of the heavier AncientJunkClusters (960, also read via
+  RimSage) — deep-tar terrain must already exist on the map before this
+  step's own validator can find it.
+
+  MayRequire is load-bearing on the def's own tag: genStep Class and the one
+  elements entry's Class both live in mandrake.rm.environmentalhazards.
+
+  DEPLOY_HOLD'd together with RUT_BeastBulge.xml and this file's own
+  Register patch (src/DEPLOY_HOLD.txt) — RUT_BeastBulge has no art yet.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_TarBeastPlacement</defName>
+    <order>780</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minEdgeDistPct>0.15</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="Verse.ScattererValidator_TerrainDef">
+          <terrainDef>RM_TarDeep</terrainDef>
+          <radius>2</radius>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RUT_BeastBulge</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_BeastBulge.xml   UtinniPatches — SUMP_MECHANICS_1 S3 build pass
+
+  The dormant form of the tar beast set-piece (sump_kit_spec.md S3, "a
+  smooth bulge in the black" — the_sump.md §9). Placed via
+  RM_GenStep_PlacedSetPieces / RM_SetPieceElement_SpawnMarker
+  (Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml) — Miasma M6's own generic
+  marker-spawn element, built earlier this same session in the shared
+  worktree, REUSED here rather than a Sump-specific duplicate (confirmed by
+  reading it in full before writing this file).
+
+  Dormancy/wake are entirely stock: CompProperties_CanBeDormant +
+  CompProperties_WakeUpDormant (RimWorld/CompCanBeDormant.cs,
+  RimWorld/CompWakeUpDormant.cs, both read in full). The Building-to-pawn
+  TRANSITION on wake is ALSO stock — CompProperties_PawnSpawnOnWakeup
+  (RimWorld/CompPawnSpawnOnWakeup.cs, read in full), the same comp vanilla's
+  own CocoonMegaspider/CocoonMegascarab/CocoonSpelopede
+  (Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml, read directly
+  from the live install) already ship for exactly this shape — closer to
+  the spec's own "crib the TunnelHiveSpawner emergence shape" instruction
+  than TunnelHiveSpawner itself, since it is already wired to
+  CompCanBeDormant rather than a fixed timer. No new C# subclass of
+  CompCanBeDormant was written this pass; RM_CompBeastWakeRelay.cs is the
+  only new class this Def carries (the S2 signal seam, see its own header).
+
+  🔴 tickerType Normal is LOAD-BEARING, not decorative — confirmed against
+  the live decompile: CompWakeUpDormant's own wakeUpOnThingConstructedRadius
+  check runs from its CompTick() (gated `parent.IsHashIntervalTick(250)`),
+  and CompPawnSpawnOnWakeup's own Awake-poll ALSO runs from CompTick() —
+  neither overrides CompTickRare. Verse/TickManager.cs:310-313 confirms
+  TickerType.Rare things never receive CompTick() calls at all (only
+  CompTickRare()) — with tickerType Rare here, both the construction-radius
+  wake cause and the emergence transition itself would silently never fire.
+  wakeUpOnDamage is unaffected either way (Thing.TakeDamage calls
+  PostPostApplyDamage synchronously, independent of tickerType).
+
+  receivesSignals is likewise load-bearing:
+  CompProperties_CanBeDormant.ConfigErrors demands it whenever jobDormancy
+  is false (true here — this parent is a Building, not a Pawn).
+
+  emergePawnKind (Thrumbo, in the comp below) is a WIRING PLACEHOLDER —
+  roster pass replaces with the real tar-beast kind. points is 500~500 to
+  clear Thrumbo's own combatPower (500, confirmed via RimSage) —
+  CompPawnSpawnOnWakeup.GeneratePawns only rolls a kind whose combatPower is
+  <= the remaining points pool. pawnSpawnRadius is widened from the stock
+  default (2) to 2~8 — INVENTED-BUILD: RM_TarDeep is Impassable
+  (WaterDeepBase-derived), so the walk-cell search CompPawnSpawnOnWakeup
+  itself runs at wake time needs room to find dry ground past the tar
+  region's own edge; not verified live, out of this pass's no-bridge scope.
+
+  Site validator (on the GenStepDef, not here) is entirely stock too:
+  Verse.ScattererValidator_TerrainDef — no new validator class needed.
+
+  DEPLOY_HOLD'd together with RUT_SumpTarBeastGenStep.xml and its Register
+  patch (src/DEPLOY_HOLD.txt) — genuinely new bespoke content, no
+  vanilla/existing-mod texture reads as "a smooth bulge in tar."
+-->
+<Defs>
+
+  <ThingDef MayRequire="mandrake.rm.environmentalhazards" ParentName="BuildingNaturalBase">
+    <defName>RUT_BeastBulge</defName>
+    <label>tar bulge</label>
+    <description>Black and smooth, rising just above the surface of the deep tar. Wrong, somehow, in a way you can't point to.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RUT_BeastBulge</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.6</fillPercent>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <passability>Impassable</passability>
+    <receivesSignals>true</receivesSignals>
+    <building>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <showSleepingZs>true</showSleepingZs>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpOnThingConstructedRadius>20</wakeUpOnThingConstructedRadius>
+        <onlyWakeUpSameFaction>false</onlyWakeUpSameFaction>
+      </li>
+      <li Class="CompProperties_PawnSpawnOnWakeup">
+        <spawnablePawnKinds>
+          <!-- PLACEHOLDER — roster pass replaces with the real tar-beast kind. -->
+          <li>Thrumbo</li>
+        </spawnablePawnKinds>
+        <points>500~500</points>
+        <pawnSpawnRadius>2~8</pawnSpawnRadius>
+        <aggressive>false</aggressive>
+        <destroyAfterSpawn>true</destroyAfterSpawn>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompBeastWakeRelay" />
+    </comps>
+  </ThingDef>
+
+</Defs>

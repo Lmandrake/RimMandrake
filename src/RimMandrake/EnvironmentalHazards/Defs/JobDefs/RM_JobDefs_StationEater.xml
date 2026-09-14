@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SUMP_MECHANICS_1 S3 - the one JobDef RM_CompStationEater's own job
+     needs: driven by RM_JobDriver_EatStructure, requested by
+     RM_JobGiver_EatNearestStructure whenever a pawn carries
+     RM_CompStationEater. Generic, not Sump-specific (RM_CompStationEater.cs's
+     own header). NOT wired onto any live ThinkTreeDef/PawnKindDef this
+     pass — that requires authoring the real tar-beast's own ThingDef,
+     explicitly out of scope; see RUT_BeastBulge.xml's own placeholder
+     note. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_EatStructure</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RM_JobDriver_EatStructure</driverClass>
+    <reportString>eating TargetA.</reportString>
+  </JobDef>
+
+</Defs>
