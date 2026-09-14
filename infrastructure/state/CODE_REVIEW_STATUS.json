@@ -1271,6 +1271,18 @@
     "hash": "2492a539544b7781bd9c124eb5db26a55827eb894cb07c20ab43ce3430b5b34a",
     "sha": "670da445d"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "1e000dc74c029e3a639f12b947ca6bda265d75794c253c9bd2f9605c0071ba9e",
+    "sha": "0cdbc22b8"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "4c6098e2713dafd3170bad67bd3227a8386f0fc32d12db2cda2d676e1235b01f",
+    "sha": "0cdbc22b8"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
     "cleanCount": 4,
     "date": "2026-09-13",
@@ -1278,10 +1290,10 @@
     "sha": "ce17e0865"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "19f49194330012b379e9eca5a9f285f4551cbb06c80841bf1f20226b14797fe9",
-    "sha": "0e38767e7"
+    "cleanCount": 2,
+    "date": "2026-09-14",
+    "hash": "cca8b759437dd1edd70ebe45ea1bff604626167efd71baa3853c41f468309f86",
+    "sha": "0cdbc22b8"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_EdgeBandFilth.cs": {
     "cleanCount": 1,
@@ -1330,6 +1342,12 @@
     "date": "2026-09-13",
     "hash": "854689af88cc53017989f7c903e12e73c536d75e77145f5b82133221ef6eb106",
     "sha": "670da445d"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_VaporColumns.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "a90ac88401da39686634f849ab37ca1e460ca5b316768be92f323dc6a3d032e4",
+    "sha": "0cdbc22b8"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_CrecheDespoilManhunterFactor.cs": {
     "cleanCount": 1,
@@ -14516,6 +14534,12 @@
     "date": "2026-09-13",
     "hash": "ed883e63d6ca30e1351543e732f2074431dedd30054b5f80dce6097fabec87f8",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_VaporDrifter_AerofleetWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "beca4f96c703b58fd6bf07ba284f2c6da1bae1433692fadf992b0b6a210f44e0",
+    "sha": "0cdbc22b8"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml": {
     "cleanCount": 1,
