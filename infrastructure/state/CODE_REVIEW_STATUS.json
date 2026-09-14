@@ -1265,6 +1265,12 @@
     "hash": "e6565186b9c0c7752103041ca224f610c2ac11f61dc6b633e6ea5c28f477279e",
     "sha": "1ae30640a"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompLivingBoleMarker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "8a4e4080c5dad9bc788c0585c4db3579a32f28ee50aaa6489b1ba5468f651173",
+    "sha": "07118c4e6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompScriptedDieOff.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1337,6 +1343,18 @@
     "hash": "f01523044bc8326027b71e2ada1706a0306080bac4fcaff789d2eb98e5e1d28a",
     "sha": "b1a2aa399"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_LivingBoles.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "68fb58467f7ab816717eea0d30f06e7503c576b17f316371acd9c9c7b89d752f",
+    "sha": "07118c4e6"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "0206622ddcba4b79d06b9fafa89a0326285ea81a60478666356a58f7993fc6c2",
+    "sha": "07118c4e6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_TerrainChannels.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1391,6 +1409,12 @@
     "hash": "391f852fb030b3f3eb6a09e9a35fe0f90041a2561b9c9d1db48840540b3df067",
     "sha": "c76fc40a0"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_LivingBoleBiomeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "9abe2888202a0a15f5c336d332b8d4cce799eaca22093251b98c615f4c6dd831",
+    "sha": "07118c4e6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_LordJob_DefendPerimeter.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1427,6 +1451,12 @@
     "hash": "c46811ada2e049847e23bf331f56e97581a309c53c8cd8fd27dce5c01821b373",
     "sha": "3901f320b"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "19ca77a4ac192498dbbee1a4edad387523d8782f3c1d6dd6ea33c8612b02e774",
+    "sha": "07118c4e6"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1456,6 +1486,12 @@
     "date": "2026-09-13",
     "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
     "sha": "f4d5c1714"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_RootCausewayBiomeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "77fc8448ee7a169b1da1c9c1e88795cf35b9709febc8f3514ee88b5e4e916631",
+    "sha": "07118c4e6"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_Biome.cs": {
     "cleanCount": 1,
