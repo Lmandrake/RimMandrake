@@ -1,0 +1,128 @@
+{
+  "decidedCount": 24,
+  "decisions": {
+    "acklay": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "beldon": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "boma": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "borcatu": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "cancell": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "dalgo": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "dewback": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "dianoga": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "dragonsnake": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "eopie": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "fanback": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "hawkbat": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "jerba": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "kinrath": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "kreetle": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "nuna": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "pekopeko": {
+      "decision": "4",
+      "note": "",
+      "prefill": "4"
+    },
+    "porg": {
+      "decision": "2",
+      "note": "",
+      "prefill": "2"
+    },
+    "shiro": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "vornskyr": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "vulptex": {
+      "decision": "4",
+      "note": "",
+      "prefill": "4"
+    },
+    "wampa": {
+      "decision": "3",
+      "note": "",
+      "prefill": "3"
+    },
+    "wyyyschokk": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    },
+    "zakkeg": {
+      "decision": "1",
+      "note": "",
+      "prefill": "1"
+    }
+  },
+  "savedAt": "2026-09-13T17:35:49-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 1
+}

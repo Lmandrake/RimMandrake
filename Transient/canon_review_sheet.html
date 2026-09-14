@@ -1,0 +1,2036 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Review sheet</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. <script id="CONFIG"  type="application/json">   the brief, posture, criterion, options
+    2. <script id="ITEMS"   type="application/json">   the rows
+    3. (optional) <script id="RENDER">                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+  "sheetId": "canon_reference_library_1_disagreements",
+  "title": "Canon creature reference \u2014 disagreements",
+  "subtitle": "CANON_REFERENCE_LIBRARY_1 \u2014 24 of 43 creatures where candidates disagree",
+  "briefHtml": "<p><b>Why this sheet exists:</b> the Wyyyschokk case \u2014 Wookieepedia TEXT alone described it as \"near-black to dark reddish-brown chitin\" and the AI render came out a generic brown spider, when the real canon (per the owner's own lore images) is blue-grey with a bold yellow-orange abdomen cross. Text undersells canon; images are the authority, and images often disagree with each other and with our current in-game donor sprite. Only the owner can pick the canonical look.</p><p>Each row below is one of the 43 canon creatures in <code>design/RimStarWars/canon_references/</code> whose own research documented a real conflict \u2014 not everything needed a ruling, only these 24. Click a numbered image button to pick it as the canonical look, or just write your own ruling line in the note (e.g. \"blue-grey per image 2, but keep the donor's leg count\") \u2014 the note always wins over the button pick when both are present. Click any thumbnail to zoom it full-size before deciding.</p><p>Rulings land back in each creature's own <code>design/RimStarWars/canon_references/&lt;creature&gt;/description.md</code> <code>## ruling</code> field once you're done \u2014 nothing here is final until that happens.</p>",
+  "criterion": "Rows are pre-filled with a SUGGESTED pick (the image the researching agent's own Visual brief called most confirmatory of the sourced canon text \u2014 never the donor sprite when the brief flagged it as a mismatch). This is a guess to react to, not a finding \u2014 read each Visual brief before trusting the pre-fill.",
+  "invented": [],
+  "posture": {
+    "mode": "ruling",
+    "explain": "Not a keep/cut list \u2014 every row needs a canonical-look RULING: which candidate image is correct, or your own line. All 24 rows need a decision; there is no 'discard' side."
+  },
+  "options": [
+    {
+      "key": "1",
+      "label": "Image 1",
+      "hotkey": "1",
+      "color": "#5ac37f"
+    },
+    {
+      "key": "2",
+      "label": "Image 2",
+      "hotkey": "2",
+      "color": "#5ac37f"
+    },
+    {
+      "key": "3",
+      "label": "Image 3",
+      "hotkey": "3",
+      "color": "#5ac37f"
+    },
+    {
+      "key": "4",
+      "label": "Image 4",
+      "hotkey": "4",
+      "color": "#5ac37f"
+    }
+  ],
+  "groupLabel": "confidence",
+  "media": true,
+  "decisionsFile": "canon_review_decisions.json",
+  "decisionsPath": "",
+  "sheetPath": ""
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[
+  {
+    "id": "acklay",
+    "label": "Acklay",
+    "group": "High confidence disagreement",
+    "effect": "Both canon images agree the acklay is green, but the donor SWBestiary sprite renders it blue-teal with no textual or visual support for that color.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/acklay/acklay_wookieepedia_1.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "acklay_wookieepedia_1.jpg",
+        "path": "canon_review_images/acklay/acklay_wookieepedia_1.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "acklay_wookieepedia_2.jpg",
+        "path": "canon_review_images/acklay/acklay_wookieepedia_2.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/acklay/donor_current_sprite.png"
+      }
+    ],
+    "sourced_text": "Acklays were non-sentient, amphibious, reptilian crustaceans native to the\nplanet Vendaxa. Infobox facts: **skin color Green** (cited to *Attack of the\nClones*), height 3.05 meters, class \"amphibious reptilian crustacean.\"\nDistinctions: grappling hands, stretchy stomachs, razor-sharp teeth,\nprotective bony nodules, hardened skin-covered claws, **six legs**, **three\neyes**. Habitat: grassland and water on Vendaxa; diet carnivore.\n\n\"The acklay was a non-sentient mix of crustacean and reptile with amphibious\ntraits... The gigantic creature was protected by a hard, shell-like carapace\nof bony nodules. They walked on six hardened, skin-covered claws, and had\ngrappling hands. Its mouth was filled with razor-sharp teeth, and used an\norgan beneath its chin to sense the body electricity given off by its prey,\nwhich it would then spear with its pointed legs. The species had stretchy\nstomachs and three eyes.\"\n\nAcklays were used as execution beasts by the Geonosians in the Petranaki\nArena on Geonosis, most famously the three-acklay scene in *Attack of the\nClones* (Obi-Wan Kenobi, Anakin Skywalker, Padm\u00e9 Amidala). Surprisingly\nagile despite their size; strong enough to bite through a polearm and smash\na stone pillar.",
+    "visual_brief": "Both candidate images and the infobox agree tightly: **the acklay is GREEN**\n(mottled olive/sage-green to yellow-green, sometimes with a paler\ncream/yellow underside), a spider-crab body plan with a long upward-curving\nneck ending in a crested, elongated toothy head, and **six** thin, sharp,\nmulti-jointed legs radiating from a small central body \u2014 two of the six\nfunction as raised grappling \"arms\" with hooked claws, the other four are\nwalking/spearing legs. No visible shell/carapace plates are obvious in\neither image (the \"bony nodules\" read more as skin texture/ridges than\narmor plating). Both images are consistent on green coloration; no\ndisagreement between the two canon images.\n\n**Disagreement with our own art**: the current SWBestiary donor sprite\n(`donor_current_sprite.png`) renders the Acklay in **blue-teal**, not green.\nBody plan (long curved neck, crested head, six spindly legs) matches canon\nwell \u2014 the color does not. This is the same failure mode as the Wyyyschokk\ncase: our render invented a color the source material does not support.\nEvery source checked (infobox skincolor field, both Wookieepedia images)\nsays green; nothing supports blue-teal. Flagging for owner ruling \u2014 canon\ncolor should very likely be corrected to green on any regen.",
+    "folder": "design/RimStarWars/canon_references/acklay",
+    "prefill": "1"
+  },
+  {
+    "id": "beldon",
+    "label": "Beldon",
+    "group": "High confidence disagreement",
+    "effect": "The infobox text and donor sprite both say orange gas bladders, but the one Wookieepedia illustration found shows a purple/lavender herd, a direct color conflict flagged for owner ruling.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/beldon/beldon_wookieepedia_1.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "beldon_wookieepedia_1.jpg",
+        "path": "canon_review_images/beldon/beldon_wookieepedia_1.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/beldon/donor_current_sprite.png"
+      }
+    ],
+    "sourced_text": "Beldons are a large, non-sentient species native to the **gas giant\nBespin**, living in herds in its lower atmosphere \u2014 **not** an aquatic\nplant-creature of Naboo (that assumption does not match canon; correcting\nit here). Infobox distinctions: \"**Orange** gas bladders, fleshy fins, long\ntendrils.\" Length: **0.8\u201310 kilometers** (extreme size range \u2014 individual\nBeldons can be city-sized). Diet: atmospheric plankton and chemicals,\nmetabolized into tibanna gas \u2014 the resource basis of Bespin's economy\n(referenced directly in *Star Wars Battlefront II*: \"If they make the\nTibanna Gas the Empire needs, the Beldons are mission critical.\").\n\n\"Beldons measured anywhere from 0.8 to 10 kilometers in width, and they had\nbodies filled with orange gas bladders that allowed them to float. These\ncreatures used their fleshy fins for propulsion. They were preyed upon by\nvelkers, and their remains often served as food for crab gliders.\"\n\nLegends origin (*Galaxy Guide 2: Yavin and Bespin*, 1989), folded into\ncanon by *Ultimate Star Wars* (2015).",
+    "visual_brief": "The one period illustration found (a *Star Wars Galaxies* / guidebook-style\npiece, labeled \"BELDON\") shows a cluster of several individuals: rounded\nbulbous heads/bodies trailing long dark tendrils/tentacles beneath, **colored\npurple/lavender** with darker purple shading \u2014 floating in formation,\nconsistent with a herd drifting through atmosphere. This directly\n**disagrees with the infobox text**, which specifies orange gas bladders,\nnot purple.\n\nOur own donor sprite (`donor_current_sprite.png`) shows a single rounded,\nlumpy, **orange/peach-colored** balloon-like body with dark wispy tendrils\ntrailing from its underside \u2014 this matches the **text** (orange gas\nbladders, long tendrils) closely, but is a single individual rather than a\nherd, and the found illustration's purple coloring means the two visual\nsources (text-matching donor art vs. the one image found) disagree with\neach other on color. No source can meaningfully depict the canon 0.8\u201310km\nscale on a creature-sized sprite; that fact is simply unrenderable at\ngameplay scale and should not drive a \"wrong size\" concern.\n\n**Disagreement flagged for owner ruling**: orange (infobox text + our donor\nsprite) vs. purple (the one Wookieepedia illustration found). Recommend\ntreating the donor's orange as likely correct given it is directly\ncited in the current canon infobox, but this needs a human call since a\nreal canon image contradicts it.",
+    "folder": "design/RimStarWars/canon_references/beldon",
+    "prefill": "1"
+  },
+  {
+    "id": "borcatu",
+    "label": "Borcatu",
+    "group": "High confidence disagreement",
+    "effect": "The two candidate images show two incompatible body plans for the same species: a scaled pangolin/armadillo-like creature (1994 sourcebook art) versus a smooth-hided mottled quadruped with a spiked tail-quill (2015 Disney Infinity render).",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/borcatu/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/borcatu/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_creaturesofthegalaxy.jpg",
+        "path": "canon_review_images/borcatu/wookieepedia_creaturesofthegalaxy.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_disneyinfinity.jpg",
+        "path": "canon_review_images/borcatu/wookieepedia_disneyinfinity.jpg"
+      }
+    ],
+    "sourced_text": "Extremely thin canon: \"Borcatus were a type of creatures that was found in the\ngalaxy\" is the entire body-text sentence on the page \u2014 no coloration, size,\ndiet, or habitat fields are filled in at all (the species infobox itself is\nabsent; the page only carries a `{{Top|ncc}}`/`{{Noncanon|canon=1}}` banner).\nThe species originates in the 1994 Legends reference book *Creatures of the\nGalaxy*, and later reappeared as a placeable Toy Box creature in *Disney\nInfinity 3.0* (2015). No habitat, diet, or behavior is described anywhere on\nthe page \u2014 this is one of the thinnest entries in the SW bestiary, carried\nalmost entirely by its two pieces of art.",
+    "visual_brief": "**The two candidate images disagree sharply, and this is the important finding\nfor this creature** \u2014 same species, two incompatible body plans:\n\n- The **1994 *Creatures of the Galaxy* illustration** (the original,\n  higher-canon-weight source) shows a **pangolin/armadillo-like creature**:\n  a body covered in large, overlapping, pointed scales (a pinecone/artichoke\n  texture), a long tapering snout with visible whiskers, small stubby\n  clawed legs, and a short spiked tail. Grayscale line art, no color given.\n- The **2015 Disney Infinity 3.0 toy-figure render** (low-poly, stylized)\n  shows a completely different animal: a **reddish-brown, mottled quadruped**\n  with a cat/boar-like face (fangs visible, pale claws/toes, pale eyes), tall\n  pointed ears or horns, and a long spiked quill or horn projecting\n  backward off the haunches/tail \u2014 no scale texture at all, smooth mottled\n  hide instead.\n\nThese are not two angles of the same design \u2014 the scaled pangolin-esque body\nand the smooth-hided mottled quadruped cannot both be \"the\" borcatu. Given the\npage's near-total absence of descriptive text, there is no tiebreaker in\ncanon prose either.\n\n**The current donor sprite** (`donor_current_sprite.png`) is mottled\nreddish-brown with a spiky tail, pointed ears, and clawed feet \u2014 it tracks\nthe *Disney Infinity* render reasonably closely (same color family, same\nspiked tail, same general silhouette) and is the closer of the two candidate\ndesigns. A reviewer should be aware the 1994 original sourcebook art (scaled,\npangolin-like) looked nothing like either the donor sprite or the Disney\nInfinity figure.",
+    "folder": "design/RimStarWars/canon_references/borcatu",
+    "prefill": "1"
+  },
+  {
+    "id": "dewback",
+    "label": "Dewback",
+    "group": "High confidence disagreement",
+    "effect": "All canon images agree dewbacks are green, scaly, and elongated reptiles, but the donor sprite is a flat grey/white, blobby, seal-like shape with no scale texture or tail.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/dewback/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/dewback/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_behindthemagic.jpg",
+        "path": "canon_review_images/dewback/wookieepedia_behindthemagic.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/dewback/wookieepedia_infobox.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_kenobi_screencap.jpg",
+        "path": "canon_review_images/dewback/wookieepedia_kenobi_screencap.jpg"
+      }
+    ],
+    "sourced_text": "Dewbacks were thick-skinned reptiles native to the desert planet of Tatooine,\nused as beasts of burden and as mounts for specialized sandtroopers (\"Dewback\ntroopers\"). Rugged reptilian lizards, they withstood the heat of Tatooine's\nbinary suns and the dust that fouled high-tech vehicles. Wookieepedia gives:\nthick hides of **scaly green skin**, **long, rounded heads and short tails**,\nwith their **backs partially covered with fur**. Four clawed feet, capable of\nbrief bursts of speed when prodded but otherwise plodding. Height ~2 meters,\nlength ~9 meters (a genuinely large animal \u2014 bigger than a real-world rhino).\nNamed for licking morning dew off their backs with a flicking tongue. Diet:\ntubers, grass, womp rats, sage, desert vegetation (omnivore). Canon role:\nTatooine's default riding/pack beast \u2014 moisture farmers, merchants, Mos Eisley\nlocals, and above all Imperial sandtroopers on patrol ride dewbacks; Obi-Wan\nKenobi owned one while in hiding on Tatooine (*Rebels*, \"Twin Suns\"). Podrace\ncrews used them to haul podracer parts to the starting grid in *The Phantom\nMenace*. Appears on-screen in *A New Hope* as the sandtrooper patrol mount\noutside the Jawa sandcrawler.",
+    "visual_brief": "The candidate images agree with each other and are unambiguous: dewbacks are\n**green**, scaly, reptilian, with an elongated low-slung lizard body, a long\nheavy tail, a broad blunt-snouted head with a wide mouth, and short thick legs\nbuilt for a rider or pack saddle on the back. The Kenobi-riding image and the\nsandtrooper close-up both show visible raised/pebbled scale texture and a\nwarm olive-green to yellow-green hide, darker/more mottled toward the back\nridge. No image shows back \"fur\" clearly \u2014 the Wookieepedia text mentions\npartial back fur but none of the candidate images make it legible; treat that\ndetail as present-but-subtle rather than a bold visual feature.\n\n**The current donor sprite (`donor_current_sprite.png`) disagrees with canon\nin two clear ways**: it is rendered in flat **grey/white**, not green, and it\nhas a rounded, blobby, almost seal-like silhouette with no scale texture and\nno elongated tail \u2014 closer to a cartoon manatee than the long low reptile\nin every reference image. Any regen should correct the color to green/olive\nand give the body a longer, lower, more lizard-like silhouette with a visibly\nscaled hide.",
+    "folder": "design/RimStarWars/canon_references/dewback",
+    "prefill": "3"
+  },
+  {
+    "id": "dianoga",
+    "label": "Dianoga",
+    "group": "High confidence disagreement",
+    "effect": "Canon dianoga are a radial tentacled cephalopod with a central toothed mouth, but the donor sprite is a four-legged, tailed creature that does not match the body plan at all beyond a shared eyestalk.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/dianoga/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/dianoga/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_infobox.png",
+        "path": "canon_review_images/dianoga/wookieepedia_infobox.png"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_sullust_refinery.jpg",
+        "path": "canon_review_images/dianoga/wookieepedia_sullust_refinery.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_toothy_swge.jpg",
+        "path": "canon_review_images/dianoga/wookieepedia_toothy_swge.jpg"
+      }
+    ],
+    "sourced_text": "Dianoga (\"trash squid\" is the related/subspecies name used for Death Star\ntank-dwelling specimens specifically) are large, sentient, omnivorous\ncephalopods native to the swampy planet Vodran in the Si'Klaata Cluster\n(Hutt Space). Body plan: **seven suckered tentacles**, an eyestalk, a mouth\nof sharp teeth, and several hearts. Length 7-10 meters. Skin color is\n**deep purple** on a mature adult, but dianoga can actively change color and\npattern for camouflage \u2014 turning black, gray, or even transparent. Blood has\na blue tint. They can regenerate lost limbs and have excellent hearing.\nHermaphroditic, with individuals able to identify as female, \"diangous\" (the\nmost common gender), or male. Diet: omnivorous \u2014 fish, crabs, bones, and\naquatic plants. Entirely water-dependent (can survive brief stretches in open\nair but will dry out). Society: a primitive tribal culture with its own\ncomplex humming language that carries through water and scares off prey;\nthey venerate water and believe in reincarnation.\n\nCanon role: the most famous dianoga is the unnamed one living in the Death\nStar's trash compactor in *A New Hope* (\"There's something alive in here\" \u2014\nLuke Skywalker). Other named/attested appearances: a dianoga in the flooded\nwreck of a derelict *Venator*-class Star Destroyer on Bracca (*The Bad\nBatch*), a dianoga family in the Bracca Badlands during the High Republic\nEra, and dianoga living in the SoroSuub refinery's water tanks on Sullust\n(*Star Wars Battlefront*).",
+    "visual_brief": "All three candidate images agree and clearly show the canon body plan: a\nsmall stalked eye (a single eye, dark reddish, atop a thin stalk) sits above\na bulbous head/body mass; below that, a large circular mouth ringed with\nsharp teeth sits at the center where the limbs converge; several long, thin,\ntapering tentacles hang/radiate downward from the body. Coloration in the\nclean infobox render is a deep maroon/purple-brown with a wrinkled, ridged\nskin texture \u2014 matching \"deep purple\" in the text. The Sullust refinery\nstill shows the same tentacled silhouette lit gold underwater. The \"Toothy\"\njar image (a juvenile specimen preserved in a tank at a theme-park\nprop/display) shows mottled olive-green through murky liquid \u2014 consistent\nwith the text's claim that dianoga can shift color/pattern, not a\ncontradiction of the purple default.\n\n**The current donor sprite (`donor_current_sprite.png`) does NOT match the\ncanon body plan at all.** It depicts a four-legged, tailed creature with a\nsingle eyestalk on top of its head \u2014 the eyestalk is the only correct detail\ncarried over. There are no tentacles, no central toothy maw, and the\noverall silhouette reads as a legged mammal/reptile rather than a hanging\ncephalopod with seven suckered limbs. This is a clear, high-confidence\nmismatch: any regen must replace the legged body with a radial mass of long\nthin tentacles beneath a small eyestalk, in deep purple/maroon tones, with a\nvisible toothed central mouth.",
+    "folder": "design/RimStarWars/canon_references/dianoga",
+    "prefill": "2"
+  },
+  {
+    "id": "dragonsnake",
+    "label": "Dragonsnake",
+    "group": "High confidence disagreement",
+    "effect": "The three canon sources disagree with each other on whether dragonsnakes have legs at all (quadruped in the bestiary illustration vs. fully limbless serpents in both screen appearances) and on color (olive-glowing, bright green, or bone-pale vs. the donor's tan/khaki), explicitly flagged as a real disagreement for the owner to rule on.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/dragonsnake/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/dragonsnake/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_huntforziro.jpg",
+        "path": "canon_review_images/dragonsnake/wookieepedia_huntforziro.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_mandalorianandgrogu.jpg",
+        "path": "canon_review_images/dragonsnake/wookieepedia_mandalorianandgrogu.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_visualencyclopedia.jpg",
+        "path": "canon_review_images/dragonsnake/wookieepedia_visualencyclopedia.jpg"
+      }
+    ],
+    "sourced_text": "Large, predatory reptiles that dwell in the murky waters of swamp-covered\nplanets, including Dagobah and Nal Hutta (also documented on Dxun-adjacent\nswamp settings in some secondary sources, though Wookieepedia's own citations\ntie the species specifically to Dagobah and Nal Hutta, not Dxun). Serpentlike\nbodies with sharp fangs, capable of excreting a lethal toxin; voracious but\nunable to digest metal (per *The Empire Strikes Back*, R2-D2 was spat back\nout). Length ~7 meters, mass up to 200 kg. Hunts by hiding under muddy water\nand among gnarltree roots, ambushing prey then dragging it back under. First\nidentified as \"Dragonsnake\" in the Clone Wars episode guide for \"Hunt for\nZiro\" (Obi-Wan Kenobi fights one on Nal Hutta). Reappeared on Dagobah in *The\nEmpire Strikes Back* (the R2-D2 encounter) and, much more recently, in *The\nMandalorian and Grogu* \u2014 a dragonsnake owned by the Hutt Twins on Nal Hutta\nfights Din Djarin, injuring him with venom before being fed the Twins\nthemselves. Individual \"Bright-Eyes\" on Dagobah displayed a degree of\nsentience (*From a Certain Point of View: Return of the Jedi*).",
+    "visual_brief": "**The three canon sources disagree sharply on body plan, and none of them\nmatch our current donor/vendored sprite closely.**\n\n- `wookieepedia_huntforziro.jpg` (Clone Wars, \"Hunt for Ziro\", Nal Hutta): a\n  thick, segmented, armor-plated body with NO visible limbs, a bony/skeletal\n  jawless-looking skull with prominent fangs, and rows of glowing\n  yellow-green bioluminescent spots down the body. Olive/dark-khaki color.\n  Reads as an eel/worm-like ambush predator, not a \"snake with legs.\"\n- `wookieepedia_visualencyclopedia.jpg` (Star Wars Adventure Journal-style\n  illustration, labeled \"DRAGONSNAKE\" on a map): a lean, green, spotted\n  quadruped with small clawed forelimbs and hindlimbs, a long tapering tail,\n  and an elongated toothy crocodilian head with a pronounced brow ridge \u2014\n  this is the source closest in body plan to a \"dragon\" and closest to our\n  donor sprite (both have four small limbs), but the color is bright green\n  with pale spots, not our sprite's tan/khaki.\n- `wookieepedia_mandalorianandgrogu.jpg` (*The Mandalorian and Grogu*, Nal\n  Hutta pit): a massive, pale bone-white/gray, LIMBLESS eel-like serpent \u2014\n  multiple huge coils breach the water, with a skull-like elongated head and\n  a mouth full of long fangs dripping venom. No legs are visible anywhere on\n  the body. This is the newest, most \"current canon\" screen appearance and it\n  contradicts the quadruped read from the encyclopedia illustration.\n- `donor_current_sprite.png` (our own in-game sprite,\n  `Dragonsnake_Swimming_south.png`): a lean tan/khaki quadruped with small\n  clawed limbs, dark spotted markings, and an alligator-like toothy skull\n  head \u2014 body-plan-wise it agrees with the visual-encyclopedia illustration\n  (four legs) but its muted tan coloring matches none of the three canon\n  images, which run olive-with-glowing-spots, bright green, or bone-pale.\n\n**Net read**: canon dragonsnakes are consistently serpentine/reptilian with a\nelongated toothy skull, but disagree on whether they have visible legs at all\n(illustration: yes: small quadruped legs / both screen appearances: no\nvisible limbs, pure coiling serpent) and on color (olive-glowing, bright\ngreen, bone-pale, vs. our tan). This is a real candidate-image disagreement\nfor the owner to rule on \u2014 likely resolution is either \"keep our quadruped\nbody plan but recolor\" or \"cut the legs to match the two screen\nappearances.\"",
+    "folder": "design/RimStarWars/canon_references/dragonsnake",
+    "prefill": "2"
+  },
+  {
+    "id": "hawkbat",
+    "label": "Hawkbat",
+    "group": "High confidence disagreement",
+    "effect": "Current canon and Legends depictions diverge sharply: the current-canon Hyperspace Lounge prop photo shows a squat violet slug/larva-bodied creature with no visible wings, while three independent Legends-lineage sources (two Field Guide illustrations and the donor mod's own icon) show a purple-topped, cream-gold-bellied membrane-winged reptavian bat.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/hawkbat/donor_mod_workshop_icon.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_mod_workshop_icon.jpg",
+        "path": "canon_review_images/hawkbat/donor_mod_workshop_icon.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_current_canon_infobox.jpg",
+        "path": "canon_review_images/hawkbat/wookieepedia_current_canon_infobox.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_legends_infobox.jpg",
+        "path": "canon_review_images/hawkbat/wookieepedia_legends_infobox.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_legends_juvenile.jpg",
+        "path": "canon_review_images/hawkbat/wookieepedia_legends_juvenile.jpg"
+      }
+    ],
+    "sourced_text": "Two separate Wookieepedia pages exist for \"Hawk-bat\" and they diverge sharply\n\u2014 more sharply than usual for this library:\n\n- **Current canon** (`Hawk-bat`, pageid 506226): a thin stub. A hawk-bat is\n  \"a type of bat which had a beak with sharp contours.\" The only concrete\n  detail given is a simile: Grand Moff Wilhuff Tarkin's bony nose \"looked\n  like a hawk-bat's beak\" (*Battle to the End*). The species' name was also\n  a derogatory insult for an unsavory person (*Servants of the Empire: Rebel\n  in the Ranks*), and the Jedi youngling clan Dooku belonged to was named\n  after the creature (*Dooku: Jedi Lost*). No coloration, size, habitat, or\n  behavior is given anywhere on the current-canon page. It also appears\n  (via its infobox image) in *Star Wars: Hyperspace Lounge* material.\n- **Legends** (`Hawk-bat/Legends`, pageid 11574): far richer. Hawk-bats were\n  predatory **reptavians** (part-reptile, part-bird/bat) native to urbanized\n  worlds, especially **Coruscant** \u2014 one of the few native Coruscanti species\n  to survive the planet's urbanization, alongside the thrantcill. About 1\n  meter tall with an average **1.5-meter wingspan**; leathery wings on a\n  thin membrane stretched over wing-bones, the membrane **studded with\n  spiky growths**. A hooked beak lined with tiny teeth shreds prey; **ruby\n  eyes** with an extremely wide vision spectrum (UV, infrared, and beyond)\n  plus echolocation for spotting camouflaged prey. Skin color is explicitly\n  two-staged: hatchlings are **green**, and on reaching maturity a hawk-bat\n  sheds its green skin (and eats the shed skin) to reveal **purplish\n  yellow-gray** adult coloring. They hunt in coordinated flocks \u2014 a lone\n  hawk-bat is vulnerable, but a disturbed flock retaliates as one \u2014 favoring\n  granite slugs and shadowmoth larvae, scooping prey off vertical walls.\n  Eggs are camouflaged brown-and-green to look like rocks; mothers guard\n  nests fiercely. Hawk-bats were also eaten as a delicacy (Emperor Palpatine\n  kept a private aviary of them for that purpose) and gave their name to the\n  lightsaber form Ataru and to the Hawkbat Battalion of the 101st Regiment.\n\n**Important correction to this creature's brief:** the \"predatory bat-like\nflier that prominently appears on Lothal in *Star Wars Rebels*\" is a\n**different, separate Wookieepedia species: `Loth-bat`** (from the junior\nnovel *Battle to the End* and the *Rebels* episodes \"Flight of the Defender\"\nand \"Jedi Night\"), not the hawk-bat. Loth-bats are giant gliding bats native\nto Lothal that roost under building eaves and make unnerving high-pitched\nsqueals at night; they have no confirmed relation to hawk-bats beyond the\nshared \"bat\" word in the name and a passing narrative comparison (Agent\nKallus mentally likened the Grand Inquisitor to a loth-bat). **This pass did\nnot find or verify the \"hawk-bats in the belfry\" idiom** cited in the task\nbrief \u2014 it may exist in some other source, but no citation for it turned up\nin the pages pulled here, so it is not asserted as fact.",
+    "visual_brief": "This is a stronger case of text/image (and current-canon/Legends) disagreement\nthan usual, and three of the four candidate images line up with each other\nagainst the fourth:\n\n- `wookieepedia_current_canon_infobox.jpg` (current canon, a display prop\n  photographed for *Star Wars: Hyperspace Lounge* material) shows something\n  that barely reads as \"hawk-bat\" at all: a squat, **slug/larva-bodied**\n  creature in deep violet-to-near-black skin, a bulky snouted head with\n  small forward-curling horn-like growths, visible curved fangs, and large\n  clawed grasping forelimbs. No batlike membrane wings are visible in this\n  pose. This is a legitimate current-canon depiction but is visually\n  disconnected from everything else found for this creature \u2014 treat it as\n  the minority/outlier reference, not the target.\n- `wookieepedia_legends_infobox.jpg` (*The Wildlife of Star Wars: A Field\n  Guide* illustration) \u2014 the clearest single reference: a pterosaur-like\n  silhouette with **violet-purple dorsal wing membrane fading to\n  cream/pale-gold on the ventral side**, ribbed wing structure, a short\n  beaked head with a small forward horn and a green eye (not the ruby the\n  text names \u2014 see below), clawed wingtips, long tail. Matches the \"purplish\n  yellow-gray adult\" text closely for the wing coloring.\n- `wookieepedia_legends_juvenile.jpg` (same Field Guide source, two\n  individuals) directly illustrates the text's green-juvenile \u2192 purple/gold\n  adult transformation: a green-and-purple individual perched atop a\n  building, still gripping a shed skin below it, next to a separate\n  **pale gray-white** flying individual with a **red/orange eye** diving\n  past. Confirms the molt described in the sourced text and shows the eye\n  color is inconsistently rendered across sources (green in one image, red\n  in another) even though the text says ruby.\n- `donor_mod_workshop_icon.jpg` \u2014 cropped from the donor mod's own Steam\n  Workshop screenshot (full grid screenshot showing \"HAWK-BAT\" labeled next\n  to Gornt/Gorak/Iriaz \u2014 see Source URLs). **This is the strongest\n  confirmation available**: the mod's own stylized icon uses the same\n  **violet-purple-topped, cream/pale-yellow-bottomed wing membrane**,\n  small head with a slight brow horn, and long tail as the Legends Field\n  Guide art \u2014 i.e. whoever built this RimWorld mod referenced the classic\n  Legends hawk-bat, not the Hyperspace Lounge current-canon redesign.\n\n**Net read: render the Legends version** \u2014 a purple-topped, cream-to-pale-gold-\nbellied, membrane-winged reptavian bat with a small forehead horn, hooked\nbeak, and long tail, consistent across three independent sources (Field\nGuide art \u00d72 and the donor mod's own icon). The current-canon Hyperspace\nLounge image is real but is the outlier and should not be used as the color\ntarget \u2014 flagging it here rather than quietly dropping it, per this\nlibrary's own rule about disagreement.",
+    "folder": "design/RimStarWars/canon_references/hawkbat",
+    "prefill": "2"
+  },
+  {
+    "id": "kinrath",
+    "label": "Kinrath",
+    "group": "High confidence disagreement",
+    "effect": "Two distinct creatures share the name 'kinrath' across canon tiers with incompatible body plans: the KOTOR/Legends design is a long-necked mantis/scorpion-like quadruped with a poisonous face-appendage, while the current-canon Bad Batch retcon ('netcaster') is a low, spoon-bodied spider with a six-eye cluster and a flower organ neither prior design had.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/kinrath/kotor_screenshot_hivekinrath_dantooine.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "kotor_screenshot_hivekinrath_dantooine.jpg",
+        "path": "canon_review_images/kinrath/kotor_screenshot_hivekinrath_dantooine.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "unfinished_tcw_netcasters_conceptclip.png",
+        "path": "canon_review_images/kinrath/unfinished_tcw_netcasters_conceptclip.png"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_currentcanon_netcaster_infobox.png",
+        "path": "canon_review_images/kinrath/wookieepedia_currentcanon_netcaster_infobox.png"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_currentcanon_netcaster_rear.png",
+        "path": "canon_review_images/kinrath/wookieepedia_currentcanon_netcaster_rear.png"
+      }
+    ],
+    "sourced_text": "**Two separate creatures share the name \"Kinrath\" across Star Wars canon\ntiers, and they are NOT visually the same design** \u2014 this is a bigger split\nthan the usual current-canon/Legends text variance seen elsewhere in this\nlibrary:\n\n- **Legends (`Kinrath/Legends`) \u2014 the KOTOR-era creature**, sourced to\n  *Star Wars: Knights of the Old Republic* and *KOTOR II*. Large,\n  non-sentient arachnoids found on **Dantooine** and **Kashyyyk**\n  (habitat: grasslands, caves, forests). Average coloring **light\n  yellow-brownish**, with variant colorations in orange and green. Named\n  subspecies: **viper kinrath** (more poisonous, tougher) and **hive\n  kinrath** (lives subsurface on Dantooine, hive-and-matriarch social\n  structure). Four legs, plus a distinctive **leg-like poisonous appendage\n  extending from the face** used as an attack weapon (not simple fangs).\n  Completely **blind** \u2014 navigates and hunts purely by heat-sensing. Red\n  lightsaber crystals could naturally form in unhatched kinrath eggs.\n- **Current canon (`Kinrath`, main page) \u2014 retconned onto \"Netcasters\"**,\n  from *Star Wars: The Bad Batch* Season 2 episode \"Tribe\" (2023). These\n  are **yellow/golden** spider-like creatures native to the forests of\n  **Kashyyyk** (not Dantooine in this tier's prose, though caves on\n  Dantooine are mentioned as a secondary habitat). Six eyes in two groups\n  of three, sitting above a distinctive **flower-shaped organ of six\n  petals** on the head/upper body. Four long segmented legs ending in\n  claws surrounded by petal-shaped flaps. Spoon-shaped body, wider at the\n  bottom. Darker off-color horizontal stripes circle the body. Spin webs\n  from a rear orifice; venomous; capable of distinguishing hostile from\n  peaceable intruders. **The \"Behind the scenes\" section states this\n  Bad Batch creature design was explicitly derived from \u2014 and later\n  in-universe unified with \u2014 the KOTOR kinrath**: Disney+ subtitles call\n  the netcaster a \"kinrath,\" and *Star Wars: The Secrets of the Wookiees*\n  confirms the two are the same species. An earlier, unfinished *Clone\n  Wars* episode (only a leaked clip survives, shown at Celebration\n  Anaheim 2015) used a more upright, mantis-postured precursor design\n  before the concept was reworked into the \"Tribe\" episode's spoon-bodied\n  version.\n\n**Net read: both tiers agree the creature is warm yellow/gold/tan-brown in\nbase color \u2014 there is no text/image color disagreement here, unlike the\nWyyyschokk and PekoPeko cases.** The disagreement is instead in BODY PLAN:\nthe KOTOR original reads as a long-necked mantis/scorpion-like biped-stanced\nquadruped, while the \"official\" retcon (Bad Batch) reads as a low, rounded,\nspoon-bodied spider with a signature flower organ and a tight eye cluster\nneither prior design had.",
+    "visual_brief": "Four real candidate images were pulled and they split cleanly along the two\ndesign lineages above \u2014 read them as two related but distinct visual\ntargets, not one:\n\n- `kotor_screenshot_hivekinrath_dantooine.jpg` \u2014 actual in-game KOTOR\n  screenshot: a kinrath rearing up at the player in dim grassland/forest\n  lighting. Confirms the body plan from text: four very long, thin,\n  multi-jointed legs, a long extended neck/head reaching forward (this is\n  the poisonous face-appendage attacking, not a separate head), overall\n  olive-brown coloring under the scene's warm dark lighting. Matches the\n  \"long-necked mantis-like\" read.\n- `wookieepedia_legends_infobox_viperkinrath.png` \u2014 the Legends species\n  infobox image (a rendered 3D model, likely from a later KOTOR-related\n  game asset). Shows the same body plan cleanly and in neutral lighting:\n  **yellow-tan base with rust/reddish-brown mottling**, an upward-curving\n  segmented neck ending in a small mantis-like head, four extremely long\n  jointed legs with clawed/pointed tips, NO visible eyes-cluster or flower\n  organ. This is the strongest clean color+shape reference for the\n  Legends/KOTOR design and confirms \"light yellow-brownish\" from the text.\n- `wookieepedia_currentcanon_netcaster_infobox.png` \u2014 Bad Batch \"Tribe\"\n  render, front-on: confirms the flower organ (orange/red, six petals,\n  positioned below a head bearing **six black eyes in a tight cluster**),\n  golden-tan chitin, dense mossy Kashyyyk forest setting with webbing\n  visible. This is the strongest reference for the current-canon \"netcaster\"\n  design and its two features absent from the KOTOR model (flower organ,\n  eye cluster).\n- `wookieepedia_currentcanon_netcaster_rear.png` \u2014 same creature from\n  behind: confirms the spoon-shaped body silhouette (narrow at top, wider\n  toward the rear) and dark horizontal banding/stripes across the\n  abdomen, matching the text description exactly.\n- `unfinished_tcw_netcasters_conceptclip.png` \u2014 leaked clip from the\n  cancelled *Clone Wars* episode, three creatures shown: bright\n  **yellow-gold**, more upright/standing posture than the final Bad Batch\n  version, small mandibles visible on the nearest one, the six-eye cluster\n  already present on the two further back. Useful as a third data point\n  confirming yellow/gold as the stable base color across every design\n  iteration, but its posture is closer to upright-standing than either the\n  KOTOR original or the final low-slung \"Tribe\" version \u2014 a third,\n  intermediate body plan, included for completeness rather than as a\n  primary reference.\n\n**Distinguishing from Wyyyschokk (the sibling Kashyyyk Shadowlands\nspider in this library):** Wyyyschokk is ruled as **blue-grey with a\nyellow-orange abdomen cross, blue-black legs, and spiky bristle tufts**\n(see `wyyyschokk/description.md`). Kinrath, in every candidate image across\nboth canon tiers, is **warm yellow/gold/tan-brown with no blue anywhere** \u2014\nthe two should read as opposite ends of a color wheel, not near-duplicates.\nWyyyschokk's signature mark is the abdomen cross; Kinrath's signature marks\nare the six-eye cluster and flower organ (current canon) or the long\nmantis-like neck-appendage (KOTOR/Legends) \u2014 neither has a cross marking.",
+    "folder": "design/RimStarWars/canon_references/kinrath",
+    "prefill": "3"
+  },
+  {
+    "id": "nuna",
+    "label": "Nuna",
+    "group": "High confidence disagreement",
+    "effect": "The sourced text classifies nunas as a bird ('swamp turkey') but all three official reference images show a toad/turtle-like amphibian with no feathers, beak, or wings whatsoever, a sharp text-vs-image contradiction.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/nuna/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/nuna/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_classic_render.jpg",
+        "path": "canon_review_images/nuna/wookieepedia_classic_render.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/nuna/wookieepedia_infobox.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_walkintime.jpg",
+        "path": "canon_review_images/nuna/wookieepedia_walkintime.jpg"
+      }
+    ],
+    "sourced_text": "Nunas, also known as **\"swamp turkeys,\"** were small, non-sentient bipeds\nnative to the swamps of Naboo that spread across the galaxy and were also\nfound on Tatooine, Coruscant, and Saleucami. Infobox stats: height ~0.5\nmeters, mass ~4 kilograms, **skin color green**, **eye color white**,\nWookieepedia-classed **`[[Bird]]`**, habitat desert/swamp/urban, diet\nomnivore (mostly plants, occasionally fish). They could not fly, were known\nfor their stupidity, but were adaptable and easy to care for \u2014 combined with\nfast egg production, this made them a popular, easy livestock animal capable\nof feeding a family of four per bird. When angered or threatened they could\ninflate their bodies to a larger size. A 2020s comic (*Doctor Aphra* #33)\nestablishes they were capable of growing blue and red feathers. Canon role\nis overwhelmingly culinary and background-livestock: roast nuna, deep-fried\nnuna leg, Nuna Turkey Jerky (a real Galaxy's Edge/Batuu snack item at Ronto\nRoasters), and nuna used as the ball in the sport \"nuna-ball.\" They appear\nas background livestock across the prequel trilogy, *The Clone Wars*, *The\nBad Batch*, *The Mandalorian*, and *The Book of Boba Fett*, almost always\nas scenery or food rather than a creature shown up close.",
+    "visual_brief": "The three candidate images (all official render/promotional art of the\nanimal itself, not food shots) are internally consistent with each other but\n**disagree sharply with the \"bird\" / \"swamp turkey\" framing in the text**.\nNone of the three shows anything resembling feathers, a beak, wings, or a\nturkey-like silhouette. What they actually show is a squat, hunched,\n**toad- or turtle-like amphibian/reptile**: a heavy domed/ridged shell-like\nback rising into a peak, a wide froglike head with a broad flat mouth and\nbulging pink or amber eyes, floppy skin flaps hanging at the sides of the\nhead (read as loose jowls/wattle, not ears), thick bent hind legs ending in\nclawed toed feet, and mottled olive-to-dark-green pebbled/warty skin \u2014 no\nvisible feather texture anywhere, on any of the three images, across two\ndifferent render styles and two different eras of official art. The\nfront-on view (`wookieepedia_walkintime.jpg`) confirms the body is wider\nthan tall when viewed head-on, with the two hind legs doing all the\nvisible structural work, consistent with the \"biped\" description, but the\noverall read is far closer to a bloated toad or snapping turtle than to any\nbird. Skin color does match the infobox text (green). \"Swamp turkey\" as a\nnickname reads as a folk/marketing name for a domesticated food animal\nrather than a literal physical descriptor \u2014 the images support \"turtle\"\nfar better than \"turkey.\"\n\n**The donor sprite agrees reasonably well with the images**, better than\nmost creatures in this library: it is green, has a hunched dome-shaped back\nwith lighter banding suggesting a ridged/shell-like top, a forward-jutting\nmouth/head, and a single small orange nub at the front-left that reads as a\nstylized crest or wattle rather than a wing. It is far more simplified and\nflat-cartoon-shaded than any candidate image (RimWorld's chunky low-detail\nart style, no visible skin texture or individual toes), and it omits the\nvisible hind legs / froggy stance entirely \u2014 the sprite reads as a rounded\nblob-with-a-face rather than a standing biped \u2014 but the *silhouette family*\n(squat, hunched, domed-backed, green, toad/turtle-adjacent, not bird-like)\nis a genuine match to canon, which is not true of every creature audited so\nfar in this library.",
+    "folder": "design/RimStarWars/canon_references/nuna",
+    "prefill": "3"
+  },
+  {
+    "id": "pekopeko",
+    "label": "Pekopeko",
+    "group": "High confidence disagreement",
+    "effect": "Both canon tiers describe a blue peacock/macaw-derived bird, but only one of four candidate images (the Battlefront II palace painting) actually shows blue plumage; the infobox icon undersells it as tan/khaki/gold and the SWG screenshot shows an explicitly mutated red-orange variant.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/pekopeko/swg_toxic_pekopeko_mount.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "swg_toxic_pekopeko_mount.jpg",
+        "path": "canon_review_images/pekopeko/swg_toxic_pekopeko_mount.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_battlefront2_painting.jpg",
+        "path": "canon_review_images/pekopeko/wookieepedia_battlefront2_painting.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_fieldguide.jpg",
+        "path": "canon_review_images/pekopeko/wookieepedia_fieldguide.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/pekopeko/wookieepedia_infobox.jpg"
+      }
+    ],
+    "sourced_text": "Two separate Wookieepedia entries exist and they read differently:\n\n- **Current canon** (`Peko-peko`, sourced to *Star Wars Battlefront II* and\n  *Star Wars Bestiary, Vol. 1*): flying creatures of the Naboo swamps. **Blue\n  feathering**, a long tail, clawed wings, a prominent beak used to crack\n  nuts and peel fruit; mate for life, two chicks per litter. First seen (a\n  pair flying over the Gungan Sacred Place) in *The Phantom Menace* (32 BBY).\n  A painting of Queen Padm\u00e9 Amidala holding a peko-peko hangs in the Theed\n  Royal Palace per *Battlefront II*.\n- **Legacy/Legends** (`Peko-peko/Legends`): large, strong \"reptavians\" native\n  to the Gungan swamps of Naboo (a second breed on Nal Hutta), length ~3\n  meters. Coloring: **blue and yellow skin, indigo-sapphire feathers** \u2014\n  concept artist Terryl Whitlatch developed it from a real-world peacock and\n  a hyacinth macaw. Clawed wings (hoatzin-style) for climbing in the\n  tree canopy, a powerful beak that can crush coconut-sized nuts, fairly\n  toxic skin/feathers (causes stomach pain, vomiting, occasional death in\n  predators, though not universally). Preyed on by tusk cats; ate kaadu eggs.\n  Used as a mount in *Star Wars Galaxies* \u2014 a mutated \"Toxic peko-peko\"\n  variant bred by Cornelius Evazan was sold as a loot-card mount.\n\n**Both canon tiers agree on the core fact that matters for art: this is a\nblue, peacock/macaw-derived bird, not a drab or reptilian-brown one.**",
+    "visual_brief": "This is a second text-vs-image mismatch case, same shape as the Wyyyschokk\none this library exists to catch \u2014 most of the easily-found candidate images\ndo NOT show the blue coloring the text insists on, and only one candidate\nactually confirms it:\n\n- `wookieepedia_battlefront2_painting.jpg` \u2014 **the one candidate that\n  matches the sourced text.** The in-universe Theed palace painting (current\n  canon, *Battlefront II*) shows the peko-peko perched on Padm\u00e9's arm with\n  unmistakable **peacock-blue wing and tail plumage**, a small yellow/gold\n  head crest, long trailing tail feathers with pale gold edging, and a\n  raptor-like curved beak. This is the strongest single confirmation of the\n  \"peacock + macaw\" description and should be treated as the visual anchor.\n- `wookieepedia_fieldguide.jpg` \u2014 an unlit gray 3D model/render (body plan\n  only: long S-curved neck, elongated toothy-looking beak/skull, folded\n  wings, long tail) \u2014 confirms silhouette and beak shape but carries **no\n  color information at all**; do not read \"gray\" as canon.\n- `wookieepedia_infobox.jpg` \u2014 a small flat cartoon icon in tan/khaki/gold\n  with a bony reptilian-looking head; this reads as a generic wiki\n  species-icon illustration rather than accurate canon color and visibly\n  UNDERSELLS the blue plumage the text describes \u2014 exactly the failure mode\n  this library exists to catch. Keep it only as a cautionary example, not a\n  reference to render from.\n- `swg_toxic_pekopeko_mount.jpg` \u2014 in-game screenshot from *Star Wars\n  Galaxies* of the mutated \"Toxic peko-peko\" mount: reddish/rust-orange\n  plumage on a winged reptavian body. Per the source text this is an\n  explicitly MUTATED variant (bred by an outlaw for toxin/aggression), so its\n  red-orange color is not representative of a baseline peko-peko \u2014 it is\n  useful for body plan (wings, clawed feet, elongated beak) but the color\n  should be disregarded for a baseline render.\n\n**Net read: render blue** (`wookieepedia_battlefront2_painting.jpg` is the\ntarget), peacock/macaw-style plumage, long trailing tail feathers, clawed\nwings, a strong hooked/nut-cracking beak. The gray model gives the cleanest\nbody-plan silhouette. The tan icon and the red mutant screenshot are both\noff-canon for color and should not be used as color references.",
+    "folder": "design/RimStarWars/canon_references/pekopeko",
+    "prefill": "4"
+  },
+  {
+    "id": "vornskyr",
+    "label": "Vornskyr",
+    "group": "High confidence disagreement",
+    "effect": "The three candidate images diverge on fur (hairless dark-gray vs. shaggy pale cream-tan) and eye color (two sources show red eyes matching the infobox, but a third swamp-pack scene shows glowing yellow eyes that directly contradict it).",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/vornskyr/wookieepedia_alienarchive.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "wookieepedia_alienarchive.jpg",
+        "path": "canon_review_images/vornskyr/wookieepedia_alienarchive.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_essentialguide_pair.jpg",
+        "path": "canon_review_images/vornskyr/wookieepedia_essentialguide_pair.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_swamp_pack.jpg",
+        "path": "canon_review_images/vornskyr/wookieepedia_swamp_pack.jpg"
+      }
+    ],
+    "sourced_text": "The mod's spelling (\"Vornskyr\") does not match any Wookieepedia title; the\ncanonical spelling on both current canon and Legends is **`Vornskr`** (no\nsecond \"y\"). `Vornskyr` itself does not resolve \u2014 a plain `Vornskr` lookup\nis the correct target creature and is what this file researches.\n\nWookieepedia's `Vornskr` page is tagged Legends-only (`{{Top|leg}}`) \u2014 there\nis currently no distinct current-canon article, though vornskrs are the\nForce-tracking predator native to **Myrkr**, the Force-nullifying planet the\ntask brief names, and that Myrkr/Force-hunting relationship is treated as\ncanon lore across all eras (it underpins Myrkr's in-universe role in both\nLegends and current-canon Thrawn material).\n\n- **Species**: canine beast, non-sentient, native to the forest planet\n  Myrkr. Height ~0.8 meters.\n- **Coloring**: infobox gives haircolor as **gray and black**, eyecolor\n  **red**.\n- **The Force-tracking ability is the defining trait**: vornskrs evolved to\n  hunt ysalamiri (small lizard-like creatures on Myrkr that, in turn,\n  evolved a Force-suppression \"bubble\" specifically to defend against\n  vornskr predation). A side effect of the vornskr's Force-sense is that it\n  also treats Force-sensitive beings (including Jedi) as favored prey.\n- **Behavior**: primarily nocturnal, wild and vicious; hunts using a\n  whip-like, mildly venomous tail to stun prey before finishing with its\n  teeth. Docile individuals (e.g. smuggler Talon Karrde's pets Sturm and\n  Drang) remain instinctively hostile toward Force-users even after\n  domestication and tail-removal.\n- **Cultural footprint**: the lightsaber form later refined into Vaapad\n  (Form VII) was originally called \"the Way of the Vornskr.\" Vornskrs were\n  bred and trained as hunting/guard animals by figures including Tyber Zann\n  and Talon Karrde.",
+    "visual_brief": "Three candidate images, and they diverge more than they agree \u2014 this is\nanother text-vs-image (and image-vs-image) mismatch case:\n\n- `wookieepedia_alienarchive.jpg` (captioned \"Two vornskrs on Myrkr\" in the\n  source article, credited to *The Essential Guide to Alien Species*) \u2014\n  shows a **hairless, smooth dark-gray/near-black skinned** quadruped:\n  reptilian-textured hide rather than fur, tall pointed bat-like ears, a\n  narrow snarling canine/reptile-hybrid muzzle with visible fangs, **red\n  eyes**, and a long whip-thin tail ending in a bushy black tuft. Four\n  clawed digits per paw. This is the closest single-creature match to the\n  infobox's \"gray, black, red eyes\" and reads as the most credible baseline\n  reference.\n- `wookieepedia_essentialguide_pair.jpg` (captioned \"A pack of vornskrs\" in\n  the source article) \u2014 shows two creatures that are **noticeably shaggier\n  and furrier** than the AA image: pale cream/tan-white long fur, a mane-like\n  ruff around the neck/shoulders, red eyes, a similar whip tail with dark\n  tuft, and a more bulky/boar-like build than the lean AA individual. Still\n  broadly consistent with \"gray/black + red eyes\" if the fur is read as a\n  lighter variant, but the silhouette (heavier, maned, shaggy) disagrees\n  with the sleek hairless AA depiction.\n- `wookieepedia_swamp_pack.jpg` (a multi-creature pack scene in a dark\n  swamp) \u2014 shows several **smooth black-skinned** vornskrs with **glowing\n  yellow eyes** (not red), curved horn-like ears, and the same whip tail\n  shape. The yellow eye color directly contradicts the infobox's \"red\" and\n  the other two images; treat this as an outlier, likely stylized for a\n  dramatic low-light comic/game scene rather than a color-accurate baseline.\n\n**Net read**: body plan is consistent across all three \u2014 quadruped canine\npredator, tall pointed ears, a long whip-like tail ending in a distinct\ntuft, prominent fangs. Coloring is NOT consistent: two of three sources\nagree on red eyes over gray/black skin (matching the infobox), but fur\ndensity/length and the third source's yellow eyes are genuinely\ncontradictory. Treat `wookieepedia_alienarchive.jpg` as the primary color\nanchor (matches infobox exactly) and the other two as showing the plausible\nrange of variation (or inconsistent non-canon art), not settled fact.",
+    "folder": "design/RimStarWars/canon_references/vornskyr",
+    "prefill": "1"
+  },
+  {
+    "id": "vulptex",
+    "label": "Vulptex",
+    "group": "High confidence disagreement",
+    "effect": "Canon vulptices have a signature coat of hard, faceted crystalline bristle spikes and a tall, leggy, upright stance, but the donor sprite is a smooth-shaded, low-slung, short-legged cartoon icon with no crystalline texture whatsoever, disagreeing on nearly every visual axis.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/vulptex/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/vulptex/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_battlescreencap.jpg",
+        "path": "canon_review_images/vulptex/wookieepedia_battlescreencap.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_craitsurface.jpg",
+        "path": "canon_review_images/vulptex/wookieepedia_craitsurface.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/vulptex/wookieepedia_infobox.jpg"
+      }
+    ],
+    "sourced_text": "Vulptices (singular vulptex) were a non-sentient species of omnivorous,\ngregarious canids native to the mineral world **Crait**, first appearing in\n*Star Wars: The Last Jedi* (2017). Fox-like in build, with a flexible body,\nlarge upright pointed ears, and a bushy tail. Their single most distinctive\nfeature \u2014 called out explicitly in the infobox as \"unique crystalline\nbristles/spikes\" \u2014 is a coat made of **white crystalline bristles**\ncovering the whole body, which jingle/tinkle audibly as they move and which\nthe species reportedly uses to communicate (rubbing bristles against stones\nor each other to make pack-specific sound patterns). Eye color is given\ninconsistently by two production sources: **blue** (per the *TLJ* trailer)\nand **red** (per *TLJ* behind-the-scenes footage) \u2014 Wookieepedia lists both.\nSize: ~51 cm tall, ~1.2 m long, ~9.1 kg \u2014 a small animal, roughly\ncoyote/fox-sized rather than wolf-sized. Habitat: highland caves, canyons,\nand salt flats on Crait; diet of tubers and small burrowing mammals dug from\nunder the salt crust. Live in family groups called skulks (3-4 families,\nup to ~10 each; occasionally larger dens of up to ~100). Canon role: appear\nduring the Battle of Crait in *The Last Jedi* \u2014 a skulk hides in the\nResistance's abandoned rebel base, and one vulptex leads the escaping\nResistance survivors to a hidden exit, which Rey then widens with the Force.\n**Behind the scenes**: per creature effects supervisor Neal Scanlan, the\nin-universe explanation is that \"they've fed off this planet for so long\nthat their fur has become crystalline... they've taken on the very surface\nof the planet they live on\" \u2014 i.e. the crystal coat is an adaptation to\nCrait's crystalline salt-and-mineral surface, not incidental decoration.\nDesigners cited \"crystal glass chandeliers\" as a visual reference for the\ncoat's faceted, light-catching quality. The creature was built as a\npractical animatronic for the film.",
+    "visual_brief": "All four candidate images agree closely with each other and with the text.\nThe vulptex is NOT a smooth-furred fox with sparkly highlights \u2014 the\n\"crystalline\" coat is a bold, literal visual feature: individual bristles\nread as hard, faceted, glass-like **shards/spikes** standing up off the\nbody (most visible along the spine, shoulders, and especially the tail,\nwhich is a dense brush of spike-like points rather than a soft fluffy\nbrush). The two studio/promotional renders (`wookieepedia_infobox.jpg`,\n`wookieepedia_masterwork.jpg`) show this clearly in clean lighting: a\ngrey-blue-white coat with visible individual crystal facets catching cool\nlight, a long slender fox muzzle, very large upright triangular ears, a\nlong thin tail covered in the same spiked coat, and notably **long, thin\nlegs and an upright, almost deer-like stance** \u2014 taller and leggier than a\nreal-world fox, not low-slung. The two in-film screencaps\n(`wookieepedia_craitsurface.jpg`, `wookieepedia_battlescreencap.jpg`)\nconfirm the same silhouette and coat under real film lighting/grading, and\nalso confirm the text's eye-color inconsistency firsthand: the cave shot\nshows glowing **orange/amber** eyes, while the daylight battle shot shows\nclearly **blue** eyes \u2014 the two production sources Wookieepedia cites are\nnot reconciled in the actual footage either, so both are genuinely correct\ndepending on shot/lighting.\n\n**The donor sprite (`donor_current_sprite.png`) disagrees with canon on\nnearly every visual axis.** It is a flat cartoon icon: a low-slung,\nelongated, short-legged body (closer to a ferret or a lounging rabbit than\nan upright fox), a smooth smoothly-shaded white coat with pale blue patches\nand a solid black outline, and **no crystalline/faceted texture\nwhatsoever** \u2014 no spikes, no shard shapes, no faceted shading anywhere on\nthe body or tail. The white base color and cool blue tint are the only\nthings it gets right; the silhouette (should be tall/leggy/upright, is\nlow/long/crouched), the ear size (canon's ears are dramatically larger\nrelative to the head), and above all the signature crystalline bristle\ntexture (entirely absent) are all mismatched against every reference image.\nAny regen should prioritize the spiked/faceted coat texture first \u2014 it's\nthe one feature that makes a vulptex recognizable as a vulptex rather than\na generic white fox \u2014 and correct the body proportions toward a taller,\nlonger-legged stance.",
+    "folder": "design/RimStarWars/canon_references/vulptex",
+    "prefill": "4"
+  },
+  {
+    "id": "wampa",
+    "label": "Wampa",
+    "group": "High confidence disagreement",
+    "effect": "Every canon reference shows a bipedal, ape/yeti-postured predator with visible claws and small horns, but the donor sprite is drawn as a quadrupedal, bear/dog-like grazing animal with no claws or horns and brown face blotching not seen in any reference, called out as a bigger disagreement than the dewback or bantha cases.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/wampa/comic_cover_agesolo.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "comic_cover_agesolo.jpg",
+        "path": "canon_review_images/wampa/comic_cover_agesolo.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/wampa/donor_current_sprite.png"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_infobox_esb.jpg",
+        "path": "canon_review_images/wampa/wookieepedia_infobox_esb.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_unused_concept.jpg",
+        "path": "canon_review_images/wampa/wookieepedia_unused_concept.jpg"
+      }
+    ],
+    "sourced_text": "Wampas (\"wampa ice creatures\") were a carnivorous, semi-sentient, white-furred\nspecies of mammal dwelling on the snow-clad planet Hoth. Wookieepedia gives:\nheight 2.5\u20133 meters, mass ~150 kg average (up to 200 kg max recorded), **white\nfur**, **black eyes**, a pair of small cranial horns, and cave-dwelling\nbehavior. One of Hoth's top predators, using white fur as camouflage to\nambush prey (chiefly tauntauns) with razor-sharp fangs and claws, then\ndragging the catch back to a cave to hang upside-down until consumed \u2014 which\nis exactly what happens to Luke Skywalker at the start of *The Empire Strikes\nBack*. Described as demonstrating advanced intelligence and caring about their\nclans (semi-sentient, not a mindless beast). Diet: carnivore. Habitat: snow\nplains/ice caves of Hoth. A visually similar \"cousin species,\" the Mogu,\nexists on the warmer world of Koboh but is a distinct species.",
+    "visual_brief": "The candidate images broadly agree on white shaggy fur, black facial\nfeatures, and a heavyset ape/bear-like posture with prominent claws \u2014 but\nthey diverge on stance and menace level. The ESB-era infobox still (practical\nsuit, bound and hoisted by rope, arms raised) and the unused behind-the-scenes\nstill (screaming close-up, fangs bared, blood-streaked claws and muzzle) both\nshow a **bipedal, ape/yeti-like posture** with long shaggy white fur, dark\nbald-looking facial skin around the eyes/muzzle, small dark eyes, and visible\nsharp claws and fangs \u2014 genuinely frightening, not cute. The official comic\ncover art (Luke dangling, wampa lunging with jaws open) confirms the same\nwhite-furred, black-eyed, fanged, roughly humanoid-postured predator, plus\nvisible small horns on the head silhouette matching the \"small cranial horns\"\nin the text.\n\n**The current donor sprite (`donor_current_sprite.png`) disagrees in body\nplan, not just detail**: it is drawn as a **quadrupedal**, bear/dog-like\ngrazing-animal silhouette (side profile, four legs on the ground, gentle\nposture) with tan/brown blotching on the face \u2014 none of the reference images\nshow a wampa on all fours, and none show brown blotching; every reference is\na bipedal, upright, arms-out predator with a mostly white coat and dark bare\nskin only immediately around the eyes/muzzle. The donor sprite also omits the\nclaws and small horns entirely. A regen should correct the stance to\nupright/bipedal-reaching and add visible claws and small head horns; this is\na bigger disagreement than the Dewback or Bantha cases and is worth flagging\nprominently for the owner's ruling.",
+    "folder": "design/RimStarWars/canon_references/wampa",
+    "prefill": "3"
+  },
+  {
+    "id": "wyyyschokk",
+    "label": "Wyyyschokk",
+    "group": "High confidence disagreement",
+    "effect": "The sourced Wookieepedia prose ('near-black to dark reddish-brown chitin') undersold the real canon look; an owner-ruled correction established the true design as blue-grey with a bold yellow-orange abdomen cross, and even among the images the Fallen Order concept sheet renders that cross closer to red than yellow-orange. This is the exemplar case this whole reference library was built to catch.",
+    "contested": true,
+    "meta": {
+      "confidence": "high"
+    },
+    "thumb": "canon_review_images/wyyyschokk/official_art_fallenorder_concept.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "official_art_fallenorder_concept.jpg",
+        "path": "canon_review_images/wyyyschokk/official_art_fallenorder_concept.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_cocoonedstormy.jpg",
+        "path": "canon_review_images/wyyyschokk/wookieepedia_cocoonedstormy.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_eggs.jpg",
+        "path": "canon_review_images/wyyyschokk/wookieepedia_eggs.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_jfo_infobox.jpg",
+        "path": "canon_review_images/wyyyschokk/wookieepedia_jfo_infobox.jpg"
+      }
+    ],
+    "sourced_text": "A large arachnid predator native to Kashyyyk's Shadowlands. Canon Wookieepedia\nprose (as pulled by the 2026-09-13 canon-brief pass) described it as\n\"near-black to dark reddish-brown chitin\" \u2014 **this text description undersold\nthe real visual canon and is the worked example for why text alone fails; see\nbelow.**",
+    "visual_brief": "",
+    "folder": "design/RimStarWars/canon_references/wyyyschokk",
+    "prefill": "1"
+  },
+  {
+    "id": "boma",
+    "label": "Boma",
+    "group": "Medium confidence disagreement",
+    "effect": "The Databank render and infobox text agree the boma is green and squat, but the Empire's End comic shows a large blue-grey mount-scale boma, disagreeing with both the infobox skincolor and the first image.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/boma/boma_wookieepedia_1.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "boma_wookieepedia_1.jpg",
+        "path": "canon_review_images/boma/boma_wookieepedia_1.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "boma_wookieepedia_2.jpg",
+        "path": "canon_review_images/boma/boma_wookieepedia_2.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/boma/donor_current_sprite.png"
+      }
+    ],
+    "sourced_text": "Bomas are **Legends** ravenous beasts native to **Onderon and its moon\nDxun** (KOTOR era, ~4000 BBY). Infobox: **skin color Green**, class\n\"Reptile,\" habitat jungle, diet carnivore. Distinctions: \"Squat face with 2\nhorns and 2 tusks,\" \"thick scales.\"\n\n\"A species of monstrous, wingless beasts that had green reptilian hides,\nlong tails, four horns, dagger-like claws, and savage teeth.\"\n\n\"Although most bomas were generally small, there were some that were\nextremely large in size, as experienced by the Jedi Exile and her\ncompanions while exploring [Dxun].\" Dangerous predators known to kill\nMandalorians, themselves preyed on by zakkeg beasts and drexl. Also\nappeared as tamed/ridden beasts \u2014 used by Jedi Knight Tott Doneeta (Force\nanimal-bond) to breach a citadel, and depicted as a large mount carrying a\nhowdah/canopy with multiple riders in *Empire's End* (11 ABY, set on\nOnderon).",
+    "visual_brief": "The two candidate images show what reads as **two different \"sizes\" of\nboma described in the text** (\"most bomas were generally small... some\nextremely large\"), and they disagree sharply on scale/role but agree on\ncore coloring:\n- The Databank-style render shows a **squat, monstrous, green** reptilian\n  predator: bulldog/toad-like stance, a wide horned-and-tusked face, thick\n  wrinkled scaled hide, short powerful clawed legs, a moderate tail \u2014\n  matches the infobox's \"squat face, 2 horns, 2 tusks, thick scales\" almost\n  exactly. This is the small/wild predatory boma.\n- The comic panel (*Empire's End*) shows an entirely different-scale scene:\n  a large **blue-grey** quadruped beast of burden carrying a canopied\n  howdah with multiple passengers (echoing the \"extremely large\" bomas used\n  as mounts) \u2014 long tail, blunt horned snout, thick legs, more Triceratops/\n  rancor-adjacent in proportion than the squat predator. Coloring here\n  reads blue-grey/tan rather than green, a disagreement with the infobox's\n  stated green skin color and with the first image.\n\nOur own donor sprite (`donor_current_sprite.png`) is **green**, low and\nsquat with a stocky tail and blunt snouted head \u2014 this matches the small\npredatory-boma reading (image 1 and the infobox skincolor) well, and does\nnot attempt the large-mount variant seen in image 2.",
+    "folder": "design/RimStarWars/canon_references/boma",
+    "prefill": "1"
+  },
+  {
+    "id": "cancell",
+    "label": "Cancell",
+    "group": "Medium confidence disagreement",
+    "effect": "The authoritative Teth CGI render matches the sourced red/blue/green palette, but the TGTB game render shows a brown/tan feathered bird-like creature with a teal crest, an outlier that contradicts the sourced skin color entirely.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/cancell/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/cancell/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_rots_kashyyyk.jpg",
+        "path": "canon_review_images/cancell/wookieepedia_rots_kashyyyk.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_teth_tcw.jpg",
+        "path": "canon_review_images/cancell/wookieepedia_teth_tcw.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_tgtb.jpg",
+        "path": "canon_review_images/cancell/wookieepedia_tgtb.jpg"
+      }
+    ],
+    "sourced_text": "A species of flying insect found on many planets across the galaxy \u2014\nKashyyyk (first/primary appearance, *Star Wars: Episode III \u2013 Revenge of the\nSith*), Batuu, Aleen, Ryloth, Rodia, Taul, and Teth. Class: Insect.\nSkin color: **red and blue**. Eye color: **green**. Length: more than 3\nmeters (9 ft 10 in) \u2014 a large creature, not a small bug. They have **quad\nwings** (two pairs) and large eyes. Wookiees on Kashyyyk consider seeing a\ncan-cell good luck and modeled the *Raddaugh Gnasp* fluttercraft's design on\nthem; can-cells are drawn to the buzzing engine sound of Wookiee jet\ncatamarans and congregate at their landing pads. Some Batuu residents keep\nnative can-cells as pets. In *The Clone Wars* film, Anakin Skywalker and\nAhsoka Tano ride one on Teth to escape Asajj Ventress and reach the\n*Twilight*. Luke Skywalker's line about \"bulls-eyeing womp rats in my T-16\"\nback home on Tatooine is the more famous pop-culture reference point the\nowner named, though can-cell's sourced habitat list above (per Wookieepedia)\ndoes not include Tatooine by name \u2014 its screen appearances are Kashyyyk and\nTeth.",
+    "visual_brief": "Three images, and they diverge in fidelity/style but agree on the core\ndragonfly-like body plan:\n- **The movie-accurate CGI render (Teth, *Clone Wars* film)** is the clearest\n  and most authoritative: an elongated **red/maroon segmented insectoid\n  body**, large **bright green compound eyes** (exact match to the \"eyecolor:\n  Green\" field), **dark blue-black jointed legs**, yellow-tipped antennae/\n  mandible fringe, and two pairs of long, thin, translucent dragonfly wings\n  extending in both directions \u2014 this is the strongest single confirmation\n  of the sourced \"red and blue\" skin + \"green\" eyes.\n- **The ROTS Kashyyyk wide shot** shows only a small silhouette in flight\n  over misty mountains \u2014 confirms the elongated dragonfly-like flying\n  silhouette and large wingspan relative to body, but no usable color detail\n  at this resolution.\n- **The \"TGTB\" game/render image** shows a different visual treatment: a\n  **brown/tan feathered-looking body** with a rounded **teal/turquoise\n  crest** on the head and long clawed legs, gliding on what appear to be\n  tether lines \u2014 bird-like rather than insectoid, and the color palette\n  (brown+teal) does not match the sourced \"red and blue\" skin at all. This\n  looks like a lower-fidelity or reimagined asset; treat the Teth CGI render\n  as the authoritative canon look and the TGTB image as the outlier.\n\n**The current donor sprite** (`donor_current_sprite.png`) shows an\ninsect/dragonfly-like creature with a long segmented body, a pair of large\ntranslucent wings, and a distinct head with a visible eye \u2014 muted pink/cream/\ntan coloring with faint blue-ish streaks near the head/neck. It agrees with\ncanon on the broad body plan (elongated insect with large wings) but its pale\npink-tan palette matches neither the sourced \"red and blue\" skin nor either\ncandidate image's palette well; the closest canon match for color is the Teth\nCGI render (red body, blue legs, green eyes) \u2014 a regen should push the donor's\nwashed-out pink-tan toward that stronger red/blue/green palette.",
+    "folder": "design/RimStarWars/canon_references/cancell",
+    "prefill": "2"
+  },
+  {
+    "id": "dalgo",
+    "label": "Dalgo",
+    "group": "Medium confidence disagreement",
+    "effect": "Both canon reference images show a tall, long-legged raptor-built runner, but the donor sprite renders a low, stocky, dachshund-shaped quadruped with short legs and a curled tail, the opposite build.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/dalgo/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/dalgo/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_encyclopedia_art.png",
+        "path": "canon_review_images/dalgo/wookieepedia_encyclopedia_art.png"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_sot_art.png",
+        "path": "canon_review_images/dalgo/wookieepedia_sot_art.png"
+      }
+    ],
+    "sourced_text": "",
+    "visual_brief": "Both candidate images (Star Wars Encyclopedia art and a \"Secrets of Tatooine\"\npiece \u2014 note: shown mounted with tack despite the Onderon-jungle origin,\nconsistent with its use as a domesticated battle mount) agree closely and\nmatch the text: a tall, long-legged reptilian runner with a raptor/theropod\nbuild, not a low-slung lizard. The head has a pronounced sail-like dorsal\ncrest running from the crown down the neck, a long snout with visible sharp\nteeth (including the lower tusks), and the hide is a warm **rust-orange**\nwith a paler cream/tan underside and belly, exactly matching the \"orange\nskin\" infobox field. Both images show the animal saddled and reined as a\nmount, legs long and thin, built for speed rather than bulk.\n\n**The current donor sprite (`donor_current_sprite.png`) disagrees on body\nproportions**: it keeps the correct orange/rust coloring and a small\nhead-crest, but renders the animal as a low, stocky, elongated\ndachshund-shaped quadruped with short stubby legs and a curled tail \u2014 the\nopposite of the tall, long-legged running/sprinting build shown in every\nreference image. The blade-like tail tip and forward-facing nostril crest\nare also not legible on the donor sprite. Any regen should raise the body\nonto long thin legs, lengthen the snout, and keep the orange-with-cream-\nunderside palette and dorsal crest.",
+    "folder": "design/RimStarWars/canon_references/dalgo",
+    "prefill": "2"
+  },
+  {
+    "id": "eopie",
+    "label": "Eopie",
+    "group": "Medium confidence disagreement",
+    "effect": "Canon eopies are a long, low camel-like quadruped with visible legs and a trunk-snout, but the donor sprite is a rounded, legless blob with a stubby trunk and no pack gear, even though its pale color is correct.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/eopie/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/eopie/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_herd.jpg",
+        "path": "canon_review_images/eopie/wookieepedia_herd.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_infobox.png",
+        "path": "canon_review_images/eopie/wookieepedia_infobox.png"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_screencap.jpg",
+        "path": "canon_review_images/eopie/wookieepedia_screencap.jpg"
+      }
+    ],
+    "sourced_text": "Eopies were quadruped mammalian herbivores native to the desert planet\nTatooine, tough and acclimated to the endless desert, and domesticated by the\nplanet's inhabitants as transports and beasts of burden \u2014 though bad-tempered,\nstubborn, and prone to breaking wind under a heavy load. Average height ~1.75-2\nmeters. Their rough skin protected them from the heat of Tatooine's twin suns,\nand their hooves were adapted to climbing rocky cliffs. The trunked mouth\nsecretes an adhesive spit the eopie layers over its own eyes (and a parent\nlays over a young eopie's head) as sandstorm protection. Though herbivorous,\neopies can eat meat with no ill effects (as with banthas) \u2014 Obi-Wan Kenobi's\neopie Akkani happily ate meat scraps during his exile on Tatooine. Lifespan\n~90 standard years. Canon role: Tatooine's default pack/transport animal for\nmoisture farmers and locals \u2014 seen ridden and laden with cargo baskets/saddle\ngear in *The Phantom Menace* (hauling podracer parts), *Obi-Wan Kenobi*, and\nmultiple *Clone Wars* episodes; also found on Saleucami, Zardossa Stix, and\nBatuu. Behind the scenes: the eopie design began as a retouched production\npainting of the kaadu (the creature that was ultimately reassigned to the\nGungans of Naboo instead).",
+    "visual_brief": "The candidate images agree closely with each other and diverge sharply from\nthe donor sprite's color. Eopies read as **pale \u2014 cream, dusty tan, or a\npinkish-grey** skin tone, never brown. The body plan is unmistakably\ncamel-like: a long, low-slung barrel body on four thin legs, each ending in\nsmall clawed/hoofed toes, topped by a genuinely elongated **trunk-like\nsnout** (more tapir/small-elephant trunk than a simple long muzzle) with one\nlarge dark eye set well back on the head. None of the images show visible fur\nor hair \u2014 the hide reads smooth-to-leathery, not woolly. Every reference shows\nthe eopie loaded with practical tan/brown leather cargo saddlebags and woven\nwicker panniers strapped across its back and neck, which is core to its\nin-universe role as a pack animal, though that's harness/tack rather than a\nbody feature. The stylized \"EOPIES!\" cartoon thumbnail is a much lower-fidelity\nsource (flat shading, exaggerated cartoon eyes) but still agrees on the pale\ntan color and the long trunk-snout silhouette, so it corroborates rather than\ncontradicts the higher-fidelity images.\n\n**The current donor sprite (`donor_current_sprite.png`) gets the color\nroughly right** \u2014 it's a similar pale dusty pink-grey \u2014 **but the shape is\nwrong**: it's a rounded, legless blob with a stubby trunk-snout, no visible\nlegs, no saddle/pack gear, and none of the long low camel-backed silhouette\nevery reference image shows. Any regen should keep the pale skin tone but\ngive the body a longer, lower quadruped silhouette with visible legs and the\ndistinctive trunk-like snout reading clearly against the body.",
+    "folder": "design/RimStarWars/canon_references/eopie",
+    "prefill": "3"
+  },
+  {
+    "id": "fanback",
+    "label": "Fanback",
+    "group": "Medium confidence disagreement",
+    "effect": "The species infobox metadata field states green skin, but the only surviving illustration shows a tan/khaki-olive body with dark brown mottling, not green at all.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/fanback/wookieepedia_egg.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "wookieepedia_egg.jpg",
+        "path": "canon_review_images/fanback/wookieepedia_egg.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/fanback/wookieepedia_infobox.jpg"
+      }
+    ],
+    "sourced_text": "Legends-only entry (page carries the `{{Top|leg}}` Legends banner \u2014 no current-canon\npage exists for this creature). Source: *Episode I Adventures 11: Pirates from\nBeyond the Sea*, cited via the \"Complete Star Wars Encyclopedia\".\n\n- **Species infobox**: skin color listed as **Green**; origin **Naboo**. No\n  height/length/mass/lifespan fields filled in.\n- **Body plan**: a cold-blooded amphibian with a large dorsal spine (sail) and a\n  sensitive snout.\n- **Diet/behavior**: carnivore; preyed on \"egg-eaters\" (a separate Naboo species).\n- **Canon role**: minor background fauna. Shortly after 32 BBY the Gungans\n  transported fanbacks (and other animals) to the moon Ohma-D'un to try to\n  establish an ecosystem there; most of that flora/fauna was later destroyed by\n  Separatists during the Battle of Ohma-D'un.\n- **Behind the scenes**: the wiki explicitly notes the fanback resembles the\n  extinct Earth species *Dimetrodon* (the sail-backed \"mammal-like reptile,\" not\n  a dinosaur, despite popular association).\n- **Appearances**: *Episode I Adventures 9: Rescue in the Core*, *Episode I\n  Adventures 11: Pirates from Beyond the Sea*, and the PC game *Star Wars\n  Episode I: The Gungan Frontier* (first appearance). Non-canon: *Star Wars:\n  Super Bombad Racing*.",
+    "visual_brief": "Only two images exist on the Wookieepedia page: the species infobox\nillustration and a separate \"fanback egg\" illustration (a nest scene, no\nadult animal visible). Both are the same era/style of Episode I Adventures\nbook illustration \u2014 muted, painterly, sepia-toned page background.\n\n- `wookieepedia_infobox.jpg` \u2014 the primary (and only) reference for the\n  animal itself. Shows a **Dimetrodon-shaped** reptile/amphibian: squat\n  low-slung body, thick tail, short stubby legs, and a wide toothy jaw with\n  visible lower fangs \u2014 reads as an active predator, not docile. Body color\n  is **tan/khaki-olive with darker brown mottled spots**, NOT the vivid or\n  clean green the infobox metadata field claims. The dorsal sail is the\n  standout feature: tall, rounded, running most of the spine's length,\n  colored a darker brown-to-near-black at its trailing/upper edge, lighter\n  tan at its base where it meets the body.\n- `wookieepedia_egg.jpg` \u2014 no animal visible; shows only a sand/mud nest\n  mound with dry grass tufts and one large cream-white egg with fine dark\n  speckling, half-buried in a shallow brown depression. Useful only for\n  confirming egg-laying (oviparous) behavior and a desert/dune nesting\n  habitat consistent with Naboo's swamp-adjacent drylands, not for body\n  color.\n\n**Text vs. image disagreement**: the species infobox metadata field says\n`skincolor=Green`, but the actual illustration does not read as green \u2014 it\nreads as tan/olive-brown with dark mottling, closer to a real-world monitor\nlizard or Dimetrodon reconstruction than anything green-skinned. Treat the\nillustration as the stronger signal (per this library's standing rule that\nimages outrank text), and note the \"Green\" field as likely an\napproximation/rounding by whoever filled in the old infobox rather than an\naccurate description of the single piece of art that exists. No second\nindependent image exists to cross-check this against, which is itself worth\nflagging: this creature has effectively **one** surviving canon depiction.\n\n**Net read for art**: sail-backed, Dimetrodon-silhouette reptilian\namphibian; tan/khaki-olive base coat with darker brown mottled spots; sail\ndarker brown to near-black along its edge; toothy predator jaw; short legs;\nthick tail; desert/mudflat nesting habitat with a large speckled egg.",
+    "folder": "design/RimStarWars/canon_references/fanback",
+    "prefill": "2"
+  },
+  {
+    "id": "jerba",
+    "label": "Jerba",
+    "group": "Medium confidence disagreement",
+    "effect": "Canon jerbas are shaggy/long-haired with short, gently ridge-curved horns, but the donor sprite reuses the bantha's smooth-coated art with large tight ram-spiral horns, a clear texture and horn-shape mismatch.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/jerba/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/jerba/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_alienarchive.jpg",
+        "path": "canon_review_images/jerba/wookieepedia_alienarchive.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_anh_movie_still.jpg",
+        "path": "canon_review_images/jerba/wookieepedia_anh_movie_still.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_cantina_tethered.jpg",
+        "path": "canon_review_images/jerba/wookieepedia_cantina_tethered.jpg"
+      }
+    ],
+    "sourced_text": "A jerba was a shaggy, smooth-haired quadruped found in desert environments,\nmost notably on Tatooine. Strong, sturdy build with a horned head; considered\nby some (Han Solo) to be \"uglier than the back end of a shaved bantha.\"\nHaircolor brown, eyecolor orange, with ridged horns per *Star Wars\nBattlefront*. Their strong build made them good beasts of burden, and they\nwere also kept for milk and meat, with a subculture of jerba breeders across\nthe galaxy. Jerba leather was tanned for boots, jewelry, and rugs (Leia wore\njerba-leather boots as part of her dancing-girl costume in Jabba's Palace).\nTethers for jerbas and banthas stood outside Tosche Station in Anchorhead, and\nwary jerbas gathered near the building \u2014 this is the creature's on-screen\ndebut in *A New Hope* (1977), visible tethered near the Millennium Falcon /\nDocking Bay 94 area. Jabba the Hutt kept a jerba trophy head mounted in his\npalace alongside other hunting trophies. Much more prominent in modern media\nas the smaller mount ridden by younger Tusken Raiders in *The Book of Boba\nFett* \u2014 smaller and more agile than a full bantha, suited to a young rider.",
+    "visual_brief": "The two highest-fidelity sources \u2014 the genuine 1977 *A New Hope* movie still\nand the Alien Archive illustration \u2014 agree closely: jerbas are covered in\n**long, shaggy, unkempt brown fur** hanging in ragged locks (visibly longer\nand stringier than a bantha's coat, almost goat-like), with a **pair of\nshort, forward-curving ridged horns** on the head and a blunt, slightly\nundershot lower jaw with visible teeth. The movie still shows the real\npractical creature as dark brown, dusty, and shaggy, photographed tethered\nagainst a Tatooine adobe wall (with R2-D2 and a blaster rifle in the\nforeground) \u2014 an authentic on-set reference for scale and texture. The\nAlien Archive line-art gives a cleaner full-body profile: reddish-brown\nshaggy coat, a collared neck (domesticated pack-animal framing), the same\nshort ridged horns, and a low-slung sturdy body silhouette. The small comic\npanel (jerba tethered outside a cantina, next to a droid) is much lower\ndetail but is consistent \u2014 dark brown, laden with a saddle pack, docile.\n\n**The current donor sprite (`donor_current_sprite.png`) is the shared Bantha\nart (`Bantha_east`)**: a solid dark brown, smooth-shaded blob with a pair of\nlarge curled ram-like horns, no fur texture at all, and a squared-off body.\nThis disagrees with canon jerba texture in one clear way \u2014 real jerbas are\nexplicitly **shaggy/long-haired**, not smooth-coated, and their horns are\nshort and gently ridge-curved rather than the large tight ram-spiral horns\nthis donor shares with the adult bantha. Since the mod intentionally reuses\nbantha art for the jerba (as a \"smaller relative\" placeholder), any dedicated\njerba art should differentiate it with a visibly shaggier coat and smaller,\nstraighter/ridged horns rather than the bantha's heavy curled horns.",
+    "folder": "design/RimStarWars/canon_references/jerba",
+    "prefill": "2"
+  },
+  {
+    "id": "kreetle",
+    "label": "Kreetle",
+    "group": "Medium confidence disagreement",
+    "effect": "Three sources (infobox art and two Republic Commando screenshots) show a reddish-maroon ribbed shell, but the Star Wars Galaxies render shows a noticeably more olive/khaki-brown shell, a genuine cross-image color disagreement.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/kreetle/swg_kreetle.jpg",
+    "images": [
+      {
+        "key": "1",
+        "filename": "swg_kreetle.jpg",
+        "path": "canon_review_images/kreetle/swg_kreetle.jpg"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_geonosis.jpg",
+        "path": "canon_review_images/kreetle/wookieepedia_geonosis.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/kreetle/wookieepedia_infobox.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_kashyyyk.jpg",
+        "path": "canon_review_images/kreetle/wookieepedia_kashyyyk.jpg"
+      }
+    ],
+    "sourced_text": "Legends-only creature (current canon only shows an \"Unidentified creature\"\nat Ronto Roasters in Galaxy's Edge that fans associate with the kreetle \u2014\nnever formally named in current canon). Per the Legends article:\n\nThe **kreetle** was a parasitic, burrowing insect commonly found in homes\nand around cities on multiple worlds (Tatooine, Naboo, Kashyyyk, Geonosis).\nSpecies infobox: **skin color brown**, **eye color yellow**, distinctions\nlisted as *Shell*, *Ten legs*, *Large jaws*. Body text is more specific:\n\"equipped with five pairs of legs [ten legs total], a tough\n**reddish-brown exoskeleton**, and large mandibles.\" Habitat: burrows,\ndesert, forest, swamp, urban; diet omnivorous, though behavior text also\nsays they \"fed on flesh, whether living or dead\" and attacked in groups of\nfour-to-five. A larger, more aggressive variant race exists, the\n\"Overkreetle.\" Gungans on Naboo used kreetles as nutcrackers and also ate\nthem. First appeared in the *Star Wars Episode I: The Gungan Frontier*\ngame; also appears in *Jedi Power Battles*, *Republic Commando* (rendered\nthere with only three pairs of legs, not five, per the \"Behind the scenes\"\nsection), *Star Wars Galaxies*, and several novels (later used only as an\ninsult, \"kreetle,\" in Legacy-era books).",
+    "visual_brief": "Unlike the Peko-peko/Wyyyschokk cases, text and images **agree well** here \u2014\nall four candidates show the same basic body plan and there is no dramatic\n\"generic vs canon\" contradiction. The one real disagreement is shell color:\n\n- `wookieepedia_infobox.jpg` \u2014 the official species-page illustration (art\n  from *The Art of Star Wars Episode I*/Jedi Power Battles era). Shows a\n  low, domed, **segmented reddish-maroon ribbed carapace** (like a\n  pillbug/woodlouse or hermit-crab shell), a tan/gold mottled head with\n  dark reddish spots, prominent dark curved mandibles/tusks at the front,\n  bright **yellow eyes**, and short jointed legs along both sides of the\n  body. This matches the sourced text closely (reddish-brown shell, yellow\n  eyes, large jaws, many legs) and is the strongest single reference.\n- `wookieepedia_kashyyyk.jpg` \u2014 small in-game screenshot (*Republic\n  Commando*, \"A kreetle found on Kashyyyk\"): low-res but shows the same\n  domed, ribbed, **pinkish-maroon shell** with visible yellow eye-glints and\n  short leg nubs. Confirms the shell color and low domed-beetle silhouette\n  at production-game fidelity, not just concept art.\n- `wookieepedia_geonosis.jpg` \u2014 small in-game screenshot (\"A kreetle found\n  on Geonosis,\" also *Republic Commando*): same domed **reddish/rust-pink\n  ribbed shell**, yellow eyes, stubby legs \u2014 consistent with the Kashyyyk\n  screenshot, reinforcing reddish-brown/maroon as the in-game standard\n  color rather than a one-off render choice.\n- `swg_kreetle.jpg` \u2014 *Star Wars Galaxies* in-game creature: same domed,\n  ribbed-shell, many-legged body plan and pink eye-glints, but the shell\n  renders as **olive/khaki-brown** rather than reddish-maroon \u2014 noticeably\n  more green-brown than the other three sources. This is a genuine\n  cross-image disagreement, not a text/image one: body plan and eye color\n  agree everywhere, but SWG's coloring skews duller/greener while the\n  *Republic Commando*-era art and screenshots both skew red.\n\n**Net read**: a low, domed, segmented/ribbed shell (pillbug or hermit-crab\nsilhouette) in reddish-brown-to-maroon (SWG's more olive/khaki version is a\nsecondary, less-corroborated variant), a mottled tan/spotted head, dark\nmandibles/tusks, bright yellow eyes, and many short jointed legs along the\nsides (five pairs per the text; three pairs as actually modeled in\n*Republic Commando*). This is a small, floor-hugging arthropod \u2014 treat it as\na scavenger/pest-scale creature, not anything human-sized.",
+    "folder": "design/RimStarWars/canon_references/kreetle",
+    "prefill": "3"
+  },
+  {
+    "id": "porg",
+    "label": "Porg",
+    "group": "Medium confidence disagreement",
+    "effect": "Canon porgs are explicitly beakless with warm mottled gray-to-brown back plumage, but the donor sprite draws a visible dark beak nub and a flat, dark charcoal-gray back with a saturated red-orange cheek patch instead of the softer warm tan/orange seen in every reference.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/porg/donor_current_sprite.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "donor_current_sprite.png",
+        "path": "canon_review_images/porg/donor_current_sprite.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_infobox.jpg",
+        "path": "canon_review_images/porg/wookieepedia_infobox.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "wookieepedia_nest.jpg",
+        "path": "canon_review_images/porg/wookieepedia_nest.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "wookieepedia_shiny_lightsaber.jpg",
+        "path": "canon_review_images/porg/wookieepedia_shiny_lightsaber.jpg"
+      }
+    ],
+    "sourced_text": "Porgs were a non-sentient species of sea-dwelling, beakless birds native to\nthe island planet Ahch-To, where Luke Skywalker lived in exile before the\nevents of *The Last Jedi* (2017). They first appeared on-screen in that film\nand have since recurred across *The Rise of Skywalker*, comics, and Disney\nkids' media (*Star Wars Resistance*, *Chewie and the Porgs*).\n\nSize: small \u2014 **18 to 26 cm** tall, **~0.5 kg (1 lb)**. Body plan: **stocky\nand round**, two short stubby wings, a **flat, beakless face**, two webbed\nfeet, orange/tan legs. Sexually dimorphic \u2014 males slightly larger, with\norange plumage around the eyes (females' eye-plumage color is less\nemphasized in sourcing). Eyes are large, with brown irises, black pupils,\nand stereoscopic/telescopic vision for catching fish. Plumage: dense,\nwaterproof feathers, **white on the body and face**, **gray-to-brown on the\nwings and back**, giving natural camouflage; a soft fluffy underlayer makes\nthem much lighter than they look. Habitat: coastal cliffs, islands, and open\nsea on Ahch-To; diet is fish and crustaceans, caught via controlled dives.\nBehavior: hypercurious, nest-builders (hair/fiber/grass, decorated with\nshiny objects), drawn to shiny objects and human belongings, can wreak havoc\nif curiosity runs unchecked, capable of short flights, vocalize in burbles/\nsqueaks/song. A group of porgs is called a \"murder.\" Canon role: comic\nrelief/wildlife dressing on Ahch-To and later stowaways aboard the\n*Millennium Falcon*; not combatants, not sentient, no known role beyond\nlocal fauna and merchandising icon.",
+    "visual_brief": "All three candidate images agree closely with the sourced text and with\neach other: porgs are **round, egg/teardrop-shaped birds** with a\ndisproportionately large head-to-body ratio, **huge black-pupiled eyes**\nthat dominate the face, a flat beakless face with only a small nostril\nbump (no visible beak \u2014 this matches the text's \"beakless\" claim, which is\neasy to doubt on a \"bird\" until you actually look), short furry-looking\nstub wings held close to the body, and thin orange legs with webbed feet\ntucked almost entirely under the round belly. Coloration matches text\nexactly: **white/cream face and underbelly, gray-to-brown mottled back and\nwing feathers, warm orange-tan cheek/eye patches**. The nest-cliff image\nconfirms the coastal/grassy-cliff-over-ocean habitat and shows the same\ncolor pattern from a side profile. The cliff pair image (with the discarded\nlightsaber) confirms the curious/shiny-object-seeking behavior described in\nthe text and shows the stubby wings spread, functioning more like small\nflippers/arms than flight wings \u2014 consistent with \"short flights only.\"\n\n**The donor sprite disagrees with canon in two ways.** First, color: the\ndonor sprite's back/wings are rendered in a **flat, fairly dark charcoal\ngray** with almost no brown or warm tone, and its cheek patch is a small,\nsaturated **red-orange** blotch rather than the softer warm tan/orange seen\nin every reference image \u2014 the real animal reads warmer and more\nmottled/textured than the donor's flat two-tone fill. Second, the beak: the\ndonor sprite draws a small **visible dark beak/bill nub** at the front of\nthe face; canon porgs are explicitly and visibly **beakless** \u2014 a flat face\nwith only a tiny nostril crease, no protruding beak shape at all. Body\nsilhouette (round egg shape, big head, tiny legs, short wings) and the\nwhite belly / dark back split are otherwise correctly captured by the donor\nsprite.",
+    "folder": "design/RimStarWars/canon_references/porg",
+    "prefill": "2"
+  },
+  {
+    "id": "shiro",
+    "label": "Shiro",
+    "group": "Medium confidence disagreement",
+    "effect": "The current-canon Disney Infinity 3.0 art shows a bright clean green creature, while the Legends group illustration shows duller, mud-toned brown-green shells, a documented color disagreement between the two canon tiers' art.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/shiro/shirodisneyinfinity.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "shirodisneyinfinity.png",
+        "path": "canon_review_images/shiro/shirodisneyinfinity.png"
+      },
+      {
+        "key": "2",
+        "filename": "shiros_group_legends.jpg",
+        "path": "canon_review_images/shiro/shiros_group_legends.jpg"
+      },
+      {
+        "key": "3",
+        "filename": "shirotrap_legends.jpg",
+        "path": "canon_review_images/shiro/shirotrap_legends.jpg"
+      },
+      {
+        "key": "4",
+        "filename": "shirotrap_retracted_legends.jpg",
+        "path": "canon_review_images/shiro/shirotrap_retracted_legends.jpg"
+      }
+    ],
+    "sourced_text": "Search for \"Shiro\" on Wookieepedia is noisy \u2014 results include `Shiro-trap` (a\nsymbiotic plant/animal pairing, not a separate species), `Unidentified small\nsentient creature`, `aliens.fandom.com`'s own separate \"Shiro\" entry, and\nseveral near-miss titles (`Shrikarai`, `Shryo`, `Shirro`, `Ssori`). The actual\nspecies page is `https://starwars.fandom.com/wiki/Shiro` (pageid 589183),\nconfirmed as the animal species by its `{{Species}}` infobox and its\n`Category:Creatures of Naboo` tag. That page carries both a canon stub and a\n`/Legends` continuity page (`https://starwars.fandom.com/wiki/Shiro/Legends`,\npageid 58526) \u2014 this is the standard Wookieepedia split for an article with\nboth continuities, not two different creatures. I ruled out\n`aliens.fandom.com/wiki/Shiro` (a fan-run wiki, not Wookieepedia/canon\nLucasfilm-licensed source \u2014 not used here) and the \"Unidentified small\nsentient creature\" page (a different, unrelated entity that only turned up\nbecause of shared search terms).\n\n**Canon page (Shiro)**: Shiro were a turtle-like species found on Naboo.\nSkin color is recorded in the infobox as green, sourced to the 2015 video\ngame *Disney Infinity 3.0* \u2014 this is also their first canon appearance. The\nspecies originally appeared earlier in Legends, in the 1999 video game\n*Star Wars Episode I: The Gungan Frontier*. The canon-page text itself is\nvery thin (one sentence) \u2014 the infobox art (`File:ShiroDisneyInfinity.png`)\nis the primary canon visual source.\n\n**Legends page (Shiro/Legends)**: much richer description. Shiros were\nhard-shelled, benign, slow-moving reptiles (class: Reptile, non-sentient,\nomnivorous) native to the Gungan Swamps of Naboo. Their main defense was\nretracting head, legs and tail into a spiny/ridged shell. They fed on\nmintri, zaela, grahn vine, chak-root, and occasional mud-dwelling crustaceans\nand mollusks, and were popular with Gungan cooks. Notably, Shiros would roll\nin mud and collect dirt and seeds between their shell ridges; Tooke-trap\nplants would grow in these \"soil pockets,\" forming a symbiotic pairing\nnicknamed a \"Shiro-trap\" \u2014 the plant camouflaged the Shiro from its main\npredator (the saw-toothed grank, which can crush shells), and the Shiro gave\nthe plant mobility. This confirms the task's note: **Shiro-trap is the\nname for a camouflaged/symbiotic Shiro, not a different species.**\nSource cited throughout: *The Wildlife of Star Wars: A Field Guide* (2001).",
+    "visual_brief": "Four images were retrieved, and they show real disagreement:\n\n- `shirodisneyinfinity.png` (the canon infobox art, *Disney Infinity 3.0*) is\n  a small, stylized, cartoonish render \u2014 a rounded green creature on a\n  low-poly Naboo-swamp background. It reads as green-skinned as the infobox\n  text states, but is a low-detail toy/game-art style rather than a\n  naturalistic reference \u2014 body plan is hard to read precisely (chibi\n  proportions), though the turtle-like rounded-shell silhouette is visible.\n- `shirotrap_legends.jpg` and `shirotrap_retracted_legends.jpg` (both\n  Legends-era, captioned \"a Shiro-trap retracted into its shell\") show the\n  animal fully withdrawn \u2014 from these alone you mostly see a mottled,\n  earth-toned, dirt-and-plant-covered shell mass, consistent with the \"rolls\n  in mud, collects seeds in shell ridges\" text. Because the plant/soil\n  disguise is the whole point of a Shiro-trap, these images are **not a\n  clean read of the animal's own skin/shell color** \u2014 they show it\n  deliberately camouflaged.\n- `shiros_group_legends.jpg` (captioned as the general Legends infobox image,\n  file `Shiros.jpg`, showing multiple individuals) is the best like-for-like\n  match to the text: a group of hard-shelled, dome-backed reptiles with\n  ridged/spiny shells in duller brown-green earth tones, resting in a muddy\n  swamp setting \u2014 consistent with \"hard-shelled... native to the Gungan\n  Swamps,\" \"rolled in mud,\" omnivorous swamp reptile.\n\n**Disagreement**: the canon *Disney Infinity 3.0* art is a bright, clean\ngreen cartoon creature; the Legends reference images (uncamouflaged group\nshot) read as duller, mud-toned brown-green \u2014 but note the Legends text\nitself explicitly says the animals accumulate mud and camouflage, so a\n\"clean\" green Shiro may simply not appear undirtied in any Legends art.\n**Treat the canon infobox image (`shirodisneyinfinity.png`) as the color\nanchor** (it is the current, non-Legends canon source, and its green skin\ncolor is also independently stated in the infobox text, not just visually\ninferred) \u2014 but use the Legends group shot (`shiros_group_legends.jpg`) as\nthe anchor for **body plan and shell texture** (hard ridged/spiny dome\nshell, stubby retractable head/legs/tail, turtle-like proportions), since\nthe canon art is too low-detail/stylized to read shell texture from.\n\n## Watch out\nNo local donor sprite exists: the RimWorld mod this defName comes from,\n`mlie.starwarsanimalcollection` (\"Star Wars Animal Collection\", 1.6 release),\nis not installed or vendored anywhere in this repo, and its 1.6 build packs\ncreature art inside Unity AssetBundles rather than loose PNGs, so there is no\nextractable donor sprite file. I checked the mod's Steam Workshop page\n(`https://steamcommunity.com/sharedfiles/filedetails?id=3497316713`, the 1.6\n\"Star Wars Animal Collection (Continued)\" listing) for a substitute\nscreenshot. The page's full animal roster list does include both \"Shiro\" and\n\"Shiro-Trap\" by name, confirming the mod ships this creature \u2014 but the only\nactual screenshot I could extract from the page (its main preview/header\nimage) is a generic collage advertising a different subset of animals\n(\"Krayt Dragon, Rancor, Acklay, Reek, Nexu, Bantha, Dewback, Tauntaun, Nerf,\nGizka\") with no Shiro-specific screenshot and no per-creature labeling on the\ncollage art, so **I did not save it** \u2014 I could not confirm which (if any)\nfigure in that collage is meant to be a Shiro, and saving an unlabeled guess\nwould risk exactly the kind of fabrication this library exists to prevent.\n**No donor sprite was obtainable this pass.**",
+    "folder": "design/RimStarWars/canon_references/shiro",
+    "prefill": "1"
+  },
+  {
+    "id": "zakkeg",
+    "label": "Zakkeg",
+    "group": "Medium confidence disagreement",
+    "effect": "The sourced in-universe quote ('a huge, red lizard') and the juvenile KOTOR II render both point to red/rust coloring, but the adult SWTOR render is dark brown-to-near-black, an unresolved color disagreement possibly explained by a juvenile-to-adult shift but not confirmed.",
+    "contested": true,
+    "meta": {
+      "confidence": "medium"
+    },
+    "thumb": "canon_review_images/zakkeg/wookieepedia_kotor2_juvenile.png",
+    "images": [
+      {
+        "key": "1",
+        "filename": "wookieepedia_kotor2_juvenile.png",
+        "path": "canon_review_images/zakkeg/wookieepedia_kotor2_juvenile.png"
+      },
+      {
+        "key": "2",
+        "filename": "wookieepedia_swtor_adult.jpg",
+        "path": "canon_review_images/zakkeg/wookieepedia_swtor_adult.jpg"
+      }
+    ],
+    "sourced_text": "Two separate Wookieepedia entries exist and they read very differently \u2014\ncurrent canon has almost nothing, Legends has the full creature the task\nbrief describes:\n\n- **Current canon** (`Zakkeg`): reduced to a figure of speech. The\n  mercenary Saponza calls a heavily-fortified Tusken Raider warlord \"a\n  crafty Zakkeg,\" and a smuggler is described as \"stubborn as a zakkeg, and\n  twice as mean.\" The infobox is entirely blank \u2014 no size, color, habitat,\n  or origin given in current canon.\n- **Legends** (`Zakkeg/Legends`) \u2014 **this is the creature the task brief\n  describes**: rare alpha-predators indigenous to **Dxun**, matching the\n  brief's \"Dxun (KOTOR-era, similar habitat to Boma)\" note exactly. Huge\n  armored quadrupeds, solitary and territorial, **reptilian class**, length\n  greater than 4 meters, **4 powerful taloned legs**, **thick knobbed\n  scales**. Carnivorous; preyed on cannoks, maalraas, and even bomas.\n  Killing one was considered a mark of great honor among Mandalorians.\n  First appeared in *Knights of the Old Republic II: The Sith Lords*\n  (2004); later appeared in *Star Wars: The Old Republic* (including as a\n  huntable creature and a Cartel Market mount/pet source), where a\n  Mandalorian clan is noted to have hunted zakkegs regularly and used their\n  hide for armor.\n  - **Direct in-universe description** (Mandalorian guard captain, KOTOR\n    II): *\"It's a huge, red lizard that's built like a Baragwin battle\n    tank. It has a hide so thick it might as well be durasteel plating.\"*\n    \u2014 this is the single strongest color cue in the sourced text: **red**,\n    not brown or black.",
+    "visual_brief": "Two candidate images, both game-rendered 3D models rather than illustration,\nand they show a body-plan match but a color disagreement worth flagging:\n\n- `wookieepedia_kotor2_juvenile.png` (captioned \"A juvenile zakkeg,\" in-game\n  render, KOTOR II) \u2014 a **rust-red/copper-brown** quadruped with a jagged\n  spiked ridge running along the spine from head to tail, a low-slung\n  reptilian toothy head with small yellow eyes, thick knobbed/bumpy hide,\n  and stocky clawed legs. This is the closer color match to the in-universe\n  \"huge, red lizard\" quote.\n- `wookieepedia_swtor_adult.jpg` (in-game render, *The Old Republic*) \u2014 the\n  same body plan at adult scale: spiked dorsal ridge, low reptilian head\n  with visible fangs and small eyes, thick knobbed scales, four\n  heavy-clawed legs, a tapered tail. Coloring here reads **dark\n  brown-to-near-black**, noticeably darker/duller than the juvenile render\n  and than the \"red lizard\" quote.\n\n**Net read**: body plan is consistent and well-confirmed across both\nsources and the text \u2014 a stegosaur-like reptilian quadruped predator with a\nspiked dorsal ridge, thick knobbed/armored hide, a low toothy head, and four\nheavy taloned legs, roughly the size of \"a battle tank.\" Color is the one\nopen question: the sourced in-universe quote and the juvenile render both\npoint to **red/rust**, while the adult SWTOR render is darker\nbrown-black \u2014 plausibly a juvenile-vs-adult color shift (common in reptile\nWookieepedia analogues) rather than a contradiction, but not confirmed\neither way. Favor red/rust as the primary color anchor since it is the only\none both an in-universe character quote AND an image agree on.",
+    "folder": "design/RimStarWars/canon_references/zakkeg",
+    "prefill": "1"
+  }
+]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<script id="RENDER">
+window.itemBody = it => {
+  const gallery = (it.images || []).map(img => {
+    const cap = `${it.label} — image ${img.key} (${img.filename})`;
+    return `<div class="czthumb" data-zoom="${img.path.replace(/"/g,'&quot;')}" data-cap="${cap.replace(/"/g,'&quot;')}">
+      <img src="${img.path}" loading="lazy" decoding="async" alt="">
+      <div class="czcap">#${img.key} ${img.filename}</div>
+    </div>`;
+  }).join('');
+  const details = `<details class="czdetails"><summary>sourced text + visual brief</summary>
+    <div class="czsection"><b>Sourced text</b><br>${esc(it.sourced_text || '').replace(/\n/g,'<br>')}</div>
+    <div class="czsection"><b>Visual brief</b><br>${esc(it.visual_brief || '').replace(/\n/g,'<br>')}</div>
+    <div class="czsection czpath"><code>${esc(it.folder)}/description.md</code></div>
+  </details>`;
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + `<div class="czgallery">${gallery}</div>`
+       + details;
+};
+function esc(s){return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+<style>
+.czgallery{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.czthumb{width:96px;cursor:zoom-in;text-align:center}
+.czthumb img{width:96px;height:96px;object-fit:contain;border:1px solid var(--line);border-radius:5px;
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22}
+.czcap{font-size:10px;color:var(--dim);margin-top:2px;word-break:break-all}
+.czdetails{margin-top:6px;font-size:12px;color:var(--dim)}
+.czdetails summary{cursor:pointer;color:var(--link)}
+.czsection{margin-top:6px;white-space:normal}
+.czpath{font-size:11px;color:var(--dim)}
+</style>
+<!-- ══ FILL IN #3 (optional, now used above) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  const opts = OPTS.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    const bulk = OPTS.map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${decided}</b>/${total} decided · <b>${total - decided}</b> left`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">⭐ Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+</body>
+</html>
