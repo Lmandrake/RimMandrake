@@ -196,17 +196,11 @@ Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still a
 # sweep clean, RUT_Miasma's 9 dangling wildAnimals refs resolve again) owed
 # on the next full load — this hold is lifted, not superseded.
 
-# --- Pyrelands flora defs: texPaths rebound to OWN art that is still rendering --
-# 2026-09-14 (BENCH), PYRELANDS_FLORA_ART_IDENTITY_1. EmberGrass/Quickgrass/
-# ScorchFruit/Fulgurite no longer point at vanilla Grass/Ambrosia/Berries/Jade;
-# the 11 replacement sprites are in the artpipe queue. Deploying these defs
-# before the PNGs land in Textures/ renders every Pyrelands plant as the
-# missing-texture placeholder.
-# => LIFT when the flora sprites are installed under Pyrelands/Textures/ - the
-#    defs and their art deploy together in one --apply.
-Pyrelands/Defs/ThingDefs_Plants/*      # BENCH: art still rendering, 2026-09-14
-Pyrelands/Defs/ThingDefs_ScorchFruit/* # BENCH: art still rendering, 2026-09-14
-Pyrelands/Defs/ThingDefs_Fulgurite/*   # BENCH: art still rendering, 2026-09-14
+# --- Pyrelands flora defs hold: LIFTED 2026-09-14, same day --
+# All flora sprites landed (11 rendered, quickgrass C-variant waived at 2/3
+# variants after two gate fails); defs + art deploy together, as the hold
+# demanded. Kept as the record of why the defs sat undeployed for one render
+# cycle.
 
 # --- SCALD_MECHANICS_1 S4/S2: RUT_ScaldVent + RUT_SteamCatch, no art yet -------
 # 2026-09-13, SCALD_MECHANICS_1 build pass. Both ThingDefs are new this pass
