@@ -324,3 +324,184 @@ remainder (off critical path by design), F5 point 1 (ground-refusal
 terrain), F6/F7 (blocked on `GREENTIDE_MECHANICS_1`'s own classes, still
 absent from `src/`), F8's content (roster pass), F9's Lord/Faction/quest
 build. Item stays in `doing`.
+
+## F6/F7 build pass — 2026-09-14
+
+Unblocked by `GREENTIDE_MECHANICS_2`'s own M9/M12 build pass (same day,
+commits `07118c4e6`/`647b306fe`): `RM_GenStep_RootCauseways` and
+`RM_MapComponent_LivingRegrowth` now exist, compile, and — checked for
+real this pass rather than assumed from the sibling item's own claim — are
+genuinely reusable as advertised. Built F7 first (trunk anchors), then F6
+(reads F7's registered bole centers automatically via
+`RM_MapComponent_LivingRegrowth.BoleCenters`).
+
+**Greentide-class reuse finding: genuinely reusable, with one real gap.**
+Read all four classes (`RM_GenStep_RootCauseways`,
+`RM_MapComponent_LivingRegrowth`, `RM_CompLivingBoleMarker`,
+`RM_LivingBoleBiomeExtension`, `RM_RootCausewayBiomeExtension`) before
+writing anything. Nothing in them names Greentide, a bole, or a
+Churnmud — every one is a harmless no-op on any `BiomeDef` that doesn't
+carry its extension, exactly the "generic kit's home" promise the sibling
+item's own header makes. F7 used them completely unmodified (**"No new
+C#" holds**). F6 found one real gap: the kit spec's own text claims the
+ground-causeway pass is "the same GenStep's second call... zero extra
+code, just a second GenStepDef instance with different tuning" — but
+`RM_GenStep_RootCauseways` reads its whole profile off the ONE
+`RM_RootCausewayBiomeExtension` instance a `BiomeDef` carries
+(`GetModExtension<T>()` returns only the first match of a type), so a
+second `GenStepDef` of the same class would read the IDENTICAL extension
+and repaint the identical lanes, not a second, differently-tuned network.
+Fixed with the minimal generic addition described below — not
+Fever-Wood-specific, and Greentide's own existing single-profile XML is
+unchanged (`additionalPasses` defaults to null/empty).
+
+**F7 — bore-caves and the trunks.** `RUT_FeverTrunkHeartwood` (mineable
+`ThingDef`, `ParentName="RockBase"`, cribbed field-for-field from
+`RUT_GreatboleHeartwood`) + `RUT_FeverTrunkCore` (marker `ThingDef`,
+cribbed from `RUT_GreatboleCore`, oversized `drawSize` reusing vanilla's
+real `Things/Building/Misc/DeepDrillPowered` texture with a paler tint,
+same RESOLVED ❓ the Greentide spike already settled — a plain
+`GraphicData.drawSize` override, not a Skyfaller). `RM_LivingBoleBiomeExtension`
+wired directly onto `RUT_FeverWood.xml`'s own `modExtensions` (a direct
+edit, not a Patch — matching `RUT_Greentide.xml`'s own precedent for
+these two specific extensions: each risky cross-reference is guarded at
+its own `<li MayRequire=...>`, not by a patch layer around the whole
+addition).
+
+Two real decisions, not guessed:
+- **mineableThing = vanilla `WoodLog`, not `RUT_Hardwood`.** `RUT_Hardwood`'s
+  own description is Greentide-flavor-specific ("cut from the living heart
+  of a Greatbole... worth real money off-world") — wrong lore for a Fever
+  Wood trunk, and inventing a second bespoke wood-resource economy here is
+  exactly the unrequested-design category F8/F9's own prior passes already
+  declined. Vanilla `WoodLog` is the honest neutral choice.
+- **sealantTerrain reuses `RUT_ToxinSealant` verbatim** (the ALREADY-SHIPPED
+  Greentide terrain) rather than a second Fever-Wood-named sealant def —
+  same "one def, reused cross-kit" shape `RUT_Scald`/`RM_ScaldArmor`
+  already set (checked per the calling brief's own pointer:
+  `FORGE_MECHANICS_1` reused Greentide's damage-type trio rather than
+  duplicating it). Gated `MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide"`
+  — TWO packages, not one, since `RUT_ToxinSealant.xml`'s own def carries
+  `MayRequire="mandrake.rm.greentide"` (its `costList` consumes a
+  Greentide-mod item) and a reference to it needs the same guard or it
+  dangles. **Real finding against the sibling precedent, not fixed there
+  (out of this item's scope):** `RUT_GreatboleCore.xml`'s own comp `<li>`
+  (in `GREENTIDE_MECHANICS_2`) is gated on
+  `MayRequire="mandrake.rm.environmentalhazards"` ONLY, despite the exact
+  same `sealantTerrain` reference — a latent dangling-cross-reference risk
+  in the already-shipped Greentide code if `mandrake.rm.environmentalhazards`
+  were ever active without `mandrake.rm.greentide` (currently moot: both
+  ship together in this campaign's full mod list, but inconsistent with
+  that same file's own sibling M9 extension, which DOES two-package-gate
+  its cross-mod `basinTerrains` reference). Flagged for the record in this
+  def's own header; not touched (`GREENTIDE_MECHANICS_2`'s file, not this
+  item's).
+
+Regrowth retuned per the spec's own INVENTED call ("this biome is the
+still one"): `regrowDaysRange` 10~18 days versus the Greatbole's 3~6 —
+roughly 3x. Creak/crush timings left at the shared class's own defaults;
+the spec names no separate number for those.
+
+**F6 — the boughway network.** `RUT_Boughway` `TerrainDef` (elevated lane:
+`pathCost` 1, affordances Light+Medium only — no Heavy, "platforms yes,
+bunkers no" per the spec's own INVENTED tier) is `RM_RootCausewayBiomeExtension`'s
+primary profile on `RUT_FeverWood`, anchored automatically on F7's
+registered trunk centers. The "ground causeway... second pass" uses the
+new `additionalPasses` field with `RUT_RootCauseway` reused verbatim
+(narrower/shorter/fewer paths per anchor than the primary network, so it
+reads as the modest, cheap alternative rather than a duplicate network).
+
+**RESOLVED ❓ (water-bridging):** checked `Verse/TerrainGrid.cs:193`
+(`TerrainGrid.SetTerrain`, the real method GenStep terrain-painting calls)
+against the live 1.6/Odyssey decompile — it carries NO
+`terrainAffordanceNeeded`/Bridgeable check at all, only null/bounds/
+temporary/`isFoundation` branches. That gating exists exclusively on the
+PLAYER-CONSTRUCTION path (`BuildableDef.terrainAffordanceNeeded` +
+`GenConstruct.cs:494`, F5's own already-confirmed engine route), which
+map-gen terrain painting never goes through. **There is no
+"Bridgeable-style replacement" mechanism to reuse in the first place** —
+so the simpler, more honest route (taken here) is to never paint a
+boughway cell over a registered pool at all, not to synthesize a
+drawn-fiction bridge visual with no engine mechanism behind it. Both
+passes' `basinTerrains` is set to Fever Wood's own two buildable ground
+terrains (`Soil`/`SoilRich`, `RUT_FeverWood.xml`'s own
+`terrainsByFertility`) — `PaintFootprint`'s existing "restricted to
+basinTerrains" allowlist check (built for Greentide's opposite use,
+painting ONLY over its churnmud basin) doubles as an EXCLUDE of
+everything not in that list, including `RUT_FeverWoodMirrorPool` and
+`RUT_StiltPlatform`, with **zero new C# for the exclusion itself**. This
+preserves F1's pool-terrain registry (`RUT_MapComponent_TheTenant`'s own
+terrain-grid scan would lose a cell if a boughway simply overwrote it) and
+the lore's own "nothing goes in the water here." Caveat for the record:
+F1's own `RUT_FeverWoodMirrorPool` terrain is not yet painted onto any
+generated map by any GenStep (the continuation pass's own note — "not
+done: painting this terrain onto any generated Fever Wood map" still
+holds), so this exclusion is a forward safeguard for when that painting
+step lands, not something that changes today's generated output.
+
+Per-mechanic C# needed: **F7 none** (pure XML/content, as the spec
+demanded). **F6 one minimal, generic addition** — `RM_RootCausewayPass`
+(a plain nested profile class: `causewayTerrain`/`basinTerrains`/
+`pathsPerAnchorRange`/`laneWidthRange`/`pathLengthRange`/
+`turnChancePerStep`) plus `RM_RootCausewayBiomeExtension.additionalPasses`
+(`List<RM_RootCausewayPass>`, default null) and a refactor of
+`RM_GenStep_RootCauseways.Generate` to build a `CausewayProfile` struct
+from the primary extension fields, run it, then run one more per
+`additionalPasses` entry over the same anchor set — `TraceSpline`/
+`PaintFootprint`/`ConnectNearestNeighbors`/`ConnectAnchors` now take that
+struct instead of the extension directly. Backward-compatible:
+`RUT_Greentide.xml`'s own existing single-profile XML is untouched and
+behaves identically (`additionalPasses` unset).
+
+**Slow variation** — explicitly not attempted, per the calling brief and
+the spec's own deferral (parked on `EXPLOSIVE_PLANT_GROWTH_1`'s v2 list,
+same posture as Greentide's identical clause).
+
+**Build/validate.** `RM_EnvironmentalHazards.csproj` rebuilds clean, 0
+warnings/0 errors, with only the two touched `.cs` files (no new `.cs`
+files — F6's addition lives inside the two already-existing M9 classes).
+`validate_patch.py` against the live 99-active-mod installed set: 4 new/
+changed def files (`RUT_FeverTrunkHeartwood.xml`, `RUT_FeverTrunkCore.xml`,
+`RUT_Boughway.xml`, `RUT_FeverWood.xml`), 0 errors, 1 expected WARN
+(`RUT_FeverTrunkCore`'s reused vanilla `DeepDrillPowered` texture — "cannot
+verify a packed vanilla texture from here," the same class of WARN
+`RUT_GreatboleCore`'s own identical reuse gets) plus the one pre-existing,
+unrelated WARN (`mandrake.rut.vaultdungeons` has no folder on disk).
+
+**Art.** `RUT_FeverTrunkHeartwood` ships a genuine flat-color placeholder
+PNG (`Textures/Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood.png`,
+128×128 RGBA) — UtinniPatches owns the `Things/` texture namespace itself,
+so a vanilla-path reuse would be a hard ERROR here, same shape
+`RUT_GreatboleHeartwood`'s own header already documents. `RUT_FeverTrunkCore`
+and `RUT_Boughway` both reuse real, already-loaded vanilla texture paths
+(`Things/Building/Misc/DeepDrillPowered`, `Terrain/Surfaces/WoodFloor`)
+with a distinguishing tint — legitimate reuse, no placeholder, no
+`DEPLOY_HOLD` entry needed (terrain texture reuse is not the "Things/"
+namespace-ownership check; `RUT_RootCauseway`/`RUT_StiltPlatform`'s own
+headers already established this). Real bespoke art for all three is
+still owed to the standing art pipeline.
+
+**Owed after this pass.** F6's ground-causeway pass is an approximation,
+not a literal water's-edge pathfinder — it runs the same anchor-based
+random-walk shape as the primary network, just narrower/shorter/fewer per
+anchor, not a route that hugs pool edges cell-by-cell; a true
+edge-hugging placement would be genuinely new, more complex C#, out of
+proportion for this pass's effort budget, and not attempted. F1's own
+pool-terrain painting (noted above). No bridge/quicktest/game verification
+attempted — no game access in this task, same posture as every sibling
+spike/build pass in this item's own history. Wild bore-cave occupant
+content (roster pass) untouched, out of this pass's scope per the calling
+brief.
+
+Item stays in `doing`.
+
+## files (F6/F7 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_RootCausewayBiomeExtension.cs` (new `RM_RootCausewayPass` class + `additionalPasses` field)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs` (multi-pass refactor)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkHeartwood.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_Boughway.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` (modExtensions added)
+- `src/RimUtinni/UtinniPatches/Textures/Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood.png` (new placeholder)

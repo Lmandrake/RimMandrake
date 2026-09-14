@@ -96,6 +96,77 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!--
+      FEVER_WOOD_MECHANICS_1 F6/F7 build pass, 2026-09-14. Both extensions
+      are generic RM_-tier (mandrake.rm.environmentalhazards), same
+      GREENTIDE_MECHANICS_2 M9/M12 classes RUT_Greentide.xml itself already
+      wires this exact way — cribbed directly, see RM_LivingBoleBiomeExtension.cs
+      / RM_RootCausewayBiomeExtension.cs for the full field docs. A direct
+      BiomeDef edit (not a Patch), matching RUT_Greentide.xml's own
+      precedent for these two extensions specifically: each risky cross-
+      reference is guarded at its own <li MayRequire=...>, not by wrapping
+      the whole addition in a patch layer.
+    -->
+    <modExtensions>
+      <!-- F7: the trunk. Cribbed straight from RUT_Greentide.xml's own
+           boleCountRange/boleRadius/minSpacing/edgeMargin (kit spec gives
+           no separate numbers for Fever Wood); roofDef left unset so the
+           GenStep's own default (RoofDefOf.RoofRockThick) applies, same as
+           Greentide. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+        <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
+        <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
+        <boleCountRange>1~2</boleCountRange>
+        <boleRadius>4~6</boleRadius>
+        <minSpacing>30</minSpacing>
+        <edgeMargin>12</edgeMargin>
+      </li>
+      <!-- F6: the boughway network. Primary profile is the elevated
+           network (RUT_Boughway); additionalPasses carries the "ground
+           causeway... same GenStep's second pass" from the kit spec's own
+           text (RUT_RootCauseway, reused verbatim from the sibling kit
+           rather than a second terrain def — same "one def, reused
+           cross-kit" shape RUT_Scald already set), narrower/shorter/fewer
+           per anchor so it reads as the modest, cheap-to-walk alternative
+           rather than a second full network. basinTerrains on BOTH passes
+           is Fever Wood's own two buildable ground terrains
+           (terrainsByFertility above) — an ALLOWLIST that doubles as the
+           water-avoidance answer to the spec's own ❓, see RUT_Boughway.xml's
+           own header for the full resolution (map-gen SetTerrain has no
+           Bridgeable-style gate to reuse in the first place; routing
+           around the registered pools is the honest fix, not a drawn-
+           fiction bridge). No basin hazard of its own to route OVER here
+           (unlike Greentide's churnmud), so this is purely an exclude. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+        <causewayTerrain>RUT_Boughway</causewayTerrain>
+        <basinTerrains>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </basinTerrains>
+        <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
+        <laneWidthRange>1~2</laneWidthRange>
+        <pathLengthRange>20~40</pathLengthRange>
+        <fallbackAnchorCountRange>1~3</fallbackAnchorCountRange>
+        <fallbackMinAnchorSpacing>25</fallbackMinAnchorSpacing>
+        <fallbackEdgeMargin>10</fallbackEdgeMargin>
+        <additionalPasses>
+          <li>
+            <!-- RUT_RootCauseway carries no MayRequire of its own (plain
+                 UtinniPatches TerrainDef, unlike RUT_ToxinSealant) — so
+                 this reference needs none either. -->
+            <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+            <basinTerrains>
+              <li>Soil</li>
+              <li>SoilRich</li>
+            </basinTerrains>
+            <pathsPerAnchorRange>1~2</pathsPerAnchorRange>
+            <laneWidthRange>1~1</laneWidthRange>
+            <pathLengthRange>10~20</pathLengthRange>
+            <turnChancePerStep>0.3</turnChancePerStep>
+          </li>
+        </additionalPasses>
+      </li>
+    </modExtensions>
     <baseWeatherCommonalities>
       <Clear>30</Clear>
       <Fog>10</Fog>

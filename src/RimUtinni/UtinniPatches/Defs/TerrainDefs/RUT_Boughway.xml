@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FEVER_WOOD_MECHANICS_1 F6 build ("The boughway network — elevated
+     lanes"). fever_wood_kit_spec.md F6: "lanes are RUT_Boughway TerrainDef
+     — low pathCost, raised sprite, affordance Medium (INVENTED affordance
+     tier per §7b: platforms yes, bunkers no — heavy goes on F5's stilts or
+     in F7's bore-caves)". Painted entirely by RM_GenStep_RootCauseways
+     (RUT_FeverWood.xml's own RM_RootCausewayBiomeExtension, primary
+     profile) — not buildable, not in any construction designation
+     category, same posture RUT_RootCauseway's own header already
+     established for the sibling kit's ground lane.
+
+     RESOLVED ❓ (the spec's own "verify the donor's water terrains accept
+     a Bridgeable-style replacement, or route lanes around pools at gen
+     time"): checked against the real 1.6/Odyssey decompile this pass,
+     Verse/TerrainGrid.cs:193 TerrainGrid.SetTerrain — the method GenStep
+     map-painting actually calls has NO terrainAffordanceNeeded/Bridgeable
+     check at all (only null/bounds/temporary/isFoundation branches); that
+     gating only exists on the PLAYER-CONSTRUCTION path
+     (BuildableDef.terrainAffordanceNeeded + GenConstruct.cs:494, F5's own
+     engine route), which map-gen terrain painting never goes through. So
+     there is no real "Bridgeable-style replacement" mechanism to reuse in
+     the first place — the simpler and more honest route, taken here, is
+     to never paint a boughway cell over a registered pool at all: the
+     RM_RootCausewayBiomeExtension wired onto RUT_FeverWood sets
+     basinTerrains to the biome's own two buildable ground terrains
+     (Soil/SoilRich, RUT_FeverWood.xml's own terrainsByFertility list) as
+     an ALLOWLIST — RM_GenStep_RootCauseways.PaintFootprint's existing
+     "restricted to basinTerrains" check (built for Greentide's opposite
+     use, painting ONLY over its churnmud basin) doubles as an EXCLUDE of
+     everything not in that list, including RUT_FeverWoodMirrorPool and
+     RUT_StiltPlatform, with zero new C#. This preserves F1's pool-terrain
+     registry (RUT_MapComponent_TheTenant's own terrain-grid scan would
+     lose a cell if a boughway simply overwrote it) and the lore's own
+     "nothing goes in the water here" — genuinely simpler than inventing a
+     drawn-fiction bridge visual with no engine mechanism behind it.
+
+     pathCost 1 (lower than RUT_RootCauseway's 2 — "fast... lanes" per the
+     spec's own player-experience text). affordances Light+Medium only, no
+     Heavy — "platforms yes, bunkers no" (INVENTED tier, per the spec's own
+     citation).
+
+     ART: reuses vanilla WoodPlankFloor's own texture path unmodified
+     (confirmed real, Data/Core/Defs/TerrainDefs/Terrain_Floors.xml,
+     texturePath Terrain/Surfaces/WoodFloor) — the same texture
+     RUT_StiltPlatform already reuses via its own Bridge ancestry, tinted
+     here to read as living wood rather than milled planking. Terrain
+     texture reuse is not the "Things/" namespace-ownership check
+     validate_patch.py enforces for ThingDefs in this mod (RUT_RootCauseway/
+     RUT_StiltPlatform's own headers already establish this for terrain),
+     so no placeholder PNG or DEPLOY_HOLD entry is needed. Real bespoke
+     raised-lane art is still owed to the standing art pipeline, same
+     disclosure as RUT_StiltPlatform's own. -->
+<Defs>
+
+  <TerrainDef>
+    <defName>RUT_Boughway</defName>
+    <label>boughway</label>
+    <description>A living lane grown across the crown — bark and root woven flat and firm well above the black pools below. Fast, safe, and never quite where the map says it was last season.</description>
+    <renderPrecedence>326</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WoodFloor</texturePath>
+    <pathCost>1</pathCost>
+    <fertility>0</fertility>
+    <edgeType>FadeRough</edgeType>
+    <color>(87,66,38)</color>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+    </affordances>
+    <statBases>
+      <Beauty>1</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

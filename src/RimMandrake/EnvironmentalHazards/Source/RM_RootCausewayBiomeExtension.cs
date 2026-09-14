@@ -47,6 +47,28 @@ namespace RimMandrake.EnvironmentalHazards
         public float fallbackMinAnchorSpacing = 25f;
         public int fallbackEdgeMargin = 10;
 
+        // FEVER_WOOD_MECHANICS_1 F6 build. Optional additional lane
+        // networks, run over the SAME anchor set after the primary profile
+        // above (causewayTerrain/basinTerrains/pathsPerAnchorRange/
+        // laneWidthRange/pathLengthRange/turnChancePerStep), each with its
+        // own terrain and tuning. Generic, not Fever-Wood-specific: "any
+        // biome wanting more than one lane tier (e.g. an elevated network
+        // plus a cheaper ground-level alternative) opts in via extra
+        // entries" — null/empty means exactly what it always meant, a
+        // single pass (Greentide's own existing profile, unchanged).
+        //
+        // Real correction against the fever_wood_kit_spec.md's own framing:
+        // the spec describes the ground causeway as "the same GenStep's
+        // second call... zero extra code, just a second GenStepDef
+        // instance with different tuning" — but RM_GenStep_RootCauseways
+        // reads its whole profile off the ONE RM_RootCausewayBiomeExtension
+        // instance a BiomeDef carries (GetModExtension<T>() returns only
+        // the first match of a type), so a second GenStepDef of the same
+        // class would read the identical extension and repaint the
+        // identical lanes — not a second, differently-tuned network. This
+        // field is the minimal, generic fix.
+        public List<RM_RootCausewayPass> additionalPasses;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string err in base.ConfigErrors())
@@ -58,6 +80,31 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 yield return "RM_RootCausewayBiomeExtension has no causewayTerrain — RM_GenStep_RootCauseways would have nothing to paint.";
             }
+
+            if (additionalPasses != null)
+            {
+                for (int i = 0; i < additionalPasses.Count; i++)
+                {
+                    if (additionalPasses[i]?.causewayTerrain == null)
+                    {
+                        yield return "RM_RootCausewayBiomeExtension.additionalPasses[" + i + "] has no causewayTerrain — RM_GenStep_RootCauseways would have nothing to paint for it.";
+                    }
+                }
+            }
         }
+    }
+
+    // One additional lane-network profile (see RM_RootCausewayBiomeExtension.additionalPasses
+    // above) — the same per-pass fields the primary profile carries, minus
+    // the anchor-selection fields, since anchors are shared across every
+    // pass on one map.
+    public class RM_RootCausewayPass
+    {
+        public TerrainDef causewayTerrain;
+        public List<TerrainDef> basinTerrains;
+        public IntRange pathsPerAnchorRange = new IntRange(3, 6);
+        public IntRange laneWidthRange = new IntRange(1, 2);
+        public IntRange pathLengthRange = new IntRange(20, 40);
+        public float turnChancePerStep = 0.35f;
     }
 }
