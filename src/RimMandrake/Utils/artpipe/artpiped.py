@@ -1126,7 +1126,23 @@ def build_job_prompt(job: dict) -> str:
     if job.get("style_notes"):
         parts.append(f"Style: {job['style_notes']}")
     if job.get("facing"):
-        parts.append(f"Facing: {job['facing']}.")
+        # A bare "Facing: north." leaves the image model to guess RimWorld's
+        # top-down camera convention, and it guessed wrong often enough to
+        # invert whole creatures (PYRELANDS_FACING_REGRESSION_1, owner live
+        # review 2026-09-14). Spell the convention out per facing.
+        facing_direction = {
+            "north": ("Facing: north — the creature walks AWAY from the "
+                      "viewer; we see its BACK, rear haunches and the back "
+                      "of its head. No face, no eyes visible."),
+            "south": ("Facing: south — the creature walks TOWARD the "
+                      "viewer; we see its FACE and chest straight on."),
+            "east": ("Facing: east — strict side profile, the creature's "
+                     "head points to the RIGHT edge of the image."),
+            "west": ("Facing: west — strict side profile, the creature's "
+                     "head points to the LEFT edge of the image."),
+        }
+        parts.append(facing_direction.get(str(job["facing"]).lower(),
+                                          f"Facing: {job['facing']}."))
     return " ".join(parts)
 
 

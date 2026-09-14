@@ -11,9 +11,11 @@ starting; `tune` notes amend the law clause).
 
 Every SW-canon creature in the stack (the library's roster), re-rendered:
 prompts authored from the library entry (owner ruling > images > text), under
-the full lawset (toy-figurine + leg budget + identity-limb exception + vivid
-coloration + true drawSize canvas), all shipped facings, through the daemon
-and locked gate. The Wyyyschokk is the acceptance exemplar: the regen must
+the RESTORED PAINTERLY style law (ART_PAINTERLY_RESTORATION_1, owner
+2026-09-14 — the toy-figurine/leg-budget lawset is a non-default option in
+infrastructure/artpipe/STYLE_CARTOONISH.md; the legibility gate is advisory,
+never a rejector), vivid coloration and drawSize×128 sizing surviving, all
+shipped facings, through the daemon. The Wyyyschokk is the acceptance exemplar: the regen must
 show blue-grey body, yellow-orange abdomen cross, bristle tufts — not a brown
 hairy spider. Renders reviewed on a sheet showing the library candidates
 BESIDE each render (fidelity judged, not remembered). Pyrelands roster canon
