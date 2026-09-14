@@ -57,6 +57,32 @@ Wyyyschokk entry carries the owner's 2026-09-13 correction (blue-grey,
 yellow-orange abdomen cross) as its ruling seed. `git grep` finds no canon
 prompt authored after this closes that lacks a library citation.
 
+## Roster (measured 2026-09-13)
+
+52 candidate creature stems (34 `SWBestiary`-vendored + 18 from third-party
+donor `mlie.starwarsanimalcollection`, cross-checked name-for-name against
+`design/RimStarWars/star_wars_canon_names.md`'s master 160-species list) —
+**minus 9 that live in `SWBestiary` under an SW-sounding name but are NOT
+actually Star Wars content**, per that same doc's "Known issues #2": the 8
+`Absorbed_*` creatures (Baseopsis, Diplocaulus, Holcorobeus, Platyhystrix,
+Protosolpuga, Protovermes, Segnosaurus, Termitotron — absorbed "Jurassic
+Rimworld" dinosaurs, zero SW content) plus `RSW_SandStalker` (texPath
+`Things/Pawn/Animal/Skarnix/Skarnix`, absent from the 160-name master list —
+almost certainly an absorbed BiomesTeam creature, not SW; build its folder
+last and verify before ruling). **True roster: 43.**
+
+Progress: **9/43 built** 2026-09-13 (priority wave — wyyyschokk, dragonsnake,
+pekopeko, dactillion, anooba, greaterkraytdragon, dewback, bantha, wampa).
+Remaining 34: Acklay, Beldon, Bolotaur, Boma, Borcatu, CanCell, Cannok,
+Clodhopper, Convor, Corinathoth, Dalgo, Dianoga, Eopie, Iriaz, Jerba, Mudhorn,
+Nuna, Porg, Vulptex (SWBestiary-vendored) + Fambaa, Fanback, Grank, Hawkbat,
+Horax, Insectomorph, Kinrath, Kreetle, Ollopom, Orray, Ronto, Shiro, Vornskyr,
+Whisperbird, Zakkeg (donor-external, `mlie.starwarsanimalcollection` not
+locally installed — that mod's 1.6 release packs art in Unity AssetBundles,
+not loose PNGs, so "donor sprite" candidates for these come from a Steam
+Workshop screenshot where findable, noted as a substitute when used) +
+SandStalker (verify-first, see above).
+
 ## Watch out
 
 - Text vs image disagreement is the NORM (the Wyyyschokk case) — never let a
@@ -64,3 +90,5 @@ prompt authored after this closes that lacks a library citation.
 - Keep images small; the repo push limit is real (~50MB/file hard-refused).
 - CANON_CREATURE_REGEN_1 and PYRELANDS_CREATURE_RERENDER_1 are gated on this
   item for their canon creatures.
+- "Lives in SWBestiary" is not itself proof of SW-canon status — 9 of the
+  candidate 52 do not belong in this library at all (see Roster above).
