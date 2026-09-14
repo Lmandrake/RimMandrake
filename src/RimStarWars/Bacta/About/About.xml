@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.bacta</packageId>
+  <name>RimStarWars — Bacta</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>BACTA_TANK_CORE_1 — the bacta tank and the fluid that fills it.
+
+Bacta is not regeneration. It is healing, turned up: a pawn suspended in a powered, filled tank closes wounds and burns far faster than a hospital bed, and — given long enough — old scars and permanent physical injuries fade out entirely. Damaged organs mend. What bacta will NOT do is grow anything back: a missing kidney stays missing, a lost leg stays lost. It will not touch the brain, and it will not repair a mind.
+
+Infections are helped only where medicine could have helped them. An untendable disease runs its course in the tank exactly as it would in a bed.
+
+The point is the shape of a lost battle. Without bacta, a bad raid costs colonists. With it, a bad raid costs recovery time — pawns are out of the game while they float, and they come back.
+
+Bacta itself cannot be made. It is bought from exotic and outlander traders, or taken off someone who had some. The tank drinks it while it works, and stops when the tank runs dry.
+
+No Harmony patches: the tank is a Building_Enterable with our own ThingComps, so nothing in the base game is rewritten.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.liquidtypes</li>
+  </loadAfter>
+</ModMetaData>

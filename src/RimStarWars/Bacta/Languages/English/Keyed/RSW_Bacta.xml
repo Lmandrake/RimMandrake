@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Inspect pane -->
+  <RSW_BactaTankImmersing>Immersing: {0}</RSW_BactaTankImmersing>
+  <RSW_BactaTankNothingToHeal>Immersed: {0} — nothing left to heal</RSW_BactaTankNothingToHeal>
+  <RSW_BactaTankNoFluid>Out of bacta</RSW_BactaTankNoFluid>
+  <RSW_BactaTankNoPower>Unpowered — not healing</RSW_BactaTankNoPower>
+  <RSW_BactaTankHealingDisabled>Healing disabled in mod settings</RSW_BactaTankHealingDisabled>
+  <RSW_BactaTankReportNoFluid>no bacta</RSW_BactaTankReportNoFluid>
+
+  <!-- Messages -->
+  <RSW_BactaTankEjectedNoFluid>The bacta tank ran dry and released {PAWN_labelShort}.</RSW_BactaTankEjectedNoFluid>
+  <RSW_BactaTankEjectedHealed>{PAWN_labelShort} has nothing left for the bacta to heal, and has been released.</RSW_BactaTankEjectedHealed>
+  <RSW_BactaTankEjectedDead>{PAWN_labelShort} died in the bacta tank.</RSW_BactaTankEjectedDead>
+
+  <!-- Gizmos -->
+  <RSW_BactaTankInsertDesc>Choose someone to immerse in the bacta. A pawn who can walk will come here themselves; a downed one will be carried in by a hauler.</RSW_BactaTankInsertDesc>
+  <RSW_BactaTankEjectDesc>Drain the harness and let the occupant out.</RSW_BactaTankEjectDesc>
+  <RSW_BactaTankNoCandidates>Nobody here can use a bacta tank.</RSW_BactaTankNoCandidates>
+
+</LanguageData>

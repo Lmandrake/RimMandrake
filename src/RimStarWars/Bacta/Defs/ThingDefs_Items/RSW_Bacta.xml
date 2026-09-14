@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Bacta — the fluid, as a plain tradeable resource.
+
+  OWED MIGRATION: the liquids framework (design/RimMandrake/liquids_framework_design.md,
+  ruled 2026-09-13) makes every fluid a LiquidDef row in RimMandrake: Liquids, with
+  `bottled`, `trade` and `cuisineTags` form slots. That def type does NOT exist on disk
+  yet — src/RimMandrake/LiquidTypes/Source holds only RM_LiquidProperties (the terrain-side
+  DefModExtension), LiquidCorrosion and LiquidIgnition; there is no `class LiquidDef`
+  anywhere in src/. LIQUID_REGISTRY_CORE_1 builds it.
+
+  So this ships as a standalone ThingDef and does not block on the registry. When
+  LiquidDef lands, RSW_Bacta becomes the `bottled` slot of a `RM_Liquid_Bacta` row and
+  this file collapses to whatever generate_liquid_suite.py emits. Nothing in the C#
+  reads this def by anything except BactaDefOf.RSW_Bacta and the tank's fuelFilter,
+  so the migration is a def swap, not a code change.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Bacta</defName>
+    <label>bacta</label>
+    <description>A gelatinous, faintly luminous alkali fluid seeded with living bacteria. Immersed in it, a body's own repair goes into overdrive: wounds close in hours instead of weeks, and given enough time even old scarring is eaten away and replaced with sound tissue.\n\nIt is not a medicine you can apply with your hands, and nobody here knows how to culture it. It arrives in sealed canisters on other people's ships, and it is expensive because it works.</description>
+    <graphicData>
+      <texPath>Things/Item/Bacta/RSW_Bacta</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>44</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <!--
+      ExoticMisc is the tag mechanism, read off the live defs rather than guessed:
+      StockGenerator_Tag with <tradeTag>ExoticMisc</tradeTag> is what Orbital_Exotic,
+      Caravan_Outlander_Exotic and Base_Outlander_Standard use. Core has no
+      "medical" tradeTag at all — medicine is stocked by StockGenerator_SingleDef and
+      StockGenerator_Category, so Patches/RSW_Bacta_TraderStock.xml adds explicit
+      single-def rows next to those medicine rows.
+    -->
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>RewardStandardCore</li>
+    </thingSetMakerTags>
+    <tradeability>All</tradeability>
+    <techLevel>Spacer</techLevel>
+    <allowedArchonexusCount>25</allowedArchonexusCount>
+  </ThingDef>
+
+</Defs>
