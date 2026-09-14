@@ -206,7 +206,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonrifle_argazdan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>35</equippedAngleOffset>
@@ -267,19 +267,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonrifle_argazdan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardHighFreq</li>
@@ -296,7 +283,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonrifle_bothan</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>35</equippedAngleOffset>
@@ -359,19 +346,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonrifle_bothan</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardHighFreq</li>
@@ -388,7 +362,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsonrifle_arkanian</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>35</equippedAngleOffset>
@@ -450,19 +424,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsonrifle_arkanian</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>
@@ -479,7 +440,7 @@
     <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>kotorsoncarbine_nagai</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>35</equippedAngleOffset>
@@ -538,19 +499,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotorsoncarbine_nagai</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>

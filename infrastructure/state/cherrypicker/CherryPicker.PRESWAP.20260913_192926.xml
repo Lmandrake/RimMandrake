@@ -2288,9 +2288,6 @@
 			<li>ThingDef/OuterRim_TibannaSiphon</li>
 			<li>ThingDef/OuterRim_TibannaExtractorLight</li>
 			<li>ThingDef/OuterRim_TibannaExtractorHeavy</li>
-			<li>ResearchProjectDef/guy762_ResearchKotOR_workbench</li>
-			<li>ResearchProjectDef/guy762_ResearchKotOR_advupgrade</li>
-			<li>ResearchProjectDef/guy762_ResearchKotOR_exupgrade</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

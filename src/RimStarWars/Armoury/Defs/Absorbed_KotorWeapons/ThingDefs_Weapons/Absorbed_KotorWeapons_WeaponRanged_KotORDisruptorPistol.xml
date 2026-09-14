@@ -109,7 +109,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotordispistol_sith</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_hvypistol</soundInteract>
@@ -187,30 +187,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotordispistol_sith</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <!-- <mountDef>guy762_KotORMount_beam_NoVerbs</mountDef> -->
-            <mountDef>guy762_KotORMount_beam_disruptorDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -322,7 +298,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotordispistol_ripper</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_hvypistol</soundInteract>
@@ -400,30 +376,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotordispistol_ripper</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <!-- <mountDef>guy762_KotORMount_power_NoVerbs</mountDef> -->
-            <mountDef>guy762_KotORMount_power_disruptorDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardMidFreq</li>
@@ -438,7 +390,7 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>kotordispistol_disintegrator</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <soundInteract>kotorsound_select_hvypistol</soundInteract>
@@ -497,36 +449,6 @@
       </li>
     </tools>
     <comps>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>kotordispistol_disintegrator</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_scope</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <!-- <mountDef>guy762_KotORMount_power_NoVerbs</mountDef> -->
-            <mountDef>guy762_KotORMount_power_disruptorDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_chamber</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <!-- <mountDef>guy762_KotORMount_trigger_NoVerbs</mountDef> -->
-            <mountDef>guy762_KotORMount_trigger_disruptorDMG</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
     <thingSetMakerTags>
       <li>RewardStandardLowFreq</li>

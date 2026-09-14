@@ -118,7 +118,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrosword_krath</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>-35</equippedAngleOffset>
@@ -189,29 +189,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrosword_krath</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrosword</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -223,7 +200,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrosword_sith</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>-35</equippedAngleOffset>
@@ -314,29 +291,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrosword_sith</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrosword</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -348,7 +302,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrosword_echani</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>-35</equippedAngleOffset>
@@ -417,29 +371,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrosword_echani</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrosword</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>
@@ -555,7 +486,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrosword_baragwin</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
     </graphicData>
     <equippedAngleOffset>-35</equippedAngleOffset>
@@ -633,29 +564,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrosword_baragwin</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrosword</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -667,7 +575,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibrosword_bacca</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>3.5</drawSize>
     </graphicData>
     <equippedAngleOffset>-35</equippedAngleOffset>
@@ -758,34 +666,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibrosword_bacca</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibrosword</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>

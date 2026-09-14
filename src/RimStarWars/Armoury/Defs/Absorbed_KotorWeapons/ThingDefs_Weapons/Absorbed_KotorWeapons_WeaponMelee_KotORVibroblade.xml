@@ -116,7 +116,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibroblade_prototype</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>-65</equippedAngleOffset>
@@ -195,29 +195,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibroblade_prototype</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibroblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -229,7 +206,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibroblade_krath</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>-65</equippedAngleOffset>
@@ -300,29 +277,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibroblade_krath</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibroblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -334,7 +288,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibroblade_echani</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>-65</equippedAngleOffset>
@@ -414,29 +368,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibroblade_echani</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibroblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>
@@ -524,7 +455,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibroblade_vao</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>-65</equippedAngleOffset>
@@ -610,34 +541,6 @@
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
       </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibroblade_vao</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibroblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_core</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
-      </li>
     </comps>
   </ThingDef>
 
@@ -649,7 +552,7 @@
     <meleeHitSound>kotorsound_blade_hitsoft</meleeHitSound>
     <graphicData>
       <texPath>vibroblade_sanasiki</texPath>
-      <graphicClass>ModularWeapons2.Graphic_UniqueByComp</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
     <equippedAngleOffset>-65</equippedAngleOffset>
@@ -731,29 +634,6 @@
         <soundMiss>kotorsound_blade_swing</soundMiss>
         <soundHitPawn>kotorsound_blade_hitsoft</soundHitPawn>
         <soundHitBuilding>kotorsound_blade_hithard</soundHitBuilding>
-      </li>
-      <li Class="ModularWeapons2.CompProperties_ModularWeapon">
-        <baseGraphicData>
-          <texPath>vibroblade_sanasiki</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-        </baseGraphicData>
-        <partsMounts>
-          <li>
-            <mountDef>guy762_KotORMount_edge</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_ecell_vibroblade</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-          <li>
-            <mountDef>guy762_KotORMount_grip</mountDef>
-            <offset>(0,0)</offset>
-            <layerOrder>1</layerOrder>
-          </li>
-        </partsMounts>
       </li>
     </comps>
   </ThingDef>
