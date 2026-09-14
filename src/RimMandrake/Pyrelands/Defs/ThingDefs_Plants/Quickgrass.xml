@@ -18,10 +18,11 @@
     an ordinary lawn (0.7), not like the fuel bed; the fire passes THROUGH
     it and it is back inside two days, which is the engineered point.
 
-    growDays 0.5: "regrowth in days by design", faster even than ember grass
-    (0.8) — the burn never outruns the lawn. Same lifespan trap as ember
-    grass: lifespanDaysPerGrowDays 42 puts the lifespan back at a normal
-    ~21 days.
+    growDays 3 (owner, 2026-09-14): regrowth the PLAYER CAN WATCH — "slowly
+    growing within the visual perception of the actual player, so perhaps
+    taking three days to go from nothing to fully tall." The regrow happens
+    after each fire; fires come every few days. lifespanDaysPerGrowDays 7
+    keeps the lifespan at the same ~21 days as before.
 
     ⚠️ Same flagged-not-guessed tint assumption as EmberGrass.xml /
     ScorchFruit.xml: no vanilla plant sets graphicData <color>; if CutoutPlant
@@ -56,8 +57,8 @@
            the same heavy-ash rungs, so the ash ladder keeps its meaning. -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0.1</fertilitySensitivity>
-      <growDays>0.5</growDays>
-      <lifespanDaysPerGrowDays>42</lifespanDaysPerGrowDays>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>7</lifespanDaysPerGrowDays>
       <leaflessGraphicPath>Things/Plant/RM_FE_Quickgrass_Leafless</leaflessGraphicPath>
       <harvestWork>40</harvestWork>
       <maxMeshCount>9</maxMeshCount>
