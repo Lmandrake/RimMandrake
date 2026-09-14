@@ -225,6 +225,12 @@
    "drawsize": 3.5,
    "ds_source": "pawnkind-xml"
   },
+  "dalgo": {
+   "class": "creature",
+   "defName": "RSW_Dalgo",
+   "drawsize": 3.0,
+   "ds_source": "pawnkind-xml"
+  },
   "dervish": {
    "class": "flora",
    "defName": "RG_Plant_Dervish",
@@ -507,6 +513,12 @@
    "drawsize": 2.0,
    "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
   },
+  "iriaz": {
+   "class": "creature",
+   "defName": "RSW_Iriaz",
+   "drawsize": 1.65,
+   "ds_source": "pawnkind-xml"
+  },
   "jogantree": {
    "class": "flora",
    "defName": "Plant_JoganTree_Wild",
@@ -608,6 +620,12 @@
    "defName": "RUT_Nuitae",
    "drawsize": 1.0,
    "ds_source": "default-1.0"
+  },
+  "nuna": {
+   "class": "creature",
+   "defName": "RSW_Nuna",
+   "drawsize": 1.25,
+   "ds_source": "pawnkind-xml"
   },
   "nysyllin": {
    "class": "flora",
@@ -992,6 +1010,18 @@
    "defName": "Zakkeg",
    "drawsize": 5.0,
    "ds_source": "donor-pawnkind-xml (SWAC 3497316713)"
+  },
+  "zeer": {
+   "class": "creature",
+   "defName": "Zeer",
+   "drawsize": 4.0,
+   "ds_source": "donor-pawnkind-xml SWAC 3497316713 adult"
+  },
+  "gizka": {
+   "class": "creature",
+   "defName": "Gizka",
+   "drawsize": 0.87,
+   "ds_source": "donor-pawnkind-xml SWAC 3497316713 adult"
   }
  },
  "unresolved": [
