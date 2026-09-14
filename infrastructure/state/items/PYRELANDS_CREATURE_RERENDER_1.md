@@ -93,3 +93,15 @@ deliberately open (commission close); Orray covers the burrows band.
 `wildAnimals` is the core-only vanilla placeholder; NONE of the roster above
 is wired into the biome. The walk shows vanilla animals until wiring lands.
 `drawsize_backfill.json` has zero roster entries — worker derives from mod XML.
+
+## First-walk owner verdicts (2026-09-14, in-game review tier, scratch map)
+
+- **Bolotaur — DONE** (owner: "I like the Bolotaur... call those done")
+- **Gualaar — DONE** (same breath)
+- Neither stem exists in the artpipe registry (grep 0) — their art predates or
+  bypasses the pipeline; verdicts recorded here as the durable copy.
+- **AA_GreenGoo — praised**: "little arms sticking out and waving around. It
+  works on the new image." Study note filed (LESSONS_INBOX) on how the wiggle
+  is achieved — donor-side animation mechanism + our art interplay.
+- Systemic finding this walk: ARTPIPE_FACING_COHERENCE_1 (N/S facings broken
+  everywhere, owner ruling recorded there).
