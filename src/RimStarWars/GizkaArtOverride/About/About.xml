@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.gizkaartoverride</packageId>
+  <name>Gizka Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Gizka art with custom
+generated art per the 2026-09-11 owner ruling on `art: "improve"` rows: Star
+Wars-named creatures keep their canon identity, full regeneration, heavy
+black outline required.
+
+The donor draws the adult stage from bodyGraphicData texPath
+swanimals/Gizka/Gizka, but 80% of wild spawns roll one of six recolored
+alternateGraphics entries on texPath swanimals/Gizka/GizkaW instead
+(alternateGraphicChance 0.8) - only one look was generated for this wave, so
+the SAME new art is wired to BOTH Gizka_&lt;facing&gt; and
+GizkaW_&lt;facing&gt; rather than leaving 80% of spawns on the old donor look.
+The dessicated-corpse texture (Gizka_Dessicated) stays on donor art. LABEL/
+ART ONLY - no defName touched, no Defs, no Patches, loose Textures/ only,
+same relative paths the donor uses, so this mod's later load order wins the
+same-path resolution.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>
