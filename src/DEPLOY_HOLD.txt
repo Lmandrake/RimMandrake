@@ -207,3 +207,18 @@ Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still a
 Pyrelands/Defs/ThingDefs_Plants/*      # BENCH: art still rendering, 2026-09-14
 Pyrelands/Defs/ThingDefs_ScorchFruit/* # BENCH: art still rendering, 2026-09-14
 Pyrelands/Defs/ThingDefs_Fulgurite/*   # BENCH: art still rendering, 2026-09-14
+
+# --- SCALD_MECHANICS_1 S4/S2: RUT_ScaldVent + RUT_SteamCatch, no art yet -------
+# 2026-09-13, SCALD_MECHANICS_1 build pass. Both ThingDefs are new this pass
+# (RUT_ScaldVent.xml's texPath is a Scald-specific art identity, deliberately
+# NOT reusing vanilla SteamGeyser's texture; RUT_SteamCatch.xml is a wholly
+# new building with no vanilla equivalent). validate_patch.py: 0 errors on
+# every other field on both files — the ONLY failure on each is the missing
+# texPath, confirmed via the live 589-mod scan (`Things/Building/Natural/
+# RUT_ScaldVent` and `Things/Building/Production/RUT_SteamCatch` resolve
+# nowhere under any Textures/ root). Deploying either now renders a pink
+# placeholder.
+# => LIFT when both sprites land under UtinniPatches/Textures/ — defs and art
+#    deploy together in one --apply, same pattern as the Pyrelands hold above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml    # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   # BENCH: no art yet, 2026-09-13
