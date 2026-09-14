@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+<key attr.name="Description" attr.type="string" for="graph" id="d0"/>
+<key for="port" id="d1" yfiles.type="portgraphics"/>
+<key for="port" id="d2" yfiles.type="portgeometry"/>
+<key for="port" id="d3" yfiles.type="portuserdata"/>
+<key attr.name="url" attr.type="string" for="node" id="d4"/>
+<key attr.name="description" attr.type="string" for="node" id="d5"/>
+<key for="node" id="d6" yfiles.type="nodegraphics"/>
+<key for="graphml" id="d7" yfiles.type="resources"/>
+<key attr.name="url" attr.type="string" for="edge" id="d8"/>
+<key attr.name="description" attr.type="string" for="edge" id="d9"/>
+<key for="edge" id="d10" yfiles.type="edgegraphics"/>
+<graph edgedefault="directed" id="G">
+<data key="d0">The Ash'karr Plot Sitting as partial-order tracks. Solid = ruled order within a track. Dashed orange = a cross-track joint (the only places two tracks relate). Dotted = either/or. Yellow = open question, deliberately unlinked. Source of record: design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md.</data>
+<node id="tA" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE SHIP — main line</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE SHIP — main line</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tA:">
+<node id="a1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="60"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Hatch opens at Zeddo's Toll
+G1 · G2</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="a2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="60"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">The loop: land, scavenge,
+improve, launch — G3</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="a3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="60"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Flight hardware earned
+mid-game — G5</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="a4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="60"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">FIRST LAUNCH
+tone GAP — G77</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="a5"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1000" y="60"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Open-ended late game
+G14</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tB" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · ANTIQUITIES LADDER — reading the world back</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · ANTIQUITIES LADDER — reading the world back</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tB:">
+<node id="b1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">LANGUAGE
+true-name labels — G50</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">RELIGION
+shrines revealed</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">CULTURE — the reversal
+census-of-property — G52</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">CARTOGRAPHY
+vaults + access phrases</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b5"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1000" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Shattered Vault gut punch
+→ reconstruction job — G57</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b6"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1235" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">VOICE
+addressing the ancients</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="b7"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1470" y="265"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Call-Out &amp; Testament
+G58</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tC" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · CATHEDRAL RELATIONSHIP</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · CATHEDRAL RELATIONSHIP</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tC:">
+<node id="c1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="480"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Wary
+G7</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="c2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="480"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Tolerated</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="c3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="480"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Vouched</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="c4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="480"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Revealed — scale + aliveness
+G54</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="c5"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1000" y="480"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Cradle-strike ask +
+droid deal — G11</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="c6"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="210" x="1235" y="480"/>
+<y:Fill color="#D6D9A8" transparent="false"/>
+<y:BorderStyle color="#5F6A2F" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Exposure completes → catastrophe
+buildable ANY time — G76</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tD" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · TRUST CHAIN → THE FLESH COMPLEX</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · TRUST CHAIN → THE FLESH COMPLEX</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tD:">
+<node id="d1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="695"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Droid trust earned
+holy city — G30</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="d2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="695"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Cathedral trust earned</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="d3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="695"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Reveal: 'where the infection
+started' — G11</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="d4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="695"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Thaw-gate strike</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="d5"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="1000" y="695"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">ASSAILANT FLESH COMPLEX
+register guard lands HERE — G25/G51</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tE" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE TWO-KEY WAR LAB</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE TWO-KEY WAR LAB</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tE:">
+<node id="e1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="895"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Spire: seize command codes
+the Key — G8 · tone GAP</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="e2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="985"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Crater event — the lake ends
+G9 · cut-scene GAP</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="e3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="940"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">War lab ENTRY
+G10 · tone GAP</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="e4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="200" x="530" y="940"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">War lab INTERIOR / PRIZE /
+CONSEQUENCE — blank — G22</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tF" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE RECLAMATION</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE RECLAMATION</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tF:">
+<node id="f1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="1165"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Ancients woken
+(accumulating debt)</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="f2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="1165"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Helix flip — boon economy
+ends — G12</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="f3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="1165"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">The Reclamation battle
+one concentrated event</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="f4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="1165"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">After-scenes; ancients
+dominated — G60</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tG" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE EMBARGO CLOCK (either / or)</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · THE EMBARGO CLOCK (either / or)</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tG:">
+<node id="g1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="1370"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">The Forge meters tibanna
+G13 · G26</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="g2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="1325"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Player BREAKS the meter
+→ Act III early</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="g3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="1415"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Empire WINS the clock
+→ resistance goes quiet</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="tH" yfiles.foldertype="group">
+<data key="d6"><y:ProxyAutoBoundsNode><y:Realizers active="0">
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · UNANCHORED ARCS — no edges on purpose</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="false" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+<y:GroupNode>
+<y:Geometry height="100" width="400" x="0" y="0"/>
+<y:Fill color="#F7F2E6" transparent="false"/>
+<y:BorderStyle color="#9A8A6A" type="line" width="1.0"/>
+<y:NodeLabel alignment="left" autoSizePolicy="node_width" backgroundColor="#EBDFC6" fontFamily="Dialog" fontSize="13" fontStyle="bold" modelName="internal" modelPosition="t">TRACK · UNANCHORED ARCS — no edges on purpose</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+<y:State closed="true" innerGraphDisplayEnabled="false"/>
+<y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+<y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+</y:GroupNode>
+</y:Realizers></y:ProxyAutoBoundsNode></data>
+<graph edgedefault="directed" id="tH:">
+<node id="h1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="60" y="1590"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Nine-claimant ship
+which god wins the Body — G15</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="h2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="295" y="1590"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Succession clock (Nekko Vok)
+tone GAP — G77</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="h3"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="530" y="1590"/>
+<y:Fill color="#E8D5A8" transparent="false"/>
+<y:BorderStyle color="#9A7A1C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Love-gate
+Yeku / Wim</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+<node id="h4"><data key="d6"><y:ShapeNode>
+<y:Geometry height="62" width="190" x="765" y="1590"/>
+<y:Fill color="#F2B98A" transparent="false"/>
+<y:BorderStyle color="#C1471C" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">Droid-theft heist (Griz)
+tone GAP — G77</y:NodeLabel>
+<y:Shape type="roundrectangle"/>
+</y:ShapeNode></data></node>
+</graph>
+</node>
+<node id="n1"><data key="d6"><y:ShapeNode>
+<y:Geometry height="80" width="300" x="1300" y="570"/>
+<y:Fill color="#FFF3B8" transparent="false"/>
+<y:BorderStyle color="#B89B2A" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">OPEN — G16
+Cathedral arc vs Spire: NO ruled order.
+The codes do NOT ride the relationship.</y:NodeLabel>
+<y:Shape type="rectangle"/>
+</y:ShapeNode></data></node>
+<node id="n2"><data key="d6"><y:ShapeNode>
+<y:Geometry height="80" width="300" x="1300" y="1030"/>
+<y:Fill color="#FFF3B8" transparent="false"/>
+<y:BorderStyle color="#B89B2A" type="line" width="1.5"/>
+<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" modelName="internal" modelPosition="c">OPEN — G16
+Crater vs Reclamation: no stated order.
+45-day trigger is PROPOSED, not canon.</y:NodeLabel>
+<y:Shape type="rectangle"/>
+</y:ShapeNode></data></node>
+<edge id="e0" source="a1" target="a2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e1" source="a2" target="a3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e2" source="a3" target="a4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e3" source="a4" target="a5"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e4" source="b1" target="b2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e5" source="b2" target="b3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e6" source="b3" target="b4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e7" source="b4" target="b5"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e8" source="b5" target="b6"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e9" source="b6" target="b7"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e10" source="c1" target="c2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e11" source="c2" target="c3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e12" source="c3" target="c4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e13" source="c4" target="c5"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e14" source="d1" target="d2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e15" source="d2" target="d3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e16" source="d3" target="d4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e17" source="d4" target="d5"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e18" source="e1" target="e3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">key 1</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e19" source="e2" target="e3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">key 2</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e20" source="e3" target="e4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e21" source="f1" target="f2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e22" source="f2" target="f3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e23" source="f3" target="f4"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="line" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e24" source="g1" target="g2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="dotted" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">either</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e25" source="g1" target="g3"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#5A4A32" type="dotted" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">or</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e26" source="c3" target="d2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#C1471C" type="dashed" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">same joint (G7/G11)</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e27" source="d2" target="b5"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#C1471C" type="dashed" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">partnership unlocks reconstruction (G57)</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e28" source="d5" target="b6"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#C1471C" type="dashed" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">VOICE never front-runs the flesh dungeon (G50)</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+<edge id="e29" source="d3" target="e2"><data key="d10"><y:PolyLineEdge>
+<y:LineStyle color="#C1471C" type="dashed" width="2.0"/>
+<y:Arrows source="none" target="standard"/>
+<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" fontFamily="Dialog" fontSize="10" modelName="six_pos" modelPosition="ttail">reveal points AT the lake site (G11/G22)</y:EdgeLabel>
+<y:BendStyle smoothed="false"/>
+</y:PolyLineEdge></data></edge>
+</graph>
+<data key="d7"><y:Resources/></data>
+</graphml>
