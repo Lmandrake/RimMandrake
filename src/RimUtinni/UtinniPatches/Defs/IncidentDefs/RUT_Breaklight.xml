@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_Breaklight.xml                     UtinniPatches · GREENTIDE_MECHANICS_2 M5
+  ============================================================================
+  greentide_kit_spec.md "M5. Breaklight — clarity as the disaster": "a rare
+  IncidentDef-triggered RM_GameCondition_EnvironmentalWeather... condition
+  preset." Fires Defs/GameConditionDefs/RUT_BreaklightCondition.xml.
+
+  category=Misc, workerClass=IncidentWorker_MakeGameCondition (or a thin
+  subclass of it): confirmed against the live def dump this pass
+  (mcp__rimsage__get_def_details HeatWave, raw) that vanilla's own weather-
+  event incidents (HeatWave, ColdSnap) use exactly this shape — category
+  Misc, baseChance + minRefireDays, no bespoke StorytellerComp — so Breaklight
+  rides the Storyteller's ordinary periodic Misc-incident roll rather than a
+  hand-rolled MapComponent timer (contrast RUT_Surge.xml, which deliberately
+  bans ANY schedule field for a different biome's own "no clockwork tide"
+  rule — no such ban exists in this kit spec's M5 section).
+
+  workerClass=RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_Breaklight
+  (this pass's own new class, EnvironmentalHazards Source/): a one-line
+  subclass of vanilla's own IncidentWorker_MakeGameCondition adding only the
+  MOD_OPTIONS_RETROFIT_1 settings gate (breaklightEnabled) — no firing logic
+  of its own. See that class's own header for why a bespoke subclass was
+  needed here (a permanent biomeMapConditions lock has no equivalent
+  toggle-hook gap; a rare incident does).
+
+  baseChance 1 / minRefireDays 6: both this pass's own INVENTED-BUILD values
+  — the spec names a duration (3-8 hours, on the condition/IncidentDef pair
+  below) but no refire cadence. allowedBiomes=[RUT_Greentide] makes baseChance
+  effectively "this biome's own share of the Misc queue," same posture
+  RUT_Surge.xml's own header already explains for allowedBiomes generally
+  (CanFireNow enforces it even off a Storyteller-driven roll, verified
+  against the live decompile there).
+
+  durationDays 0.125~0.3333 = 3-8 in-game hours, the spec's own INVENTED
+  figure converted to the days unit IncidentWorker_MakeGameCondition.
+  TryExecuteWorker actually consumes — same conversion RUT_Surge.xml's own
+  header already documents for its own duration figure.
+
+  MayRequire is load-bearing: workerClass and gameCondition both resolve
+  into mandrake.rm.environmentalhazards content.
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_Breaklight</defName>
+    <label>Breaklight</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_Breaklight</workerClass>
+    <gameCondition>RUT_BreaklightCondition</gameCondition>
+    <durationDays>0.125~0.3333</durationDays>
+    <baseChance>1</baseChance>
+    <minRefireDays>6</minRefireDays>
+    <allowedBiomes>
+      <li>RUT_Greentide</li>
+    </allowedBiomes>
+    <letterLabel>Breaklight</letterLabel>
+    <letterDef>NegativeEvent</letterDef>
+  </IncidentDef>
+
+</Defs>

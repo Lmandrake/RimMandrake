@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_BreaklightCondition.xml            UtinniPatches · GREENTIDE_MECHANICS_2 M5
+  ============================================================================
+  greentide_kit_spec.md "M5. Breaklight — clarity as the disaster": "reuse
+  ruled RM_GameCondition_EnvironmentalWeather as a rare IncidentDef-triggered
+  condition preset: forces RUT_BreaklightClear WeatherDef (clear, harsh
+  palette), tempOffset +12 C (INVENTED — stacks on the ~45 C ambient into
+  vanilla heatstroke territory via the untouched HediffGiver_Heat), duration
+  3-8 hours (INVENTED)." Duration itself lives on the firing IncidentDef
+  (Defs/IncidentDefs/RUT_Breaklight.xml durationDays), consumed by
+  IncidentWorker_MakeGameCondition.TryExecuteWorker exactly the way
+  RUT_GradientSurge.xml's own header already documents — not repeated here.
+
+  conditionClass = RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather
+  (ALPHA_MECHANICS_KIT_1, ruled and already shipped). tempOffset IS a real,
+  already-shipped EnvironmentalWeatherExtension field (verified against
+  Source/EnvironmentalWeatherExtension.cs this pass, not guessed) — read by
+  GameCondition_EnvironmentalWeather.TemperatureOffset() and faded in/out via
+  GameConditionUtility.LerpInOutValue over temperatureTransitionTicks, tuned
+  below to 2500 (INVENTED, this pass's own — a faster ramp than the
+  extension's own 5000 default, matching "temperatures spike" rather than a
+  slow drift; proportionally still a small fraction of even the shortest
+  3-hour duration).
+
+  Two modExtensions, same "a Def can carry more than one, filtered by type"
+  shape RUT_MiasmaWeatherLock and others already rely on:
+    - EnvironmentalWeatherExtension: the ruled condition's own config
+      (forcedWeather + tempOffset), no damage/hediff/rot/density fields set.
+    - RM_GlowMultiplierOverrideExtension (this item's own M5 build, new
+      class): read directly by BiomeGlowPatches.CurCelestialSunGlow_Postfix,
+      NOT by GameCondition_EnvironmentalWeather — glowMultiplier 1.0
+      (explicit, matching the class default) undoes the Greentide's own
+      permanent 0.75 BiomeGlowMultiplierExtension for the condition's
+      duration, "the steam deflects the sun" mechanism switched fully off
+      rather than merely dimmed less.
+
+  allowUnderground=false (unlike the Roil lock's own true): Breaklight is a
+  sun event — a cave/underground map has no sun to snap clear, and the ~45 C
+  ambient/dry-heat framing this condition prices in is a surface story. Same
+  choice RUT_GradientSurge.xml already made for its own (different reason,
+  same field) tidal event.
+
+  canBePermanent left unset/false: fired only via RUT_Breaklight.xml's
+  IncidentDef, same posture RUT_GradientSurge.xml already documents for its
+  own incident-fired condition.
+
+  MayRequire is load-bearing: conditionClass and both modExtension classes
+  live in mandrake.rm.environmentalhazards; forcedWeather (RUT_BreaklightClear)
+  carries no MayRequire of its own (plain-vanilla-field WeatherDef, no
+  cross-mod class reference) so no extra gate is needed for it specifically.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_BreaklightCondition</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>Breaklight</label>
+    <description>The Roil has lifted. The Greentide stands under a bare, merciless sun, and every degree of the heat it was hiding is suddenly real.</description>
+    <startMessage>The standing fog tears open all at once — Breaklight has come, and the sun over the Greentide is bare and full.</startMessage>
+    <endMessage>The Roil closes back over the canopy. Breaklight has passed.</endMessage>
+    <letterText>The fog blanket has lifted without warning. For the next several hours the Greentide stands under a cloudless, merciless sun — full accuracy, full heat, and every wild thing in sight running for shade.</letterText>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <forcedWeather>RUT_BreaklightClear</forcedWeather>
+        <tempOffset>12</tempOffset>
+        <temperatureTransitionTicks>2500</temperatureTransitionTicks>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GlowMultiplierOverrideExtension">
+        <glowMultiplier>1.0</glowMultiplier>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

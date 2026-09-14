@@ -13,16 +13,27 @@
   (not merely a silently-false match) when the mod is missing. Same shape
   as RUT_ScaldSteamLock_BiomeWiring.xml (SCALD_MECHANICS_1 S1).
 
-  RUT_Greentide.xml carries no <biomeMapConditions> node at all today (only
-  wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so
-  this adds the whole element rather than appending an <li> to an existing
-  one.
+  RUT_Greentide.xml carried no <biomeMapConditions> node at all when this
+  file was first authored (M1), so this originally only added the whole
+  element. GREENTIDE_MECHANICS_2 M4 build pass: RUT_RoilLock_BiomeWiring.xml
+  now ALSO touches this same node, and PatchOperation order between two
+  same-mod files is not something either file controls — a bare
+  nomatch-only Operation would silently do nothing (add no <li> at all, no
+  error, no log) if the node already exists by the time this one runs. Added
+  the symmetric <match> branch below so this patch is correct regardless of
+  which of the two lock-wiring patches happens to run first.
   ============================================================================
 -->
 <Patch>
 
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
     <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+      <value>
+        <li>RUT_GreentideWetBulbLock</li>
+      </value>
+    </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]</xpath>
       <value>

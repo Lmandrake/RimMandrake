@@ -65,6 +65,19 @@ namespace RimMandrake.EnvironmentalHazards
         public List<ThingDef> immuneThingDefs;
         public List<PawnKindDef> immunePawnKinds;
 
+        // GREENTIDE_MECHANICS_2 M5 build ("M1's condition reads Breaklight's
+        // presence and idles — dry air, the multiplier switches off, exactly
+        // the sheet's physics"). Gate 4: while ANY GameConditionDef named
+        // here is active on the same map, RampMap idles the whole ramp for
+        // that map that tick — not merely a reduced driveFactor, an outright
+        // skip, matching "the wet-bulb clock pauses" verbatim. Left empty by
+        // default so this stays a no-op on every other biome; Greentide's
+        // own RUT_GreentideWetBulbLock.xml is the only config that names
+        // RUT_BreaklightCondition here. Data-driven rather than a hardcoded
+        // defName so this class stays kit-agnostic — the specific pairing
+        // lives in XML, not in RM_GameCondition_WetBulb.cs.
+        public List<GameConditionDef> pausedByConditions;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string err in base.ConfigErrors())

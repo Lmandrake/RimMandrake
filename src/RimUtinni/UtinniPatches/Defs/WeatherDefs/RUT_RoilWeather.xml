@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_RoilWeather.xml                    UtinniPatches · GREENTIDE_MECHANICS_2 M4
+  ============================================================================
+  greentide_kit_spec.md "M4. The Roil — standing ground-fog weather" (§4c):
+  "RUT_RoilWeather WeatherDef - accuracyMultiplier and moveSpeedMultiplier
+  are native WeatherDef fields (INVENTED: accuracy 0.7, move 0.95)." Both
+  figures carried over verbatim from the spec, not re-invented here.
+
+  overlayClasses -> RimMandrake.Greentide.RM_WeatherOverlay_GreentideRoil
+  (src/RimMandrake/Greentide/Source/RM_WeatherOverlay_GreentideRoil.cs,
+  already shipped this item's own spike pass — compiles clean, texture owed
+  to the art pipeline, same DEPLOY_HOLD-adjacent posture
+  RUT_WeatherOverlay_ScaldSteam already set: MatLoader.LoadMat on a missing
+  texture logs an error and returns a placeholder rather than throwing, so
+  no def-level DEPLOY_HOLD.txt entry is needed — WeatherDef itself carries no
+  texPath field for validate_patch.py to flag). MayRequire is load-bearing on
+  mandrake.rm.greentide (the overlay class), separate from the lock's own
+  MayRequire on mandrake.rm.environmentalhazards (RUT_RoilLock.xml).
+
+  ambientSounds intentionally empty here, same posture RUT_MiasmaWeather.xml
+  already documented: the spec's own "underlight rain" ambient drip is a
+  BIOME-level cue (BiomeDef.soundsAmbient, RimWorld/BiomeDef.cs:59, distinct
+  from this WeatherDef's own ambientSounds field) — wired onto RUT_Greentide
+  directly (see that file's own header note) rather than duplicated here.
+
+  rainRate/snowRate/sandRate explicit 0: the Roil is fog, never
+  precipitation — same "no rain weather reachable" shape the sibling kits'
+  permanent-lock weathers already enforce (RUT_ScaldSteam, RUT_MiasmaWeather).
+
+  Sky colours: this pass's own INVENTED-BUILD tuning (the spec gives no
+  figures) — a warm, saturated green-gold haze at ground level reading as
+  "hot, roiling, waist-deep fog" per the sheet's player-experience text,
+  distinct from Miasma's own cooler green-gold (a different biome's weather,
+  not to be confused for it) and from Scald's cyan-white steam.
+  ============================================================================
+-->
+<Defs>
+
+  <WeatherDef MayRequire="mandrake.rm.greentide">
+    <defName>RUT_RoilWeather</defName>
+    <label>the Roil</label>
+    <description>Waist-deep, hot fog that hugs the jungle floor while the canopy stands clear above it — the Greentide's permanent breath, thick enough to hide a Lunger and slow an aimed shot, never quite enough to slow a step.</description>
+    <repeatable>true</repeatable>
+    <windSpeedFactor>0.25</windSpeedFactor>
+    <accuracyMultiplier>0.7</accuracyMultiplier>
+    <moveSpeedMultiplier>0.95</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <overlayClasses>
+      <li>RimMandrake.Greentide.RM_WeatherOverlay_GreentideRoil</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.62,0.68,0.5)</sky>
+      <shadow>(0.55,0.6,0.42)</shadow>
+      <overlay>(0.42,0.5,0.32)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.6,0.58,0.4)</sky>
+      <shadow>(0.5,0.5,0.34)</shadow>
+      <overlay>(0.4,0.4,0.26)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightMid>
+      <sky>(0.2,0.24,0.18)</sky>
+      <shadow>(0.28,0.3,0.22)</shadow>
+      <overlay>(0.18,0.22,0.14)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsNightMid>
+    <skyColorsNightEdge>
+      <sky>(0.28,0.3,0.2)</sky>
+      <shadow>(0.34,0.35,0.25)</shadow>
+      <overlay>(0.24,0.26,0.17)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsNightEdge>
+  </WeatherDef>
+
+</Defs>

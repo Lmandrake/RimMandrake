@@ -115,6 +115,19 @@ namespace RimMandrake.EnvironmentalHazards
     //      seeking a trunk to chew — an already-falling/mid-chew tree at the
     //      moment this is toggled off simply never completes; nothing is
     //      forced upright again.
+    //  23. breaklightEnabled — RUT_IncidentWorker_Breaklight
+    //      (GREENTIDE_MECHANICS_2 M5). Off: the Breaklight clearing event
+    //      never fires (CanFireNowSub refuses outright); an occurrence
+    //      already in progress runs to its own scheduled end rather than
+    //      snapping off under a pawn's feet, same posture every other timed
+    //      condition in this kit takes.
+    //  24. steamDevilEnabled — RM_WanderingVortex / RUT_IncidentWorker_
+    //      SteamDevil (GREENTIDE_MECHANICS_2 M3 remainder). Off: the
+    //      incident never fires (CanFireNowSub refuses outright) and any
+    //      steam devil already wandering the map goes inert in place —
+    //      stops moving, damaging and felling trees — rather than vanishing
+    //      out from under a pawn; it simply never dissipates or resumes
+    //      until this is back on.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -140,6 +153,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool wetBulbOverwhelmEnabled = true;
         public static bool dryAirBlowerEnabled = true;
         public static bool treeFallEnabled = true;
+        public static bool breaklightEnabled = true;
+        public static bool steamDevilEnabled = true;
 
         public override void ExposeData()
         {
@@ -166,6 +181,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref wetBulbOverwhelmEnabled, "wetBulbOverwhelmEnabled", true);
             Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
             Scribe_Values.Look(ref treeFallEnabled, "treeFallEnabled", true);
+            Scribe_Values.Look(ref breaklightEnabled, "breaklightEnabled", true);
+            Scribe_Values.Look(ref steamDevilEnabled, "steamDevilEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -236,6 +253,12 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
                 "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
               + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");
+            list.CheckboxLabeled("Breaklight clearing event", ref breaklightEnabled,
+                "A biome built with a rare weather-clearing event stops rolling for one. An occurrence "
+              + "already in progress finishes on its own instead of snapping off immediately.");
+            list.CheckboxLabeled("Steam devils", ref steamDevilEnabled,
+                "The wandering scald-damage vortex event stops occurring; one already wandering the "
+              + "map freezes in place (stops moving, damaging and felling trees) instead of vanishing.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

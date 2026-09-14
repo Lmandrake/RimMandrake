@@ -685,6 +685,165 @@ task, same posture as every build pass in this item).
 - `src/RimUtinni/UtinniPatches/Textures/Things/Plant/GreentideGiantTree/RUT_Placeholder_GreentideGiantTree.png` (new, placeholder)
 - `src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_Greenwood.png` (new, placeholder)
 
+## M4/M5 build pass — 2026-09-14
+
+Full build of the remaining M4 (the Roil weather) and M5 (Breaklight)
+pieces per this item's own spike-pass reconciliation of both sections
+(above): M4's overlay class (`RM_WeatherOverlay_GreentideRoil`) and M5's
+seek-shade AI (`RM_JobGiver_SeekShade`) were already shipped before this
+pass; everything else in both sections lands here — almost entirely XML
+wiring onto already-compiling ruled classes
+(`GameCondition_EnvironmentalWeather`/`EnvironmentalWeatherExtension`,
+`BiomeGlowPatches`), plus one small new generic C# class and one small new
+gate on an existing one.
+
+**M4 — the Roil.** `RUT_RoilWeather.xml` (WeatherDef, accuracy 0.7/move
+0.95, both the spec's own INVENTED figures, overlayClasses pointing at the
+already-shipped `RM_WeatherOverlay_GreentideRoil`) forced permanently via
+`RUT_RoilLock.xml` (GameConditionDef, `conditionClass` =
+`GameCondition_EnvironmentalWeather`, no damage/hediff/rot/density fields
+set — pure weather force, same shape `RUT_ScaldSteamLock`/
+`RUT_MiasmaWeatherLock` already established for their own sibling biomes),
+wired onto `RUT_Greentide` via `RUT_RoilLock_BiomeWiring.xml`. "The steam
+deflects the sun": `BiomeGlowMultiplierExtension{glowMultiplier: 0.75}`
+(the spec's own INVENTED value) added directly to `RUT_Greentide.xml`'s
+`modExtensions` — zero new code, the ruled `BiomeGlowPatches` Harmony patch
+already reads it. "Underlight rain": `Ambient_Rain` (real, already-shipping
+vanilla SoundDef, confirmed via `mcp__rimsage__search_defs`) added to
+`RUT_Greentide.xml`'s `soundsAmbient` — cosmetic, no mechanic, no C#, per
+the spec's own explicit minimal-content license. The biome's own stale
+header note ("no dedicated Roil/Breaklight WeatherDefs exist yet") is
+corrected in place per the repo's "inaccurate material is deleted, not
+superseded-in-place" rule — it named a real gap this pass closes.
+
+**M5 — Breaklight.** `RUT_BreaklightClear.xml` (WeatherDef, clear/harsh —
+accuracy/move left at their 1.0 defaults rather than repeated, no
+overlayClasses, bright near-white sky colours, all INVENTED-BUILD tuning
+since the spec names no figures) fired by `RUT_Breaklight.xml` (IncidentDef,
+category Misc, `workerClass` = a new one-line subclass
+`RUT_IncidentWorker_Breaklight` rather than bare vanilla
+`IncidentWorker_MakeGameCondition` — see below for why; `durationDays`
+0.125~0.3333 = 3-8 hours, the spec's own INVENTED figure; `baseChance`
+1/`minRefireDays` 6, both this pass's own INVENTED since the spec gives no
+refire cadence; `allowedBiomes: [RUT_Greentide]`), which registers
+`RUT_BreaklightCondition.xml` (GameConditionDef, `conditionClass` =
+`GameCondition_EnvironmentalWeather`, `tempOffset` 12 — confirmed a real,
+already-shipped `EnvironmentalWeatherExtension` field before use, not
+guessed — `temperatureTransitionTicks` 2500 INVENTED for a fast ramp-in,
+`allowUnderground` false since a cave has no sun to snap clear).
+
+Confirmed against the live def dump (`mcp__rimsage__get_def_details
+HeatWave`) that vanilla's own weather-event incidents (HeatWave, ColdSnap)
+use the identical category-Misc/`baseChance`/`minRefireDays` shape with no
+bespoke StorytellerComp — Breaklight rides the Storyteller's ordinary
+periodic Misc-incident roll, not a hand-rolled `MapComponent` timer (unlike
+`RUT_Surge`, whose sibling biome carries an explicit "no clockwork tide"
+ban this kit's own M5 section never states).
+
+Two small hookups, both additive to already-shipped shared classes rather
+than new comps, per the spec's own framing of each as a small extension:
+
+- **Glow override** (new class `RM_GlowMultiplierOverrideExtension`,
+  `src/RimMandrake/EnvironmentalHazards/Source/`): a `DefModExtension` for a
+  `GameConditionDef` (not a `BiomeDef`, unlike `BiomeGlowMultiplierExtension`).
+  `BiomeGlowPatches.CurCelestialSunGlow_Postfix` now checks
+  `EnvironmentalHazardsMod.ActiveGlowOverrideFor(map)` first — a scan of
+  `map.gameConditionManager.ActiveConditions` for one whose `def` carries the
+  new extension, gated behind a load-order-computed `anyGlowOverrideOptsIn`
+  flag so every install that never uses the feature pays only a bool read,
+  same hot-path posture `anyBiomeOptsIn` already established for the
+  biome-side check. When found, its `glowMultiplier` (1.0 on
+  `RUT_BreaklightCondition`) is applied INSTEAD of the biome's own 0.75, not
+  stacked with it. Deliberately generic — nothing in the new class names
+  Greentide or Breaklight — so any future dark-biome "clearing event"
+  reuses it without new C#, exactly the spec's own "benefits every future
+  dark biome with a clearing event" framing.
+- **Wet-bulb pause**: `RM_WetBulbExtension` gained one new field,
+  `pausedByConditions` (`List<GameConditionDef>`, empty/no-op by default) —
+  `RM_GameCondition_WetBulb.RampMap` now checks it before gate 2's per-room
+  dried-room check and idles the WHOLE map's ramp for the tick if any named
+  condition is active (`GameConditionManager.ConditionIsActive`), a genuine
+  gate-4 addition, not a reduced rate. `RUT_GreentideWetBulbLock.xml` is the
+  only config naming `RUT_BreaklightCondition` here — the C# class itself
+  stays kit-agnostic, matching M1's existing data-driven shape rather than
+  hardcoding Breaklight's defName in `RM_GameCondition_WetBulb.cs`.
+
+`RUT_IncidentWorker_Breaklight` (new class, same RUT_-prefixed-content-in-
+`mandrake.rm.environmentalhazards` precedent `RUT_WeatherOverlay_ScaldSteam`
+already set): a one-line `IncidentWorker_MakeGameCondition` subclass adding
+only the `breaklightEnabled` mod-setting gate — no firing logic of its own.
+Needed because, unlike a permanent `biomeMapConditions` lock (which has no
+individual toggle in this kit's existing convention — Scald/Miasma/this
+pass's own Roil lock are all ungated), a rare incident-fired event has no
+other on/off hook to retrofit `MOD_OPTIONS_RETROFIT_1`'s "master switch per
+mechanism" rule onto.
+
+**Patch-order bug found and fixed in self-review, before commit.**
+`RUT_RoilLock_BiomeWiring.xml` is the SECOND patch to touch
+`RUT_Greentide.xml`'s `biomeMapConditions` node (M1's
+`RUT_GreentideWetBulbLock_BiomeWiring.xml` was first) — PatchOperation order
+between two same-mod files is not something either file controls. The
+existing M1 patch used a bare `PatchOperationConditional` with only a
+`<nomatch>` branch (add-the-whole-node); if this pass's own Roil patch had
+happened to run first, the WetBulb patch's `<nomatch>` branch would have
+silently done nothing on its own turn (node already exists, no `<match>`
+branch to fire), permanently dropping `RUT_GreentideWetBulbLock` from the
+biome with no error and no log. Fixed by adding the symmetric `<match>`
+branch (append-`<li>`) to `RUT_GreentideWetBulbLock_BiomeWiring.xml` itself,
+and writing `RUT_RoilLock_BiomeWiring.xml` with both branches from the
+start — both patches are now correct regardless of load order.
+`validate_patch.py` confirms both files' `<nomatch>` branch is the one that
+actually fires against the live 99-mod load order (alphabetical: M1's file
+sorts before M4's), so this was a latent bug, not a live one — worth fixing
+anyway since load order is not a contract.
+
+**Owed** (explicitly deferred per this item's own scope, not silently
+dropped): M5's "everything scrambles for shade" visible animal AI — a
+seek-shade JobGiver keyed to Breaklight specifically — is flavor-only and
+was NOT built this pass, per the calling brief's own instruction; M1's
+`immunePawnKinds`/`immuneThingDefs` lists remain empty (Greentide's own
+fauna roster, a follow-on item, unchanged by this pass); no art held —
+neither new WeatherDef carries a texPath validate_patch.py can flag, and the
+Roil overlay's own missing texture was already flagged (no DEPLOY_HOLD.txt
+entry needed either way, matching `RUT_WeatherOverlay_ScaldSteam`'s own
+precedent: a weather overlay's `MatLoader.LoadMat` call is invisible to that
+tool); no bridge/quicktest verification (no game access in this task, same
+posture as every build pass in this item).
+
+**Build/validate.** `RM_EnvironmentalHazards.csproj` rebuilds clean, 0
+warnings/0 errors (2 new `<Compile>` entries:
+`RM_GlowMultiplierOverrideExtension.cs`, `RUT_IncidentWorker_Breaklight.cs`;
+4 files edited: `BiomeGlowPatches.cs`, `RM_WetBulbExtension.cs`,
+`RM_GameCondition_WetBulb.cs`, `RM_EnvironmentalHazardsMod.cs` — the last
+gaining settings toggle #23, `breaklightEnabled`). `validate_patch.py`
+against the live 99-active-mod installed set: 0 errors across all 9
+new/changed def/patch files; 2 advisory WARNs, both the expected
+"add-if-missing `<nomatch>` shape" info the two biome-wiring patches always
+carry (confirmed intentional, same as every sibling lock-wiring patch in
+this item); several `info` lines noting the new/edited C# classes aren't
+resolvable from the undeployed Mods folder, expected pre-deploy and matching
+every prior build pass in this item.
+
+## files (M4/M5 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GlowMultiplierOverrideExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_Breaklight.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowPatches.cs` (glow-override lookup, wired into the postfix)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs` (1 new field, `pausedByConditions`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WetBulb.cs` (gate 4, the dry-air pause)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle, #23)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_RoilWeather.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_RoilLock.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml` (patch-order bug fix, `<match>` branch added)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml` (M4's `BiomeGlowMultiplierExtension`/`soundsAmbient`; stale header note corrected)
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_BreaklightClear.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_BreaklightCondition.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_Breaklight.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GreentideWetBulbLock.xml` (M5's `pausedByConditions` wiring)
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside

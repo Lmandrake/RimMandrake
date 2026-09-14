@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_BreaklightClear.xml                UtinniPatches · GREENTIDE_MECHANICS_2 M5
+  ============================================================================
+  greentide_kit_spec.md "M5. Breaklight — clarity as the disaster" (§4c):
+  "forces RUT_BreaklightClear WeatherDef (clear, harsh palette)." Player
+  experience text: "the fog blanket lifts at once and the biome stands naked
+  under the full +45 deg sun... accuracy snaps to full."
+
+  accuracyMultiplier/moveSpeedMultiplier both left at their WeatherDef
+  defaults (1.0, unset) rather than repeated explicitly — "snaps to full"
+  means undoing the Roil's own 0.7/0.95 penalties entirely, i.e. plain
+  vanilla-neutral weather, not a bespoke bonus above 1.0 the spec never asks
+  for.
+
+  No overlayClasses: harsh, unclouded sun needs no weather overlay panner at
+  all — same shape vanilla's own Clear.xml uses (zero overlayClasses).
+
+  rainRate/snowRate/sandRate explicit 0: same "no rain weather reachable"
+  posture every permanent-lock weather in this kit already enforces, kept
+  here even though this is a temporary rather than locked weather — nothing
+  in the sheet suggests Breaklight ever precipitates.
+
+  Sky colours: this pass's own INVENTED-BUILD tuning (the spec names no
+  figures) — a bright, near-white, high-saturation harsh noon look, the
+  visual inverse of RUT_RoilWeather's muted green-gold haze, reading as the
+  "naked under full sun" the sheet's own player-experience text describes.
+  ============================================================================
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RUT_BreaklightClear</defName>
+    <label>Breaklight</label>
+    <description>The fog blanket lifts without warning and the Greentide stands naked under a merciless, cloudless sun — every shot true, every degree of the heat suddenly real, and every creature in sight running for shade.</description>
+    <repeatable>true</repeatable>
+    <windSpeedFactor>1.0</windSpeedFactor>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <skyColorsDay>
+      <sky>(0.98,0.97,0.9)</sky>
+      <shadow>(0.95,0.94,0.88)</shadow>
+      <overlay>(0.9,0.88,0.78)</overlay>
+      <saturation>1.05</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.95,0.8,0.55)</sky>
+      <shadow>(0.9,0.78,0.55)</shadow>
+      <overlay>(0.85,0.65,0.4)</overlay>
+      <saturation>1.05</saturation>
+    </skyColorsDusk>
+    <skyColorsNightMid>
+      <sky>(0.15,0.17,0.22)</sky>
+      <shadow>(0.22,0.24,0.3)</shadow>
+      <overlay>(0.12,0.14,0.2)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+    <skyColorsNightEdge>
+      <sky>(0.22,0.24,0.3)</sky>
+      <shadow>(0.28,0.3,0.36)</shadow>
+      <overlay>(0.18,0.2,0.26)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+  </WeatherDef>
+
+</Defs>

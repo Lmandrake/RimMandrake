@@ -22,6 +22,13 @@
   reconciliation notes on M5/M7), so there is no roster to name here yet.
   The lists exist on RM_WetBulbExtension and are ready for that pass to
   populate without touching this file's own structure.
+
+  GREENTIDE_MECHANICS_2 M5 build pass: pausedByConditions added, naming
+  RUT_BreaklightCondition (Defs/GameConditionDefs/RUT_BreaklightCondition.xml)
+  — "M1's condition reads Breaklight's presence and idles (dry air — the
+  multiplier switches off, exactly the sheet's physics)." No MayRequire
+  needed on the <li> itself: both this def and RUT_BreaklightCondition are
+  UtinniPatches content, never independently present/absent from each other.
   ============================================================================
 -->
 <Defs>
@@ -40,6 +47,9 @@
         <intervalTicks>600</intervalTicks>
         <severityPerInterval>0.00667</severityPerInterval>
         <protectionHoldThreshold>0.8</protectionHoldThreshold>
+        <pausedByConditions>
+          <li>RUT_BreaklightCondition</li>
+        </pausedByConditions>
       </li>
     </modExtensions>
   </GameConditionDef>

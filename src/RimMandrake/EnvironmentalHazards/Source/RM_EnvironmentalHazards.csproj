@@ -139,6 +139,11 @@
     <Compile Include="RM_GnawTreeBaseExtension.cs" />
     <Compile Include="RM_JobGiver_GnawTreeBase.cs" />
     <Compile Include="RM_JobDriver_GnawTreeBase.cs" />
+    <Compile Include="RM_GlowMultiplierOverrideExtension.cs" />
+    <Compile Include="RUT_IncidentWorker_Breaklight.cs" />
+    <Compile Include="RM_WanderingVortexExtension.cs" />
+    <Compile Include="RM_WanderingVortex.cs" />
+    <Compile Include="RUT_IncidentWorker_SteamDevil.cs" />
   </ItemGroup>
 
   <ItemGroup>
