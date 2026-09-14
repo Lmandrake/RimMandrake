@@ -72,6 +72,19 @@ namespace RimMandrake.EnvironmentalHazards
     //      a despoiled marker still flips its own despoiled flag (flavor,
     //      inspect string), but the map-wide manhunter-chance factor is
     //      never registered or applied.
+    //  15. bubbleSailorScattererEnabled — RM_ScattererValidator_NearThingDef
+    //      (SCALD_MECHANICS_1 S5). WORLDGEN-AFFECTING: off means
+    //      RUT_GenStep_ScaldSailScatterer finds no valid site on any map
+    //      generated while it is off, so no sail-cluster pawn is ever
+    //      placed near a vent on that map — already-generated maps and
+    //      their existing placements are unaffected either way.
+    //  16. strandingPoolsEnabled — RM_MapComponent_StrandingPools /
+    //      RM_JobGiver_ReturnToWater (MIASMA_MECHANICS_1 M3). Off: no new
+    //      pool is ever detected after a recede, no stranded creature is
+    //      ever spawned, and every already-tracked pool freezes in place
+    //      (no further decay, no despawn fallback, no return-to-water jobs)
+    //      until this is turned back on — never a silent despawn just from
+    //      toggling the option off.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -89,6 +102,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool periodicInspirationEnabled = true;
         public static bool wardenCrecheScattererEnabled = true;
         public static bool crecheDespoilMemoryEnabled = true;
+        public static bool bubbleSailorScattererEnabled = true;
+        public static bool strandingPoolsEnabled = true;
 
         public override void ExposeData()
         {
@@ -107,6 +122,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref periodicInspirationEnabled, "periodicInspirationEnabled", true);
             Scribe_Values.Look(ref wardenCrecheScattererEnabled, "wardenCrecheScattererEnabled", true);
             Scribe_Values.Look(ref crecheDespoilMemoryEnabled, "crecheDespoilMemoryEnabled", true);
+            Scribe_Values.Look(ref bubbleSailorScattererEnabled, "bubbleSailorScattererEnabled", true);
+            Scribe_Values.Look(ref strandingPoolsEnabled, "strandingPoolsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -151,6 +168,13 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Crèche despoil memory", ref crecheDespoilMemoryEnabled,
                 "Killing a placed crèche's warden stops raising manhunter-pack odds on that map afterward. "
               + "The marker itself still remembers it was despoiled either way.");
+            list.CheckboxLabeled("Bubble-sailor placement (WORLDGEN-AFFECTING)", ref bubbleSailorScattererEnabled,
+                "A biome built to place sail clusters near its vents stops placing new ones on any map "
+              + "generated while this is off. Maps already generated keep whatever they already have.");
+            list.CheckboxLabeled("Stranding pools and the stranded", ref strandingPoolsEnabled,
+                "A biome built to leave cut-off water pools behind a receding surge stops detecting new "
+              + "ones, stops spawning anything stranded in them, and freezes every pool already tracked "
+              + "(no further shrinking, no return-to-water jobs, no despawn) until this is back on.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

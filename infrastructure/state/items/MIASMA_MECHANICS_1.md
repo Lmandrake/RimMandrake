@@ -1038,3 +1038,189 @@ item's 6 mechanics. Item stays in `doing`.
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_CrecheMarker.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml` (new)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_CrecheScatterer_Register.xml` (new)
+
+## M3 build pass — 2026-09-14
+
+Kit spec's own last v1 mechanic, "stranding pools and the stranded" —
+strictly after M2, "armed by its recede" per this item's own assignment.
+With this pass, **all six of MIASMA_MECHANICS_1's mechanics (M1-M6) have
+landed a build pass.** No bridge/game/quicktest access this pass, same gap
+every prior pass in this item has flagged — a live map actually showing a
+pool form, spawn, shrink and empty (or a stranded creature actually walk
+home) is still owed. Item stays in `doing` — closing it is a judgment call
+for whoever reviews the full kit against its own live-test bar, per this
+pass's own assignment; not done here.
+
+**Armed by M2's recede, concretely — not re-derived.** `RM_MapComponent_
+StrandingPools.MapComponentTick` (same throttled `GenTicks.TickRareInterval`
+cadence M1/M2 already use, jittered per-map at construction) polls `RM_
+MapComponent_GradientAxis.LastRecedeCompletedTick` each throttled step and
+compares it against its own last-seen value; on an advance, `DetectPools()`
+runs. This is the exact handoff signal the M2 build pass exposed for this
+purpose — no separate recede-detection was invented.
+
+**Pool detection.** A full flood-fill of the map's water-band cells
+(`TerrainGrid.BaseTerrainAt(c).IsWater`, 4-directional, matching vanilla's
+own room/region flood-fill convention) into connected components. The
+LARGEST component is read as the main channel network; every other
+component is a candidate pool. A candidate sharing any cell with an
+already-tracked pool is treated as that SAME pool (its cell list is
+resynced, not re-spawned into); a candidate with no overlap anywhere is
+registered brand new — id, cells, birth tick, a decay clock rolled from
+`RM_StrandingPoolsExtension.decayDaysRange` (INVENTED 3-8 days, the spec's
+own figure) — and immediately rolled for stranding spawns. **Known,
+documented softness**: if a second recede touches an already-tracked pool
+before its first fully resolves, the pool's cell SHAPE is resynced but its
+birth tick / decay clock is not restarted — the pool keeps decaying against
+its original timeline while occupying a possibly different cell footprint.
+Non-fatal (decay math degrades to "resume once the target catches up" or
+"shrink toward a stale target," never a crash or a double-spawn) and
+untested against a live map; flagged, not silently assumed correct.
+
+**Reconciliation and the "re-covered pool deregisters" requirement (this
+item's own assignment point 5).** Every throttled tick while any pool
+exists (not only on a recede), each tracked pool gets a BOUNDED local
+flood-fill starting from one of its own cells, capped at
+`max(200, cells*8)`. Reaching the map edge (vanilla rivers/coasts always
+touch the map boundary) or exceeding the cap without terminating is read as
+"reconnected to something large/open again" — the next surge restoring the
+channel over previously-pooled cells, per the assignment's own framing.
+Reconnected pools are simply removed from tracking, no despawn: their
+occupants were always ordinary spawned wild pawns on the map, never held or
+contained by anything synthetic, so "rejoin the wild population" (spec's
+own words) needs no further code — they already have. **A deliberate,
+documented heuristic**, not a literal graph-connectivity proof — a full-map
+recompute every throttled tick was judged needlessly expensive for a check
+that only needs to be directionally right; the assignment's own item 5 text
+("document what happens in the edge case where a new surge arrives mid-pool
+life") is answered by this same mechanism, since a forward shove flooding a
+pool's connecting land IS exactly what trips this check.
+
+**Pool decay.** Pools not reconnected shrink cell-by-cell toward zero over
+their own `decayTotalTicks`, removing EDGE cells first (a cell adjacent to
+already-non-water ground) for a "drying from the shore inward" look — an
+explicit simplification of real erosion, not a physical simulation, chosen
+because a true multi-layer erosion algorithm bought nothing a player would
+notice at this scale. Each removed cell repaints via `RM_GradientAxisRepaint.
+SetTerrainFloorSafe` — the SAME floor-safe write M2 built, reused directly
+per this item's own instruction ("reuse it, don't fork it") rather than
+re-derived — to `RM_StrandingPoolsExtension.dryTerrain` (wired to
+`RUT_Jawa_SaltCrust`, M1's own choice for the driest brine-adjacent band),
+so a player floor sitting over a decaying pool cell is never silently
+destroyed, closing the same bug class M2's own pass fixed for the surge
+repaint. A dedicated `dryTerrain` field rather than reading M1's own
+`RM_GradientAxisExtension.landTerrain`: that field is gated on
+`landRepaintSource`/`landRepaintMinSalinity` for a different purpose (muck
+salt-crusting) and simply doesn't apply to former WATER cells drying out, so
+this mechanism carries its own simpler target rather than depending on M1's
+unrelated gating.
+
+**Stranding spawns.** Weighted roll (INVENTED, spec: 40% empty / 50% 1-2 /
+10% something bigger) against `RM_StrandingPoolsExtension`'s three weight
+fields; the "something bigger" tier is read as MORE individuals (INVENTED
+3-5, `strandedCountBig`) from the same generic list rather than a
+differently-tiered creature, since a second "big creature" PawnKindDef list
+would itself be roster content this kit is explicitly not scoped to invent
+(the spec's own words: "the transitional endemics are roster content; this
+kit ships only the spawner and the pool lifecycle"). `RM_StrandingPoolsExtension.
+strandedSpawnList` is a generic `List<PawnKindDef>` — the real
+`RUT_StrandedSpawnList` roster is NOT authored here. `RUT_Miasma.xml` wires
+exactly ONE existing shipped PawnKindDef (`Yobshrimp`, already present in
+this biome's own `wildAnimals`, `MayRequire="mlie.starwarsanimalcollection"`)
+into it as a loudly-commented PLACEHOLDER, same discipline this session's
+other passes use for placeholder art/content, so the spawner compiles and
+could run end-to-end today rather than only against an empty list.
+
+**Return-to-water JobGiver: the REAL job landed, not the despawn fallback**
+— this item's own assignment: "Attempt this for real... if you genuinely
+run out of scope/time, ship the explicit despawn fallback instead." Time
+allowed the real job. `RM_JobGiver_ReturnToWater` (a `ThinkNode_JobGiver`,
+same shape as this repo's own `RM_JobGiver_SeekShade`/`RM_JobGiver_
+SeekMarkedTerrain` in `CreatureBehaviors`) is inserted GLOBALLY for every
+animal in the game via a new `RM_ThinkTree_StrandingBehaviors.xml`
+(`insertTag="Animal_PreMain"`, vanilla's own `Verse.AI.
+ThinkNode_SubtreesByTag` extension point) — required specifically because
+this pass's placeholder spawn uses an EXISTING, unmodified shipped
+PawnKindDef whose own ThinkTreeDef this item must not touch; a global,
+marker-gated insertion is the only route that reaches an arbitrary existing
+kind without editing it. No per-pawn marker Hediff/Comp was needed:
+`RM_MapComponent_StrandingPools` already tracks each pool's `occupants`
+directly (`List<Pawn>`, Scribe-referenced), so `TryGetPoolFor(pawn, ...)` is
+a cheap linear scan over a typically tiny pools list, and the JobGiver
+no-ops instantly for the overwhelming majority of pawns — anyone not a
+tracked occupant. Once a pawn's own pool's live cell count drops to/below
+`RM_StrandingPoolsExtension.poolSizeThreshold` (INVENTED — the spec names no
+figure at all here, picked and recorded as 4), `TryFindNearestChannelCell`
+walks `GenRadial.RadialCellsAround` (yields cells in strictly increasing
+distance order, confirmed against the live decompile's own precomputed
+table) looking for the first reachable, non-pool water cell within
+`searchRadius` (INVENTED 60) and returns a plain vanilla `JobDefOf.Goto` —
+no new JobDef or JobDriver needed.
+
+**The despawn-at-pool-death fallback still exists, as the spec's own
+explicit safety net, not the primary path.** `DespawnStrandedFallback` fires
+only when a pool's cell count reaches exactly 0 while it still holds
+occupants the JobGiver never resolved (no reachable channel within
+`searchRadius`, blocked pathing, or similar) — loudly `Log.Message`-logged
+per pawn, never a silent vanish, matching this item's own instruction
+("flag at build if the job slips, so the sheet's tragedy isn't silently a
+despawn forever").
+
+**Mod Settings.** `strandingPoolsEnabled` (default on) added to `RM_
+EnvironmentalHazardsSettings`/`RM_EnvironmentalHazardsMod.cs` — off freezes
+every tracked pool in place (no further decay/despawn/return jobs) and stops
+new pools from ever being detected, never a silent despawn just from
+toggling it off. M2/M4's own build passes explicitly deferred a toggle to
+`MOD_OPTIONS_RETROFIT_1`'s own territory; this pass instead followed M6's
+own precedent (which DID add `wardenCrecheScattererEnabled`/
+`crecheDespoilMemoryEnabled` to this same settings file) rather than
+repeating M2/M4's deferral, per the repo's standing "every mod ships superb
+Mod Settings, no exceptions" rule — a real, if small, inconsistency against
+M2/M4's own choice, noted rather than silently resolved either way.
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0
+errors, with this pass's own 3 new `<Compile>` entries. Another window
+(a Dread-field/Scald-mechanics pass) was concurrently committing its own
+csproj change to the same shared file while this pass ran; confirmed
+directly (re-read after a mid-session `Edit` failure on a stale read) that
+the merged file already carried all of this pass's 3 entries alongside that
+window's own additions — nothing lost, nothing duplicated, nothing further
+needed for that file.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` against
+the live 99-active-mod set (`--defs` Data + Mods + Workshop root,
+`--mods-config` the real `ModsConfig.xml`): the 2 new/changed XML files,
+**0 errors, 0 warnings**. The "no def in the load set uses that class" info
+lines for `RM_StrandingPoolsExtension`/`RM_GradientSurgeExtension`/
+`RM_JobGiver_ReturnToWater` are expected (the tool cannot see a freshly
+built DLL); the clean build above is what actually confirms each class
+resolves.
+
+**Not done this pass, explicitly**: no live/quicktest verification of any
+kind (pool forming after a real recede, spawn actually landing, decay
+actually shrinking/repainting, a stranded pawn actually walking home,
+`IsReconnected`'s heuristic actually tripping on a real second surge) — same
+gap every prior pass in this item has flagged, now true of all six
+mechanics at once. `ModsConfig.xml` untouched. No `RUT_StrandedSpawnList`
+roster content authored — `strandedSpawnList` carries only the one
+PLACEHOLDER kind named above. M1/M2/M4/M5/M6 untouched except through their
+existing public APIs (`LastRecedeCompletedTick`, `RM_GradientAxisRepaint.
+SetTerrainFloorSafe`). The multi-recede-touching-one-pool softness noted
+above under "Pool detection" is real and undomented anywhere else.
+
+**All six of MIASMA_MECHANICS_1's mechanics have now landed a build pass.**
+This item stays in `doing` — this pass does not close it, per its own
+explicit instruction; a live-test pass against the kit's own spec (and a
+judgment call on whether M1-M6's accumulated "not done"/"owed" lists are
+acceptable for a v1 ship) is the next real gate, for whoever reviews the
+whole kit next.
+
+## files (M3 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_StrandingPoolsExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_ReturnToWater.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Defs/ThinkTreeDefs/RM_ThinkTree_StrandingBehaviors.xml` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (modified: `strandingPoolsEnabled` setting)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (modified: 3 new `<Compile>` entries — this pass's own only, landed inside another concurrent window's own commit to the same shared file)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` (modified: `RM_StrandingPoolsExtension` added to `modExtensions`, with the placeholder `Yobshrimp` spawn entry)
