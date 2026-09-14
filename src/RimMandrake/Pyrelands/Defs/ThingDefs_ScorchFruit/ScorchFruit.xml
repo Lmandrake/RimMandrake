@@ -45,9 +45,9 @@
       </li>
     </comps>
     <graphicData>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutPlant</shaderType>
-      <texPath>Things/Plant/Ambrosia</texPath>
+      <texPath>Things/Plant/RM_FE_ScorchFruitPod</texPath>
       <color>(150, 70, 40)</color>
       <shadowData>
         <volume>(0.1, 0.2, 0.1)</volume>
@@ -109,7 +109,7 @@
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Berries</texPath>
+      <texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>
       <color>(150, 70, 40)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>

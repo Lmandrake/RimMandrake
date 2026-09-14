@@ -41,7 +41,7 @@
       <Nutrition>0.45</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Grass</texPath>
+      <texPath>Things/Plant/RM_FE_EmberGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <color>(198, 142, 68)</color>
     </graphicData>
@@ -56,7 +56,7 @@
       <fertilitySensitivity>0.15</fertilitySensitivity>
       <growDays>0.8</growDays>
       <lifespanDaysPerGrowDays>26</lifespanDaysPerGrowDays>
-      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <leaflessGraphicPath>Things/Plant/RM_FE_EmberGrass_Leafless</leaflessGraphicPath>
       <harvestWork>40</harvestWork>
       <maxMeshCount>9</maxMeshCount>
       <visualSizeRange>0.5~0.85</visualSizeRange>
