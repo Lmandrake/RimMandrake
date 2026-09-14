@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Greentide_LivingRegrowth.xml       UtinniPatches · GREENTIDE_MECHANICS_2 M12 build
+
+  Translate key for the Greatbole's creak-warning Message
+  (RM_MapComponent_LivingRegrowth.cs, CreakWarning) — a generic RM_-tier
+  class, but the player-facing text is Greentide/Utinni flavor, same split
+  every other cross-referenced RM_/RUT_ pair in this repo uses.
+-->
+<LanguageData>
+
+  <RM_LivingRegrowthCreak>Something creaks overhead — the wood is closing back in.</RM_LivingRegrowthCreak>
+
+</LanguageData>

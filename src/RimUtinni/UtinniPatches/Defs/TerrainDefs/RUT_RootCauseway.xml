@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M9 build (greentide_kit_spec.md M9: "paint
+     RUT_RootCauseway TerrainDef (low pathCost, raised sprite) in 1-2 wide
+     lanes over the churnmud basins"). Painted entirely by
+     RM_GenStep_RootCauseways — not buildable, not in any construction
+     designation category, same posture as vanilla's own natural-terrain
+     defs (a player never designates this, only walks it).
+
+     PLACEHOLDER ART: reuses vanilla PackedDirt's own texture (a plausible
+     raised, packed root-surface reading); real bespoke art (a visibly
+     raised root lane over mud) is owed — DEPLOY_HOLD. -->
+<Defs>
+
+  <TerrainDef>
+    <defName>RUT_RootCauseway</defName>
+    <label>root causeway</label>
+    <description>A raised lane of packed, interwoven roots, firm enough to walk in a straight line over ground that would otherwise swallow you to the knee.</description>
+    <renderPrecedence>325</renderPrecedence>
+    <texturePath>Terrain/Surfaces/PackedDirt</texturePath>
+    <pathCost>2</pathCost>
+    <fertility>0.2</fertility>
+    <edgeType>FadeRough</edgeType>
+    <color>(107,84,52)</color>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <statBases>
+      <Beauty>0</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

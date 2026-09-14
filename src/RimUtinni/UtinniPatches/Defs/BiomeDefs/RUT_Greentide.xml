@@ -98,6 +98,46 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!--
+      GREENTIDE_MECHANICS_2 M9/M12 build pass. Both extensions are generic
+      RM_-tier (defined in mandrake.rm.environmentalhazards, harmless on any
+      biome that doesn't carry them) — see RM_LivingBoleBiomeExtension.cs /
+      RM_RootCausewayBiomeExtension.cs for the full field docs.
+    -->
+    <modExtensions>
+      <!-- M12: the Greatbole. Counts/radius/spacing are all kit-spec
+           INVENTED numbers; roofDef left unset so the GenStep's own default
+           (RoofDefOf.RoofRockThick) applies. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+        <heartwoodThing>RUT_GreatboleHeartwood</heartwoodThing>
+        <coreMarkerThing>RUT_GreatboleCore</coreMarkerThing>
+        <boleCountRange>1~2</boleCountRange>
+        <boleRadius>4~6</boleRadius>
+        <minSpacing>30</minSpacing>
+        <edgeMargin>12</edgeMargin>
+      </li>
+      <!-- M9: root causeways. basinTerrains names GREENTIDE_STANDALONE_MOD_1's
+           own already-shipped churnmud basin (RM_Churnmud,
+           src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml)
+           — the real basin terrain, not guessed. RUT_GreatboleCore's own
+           RM_CompLivingBoleMarker registers each bole's center with
+           RM_MapComponent_LivingRegrowth before this GenStep runs (see each
+           GenStepDef's order value in Defs/MapGeneration/), so this map's
+           causeways connect to the real Greatbole(s) rather than a
+           fallback scatter. -->
+      <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+        <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+        <basinTerrains>
+          <li MayRequire="mandrake.rm.greentide">RM_Churnmud</li>
+        </basinTerrains>
+        <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
+        <laneWidthRange>1~2</laneWidthRange>
+        <pathLengthRange>20~40</pathLengthRange>
+        <fallbackAnchorCountRange>1~3</fallbackAnchorCountRange>
+        <fallbackMinAnchorSpacing>25</fallbackMinAnchorSpacing>
+        <fallbackEdgeMargin>10</fallbackEdgeMargin>
+      </li>
+    </modExtensions>
     <baseWeatherCommonalities>
       <Clear>6</Clear>
       <Fog>0</Fog>

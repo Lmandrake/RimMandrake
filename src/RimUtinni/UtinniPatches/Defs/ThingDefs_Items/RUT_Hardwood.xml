@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M12 build (greentide_kit_spec.md M12: "giants
+     also drop RUT_Hardwood at the heart cells — §7's price-gap story").
+     ParentName="ResourceBase" — same parent RUT_FungalSoil/Steel use
+     (mcp__rimsage__get_def_details confirmed live on that def already in
+     this repo). Mined out of RUT_GreatboleHeartwood
+     (building.mineableThing), same "ordinary vanilla mining, real resource"
+     shape RUT_MineableFungalGround already established for this repo.
+
+     PLACEHOLDER ART: UtinniPatches ships its own Textures/Things/Item/
+     namespace (validate_patch.py's own ownership check — a "Things/" path
+     with no real file underneath it is an ERROR here, not the WARN a mod
+     with no Textures/ folder of its own gets away with), so a vanilla-path
+     reuse like RUT_MineableFungalGround's own would fail validation. A
+     genuine flat-color placeholder PNG ships instead
+     (Textures/Things/Item/Resource/RUT_Hardwood.png) — real bespoke item
+     art is owed, DEPLOY_HOLD. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_Hardwood</defName>
+    <label>heartwood</label>
+    <description>A dense, dark-grained timber cut from the living heart of a Greatbole. It never fully stops growing, even off the tree — a plank of it will slowly warp true again if left alone. Worth real money off-world, for exactly that reason.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>7.5</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0.9</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <burnableByRecipe>true</burnableByRecipe>
+  </ThingDef>
+
+</Defs>

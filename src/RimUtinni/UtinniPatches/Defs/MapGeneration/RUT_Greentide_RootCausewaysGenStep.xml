@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Greentide_RootCausewaysGenStep.xml   UtinniPatches - GREENTIDE_MECHANICS_2 M9 build pass
+
+  Declares the GenStepDef for RM_GenStep_RootCauseways (this pass's own new
+  class — src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs).
+  Registration is the separate
+  Patches/RUT_Greentide_RootCausewaysGenStep_Register.xml.
+
+  order 228: after RUT_GenStep_LivingBoles (222) — see that GenStepDef's own
+  header for the ordering reasoning. Also, generically, after vanilla
+  Terrain (210)/MutatorPostTerrain (220), matching the kit spec's own text
+  ("ordered after terrain gen").
+
+  The class is a no-op on any biome without RM_RootCausewayBiomeExtension
+  (only RUT_Greentide carries it this pass), so registering globally on
+  Base_Player is safe for every other biome too — same posture as every
+  other biome-gated GenStep in this assembly.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_RootCauseways</defName>
+    <order>228</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_RootCauseways" />
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M12 build (greentide_kit_spec.md M12: "Not a
+     Plant at all — a structure of mineable edifices with a
+     component-driven life"). ParentName="RockBase", the same pattern
+     RUT_MineableFungalGround already established in this repo (mineable=true
+     / building.mineableThing, both cited verified in the kit spec against
+     Source/Verse/ThingDef.cs:280 and Source/RimWorld/BuildingProperties.cs:267).
+
+     Placed entirely by RM_GenStep_LivingBoles (never by vanilla's own
+     rock-vein scatter) — veinMineable=false, mineableScatterCommonality=0,
+     same anti-exponential-yield posture RUT_MineableFungalGround's own
+     header explains.
+
+     PLACEHOLDER ART: UtinniPatches ships its own Textures/Things/Building/
+     namespace (validate_patch.py's own ownership check — a "Things/" path
+     with no real file underneath it is an ERROR here, not the WARN
+     RUT_MineableFungalGround's own vanilla-path reuse gets away with in a
+     mod with no Textures/ folder of its own), so reusing vanilla's
+     RockFlecked_Atlas path directly would fail validation here. A genuine
+     flat-color placeholder PNG ships instead
+     (Textures/Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood.png)
+     — real bespoke art (a living-wood grain, not a rock fleck) is owed,
+     DEPLOY_HOLD. -->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_GreatboleHeartwood</defName>
+    <label>greatbole heartwood</label>
+    <description>Living wood grown as dense and as still as stone — the outer mass of a Greatbole, packed tight enough to dig into like rock. Cut chamber into it and it heals, slowly, unless you paint the wound shut.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_Hardwood</mineableThing>
+      <mineableYield>15</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>

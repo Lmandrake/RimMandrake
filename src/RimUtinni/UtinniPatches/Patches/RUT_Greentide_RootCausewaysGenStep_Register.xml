@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Greentide_RootCausewaysGenStep_Register.xml   UtinniPatches - GREENTIDE_MECHANICS_2 M9 build pass
+
+  Registers RUT_GenStep_RootCauseways onto Base_Player, same target/shape as
+  RUT_Miasma_GradientAxis_Register.xml (read directly before writing this).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards">RUT_GenStep_RootCauseways</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
