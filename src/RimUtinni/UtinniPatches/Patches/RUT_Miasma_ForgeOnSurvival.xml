@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_ForgeOnSurvival.xml       UtinniPatches - MIASMA_MECHANICS_1 M5 build pass
+
+  Wires the already-spiked, already-compiling
+  RM_HediffComp_ForgeOnSurvival/HediffCompProperties_ForgeOnSurvival
+  (src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_ForgeOnSurvival.cs)
+  onto real disease HediffDefs for the first time — miasma_kit_spec.md M5:
+  "surviving a disease in the Miasma sometimes leaves something behind."
+  Confirmed that class needs no new field for this: onlyInBiomes,
+  minPeakSeverity, noBoonWeight and boonOptions already cover everything the
+  spec's own table calls for — no C# change to that class this pass.
+
+  Targets: the 7 vanilla HediffDefs that actually carry
+  HediffCompProperties_Immunizable (confirmed by reading Data/Core/Defs/
+  HediffDefs/Hediffs_Local_Infections.xml directly this pass — GutWorms/
+  MuscleParasites/FibrousMechanites/SensoryMechanites do NOT gain immunity
+  and were excluded on purpose, since RM_HediffComp_ForgeOnSurvival's own
+  removal gate is `ImmunityHandler.GetImmunity(parent.def) >= 1f`, which
+  those hediffs can never reach): Flu, Animal_Flu, Plague, Animal_Plague,
+  Malaria, SleepingSickness, WoundInfection. No Miasma-specific campaign
+  disease HediffDef exists yet to patch alongside these — the one campaign
+  disease family found in src/ this pass, RUT_RotSporeKit_Hediffs.xml
+  (RUT_SporesBuildup/RUT_SporeFlesh/RUT_HediffSkulltopSpores), belongs to a
+  different biome (the Rot) and is left alone; a Miasma-specific disease is
+  roster/content-pass territory, not this item's to invent.
+
+  onlyInBiomes gates by the pawn's CURRENT map biome at removal time (the
+  comp's own runtime check), not by where the disease was caught — so this
+  is deliberately biome-scoped to RUT_Miasma alone, exactly matching the
+  sheet's "the Miasma, uniquely."
+
+  Each disease gets its OWN boon table, not a shared one across all seven:
+  the 30% slot names ONLY that disease's own RUT_HardenedImmunity_<disease>
+  (surviving Plague can only ever forge plague-hardening, never
+  flu-hardening) — the 14%/1% tiers are the same three/five generic hediffs
+  for every disease, per the spec's own table. Weights: 55 (noBoonWeight) +
+  30 (own HardenedImmunity) + 14 (split evenly across the 3 FeverForged
+  minor hediffs, ~4.6667 each) + 1 (split evenly across the 5 strange-tier
+  hediffs, 0.2 each) = 100, matching the spec's own percentages exactly.
+
+  minPeakSeverity 0.6 is the class's own default, written out explicit here
+  for citation (spec's own INVENTED value — "a brush with it doesn't
+  forge").
+
+  MayRequire on every added <li> (not just relying on the target disease's
+  own def existing): the comp Class and boon HediffDefs referenced all live
+  in mandrake.rm.environmentalhazards / this same RUT content — if that mod
+  is ever absent from a load order, an unresolvable comp Class risks
+  discarding the WHOLE host disease def (the <li> trap, per this repo's own
+  memory) rather than just this patch quietly not applying. PatchOperation
+  Conditional guards each target disease existing at all (DLC/mod-order
+  safety — "a patch that matches nothing logs nothing" is the hard-ban this
+  repo tracks for exactly this shape of patch).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="Flu"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="Flu"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_Flu</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="Animal_Flu"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="Animal_Flu"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_Animal_Flu</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="Plague"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="Plague"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_Plague</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="Animal_Plague"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="Animal_Plague"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_Animal_Plague</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="Malaria"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="Malaria"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_Malaria</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="SleepingSickness"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="SleepingSickness"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_SleepingSickness</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/HediffDef[defName="WoundInfection"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/HediffDef[defName="WoundInfection"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+          <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+          <minPeakSeverity>0.6</minPeakSeverity>
+          <noBoonWeight>55</noBoonWeight>
+          <boonOptions>
+            <li><hediff>RUT_HardenedImmunity_WoundInfection</hediff><weight>30</weight></li>
+            <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Painworn</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_FeverForged_Saltblood</hediff><weight>4.6667</weight></li>
+            <li><hediff>RUT_Miasma_SwarmMarked</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_SaltBlooded</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_LoamLunged</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_MotherDreamed</hediff><weight>0.2</weight></li>
+            <li><hediff>RUT_Miasma_FeverTempered</hediff><weight>0.2</weight></li>
+          </boonOptions>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

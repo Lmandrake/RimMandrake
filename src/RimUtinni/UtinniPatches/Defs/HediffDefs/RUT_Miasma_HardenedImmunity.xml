@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_HardenedImmunity.xml      UtinniPatches - MIASMA_MECHANICS_1 M5 build pass
+
+  miasma_kit_spec.md M5's own table, 30% tier: "RUT_HardenedImmunity_<disease>
+  (immunity-gain-speed / disease-resist stat offsets, per-disease flavor)."
+  One per vanilla disease RUT_Miasma_ForgeOnSurvival.xml patches
+  HediffCompProperties_ForgeOnSurvival onto (Flu, Animal_Flu, Plague,
+  Animal_Plague, Malaria, SleepingSickness, WoundInfection) - a pawn who
+  survives THAT disease in the Miasma can only ever roll THAT disease's own
+  hardened immunity, never another's (the per-disease list-membership does
+  the "flavor," not a shared pool).
+
+  Stats confirmed real against the live 1.6/Odyssey decompile
+  (RimWorld/StatDefOf.cs), not guessed:
+    ImmunityGainSpeed       "The speed at which this character gains
+                             immunity to diseases." defaultBaseValue 1,
+                             PercentZero - a statOffset here is additive
+                             percentage points.
+    ImmunityGainSpeedFactor exists too (Building category, a multiplier
+                             stat) but ImmunityGainSpeed alone already reads
+                             correctly as "immunity-gain-speed" per the
+                             spec's own words, so only that one is used -
+                             stacking both would double-count the same
+                             English phrase as two different mechanisms.
+  No standalone "disease resistance" StatDef exists in the indexed 1.6
+  source; ImmunityGainSpeed is the real, closest, and only lever the spec's
+  own phrase maps onto - not invented.
+
+  Permanent (isBad false, no removal comp): recovering from a real fight
+  with the disease is what earns this, and it never goes away, matching the
+  fever-forged framing ("something it leaves behind").
+
+  Offset magnitude +0.20 (20 percentage points) is this pass's own INVENTED
+  tuning value - noticeable without trivializing a second bout.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_Flu</defName>
+    <label>flu-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of flu faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_Animal_Flu</defName>
+    <label>flu-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of animal flu faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_Plague</defName>
+    <label>plague-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of plague faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_Animal_Plague</defName>
+    <label>plague-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of plague faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_Malaria</defName>
+    <label>malaria-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of malaria faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_SleepingSickness</defName>
+    <label>sickness-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh dose of sleeping sickness faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_HardenedImmunity_WoundInfection</defName>
+    <label>infection-hardened</label>
+    <description>The fever that should have killed you taught your body something instead. You shake off a fresh wound infection faster than you used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.20</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_StrangeTier.xml           UtinniPatches - MIASMA_MECHANICS_1 M5 build pass
+
+  miasma_kit_spec.md M5's own table, 1% tier - "the genuinely strange tier."
+  The spec's own section text (M5 body paragraph) still calls this tier
+  "content deliberately unspecified here - owner card 1," but that line is
+  STALE: the spec's own "Owner cards - RULED, sitting 2026-09-12" section,
+  just below it in the same file, shows card 1 was fully ruled in a bench
+  sitting the next day - five named strange-tier HediffDefs with full
+  mechanical descriptions, Tide-reader explicitly CUT. Same stale-header
+  shape FORGE_MECHANICS_1 hit once already; the RULED section is the one
+  followed here, per this item's own build assignment. All five: HediffDefs
+  only (ban #1 - never genes, never a directed pick), none healing, all
+  framed as wild-nature biology, never Force-register.
+
+  Each hediff below notes, inline, exactly which half of its ruled
+  description is real mechanism this pass and which half is an honest gap -
+  see MIASMA_MECHANICS_1.md's own "M5 build pass" section for the full
+  accounting across all five.
+-->
+<Defs>
+
+  <!--
+    Swarm-marked - ruled text: "the karr-clade fever-swarms stop reading the
+    pawn as prey: swarms don't attack them, swarm-contact disease exposure
+    drops to a trickle. Fiction stays biological (scent-kin, not blessing)."
+
+    BOTH behavioral halves need a fever-swarm mechanism to hook into and
+    NONE exists yet anywhere in src/RimMandrake or src/RimUtinni (checked
+    this pass: grep -rn "swarm" -i turned up only unrelated content -
+    ShipVermin, CreatureBehaviors' vermin pressure, PawnFlavor backstories -
+    nothing that is or drives a Miasma fever-swarm). The spec's own M2
+    ("the breath-tide surge") is the only mechanic in this kit that could
+    ever own a swarm entity, and M2 is not built - owed there, not invented
+    here as a new AI system (out of this pass's scope, per its own
+    instruction). RM_HediffComp_EnvironmentalExposure (M4, already shipped)
+    has no per-pawn stat hook at all - its severity math reads only weather
+    + M1 salinity band, never GetStatValue - so there is no existing lever
+    "swarm-contact exposure drops to a trickle" could even patch into today.
+
+    What ships instead: a small, real, buildable stand-in for "the pilgrims'
+    biology resists common exposure ailments a little" - the same
+    ImmunityGainSpeed lever the 30% tier uses (RUT_Miasma_HardenedImmunity.xml),
+    at a level between that tier's 0.20 and the 14% tier's smaller offsets,
+    since this is the rare 1% roll. This is flavor-adjacent, not the ruled
+    swarm behavior - flagged, not silently substituted.
+  -->
+  <HediffDef>
+    <defName>RUT_Miasma_SwarmMarked</defName>
+    <label>swarm-marked</label>
+    <description>Something about you reads as kin to the karr-clade swarms now - scent, warmth, the Working under your skin. It shows in small ways. The bigger claim (that the swarms themselves let you pass) waits on the swarms existing at all.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ImmunityGainSpeed>0.10</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!--
+    Salt-blooded - ruled text: "bleed rate halved, food-poisoning
+    near-immune, corpse barely rots; pain sensitivity up a notch.
+    Preservation, not healing."
+
+    Bleed and pain confirmed real, clean vanilla HediffStage fields (checked
+    this pass against Verse/HediffStage.cs and Verse/HediffSet.cs's
+    CalculateBleedRate/CalculatePain):
+      totalBleedFactor  multiplies HediffSet.BleedRateTotal directly
+                        (HediffSet.cs:1299-1324) - "bleed rate halved" is
+                        exactly totalBleedFactor 0.5, no invented mechanism.
+      painFactor        multiplies the pawn's total computed pain
+                        (HediffSet.CalculatePain) - "pain sensitivity up a
+                        notch" is painFactor > 1.
+
+    Food-poisoning resistance and corpse rot checked and NOT built - no
+    stat-level lever exists for either in the live 1.6 decompile:
+      - Food poisoning has no per-eater resistance stat at all. The only
+        real hook (RimWorld/FoodUtility.cs:1374,
+        TryGetFoodPoisoningChanceOverrideFromTraits) is keyed per specific
+        food ThingDef via Trait.CurrentData.ingestibleModifiers, not a
+        general hediff-level lever; FoodPoisoning itself
+        (Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml) has no
+        HediffCompProperties_Immunizable, so ImmunityGainSpeed does not
+        touch it either.
+      - Corpse rot rate (RimWorld/CompRottable.cs) is driven purely by
+        GenTemperature.RotRateAtTemperature - no GetStatValue call
+        anywhere in that class, and TicksToRotStart is a flat per-ThingDef
+        value baked once per race, not something a living pawn's hediff can
+        reach.
+    Both would need a Harmony patch (on CompFoodPoisonable/FoodUtility and
+    on CompRottable respectively) - out of this pass's "clean XML hediff"
+    scope; not guessed at with a fabricated stat name, flagged instead.
+  -->
+  <HediffDef>
+    <defName>RUT_Miasma_SaltBlooded</defName>
+    <label>salt-blooded</label>
+    <description>The brine got further into you than it should have. Your blood barely wants to leave your body, and pain doesn't slow you the way it used to. Preservation, not healing - something in you keeps a little longer than it should.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <totalBleedFactor>0.5</totalBleedFactor>
+        <painFactor>1.15</painFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!--
+    Loam-lunged - ruled text: "the pawn exhales a trace of the Working:
+    slightly faster plant growth immediately around their sleeping/working
+    spots, delta-loam fertility developing where they rest. PASSIVE AND
+    TINY - the line against the Greentide/explosive-growth soak territory
+    is that this never triggers, never surges, never scales."
+
+    Genuinely novel behavior, no vanilla stat or existing RM_ comp does
+    this (checked this pass - see RM_HediffComp_LocalGrowthAura.cs's own
+    header for what was checked and ruled out). New, small, generic C#:
+    RM_HediffComp_LocalGrowthAura, a direct crib of
+    HediffComp_PeriodicAreaAttack's radius-scan shape substituting a
+    Plant.Growth nudge for damage. Values below match that comp's own
+    documented defaults, written out explicit for citation.
+  -->
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_Miasma_LoamLunged</defName>
+    <label>loam-lunged</label>
+    <description>Every breath carries a trace of the Working out of you. Nothing anyone would notice looking - but wherever you rest a while, the ground remembers it, just a little.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LocalGrowthAura">
+        <radius>3</radius>
+        <tickIntervalTicks>2500</tickIntervalTicks>
+        <growthPerCycle>0.002</growthPerCycle>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!--
+    Mother-dreamed - ruled text: "rarely, a day-long harmless fever-dream
+    ending in a random vanilla Inspiration. Letter text is wild-nature,
+    never oracle/mystic register."
+
+    Checked this pass before writing any new C# (per the spec's own
+    "check for a stock HediffComp before writing new C#"): no stock
+    HediffComp grants a random Inspiration on an MTB, but the exact real
+    seam vanilla content already uses for "give this pawn a random
+    Inspiration" is documented in full in
+    RM_HediffComp_PeriodicInspiration.cs's own header
+    (InspirationHandler.TryStartInspiration +
+    GetRandomAvailableInspirationDef, cribbed from
+    IngestionOutcomeDoer_Psilocap.cs and CompAbilityEffect_GiveInspiration.cs).
+    New comp is a thin MTB-roll wrapper around that real API, nothing
+    invented about the inspiration grant itself.
+
+    letterLabelKey/letterTextKey point at translation keys not yet added to
+    a Languages/ folder - same owed gap this item's own M4 pass already
+    flagged for RM_MiasmaBoonLetterLabel/Text; .Translate() falls back to
+    the raw key rather than erroring, so this does not block anything.
+  -->
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_Miasma_MotherDreamed</defName>
+    <label>mother-dreamed</label>
+    <description>Once in a great while, the fever brings a dream - long, strange, and harmless. You wake with your hands already knowing what to do next. Wild-nature, not oracle: nothing in the haze speaks to you, it just leaves the door open sometimes.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_PeriodicInspiration">
+        <mtbDaysToDream>20</mtbDaysToDream>
+        <letterLabelKey>RUT_MotherDreamedLetterLabel</letterLabelKey>
+        <letterTextKey>RUT_MotherDreamedLetterText</letterTextKey>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!--
+    Fever-tempered - ruled text: "the fever recalibrated the thermostat:
+    the pawn's comfortable temperature band permanently widens both
+    directions (magnitude tuned at build). Replacement for the cut
+    Tide-reader ... pays game-wide on a planet whose geography is
+    temperature."
+
+    Plain vanilla HediffStage statOffsets on ComfyTemperatureMin (confirmed
+    real, RimWorld/StatDefOf.cs; defaultBaseValue 0, Temperature format) and
+    ComfyTemperatureMax (defaultBaseValue 40) - "both directions" is a
+    negative offset on Min and a positive offset on Max together. Magnitude
+    5C each direction is this pass's own INVENTED tuning value, per the
+    ruling's own "tuned at build."
+  -->
+  <HediffDef>
+    <defName>RUT_Miasma_FeverTempered</defName>
+    <label>fever-tempered</label>
+    <description>The fever recalibrated something. Heat and cold both bother you a little less than they used to - not dramatically, but on a world this hot, every degree counts.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+          <ComfyTemperatureMax>5</ComfyTemperatureMax>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

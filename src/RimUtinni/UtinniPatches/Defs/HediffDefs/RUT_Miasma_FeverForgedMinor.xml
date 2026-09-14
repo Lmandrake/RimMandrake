@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_FeverForgedMinor.xml      UtinniPatches - MIASMA_MECHANICS_1 M5 build pass
+
+  miasma_kit_spec.md M5's own table, 14% tier: "small permanent resilience
+  (RUT_FeverForged_Toughskin / _Painworn / _Saltblood - minor stat hediffs)."
+  Three generic hediffs, same three for every patched disease (unlike the
+  30% tier, which is per-disease) - the spec names exactly these three
+  identifiers, kept literal.
+
+  All stats confirmed real against the live 1.6/Odyssey decompile
+  (RimWorld/StatDefOf.cs / Data/Core/Defs/Stats), not guessed:
+    ArmorRating_Sharp / ArmorRating_Blunt  category PawnResistances-adjacent
+                                            (Apparel category, but a pawn's
+                                            GetStatValue for these aggregates
+                                            hediff-stage statOffsets same as
+                                            any other stat - this is the
+                                            standard vanilla route for a
+                                            creature's "natural armor").
+    PainShockThreshold                     "The pain level at which this
+                                            creature is downed from pain,"
+                                            defaultBaseValue 0.8 - raising it
+                                            is straightforward resilience.
+    ToxicResistance                        "How well this creature resists
+                                            toxic buildup," defaultBaseValue
+                                            0 - a modest offset here is the
+                                            brine/salt-hardening flavor for
+                                            _Saltblood, distinct from the 1%
+                                            strange-tier "Salt-blooded"
+                                            hediff (RUT_Miasma_SaltBlooded,
+                                            RUT_Miasma_StrangeTier.xml),
+                                            deliberately spelled/named
+                                            differently to avoid confusion
+                                            between the two tiers.
+
+  Offset magnitudes below are this pass's own INVENTED tuning: small enough
+  to read as "a little tougher," not a build-defining stat block.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_FeverForged_Toughskin</defName>
+    <label>toughened skin</label>
+    <description>The fever left your skin a little thicker, a little less forgiving to cut or bruise. Small, permanent, and yours.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ArmorRating_Sharp>0.04</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.04</ArmorRating_Blunt>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_FeverForged_Painworn</defName>
+    <label>painworn</label>
+    <description>You've felt worse. The fever left you a little harder to knock down with hurt alone.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <painFactor>0.9</painFactor>
+        <statOffsets>
+          <PainShockThreshold>0.05</PainShockThreshold>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_FeverForged_Saltblood</defName>
+    <label>salt-blood</label>
+    <description>A little of the brine got into you and stayed. Ordinary poisons and toxins trouble you less than they used to.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <ToxicResistance>0.08</ToxicResistance>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

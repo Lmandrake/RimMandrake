@@ -92,6 +92,8 @@
     <Compile Include="RM_PlaceWorker_OnRequiredVentComp.cs" />
     <Compile Include="RM_GradientAxisExtension.cs" />
     <Compile Include="RM_GenStep_GradientAxis.cs" />
+    <Compile Include="RM_HediffComp_LocalGrowthAura.cs" />
+    <Compile Include="RM_HediffComp_PeriodicInspiration.cs" />
   </ItemGroup>
 
   <ItemGroup>
