@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M12 build. The marker building
+     RM_GenStep_LivingBoles spawns at the center of each heartwood blob —
+     holds the bole's identity (RM_CompLivingBoleMarker registers/
+     deregisters it with RM_MapComponent_LivingRegrowth) and carries the
+     oversized visual the kit spec calls "RUT_GreatboleCrown". Per the kit
+     spec's own RESOLVED ❓ (greentide_kit_spec.md M12, GREENTIDE_MECHANICS_2's
+     spike pass 2026-09-13): "RUT_GreatboleCrown ships as an ordinary
+     GraphicData.drawSize override on the marker building, not a Skyfaller
+     subclass" — so the crown is THIS def's own graphic, not a second
+     ThingDef; RUT_GreatboleCrown names the graphic, not a separate defName.
+
+     Impassable/not mineable itself — a player never digs out the core, only
+     the heartwood blob around it (RUT_GreatboleHeartwood).
+
+     PLACEHOLDER ART: reuses a vanilla building silhouette, oversized via
+     drawSize to stand in for the crown's real multi-cell silhouette. Real
+     bespoke art is owed — DEPLOY_HOLD. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_GreatboleCore</defName>
+    <label>greatbole core</label>
+    <description>The living heart of a Greatbole — the one cell of it that never goes still, and never mines out. Everything the tree does starts here.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <useHitPoints>true</useHitPoints>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/DeepDrillPowered</texPath>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(74,58,36)</color>
+      <drawSize>(7,7)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+        <regrowthThing>RUT_GreatboleHeartwood</regrowthThing>
+        <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
+        <regrowDaysRange>3~6</regrowDaysRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

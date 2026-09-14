@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Greentide_LivingBolesGenStep.xml   UtinniPatches - GREENTIDE_MECHANICS_2 M12 build pass
+
+  Declares the GenStepDef for RM_GenStep_LivingBoles (this pass's own new
+  class — src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_LivingBoles.cs).
+  A GenStepDef on its own runs on no map; registration is the separate
+  Patches/RUT_Greentide_LivingBolesGenStep_Register.xml.
+
+  order 222: after vanilla Terrain (210) and MutatorPostTerrain (220, both
+  confirmed live via RUT_Miasma_GradientAxisGenStep.xml's own header this
+  pass reused rather than re-deriving), and BEFORE RUT_GenStep_RootCauseways
+  (228) — a paired map's bole(s) must already be registered with
+  RM_MapComponent_LivingRegrowth (via RUT_GreatboleCore's own
+  RM_CompLivingBoleMarker, which fires from GenSpawn.Spawn during THIS
+  GenStep) by the time the causeways GenStep reads BoleCenters.
+
+  MayRequire on the added <li> itself (registration patch), same pattern as
+  RUT_Miasma_GradientAxis_Register.xml, so the cross-reference cannot dangle
+  if mandrake.rm.environmentalhazards is absent from the active mod list.
+  The class itself is a no-op on any biome without RM_LivingBoleBiomeExtension
+  (only RUT_Greentide carries it this pass), so registering globally on
+  Base_Player is safe for every other biome too.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_LivingBoles</defName>
+    <order>222</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_LivingBoles" />
+  </GenStepDef>
+
+</Defs>

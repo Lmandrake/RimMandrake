@@ -217,6 +217,159 @@ trio — mechanism in EnvironmentalHazards, content in UtinniPatches, wired
 onto the frozen campaign biome `RUT_Greentide` via a MayRequire-gated
 patch, never a direct BiomeDef edit).
 
+## M9/M12 build pass — 2026-09-14
+
+High-leverage build, run concurrently with the M1/M2 pass above in a
+second window against the same shared `RM_EnvironmentalHazards.csproj` (no
+file collision hit — see "concurrency" below) — `FEVER_WOOD_MECHANICS_1`'s
+own item file names `RM_GenStep_RootCauseways` (M9) and
+`RM_MapComponent_LivingRegrowth` (M12's core class) as the exact two
+classes blocking its own F6/F7, so landing these unblocks a sibling kit,
+not just this one.
+
+Both mechanics built generic RM_-tier in
+`src/RimMandrake/EnvironmentalHazards/Source/` (the shared kit home,
+matching every other cross-kit-reused class in this assembly — F1-F9's own
+RUT_ classes already live there too), gated onto biomes via two new
+`DefModExtension`s (`RM_LivingBoleBiomeExtension`, `RM_RootCausewayBiomeExtension`)
+following `RM_GradientAxisExtension`'s exact idiom: a no-op on any biome
+that doesn't carry the extension, so registering both GenStepDefs globally
+onto `Base_Player` (same pattern `RUT_Miasma_GradientAxis_Register.xml`
+already set) is safe for every other biome too.
+
+**M12 (the Greatbole).** `RUT_GreatboleHeartwood` (mineable ThingDef,
+`ParentName="RockBase"`, `mineable=true`/`building.mineableThing=RUT_Hardwood`
+— both fields the spike pass's own spike-7 already verified) spawns as a
+blob via `RM_GenStep_LivingBoles`, which also paints `RoofDefOf.RoofRockThick`
+over the whole footprint (the "natural-roof patch") and spawns
+`RUT_GreatboleCore` (the marker, carrying the oversized `drawSize` the kit
+spec's own RESOLVED ❓ calls for — no separate "Crown" defName; see that
+def's own header) at the blob's center cell. `RUT_GreatboleCore`'s
+`RM_CompLivingBoleMarker` flood-fills its own footprint from the heartwood
+blob around it on first spawn and registers with
+`RM_MapComponent_LivingRegrowth` — the reusable core loop: every
+`TickInterval` (250 ticks, INVENTED), each registered bole's footprint is
+scanned for empty/enclosed(roofed)/unsealed cells, which schedule a
+regrow timer (3-6 days, INVENTED); landing on an occupied cell fires a
+creak warning (message + sound, ~1 in-game hour ahead, per spec) then
+periodic Blunt crush-and-eject (pawns pushed to the nearest open cell
+outside the bole's own footprint, items destroyed, buildings damaged then
+destroyed) until clear, then the tree regrows there. Sealing a cell at ANY
+point (an ordinary construction job painting `RUT_ToxinSealant`) cancels
+its timer outright, checked every pass, not just at schedule time — a real
+bug found and fixed during this pass's own self-review (see "self-review
+findings" below).
+
+🔴 **Load-bearing correction found this pass, against the kit spec's own
+"owed to the items pass" framing (card 2):** the sealant item and its
+recipe chain are NOT owed — `RM_ToxinSealant`/`RM_SapResin` already shipped
+in `src/RimMandrake/Greentide/Defs/ThingDefs/RM_Greentide_Items.xml`
+(`GREENTIDE_STANDALONE_MOD_1`'s own M12 sealant half, that file's own
+header: "owner ruling confirmed 2026-09-11: crafted from sap/resin; the
+economic link is canon") and already seals M8's `RM_ChurnmudSealed`. This
+pass's own `RUT_ToxinSealant` TerrainDef (the chamber-floor sealant, a
+different def from the item of the same theme) simply consumes the
+existing `RM_ToxinSealant` item via `costList`, same as `RM_ChurnmudSealed`
+already does — no new economy invented. Same stale-spec pattern this
+item's own spike pass already found three times over (M3/M5/M8/M11); kit
+spec's M12 section corrected this pass to point at the real shipped item
+instead of repeating "owed to items pass."
+
+**M9 (root causeways).** `RM_GenStep_RootCauseways`, registered at
+GenStepDef `order` 228 (after `RM_GenStep_LivingBoles`'s own 222, both
+after vanilla `GenStep_Terrain`'s 210/`MutatorPostTerrain`'s 220 — the same
+verified anchor `RUT_Miasma_GradientAxisGenStep.xml`'s own header cites).
+Anchor selection is configurable, not hardcoded to the Greatbole, per the
+build brief: reads `RM_MapComponent_LivingRegrowth.BoleCenters` when
+non-empty (M9 paired with M12, guaranteed populated by the order value
+above), else falls back to `RM_RootCausewayBiomeExtension`'s own scatter
+fields (M9 running standalone). Traces 3-6 (INVENTED) wandering spline
+paths per anchor in 1-2-wide lanes, restricted to `basinTerrains` when set;
+`RUT_Greentide`'s own extension names `RM_Churnmud`
+(`src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml`,
+`GREENTIDE_STANDALONE_MOD_1`'s already-shipped M8 basin — the real name,
+checked, not guessed) as the basin to route over. Connects every anchor to
+its own nearest neighbor (not a full minimum spanning tree, but enough for
+"the network spans the map" per the spec's own text). "Roads slowly move
+between visits" untouched, still correctly parked on
+`EXPLOSIVE_PLANT_GROWTH_1`'s v2 list per the spec's own deferral.
+
+**Self-review findings (M12's crush/eject logic touches player state
+directly, reviewed carefully per the build brief).** One real bug found
+and fixed before commit: `ProcessTimers` only checked for sealant at
+schedule time, so sealing a cell already mid-`Scheduled`/`Warning`/
+`Crushing` would NOT cancel its pending timer — a colonist could seal a
+chamber and still have the tree crush it later. Fixed: the sealant check
+now runs every pass, for every state, before the due-tick check. Two
+accepted (not fixed) edge cases, both flagged rather than engineered
+around: (1) a pawn crushed with genuinely no valid non-footprint escape
+cell within radius 6 (e.g. deep in a large, fully-tunneled bole) takes
+repeated Blunt pulses until it dies rather than stalling — matches the
+spec's own intended lethality ("the tree crushes... whatever stands in the
+way"), not treated as a bug, but real and worth the owner's awareness; (2)
+`RM_GenStep_LivingBoles` does not individually validate each footprint
+cell's terrain before placing heartwood there (only the blob's center site
+is checked `Standable`), so a blob could in principle straddle water —
+low-risk given the biome's own terrain table, not fixed this pass.
+
+**Save-format note.** Unlike every other `RM_MapComponent_*` in this
+assembly (which are deliberately NOT Scribed, being fully re-derivable
+from currently-spawned things), `RM_MapComponent_LivingRegrowth` DOES
+Scribe its full per-bole state (`BoleRecord`/`CellTimer`, both new
+`IExposable` classes) — re-deriving a bole's footprint by flood-fill on
+every load would silently shrink it once any chamber is mined out, so the
+footprint and every pending timer are saved in full instead.
+`RM_CompLivingBoleMarker` scribes its own `boleId` and skips
+re-registering (re-flood-filling) on any load where that id is already
+set.
+
+**Mod Settings** (`MOD_OPTIONS_RETROFIT_1` pattern, `RM_EnvironmentalHazardsSettings`):
+three new toggles — `livingBolesEnabled` (WORLDGEN-AFFECTING, gates
+`RM_GenStep_LivingBoles`), `livingRegrowthEnabled` (gates
+`RM_MapComponent_LivingRegrowth`'s tick — off freezes every registered bole
+exactly where it is), `rootCausewaysEnabled` (WORLDGEN-AFFECTING, gates
+`RM_GenStep_RootCauseways`). Landed in the same shared `RM_EnvironmentalHazardsMod.cs`
+the concurrent M1/M2 pass was also editing — see "concurrency" below.
+
+**Concurrency with the M1/M2 pass.** Both passes edited
+`RM_EnvironmentalHazardsMod.cs` and `RM_EnvironmentalHazards.csproj`
+concurrently in separate windows; both sets of edits were additive
+(different toggle names, different `<Compile>` entries) and the M1/M2
+window's own commit (`946fc0b04`) ended up capturing this pass's uncommitted
+edits to those two shared files along with its own — verified afterward
+(`git status`/`git show --stat`) that the committed content is byte-correct
+for both passes' additions, not just claimed correct. No content was lost
+or overwritten; this item's own commit below carries only the files that
+commit did not already capture (the 6 new `.cs` files, the rebuilt `.dll`,
+and everything under `src/RimUtinni/`).
+
+**Confirms `FEVER_WOOD_MECHANICS_1`'s dependency is now satisfiable.**
+`RM_GenStep_RootCauseways` and `RM_MapComponent_LivingRegrowth` both exist,
+compile, and expose a generic public surface (footprint-registration API on
+the MapComponent; a reusable marker `ThingComp` any future bole/dungeon
+Thing can carry) — that item's own F6/F7 can now build against them without
+inventing either class itself.
+
+**Build/validate.** `RM_EnvironmentalHazards.csproj` rebuilds clean, 0
+warnings/0 errors, including the concurrent M1/M2 files. All 11 new/changed
+UtinniPatches XML files (2 ThingDefs, 2 TerrainDefs, 2 GenStepDefs, 2
+registration patches, 1 BiomeDef edit, 1 translation file) validate 0
+errors/0 warnings via `validate_patch.py` against the live 99-active-mod
+installed set (one pre-existing, unrelated WARN: `mandrake.rut.vaultdungeons`
+has no folder on disk). Two placeholder textures shipped (not held) because
+`UtinniPatches` owns the `Things/` texture namespace itself — a vanilla-path
+reuse like `RUT_MineableFungalGround`'s own would be a hard validate_patch
+ERROR here, not the tolerable WARN a mod with no `Textures/` folder of its
+own gets; genuine flat-color placeholder PNGs ship instead, both still
+flagged `DEPLOY_HOLD` for real art.
+
+**Owed**: wild-bole dungeon population (layout + occupant, explicitly
+roster/template work per the build brief, capability-only this pass);
+`RUT_ToxinSealant`/`RUT_RootCauseway`/`RUT_GreatboleHeartwood`/
+`RUT_GreatboleCore` real art (`DEPLOY_HOLD`); the two accepted edge cases
+above; no bridge/quicktest verification (none attempted, per scope — no
+game access in this task).
+
 **M1 — wet-bulb overwhelm.** `RM_GameCondition_WetBulb : GameCondition`
 (new) + `RM_WetBulbExtension : DefModExtension` (new) ramp
 `RUT_WetBulbOverwhelm` severity on an interval, cribbing

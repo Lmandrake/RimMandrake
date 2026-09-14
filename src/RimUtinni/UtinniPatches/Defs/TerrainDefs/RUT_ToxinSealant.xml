@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_MECHANICS_2 M12 build (greentide_kit_spec.md M12: "Sealant:
+     RUT_ToxinSealant — a paintable per-cell mark... the cheapest honest
+     route: a floor-like TerrainDef applied over the chamber floor by a
+     normal construction job consuming the sealant item").
+
+     🔴 Load-bearing correction found this pass: the spec flags the sealant
+     item's own recipe chain as "owed to the items pass" (card 2), but
+     RM_ToxinSealant (the ITEM) already shipped —
+     src/RimMandrake/Greentide/Defs/ThingDefs/RM_Greentide_Items.xml, header
+     comment "GREENTIDE_STANDALONE_MOD_1 (M12 sealant half, owner ruling
+     confirmed 2026-09-11: crafted from sap/resin; the economic link is
+     canon)" — crafted from RM_SapResin (also already shipped there) at
+     TableMachining. It already seals M8's own RM_ChurnmudSealed via the
+     exact same costList entry this def reuses below. Nothing new to craft
+     or cost here; this terrain is the Greatbole's own consumer of that
+     same existing item, not a second sealant economy. Item file addendum
+     records this correction against greentide_kit_spec.md's stale "owed"
+     note.
+
+     RM_MapComponent_LivingRegrowth gates purely on
+     `cell.GetTerrain(map) == sealantTerrain` (see RUT_GreatboleCore.xml's
+     own CompProperties_LivingBoleMarker.sealantTerrain) — carrying NO
+     RM_MireExtension or other marker is what makes a sealed chamber cell
+     exempt from regrowth, same "no separate bookkeeping" shape
+     RM_ChurnmudSealed already established for M8.
+
+     PLACEHOLDER ART: reuses vanilla PavedTile's own texture, same choice
+     RM_ChurnmudSealed already made for a sealant floor. Real bespoke art is
+     owed — DEPLOY_HOLD. -->
+<Defs>
+
+  <TerrainDef MayRequire="mandrake.rm.greentide">
+    <defName>RUT_ToxinSealant</defName>
+    <label>toxin-sealed floor</label>
+    <description>Chamber floor painted over with toxin sealant and packed down. The living wood beneath cannot push through it, or close the cut you made.</description>
+    <renderPrecedence>320</renderPrecedence>
+    <texturePath>Terrain/Surfaces/PavedTile</texturePath>
+    <pathCost>14</pathCost>
+    <fertility>0</fertility>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <layerable>true</layerable>
+    <designationCategory>Floors</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <costList>
+      <RM_ToxinSealant>5</RM_ToxinSealant>
+    </costList>
+    <statBases>
+      <WorkToBuild>400</WorkToBuild>
+      <Beauty>-1</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>
