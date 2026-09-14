@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SentinelDefend.xml               UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §4 (Forgotten Sentinels), owner ruling 6b (card
+  sitting 2026-09-11, "Double them, then accept"): acquire 72 / keep 80 /
+  wander 24 / defend 80 — supersedes the section's own first drafted 36/40/
+  12/40.
+
+  A clone of vanilla DutyDefOf.Defend (RimSage raw XML, quoted in full in
+  SCARLANDS_MECHANICS_2.md's own header comment for RM_LordToil_
+  DefendPerimeter.cs) with only the two JobGiver_AIFightEnemy-derived radii
+  and the wander radius changed:
+
+    - JobGiver_AIDefendPoint.targetAcquireRadius/targetKeepRadius are plain
+      protected fields on the JobGiver, set straight from this DutyDef's XML
+      (JobGiver_AIFightEnemy.cs, decompile-confirmed) — NOT read from
+      PawnDuty.radius, so they must be authored here rather than left to
+      RM_LordToil_DefendPerimeter's own duty.radius assignment.
+    - JobGiver_WanderNearDutyLocation.wanderRadius likewise a plain field on
+      that JobGiver, tightened 8 -> 24 (the owner's ruling is a widening
+      here, not the "8" vanilla default — 24 is a strongpoint holding formation,
+      not a squad's tight leash).
+    - defend RADIUS (80) is NOT a DutyDef field at all — that one lives on
+      RM_LordJob_DefendPerimeter's own defendRadius, read into
+      PawnDuty.radius by RM_LordToil_DefendPerimeter.UpdateAllDuties and
+      consumed by JobGiver_AIDefendPoint.TryFindShootingPosition's
+      maxRangeFromLocus. Nothing to duplicate here.
+
+  ThinkNode_ForbidOutsideFlagRadius.maxDistToSquadFlag (16) is left at
+  vanilla's own value — the spec's owner ruling names acquire/keep/wander/
+  defend explicitly and no fifth number; changing this too would be
+  invention past what was ruled.
+
+  Consumed by RUT_LordJob_SentinelDefend.cs (RimMandrake.EnvironmentalHazards)
+  via DefDatabase<DutyDef>.GetNamedSilentFail — no MayRequire needed on this
+  def itself (DutyDef, JobGiver_* and ThinkNode_* classes are all vanilla),
+  though the spawner building that assigns this duty lives behind
+  mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <DutyDef>
+    <defName>RUT_SentinelDefend</defName>
+    <alwaysShowWeapon>true</alwaysShowWeapon>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_TakeCombatEnhancingDrug">
+          <onlyIfInDanger>true</onlyIfInDanger>
+        </li>
+        <li Class="JobGiver_AIDefendPoint">
+          <targetAcquireRadius>72</targetAcquireRadius>
+          <targetKeepRadius>80</targetKeepRadius>
+        </li>
+        <li Class="ThinkNode_ForbidOutsideFlagRadius">
+          <maxDistToSquadFlag>16</maxDistToSquadFlag>
+          <subNodes>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>SatisfyBasicNeedsAndWork</treeDef>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>24</wanderRadius>
+          <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

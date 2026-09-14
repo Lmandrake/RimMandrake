@@ -43,6 +43,21 @@
     lore ladder (belongs in dialogue/quest text, never a def field, per ban 1); any
     world repaint.
 
+    SCARLANDS_MECHANICS_2 build pass (2026-09-14): wildAnimalScariaChance
+    added below (0.5, matching the donor vanilla Scarlands.xml exactly).
+    🔴 BUG FIX, not new tuning: this fresh BiomeDef (no ParentName) never
+    carried this field at all, silently defaulting to BiomeDef's own field
+    default of 0 (decompile-confirmed, RimWorld/BiomeDef.cs:101) — without
+    it, zero wild animals here would ever roll vanilla Scaria, and §3's own
+    scaria-onset arming (RUT_ScariaOnsetArming.xml, requiredHediff=Scaria)
+    would have nothing to ever find. biomeMapConditions below wires the
+    Scarlands mark lock (§2) and the scaria-onset arming sweep (§3) — both
+    permanent per-map conditions, RUT_MiasmaWeatherLock.xml's own proven
+    shape (no MapComponent of this kit's own needed). extraGenSteps gains
+    RUT_ScarlandsSprungDangers (§5 pre-sprung dressing, pure PrefabDef
+    content, zero new C#). Full build-pass details:
+    infrastructure/state/items/SCARLANDS_MECHANICS_2.md.
+
   -->
 
   <BiomeDef MayRequire="Ludeon.RimWorld.Odyssey">
@@ -62,6 +77,7 @@
     <plantDensity>0.15</plantDensity>
     <forageability>0.25</forageability>
     <movementDifficulty>1</movementDifficulty>
+    <wildAnimalScariaChance>0.5</wildAnimalScariaChance>
     <texture>World/Biomes/Scarlands</texture>
     <extraGenSteps>
       <li>AncientRuins_Scarlands</li>
@@ -70,7 +86,12 @@
       <li>CratersSmall</li>
       <li>ScarlandsJunkClusters</li>
       <li>ScarlandsJunkPrefabs</li>
+      <li>RUT_ScarlandsSprungDangers</li>
     </extraGenSteps>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards">RUT_ScarlandsMarkLock</li>
+      <li MayRequire="mandrake.rm.environmentalhazards">RUT_ScariaOnsetArming</li>
+    </biomeMapConditions>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>
       <li>

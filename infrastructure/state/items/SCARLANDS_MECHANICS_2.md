@@ -246,3 +246,223 @@ item stays in `doing`.
   `WRECKAGE_VERMIN_SPAWN_1` and `MIASMA_MECHANICS_1` already shipped —
   enforced by this pass's own spec reconciliation, to be checked again at
   the next build pass.
+
+## build pass — 2026-09-14
+
+Wires the spike pass's three compiling proof classes into real, shippable
+content for §2/§3/§4, plus §5's pure-declarative dressing — same shape as
+`MIASMA_MECHANICS_1`'s own M4/M1 build pass. No bridge/game access this
+pass — offline only (build + `validate_patch.py`), same gap the spike pass
+itself already flagged as owed. `ModsConfig.xml` untouched. §1 (mynock) not
+touched, per assignment.
+
+**§2 (the Scarlands mark) — shipped, not just defined.**
+`RUT_ScarlandsMark.xml` (new `HediffDef`): RC4's own `hediffToApply`/
+`hediffSeverityPerInterval` (already shipped by Miasma's M4 build, zero
+further RC4 changes needed) drives on-map accumulation; a real vanilla
+`HediffCompProperties_SeverityPerDay` (`-0.1`, unconditional) drives the
+constant fade; the spike's own `RM_HediffComp_SeverityFloor` (`0.5`
+trigger / `0.25` floor, the spec's own numbers verbatim) is wired on for
+the first time and clamps the never-fully-fades tail. `hediffSeverityPerInterval`
+is `0.0125` (0.3/day gross at the 2500-tick/~1-hour cadence Miasma's own
+lock uses) so it nets to the spec's own "+0.2/day on-map" against the
+`-0.1`/day comp — full derivation in that file's own header. 4 stages
+(0/0.25/0.5/0.75) with `mentalStateGivers` → `Wander_Sad` from 0.5 up
+(vanilla `MentalStateDef`, RimSage-confirmed), matching owner ruling 4
+("both — permanent mood hit AND nightmares... leaving the map ends the
+nightmares, never the mark" — nightmares self-end because severity decays
+below the 0.5 band once the RC4 lock stops running off-map; the mark
+itself never drops below its 0.25 floor). `RUT_ScarlandsMarkThoughts.xml`
+(new `ThoughtDef`, vanilla `ThoughtWorker_Hediff`) index-aligns its own 4
+stages to the hediff's, mood `0/-2/-4/-6` (spec's own INVENTED figure,
+verbatim). `RUT_ScarlandsMarkLock.xml` (new `GameConditionDef`) attaches it
+via `RUT_Scarlands.xml`'s own `biomeMapConditions`, copying
+`RUT_MiasmaWeatherLock.xml`'s proven permanent-condition shape exactly (the
+spike's own finding 4) — `onlyUnroofed=false` is the one field this pass
+changed from RC4's default, since the mark is "every colonist who walks the
+Scarlands," not a weather-exposure tax a roof would answer.
+
+**§3 (plated-grazer scaria onset) — shipped, not just defined.**
+`RUT_ScariaIncubation.xml` (new `HediffDef`, pure XML): a vanilla
+`HediffCompProperties_SeverityPerDay` with `severityPerDay=0` and
+`severityPerDayRange 0.1~0.25` rolls ONE rate per pawn at grant
+(`CalculateSeverityPerDay`, decompile-confirmed) and keeps it for the
+hediff's life — the spec's own "severity 0.1-0.25/day, randomized per pawn"
+with zero new C#. Final stage (severity 1.0) carries `mentalStateGivers` →
+`ManhunterPermanent`, `mtbDays 0.5` (spec's own figure) — once that fires,
+the animal's OWN already-present vanilla `Scaria` hediff takes over its own
+5-day death clock, per the spec's own "we add the fuse, vanilla burns it."
+`RUT_ScariaOnsetArming.xml` (new `GameConditionDef` on the spike's own
+extended `GameCondition_ArmLatentHazard`) arms it: `pawnKindFilter`
+= `RSW_FoundryBeetle` + `AA_SpinedGow` (the two PawnKindDefs
+`RUT_Scarlands.xml`'s own `wildAnimals` list already comments
+"plated-grazer, keep" — `AA_Helixien`, commented "mortuary-guild,
+adjust-keep," deliberately excluded), `requiredHediff=Scaria`. Attached via
+the same `biomeMapConditions` route as §2.
+
+**🔴 Bug found and fixed this pass, load-bearing for §3.** `RUT_Scarlands.xml`
+(a fresh `BiomeDef` with no `ParentName`) never carried
+`<wildAnimalScariaChance>` — the donor vanilla `Scarlands.xml` sets `0.5`,
+but a fresh `BiomeDef` silently defaults to the field's own default of `0`
+(decompile-confirmed, `RimWorld/BiomeDef.cs:101`). Without it, zero wild
+animals on this biome would ever carry vanilla `Scaria` in the first place,
+and §3's entire arming gate (`requiredHediff=Scaria`) would have nothing to
+ever find — the mechanic would compile clean and do nothing, forever, on a
+real map. Fixed by adding `<wildAnimalScariaChance>0.5</wildAnimalScariaChance>`
+to `RUT_Scarlands.xml` this same pass.
+
+**§4 (Sentinel defend-only AI) — shipped, not just defined; Sentinel
+PawnKindDef is a PLACEHOLDER.** `RUT_SentinelDefend.xml` (new `DutyDef`): a
+clone of vanilla `DutyDefOf.Defend` (RimSage raw XML pulled to match its
+shape exactly) with `JobGiver_AIDefendPoint.targetAcquireRadius/
+targetKeepRadius` tightened `65/72` → `72/80` and
+`JobGiver_WanderNearDutyLocation.wanderRadius` `8` → `24` — owner ruling 6b
+("Double them, then accept"), verbatim. These two radii are plain fields
+read straight from the `DutyDef`'s own XML (decompile-confirmed,
+`JobGiver_AIFightEnemy.cs`), NOT from `PawnDuty.radius`, so they had to be
+authored here rather than left to `RM_LordToil_DefendPerimeter`'s own duty
+assignment. New C# this pass: `RUT_LordJob_SentinelDefend.cs`
+(`RimMandrake.EnvironmentalHazards`, same assembly/namespace convention
+every other `RUT_`-prefixed class in this folder already uses) — a
+one-method subclass of `RM_LordJob_DefendPerimeter` whose own
+`SpawnedPawnParams` ctor is the ONLY seam `CompSpawnerPawn.CreateNewLord`'s
+`Activator.CreateInstance` can reach, and always passes `defendDuty=null`
+(it is deliberately content-blind). This subclass is that seam: its own
+`SpawnedPawnParams` ctor hands in `DutyDatabase<DutyDef>.
+GetNamedSilentFail("RUT_SentinelDefend")` so a spawner building's
+`<lordJob>` field can finally reach the real, tuned duty. Rebuilds clean,
+0 warnings/0 errors (confirmed twice this pass, once before and once after
+a concurrent window's own unrelated edits to the same `.csproj` landed —
+see "build" below).
+
+`RUT_SentinelGraveWard.xml` (new `ThingDef`, `ParentName="BuildingBase"`,
+same shape/comment convention as `RustCathedralWalls`' own
+`RUT_SacredWall_Conduit.xml` — same "Forgotten"/Cathedral lore family):
+carries vanilla `CompProperties_SpawnerPawn` wired to
+`lordJob=RimMandrake.EnvironmentalHazards.RUT_LordJob_SentinelDefend`,
+`defendRadius=80`/`lordJoinRadius=80` (tightened from vanilla's huge
+default so each grave-ward's Sentinels join only that ward's own lord, not
+one pooled lord for the whole map — this pass's own INVENTED-BUILD choice,
+undocumented in the spec), `initialPawnsCount=2`,
+`maxSpawnedPawnsPoints=300`, `pawnSpawnIntervalDays 4~6` — "ward scale,
+never a production line" per the spec's own §4 density note ("spawner
+points cap per site still INVENTED", the spike's own words).
+**`spawnablePawnKinds` is a clearly-commented PLACEHOLDER**: vanilla
+`Mech_Pikeman` stands in for the real Forgotten Sentinel `PawnKindDef`,
+which does not exist anywhere in `src/` (checked) and is roster/faction-
+pass content this kit does not own, per its own naming section ("remaining
+content (§2-5) is RUT_-tier, owed to later passes").
+
+**🔴 Owed, not built: Sentinel faction assignment.** `CompSpawnerPawn.
+TrySpawnPawn` spawns with `parent.Faction` (decompile-confirmed) — Faction
+is a runtime `Thing` property, never a `ThingDef` field, so it cannot be
+set in this XML. `RUT_SacredWall_Conduit.xml` (same lore family) is the
+precedent: its own `GenStep_ScatterSacredWalls.cs` calls
+`.SetFaction(Faction.OfMechanoids)` at placement time — very likely the
+correct route here too, but the placement `GenStep` that would call
+`SetFaction` on `RUT_SentinelGraveWard` does not exist yet (map placement
+is separately scoped, and this pass had no bridge/game access to prove a
+faction-less spawn end to end). A debug-spawned grave-ward today produces
+faction-less ("wild") Sentinels — not hostile, not the scoped behavior.
+Flagged, not guessed at.
+
+**§5 (pre-sprung dressing) — shipped, zero new C#, per the spike's own
+finding.** `RUT_ScarlandsSprungDangers.xml` (new, 3 `PrefabDef`s):
+`RUT_SprungVaultBreach` (two `AncientFortifiedWall` segments with a
+one-cell gap between them — no `<li>` for that cell at all, walls with a
+gap, literally, no intact door — `hp` set well below the def's own 7500
+max), `RUT_SprungMechShell` (two `ChunkSlagSteel` + `Filth_MachineBits` +
+`Filth_BlastMark` — a real wrecked-mechanoid BUILDING def does not exist
+as inert scatter dressing anywhere checked this pass, and new mech-corpse
+art/content is not this kit's to invent), `RUT_SprungOpenedContainer` (two
+`AncientBarrel` + `Filth_ScatteredDocuments`). **Deliberate substitution,
+not a guess**: the literal "opened casket" reading (`AncientCryptosleepCasket`)
+carries `CompProperties_Explosive` (RimSage-confirmed) — a LIVE interactive
+threat if a colonist opens it, which the spec's own §6 ban explicitly
+forbids for this mechanic ("no live threats inside"). `AncientBarrel`
+(RimSage-confirmed inert, zero comps, its own vanilla description already
+reads "broken... the only thing it contains now is a smear of dried
+sludge") is the closest already-shipped, threat-free "opened ancient
+container" vocabulary that doesn't violate that ban.
+`RUT_ScarlandsSprungDangers_GenStep.xml` (new `GenStepDef`) scatters all
+three via vanilla `Verse.GenStep_ScatterGroupPrefabs` — the same class
+`ScarlandsJunkPrefabs` (this biome's own donor genstep) already uses, its
+raw XML pulled via RimSage to match field-for-field. `countPer10kCellsRange
+0.4~0.6` reuses `ScarlandsJunkPrefabs`' own figure rather than inventing a
+new one, landing the expected total scatter count for a ~250x250 map right
+in the spec's own "2-4 sprung sites per map" band with no further tuning.
+Wired into `RUT_Scarlands.xml`'s own `extraGenSteps`.
+
+**Build.** `"C:\Users\Mandrake\.dotnet\dotnet.exe" build ...
+RM_EnvironmentalHazards.csproj -c Release` — 0 warnings/0 errors, confirmed
+twice (before and after a concurrent window's own unrelated edits — new
+`RM_ScattererValidator_NearThingDef.cs`, stranding-pools work referencing a
+not-yet-added `RM_EnvironmentalHazardsSettings.strandingPoolsEnabled` field
+— landed mid-build and briefly broke the shared assembly; not this pass's
+file, not touched, resolved itself on retry once that window's own edit
+finished). That window's own commit (`c76fc40a0`, `MIASMA_MECHANICS_1` M3)
+already carries this pass's one `<Compile Include="RUT_LordJob_
+SentinelDefend.cs" />` csproj line and a matching rebuilt
+`RimMandrake.EnvironmentalHazards.dll` — confirmed byte-identical to this
+pass's own local rebuild (`git diff --stat` on both files: empty) — so
+neither is re-committed here.
+
+**Validate.** `validate_patch.py` (via `skills/rimworld-modding/scripts/`,
+the live script) against the real installed set (`--defs` Data + Workshop +
+Mods, 99 active mods per the live `ModsConfig.xml`, 98 found on disk — 1
+missing, `mandrake.rut.vaultdungeons`, a pre-existing gap unrelated to this
+pass): **9 of 10 new/changed files clean, 0 errors, 0 warnings.**
+
+**1 file, 1 known false positive, not a real defect**:
+`RUT_SentinelGraveWard.xml`'s texPath
+(`Things/Building/Linked/AncientFortifiedWall_Atlas`) — the REAL texture
+`AncientFortifiedWall` itself ships with, RimSage-confirmed. Every vanilla
+texture lives inside Unity asset bundles, never as a loose file (confirmed
+this pass: zero `*.png` anywhere under the live `Data/` root), so
+`validate_patch.py` can never resolve ANY vanilla texPath by design; it
+only escalates its usual WARN to ERROR here because `UtinniPatches` ships
+its own `Textures/Things/` folder, so a miss inside that namespace reads as
+load-bearing. `RUT_SacredWall_Conduit.xml`, checked standalone outside its
+own mod's folder context, gets the softer WARN for the exact same class of
+miss on its own vanilla-styled texPath, with the tool's own text confirming
+it: "cannot be called a typo... a correct vanilla path looks identical to a
+wrong one from here." Same pre-existing, repo-wide pattern as
+`RUT_VaultHeart.xml`'s own `Things/Building/Ship/ShipComputerCore` reuse
+(`StructureInjectionsRUT`, also owns its own `Things/` namespace). Recorded
+here rather than swapped for a worse-fitting texture just to silence the
+scanner.
+
+**Not built this pass, explicitly.** Sentinel faction assignment (see §4
+above). The real Sentinel `PawnKindDef`/roster content (§4, content pass).
+Bespoke art for `RUT_SentinelGraveWard` and the three §5 prefabs (all
+placeholder/reused, art pipe owed). No dedicated Mod Settings toggles for
+any of this pass's new hediffs/conditions (`MOD_OPTIONS_RETROFIT_1`'s
+territory) — they ride the existing kit-wide `latentHazardArmingEnabled`/
+`environmentalDamageEnabled`/`hazardDamageMultiplier` settings the RC4/RC5
+classes already gate on. No live/quicktest verification — no bridge/game
+access this task, same gap the spike pass itself already flagged as owed;
+a real map in the Scarlands to actually SEE the mark accruing, a grazer
+snap, a Sentinel hold its ground, and the sprung dressing scatter is still
+owed.
+
+## files (build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_LordJob_SentinelDefend.cs` (new)
+- `src/RimUtinni/UtinniPatches/Defs/DutyDefs/RUT_SentinelDefend.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_ScarlandsMark.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThoughtDefs/RUT_ScarlandsMarkThoughts.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScarlandsMarkLock.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_ScariaIncubation.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/PrefabDefs/RUT_ScarlandsSprungDangers.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScarlandsSprungDangers_GenStep.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` (modified:
+  `wildAnimalScariaChance` bug fix, `biomeMapConditions`, one `extraGenSteps`
+  entry, header note)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj`
+  (1 new `<Compile>` entry — already committed by `c76fc40a0`, a concurrent
+  window's commit; not re-committed here)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll`
+  (rebuilt, 0 warnings/errors — already committed by `c76fc40a0`, confirmed
+  byte-identical to this pass's own rebuild; not re-committed here)
