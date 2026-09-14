@@ -96,6 +96,12 @@
     <Compile Include="RM_HediffComp_PeriodicInspiration.cs" />
     <Compile Include="RM_CompTimedTerrainBurn.cs" />
     <Compile Include="RM_MapComponent_ThresholdSmokeColumn.cs" />
+    <Compile Include="RM_ScattererValidator_BrineShallowWater.cs" />
+    <Compile Include="RM_SetPieceElement_SpawnMarker.cs" />
+    <Compile Include="RM_SetPieceElement_AnchoredPawn.cs" />
+    <Compile Include="RM_CompCrecheMarker.cs" />
+    <Compile Include="RM_MapComponent_CrecheMemory.cs" />
+    <Compile Include="RM_Patch_CrecheDespoilManhunterFactor.cs" />
   </ItemGroup>
 
   <ItemGroup>
