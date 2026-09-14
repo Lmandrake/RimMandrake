@@ -19,6 +19,14 @@ namespace RimMandrake.EnvironmentalHazards
     // straight from RM_RootCausewayBiomeExtension's own fields (M9 running
     // standalone) — "so M9 can run standalone or paired with M12" per the
     // build brief. A no-op on any biome without the extension at all.
+    //
+    // FEVER_WOOD_MECHANICS_1 F6 build: the primary profile (causewayTerrain/
+    // basinTerrains/pathsPerAnchorRange/laneWidthRange/pathLengthRange/
+    // turnChancePerStep, read straight off the extension) runs first, then
+    // any RM_RootCausewayBiomeExtension.additionalPasses run over the SAME
+    // anchor set — see that field's own doc comment for why a second
+    // GenStepDef instance alone cannot produce a second, differently-tuned
+    // network.
     public class RM_GenStep_RootCauseways : GenStep
     {
         private static readonly IntVec3[] EightDirs =
@@ -61,16 +69,74 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            RunPass(map, BuildProfile(ext), anchors);
+
+            if (!ext.additionalPasses.NullOrEmpty())
+            {
+                for (int i = 0; i < ext.additionalPasses.Count; i++)
+                {
+                    RM_RootCausewayPass pass = ext.additionalPasses[i];
+                    if (pass?.causewayTerrain == null)
+                    {
+                        continue; // ConfigErrors already flagged this; skip rather than paint nothing meaningfully
+                    }
+                    RunPass(map, BuildProfile(pass), anchors);
+                }
+            }
+        }
+
+        private static CausewayProfile BuildProfile(RM_RootCausewayBiomeExtension ext)
+        {
+            return new CausewayProfile
+            {
+                causewayTerrain = ext.causewayTerrain,
+                basinTerrains = ext.basinTerrains,
+                pathsPerAnchorRange = ext.pathsPerAnchorRange,
+                laneWidthRange = ext.laneWidthRange,
+                pathLengthRange = ext.pathLengthRange,
+                turnChancePerStep = ext.turnChancePerStep,
+            };
+        }
+
+        private static CausewayProfile BuildProfile(RM_RootCausewayPass pass)
+        {
+            return new CausewayProfile
+            {
+                causewayTerrain = pass.causewayTerrain,
+                basinTerrains = pass.basinTerrains,
+                pathsPerAnchorRange = pass.pathsPerAnchorRange,
+                laneWidthRange = pass.laneWidthRange,
+                pathLengthRange = pass.pathLengthRange,
+                turnChancePerStep = pass.turnChancePerStep,
+            };
+        }
+
+        private void RunPass(Map map, CausewayProfile profile, List<IntVec3> anchors)
+        {
             for (int i = 0; i < anchors.Count; i++)
             {
-                int pathCount = ext.pathsPerAnchorRange.RandomInRange;
+                int pathCount = profile.pathsPerAnchorRange.RandomInRange;
                 for (int p = 0; p < pathCount; p++)
                 {
-                    TraceSpline(map, ext, anchors[i]);
+                    TraceSpline(map, profile, anchors[i]);
                 }
             }
 
-            ConnectNearestNeighbors(map, ext, anchors);
+            ConnectNearestNeighbors(map, profile, anchors);
+        }
+
+        // One lane-network's worth of paint tuning — built once per pass
+        // (the primary RM_RootCausewayBiomeExtension profile, or one entry
+        // of its additionalPasses) so TraceSpline/PaintFootprint/
+        // ConnectNearestNeighbors/ConnectAnchors don't care which.
+        private struct CausewayProfile
+        {
+            public TerrainDef causewayTerrain;
+            public List<TerrainDef> basinTerrains;
+            public IntRange pathsPerAnchorRange;
+            public IntRange laneWidthRange;
+            public IntRange pathLengthRange;
+            public float turnChancePerStep;
         }
 
         private List<IntVec3> PickFallbackAnchors(Map map, RM_RootCausewayBiomeExtension ext)
@@ -116,18 +182,18 @@ namespace RimMandrake.EnvironmentalHazards
             return anchors;
         }
 
-        private void TraceSpline(Map map, RM_RootCausewayBiomeExtension ext, IntVec3 anchor)
+        private void TraceSpline(Map map, CausewayProfile profile, IntVec3 anchor)
         {
             IntVec3 cursor = anchor;
             int dirIndex = Rand.Range(0, EightDirs.Length);
-            int length = ext.pathLengthRange.RandomInRange;
-            int width = ext.laneWidthRange.RandomInRange;
+            int length = profile.pathLengthRange.RandomInRange;
+            int width = profile.laneWidthRange.RandomInRange;
 
             for (int step = 0; step < length; step++)
             {
-                PaintFootprint(map, ext, cursor, width);
+                PaintFootprint(map, profile, cursor, width);
 
-                if (Rand.Chance(ext.turnChancePerStep))
+                if (Rand.Chance(profile.turnChancePerStep))
                 {
                     dirIndex = (dirIndex + (Rand.Bool ? 1 : -1) + EightDirs.Length) % EightDirs.Length;
                 }
@@ -143,7 +209,7 @@ namespace RimMandrake.EnvironmentalHazards
         // Every anchor connects to its own single nearest neighbor — not a
         // full minimum spanning tree, but enough for "the network spans the
         // map" per the kit spec's own text, at map-gen-appropriate cost.
-        private void ConnectNearestNeighbors(Map map, RM_RootCausewayBiomeExtension ext, List<IntVec3> anchors)
+        private void ConnectNearestNeighbors(Map map, CausewayProfile profile, List<IntVec3> anchors)
         {
             if (anchors.Count < 2)
             {
@@ -179,12 +245,12 @@ namespace RimMandrake.EnvironmentalHazards
                 long key = ((long)lo << 32) | (uint)hi;
                 if (connected.Add(key))
                 {
-                    ConnectAnchors(map, ext, anchors[i], anchors[nearest]);
+                    ConnectAnchors(map, profile, anchors[i], anchors[nearest]);
                 }
             }
         }
 
-        private void ConnectAnchors(Map map, RM_RootCausewayBiomeExtension ext, IntVec3 a, IntVec3 b)
+        private void ConnectAnchors(Map map, CausewayProfile profile, IntVec3 a, IntVec3 b)
         {
             float dx = b.x - a.x;
             float dz = b.z - a.z;
@@ -196,16 +262,16 @@ namespace RimMandrake.EnvironmentalHazards
             dx /= dist;
             dz /= dist;
 
-            int width = Mathf.Max(1, ext.laneWidthRange.min);
+            int width = Mathf.Max(1, profile.laneWidthRange.min);
             int steps = Mathf.CeilToInt(dist);
             for (int i = 0; i <= steps; i++)
             {
                 IntVec3 cell = new IntVec3(Mathf.RoundToInt(a.x + dx * i), 0, Mathf.RoundToInt(a.z + dz * i));
-                PaintFootprint(map, ext, cell, width);
+                PaintFootprint(map, profile, cell, width);
             }
         }
 
-        private void PaintFootprint(Map map, RM_RootCausewayBiomeExtension ext, IntVec3 center, int width)
+        private void PaintFootprint(Map map, CausewayProfile profile, IntVec3 center, int width)
         {
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, width, true))
             {
@@ -214,12 +280,14 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
-                if (!ext.basinTerrains.NullOrEmpty() && !ext.basinTerrains.Contains(map.terrainGrid.TerrainAt(c)))
+                if (!profile.basinTerrains.NullOrEmpty() && !profile.basinTerrains.Contains(map.terrainGrid.TerrainAt(c)))
                 {
-                    continue; // restricted to basin terrain — leave everything else untouched
+                    continue; // restricted terrain allowlist — leave everything else untouched (also
+                              // how a biome keeps a lane off registered water: list the buildable
+                              // ground terrains, not the pool, per FEVER_WOOD_MECHANICS_1 F6)
                 }
 
-                map.terrainGrid.SetTerrain(c, ext.causewayTerrain);
+                map.terrainGrid.SetTerrain(c, profile.causewayTerrain);
             }
         }
     }

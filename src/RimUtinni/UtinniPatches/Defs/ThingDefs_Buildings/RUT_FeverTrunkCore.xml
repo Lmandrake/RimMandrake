@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FEVER_WOOD_MECHANICS_1 F7 build. Cribbed directly from
+     GREENTIDE_MECHANICS_2 M12's RUT_GreatboleCore.xml — the marker
+     RM_GenStep_LivingBoles spawns at the center of each heartwood blob,
+     carrying RM_CompLivingBoleMarker (registers/deregisters with
+     RM_MapComponent_LivingRegrowth) and the oversized drawSize standing in
+     for the trunk's real multi-cell silhouette (same RESOLVED ❓ the M12
+     spike already settled: a plain GraphicData.drawSize override, not a
+     Skyfaller subclass).
+
+     regrowDaysRange retuned per the kit spec's own INVENTED call ("slower
+     regrowth than the Greentide — this biome is the still one"): 10~18
+     days here versus the Greatbole's 3~6 — roughly 3x. creakWarningTicks/
+     crushIntervalTicks/crushDamagePerHit left at CompProperties_
+     LivingBoleMarker's own class defaults (1 in-game hour / 600 ticks /
+     12 dmg) — the spec names no separate number for those, and "still" is
+     about the regrow clock, not the crush pulse once a colonist ignores
+     the warning.
+
+     sealantTerrain=RUT_ToxinSealant reuses the ALREADY-SHIPPED Greentide
+     terrain verbatim (src/RimUtinni/UtinniPatches/Defs/TerrainDefs/
+     RUT_ToxinSealant.xml) rather than inventing a second sealant economy —
+     same "a shared mechanism gets ONE def, reused cross-kit" precedent
+     RUT_Scald/RM_ScaldArmor already set (FORGE_MECHANICS_1 reused
+     Greentide's own damage-type trio rather than duplicating it). Gated
+     MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" —
+     TWO packages, not one: RUT_ToxinSealant.xml's own defining def already
+     carries MayRequire="mandrake.rm.greentide" (its costList consumes
+     RM_ToxinSealant, a Greentide-mod item), so a reference to it needs the
+     same guard or it dangles when mandrake.rm.greentide alone is absent.
+     Real finding against the sibling precedent this pass read before
+     writing: RUT_GreatboleCore.xml's OWN comp <li> (in GREENTIDE_
+     MECHANICS_2, not this item's file) is gated on
+     MayRequire="mandrake.rm.environmentalhazards" only, despite the exact
+     same sealantTerrain reference — a latent dangling-cross-reference risk
+     in the already-shipped Greentide code if mandrake.rm.environmentalhazards
+     were ever active without mandrake.rm.greentide (currently moot: both
+     ship together in this campaign's full mod list, but inconsistent with
+     that file's own sibling M9 extension, which DOES two-package-gate its
+     own cross-mod basinTerrains reference). Not fixed here — out of this
+     item's scope (GREENTIDE_MECHANICS_2's own file) — flagged for the
+     record; this def does not repeat the gap.
+
+     PLACEHOLDER ART: reuses the same real vanilla texture path
+     RUT_GreatboleCore.xml already established (Things/Building/Misc/
+     DeepDrillPowered, oversized + tinted) rather than a new placeholder —
+     legitimate reuse, not a namespace-owned path, no DEPLOY_HOLD needed.
+     Tint distinguishes it from the Greentide original (a paler, duller
+     wood tone versus the Greatbole's darker one). -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_FeverTrunkCore</defName>
+    <label>fever trunk core</label>
+    <description>The living heart of a giant trunk — the one cell of it that never goes still, and never mines out. Everything the tree does starts here, at a pace this whole biome shares.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <useHitPoints>true</useHitPoints>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/DeepDrillPowered</texPath>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(92,84,60)</color>
+      <drawSize>(7,7)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+        <regrowthThing>RUT_FeverTrunkHeartwood</regrowthThing>
+        <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
+        <regrowDaysRange>10~18</regrowDaysRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
