@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScariaIncubation.xml             UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §3 (plated-grazer scaria onset). Pure XML per the
+  spec's own route: vanilla wildAnimalScariaChance already rolls vanilla
+  Scaria onto some wild animals at spawn, but Hediff_Scaria.TickInterval
+  only auto-starts the rage for humanlikes and FACTIONED animals (decompile-
+  confirmed, quoted in the kit spec) — a wild scaria animal otherwise stays
+  calm forever. This hediff is the fuse: once armed (RUT_ScariaOnsetArming.xml,
+  GameConditionDefs/), it climbs on its own and its own final stage forces
+  the manhunter flip vanilla scaria never would on a wild animal.
+
+  severityPerDayRange (0.1~0.25), left as severityPerDay=0 plus the range:
+  HediffCompProperties_SeverityPerDay.CalculateSeverityPerDay (decompile-
+  confirmed) rolls ONE rate per pawn at CompPostPostAdd and keeps it for the
+  hediff's life — exactly the spec's own "severity 0.1–0.25/day, randomized
+  per pawn," with zero new C#. maxSeverity 1.0 makes the spec's own invented
+  "incubation 4-12 days" arithmetic transparent: 1.0/0.25 = 4 days fastest,
+  1.0/0.1 = 10 days slowest (the spec's own "4-12" is itself an
+  approximation — this build pass did not stretch the range to hit 12
+  exactly, since the rate figures are the spec's real INVENTED numbers and
+  the day-count was only ever their derived illustration).
+
+  Final stage's mentalStateGivers -> ManhunterPermanent, mtbDays 0.5: the
+  spec's own INVENTED figure, verbatim ("final-stage giver MTB 0.5 days").
+  Once that mental state fires, the ANIMAL'S OWN vanilla Scaria hediff
+  (already present — this condition only arms pawns carrying it, see
+  RUT_ScariaOnsetArming.xml's requiredHediff) takes over via its own 5-day
+  (300000-tick) death clock — nothing else to wire here, per the spec's own
+  "we add the fuse, vanilla burns it."
+
+  No MayRequire: HediffWithComps and HediffCompProperties_SeverityPerDay are
+  both vanilla.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_ScariaIncubation</defName>
+    <label>scaria incubation</label>
+    <description>The madness is coming. Nothing shows yet — no sores, no change in temper — but somewhere under the plating it has already started, and it will not stop.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.5,0.1,0.1)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>incubating</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>1.0</minSeverity>
+        <label>on the verge</label>
+        <mentalStateGivers>
+          <li>
+            <mentalState>ManhunterPermanent</mentalState>
+            <mtbDays>0.5</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0</severityPerDay>
+        <severityPerDayRange>0.1~0.25</severityPerDayRange>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

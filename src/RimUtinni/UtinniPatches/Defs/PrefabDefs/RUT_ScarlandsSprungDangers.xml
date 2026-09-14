@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsSprungDangers.xml       UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §5 (pre-sprung danger dressing). RESOLVED zero-C# by
+  the spike pass (2026-09-14, finding 3): PrefabThingData carries a plain
+  public int hp field, read straight off the XML (RimWorld/PrefabThingData.cs,
+  decompile-confirmed) — every entry below sets it explicitly, well below
+  the donor def's own MaxHitPoints, so every spawned Thing arrives already
+  damaged. No RUT_GenStep_SprungDanger class exists or is needed; scatter
+  wiring rides vanilla Verse.GenStep_ScatterGroupPrefabs
+  (RUT_ScarlandsSprungDangers_GenStep.xml, MapGeneration/).
+
+  Three sites, per the spec's own dressing list ("breached vault walls...
+  destroyed mech shells, scorch filth, opened caskets"), each picked or
+  substituted for a REAL, ALREADY-SHIPPED, threat-free def — never a new
+  ThingDef, this being "content-heavy, C#-light" per the spec's own words:
+
+  - RUT_SprungVaultBreach: two AncientFortifiedWall segments (the donor
+    Scarlands' own "shattered megastructure" wall — MaxHitPoints 7500,
+    RimSage-confirmed, deconstructible=false/neverBuildable=true, purely
+    decorative ruin dressing already used by this biome's own
+    AncientRuins_Scarlands extraGenStep) with a ONE-CELL GAP left between
+    them (no <li> entry for that middle cell at all) — "walls with a gap,
+    no intact door," read literally. hp far below max on both stubs.
+    Filth_RubbleBuilding (AncientFortifiedWall's own filthLeaving def,
+    RimSage-confirmed) scattered through the gap and the two flanking
+    cells.
+
+  - RUT_SprungMechShell: two ChunkSlagSteel (inert, smeltable junk chunk,
+    zero comps) standing in for "destroyed mech shells" — a real wrecked-
+    mechanoid BUILDING def does not exist as inert scatter dressing
+    anywhere in src/ or the vanilla vocabulary checked this pass, and this
+    kit does not own new mech-corpse art/content (roster's call). Filth_
+    MachineBits (already this biome's own junk-dressing filth, see
+    ScarlandsJunkPrefabs) + Filth_BlastMark read the scorched-and-spent
+    story without inventing anything.
+
+  - RUT_SprungOpenedContainer: two AncientBarrel (RimSage-confirmed: zero
+    comps, isInert=true, its OWN description already reads "broken...
+    the only thing it contains now is a smear of dried sludge") standing in
+    for "opened caskets." 🔴 DELIBERATE SUBSTITUTION, not a guess: the real
+    AncientCryptosleepCasket ThingDef (RimSage-confirmed) carries
+    CompProperties_Explosive — a LIVE interactive threat if a colonist
+    opens it, which the spec's own §6 ban explicitly forbids for this
+    mechanic ("no live threats inside"). AncientBarrel is the closest
+    already-shipped, already-inert "opened ancient container" vocabulary
+    that does NOT violate that ban. Filth_ScatteredDocuments dressing
+    (already a real vanilla filth def) reads as "picked clean," matching
+    ban 4's "stripped surfaces, sealed prizes elsewhere."
+
+  No MayRequire: every def named above (AncientFortifiedWall, ChunkSlagSteel,
+  AncientBarrel, the three Filth_* defs) is vanilla/Odyssey, already
+  MayRequire-gated once at the BiomeDef level (RUT_Scarlands.xml's own
+  MayRequire="Ludeon.RimWorld.Odyssey").
+-->
+<Defs>
+
+  <PrefabDef>
+    <defName>RUT_SprungVaultBreach</defName>
+    <size>(3,1)</size>
+    <things>
+      <AncientFortifiedWall>
+        <position>(0,0,0)</position>
+        <hp>900</hp>
+      </AncientFortifiedWall>
+      <!-- (1,0,0) deliberately empty: the gap. -->
+      <AncientFortifiedWall>
+        <position>(2,0,0)</position>
+        <hp>650</hp>
+      </AncientFortifiedWall>
+      <Filth_RubbleBuilding>
+        <positions>
+          <li>(0,0,0)</li>
+          <li>(1,0,0)</li>
+          <li>(2,0,0)</li>
+        </positions>
+      </Filth_RubbleBuilding>
+    </things>
+  </PrefabDef>
+
+  <PrefabDef>
+    <defName>RUT_SprungMechShell</defName>
+    <size>(2,2)</size>
+    <things>
+      <ChunkSlagSteel>
+        <position>(0,0,0)</position>
+      </ChunkSlagSteel>
+      <ChunkSlagSteel>
+        <position>(1,0,1)</position>
+      </ChunkSlagSteel>
+      <Filth_MachineBits>
+        <rects>
+          <li>(0,0,1,1)</li>
+        </rects>
+      </Filth_MachineBits>
+      <Filth_BlastMark>
+        <position>(0,0,0)</position>
+      </Filth_BlastMark>
+    </things>
+  </PrefabDef>
+
+  <PrefabDef>
+    <defName>RUT_SprungOpenedContainer</defName>
+    <size>(2,1)</size>
+    <things>
+      <AncientBarrel>
+        <position>(0,0,0)</position>
+      </AncientBarrel>
+      <AncientBarrel>
+        <position>(1,0,0)</position>
+      </AncientBarrel>
+      <Filth_ScatteredDocuments>
+        <positions>
+          <li>(0,0,0)</li>
+          <li>(1,0,0)</li>
+        </positions>
+      </Filth_ScatteredDocuments>
+    </things>
+  </PrefabDef>
+
+</Defs>

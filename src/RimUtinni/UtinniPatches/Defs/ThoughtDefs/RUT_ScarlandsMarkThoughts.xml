@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsMarkThoughts.xml        UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §2: "vanilla ThoughtWorker_Hediff — a ThoughtDef keyed
+  to the hediff, stage per severity band. Zero new C#." Stage bands/mood
+  offsets are the spec's own INVENTED values, verbatim: "stage bands
+  0.25/0.5/0.75 (mood −2/−4/−6...)".
+
+  Index-aligned to RUT_ScarlandsMark.xml's own <stages> list — 4 stages each
+  (ThoughtWorker_Hediff.CurrentStateInternal reads
+  Min(hediff.CurStageIndex, hediff.def.stages.Count-1, def.stages.Count-1),
+  decompile-confirmed this spike pass) — stage 0 (onset) carries no mood so
+  it is not shown at all (visible false); stages 1-3 are the mild/deepening/
+  heavy bands.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RUT_ScarlandsMark</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RUT_ScarlandsMark</hediff>
+    <stages>
+      <li>
+        <visible>false</visible>
+      </li>
+      <li>
+        <label>marked by the Scarlands</label>
+        <description>Something followed me out of the Scarlands. It doesn't say anything. It doesn't have to.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>marked by the Scarlands</label>
+        <description>The mark is getting heavier. I dream about the place even when I'm nowhere near it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>marked by the Scarlands</label>
+        <description>I can't tell anymore where the Scarlands end and I begin.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

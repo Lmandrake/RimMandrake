@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsMark.xml                UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §2 (the Scarlands mark). Owner ruling 4 (card sitting
+  2026-09-11): "both — a small permanent mood hit AND nightmares while on
+  Scarlands maps; leaving the map ends the nightmares, never the mark."
+
+  Application: RUT_ScarlandsMarkLock.xml (GameConditionDefs/) grants this
+  hediff via EnvironmentalWeatherExtension.hediffToApply/
+  hediffSeverityPerInterval — RESOLVED zero-C# by the spike pass (both
+  fields already shipped on RC4 by MIASMA_MECHANICS_1's M4 build). Severity
+  math below is this pass's own INVENTED-BUILD split of the spec's own
+  INVENTED "+0.2/day on-map; -0.1/day off-map; floor 0.25 once severity ever
+  exceeded 0.5" into two independent, already-shipped comps rather than one
+  new one:
+
+    - HediffCompProperties_SeverityPerDay (vanilla): severityPerDay -0.1,
+      running unconditionally (both on- and off-map) — the constant fade
+      half.
+    - RUT_ScarlandsMarkLock's own hediffSeverityPerInterval: +0.3/day GROSS
+      while the permanent condition is active (damageIntervalTicks 2500,
+      ~24 applications/day -> 0.3/24 = 0.0125/application), netting against
+      the -0.1/day comp above to +0.2/day NET while on a Scarlands map —
+      matching the spec's own on-map figure exactly. Off-map the
+      GameCondition is not running (it is a per-map permanent condition),
+      so only the -0.1/day comp acts, matching the spec's own off-map
+      figure exactly.
+    - HediffCompProperties_SeverityFloor (RM_HediffComp_SeverityFloor, this
+      spike's own new C#): floorTriggerThreshold 0.5, floorValue 0.25 —
+      the spec's own numbers, verbatim. Deliberately equals this hediff's
+      own "mild exposure" stage threshold below, so a floored pawn settles
+      permanently at "the mark, faded to its floor" rather than oscillating
+      across a stage boundary.
+
+  Stages/mood/nightmares: vanilla ThoughtWorker_Hediff (RUT_ScarlandsMarkThoughts.xml,
+  ThoughtDefs/) index-aligns its own <stages> list to THIS hediff's stage
+  index (ThoughtWorker_Hediff.CurrentStateInternal, decompile-confirmed) —
+  the two files' stage counts and thresholds must move together. Nightmares
+  are vanilla HediffStage.mentalStateGivers (Hediff.cs:463, decompile-
+  confirmed this spike pass) on the top two stages, per the spec's own
+  "nightmares from 0.5 up."
+
+  MayRequire is load-bearing: the compClass (RM_HediffComp_SeverityFloor)
+  lives in mandrake.rm.environmentalhazards; per memory
+  (modextension-missing-type-discards-def) an unresolvable comp class risks
+  discarding the whole def silently.
+
+  STAGED-LORE COUPLING (kit spec's own note): description below is §P
+  register only (no §GM truth) — deepens later via STAGED_LORE_BUILD_1's
+  live def-description swaps, not built here.
+-->
+<Defs>
+
+  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScarlandsMark</defName>
+    <label>the Scarlands mark</label>
+    <description>Something about this place gets under the skin and stays there — bad dreams, a shadow on the mood, a weight that never quite lifts even long after the dust of the Scarlands is washed off. The Jawa have a word for it. They are right.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55,0.2,0.25)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>onset</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.25</minSeverity>
+        <label>mild mark</label>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>deepening mark</label>
+        <mentalStateGivers>
+          <li>
+            <mentalState>Wander_Sad</mentalState>
+            <mtbDays>6</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+      <li>
+        <minSeverity>0.75</minSeverity>
+        <label>heavy mark</label>
+        <mentalStateGivers>
+          <li>
+            <mentalState>Wander_Sad</mentalState>
+            <mtbDays>3</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.1</severityPerDay>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_SeverityFloor">
+        <floorTriggerThreshold>0.5</floorTriggerThreshold>
+        <floorValue>0.25</floorValue>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

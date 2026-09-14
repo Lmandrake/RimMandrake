@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SentinelGraveWard.xml            UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §4 (Forgotten Sentinels). "Sentinel spawning rides
+  existing vanilla plumbing: repair alcoves / grave-wards as buildings
+  carrying vanilla CompSpawnerPawn with lordJob = RM_LordJob_DefendPerimeter
+  — VERIFIED that comp is fully def-driven" (spec's own words). This is
+  that building, wired to RUT_LordJob_SentinelDefend (the SpawnedPawnParams-
+  ctor subclass that hands in the real RUT_SentinelDefend duty — see that
+  class's own header for why the plain RM_ base class alone can't).
+
+  Density/lore per the spec's own §4: "SPARSE... most strongpoints are
+  bones, the manned one is the exception... reads as SELF-REPAIR — surface
+  Sentinels are the Cathedral's lost, self-mending, slowly devolving units,
+  not a garrison being restocked." pawnSpawnIntervalDays (4~6) and the small
+  points cap below are this build pass's own INVENTED-BUILD numbers for
+  "ward scale, never a production line" — the spec names no figure
+  ("spawner points cap per site still INVENTED", SCARLANDS_MECHANICS_2.md's
+  own spike-pass note).
+
+  spawnablePawnKinds: PLACEHOLDER. vanilla Mech_Pikeman — a real, defensive,
+  ranged mechanoid — stands in for the actual Forgotten Sentinel PawnKindDef,
+  which does not exist anywhere in src/ yet (checked) and is roster/faction-
+  pass content this kit does not own (the kit spec's own naming section:
+  RUT_-tier CONTENT, "remaining content (§2-5) is RUT_-tier, owed to later
+  passes" — a Sentinel's own kind/art/faction is exactly that kind of
+  content, not this kit's mechanism work). Swap this one line for the real
+  kind the moment the roster pass ships it; nothing else here changes.
+
+  lordJoinRadius 80 (== defendRadius): CompSpawnerPawn.Lord/FindLordToJoin
+  (decompile-confirmed) searches for an existing lord of the SAME lordJob
+  TYPE within lordJoinRadius (vanilla default ~2.1B, i.e. "anywhere on the
+  map") before spawning a new one — left at vanilla's huge default, every
+  grave-ward on a map would pool its Sentinels into ONE lord defending
+  whichever ward spawned first. Tightened to the ward's own defend radius so
+  each grave-ward's Sentinels join only pawns from THAT ward (or one very
+  nearby), each defending its own point — this build pass's own
+  INVENTED-BUILD choice, undocumented in the spec.
+
+  🔴 OWED, NOT BUILT: faction assignment. CompSpawnerPawn.TrySpawnPawn spawns
+  with parent.Faction (decompile-confirmed) — Faction is a runtime Thing
+  property, never a ThingDef field, so it cannot be set here. RUT_SacredWall_
+  Conduit.xml (RustCathedralWalls, same "Forgotten"/Cathedral lore family)
+  is the precedent: its own GenStep_ScatterSacredWalls.cs calls
+  `.SetFaction(Faction.OfMechanoids)` at placement time — that faction
+  (vanilla `Mechanoid`, hidden/permanentEnemy, already reskinned "the
+  Forgotten Arsenal" per ForgottenArsenal.xml) is very likely the correct
+  one for this building too, but the placement GenStep that would call
+  SetFaction on THIS building does not exist yet (§4's own "v1: the lord +
+  duty + spawner wiring" — map placement is separately scoped, and this
+  pass had no bridge/game access to prove a faction-less spawn end to end).
+  Until that GenStep ships, a debug-spawned RUT_SentinelGraveWard produces
+  faction-less ("wild") Sentinels — not hostile to the player, not the
+  scoped behavior. Flagged, not guessed at.
+
+  PLACEHOLDER ART: Things/Building/Linked/AncientFortifiedWall_Atlas — the
+  REAL vanilla-Odyssey texture RimSage confirms AncientFortifiedWall itself
+  ships with, tinted toward the grave-ward's own weathered-verdigris
+  palette. 🔴 KNOWN validate_patch.py FALSE POSITIVE, not a real miss:
+  ALL vanilla textures live inside Unity asset bundles, never as loose
+  files (confirmed this pass: zero *.png anywhere under the live Data/
+  root), so the checker can never resolve ANY vanilla texPath by design —
+  it only escalates WARN to ERROR here because UtinniPatches ships its own
+  Textures/Things/ folder (RUT_SacredWall_Conduit.xml, checked standalone
+  outside that mod context, gets the softer WARN for the exact same class
+  of miss on its own vanilla-styled path, with the tool's own text saying
+  so: "cannot be called a typo... a correct vanilla path looks identical to
+  a wrong one from here"). Same pre-existing, repo-wide pattern as
+  RUT_VaultHeart.xml's own Things/Building/Ship/ShipComputerCore reuse
+  (StructureInjectionsRUT, also owns its own Things/ namespace). Recorded
+  as a known false positive in SCARLANDS_MECHANICS_2.md rather than swapped
+  for a worse-fitting texture just to silence the scanner. Real bespoke
+  grave-ward art is owed (art pipe), same posture as every other
+  placeholder in this kit.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_SentinelGraveWard</defName>
+    <thingClass>Building</thingClass>
+    <label>Sentinel grave-ward</label>
+    <description>A squat, patterned monument half-sunk into the crust, still faintly warm. It does not explain itself. It does not need to — whatever it protects, it protects it still.</description>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.6</fillPercent>
+    <coversFloor>false</coversFloor>
+    <blockLight>false</blockLight>
+    <blockWind>false</blockWind>
+    <neverMultiSelect>true</neverMultiSelect>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <mineable>false</mineable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <tickerType>Normal</tickerType>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <size>(2,2)</size>
+    <graphicData>
+      <texPath>Things/Building/Linked/AncientFortifiedWall_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(120,110,100)</color>
+      <colorTwo>(90,40,45)</colorTwo>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_SpawnerPawn">
+        <spawnablePawnKinds>
+          <!-- PLACEHOLDER, see header. -->
+          <li>Mech_Pikeman</li>
+        </spawnablePawnKinds>
+        <lordJob>RimMandrake.EnvironmentalHazards.RUT_LordJob_SentinelDefend</lordJob>
+        <defendRadius>80</defendRadius>
+        <lordJoinRadius>80</lordJoinRadius>
+        <initialPawnsCount>2</initialPawnsCount>
+        <maxSpawnedPawnsPoints>300</maxSpawnedPawnsPoints>
+        <pawnSpawnIntervalDays>4~6</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+        <chooseSingleTypeToSpawn>true</chooseSingleTypeToSpawn>
+        <showNextSpawnInInspect>false</showNextSpawnInInspect>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

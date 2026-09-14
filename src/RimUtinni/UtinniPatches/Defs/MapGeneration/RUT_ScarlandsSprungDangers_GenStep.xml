@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScarlandsSprungDangers_GenStep.xml  UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §5. Scatters the three RUT_Sprung* prefabs
+  (PrefabDefs/RUT_ScarlandsSprungDangers.xml) via vanilla Verse.GenStep_
+  ScatterGroupPrefabs — the SAME class ScarlandsJunkPrefabs (this biome's
+  own donor genstep, still listed in RUT_Scarlands.xml's extraGenSteps)
+  already uses; raw XML for that def pulled via RimSage this pass to match
+  its field shape exactly (order/allowInWaterBiome/isJunk/minSpacing/
+  countPer10kCellsRange/spotMustBeStandable/allowRoofed/groups).
+
+  countPer10kCellsRange 0.4~0.6 reuses ScarlandsJunkPrefabs' own figure
+  rather than inventing a new one — on a ~250x250 map (~6.25 x 10k cells)
+  that lands the expected total scatter count for all three groups combined
+  right in the spec's own INVENTED "2-4 sprung sites per map" band, with no
+  further tuning needed.
+
+  order 955 (just after ScarlandsJunkPrefabs' own 950, still before terrain
+  passes that run later): these are dressing, not structural, so ordering
+  relative to the OTHER prefab scatter is the only thing that matters.
+
+  isJunk=true: matches ScarlandsJunkPrefabs — these are exactly that
+  category (spent, stripped, already-triggered), not a live danger the
+  isJunk flag would be dishonest about.
+
+  Not wired into RUT_Scarlands.xml's own extraGenSteps by this file alone —
+  see that file's own header for the added <li>.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_ScarlandsSprungDangers</defName>
+    <order>955</order>
+    <genStep Class="GenStep_ScatterGroupPrefabs">
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <isJunk>true</isJunk>
+      <minSpacing>60</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <allowRoofed>false</allowRoofed>
+      <groups>
+        <RUT_SprungVaultBreach>
+          <weight>1</weight>
+          <indoorRuin>false</indoorRuin>
+          <filthDef>Filth_RubbleBuilding</filthDef>
+          <filthExpandBy>1</filthExpandBy>
+          <filthChance>0.3</filthChance>
+        </RUT_SprungVaultBreach>
+        <RUT_SprungMechShell>
+          <weight>1</weight>
+          <indoorRuin>false</indoorRuin>
+          <filthDef>Filth_MachineBits</filthDef>
+          <filthExpandBy>1</filthExpandBy>
+          <filthChance>0.3</filthChance>
+        </RUT_SprungMechShell>
+        <RUT_SprungOpenedContainer>
+          <weight>1</weight>
+          <indoorRuin>false</indoorRuin>
+          <filthDef>Filth_ScatteredDocuments</filthDef>
+          <filthExpandBy>1</filthExpandBy>
+          <filthChance>0.3</filthChance>
+        </RUT_SprungOpenedContainer>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

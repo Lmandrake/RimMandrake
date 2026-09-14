@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ScariaOnsetArming.xml            UtinniPatches - SCARLANDS_MECHANICS_2 build pass
+
+  scarlands_kit_spec.md §3. Reuses ruled comp RC5's GameCondition_
+  ArmLatentHazard, extended this spike pass with pawnKindFilter/
+  requiredHediff (both BUILT, compiling, 0 warnings/errors) specifically for
+  this mechanic: arm ONLY the plated grazers that already rolled vanilla
+  Scaria (biome's own wildAnimalScariaChance, see RUT_Scarlands.xml) — never
+  every animal on the map, never a grazer that never carried the disease at
+  all.
+
+  pawnKindFilter: the two PawnKindDefs RUT_Scarlands.xml's own wildAnimals
+  list already comments "plated-grazer, keep" — RSW_FoundryBeetle (our own
+  clone, mandrake.rsw.swbestiary) and AA_SpinedGow (Alpha Animals,
+  sarg.alphaanimals, already referenced elsewhere in the campaign, e.g.
+  BiomeCast_Ashkarr.xml). AA_Helixien is commented "mortuary-guild,
+  adjust-keep" on that same list — NOT a plated grazer, deliberately
+  excluded here.
+
+  requiredHediff: vanilla Scaria (HediffDefOf.Scaria, defName "Scaria",
+  RimSage-confirmed) — a pawn must already carry it, so this sweep only ever
+  touches animals the biome's own roll already marked.
+
+  chancePerPawn left at its 1.0 default: the biome's own
+  wildAnimalScariaChance (0.5) is the only dice roll in this mechanic — "the
+  wildlife carries the madness; the plated grazers always succumb in the
+  end" (the_scarlands.md, quoted in the kit spec) reads as 100% eventual
+  onset for every animal that already has Scaria, not a second, independent
+  chance layered on top.
+
+  intervalTicks 60000 (1 game day) and armImmediately=true are this build
+  pass's own INVENTED-BUILD sweep cadence — the spec gives no number for how
+  often the sweep itself runs (only for the incubation hediff's own climb
+  rate, on RUT_ScariaIncubation.xml), and armImmediately keeps a fresh
+  colony from waiting out a full day before any grazer already on the map
+  can be swept.
+
+  🔴 BUG FOUND AND FIXED THIS PASS: RUT_Scarlands.xml (a fresh BiomeDef with
+  no ParentName) never carried <wildAnimalScariaChance> at all — the donor
+  vanilla Scarlands.xml sets 0.5, but our own biome def silently defaulted
+  to BiomeDef's own field default of 0 (decompile-confirmed,
+  RimWorld/BiomeDef.cs:101). Without that field this mechanic's own arming
+  gate (requiredHediff=Scaria) would have nothing to ever find — zero wild
+  animals would ever carry vanilla Scaria to begin with. Fixed in
+  RUT_Scarlands.xml this same pass (see that file's own header note).
+
+  MayRequire is load-bearing: conditionClass and the modExtension both live
+  in mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_ScariaOnsetArming</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_ArmLatentHazard</conditionClass>
+    <label>the madness inevitably comes</label>
+    <description>The plated grazers graze on, placid as ever. It never lasts. Sooner or later, every one of them snaps.</description>
+    <canBePermanent>true</canBePermanent>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.ArmLatentHazardExtension">
+        <hediffToApply>RUT_ScariaIncubation</hediffToApply>
+        <intervalTicks>60000</intervalTicks>
+        <armImmediately>true</armImmediately>
+        <targets>Animals</targets>
+        <pawnKindFilter>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_FoundryBeetle</li>
+          <li MayRequire="sarg.alphaanimals">AA_SpinedGow</li>
+        </pawnKindFilter>
+        <requiredHediff>Scaria</requiredHediff>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>
