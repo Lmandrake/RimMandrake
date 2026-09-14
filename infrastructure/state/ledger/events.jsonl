@@ -8439,3 +8439,8 @@
 {"seat":"BENCH","event":"start","id":"BACTA_PAWNINTANK_RECON_1","ts":"2026-09-14T07:57:09Z"}
 {"seat":"BENCH","event":"close","id":"BACTA_PAWNINTANK_RECON_1","sha":"fdca467f3f0c787fd07e6ebb340b682022bd32ad","ts":"2026-09-14T08:00:48Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-14T09:32:10Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-14T09:55:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-14T09:55:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_FORMAT_TIERS_1: live-retest DroidFormatTier.SetTier need-gating, seven-box checklist","ts":"2026-09-14T09:55:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-14T09:59:53Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_FORMAT_TIERS_1","text":"Live re-test 2026-09-14: box 1 CONFIRMED PASS via jawa/pawn_need (list) on a freshly-spawned droid, needs=[Mood,RSW_DW_Power] exactly per ruling 4. Root-caused why jawa/pawn_health can never test a non-default tier (AddHediff's needs-rebuild fires at initialSeverity, before the post-add severity poke) - structural, not a usage mistake. Boxes 2/3/6/7 need a dedicated SetTier bridge tool (fast, needs a restart) or the real recipe route (needs a colonist). Left in doing.","ts":"2026-09-14T10:00:30Z"}
