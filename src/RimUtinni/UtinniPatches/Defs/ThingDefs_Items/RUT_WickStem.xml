@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WickStem.xml                       UtinniPatches · SUMP_MECHANICS_1 (S5)
+  ============================================================================
+  sump_kit_spec.md S5: "Harvest: RUT_WickStem  — torch/lamp fuel via
+  CompRefuelable fuel filters and a tradeable candle good (items pass owns
+  pricing)." The harvest of RUT_Plant_Wick (ThingDefs_Plants/, same pass).
+
+  Plain resource good, no comps of its own: CompRefuelable lives on the
+  FUEL-CONSUMING building (a lamp/torch), which lists this def in its own
+  fuelFilter — nothing about the fuel ITEM needs a comp for that to work,
+  confirmed against Chemfuel's own def (Core/Defs/ThingDefs_Items/
+  Items_Resource_Manufactured.xml) which carries CompProperties_Explosive
+  for an unrelated reason (volatility), not for fuel-filter eligibility
+  itself. No refuelable building references this def yet — that's the
+  derrick-lamp/torch building's own content-pass work (§7b stations, items
+  pass), not built this pass.
+
+  MarketValue 1.5 is an explicit INVENTED PLACEHOLDER, not a real pricing
+  call — the kit spec is explicit that "items pass owns pricing." Left
+  un-zero only so the def has a legal, tradeable value rather than
+  defaulting to 0 and reading as worthless; expect this number to be
+  replaced, not treated as load-bearing.
+
+  Not flammable enough to ignore, not so flammable it's a walking bomb:
+  Flammability 1.5, between Wood's 1.0 and Chemfuel's 2.0  — candle/lamp
+  stock, not raw volatile fuel. No CompRottable: matches WoodLog's own
+  precedent (dried plant fuel-stock, not perishable food) rather than
+  RawBerries' (a food good that rots).
+
+  Texture reused from vanilla (Things/Item/Resource/WoodLog, a real,
+  confirmed texPath, Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml:254)
+  as a stick/stem placeholder  — art pass owed, same practice as this pass's
+  RUT_Plant_Wick.xml.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_WickStem</defName>
+    <label>wick-stem</label>
+    <description>A dried, waxy stem from a wick-plant, split and cured for burning. Slow and steady — it is the closest thing to a candle the Sump ever grows, and every station lamp-garden exists to keep a supply of it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/WoodLog</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.15</Mass>
+      <Flammability>1.5</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

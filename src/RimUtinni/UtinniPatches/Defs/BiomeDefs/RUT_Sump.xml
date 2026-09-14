@@ -36,6 +36,24 @@
     tables, tar beast set-piece logic, mouse-line telegraphy); wick-garden crop; any
     world repaint.
 
+    UPDATED — SUMP_MECHANICS_1 S6 build pass: <modExtensions> below carries
+    BiomeGlowMultiplierExtension (ALPHA_MECHANICS_KIT_1, ruled/shipped), glowMultiplier
+    0.55 per sump_kit_spec.md S6's own INVENTED value ("deep dusk, darker than Miasma's
+    0.85, lighter than a cave"). MayRequire is on the <li> itself, not the whole
+    BiomeDef (per infrastructure memory modextension-missing-type-discards-def: an
+    unresolvable Class inside <modExtensions> drops the WHOLE containing def unless the
+    <li> is individually gated) — this file must always load regardless of whether
+    mandrake.rm.environmentalhazards is active. The permanent-dusk weather lock
+    (RUT_SumpDuskLock) is wired separately via
+    Patches/RUT_SumpDuskLock_BiomeWiring.xml — a plain <li> defName reference in
+    biomeMapConditions WOULD be a dangling cross-reference if that mod were absent,
+    unlike a modExtensions Class, so it needs the patch route instead; see that file's
+    own header. ❓ live glow-multiplier calibration against the frozen tile's actual
+    sun-dot value is still owed (no-bridge scope this pass, per SUMP_MECHANICS_1's own
+    spike-pass S6 finding: the multiplier only affects the fractional residual glow
+    band, and whether the frozen Sump tile ever falls in that band isn't checkable
+    offline).
+
   -->
 
   <BiomeDef>
@@ -111,6 +129,12 @@
       <AB_TarPuddle>0.6</AB_TarPuddle>  <!-- tar puddle -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <glowMultiplier>0.55</glowMultiplier>
+        <suppressSunlightStatAffecter>true</suppressSunlightStatAffecter>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

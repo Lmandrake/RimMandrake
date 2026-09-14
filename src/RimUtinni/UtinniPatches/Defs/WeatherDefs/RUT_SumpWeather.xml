@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_SumpWeather.xml                    UtinniPatches · SUMP_MECHANICS_1 (S6)
+  ============================================================================
+  sump_kit_spec.md S6 "the light": forced weather for the permanent dusk
+  (the_sump.md §0 "sun median -10.6 deg... permanent deep twilight", §9
+  "black glass under horizon-glow"). Locked onto every Sump map via
+  RUT_SumpDuskLock (GameConditionDefs/, same pass) through
+  GameCondition.ForcedWeather() — vanilla's own override for exactly this
+  (GameCondition_EnvironmentalWeather.cs:198-202, ALPHA_MECHANICS_KIT_1,
+  already shipped). RUT_Sump.xml's own baseWeatherCommonalities table
+  (Fog/Clear/DryThunderstorm/SnowGentle/SnowHard) is therefore pre-mod-load
+  documentation once the lock is active on a map — it never actually gets
+  rolled — same structural point RUT_MiasmaWeather.xml's own header already
+  made for that biome's table.
+
+  MayRequire on the whole Def, matching RUT_ScaldSteam.xml's own precedent
+  (this same folder, SCALD_MECHANICS_1, today): this weather is never named
+  in RUT_Sump.xml's baseWeatherCommonalities (unlike RUT_MiasmaWeather, which
+  is left ungated because nothing else references it either), so it exists
+  only to be the lock's forcedWeather target — a true no-op def when
+  mandrake.rm.environmentalhazards is inactive is strictly better than an
+  orphaned, always-loaded WeatherDef nothing ever rolls.
+
+  windSpeedFactor 0.2 ("still", the_sump.md §5/§9) and no accuracyMultiplier
+  (left at the 1.0 default — the sheet gives the dusk no combat penalty of
+  its own; that is the lit-moat's smoke, a separate S1 mechanic) are this
+  pass's own INVENTED-BUILD values, not named by the kit spec. rainRate/
+  snowRate explicit 0 is ban #4's linter-checkable half for THIS weather
+  specifically (RUT_SumpDuskLock's forced-weather override is the structural
+  half that makes rain unreachable at all once a map is generated).
+
+  overlayClasses -> vanilla WeatherOverlay_Fog, reused as-is (RUT_Sump.xml's
+  own header already reasons "the sun a glow below the horizon... reads as
+  fog-dim, not desert-clear" — same call, no new art commissioned this pass).
+  Sky colours are this pass's own INVENTED-BUILD tuning toward the sheet's
+  §9 palette ("horizon amber", "every black") — the kit spec gives no colour
+  values, matching RUT_MiasmaWeather.xml's own precedent for the same gap.
+  ============================================================================
+-->
+<Defs>
+
+  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_SumpWeather</defName>
+    <label>permanent dusk</label>
+    <description>The sun sits just below the horizon here and never rises further. Amber light along the edge of the world, cold still air, black glass and black pools under it. It does not rain.</description>
+    <repeatable>true</repeatable>
+    <windSpeedFactor>0.2</windSpeedFactor>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.42,0.30,0.22)</sky>
+      <shadow>(0.5,0.42,0.38)</shadow>
+      <overlay>(0.5,0.4,0.35)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.55,0.34,0.18)</sky>
+      <shadow>(0.5,0.4,0.35)</shadow>
+      <overlay>(0.55,0.4,0.3)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.2,0.18)</sky>
+      <shadow>(0.4,0.35,0.35)</shadow>
+      <overlay>(0.35,0.3,0.3)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.2,0.14,0.14)</sky>
+      <shadow>(0.3,0.28,0.28)</shadow>
+      <overlay>(0.25,0.22,0.24)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

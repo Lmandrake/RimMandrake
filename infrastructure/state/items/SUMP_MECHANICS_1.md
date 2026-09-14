@@ -260,3 +260,172 @@ scope.
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompFloodIgniter.cs` (S1)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (3 new `<Compile>` entries)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+
+## S6/S5 build pass — 2026-09-13
+
+Build order step 2 (S6 calibration + biome XML, offline parts only) and step
+3 (S5 wick crop) per `sump_kit_spec.md`'s own "Build order". No bridge, no
+game, no quicktest this pass, per task scope — every field cited below was
+read from the live 1.6/Odyssey decompile or this repo's own already-shipped
+classes, never guessed. No new C# — both mechanics are XML-only on top of
+`ALPHA_MECHANICS_KIT_1`'s already-shipped, already-built comps; the
+`RM_EnvironmentalHazards.csproj` build was not re-run (no `.cs` file
+touched).
+
+**S6 — the lock, the light, the biome wiring.** Three new files plus one
+edit, following the SAME architecture `RUT_ScaldSteamLock.xml` /
+`RUT_ScaldSteamLock_BiomeWiring.xml` (SCALD_MECHANICS_1, this same session
+window, found already sitting uncommitted in the shared worktree and read as
+a live precedent, not guessed at):
+
+- `RUT_SumpWeather.xml` (WeatherDefs/): new `WeatherDef`, MayRequire-gated on
+  `mandrake.rm.environmentalhazards`. `rainRate`/`snowRate` explicit 0 (ban
+  #4's per-weather half); `windSpeedFactor 0.2` ("still", the_sump.md §5/§9);
+  reuses vanilla `WeatherOverlay_Fog` (RUT_Sump.xml's own header already
+  reasoned Fog-not-Clear for this biome) rather than new art. Sky colours are
+  this pass's own INVENTED-BUILD tuning toward §9's "horizon amber... every
+  black" — the kit spec gives no colour values, same gap
+  `RUT_MiasmaWeather.xml` already left flagged for its own biome.
+- `RUT_SumpDuskLock.xml` (GameConditionDefs/): new `GameConditionDef`,
+  whole-Def MayRequire-gated (matching `RUT_ScaldSteamLock.xml` /
+  `RUT_MiasmaWeatherLock.xml`'s own precedent — a bare `<li>` reference to a
+  MayRequire-gated defName, baked directly into the always-loaded BiomeDef,
+  would be a dangling cross-reference the moment the hazards mod is absent).
+  `conditionClass` = the ruled `RM_GameCondition_EnvironmentalWeather`;
+  `EnvironmentalWeatherExtension` sets only `forcedWeather` — no damage/
+  hediff/density fields, matching the spec's own "the dusk carries no damage
+  of its own" reading (unlike Miasma's own lock, which bootstraps a hediff
+  carrier). `allowUnderground false` — the bumbledrone hives under the tar
+  (the_sump.md §0) shouldn't inherit a surface weather condition.
+- `RUT_SumpDuskLock_BiomeWiring.xml` (Patches/): `PatchOperationAdd`, MayRequire
+  -gated on the Operation itself, adding `<biomeMapConditions><li>
+  RUT_SumpDuskLock</li></biomeMapConditions>` onto `RUT_Sump` — RUT_Sump.xml
+  carried no `biomeMapConditions` node before this pass. Confirmed against
+  the live 1.6 decompile that this is sufficient:
+  `BiomeConditionMapComponent.MapGenerated()` calls
+  `GameConditionMaker.MakeConditionPermanent(...)` for every entry in that
+  list (Verse/RimWorld/BiomeConditionMapComponent.cs:12-22) — no extra field
+  or registration code needed.
+- `RUT_Sump.xml` (BiomeDefs/, edited): added `<modExtensions>` carrying
+  `BiomeGlowMultiplierExtension` DIRECTLY (not via patch) with
+  `MayRequire="mandrake.rm.environmentalhazards"` on the `<li>` itself, not
+  the whole BiomeDef — per infrastructure memory
+  `modextension-missing-type-discards-def`, an unresolvable Class inside
+  `<modExtensions>` drops the WHOLE containing def unless the `<li>` is
+  individually gated, and RUT_Sump.xml must always load regardless of
+  whether the hazards mod is active. `glowMultiplier 0.55` is the kit spec's
+  own S6 INVENTED value ("deep dusk, darker than Miasma's 0.85, lighter than
+  a cave"); `suppressSunlightStatAffecter true` (a true-dark biome, matching
+  the "permanent dusk... sun a glow below the horizon" framing). This is the
+  first biome in the repo to actually wire `BiomeGlowMultiplierExtension` —
+  no prior precedent existed to crib (checked: zero other hits repo-wide).
+
+  ❓ **Not done, out of scope, honestly owed**: the live glow-multiplier
+  calibration check. The spike pass's own S6 finding already establishes
+  what's checkable offline — `CurCelestialSunGlow_Postfix` runs strictly
+  after vanilla's own `Clamp01`, so the multiplier is a no-op wherever
+  vanilla's own sun-dot product is already floored to 0 all day, and only
+  visibly darkens the fractional twilight band otherwise — but which case
+  the frozen Sump tile's real world-position falls into is not derivable
+  from any file on disk; it needs a live/quicktest read, explicitly out of
+  this pass's no-bridge scope.
+
+**S5 — the wick-garden crop.** Two new files, pure XML per the spec's own
+"no C#" call:
+
+- `RUT_Plant_Wick.xml` (ThingDefs_Plants/): `RUT_Plant_Wick`,
+  `ParentName="PlantBaseNonEdible"`. `growMinGlow 0` / `growOptimalGlow 1`
+  (explicit, matching rather than overriding the default) applies the spike
+  pass's own S5 finding directly: `GrowthRateFactorFor_Light` is
+  `InverseLerp(growMinGlow, growOptimalGlow, glow)`, CLAMPED — "no floor,
+  linear ramp to optimal," not "grows regardless of light" — so growth is
+  proportional to whatever ambient glow the permanent-dusk biome (plus any
+  station lamp) actually provides, never magically full-rate in true
+  darkness.
+  - **Terrain restriction, engine-mapped this pass** (the spec's own
+    "restricted by terrain affordance to tar-margin terrain grades" clause
+    had no concrete field named): `PlantProperties` has no
+    `terrainAffordanceNeeded`-style field — that field exists on `ThingDef`
+    generally, but `GenConstruct.cs` only ever reads it for
+    `ThingCategory.Building` (confirmed against the live decompile, not
+    assumed). The real vanilla mechanism for restricting a sown/wild plant
+    to specific terrain is `PlantUtility.CanEverPlantAt`'s `wildTerrainTags`
+    overlap check against `terrain.tags` — the SAME function gates both wild
+    spread and player sowing. `RM_TarShallow`/`RM_TarDeep`
+    (`LIQUID_TYPES_MOD_1`'s own generated `RM_Tar.xml`, read not edited this
+    pass) both carry the vanilla `Water` tag inherited from `WaterBase`, and
+    no other terrain the Sump biome can generate carries it (ban #4) — so
+    `wildTerrainTags: [Water]` is, in the Sump's own context, exactly "the
+    tar grades." `completelyIgnoreFertility true` is required alongside it:
+    `WaterBase` itself sets `fertility 0` (confirmed against the live
+    install), which would otherwise refuse the plant outright regardless of
+    the terrain-tag match — and is thematically correct besides, since a
+    chemotroph "feeding directly on the tar's energy rather than the sun"
+    has no business being fertility-gated by soil chemistry. Sowing inside a
+    `Building_PlantGrower` (station hydroponics-style planter) bypasses the
+    terrain-tag check entirely, per the same function — consistent with
+    "grown in station gardens."
+  - `minGrowthTemperature -8`: the spec's own INVENTED value verbatim.
+  - Texture reused from vanilla (`Things/Plant/Ambrosia`, confirmed real
+    path) as a placeholder — same practice as this mod's own
+    `RUT_TwinkleSpikeTestPlant.xml`; art pass owed.
+  - `growDays`/`harvestYield`/`harvestWork`/`sowWork`/`statBases`: this
+    pass's own INVENTED-BUILD values, not named by the spec beyond
+    `growMinGlow`/`growMinTemp`.
+- `RUT_WickStem.xml` (ThingDefs_Items/): `RUT_Plant_Wick`'s harvest,
+  `ParentName="ResourceBase"`. Plain resource good, no comps — confirmed
+  against `Chemfuel`'s own def that `CompRefuelable` fuel-filter eligibility
+  needs nothing on the fuel ITEM itself, only on the fuel-consuming
+  building's own `fuelFilter` (not built this pass — the derrick-lamp/torch
+  building is items-pass content). `MarketValue 1.5` is an EXPLICIT INVENTED
+  PLACEHOLDER, not a pricing call — the kit spec is explicit "items pass
+  owns pricing"; left non-zero only so the def is legally tradeable rather
+  than defaulting to worthless. Texture reused from vanilla
+  (`Things/Item/Resource/WoodLog`, confirmed real path) as a stick/stem
+  placeholder.
+
+**Validation.**
+`python3 skills/rimworld-modding/scripts/validate_patch.py` on all 6
+touched/added files, `--defs` against the live Data + Mods + Workshop roots
+(589 active mods, 8,680 def files scanned): **0 real errors, 0 real
+warnings** —
+- `RUT_SumpWeather.xml`, `RUT_Plant_Wick.xml`: clean, 0/0.
+- `RUT_SumpDuskLock.xml`, `RUT_Sump.xml`: an info-level "no def in the load
+  set uses that class" note for each own new modExtension/conditionClass
+  reference — expected (the assembly ships these classes; both were read in
+  full this pass and confirmed public, correctly namespaced).
+- `RUT_SumpDuskLock_BiomeWiring.xml`: 1 WARN, "not wrapped in
+  PatchOperationConditional/FindMod" — a KNOWN, ALREADY-DOCUMENTED
+  `validate_patch.py` false positive (`XML_PATCH_VALIDATION_SWEEP_1.md`'s
+  own recorded follow-up: "a MayRequire-only guard is never recognized"),
+  not a defect; matches `RUT_ScaldSteamLock_BiomeWiring.xml`'s own identical
+  pattern.
+- `RUT_WickStem.xml`: 1 ERROR on the `WoodLog` texPath — a SECOND
+  already-documented `validate_patch.py` blind spot from the same sweep
+  item: vanilla ships its art packed inside Unity asset bundles with no
+  loose `Textures/` folder to scan, so a directory-scanning validator can
+  never resolve a genuinely-real vanilla texPath. Confirmed directly this
+  pass (no loose file exists under Core's `Textures/Things/Item/Resource/`
+  for `WoodLog` either) — same class of false positive already recorded for
+  21 other vanilla texPaths in that sweep, not a new problem.
+
+No new/changed C# — build not re-run this pass (nothing to rebuild).
+
+**Not done this pass, honestly**: S1 (poured moat — blocked on
+`LIQUID_TYPES_MOD_1` grade names, not this pass's scope), S2 (already
+built), S3 (tar beast — blocked on the missing shared scatterer), S4
+(mouse-lines — blocked on S3), the derrick-lamp/torch building that would
+actually consume `RUT_WickStem` as fuel (items pass), any real
+`MarketValue`/economy pricing for `RUT_WickStem` (items pass, explicitly
+disclaimed above), any new art for either plant or item, and the live
+glow-multiplier calibration check (flagged above, out of this pass's
+no-bridge scope). Item stays in `doing`.
+
+## files (S6/S5 build pass)
+
+- `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_SumpWeather.xml` (new, S6)
+- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SumpDuskLock.xml` (new, S6)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_SumpDuskLock_BiomeWiring.xml` (new, S6)
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` (edited: `modExtensions`, S6)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Plant_Wick.xml` (new, S5)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml` (new, S5)

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_SumpDuskLock.xml                   UtinniPatches · SUMP_MECHANICS_1 (S6)
+  ============================================================================
+  sump_kit_spec.md S6 "the lock": "reuse ruled RM_GameCondition_
+  EnvironmentalWeather as a permanent biomeMapConditions entry  — forced
+  RUT_SumpWeather... never vanilla's rain-capable rotation." Attached to
+  RUT_Sump via Patches/RUT_SumpDuskLock_BiomeWiring.xml (same pass), not a
+  direct edit to RUT_Sump.xml's own biomeMapConditions  — this Def only
+  exists when mandrake.rm.environmentalhazards is active (whole-Def
+  MayRequire, matching RUT_ScaldSteamLock.xml / RUT_MiasmaWeatherLock.xml's
+  own precedent, this same folder), so a bare <li> baked directly into the
+  always-loaded BiomeDef would be a dangling cross-reference the moment that
+  mod is absent. BiomeConditionMapComponent.MapGenerated() ->
+  GameConditionMaker.MakeConditionPermanent(...) is what actually makes a
+  biomeMapConditions entry run forever (Verse/RimWorld/
+  BiomeConditionMapComponent.cs:12-22, confirmed against the live 1.6
+  decompile this pass)  — no extra field on this Def does that job.
+
+  No damageDef/hediffToApply/carrierHediff and no density factors: unlike
+  Miasma's own lock (which bootstraps a hediff carrier and a plant-growth
+  bonus), the sheet gives the Sump's dusk itself no damage or growth effect
+   — only the weather override. The Sump's own animalDensity/plantDensity
+  figures already live on the BiomeDef (RUT_Sump.xml, BIOME_OWNERSHIP_WAVE_1),
+  and "the light" (darkness, not the weather) is the SEPARATE
+  BiomeGlowMultiplierExtension wired directly onto RUT_Sump.xml's own
+  modExtensions in this same pass  — this Def does not touch glow at all.
+
+  allowUnderground false: a surface weather-lock has no business reaching the
+  bumbledrone hives beneath the tar (the_sump.md §0's "subterranean...
+  colonies tunneling beneath the insulating tar")  — matches
+  RUT_MiasmaWeatherLock.xml's own choice for the same reasoning, not
+  RUT_ScaldSteamLock.xml's (that biome's steam genuinely reaches its own
+  underground spaces).
+
+  MayRequire is load-bearing: conditionClass and the modExtension both live
+  in mandrake.rm.environmentalhazards.
+
+  ❓ owed, out of this pass's no-bridge scope (per the kit spec's own build
+  order and this task's instructions): the live glow-multiplier calibration
+  check. This Def's own contribution  — the weather lock itself  — needs no
+  live check; GameCondition.ForcedWeather() is read and confirmed
+  unconditional (GameCondition_EnvironmentalWeather.cs:198-202).
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_SumpDuskLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>permanent dusk</label>
+    <description>The Sump never sees full day or full dark. The sun sits just below the horizon, forever, and it does not rain.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <forcedWeather>RUT_SumpWeather</forcedWeather>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

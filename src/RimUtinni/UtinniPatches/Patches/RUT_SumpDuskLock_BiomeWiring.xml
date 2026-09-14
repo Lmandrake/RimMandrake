@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_SumpDuskLock_BiomeWiring.xml       UtinniPatches · SUMP_MECHANICS_1 (S6)
+  ============================================================================
+  Wires the permanent dusk lock (Defs/GameConditionDefs/RUT_SumpDuskLock.xml)
+  onto RUT_Sump as a PATCH rather than a direct edit to RUT_Sump.xml's own
+  biomeMapConditions field  — RUT_SumpDuskLock only exists when
+  mandrake.rm.environmentalhazards is active (MayRequire-gated Def), so a
+  bare <li> baked directly into the always-loaded BiomeDef would be a
+  dangling cross-reference the moment that mod is absent. MayRequire on the
+  Operation itself makes this patch a true no-op (not merely a silently-false
+  match) when the mod is missing. Exact precedent:
+  RUT_ScaldSteamLock_BiomeWiring.xml, this same folder, same pass window.
+
+  RUT_Sump.xml carries no <biomeMapConditions> node at all today (only
+  wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so this
+  adds the whole element rather than appending an <li> to an existing one.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/BiomeDef[defName="RUT_Sump"]</xpath>
+    <value>
+      <biomeMapConditions>
+        <li>RUT_SumpDuskLock</li>
+      </biomeMapConditions>
+    </value>
+  </Operation>
+
+</Patch>
