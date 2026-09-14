@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T02:54:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-14T04:16:37Z (the last event's own timestamp, not the render clock)
+game:  GOING_DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1 ShowMeYourHands DrawHandsOnWeapon patch emits invalid IL into ModularWeapons2 type-init: PawnGenerator crashes, ANY new map on the current list dies at starting-pawn gen (quicktest map-gen error modal, Player.log 12297-12409, 2026-09-13)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  SMYHMODULARWEAPONSPAWNGENCRASH1 — Show Me Your Hands × ModularWeapons2 kills pawn generation
-prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
 
 ## BACTA_PAWNINTANK_RECON_1 Find and evaluate the visible-pawn-in-tank rendering technique: locate BioReactor mod source (workshop id/GitHub; not installed locally), read how it composites the pawn into the tank graphic, report the classes/approach and license; fallback techniques if unusable
 state:    ready
@@ -212,7 +203,7 @@ prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is GOING_DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
 state:    ready
@@ -220,7 +211,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is GOING_DOWN
 summary:  (no items/PYRELANDS_FAUNA_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
@@ -230,7 +221,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is GOING_DOWN
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 

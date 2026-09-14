@@ -8371,3 +8371,25 @@
 {"seat":"BENCH","event":"bridge","state":"released","override":"released the bridge out from under FOUNDRY","ts":"2026-09-14T02:52:36Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-14T02:54:13Z"}
 {"seat":"FOUNDRY","event":"note","id":"ARMOURY_MW2_CUT_1","text":"Cold load triggered 2026-09-14T02:54:19Z via Steam relaunch (bridge confirmed no_game/main-menu beforehand, so no active session was killed). Expect ~15-25min. Bridge released so next session can take it fresh. Next session: poll Player.log for 'Bridge token:', check 0 TypeInitializationException for ModularWeapons2 and 0 red errors for guy762_* weapons, spawn a pawn holding guy762_brifle/guy762_vblade to confirm render+fire, then resave canonical (back up Saves first, stat after).","ts":"2026-09-14T02:54:19Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-14T03:09:51Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ARMOURY_MW2_CUT_1 step 8: cold-load verify","ts":"2026-09-14T03:10:27Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"wake agent foundry and continue any and all progress towards fully removing MW2 and restoring show me your hands","ts":"2026-09-14T03:15:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-14T03:17:04Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"wake agent foundry and continue any and all progress towards fully removing MW2 and restoring show me your hands; game is going down for a restart to pick up the deploy fix","ts":"2026-09-14T03:17:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SELFTEST_GIT_FIXTURE_TEMPLATE_1","ts":"2026-09-14T03:23:12Z"}
+{"seat":"FOUNDRY","event":"start","id":"SELFTEST_GIT_FIXTURE_TEMPLATE_1","ts":"2026-09-14T03:23:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MIGRATE_NAMES_BATCH_MV_1","ts":"2026-09-14T03:29:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"MIGRATE_NAMES_BATCH_MV_1","ts":"2026-09-14T03:29:36Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CODE_REVIEW_STATUS_MIGRATE_BATCH_1","ts":"2026-09-14T03:29:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"CODE_REVIEW_STATUS_MIGRATE_BATCH_1","ts":"2026-09-14T03:29:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_GIT_FIXTURE_TEMPLATE_1","sha":"1be034673efcbaffa406e2b1539fb85533659cb4","ts":"2026-09-14T03:30:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"MIGRATE_NAMES_BATCH_MV_1","sha":"1be034673efcbaffa406e2b1539fb85533659cb4","ts":"2026-09-14T03:30:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"CODE_REVIEW_STATUS_MIGRATE_BATCH_1","sha":"1be034673efcbaffa406e2b1539fb85533659cb4","ts":"2026-09-14T03:30:09Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-14T03:31:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ARMOURY_MW2_CUT_1 step 8: cold-load verify","ts":"2026-09-14T03:41:10Z"}
+{"seat":"FOUNDRY","event":"close","id":"ARMOURY_MW2_CUT_1","sha":"e3be87450a9642e3b66cabd669945e9077fbf57a","ts":"2026-09-14T04:13:09Z"}
+{"seat":"FOUNDRY","event":"file","id":"CORRECT_SMYH_MODULARWEAPONS_1","title":"SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1's verify criteria are already satisfied — close it","kind":"task","target":"v1","caused_by":"SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1","for":"BENCH","ts":"2026-09-14T04:13:32Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-14T04:14:14Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-14T04:14:15Z"}
+{"seat":"OWNER","event":"close","id":"SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1","sha":"85186a9acd913fa8491631b429aa3f8f8fb6bcae","ownerSaid":"No, I authorize you to close SMYH issues right now.","override":"OWNER may not `close` SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1 — it belongs to BENCH. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-14T04:16:31Z"}
+{"seat":"OWNER","event":"close","id":"CORRECT_SMYH_MODULARWEAPONS_1","sha":"85186a9acd913fa8491631b429aa3f8f8fb6bcae","ownerSaid":"No, I authorize you to close SMYH issues right now.","override":"OWNER may not `close` CORRECT_SMYH_MODULARWEAPONS_1 — it belongs to BENCH. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-14T04:16:37Z"}
