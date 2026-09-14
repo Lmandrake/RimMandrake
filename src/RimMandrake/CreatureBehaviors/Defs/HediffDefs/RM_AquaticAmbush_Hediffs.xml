@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_AquaticAmbush_Hediffs.xml       CreatureBehaviors - GREENTIDE_MECHANICS_2 M7
+
+  Granted/removed by RM_CompAquaticAmbusher — see that class's own header
+  (greentide_kit_spec.md M7, "Lunger ambush"). Generic RM_-tier mechanism
+  defs, not Greentide-hardcoded: any future aquatic ambush creature's own
+  CompProperties_AquaticAmbusher can point at these same two hediffs, or
+  author its own.
+
+  RM_AquaticAmbushInvisibility carries stock Verse.HediffComp_Invisibility
+  (HediffCompProperties_Invisibility, vanilla — the Revenant/Sightstealer
+  machinery, confirmed via decompile: its own comp's UpdateTarget calls
+  ModLister.CheckRoyaltyOrAnomaly, so this hediff is Anomaly-or-Royalty
+  gated per the spec's own explicit note). visibleToPlayer=false: the spec's
+  own "literally invisible until the lunge" is a player-facing effect, not
+  just an AI-targeting one.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_AquaticAmbushInvisibility</defName>
+    <label>submerged</label>
+    <description>Submerged and hidden beneath the water, invisible to anything that hasn't come within striking range.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>30</fadeDurationTicks> <!-- INVENTED, a snappy submerge/surface -->
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks> <!-- INVENTED, ~5s forced-visible after taking damage -->
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <!-- Granted by RM_CompAquaticAmbusher.TriggerLunge for the opener's
+       approach (RM_JobDriver_LungeAttack does not itself manage this —
+       the comp applies it once at lunge start, and it self-clears via its
+       own Disappears comp, same idiom RUT_DryAirAversion.xml already
+       established in this repo). Optional per CompProperties_
+       AquaticAmbusher.lungeSpeedHediff — a kind's XML can point at null to
+       skip the speed burst entirely. -->
+  <HediffDef>
+    <defName>RM_LungeSpeedBurst</defName>
+    <label>lunging</label>
+    <description>A burst of speed as it closes for the strike.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>240</disappearsAfterTicks> <!-- INVENTED, ~4s — long enough to close 5 cells at the boosted speed below -->
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statOffsets>
+          <MoveSpeed>2.5</MoveSpeed> <!-- INVENTED -->
+        </statOffsets>
+      </li>
+    </stages>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

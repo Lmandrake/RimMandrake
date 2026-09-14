@@ -65,6 +65,9 @@
     <Compile Include="RM_MapComponent_SenseWeb.cs" />
     <Compile Include="RM_FrontCreepExtension.cs" />
     <Compile Include="RM_MapComponent_FrontCreep.cs" />
+    <Compile Include="CompProperties_AquaticAmbusher.cs" />
+    <Compile Include="RM_CompAquaticAmbusher.cs" />
+    <Compile Include="RM_JobDriver_LungeAttack.cs" />
   </ItemGroup>
 
   <ItemGroup>

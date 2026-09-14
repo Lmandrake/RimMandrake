@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Placeholder_GreentideLunger.xml   UtinniPatches — GREENTIDE_MECHANICS_2 M7
+
+  PLACEHOLDER PawnKindDef for RUT_Placeholder_GreentideLungerRace
+  (ThingDefs_Races/, this same pass) — see that file's own header.
+  ParentName="AnimalKindBase", NOT ParentName="Alligator" — same Name=
+  attribute trap that file's own header records (validate_patch.py caught
+  it live); lifeStages/combatPower/ecoSystemWeight/moveSpeedFactorByTerrainTag
+  copied down directly from the real Alligator PawnKindDef (RimSage
+  get_def_details) instead, reusing its own real texPath/swimmingGraphicData
+  wholesale — no recolor, unlike M6's Gnawer placeholder, since Alligator
+  already reads as the right creature for this ambush.
+
+  NOT added to RM_Greentide's own wildAnimals list and not wired into any
+  GenStep — this pass's own scope is proving RM_CompAquaticAmbusher /
+  RM_JobDriver_LungeAttack compile and are reachable, not populating the
+  Greentide biome with live wildlife (same "compiles now, first live spawn
+  later" posture RUT_Placeholder_GreentideGnawer's own header used).
+
+  §6.6's "no safe standing water" (spawn-density rule, not code, per the
+  build brief): a real roster pass would set this placeholder's own
+  ecoSystemWeight high enough on deep-water cells that no stretch of deep
+  water reads as safe to cross — INVENTED reference figure, recorded here
+  rather than silently dropped: ecoSystemWeight 1.2-1.5 (vs. vanilla
+  Alligator's own 0.5, copied below unchanged) once actually added to a
+  biome's wildAnimals list. Left at the copied vanilla value on this
+  placeholder itself, since it is deliberately not wired into any biome
+  this pass.
+-->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Placeholder_GreentideLunger</defName>
+    <label>lunger (placeholder)</label>
+    <race>RUT_Placeholder_GreentideLungerRace</race>
+    <combatPower>120</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/SwimmingAlligator</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/SwimmingAlligator</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/Dessicated_Alligator</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/Alligator/SwimmingAlligator</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+  </PawnKindDef>
+
+</Defs>

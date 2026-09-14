@@ -855,3 +855,177 @@ every prior build pass in this item.
 - No duplicate defs against what `FORGE_MECHANICS_1` and
   `GREENTIDE_STANDALONE_MOD_1` already shipped — enforced by this pass's own
   spec reconciliation, to be checked again at the next build pass.
+
+## M3/M7 build pass — 2026-09-14
+
+M3's remainder (the steam devil vortex — the Scald damage-type trio stays
+FORGE_MECHANICS_1's, not re-shipped) and M7 (Lunger ambush) in full, per
+`greentide_kit_spec.md`. Concurrent with another window's M4/M5 pass
+(`6f7f5ff61`, landed mid-way through this one) — different files, no
+collision on the source it touched; the shared `RM_EnvironmentalHazards.csproj`
+and `RM_EnvironmentalHazardsMod.cs` were both mid-edit by that window at the
+same time and got clobbered back to pre-my-edit state once (csproj) — caught
+by a stale-file notification, re-applied on top of the current disk content
+rather than reverting theirs.
+
+**M3 — the steam devil.** `RUT_SteamDevil` ThingDef (`ParentName=
+"EtherealThingBase"`, category Ethereal/no hit points — def shape cribbed
+from the real vanilla Tornado def, read directly off the live install's
+`Data/Core/Defs/ThingDefs_Misc/Ethereal_Various.xml`) + new
+`RM_WanderingVortex : ThingWithComps`
+(`src/RimMandrake/EnvironmentalHazards/Source/`), structurally cribbed from
+`Source/RimWorld/Tornado.cs` (read in full) and reimplemented in this
+repo's own words: a bounded-drift wander (plain `Rand.Range` heading nudge
+on a fixed interval, not Tornado's own private-static Perlin field — a
+documented, deliberate simplification), a close-radius damage sweep on an
+interval, a rare far hit, and a lifetime countdown to dissipation.
+Parameterized via new `RM_WanderingVortexExtension` (DefModExtension):
+`damageDef` points at the already-shipped `RUT_Scald`; wander speed,
+lifetime, both damage radii/intervals, damage amount range and armor
+penetration are all **INVENTED** (recorded in that class's own field
+comments — no figures named in the spec's own text for any of them).
+Fells trees it crosses via `RM_TreeFallUtility.FellTree` (M6's shared
+routine, unmodified except one additive change: a new
+`FallCause.WindThrown` enum value, since none of the three existing causes
+fit and `FellTree` doesn't branch on the value today) —
+**INVENTED** per the spec's own explicit rule: a giant-tagged tree only
+falls below `giantTreeFellHealthFraction` (0.5) of its max HP, a non-giant
+or untagged tree falls unconditionally once in the swath.
+
+Spawned by `RUT_SteamDevilAppears` IncidentDef (new
+`RUT_IncidentWorker_SteamDevil`, weighted into `RM_Greentide` only,
+**INVENTED** baseChance 2 / minRefireDays 5). The Roil-condition rare-spawn
+hook (spec: "and, rarely, by the Roil condition itself") is **NOT wired**
+— checked before build: `RUT_RoilLock.xml`/`RUT_RoilWeather.xml` existed on
+disk but uncommitted at check time, another window's own M4/M5 pass still
+in flight, so M4 counted as not-yet-landed per the build brief's own
+explicit fallback for this exact race ("if M4 hasn't landed yet when you
+check, wire the plain IncidentDef route only... don't wait on it"). M4 has
+since landed and committed (`6f7f5ff61`) — re-checked after the fact,
+purely for this note: `RUT_RoilLock`'s `conditionClass` is the shared,
+already-ruled `GameCondition_EnvironmentalWeather` (also the Wet Bulb/
+Scald Steam/Miasma locks' own conditionClass), which has no per-tick
+arbitrary-Thing-spawn hook at all — wiring a rare vortex spawn into it
+would mean extending a widely-reused shared class, not a small addition,
+so it stays owed rather than retrofitted under this pass.
+
+**Self-review** (build brief's own instruction — this directly damages
+pawns/structures/trees): `DamageCloseThings`/`DamageFarThing`/`FellTreesNearby`
+all snapshot their own cell's Thing list before iterating (same defensive
+shape `RM_TreeFallUtility.DamageCell`/`HediffComp_PeriodicAreaAttack.DamageCell`
+already use), so a Thing destroyed mid-sweep cannot corrupt the loop.
+`CellImmuneToDamage` excludes natural rock and un-owned (Faction-null)
+walls exactly like Tornado's own exclusion — a colonist's OWN built wall
+IS hit, the spec's own intent. One real catch this review found and fixed
+before shipping: the ThingDef initially cribbed Tornado's `drawerType
+RealtimeOnly` without cribbing its ~180-line custom `DrawAt` mesh code —
+with no `graphicData` and no draw override, that combination risked an
+engine draw call against a null `Graphic` every frame. Fixed by leaving
+`drawerType` at `EtherealThingBase`'s own inherited `None` — the vortex is
+now represented only by its own `FleckMaker.ThrowSmoke` column, no drawn
+sprite. Flagged, not silently accepted: this means the spec's own "visible
+from far off" is **not actually met** by flecks alone (they render only
+near the vortex's current cell) — real custom draw code, or at minimum
+`graphicData` once art exists, is owed to a later rendering pass.
+
+**M7 — Lunger ambush.** New `RM_CompAquaticAmbusher : ThingComp` +
+`CompProperties_AquaticAmbusher` (`src/RimMandrake/CreatureBehaviors/Source/`,
+generic RM_-tier — any future aquatic ambush creature can reuse it, not
+Greentide-hardcoded). Reads "no melee target" / "target acquired" as one
+operation: while the carrying pawn stands on deep water (**INVENTED**
+reading of "deep water" — the three vanilla-named DEEP water TerrainDefOf
+entries: `WaterDeep`/`WaterOceanDeep`/`WaterMovingChestDeep`, distinct from
+their Shallow counterparts) with no hostile pawn within `lungeRangeCells`
+(5, spec's own figure), it grants `RM_AquaticAmbushInvisibility` (stock
+`HediffComp_Invisibility`, the Revenant/Sightstealer machinery, per the
+spec's own "reuse vanilla invisibility wholesale"); a hostile pawn found
+within range removes that hediff (`BecomeVisible(instant: true)` then
+`RemoveHediff`, an intentionally sudden reveal — an ambush snapping visible
+reads right, not a graceful fade) and force-starts `RM_LungeAttack`
+(new JobDef, driven by new `RM_JobDriver_LungeAttack`): a fast approach
+(an optional short `RM_LungeSpeedBurst` self-expiring MoveSpeed hediff,
+**INVENTED** +2.5 c/s for 240 ticks) ending in ONE manually-dealt
+`DamageDefOf.Bite` hit at `baseLungeDamageRange` (**INVENTED**, 12-20)
+`× firstStrikeDamageMultiplier` (1.5, spec's own figure). The opener is
+dealt via direct `TakeDamage`, not the pawn's normal melee-verb pipeline —
+deliberately, to avoid a Harmony patch on `Verb_MeleeAttackDamage`'s own
+private damage-resolution method for what the spec itself frames as
+"a small comp"; ongoing combat after the opener is 100% vanilla predator
+ThinkTree, exactly the spec's own stated boundary. Self-review catch: the
+comp now also treats a `Downed` pawn as a no-op (vanilla's own
+`HediffComp_Invisibility.ForcedVisible` already forces a downed pawn
+visible regardless, but nothing previously stopped a fresh lunge job from
+being force-started on one).
+
+**DLC-gate finding**: `HediffComp_Invisibility`'s own `UpdateTarget` calls
+`ModLister.CheckRoyaltyOrAnomaly` — confirmed via decompile, matches the
+spec's own note. Checked against the owner's live `ModsConfig.xml`
+(`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon
+Studios\Config\ModsConfig.xml`) this pass: both `ludeon.rimworld.royalty`
+and `ludeon.rimworld.anomaly` are active — the gate is satisfied on the
+owner's own install, nothing here would silently fail to compile or work
+for him.
+
+**Placeholder finding**: the spec's M7 section never states outright
+whether the Lunger PawnKindDef is roster content (unlike some sibling kit
+pieces, which say so explicitly) — read as ambiguous, so treated the same
+as every other kit's creature-content boundary this session. Vanilla Core
+`Alligator` (predator, water-seeker, real swimming graphic — confirmed via
+RimSage) is aquatic-ambush-shaped enough to need **no art recolor at all**,
+unlike M6's Gnawer placeholder (a tinted Squirrel). New
+`RUT_Placeholder_GreentideLungerRace`/`RUT_Placeholder_GreentideLunger`
+(ThingDef+PawnKindDef, `UtinniPatches/`) copy Alligator's own real
+statBases/tools/race/lifeStages/graphics fields down directly —
+`ParentName="Alligator"` does **not** work (`validate_patch.py` caught it
+live: Alligator carries no `Name="..."` attribute, the same trap the
+Gnawer placeholder's own header already recorded for Squirrel) — and add
+only the one new comp. Neither def is added to `RM_Greentide`'s own
+`wildAnimals` list or any GenStep, same "compiles now, first live spawn
+later" posture as every prior placeholder this item shipped. §6.6's "no
+safe standing water" spawn-density rule: **INVENTED** reference figure
+recorded in the PawnKindDef's own header (ecoSystemWeight 1.2-1.5 vs.
+vanilla's 0.5, once a real roster pass actually wires this into a biome) —
+not set on the placeholder itself, since it is deliberately unwired.
+
+**Build/validate.** Both assemblies rebuilt, 0 warnings/0 errors
+(`RimMandrake.EnvironmentalHazards.dll`: 3 new `<Compile>` entries plus one
+additive enum value in `RM_TreeFallUtility.cs`;
+`RimMandrake.CreatureBehaviors.dll`: 3 new `<Compile>` entries).
+`validate_patch.py` against the live 99-active-mod installed set: 0 errors
+on all 7 new/changed def files (the usual info-line for a brand-new C#
+class no def yet resolves against by name across the load set, and the
+usual "cannot verify a packed vanilla texture" WARNs on the Alligator-reuse
+texPaths — both the same expected shape every prior placeholder in this
+repo produces).
+
+**Owed.** The Roil rare-spawn hook for M3 (see above — needs the shared
+`GameCondition_EnvironmentalWeather` class extended, or a side
+`MapComponent`, not a small addition); real custom draw/art for the steam
+devil (currently flecks-only, does not meet "visible from far off"); real
+bespoke art for the Lunger placeholder pair; the real Lunger roster content
+(placeholder explicitly out of scope); no bridge/quicktest verification (no
+game access in this task, same posture as every build pass in this item).
+
+## files (M3/M7 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortexExtension.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortex.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs` (additive `FallCause.WindThrown` enum value)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle, #24 `steamDevilEnabled`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (3 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Misc/RUT_SteamDevil.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_SteamDevilAppears.xml` (new)
+- `src/RimUtinni/UtinniPatches/Languages/English/Keyed/RUT_Greentide_SteamDevil.xml` (new)
+- `src/RimMandrake/CreatureBehaviors/Source/CompProperties_AquaticAmbusher.cs` (new)
+- `src/RimMandrake/CreatureBehaviors/Source/RM_CompAquaticAmbusher.cs` (new)
+- `src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_LungeAttack.cs` (new)
+- `src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs` (1 new JobDef entry)
+- `src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs` (1 new settings toggle, #11 `aquaticAmbushEnabled`)
+- `src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj` (3 new `<Compile>` entries)
+- `src/RimMandrake/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml` (new `RM_LungeAttack` JobDef)
+- `src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_AquaticAmbush_Hediffs.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_GreentideLungerRace.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_GreentideLunger.xml` (new)
