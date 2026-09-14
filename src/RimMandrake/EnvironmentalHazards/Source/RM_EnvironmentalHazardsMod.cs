@@ -47,6 +47,14 @@ namespace RimMandrake.EnvironmentalHazards
     //   9. hazardDamageMultiplier — global scalar on every damage/severity
     //      amount the mechanisms above deal (never on cadence, radius or
     //      chance — those stay whatever the def author tuned).
+    //  10. weatherPulseEnabled — RM_GameCondition_WeatherPulse /
+    //      RUT_Plant_FlashFlora (FORGE_MECHANICS_1 F1). Off: the condition
+    //      stops rolling for a new burst and stays on its calm base
+    //      weather permanently (a burst already in progress finishes
+    //      rather than snapping off under a pawn's feet); flash-growth
+    //      plants stop reading the burst window and grow at their normal
+    //      (unmultiplied) rate instead of being stuck at the "outside
+    //      window" penalty forever.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -59,6 +67,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool targetedHediffAbilityEnabled = true;
         public static bool biomeGlowMultiplierEnabled = true;
         public static float hazardDamageMultiplier = 1f;
+        public static bool weatherPulseEnabled = true;
 
         public override void ExposeData()
         {
@@ -72,6 +81,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref targetedHediffAbilityEnabled, "targetedHediffAbilityEnabled", true);
             Scribe_Values.Look(ref biomeGlowMultiplierEnabled, "biomeGlowMultiplierEnabled", true);
             Scribe_Values.Look(ref hazardDamageMultiplier, "hazardDamageMultiplier", 1f);
+            Scribe_Values.Look(ref weatherPulseEnabled, "weatherPulseEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -102,6 +112,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built to run darker than usual (WORLDGEN-AFFECTING for anything that reads "
               + "sunlight over time, but applies to existing maps too since it reads live sun glow) "
               + "reads normal daylight instead.");
+            list.CheckboxLabeled("Weather-pulse bursts and flash growth", ref weatherPulseEnabled,
+                "A biome built to pulse between calm weather and a violent scalding burst stops "
+              + "bursting and stays calm; flash-growth plants stop surging in the burst window and "
+              + "grow at their normal rate instead.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

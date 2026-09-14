@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_BoilingRain.xml                    UtinniPatches - FORGE_MECHANICS_1 F1
+
+  forge_kit_spec.md F1 ("The lock + the pulse" / "The scald"): "on MTB...
+  switches its forced weather to RUT_BoilingRain for a short burst...
+  WeatherDef.rainRate is a native field - the burst renders as real
+  driving rain." Only ever reached via RUT_ForgePulse's own
+  RM_GameCondition_WeatherPulse.ForcedWeather() while a burst is running
+  (RUT_TheForge.xml's baseWeatherCommonalities does not list it either) -
+  never a natural-rotation pick, matching ban #6.
+
+  rainRate 1 (matches vanilla RainyThunderstorm's own value - real, dense,
+  visible rain, not a drizzle). The scald damage itself is NOT this def's
+  job (WeatherDef carries no damage fields at all in the live decompile) -
+  it is RUT_ForgePulse's WeatherPulseExtension.scaldDamageDef, ticking
+  independently of which weather is currently drawn. moveSpeedMultiplier/
+  accuracyMultiplier mirror RainyThunderstorm's own figures (a real storm
+  you'd rather not be caught in) rather than a milder rain, since being
+  caught in this one is meant to hurt (owner card 2: "boiling rain is
+  survivable once... never instant death from one burst" - the mechanic
+  living in the damage cadence/gear gate, not the movement penalty).
+-->
+<Defs>
+
+  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_BoilingRain</defName>
+    <label>boiling rain</label>
+    <isBad>true</isBad>
+    <description>A sudden, violent downpour of scalding rain, flashing back to steam off the hot rock within seconds of falling. Scalds anyone caught in the open.</description>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <favorability>Bad</favorability>
+    <perceivePriority>3</perceivePriority>
+    <weatherThought>SoakingWet</weatherThought>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <rainRate>1</rainRate>
+    <snowRate>0</snowRate>
+    <moveSpeedMultiplier>0.8</moveSpeedMultiplier>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.55,0.42,0.40)</sky>
+      <shadow>(0.85,0.72,0.70)</shadow>
+      <overlay>(0.45,0.36,0.34)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.48,0.34,0.32)</sky>
+      <shadow>(0.85,0.68,0.66)</shadow>
+      <overlay>(0.42,0.32,0.30)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.26,0.18,0.17)</sky>
+      <shadow>(0.75,0.58,0.56)</shadow>
+      <overlay>(0.38,0.28,0.27)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.16,0.11,0.10)</sky>
+      <shadow>(0.7,0.5,0.48)</shadow>
+      <overlay>(0.38,0.26,0.25)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

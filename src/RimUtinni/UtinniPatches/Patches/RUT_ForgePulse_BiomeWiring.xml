@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ForgePulse_BiomeWiring.xml         UtinniPatches - FORGE_MECHANICS_1 F1
+
+  Wires the permanent weather pulse (Defs/GameConditionDefs/
+  RUT_ForgePulse.xml) onto RUT_TheForge as a PATCH rather than a direct
+  edit to RUT_TheForge.xml's own biomeMapConditions field -
+  RUT_ForgePulse only exists when mandrake.rm.environmentalhazards is
+  active (MayRequire-gated def), so a bare <li> baked directly into the
+  BiomeDef would be a dangling cross-reference the moment that mod is
+  absent. MayRequire on the Operation itself makes this patch a true
+  no-op (not merely a silently-false match) when the mod is missing.
+  Same pattern SCALD_MECHANICS_1's RUT_ScaldSteamLock_BiomeWiring.xml
+  already established for this exact file family.
+
+  RUT_TheForge.xml carries no <biomeMapConditions> node at all today (only
+  wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so
+  this adds the whole element rather than appending an <li> to an existing
+  one. RUT_TheForge.xml's own baseWeatherCommonalities (AB_VolcanicAsh/
+  AB_VolcanicAshRain/RSW_SW_RedFog/Clear) is left untouched by this patch:
+  once this condition registers, GameCondition.ForcedWeather() overrides
+  natural weather selection unconditionally for as long as the condition
+  runs (permanent, per BiomeConditionMapComponent), so those commonality
+  entries go structurally unreachable rather than wrong - editing that
+  table is biome-authoring judgment outside this build pass's scope, not
+  touched here.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+    <value>
+      <biomeMapConditions>
+        <li>RUT_ForgePulse</li>
+      </biomeMapConditions>
+    </value>
+  </Operation>
+
+</Patch>

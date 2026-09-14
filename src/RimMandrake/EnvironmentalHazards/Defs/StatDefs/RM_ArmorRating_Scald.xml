@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ArmorRating_Scald.xml               EnvironmentalHazards - FORGE_MECHANICS_1 F1
+
+  The armor StatDef RM_ScaldArmor.xml points at. ParentName="ArmorRatingBase"
+  cribs vanilla ArmorRating_Sharp/Blunt/Heat's own shared base (verified via
+  RimSage this pass: category Apparel, defaultBaseValue 0, minValue 0,
+  maxValue 2, toStringStyle PercentOne, hideAtValue 0 all live on the
+  abstract vanilla def and are inherited unedited here) - only the
+  quality-scaling StatPart is repeated (every vanilla armor stat carries
+  it) since apparel quality should scale this stat the same way it scales
+  every other armor rating.
+
+  No StatPart_Stuff entry (unlike vanilla's own three siblings, which each
+  reference a StuffPower_Armor_* stat): no vendored Stuff in this repo
+  grants scald resistance, so there is nothing for a material to
+  contribute - apparel grants this stat via a flat <statBases> entry on
+  the garment itself (the wet-kit gear item pass owns the concrete
+  numbers, not this file).
+-->
+<Defs>
+
+  <StatDef ParentName="ArmorRatingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_ArmorRating_Scald</defName>
+    <label>armor - scald</label>
+    <labelForFullStatList>Armor - Scald (armor stat)</labelForFullStatList>
+    <description>The protection given against scalding steam and boiling water - a wet burn that armor built for flame or heat does not stop. Only apparel built for it grants this.
+
+Upon taking damage, first this armor rating is reduced by the attack's armor penetration value.
+
+The remaining armor rating is then compared against a random number from 0 to 100.
+
+    - If the random number is under half the armor rating, the damage deflects harmlessly.
+    - If the random number is over half the armor rating, but not higher than the armor rating, the damage is reduced by half and changed to blunt.
+    - If the random number is greater than the armor rating, the armor has no effect.
+
+Each layer of armor is applied separately, from the outside in.</description>
+    <parts>
+      <li Class="StatPart_Quality">
+        <factorAwful>0.6</factorAwful>
+        <factorPoor>0.8</factorPoor>
+        <factorNormal>1</factorNormal>
+        <factorGood>1.15</factorGood>
+        <factorExcellent>1.3</factorExcellent>
+        <factorMasterwork>1.45</factorMasterwork>
+        <factorLegendary>1.8</factorLegendary>
+      </li>
+    </parts>
+  </StatDef>
+
+</Defs>

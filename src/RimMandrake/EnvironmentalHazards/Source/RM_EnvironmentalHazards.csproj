@@ -84,6 +84,14 @@
     <Compile Include="RM_GenStep_PlacedSetPieces.cs" />
     <Compile Include="RM_CompGatherableGas.cs" />
     <Compile Include="RM_CompScriptedDieOff.cs" />
+    <Compile Include="WeatherPulseExtension.cs" />
+    <Compile Include="RM_GameCondition_WeatherPulse.cs" />
+    <Compile Include="RM_MapComponent_FlashCycle.cs" />
+    <Compile Include="RUT_Plant_FlashFlora.cs" />
+    <Compile Include="RUT_WeatherOverlay_ScaldSteam.cs" />
+    <Compile Include="RM_PlaceWorker_OnRequiredVentComp.cs" />
+    <Compile Include="RM_GradientAxisExtension.cs" />
+    <Compile Include="RM_GenStep_GradientAxis.cs" />
   </ItemGroup>
 
   <ItemGroup>
