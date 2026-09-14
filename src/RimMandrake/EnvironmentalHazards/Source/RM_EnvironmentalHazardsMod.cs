@@ -55,6 +55,12 @@ namespace RimMandrake.EnvironmentalHazards
     //      plants stop reading the burst window and grow at their normal
     //      (unmultiplied) rate instead of being stuck at the "outside
     //      window" penalty forever.
+    //  11. localGrowthAuraEnabled — RM_HediffComp_LocalGrowthAura
+    //      (MIASMA_MECHANICS_1 M5, "Loam-lunged"). Off: a carrier stops
+    //      nudging nearby plant growth; the hediff itself is untouched.
+    //  12. periodicInspirationEnabled — RM_HediffComp_PeriodicInspiration
+    //      (MIASMA_MECHANICS_1 M5, "Mother-dreamed"). Off: a carrier stops
+    //      rolling for a random vanilla Inspiration.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -68,6 +74,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool biomeGlowMultiplierEnabled = true;
         public static float hazardDamageMultiplier = 1f;
         public static bool weatherPulseEnabled = true;
+        public static bool localGrowthAuraEnabled = true;
+        public static bool periodicInspirationEnabled = true;
 
         public override void ExposeData()
         {
@@ -82,6 +90,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref biomeGlowMultiplierEnabled, "biomeGlowMultiplierEnabled", true);
             Scribe_Values.Look(ref hazardDamageMultiplier, "hazardDamageMultiplier", 1f);
             Scribe_Values.Look(ref weatherPulseEnabled, "weatherPulseEnabled", true);
+            Scribe_Values.Look(ref localGrowthAuraEnabled, "localGrowthAuraEnabled", true);
+            Scribe_Values.Look(ref periodicInspirationEnabled, "periodicInspirationEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -116,6 +126,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built to pulse between calm weather and a violent scalding burst stops "
               + "bursting and stays calm; flash-growth plants stop surging in the burst window and "
               + "grow at their normal rate instead.");
+            list.CheckboxLabeled("Local growth aura", ref localGrowthAuraEnabled,
+                "A hediff built to slightly speed up plant growth around its carrier stops doing so.");
+            list.CheckboxLabeled("Periodic inspiration dreams", ref periodicInspirationEnabled,
+                "A hediff built to rarely grant its carrier a random Inspiration stops rolling for one.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

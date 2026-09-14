@@ -421,3 +421,195 @@ accruing is still owed, same as the spike pass's own "not done" line said.
 - `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_GradientAxis_Register.xml` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/EnvironmentalWeatherExtension.cs` (modified: `carrierHediff`/`carrierHediffSeverity`)
 - `src/RimMandrake/EnvironmentalHazards/Source/GameCondition_EnvironmentalWeather.cs` (modified: `EnsureCarrierHediff`, settings-gate fix)
+
+## M5 build pass — 2026-09-13
+
+Kit spec's own build order step 7, "fever-forged boon tables" — "independent
+of all of the above; slot anywhere." No bridge/game access this pass —
+offline only (build + `validate_patch.py`), same gap every prior pass in
+this item has flagged.
+
+**Stale-header correction acted on, not just noted.** M5's own section body
+in `miasma_kit_spec.md` still calls the 1% "genuinely strange tier" "content
+deliberately unspecified here — owner card 1." That line is stale: the same
+file's own "Owner cards — RULED, sitting 2026-09-12" section, a few hundred
+lines below it, shows card 1 fully ruled the next day — five named
+strange-tier HediffDefs with full mechanical descriptions, Tide-reader
+explicitly cut. This pass built the RULED version, full strange tier
+included, per this item's own assignment (the same stale-header shape
+`FORGE_MECHANICS_1` hit once already).
+
+**The generic mechanism — confirmed sufficient, not extended.**
+`RM_HediffComp_ForgeOnSurvival`/`HediffCompProperties_ForgeOnSurvival`
+(built in the spike pass, Spike 4) already carries `onlyInBiomes`,
+`minPeakSeverity`, `noBoonWeight` and a weighted `boonOptions` list of
+HediffDefs — everything the spec's own table needs. No field was missing;
+no change was made to that class this pass.
+
+**Two new generic C# comps** (checked against the live 1.6/Odyssey decompile
+before writing either — see each file's own header for the specific
+symbols read):
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_LocalGrowthAura.cs`
+  (new) — for "Loam-lunged." No vanilla stat or existing RM_ comp reaches "the
+  ground gets slightly richer wherever this pawn rests" (`PlantDensityFactor`
+  is a map-wide `GameCondition` virtual already used by this mod's own M4
+  pass, not a per-pawn lever; `RM_CompResourceCondenser` and
+  `HediffComp_PeriodicAreaAttack` — this mod's only "periodic radius effect"
+  precedents — do vent-locked item output and area damage respectively, not
+  growth). New comp directly cribs `HediffComp_PeriodicAreaAttack`'s
+  `CompPostTickInterval` + `GenRadial` scan shape, substituting a tiny
+  `Plant.Growth +=` nudge (confirmed real and publicly settable,
+  `RimWorld/Plant.cs`, `Mathf.Clamp01` setter) for damage. Defaults:
+  radius 3, 2500-tick cycle (~1 in-game hour), +0.002 growth/cycle — all
+  INVENTED, sized to the ruling's own "PASSIVE AND TINY ... never triggers,
+  never surges, never scales."
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_PeriodicInspiration.cs`
+  (new) — for "Mother-dreamed." Checked for a stock route before writing any
+  new C#, per this item's own instruction: none exists, but the real seam
+  vanilla content already uses for "grant this pawn a random Inspiration" is
+  `InspirationHandler.TryStartInspiration` +
+  `GetRandomAvailableInspirationDef()` (`RimWorld/InspirationHandler.cs:68,134`),
+  the exact pair `IngestionOutcomeDoer_Psilocap.cs:19` and
+  `CompAbilityEffect_GiveInspiration.cs:12-16` already call — confirmed by
+  reading both call sites directly, not assumed. `TryStartInspiration`
+  already guards `Inspired` (no double-inspiring) and
+  `def.Worker.InspirationCanOccur(pawn)`, so this comp is a thin MTB-roll
+  wrapper (`Rand.MTBEventOccurs`, 200-tick batched interval via an explicit
+  countdown, same shape as this mod's other interval comps — not the
+  hash-interval-on-`CompPostTick` first draft, corrected in self-review to
+  match the codebase's own `CompPostTickInterval` convention for tick-batch
+  correctness) around a real, already-used vanilla API. `mtbDaysToDream 20`
+  is this pass's own INVENTED value ("rarely," the ruling's own word).
+
+Both new comps got their own Mod Settings toggle
+(`localGrowthAuraEnabled`, `periodicInspirationEnabled`) in
+`RM_EnvironmentalHazardsMod.cs`, following this kit's own established
+one-toggle-per-mechanism convention (items 1–10 in that file's header).
+
+**15 new content HediffDefs**, all `isBad false`, permanent (no removal
+comp — surviving the disease is what earns them):
+
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_HardenedImmunity.xml`
+  (new) — the 30% tier, one `RUT_HardenedImmunity_<disease>` per disease
+  patched below (7 total: Flu, Animal_Flu, Plague, Animal_Plague, Malaria,
+  SleepingSickness, WoundInfection), each a `statOffsets` bump on
+  `ImmunityGainSpeed` (+0.20, INVENTED) — confirmed the real, and only,
+  StatDef the spec's own phrase "immunity-gain-speed" maps onto (no
+  standalone "disease resistance" stat exists in the indexed 1.6 source).
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_FeverForgedMinor.xml`
+  (new) — the 14% tier, the spec's own three literal names
+  (`RUT_FeverForged_Toughskin`/`_Painworn`/`_Saltblood`), shared across all
+  seven diseases: `ArmorRating_Sharp`/`_Blunt` +0.04 each, `painFactor` 0.9 +
+  `PainShockThreshold` +0.05, `ToxicResistance` +0.08 — all INVENTED
+  magnitudes, all confirmed-real StatDefs/HediffStage fields.
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_StrangeTier.xml`
+  (new) — the 1% tier, all five ruled names. Per-hediff header comments in
+  the file itself document exactly what's real mechanism this pass and what
+  is flagged, not silently substituted:
+  - **Swarm-marked**: ruled text needs a fever-swarm mechanism for BOTH
+    halves ("swarms don't attack them," "swarm-contact exposure drops to a
+    trickle"). Confirmed this pass: no swarm entity or mechanism exists
+    anywhere in `src/RimMandrake` or `src/RimUtinni` (`grep -rn "swarm" -i`
+    turned up only unrelated content — ShipVermin, CreatureBehaviors'
+    vermin pressure, PawnFlavor backstories); M2 (the surge) is the only
+    mechanic in this kit that could ever own one, and M2 is unbuilt. Also
+    confirmed: M4's own `RM_HediffComp_EnvironmentalExposure` has no
+    per-pawn stat hook at all (severity reads only weather + M1 salinity,
+    never `GetStatValue`), so there is no existing lever the "trickle" half
+    could even patch into today. Ships with a modest real stand-in
+    (`ImmunityGainSpeed` +0.10) and both behavioral halves flagged as owed
+    to M2, not invented as a new swarm AI system (explicitly out of this
+    pass's scope).
+  - **Salt-blooded**: bleed and pain confirmed real, clean vanilla
+    `HediffStage` fields — `totalBleedFactor` (multiplies
+    `HediffSet.BleedRateTotal` directly, `Verse/HediffSet.cs:1299-1324`) at
+    0.5, `painFactor` at 1.15. Food-poisoning resistance and corpse rot
+    checked and NOT built: no per-eater food-poisoning resistance stat
+    exists at all (the only real hook,
+    `FoodUtility.TryGetFoodPoisoningChanceOverrideFromTraits`, is keyed per
+    specific food ThingDef via Trait data, not a general hediff lever, and
+    `FoodPoisoning` itself carries no `HediffCompProperties_Immunizable` for
+    `ImmunityGainSpeed` to touch); corpse rot (`CompRottable`) is driven
+    purely by `GenTemperature.RotRateAtTemperature` with no `GetStatValue`
+    call anywhere in that class. Both would need a Harmony patch — out of
+    this pass's "clean XML hediff" scope, not guessed at with a fabricated
+    stat name.
+  - **Loam-lunged**: `RM_HediffComp_LocalGrowthAura` (new C#, above).
+  - **Mother-dreamed**: `RM_HediffComp_PeriodicInspiration` (new C#, above).
+  - **Fever-tempered**: `ComfyTemperatureMin` −5 / `ComfyTemperatureMax` +5
+    (INVENTED, "tuned at build" per the ruling's own words) — plain
+    `statOffsets`, both confirmed real StatDefs.
+- `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml` (new)
+  — patches `HediffCompProperties_ForgeOnSurvival` onto the 7 vanilla
+  HediffDefs confirmed to actually carry
+  `HediffCompProperties_Immunizable` (read directly from
+  `Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml`: `GutWorms`/
+  `MuscleParasites`/`FibrousMechanites`/`SensoryMechanites` do NOT gain
+  immunity and were excluded on purpose, since the comp's own removal gate
+  is `ImmunityHandler.GetImmunity(parent.def) >= 1f`, which those can never
+  reach). No Miasma-specific campaign disease exists to patch alongside
+  them — the one campaign disease family found in `src/` this pass
+  (`RUT_RotSporeKit_Hediffs.xml`) belongs to a different biome (the Rot) and
+  was left alone; a Miasma-specific disease is roster/content-pass
+  territory. Each disease's own table: 55 noBoon / 30 its own
+  `RUT_HardenedImmunity_<disease>` / 14 split across the 3 FeverForged-minor
+  hediffs (~4.6667 each) / 1 split across the 5 strange-tier hediffs (0.2
+  each) — matching the spec's own 55/30/14/1 percentages exactly, and
+  deliberately per-disease for the 30% slot (surviving Plague can only ever
+  forge plague-hardening, never flu-hardening). `MayRequire` on every added
+  `<li>` (the comp Class and every boon HediffDef referenced live in
+  `mandrake.rm.environmentalhazards`/this RUT content) — an unresolvable
+  Class discards the whole host disease def, the same `<li>` trap this
+  repo's own memory already names. `PatchOperationConditional` around every
+  target for the same reason M1's own precedent used it.
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean, 0 warnings/0
+errors, with both new files added as `<Compile>` entries. Another window
+was concurrently adding its own two new files
+(`RM_CompTimedTerrainBurn.cs`, `RM_MapComponent_ThresholdSmokeColumn.cs`) to
+this same shared `.csproj` while this pass ran (per this repo's own
+"concurrent agents share the repo" memory) — this commit stages only this
+pass's own two `<Compile>` lines, leaving the other window's two lines and
+new files uncommitted on disk for it to commit itself. **The rebuilt
+`Assemblies/RimMandrake.EnvironmentalHazards.dll` is deliberately NOT part
+of this pass's commit**, same reasoning the M4/M1 pass already gave: a
+shared, actively-being-built assembly: regenerable any time from committed
+source by the one-line build command this file's own spike-pass section
+already gives.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` against
+the live 98-active-mod set (`--defs` Data + Mods + Workshop root,
+`--mods-config` the real `ModsConfig.xml`): all 4 new XML files, **0
+errors, 0 warnings**. The patch file's own `info` lines confirm all 7
+`PatchOperationConditional`/`PatchOperationAdd` pairs matched exactly once
+each, in Core.
+
+**Not done this pass, explicitly**: M2 (breath-tide surge), M3 (stranding
+pools), M6 (warden-mother placement) — none touched, per assignment scope.
+No `PawnKindDef`/creature/roster content authored beyond the 15 hediffs
+named above. `ModsConfig.xml` untouched. No bridge/game/quicktest —
+everything above is offline-verified only; a live map in the Miasma to
+actually watch a disease survival roll a boon is still owed, same as every
+prior pass in this item. Swarm-marked's two behavioral halves and
+Salt-blooded's food-poison/corpse-rot halves are real, named, unbuilt gaps
+(above), not silent stubs. Letter translation keys
+(`RUT_MotherDreamedLetterLabel`/`Text`) are referenced but not yet added to
+a Languages/ folder — same owed shape as this item's own M4 pass already
+flagged for `RM_MiasmaBoonLetterLabel`/`Text`; `.Translate()` falls back to
+the raw key rather than erroring, so this does not block anything.
+
+With M4/M1/M5 landed, only M2 (surge), M3 (stranding pools, blocked on M2)
+and M6 (warden placement, blocked on roster content) remain of this item's
+6 mechanics.
+
+## files (M5 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_LocalGrowthAura.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_PeriodicInspiration.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (modified: 2 new `<Compile>` entries — this pass's own only)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (modified: `localGrowthAuraEnabled`/`periodicInspirationEnabled` settings)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_HardenedImmunity.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_FeverForgedMinor.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_Miasma_StrangeTier.xml` (new)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml` (new)
