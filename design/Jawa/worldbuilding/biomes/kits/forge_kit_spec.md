@@ -19,10 +19,43 @@ the "1.5-era" caveat those specs carry — but the standing discipline holds:
 every "vanilla has no X" claim is "no X **in the indexed source**" with an
 implicit ❓ against the live 1.6 assembly. Anchors marked *(verified,
 greentide)* / *(verified, miasma)* were verified at those specs' drafting.
-❓ The sheet's three donor biomes (`Volcano`, `LavaField`,
-`AB_PyroclasticConflagration`) — confirm at build which mod/DLC owns each and
-whether 1.6 lava terrain damages standing pawns natively (nothing verified
-here assumes it does).
+**RESOLVED — FORGE_MECHANICS_1 spike, 2026-09-13.** The sheet's own donor line
+("vanilla Volcano/LavaField") is half wrong: `LavaField` is CONFIRMED vanilla
+— Odyssey DLC content (`Defs/Odyssey/BiomeDefs/LavaField.xml`,
+`Defs/Odyssey/FeatureDefs/Features.xml`'s `LavaField` FeatureDef, workerClass
+`BiomeWorker_LavaField` in the core `RimWorld` namespace; the BiomeDef itself
+carries no `MayRequire`, only a few sub-elements do). `Volcano` is NOT
+vanilla — CONFIRMED absent from vanilla's own `LandmarkDefOf` roster (no
+`Volcano` field; `LavaFlow` is the nearest vanilla landmark) and absent
+everywhere in the 1.6/Odyssey decompile — it is **Advanced Biomes**
+(`emipa606/AdvancedBiomes`, WS 3541022508; `biome_terrain_palette.md` §A3,
+already correctly attributed there: "Advanced Biomes uses unprefixed
+defNames... `Volcano`... lava + obsidian terrain, ActiveTerrain lava
+dynamics"). `AB_PyroclasticConflagration` is CONFIRMED Alpha Biomes (the
+`AB_` naming convention this repo uses consistently for that mod;
+`rosters/the_forge.json` records "Alpha pyroclastic donor family" /
+"Alpha Biomes' own pyroclastic-donor tree"). Note the naming collision this
+surfaces: Advanced Biomes' own terrain (`AB_LiquidLava`/`AB_Obsidian`/
+`AB_VolcanicGravel`, per `biome_terrain_palette.md` §3) ALSO carries an `AB_`
+prefix — a different mod reusing the same two letters, already flagged as a
+legibility hazard at §4 item 2 of that same doc, not new here.
+
+Whether 1.6 lava terrain damages standing pawns natively — CONFIRMED yes, via
+the same native mechanism the Scald spike found for boil terrain:
+`TerrainDef.burnDamage`/`burnIntervalTicks` (`Verse/TerrainDef.cs:212`),
+read every tick by `Verse/HediffGiver_Terrain.cs:17` (`if (terrain.burnDamage
+> 0 && Rand.MTBEventOccurs(terrain.burnIntervalTicks, ...))`, dealing
+`DamageDefOf.Burn`). The concrete vanilla terrain, though, tells against F4's
+"open melt" framing: `LavaShallow` (merged def) carries `burnDamage=3`,
+`burnIntervalTicks=120`, `dangerous=true`, `avoidWander=true`,
+`ignitePawnsIntervalTicks=240` and IS walkable (`affordances: Walkable`) —
+a real, native burn hazard a pawn can cross. `LavaDeep`, by contrast, is
+`passability=Impassable` (`pathCost 300`) with no burn fields of its own on
+the raw def — nothing can stand on it at all, native or otherwise, so
+"open melt as the wall" (F4) reads correctly only for LavaDeep-as-obstacle;
+any walkable melt/scald surface in the tower floors should crib
+LavaShallow's own field values rather than inventing new ones. No C# needed
+for either behaviour — it is stock TerrainDef data + the stock HediffGiver.
 
 **Naming**: generic mechanisms are `RM_` (`RimMandrake.*` namespaces); Forge
 content defs exposing them are `RUT_` (`RimMandrake.Utinni.*`). Per the ruled
@@ -144,8 +177,29 @@ pasture, and hunting them means going where the columns are.
 **Engine route.** There is no z-axis; "flight" is the Aerofleet posture —
 a ground pawn that floats visually and paths where others can't. The mod set
 already proves it: `AA_Aerofleet` / `AA_ColossalAerofleet` (defNames verified
-in `rosters/the_forge.json`, MEASURED "floats") — ❓ read the Alpha Animals
-def + any comp/class behind its float at build and crib the draw route.
+in `rosters/the_forge.json`, MEASURED "floats") — **RESOLVED — FORGE_MECHANICS_1
+spike, 2026-09-13.** CONFIRMED the float is not Alpha Animals' own code at
+all: `AA_Aerofleet`'s `<comps>` block
+(`.../workshop/content/294100/1541721856/1.6/Defs/ThingDefs_Races/Races_Aerofleet.xml`)
+carries `<li Class="VEF.AnimalBehaviours.CompProperties_Floating">` — a
+**Vanilla Expanded Framework** comp (WS 2023507013, `VEF.dll`,
+`1.6/Assemblies/`), not `AlphaBehavioursAndEvents.dll`. Binary-string read of
+`VEF.dll` (`MEASURE_ALLOW_SCAN=1`, same technique the Scald spike used on
+`BadHygiene.dll`) turns up the real seam: `CompFloating` maintains a shared
+static roster (`floating_animals`, `AddFloatingAnimalToList`/
+`RemoveFloatingAnimalFromList` — added/removed on spawn/despawn, not
+per-tick lookup) consumed by exactly ONE Harmony postfix,
+`VanillaExpandedFramework_Pawn_DrawTracker_DrawPos_Patch` — a patch on
+`Verse.Pawn_DrawTracker.DrawPos`'s getter, applying a `FloatingOffset` to any
+pawn currently in that list. A second string,
+`DisablePathCostForFloatingCreatures`, confirms the "ignore terrain movement
+costs" line in Aerofleet's own flavor text is the same comp's doing (a
+pathing-cost patch, not a terrain-affordance trick). **Consequence for
+`RM_CompVaporDrifter`**: crib the same seam — a `ThingComp` that registers
+itself into a shared list on spawn/despawn, consumed by ONE Harmony postfix
+on `Pawn_DrawTracker.DrawPos` — rather than a PawnRenderer draw node or a
+def-side float property; this mod's `.csproj` already references
+`0Harmony.dll` (for the biome-glow patch), so no new dependency is needed.
 This kit adds the pasture-binding:
 
 - `RM_MapComponent_VaporColumns` — builds a column field from emitter
@@ -154,13 +208,34 @@ This kit adds the pasture-binding:
   ruled **`RM_CompActiveGasEmitter`** reuse (miasma/greentide precedent —
   harmless white gas, pure atmosphere) — zero new emitter C#.
 - `RM_CompVaporDrifter : ThingComp` on sky kinds: constrains wander/graze
-  destinations to column cells (❓ cleanest seam — wander-root override vs a
-  small ThinkTree subtree; same open question the miasma's
-  `RM_CompTerritorialAnchor` carries, resolve both against the same source
-  read at build), grants the kit's ground-hazard immunities (scald bursts do
-  not touch drifters — they live in the steam), and drives the float-draw
-  offset if the Aerofleet route turns out to be class-side rather than
-  def-side.
+  destinations to column cells — **RESOLVED — FORGE_MECHANICS_1 spike,
+  2026-09-13, against the same source read MIASMA_MECHANICS_1's own spike
+  already did for `RM_CompTerritorialAnchor`
+  (`src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs`).**
+  That spike found the real seam is neither a raw wander-root override nor a
+  bespoke ThinkTree subtree in isolation: vanilla's own hive defenders use
+  `Verse.AI.PawnDuty` (focus + radius) read by two `protected virtual`
+  JobGiver overrides — `RimWorld/JobGiver_HiveDefense.cs`'s
+  `GetFlagPosition`/`GetFlagRadius` (on the abstract base
+  `RimWorld/JobGiver_AIFightEnemy.cs:42,47`) and `RimWorld/
+  JobGiver_WanderHive.cs`'s `GetWanderRoot` (on `JobGiver_Wander`, a real
+  overridable method, not a Func field). `RM_CompTerritorialAnchor`
+  reproduces this pattern generically via `RM_JobGiver_AnchorWander :
+  JobGiver_Wander` overriding `GetWanderRoot(Pawn pawn)`. F3's
+  pasture-binding is the SAME seam, already proven to compile in this
+  assembly: a sibling `RM_JobGiver_ColumnWander : JobGiver_Wander`
+  overriding `GetWanderRoot` to return the nearest cell
+  `RM_MapComponent_VaporColumns.InColumn` accepts, wired into the sky
+  kind's ThinkTreeDef the same way `RM_JobGiver_AnchorWander` is (a
+  PawnKindDef/ThinkTreeDef content decision, XML, owed to the full build —
+  not a further engine question). No new C# class is needed to prove this
+  seam; it already compiles as `RM_CompTerritorialAnchor`'s own JobGivers.
+  Grants the kit's ground-hazard immunities (scald bursts do
+  not touch drifters — they live in the steam). No float-draw offset of its
+  own is needed: the Aerofleet float route is CONFIRMED class-side (the VEF
+  `CompFloating`/`Pawn_DrawTracker.DrawPos` Harmony postfix above), so any
+  sky kind wearing VEF's own `CompProperties_Floating` already floats
+  without this comp touching draw code at all.
 - **Fleet fliers** ("race in, eat fireweed, retreat"): diet XML (fireweed in
   the food filter) + the drifter comp with a looser leash (**INVENTED**:
   forage radius 12 beyond columns) — no bespoke AI in v1; the darting read is
@@ -195,11 +270,32 @@ richly present in the indexed source:
   mechanoid-family, roster/faction pass; their strings reveal nothing
   (ban #2).
 - **Floor after floor**: ❓ whether a pocket map can host a further
-  `MapPortal` down (portal-in-pocket-map chaining) — nothing in the indexed
-  source forbids it, nothing proves it; PROVE in a quicktest before
-  committing the multi-floor design. Fallback that loses little: one deep
-  floor per tower, tower count from the set-piece scatterer (card 1 rules
-  which).
+  `MapPortal` down (portal-in-pocket-map chaining) — **narrowed but NOT
+  resolved, FORGE_MECHANICS_1 spike, 2026-09-13 (this needs a live
+  quicktest, per the item's own instructions this pass did not attempt
+  one).** Full-body reads of `RimWorld/MapPortal.cs` (`GeneratePocketMapInt`
+  → `PocketMapUtility.GeneratePocketMap`), `Verse/PocketMapUtility.cs`,
+  `Verse/MapGenerator.cs`'s `GenerateMap(..., isPocketMap: true)`, and
+  `RimWorld/MapPortalProperties.cs` turn up **no guard anywhere** that
+  checks whether `sourceMap` (the map a new pocket map is generated FROM) is
+  itself already a pocket map — `PocketMapParent.sourceMap` is untyped as
+  to "must be a real map," and `Find.World.pocketMaps` is a flat
+  `List<PocketMapParent>` with no nesting/depth field. So the source
+  code neither explicitly forbids chaining NOR explicitly handles it — it is
+  genuinely untested engine territory, not "probably fine": nothing in
+  `Verse/Map.cs`'s `IsPocketMap`/`PocketMapParent` properties, nor any of
+  the ~30 call sites `search_source` found for `IsPocketMap` (world
+  rendering, `CameraJumper`, caravan-exit, psychic rituals, prisoner escape,
+  etc.), was written with "a pocket map whose OWN Parent is a
+  PocketMapParent" in mind — several of those call sites walk exactly one
+  level up (e.g. `RimWorld/GenStep_InsectLairCave.cs:130`'s
+  `(map.Parent as PocketMapParent)?.sourceMap`) and would silently stop at
+  the first level in a chain. This raises, not lowers, the risk that a
+  second-level pocket map would generate without error but break something
+  UI/traversal-side one level removed — PROVE in a quicktest before
+  committing the multi-floor design; do not treat "no forbidding code" as
+  "safe." Fallback that loses little: one deep floor per tower, tower count
+  from the set-piece scatterer (card 1 rules which).
 - **Placement**: towers on the map are set-pieces — reuse the miasma kit's
   **`RM_GenStep_PlacedSetPieces`** *(miasma M6; base
   `GenStep_Scatterer` verified there)* with a Forge def-list entry
@@ -235,9 +331,24 @@ lose.
   then die, leaving `RUT_DeadCreep`; all props). **INVENTED**: spread 6–10
   cells over 4 hours, dead by hour 8. Letter on arrival, quiet death.
 - **The ban edge**: `RUT_DyingCreep` carries no reproduction/harvest fields —
-  it can never establish (the sheet's physics as def structure; linter:
-  no `plant.reproduces` on it ❓ exact field name — read `PlantProperties`
-  at build, never guess it into XML).
+  it can never establish (the sheet's physics as def structure). **RESOLVED
+  — FORGE_MECHANICS_1 spike, 2026-09-13.** `plant.reproduces` does not exist
+  as a field on `RimWorld/PlantProperties.cs` at all — CONFIRMED by a full
+  class read against the live 1.6/Odyssey decompile (every field of the
+  class enumerated; no `reproduces`/`spreads`/`multiplies` boolean anywhere).
+  RimWorld has no such per-plant flag. The REAL mechanism, also confirmed by
+  source: `RimWorld/WildPlantSpawner.cs`'s `GetCommonalityOfPlant` returns
+  `cachedPlantCommonalities.GetValueOrDefault(plant, 0f)`, and those cached
+  commonalities come from `RimWorld/BiomeDef.cs:419`'s own
+  `CommonalityOfPlant(ThingDef)`, which reads the BiomeDef's own `wildPlants`
+  dict — a plant absent from every active BiomeDef's `wildPlants` entry gets
+  commonality exactly 0 and `WildPlantSpawner` never spreads it on its own,
+  full stop. So the linter check is not "no `plant.reproduces` field" (that
+  field doesn't exist to check) — it is **"`RUT_DyingCreep` appears in no
+  BiomeDef's `wildPlants` dict, anywhere"**; the only spread route left is
+  this kit's own scripted `RM_CompScriptedDieOff`, exactly the "physics as
+  def structure" the sheet already calls for. (`RM_CompScriptedDieOff` also
+  ships this pass — see FORGE_MECHANICS_1's own spike-pass write-up.)
 - Cross-flow: `the_contagion.md`'s own kit owns real creep mechanics; this
   kit's die-off pieces are standalone so the Forge never waits on it — if a
   shared creep system lands later, `RUT_DyingCreep` becomes its client

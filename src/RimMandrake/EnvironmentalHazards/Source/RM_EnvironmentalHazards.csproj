@@ -82,6 +82,8 @@
     <Compile Include="RM_CompWorkedLottery.cs" />
     <Compile Include="RM_CompFloodIgniter.cs" />
     <Compile Include="RM_GenStep_PlacedSetPieces.cs" />
+    <Compile Include="RM_CompGatherableGas.cs" />
+    <Compile Include="RM_CompScriptedDieOff.cs" />
   </ItemGroup>
 
   <ItemGroup>
