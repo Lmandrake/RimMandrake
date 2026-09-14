@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.hawkbatartoverride</packageId>
+  <name>Hawk-bat Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Hawk-bat art with
+custom generated art per the 2026-09-11 owner ruling on `art: "improve"`
+rows: Star Wars-named creatures keep their canon identity (the leathery-winged,
+shrieking cave-and-canopy ambush flyer), full regeneration, heavy black
+outline required.
+
+The donor splits the adult life stage by gender (bodyGraphicData
+swanimals/Hawkbat/Hawkbat, femaleGraphicData swanimals/Hawkbat/Hawkbat_j) -
+only one look was generated for this wave, so the SAME new art is wired to
+BOTH Hawkbat_&lt;facing&gt; and Hawkbat_j_&lt;facing&gt; rather than leaving
+females on the old donor look (a spawn would otherwise show the new art only
+on a ~50% roll - the same alternate-variant gotcha ART_REGEN_WAVE2_WIRE_IN_1
+hit on AA_Frostmite). The flying-animation frame set and the
+dessicated-corpse texture stay on donor art. LABEL/ART ONLY - no defName
+touched, no Defs, no Patches, loose Textures/ only, same relative paths the
+donor uses, so this mod's later load order wins the same-path
+resolution.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.pekopekoartoverride</packageId>
+  <name>Peko-Peko Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Peko-Peko art with
+custom generated art per the 2026-09-11 owner ruling on `art: "improve"`
+rows: Star Wars-named creatures keep their canon identity (the large
+flightless riding bird of Naboo), full regeneration, heavy black outline
+required.
+
+The donor splits EVERY life stage by gender (separate bodyGraphicData/
+femaleGraphicData texPaths, swanimals/PekoPeko/PekoPeko_m and PekoPeko_f) -
+only one look was generated for this wave, so the SAME new art is wired to
+BOTH PekoPeko_m_&lt;facing&gt; and PekoPeko_f_&lt;facing&gt; rather than
+leaving one sex on the old donor look (a spawn would otherwise show the new
+art only on a ~50% roll - the same alternate-variant gotcha
+ART_REGEN_WAVE2_WIRE_IN_1 hit on AA_Frostmite). The flying-animation frame
+set and the dessicated-corpse texture stay on donor art. LABEL/ART ONLY - no
+defName touched, no Defs, no Patches, loose Textures/ only, same relative
+paths the donor uses, so this mod's later load order wins the same-path
+resolution.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>
