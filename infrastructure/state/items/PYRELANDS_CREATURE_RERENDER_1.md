@@ -105,3 +105,16 @@ is wired into the biome. The walk shows vanilla animals until wiring lands.
   is achieved — donor-side animation mechanism + our art interplay.
 - Systemic finding this walk: ARTPIPE_FACING_COHERENCE_1 (N/S facings broken
   everywhere, owner ruling recorded there).
+
+## Walk 2 staging (2026-09-14 ~01:00, BENCH, owner AFK)
+
+- **The walk map moved: tile 59952, save `PYRE_WALK2_59952.rws`, settlement "Pyrelands Walk" (PlayerColony).** Tile 104504 sits in the scratch world's polar band — the sun NEVER rises there (three screenshots across a full day cycle, glow 0% at 10 AM Clear with zero active conditions). 59952 is equatorial: "Brightly lit (100%)" at 2 PM, Spring. All prior color judgments were made on an unlit map.
+- Daylight resolves the ash-tier legibility worry: "Light ash" reads as a distinct pale tier at walk zoom. Standing critique for the owner's eyes: lush green donor flora breaks the burn-biome fiction; steam river reads olive-mud; grey stone scatter reads cold.
+- Review grid staged ×2 each at rows z=90/101/112, x=80+11k, order: Razorjack Barbslinger FireWasp Boomsnake FireHawk FurnaceBeast / Orray Gizka Anooba Iriaz Nuna Zeer / Dalgo Boomalope Bolotaur Gualaar GreenGoo. Natural wildlife ALSO spawns here (23 wild roster-kind pawns at mapgen — self-injection working; contrast PYRELANDS_ANIMALS_GENSTEP_1's NRE on the 104504 regen, now known conditional).
+- Route that works for a fresh walk map (the leave/re-enter harness silently no-ops on player settlements): `jawa/world_tile_set`+`world_commit` → `jawa/colony_found` (or `world_objects_set` re-faction if a dead Settlement blocks it) → `jawa/world_tile_map_generate` → save+load to make it current. ⚠️ A faction-none Settlement's map AUTO-CLOSES once ticks pass — re-faction BEFORE stepping time.
+
+## Open owner questions (parked while AFK)
+
+1. **Iriaz identity conflict**: `design/RimStarWars/canon_references/iriaz/description.md` exists (four-legged Dantooine antelope, olive-teal + orange spots, one horn, ruling field EMPTY) and contradicts the two-legged Dathomir identity used by both regen waves. No Iriaz art regenerated until ruled.
+2. **AA_GreenGoo north**: faceless amorphous slime — its _north reads frontal but there is no rear cue possible. Does the facing law apply to it? (Owner praised this art; untouched.)
+3. Anooba + Orray painterly norths are FACE-VISIBLE; corrected rear-view derivations queue on the Codex reset.
