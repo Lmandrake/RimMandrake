@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T01:33:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T02:02:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1481,3 +1481,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ARMOURY_MW2_DEP_UNGATED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ARMOURY_MW2_DEP_UNGATED_1.md
+
+## ARMOURY_MW2_CUT_1 Cut ModularWeapons2 out of Armoury entirely: strip 181 comps + 92 graphicClass swaps, delete 21 root-tag defs + workbench + 3 research + 2 gadgets, remove MW2 from ModsConfig, RESTORE SMYH as final step, cold-load verify + resave canonical (owner ruled CUT 2026-09-13; spec in item)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  ARMOURYMW2CUT1 — cut ModularWeapons2 out of the KotOR Armoury entirely
+prose:    infrastructure/state/items/ARMOURY_MW2_CUT_1.md
