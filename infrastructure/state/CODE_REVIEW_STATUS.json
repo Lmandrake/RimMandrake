@@ -13492,10 +13492,10 @@
     "sha": "e2fec3c99"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c758a693e946b58832039beffc6c9d6b580e589d1e697f1cffa693ec3b5ebefa",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-13",
+    "hash": "97e04bd4512b5e1ea402f3a68a5a93b3d4040dc532ce96ecbd313fa7e54b01df",
+    "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
     "cleanCount": 2,
@@ -13610,6 +13610,12 @@
     "date": "2026-09-13",
     "hash": "1d0e04405aef62b400bbc04bb4b92ce2fecdb683a91bf10c108eede069692075",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SumpDuskLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a6cedf63992708ca5916c275f30107633ed300fe0898a465336027c0c063be8e",
+    "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
@@ -13737,6 +13743,18 @@
     "hash": "2f500169cb05f97c9328fe249844a465854a689394b95167bd42d848da5cfba4",
     "sha": "f4b18455a"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "35cb60514b893aacb350496c46b7b84dfc09b6501fcb458b81f4a7bdbad4a098",
+    "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Plant_Wick.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "5c3610de6b1aa0b637755e238a1dd072416122f81bc7cc65c8f92a7fb914147d",
+    "sha": "779a079ab"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -13772,6 +13790,12 @@
     "date": "2026-09-13",
     "hash": "a0ce81fd55cf3891689088e1aacd92aecf7aad80efad27278bd5ea5d40e354b0",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_SumpWeather.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "3843fd17f41034f75a866cbb6d8893d5ad6dd3319e132aa26bdc64efd9ab0078",
+    "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/LICENSE": {
     "cleanCount": 1,
@@ -14144,6 +14168,12 @@
     "date": "2026-09-13",
     "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_SumpDuskLock_BiomeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c59be6b987550c2e0989928f3acab780f0d3d2084d6762f016674e085dbe2f79",
+    "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
     "cleanCount": 1,
