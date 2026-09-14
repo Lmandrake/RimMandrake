@@ -1158,10 +1158,10 @@
     "sha": "0637431c1"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/EnvironmentalWeatherExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "b549545fc0c6c2f9d6cfbb8770f62d48ae45bc2df7c77a6249ce6da9e8e78cc3",
-    "sha": "2eee1995f"
+    "cleanCount": 2,
+    "date": "2026-09-13",
+    "hash": "c27eb40ed2d0479851aecc1dbb9f8a7e54f01e9d8c3f4efdc8b16bf96a81f45e",
+    "sha": "b1a2aa399"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_ArmLatentHazard.cs": {
     "cleanCount": 2,
@@ -1170,10 +1170,10 @@
     "sha": "0637431c1"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_EnvironmentalWeather.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "df7183adbc2e93bb8be691a701cf1eea23c854e82ef1fe641ffaf63852ec6fee",
-    "sha": "0637431c1"
+    "cleanCount": 3,
+    "date": "2026-09-13",
+    "hash": "7b7e7b1bf7d7682e7e6dc91bd645820529d4fed0219ca6f7b8d7caaed7d1f3b7",
+    "sha": "b1a2aa399"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/GasEffectExtensions.cs": {
     "cleanCount": 1,
@@ -1234,6 +1234,18 @@
     "date": "2026-09-13",
     "hash": "19f49194330012b379e9eca5a9f285f4551cbb06c80841bf1f20226b14797fe9",
     "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GradientAxis.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "f01523044bc8326027b71e2ada1706a0306080bac4fcaff789d2eb98e5e1d28a",
+    "sha": "b1a2aa399"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "04d83688614685243f0c1c743aca59b0a0f06a5bb9faf45b03c79e49ab3831b2",
+    "sha": "b1a2aa399"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
     "cleanCount": 1,
@@ -13462,10 +13474,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "c7fe6478523f5c7f692d5b4f0e1582cdfba6fbf1f1bbe5e29110e3e8b5d8257b",
-    "sha": "e2fec3c99"
+    "cleanCount": 4,
+    "date": "2026-09-13",
+    "hash": "3dcb0a54070834ced3caa38b148c2d3d23b531990b37da6df0b5aa0d89c62519",
+    "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 2,
@@ -13623,6 +13635,12 @@
     "hash": "1d0e04405aef62b400bbc04bb4b92ce2fecdb683a91bf10c108eede069692075",
     "sha": "0e38767e7"
   },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_MiasmaWeatherLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "db8c9e3b2d5bca76bdbded8c44439f51d33b8fee5306adf559ffbbbab57c911c",
+    "sha": "b1a2aa399"
+  },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScaldSteamLock.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13634,6 +13652,12 @@
     "date": "2026-09-13",
     "hash": "a6cedf63992708ca5916c275f30107633ed300fe0898a465336027c0c063be8e",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_MiasmaExposure.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c49939ad424b32f578c2164f04d7f2ac653aaf391d30c44ea70f1ca06a89ed57",
+    "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
@@ -13676,6 +13700,12 @@
     "date": "2026-09-09",
     "hash": "1a2bae355f4a9364933aa3e5e70901dc7cf4fdb42584129273caf93ee2d4ae27",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_Miasma_GradientAxisGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "3f2f30cbae097eb4f673f352e9b8460a46faeef97a385cdfdfd096113abd41a1",
+    "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScatterShrinesRare.xml": {
     "cleanCount": 1,
@@ -13820,6 +13850,12 @@
     "date": "2026-09-13",
     "hash": "a0ce81fd55cf3891689088e1aacd92aecf7aad80efad27278bd5ea5d40e354b0",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_MiasmaWeather.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "6e8dc918cb3aa64c92dca822ba2dce335929db6fc3cfc5629017d261b023a76a",
+    "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_ScaldSteam.xml": {
     "cleanCount": 1,
@@ -14204,6 +14240,12 @@
     "date": "2026-09-13",
     "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_GradientAxis_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "8affa61555610f7f27720bd33ba75532553ed63bfc8110d1f2332b62bd823553",
+    "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSteamLock_BiomeWiring.xml": {
     "cleanCount": 1,
