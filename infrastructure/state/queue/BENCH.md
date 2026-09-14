@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T00:41:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T01:33:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -20,7 +20,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md yet — write one when you have something to say)
+summary:  SMYHMODULARWEAPONSPAWNGENCRASH1 — Show Me Your Hands × ModularWeapons2 kills pawn generation
 prose:    infrastructure/state/items/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md
 
 ## BACTA_PAWNINTANK_RECON_1 Find and evaluate the visible-pawn-in-tank rendering technique: locate BioReactor mod source (workshop id/GitHub; not installed locally), read how it composites the pawn into the tank graphic, report the classes/approach and license; fallback techniques if unusable
