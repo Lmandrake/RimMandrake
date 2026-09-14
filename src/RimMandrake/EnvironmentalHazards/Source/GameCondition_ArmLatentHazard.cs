@@ -137,6 +137,21 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
 
+            // SCARLANDS_MECHANICS_1 §3. Both optional and additive to the
+            // targets/affects gates below — a pawnKindFilter without a
+            // requiredHediff still narrows to that kind list; a
+            // requiredHediff without a filter still narrows to any pawn
+            // already carrying it, regardless of kind.
+            if (!ext.pawnKindFilter.NullOrEmpty() && !ext.pawnKindFilter.Contains(pawn.kindDef))
+            {
+                return false;
+            }
+
+            if (ext.requiredHediff != null && !pawn.health.hediffSet.HasHediff(ext.requiredHediff))
+            {
+                return false;
+            }
+
             switch (ext.targets)
             {
                 case LatentHazardTargets.Animals:
