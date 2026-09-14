@@ -216,3 +216,20 @@ Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still a
 #    deploy together in one --apply, same pattern as the Pyrelands hold above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml    # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml   # BENCH: no art yet, 2026-09-13
+
+# --- SCALD_MECHANICS_1 S6: RUT_ScaldWreck* + scatter wiring, no art yet -------
+# 2026-09-13, SCALD_MECHANICS_1 build pass. RUT_ScaldWrecks.xml's three
+# ThingDefs (RUT_ScaldWreckHull/Tank/Frame) are new this pass, each with a
+# texPath under UtinniPatches/Textures/ that does not exist yet — same
+# missing-art shape as the S4/S2 hold above. Held TOGETHER with the two
+# files that key on their defNames: RUT_ScaldWreckScatter.xml's three
+# GenStepDefs (each <thingDef> a dangling cross-reference without the defs
+# deployed) and RUT_ScaldWreckScatter_Register.xml (adds those three
+# GenStepDef names to Base_Player's live genSteps — deploying it alone
+# would run map generation against def names nothing in the game provides).
+# => LIFT all three at once when the three wreck sprites land under
+#    UtinniPatches/Textures/ — defs, scatter wiring and art deploy together
+#    in one --apply, same pattern as the Pyrelands/S4/S2 holds above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldWrecks.xml         # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/MapGeneration/RUT_ScaldWreckScatter.xml         # BENCH: held with the ThingDefs it scatters, 2026-09-13
+UtinniPatches/Patches/RUT_ScaldWreckScatter_Register.xml           # BENCH: held with the ThingDefs it scatters, 2026-09-13

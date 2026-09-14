@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWreckScatter_Register.xml     UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S6 — the registration half. RUT_ScaldWreckScatter.xml
+  declares three GenStepDefs; a GenStepDef on its own runs on NO map, the
+  same fact JawaResource_Scrapfields.xml and JawaGroundHulk_Register.xml (this
+  same mod) already document and act on. This file is that listing, same
+  three-file shape, same target.
+
+  ===========================================================================
+  SCOPE: Base_Player, GLOBAL — and that is deliberate, unlike the two prior
+  registrations in this mod
+  ===========================================================================
+  JawaResource_Scrapfields.xml and JawaGroundHulk_Register.xml both scope to
+  Base_Player for CONTINUITY reasons (one wreck, one clan's own ship; scrap
+  belongs on the settled map only). This registration has a different, and
+  simpler, justification: the wreck scatter's OWN terrain validator
+  (terrainValidationAllowed -> RUT_ScaldShallow) already confines it to
+  cells carrying that tag, and only the Scald's own three shallow water
+  terrains carry it (RUT_ScaldWater.xml, this same pass) — nowhere else in
+  the load order does. Registering onto Base_Player (rather than the
+  abstract MapCommonBase) is still the right call for the same reason the
+  other two registrations give: the player's own settled map is where a
+  wrecks-in-the-shallows scatter should visibly land, not every encounter
+  or quest map layered over the abstract base.
+
+  ===========================================================================
+  THE TARGET, READ FROM CORE
+  ===========================================================================
+  Core/Defs/MapGeneration/BasePlayerMapGenerator.xml:4-15,
+  MapGeneratorDef ParentName="MapCommonBase" Name="Base_Player", <genSteps>
+  a plain list of GenStepDef names — <li> is correct, read from the node
+  directly (same citation JawaResource_Scrapfields.xml already gives).
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  No MayRequire needed on this patch or its target GenStepDefs — unlike
+  JawaGroundHulk_Register.xml, nothing here depends on another mod being
+  present; RUT_ScaldWreckScatter.xml's three GenStepDefs are this mod's own,
+  always loaded together with this patch. Conditional test xpath is
+  IDENTICAL to the inner Add's xpath (JawaResource_Scrapfields.xml's own
+  discipline): if Core ever renames Base_Player or restructures the node,
+  this becomes a silent no-op rather than a red error.
+
+  Held via src/DEPLOY_HOLD.txt together with RUT_ScaldWrecks.xml and
+  RUT_ScaldWreckScatter.xml: deploying this patch without the ThingDefs it
+  names would add three defNames to Base_Player's genSteps that resolve to
+  nothing in the running game — a dangling cross-reference on every map
+  generation, not a smaller failure than the missing art itself.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RUT_Jawa_ScatterScaldWreckHull</li>
+        <li>RUT_Jawa_ScatterScaldWreckTank</li>
+        <li>RUT_Jawa_ScatterScaldWreckFrame</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

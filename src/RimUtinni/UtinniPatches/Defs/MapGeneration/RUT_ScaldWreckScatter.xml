@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWreckScatter.xml              UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S6 "burning-shallows wreck salvage" — the
+  scatter half. RUT_ScaldWrecks.xml declares the three salvage buildings;
+  this file places them.
+
+  ===========================================================================
+  RESOLVED, NO SUBCLASS — scald_kit_spec.md §S6, decompile this pass
+  ===========================================================================
+  Verse/GenStep_ScatterThings.CanScatterAt (full body read, cited in the kit
+  spec and SCALD_MECHANICS_1.md's own spike-pass finding 5) walks
+  GenRadial.RadialCellsAround(loc, terrainValidationRadius) and checks
+  terrain.HasTag(tag) against terrainValidationAllowed — stock XML fields on
+  the stock class, TAG-based rather than defName-based. So no C# subclass is
+  needed: the RUT_ScaldShallow tag now carried by the three shallow
+  RUT_ScaldWater* terrains (RUT_ScaldWater.xml, this same pass) is
+  sufficient on its own.
+
+  Same crib shape as JawaScrapfields.xml (this same mod, V1 row 4): a plain
+  GenStepDef wrapping GenStep_ScatterThings, order/allowInWaterBiome/
+  minSpacing/countPer10kCellsRange fields copied from that shipped,
+  working precedent rather than re-derived from nothing.
+
+  ===========================================================================
+  ONE GenStepDef PER SILHOUETTE — the class field is singular
+  ===========================================================================
+  GenStep_ScatterThings carries one <thingDef>, not a list, so three wreck
+  defs need three GenStepDefs. Each is independently terrain-validated
+  against the same RUT_ScaldShallow tag, so all three only ever land on the
+  Scald's own shallow water — nowhere else in the mod list carries that tag.
+  This is also why the registration patch (RUT_ScaldWreckScatter_Register.xml)
+  can safely add all three to the GLOBAL Base_Player genSteps list rather
+  than needing a biome-scoped gate: the tag itself is the scope, per the
+  spec's own design (§S6: "TAG-based, not defName-based").
+
+  ===========================================================================
+  TUNING — ALL THREE VALUES INVENTED, stated plainly (no source names a wreck
+  count for this mechanic)
+  ===========================================================================
+  countPer10kCellsRange 0.4~0.6 per silhouette (three silhouettes => a
+  ceiling of roughly 6-9 attempts total on a 250x250 map, using
+  JawaScrapfields.xml's own documented arithmetic: RoundToInt(size*size /
+  RoundToInt(10000/value)) x GetPlacementFactor). That is a CEILING on
+  ATTEMPTS, not a promise of that many wrecks: terrainValidationAllowed
+  rejects every candidate cell outside the Scald's shallow band, and the
+  Scald's shallows are a small fraction of any given map, so the realized
+  count is expected to land well under the ceiling — "a few wrecks in the
+  shallows" (§8's own wording), not a field of them. Real density is owed to
+  a live/quicktest pass (no bridge access this task).
+  minSpacing 6 — keeps the three silhouettes of the SAME kind from stacking
+  on top of each other inside one shallow pocket; well above
+  GenStep_ScatterThings' engine-hardcoded cluster radius of 4
+  (JawaScrapfields.xml's own header documents this constant and the failure
+  mode of setting minSpacing too close to it — this value stays clear of it).
+  terrainValidationRadius 2 — covers a wreck's own 2x2 footprint plus one
+  ring, so a scatter roll only lands where the whole footprint (not just its
+  origin cell) sits inside the shallow band.
+  allowInWaterBiome true — required; the Scald IS a water body (BiomeDef
+  Lake), unlike every land biome JawaScrapfields.xml's own scatter runs on.
+
+  order 965 — after JawaScrapfields' 960 (that step is desert-only, so no
+  real interaction), well after any terrain-generation genStep so the
+  RUT_ScaldWater* terrain grid (and its tags) already exists on the map when
+  this step's terrain validator reads it.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterScaldWreckHull</defName>
+    <order>965</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_ScaldWreckHull</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>2</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_ScaldShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterScaldWreckTank</defName>
+    <order>966</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_ScaldWreckTank</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>2</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_ScaldShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterScaldWreckFrame</defName>
+    <order>967</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_ScaldWreckFrame</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>2</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_ScaldShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
