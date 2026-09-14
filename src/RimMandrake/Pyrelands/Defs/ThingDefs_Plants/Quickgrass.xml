@@ -24,10 +24,11 @@
     every few days. lifespanDaysPerGrowDays 21 keeps the lifespan at the
     same ~21 days as always.
 
-    ⚠️ Same flagged-not-guessed tint assumption as EmberGrass.xml /
-    ScorchFruit.xml: no vanilla plant sets graphicData <color>; if CutoutPlant
-    ignores it the plant renders plain green — cosmetic only. The colour is
-    the ruled flora accent, regrowth green #62c944.
+    Art (owner-approved 2026-09-14): green-gold "waving golden grass" baked
+    into the pixels — no graphicData tint (a tint would multiply over the
+    baked gold and kill it). Variants A/B are the TALL stage; sprout/half
+    stage art is staged at Textures/Things/Plant/RM_FE_QuickgrassStages/ for
+    the growth-keyed selector owed by QUICKGRASS_GROWTH_STAGES_1.
   -->
 
   <ThingDef ParentName="PlantBase">
@@ -47,7 +48,6 @@
     <graphicData>
       <texPath>Things/Plant/RM_FE_Quickgrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(98, 201, 68)</color>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T16:49:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T17:15:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1587,3 +1587,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BOOMALOPE_CUT_EVERYWHERE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
+
+## PYRELANDS_FACING_REGRESSION_1 Creature facing inverted on both axes despite FACING_COMPLETE closed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_FACING_REGRESSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FACING_REGRESSION_1.md
+
+## NUNA_ART_REGEN_1 Nuna art regeneration
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NUNA_ART_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NUNA_ART_REGEN_1.md
+
+## ANOOBA_DRAWSIZE_FIX_1 Anooba renders far oversized on Pyrelands map
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ANOOBA_DRAWSIZE_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANOOBA_DRAWSIZE_FIX_1.md
+
+## IRIAZ_ART_REGEN_1 Iriaz art regeneration
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/IRIAZ_ART_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/IRIAZ_ART_REGEN_1.md
