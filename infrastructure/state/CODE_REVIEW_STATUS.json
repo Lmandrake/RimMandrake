@@ -1289,6 +1289,12 @@
     "hash": "f86eadd2160a990b8df4a15acbd7a2a418d13df67b7737a629c23888937a8afc",
     "sha": "ce17e0865"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_GradientSurge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "6b099913121e5eb15e72d4b1249dfdc8d16a68363bb4094fd79fc0083648e87d",
+    "sha": "3901f320b"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs": {
     "cleanCount": 2,
     "date": "2026-09-14",
@@ -1318,6 +1324,18 @@
     "date": "2026-09-13",
     "hash": "04d83688614685243f0c1c743aca59b0a0f06a5bb9faf45b03c79e49ab3831b2",
     "sha": "b1a2aa399"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisRepaint.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "c8d85d48af398b0b355c71b5428c818724b3a784493ba4e4774954881dccdd42",
+    "sha": "3901f320b"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientSurgeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "6c7d87d92aa42ea6a74973ae48fd15a502866b1cb713bfb7a5b746e97887611d",
+    "sha": "3901f320b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_LocalGrowthAura.cs": {
     "cleanCount": 1,
@@ -1354,6 +1372,12 @@
     "date": "2026-09-13",
     "hash": "0eb5130cb31b840947ad8db7579425f3c81c83d0905a4dbcdc87e1128b6de3b1",
     "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GradientAxis.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "c46811ada2e049847e23bf331f56e97581a309c53c8cd8fd27dce5c01821b373",
+    "sha": "3901f320b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_ThresholdSmokeColumn.cs": {
     "cleanCount": 1,
