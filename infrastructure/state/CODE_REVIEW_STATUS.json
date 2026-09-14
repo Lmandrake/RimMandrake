@@ -1085,6 +1085,18 @@
     "hash": "ce3e508b178733d92d82c5ae2538fc32e011fdb158c8400425cfeffb4d2bcd40",
     "sha": "2eee1995f"
   },
+  "src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/RM_ScaldArmor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "0b579fa6c3ba1ddda69fe745a97b243c4e7e4cdc1000ddddb256490822bdef57",
+    "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "cc8bb268ca76fd78c58cd49f743afa7ed028bee9ea77cda6682725d9501898e6",
+    "sha": "0e38767e7"
+  },
   "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs/RM_GasBases.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1212,10 +1224,34 @@
     "sha": "1ae30640a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-13",
+    "hash": "46ccb7e245b9ef3b369e2b95bd885637d2866182086d4f1b324515927ff6928a",
+    "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs": {
     "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "08312e40d9b360f14ed6725a25375c4a1077dd2dbf5fd674daf36f1535263ff4",
-    "sha": "47ae589d5"
+    "date": "2026-09-13",
+    "hash": "19f49194330012b379e9eca5a9f285f4551cbb06c80841bf1f20226b14797fe9",
+    "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "0eb5130cb31b840947ad8db7579425f3c81c83d0905a4dbcdc87e1128b6de3b1",
+    "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "0495ab98523c565169780c1ed176c98ac773e6037fbbc919da74d024357f4ef7",
+    "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/WeatherPulseExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "8b2cbb753a3e1281db3a4d2a943c7084284297185529aa398980a8fd0583ee16",
+    "sha": "0e38767e7"
   },
   "src/RimMandrake/FloodedCanyon/About/About.xml": {
     "cleanCount": 1,
@@ -13515,6 +13551,12 @@
     "hash": "55bd8a267dc59471e5cbdf40a8cc49728365e906a2e49191b86491eb945d3856",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "1093fb713438e00c3490398a32007c5487282f5a05bd83c33c52f35f40eb3041",
+    "sha": "0e38767e7"
+  },
   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -13562,6 +13604,12 @@
     "date": "2026-09-09",
     "hash": "a437559251e4d717244c8bb5af3538e353a430eae29ecbb8278b6ac45bde81dc",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ForgePulse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "1d0e04405aef62b400bbc04bb4b92ce2fecdb683a91bf10c108eede069692075",
+    "sha": "0e38767e7"
   },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml": {
     "cleanCount": 1,
@@ -13712,6 +13760,18 @@
     "date": "2026-09-09",
     "hash": "92a82d08e8734592169dd8f3ac2407ed774a15c64c581433c104c1ef91399b32",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_BoilingRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "29c90b6719f95c91a8b62444a4dd27a38c4841239cb25e197c738f8031579573",
+    "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_ForgeStill.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a0ce81fd55cf3891689088e1aacd92aecf7aad80efad27278bd5ea5d40e354b0",
+    "sha": "0e38767e7"
   },
   "src/RimUtinni/UtinniPatches/LICENSE": {
     "cleanCount": 1,
@@ -14078,6 +14138,12 @@
     "date": "2026-09-09",
     "hash": "d3b92ca056d90019a1210a1483e5b6ac9e62049a3057c6b516e9fdcb3c058f55",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
+    "sha": "0e38767e7"
   },
   "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
     "cleanCount": 1,
