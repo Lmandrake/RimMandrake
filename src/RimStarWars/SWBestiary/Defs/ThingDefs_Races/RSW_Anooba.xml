@@ -186,27 +186,35 @@
     <combatPower>80</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>3~6</wildGroupSize>
+    <!-- ANOOBA_DRAWSIZE_FIX_1: the donor's own drawSize ladder (1.5/2/3,
+         copied verbatim on port) put the adult Anooba's drawSize ABOVE
+         vanilla Warg's (2.15) despite Anooba's baseBodySize (0.95, above)
+         being smaller than Warg's (1.4) — the donor's own def, ported
+         verbatim, was the bug. Rescaled to Warg's drawSize/bodySize ratio
+         (2.15/1.4 ~= 1.54) applied to Anooba's own 0.95, giving an adult
+         drawSize of ~1.46, rounded to 1.5; pup/juvenile keep the donor's
+         original 0.5/0.667 ratio to the adult value. -->
     <lifeStages>
       <li>
         <label>anooba pup</label>
         <labelPlural>anoobas pups</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_m</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Anooba/Anooba_f</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.75</drawSize>
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.75</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_m</texPath>
-          <drawSize>2</drawSize>
+          <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
             <offset>(0,0,0.0)</offset>
@@ -214,7 +222,7 @@
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Anooba/Anooba_f</texPath>
-          <drawSize>2</drawSize>
+          <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
             <offset>(0,0,0.0)</offset>
@@ -222,13 +230,13 @@
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
-          <drawSize>2</drawSize>
+          <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_m</texPath>
-          <drawSize>3</drawSize>
+          <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -236,7 +244,7 @@
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Anooba/Anooba_f</texPath>
-          <drawSize>3</drawSize>
+          <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -244,7 +252,7 @@
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
-          <drawSize>3</drawSize>
+          <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

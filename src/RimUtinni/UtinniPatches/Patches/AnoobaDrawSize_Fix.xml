@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    ANOOBA_DRAWSIZE_FIX_1 — owner, live review 2026-09-14: the Anooba renders
+    far oversized.
+
+    Root cause is in the DONOR mod itself, "Star Wars Animal Collection
+    (Continued)" (packageId mlie.starwarsanimalcollection, workshop id
+    3497316713) — this is the mod whose bare `Anooba` PawnKindDef is wired
+    into RM_FE_Pyrelands's wildAnimals by WildAnimals_Pyrelands.xml (NOT this
+    repo's own RSW_Anooba port in src/RimStarWars/SWBestiary, which is a
+    separate def used only to resolve a ZBiome_Grasslands collision and is
+    not wired to any biome by that change).
+
+    MEASURED in the donor's own file
+    (workshop/content/294100/3497316713/1.6/Defs/ThingDefs_Races/
+    Races_Animal_SW.xml, PawnKindDef defName="Anooba"): adult lifeStage
+    drawSize is 3.0 against a race baseBodySize of 0.95 — bigger than
+    vanilla Warg's adult drawSize of 2.15 despite Warg's baseBodySize being
+    larger (1.4). Applying Warg's own drawSize/bodySize ratio (2.15/1.4 ~=
+    1.54) to Anooba's 0.95 gives ~1.46, rounded to 1.5; pup/juvenile keep the
+    donor's original 0.5/0.667 ratio to the adult value (0.75/1.0/1.5).
+
+    Same numbers (1.5/2/3 verbatim) were separately fixed in this repo's own
+    RSW_Anooba.xml port for the unrelated collision-fix def — that edit does
+    NOT reach the live Pyrelands Anooba, hence this patch.
+  -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.75</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[1]/femaleGraphicData/drawSize</xpath>
+          <value><drawSize>0.75</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[1]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.75</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.0</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[2]/femaleGraphicData/drawSize</xpath>
+          <value><drawSize>1.0</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.0</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.5</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[3]/femaleGraphicData/drawSize</xpath>
+          <value><drawSize>1.5</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Anooba"]/lifeStages/li[3]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.5</drawSize></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
