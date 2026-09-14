@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.firewaspartoverride</packageId>
+  <name>Fire Wasp Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces sarg.alphaanimals' AA_FireWasp art (all three
+lifeStages share one texPath) with custom generated Pyrelands-themed art
+(pyrelands_firewasp_v2). The dessicated-corpse texture
+(AA_Dessicated_FireWasp) stays on donor art. LABEL/ART ONLY - no defName
+touched, no Defs, no Patches, loose Textures/ only, same relative path
+(Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_&lt;facing&gt;) the donor uses
+so this mod's later load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.barbslingerartoverride</packageId>
+  <name>Barbslinger Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces sarg.alphaanimals' AA_Barbslinger art (primary look
+only - the AA_BarbSlinger2/3/4 alternate looks and the dessicated-corpse
+texture stay on donor art) with custom generated Pyrelands-themed art
+(pyrelands_barbslinger_v2). LABEL/ART ONLY - no defName touched, no Defs,
+no Patches, loose Textures/ only, same relative path
+(Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_&lt;facing&gt;) the donor
+uses so this mod's later load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>
