@@ -257,11 +257,11 @@
     <wildPlants>
       <RM_FE_Plant_EmberGrass>9.0</RM_FE_Plant_EmberGrass>
       <RM_FE_Plant_Quickgrass>3.8</RM_FE_Plant_Quickgrass>
+      <!-- Owner 2026-09-14: "I still see the trees, agave, and dandelions.
+           I don't want those." Bush and pincushion cactus were not named
+           and stay pending his word. -->
       <Plant_Bush>0.55</Plant_Bush>
-      <Plant_Agave>0.35</Plant_Agave>
       <Plant_PincushionCactus>0.3</Plant_PincushionCactus>
-      <Plant_TreeDrago>0.12</Plant_TreeDrago>
-      <Plant_Dandelion>0.3</Plant_Dandelion>
     </wildPlants>
 
     <!--
