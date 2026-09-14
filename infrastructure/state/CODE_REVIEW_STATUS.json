@@ -1247,6 +1247,12 @@
     "hash": "af1c7c77cd8f9d5d830620626ce92ba2f15c90f21f55037f36209d958cae3929",
     "sha": "ce17e0865"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompDryFieldEmitter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "af2040cd6a82c03568bab4290e1870e366ae0cf9b7f522d199b22f7c27fcdf35",
+    "sha": "946fc0b04"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFilthTrail.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1296,10 +1302,10 @@
     "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 5,
+    "cleanCount": 6,
     "date": "2026-09-14",
-    "hash": "c7e96f2014ab0a23dd36dffbbf47b846c4b753be73209c05acd559ee0fcd082c",
-    "sha": "c76fc40a0"
+    "hash": "cf6035225de53b1112791737f700c8c4355a6488d5b25f6e91b2bc80a988bd92",
+    "sha": "946fc0b04"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_GradientSurge.cs": {
     "cleanCount": 1,
@@ -1312,6 +1318,12 @@
     "date": "2026-09-14",
     "hash": "cca8b759437dd1edd70ebe45ea1bff604626167efd71baa3853c41f468309f86",
     "sha": "0cdbc22b8"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WetBulb.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "cef7f73503b392cb3bc8007c4063c517cd56c373d70352532ba94cfb603e99d9",
+    "sha": "946fc0b04"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_EdgeBandFilth.cs": {
     "cleanCount": 1,
@@ -1397,6 +1409,12 @@
     "hash": "9e12f2c8067607d4c1a9541d494147851b54e1241a17e3382b10c120adaa4563",
     "sha": "b3a646c3f"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DryRooms.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "19c6520d93f3b53fd24e1ebc927f8656c1e43f5134c09c23f37947967cd0c712",
+    "sha": "946fc0b04"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1474,6 +1492,12 @@
     "date": "2026-09-14",
     "hash": "ff8351497694b423011bfe30d32ccd113f1bf753bf80fa285744110d771b09df",
     "sha": "c76fc40a0"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "5bec03fe92822e04c09d0134fdaba784a1cd52f116d66d14b7e2864e37674984",
+    "sha": "946fc0b04"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_ContagionProbe.cs": {
     "cleanCount": 1,
