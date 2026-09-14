@@ -636,3 +636,216 @@ owner card 1's own "telegraphy per the mouse-line doctrine" pacing note
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml` (new, `DEPLOY_HOLD`'d)
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_TarBlaze.xml` (new)
 - `src/DEPLOY_HOLD.txt` (edited: `RUT_MoatFusePost.xml` entry)
+
+## S3 build pass — 2026-09-13
+
+Build order step 6 (S3, "the tar beast set-pieces"), per `sump_kit_spec.md`'s
+own "Build order". No bridge, no game, no quicktest this pass, per task
+scope.
+
+**Precondition check: `RM_GenStep_PlacedSetPieces` is no longer missing.**
+A concurrent window built it since this item's own S1 spike pass recorded it
+absent (`b47fe61a0 File RM_GENSTEP_PLACED_SETPIECES_1`) — read in full
+before writing anything: a generic `GenStep_Scatterer` subclass with an
+abstract `RM_SetPieceElement` hook, not rebuilt this pass. **A second
+concurrent window (MIASMA_MECHANICS_1 M6) landed its own build in this same
+shared worktree mid-pass, uncommitted at the time this pass started** —
+`RM_SetPieceElement_SpawnMarker.cs` ("spawn one configured Building at the
+site") and `RM_SetPieceElement_AnchoredPawn.cs` ("spawn a pawn and anchor
+it") both appeared in `Source/` between this pass's first `ls` and its first
+`Read` of the `.csproj`. Per this task's own instruction to check for and
+reuse a matching element before writing one: **`RM_SetPieceElement_SpawnMarker`
+is reused verbatim** for `RUT_BeastBulge` (a Building, not a pawn, at
+placement time — the dormant bulge only becomes a pawn later, on wake) — no
+Sump-specific spawn-building element was written. `RM_SetPieceElement_AnchoredPawn`
+does not fit S3's own shape (nothing is anchored at placement time) and was
+left untouched.
+
+**Emergence mechanism: NOT a new `CompCanBeDormant` subclass, and not
+`TunnelHiveSpawner` either — a closer stock comp exists and was found
+before writing anything.** The spec's own "crib the `TunnelHiveSpawner`
+emergence shape" pointed at `GroundSpawner`'s despawn-then-spawn-at-the-
+same-cell pattern, but that class drives off its own fixed internal timer
+(`GroundSpawner.Tick()`'s `secondarySpawnTick`), not `CompCanBeDormant`.
+Checked the live install's own `Data/Core/Defs/ThingDefs_Buildings/
+Buildings_Natural.xml` directly (not guessed) and found vanilla ships
+exactly this item's own shape already: `CompPawnSpawnOnWakeup`/
+`CompProperties_PawnSpawnOnWakeup` (`RimWorld/CompPawnSpawnOnWakeup.cs`,
+read in full), the comp `CocoonMegaspider`/`CocoonMegascarab`/
+`CocoonSpelopede` use — "a dormant Building that spawns a pawn and destroys
+itself the instant its sibling `CompCanBeDormant.Awake` flips true," driven
+by the SAME `CompCanBeDormant` this item's own dormancy already uses, not a
+separate timer. `RUT_BeastBulge.xml` wires this stock comp directly; **no
+new C# subclass of `CompCanBeDormant` was written.**
+
+**🔴 `tickerType Normal` is load-bearing, confirmed against the live
+decompile, not assumed.** `CompWakeUpDormant`'s own
+`wakeUpOnThingConstructedRadius` check and `CompPawnSpawnOnWakeup`'s own
+Awake-poll both run from `CompTick()` only (neither overrides
+`CompTickRare()`) — `Verse/TickManager.cs:310-313` confirms a
+`TickerType.Rare` Thing never receives `CompTick()` calls at all, only
+`CompTickRare()`. With `tickerType Rare`, both the construction-radius wake
+cause and the emergence transition itself would silently never fire.
+`wakeUpOnDamage` is unaffected either way (`PostPostApplyDamage` fires
+synchronously from `Thing.TakeDamage`, independent of tickerType).
+`RUT_BeastBulge.xml` sets `tickerType Normal` explicitly for this reason,
+documented in its own header.
+
+**New C# — one small comp, generic, not Sump-specific:**
+
+- `RM_CompBeastWakeRelay.cs` — the only new class the dormancy/emergence
+  side of S3 needed, since vanilla covers the rest. Subscribes to S2's
+  `RM_CompWorkedLottery.BeastWakeRequested` static event (`PostSpawnSetup`/
+  unsubscribes `PostDeSpawn`) and relays it into the **native**
+  `CompWakeUpDormant.Activate(Thing)` call — this satisfies the item brief's
+  own "explicit `Activate()` call from S2's dig lottery" instruction without
+  inventing a parallel wake API next to the stock one. **S1's own tie-in
+  needed no code at all**: `RUT_TarBlaze`/the moat ignition already work
+  through real fire and explosion damage (`RM_CompFloodIgniter.cs`'s own S1
+  build), which reaches `RUT_BeastBulge` through the same native
+  `wakeUpOnDamage` field every other damage source uses — confirmed, not
+  assumed, that `PostPostApplyDamage` fires synchronously regardless of
+  tickerType. Adding a second signal path from S1 alongside the field that
+  already covers it would have been redundant.
+
+- `RM_CompStationEater.cs` — `CompProperties_StationEater` +
+  `RM_CompStationEater` (config + satiation tracking) +
+  `RM_JobGiver_EatNearestStructure` + `RM_JobDriver_EatStructure`, generic,
+  reusable. **❓ breach-seam resolved**: NOT `JobGiver_AIBreaching`/
+  `BreachingUtility` (both read in full this pass) — that machinery is
+  raid-specific end to end (a `Lord` running `LordJob_AssaultColonyBreaching`,
+  a per-Lord `BreachingGrid`, target selection gated on the pawn's own
+  EQUIPPED VERB via `BreachingUtility.FindVerbToUseForBreaching`). A lone,
+  factionless, weaponless creature has none of that; reusing it would mean
+  building a fake one-pawn Lord/BreachingGrid to satisfy an API shaped for
+  raid squads. The custom `JobGiver`/`JobDriver` pair instead reuses the
+  SAME `GenClosest.ClosestThingReachable` call `CompWakeUpDormant`'s own
+  `wakeUpOnThingConstructedRadius` check already makes, and applies direct
+  `DamageInfo` ticks with no verb/Lord involved. **"Never hunts pawns" is
+  structural**: `RM_JobGiver_EatNearestStructure` only ever searches
+  `ThingRequestGroup.BuildingArtificial`, which cannot return a `Pawn` —
+  there is no code path by which this JobGiver could hand out a pawn
+  target, tuned low or otherwise.
+
+  `RM_JobDefs_StationEater.xml` (new JobDefs file) backs the JobDriver.
+
+  **NOT wired onto any live PawnKindDef/ThingDef this pass** — same
+  "compiles now, first XML consumer later" posture S1/S2's own spike pass
+  already used for `RM_CompFloodIgniter`/`RM_CompWorkedLottery`. Wiring
+  this comp onto the real tar-beast's own ThingDef is roster-pass work: it
+  requires authoring that ThingDef, which this task's own brief explicitly
+  forbids this pass (placeholder PawnKindDef only). Flagged here, not
+  silently skipped: **the station-eating behavior does not run in-game
+  yet** — only the emergence (dormant bulge → a real, generatable pawn) is
+  live content this pass.
+
+**New content XML:**
+
+- `RUT_BeastBulge.xml` — the dormant tar-beast set-piece, `ParentName=
+  "BuildingNaturalBase"` (cribbed from vanilla `CocoonBase`'s own use of the
+  same abstract parent, read directly from the live install). Stock
+  `CompProperties_CanBeDormant` + `CompProperties_WakeUpDormant`
+  (`wakeUpOnDamage true`, `wakeUpOnThingConstructedRadius 20` — the spec's
+  own INVENTED value) + stock `CompProperties_PawnSpawnOnWakeup` + the new
+  `RM_CompBeastWakeRelay`. **`emergePawnKind: Thrumbo` is an explicit,
+  loudly-commented PLACEHOLDER** — an existing, already-shipped
+  PawnKindDef, per this task's own instruction not to author the real
+  tar-beast kind. `points: 500~500` matches Thrumbo's own `combatPower`
+  (500, confirmed via RimSage) — `CompPawnSpawnOnWakeup.GeneratePawns` only
+  rolls a kind whose `combatPower` fits the remaining points pool.
+  `pawnSpawnRadius: 2~8` (widened from the stock default of 2) is
+  INVENTED-BUILD: `RM_TarDeep` is `Impassable` (`WaterDeepBase`-derived), so
+  the walk-cell search `CompPawnSpawnOnWakeup` itself runs at wake time
+  needs room to find dry ground past the tar region's own edge — not
+  verified live, out of this pass's no-bridge scope.
+- `RUT_SumpTarBeastGenStep.xml` — `RUT_GenStep_TarBeastPlacement`, an
+  `RM_GenStep_PlacedSetPieces` instance. **Site validator is entirely
+  stock**: `Verse.ScattererValidator_TerrainDef` (`terrainDef: RM_TarDeep`,
+  `radius: 2`) — no new validator class needed for "deep-tar regions."
+  **"Far from map edge" is ALSO stock**: `GenStep_Scatterer`'s own
+  `minEdgeDistPct` field (`0.15`, INVENTED — the spec names no number).
+  `count: 1` — the spec's own "N dormant beasts (INVENTED: 1-2)" collapses
+  to a fixed 1 this pass, since `GenStep_Scatterer` has no `IntRange` count
+  field (only a fixed int or a density-based
+  `countPer10kCellsRange`) and "1-2" is itself unmechanized INVENTED tuning;
+  widening to a density range is a one-line change later, flagged here, not
+  silently dropped. `order: 780` — after terrain/mutator gen (210/220) and
+  the generic `ScatterRuinsSimple` (750, read via RimSage), ahead of
+  `AncientJunkClusters` (960, also read via RimSage). `warnOnFail: false` —
+  `RM_TarDeep` only generates on the Sump biome, so this validator doubles
+  as the GenStepDef's own biome gate (same posture `RM_GenStep_GradientAxis`'s
+  own header already documents for this mod); a "no deep tar here" result
+  on every non-Sump map is expected, not exceptional.
+- `RUT_SumpTarBeastGenStep_Register.xml` — registers
+  `RUT_GenStep_TarBeastPlacement` onto `Base_Player`'s `genSteps`, same
+  `PatchOperationConditional`/`PatchOperationAdd` shape as this folder's own
+  `RUT_Miasma_GradientAxis_Register.xml` precedent (read before writing
+  this).
+- `RM_JobDefs_StationEater.xml` — `RM_EatStructure` JobDef backing
+  `RM_JobDriver_EatStructure`.
+
+**DEPLOY_HOLD.** `RUT_BeastBulge.xml` + `RUT_SumpTarBeastGenStep.xml` +
+`RUT_SumpTarBeastGenStep_Register.xml` held together — same "no art yet,
+held with what keys on its defName" shape as this session's own
+`RUT_ScaldWrecks.xml`/`RUT_ScaldWreckScatter.xml`/
+`RUT_ScaldWreckScatter_Register.xml` hold. `RUT_BeastBulge` is genuinely new
+bespoke content with no vanilla/existing-mod texture that reads as "a
+smooth bulge in tar."
+
+**Build.**
+```
+"C:\Users\Mandrake\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj -c Release
+```
+→ 0 warnings, 0 errors (2 new `.cs` files + 2 new `<Compile>` entries, built
+alongside two OTHER concurrent windows' own same-pass additions to this
+shared `.csproj` — MIASMA_MECHANICS_1 M6's 6 new files and a second,
+unrelated window's `RM_GenStep_EdgeBandFilth.cs`/
+`RUT_IncidentWorker_ContagionProbe.cs` entries, both still uncommitted at
+build time, both left untouched).
+
+**Validate.** `validate_patch.py` against the live 99-mod set (`--defs`
+Data + Mods + Workshop): 4 files, **0 errors, 1 warning** — the expected
+missing-texPath warning on `RUT_BeastBulge.xml` (`DEPLOY_HOLD`'d, per
+above) plus expected info lines ("no def in the load set uses that class")
+for this pass's own new classes and for the stock
+`Verse.ScattererValidator_TerrainDef` reference — same pattern every prior
+pass in this item has recorded.
+
+**Self-review.** `RM_CompBeastWakeRelay.cs`, `RM_CompStationEater.cs`, and
+all 4 new content/JobDefs XML files read in full, cross-checked against the
+decompile for every engine claim above (`CompCanBeDormant`,
+`CompWakeUpDormant`, `CompPawnSpawnOnWakeup`, `GenStep_Scatterer`,
+`ScattererValidator_TerrainDef`, `TickManager`/`TickList` tickerType
+dispatch, `JobGiver_AIBreaching`/`BreachingUtility`, `GenClosest`,
+`ToilFailConditions`) — no defects found; all 6 marked `CLEAN` in
+`CODE_REVIEW_STATUS.json`. `RM_EnvironmentalHazards.csproj` and
+`DEPLOY_HOLD.txt` left unmarked (shared/multi-author and ledger files, same
+posture every prior pass in this item has used).
+
+**Owed, not done, explicitly**: the real tar-beast `PawnKindDef`/`ThingDef`
+(roster pass — carries the real body, the real `RM_CompStationEater` wiring,
+and any `ThinkTreeDef` needed to actually drive
+`RM_JobGiver_EatNearestStructure` in play); station-eating is therefore
+**not yet live** even though the comp/JobGiver/JobDriver compile and are
+ready; satiation's own "despawn into a fresh bulge at a new deep-tar cell"
+re-submergence (the spec's own "may land one build later" allowance —
+`RM_CompStationEater.Satiated` ships the check, not the re-submergence);
+`RUT_BeastBulge`'s own art (`DEPLOY_HOLD`'d); the real "1-2 per map" count
+mechanism if ever widened past a fixed 1; any live/quicktest proof that a
+raider actually wakes the bulge, that the emerged pawn finds a walkable
+spawn cell near deep tar, or that the S2 signal relay fires correctly in
+play (all explicitly out of this task's no-bridge scope); S4 (mouse-line
+telegraphy, blocked on this item, not this pass's scope — now unblocked for
+a future pass). S1/S2/S5/S6 untouched. Item stays in `doing`.
+
+## files (S3 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (edited: 2 new `<Compile>` entries, shared/multi-author this pass)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_StationEater.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml` (new, `DEPLOY_HOLD`'d)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml` (new, `DEPLOY_HOLD`'d)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml` (new, `DEPLOY_HOLD`'d)
+- `src/DEPLOY_HOLD.txt` (edited: 3-file `RUT_BeastBulge` entry)

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SumpTarBeastGenStep_Register.xml   UtinniPatches — SUMP_MECHANICS_1 S3
+
+  Registers RUT_GenStep_TarBeastPlacement onto Base_Player, the player's
+  home-map generator — same PatchOperationConditional/PatchOperationAdd
+  shape and same reasoning as this folder's own precedent,
+  Patches/RUT_Miasma_GradientAxis_Register.xml (read directly before writing
+  this).
+
+  MayRequire on the added <li> itself (not just on the GenStepDef's own
+  declaration) — same pattern as that precedent — so the cross-reference
+  cannot dangle if mandrake.rm.environmentalhazards is absent from the
+  active mod list.
+
+  DEPLOY_HOLD'd together with RUT_BeastBulge.xml and
+  RUT_SumpTarBeastGenStep.xml (src/DEPLOY_HOLD.txt) — RUT_BeastBulge has no
+  art yet.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards">RUT_GenStep_TarBeastPlacement</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
