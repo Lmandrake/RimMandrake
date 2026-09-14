@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TibannaGas.xml                     UtinniPatches · FORGE_MECHANICS_1 F2
+  ============================================================================
+  forge_kit_spec.md F2 "beldon herds + the tibanna harvest" (§4, §7, ban 5).
+  "There is no other tibanna on the planet" — this ThingDef is the ONLY
+  source: produced exclusively by RM_CompGatherableGas (the F2 spike's
+  already-compiling comp, RUT_TibannaTap_BeldonWiring.xml this same pass
+  attaches it to RSW_Beldon). Ban 5's own linter check ("no RecipeDef
+  products, no butcher yield, no trader-stock tag outside Imperial hands")
+  applies to THIS def by construction: it appears in no <products> of any
+  RecipeDef, no ThingDef's <butcherProducts>, and no TraderKindDef's stock
+  generator anywhere in this repo — verified by repo-wide grep this same
+  pass (see FORGE_MECHANICS_1.md's own build-pass write-up for the exact
+  command and result). Trade wiring is explicitly TIBANNA_EMBARGO_PLOT_1's
+  job, not this file's.
+
+  Plain resource good, no comps of its own — same shape as RUT_WickStem.xml
+  (SUMP_MECHANICS_1 S5): the gathering comp lives on the ANIMAL, not the
+  item, so the item itself needs nothing beyond ResourceBase.
+
+  MarketValue is an explicit INVENTED PLACEHOLDER, not a real pricing call —
+  TIBANNA_EMBARGO_PLOT_1 owns the real figure (a planet-wide monopoly good
+  should price accordingly; left non-zero only so the def is legally
+  tradeable rather than reading as worthless in the interim).
+
+  🔴 Texture: intended to reuse vanilla Chemfuel's own icon
+  (Things/Item/Resource/Chemfuel) as a pressurized-gas placeholder, same
+  "borrow the nearest legible vanilla icon" practice RUT_WickStem.xml
+  established — but validate_patch.py flags that choice as a hard ERROR
+  ("'things/' IS this mod's own texture namespace"), because UtinniPatches
+  already ships its own Things/Item/* tree elsewhere, so its own-namespace
+  heuristic cannot tell a deliberate cross-mod reuse from a typo in this
+  mod's own art. Rather than ship a disputed claim with no live game access
+  to settle it, this def points at its OWN new texPath instead
+  (Things/Item/Resource/RUT_TibannaGas) and is held via src/DEPLOY_HOLD.txt
+  until art lands — same shape as every other new-art hold in this build
+  pass (RUT_VentSmelter/Kiln/Forge, RUT_DeadCreep, RUT_DyingCreep).
+
+  Flammability 0.5, not Chemfuel's 2.0 and no CompProperties_Explosive: raw
+  tibanna gas is a contained industrial commodity in this kit's own telling
+  (metered by the Empire, tapped like shearing), not a walking incendiary —
+  the volatility framing belongs to refined chemfuel, not this good.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_TibannaGas</defName>
+    <label>tibanna gas</label>
+    <description>Pressurized gas tapped from a living beldon, like shearing. There is no other source of it on the planet — the Empire's own station exists to meter this.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_TibannaGas</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.03</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

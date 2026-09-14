@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ContagionRingScatter_Register.xml  UtinniPatches · FORGE_MECHANICS_1 F5
+  ============================================================================
+  RUT_ContagionRingScatter.xml declares one GenStepDef; a GenStepDef on its
+  own runs on no map (same fact RUT_ScaldWreckScatter_Register.xml's own
+  header documents for this exact file family). This is that registration.
+
+  Scope: Base_Player, GLOBAL — same target and same xpath shape as
+  RUT_ScaldWreckScatter_Register.xml. Safe everywhere, not just the Forge:
+  RM_GenStep_EdgeBandFilth's own Generate() no-ops silently on any map whose
+  Biome isn't in its configured `biomes` list (RUT_TheForge only, this
+  instance) — registering it globally costs nothing on every other biome's
+  map generation beyond one Biome-equality check.
+
+  No MayRequire needed on the PatchOperation itself: RUT_ContagionRingScatter
+  is this same mod's own def, MayRequire-gated on itself (this file's
+  sibling), always loaded together with this patch.
+
+  Core/Defs/MapGeneration/BasePlayerMapGenerator.xml, MapGeneratorDef
+  ParentName="MapCommonBase" Name="Base_Player", <genSteps> is a plain list
+  of GenStepDef names — same citation the wreck-scatter registration and
+  JawaResource_Scrapfields.xml both already give.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RUT_ContagionRingScatter</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

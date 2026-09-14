@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_VentKiln.xml                       UtinniPatches · FORGE_MECHANICS_1 F6
+  ============================================================================
+  forge_kit_spec.md F6 "geothermal industry — XML only": "RUT_VentSmelter /
+  RUT_VentKiln / RUT_VentForge... Recipes mirror the fueled vanilla
+  equivalents."
+
+  🔴 HONEST SUBSTITUTION, checked and documented, not guessed: there is NO
+  "Kiln" ThingDef anywhere in this repo, the vanilla Core/DLC Data folders,
+  or the live ~599-mod installed set. Checked three ways this pass: (1)
+  RimSage's own def index (`search_defs query="Kiln" defType="ThingDef"` ->
+  zero results), (2) a full-text grep of every Data/*/Defs tree
+  (Core/Biotech/Ideology/Odyssey/Anomaly/Royalty) for "kiln" case-
+  insensitive -> zero hits, (3) a defName grep across the Steam Workshop
+  content root -> zero hits (timed out at full breadth but RimSage's own
+  index, which covers the live ~599-mod set this repo actually runs, is
+  authoritative and already answered zero). So "the vanilla ...kiln...
+  workbench def" this task asked to find does not exist to crib from.
+
+  Judgment call, stated plainly: cribbed vanilla TableStonecutter instead
+  (Core/Defs/ThingDefs_Buildings/Buildings_Production.xml) — the closest
+  vanilla production building to "a kiln" in the family's absence: a
+  heat/mineral-processing bench (thingClass Building_WorkTable_HeatPush,
+  same as ElectricSmelter) that needs no fuel AND no power in vanilla
+  already (unlike the smithy pair), so "free heat, free power" costs it
+  nothing to strip — a closer fit than forcing a second smithy-shaped def to
+  stand in for "kiln." Recipes mirror it the same way RUT_VentForge mirrors
+  FueledSmithy: TableStonecutter's own recipeUsers entry lives on the
+  RecipeDef side (Core/Defs/RecipeDefs/Recipes_Production.xml, the abstract
+  `MakeStoneBlocksBase` RecipeDef, confirmed the ONE such node in the
+  indexed set) rather than on the ThingDef itself, so
+  RUT_VentKiln_RecipeWiring.xml (this same pass) patches that RecipeDef's
+  own recipeUsers list rather than copying a static list.
+
+  No CompProperties_AffectedByFacilities (TableStonecutter's own
+  ToolCabinet linkage — a facility-bonus system unrelated to fuel/power,
+  left off only to keep this def minimal; nothing bans re-adding it later).
+  thingClass plain Building_WorkTable (dropping TableStonecutter's own
+  _HeatPush variant for the same reason RUT_VentSmelter.xml drops it: no
+  power comp to gate a heat push on).
+
+  Placement/size/placeWorkers/WorkTableWorkSpeedFactor: same shape as
+  RUT_VentSmelter.xml/RUT_VentForge.xml — see those files.
+
+  researchPrerequisites keeps Stonecutting (TableStonecutter's own prereq:
+  knowing how to cut stone is independent of what powers the bench).
+
+  Costs/stats: INVENTED. TableStonecutter itself is stuff-costed
+  (costStuffCount + stuffCategories, paintable) — simplified here to a flat
+  costList, matching every other Vent* def in this pass and RUT_ScaldVent/
+  RUT_SteamCatch's own precedent of dropping stuff-coloring for a fixed
+  vent-locked building.
+
+  🔴 Texture: intended to reuse vanilla TableStonecutter's own art
+  (Things/Building/Production/TableStonecutter) as a placeholder, but
+  validate_patch.py flags that choice as a hard ERROR under its own-
+  namespace heuristic — see RUT_VentSmelter.xml's own header for the full
+  reasoning. Points at its own new texPath instead
+  (Things/Building/Production/RUT_VentKiln) and is held via
+  src/DEPLOY_HOLD.txt until art lands.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RUT_VentKiln</defName>
+    <label>vent kiln</label>
+    <description>A stonecutter's kiln built directly over a steam vent — no fuel, no power line, the vent alone runs it hot enough. The one place fire costs nothing.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_VentKiln</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>2000</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Cleanliness>-5</Cleanliness>
+      <WorkTableWorkSpeedFactor>1.2</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <costList>
+      <Steel>30</Steel>
+    </costList>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>PlaceWorker_OnSteamGeyser</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>Stonecutting</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

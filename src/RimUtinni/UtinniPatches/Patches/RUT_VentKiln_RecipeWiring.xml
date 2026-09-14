@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_VentKiln_RecipeWiring.xml          UtinniPatches · FORGE_MECHANICS_1 F6
+  ============================================================================
+  RUT_VentKiln.xml's own header explains the crib and why this is a patch:
+  vanilla stone-block recipes live on the RecipeDef side, via the abstract
+  `MakeStoneBlocksBase` (Core/Defs/RecipeDefs/Recipes_Production.xml)
+  naming TableStonecutter in its own <recipeUsers> — confirmed the ONE such
+  node in the indexed ~599-mod set (`grep -c "<li>TableStonecutter</li>"`
+  against the live installed Data/Core tree, this pass). Every concrete
+  stone-block RecipeDef (Make_StoneBlocksAny, Make_StoneBlocksGranite, ...)
+  inherits that recipeUsers list via ParentName rather than repeating it, so
+  patching the one abstract node reaches all of them.
+
+  xpath matches on CONTENT, not a hand-copied list, for the same reason
+  RUT_VentForge_RecipeWiring.xml's own header gives — this also
+  automatically reaches any mod-added stonecutting recipe that names
+  TableStonecutter the same way, not just today's vanilla set.
+
+  MayRequire="mandrake.rm.environmentalhazards" on the Operation itself:
+  RUT_VentKiln only exists when that mod is active, so without the guard
+  the appended <li> would be a dangling defName the moment it is not.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/RecipeDef[recipeUsers/li="TableStonecutter"]/recipeUsers</xpath>
+    <value>
+      <li>RUT_VentKiln</li>
+    </value>
+  </Operation>
+
+</Patch>

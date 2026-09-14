@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TibannaTap_BeldonWiring.xml        UtinniPatches · FORGE_MECHANICS_1 F2
+  ============================================================================
+  Wires the F2 spike class (RM_CompGatherableGas, already compiling,
+  src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableGas.cs) onto
+  the actual shipped Beldon — forge_kit_spec.md F2's own text: "a def named
+  Beldon already ships in the mod set... this kit attaches the comp to
+  whatever kind the roster lands; it ships no PawnKindDef."
+
+  The Beldon def as shipped: RSW_Beldon
+  (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Beldon.xml,
+  MLIE_FAUNA_ABSORPTION_1 Wave C — a port from mlie.starwarsanimalcollection
+  renamed under this repo's OWN RSW_ tier, not a donor/vendor mod's file we
+  don't control). Patched rather than hand-edited directly even though it is
+  repo-owned: RSW_Beldon.xml is generic RimStarWars-tier content ("any Star
+  Wars scenario"), and the tibanna tap is Utinni-tier campaign mechanics
+  (§8's Empire monopoly) — baking a Forge-specific comp straight into the
+  shared SWBestiary file would leak campaign content into the generic tier,
+  same discipline RUT_ForgePulse_BiomeWiring.xml (F1, this same item)
+  already applied to RUT_TheForge itself. PatchOperationAdd targets
+  RSW_Beldon's own existing <comps> node (already carries EggLayer +
+  Milkable) rather than replacing it.
+
+  MayRequire="mandrake.rm.environmentalhazards" is load-bearing: without
+  that mod, RM_CompGatherableGas.CompProperties_GatherableGas does not
+  exist, and an unguarded <li Class="..."> for a missing type silently
+  discards the WHOLE parent def (memory:
+  modextension-missing-type-discards-def) — the guard on the Operation
+  itself makes this a true no-op instead.
+
+  Tuning: interval 2 days, amount 12 — forge_kit_spec.md F2's own INVENTED
+  values, verbatim ("interval 2 days, amount 12 RUT_TibannaGas"). gatherDef
+  points at RUT_TibannaGas.xml (this same pass). fullnessLabelKey repoints
+  the comp's default "RM_GasPressure" generic key to the concrete
+  "tibanna pressure" flavor the kit spec's own text names for the inspect
+  line (RUT_TibannaPressure, Languages/English/Keyed/
+  RUT_Forge_Mechanics.xml, this same pass).
+
+  Sex-independent per the comp's own design (no milkFemaleOnly-equivalent
+  gate) — nothing in this patch changes that.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/ThingDef[defName="RSW_Beldon"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas">
+        <gatherIntervalDays>2</gatherIntervalDays>
+        <gatherAmount>12</gatherAmount>
+        <gatherDef>RUT_TibannaGas</gatherDef>
+        <fullnessLabelKey>RUT_TibannaPressure</fullnessLabelKey>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>

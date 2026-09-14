@@ -248,3 +248,50 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art ye
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldWrecks.xml         # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/MapGeneration/RUT_ScaldWreckScatter.xml         # BENCH: held with the ThingDefs it scatters, 2026-09-13
 UtinniPatches/Patches/RUT_ScaldWreckScatter_Register.xml           # BENCH: held with the ThingDefs it scatters, 2026-09-13
+
+# --- SUMP_MECHANICS_1 S3: RUT_BeastBulge + tar-beast scatter wiring, no art yet --
+# 2026-09-13, SUMP_MECHANICS_1 S3 build pass. RUT_BeastBulge.xml is new this
+# pass (the dormant tar-beast set-piece, "a smooth bulge in the black") with
+# a texPath under UtinniPatches/Textures/ that does not exist yet — same
+# missing-art shape as the Scald wreck hold above. Held TOGETHER with the
+# two files that key on its defName: RUT_SumpTarBeastGenStep.xml (its one
+# RM_SetPieceElement_SpawnMarker entry's <markerDef> is a dangling
+# cross-reference without the def deployed) and
+# RUT_SumpTarBeastGenStep_Register.xml (adds RUT_GenStep_TarBeastPlacement
+# to Base_Player's live genSteps — deploying it alone would run map
+# generation against a def name nothing in the game provides).
+# => LIFT all three at once when the bulge sprite lands under
+#    UtinniPatches/Textures/ — def, scatter wiring and art deploy together
+#    in one --apply, same pattern as the Scald wreck hold above.
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml            # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml         # BENCH: held with the ThingDef it scatters, 2026-09-13
+UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held with the ThingDef it scatters, 2026-09-13
+
+# --- FORGE_MECHANICS_1 F2/F5/F6: six new ThingDefs, no art yet ---------------
+# 2026-09-13, FORGE_MECHANICS_1 F2/F5/F6 build pass. All six intended to
+# reuse an existing vanilla texPath as a placeholder (Chemfuel/Filth_Blood/
+# ElectricSmelter/FueledSmithy/TableStonecutter) — the same "borrow the
+# nearest legible icon" practice RUT_WickStem.xml and RM_FE_Filth_LooseAsh.xml
+# already established elsewhere in this mod. validate_patch.py refused that
+# choice as a hard ERROR on all six: UtinniPatches already ships its own
+# Things/Building, Things/Item, Things/Filth and Things/Plant trees
+# elsewhere, so its own-namespace heuristic ("'things/' IS this mod's own
+# texture namespace") cannot tell a deliberate cross-mod reuse from a typo
+# in this mod's own art (validate_patch.py's own source documents this
+# exact tradeoff — vanilla_loose is False on this Steam install, so a
+# correct vanilla-art reuse and a genuine miss look identical to the
+# scanner once "mine" is true). Rather than ship six disputed texPath
+# claims with no live game access this task to settle them, each def was
+# repointed to its own new RUT_-named path under the same vanilla-mirroring
+# folder (Things/Item/Resource/, Things/Filth/, Things/Plant/,
+# Things/Building/Production/) and is held here instead — same shape as
+# every other new-art hold in this file.
+# => LIFT each when its own sprite lands under UtinniPatches/Textures/ — def
+#    and art deploy together in one --apply, same pattern as the Scald/Sump
+#    holds above. Independent: none of the six references another's art.
+UtinniPatches/Defs/ThingDefs_Items/RUT_TibannaGas.xml           # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Items/RUT_DeadCreep.xml            # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml          # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml        # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: no art yet, 2026-09-13

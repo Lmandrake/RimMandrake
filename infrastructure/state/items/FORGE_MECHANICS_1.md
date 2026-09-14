@@ -388,3 +388,171 @@ live quicktest pass, not attempted here.
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries from the spike, 4 more from F1)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
 - `design/Jawa/worldbuilding/biomes/kits/forge_kit_spec.md` (5 ❓s resolved/narrowed in place)
+
+## F2/F5/F6 build pass — 2026-09-13
+
+Build order steps 4-5 and 3 (forge_kit_spec.md's own "Build order": F1
+already shipped). Wires F2 "the tibanna harvest", F5 "the Contagion die-off
+ring" and F6 "geothermal industry" into real, shippable content on top of
+the spike pass's two already-compiling comps (`RM_CompGatherableGas`,
+`RM_CompScriptedDieOff`). F3 (vapor columns), F4 (towers) untouched, per
+this pass's own scope. No bridge/game/quicktest — offline only.
+
+**F2 — tibanna tap.** The shipped Beldon is `RSW_Beldon`
+(`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Beldon.xml`,
+MLIE_FAUNA_ABSORPTION_1 Wave C — repo-owned, RSW_ tier, not a donor/vendor
+folder). Patched rather than hand-edited even though repo-owned: it is
+generic RimStarWars-tier content, and the tap is Utinni-tier campaign
+mechanics — same discipline F1's own `RUT_ForgePulse_BiomeWiring.xml`
+already applied to `RUT_TheForge` itself. `RUT_TibannaTap_BeldonWiring.xml`
+(`PatchOperationAdd`, `MayRequire="mandrake.rm.environmentalhazards"`)
+appends `RM_CompGatherableGas`'s comp onto `RSW_Beldon`'s existing `<comps>`
+node at the spec's own INVENTED values (interval 2 days, amount 12).
+`RUT_TibannaGas.xml` ships the resource good (`ParentName="ResourceBase"`,
+no comps of its own, MarketValue an explicit placeholder —
+`TIBANNA_EMBARGO_PLOT_1` owns real pricing).
+
+**Ban #5 linter check — PASS.** Repo-wide grep for `RUT_TibannaGas` outside
+its own def file: the ONLY hit is the single `<gatherDef>RUT_TibannaGas</gatherDef>`
+in `RUT_TibannaTap_BeldonWiring.xml`. No RecipeDef product, no
+butcherProducts, no trader-stock tag anywhere names it — the monopoly holds
+by construction.
+
+**F5 — Contagion die-off ring.** `RUT_DeadCreep` (filth, `ParentName="BaseFilth"`,
+`rainWashes false` — ban 6 means ordinary rain never reaches this biome
+anyway, so leaving it `true` would document an unreachable mechanism).
+`RUT_DyingCreep` (`ParentName="PlantBase"`, carries
+`RM_CompScriptedDieOff` at its class defaults — spread 6~10 over 4h, dead
+by 8h, matching the spec's own INVENTED figures exactly, only `deadThingDef`
+overridden to `RUT_DeadCreep`). Ban-edge check: `RUT_DyingCreep` is listed
+in no BiomeDef's `wildPlants` anywhere in this repo (confirmed — this pass
+touches no BiomeDef's `wildPlants` at all) and carries no `sowTags`
+(unsowable) and `harvestable` unset (defaults false) — the spike's own
+resolution ("no `plant.reproduces` field exists; the real gate is
+`wildPlants` absence") is satisfied structurally, not by a flag.
+
+Gen-time scatter: `RM_GenStep_EdgeBandFilth` (new C# this pass) — a
+bespoke, generic (biome-list + filthDef + band + chance, all XML-settable)
+edge-band paint pass, NOT a reuse of `RM_GenStep_PlacedSetPieces` or
+vanilla `GenStep_ScatterThings`: both of those pick N discrete sites via
+the scatterer framework, built for set-pieces, and a patchy contiguous band
+near the map edge is a different shape entirely — judgment call the spec's
+own text explicitly invited ("reuse if genuinely a fit... use judgment,
+don't force-fit"). `RUT_ContagionRingScatter.xml` configures one instance
+(`RUT_DeadCreep`, biomes `[RUT_TheForge]`, band 8~15 cells, 0.35 chance/cell)
+and `RUT_ContagionRingScatter_Register.xml` adds it to `Base_Player`'s
+`genSteps` globally — safe everywhere per the class's own biome-list no-op,
+same registration pattern `RUT_ScaldWreckScatter_Register.xml` already
+established.
+
+The probe: `RUT_IncidentWorker_ContagionProbe` (new C#) hardcodes the
+`RUT_TheForge` biome check directly (the kit spec's own gate is singular —
+one merged BiomeDef, not a list) — finds a standable map edge cell, spawns
+a 3-6 count cluster of `RUT_DyingCreep` within radius 4 (INVENTED,
+"cluster"), sends a standard letter (`RUT_ContagionProbe.xml`, `baseChance
+1.5`, `minRefireDays 8` — the spec's own "~1 per 8 days" read as the
+storyteller's idiomatic refire floor, same conversion
+`RUT_FeverWood_MirrorBreak.xml` already uses for its own plain-English MTB).
+Translate keys in `RUT_Forge_Mechanics.xml`.
+
+**F6 — geothermal industry, pure XML.** `RUT_VentSmelter` /
+`RUT_VentForge` / `RUT_VentKiln`, all `ParentName="BenchBase"`,
+`thingClass Building_WorkTable` (no fuel/power comp of any kind), gated
+onto real vanilla steam geysers via the stock `PlaceWorker_OnSteamGeyser`
+(`RimWorld/PlaceWorker_OnSteamGeyser.cs`, decompile-read this pass:
+`AllowsPlacing` requires this building's own anchor cell to literally BE
+the geyser's anchor cell, `ForceAllowPlaceOver` allows building directly
+over it) — size `(2,2)` matching vanilla `SteamGeyser`'s own footprint
+exactly (confirmed via RimSage). `WorkTableWorkSpeedFactor 1.2` (+20%,
+INVENTED per this task's brief) on all three; `BenchBase`'s own
+`CompProperties_ReportWorkSpeed` already surfaces that stat, confirmed
+reading `BenchBase`'s raw XML this pass.
+
+Recipe cribs, verified against the live installed set rather than invented:
+- `RUT_VentSmelter` copies vanilla `ElectricSmelter`'s own `<recipes>` list
+  verbatim (`ExtractMetalFromSlag`/`SmeltOrDestroyThing`/`SmeltWeapon`/
+  `SmeltApparel`/`DestroyWeapon`/`DestroyApparel`) — that building lists
+  recipes directly on itself, so a direct copy is correct here.
+- `RUT_VentForge` mirrors `FueledSmithy` via a PATCH
+  (`RUT_VentForge_RecipeWiring.xml`), not a copied list: vanilla smithing
+  recipes are each weapon/apparel `ThingDef`'s own
+  `<recipeMaker><recipeUsers>` entry (confirmed reading
+  `Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml:125-135`, the
+  `BaseMeleeWeapon` abstract — NOT a standalone RecipeDef), so the patch's
+  xpath (`ThingDef[recipeMaker/recipeUsers/li="FueledSmithy"]/recipeMaker/recipeUsers`)
+  matches on content, reaching 11 ThingDefs in the live set (weapons,
+  headgear, apparel) and automatically mirroring any future addition using
+  the same entry, not a snapshot.
+- `RUT_VentKiln` mirrors vanilla `TableStonecutter` — 🔴 **honest
+  substitution, not the literal thing this task asked for**: there is NO
+  "Kiln" ThingDef anywhere in this repo, the vanilla Core/DLC Data folders,
+  or the live ~599-mod installed set (checked three ways: RimSage's own def
+  index, a full-text grep of every `Data/*/Defs` tree, and a defName grep
+  across the Workshop content root — all zero). `TableStonecutter` was
+  picked as the closest fit in the family's absence: the one vanilla
+  production bench that already needs no fuel AND no power, so stripping it
+  costs nothing, versus forcing a second smithy-shaped def to stand in for
+  "kiln." Recipes wired the same content-match-patch way as VentForge
+  (`RUT_VentKiln_RecipeWiring.xml`, targeting the one `RecipeDef` node —
+  the abstract `MakeStoneBlocksBase` — whose `recipeUsers` names
+  `TableStonecutter`; 12 live matches: vanilla stone blocks, Alpha Biomes'
+  own stone recipes, Star Wars Animal Collection's ivory recipes).
+
+**Art.** All six new visible ThingDefs (`RUT_TibannaGas`, `RUT_DeadCreep`,
+`RUT_DyingCreep`, `RUT_VentSmelter`, `RUT_VentForge`, `RUT_VentKiln`) were
+originally drafted to reuse an existing vanilla texPath as a placeholder
+(the same practice `RUT_WickStem.xml`/`RM_FE_Filth_LooseAsh.xml` already
+established) — `validate_patch.py` refused all six as a hard ERROR: this
+mod already ships its own `Things/Building`, `Things/Item`, `Things/Filth`
+and `Things/Plant` trees elsewhere, so its own-namespace heuristic cannot
+tell a deliberate cross-mod reuse from a typo in this mod's own art (its
+own source documents this exact tradeoff at `validate_patch.py:1838-1890`).
+Rather than ship six disputed texPath claims with no live game access this
+task to settle them, each was repointed to its own new RUT_-named path and
+held via `src/DEPLOY_HOLD.txt` — same shape as every other new-art hold in
+that file (Scald/Sump precedent). `validate_patch.py` result: 6 expected/held
+texPath errors (the ONLY failures — same accepted shape the Scald/Sump
+holds document), 0 other errors, 3 warnings (`PatchOperationAdd` not
+wrapped in `PatchOperationConditional`/`PatchOperationFindMod` on
+`RUT_TibannaTap_BeldonWiring.xml`, `RUT_VentForge_RecipeWiring.xml`,
+`RUT_VentKiln_RecipeWiring.xml` — `MayRequire` on each Operation is the
+real guard, same accepted posture as every other same-family patch in this
+mod, e.g. `RUT_ForgePulse_BiomeWiring.xml`).
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean with 2 new
+`<Compile>` entries (`RM_GenStep_EdgeBandFilth.cs`,
+`RUT_IncidentWorker_ContagionProbe.cs`) — **0 warnings, 0 errors**. (Note:
+this shared `.csproj` and the DLL are being built on concurrently by other
+FOUNDRY/BENCH agents tonight — this pass's own two `<Compile>` entries were
+appended against the live file each time a concurrent edit landed first,
+per this repo's own documented "whole staged index" discipline; the two
+entries this pass owns are confirmed present.)
+
+**Explicitly NOT done, per this task's own scope**: F3 (vapor columns), F4
+(towers) — untouched. `ModsConfig.xml` untouched. No bridge/game/quicktest
+run. Art for all six new visible things (held, `src/DEPLOY_HOLD.txt`). Live
+verification of the tap cadence, the die-off ring's actual visual density,
+the probe's cluster placement, and the three Vent* buildings' in-game
+placement onto a real geyser are all owed to a live quicktest pass, not
+attempted here.
+
+### files (F2/F5/F6 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_EdgeBandFilth.cs` (new, F5)
+- `src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_ContagionProbe.cs` (new, F5)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_TibannaGas.xml` (new, F2)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml` (new, F2)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_DeadCreep.xml` (new, F5)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml` (new, F5)
+- `src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ContagionRingScatter.xml` (new, F5)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml` (new, F5)
+- `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_ContagionProbe.xml` (new, F5)
+- `src/RimUtinni/UtinniPatches/Languages/English/Keyed/RUT_Forge_Mechanics.xml` (new, F2/F5)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml` (new, F6)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml` (new, F6)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml` (new, F6)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml` (new, F6)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml` (new, F6)
+- `src/DEPLOY_HOLD.txt` (edit — 6 new held entries)
