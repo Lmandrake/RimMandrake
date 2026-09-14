@@ -1241,11 +1241,23 @@
     "hash": "0eb5130cb31b840947ad8db7579425f3c81c83d0905a4dbcdc87e1128b6de3b1",
     "sha": "0e38767e7"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_PlaceWorker_OnRequiredVentComp.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "cf1bd00cb056c9867a19c0202eb3f28ae5c8965e4d895801c8fec14805190a08",
+    "sha": "f4d5c1714"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "0495ab98523c565169780c1ed176c98ac773e6037fbbc919da74d024357f4ef7",
     "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_WeatherOverlay_ScaldSteam.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "e122fe282e66f6ddc5770347ba22745f709497f6a70fc9c249fd62a60a923174",
+    "sha": "f4d5c1714"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/WeatherPulseExtension.cs": {
     "cleanCount": 1,
@@ -13611,6 +13623,12 @@
     "hash": "1d0e04405aef62b400bbc04bb4b92ce2fecdb683a91bf10c108eede069692075",
     "sha": "0e38767e7"
   },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScaldSteamLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "9f39787e5d575e1180594e8c56ebd764b9376ddc58db671c057fed1a6844bdf5",
+    "sha": "f4d5c1714"
+  },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SumpDuskLock.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13725,6 +13743,18 @@
     "hash": "019632c0a716eeb1a5a8b013a60a18af71d52410edc6ff75945b4e009843dd2b",
     "sha": "a07448e6"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "a43656905573ff87694fd668dffe281b824dbc5705e20472cbaedf486edae372",
+    "sha": "f4d5c1714"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "c823d5527860650d190178af1d1d84233bfa15122acc876a80f36fe77f0b605e",
+    "sha": "f4d5c1714"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WebworkStructures.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -13790,6 +13820,12 @@
     "date": "2026-09-13",
     "hash": "a0ce81fd55cf3891689088e1aacd92aecf7aad80efad27278bd5ea5d40e354b0",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_ScaldSteam.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "5da6154a629456c708d40e24b9bb58569630f2666df7013a783cef5d9d282e49",
+    "sha": "f4d5c1714"
   },
   "src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_SumpWeather.xml": {
     "cleanCount": 1,
@@ -14168,6 +14204,12 @@
     "date": "2026-09-13",
     "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
     "sha": "0e38767e7"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSteamLock_BiomeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "9188a42c80fff4c0f116e61149007daa9f5e8a7f304fbacb7262fbf10c2cb81a",
+    "sha": "f4d5c1714"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_SumpDuskLock_BiomeWiring.xml": {
     "cleanCount": 1,
