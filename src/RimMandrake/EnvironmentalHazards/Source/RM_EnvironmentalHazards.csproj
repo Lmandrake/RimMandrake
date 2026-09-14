@@ -106,6 +106,10 @@
     <Compile Include="RM_CompStationEater.cs" />
     <Compile Include="RM_GenStep_EdgeBandFilth.cs" />
     <Compile Include="RUT_IncidentWorker_ContagionProbe.cs" />
+    <Compile Include="RM_HediffComp_SeverityFloor.cs" />
+    <Compile Include="RM_LordJob_DefendPerimeter.cs" />
+    <Compile Include="RM_MapComponent_VaporColumns.cs" />
+    <Compile Include="RM_CompVaporDrifter.cs" />
   </ItemGroup>
 
   <ItemGroup>

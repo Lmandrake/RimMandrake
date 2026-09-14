@@ -181,6 +181,19 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                // FORGE_MECHANICS_1 F3: "scald bursts ... do not touch
+                // drifters — they live in the steam." A comp flag this
+                // method already has everything it needs to read, per this
+                // build pass's own brief — not a fork of the damage shape,
+                // just one more exemption alongside onlyUnroofed/affects
+                // above. RM_CompVaporDrifter.Props.groundHazardImmune
+                // defaults true but stays per-kind configurable.
+                RM_CompVaporDrifter drifter = pawn.TryGetComp<RM_CompVaporDrifter>();
+                if (drifter != null && drifter.Props.groundHazardImmune)
+                {
+                    continue;
+                }
+
                 pawn.TakeDamage(new DamageInfo(ext.scaldDamageDef, ext.scaldDamageAmount * mult, ext.armorPenetration, -1f));
             }
         }
