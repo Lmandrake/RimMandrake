@@ -556,3 +556,167 @@ attempted here.
 - `src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml` (new, F6)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml` (new, F6)
 - `src/DEPLOY_HOLD.txt` (edit — 6 new held entries)
+
+## F3 build pass — 2026-09-14
+
+Build order step 6 (forge_kit_spec.md's own "Build order": F1/F2/F5/F6
+already shipped; F4 towers is separate, later work, not this pass). Wires
+F3 "the vapor-column flight layer" — the pasture-binding half of the sky
+fauna mechanic, since F3's own float mechanism (VEF's `CompFloating` via a
+class-side Harmony postfix on `Pawn_DrawTracker.DrawPos`) was already
+CONFIRMED class-side and needing no further code by the spike pass. No
+bridge/game/quicktest — offline only, per this task's own scope.
+
+**C# — 2 new classes, `src/RimMandrake/EnvironmentalHazards/Source/`:**
+
+- **`RM_MapComponent_VaporColumns : MapComponent`** — the column field.
+  Generic emitter detection, not Forge-hardcoded: any spawned
+  `RimWorld.Building_SteamGeyser` (native geysers, and this repo's own
+  `RUT_ScaldVent` clone, which shares that thingClass verbatim), any
+  spawned Thing carrying `CompActiveGasEmitter`, and any terrain cell
+  flagged `dangerous && avoidWander` — the exact two fields the F1 spike
+  confirmed on vanilla `LavaShallow` (open, walkable melt), read generically
+  rather than by a `"Lava"` defName substring so any biome's own hazardous
+  open-melt terrain qualifies without this class knowing its name. Checked
+  this pass: no Forge vent content actually carries `CompActiveGasEmitter`
+  yet (`RUT_ScaldVent.xml`'s own header explicitly says it does NOT — that
+  was a stale brief-vs-spec correction on a different, earlier item) — the
+  comp-based route is real but forward-looking, not dead code; the terrain
+  flag and native `Building_SteamGeyser` routes are live today against any
+  map with vanilla/Odyssey geysers or Scald's own vent clone.
+  `InColumn(IntVec3)` (spec's own required public API) and
+  `NearestColumnCell(from, maxDist)` (the wander-root lookup). "At map init
+  + on-change" (spec's own line) is implemented as a full rebuild on
+  `FinalizeInit` plus an hourly rescan (2500 ticks, the same
+  ticks/hour conversion `RM_GameCondition_WeatherPulse` and
+  `RM_CompScriptedDieOff` already use) rather than push notifications from
+  every emitter/terrain-change source — emitters are near-static once
+  placed, and wiring spawn/despawn callbacks into the shared
+  `CompActiveGasEmitter` (a cross-kit reuse F1/F2/F6 all also depend on)
+  would be exactly the kind of fork this task's brief said not to do for
+  F3's sake. `RebuildNow()` is public for a future quicktest or GenStep to
+  force an immediate rebuild. Not Scribe-saved — the field is entirely
+  derived from map content, so `FinalizeInit`'s own rebuild reconstructs it
+  identically on load, same reasoning `RM_MapComponent_GradientAxis`'s own
+  header gives for deferring a per-cell save format.
+- **`RM_CompVaporDrifter : ThingComp`** (+ `CompProperties_VaporDrifter`,
+  `RM_JobGiver_ColumnWander : JobGiver_Wander`) — the pasture-binding comp
+  and its wander-root override, generalizing `RM_CompTerritorialAnchor`'s
+  own `RM_JobGiver_AnchorWander` pattern exactly as the spec's own F3
+  resolution names ("a sibling `RM_JobGiver_ColumnWander`... No new C#
+  class is needed to prove this seam; it already compiles as
+  `RM_CompTerritorialAnchor`'s own JobGivers"). Two seams constrain
+  destinations, not one: `GetWanderRoot` picks the nearest column cell to
+  wander around, and a `wanderDestValidator` (a real `JobGiver_Wander`
+  field) rejects any candidate destination that is neither in a column nor
+  within the pawn's own `forageRadiusBeyondColumns` of one — this is what
+  actually keeps a column-bound species off the open ash even when
+  `RCellFinder.RandomWanderDestFor` rolls a candidate outside the column
+  proper, not just the root. `wanderRadius` itself is left untouched
+  (protected, JobGiver_Wander's own field) so a concrete kind's
+  ThinkTreeDef XML can set it directly per the vanilla idiom stock animal
+  wander JobGivers already use — deliberately not hardcoded in the
+  constructor the way `RM_JobGiver_AnchorWander` does, since that class
+  serves one anchored-creature family and this one is meant for every
+  future sky kind.
+- **Ground-hazard immunity** — `RM_GameCondition_WeatherPulse.
+  DoScaldDamageOnMap` (F1) gets one added exemption check reading
+  `RM_CompVaporDrifter.Props.groundHazardImmune` (default true) alongside
+  its existing `onlyUnroofed`/`HazardTargeting.Affects` checks — not a fork
+  of the damage shape, the one line this task's own brief pointed at
+  ("add the exemption check there... don't fork the damage logic"). F1's
+  own file is otherwise untouched.
+
+**Float-draw-offset decision: SKIPPED, per the spec's own already-resolved
+line.** forge_kit_spec.md F3 was RESOLVED at the spike pass, before this
+build pass started: "No float-draw offset of its own is needed: the
+Aerofleet float route is CONFIRMED class-side... so any sky kind wearing
+VEF's own `CompProperties_Floating` already floats without this comp
+touching draw code at all." This build pass re-verified the claim directly
+against the live install rather than trusting the spike's citation
+blind — read `Races_Aerofleet.xml` from both
+`.../workshop/content/294100/1541721856/1.5/` and `.../1.6/` on the
+owner's actual Steam install: the 1.5 copy carries plain
+`AnimalBehaviours.CompProperties_Floating` (Alpha Animals' own
+`AnimalBehaviours.dll`) but the **1.6** copy — the live, active version —
+carries `VEF.AnimalBehaviours.CompProperties_Floating`, confirming the
+spike's citation exactly. `RM_CompVaporDrifter` therefore ships no draw
+code, exactly as the spec allows.
+
+**Fireweed gap — flagged, not invented.** Checked this pass: no
+`RUT_Fireweed`-family plant or item ThingDef exists anywhere in this repo
+(`design/` mentions it as flora-roster intent in several worldbuilding
+docs; `src/` has none). Per this task's own instruction, no fireweed def
+was invented — the fleet-flier diet XML (fireweed in the food filter) is
+**owed to the roster/biome flora pass**, same as every other kind's own
+diet content. `CompProperties_VaporDrifter.forageRadiusBeyondColumns`
+(INVENTED default 0, spec's own "12 beyond columns" figure for fleet
+fliers) ships so that pass has the field ready to set once a fleet-flier
+kind and its diet exist.
+
+**Kind-attachment gap — flagged, PLACEHOLDER shipped, not invented.** No
+Forge-specific flying PawnKindDef exists yet (expected — kinds are a
+roster-pass job per every sibling kit's own scope discipline, same as F1's
+flash-flora and F2's beldon). `RUT_VaporDrifter_AerofleetWiring.xml`
+(`src/RimUtinni/UtinniPatches/Patches/`) patches
+`CompProperties_VaporDrifter` onto the ALREADY-SHIPPED `AA_Aerofleet` — the
+one sky-capable kind `RUT_TheForge.xml`'s own `<wildAnimals>` list already
+carries (`MayRequire="sarg.alphaanimals"`, commonality 0.4) — via
+`PatchOperationAdd` with `MayRequire="mandrake.rm.environmentalhazards"`
+only (the xpath itself no-ops if Alpha Animals is absent; the class-missing
+risk is the one that silently discards the whole parent def, per
+`modextension-missing-type-discards-def`), never a hand-edit of the vendor
+file. Validated live: `validate_patch.py` finds exactly 1 xpath match in
+Alpha Animals' own `Races_Aerofleet.xml`. Clearly commented PLACEHOLDER —
+whether the Forge's real sky fauna IS a renamed Aerofleet (the kit spec's
+own XML-only ledger already lists "Aerofleet→Fumerider rename" as roster
+work) is that pass's call, not this one's.
+
+🔴 **What this ships short of full "constrains wander" behaviour, stated
+plainly**: this patch attaches the DATA comp only (grants ground-hazard
+immunity today, live). It does **not** wire `RM_JobGiver_ColumnWander` into
+any ThinkTreeDef — `AA_Aerofleet` inherits vanilla's shared `Animal`
+ThinkTreeDef (confirmed this pass, no `thinkTree` override in
+`Races_Aerofleet.xml`), and splicing a wander-root override into that
+shared tree is an authoring judgment call (every Aerofleet everywhere vs.
+only a Forge-specific clone) the spec's own F3 resolution already deferred
+to "the full build... not a further engine question" — exactly the same
+deferral MIASMA_MECHANICS_1's M6 spike made for `RM_JobGiver_AnchorWander`,
+which also still has no live ThinkTreeDef wiring. So today: AA_Aerofleet on
+a Forge map is immune to scald bursts, but does not yet wander preferentially
+into columns. The JobGiver class compiles and is ready; wiring it is roster
+work, named here rather than silently short.
+
+**Validate**: `skills/rimworld-modding/scripts/validate_patch.py` on the
+one new patch file against the live installed set (`--defs` Data + Mods +
+Workshop root + `src/RimUtinni` + `src/RimMandrake` + `src/RimStarWars`,
+99 active mods on the currently-live minimal list) — **0 errors**, 1
+advisory warning (`PatchOperationAdd` not wrapped in
+`PatchOperationConditional`/`PatchOperationFindMod` — the same accepted
+posture as every sibling patch in this build, `MayRequire` is the real
+guard).
+
+**Build**: `RM_EnvironmentalHazards.csproj` rebuilds clean with 2 new
+`<Compile>` entries (`RM_MapComponent_VaporColumns.cs`,
+`RM_CompVaporDrifter.cs`) — **0 warnings, 0 errors**. (This shared
+`.csproj` was edited by a concurrent FOUNDRY/BENCH agent between this
+pass's read and write — re-read and re-applied against the live file,
+same "whole staged index" discipline this repo's own history already
+documents for F2/F5/F6.)
+
+**Explicitly NOT done, per this task's own scope**: F4 (towers) —
+untouched. `ModsConfig.xml` untouched. No bridge/game/quicktest run.
+Fireweed diet content and the real Forge sky-kind roster/ThinkTreeDef
+wiring are both owed to later passes, named above rather than invented.
+Live verification of the column field's actual shape on a real Forge map,
+the wander-constraint behaviour once ThinkTree wiring lands, and the
+scald-immunity exemption are all owed to a live quicktest pass.
+
+### files (F3 build pass)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_VaporColumns.cs` (new, F3)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs` (new, F3)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs` (edit, F3: drifter ground-hazard-immunity exemption in `DoScaldDamageOnMap`)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimUtinni/UtinniPatches/Patches/RUT_VaporDrifter_AerofleetWiring.xml` (new, F3 — PLACEHOLDER wiring pattern)

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_VaporDrifter_AerofleetWiring.xml   UtinniPatches · FORGE_MECHANICS_1 F3
+  ============================================================================
+  🔴 PLACEHOLDER — proves the wiring PATTERN, per this task's own brief
+  ("ship RM_CompVaporDrifter and RM_MapComponent_VaporColumns as generic,
+  content-free, compiling classes plus the wiring PATTERN ... a placeholder
+  using an EXISTING shipped flying/aerofleet kind ... is fine ... clearly
+  commented PLACEHOLDER"). This is NOT a roster decision: whether the
+  Forge's actual sky fauna IS AA_Aerofleet (renamed "fumerider" per the kit
+  spec's own XML-only ledger line — "Aerofleet→Fumerider rename... roster
+  pass") is `rosters/the_forge.json`'s call, owed to that pass, not this one.
+
+  Target: AA_Aerofleet is CONFIRMED already in RUT_TheForge's own
+  <wildAnimals> list today (`<AA_Aerofleet MayRequire="sarg.alphaanimals">
+  0.4</AA_Aerofleet>`, RUT_TheForge.xml) — the only sky-capable kind this
+  biome already spawns, checked this pass rather than assumed. Its float
+  mechanism is confirmed VEF's own class-side CompFloating (see
+  RM_CompVaporDrifter.cs's own header) — this patch adds nothing to that,
+  it only attaches the pasture-binding data comp alongside it.
+
+  Patched, per this mod's own standing discipline for vendor content: a
+  bare PatchOperationAdd rather than a hand-edit of Alpha Animals'
+  Races_Aerofleet.xml (a donor mod folder, never touched directly — same
+  rule RUT_TibannaTap_BeldonWiring.xml documents for repo-owned-but-generic
+  content, applying with even more force to an actual vendor file).
+
+  MayRequire="mandrake.rm.environmentalhazards" only (not also
+  "sarg.alphaanimals"): if AA_Aerofleet is absent, the xpath itself matches
+  nothing and PatchOperationAdd is a silent no-op — the load-bearing guard
+  is the comp's own assembly, per modextension-missing-type-discards-def
+  (an unguarded <li Class="..."> for a missing type silently discards the
+  WHOLE parent def), same reasoning RUT_TibannaTap_BeldonWiring.xml already
+  gives for its own single MayRequire.
+
+  🔴 What this patch deliberately does NOT do: wire RM_JobGiver_ColumnWander
+  into any ThinkTreeDef. forge_kit_spec.md's own F3 resolution defers that
+  explicitly ("wired into the sky kind's ThinkTreeDef the same way
+  RM_JobGiver_AnchorWander is — a PawnKindDef/ThinkTreeDef content decision,
+  XML, owed to the full build — not a further engine question"), and
+  MIASMA_MECHANICS_1's own M6 spike left the identical wiring owed for
+  RM_JobGiver_AnchorWander. AA_Aerofleet inherits vanilla's shared
+  Animal ThinkTreeDef (confirmed this pass — no thinkTree override of its
+  own in Races_Aerofleet.xml); splicing a wander-root override into that
+  shared tree is authoring judgment (does every Aerofleet everywhere become
+  column-bound, or only a Forge-specific rename/clone?) that belongs to the
+  roster pass, not this mechanics build. Without that wiring, this comp
+  alone grants ground-hazard immunity (RM_GameCondition_WeatherPulse reads
+  it directly) but does NOT yet constrain wander — flagged here and in
+  FORGE_MECHANICS_1.md, not silently short of the spec's full behaviour.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_VaporDrifter">
+        <forageRadiusBeyondColumns>0</forageRadiusBeyondColumns>
+        <groundHazardImmune>true</groundHazardImmune>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
