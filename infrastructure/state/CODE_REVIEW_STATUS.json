@@ -1481,6 +1481,12 @@
     "hash": "24e20772e73769a2f2c791c9fe93afc991f86bd01d5bc4950943363f11bf9a50",
     "sha": "b62604fad"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_LordJob_SentinelDefend.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "06644415f1fffaa5a888803c79c1a5c39b0073d1b2e09d2ec95a0a6a24629f45",
+    "sha": "52c8c982c"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13732,10 +13738,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "3bab685c2c0ff763279c19d662260c4c897b6f0ca9d1033e6c9b739576a4210a",
-    "sha": "e2fec3c99"
+    "cleanCount": 4,
+    "date": "2026-09-14",
+    "hash": "b9d6aa880e92d366a95939b22fddf8845bf4b0d44d5f2f3198efc110f7f09332",
+    "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml": {
     "cleanCount": 2,
@@ -13809,6 +13815,12 @@
     "hash": "1093fb713438e00c3490398a32007c5487282f5a05bd83c33c52f35f40eb3041",
     "sha": "0e38767e7"
   },
+  "src/RimUtinni/UtinniPatches/Defs/DutyDefs/RUT_SentinelDefend.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "ea007ec74d22b236d44dae6c32acf65454dc18359865f8e8a0b046110c4d4b5a",
+    "sha": "52c8c982c"
+  },
   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -13875,6 +13887,18 @@
     "hash": "9f39787e5d575e1180594e8c56ebd764b9376ddc58db671c057fed1a6844bdf5",
     "sha": "f4d5c1714"
   },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "40e0f61e0af3b93317d15c22895f1d2eb44a0f0d23e3a09f6296379eb0f68ac7",
+    "sha": "52c8c982c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScarlandsMarkLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "f9b9a27e6eff49254db5ad2a3569361caabec3ad39dff25d27f7e1c78e346aa9",
+    "sha": "52c8c982c"
+  },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_SumpDuskLock.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13904,6 +13928,18 @@
     "date": "2026-09-13",
     "hash": "def1fa9a1fbd881815b94125f8901d641725ed56bc539cdf50b7c733472845bf",
     "sha": "346490000"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_ScariaIncubation.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "0483bac1fedefe9b13f0f048fda798dc3ffa5de67d02c64462ccebe71bb82082",
+    "sha": "52c8c982c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_ScarlandsMark.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "69dbeb6f282fd8619fc3d73514df6e8c8d88aa4073aa771a4cee047c6fc1eb8c",
+    "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_ContagionProbe.xml": {
     "cleanCount": 1,
@@ -14013,6 +14049,12 @@
     "hash": "8a5ca7fdbeb26a121260460d4e55117ff792cf7c83bd07f0368858c25b22a4ec",
     "sha": "e7810e12f"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScarlandsSprungDangers_GenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "d15eaab0a2eb5400ba03150e972b1dd69405b7531a87cb25472fa7945dce80f2",
+    "sha": "52c8c982c"
+  },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScatterShrinesRare.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -14048,6 +14090,12 @@
     "date": "2026-09-09",
     "hash": "623039ac94359bd0c7da0eaa224579e9e288a9aff6b3959c3599ed6f6590a1ee",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/PrefabDefs/RUT_ScarlandsSprungDangers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "57ba1cc26ff505f35e7ddf5cc706bdcab1389d6bbd15bd840c66e7c21f816c93",
+    "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml": {
     "cleanCount": 2,
@@ -14132,6 +14180,12 @@
     "date": "2026-09-13",
     "hash": "007c48e81cc0481f371b186736810da17fcd2581b49cbe48705d67d406a4261f",
     "sha": "e7810e12f"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SentinelGraveWard.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "c07653079330cfcb337976fbab793794b8ca52dc913409ddf9f2a8eb0d2ec3f2",
+    "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_SteamCatch.xml": {
     "cleanCount": 1,
@@ -14240,6 +14294,12 @@
     "date": "2026-09-14",
     "hash": "b27a315e240fa4f5c2dcc7731a358d6d484992a57dd533a8f41382f37e2be9cc",
     "sha": "b3a646c3f"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThoughtDefs/RUT_ScarlandsMarkThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "725033b9cada27dfc20c60bfaf3992070f0820ca4d47b2cd08dbb6b412f8664d",
+    "sha": "52c8c982c"
   },
   "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
     "cleanCount": 1,
