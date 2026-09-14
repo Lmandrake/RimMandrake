@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-14T17:15:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-14T17:20:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1627,3 +1627,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/IRIAZ_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/IRIAZ_ART_REGEN_1.md
+
+## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FIREHAWK_FLIGHT_BEHAVIOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
