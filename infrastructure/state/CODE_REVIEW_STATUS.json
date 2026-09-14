@@ -833,6 +833,12 @@
     "hash": "3945a503986056aa3849e16c62b0d81e01b8df47470199032b07bbbb091b6d2d",
     "sha": "99a9e5cbc"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/CompProperties_AquaticAmbusher.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "1a1d7f59ff75ba3bf6ea77432fcf326450fd9ad46c6b8e937dfca6a34f1e185c",
+    "sha": "3bcf80ccf"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Alert_VerminPopulationBase.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -850,6 +856,12 @@
     "date": "2026-09-12",
     "hash": "9ea8f313fecbdfe2a1ae048ca5f9d6f15084e106682c70c67b4fd15037b66360",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompAquaticAmbusher.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "d15125b00f2ccce8dca747b80a2efe666dbb0e64275d01939fea3d21170969c6",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
     "cleanCount": 1,
@@ -870,10 +882,10 @@
     "sha": "20ce46f24"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "722f12d28f04f8f12db04a27e00203c5cc72101603e1e9737abff038128550e2",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-14",
+    "hash": "08708a95771ebb01dbb43bc97b5496e18d44d13f36de13947dfac717d5615951",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
@@ -900,10 +912,10 @@
     "sha": "20ce46f24"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "9486fcc05d525aaee3c5dcb574606a5676b2a32901e3081a3a284682740fe0af",
-    "sha": "99a9e5cbc"
+    "cleanCount": 3,
+    "date": "2026-09-14",
+    "hash": "7c9fe2912305bc91ebb1bc5cf16545c52c3ee6798f4c041cd8278e869f5fb346",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_EatCleanable.cs": {
     "cleanCount": 1,
@@ -916,6 +928,12 @@
     "date": "2026-09-11",
     "hash": "782a998d1ef4d34d08511676b4bbdb3bb328565bbd22fefd97e50b1e48a9c001",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_LungeAttack.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "c0b5a6423ecd2c4aea88283af4c5370fdad82c4cb357c3f1d88d028b2073d021",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_ChewAnchors.cs": {
     "cleanCount": 1,
@@ -1566,10 +1584,22 @@
     "sha": "c76fc40a0"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-14",
+    "hash": "9988fc7762887ed201ffad8d2ea98a88844dc0f6fbd942493b6c132c45a969a7",
+    "sha": "3bcf80ccf"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortex.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
-    "hash": "db17d8d3865e5afae25520c2d8cc559c143aa1832995d0171692a028c7eb3f49",
-    "sha": "0dedc6cfa"
+    "hash": "eefba3aaedcc8fce38f6ebe197b8e5dda6f7dc3589103ed69e0f2b0446c3c949",
+    "sha": "3bcf80ccf"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortexExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "ab1de1fb4fe3a7baf0657514dd54802ce402ef464e6bd407b731a3bbc9ce7f1a",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs": {
     "cleanCount": 2,
@@ -1588,6 +1618,12 @@
     "date": "2026-09-13",
     "hash": "24e20772e73769a2f2c791c9fe93afc991f86bd01d5bc4950943363f11bf9a50",
     "sha": "b62604fad"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-14",
+    "hash": "93d708b5106afa5ee42175bed194ca66aea288c55834ee2a2f35809561d0ac26",
+    "sha": "3bcf80ccf"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_LordJob_SentinelDefend.cs": {
     "cleanCount": 1,
