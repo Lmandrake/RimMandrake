@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_MECHANICS_2 M3 remainder build — steam devil letter/message strings. -->
+<LanguageData>
+
+  <RUT_SteamDevilAppears>Steam devil appears</RUT_SteamDevilAppears>
+  <RUT_SteamDevilAppearsDesc>A column of boiling vapor has spun up off the river and is wandering the map. It scalds anything it crosses and can knock down weaker trees — heat-rated armor gives no protection against it.</RUT_SteamDevilAppearsDesc>
+  <RUT_SteamDevilDissipated>The steam devil has dissipated.</RUT_SteamDevilDissipated>
+  <RUT_SteamDevilLeftMap>The steam devil has wandered off the map.</RUT_SteamDevilLeftMap>
+
+</LanguageData>

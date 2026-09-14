@@ -25,9 +25,10 @@ namespace RimMandrake.EnvironmentalHazards
         // kit spec names.
         public enum FallCause
         {
-            Cracked,   // feller 1 — cracked from within
-            Shattered, // feller 2 — shattered from the side
-            Gnawed,    // feller 3 — gnawed from below
+            Cracked,    // feller 1 — cracked from within
+            Shattered,  // feller 2 — shattered from the side
+            Gnawed,     // feller 3 — gnawed from below
+            WindThrown, // GREENTIDE_MECHANICS_2 M3 — knocked down by the steam devil vortex crossing it
         }
 
         // Used for any Plant with no RM_FellableTreeExtension of its own —

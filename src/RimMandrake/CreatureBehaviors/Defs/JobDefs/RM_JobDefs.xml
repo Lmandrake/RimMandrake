@@ -19,4 +19,13 @@
     <reportString>cleaning up TargetA.</reportString>
   </JobDef>
 
+  <!-- GREENTIDE_MECHANICS_2 M7 - driven by RM_JobDriver_LungeAttack,
+       requested by RM_CompAquaticAmbusher whenever a submerged pawn
+       acquires a hostile target within lunge range. -->
+  <JobDef>
+    <defName>RM_LungeAttack</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_LungeAttack</driverClass>
+    <reportString>lunging at TargetA.</reportString>
+  </JobDef>
+
 </Defs>

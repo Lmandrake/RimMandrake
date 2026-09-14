@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Placeholder_GreentideLungerRace.xml   UtinniPatches — GREENTIDE_MECHANICS_2 M7
+
+  PLACEHOLDER Lunger race — NOT the real Greentide Lunger the roster pass
+  eventually authors (this task's own brief explicitly forbids authoring
+  that here). Spec check before build: greentide_kit_spec.md M7 never
+  states outright whether the Lunger PawnKindDef is roster content (unlike
+  some other kit pieces, which say so explicitly) — treated the same as
+  every other kit's creature-content boundary this session per the build
+  brief's own instruction: an EXISTING shipped aquatic/ambush-shaped
+  PawnKindDef, clearly commented PLACEHOLDER.
+
+  vanilla Core Alligator (predator=true, waterSeeker=true, swims faster on
+  Water-tagged terrain, real swimmingGraphicData — confirmed via RimSage
+  this pass) is the right creature for this. ParentName="AnimalThingBase",
+  NOT ParentName="Alligator" — validate_patch.py caught this live: Alligator
+  carries no Name="..." attribute (same trap RUT_Placeholder_
+  GreentideGnawerRace's own header already recorded for Squirrel), so every
+  field below is copied down directly from the real Alligator ThingDef
+  (RimSage get_def_details, raw) rather than inherited. A fresh ThingDef
+  (not a patch onto the live Alligator def) so vanilla Alligators
+  everywhere else in the game are completely untouched by this comp.
+
+  comps: CompProperties_AquaticAmbusher (RimMandrake.CreatureBehaviors, new
+  this pass) — see that class's own header. CompProperties_EggLayer is
+  copied down too (harmless on a placeholder; costs nothing to leave in).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" MayRequire="mandrake.rm.creaturebehaviors">
+    <defName>RUT_Placeholder_GreentideLungerRace</defName>
+    <label>lunger (placeholder)</label>
+    <description>PLACEHOLDER — a vanilla alligator standing in for the real Greentide Lunger (roster pass owed). Submerges and waits, invisible, until something wanders into range.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>EggAlligatorUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>EggAlligatorFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>12</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_AquaticAmbusher">
+        <invisibilityHediff>RM_AquaticAmbushInvisibility</invisibilityHediff>
+        <lungeSpeedHediff>RM_LungeSpeedBurst</lungeSpeedHediff>
+        <lungeRangeCells>5</lungeRangeCells> <!-- spec's own explicit figure -->
+        <firstStrikeDamageMultiplier>1.5</firstStrikeDamageMultiplier> <!-- spec's own explicit figure -->
+        <baseLungeDamageRange>12~20</baseLungeDamageRange> <!-- INVENTED -->
+        <checkIntervalTicks>30</checkIntervalTicks> <!-- INVENTED -->
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>None</trainability>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeExpectancy>40</lifeExpectancy>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <soundEating>Reptile_Eat</soundEating>
+      <manhunterOnTameFailChance>0.3</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Alligator_Wounded</soundWounded>
+          <soundDeath>Pawn_Alligator_Death</soundDeath>
+          <soundCall>Pawn_Alligator_Call</soundCall>
+          <soundAngry>Pawn_Alligator_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(-0.01, 0, 0.3)</li>
+        <li>(0.35, 0, 0.05)</li>
+        <li>(0.0, 0, -0.24)</li>
+        <li>(-0.35, 0, 0.05)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

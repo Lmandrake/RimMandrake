@@ -47,6 +47,12 @@ namespace RimMandrake.CreatureBehaviors
     //      freezes wherever it currently sits. The dial scales how much of
     //      each band actually spawns (never the advance interval or depth
     //      cap, which stay whatever the biome's own extension says).
+    //  11. aquaticAmbushEnabled — RM_CompAquaticAmbusher / RM_JobDriver_
+    //      LungeAttack (GREENTIDE_MECHANICS_2 M7). Off: a tagged pawn never
+    //      goes invisible while submerged and never lunges — a hediff it
+    //      already carries when this is toggled off is removed on the next
+    //      check, so nothing stays invisible forever; the pawn hunts
+    //      exactly like a normal vanilla predator from then on.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -63,6 +69,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool chewAnchorsBehaviorEnabled = true;
         public static bool frontCreepEnabled = true;
         public static float frontCreepRateMultiplier = 1f;
+        public static bool aquaticAmbushEnabled = true;
 
         public override void ExposeData()
         {
@@ -80,6 +87,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref chewAnchorsBehaviorEnabled, "chewAnchorsBehaviorEnabled", true);
             Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
             Scribe_Values.Look(ref frontCreepRateMultiplier, "frontCreepRateMultiplier", 1f);
+            Scribe_Values.Look(ref aquaticAmbushEnabled, "aquaticAmbushEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -125,6 +133,12 @@ namespace RimMandrake.CreatureBehaviors
                 "A map bordering a creeping biome stops advancing that biome's web/anchor/gutter line inward.");
             list.Label("Margin creep density: " + frontCreepRateMultiplier.ToString("0.00") + "x");
             frontCreepRateMultiplier = list.Slider(frontCreepRateMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Aquatic ambush (submerge + lunge)", ref aquaticAmbushEnabled,
+                "A tagged animal stops going invisible while submerged in deep water and stops "
+              + "lunging at targets that come into range; any lingering invisibility clears "
+              + "immediately, and the animal hunts like a normal predator from then on.");
 
             list.End();
         }
