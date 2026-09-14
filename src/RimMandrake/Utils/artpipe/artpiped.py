@@ -160,11 +160,19 @@ def _looks_gemini_quota_error(text: str) -> bool:
 
 VALIDATOR_TIMEOUT_S = 60  # run_validator's own subprocess.run ceiling.
 
-# Downscale-legibility gate (ART_LEGIBILITY_GATE_1, owner-ruled 2026-09-13):
-# score every transparent-bg sprite at 1:1 + two zoom-outs and refuse mud
-# BEFORE it reaches the owner's review sheet. Thresholds are CALIBRATED
-# (p25 of Alpha Animals' 471 shipping sprites, minus margin), never guessed;
-# regenerate them with `art_legibility.py calibrate` if the corpus moves.
+# Downscale-legibility gate (ART_LEGIBILITY_GATE_1, owner-ruled 2026-09-13;
+# DEMOTED TO ADVISORY-ONLY by ART_PAINTERLY_RESTORATION_1, owner, 2026-09-14
+# — "the whole scoring metric nonsense", never again a hard REFUSAL). The
+# scorer can still run and its findings still get recorded on a job, but
+# `run_legibility_gate` now defaults to DISABLED (same mechanism the e2e
+# selftests already used: ARTPIPE_LEGIBILITY_THRESHOLDS='' disables) so a
+# candidate is never failed on this score alone. Set
+# ARTPIPE_LEGIBILITY_THRESHOLDS=<path to legibility_thresholds.json> to
+# re-enable the hard gate if the owner ever re-funds it. RESTART THE DAEMON
+# to pick this up — this is a code default change, not a live config flip.
+# Thresholds are CALIBRATED (p25 of Alpha Animals' 471 shipping sprites,
+# minus margin), never guessed; regenerate them with `art_legibility.py
+# calibrate` if the corpus moves.
 LEGIBILITY_SCRIPT = common.REPO_ROOT / "src" / "RimMandrake" / "Utils" / "art_legibility.py"
 LEGIBILITY_THRESHOLDS = common.REPO_ROOT / "infrastructure" / "artpipe" / "legibility_thresholds.json"
 # Owner-grade-fitted 3-band model (2026-09-13 graded sheet): pass / borderline
@@ -1101,7 +1109,17 @@ def build_job_prompt(job: dict) -> str:
                       "no backdrop, floor, shadow or gradient.")
         # In-game sprites are the ones that get downsampled onto the map;
         # a black-backdrop reference shot does not, so it skips this.
-        parts.append(_SPRITE_ART_DIRECTION)
+        # Style-conditional (ART_PAINTERLY_RESTORATION_1, owner, 2026-09-14):
+        # this block used to be appended unconditionally so every candidate
+        # would clear the (now advisory-only, never-a-rejector) legibility
+        # gate — that reason is gone. The restored wave-4/5 painterly prompt
+        # family already states its own outline/readability direction
+        # inline ("Heavy, clean black outline... thick enough to read
+        # clearly at standard RimWorld zoom and below"), so only bolt this
+        # generic direction onto a job that ISN'T already asking for the
+        # painterly style, instead of duplicating and diluting it.
+        if "painterly" not in job["prompt"].lower():
+            parts.append(_SPRITE_ART_DIRECTION)
     else:
         parts.append(f"Background: one perfectly flat solid field of {bg}, "
                       f"used nowhere in the subject.")
@@ -1256,14 +1274,17 @@ def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S,
       "gate_error"  — the gate itself could not run/finish; infrastructure,
                        never blamed on the job
     """
-    # ARTPIPE_LEGIBILITY_THRESHOLDS overrides the thresholds path; set EMPTY
-    # to disable the gate (the e2e selftests do — their synthetic fixtures
-    # are not art and must not be judged as art). Read per call, not at
-    # import, so a test can flip it without reimporting the module.
+    # ARTPIPE_LEGIBILITY_THRESHOLDS overrides the thresholds path. DEFAULT IS
+    # DISABLED (ART_PAINTERLY_RESTORATION_1, owner, 2026-09-14 — the hard
+    # gate is reversed): an unset env var now means OFF, same as an explicit
+    # ''. Set it to a real thresholds-file path to opt back in. Read per
+    # call, not at import, so a test (or a re-funded gate) can flip it
+    # without reimporting the module.
     env_th = os.environ.get("ARTPIPE_LEGIBILITY_THRESHOLDS")
-    thresholds = LEGIBILITY_THRESHOLDS if env_th is None else (Path(env_th) if env_th else None)
+    thresholds = Path(env_th) if env_th else None
     if thresholds is None:
-        return None, ["gate disabled via ARTPIPE_LEGIBILITY_THRESHOLDS='' — "
+        return None, ["gate disabled by default (ART_PAINTERLY_RESTORATION_1) — "
+                      "set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; "
                       "skipped, not a pass"]
     if not thresholds.is_file():
         return None, [f"no thresholds file at {thresholds} — "

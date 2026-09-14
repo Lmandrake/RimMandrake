@@ -100,28 +100,26 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     facings = _split_facings(row.get("facings"))
     canvas = {"width": int(row["canvas_w"]), "height": int(row["canvas_h"])}
 
-    # Efficiency guard, from the frostmite resolution proof (2026-09-12): a
-    # ~1-cell creature downscaled to on-screen size is pixel-identical whether
-    # sourced from 512² or 256² (RMSE 5-7 at every play zoom), and 512² costs
-    # ~4x the atlas VRAM — a real OOM axis on the full mod list. The owner's own
-    # 2026-08-23 ruling is 128 px per cell of occupancy, so a drawSize-1 vermin
-    # wants 128-256, never 512. LOCKED as a refusal (owner, 2026-09-13, with
-    # the resolution experiment: stored 128/256/512 identical within 0.1 at
-    # every play zoom over 35 masters — resolution above the 1:1 tier buys
-    # nothing). The ceiling is ARITHMETIC when the row carries `drawsize`
-    # (cells): the law is canvas = drawSize×128, rounded up to the next power
-    # of two, floor 256. Without a drawsize, 256 is the ceiling. Exceeding
-    # the ceiling needs an explicit 'oversize_reason'. Below 128 is a
-    # warning (a decor sprite may legitimately be small).
+    # Sizing rule of thumb (ART_PAINTERLY_RESTORATION_1, owner, 2026-09-14):
+    # canvas = drawSize×128, rounded up to the next power of two, floor 256 —
+    # a starting point, not a refusal. The 2026-09-13 "stored resolution above
+    # 128 changes nothing measurable" finding was measured at VANILLA zoom
+    # tiers only (96/32/18 px); the owner is not convinced it holds at the
+    # enhanced zoom levels in the current mod stack, so sizing errs GENEROUS
+    # until re-measured — high resolution is fine "as long as the user will
+    # actually see the resolution" (owner's words). This used to be a hard
+    # REFUSAL past the ceiling without an 'oversize_reason' (owner-locked
+    # 2026-09-13); that lock is reversed. Below 128 still warns (a decor
+    # sprite may legitimately be small).
     import math
     ds = float(row.get("drawsize") or 1.0)
     ceiling = max(256, 2 ** math.ceil(math.log2(max(1.0, ds * 128))))
     if max(canvas["width"], canvas["height"]) > ceiling and not (row.get("oversize_reason") or "").strip():
-        raise ValueError(
-            f"row {base_id!r}: canvas {canvas['width']}x{canvas['height']} exceeds the ceiling "
-            f"{ceiling} for drawsize {ds} — MEASURED (35 masters, 2026-09-13): stored resolution "
-            f"above the 1:1 tier is pixel-identical at every play zoom and costs ~4x atlas VRAM. "
-            f"Set canvas to drawSize×128 (next power of two), or add an 'oversize_reason'.")
+        print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} exceeds the "
+              f"drawSize×128 rule-of-thumb ceiling {ceiling} for drawsize {ds} — filing anyway "
+              f"(ART_PAINTERLY_RESTORATION_1: advisory only, generous until re-measured at "
+              f"modded zoom). Add an 'oversize_reason' to record why.",
+              file=sys.stderr)
     if max(canvas["width"], canvas["height"]) < 128:
         print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} is under the 128 floor "
               f"— fine for decor, mud for a creature (64-stored measurably drops at 1:1).",
