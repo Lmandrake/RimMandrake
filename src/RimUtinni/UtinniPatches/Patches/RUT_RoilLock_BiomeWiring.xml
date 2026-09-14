@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_RoilLock_BiomeWiring.xml           UtinniPatches · GREENTIDE_MECHANICS_2 M4
+  ============================================================================
+  Wires the permanent Roil lock (Defs/GameConditionDefs/RUT_RoilLock.xml)
+  onto RUT_Greentide as a PATCH rather than a direct edit to
+  RUT_Greentide.xml's own biomeMapConditions field — same
+  dangling-cross-reference caution every sibling lock file already applies
+  (RUT_ScaldSteamLock_BiomeWiring.xml, RUT_GreentideWetBulbLock_BiomeWiring.xml).
+
+  Unlike those two, this is NOT the first patch to touch RUT_Greentide's
+  biomeMapConditions: RUT_GreentideWetBulbLock_BiomeWiring.xml (M1) already
+  adds the whole <biomeMapConditions><li>RUT_GreentideWetBulbLock</li>...
+  element when it runs first, and PatchOperation order between two same-mod
+  files is not something this file controls or should depend on. So this
+  patch checks BOTH shapes rather than assuming one: if biomeMapConditions
+  already exists (the M1 patch ran first), append an <li> into it; if it
+  does not yet exist (this patch ran first), add the whole node. Either
+  order leaves RUT_Greentide with both locks registered — order between them
+  doesn't matter: GameCondition.Init() for each is independent, and
+  WeatherDecider.ForcedWeather() only reads ForcedWeather() (the Roil lock
+  only), which the wet-bulb lock never overrides (it sets no forcedWeather).
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
+    <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+      <value>
+        <li>RUT_RoilLock</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]</xpath>
+      <value>
+        <biomeMapConditions>
+          <li>RUT_RoilLock</li>
+        </biomeMapConditions>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

@@ -28,6 +28,17 @@ namespace RimMandrake.EnvironmentalHazards
         // what is one of the hottest methods in the game.
         private static bool anyBiomeOptsIn;
 
+        // GREENTIDE_MECHANICS_2 M5. True when no GameConditionDef in the
+        // whole load order carries RM_GlowMultiplierOverrideExtension — lets
+        // CurCelestialSunGlow_Postfix skip scanning a map's ActiveConditions
+        // entirely on every other install, the same hot-path bail
+        // anyBiomeOptsIn already gives the biome-side check. Unlike
+        // ExtensionCache above this cannot be a BiomeDef/Map-keyed cache at
+        // all — which condition is active changes at runtime, not per biome
+        // or per map identity — so the per-call cost this flag guards is a
+        // short linear scan of ActiveConditions, not a dictionary lookup.
+        private static bool anyGlowOverrideOptsIn;
+
         static EnvironmentalHazardsMod()
         {
             BuildCache();
@@ -81,6 +92,24 @@ namespace RimMandrake.EnvironmentalHazards
                 ExtensionCache[biomes[i]] = ext;
                 anyBiomeOptsIn = true;
             }
+
+            // GREENTIDE_MECHANICS_2 M5. GameConditionDefs opting into
+            // RM_GlowMultiplierOverrideExtension can't be cached by def the
+            // way biomes are above (which one is ACTIVE is runtime state,
+            // not load-order state) — this only records whether the feature
+            // is used anywhere at all, so ActiveGlowOverrideFor can bail
+            // without touching a map's GameConditionManager on every install
+            // that never uses it.
+            anyGlowOverrideOptsIn = false;
+            List<GameConditionDef> conditions = DefDatabase<GameConditionDef>.AllDefsListForReading;
+            for (int i = 0; i < conditions.Count; i++)
+            {
+                if (conditions[i].GetModExtension<RM_GlowMultiplierOverrideExtension>() != null)
+                {
+                    anyGlowOverrideOptsIn = true;
+                    break;
+                }
+            }
         }
 
         internal static BiomeGlowMultiplierExtension ExtensionFor(Map map)
@@ -98,6 +127,44 @@ namespace RimMandrake.EnvironmentalHazards
 
             return ExtensionCache.TryGetValue(biome, out BiomeGlowMultiplierExtension ext) ? ext : null;
         }
+
+        // GREENTIDE_MECHANICS_2 M5. First active condition on the map whose
+        // def carries RM_GlowMultiplierOverrideExtension, or null. Order
+        // among ActiveConditions is registration order, same list
+        // WeatherDecider.ForcedWeather already walks for the identical
+        // "most recently registered wins" reason — a rare incident-fired
+        // clearing condition is always registered after a biome's own
+        // permanent lock, so it is the one this finds first in the common
+        // case of exactly one override condition active at a time. Two
+        // such conditions active simultaneously (not something this kit
+        // creates) would resolve to whichever comes first in that list —
+        // an accepted, undocumented-further edge case, same posture as
+        // WeatherDecider's own "last one wins" resolution it mirrors.
+        internal static RM_GlowMultiplierOverrideExtension ActiveGlowOverrideFor(Map map)
+        {
+            if (!anyGlowOverrideOptsIn || map?.gameConditionManager == null)
+            {
+                return null;
+            }
+
+            List<GameCondition> active = map.gameConditionManager.ActiveConditions;
+            for (int i = 0; i < active.Count; i++)
+            {
+                GameCondition condition = active[i];
+                if (condition?.def == null)
+                {
+                    continue;
+                }
+
+                RM_GlowMultiplierOverrideExtension ext = condition.def.GetModExtension<RM_GlowMultiplierOverrideExtension>();
+                if (ext != null)
+                {
+                    return ext;
+                }
+            }
+
+            return null;
+        }
     }
 
     public static class BiomeGlowPatches
@@ -113,6 +180,18 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return; // mod option: biome darkness multiplier disabled
             }
+
+            // GREENTIDE_MECHANICS_2 M5: an active "clearing event" condition
+            // (e.g. Breaklight) takes priority over the biome's own permanent
+            // darkening — checked first and, when present, applied INSTEAD
+            // of ext.glowMultiplier below, never stacked with it.
+            RM_GlowMultiplierOverrideExtension overrideExt = EnvironmentalHazardsMod.ActiveGlowOverrideFor(map);
+            if (overrideExt != null)
+            {
+                __result *= overrideExt.glowMultiplier;
+                return;
+            }
+
             BiomeGlowMultiplierExtension ext = EnvironmentalHazardsMod.ExtensionFor(map);
             if (ext == null)
             {

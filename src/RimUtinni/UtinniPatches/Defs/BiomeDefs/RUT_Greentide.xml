@@ -14,14 +14,22 @@
     Weather rebuilt around SS4c's "steam kit," NOT the donor's temperate-jungle
     table: donor Clear was 18 (a mild-jungle read); dropped hard, because this is
     "the most furiously productive ground on the planet" under Extreme-Desert sun —
-    the Roil (standing ground-hugging hot fog) is the norm, not an event. No
-    dedicated Roil/Breaklight/underlight-rain WeatherDefs exist yet (SS Owed,
-    `GREENTIDE_MECHANICS_1`) — Fog itself is NOT substituted here (fog reads as
-    cool/grey, wrong for a hot steam-jungle) and left at 0 rather than mis-cast;
-    flagged as a real gap pending that item. Snow zeroed outright (45 C median makes
-    it absurd — not a named ban, a thematic call). GrayPall/Overcast (both
-    MayRequire-gated) zeroed to 0 rather than removed, keeping the slots visible for
-    whoever authors GREENTIDE_MECHANICS_1's real weather next.
+    the Roil (standing ground-hugging hot fog) is the norm, not an event. Fog itself
+    is NOT substituted here (fog reads as cool/grey, wrong for a hot steam-jungle)
+    and left at 0 rather than mis-cast. Snow zeroed outright (45 C median makes it
+    absurd — not a named ban, a thematic call). GrayPall/Overcast (both
+    MayRequire-gated) zeroed to 0 — the Roil lock's permanent ForcedWeather()
+    already makes every baseWeatherCommonalities entry on this def inert (same
+    posture RUT_MiasmaWeatherLock.xml's own header already documents for its
+    sibling biome); kept at 0 rather than removed so the slots stay visible.
+
+    GREENTIDE_MECHANICS_2 M4 build pass: RUT_RoilWeather (the standing
+    ground-fog) now exists and is permanently forced via biomeMapConditions
+    (Patches/RUT_RoilLock_BiomeWiring.xml) — the "no dedicated Roil WeatherDef
+    yet" gap this header used to flag here is closed. Breaklight (M5, the rare
+    clearing event) is a GameCondition-based incident, not a
+    baseWeatherCommonalities entry, so it never appears in the table above
+    either; see RUT_Breaklight.xml (Defs/IncidentDefs/).
 
     diseases kept at the donor's own set (diseaseMtbDays 50, "a heavy disease load —
     also accidentally honest" per SS0). animalDensity/plantDensity kept at the
@@ -99,12 +107,25 @@
       </li>
     </terrainsByFertility>
     <!--
-      GREENTIDE_MECHANICS_2 M9/M12 build pass. Both extensions are generic
-      RM_-tier (defined in mandrake.rm.environmentalhazards, harmless on any
-      biome that doesn't carry them) — see RM_LivingBoleBiomeExtension.cs /
-      RM_RootCausewayBiomeExtension.cs for the full field docs.
+      GREENTIDE_MECHANICS_2 M9/M12/M4 build passes. All extensions are
+      generic RM_-tier (defined in mandrake.rm.environmentalhazards, harmless
+      on any biome that doesn't carry them) — see RM_LivingBoleBiomeExtension.cs /
+      RM_RootCausewayBiomeExtension.cs / BiomeGlowMultiplierExtension.cs for
+      the full field docs.
     -->
     <modExtensions>
+      <!-- M4: "the steam deflects the sun" — permanent bright-overcast via
+           the ruled BiomeGlowPatches Harmony patch. 0.75 is the kit spec's
+           own INVENTED value ("livable for anything that needs moisture");
+           vanilla's darkness chain (accuracy, mood, plant growth, light-gated
+           work) prices this in for free once GenCelestial.CurCelestialSunGlow
+           is scaled. suppressSunlightStatAffecter left at its default
+           (false): 0.75 is dim overcast, not true darkness, so a
+           sunlight-gated effect (e.g. Biotech sun-sensitivity) should still
+           read this biome as sunlit. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+        <glowMultiplier>0.75</glowMultiplier>
+      </li>
       <!-- M12: the Greatbole. Counts/radius/spacing are all kit-spec
            INVENTED numbers; roofDef left unset so the GenStep's own default
            (RoofDefOf.RoofRockThick) applies. -->
@@ -138,6 +159,16 @@
         <fallbackEdgeMargin>10</fallbackEdgeMargin>
       </li>
     </modExtensions>
+    <!-- M4: "underlight rain" — the standing ambient drip under the Roil,
+         cosmetic only (BiomeDef.soundsAmbient, distinct from a WeatherDef's
+         own ambientSounds field). Ambient_Rain is a real, already-shipping
+         vanilla SoundDef (verified), reused as-is rather than authoring a
+         bespoke loop for one biome's flavor cue — same minimal-content
+         posture the spec's own M4 text explicitly allows ("cite a real
+         vanilla SoundDef if you don't want to author a new one"). -->
+    <soundsAmbient>
+      <li>Ambient_Rain</li>
+    </soundsAmbient>
     <baseWeatherCommonalities>
       <Clear>6</Clear>
       <Fog>0</Fog>

@@ -87,6 +87,23 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            // GREENTIDE_MECHANICS_2 M5's wet-bulb-pause hookup: gate 4, dry
+            // air. Checked before gate 2's per-room dried check because this
+            // one idles the WHOLE map for the tick, not room by room — a
+            // Breaklight sky is dry everywhere, not just inside a blower's
+            // registered rooms.
+            if (ext.pausedByConditions != null)
+            {
+                for (int i = 0; i < ext.pausedByConditions.Count; i++)
+                {
+                    GameConditionDef pausingDef = ext.pausedByConditions[i];
+                    if (pausingDef != null && map.gameConditionManager.ConditionIsActive(pausingDef))
+                    {
+                        return; // gate 4: a dry-air clearing event idles the whole ramp
+                    }
+                }
+            }
+
             // M2's dried-room gate: RM_CompDryFieldEmitter keeps this
             // registry fresh while its blower runs. Absent mod/no blower on
             // this map at all is the common case and must not throw.

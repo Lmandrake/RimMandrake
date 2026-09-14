@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_RoilLock.xml                       UtinniPatches · GREENTIDE_MECHANICS_2 M4
+  ============================================================================
+  greentide_kit_spec.md "M4. The Roil" — "The lock: reuse ruled
+  RM_GameCondition_EnvironmentalWeather as a permanent biomeMapConditions
+  entry — weather forced to RUT_RoilWeather via ForcedWeather(), no damage
+  fields set." Same shape RUT_ScaldSteamLock.xml/RUT_MiasmaWeatherLock.xml
+  already established for their own sibling biomes.
+
+  conditionClass = RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather
+  (ALPHA_MECHANICS_KIT_1, ruled and already shipped — this def only
+  configures it via EnvironmentalWeatherExtension). Wired onto RUT_Greentide
+  via a MayRequire-gated patch (Patches/RUT_RoilLock_BiomeWiring.xml), not a
+  direct XML edit to RUT_Greentide.xml's own biomeMapConditions field — same
+  dangling-cross-reference caution every sibling lock file already applies.
+
+  No damage/hediff/rot/plant-kill/density fields set — the spec is explicit
+  ("no damage fields set — pure weather force"); the Roil's only mechanical
+  cost is the WeatherDef's own accuracy/move multipliers, forced by this
+  condition, not dealt by it.
+
+  MayRequire is load-bearing: conditionClass lives in
+  mandrake.rm.environmentalhazards; forcedWeather (RUT_RoilWeather) is itself
+  MayRequire-gated on mandrake.rm.greentide (see that file's own header) —
+  both are named plainly below since this def already requires
+  mandrake.rm.environmentalhazards and RUT_Greentide's own biome (this mod,
+  UtinniPatches) already depends on mandrake.rm.greentide for the biome's
+  other Greentide-kit content, so the two mods are never independently
+  present/absent from each other in practice on this campaign's mod list.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_RoilLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the Roil</label>
+    <description>Waist-deep, hot fog standing permanently over the Greentide's floor — the jungle's own breath, and the reason nothing here is ever seen coming until it's close.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>true</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <forcedWeather>RUT_RoilWeather</forcedWeather>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>
