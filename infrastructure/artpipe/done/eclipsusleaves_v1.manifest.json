@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 102.63318317104131,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.63318317104131,
+  "height": 256,
+  "id": "eclipsusleaves_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-49-50-01a099f5-635b-7342-ab68-2a977a1676f6.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 29.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-48-15-01a099f3-ecf3-7f22-9cf2-c23154534dd8.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "eclipsusleaves_v1",
+    "note": "Built-in imagegen; created a near-black, pale-edged miasmatic shrub with heavy linework, then resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\eclipsusleaves_v1\\eclipsusleaves_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/eclipsusleaves_v1/eclipsusleaves_v1.png\n    256x256  rgba  87,078 bytes  (102s)\n"
+}

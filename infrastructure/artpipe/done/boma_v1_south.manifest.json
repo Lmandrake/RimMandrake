@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 73.9971880549856,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 73.9971880549856,
+  "height": 512,
+  "id": "boma_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 4.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-28-46-01a09296-6c10-74d1-a5c3-beb0282cfce2.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T13-53-22-01a0923f-1328-73e1-bc51-b09a43d2d3c0.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "boma_v1_south",
+    "note": "Generated a full-regeneration south-facing Boma sprite with heavy black linework, then resized it to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\boma_v1_south\\boma_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/boma_v1_south/boma_v1_south.png\n    512x512  rgba  391,329 bytes  (74s)\n"
+}

@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T20:31:30Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "duskram_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien desert grazer creature (working name 'Duskram') \u2014 a large, hardy beast of burden suited to open desert. NOT a mundane Earth camel: a broad-backed quadruped with two low fatty dorsal ridges instead of humps, a wide bony ceratopsian-like frill sweeping back from a blunt heavy-jawed head, small deep-set eyes shaded by heavy brow ridges, thick cracked hide in dusty tan-grey tones built to shrug off sandstorms. Reads as a slow, tough desert pack animal, distinct from any Earth ungulate. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or cargo rigging. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+  "style_notes": "Non-SW name (Jamel) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a large desert beast of burden), specific name/character invented \u2014 'Duskram', a frilled ceratopsian-headed desert grazer, deliberately not a literal camel despite the source name's echo. Large sizeBin, desert biome. Full regen. Explicit outline-thickness requirement per the same ruling."
+}

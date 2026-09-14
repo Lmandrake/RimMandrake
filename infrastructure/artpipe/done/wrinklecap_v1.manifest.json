@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 99.65078662103042,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.65078662103042,
+  "height": 256,
+  "id": "wrinklecap_v1",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 83.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T07-12-48-01a09b1d-11a6-78a1-8120-c9c34c3e88ab.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 56.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 77.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T07-06-56-01a09b17-b138-7221-8f4f-a1237dbd2cbc.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "wrinklecap_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\wrinklecap_v1\\wrinklecap_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/wrinklecap_v1/wrinklecap_v1.png\n    256x256  rgba  35,838 bytes  (99s)\n"
+}

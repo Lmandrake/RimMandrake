@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 110.33501726400573,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.33501726400573,
+  "height": 256,
+  "id": "twistingthorngrass_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T07-02-46-01a09b13-e316-7671-8c47-ce898fb546c8.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 54.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T07-01-00-01a09b12-450b-7411-801c-5b3e34ef29a4.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "twistingthorngrass_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\twistingthorngrass_v1\\twistingthorngrass_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/twistingthorngrass_v1/twistingthorngrass_v1.png\n    256x256  rgba  35,524 bytes  (110s)\n"
+}

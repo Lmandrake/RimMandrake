@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 83.35715245304164,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 83.35715245304164,
+  "height": 256,
+  "id": "skulltop_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-52-33-01a09b0a-84d7-71b2-95fd-b65dfd8e5b7c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 36.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-50-44-01a09b08-db20-7e60-8dec-2f7d86bd73f7.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "skulltop_v1",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 256\u00d7256, and preserved transparent alpha. Prompt normalized from the supplied production spec.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\skulltop_v1\\skulltop_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/skulltop_v1/skulltop_v1.png\n    256x256  rgba  52,497 bytes  (83s)\n"
+}

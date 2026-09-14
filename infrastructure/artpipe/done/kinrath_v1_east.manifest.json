@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 122.6945959419827,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 122.6945959419827,
+  "height": 512,
+  "id": "kinrath_v1_east",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T17-14-57-01a092f7-a0da-77c3-ae3d-a92d153ff56c.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 65.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 81.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T17-09-46-01a092f2-e17f-7e12-bca0-7cc5aad91bc8.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 64.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "kinrath_v1_east",
+    "note": "Built-in imagegen full regen; resized to exact 512x512 with transparent padding. East-facing Kinrath has four legs, facial feeler, mottled carapace, and heavy outlines.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\kinrath_v1_east\\kinrath_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/kinrath_v1_east/kinrath_v1_east.png\n    512x512  rgba  191,658 bytes  (121s)\n"
+}

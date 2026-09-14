@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 123.36225676903268,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 123.36225676903268,
+  "height": 256,
+  "id": "ripthorn_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-48-40-01a09b06-f6bf-7e23-81f6-419c6d8ec0ee.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 48.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-47-16-01a09b05-b0ef-7de1-ad8a-66b272a0181e.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "ripthorn_v1",
+    "note": "Generated via built-in imagegen, resized to exact 256x256 RGBA, and saved with transparent corners and no scenery or ground shadow.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\ripthorn_v1\\ripthorn_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/ripthorn_v1/ripthorn_v1.png\n    256x256  rgba  67,595 bytes  (123s)\n"
+}

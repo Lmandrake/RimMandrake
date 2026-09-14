@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 141.92857631196966,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 141.92857631196966,
+  "height": 256,
+  "id": "pyrelands_barbslinger_v2_south",
+  "legibility": "REINFORCED_PASS",
+  "legibility_findings": [
+    "LEGIBILITY BORDERLINE fitted=1.04 in [0.63, 1.318) \u2014 reinforce the keyline, then rescore (gate_coverage@32=0.99 gate_ground@32=0.61 gate_keyline@32=1.00 gate_structure@32=0.17)",
+    "--- after stroke ---",
+    "LEGIBILITY PASS fitted=1.53 >= works 1.318 (gate_coverage@32=0.99 gate_ground@32=0.73 gate_keyline@32=1.00 gate_structure@32=0.31)"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789357769,
+    "primary_used_percent": 66.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T18-38-40-01a09d90-ffa7-7a00-8494-adcaedf3fc6b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 66.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789357769,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T17-14-45-01a09d44-2a67-77b2-b97a-35103357f230.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 65.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "borderline promoted by the outside keyline stroke; pre-stroke original kept beside it",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_barbslinger_v2_south",
+    "note": "Generated with built-in imagegen, preserving the requested flat ash-grey/red toy-figurine design; resized to exactly 256x256 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_barbslinger_v2_south\\pyrelands_barbslinger_v2_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_barbslinger_v2_south/pyrelands_barbslinger_v2_south.png\n    256x256  rgba  39,163 bytes  (141s)\n"
+}

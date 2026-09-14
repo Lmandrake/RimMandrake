@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 99.18903395999223,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.18903395999223,
+  "height": 512,
+  "id": "fumeback_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T14-50-15-01a09799-8482-7b43-b9f0-e8bf83907aea.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 8.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T14-48-51-01a09798-3d40-7b12-aa90-893b3a45d28f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "fumeback_v1_north",
+    "note": "Built-in imagegen; mechanically downscaled with transparent padding to exact 512\u00d7512. One retry followed a local resize-tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\fumeback_v1_north\\fumeback_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/fumeback_v1_north/fumeback_v1_north.png\n    512x512  rgba  256,311 bytes  (99s)\n"
+}

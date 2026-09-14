@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 113.02826621202985,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 113.02826621202985,
+  "height": 256,
+  "id": "primordialtallgrass_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T06-41-45-01a09b00-a391-7750-8e4a-d770768602c1.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789306902,
+    "primary_used_percent": 88.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T02-17-15-01a09a0e-79da-7363-bac0-9509bd2803a9.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 43.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "primordialtallgrass_v1",
+    "note": "Generated with built-in imagegen and resized to exactly 256x256; preserved transparent alpha and heavy outlined forge-grass silhouette.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\primordialtallgrass_v1\\primordialtallgrass_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/primordialtallgrass_v1/primordialtallgrass_v1.png\n    256x256  rgba  52,476 bytes  (112s)\n"
+}

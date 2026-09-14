@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 99.55135624599643,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.55135624599643,
+  "height": 256,
+  "id": "firevinetree_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T20-42-49-01a098dc-4daa-7a90-a4ad-68c1e1a86257.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 16.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T20-41-17-01a098da-e699-7e31-99e4-1bb41bab507c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "firevinetree_v1",
+    "note": "Generated a full replacement ember-vine volcanic tree sprite and resized it to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\firevinetree_v1\\firevinetree_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/firevinetree_v1/firevinetree_v1.png\n    256x256  rgba  87,539 bytes  (99s)\n"
+}

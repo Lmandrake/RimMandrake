@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 108.18205814802786,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.18205814802786,
+  "height": 256,
+  "id": "flakespirefungus_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-51-34-01a099f6-f5f2-7033-a9a0-b5c517b4c00b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-49-50-01a099f5-635b-7342-ab68-2a977a1676f6.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "flakespirefungus_v1",
+    "note": "Generated via built-in imagegen, then downscaled to exactly 256x256 while preserving transparent RGBA and the outlined single-organism silhouette.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\flakespirefungus_v1\\flakespirefungus_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/flakespirefungus_v1/flakespirefungus_v1.png\n    256x256  rgba  68,933 bytes  (108s)\n"
+}

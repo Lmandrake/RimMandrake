@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 96.4703848399804,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.4703848399804,
+  "height": 256,
+  "id": "shinecap_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 36.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T06-51-01-01a09b09-1ed3-7062-8137-94e3183eca07.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 32.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T06-49-20-01a09b07-965e-7700-9206-4fc61d05539b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 48.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "shinecap_v1",
+    "note": "Generated via built-in imagegen, copied to the workspace, and resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\shinecap_v1\\shinecap_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/shinecap_v1/shinecap_v1.png\n    256x256  rgba  122,685 bytes  (96s)\n"
+}

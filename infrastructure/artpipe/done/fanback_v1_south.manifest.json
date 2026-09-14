@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 111.7913219940092,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.7913219940092,
+  "height": 512,
+  "id": "fanback_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T20-30-58-01a093ab-164c-75a3-be89-ebd0c3ff7a9f.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T20-29-00-01a093a9-4bc5-7162-84a5-f92aed82ddf3.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 67.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "fanback_v1_south",
+    "note": "Generated via built-in imagegen; resized to exact 512\u00d7512 after ImageMagick was unavailable. Verified alpha and four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\fanback_v1_south\\fanback_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/fanback_v1_south/fanback_v1_south.png\n    512x512  rgba  251,119 bytes  (111s)\n"
+}

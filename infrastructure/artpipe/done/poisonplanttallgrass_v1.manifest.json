@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 91.76204291498289,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.76204291498289,
+  "height": 256,
+  "id": "poisonplanttallgrass_v1",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 83.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T02-12-26-01a09a0a-111e-7bc1-85fe-25b60e9777cd.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 77.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T02-06-48-01a09a04-e92d-77e3-9841-54afa5f58c04.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 41.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "poisonplanttallgrass_v1",
+    "note": "Generated via built-in imagegen and saved as an exact 256x256 transparent PNG. One retry followed a PowerShell resize syntax error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\poisonplanttallgrass_v1\\poisonplanttallgrass_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/poisonplanttallgrass_v1/poisonplanttallgrass_v1.png\n    256x256  rgba  34,376 bytes  (91s)\n"
+}

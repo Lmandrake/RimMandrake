@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 138.13613428600365,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 138.13613428600365,
+  "height": 256,
+  "id": "halfalientree_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-57-21-01a099fc-44cd-7803-9954-e5af71132797.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-55-55-01a099fa-f4bf-7c93-a52b-f601a727428a.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "halfalientree_v1",
+    "note": "Generated via built-in imagegen, resized to exactly 256\u00d7256, and preserved genuine alpha transparency with all four corners transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\halfalientree_v1\\halfalientree_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/halfalientree_v1/halfalientree_v1.png\n    256x256  rgba  102,775 bytes  (138s)\n"
+}

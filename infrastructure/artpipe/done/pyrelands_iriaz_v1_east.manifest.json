@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 104.24814217200037,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 104.24814217200037,
+  "height": 256,
+  "id": "pyrelands_iriaz_v1_east",
+  "legibility": "REINFORCED_PASS",
+  "legibility_findings": [
+    "LEGIBILITY BORDERLINE fitted=1.26 in [0.63, 1.318) \u2014 reinforce the keyline, then rescore (gate_coverage@32=1.00 gate_ground@32=0.41 gate_keyline@32=1.00 gate_structure@32=0.45)",
+    "--- after stroke ---",
+    "LEGIBILITY PASS fitted=2.02 >= works 1.318 (gate_coverage@32=1.00 gate_ground@32=0.66 gate_keyline@32=1.00 gate_structure@32=0.60)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-40-32-01a09e37-7fa2-7ee2-810a-8498dbff8260.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 74.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T21-38-58-01a09e36-104c-7911-b5ed-d5398dbb546c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 74.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "borderline promoted by the outside keyline stroke; pre-stroke original kept beside it",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_iriaz_v1_east",
+    "note": "Generated with built-in imagegen, preserved transparent alpha, and resized to exactly 256x256.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_iriaz_v1_east\\pyrelands_iriaz_v1_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_iriaz_v1_east/pyrelands_iriaz_v1_east.png\n    256x256  rgba  41,800 bytes  (104s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 83.9348603769904,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 83.9348603769904,
+  "height": 512,
+  "id": "direwail_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T14-48-51-01a09798-3d40-7b12-aa90-893b3a45d28f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T14-46-46-01a09796-51c7-7600-b0ab-56b04d770187.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 6.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "direwail_v1_north",
+    "note": "Built-in imagegen; original Direwail north-facing RimWorld sprite with heavy outlines, mottled grey-green hide, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\direwail_v1_north\\direwail_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/direwail_v1_north/direwail_v1_north.png\n    512x512  rgba  134,022 bytes  (83s)\n"
+}

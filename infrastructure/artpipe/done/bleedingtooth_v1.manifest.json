@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 79.74236649402883,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 79.74236649402883,
+  "height": 256,
+  "id": "bleedingtooth_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T21-22-17-01a09900-7006-7693-9531-36eef4c06b9b.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 68.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T21-06-23-01a098f1-df6a-7d42-b4de-3365f04ccfe9.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 25.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "bleedingtooth_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256 while preserving transparent alpha. One retry followed a genuine local image-processing error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\bleedingtooth_v1\\bleedingtooth_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/bleedingtooth_v1/bleedingtooth_v1.png\n    256x256  rgba  73,147 bytes  (79s)\n"
+}

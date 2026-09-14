@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-12T21:46:33Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "huskrunner_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Huskrunner \u2014 a large husk-podded quadruped grazer native to arid shrubland, a body plated in overlapping dried seed-pod armor segments in tan and dusty brown, sturdy legs built for covering ground between sparse vegetation. Reads as a large armored desert grazer. Single creature, centered, standing four-legged stance, no ground shadow, no background scenery, no dust/wind effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (AA_Wildpod, Alpha Animals prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:arid_shrubland:AA_Wildpod (the currently-live 'in' placement; the poison_forest copy of this row is decision:'out', removed per the 2026-09-10 sitting ruling), large sizeBin, note '8 squares' (large body footprint). General kind kept (pod-armored grazer), invented name/character: Huskrunner. Explicit outline-thickness requirement per the ruling."
+}

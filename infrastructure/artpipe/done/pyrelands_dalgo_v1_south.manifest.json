@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 159.6202639840194,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 159.6202639840194,
+  "height": 512,
+  "id": "pyrelands_dalgo_v1_south",
+  "legibility": "PASS",
+  "legibility_findings": [
+    "LEGIBILITY PASS fitted=1.72 >= works 1.318 (gate_coverage@32=1.00 gate_ground@32=0.35 gate_keyline@32=1.00 gate_structure@32=0.55)"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 19.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T21-36-52-01a09e34-22ca-72e1-a169-de80d8906e91.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789375782,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T21-34-57-01a09e32-63f1-7901-984c-9dcfdc9ca17b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 72.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_dalgo_v1_south",
+    "note": "Built-in imagegen used the ruled canon reference; re-rendered as a low-slung, two-leg RimWorld toy figurine. Second pass corrected baked checkerboard to true alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_dalgo_v1_south\\pyrelands_dalgo_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_dalgo_v1_south/pyrelands_dalgo_v1_south.png\n    512x512  rgba  198,217 bytes  (158s)\n"
+}

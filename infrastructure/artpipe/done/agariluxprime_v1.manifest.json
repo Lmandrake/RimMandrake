@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 113.15919639897766,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 113.15919639897766,
+  "height": 384,
+  "id": "agariluxprime_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T20-41-18-01a098da-e725-7c20-a1b2-83e4e2aa1a0e.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 87.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/12/rollout-2026-09-12T15-08-39-01a097aa-5c39-7cb0-b9c4-5cf44799a0df.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 384,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 384,
+    "id": "agariluxprime_v1",
+    "note": "Generated with built-in imagegen, copied into the workspace, resized to exactly 384x384, and verified as RGBA with four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\agariluxprime_v1\\agariluxprime_v1.png",
+    "status": "ok",
+    "width": 384
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/agariluxprime_v1/agariluxprime_v1.png\n    384x384  rgba  253,476 bytes  (111s)\n"
+}

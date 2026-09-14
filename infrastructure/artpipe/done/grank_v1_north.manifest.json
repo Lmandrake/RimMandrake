@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 81.81614878500113,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.81614878500113,
+  "height": 512,
+  "id": "grank_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T20-32-40-01a093ac-a550-7730-aa29-fe15f3ce4208.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T20-30-48-01a093aa-ef0b-72a0-897b-13174007547d.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 67.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "grank_v1_north",
+    "note": "Full regeneration: north-facing saw-toothed Grank with heavy black outlines, centered on transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grank_v1_north\\grank_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grank_v1_north/grank_v1_north.png\n    512x512  rgba  251,786 bytes  (81s)\n"
+}

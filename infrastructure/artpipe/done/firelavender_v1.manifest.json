@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 85.40942462498788,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.40942462498788,
+  "height": 256,
+  "id": "firelavender_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-51-20-01a099f6-c11a-7223-8935-dcc426f51d4d.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/13/rollout-2026-09-13T01-49-38-01a099f5-31e8-7a82-b5ce-267eb74f6140.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "firelavender_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256. One retry followed a PowerShell bitmap-constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\firelavender_v1\\firelavender_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/firelavender_v1/firelavender_v1.png\n    256x256  rgba  41,610 bytes  (85s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 97.44349557795795,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.44349557795795,
+  "height": 256,
+  "id": "redbugloss_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 18.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T06-45-17-01a09b03-e0fd-74e2-81fc-34623015ff1e.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 46.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789324923,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T06-43-22-01a09b02-1dfb-7d00-bacb-1962a3e835ed.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 45.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "redbugloss_v1",
+    "note": "Generated in built-in imagegen mode, copied to the workspace, and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\redbugloss_v1\\redbugloss_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/redbugloss_v1/redbugloss_v1.png\n    256x256  rgba  106,135 bytes  (97s)\n"
+}

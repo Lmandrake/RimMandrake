@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-13T08:32:41Z",
+  "generatedAt": "2026-09-13T08:46:27Z",
   "iterationsHistogram": {
-    "1": 224,
+    "1": 231,
     "2": 4,
     "3": 6,
     "4": 3,
@@ -395,19 +395,19 @@
         "alientreepolluted_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273945.5101314,
+      "last_ts": 1789288979.786135,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 2.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "ambrosia": {
       "iteration": 1,
@@ -415,19 +415,19 @@
         "ambrosia_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273946.5455396,
+      "last_ts": 1789288982.1984878,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "anooba/east": {
       "iteration": 1,
@@ -515,19 +515,19 @@
         "aridgrass_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273946.9147396,
+      "last_ts": 1789288993.7217627,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "arpeau": {
       "iteration": 1,
@@ -535,19 +535,19 @@
         "arpeau_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273946.0157785,
+      "last_ts": 1789289080.8655877,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
         "codexPctWindow": 0.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "ashrunner/east": {
       "iteration": 1,
@@ -716,19 +716,19 @@
         "bindweed_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273946.4948838,
+      "last_ts": 1789289075.9287353,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
         "codexPctWindow": 0.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "bleedingtooth": {
       "iteration": 1,
@@ -756,19 +756,19 @@
         "bloddle_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273946.563704,
+      "last_ts": 1789289087.575107,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "bloodbouquet": {
       "iteration": 1,
@@ -776,19 +776,19 @@
         "bloodbouquet_v1"
       ],
       "last_notes": null,
-      "last_ts": 1789273945.526742,
+      "last_ts": 1789289174.7935195,
       "rejected_count": 0,
-      "renders": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_FLORA_WAVE1_QUEUE_1"
       ],
       "spend": {
-        "codexPctWindow": 0.0,
+        "codexPctWindow": 1.0,
         "note": null,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "boma/east": {
       "iteration": 1,
@@ -6651,28 +6651,28 @@
     "totalTargets": 330
   },
   "sourceFingerprint": {
-    "bytes": 181142,
+    "bytes": 183137,
     "exists": true,
-    "lines": 1234,
+    "lines": 1248,
     "path": "infrastructure/artpipe/registry.jsonl",
-    "sha256_12": "13e30f7153ac"
+    "sha256_12": "30febd7769b1"
   },
   "spend": {
     "acceptedOrCommittedCount": 0,
-    "codexPctAllTime": 192.0,
+    "codexPctAllTime": 198.0,
     "geminiUsdTotal": 4.02,
     "geminiUsdWeek": 4.02,
-    "pctWeeklyWindow": 203.0,
+    "pctWeeklyWindow": 209.0,
     "status": "MEASURED"
   },
   "stateCounts": {
     "accepted": 0,
-    "awaiting_verdict": 223,
+    "awaiting_verdict": 230,
     "committed": 0,
     "deployed": 0,
     "generated": 14,
     "parked_at_cap": 0,
-    "queued": 93,
+    "queued": 86,
     "registered": 0,
     "rejected_in_retry": 0,
     "repurposed": 0,
@@ -6680,10 +6680,10 @@
   },
   "targetCount": 330,
   "throughputFingerprint": {
-    "bytes": 261946,
+    "bytes": 269007,
     "exists": true,
-    "lines": 320,
+    "lines": 327,
     "path": "infrastructure/artpipe/throughput.jsonl",
-    "sha256_12": "4705035dcbad"
+    "sha256_12": "abf7d7657be6"
   }
 }

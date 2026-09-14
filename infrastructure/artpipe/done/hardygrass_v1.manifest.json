@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 120.88231964001898,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.88231964001898,
+  "height": 256,
+  "id": "hardygrass_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-57-52-01a099fc-bb48-7363-9a7b-666df94b1b0c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-56-23-01a099fb-6068-7fe3-8837-805eb3e8fb41.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "hardygrass_v1",
+    "note": "Generated with built-in imagegen and exported to exact 256\u00d7256 RGBA. First export command failed; retry succeeded. Final prompt followed the supplied RimWorld sprite specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\hardygrass_v1\\hardygrass_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/hardygrass_v1/hardygrass_v1.png\n    256x256  rgba  24,893 bytes  (120s)\n"
+}

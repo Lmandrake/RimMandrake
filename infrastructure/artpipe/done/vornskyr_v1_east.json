@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T20:31:30Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "vornskyr_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Vornskyr \u2014 a lean, vicious predatory lizard-hound native to Kessel-like hostile worlds. Sleek low-slung reptilian body built for a fast pounce, four clawed legs, a long low-held tail, a narrow wedge-shaped head with a mouth full of sharp needle teeth, a ridge of short bony spines running down the neck and spine, tough mottled hide in dark grey-green tones. Reads as a dangerous pack predator that hunts by scent. Single creature, centered, low stalking pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+  "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Vornskyr's name means the canonical vornskr predator (Kessel/Rebels) \u2014 converge on its known look (lean spiny-ridged lizard-hound, needle teeth). Large sizeBin, the_miasma biome. Full regen. Explicit outline-thickness requirement per the same ruling."
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 105.53072307701223,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.53072307701223,
+  "height": 512,
+  "id": "mireflit_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 64.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-54-06-01a0979d-099a-7a61-a6f3-efa322a1f402.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 10.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-52-17-01a0979b-5eaa-7bb1-997a-d1316f28ddaa.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 9.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "mireflit_v1_north",
+    "note": "Built-in imagegen; prompt normalized from the supplied Mireflit sprite brief. Generated with real alpha, copied to the workspace, and resized to exactly 512x512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\mireflit_v1_north\\mireflit_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/mireflit_v1_north/mireflit_v1_north.png\n    512x512  rgba  247,391 bytes  (105s)\n"
+}

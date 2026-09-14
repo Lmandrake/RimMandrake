@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 98.84068207297241,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 98.84068207297241,
+  "height": 256,
+  "id": "mortalmorel_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 71.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T02-01-35-01a09a00-224a-7331-8058-13bb7f2bee18.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-59-53-01a099fe-9523-7641-b272-caeb01ed520f.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "mortalmorel_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256 while preserving transparent alpha. No artwork regeneration was needed.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\mortalmorel_v1\\mortalmorel_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/mortalmorel_v1/mortalmorel_v1.png\n    256x256  rgba  64,003 bytes  (98s)\n"
+}

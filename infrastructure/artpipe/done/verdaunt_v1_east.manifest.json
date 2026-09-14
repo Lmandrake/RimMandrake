@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 84.91061483402154,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 84.91061483402154,
+  "height": 512,
+  "id": "verdaunt_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T15-35-47-01a0929c-d84d-71e3-b5ae-cd7102c9884d.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 56.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 24.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T15-34-13-01a0929b-699c-7041-b583-a4ef831f072c.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "verdaunt_v1_east",
+    "note": "Built-in imagegen; generated east-facing green-black mottled Verdaunt with heavy outlines, then resized to exact 512x512. One retry followed a resizing tool error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\verdaunt_v1_east\\verdaunt_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/verdaunt_v1_east/verdaunt_v1_east.png\n    512x512  rgba  187,625 bytes  (85s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 106.81083868502174,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 106.81083868502174,
+  "height": 256,
+  "id": "jungletree_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T21-02-39-01a098ee-7630-7763-be69-e2c783af91ff.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 24.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789288888,
+    "primary_used_percent": 51.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/12/rollout-2026-09-12T21-01-00-01a098ec-f185-7953-b1d7-667f6a5efe5b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "jungletree_v1",
+    "note": "Generated via built-in imagegen, copied into the workspace, and downscaled to exactly 256x256 while preserving RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\jungletree_v1\\jungletree_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/jungletree_v1/jungletree_v1.png\n    256x256  rgba  113,092 bytes  (106s)\n"
+}

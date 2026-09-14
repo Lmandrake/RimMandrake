@@ -1602,3 +1602,209 @@
 {"by": "fill_queue", "event": "queued", "iteration": 3, "job_id": "pyrelands_furnacebeast_v3_north", "notes": "", "target": "pyrelands_furnacebeast/north", "ts": 1789349916.482616}
 {"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_furnacebeast/south", "ts": 1789349916.489012}
 {"by": "fill_queue", "event": "queued", "iteration": 3, "job_id": "pyrelands_furnacebeast_v3_south", "notes": "", "target": "pyrelands_furnacebeast/south", "ts": 1789349916.4979596}
+{"by": "artpiped", "elapsed_s": 84.00497006700607, "event": "generated", "job_id": "pyrelands_barbslinger_v2_north", "target": "pyrelands_barbslinger/north", "ts": 1789350003.0353124}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_barbslinger_v2_north", "target": "pyrelands_barbslinger/north", "ts": 1789350003.0459266, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.61173242802033, "event": "generated", "job_id": "pyrelands_barbslinger_v2_east", "target": "pyrelands_barbslinger/east", "ts": 1789350024.9412668}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_barbslinger_v2_east", "target": "pyrelands_barbslinger/east", "ts": 1789350024.9527926, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 141.92857631196966, "event": "generated", "job_id": "pyrelands_barbslinger_v2_south", "target": "pyrelands_barbslinger/south", "ts": 1789350061.1074286}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_barbslinger_v2_south", "target": "pyrelands_barbslinger/south", "ts": 1789350061.1155672, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.1644471330219, "event": "generated", "job_id": "pyrelands_boomsnake_v2_east", "target": "pyrelands_boomsnake/east", "ts": 1789350086.1434994}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_boomsnake_v2_east", "target": "pyrelands_boomsnake/east", "ts": 1789350086.1527255, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.48317140096333, "event": "generated", "job_id": "pyrelands_boomsnake_v2_north", "target": "pyrelands_boomsnake/north", "ts": 1789350112.3232126}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_boomsnake_v2_north", "target": "pyrelands_boomsnake/north", "ts": 1789350112.3337033, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 63.99672848597402, "event": "generated", "job_id": "pyrelands_firehawk_v3_east", "target": "pyrelands_firehawk/east", "ts": 1789350151.3541713}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firehawk_v3_east", "target": "pyrelands_firehawk/east", "ts": 1789350151.3625288, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 101.01901579997502, "event": "generated", "job_id": "pyrelands_boomsnake_v2_south", "target": "pyrelands_boomsnake/south", "ts": 1789350162.864664}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_boomsnake_v2_south", "target": "pyrelands_boomsnake/south", "ts": 1789350162.8731022, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.97618353000144, "event": "generated", "job_id": "pyrelands_firehawk_v3_north", "target": "pyrelands_firehawk/north", "ts": 1789350206.6519682}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firehawk_v3_north", "target": "pyrelands_firehawk/north", "ts": 1789350206.6624002, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.9081254050252, "event": "generated", "job_id": "pyrelands_firehawk_v3_south", "target": "pyrelands_firehawk/south", "ts": 1789350301.6831622}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firehawk_v3_south", "target": "pyrelands_firehawk/south", "ts": 1789350301.6920605, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.35684097401099, "event": "generated", "job_id": "pyrelands_firewasp_v2_east", "target": "pyrelands_firewasp/east", "ts": 1789350395.7754326}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firewasp_v2_east", "target": "pyrelands_firewasp/east", "ts": 1789350395.784458, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.03775952500291, "event": "generated", "job_id": "pyrelands_firewasp_v2_north", "target": "pyrelands_firewasp/north", "ts": 1789350485.4623795}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firewasp_v2_north", "target": "pyrelands_firewasp/north", "ts": 1789350485.471381, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 70.28094152797712, "event": "generated", "job_id": "pyrelands_firewasp_v2_south", "target": "pyrelands_firewasp/south", "ts": 1789350556.6011446}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_firewasp_v2_south", "target": "pyrelands_firewasp/south", "ts": 1789350556.610935, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 157.70498987700557, "event": "generated", "job_id": "pyrelands_furnacebeast_v3_east", "target": "pyrelands_furnacebeast/east", "ts": 1789350715.2251253}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_furnacebeast_v3_east", "target": "pyrelands_furnacebeast/east", "ts": 1789350715.2343192, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.74722953699529, "event": "generated", "job_id": "pyrelands_furnacebeast_v3_north", "target": "pyrelands_furnacebeast/north", "ts": 1789350823.7365677}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_furnacebeast_v3_north", "target": "pyrelands_furnacebeast/north", "ts": 1789350823.7455242, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.9127788420301, "event": "generated", "job_id": "pyrelands_furnacebeast_v3_south", "target": "pyrelands_furnacebeast/south", "ts": 1789350923.4019856}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_furnacebeast_v3_south", "target": "pyrelands_furnacebeast/south", "ts": 1789350923.4106364, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.81851393403485, "event": "generated", "job_id": "pyrelands_mantistanis_v2_east", "target": "pyrelands_mantistanis/east", "ts": 1789351026.9685907}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_mantistanis_v2_east", "target": "pyrelands_mantistanis/east", "ts": 1789351026.977725, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.22984230297152, "event": "generated", "job_id": "pyrelands_mantistanis_v2_north", "target": "pyrelands_mantistanis/north", "ts": 1789351116.9616785}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_mantistanis_v2_north", "target": "pyrelands_mantistanis/north", "ts": 1789351116.9701262, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.96168148395373, "event": "generated", "job_id": "pyrelands_mantistanis_v2_south", "target": "pyrelands_mantistanis/south", "ts": 1789351222.6325862}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_mantistanis_v2_south", "target": "pyrelands_mantistanis/south", "ts": 1789351222.6423082, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.06881996802986, "event": "generated", "job_id": "pyrelands_razorjack_v2_east", "target": "pyrelands_razorjack/east", "ts": 1789357855.4241176}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_razorjack_v2_east", "target": "pyrelands_razorjack/east", "ts": 1789357855.4343567, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.05075854202732, "event": "generated", "job_id": "pyrelands_razorjack_v2_south", "target": "pyrelands_razorjack/south", "ts": 1789357875.324851}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_razorjack_v2_south", "target": "pyrelands_razorjack/south", "ts": 1789357875.3360767, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.83201893698424, "event": "generated", "job_id": "pyrelands_razorjack_v2_north", "target": "pyrelands_razorjack/north", "ts": 1789357882.1000326}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_razorjack_v2_north", "target": "pyrelands_razorjack/north", "ts": 1789357882.1105142, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_anooba/east", "ts": 1789360492.806551}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_anooba_v1_east", "notes": "", "target": "pyrelands_anooba/east", "ts": 1789360492.8191233}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_anooba/north", "ts": 1789360492.8296254}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_anooba_v1_north", "notes": "", "target": "pyrelands_anooba/north", "ts": 1789360492.8390481}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_anooba/south", "ts": 1789360492.8497467}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_anooba_v1_south", "notes": "", "target": "pyrelands_anooba/south", "ts": 1789360492.8594434}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_iriaz/east", "ts": 1789360492.8710089}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_iriaz_v1_east", "notes": "", "target": "pyrelands_iriaz/east", "ts": 1789360492.8845508}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_iriaz/north", "ts": 1789360492.8948004}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_iriaz_v1_north", "notes": "", "target": "pyrelands_iriaz/north", "ts": 1789360492.9072306}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_iriaz/south", "ts": 1789360492.9184325}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_iriaz_v1_south", "notes": "", "target": "pyrelands_iriaz/south", "ts": 1789360492.9270208}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_nuna/east", "ts": 1789360492.9435754}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_nuna_v1_east", "notes": "", "target": "pyrelands_nuna/east", "ts": 1789360492.9538693}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_nuna/north", "ts": 1789360492.9643269}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_nuna_v1_north", "notes": "", "target": "pyrelands_nuna/north", "ts": 1789360492.9753742}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_nuna/south", "ts": 1789360492.985483}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_nuna_v1_south", "notes": "", "target": "pyrelands_nuna/south", "ts": 1789360492.9950042}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_orray/east", "ts": 1789360493.0048094}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_orray_v1_east", "notes": "", "target": "pyrelands_orray/east", "ts": 1789360493.0158012}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_orray/north", "ts": 1789360493.0253515}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_orray_v1_north", "notes": "", "target": "pyrelands_orray/north", "ts": 1789360493.0360572}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_orray/south", "ts": 1789360493.0465834}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_orray_v1_south", "notes": "", "target": "pyrelands_orray/south", "ts": 1789360493.055904}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_dalgo/east", "ts": 1789360493.0667653}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_dalgo_v1_east", "notes": "", "target": "pyrelands_dalgo/east", "ts": 1789360493.0756044}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_dalgo/north", "ts": 1789360493.0865347}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_dalgo_v1_north", "notes": "", "target": "pyrelands_dalgo/north", "ts": 1789360493.0973234}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_dalgo/south", "ts": 1789360493.1069648}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_dalgo_v1_south", "notes": "", "target": "pyrelands_dalgo/south", "ts": 1789360493.1172726}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/east", "ts": 1789360493.1283836}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_zeer_v1_east", "notes": "", "target": "pyrelands_zeer/east", "ts": 1789360493.1387959}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/north", "ts": 1789360493.1488092}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_zeer_v1_north", "notes": "", "target": "pyrelands_zeer/north", "ts": 1789360493.1585858}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/south", "ts": 1789360493.1687307}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_zeer_v1_south", "notes": "", "target": "pyrelands_zeer/south", "ts": 1789360493.179627}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_gizka/east", "ts": 1789360493.1896145}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_gizka_v1_east", "notes": "", "target": "pyrelands_gizka/east", "ts": 1789360493.201074}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_gizka/north", "ts": 1789360493.2108092}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_gizka_v1_north", "notes": "", "target": "pyrelands_gizka/north", "ts": 1789360493.223179}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_gizka/south", "ts": 1789360493.2342935}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_gizka_v1_south", "notes": "", "target": "pyrelands_gizka/south", "ts": 1789360493.2436407}
+{"by": "artpiped", "elapsed_s": 98.37732221599435, "event": "generated", "job_id": "pyrelands_anooba_v1_south", "target": "pyrelands_anooba/south", "ts": 1789360594.5768213}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_anooba_v1_south", "target": "pyrelands_anooba/south", "ts": 1789360594.5869477, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.5254356439691, "event": "generated", "job_id": "pyrelands_anooba_v1_east", "target": "pyrelands_anooba/east", "ts": 1789360599.831409}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_anooba_v1_east", "target": "pyrelands_anooba/east", "ts": 1789360599.8495588, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 113.07680304499809, "event": "generated", "job_id": "pyrelands_anooba_v1_north", "target": "pyrelands_anooba/north", "ts": 1789360609.2488375}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_anooba_v1_north", "target": "pyrelands_anooba/north", "ts": 1789360609.261088, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/east", "ts": 1789360614.6502566}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyrelands_zeer_v1_east", "notes": "", "target": "pyrelands_zeer/east", "ts": 1789360614.6677291}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/north", "ts": 1789360614.6878054}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyrelands_zeer_v1_north", "notes": "", "target": "pyrelands_zeer/north", "ts": 1789360614.703389}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/south", "ts": 1789360614.7191422}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyrelands_zeer_v1_south", "notes": "", "target": "pyrelands_zeer/south", "ts": 1789360614.7329745}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/east", "ts": 1789360661.6718614}
+{"by": "fill_queue", "event": "queued", "iteration": 3, "job_id": "pyrelands_zeer_v1_east", "notes": "", "target": "pyrelands_zeer/east", "ts": 1789360661.683819}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/north", "ts": 1789360661.6941152}
+{"by": "fill_queue", "event": "queued", "iteration": 3, "job_id": "pyrelands_zeer_v1_north", "notes": "", "target": "pyrelands_zeer/north", "ts": 1789360661.7051709}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_zeer/south", "ts": 1789360661.716363}
+{"by": "fill_queue", "event": "queued", "iteration": 3, "job_id": "pyrelands_zeer_v1_south", "notes": "", "target": "pyrelands_zeer/south", "ts": 1789360661.7286649}
+{"by": "artpiped", "elapsed_s": 136.0571445619571, "event": "generated", "job_id": "pyrelands_dalgo_v1_north", "target": "pyrelands_dalgo/north", "ts": 1789360737.214331}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_dalgo_v1_north", "target": "pyrelands_dalgo/north", "ts": 1789360737.223723, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 159.6202639840194, "event": "generated", "job_id": "pyrelands_dalgo_v1_south", "target": "pyrelands_dalgo/south", "ts": 1789360770.349983}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_dalgo_v1_south", "target": "pyrelands_dalgo/south", "ts": 1789360770.359043, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 209.4727933019749, "event": "generated", "job_id": "pyrelands_dalgo_v1_east", "target": "pyrelands_dalgo/east", "ts": 1789360805.3645465}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_dalgo_v1_east", "target": "pyrelands_dalgo/east", "ts": 1789360805.3758967, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.603798052005, "event": "generated", "job_id": "pyrelands_gizka_v1_east", "target": "pyrelands_gizka/east", "ts": 1789360831.183595}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_gizka_v1_east", "target": "pyrelands_gizka/east", "ts": 1789360831.1937125, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.20270901697222, "event": "generated", "job_id": "pyrelands_gizka_v1_north", "target": "pyrelands_gizka/north", "ts": 1789360874.936004}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_gizka_v1_north", "target": "pyrelands_gizka/north", "ts": 1789360874.9478998, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.01910434197634, "event": "generated", "job_id": "pyrelands_gizka_v1_south", "target": "pyrelands_gizka/south", "ts": 1789360909.785698}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_gizka_v1_south", "target": "pyrelands_gizka/south", "ts": 1789360909.795975, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.24814217200037, "event": "generated", "job_id": "pyrelands_iriaz_v1_east", "target": "pyrelands_iriaz/east", "ts": 1789360936.7626493}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_iriaz_v1_east", "target": "pyrelands_iriaz/east", "ts": 1789360936.7724626, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_a", "ts": 1789360993.038736}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_embergrass_a_v1", "notes": "", "target": "pyre_embergrass_a", "ts": 1789360993.0495946}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_b", "ts": 1789360993.0566902}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_embergrass_b_v1", "notes": "", "target": "pyre_embergrass_b", "ts": 1789360993.0660753}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_c", "ts": 1789360993.0739074}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_embergrass_c_v1", "notes": "", "target": "pyre_embergrass_c", "ts": 1789360993.083781}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_a", "ts": 1789360993.0909536}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_quickgrass_a_v1", "notes": "", "target": "pyre_quickgrass_a", "ts": 1789360993.1010027}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_b", "ts": 1789360993.1093993}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_quickgrass_b_v1", "notes": "", "target": "pyre_quickgrass_b", "ts": 1789360993.1190321}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_c", "ts": 1789360993.1278436}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_quickgrass_c_v1", "notes": "", "target": "pyre_quickgrass_c", "ts": 1789360993.1364434}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_scorchpod", "ts": 1789360993.144663}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_scorchpod_v1", "notes": "", "target": "pyre_scorchpod", "ts": 1789360993.1537075}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_scorchfruit", "ts": 1789360993.1623433}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_scorchfruit_v1", "notes": "", "target": "pyre_scorchfruit", "ts": 1789360993.1715853}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_fulgurite", "ts": 1789360993.1864116}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_fulgurite_v1", "notes": "", "target": "pyre_fulgurite", "ts": 1789360993.195701}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_leafless", "ts": 1789360993.2031958}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_embergrass_leafless_v1", "notes": "", "target": "pyre_embergrass_leafless", "ts": 1789360993.2121608}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_leafless", "ts": 1789360993.2199516}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyre_quickgrass_leafless_v1", "notes": "", "target": "pyre_quickgrass_leafless", "ts": 1789360993.230228}
+{"by": "artpiped", "elapsed_s": 140.65092983096838, "event": "generated", "job_id": "pyrelands_iriaz_v1_north", "target": "pyrelands_iriaz/north", "ts": 1789361078.1495385}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_iriaz_v1_north", "target": "pyrelands_iriaz/north", "ts": 1789361078.1600058, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 91.97126061696326, "event": "generated", "job_id": "pyre_embergrass_a_v1", "target": "pyre_embergrass_a", "ts": 1789361171.5085218}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_a_v1", "target": "pyre_embergrass_a", "ts": 1789361171.5174472, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.3937686230056, "event": "generated", "job_id": "pyre_embergrass_b_v1", "target": "pyre_embergrass_b", "ts": 1789361269.2336683}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_b_v1", "target": "pyre_embergrass_b", "ts": 1789361269.2432032, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.01034599501872, "event": "generated", "job_id": "pyre_embergrass_c_v1", "target": "pyre_embergrass_c", "ts": 1789361373.804652}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_c_v1", "target": "pyre_embergrass_c", "ts": 1789361373.8205235, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 94.28259836899815, "event": "generated", "job_id": "pyre_embergrass_leafless_v1", "target": "pyre_embergrass_leafless", "ts": 1789361469.6658645}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_leafless_v1", "target": "pyre_embergrass_leafless", "ts": 1789361469.6791723, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 228.26256564399227, "event": "generated", "job_id": "pyre_fulgurite_v1", "target": "pyre_fulgurite", "ts": 1789361700.3243062}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_fulgurite_v1", "target": "pyre_fulgurite", "ts": 1789361700.364265, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 102.4032708540326, "event": "generated", "job_id": "pyre_quickgrass_a_v1", "target": "pyre_quickgrass_a", "ts": 1789361805.3561592}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_a_v1", "target": "pyre_quickgrass_a", "ts": 1789361805.3675954, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.63112640095642, "event": "generated", "job_id": "pyre_quickgrass_b_v1", "target": "pyre_quickgrass_b", "ts": 1789361912.626915}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_b_v1", "target": "pyre_quickgrass_b", "ts": 1789361912.6471102, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.57144072902156, "event": "generated", "job_id": "pyre_quickgrass_c_v1", "target": "pyre_quickgrass_c", "ts": 1789362002.4931374}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_c_v1", "target": "pyre_quickgrass_c", "ts": 1789362002.5483603, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 97.31610467797145, "event": "generated", "job_id": "pyre_quickgrass_leafless_v1", "target": "pyre_quickgrass_leafless", "ts": 1789362102.7232392}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_leafless_v1", "target": "pyre_quickgrass_leafless", "ts": 1789362102.7704935, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 107.55534866004018, "event": "generated", "job_id": "pyre_scorchfruit_v1", "target": "pyre_scorchfruit", "ts": 1789362212.7303712}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_scorchfruit_v1", "target": "pyre_scorchfruit", "ts": 1789362212.7439003, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 100.86650030798046, "event": "generated", "job_id": "pyre_scorchpod_v1", "target": "pyre_scorchpod", "ts": 1789362316.5133612}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_scorchpod_v1", "target": "pyre_scorchpod", "ts": 1789362316.5436885, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.36152928799856, "event": "generated", "job_id": "pyrelands_iriaz_v1_south", "target": "pyrelands_iriaz/south", "ts": 1789362428.0652113}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_iriaz_v1_south", "target": "pyrelands_iriaz/south", "ts": 1789362428.091079, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 216.23977114097215, "event": "generated", "job_id": "pyrelands_nuna_v1_east", "target": "pyrelands_nuna/east", "ts": 1789362650.3022392}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_nuna_v1_east", "target": "pyrelands_nuna/east", "ts": 1789362650.3158717, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 159.10786688700318, "event": "generated", "job_id": "pyrelands_nuna_v1_north", "target": "pyrelands_nuna/north", "ts": 1789362813.7475288}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_nuna_v1_north", "target": "pyrelands_nuna/north", "ts": 1789362813.7672713, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 167.58389289298793, "event": "generated", "job_id": "pyrelands_nuna_v1_south", "target": "pyrelands_nuna/south", "ts": 1789362988.5236363}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_nuna_v1_south", "target": "pyrelands_nuna/south", "ts": 1789362988.5453377, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 99.19920392200584, "event": "generated", "job_id": "pyrelands_orray_v1_east", "target": "pyrelands_orray/east", "ts": 1789363093.848759}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_orray_v1_east", "target": "pyrelands_orray/east", "ts": 1789363093.8641968, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.19954219198553, "event": "generated", "job_id": "pyrelands_orray_v1_north", "target": "pyrelands_orray/north", "ts": 1789363194.0289867}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_orray_v1_north", "target": "pyrelands_orray/north", "ts": 1789363194.0518203, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.32103805604856, "event": "generated", "job_id": "pyrelands_orray_v1_south", "target": "pyrelands_orray/south", "ts": 1789363307.8735301}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_orray_v1_south", "target": "pyrelands_orray/south", "ts": 1789363307.8886628, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.40625713800546, "event": "generated", "job_id": "pyrelands_zeer_v1_east", "target": "pyrelands_zeer/east", "ts": 1789363408.6433287}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_zeer_v1_east", "target": "pyrelands_zeer/east", "ts": 1789363408.6553519, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.3658816650277, "event": "generated", "job_id": "pyrelands_zeer_v1_north", "target": "pyrelands_zeer/north", "ts": 1789363519.9666455}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_zeer_v1_north", "target": "pyrelands_zeer/north", "ts": 1789363519.9892461, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.50911161804106, "event": "generated", "job_id": "pyrelands_zeer_v1_south", "target": "pyrelands_zeer/south", "ts": 1789363634.3603227}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_zeer_v1_south", "target": "pyrelands_zeer/south", "ts": 1789363634.3805635, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_iriaz_v1_north", "ts": 1789363902.826034}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_iriaz_v1_north_r2", "notes": "", "target": "pyrelands_iriaz_v1_north", "ts": 1789363902.8528187}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_CREATURE_RERENDER_1", "target": "pyrelands_nuna_v1_north", "ts": 1789363902.8815598}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pyrelands_nuna_v1_north_r2", "notes": "", "target": "pyrelands_nuna_v1_north", "ts": 1789363902.9019945}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_c", "ts": 1789363902.9380672}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyre_embergrass_c_v2", "notes": "", "target": "pyre_embergrass_c", "ts": 1789363902.9617908}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_c", "ts": 1789363902.9952016}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyre_quickgrass_c_v2", "notes": "", "target": "pyre_quickgrass_c", "ts": 1789363903.0225408}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_embergrass_leafless", "ts": 1789363903.0522566}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyre_embergrass_leafless_v2", "notes": "", "target": "pyre_embergrass_leafless", "ts": 1789363903.0753582}
+{"by": "fill_queue", "event": "registered", "source": "PYRELANDS_FLORA_ART_IDENTITY_1", "target": "pyre_quickgrass_leafless", "ts": 1789363903.108236}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "pyre_quickgrass_leafless_v2", "notes": "", "target": "pyre_quickgrass_leafless", "ts": 1789363903.131315}
+{"by": "artpiped", "elapsed_s": 106.12130023300415, "event": "generated", "job_id": "pyre_embergrass_c_v2", "target": "pyre_embergrass_c", "ts": 1789364013.3629906}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_c_v2", "target": "pyre_embergrass_c", "ts": 1789364013.3794537, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 104.3525379159837, "event": "generated", "job_id": "pyre_embergrass_leafless_v2", "target": "pyre_embergrass_leafless", "ts": 1789364119.5872827}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_embergrass_leafless_v2", "target": "pyre_embergrass_leafless", "ts": 1789364119.5988102, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 119.82820144499419, "event": "generated", "job_id": "pyre_quickgrass_c_v2", "target": "pyre_quickgrass_c", "ts": 1789364240.2489157}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_c_v2", "target": "pyre_quickgrass_c", "ts": 1789364240.2585027, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 85.28125730296597, "event": "generated", "job_id": "pyre_quickgrass_leafless_v2", "target": "pyre_quickgrass_leafless", "ts": 1789364326.7726824}
+{"by": "artpiped", "event": "validated", "job_id": "pyre_quickgrass_leafless_v2", "target": "pyre_quickgrass_leafless", "ts": 1789364326.781822, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 108.23846437997418, "event": "generated", "job_id": "pyrelands_iriaz_v1_north_r2", "target": "pyrelands_iriaz_v1_north", "ts": 1789364436.398172}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_iriaz_v1_north_r2", "target": "pyrelands_iriaz_v1_north", "ts": 1789364436.4094977, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 176.31264607602498, "event": "generated", "job_id": "pyrelands_nuna_v1_north_r2", "target": "pyrelands_nuna_v1_north", "ts": 1789364614.056051}
+{"by": "artpiped", "event": "validated", "job_id": "pyrelands_nuna_v1_north_r2", "target": "pyrelands_nuna_v1_north", "ts": 1789364614.067055, "verdict": "pass"}

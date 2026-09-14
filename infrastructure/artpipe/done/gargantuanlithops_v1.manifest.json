@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 112.59633701405255,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.59633701405255,
+  "height": 256,
+  "id": "gargantuanlithops_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-53-10-01a099f8-6ff8-7a52-b768-febbe2d65030.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-51-15-01a099f6-ac4c-7de1-8af6-b90f435db551.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "gargantuanlithops_v1",
+    "note": "Generated full sprite and resized to exactly 256\u00d7256; preserved true alpha with all corners transparent. Initial resize utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\gargantuanlithops_v1\\gargantuanlithops_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/gargantuanlithops_v1/gargantuanlithops_v1.png\n    256x256  rgba  106,807 bytes  (112s)\n"
+}

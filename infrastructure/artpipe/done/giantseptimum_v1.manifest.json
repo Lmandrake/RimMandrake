@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 84.76424349902663,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 84.76424349902663,
+  "height": 256,
+  "id": "giantseptimum_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-53-22-01a099f8-9f4b-79c3-90d5-abf1cb3d14b3.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-51-34-01a099f6-f5f2-7033-a9a0-b5c517b4c00b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 35.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "giantseptimum_v1",
+    "note": "Built-in imagegen; generated a centered seven-section RimWorld-style stalk, then resized to exactly 256\u00d7256 while preserving transparent RGBA.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\giantseptimum_v1\\giantseptimum_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/giantseptimum_v1/giantseptimum_v1.png\n    256x256  rgba  48,422 bytes  (84s)\n"
+}

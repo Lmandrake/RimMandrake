@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 78.65021329099545,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 78.65021329099545,
+  "height": 512,
+  "id": "cinderwing_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-29-59-01a09297-8892-7ac0-bfcb-8946e15b72a2.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789183737,
+    "primary_used_percent": 4.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T15-28-46-01a09296-6c10-74d1-a5c3-beb0282cfce2.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "cinderwing_v1_east",
+    "note": "Generated east-facing Cinderwing sprite with heavy black linework, resized to exactly 512\u00d7512, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\cinderwing_v1_east\\cinderwing_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/cinderwing_v1_east/cinderwing_v1_east.png\n    512x512  rgba  180,688 bytes  (78s)\n"
+}

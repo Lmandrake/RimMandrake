@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-13T04:22:14Z",
+  "facing": null,
+  "facings": [],
+  "id": "bleedingtooth_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a lumpy white-capped fungus oozing thick dark red droplets from its surface like beads of blood, an unsettling toothed texture to the cap. Single fungus, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE1_QUEUE_1",
+  "style_notes": "Non-SW name, general kind (bleeding-tooth fungus, per its own name \u2014 echoes the real Hydnellum peckii) fixed, flavor free per 'improve' semantics. Source row: flora:the_rot:BMT_BleedingTooth, sizeBin medium. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1."
+}

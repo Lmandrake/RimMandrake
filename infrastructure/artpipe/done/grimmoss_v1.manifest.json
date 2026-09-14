@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 88.32136654900387,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 88.32136654900387,
+  "height": 256,
+  "id": "grimmoss_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-56-23-01a099fb-6068-7fe3-8837-805eb3e8fb41.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/13/rollout-2026-09-13T01-55-03-01a099fa-29de-7cf2-9f7e-eae79f3f4c99.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 36.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "grimmoss_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 256x256; preserved transparent alpha. One local resize command error required a retry.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grimmoss_v1\\grimmoss_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grimmoss_v1/grimmoss_v1.png\n    256x256  rgba  28,537 bytes  (88s)\n"
+}

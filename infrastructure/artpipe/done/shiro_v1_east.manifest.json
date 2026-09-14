@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 100.9459324630152,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.9459324630152,
+  "height": 512,
+  "id": "shiro_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T20-34-02-01a093ad-e701-7fe3-89d0-711e737538c7.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 69.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789201748,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T20-32-40-01a093ac-a550-7730-aa29-fe15f3ce4208.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "shiro_v1_east",
+    "note": "Generated an east-facing Shiro sprite with heavy black linework, then resized it to the required 512\u00d7512 canvas while preserving alpha transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\shiro_v1_east\\shiro_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/shiro_v1_east/shiro_v1_east.png\n    512x512  rgba  270,152 bytes  (100s)\n"
+}

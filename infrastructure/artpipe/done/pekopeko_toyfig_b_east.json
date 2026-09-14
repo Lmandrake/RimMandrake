@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-13T23:32:14Z",
+  "drawsize": 3.5,
+  "facing": "east",
+  "facings": [
+    "east"
+  ],
+  "id": "pekopeko_toyfig_b_east",
+  "priority": 1,
+  "prompt": "RimWorld creature sprite, flat cel-shaded vanilla-RimWorld toy-figurine art style: the Star Wars canon Peko-peko, the large Naboo swamp bird - VIVID SATURATED COBALT AND TURQUOISE BLUE plumage (designed from a peacock and a hyacinth macaw - the blue IS the design, never drab brown), a long trailing tail, a heavy hooked beak for cracking nuts, thin simple bird legs (its identity - like a vanilla RimWorld bird's stilts). Single creature, centered, calm standing pose, no ground shadow, no background. Toy-figurine convention, strict: calm neutral pose, pure flat side profile, no visible musculature or anatomy detail, flat cel shading with large simple color areas, clean vanilla-RimWorld style, heavy clean black outline. Leg policy: low-slung ground-hugging mass, at most two short fused stub legs \u2014 EXCEPT where legs or wings are the creature's defining identity, which stay prominent but simple and jointless.",
+  "reference": null,
+  "rimflow_item_id": "TOYFIG_LAW_PILOT_1",
+  "style_notes": ""
+}

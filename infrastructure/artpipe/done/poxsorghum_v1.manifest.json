@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 90.62178347498411,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 90.62178347498411,
+  "height": 256,
+  "id": "poxsorghum_v1",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T02-19-50-01a09a10-d745-7c00-81d6-b83c4ca9a3c3.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 43.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 84.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T02-13-58-01a09a0b-79f4-79e2-8f7a-91f07197391c.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "poxsorghum_v1",
+    "note": "Generated with built-in imagegen and downscaled to the required 256x256 PNG while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\poxsorghum_v1\\poxsorghum_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/poxsorghum_v1/poxsorghum_v1.png\n    256x256  rgba  34,980 bytes  (90s)\n"
+}

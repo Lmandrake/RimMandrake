@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-12T21:44:54Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "oozemaw_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Oozemaw \u2014 a large amorphous ooze-predator native to the slime biome, a semi-translucent gelatinous mass with a faintly visible internal organ silhouette, thick pseudopod limbs it uses to drag itself and engulf prey, a mottled sickly green-grey coloring with darker sludge streaks. Reads as a slow, unnerving amorphous hunter, not a cute blob. Single creature, centered, mid-crawl stance with pseudopods braced against the ground, no ground shadow, no background scenery, no drip/splash effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+  "style_notes": "Non-SW donor name (AA_AcanthamoebaGiganteaLarge, Alpha Animals prefix) \u2014 checked against design/RimStarWars/star_wars_canon_names.md, not found \u2192 reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_slime:AA_AcanthamoebaGiganteaLarge, large sizeBin, no note. General kind kept (giant amoeba/ooze predator), invented name/character: Oozemaw. Explicit outline-thickness requirement per the ruling."
+}

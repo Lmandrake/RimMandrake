@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 89.55143966700416,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 89.55143966700416,
+  "height": 512,
+  "id": "wastewing_v1_east",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T15-12-33-01a097ad-ed0f-7743-a4f3-257ef7f08ccf.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789261296,
+    "primary_used_percent": 84.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T15-06-45-01a097a8-a04c-7981-9dd1-44866834d145.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "wastewing_v1_east",
+    "note": "Generated with built-in imagegen, then downscaled to exactly 512x512 with transparent padding and preserved alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\wastewing_v1_east\\wastewing_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/wastewing_v1_east/wastewing_v1_east.png\n    512x512  rgba  139,623 bytes  (89s)\n"
+}

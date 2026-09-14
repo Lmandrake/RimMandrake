@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 112.18941886298126,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.18941886298126,
+  "height": 256,
+  "id": "bubblespore_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 18.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-44-48-01a099f0-c6c4-76d0-882e-ec057561341b.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789306901,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/13/rollout-2026-09-13T01-43-14-01a099ef-584f-70f0-8288-0dcd4a843093.jsonl",
+    "secondary_resets_at": 1789848096,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "bubblespore_v1",
+    "note": "Built-in imagegen; prompt preserved the fungal bubble-pod plant, jungle-vine detail, heavy black linework, single centered silhouette, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\bubblespore_v1\\bubblespore_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/bubblespore_v1/bubblespore_v1.png\n    256x256  rgba  122,134 bytes  (112s)\n"
+}

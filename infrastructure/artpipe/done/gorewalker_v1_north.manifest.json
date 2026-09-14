@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 91.50755818100879,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.50755818100879,
+  "height": 512,
+  "id": "gorewalker_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261297,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-50-43-01a09799-f243-73e2-9ae6-7d5dab6000bf.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 8.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789261297,
+    "primary_used_percent": 46.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/12/rollout-2026-09-12T14-49-29-01a09798-ce12-7061-90e4-8ae7d6c02fc0.jsonl",
+    "secondary_resets_at": 1789848097,
+    "secondary_used_percent": 7.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "gorewalker_v1_north",
+    "note": "Generated via built-in imagegen and normalized to the required 512x512 transparent RGBA PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\gorewalker_v1_north\\gorewalker_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/gorewalker_v1_north/gorewalker_v1_north.png\n    512x512  rgba  248,015 bytes  (91s)\n"
+}
