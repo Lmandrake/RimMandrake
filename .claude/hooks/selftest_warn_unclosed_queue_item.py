@@ -51,16 +51,32 @@ def git(root, *a):
                    check=True)
 
 
+# Every case shares the identical BASE-committed repo; only the uncommitted
+# working-tree body differs. Building it with 5 git spawns PER CASE was most
+# of this file's git-process cost, so it is built once and copied (no
+# subprocess) into each case's own throwaway dir instead.
+_TEMPLATE = None
+
+
+def _template_repo():
+    global _TEMPLATE
+    if _TEMPLATE is None:
+        root = tempfile.mkdtemp(prefix="selftest_wuqi_template_")
+        os.makedirs(os.path.join(root, QUEUE), exist_ok=True)
+        git(root, "init", "-q")
+        git(root, "config", "user.email", "t@t")
+        git(root, "config", "user.name", "t")
+        open(os.path.join(root, QUEUE, "BUILD.md"), "w").write(BASE)
+        git(root, "add", "-A")
+        git(root, "commit", "-qm", "base")
+        _TEMPLATE = root
+    return _TEMPLATE
+
+
 def setup(root, body):
-    os.makedirs(os.path.join(root, QUEUE), exist_ok=True)
-    git(root, "init", "-q")
-    git(root, "config", "user.email", "t@t")
-    git(root, "config", "user.name", "t")
-    path = os.path.join(root, QUEUE, "BUILD.md")
-    open(path, "w").write(BASE)
-    git(root, "add", "-A")
-    git(root, "commit", "-qm", "base")
-    open(path, "w").write(body)
+    shutil.rmtree(root)
+    shutil.copytree(_template_repo(), root)
+    open(os.path.join(root, QUEUE, "BUILD.md"), "w").write(body)
 
 
 # (name, working-tree body, commit command, expect_warn, must appear in stderr)
@@ -120,24 +136,28 @@ CASES = [
 
 def main():
     fails = 0
-    for name, body, cmd, expect_warn, needle in CASES:
-        root = tempfile.mkdtemp(prefix="selftest_wuqi_")
-        try:
-            setup(root, body)
-            code, err = run(root, cmd)
-        finally:
-            shutil.rmtree(root, ignore_errors=True)
-        # Exit 1 = non-blocking error, stderr shown in red. NEVER 2: 2 blocks the
-        # command, and the owner ruled 2026-08-15 that this warns and never gates.
-        want = 1 if expect_warn else 0
-        ok = (code == want) and (not needle or needle in err)
-        if code == 2:
-            ok = False
-            err += "\n  !! exit 2 GATES the commit — forbidden"
-        print("%-4s %s" % ("ok" if ok else "FAIL", name))
-        if not ok:
-            fails += 1
-            print("       exit=%s want=%s stderr=%r" % (code, want, err[:400]))
+    try:
+        for name, body, cmd, expect_warn, needle in CASES:
+            root = tempfile.mkdtemp(prefix="selftest_wuqi_")
+            try:
+                setup(root, body)
+                code, err = run(root, cmd)
+            finally:
+                shutil.rmtree(root, ignore_errors=True)
+            # Exit 1 = non-blocking error, stderr shown in red. NEVER 2: 2 blocks the
+            # command, and the owner ruled 2026-08-15 that this warns and never gates.
+            want = 1 if expect_warn else 0
+            ok = (code == want) and (not needle or needle in err)
+            if code == 2:
+                ok = False
+                err += "\n  !! exit 2 GATES the commit — forbidden"
+            print("%-4s %s" % ("ok" if ok else "FAIL", name))
+            if not ok:
+                fails += 1
+                print("       exit=%s want=%s stderr=%r" % (code, want, err[:400]))
+    finally:
+        if _TEMPLATE:
+            shutil.rmtree(_TEMPLATE, ignore_errors=True)
     print("\n%d/%d passed" % (len(CASES) - fails, len(CASES)))
     return 1 if fails else 0
 
