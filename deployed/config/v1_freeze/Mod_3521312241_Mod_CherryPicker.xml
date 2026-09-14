@@ -1953,19 +1953,32 @@
 			<li>ThingDef/Boomalope</li>
 			<li>PawnKindDef/Boomalope</li>
 			<li>ThingDef/Boomrat</li>
+			<li>PawnKindDef/Boomrat</li>
 			<li>ThingDef/VFEI2_Boomtick</li>
+			<li>PawnKindDef/VFEI2_Boomtick</li>
 			<li>ThingDef/GR_Bearalope</li>
+			<li>PawnKindDef/GR_Bearalope</li>
 			<li>ThingDef/GR_Boomabear</li>
+			<li>PawnKindDef/GR_Boomabear</li>
 			<li>ThingDef/GR_Boomalisk</li>
+			<li>PawnKindDef/GR_Boomalisk</li>
 			<li>ThingDef/GR_Boombeetle</li>
+			<li>PawnKindDef/GR_Boombeetle</li>
 			<li>ThingDef/GR_Boomcat</li>
+			<li>PawnKindDef/GR_Boomcat</li>
 			<li>ThingDef/GR_Boomffalo</li>
+			<li>PawnKindDef/GR_Boomffalo</li>
 			<li>ThingDef/GR_Boomsnake</li>
 			<li>ThingDef/GR_Boomsquirrel</li>
+			<li>PawnKindDef/GR_Boomsquirrel</li>
 			<li>ThingDef/GR_Chickenlope</li>
+			<li>PawnKindDef/GR_Chickenlope</li>
 			<li>ThingDef/GR_Manalope</li>
+			<li>PawnKindDef/GR_Manalope</li>
 			<li>ThingDef/GR_ParagonBoomalope</li>
+			<li>PawnKindDef/GR_ParagonBoomalope</li>
 			<li>ThingDef/GR_Squirralope</li>
+			<li>PawnKindDef/GR_Squirralope</li>
 			<li>AbilityDef/VQEA_Levitation</li>
 			<li>GeneDef/VQEA_Levitation</li>
 			<li>AbilityDef/VQEA_Invisibility</li>

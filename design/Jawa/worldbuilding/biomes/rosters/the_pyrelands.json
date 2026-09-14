@@ -150,6 +150,11 @@
       "def": "Boomalope",
       "disposition": "cut:BOOMALOPE_CUT_EVERYWHERE_1 (owner card 2026-09-14, \"Absolutely no boomalopes\")",
       "reason": "reverses the 2026-09-09 KEEP-reskinned card (ubiquity-25 §9) — the in-joke lane is dead, no named home anywhere"
+    },
+    {
+      "def": "GR_Boomsnake",
+      "disposition": "cut:BOOM_FAMILY_CUT_1 (BOOMSNAKE_CUT_CONFLICT_1, 2026-09-14)",
+      "reason": "the round-2 move-mapping import (decisions_propagated.json, 2026-09-10T13:20:55Z) predates and was never reconciled against the same day's boom-family cut — biome_findings.md already recorded the move as voided (07:41/17:45 local) hours before ROSTER_MOVE_APPLY_1 mechanically re-added it (23:59) and PYRELANDS_FAUNA_WIRING_1 wired it live (2026-09-13); no ruling ever restored it — the ThingDef stays cut and the fire-follower niche is AA_Razorjack's per the same recast"
     }
   ],
   "fauna": [
@@ -248,12 +253,6 @@
       "band": "brake",
       "commonality": 0.18,
       "def": "Dalgo",
-      "law": "owner review 2026-09 (round2 move mapping): Pyrelands"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "GR_Boomsnake",
       "law": "owner review 2026-09 (round2 move mapping): Pyrelands"
     }
   ],
