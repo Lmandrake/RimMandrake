@@ -1109,6 +1109,12 @@
     "hash": "052f18793fbb98eed58afb6442532ee17435cbeb839668c0229d8bd8b9a88e00",
     "sha": "2eee1995f"
   },
+  "src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "b763349a048176f941deea3a0ac6050a791f5254d1f50f97b914799a6961b3ce",
+    "sha": "670da445d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/ArmLatentHazardExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1229,6 +1235,12 @@
     "hash": "fcb139ea2310504d9ae4e8b1d916a502534dab4cacea990e4c3cc28bd6946b39",
     "sha": "1ae30640a"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTimedTerrainBurn.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "2492a539544b7781bd9c124eb5db26a55827eb894cb07c20ab43ce3430b5b34a",
+    "sha": "670da445d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
     "cleanCount": 3,
     "date": "2026-09-13",
@@ -1270,6 +1282,12 @@
     "date": "2026-09-13",
     "hash": "0eb5130cb31b840947ad8db7579425f3c81c83d0905a4dbcdc87e1128b6de3b1",
     "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_ThresholdSmokeColumn.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "854689af88cc53017989f7c903e12e73c536d75e77145f5b82133221ef6eb106",
+    "sha": "670da445d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_PlaceWorker_OnRequiredVentComp.cs": {
     "cleanCount": 1,
@@ -13815,6 +13833,18 @@
     "hash": "b32b2ad7c73d2e6983ed818fb3f0bc360d056504177e1ab48f7ae7bfca720db0",
     "sha": "e7810e12f"
   },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_TarMoat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "732a183f08d633d8a86a7d0f35790de99fc05f86a2aca34ce4ee60642323985e",
+    "sha": "670da445d"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "4414d771c7a0ce5a3b34e1e9e5f9e1a6826363100bf61ae11d971daaed996c72",
+    "sha": "670da445d"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_ScaldVent.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -13832,6 +13862,12 @@
     "date": "2026-09-13",
     "hash": "c823d5527860650d190178af1d1d84233bfa15122acc876a80f36fe77f0b605e",
     "sha": "f4d5c1714"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_TarBlaze.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-13",
+    "hash": "156efd6cbedc1dde363960de3c2e20a434dc34271197fc7a10c0f07aebab4ca8",
+    "sha": "670da445d"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WebworkStructures.xml": {
     "cleanCount": 1,
