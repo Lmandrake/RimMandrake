@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_Plant_Wick.xml                     UtinniPatches · SUMP_MECHANICS_1 (S5)
+  ============================================================================
+  sump_kit_spec.md S5 "the wick-garden crop" (the_sump.md §4 "edge-flora",
+  §7 "light as a crop"): "the only living light is farmed fire-in-waiting:
+  wick-plants grown in station gardens under no sun at all, harvested as
+  candles and lamp-stock." XML-only per the spec's own "no C#" call — pure
+  chemotroph pattern on vanilla PlantProperties fields, no new class.
+
+  growMinGlow 0 / growOptimalGlow 1 (explicit, matching the default rather
+  than overriding it): SUMP_MECHANICS_1's own spike pass read
+  PlantUtility.GrowthRateFactorFor_Light (RimWorld/PlantUtility.cs:361-368) —
+  GenMath.InverseLerp(growMinGlow, growOptimalGlow, glow), CLAMPED — and
+  confirmed this is "no floor, linear ramp to optimal," not "grows regardless
+  of light": growth is proportional to whatever faint ambient glow the
+  permanent-dusk biome (RUT_SumpDuskLock + BiomeGlowMultiplierExtension,
+  same pass) plus any station lamp light actually provides, and is exactly
+  zero only at literal 0.000 glow (HasEnoughLightToGrow, Plant.cs:452). Ban
+  #3 ("no sun-driven flora") is satisfied structurally by growMinGlow 0 per
+  the kit spec's own field-verified claim (PlantProperties.cs:75, default
+  0.51) — this plant needs no sun at all to begin growing, only whatever
+  light is present.
+
+  completelyIgnoreFertility true + wildTerrainTags [Water]: the spec's own
+  "restricted by terrain affordance to tar-margin terrain grades
+  (LIQUID_TYPES_MOD_1 names them)" clause, engine-mapped this pass.
+  PlantProperties has NO terrainAffordanceNeeded-style field (that field
+  exists on ThingDef generally but GenConstruct.cs:494/653/658 only ever
+  checks it for ThingCategory.Building — confirmed this pass, not assumed) —
+  the real vanilla mechanism for restricting a SOWN/wild plant to specific
+  terrain is PlantUtility.CanEverPlantAt's wildTerrainTags overlap check
+  (RimWorld/PlantUtility.cs:140, `WildTerrainTags.Overlaps(terrain.tags)`),
+  which also gates player sowing, not only wild spread (same function feeds
+  both routes). RM_TarShallow / RM_TarDeep (src/RimMandrake/LiquidTypes/
+  Defs/TerrainDefs/RM_Tar.xml, LIQUID_TYPES_MOD_1's own generated file, read
+  not edited this pass) both carry the vanilla `Water` tag inherited from
+  WaterBase, and no other terrain the Sump biome can generate carries it
+  (ban #4 — no vanilla water TerrainDef in this biome's own mapping) — so
+  `wildTerrainTags: [Water]` is, in the Sump's own context, exactly "the tar
+  grades." completelyIgnoreFertility is required alongside it: WaterBase
+  itself sets `fertility 0` (Core/Defs/TerrainDefs/Terrain_Water.xml:6,
+  confirmed against the live install this pass), which would otherwise
+  refuse ANY plant outright (PlantUtility.cs:85, fertilityMin default 0.9)
+  regardless of the terrain-tag match — thematically apt too: a chemotroph
+  "feeding directly on the tar's energy rather than the sun" (§4) has no
+  business being fertility-gated by soil chemistry at all.
+  GrowthRateFactorFor_Fertility (PlantUtility.cs:352-358) also returns a flat
+  1.0 once this flag is set, so the plant pays no growth penalty for it
+  either. Wild-growth inside a Building_PlantGrower (station hydroponics-
+  style planter) bypasses the wildTerrainTags check entirely per the same
+  function (the `!flag` guard, PlantUtility.cs:138) — consistent with "grown
+  in station gardens": a planter box works regardless of the terrain under
+  it, exactly like vanilla hydroponics crops.
+
+  minGrowthTemperature -8: sump_kit_spec.md S5's own INVENTED value
+  ("growMinTemp lowered for the cold... sheet §0 temps straddle freezing").
+  the_sump.md §0's own measured range (p10/median/p90 -4.3/1.2/14.9 degC)
+  sits mostly above -8, so the crop can grow through ordinary Sump cold
+  without artificial heating; other temperature fields (minOptimal/
+  maxOptimal/maxGrowthTemperature) left at PlantBaseNonEdible's inherited
+  defaults — the spec names no figure for them, not invented here.
+
+  Texture reused from vanilla (Things/Plant/Ambrosia — a real, confirmed
+  texPath, Core/Defs/ThingDefs_Plants/Plants_Special.xml:118) rather than
+  commissioning new art, same practice as RUT_TwinkleSpikeTestPlant.xml in
+  this same mod: this pass proves the mechanism, not the final look. Art
+  pass owed.
+
+  growDays/harvestYield/harvestWork/sowWork/statBases: this pass's own
+  INVENTED-BUILD values (moderate, station-garden-crop scale), not named by
+  the kit spec beyond growMinGlow/growMinTemp. High Flammability (2.0) is
+  deliberate — this plant IS candle-stock; RUT_WickStem (ThingDefs_Items/,
+  same pass) is the harvested fuel good.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RUT_Plant_Wick</defName>
+    <label>wick-plant</label>
+    <description>A low, waxy stand of stems that feeds directly on the tar's own chemistry rather than the sun — it needs no daylight at all, only whatever faint light is already there. Junker stations cultivate it in wick-gardens at the tar's edge; harvested and dried, its stems are the only living light the Sump ever gives back.</description>
+    <graphicData>
+      <texPath>Things/Plant/Ambrosia</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>2.0</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <wildTerrainTags>
+        <li>Water</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <sowWork>170</sowWork>
+      <harvestWork>180</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_WickStem</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <growDays>6</growDays>
+      <visualSizeRange>0.6~1.05</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>
