@@ -93,13 +93,76 @@ mod into a long-arc progression instead of a repair verb.
 ship heals, and the ship's healing is what unlocks refurbishing them at all. The
 player's job early is to feed a convalescent machine; late, it feeds itself.
 
-## Open for the session
+## Ruled at the bench — owner, 2026-09-15 (design session)
 
-- Does the graceful-degradation curve get a real mechanic (capacity decay, quality
-  tiers, a hediff-like wear model), or is it flavour plus stat spread?
-- What makes an artefact "sacred" mechanically — ideoligion precept, ritual, or a
-  ship-specific slot?
-- How does "study the machine" interact with `TECHPRINT_FACTION_GATING_1`'s research
-  access classes?
-- Does refurbished-exceeds-modern break the campaign's power curve, and where is the
-  ceiling?
+**1. The condition model is NAMED GRADES.** Discrete states, each its own stat block
+and its own sprite, not a capacity curve and not a per-subsystem organ model. This
+ratifies what the mod already does: `RM_WM_AutomatedSmelter_Wrecked` → `_Kludged` →
+`_Repaired`, stepped by vanilla 1.6 `replaceTags` (build the next tier's blueprint
+over the old footprint — an ordinary construction job, no C#).
+
+**2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
+beyond or even equal to the original. The final word should be something like nearly
+restored in a single word."* The ladder is **asymptotic** — a Jawa hand approaches the
+ancients' work and never arrives.
+
+⛔ This kills the "ascendant" grade that surpasses Rakatan design. It does **not**
+touch the earlier promise that a refurbished machine exceeds *modern* technology:
+beating rim-tech gear and equalling Rakatan work are different bars, and only the
+second is impossible.
+
+**3. The top grade is `Rewoken`.** Chosen from options because canon already names
+Rekko's domain *"the discarded rewoken"* — so the ladder's top is spoken in the god of
+repair's own vocabulary, and the word claims a thing is no longer dead without
+claiming it is whole.
+
+**4. 🔴 Reaching for the top grade is PRIDE.** Owner, verbatim: *"Reaching towards it
+would definitely please Ozzik and anger others."* Note the inversion from the design's
+first framing: the offence is not surpassing the ancients, it is **presuming you could
+make their work whole again.** Which gods anger, and whether Rekko is among them
+(his own body-vision is full restoration, which this rules impossible), is UNRULED.
+
+**5. Sacredness is SOCKETS + PRECEPT, layered.** Relics are seated in hull reliquary
+sockets — persistent, not consumed, each granting a boon — alongside an ideoligion
+precept venerating them (mood near relics, a ritual to seat one, real fallout for
+scrapping or selling). ⚠️ This makes the mod an **assembly** mod: it has zero C#
+today, so a comp plus save/load persistence plus Mod Settings is new scope.
+`src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs` is the in-repo
+precedent to copy for the persistence.
+
+**6. 🔴 The urns feed Antiquities; the relics do not.** Owner, verbatim: *"The Urns
+feed antiquities, not the artifacts."* Antiquities' 48 read artifacts
+(`RUT_Antiquity_Urn`/`_Stele`/`_Gravegood`) remain its own economy, untouched. Rakatan
+relics move the gods instead — see 7.
+
+**7. Installing a relic moves the ship's standing with the gods.** Owner, verbatim:
+*"The ship has its literall 'mood' (vector among the gods) increased when ancient
+relic artifacts are installed on the ship."* ⚠️ UNRULED which scalar the divine engine
+means: **Satiation** (the signed per-god ledger moved by what the colony DOES) or
+**Mood** (each god's own weather, which canon F8 says is never printed as a number).
+Ask before building.
+
+**8. Ship raises the FLOOR; components buy the PEAK.** Her recovery guarantees a
+climbing minimum grade across all seated relics; Ancient Components push an individual
+relic above that floor. Owner, verbatim on the timing: *"players will be manually
+upgrading systems for quite some time long before the ship gets the ability to 'bring
+everything up to some base level' across the board. It raises the floor to save the
+players from manually repairing everything all the time."* ⇒ The floor is **late** and
+its purpose is **relief from chore-work**, not a mid-game tide.
+
+**9. "Study the machine" does NOT route through Anomaly.** Anomaly is owned but
+owner-benched (*"not fun to user"*), and `CompStudiable` gates on monolith level, which
+this campaign's `generateMonolith false` never raises. Research Reinvented's
+`SpecialResearchOpportunityDef` with `opportunityType Analyse` is already proven on
+disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route.
+
+## Still open
+
+- Which gods anger when a hand reaches for `Rewoken` — and is Rekko one of them?
+- Satiation or Mood (ruling 7). The engine reserves them for different things.
+- The full grade ladder's names, and reconciling them with the shipped
+  `_Wrecked`/`_Kludged`/`_Repaired` defNames.
+- Where relics are found, and where Ancient Components come from.
+- Mobile structures: which ones, and does a mobile relic still seat in a socket?
+- Does the reliquary need to be readable by the endgame's contest over the ship's
+  future, or does this mod stay ignorant of it?
