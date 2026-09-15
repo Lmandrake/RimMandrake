@@ -95,26 +95,70 @@ player's job early is to feed a convalescent machine; late, it feeds itself.
 
 ## Ruled at the bench — owner, 2026-09-15 (design session)
 
-**1. The condition model is NAMED GRADES.** Discrete states, each its own stat block
-and its own sprite, not a capacity curve and not a per-subsystem organ model. This
-ratifies what the mod already does: `RM_WM_AutomatedSmelter_Wrecked` → `_Kludged` →
-`_Repaired`, stepped by vanilla 1.6 `replaceTags` (build the next tier's blueprint
-over the old footprint — an ordinary construction job, no C#).
+**0. 🔴 ARCHITECTURE — two mods, and the dependency points one way.** Owner, verbatim:
+*"the wrecked machines mod should be independent of the god favor... it should be its
+own stand-alone mod (RimMandrake level) and the Salvation Engine should require it."*
+
+| mod | tier | owns |
+|---|---|---|
+| **WreckedMachines** | `RimMandrake` — any RimWorld game | the three-grade ladder, refurbishment, Ancient Components, study-the-machine, mobile structures, worth-by-size, its own Mod Settings |
+| **Salvation Engine** | campaign | every god reaction, the reliquary sockets, the veneration precept, the ship-raises-the-floor mechanic |
+
+**WreckedMachines knows nothing about gods, and nothing about the Utinni.** It must be
+playable and complete in a vanilla game with no campaign content installed. Salvation
+Engine declares the dependency; WreckedMachines never reaches upward.
+
+⇒ This dissolves the cost flagged against per-relic allegiance during the session: the
+coupling to the divine engine is no longer a permanent property of this mod, because it
+lives in the mod that requires it.
+
+⚠️ UNRULED and it matters for naming: at `RimMandrake` tier the mod cannot say
+"Rakatan" — that is Star Wars lore, which the tier grammar puts at `RimStarWars`. So
+either WreckedMachines ships lore-neutral ("ancient machines") with the Rakatan
+identity added by a layer above, or the tier assignment needs revisiting. Ask before
+any defName is minted.
+
+**1. 🔴 The ladder is NAMED GRADES, and there are exactly THREE.** Owner's orders,
+verbatim: *"Defunct, Kludged, Refurbished. Only three levels (0.0001, 0.2, 0.5 of the
+original capability) One ladder for everything, with large artifacts (e.g. factories)
+worth much more than smaller items (e.g. batteries)."*
+
+| grade | capability vs. original | reads as |
+|---|---|---|
+| **Defunct** | 0.0001 | inert. A sacred object, not a machine. |
+| **Kludged** | 0.2 | works, badly, visibly bodged. |
+| **Refurbished** | 0.5 | the ceiling. Half of what its makers built. |
+
+Discrete states, each its own stat block and its own sprite — not a capacity curve and
+not a per-subsystem wear model. **One ladder for every Rakatan thing**, fixed
+installation or carried relic. **Worth scales with size**: a factory is worth far more
+than a battery at the same grade.
+
+⛔ Deletes every earlier ladder proposal: no "weakly functional", no "semi-functional",
+no grade that surpasses the original, and **no `Rewoken`** — that top-grade name was
+ruled and reversed inside the same sitting, and the three-level ladder replaces it.
+
+Shipped defNames follow the ladder: `_Wrecked` → `_Defunct`, `_Repaired` →
+`_Refurbished`; `_Kludged` already matches. Stepping stays vanilla 1.6 `replaceTags`
+(build the next tier's blueprint over the old footprint — ordinary construction, no C#).
 
 **2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
-beyond or even equal to the original. The final word should be something like nearly
-restored in a single word."* The ladder is **asymptotic** — a Jawa hand approaches the
-ancients' work and never arrives.
+beyond or even equal to the original."* The ladder is **asymptotic and capped at half**
+— a Jawa hand approaches the ancients' work and never arrives.
 
-⛔ This kills the "ascendant" grade that surpasses Rakatan design. It does **not**
-touch the earlier promise that a refurbished machine exceeds *modern* technology:
-beating rim-tech gear and equalling Rakatan work are different bars, and only the
-second is impossible.
+⛔ This kills any grade that surpasses Rakatan design. It does **not** touch the
+promise that a refurbished machine exceeds *modern* technology: beating rim-tech gear
+and equalling Rakatan work are different bars, and only the second is impossible.
 
-**3. The top grade is `Rewoken`.** Chosen from options because canon already names
-Rekko's domain *"the discarded rewoken"* — so the ladder's top is spoken in the god of
-repair's own vocabulary, and the word claims a thing is no longer dead without
-claiming it is whole.
+**3. The power curve falls out of 1 and 2 — and needs one confirmation.** If
+`Refurbished` is 0.5 of original **and** still beats modern technology, then original
+Rakatan capability is at least **2× modern rim-tech**, and realistically well beyond.
+⚠️ DERIVED, NOT RULED — it is a canon-shaped number nobody has said out loud, so it
+wants his yes before anything is balanced against it.
+
+This is also the answer to the old "does refurbished-exceeds-modern break the power
+curve" question: the ceiling is no longer scarcity alone, it is **arithmetic**. Half of
+original is the most any player ever gets.
 
 **4. 🔴 Reaching for the top grade is PRIDE.** Owner, verbatim: *"Reaching towards it
 would definitely please Ozzik and anger others."* Note the inversion from the design's
@@ -122,13 +166,17 @@ first framing: the offence is not surpassing the ancients, it is **presuming you
 make their work whole again.** Which gods anger, and whether Rekko is among them
 (his own body-vision is full restoration, which this rules impossible), is UNRULED.
 
-**5. Sacredness is SOCKETS + PRECEPT, layered.** Relics are seated in hull reliquary
-sockets — persistent, not consumed, each granting a boon — alongside an ideoligion
-precept venerating them (mood near relics, a ritual to seat one, real fallout for
-scrapping or selling). ⚠️ This makes the mod an **assembly** mod: it has zero C#
-today, so a comp plus save/load persistence plus Mod Settings is new scope.
-`src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs` is the in-repo
-precedent to copy for the persistence.
+**5. Sacredness is SOCKETS + PRECEPT, layered — and it lives in Salvation Engine.**
+Relics are seated in hull reliquary sockets — persistent, not consumed, each granting a
+boon — alongside an ideoligion precept venerating them (mood near relics, a ritual to
+seat one, real fallout for scrapping or selling). Per ruling 0 this is **not**
+WreckedMachines' content: the sockets are on the Utinni's hull and the precept is the
+clan's faith, so both sit in the dependent campaign mod.
+
+⚠️ Salvation Engine therefore needs an **assembly** — a comp plus save/load persistence
+plus settings. `src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs` is the
+in-repo precedent to copy for the persistence. WreckedMachines itself may still be able
+to ship as pure XML, which is worth protecting.
 
 **6. 🔴 The urns feed Antiquities; the relics do not.** Owner, verbatim: *"The Urns
 feed antiquities, not the artifacts."* Antiquities' 48 read artifacts
@@ -158,11 +206,12 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
 
 ## Still open
 
-- Which gods anger when a hand reaches for `Rewoken` — and is Rekko one of them?
-- Satiation or Mood (ruling 7). The engine reserves them for different things.
-- The full grade ladder's names, and reconciling them with the shipped
-  `_Wrecked`/`_Kludged`/`_Repaired` defNames.
+- **Does WreckedMachines ship lore-neutral?** Ruling 0's flagged conflict: `RimMandrake`
+  tier cannot say "Rakatan". Blocks minting any defName.
+- **Confirm the 2× arithmetic** in ruling 3 — derived, never spoken.
 - Where relics are found, and where Ancient Components come from.
-- Mobile structures: which ones, and does a mobile relic still seat in a socket?
+- Mobile structures: which ones, and does a mobile relic still seat in a hull socket?
+- Can the ship's floor ever reach `Refurbished`, or does it stop at `Kludged` — with
+  only three grades, the floor has very little room to move.
 - Does the reliquary need to be readable by the endgame's contest over the ship's
-  future, or does this mod stay ignorant of it?
+  future, or does Salvation Engine keep that to itself?
