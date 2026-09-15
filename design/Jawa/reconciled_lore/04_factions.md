@@ -71,7 +71,9 @@ adoption; until converted their faith attacks your vaporators.
 **5 · Free Droid Enclaves — two groupings** [owner 2026-08-30, canon.yml
 free_droid_enclaves.geography]: the CATHEDRAL congregation — poisoning it,
 worshiping it, building more, learning ancient tech from whispered voices deep
-in the old machinery (revealed content; ties to their Archotech charge turret)
+in the old machinery (revealed content; the machinery and its voices are
+Rakatan — archotech IS Rakatan tech, canon `archotech_is_rakatan` — which is
+also what their Archotech charge turret is)
 — and the NIGHTSIDE refugees (~two settlements, verify owed): power-starved,
 burning strange materials for dirty power in servo-freezing cold, selling fuel
 to the Junkers through long-distance pipes they must keep running — a

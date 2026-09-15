@@ -639,13 +639,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[1]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[1]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -668,7 +668,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
@@ -699,13 +699,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[2]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[2]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -728,7 +728,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
@@ -759,13 +759,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[3]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[3]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -788,7 +788,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
@@ -819,13 +819,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[4]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[4]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -848,7 +848,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
@@ -879,13 +879,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[5]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[5]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -908,7 +908,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
@@ -939,13 +939,13 @@
                 <match Class="PatchOperationReplace">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[6]/description</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="ABF_Thought_Synstruct_ArchotechImplantDissonance"]/stages/li[6]</xpath>
                   <value>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </value>
                 </nomatch>
               </li>
@@ -968,7 +968,7 @@
                 <stages>
                   <li>
                     <label>the implant's displeasure</label>
-                    <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                    <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                   </li>
                 </stages>
               </value>
