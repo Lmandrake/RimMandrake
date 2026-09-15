@@ -182,7 +182,8 @@ route, i.e. it is itself an entity/event drop]**
 
 **The draft.** *Shard-work* — the clan's name for a device built around a
 scavenged fragment nobody understands. This is precisely the campaign's
-existing "salvaged archotech" register and needs no invention:
+existing salvaged-archotech register — i.e. Rakatan relic work, canon
+`archotech_is_rakatan` — and needs no invention:
 
 - `ProximityDetector` → **Scavenger**, T1 — a perimeter of listening stakes.
 - `DisruptorFlares` → **The Strange Schools**, T2 — a stun flare, adjacent to

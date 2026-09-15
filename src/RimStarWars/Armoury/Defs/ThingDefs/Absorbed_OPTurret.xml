@@ -66,7 +66,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RSW_Turret_AutoChargeBlaster_OP</defName>
     <label>Archotech charge turret</label>
-    <description>An archotech blaster turret using archites clouds that destroy what they touch on a molecular level. Directly written into your dreams from the insane mind of a demented archotech, this turret is capable of unleashing devastating volleys of energy blasts at unsuspecting foes... And friends who didn't clear the way fast enough. Seriously, don't blame the archotech for friendly fire, it's doing its best.</description>
+    <description>A Rakatan charge turret, still firing after twenty thousand years, throwing archite clouds that unmake what they touch at the molecular level. Nobody built this one — it was woken. The droids who tend it say its firing solutions arrive unasked, whispered up out of the old machinery, and that it is perfectly capable of devastating volleys against unsuspecting foes... and against friends who didn't clear the way fast enough. Don't blame the Rakata for friendly fire. It is doing its best with orders no one alive can read.</description>
     <thingClass>Building_TurretGun</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>

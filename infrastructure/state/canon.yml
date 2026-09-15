@@ -1983,3 +1983,25 @@ trade_moot_urns:
     covert (night caravans, dead drops, deniable intermediaries),
     normalizing as the clan's standing grows. World urn total unchanged -
     the Moot finds, it does not mint.
+archotech_is_rakatan:
+  ruled: true
+  src: >
+    Owner, 2026-09-15, at the bench: "Archotech in the game now officially
+    means Rakatan Ancient technology." This REINTERPRETS vanilla content
+    rather than adding to it - his words: "The famous Rimworld 'archotech
+    battery' can now be explained." Every archotech thing in the game is a
+    Rakatan artefact, which is why it is absurdly good and absurdly rare.
+    The engineering character is the point: Rakatan tech is ROBUST, it
+    SURVIVES, and it DEGRADES GRACEFULLY - "Their batteries just slowly lose
+    capacity over millenia yet still work", and refurbished they "would
+    exceed modern technology even in a still kludged manner." Found defunct,
+    weakly functional or semi-functional, and installed on the ship as
+    sacred loot the ship LOVES; as the ship regains self-healing the
+    artefacts improve with it. Refurbishment is gated on scarce ANCIENT
+    COMPONENTS plus the tech to do it, granted by the ship - manual at
+    first, later the ship's auto-repair systems refurbish ever-larger
+    machines onboard by themselves. REACH: every campaign reference to
+    archotech inherits this. Vanilla techLevel values and vanilla defNames
+    (ArchotechEye and kin) are mechanical and unaffected - the ruling
+    governs lore, not enum values. Design + progression:
+    RAKATAN_ARCHOTECH_MACHINES_1.

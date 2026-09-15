@@ -36,8 +36,8 @@ already `done`). Built directly from that packet, FOUNDRY, 2026-09-08.
   both stay `MECHANOID_ORIGIN_CANON_1`'s to rule. No donor pawn carries this
   head; it is a standalone item today (spawn/debug, future quest loot). Art:
   vanilla Biotech's own `Things/Pawn/Humanlike/Apparel/Mechlink` texPath — an
-  archotech mind-link implant, thematically exact, and no cross-mod texPath
-  fragility since it's vanilla.
+  archotech mind-link implant — i.e. Rakatan, canon `archotech_is_rakatan` —
+  thematically exact, and no cross-mod texPath fragility since it's vanilla.
 - **Per-faction data spikes** (`ThingDefs/DataSpikes_Droidworks.xml`):
   `RSW_DW_DataSpike_{Empire,Hutt,Junker,Wild}`, same shape as the existing
   generic `RSW_DW_DataSpike` (untouched, still keyed
