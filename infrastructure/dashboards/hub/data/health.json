@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-15T12:00:00Z",
+ "generatedAt": "2026-09-15T18:53:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 616474,
-  "sha256_12": "0b10011272bb"
+  "bytes": 616597,
+  "sha256_12": "f8fe8ab90853"
  },
- "head": "e5bd51e9b",
+ "head": "86308d312",
  "counts": {
   "red": 38,
   "blue": 633,
-  "green": 1731,
-  "grey": 322,
+  "green": 1730,
+  "grey": 323,
   "unmeasured": 0,
   "total": 2724
  },
  "loc": {
   "red": 19738,
-  "blue": 242351,
-  "green": 590346,
-  "grey": 100832,
+  "blue": 242373,
+  "green": 446547,
+  "grey": 244631,
   "unmeasured": 0,
-  "total": 953267
+  "total": 953289
  },
  "reviewEntries": 2523,
  "recidivists": [
@@ -38,6 +38,11 @@
    "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml",
    "loc": 467,
    "cycles": 4
+  },
+  {
+   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
+   "loc": 143799,
+   "cycles": 3
   },
   {
    "path": "src/RimMandrake/Utils/artpipe/selftest_artpipe.py",
@@ -68,14 +73,9 @@
    "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWClothes.xml",
    "loc": 1918,
    "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORApparel.xml",
-   "loc": 1174,
-   "cycles": 2
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 2724 files (1731 clean, 322 dirty, 0 unmeasured)."
+ "headline": "OK: measured 2724 files (1730 clean, 323 dirty, 0 unmeasured)."
 }
