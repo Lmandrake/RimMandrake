@@ -99,24 +99,26 @@ player's job early is to feed a convalescent machine; late, it feeds itself.
 *"the wrecked machines mod should be independent of the god favor... it should be its
 own stand-alone mod (RimMandrake level) and the Salvation Engine should require it."*
 
-| mod | tier | owns |
-|---|---|---|
-| **WreckedMachines** | `RimMandrake` — any RimWorld game | the three-grade ladder, refurbishment, Ancient Components, study-the-machine, mobile structures, worth-by-size, its own Mod Settings |
-| **Salvation Engine** | campaign | every god reaction, the reliquary sockets, the veneration precept, the ship-raises-the-floor mechanic |
+**THREE layers, each requiring the one below** (the middle layer resolves the tier
+conflict — owner ruled it 2026-09-15, same sitting):
 
-**WreckedMachines knows nothing about gods, and nothing about the Utinni.** It must be
-playable and complete in a vanilla game with no campaign content installed. Salvation
-Engine declares the dependency; WreckedMachines never reaches upward.
+| layer | tier | owns | says "Rakatan"? |
+|---|---|---|---|
+| **WreckedMachines** | `RimMandrake` — any RimWorld game | the three-grade ladder, refurbishment, Ancient Components, study-the-machine, mobile structures, worth-by-size, its own Mod Settings. **Complete and playable in a vanilla game** — generic ancient wrecked machines, no faction, no setting | ⛔ never |
+| **the Rakatan skin** | `RimStarWars` | renames and reskins the base machines as Rakatan: labels, descriptions, art. Thin — a reskin, not a mechanic | ✅ yes |
+| **Salvation Engine** | campaign | every god reaction, the reliquary sockets, the veneration precept, the ship-raises-the-floor mechanic | ✅ yes |
 
-⇒ This dissolves the cost flagged against per-relic allegiance during the session: the
-coupling to the divine engine is no longer a permanent property of this mod, because it
-lives in the mod that requires it.
+**WreckedMachines knows nothing about gods, nothing about the Utinni, and nothing about
+Star Wars.** Dependencies point downward only; no layer ever reaches up.
 
-⚠️ UNRULED and it matters for naming: at `RimMandrake` tier the mod cannot say
-"Rakatan" — that is Star Wars lore, which the tier grammar puts at `RimStarWars`. So
-either WreckedMachines ships lore-neutral ("ancient machines") with the Rakatan
-identity added by a layer above, or the tier assignment needs revisiting. Ask before
-any defName is minted.
+⇒ Two consequences worth holding onto. This **dissolves** the cost flagged against
+per-relic allegiance during the session — divine coupling is no longer a permanent
+property of the machine mod, because it lives two layers above it. And the base mod is
+genuinely publishable to strangers, which is the test of whether the neutrality is real.
+
+🔴 **The discipline this buys must be enforced downward: not one Rakatan word may leak
+into the `RimMandrake` layer** — not a defName, not a label, not a description, not a
+comment. Any leak collapses the three layers back into one.
 
 **1. 🔴 The ladder is NAMED GRADES, and there are exactly THREE.** Owner's orders,
 verbatim: *"Defunct, Kludged, Refurbished. Only three levels (0.0001, 0.2, 0.5 of the
@@ -206,8 +208,6 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
 
 ## Still open
 
-- **Does WreckedMachines ship lore-neutral?** Ruling 0's flagged conflict: `RimMandrake`
-  tier cannot say "Rakatan". Blocks minting any defName.
 - **Confirm the 2× arithmetic** in ruling 3 — derived, never spoken.
 - Where relics are found, and where Ancient Components come from.
 - Mobile structures: which ones, and does a mobile relic still seat in a hull socket?
