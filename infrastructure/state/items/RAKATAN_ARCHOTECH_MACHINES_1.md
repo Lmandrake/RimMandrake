@@ -64,6 +64,35 @@ Two coupled ideas to design against:
   So the player's relationship to these objects is cumulative and long-arc, and the
   ship is the thing that redeems them.
 
+## Refurbishment has a cost and a progression — owner, 2026-09-15
+
+Owner, verbatim: *"introduce the concept that refurbishment requires Ancient
+Components, a truly scarce and valuable resource as well as the tech to do so (from
+the ship). At first manual refurbishing is all that's possible, but eventually the
+ship's auto-repair systems will turn back on that slowly repair ship structure and
+refurbish ever-larger machines onboard automatically."*
+
+Three things this fixes at once — it gives refurbishment a real price, it makes the
+ship the source of capability rather than a passive container, and it turns the whole
+mod into a long-arc progression instead of a repair verb.
+
+- **Ancient Components** — a truly scarce, valuable resource. The gate on every
+  refurbishment. Scarcity is the balance lever for "refurbished exceeds modern"
+  (§ the power-curve question below): the ceiling is enforced by supply, not by
+  nerfing the payoff.
+- **The tech comes from the ship.** Refurbishment capability is not a research bench
+  the player builds; it is granted by the ship as it recovers. So the ship's own
+  healing arc and the player's capability arc are the same arc.
+- **Manual first, automatic later.** Early game: every refurbishment is hand-done, one
+  machine at a time. Late game: the ship's **auto-repair systems come back online**,
+  slowly repairing ship structure and refurbishing *ever-larger* machines onboard
+  without the player. The scale of what can be automatically refurbished is itself the
+  progression meter.
+
+⇒ Note how this couples to the sacred-loot idea above: the artefacts improve as the
+ship heals, and the ship's healing is what unlocks refurbishing them at all. The
+player's job early is to feed a convalescent machine; late, it feeds itself.
+
 ## Open for the session
 
 - Does the graceful-degradation curve get a real mechanic (capacity decay, quality
