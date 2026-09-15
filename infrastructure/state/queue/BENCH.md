@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-15T03:24:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-15T12:00:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -331,3 +331,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ECOSYSTEM_PYRAMID_LAW_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ECOSYSTEM_PYRAMID_LAW_1.md
+
+## NARRATIVE_DICTIONARY_PILOT_1 Narrative dictionary pilot (batch 1): featurize ~30 placeable objects by claim/mood/Lynch-spatial-function/ISO-communicative-act/state, author ~8 vignettes as predicates over those axes, dress one room plan 4 ways (2 claim sets x dictionary/control), PIL-composite at play zoom, blind naive-reviewer 'describe this room' test with a pre-registered bar, and emit GAPS.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NARRATIVE_DICTIONARY_PILOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NARRATIVE_DICTIONARY_PILOT_1.md
+
+## EVENT_TRACE_PROPS_LIBRARY_1 Design a props library of event traces: blaster marks, burn/scorch marks, floor scrapings, drag trails, impact spall and other signs of something having happened - scoped by the gap ledger from NARRATIVE_DICTIONARY_PILOT_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EVENT_TRACE_PROPS_LIBRARY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EVENT_TRACE_PROPS_LIBRARY_1.md
+
+## RAKATAN_ARCHOTECH_MACHINES_1 Design session with the owner: extend Wrecked Machines into the core Rakatan tech trait - robust, survives, degrades gracefully; mobile structures included; archotech officially reinterpreted as Rakatan Ancient technology, found as sacred loot the ship loves and heals over time
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RAKATAN_ARCHOTECH_MACHINES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md
