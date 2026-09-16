@@ -1,8 +1,11 @@
 <!-- status: DESIGN, filed 2026-09-15 from the bench session recorded in
-     infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md. That item is
-     the authority on what the owner said and ruled; this file is the design
-     that follows from it. Where the two differ, the item wins and this file
-     is wrong. Nothing on the item's "Still open" list is decided here.
+     infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md, and reconciled
+     against that item's later rulings the same day (revised ratios, the 1.0
+     donor rung, the withdrawal of "exceeds modern", the layer-1 assembly, the
+     Ninefold impulse API). That item is the authority on what the owner said
+     and ruled; this file is the design that follows from it. Where the two
+     differ, the item wins and this file is wrong. Nothing on the item's
+     "Still open" list is decided here.
      Written on the laptop: the game, ModsConfig.xml, RimSage, the def dump
      and `measure` were all unreachable, so every claim that needed one of
      them is marked UNVERIFIED and collected in §8. -->
@@ -15,10 +18,14 @@ Ancient machines do not break, they sag: found at a fraction of the capability
 their makers built into them, they still turn over, and a scavenger can drag
 one part of the way back but never all the way. There are exactly three states
 a found machine can be in — **Defunct**, **Kludged**, **Refurbished** — one
-ladder for every ancient thing, fixed installation or carried relic, and half
-of the original is the ceiling no hand ever passes. Everything else in this
-design is about who climbs the ladder, what it costs, and — two layers up,
-where the gods live — what it means that they climbed it.
+ladder for every ancient thing, fixed installation or carried relic, and
+**three-quarters** of the original is the ceiling no hand passes unless the
+player switches the cap off himself. The original — the ordinary modern machine
+the mod's donor already ships — sits above all three at 1.0, out of reach by
+default, which is the whole point: **you use this mod when you cannot build the
+real thing at all.** Everything else in this design is about who climbs the
+ladder, what it costs, and — two layers up, where the gods live — what it means
+that they climbed it.
 
 ---
 
@@ -82,14 +89,37 @@ for every ancient thing.
 
 | grade | of original | reads as |
 |---|---|---|
-| **Defunct** | 0.0001 | inert. A sacred object, not a machine. |
+| **Defunct** | 0.001 | inert. A sacred object, not a machine. |
 | **Kludged** | 0.2 | works, badly, visibly bodged. |
-| **Refurbished** | 0.5 | the ceiling. Half of what its makers built. |
+| **Refurbished** | 0.75 | the default ceiling. Three-quarters. |
+| *the original, unmodified* | 1.0 | **unreachable by default** — a real reference point, not a grade |
 
-Ruling 2 caps it: nothing equals or exceeds the original. Ruling 3's arithmetic
-follows and is **derived, not spoken** — if Refurbished is half of original and
-still beats modern rim-tech, then original is at least 2× modern. It is on the
-open list; nothing below is balanced against it.
+Ruling 2 caps it: nothing equals or exceeds the original, and the cap is
+enforced at **0.75 by a default rather than by arithmetic** — a **Mod Setting,
+defaulting to OFF**, allows full restoration to 1.0. A player may switch it on;
+that is deliberately his choice, and with it off 0.75 is hard.
+
+**1.0 means the UNMODIFIED DONOR DEF — the ordinary modern machine.** Owner:
+*"this mod generally will be used when you CANNOT build the original technology
+(that's the current intention)."* So the ladder does **not** climb past modern
+rim-tech and was never meant to: a Refurbished machine is a **substitute for
+something out of reach, not a better version of it.** Three-quarters of a
+working machine, built from scrap, when you could not have built the real one at
+all. Its value is availability, not power, and **nothing in this mod needs
+balancing against a fear of it being too strong.**
+
+**Every ratio is player-tunable.** Owner: *"Mod settings should allow the player
+to modify the functionality of each setting."* The three numbers above are
+defaults, not constants (§7).
+
+⚠️ **And the ratios are PER DEVICE CLASS, not universal.** Owner: *"the 0.001
+weak output is intended for batteries, not factories and other functional
+devices, to allow the 'flickering faint LED look'."* 0.001 exists to make a dying
+battery flicker; it is the battery number and nothing else. **A Defunct factory
+needs its own value and nobody has set one** — open (§9.1). The ruling is stated
+of the ratios generally, not of Defunct alone, so Kludged and Refurbished inherit
+the same shape and the settings screen must carry it rather than three global
+sliders. Only the Defunct case has actually been worked through.
 
 ### 2.1 What the ratios are ratios OF
 
@@ -115,7 +145,11 @@ Real values, read from
 and from the donor facts quoted in its own header (`VFEFactory_AutomatedSmelter`,
 size 3×4, 300 W, heatPerSecond 14, Steel 260 + ComponentIndustrial 7).
 
-| axis | Defunct (`_Wrecked`) | Kludged | Refurbished (`_Repaired`) | donor = "modern" |
+Column three is labelled by the def's shipped name, not by its grade: under ruling
+1 that def's values **are** the donor's, which makes it the **1.0 rung**. There is
+no 0.75 column, because no 0.75 def exists yet.
+
+| axis | Defunct (`_Wrecked`) | Kludged | `_Repaired` = **1.0** | donor = "modern" = 1.0 |
 |---|---|---|---|---|
 | recipes | none — no comps at all | 3 of 6 | **6 of 6** | 6 of 6 |
 | power | none | 360 W | **300 W** | 300 W |
@@ -126,61 +160,81 @@ size 3×4, 300 W, heatPerSecond 14, Steel 260 + ComponentIndustrial 7).
 | WorkToBuild | 800 | 3000 | **5000** | 5000 |
 | cost | Steel 30 (token) | Steel 120 + Comp 3 | **Steel 260 + Comp 7** | Steel 260 + Comp 7 |
 
-The bold column is the problem. **The shipped top tier is field-for-field
-identical to the donor's modern machine, deliberately** — the XML says so at
-its own costList: *"Identical to the donor, per the owner's 'otherwise
-identical mechanics underneath'. Every field below this line matches
-`VFEFactory_AutomatedSmelter` except texPath, defName, label and description.
-Keep it that way — this def is the A/B comparison target."* That instruction
-was correct for an art comparison and is **void under rulings 1–3**: a
-Refurbished machine must *beat* modern rim-tech, and this one merely equals it.
+**The bold column is the 1.0 rung, and that is what resolves it.** The shipped
+top tier is field-for-field identical to the donor's modern machine,
+deliberately — the XML says so at its own costList: *"Identical to the donor,
+per the owner's 'otherwise identical mechanics underneath'. Every field below
+this line matches `VFEFactory_AutomatedSmelter` except texPath, defName, label
+and description. Keep it that way — this def is the A/B comparison target."*
+Under ruling 1 that instruction is **still correct** — but the def it describes
+is the **1.0 rung**, not the Refurbished grade. Donor-identical *is* 1.0, by
+definition, so the A/B comparison target and the full-restoration target are the
+same def, reachable only with the mod option on.
 
-The middle rung, by contrast, is roughly right by accident. Three of six
-recipes, worse power, worse heat, twice the breakdown rate, no overclock —
-call that ~0.4–0.5 of the donor, which is what 0.2/0.5 = 0.4 of Refurbished
-demands if Refurbished sits just above modern.
+⇒ **So the pilot is short a rung, not holding a wrong one.** A genuine
+**Refurbished (0.75)** def has to be authored between Kludged and the shipped
+donor-identical def. What defName that leaves for each of the two — the item's
+rename instruction is `_Repaired` → `_Refurbished`, written before 1.0 existed —
+is unset, and no name is invented here (§9.2-B).
 
-**So the pilot's numbers need one rung rebuilt, and the rebuild runs into a
-file we do not own.** The axes our own ThingDef can move against the donor
-without touching donor content are: power draw, heat, breakdown factor, hit
-points, and the overclock factor. Of the four capability axes:
+The middle rung is **too strong, by roughly a factor of two.** Three of six
+recipes, worse power, worse heat, twice the breakdown rate, no overclock reads
+as ~0.4–0.5 of the donor. Kludged is **0.2 of the donor**, and 0.2/0.75 = **0.267
+of Refurbished** — so the shipped Kludged tier is about double what the ratio
+asks for, and it comes down.
 
-- **Recipe breadth is hard-capped.** The donor already offers all six. A
-  Refurbished machine cannot beat modern by breadth; there is nothing above six.
+**The rebuild runs into a file we do not own.** The axes our own ThingDef can
+move against the donor without touching donor content are: power draw, heat,
+breakdown factor, hit points, and the overclock factor. Of the four capability
+axes:
+
+- **Recipe breadth is a usable axis in the right direction now.** The donor
+  offers six and there is nothing above six — which no longer matters, because
+  every grade sits *below* the donor. Refurbished offering five of six, or six
+  with everything else worse, are both expressible.
 - **Throughput lives in the donor's `ProcessDef`s**, not in our ThingDef.
-  Expressing 0.2 or 0.5 as a real speed ratio means either per-grade copies of
+  Expressing 0.2 or 0.75 as a real speed ratio means either per-grade copies of
   those defs, or a per-building speed multiplier the processor comp reads —
   UNVERIFIED whether one exists (§8 U2).
 - **Input efficiency** is in the same donor defs. Same constraint.
-- **Uptime and power efficiency are ours.** A Refurbished ancient machine that
-  draws 200 W where the modern one draws 300 W, and almost never breaks, reads
-  correctly as *better than anything the rim builds* without touching a donor
-  file. This is the cheapest honest route to "exceeds modern".
-- **Overclock headroom is ours and is the most expressive axis** — the donor
-  ships factor 1, and a value above 1 would say "this thing has reserve the rim
-  cannot match." But `VEF_BuildingMaxOverclockFactor`'s arithmetic has never
-  been read; DESIGN.md §6 refused to guess it once already and that refusal
-  stands (§8 U1).
+- **Uptime and power efficiency are ours, and they now run the other way.** A
+  Refurbished ancient machine that draws *more* watts than the modern one for the
+  same output, and still breaks down more often, reads correctly as *three-
+  quarters of a machine you could not have built* — without touching a donor
+  file. This is the cheapest honest route to 0.75.
+- **Overclock headroom is ours.** The donor ships factor 1. A value *above* 1 is
+  now ruled out — it would put an ancient machine over modern, which ruling 3's
+  withdrawal forbids. Whether a factor *below* 1 is legal, and what
+  `VEF_BuildingMaxOverclockFactor`'s arithmetic actually does, has never been
+  read; DESIGN.md §6 refused to guess it once already and that refusal stands
+  (§8 U1).
 
 **Recommendation, for a one-line ruling:** the capability contract for a
-VFE-Factory machine is *power efficiency + uptime + overclock headroom*, with
-recipe breadth carrying the Defunct→Kludged step only. Throughput stays out of
-it until someone reads the donor's ProcessDefs on the Windows machine.
+VFE-Factory machine is *power efficiency + uptime*, with recipe breadth carrying
+the Defunct→Kludged step and overclock left out until U1 is settled. Throughput
+stays out of it until someone reads the donor's ProcessDefs on the Windows
+machine.
 
 ### 2.3 The ladder's steps are wildly uneven, and that prices the gate
 
-0.0001 → 0.2 is a factor of **2000**. 0.2 → 0.5 is a factor of **2.5**.
+0.001 → 0.2 is a factor of **200**. 0.2 → 0.75 is a factor of **3.75**. And if the
+player switches the cap off, 0.75 → 1.0 is a factor of **1.333** — a fourth rung
+that is by far the smallest step on the ladder, which is worth knowing before
+anyone prices it.
 
 The first rung is the whole game: a sacred object becomes a machine. The second
 is a polish: a bad machine becomes a good one. If both rungs cost the same in
 Ancient Components the first is a steal and the second is an insult, so the
 component cost should be shaped like the ladder — cheap to wake a thing, dear
 to finish it. That is a tuning statement, not a ruling; it is here because the
-arithmetic makes it non-obvious in exactly one direction.
+arithmetic makes it non-obvious in exactly one direction. (The optional 1.0 rung
+inverts the shape at the top: the cheapest step in capability terms should
+plainly be the dearest in components, or the cap is off in practice as well as
+in settings.)
 
-### 2.4 Defunct's 0.0001 is doctrine, not a trickle
+### 2.4 Defunct's 0.001 is doctrine, not a trickle
 
-0.0001 exists to say *this is not dead*, which is the whole engineering
+0.001 exists to say *this is not dead*, which is the whole engineering
 character: a modern machine breaks, an ancient machine sags. It is not an
 instruction to ship a machine that produces one ingot per century.
 
@@ -190,8 +244,16 @@ instruction to ship a machine that produces one ingot per century.
   a tick and still prints an inspect line promising something that will never
   arrive.
 - On a **scalar** machine, implement it **literally** — a battery holding a
-  ten-thousandth of its charge is harmless, cheap, and delivers the fiction
-  perfectly the first time a player checks it.
+  thousandth of its charge is harmless, cheap, and delivers the fiction perfectly
+  the first time a player checks it. This is the case 0.001 was chosen for and the
+  only case it is ruled for: the owner's stated purpose is the *"flickering faint
+  LED look"* of a dying battery.
+
+🔴 **0.001 is therefore not the compound-machine number, and the compound number
+does not exist yet.** A Defunct factory needs its own Defunct value, per device
+class, and nobody has set one — so the inert treatment above is a *shape*, not a
+ratio. Do not carry 0.001 across to a factory to close the gap; leave it open
+(§9.1).
 
 The shipped Defunct description must change either way: *"It has no power in it
 and nothing to give"* states the opposite of the doctrine (§10).
@@ -240,7 +302,7 @@ layer below's defName; the reverse never happens.
 | mobile-structure grade defs | 1 | same as fixed — one ladder |
 | worth-by-size scaling | 1 | cost lists per machine |
 | the capability contract per machine | 1 | `MACHINES.md` gains a column |
-| Mod Settings for all of the above | 1 | `…/Source/` + `Assemblies/` — **does not exist yet**, see §7 |
+| Mod Settings for all of the above | 1 | `…/Source/` + `Assemblies/` — **ruled in**, not yet built; see §7 |
 | the treated-machine register | 1 | `MACHINES.md` |
 | **Rakatan labels, descriptions, lore text** | 2 | patches over layer 1's defs |
 | **Rakatan art reskins** | 2 | its own `Textures/`, texPath overrides |
@@ -253,6 +315,15 @@ layer below's defName; the reverse never happens.
 | the ship-raises-the-floor mechanic | 3 | `…/Source/`, a GameComponent |
 | the Utinni's own wreck placement | 3 | map authoring, not a def |
 | the sacred-scrap deconstruct restriction | 3 | it is a precept/policy, so it is the clan's |
+
+🔴 **Every cosmetic row above is gated on the owner's permission, asked for
+first.** Owner, 2026-09-15: cosmetic changes require asking permission because
+they may break animated faces. That covers all of it — grade art, the layer-2
+reskin, texPath moves, any skin, head, eye or render-node change — and it applies
+to the act of making the change, not to proposing it here. **Nothing in this
+document authorizes an art edit.** The three grade sprites, the layer-2 Rakatan
+reskin and the §10.8 folder rename are each a request to be put to him, one at a
+time.
 
 **Two placements worth stating because they look like layer 1 and are not.**
 Sacred scrap is a *clan rule* — `wrecked_machines_resurrection.md` item 4 ruled
@@ -270,9 +341,10 @@ is made of them.
 Owner, verbatim: *"refurbishment requires Ancient Components, a truly scarce and
 valuable resource as well as the tech to do so (from the ship)."*
 
-- **Ancient Components** are the gate on every grade step. Scarcity is the
-  balance lever with the shortest wire: it caps the number of Refurbished
-  machines in a campaign without nerfing what Refurbished means.
+- **Ancient Components** are the gate on every grade step. Scarcity caps the
+  *number* of Refurbished machines in a campaign, and that is all it is for —
+  pacing, not power. It is not protecting the game from an over-strong top grade;
+  ruling 3's withdrawal means there is no such grade to protect against.
 - **The capability is granted, not built.** There is no bench the player raises
   to unlock refurbishment; the ship hands it over as she recovers. The player's
   capability arc and the ship's healing arc are one arc.
@@ -335,7 +407,9 @@ The floor can sit at Defunct (meaningless), Kludged (relief: every relic
 eventually works, badly, and the player's hand is what makes one good), or
 Refurbished (the ship finishes the game — and Ancient Components stop buying
 anything, contradicting ruling 8's "components buy the PEAK", because there
-would be no peak above the floor).
+would be no peak above the floor). The optional 1.0 rung does not rescue that
+third case: it is **off by default**, so a design that needs a peak above the
+floor would depend on a setting most players never touch.
 
 ⇒ **The owner's own words may already dissolve this.** *"the ship's auto-repair
 systems … refurbish ever-larger machines onboard automatically"* describes a
@@ -422,13 +496,23 @@ entry point at all** — Mood is a private self-driven random walk
 (`StepMoodWalk`), and there is no method that moves it from outside. A
 temporary lift also implies decay, which is new saved state.
 
-⇒ Ruling 7 cannot be built in layer 3 alone. It needs a **new, generic
-capability in Ninefold**: an external Mood impulse with a decay clock,
-`ExposeData`d like the rest of the vector. Generic is the operative word —
-Ninefold must gain "something outside can nudge a god's weather", not "relics
-nudge a god's weather", or the engine has learned about relics and ruling 0 is
-broken from below. (Ninefold's own master switch already gates `ApplyDelta`, so
-the new path should be gated the same way for free.)
+⇒ Ruling 7 cannot be built in layer 3 alone, and **the owner has authorized the
+piece it needs**: a **generic external-impulse API in Ninefold** so that anything
+can nudge a god's Mood, with relics as its first caller. So this is settled, not
+a conflict — "both scalars" is buildable, and the one-layer-down cost is
+approved rather than owed a ruling.
+
+Shape it as: an external Mood impulse with a decay clock, `ExposeData`d like the
+rest of the vector. **Generic is the operative word** — Ninefold gains "something
+outside can nudge a god's weather", never "relics nudge a god's weather", or the
+engine has learned about relics and ruling 0 is broken from below. (Ninefold's own
+master switch already gates `ApplyDelta`, so the new path should be gated the same
+way for free.)
+
+The open design question inside it, which the authorization does not answer: **how
+an external nudge coexists with a walk that is meant to be the god's own.** An
+impulse that simply overwrites the walk makes Mood the player's dial; one that is
+swamped by the walk does nothing. That is a Ninefold design call (§9.2-K).
 
 ### 5.4 Reaching for Refurbished, and the fracture it makes
 
@@ -472,7 +556,7 @@ his own three blocmates.
 That is not a bug in the bloc map; it is the most interesting thing the ladder
 does. The bloc holds on *what the ship should become*, and splits on *what the
 clan should do this afternoon*. Rekko's alignment is with the deed, not with the
-politics: a wreck rewoken is his sacrament regardless of who else is offended,
+politics: a wreck brought back is his sacrament regardless of who else is offended,
 and he will take the same side as his flat opposite to get it. It gives the
 Council of Voices an argument that cannot be predicted from the blocs — and it
 gives the player a real, legible choice, because there is no configuration of
@@ -501,12 +585,20 @@ them here so the correction is a decision and not a discovery:
    claiming you can make their work whole — is the pride spike. If that is the
    ruling, both matrix lines need the qualifier; if not, one of the two must go.
 2. **Rekko's Body-vision**: *"the fully restored original … **Full restoration
-   is the only true path.**"* Ruling 2 caps every hand at half of original, so
-   Rekko's platform is now **permanently unattainable** — the one god whose
-   vision of the ship cannot be delivered, in an endgame that is a contest over
-   which vision wins the hull. That is either excellent tragedy (he is the god
-   who is right about what to want and wrong about whether it can be had) or a
-   hole in the endgame. It should be one of those on purpose.
+   is the only true path.**"* Ruling 2 caps every hand at three-quarters by
+   default, so Rekko's platform is **unattainable in the shipped configuration** —
+   the one god whose vision of the ship cannot be delivered, in an endgame that is
+   a contest over which vision wins the hull. That is either excellent tragedy (he
+   is the god who is right about what to want and wrong about whether it can be
+   had) or a hole in the endgame. It should be one of those on purpose.
+
+   ⚠️ **And the 1.0 mod option makes it a settings-dependent tragedy**, which is
+   worse than either. Switch full restoration on and Rekko's platform becomes
+   deliverable; leave it off and it does not. A god's endgame vision should not be
+   reachable or not depending on a checkbox in Mod Settings. Either the endgame
+   reads the setting deliberately, or Rekko's vision is written against the 0.75
+   cap and the option is understood as a sandbox affordance outside the story. One
+   line, and it is the more urgent half of §5.5.
 
 ---
 
@@ -568,54 +660,56 @@ House rule, owner 2026-09-12: every mod ships a real settings screen — on/off
 per major feature, tuning where a number is the experience, defaults = shipped
 behaviour, all-off degrades gracefully.
 
-**Two things must be said before the settings list.**
+**The assembly question is closed: layer 1 gets one.** Owner, 2026-09-15 — the
+pure-XML protection is **REVERSED**, and the false `MOD_OPTIONS_RETROFIT_1`
+exemption (*"pure texture reskins, no `Source/` dir, nothing to toggle beyond
+enabling/disabling the mod itself"*) has been deleted. Both clauses of it were
+untrue anyway: WreckedMachines ships three def files including a
+`ResearchProjectDef` and an RR opportunity, and under ruling 0 it becomes the mod
+that owns the grade ladder.
 
-**(a) `MOD_OPTIONS_RETROFIT_1` currently exempts this mod, on a false premise.**
-Its exempt list reads *"Every `*ArtOverride` mod and `WreckedMachines` — pure
-texture reskins, no `Source/` dir, nothing to toggle beyond enabling/disabling
-the mod itself."* WreckedMachines ships three def files including a
-`ResearchProjectDef` and an RR opportunity, and under ruling 0 it becomes the
-mod that owns the grade ladder. The exemption is void.
+So layer 1 gains a `Mod` subclass and a `ModSettings` subclass — the in-repo
+pattern is `src/RimMandrake/Ninefold/Source/RM_NinefoldMod.cs` — plus `Source/`
+and `Assemblies/`. Ruling 1 makes it mandatory independently of the house rule:
+**the ratios and the full-restoration cap are player-tunable, and there is
+nowhere but a settings screen to tune them.**
 
-**(b) The house rule and ruling 5 collide.** Ruling 5 notes that
-*"WreckedMachines itself may still be able to ship as pure XML, which is worth
-protecting."* A settings screen cannot be XML: it needs a `Mod` subclass and a
-`ModSettings` subclass — the in-repo pattern is
-`src/RimMandrake/Ninefold/Source/RM_NinefoldMod.cs`. So layer 1 must gain an
-assembly, or it must be the one mod with no settings screen. **One line from the
-owner settles it**; everything below assumes the assembly.
+Toggles. All default ON = shipped behaviour, **with exactly one exception**, and
+the exception is load-bearing:
 
-Toggles, all default ON = shipped behaviour:
+| setting | type | default | what off/low does |
+|---|---|---|---|
+| **allow full restoration to 1.0** | on/off | 🔴 **OFF** | on: the unmodified-donor rung becomes reachable and 0.75 stops being the cap. The only setting whose default is off, and the only one that changes what the ladder *means* |
+| grade ladder | on/off | on | off: no grade defs are buildable; existing ones keep working. The mod becomes art. |
+| study the machine (RR Analyse) | on/off | on | off: no opportunity is offered; the restoration project is reached by bench theory alone |
+| mobile relics | on/off | on | off: only fixed installations get grades |
+| Ancient Components as the gate | on/off | on | off: grade steps cost only ordinary materials — the "I do not want a scarcity economy" switch |
+| Ancient Component cost multiplier | slider | 1.0 | the scarcity dial |
+| worth-by-size multiplier | slider | 1.0 | scales relic market value — the wealth/raid-points wire in §2.5 |
+| **the three grade ratios, per device class** | sliders | 0.001 / 0.2 / 0.75 | the ratios themselves. Owner: *"Mod settings should allow the player to modify the functionality of each setting."* Because the ratios are **per device class** (§2), one global triple is the wrong shape — a scalar (battery) group and a compound (factory) group at minimum, and the compound Defunct value is unset (§9.1) |
+| Defunct destructibility | on/off | on | whether a Defunct relic can be destroyed at all (§9.2-F) |
+| grade-change signal | on/off | on | publishes the neutral signal layer 3 subscribes to. **Labelled**: off breaks dependent mods' reactions |
 
-| setting | type | what off/low does |
-|---|---|---|
-| grade ladder | on/off | off: no grade defs are buildable; existing ones keep working. The mod becomes art. |
-| study the machine (RR Analyse) | on/off | off: no opportunity is offered; the restoration project is reached by bench theory alone |
-| mobile relics | on/off | off: only fixed installations get grades |
-| Ancient Components as the gate | on/off | off: grade steps cost only ordinary materials — the "I do not want a scarcity economy" switch |
-| Ancient Component cost multiplier | slider, default 1.0 | the scarcity dial, which is the balance lever ruling 3 leans on |
-| worth-by-size multiplier | slider, default 1.0 | scales relic market value — the wealth/raid-points wire in §2.5 |
-| Refurbished capability multiplier | slider, default 1.0 | how far above modern the top grade sits; the axis §2.2 has to choose |
-| Defunct destructibility | on/off | whether a Defunct relic can be destroyed at all (§9.2-F) |
-| grade-change signal | on/off | publishes the neutral signal layer 3 subscribes to. **Labelled**: off breaks dependent mods' reactions |
-
-**Degradation contract.** With every setting off, layer 1 is a texture pack with
-three unbuildable defs and no research hooks — and nothing it once wrote to a
-save becomes invalid. Layer 3 must treat the signal being off as "no relics were
-seated today", never as an error.
+**Degradation contract.** With every toggle off, layer 1
+is a texture pack with three unbuildable defs and no research hooks — and nothing
+it once wrote to a save becomes invalid. Layer 3 must treat the signal being off
+as "no relics were seated today", never as an error. Note the asymmetry the
+full-restoration toggle creates: switching it **off again** after a 1.0 machine
+exists must not invalidate that machine, only stop new ones — UNVERIFIED how a
+settings-gated buildability change behaves on an existing building (§8 U13).
 
 ---
 
 ## 8. UNVERIFIED — everything this machine could not check
 
-Twelve claims. Every one needs the Windows machine: the game, `ModsConfig.xml`,
+Thirteen claims. Every one needs the Windows machine: the game, `ModsConfig.xml`,
 RimSage, `measure`, the def dump, or the donor mods on disk. **None of the
 defNames, fields or class names below were invented to finish a sentence** —
 where a name was not readable in this repo, no name is given.
 
 | # | claim | how to settle it |
 |---|---|---|
-| U1 | Whether `VEF_BuildingMaxOverclockFactor` above 1 is a usable "exceeds modern" axis, and what VEF's overclock arithmetic actually does | read VEF's overclock code; DESIGN.md §6 already refused to guess it once |
+| U1 | Whether `VEF_BuildingMaxOverclockFactor` **below** 1 is legal and meaningful — the axis is now needed to express a shortfall against the donor, not a surplus — and what VEF's overclock arithmetic actually does | read VEF's overclock code; DESIGN.md §6 already refused to guess it once |
 | U2 | Whether VFE-Factory's processor comp exposes **any** per-building speed or efficiency multiplier our ThingDef could set | read the donor's comp + `ProcessDef` fields |
 | U3 | The six `VFEFactory_Smelt*` process durations and yields — needed before any ratio is stated numerically | donor defs |
 | U4 | Which mod supplies the "archotech battery", and what field holds its capacity. No such vanilla Core def is evidenced anywhere in this repo | RimSage / the dump |
@@ -627,6 +721,7 @@ where a name was not readable in this repo, no name is given.
 | U10 | Whether a **ritual-bearing** precept can be hand-injected into `The Salvation.rid` via `build_salvation_rid.py::add_precepts`, whose docstring restricts safe hand-authoring to precepts needing no generated content | build one and load it |
 | U11 | That `CompStudiable` gates on monolith level (asserted by ruling 9; not readable here) | RimSage |
 | U12 | Whether vanilla exposes a hook a neutral grade-change signal can ride, and where | RimSage on the construction-completion path |
+| U13 | Whether a Mod Setting can gate a ThingDef's buildability at all, and what happens to an already-built 1.0 machine when the full-restoration setting is switched back off (§7's degradation contract depends on the answer) | read a shipped settings-gated-def pattern, then a quicktest |
 
 **Two things that are NOT unverified, stated so they are not re-checked.**
 Ninefold's public surface and the absence of any Mood mutator were read directly
@@ -639,7 +734,10 @@ source says so itself.
 
 ### 9.1 Carried forward verbatim from the item's "Still open"
 
-- **Confirm the 2× arithmetic** in ruling 3 — derived, never spoken.
+- 🔴 **Per-class Defunct values.** 0.001 is the battery number, chosen for the
+  flickering-LED look. Factories and other functional devices each need their
+  own, and nobody has set them. Nothing below is balanced against a compound
+  Defunct ratio because there is not one (§2.4).
 - Where relics are found, and where Ancient Components come from.
 - Mobile structures: which ones, and does a mobile relic still seat in a hull
   socket?
@@ -664,9 +762,24 @@ way the coverage is wrong, and the fix is the neutral signal in §1 — which is
 also what makes layer 3 buildable at all. **This is the most consequential
 finding in this document.**
 
-**B. Which axis carries the ratio, per machine** (§2.2). Needs a per-machine
-capability contract, and the pilot needs its top rung rebuilt because the
-shipped one is deliberately identical to the donor.
+**B. Which axis carries the ratio, per machine** (§2.2).
+
+> ✅ **The contradiction that used to sit here is RESOLVED.** It read: the shipped
+> top tier cannot be both donor-identical (the A/B comparison target the XML
+> protects) and stronger than modern. Ruling 1 dissolves it by making **1.0 the
+> unmodified donor def** — so the donor-identical def simply *is* the 1.0 rung,
+> reachable only with the full-restoration option on, and Refurbished at 0.75 is a
+> separate, lower rung beneath it. Both defs can exist without either one lying
+> about what it is. No field of the shipped def has to change to make this true;
+> what changes is which rung it names.
+
+What is left is ordinary work, not a conflict. Each machine needs a per-machine
+capability contract. The pilot needs a **new rung authored** — the shipped
+donor-identical def is the 1.0 rung, so a real 0.75 Refurbished def does not
+exist yet, and the Kludged def is about double the 0.2 the ratio asks for. And
+the two top defs need names: the item's rename instruction (`_Repaired` →
+`_Refurbished`) was written before 1.0 existed and no longer says which def gets
+which suffix. **No defName is invented here.**
 
 **C. Does relic worth feed colony wealth and raid points, and should it?**
 (§2.5.) It also feeds Ozzik's "wealth milestones", and the floor makes the hoard
@@ -709,13 +822,31 @@ replacing a generic mod's art) or layer 2's (a reskin).
 **J. Does the study target survive rung one, and is there a second opportunity?**
 (§6.)
 
+**K. How does an external Mood impulse coexist with the god's own walk?** (§5.3.)
+The API itself is authorized, so this is the design question left inside an
+approved build, not a request for permission. Overwrite the walk and Mood becomes
+the player's dial; get swamped by it and the impulse does nothing. It is
+Ninefold's call, and it is the last thing standing between ruling 7 and code.
+
+**L. Which grade does Rekko's endgame vision read?** (§5.5-2.) With the 1.0 rung
+gated behind a default-off setting, his *"full restoration is the only true path"*
+is deliverable in one configuration and not the other. The endgame contest cannot
+be written until that reads one way.
+
 ---
 
 ## 10. Required edits elsewhere — enumerated, NOT made
 
-Ruling 1 renames the shipped tiers (`_Wrecked` → `_Defunct`, `_Repaired` →
-`_Refurbished`; `_Kludged` already matches), and rulings 0–9 make a number of
-existing statements wrong. Nothing below was changed by this pass.
+Ruling 1 renames the shipped tiers (`_Wrecked` → `_Defunct`; `_Kludged` already
+matches) and rulings 0–9 make a number of existing statements wrong. Nothing
+below was changed by this pass.
+
+⚠️ **The `_Repaired` half of the rename is now ambiguous and is not carried out
+here.** The item says `_Repaired` → `_Refurbished`, written before 1.0 existed;
+but the `_Repaired` def is field-for-field donor-identical, which makes it the
+**1.0 rung**, not the 0.75 Refurbished grade (§2.2). One def has to become 1.0 and
+a second has to be authored at 0.75. Which suffix goes where is the owner's, and
+no name is invented (§9.2-B).
 
 **Rename cost, first, because it decides the order of work.** Per
 `WRECKED_MACHINES_RESURRECTION_1` (checked against the live `ModsConfig.xml`
@@ -731,9 +862,9 @@ before either, and re-verify U8 first.
 |---|---|
 | L3–6 header | names `ship_deck_plan.md` as *"the authority on the campaign fiction and the repair ladder"*. The ladder's authority is ruling 1; the fiction moves to layers 2–3 |
 | L8–18 banner | *"Everything below is still true and still correct"* — false after rulings 1–3 |
-| L22–28 §1 table | tier names; and the Wrecked row's **Function: None** contradicts 0.0001 / degrades-gracefully |
+| L22–28 §1 table | tier names; and the Wrecked row's **Function: None** contradicts 0.001 / degrades-gracefully |
 | L26 | *"Not deconstructible, not haulable, yields nothing if destroyed"* describes the deferred sacred-scrap state, not what ships (`deconstructible true`); and "not haulable" cannot be a ladder-wide rule now that mobile relics are in scope |
-| L28 | Repaired = *"Full function"* — must exceed modern, not equal the donor |
+| L28 | Repaired = *"Full function"* — accurate for the **1.0 rung** and wrong for the Refurbished grade at 0.75. The line does not get deleted; it moves to whichever def becomes 1.0, and Refurbished gets language for three-quarters |
 | L43–69 §1 | the parallel-def / duplicate-machine question is live but no longer knows which layer owns it (§9.2-I) |
 | L457, L481 | *"~25 minutes into a load"* — superseded by the measured ~15 min |
 | L152–157 | candidate art path `file:///D:/Luke/dev/Rimworld/src/Jawa/art_bench/smelter/` — a pre-migration `D:` path. Verify before trusting the "do not delete" instruction that depends on it |
@@ -779,7 +910,7 @@ Keep: §5 (duplicate machine) is still live and belongs in `DESIGN.md`.
 
 | where | what is now wrong |
 |---|---|
-| L199–202 | 🔴 *"The restored tier is the donor's own building, unmodified — this mod never replaces or retextures the original"* — **flatly wrong**, reversed by DESIGN.md §1 on 2026-08-12 and by the About.xml rewrite the same day. Highest priority in this file |
+| L199–202 | 🔴 *"The restored tier is the donor's own building, unmodified — this mod never replaces or retextures the original"* — half of this comes back true under ruling 1: the **1.0 rung is** the donor's own building, unmodified. The false half is *"this mod never replaces or retextures the original"*, reversed by DESIGN.md §1 on 2026-08-12 and by the About.xml rewrite the same day. Split the sentence; do not delete it whole. Highest priority in this file |
 | L14–16 | table columns `wrecked / kludged / repaired` |
 | L16 | `Defs: ⬜` (not started) — three def files exist |
 | L20, L63, L211 | section headings per grade name |
@@ -792,8 +923,8 @@ Keep: §5 (duplicate machine) is still live and belongs in `DESIGN.md`.
 | L59, L133, L254 | defNames `_Wrecked` / `_Kludged` / `_Repaired` |
 | L60, L134, L255 | labels |
 | L61 | *"It has no power in it and nothing to give"* — states the opposite of the degrades-gracefully doctrine |
-| L256 | *"It does everything the original did."* — breaks ruling 2 (never equals the original) **and** ruling 3 (must exceed modern) in one sentence |
-| L272–276 | the *"Keep it that way"* instruction to match the donor field-for-field — **void**; this is the §2.2 rebuild |
+| L256 | *"It does everything the original did."* — true of the **1.0 rung** and false of Refurbished at 0.75. It travels with the def to 1.0 rather than being deleted, and the 0.75 def needs its own description |
+| L272–276 | the *"Keep it that way"* instruction to match the donor field-for-field — **still correct**, because donor-identical is what 1.0 means. What changes is that this def is no longer the top *grade*: it becomes the option-gated 1.0 rung, and a new 0.75 def is authored below it (§2.2) |
 | L64, L138, L259 | texPaths, coupled to the `Textures/…/<Grade>/` folder names |
 | L74–79, L101 | the Defunct tier's build entry + token Steel 30 — *"Remove designationCategory before ship"*, and worth-by-size (§2.5) now argues the cost list means something |
 | L90–91 | `useHitPoints True` + `leaveResourcesWhenKilled false` — §9.2-F |
@@ -819,8 +950,9 @@ Keep: §5 (duplicate machine) is still live and belongs in `DESIGN.md`.
   framing moves to layer 2/3; layer 1's storefront text describes generic
   ancient machines.
 - The three-state block (WRECKED / KLUDGED / REPAIRED) — names, plus *"Dead …
-  does nothing, cannot be removed"* (contradicts 0.0001 and the shipped
-  `deconstructible true`) and *"Full function"*.
+  does nothing, cannot be removed"* (contradicts 0.001 and the shipped
+  `deconstructible true`) and *"Full function"*, which is 1.0's language and not
+  Refurbished's.
 - `<name>Wrecked Machines</name>` — owes the `RimMandrake: <Name>` display
   grammar, and see §9.2-H on whether the name survives at all.
 
@@ -832,7 +964,9 @@ notably `grab_source_art.py` L187/L208's `("restored", "wrecked", "kludged",
 "repaired")` and `briefs.py` L172/L258. Tooling is naming-scheme-exempt, **but
 the `art_source/` and `Textures/` folder names are what `texPath` points at**,
 so either the folders move with the defNames or the folder names stay and
-deliberately diverge from the grades. Decide it once, both sides together.
+deliberately diverge from the grades. Decide it once, both sides together — and
+because a folder move is a `texPath` move, **it is a cosmetic change and needs the
+owner's permission before it is made** (§3).
 
 ### 10.9 `design/Jawa/wrecked_machines_resurrection.md`
 
@@ -849,8 +983,8 @@ deliberately diverge from the grades. Decide it once, both sides together.
 |---|---|
 | L1223–1224 | Ozzik DEEDS − *"restoring RAKATAN works feeds his grief-side gently without the pride spike"* — contradicts ruling 4 (§5.5-1) |
 | L1243–1244 | the same claim again, in Ozzik's L-curse tail |
-| L810 | Rekko's Body-vision *"Full restoration is the only true path"* — made unattainable by ruling 2 (§5.5-2) |
-| L1112–1136 | ⑤ Rekko's page: DEEDS + *"restoring wrecks"* is grade-blind and now has three rungs to read against; his L curse *The Rewoken* has acquired a literal namesake |
+| L810 | Rekko's Body-vision *"Full restoration is the only true path"* — unattainable under ruling 2's default 0.75 cap, and attainable only if the player switches the 1.0 option on (§5.5-2, §9.2-L) |
+| L1112–1136 | ⑤ Rekko's page: DEEDS + *"restoring wrecks"* is grade-blind and now has three rungs to read against (four with the option on) |
 | L378–381 | the bloc map — the humble bloc splits on this act (§5.4) and should say so |
 | §1, L19–31 | this doc owns the two-scalar mechanics, so ruling 7's "both scalars, Mood unprinted" belongs here |
 
@@ -868,21 +1002,26 @@ deliberately diverge from the grades. Decide it once, both sides together.
 
 - L1996–2000, `archotech_is_rakatan.src`: *"Found defunct, weakly functional or
   semi-functional"* — ruling 1 deletes that ladder. The entry needs the three
-  named grades, the ratios, and the "nothing equals the original" cap. It is
-  also silent on the three-layer architecture.
+  named grades, the live ratios (0.001 / 0.2 / 0.75, per device class), the 1.0
+  unmodified-donor rung and its default-off Mod Setting, and the "nothing equals
+  the original" cap. It is also silent on the three-layer architecture.
 - L1480–1495, `wrecked_machines.src`: doctrine intact, but predates rulings 0–2
   and the grade renames.
 
 ### 10.13 Queue and plan files
 
-- `infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md` L101–102 — withdraw the
-  WreckedMachines exemption; both clauses of its stated reason are false (§7a).
+- `infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md` — the WreckedMachines
+  exemption has been **deleted** (item ruling 5). Nothing owed here; recorded so
+  nobody re-opens it. This mod now needs a normal retrofit entry like any other.
 - `design/NAMING_SCHEME_PLAN.md` L55 (§3) and L185 (Phase 3) — both name **two**
   destinations for this mod ("core" + "Rekko-relic hooks extract to RimUtinni").
   Ruling 0 has three: add the `RimStarWars` Rakatan skin. L24's tier test row
   ("WreckedMachines core") stays correct.
-- `infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md` — ruling 7 still
-  reads *"UNRULED which scalar … Ask before building"* and ruling 4 still reads
-  *"Which gods anger, and whether Rekko is among them … is UNRULED."* The
-  session resolved both (§5.3, §5.4). Either the item records that, or §5.3 and
-  §5.4 of this file are proposals and should say so.
+- `infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md` — ruling 7's
+  "which scalar" is **now recorded as resolved** (both scalars, Mood unprinted),
+  and the Ninefold external-impulse API is authorized, so §5.3 stands on the item.
+  Ruling 4 still reads *"Which gods anger, and whether Rekko is among them … is
+  UNRULED"* — so **§5.4's five-god list remains a proposal awaiting one line**, as
+  its own provenance note says. Two things the item does not yet carry: the
+  cosmetic-permission ruling (§3), and the ambiguity ruling 1 created in the
+  `_Repaired` rename now that 1.0 exists (§10 preamble).
