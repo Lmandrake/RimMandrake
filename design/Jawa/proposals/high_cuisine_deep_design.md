@@ -291,6 +291,43 @@ an existing, already-authored hazard. The only new content is the
 ThingDef/RecipeDef layer sitting on top, which is exactly the "only the
 inputs and the names change" promise `V2_DREAMS.md` made for this whole mod.
 
+### 🔴 Ingredient sweep — owner, 2026-09-15 (verbatim)
+
+> *"Search for ALL venomous creatures, all eggs, some exotic hides, some exotic
+> blood, many fruits, some leaves, some sap, some oils... for ingredients. And
+> tar. And slime."*
+
+The four rows above were authored as exemplars; this is the instruction to go
+**wide** and derive the ingredient roster from what the mod stack actually
+contains, rather than inventing a shortlist. The quantifiers are his and are
+load-bearing — *ALL* venomous creatures and *ALL* eggs are exhaustive sweeps,
+while hides, blood, leaves, sap and oils are **selective** (*some*), and fruits
+are *many*. Do not flatten them into one uniform pass.
+
+| axis | scope | note |
+|---|---|---|
+| venomous creatures | **ALL** | exhaustive — every venomous kind in the live set is an ingredient source |
+| eggs | **ALL** | exhaustive |
+| exotic hides | some | the *exotic* qualifier is the filter; ordinary leather is not cuisine |
+| exotic blood | some | pairs with the ruled live-ingredient tank — something squealing, honouring the Hutt |
+| fruits | many | the broadest of the selective axes |
+| leaves | some | |
+| sap | some | |
+| oils | some | |
+| **tar** | named outright | already a preservation medium above; here it is also an *ingredient* |
+| **slime** | named outright | new to this doc — no slime ingredient existed before this note |
+
+⚠️ **Derivation must be MEASURED, not remembered.** "All venomous creatures" is a
+count against the live post-patch def set, not a recollection — venom arrives by
+several routes, so the sweep names its instrument before a roster is written, and
+UNMEASURED beats a plausible number.
+
+🔑 **This axis list is a consumer of creature design.** A creature ruled venomous
+becomes an ingredient source by this note — so the Pyrelands art review's
+Boomsnake ruling (owner, same day: *"rename this to Flamefang and make it
+venomous"*) adds a row to the venom sweep. Resolve the sweep after that rename
+lands, not before.
+
 ---
 
 ## 5. Dish tiers — from paste-vat humility to the Nine-Course Ninefold Feast
