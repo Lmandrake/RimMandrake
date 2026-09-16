@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T14:04:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T14:05:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1705,3 +1705,33 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
+
+## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
+
+## CANAL_CONSTRAINED_SPREAD_1 Constrain Flood_FluidCanal to the dug channel - today it inherits vanilla Flood gating and spreads across any open ground, so a canal does not contain its liquid, which every canal design assumes it does
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANAL_CONSTRAINED_SPREAD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANAL_CONSTRAINED_SPREAD_1.md
+
+## FLUID_SOURCE_STOCK_MODEL_1 Give CompFluidReservoir a real volume stock per the owner's 2026-09-16 reversal - debit on fill and on pump, limited-vs-limitless by map-edge contact, slow refill from rain/season/seepage, all debited per pulse never per tick
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLUID_SOURCE_STOCK_MODEL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLUID_SOURCE_STOCK_MODEL_1.md
