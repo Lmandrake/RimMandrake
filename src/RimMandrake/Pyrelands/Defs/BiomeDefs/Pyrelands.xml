@@ -42,6 +42,15 @@
       <li>ScatterShrines</li>
     </preventGenSteps>
 
+    <!-- PYRELANDS_SCORCHED_RUINS_1 — owner: ruins "should be scorched and
+         burned to warn the player of what happens here." Runs only on THIS
+         biome's own maps (BiomeDef.extraGenSteps, RimSage MapGenerator.cs:163);
+         see GenStep_ScorchPyrelandsRuins (Source/FireEcologyHook.cs) and its
+         GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) for the mechanism. -->
+    <extraGenSteps>
+      <li>RM_FE_ScorchRuins</li>
+    </extraGenSteps>
+
     <modExtensions>
       <li Class="RimMandrake.StarWars.FireEcology.PyrelandsBiomeRanges">
         <!-- Mean annual tile temperature, degC. Below min the tile is not

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
@@ -422,6 +423,90 @@ namespace RimMandrake.StarWars.FireEcology
             {
                 Log.WarningOnce("[RimMandrake.StarWars.FireEcology] ashfall-accumulation: "
                                 + e.Message, 0x46E03);
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // SCORCHED RUINS (PYRELANDS_SCORCHED_RUINS_1) — the fourth thing XML
+    // cannot do: react to WHERE another genstep just built something.
+    //
+    // TRIGGERED BY: <extraGenSteps><li>RM_FE_ScorchRuins</li></extraGenSteps>
+    // on RM_FE_Pyrelands (Defs/BiomeDefs/Pyrelands.xml). BiomeDef.extraGenSteps
+    // is concatenated into a map's genstep list ONLY when that map's biome IS
+    // RM_FE_Pyrelands (RimSage, Verse/MapGenerator.cs:163 —
+    // `map.Biome.extraGenSteps.Where(IsValidBiome)`), so this genstep never
+    // runs, and needs no internal biome check, on any other biome's map.
+    //
+    // The paired GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) sets
+    // order=760 — right after ScatterRuinsSimple's order=750 (RimSage) and
+    // well before Plants' order=900 — so the scorched ground is already in
+    // place before wild plants roll what grows on it.
+    //
+    // GenStep_ScatterRuinsSimple.ScatterAt records every ruin's footprint into
+    // MapGenerator.UsedRects (RimSage, Verse/MapGenerator.cs:58/GenStep_
+    // ScatterRuinsSimple.cs ScatterAt) before this step runs. Mutator-placed
+    // ancient structures (MutatorCriticalStructures, order=500) land in the
+    // same UsedRects list, so those get scorched too — consistent with the
+    // owner's brief ("ruins should be scorched and burned to warn the player
+    // of what happens here"), not scoped narrowly to GenStep_ScatterRuinsSimple
+    // alone.
+    //
+    // No new art: the burn reads entirely through terrain and filth defs this
+    // mod already ships (AshLadder.xml's RM_FE_Ash_Light/Heavy, Filth_
+    // LooseAsh.xml) — heavier ash under the footprint's own cells, lighter at
+    // its rim, exactly the trace->light->heavy rungs a real burn scar climbs.
+    // ════════════════════════════════════════════════════════════════════
+    public class GenStep_ScorchPyrelandsRuins : GenStep
+    {
+        public override int SeedPart => 1993482201;
+
+        public override void Generate(Map map, GenStepParams parms)
+        {
+            if (!RM_PyrelandsSettings.scorchedRuinsEnabled) return;
+            if (!MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var usedRects)
+                || usedRects.NullOrEmpty())
+            {
+                return; // no ruin (or other used-rect structure) placed on this map — nothing to scorch
+            }
+
+            ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
+            TerrainDef ashHeavy = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Heavy");
+            TerrainDef ashLight = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Light");
+            if (ashHeavy == null && ashLight == null && ashFilth == null)
+            {
+                return; // defs not loaded — no-op, not a crash
+            }
+
+            try
+            {
+                foreach (CellRect rect in usedRects)
+                {
+                    CellRect clipped = rect.ClipInsideMap(map);
+                    foreach (IntVec3 c in clipped.Cells)
+                    {
+                        if (!c.InBounds(map)) continue;
+
+                        bool atRim = c.x == clipped.minX || c.x == clipped.maxX
+                                  || c.z == clipped.minZ || c.z == clipped.maxZ;
+                        TerrainDef targetTerrain = atRim ? ashLight : ashHeavy;
+                        if (targetTerrain != null)
+                        {
+                            map.terrainGrid.SetTerrain(c, targetTerrain);
+                        }
+                        if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
+                        {
+                            // shouldPropagate:false — a wall cell (unwalkable)
+                            // simply gets no filth rather than pushing it onto
+                            // a neighbour outside the ruin's own footprint.
+                            FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] scorch-ruins: " + e.Message, 0x46E04);
             }
         }
     }

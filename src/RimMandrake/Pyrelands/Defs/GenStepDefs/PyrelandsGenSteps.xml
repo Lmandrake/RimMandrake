@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    PYRELANDS_SCORCHED_RUINS_1. Wired in ONLY via RM_FE_Pyrelands's own
+    <extraGenSteps> (Defs/BiomeDefs/Pyrelands.xml) — BiomeDef.extraGenSteps is
+    concatenated into a map's genstep list only when that map's biome IS the
+    one carrying the list (RimSage, Verse/MapGenerator.cs:163), so this never
+    fires on, and needs no patch into, any other biome's MapGeneratorDef.
+
+    order=760 sits right after ScatterRuinsSimple (order=750, RimSage) and
+    well before Plants (order=900), so the worker (FireEcologyHook.cs,
+    GenStep_ScorchPyrelandsRuins) sees the ruin's footprint before wild
+    plants roll what grows on top of it.
+  -->
+  <GenStepDef>
+    <defName>RM_FE_ScorchRuins</defName>
+    <genStep Class="RimMandrake.StarWars.FireEcology.GenStep_ScorchPyrelandsRuins" />
+    <order>760</order>
+  </GenStepDef>
+
+</Defs>
