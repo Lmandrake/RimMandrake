@@ -70,10 +70,10 @@ haggled prices are real at execution with zero rewrite of trade execution.
   `TradeDeal.AllTradeables`, virtualized rows (599-mod stocks are huge), column
   presets save/load, wishlist stars inline (absorbs TradeHelper's UX).
 - **Broker** — bulk liquids (the liquids framework's broker interface lives
-  HERE; merge target of Liquid Logistics step ⑨): rows are (LiquidDef, amount in
+  HERE; merge target of FlowWorks' hardware step — was Liquid Logistics, absorbed 2026-09-16): rows are (LiquidDef, amount in
   reachable universal tanks / trader capacity), both directions, price = row
   marketValue × amount × settlement multiplier. Greys out with a one-line reason
-  when no tank is in range or Liquid Logistics is absent.
+  when no tank is in range or FlowWorks is absent (was Liquid Logistics, absorbed 2026-09-16).
 - **Ledger** — relationship memory: this trader's history with you, watchlist,
   session rumor log, haggle-lockout status.
 
@@ -222,7 +222,7 @@ ship FIRST and are the permanent fallback).
 Dynamic economy (campaign: authored tags / public default: procedural; flat
 kills it) · per-layer intel toggles · colony-needs badges · haggling on/off ·
 crit spoils on/off · banter (hard off switch; auto-off without CLI) · broker tab
-(auto-hidden without Liquid Logistics) · wishlist flash · grid presets/density.
+(auto-hidden without FlowWorks) · wishlist flash · grid presets/density.
 **All-off = a plain good trade grid.** Defaults = shipped behavior.
 
 ## 8. Displacement & compat
@@ -263,7 +263,7 @@ StockGenerators or their incident workers.
    crits/freebies/rumor tokens, lockout, XP, personalities, Ledger memory,
    deterministic seeding. Test: scripted push sequences replay identically
    across save/reload; lockout greys; XP ticks.
-4. **Broker tab**: merge of Liquid Logistics step ⑨ (gated on the universal
+4. **Broker tab**: merge of FlowWorks' hardware step (gated on the universal
    tank existing). Test: tank of water + trader in range → sell 100 units at
    value × amount × multiplier; tab hidden without a tank.
 5. **Banter** *(opus — prompt/validation quality is the product)*: authored

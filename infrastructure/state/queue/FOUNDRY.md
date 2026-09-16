@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T18:27:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T20:33:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1361,16 +1361,6 @@ thin:     spec, verify and criteria all present
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
-## FLOOD_ENGINE_CORRECTIONS_1 Fix FluidCanals flood defects (permanent floors, boxed-in infinite tick, rate-divisor field), then one clean live pass — gates the liquids framework
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Fix the three defects FLUIDCANALFLOODTUNINGGAPS1 recorded (read that
-prose:    infrastructure/state/items/FLOOD_ENGINE_CORRECTIONS_1.md
-
 ## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
 state:    proposed
 row:      unassigned
@@ -1420,16 +1410,6 @@ kind:     task
 thin:     no ## criteria
 summary:  A new WreckedMachines module in the existing wreck-tier grammar
 prose:    infrastructure/state/items/WRECKED_DISTILLATION_MODULE_1.md
-
-## LIQUID_LOGISTICS_MOD_1 NEW Liquid Logistics mod: universal cargo tank + universal pump + deployable hoses + tanker raid loop + trade-from-tank; per-net adapters — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  NEW mod RimMandrake: Liquid Logistics. Build order inside the item (each
-prose:    infrastructure/state/items/LIQUID_LOGISTICS_MOD_1.md
 
 ## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
 state:    proposed
@@ -1701,16 +1681,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
 
-## CANAL_CONSTRAINED_SPREAD_1 Constrain Flood_FluidCanal to the dug channel - today it inherits vanilla Flood gating and spreads across any open ground, so a canal does not contain its liquid, which every canal design assumes it does
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANAL_CONSTRAINED_SPREAD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANAL_CONSTRAINED_SPREAD_1.md
-
 ## FLUID_SOURCE_STOCK_MODEL_1 Give CompFluidReservoir a real volume stock per the owner's 2026-09-16 reversal - debit on fill and on pump, limited-vs-limitless by map-edge contact, slow refill from rain/season/seepage, all debited per pulse never per tick
 state:    proposed
 row:      unassigned
@@ -1787,6 +1757,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLOWWORKS_BUILD_PROGRAM_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
