@@ -91,19 +91,43 @@ hemogen/beer/milk adoption rows, basic (alkaline) water, kolto/bacta healing row
 
 ## 4. Mechanics
 
-**Pulsed spread.** `Flood_FluidCanal` + `CompFluidReservoir` (drip + re-flood bursts;
-scarcity is rate, not stock) generalizes with one addition: a second priming path —
-reservoir comps on *natural sources* (slime vents, tar seeps, geysers, set-piece pump
-intakes) auto-prime on spawn, so natural bodies plug into canals with no player action.
-Spills are one-shot releases with small volume and short flood duration. Viscosity
-maps to `ticksPerTile` bands (Heavy = slow oozing — the slime look). ⚠️ **Engine
-status (ledger, 2026-09-13)**: it HAS run live once (`FLUID_CANAL_FLOOD_LIVE_CHECK_1`
-done — a flood was watched receding and giving the floor back), but
-`FLUID_CANAL_FLOOD_TUNING_GAPS_1` found real defects: floods are permanent and
-floor-destroying (undisclosed), can tick forever when boxed in, and
-`MaxFloodDurationTicks` is actually a rate divisor, not a duration. **Build-phase ①
-is therefore the flood-behavior correction pass, not a first live proof.** Nothing
-builds on the engine until those corrections land.
+**Pulsed spread.** `Flood_FluidCanal` + `CompFluidReservoir` (drip + re-flood bursts)
+generalizes with one addition: a second priming path — reservoir comps on *natural
+sources* (slime vents, tar seeps, geysers, set-piece pump intakes) auto-prime on spawn,
+so natural bodies plug into canals with no player action. Spills are one-shot releases
+with small volume and short flood duration. Viscosity maps to `ticksPerTile` bands
+(Heavy = slow oozing — the slime look).
+
+🔴 **Scarcity is STOCK, not rate — owner, 2026-09-16, a FULL REVERSAL of this
+document's original line.** Every source carries a real volume and conservation of mass
+holds everywhere; "limitless" means only that a source's stock is large enough never to
+matter (a map-edge body). A source is debited by canal fill and by pumping, strains
+visibly as it is drawn down, recedes cell by cell, and — if it is a limited source, one
+fully inside the map — refills slowly from rain, season and ground seepage, slowest for
+a small body. ⚠️ **This does not weaken pillar 2**: the volume is debited at each pulse,
+never simulated per tick. A stock model and "no per-tick fluid sim, ever" are
+compatible, and the reversal is not licence for a sim. `CompFluidReservoir` is a rate
+today and must gain volume accounting; the design is drafted in
+`design/RimMandrake/fluid_canals_mod_definition.md` (DRAFT — the owner has ruled the
+reversal, not the mechanism).
+
+⚠️ **Engine status — CORRECTED 2026-09-16 (this document was stale).** All three
+`FLUID_CANAL_FLOOD_TUNING_GAPS_1` defects were fixed **2026-09-02**, eleven days before
+this document first described them as open, and the item is **closed at `747b0025`**.
+Verified by reading the source this date: `SpreadFlood` writes `SetTempTerrain` +
+`QueueRemoveTerrain` so a release is recoverable and the floor returns (and the flood
+terrains deliberately carry no `tempTerrain.destroysFloors`); a boxed-in flood
+self-destroys at `ExpiryTick = spawnedTick + 2 * FloodingTicks`; and `ticksPerTile` is a
+real per-fluid field with `MaxFloodDurationTicks` derived from it, so it is a duration
+again. `FLUID_CANAL_FLOOD_LIVE_CHECK_1` is closed too. **There is no flood-correction
+pass owed** — the deleted claim that "nothing builds on the engine until those
+corrections land" was blocking work that had already landed.
+
+🔴 **The real engine gap, MEASURED 2026-09-16: spread is not channel-constrained.**
+`Flood_FluidCanal` inherits vanilla `Flood`'s gating and spreads from its seed across
+any open, non-water, non-edifice ground — it does not follow the dug channel. Every
+canal fantasy in this document assumes a channel *contains* its liquid. This, not the
+fixed tuning defects, is what the engine owes.
 
 **Bottles are real items** (scavenger law): `RM_BottleEmpty` → fill (at terrain edge or
 tank) → `RM_Bottle<Liquid>` (generator-emitted per row) → use produces `RM_BottleDirty`
@@ -202,9 +226,12 @@ predator incidents; tank-mixing accidents (cross-connected tanks brew
 
 ## 7. Build phasing (each slice lands + quicktests alone)
 
-① **Flood-engine corrections** (fix the `FLUID_CANAL_FLOOD_TUNING_GAPS_1` defects:
-permanent/floor-destroying floods, boxed-in infinite tick, rate-divisor field; then a
-clean live pass: dig, prime, drip, re-flood, drain) → ② registry skeleton adopting
+① ~~**Flood-engine corrections**~~ — **DONE 2026-09-02, item closed at `747b0025`**
+(see §4's corrected engine status; the defects this phase existed for were already
+fixed). What the engine actually owes in its place is **channel-constrained spread** and
+the **stock model** of the 2026-09-16 reversal. Their position in this order is the
+owner's call, not this correction's: both are drafted in
+`fluid_canals_mod_definition.md` and neither is ruled. → ② registry skeleton adopting
 existing terrains (def-load test only) →
 ③ natural-source auto-prime + spills → ④ slime streams (Heavy FluidDefs, R/G/W/yellow
 rows) → ⑤ bottles + Mod Settings → ⑥ revert/rot specials → ⑦ thirst chain +
