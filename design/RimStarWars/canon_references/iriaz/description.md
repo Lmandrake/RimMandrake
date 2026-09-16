@@ -43,6 +43,17 @@ one clearly dominant horn in the in-game model, but the palette and marking
 pattern are already correct — this is the strongest existing donor-vs-canon
 agreement found in this pass.
 
+## Must show
+- [ ] Long-necked, antelope/giraffe-proportioned quadruped body with thin legs
+- [ ] Base skin colour is muted green/olive-teal
+- [ ] Leopard-style orange-yellow spotted markings scattered across neck, shoulders and flank
+- [ ] A single long, ridged, backward-curving horn (the in-game model shows one dominant horn, not a pair)
+- [ ] Thin, whip-like tail
+- [ ] Smooth hide with no visible fur
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Iriaz/Legends (Wookieepedia article text,
   pulled via

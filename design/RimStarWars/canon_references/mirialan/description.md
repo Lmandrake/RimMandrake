@@ -93,6 +93,17 @@ is that the mark is one fixed pattern shared by every Mirialan pawn, where canon
 says the tattoos **symbolize personal achievements** and therefore differ per
 individual — a variation opportunity, not an error.
 
+## Must show
+- [ ] Facial markings are geometric lozenges — diamonds, chevrons and diamond-lattice bands — never curves, script or tribal flourishes
+- [ ] Markings render in a darker tone of the pawn's own skin colour (or near-black) — never gold (gold is the Pantoran feature and must not be conflated with it)
+- [ ] Marking placement: a mark centred on the forehead above the brow, marks flanking the outer eye corners/cheekbones, and a vertical block or lattice on the chin below the lower lip
+- [ ] Skin hue reads yellow-green (the typical case) or one of the other sourced hues — blue, brown, olive, pink, purple, yellow
+- [ ] Otherwise fully human proportions — five-fingered hands, human hair, human eyes, no ridges or horns
+- [ ] The shipped head graphic already carries the forehead, inter-brow and chin-lattice diamond markings baked in at the correct canonical placement — this is a passing state to confirm, not a defect to fix
+
+## Engine limits
+none known
+
 **Xenotype-versus-canon findings:**
 
 - ✅ **Correct and well-sourced**: `RSW_MirialanHead` (carries the geometric facial

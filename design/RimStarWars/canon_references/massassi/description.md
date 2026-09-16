@@ -152,6 +152,17 @@ own; it renders from `RSW_Head_Bone` (forcing `RSW_Male_HeavyBoneNormal` /
 `RSW_BodySizeGene_big`. Nothing in this repo compares canon against the in-game
 sprite.
 
+## Must show
+- [ ] If depicting the ORIGINAL Massassi: tall, lean, fully upright build with long dark hair swept back and bound at the crown (not bald), plus long tendrils hanging from the cheekbones
+- [ ] If depicting the ORIGINAL Massassi: large, solid, pupil-less yellow eyes with no visible whites
+- [ ] If depicting the ALTERED (Yavin 4 / Exar Kun-era) Massassi: hunched, top-heavy build with a crown/shoulder mantle of hard fin-like spike growths sweeping back from the skull
+- [ ] If depicting the ALTERED Massassi: short muzzle with an outward-flaring tusked lower jaw and visible fangs, and no cheek tendrils, no eyebrow stalks, no hair
+- [ ] Three clawed digits per hand and per foot (clearest in the altered-form images, but sourced for both)
+- [ ] Skin reads a saturated red (florid crimson to lighter pink, or orange) — not the blue-grey/violet seen in the comic-continuity negative reference
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged — not fixed)
 
 `RSW_RimMandrakeSithMassassi`:

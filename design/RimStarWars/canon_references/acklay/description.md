@@ -45,6 +45,17 @@ Every source checked (infobox skincolor field, both Wookieepedia images)
 says green; nothing supports blue-teal. Flagging for owner ruling — canon
 color should very likely be corrected to green on any regen.
 
+## Must show
+- [ ] Green skin (mottled olive/sage-green to yellow-green), not blue-teal
+- [ ] Paler cream/yellow underside
+- [ ] Long, upward-curving neck ending in a crested, elongated, toothy head
+- [ ] Six thin, sharp, multi-jointed legs radiating from a small central body
+- [ ] Two of the six legs raised and functioning as grappling arms with hooked claws
+- [ ] Skin/hide reads as textured or ridged, not armored shell plates
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Acklay (Wookieepedia, text pulled via
   MediaWiki API `action=parse` 2026-09-13)

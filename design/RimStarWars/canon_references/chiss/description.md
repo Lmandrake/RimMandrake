@@ -108,6 +108,17 @@ repo** (it resolves to the external Outer Rim – Galactic Diversity mod), so no
 authors the angular face canon calls out. Skin and eye colour come from the generic
 `Skin_Blue` / `Eyes_Red` genes.
 
+## Must show
+- [ ] Glowing red eyes with no visible white sclera
+- [ ] Hair reads jet-black to blue-black, not bright azure
+- [ ] Angular, flat-planed face with sharp cheekbones and a straight jaw
+- [ ] Skin blue, but the exact shade varies across individuals from cyan to cobalt to
+  grey/near-silver — not a single fixed hue
+- [ ] Ordinary human body proportions
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Chiss — current canon; wikitext via

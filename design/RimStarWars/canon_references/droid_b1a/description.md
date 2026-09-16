@@ -134,6 +134,18 @@ wings-out silhouette in the air**; it is not usable for detail. Note the frame a
 a B2 grapple droid (the tall blue-grey figure at right), which is **not** a B1-A — do not
 read its colour as this droid's.
 
+
+## Must show
+- [ ] Tan/beige base plating with rust-orange accent panels, not blue-grey/slate blue
+- [ ] Two long swept blade-like wings projecting past the shoulders
+- [ ] Four glowing blue-white thruster nozzles at the wing roots
+- [ ] Wide flared trapezoidal shoulder yoke, with bulk concentrated in the shoulders rather than the limbs
+- [ ] Arm-mounted blaster pod with a lit blue circular lens on the forearm
+- [ ] Two small dark eye slits in an elongated ovoid head, recessed under the shoulder yoke
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/B1-A_air_battle_droid — main article; wikitext pulled via

@@ -61,6 +61,17 @@ single large amber eye rather than the two independently-moving stalked eyes
 the in-game KOTOR2 render and the source text both call for — a regen should
 add the stalked-eye detail rather than a single flat eye.
 
+## Must show
+- [ ] Squat, bloated, toad-like quadruped body
+- [ ] Mottled tan/khaki/olive-yellow-green hide on the back and flanks, paler/whitish on
+  the belly
+- [ ] Fringe of thin pointed spines running from the crown of the head down the back
+- [ ] Wide, low-slung jaw lined with many small sharp teeth
+- [ ] Two eyes on short stalks that read independently, not a single flat eye
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Cannok (Wookieepedia, fetched via the
   MediaWiki API `action=parse&prop=wikitext` endpoint, 2026-09-13)

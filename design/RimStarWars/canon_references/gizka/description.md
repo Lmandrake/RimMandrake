@@ -58,6 +58,17 @@ is not present anywhere on this machine's disk (Workshop cache or common
 Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
+## Must show
+- [ ] Small, squat, low-slung quadruped in a sprawling frog/lizard stance — front legs bent and close, hind legs long, thin and splayed wide
+- [ ] Oversized, blunt, rounded head dominated by a huge round bulging eye
+- [ ] A small pointed crest or ear-flap above the eye
+- [ ] Mottled olive-green and tan/khaki blotched skin pattern — not a flat green
+- [ ] Dull pink-red skin visible at the leg joints, belly and haunches
+- [ ] Roughly knee-height or smaller — a vermin-scale creature, not a large animal
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Gizka (current-canon stub article;
   pulled via

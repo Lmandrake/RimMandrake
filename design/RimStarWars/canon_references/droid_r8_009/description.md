@@ -132,6 +132,17 @@ interface that lets it self-retask — has **no visual cue at all**, in canon or
 Canon gives it no visible dataport or probe arm. So there is nothing to correct there; it is
 a behavioural trait with no appearance.
 
+
+## Must show
+- [ ] Tapered barrel body, wider at the top, capped by a low domed lid
+- [ ] Two thin whip antennae rising from the dome
+- [ ] Large dark barrel-lens photoreceptor assembly with a small iridescent light beside it
+- [ ] Two wide truncated-cone feet splayed out to the sides
+- [ ] Warm ochre/rust-orange body colour, not pale sandy yellow
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/R-8009_utility_droid — main article; wikitext pulled via

@@ -44,6 +44,16 @@ tail treatment; the main opportunity is richer plumage detail (mottling,
 gold accents) and slightly larger, more luminous eyes to match the reference
 art's "regal" character.
 
+## Must show
+- [ ] Round-headed owl silhouette with a short hooked beak
+- [ ] Dense brown/cream/gold mottled plumage
+- [ ] Large amber-gold eyes with black pupils
+- [ ] Long, ringed, prehensile tail used for grasping — not a standard fan-shaped bird tail
+- [ ] Plump, short-bodied build despite being an excellent flier
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Convor (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Convor&prop=wikitext`,

@@ -137,6 +137,17 @@ grey" and with the reference photograph.
   blue pilot B1, no worker/loader livery, and no folded/stowed pose. All of that is
   reskin-scale work on an existing correct silhouette.
 
+
+## Must show
+- [ ] Long narrow head projecting forward past the shoulders
+- [ ] Narrow shoulders with thin arms held close to the body
+- [ ] Tan/bone-khaki base plating
+- [ ] Hunched, forward-leaning stance with the head tilted down
+- [ ] Security markings dark red, command markings yellow, on shoulder and chest
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/B1-series_battle_droid — main article; wikitext

@@ -71,6 +71,18 @@ plating and the mandibles right. What it misses versus the images: the cranium i
 rather than **domed and proud of the skull**. The respirator is a separate gene
 (`RSW_HeadAttachment_gandmask`), so its absence here is expected.
 
+## Must show
+- [ ] Underneath any mask/respirator: a smooth chitinous insect skull — elongated, backward-sweeping cranium with heavy folded/wrinkled plating, no hair, no nose, no external ears
+- [ ] Two enormous domed compound eyes set on the SIDES of the head (lateral, not front-set), pale/glassy/faceted, canonically silver
+- [ ] A small, complex, faceted central face with mandible-like structures where a nose/mouth would be — no lips
+- [ ] Body surface reads as segmented and seamed with visible plate joints, not skin
+- [ ] Stocky, barrel-chested build with short, thick limbs
+- [ ] Warm tan/ochre/khaki-brown colouring — not dark green or slate red
+
+## Engine limits
+none known — the donor head is a greyscale mask correctly runtime-tinted by the skin
+gene, per the entry.
+
 ## Def-versus-canon (flagged)
 - 🔴 **`<description>` is `.`** — literally one period. Every other race in this file
   ships prose. This is a player-visible defect and the cheapest fix in the batch.

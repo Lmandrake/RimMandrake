@@ -156,6 +156,17 @@ Against `wookieepedia_g0t0_infobox.jpg`:
   G0-T0) with the repo's separate `RSW_DW_Race_guy762_DroidRace_ITseries`, which is labelled
   "IT-series **utility** droid" — a different model.
 
+
+## Must show
+- [ ] Black spherical body, not grey
+- [ ] Single red photoreceptor lens in a recessed circular dish, dead centre
+- [ ] Thin hooked whip antenna
+- [ ] Boxy sensor/emitter pod on a stalk near the top
+- [ ] Fine ribbed equatorial band dividing an upper dome from a lower hemisphere
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/G0-T0_infrastructure_planning_system — main article; text
   pulled via

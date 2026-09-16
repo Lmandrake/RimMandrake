@@ -73,6 +73,17 @@ longer/more powerful than the front legs. No disagreement between the
 sourced text and the images to flag this time; all three images and both
 text tiers reinforce the same creature.
 
+## Must show
+- [ ] Low-slung, spider/mantis-like body carried on four long, jointed, skeletal-looking legs
+- [ ] Legs are tan/gold with dark brown horizontal banding stripes
+- [ ] Hind legs markedly longer and more muscular than the front legs (reared, leaping-insect stance)
+- [ ] Small, blunt head held low and forward between the front legs, with a wide toothy mouth
+- [ ] Glowing red eye(s)
+- [ ] No wings and no shiny chitinous segmentation — reads as a bony/skeletal arthropod, not a beetle
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Insectomorph (current canon, wikitext
   pulled via MediaWiki API 2026-09-13)

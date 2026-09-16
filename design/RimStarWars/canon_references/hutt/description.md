@@ -100,6 +100,19 @@ RimWorld body** — the only Hutt body art on disk is
 overlay with no south variant and no tail at all. **The legless, tail-propelled
 body plan — the species' single most defining feature — is not represented.**
 
+## Must show
+- [ ] Two-tone skin: dorsal/back/limb surfaces mottled dark olive/grey-green, ventral/belly/chest/underjaw pale peach/salmon-tan — not a single flat colour
+- [ ] The dorsal/ventral transition is a wide speckled/mottled band, not a hard edge
+- [ ] Skin reads wet — specular highlights and fine crazed wrinkle networks, especially on the belly and head
+- [ ] Enormously wide, thin-lipped, down-turned mouth spanning the full width of the head
+- [ ] Small amber/yellow eyes with horizontal slit pupils under heavy shelf-like brow ridges
+- [ ] No neck — heavy jowl/chin folds stack directly under the jaw, continuous with the belly folds
+
+## Engine limits
+none known — the head-mask colour findings above belong on the skin-colour gene, not on the
+donor sprite. The unrepresented legless, tail-propelled body plan is a missing-art gap, not
+a rendering constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Hutt (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

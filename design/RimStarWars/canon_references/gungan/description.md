@@ -135,6 +135,23 @@ pixels) and `RSW_Gungan_FemaleNormal` / `RSW_Gungan_MaleNormal` both carry
 will **not** tint it from the skin gene. The head renders off-white/grey on a
 pale-brown body.
 
+## Must show
+Two canon races (lanky Otolla, heavy Ankura) look genuinely different — items below note
+where they diverge rather than averaging them.
+- [ ] A long, broad, flattened duckbill muzzle projecting well forward of the skull
+- [ ] Otolla: eyes on short mobile stalks rising above the skull. Ankura: hooded eyes with no stalks
+- [ ] Haillu: long pendulous leathery ear-flaps hanging from the sides of the head — long and prominent on Otolla, short and covered on Ankura
+- [ ] Leathery, mottled, matte skin with darker blotching over knees/thighs/shoulders and a paler ventral surface — not smooth or scaly
+- [ ] Three broad, splayed toes per foot; hands with four long digits
+- [ ] No hair anywhere on the head or face
+
+## Engine limits
+- **The shipped head cannot show any skin colour at all.** Both Gungan `HeadTypeDef`s set
+  `useSkinShader: false` over a texture measured as pure greyscale (zero channel spread
+  across 29,202 opaque pixels), so none of the six sourced skin colours (brown, green,
+  orange, pink, purple, white) reach the face — the head renders untinted regardless of
+  the skin gene chosen.
+
 ## Def-versus-canon (flagged — not fixed)
 
 - 🔴 **`AptitudePoor_Intellectual`, and the def's own `<description>` line "but have a

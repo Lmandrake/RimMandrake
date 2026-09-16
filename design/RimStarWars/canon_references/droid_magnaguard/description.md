@@ -102,6 +102,17 @@ MagnaGuard and match the reference closely.
 - **No repo art** depicts the electrostaff, but in RimWorld terms that is a weapon, not
   body art, so it is not a sprite defect.
 
+
+## Must show
+- [ ] Helmet-like crown over two large round red or yellow photoreceptors, with a vertical ribbed grille/muzzle below
+- [ ] Red sensor dot centred on the chest
+- [ ] Heavy pale cloak with a half-hood hanging from the shoulders down past the knees
+- [ ] Visible battle scarring/scuffing and thin exposed cabling at the joints
+- [ ] Hoof-like splayed feet
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/IG-100_MagnaGuard — wikitext pulled via

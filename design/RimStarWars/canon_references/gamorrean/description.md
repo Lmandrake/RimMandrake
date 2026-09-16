@@ -76,6 +76,17 @@ species' defining feature after the tusks), **the pale tan ventral/facial zone,
 the warty skin finish, and the crest ridge.** A Gamorrean in game is currently a
 big green fat human with small tusks.
 
+## Must show
+- [ ] Squat and wide silhouette at roughly human height — barrel-chested, no visible neck, big-bellied, bandy-legged — never a lanky or towering build
+- [ ] Olive-to-grey-green dorsal skin with a distinct paler tan/cream zone across the face centre, jaw underside and belly
+- [ ] Two tusks curving up from the lower jaw past the sides of the snout
+- [ ] A large, blunt, upturned snout with two big forward-facing nostrils
+- [ ] Small, deep-set, dark eyes under a heavy overhanging brow
+- [ ] Bumpy/warty, entirely hairless skin with a matte leathery finish
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Gamorrean (Wookieepedia article; direct page HTML
   is Cloudflare-walled — wikitext pulled via

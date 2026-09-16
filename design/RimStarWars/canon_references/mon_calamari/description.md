@@ -130,6 +130,19 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
   goggle-like eyes with a big pupil and pale sclera — the opposite of the species'
   headline distinction.
 
+## Must show
+- [ ] Dome is tall, smooth and rounded, swept back with no spike, crest or point at the crown
+- [ ] Eyes sit on the sides of the head on distinct lateral bulges — large, round, goggle-like, with a big dark pupil and visible pale sclera, not front-set and not tiny dots
+- [ ] Skin is mottled/striped rather than flat — either darker red-brown mottling over a salmon/orange-red base, or a two-tone teal countershading mask around the eyes/dome/limbs
+- [ ] A wide, thin, down-turned mouth sits beneath a pale cream/yellow pendulous chin-and-throat sac
+- [ ] Barbels hang from the chin
+- [ ] Small paired nostril slits sit on a short vertical ridge between the eyes
+
+## Engine limits
+- **A single flat skin-colour gene cannot produce the mottled/striped pattern or the two-tone
+  teal countershading** seen in the reference images — that arrangement needs art (a baked
+  texture or an additional render layer), not a colour value.
+
 **Xenotype-versus-canon findings:**
 
 - 🔴 **The iconic salmon/red-orange is barely represented.** The gene list has

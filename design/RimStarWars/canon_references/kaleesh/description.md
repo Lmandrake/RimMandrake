@@ -98,6 +98,17 @@ legitimate to draw, and the *anatomy* below must exist under the mask regardless
 **long thin arms** the text describes. It does **not** read as heavy or oversized — consistent
 with Legends' 1.6–1.8 m / 80 kg.
 
+## Must show
+- [ ] Deep brick-red / rust-red matte skin, crossed by darker striations and scar-like channels over the brow, temples and cheeks
+- [ ] Two large, wide-set yellow eyes with vertical slit pupils under a heavy arched brow ridge
+- [ ] No projecting nose — a broad, flat, faceted plate between and below the eyes, with two nostril slits running up toward the eyes
+- [ ] Two long, pale ivory tusks curving up and outward from the lower jaw, framing the mouth
+- [ ] When masked, the mask reads bone-white/cream (not red) — an animal-skull mask with dark angular eye sockets and hanging fangs
+- [ ] Large, elongated, pointed, triangular bat-like ear flaps
+
+## Engine limits
+none known
+
 ### Def-versus-canon (flagged — not fixed here)
 - 🔴 **`nameMaker` is `RSW_KoTOR_NamerNagai`** — the **wrong species' namer**, and Nagai is a
   separate species with its own def (`RSW_RimMandrakeNagai`) elsewhere in the same file. Kaleesh

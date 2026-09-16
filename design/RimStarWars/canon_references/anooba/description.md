@@ -81,6 +81,17 @@ pattern, ear shape, or live posture reliably, so it should not be used to
 validate or invalidate any of the canon findings above; it mainly documents
 that this creature's live sprite still needs to be authored.
 
+## Must show
+- [ ] Large, erect, pointed ears with pink/red-toned interior skin
+- [ ] Spiky dorsal mane/ridge of longer fur running from the skull down the spine
+- [ ] Tiger-like dark stripes over a blue-grey to grey coat — not a flat solid gray
+- [ ] Long, thin, low-carried or curled tail, not a canine brush tail
+- [ ] Front legs visibly longer/more developed than the hind legs (sloped hyena stance)
+- [ ] Prominent lower jaw with visible fangs (chin tusk present on larger individuals)
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Anooba (Wookieepedia article; direct page HTML
   is Cloudflare-walled — text pulled via

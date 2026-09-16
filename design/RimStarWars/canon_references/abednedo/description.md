@@ -70,6 +70,19 @@ two tiny nubs at the mouth. Since tendrils are the species' *only* infobox-liste
 distinction, this is the highest-value correction available. There are also no eye
 markings and no mottling texture.
 
+## Must show
+- [ ] Long, forward-projecting, downward-tapering snout hanging below the jawline with
+  a blunt, slightly hooked, fleshy tip
+- [ ] Eyes set on the sides of two separate raised bulges near the top of the head, not
+  front-facing on a flat face
+- [ ] Two long, thin, pendulous tendrils hanging from the underside of the snout
+- [ ] Crown always bald; any hair grows only from the sides and back of the head
+- [ ] Skin reads mottled and blotched, not a flat single tone
+- [ ] Palette is grey-cream/bone, grey-brown, or pink-tan — never orange
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged)
 - 🔴 **No grey or cream skin gene.** The list carries `Skin_Orange`,
   `Outland_Skin_PaleOrange`, `Outland_Skin_PalePink`, `Outland_Skin_Brown`,

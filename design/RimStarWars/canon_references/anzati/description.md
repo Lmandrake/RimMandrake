@@ -118,6 +118,18 @@ counts against the canon reference: **wrong origin point** (chin, not beside the
 lack of colour is correct and expected — the game tints at runtime — so only the *shape*
 finding stands. **The species' single defining feature is effectively unrepresented.**
 
+## Must show
+- [ ] Pale skin (not grey)
+- [ ] Two long, thin, smooth, cream/pale-tan proboscises emerging beside the nose,
+  hanging down toward the waist
+- [ ] Otherwise ordinary human-looking face: straight nose, black hair, pale ice-blue eyes
+- [ ] Ears subtly tapered/pointed
+- [ ] Feeding pose reads as a held embrace (both hands cupping the victim's head), not a
+  lunging bite
+
+## Engine limits
+none known
+
 ## Repo def versus canon — contradictions to report
 
 🔴 **The def builds a RimWorld blood-vampire, and Anzati are not blood-drinkers.**

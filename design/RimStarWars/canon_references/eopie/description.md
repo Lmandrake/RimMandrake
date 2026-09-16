@@ -46,6 +46,16 @@ every reference image shows. Any regen should keep the pale skin tone but
 give the body a longer, lower quadruped silhouette with visible legs and the
 distinctive trunk-like snout reading clearly against the body.
 
+## Must show
+- [ ] Pale skin tone — cream, dusty tan, or pinkish-grey — never brown
+- [ ] Long, low-slung, camel-like barrel body on four thin legs with small clawed/hoofed toes
+- [ ] Elongated trunk-like snout (closer to a tapir or small elephant trunk than a simple long muzzle)
+- [ ] One large dark eye set well back on the head
+- [ ] Smooth-to-leathery hide with no visible fur or hair
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Eopie (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Eopie&prop=wikitext`,

@@ -59,6 +59,17 @@ for the owner to rule on — likely resolution is either "keep our quadruped
 body plan but recolor" or "cut the legs to match the two screen
 appearances."
 
+## Must show
+Honest framing: the three canon images disagree sharply on body plan (limbless eel-like
+serpent in two, a small-legged quadruped in the third) and on color — only what all three
+agree on is listed as testable.
+- [ ] Elongated, toothy, skull-like/crocodilian head with prominent, visible fangs
+- [ ] Long serpentine/reptilian body plan
+- [ ] Shown as an aquatic ambush predator, partially submerged in murky swamp water
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Dragonsnake (Wookieepedia, wikitext pulled
   2026-09-13 via `action=parse&prop=wikitext`)

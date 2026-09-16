@@ -116,6 +116,20 @@ male/female × 3 facings and `*m.png` masks):
   is **a single tintable colour**, so **the horns render the same hue as the skin.** Canon
   horns are consistently a paler, cooler cream against reddish-tan skin.
 
+## Must show
+- [ ] Broad, smooth, backswept helmet-like domed cranium, wider than a human skull at the temples
+- [ ] Two down-curved horns emerging at the temples, curving forward and down past the jaw
+- [ ] Horns are a paler, cooler hue (cream-grey) than the skin — not the same colour as the face
+- [ ] Deep leathery furrows across the brow and down the cheeks
+- [ ] Completely hairless — no hair, no eyebrows, no beard
+- [ ] Large, thick, blunt hands with fleshy tapering digits, visibly bigger than a human hand
+
+## Engine limits
+- The head texture is pure greyscale and its tint mask uses only the red channel (green
+  channel empty), so there is a single tintable colour. **The horns cannot take a different
+  hue from the skin as things stand** — canon horns are consistently a paler, cooler tone than
+  the face.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Iktotchi — current canon; wikitext via

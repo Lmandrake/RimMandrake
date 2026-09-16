@@ -71,6 +71,17 @@ pale-white eye** and are the highest-value fix in this entry — verify whether 
 eyes are baked into the head texture or supplied by the `Outland_Eye_White` render
 node, because if they are baked they will override the correct gene.
 
+## Must show
+- [ ] Ordinary human head, build and facial proportions — no head appendages, ridges, or
+  snout
+- [ ] Hair pure white, worn as ordinary hair, not a mane or fur
+- [ ] Eyes pale and pupil-less — no visible iris/pupil structure
+- [ ] Skin tone spans tan to pale across individuals, not fixed to a single hue
+- [ ] Darkened, sunken eye orbits with a reddish-shadowed rim
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged)
 - 🔴 **`Beauty_Pretty` + `Turn_Gene_HighBeautyStandard` have no canon basis.** The
   sourced defining trait is **arrogance from a belief in genetic purity**, plus a

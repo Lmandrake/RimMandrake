@@ -81,6 +81,19 @@ RimWorld head sprite **cannot carry the forward-curving neck**, which is where b
 live and where most of the species' silhouette is. Whatever is done here, that compromise
 should be documented rather than hidden.
 
+## Must show
+- [ ] Long, thick, muscular neck rising from the shoulders and curving forward and down, carrying the head out in front of the chest
+- [ ] Head is a T-shaped hammer crossbar with eyes at the extreme outer ends, on protruding lateral pods
+- [ ] Twin mouths on the sides of the neck (not on the face) — a large oval opening ringed with plate-like teeth partway down the neck
+- [ ] Leathery, deeply wrinkled/creased skin, especially across the crossbar and along the neck
+- [ ] Thick, short, blunt, few-digited hands and broad three-toed feet — not elongated fingers
+- [ ] Palette is an earth tone (olive-tan, pinkish-tan, grey-brown or mid-brown) — never blue
+
+## Engine limits
+- A RimWorld head sprite cannot carry the forward-curving neck, which is where both mouths
+  live and where most of the species' silhouette actually is — the defining structure is
+  undisplayable in a head-only slot as things stand.
+
 ## Def-versus-canon (flagged)
 - 🔴 **`nameMaker` is `RSW_KoTOR_NamerSullustan`** — Ithorian pawns are being named as
   Sullustans. A concrete, cheap bug; note the file already contains species-specific

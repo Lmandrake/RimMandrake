@@ -46,6 +46,17 @@ treating the donor's orange as likely correct given it is directly
 cited in the current canon infobox, but this needs a human call since a
 real canon image contradicts it.
 
+## Must show
+- [ ] Rounded, bulbous gas-bladder body enabling flotation
+- [ ] Fleshy fins visible on the body, used for propulsion
+- [ ] Long, dark tendrils trailing from the underside
+- [ ] Gas-bladder colour matches one of the two attested options — orange (infobox text)
+  or purple/lavender (the one illustration found) — not an invented third hue
+
+## Engine limits
+The canon 0.8–10 km size range cannot be depicted at gameplay creature-sprite scale; the
+entry treats this as an inherent, unrenderable fact rather than a "wrong size" defect to fix.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Beldon (Wookieepedia, text pulled via
   MediaWiki API `action=parse` 2026-09-13)

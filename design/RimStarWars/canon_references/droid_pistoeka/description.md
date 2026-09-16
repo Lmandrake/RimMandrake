@@ -174,6 +174,16 @@ RimWorld pawn can never depict.
   RimWorld-native equivalents the canon text actually supports are **swarm counts (up to seven
   per missile)**, **dismantling other droids**, and **being killed by a single hit to the eye.**
 
+
+## Must show
+- [ ] Deployed form only: two shell halves opened wide and held high to each side, outer faces mottled olive-khaki with dark grey ribbing
+- [ ] Compact dark near-black central body with a thin whip antenna rising from the top
+- [ ] Multiple red photoreceptors (a cluster, not a single eye) on the body's front face
+- [ ] Six or more long thin multi-jointed black limbs splayed forward, with distinguishable tool heads (saw disc, drill, pincer)
+
+## Engine limits
+`skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Pistoeka_sabotage_droid — main article; wikitext via

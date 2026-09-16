@@ -144,6 +144,17 @@ so a hornless female Devaronian currently has an unmarked human forehead and is
 identifiable only by ears. Given that the round forehead discs are the species' clearest
 female signature, that is the art gap to close.
 
+## Must show
+- [ ] Skin ranges from pale flesh tone to bright saturated orange-red/vermilion — never brown
+- [ ] Males: large horns (sweeping up-and-outward or up-and-back), bald head, visible pointed teeth
+- [ ] Females: small, smooth, round, dark reddish-brown raised discs flush on the forehead — not horns, not a smooth brow
+- [ ] Females: a full head of vividly-coloured hair (e.g. purple/violet or white/silver), not brown
+- [ ] Pointed ears standing out from the skull on both sexes
+- [ ] Freckled/mottled skin on the cheeks and forehead is an acceptable female detail
+
+## Engine limits
+none known
+
 ## Repo def versus canon
 
 🔴 **`Beard_NoBeardOnly` directly contradicts a cited canon sentence.** Canon: male

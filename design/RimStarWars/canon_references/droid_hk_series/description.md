@@ -175,6 +175,16 @@ Against the canon images the sprite silhouette is **broadly right and specifical
   reference and is the tallest/thinnest of the three; it is a guide-illustration plate rather
   than a game render.
 
+
+## Must show
+- [ ] Rust-red/copper plating (HK-47/HK-series) with glowing yellow-orange photoreceptors
+- [ ] Narrow, vertically elongated, faceted wedge skull with a pronounced brow ridge and two photoreceptors set close together
+- [ ] HK-51 variant: weathered olive-grey-brown plating with orange striping/wear, not overall orange
+- [ ] HK-51 variant: lit circular chest emblem and visible weapon hardpoints on both forearms
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/HK-series_assassin_droid — main article; text pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=HK-series_assassin_droid&format=json&prop=wikitext`

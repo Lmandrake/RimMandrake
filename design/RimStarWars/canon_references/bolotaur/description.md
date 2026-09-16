@@ -49,6 +49,17 @@ painted illustration's green than the in-game render's tan/brown, and a
 reasonable match to the shared body plan (squat, long neck, long tail,
 crested head) from both images.
 
+## Must show
+- [ ] Long, sinuous neck
+- [ ] Blunt, horned/spiky-crested head
+- [ ] Thick, short legs ending in large clawed feet
+- [ ] Long tail
+- [ ] Squat, low-slung reptilian body
+- [ ] Body colour within the tan/golden-brown-to-olive-green range
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Bolotaur (Wookieepedia, text pulled via
   MediaWiki API `action=parse` 2026-09-13)

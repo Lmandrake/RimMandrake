@@ -114,6 +114,20 @@ canon-appropriate: `Armoury/Textures/vibroblade_echani.png`,
 precisely what the Legends text credits the Echani with; the gear side of this species is in
 better shape than the pawn side.
 
+## Must show
+Honest framing: no full-body reference exists, only portraits/stylised art, and no
+Thyrsian (dark-skinned subspecies) image was obtainable — this checklist covers only the
+pale-morph Echani the three available images actually show.
+- [ ] Long, loose silver-white hair
+- [ ] Dark eyebrows (not white) over the white hair
+- [ ] Pale, light-coloured eyes
+- [ ] Skin ranges from cool blue-grey chalk-pale to a warm light human tone — not one fixed hue
+- [ ] Ordinary human facial structure and anatomy — no non-human feature
+
+## Engine limits
+none known — no Echani head, face or body art exists in the repo at all to check against a
+shader or mask limit; the xenotype currently points at vanilla's generic Baseliner icon.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Echani — current canon; wikitext via

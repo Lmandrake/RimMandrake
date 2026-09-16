@@ -181,6 +181,21 @@ the void-black wraith state, the hunched long-armed posture, the hooked claws, t
 tufted erect ears, the visor — is **unrepresented**. It is not weak evidence about
 appearance so much as evidence that the appearance has not been attempted.
 
+## Must show
+Honest framing: the species' whole art inventory on disk is four tiny fangs, so this
+checklist is testable only against the reference images, not against any existing sprite.
+- [ ] Wraith state: a featureless, near-black or very-dark desaturated blue-green-black void with no visible fur strands, muscle or shading — light does not roll off it
+- [ ] Wraith state: two glowing red (or orange-red) eyes and a mouth of bared, sharp, pale fangs are the only clearly resolved features
+- [ ] Seen-properly state: warm mid-to-dark brown shaggy fur, longer/tufted at shoulders, elbows, cheeks and ears
+- [ ] Two tall, pointed, erect ears tufted at the tips — present in every reference image in both states
+- [ ] Long arms reaching to or below the knee, ending in large hooked, cream/bone-coloured claws
+- [ ] Stooped, hunched, forward-leaning posture with the head carried low, never upright and human
+
+## Engine limits
+none known — the entry records that no head, body, fur, ear, or claw art exists in the repo
+at all (only two small teeth overlays), so there is nothing to check against a shader or mask
+limit yet.
+
 ## Repo def versus canon
 
 🔴 **The species' single defining trait is entirely absent from the def.** The infobox's

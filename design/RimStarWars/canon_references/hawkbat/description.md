@@ -93,6 +93,17 @@ Lounge image is real but is the outlier and should not be used as the color
 target — flagging it here rather than quietly dropping it, per this
 library's own rule about disagreement.
 
+## Must show
+- [ ] Wing membrane violet-purple on the dorsal side fading to cream/pale-gold on the ventral side
+- [ ] Small forward-curling horn-like growth on the forehead
+- [ ] Hooked beak, not a flat bird beak
+- [ ] Long tail present
+- [ ] Ribbed wing membrane structure with clawed wingtips
+- [ ] Reads as a pterosaur-like reptavian, not the slug/larva-bodied current-canon outlier
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Hawk-bat (current canon page, wikitext
   pulled via API 2026-09-13)
