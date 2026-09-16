@@ -46,6 +46,38 @@ marker would have mislabelled roughly half the index, and one live wiki page rea
 `retired=Galactic Republic` — a faction, not a date, the same defect our own earlier QA had
 already fixed once.
 
+## Chassis entries — ruled and underway
+
+**Owner ruled 2026-09-15: entries for the 54 droids already in the repo**, not the whole index
+and not a wait-for-candidates. Those 54 canon rows collapse to **25 distinct chassis** — 11
+droideka variants share one sprite set, 11 B1 variants share another — so an entry covers a
+**chassis** and lists the canon variants it stands for. Slugs are `droid_*`.
+
+Two index-row pairs turned out to be **one chassis each, merged on evidence**: FX-7 with
+FX-series, and MSE with MSE-6. Exactly one texture set exists in `src/` for each, and canon
+treats them as line-to-member rather than rival models — the MSE *series* article's own infobox
+image is a photograph of an MSE-6. The index rows were correctly left unmerged, since they
+differ on owners, continuity and cost.
+
+## Droid findings so far
+
+Same shape as the species sweep: the defs and sprites disagree with canon.
+
+- 🔴 **Body sizes are badly off.** DSD1 `baseBodySize` 0.7 against a canon 1.98 m tall by
+  **3.05 m wide** — and its sprite's legs are far too short, so the "wide spider" read is lost
+  entirely. FX-7 is 0.75 against 1.7 m. *(Body size is functional, not cosmetic, so it is
+  inside the owner's clearance.)*
+- **Colour is wrong and nothing can correct it.** FX-7's sprite is neutral charcoal where canon
+  is steel **blue**-grey, carrying an identity white tint so no tint fixes it. MSE tints
+  `RGBA(110,110,110)` mid-grey against canon **black**. ⛔ Both are cosmetic — gated.
+- **Folded forms do not exist as content.** DUM pit droids have their arms truncated to stubs
+  and no folded form; the droideka has no rolled-up ball. These are content gaps, not bugs.
+- **MSE's top-down roof is blank**, though canon puts the order tray, sensor combs and red
+  lightbar there — the only surface actually visible from above in play.
+
+⚠️ **`Races_Primitive.xml` reuses the MSE texture, so editing that texture changes two races.**
+Anyone fixing MSE art must check this first.
+
 ## Still open
 
 - **Do individual droids get `description.md` entries** the way the 69 species did, and if so
