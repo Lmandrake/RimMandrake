@@ -53,12 +53,14 @@ again**, shape:
 - **The artpipe daemon/queue machinery itself** — the pipeline runs; only the
   style law and metric gate change.
 
-## Capture owed (owner: "capture it as 'how to make cartoonish stuff'")
+## 🔴 The cartoonish capture is REVOKED — owner, 2026-09-15
 
-Move the toy-figurine lawset + downscale-metric craft into a style OPTION doc
-(`infrastructure/artpipe/STYLE_CARTOONISH.md`) — preserved, selectable, never
-default. Until written, the craft lives in the artpipe README history and the
-2026-09-13 graded-sheet lineage.
+*"Please close immediately as terminated by user, leave no trace of
+cartoon-generating art!"* The earlier instruction to preserve the toy-figurine
+craft as a selectable style option is **withdrawn**. `STYLE_CARTOONISH.md`, the
+TOYFIG_LAW_PILOT_1 pilot art, and all 30 toyfig job specs are deleted. Painterly
+is the only style law; there is no cartoonish option to select. Nothing is owed
+here.
 
 ## Propagation debt (delete-don't-supersede, each in place)
 

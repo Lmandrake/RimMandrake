@@ -15,8 +15,10 @@ OUT = REPO / "Transient" / "livestock_mockups"
 OUT.mkdir(parents=True, exist_ok=True)
 GEN = REPO / "skills/generating-images/scripts/codex_image.py"
 
-STYLE = ("Game creature sprite in the art style of RimWorld: flat cel shading, "
-         "clean shapes, hard dark outline, muted painterly palette, full side-profile "
+STYLE = ("Game creature sprite in the painterly vanilla-RimWorld animal art style: "
+         "real anatomy, rich surface detail, muted painterly palette, heavy clean black "
+         "outline around the whole silhouette and all major internal linework, thick "
+         "enough to read at standard RimWorld zoom and below, full side-profile "
          "view facing left, standing on the ground, the whole animal fully inside the "
          "frame with margin on every side, no text, no watermark, and a GENUINELY "
          "TRANSPARENT background - output a real alpha channel, no backdrop, no floor, "

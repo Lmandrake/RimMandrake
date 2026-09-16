@@ -1,19 +1,17 @@
 # CANON_CREATURE_REGEN_1 — regenerate every SW-canon creature under library guidance
 
 Filed by BENCH, 2026-09-13. Owner: *"THEN we regenerate canon creatures with
-that guidance."* Gated on CANON_REFERENCE_LIBRARY_1 (the guidance) and on the
-owner's grades on the toyfig pilot sheet
-(`Transient/toyfig_pilot_2026-09-13/`, 10 rows, being reviewed at reboot
-time — read its decisions.json for adopt/tune/keep-old + notes before
-starting; `tune` notes amend the law clause).
+that guidance."* Gated on CANON_REFERENCE_LIBRARY_1 (the guidance) alone.
+
+🔴 The toy-figurine pilot that once gated this item is DEAD — terminated by the
+owner 2026-09-15, its art and lawset deleted. Painterly is the only style law.
 
 ## spec
 
 Every SW-canon creature in the stack (the library's roster), re-rendered:
 prompts authored from the library entry (owner ruling > images > text), under
 the RESTORED PAINTERLY style law (ART_PAINTERLY_RESTORATION_1, owner
-2026-09-14 — the toy-figurine/leg-budget lawset is a non-default option in
-infrastructure/artpipe/STYLE_CARTOONISH.md; the legibility gate is advisory,
+2026-09-14 — painterly is the only style law; the legibility gate is advisory,
 never a rejector), vivid coloration and drawSize×128 sizing surviving, all
 shipped facings, through the daemon. The Wyyyschokk is the acceptance exemplar: the regen must
 show blue-grey body, yellow-orange abdomen cross, bristle tufts — not a brown
