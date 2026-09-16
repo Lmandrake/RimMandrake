@@ -219,6 +219,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   .flag-ruling{ color:#d8e6ff; border-color:var(--info); background:#1d2839; }
   .flag-noart { color:#e6d8ff; border-color:#9a7bd8;     background:#2a2138; }
   .flag-donor { color:#d9f2e4; border-color:var(--ok);   background:#1b2f24; }
+  .flag-scale { color:#ffd7f0; border-color:#d86fb0;     background:#3a1e30; }
 </style>
 <script id="ARTSHEET_RENDER">
 // The template already prints the label and a zoomable east thumb; this adds the three
@@ -235,10 +236,9 @@ window.itemBody = it => {
   const gallery = facs
     ? `<div class="facings">${facs}</div>`
     : `<div class="facings noart">no sprite in this repo \u2014 nothing to look at</div>`;
-  const flag = (it.flag || "").trim();
-  const badge = flag
-    ? `<div class="flagline"><span class="flag flag-${esc(it.flagKind||'note')}">${esc(flag)}</span></div>`
-    : "";
+  const badges = (it.flags || []).map(f =>
+    `<span class="flag flag-${esc(f.kind||'note')}">${esc(f.text)}</span>`).join(" ");
+  const badge = badges ? `<div class="flagline">${badges}</div>` : "";
   return badge + gallery + `<div class="effect">${esc(it.effect || "")}</div>`;
 };
 </script>
@@ -347,7 +347,13 @@ window.itemBody = it => {
     "src": "art/src__RimUtinni__BarbslingerArtOverride__Textures__Things__Pawn__Animal__AA_BarbSlinger__AA_BarbSlinger_south.png"
    }
   ],
-  "thumb": "art/src__RimUtinni__BarbslingerArtOverride__Textures__Things__Pawn__Animal__AA_BarbSlinger__AA_BarbSlinger_east.png"
+  "thumb": "art/src__RimUtinni__BarbslingerArtOverride__Textures__Things__Pawn__Animal__AA_BarbSlinger__AA_BarbSlinger_east.png",
+  "flags": [
+   {
+    "text": "height 1.61x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "firewasp",
@@ -369,7 +375,13 @@ window.itemBody = it => {
     "src": "art/src__RimUtinni__FireWaspArtOverride__Textures__Things__Pawn__Animal__AA_FireWasp__AA_FireWasp_south.png"
    }
   ],
-  "thumb": "art/src__RimUtinni__FireWaspArtOverride__Textures__Things__Pawn__Animal__AA_FireWasp__AA_FireWasp_east.png"
+  "thumb": "art/src__RimUtinni__FireWaspArtOverride__Textures__Things__Pawn__Animal__AA_FireWasp__AA_FireWasp_east.png",
+  "flags": [
+   {
+    "text": "height 1.67x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "boomsnake",
@@ -391,7 +403,13 @@ window.itemBody = it => {
     "src": "art/src__RimUtinni__BoomsnakeArtOverride__Textures__Things__Pawn__Animal__Reptile__Boomsnake__Boomsnake_south.png"
    }
   ],
-  "thumb": "art/src__RimUtinni__BoomsnakeArtOverride__Textures__Things__Pawn__Animal__Reptile__Boomsnake__Boomsnake_east.png"
+  "thumb": "art/src__RimUtinni__BoomsnakeArtOverride__Textures__Things__Pawn__Animal__Reptile__Boomsnake__Boomsnake_east.png",
+  "flags": [
+   {
+    "text": "height 2.28x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "mantistanis",
@@ -413,7 +431,13 @@ window.itemBody = it => {
     "src": "art/src__RimUtinni__MantistanisArtOverride__Textures__Things__Pawn__Animal__Megafauna__Insectoid__GR_Mantistanis_south.png"
    }
   ],
-  "thumb": "art/src__RimUtinni__MantistanisArtOverride__Textures__Things__Pawn__Animal__Megafauna__Insectoid__GR_Mantistanis_east.png"
+  "thumb": "art/src__RimUtinni__MantistanisArtOverride__Textures__Things__Pawn__Animal__Megafauna__Insectoid__GR_Mantistanis_east.png",
+  "flags": [
+   {
+    "text": "height 1.46x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "firehawk",
@@ -457,7 +481,13 @@ window.itemBody = it => {
     "src": "art/src__RimUtinni__UtinniPatches__Textures__Things__Pawn__Animal__Pyrelands__FurnaceBeast__FurnaceBeast_south.png"
    }
   ],
-  "thumb": "art/src__RimUtinni__UtinniPatches__Textures__Things__Pawn__Animal__Pyrelands__FurnaceBeast__FurnaceBeast_east.png"
+  "thumb": "art/src__RimUtinni__UtinniPatches__Textures__Things__Pawn__Animal__Pyrelands__FurnaceBeast__FurnaceBeast_east.png",
+  "flags": [
+   {
+    "text": "height 1.64x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "greengoo",
@@ -502,8 +532,12 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__OrrayArtOverride__Textures__swanimals__Orray__Orray_east.png",
-  "flag": "facing law broken",
-  "flagKind": "facing"
+  "flags": [
+   {
+    "text": "facing law broken",
+    "kind": "facing"
+   }
+  ]
  },
  {
   "id": "anooba_f",
@@ -526,8 +560,16 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__AnoobaArtOverride__Textures__swanimals__Anooba__Anooba_f_east.png",
-  "flag": "facing law broken",
-  "flagKind": "facing"
+  "flags": [
+   {
+    "text": "facing law broken",
+    "kind": "facing"
+   },
+   {
+    "text": "height 1.89x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "anooba_m",
@@ -550,8 +592,16 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__AnoobaArtOverride__Textures__swanimals__Anooba__Anooba_m_east.png",
-  "flag": "duplicate of female",
-  "flagKind": "dupe"
+  "flags": [
+   {
+    "text": "duplicate of female",
+    "kind": "dupe"
+   },
+   {
+    "text": "height 1.89x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "iriaz",
@@ -574,8 +624,12 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__IriazArtOverride__Textures__swanimals__Iriaz__Iriaz_east.png",
-  "flag": "your ruling owed",
-  "flagKind": "ruling"
+  "flags": [
+   {
+    "text": "your ruling owed",
+    "kind": "ruling"
+   }
+  ]
  },
  {
   "id": "nuna_f",
@@ -620,8 +674,12 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__NunaArtOverride__Textures__swanimals__Nuna__Nuna_m_east.png",
-  "flag": "duplicate of female",
-  "flagKind": "dupe"
+  "flags": [
+   {
+    "text": "duplicate of female",
+    "kind": "dupe"
+   }
+  ]
  },
  {
   "id": "zeer",
@@ -643,7 +701,13 @@ window.itemBody = it => {
     "src": "art/src__RimStarWars__ZeerArtOverride__Textures__swanimals__Zeer__Zeer_south.png"
    }
   ],
-  "thumb": "art/src__RimStarWars__ZeerArtOverride__Textures__swanimals__Zeer__Zeer_east.png"
+  "thumb": "art/src__RimStarWars__ZeerArtOverride__Textures__swanimals__Zeer__Zeer_east.png",
+  "flags": [
+   {
+    "text": "height 1.48x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "dalgo",
@@ -665,7 +729,13 @@ window.itemBody = it => {
     "src": "art/src__RimStarWars__DalgoArtOverride__Textures__swanimals__Dalgo__Dalgo_south.png"
    }
   ],
-  "thumb": "art/src__RimStarWars__DalgoArtOverride__Textures__swanimals__Dalgo__Dalgo_east.png"
+  "thumb": "art/src__RimStarWars__DalgoArtOverride__Textures__swanimals__Dalgo__Dalgo_east.png",
+  "flags": [
+   {
+    "text": "height 1.44x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "gizka",
@@ -710,8 +780,12 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__GizkaArtOverride__Textures__swanimals__Gizka__GizkaW_east.png",
-  "flag": "partial duplicate",
-  "flagKind": "dupe"
+  "flags": [
+   {
+    "text": "partial duplicate",
+    "kind": "dupe"
+   }
+  ]
  },
  {
   "id": "bolotaur",
@@ -734,8 +808,16 @@ window.itemBody = it => {
    }
   ],
   "thumb": "art/src__RimStarWars__SWBestiary__Textures__swanimals__Bolotaur__Bolotaur_east.png",
-  "flag": "donor art, not ours",
-  "flagKind": "donor"
+  "flags": [
+   {
+    "text": "donor art, not ours",
+    "kind": "donor"
+   },
+   {
+    "text": "height 2.14x",
+    "kind": "scale"
+   }
+  ]
  },
  {
   "id": "gualaar",
@@ -744,8 +826,12 @@ window.itemBody = it => {
   "effect": "NO ART IN THIS REPO \u2014 lives in a donor mod outside src/, so nothing can be shown here. You already ruled it DONE.",
   "prefill": "keep",
   "imgs": [],
-  "flag": "no art in repo",
-  "flagKind": "noart"
+  "flags": [
+   {
+    "text": "no art in repo",
+    "kind": "noart"
+   }
+  ]
  },
  {
   "id": "boomalope",
@@ -754,8 +840,12 @@ window.itemBody = it => {
   "effect": "THE ONE GENUINE HOLE: no sprite anywhere in the repo and no registry record. Reskin rides the in-joke lane.",
   "prefill": "needsart",
   "imgs": [],
-  "flag": "no art exists",
-  "flagKind": "noart"
+  "flags": [
+   {
+    "text": "no art exists",
+    "kind": "noart"
+   }
+  ]
  },
  {
   "id": "embergrass",

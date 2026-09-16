@@ -265,10 +265,9 @@ window.itemBody = it => {
   const gallery = facs
     ? `<div class="facings">${facs}</div>`
     : `<div class="facings noart">no sprite in this repo \u2014 nothing to look at</div>`;
-  const flag = (it.flag || "").trim();
-  const badge = flag
-    ? `<div class="flagline"><span class="flag flag-${esc(it.flagKind||'note')}">${esc(flag)}</span></div>`
-    : "";
+  const badges = (it.flags || []).map(f =>
+    `<span class="flag flag-${esc(f.kind||'note')}">${esc(f.text)}</span>`).join(" ");
+  const badge = badges ? `<div class="flagline">${badges}</div>` : "";
   return badge + gallery + `<div class="effect">${esc(it.effect || "")}</div>`;
 };
 """
@@ -301,19 +300,32 @@ RENDER_CSS = r"""
   .flag-ruling{ color:#d8e6ff; border-color:var(--info); background:#1d2839; }
   .flag-noart { color:#e6d8ff; border-color:#9a7bd8;     background:#2a2138; }
   .flag-donor { color:#d9f2e4; border-color:var(--ok);   background:#1b2f24; }
+  .flag-scale { color:#ffd7f0; border-color:#d86fb0;     background:#3a1e30; }
 </style>
 """
 
-FLAGS = {
-    "orray":      ("facing law broken", "facing"),
-    "anooba_f":   ("facing law broken", "facing"),
-    "anooba_m":   ("duplicate of female", "dupe"),
-    "nuna_m":     ("duplicate of female", "dupe"),
-    "gizka_w":    ("partial duplicate", "dupe"),
-    "iriaz":      ("your ruling owed", "ruling"),
-    "boomalope":  ("no art exists", "noart"),
-    "gualaar":    ("no art in repo", "noart"),
-    "bolotaur":   ("donor art, not ours", "donor"),
+# A row can violate several facts at once. Each entry is (text, kind).
+# Height ratios are MEASURED on the ORIGINAL 512px sprites with an alpha>16 visible-silhouette
+# threshold. Measuring the 256px thumbnails at alpha>0 was WRONG: sub-visible haze (alpha 1-16,
+# under 6% opacity) inflates the bbox and cleared FurnaceBeast at 1.03x when it is really 1.64x.
+# An animal's height does not change with viewing angle, so a mismatch is a fact, not a taste call.
+FLAGS: dict[str, list[tuple[str, str]]] = {
+    "orray":      [("facing law broken", "facing")],
+    "anooba_f":   [("facing law broken", "facing"), ("height 1.89x", "scale")],
+    "anooba_m":   [("duplicate of female", "dupe"), ("height 1.89x", "scale")],
+    "nuna_m":     [("duplicate of female", "dupe")],
+    "gizka_w":    [("partial duplicate", "dupe")],
+    "iriaz":      [("your ruling owed", "ruling")],
+    "boomalope":  [("no art exists", "noart")],
+    "gualaar":    [("no art in repo", "noart")],
+    "bolotaur":   [("donor art, not ours", "donor"), ("height 2.14x", "scale")],
+    "boomsnake":  [("height 2.28x", "scale")],
+    "firewasp":   [("height 1.67x", "scale")],
+    "furnacebeast":[("height 1.64x", "scale")],
+    "barbslinger":[("height 1.61x", "scale")],
+    "zeer":       [("height 1.48x", "scale")],
+    "mantistanis":[("height 1.46x", "scale")],
+    "dalgo":      [("height 1.44x", "scale")],
 }
 
 
@@ -342,7 +354,7 @@ def build_items(mapping: dict[str, str]) -> list[dict]:
     items = []
     for rid, group, label, facings, prefill, effect in ROWS:
         imgs = [{"facing": f, "src": mapping[r]} for f, r in facings if r in mapping]
-        flag, kind = FLAGS.get(rid, ("", ""))
+        flags = FLAGS.get(rid, [])
         it = {
             "id": rid,
             "group": group,
@@ -353,8 +365,8 @@ def build_items(mapping: dict[str, str]) -> list[dict]:
         }
         if imgs:
             it["thumb"] = imgs[0]["src"]
-        if flag:
-            it["flag"], it["flagKind"] = flag, kind
+        if flags:
+            it["flags"] = [{"text": t, "kind": k} for t, k in flags]
         items.append(it)
     return items
 
