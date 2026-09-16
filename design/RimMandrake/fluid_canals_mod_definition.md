@@ -83,7 +83,7 @@ refill in step 8 — are the mod.
 | Filled vs unfilled movement cost | **UNBUILT** | `RM_Channel_Empty` declares `pathCost` 6; no code varies cost with fill state |
 | Ignition, long burn, fire reaching the source | **UNBUILT** | ⚠️ UNVERIFIED premise: `About.xml:25-26` claims "vanilla ignition already works on any flammable terrain, so a fluid with flammability > 0 needs [nothing extra]". That is a previous agent's written claim, not a measured fact, and fire in RimWorld attaches to Things and cells — whether TerrainDef flammability is consulted at all is being checked against the decompiled engine. If the premise is false, ignition itself is new mechanism too. "Burns for a very long time" and "lights its source" are unbuilt either way |
 | Slime near-uncrossable, slow to escape | **UNBUILT** | The mechanics live in GelatinousSlime (framework §5); the canal only has to be a legal place for slime to sit |
-| Irrigation — plants near a filled canal act watered | **UNBUILT** | No fertility or growth effect of any kind |
+| Irrigation — plants near a filled canal act watered | **UNBUILT here, but SOLVED next door** | No effect of any kind in FluidCanals — but `FloodedCanyon` already ships the whole mechanism and it is copyable nearly verbatim. §11 |
 | Liquid roster | **PARTIAL** | One `FluidDef`: `RM_Fluid_Water`. `RM_FluidSpring_Test` is self-labelled a test source, not content |
 | Mod Settings | **PARTIAL** | Three fields: `canalFlowEnabled`, `flowRateMultiplier`, `floodVolumeMultiplier`. Every mechanic added below needs its own toggle (2026-09-12 rule) |
 | Art | **UNBUILT** | Zero bespoke textures. Channel reuses `Terrain/Surfaces/Gravel`, the test source the drop-beacon sprite, the designator `UI/Designators/Mine`. §7 |
@@ -155,7 +155,11 @@ only, writing terrain and debiting stock itself. *For:* the only option that can
 the design needs — partial fill, exact conservation of mass, recession, ignition propagating along
 the liquid, a fill front the player can watch. Still strictly pulsed, so pillar 2 holds. It also
 drops the hard Odyssey dependency `About.xml` currently declares, which matters for a public
-release. *Against:* the most code, loses Odyssey's presentation, new save-compat surface.
+release. *Against:* the most code, loses Odyssey's presentation, new save-compat surface — **but far
+less of that than it sounds**, because a working in-repo precedent exists for every hard part of it
+(§11): `RM_MapComponent_CanyonFlood` already owns a phased flood on a `MapComponent`, holds per-cell
+dictionaries across save/load, and exposes debug arm/start surfaces for testing. B is a port, not an
+invention.
 
 **C. Micro-floods along a precomputed path.** Keep `Flood` for the arrival drama, but spawn one
 single-cell release per channel cell along a path computed in advance. *For:* vanilla visuals,
@@ -242,8 +246,12 @@ channels (2026-09-12 standing rule).
    empties the *source*, since fire reaching it is your design.
 5. **How does fire reach the source?** Cell by cell along the surface (a fuse the player can cut), or
    instantly once any connected cell lights (a punishment)?
-6. **Irrigation effect and radius.** Fertility bonus, growth-rate bonus, or a soil-terrain change?
-   What radius, and does a *partially* filled canal irrigate at all?
+6. **Irrigation effect and radius.** ⚠️ Largely answered by §11 — `FloodedCanyon` already does this
+   with a decaying per-cell growth multiplier plus a terrain swap to `SoilRich` on recede, both
+   settings-gated. What is left for you is the *feel*: what multiplier, what radius from a filled
+   cell, how many days the soak lasts after a canal empties, and whether a **partially** filled canal
+   irrigates at all. Also whether canal irrigation should permanently upgrade soil the way
+   `RecedeFlood()` does, which is terraforming (your 4th motivation) arriving through the side door.
 7. **Does slime escape time scale?** ⚠️ Partly answered by §10: Pits already scales it (body size
    against depth tier, health, manipulation). So "flat" is not the simple option, it is the
    *divergent* one — it would give the campaign two different escape grammars. The real question is
@@ -298,3 +306,38 @@ and a pawn that is **stuck in place while still spawned**. Pits only knows one s
 an `innerContainer` (`DestroyMode.Vanish`, which is why its validator asserts
 `expect_pawn_despawned`). The closest sketch of in-place stuckness is
 `design/Jawa/proposals/tar_pits_deep_design.md`'s hediff-based model, which was never built.
+
+## 11. Irrigation and the MapComponent walk are already built — in FloodedCanyon
+
+🔑 **The two things this document called hardest already exist in a sibling mod.** VERIFIED
+first-hand 2026-09-16 by reading the source, not inferred from a doc — `src/RimMandrake/FloodedCanyon/Source/`:
+
+- **`RM_MapComponent_CanyonFlood`** (`RM_MapComponent_CanyonFlood.cs:36`) is a `MapComponent` that
+  owns a phased flood cycle end to end — `Phase.Dry` → chime → wall → flood → `RecedeFlood()` — with
+  `activeFloodCells`, a `Dictionary<IntVec3, int> soakUntilTick`, stale-entry pruning, and full
+  `ExposeData` persistence via `Scribe_Collections` with rehydration guards. It also ships debug
+  surfaces (`DebugArmFloodSoon()`, `DebugStartFloodNow()`) that make the whole sequence testable in
+  real time without waiting on the natural period.
+  ⇒ **This is §6 option B, already working.** Owning a pulsed, map-level, save-safe, per-cell flow
+  engine is a solved problem in this repo. Port it; do not design it.
+- **`SoakFactorAt(IntVec3 cell, int nowTick)`** (`:66`) returns a decaying per-cell growth multiplier,
+  documented "never allocates", gated on `RM_FloodedCanyonSettings.growthCouplingEnabled`.
+- **`RM_Patch_Plant_GrowthRate`** (`RM_Patch_Plant_GrowthRate.cs`) is a Harmony **postfix on the
+  `Plant.GrowthRate` GETTER**, multiplying on top of the result so every vanilla `GrowthRateFactor_*`
+  is still respected — its own comment says exactly that, and it follows a second in-repo precedent,
+  RimUtinni's `PlantGrowth/Source/Patch_Plant_GrowthRate.cs`. Guards on settings, `__result <= 0f`,
+  a null `Map` (unspawned or in a caravan) and a missing comp.
+  ⇒ **This is the irrigation mechanism.** Key it off canal cells instead of flood cells and
+  irrigation is done. Harmony is already a baseline dependency (`brrainz.harmony`).
+- **`RecedeFlood()`** (`:222`) converts receding flood terrain to `TerrainDefOf.SoilRich` rather than
+  plain `Soil` — a permanent fertility upgrade as the visible legacy of water having been there.
+  That is a second, Harmony-free irrigation lever, and it is also terraforming.
+- Its settings shape is the pattern to copy too: `floodCycleEnabled`, `growthCouplingEnabled`,
+  `growthMultiplier`, `soakDecayDays`, and `featureInOtherBiomes` — that last one being CLAUDE.md's
+  standing rule that biome-kit mechanics stay usable outside their biome, already honoured.
+
+⚠️ **What is NOT confirmed**, because it needs the engine and RimSage is unreachable from this
+machine: the exact member name and interpolation of a fertility growth factor, and whether Odyssey's
+`GrowthRateFactor_Drought` exists as named. Those come from repo prose written by earlier sessions,
+not from a decompiler. The mechanism above does not depend on them — a postfix multiplier needs no
+knowledge of the factors it multiplies — so irrigation can be built without settling either.
