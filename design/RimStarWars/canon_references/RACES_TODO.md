@@ -768,3 +768,137 @@ for skin colour, so it is the most promising unread source), and the underlying 
 sources (*Ultimate Alien Anthology*, *Alien Anthology*, *Galaxy at War*, *The Clone Wars
 Campaign Guide*, *Legacy Era Campaign Guide*, *Galaxy Guide 4*) — only Wookieepedia's
 transcription of them was read.
+
+### Batch — Herglic, Muun, Neimoidian, Pyke, Selkath (2026-09-15)
+
+All five entries complete: directory, reference images and `description.md` on disk for
+`herglic/`, `muun/`, `neimoidian/`, `pyke/`, `selkath/`. All five defNames verified
+line-by-line against `RimMandrakeXenotypes.xml` (778 Herglic, 1265 Muun, 1355 Neimoidian,
+1507 Pyke, 1638 Selkath). **23 Wookieepedia images downloaded** (URLs resolved with
+`api.php?action=query&prop=imageinfo`, never guessed), plus a `donor_current_sprite.png`
+for four of the five. Wikitext came through **Fetcher**; 8/8 directives worked and nothing
+was truncated.
+
+🔴 **The costume-vs-anatomy split, which this batch existed to settle:**
+
+- **Neimoidian — the tall horned mitre is a HAT, not a skull.** Canon states headgear is
+  status dress (*"their status and wealth were also reflected in a combination of clothing
+  and headgear"*) and the article's own infobox image proves it by showing **three
+  Neimoidians in three different hats, one also wearing a breathing mask.** Under it the
+  head is a **downward-tapering** domed skull with creased mottled grey-green skin. The
+  ribbed collar and gold cords are knitwear.
+- **Pyke — prose gets it BACKWARDS.** The canon text's *"masks frequently worn"* invites a
+  helmet-head; the article's own infobox image is named **`File:Pykes_are_fish.png`** and
+  shows **bare piscine faces**. The concept art settles it: the **tall cranium is bare,
+  pale, veined SKIN**, and the mottled covering over it is a **cloth cowl**; the worn
+  "mask" is only a **face plate with goggles and a mouth tube.** A pair of **fleshy jaw
+  barbels** hangs from the jaw corners and is flesh, not gear. One honest uncertainty
+  flagged rather than guessed: whether the *Clone Wars* pale dome is cranium or hood.
+- Both entries carry an explicit **body / clothing table** rather than prose.
+
+🔴 **Def-versus-canon findings** (reported, not fixed):
+
+- `RSW_RimMandrakeNeimoidian` gives the species **`RSW_butchergene_lizardskin` +
+  `Outland_Scalebody`** where canon says **"smooth"** twice (*"smooth noseless faces"*,
+  *"smooth, mottled green-gray skin"*) and every image shows creased, blotchy, soft skin.
+  Its `RSW_Eyes_HugeRed` misses the **horizontally-split pupil**, the species' defining
+  eye feature, also absent from the def's description ("large orange eyes").
+  `Turn_Gene_Terrified` + `Delicate` encode as biology what the article explicitly names a
+  **racist cliché** and reframes as risk-calculation — and canon has **Neimoidian Royal
+  Guards** as the counter-example. `Outland_AcceleratedPregnancy` runs against a canonical
+  **seven-year maggot-grub larval stage.** **Positive, do not "fix":**
+  `Outland_Blood_Brown` is correct and sourced, and `RSW_DurosHead` is **canon-supported**
+  — the two species are genetically linked and Neimoidia was colonised by Duros.
+- `RSW_RimMandrakeMuun` is the roughest def in the batch. Its **`iconPath` is the VANILLA
+  RimWorld `UI/Icons/Xenotypes/Genie`**, and there is **no Muun art anywhere in `src/`** —
+  the only species in this batch with zero dedicated art. Its description ships a typo:
+  *"InterGalactic **Ganking** Clan."* `AptitudeStrong_Medicine`,
+  `AptitudeRemarkable_Crafting`, `Immunity_Weak`, `WoundHealing_Slow` and `Delicate` are
+  all unsourced; the sourced trait is mathematical/financial. Skin is limited to
+  **sandstone/granite** against canon's pale pink / grey / pink / white / green. **Force
+  sensitivity is canon and sourced** (and **Darth Plagueis was a Muun**) with no gene — the
+  mirror image of the Rakata finding. ⚠️ **False alarm defused:** `RSW_Head_quarren` is
+  **not** a Quarren squid-face — checked the GeneDef, it is labelled *"oval head / enlarged,
+  egg-shaped forehead"* and is a defensible Muun donor.
+- `RSW_RimMandrakePyke` has **`Hands_Pig`** (two-toed) against canon's **three, four or
+  five** fingers, and **`AptitudeStrong_Plants`**, which looks like a misreading of "spice"
+  — canon spice is **mined by slaves on Kessel**, not grown. `Outland_ThickSkin`,
+  `Aggression_Aggressive`, `Turn_Gene_MotivationLow` and `AptitudePoor_Intellectual` are
+  unsourced for a species running the galaxy's largest narcotics cartel. **No
+  representation of the two physiological groups** canon states in its lead, and none of
+  the **lethal Kessel-atmosphere allergy** — the species' one mechanically interesting
+  canon fact.
+- `RSW_RimMandrakeSelkath` has **no gene for needing to be wet**, the species' defining
+  trait (*"most comfortable underwater and preferred to be immersed in liquid"*, with
+  **misting vents built into their chest armour**). This is the **third** aquatic species in
+  this library found with no water gene, after Mon Calamari and Nautolan.
+  `RSW_BodySizeGene_small` and **`Body_Hulk` are in the same gene list**; Legends puts the
+  species at **1.5 m** and every image is slender. `Outland_EggLayer` is unsourced; **pink
+  skin** (in both continuities' colour lists) is missing; the **female head-tendrils** —
+  the only canonical dimorphism — have no gene. **Positive:**
+  `Outland_Hands_VenomTalons` is **correct and sourced** (retractable venom-tipped claws)
+  — with the caveat that Legends says using them in combat is **dishonourable and a sign of
+  madness**, so a clawing Selkath is canonically one who has lost it.
+- `RSW_RimMandrakeHerglic` carries **`AptitudePoor_Intellectual`** against a species that
+  developed **hyperdrive independently**, ran a trade empire predating the Republic, and
+  left gravity-manipulating machinery *"not paralleled during the time of the Galactic
+  Empire"*; and **`AptitudePoor_Social`** against *"pleasant and peaceful … easygoing …
+  calm persona that helped them interact with other species."* Its whole combat kit
+  (`MeleeDamage_Strong`, `Body_Hulk`, `Outland_ThickSkin`) rests on the def description's
+  *"hit like a wrecking ball … shake off most blunt attacks"*, which has **no Wookieepedia
+  support at all**. The species' one canonical vice — an **addiction to gambling and games
+  of chance** — has no trait.
+- ⚠️ **Cross-def inconsistency:** the **Muun** def carries an **unsourced**
+  `AptitudeStrong_Medicine`, while the **Selkath** def — canonically *"devoted to … taking
+  care of the ill"* with a monopoly on a healing compound — has **no medicine aptitude at
+  all.** The aptitude appears to be on the wrong species.
+
+**Images-over-prose calls made this batch:**
+
+- 🔴 **The Herglic is an ORCA, and "black skin" is the failure mode.** Canon's infobox says
+  skin colour *Black*; `wookieepedia_legends_narloch_white_stripes.jpg` shows unambiguous
+  **killer-whale countershading** — glossy black cranium, hard-edged **white eye-patch**,
+  **white throat and belly** — which the prose renders only as "white stripes down the sides
+  of their head and arms." The two canon comic Herglics are **slate grey-lavender** and
+  **desaturated blue-purple**, **neither ink black.** And because RimWorld head sprites are
+  single-channel tint masks, **the orca pattern cannot come from a skin-colour gene** — it
+  needs a second render node or a baked variant, i.e. new art.
+- The Herglic is **1.7–2.2 m — human-tall but extremely WIDE** (*"would take up two seats in
+  a restaurant"*). Width, not height, is the proportion; `Body_Hulk` gets width right by
+  accident and height wrong if scaled up.
+- The **Selkath** silhouette carries two features prose never mentions: a **reticulated,
+  net-like camouflage patterning** over the cranium (Legends: *"patterned for underwater
+  camouflage"*), and **large splayed paddle feet with broad hooflike toes** left bare by
+  boots that deliberately stop above the ankle.
+
+**Donor-sprite findings:** the **Pyke** head is the best donor art in the batch — it
+actually lands the oversized-cranium/undersized-face proportion — but has **no barbels and
+no mouth**. The **Selkath** head is the best-*engineered*: the cephalic lobes are a proper
+**head attachment** (`fishyjowls_*`, both sexes, all four facings) with the mouth on
+`RSW_Beard_fishmouth`; `selkath/donor_current_sprite.png` is a **composite** of head + jowls,
+since the head alone is misleading. The **Herglic** head sprite **has no mouth at all** — the
+wide lipless mouth-line is the species' most-cited feature.
+`muun/donor_current_sprite.png` is **not Muun art** and is labelled as such: it is the shared
+`quarren/Male_Egghead_south.png` that the xenotype's head gene forces.
+⚠️ **`neimoidian/` has NO `donor_current_sprite.png`** — the only Neimoidian texture in the
+repo is a UI xenotype icon, and the xenotype borrows `RSW_DurosHead`.
+
+**Genuinely unsourceable, recorded as absent rather than guessed:** Herglic **canon**
+height, mass, lifespan and origin (all blank; the only height figure in existence is Legends'
+1.7–2.2 m); Muun mass and lifespan; Neimoidian mass and lifespan; **Pyke height, mass AND
+lifespan — all three blank**, the body text offering only *"slimmer and taller than most
+humans"*; Selkath **canon** height, mass and lifespan (Legends supplies 1.5 m and up to 100
+years). ⚠️ **The canon Selkath article is a `{{Species-stub}}` with no "Biology and
+appearance" section at all** — every anatomical fact in that entry is Legends and is labelled
+so — and the **Pyke** article carries `{{MultipleIssues|expand|image}}`, the wiki's own flag
+that it needs better images.
+
+**Named gaps left actionable rather than invisible:** no image of **Peex Curando** (*The
+Acolyte*, the **first live-action Selkath**) was retrieved, nor `File:Selkath_female.jpg`,
+which the Legends article captions *"A female Selkath and her distinctive head-tendrils"* —
+the one image that would confirm the tendrils. For Pyke, `File:Unlimited-LomPyke.png`
+(captioned *"Examples of two forms of the Pyke species' body"*) was resolved but not
+downloaded; it is the wiki's own side-by-side of the two physiological groups. Not fetched in
+any of the five cases: the `starwars.com` Databank (the Neimoidian article cites it for the
+species' `class` and for the 1.9–2.11 m height figures, so it is the most promising unread
+source here).

@@ -44,8 +44,10 @@ Two species have **no `nameMaker` at all** and therefore fall back to default hu
 
 The thing the species is *known for* is absent from its def:
 
-- **Three aquatic species cannot breathe water** — Mon Calamari, Nautolan, Gungan. All three
-  sit in the Deepwater faction. Nautolan's temperature genes are additionally inverted.
+- 🔴 **FOUR aquatic species cannot breathe water** — Mon Calamari, Nautolan, Gungan,
+  **Selkath**. Every one of them sits in the Deepwater faction, which is the faction built
+  around being aquatic. Nautolan's temperature genes are additionally inverted. This is the
+  single most consistent defect found.
 - **Defel** — no light-absorption or stealth gene of any kind. Its entire art inventory is
   four small fangs.
 - **Falleen** — no colour-shift mechanism; four skin genes, all green.
@@ -94,6 +96,16 @@ doubled lifespan still undershoots canon's 200+ years.
 Two exact mirrors of each other: **Rakata** carry psychic genes though post-plague Rakata are
 Force-blind; **Devaronian** has canon elevated Force-sensitivity and no gene for it. **Cerean**
 carries enhanced psychic ability where the source says its sensitivity is ordinary.
+
+## Pattern 8b — a tint mask cannot express a two-tone animal
+
+**Herglic is an orca.** The Narloch reference shows a white eye-patch and white throat, and
+the two canon comic appearances are slate-lavender and blue-purple rather than black. **A
+single-channel tint mask cannot produce a patterned animal**, so no gene value fixes this —
+it needs art. The same limitation blocks Lasat striping and Cathar stripes, and it means
+Iktotchi horns cannot differ in hue from Iktotchi skin (red-channel-only mask).
+
+This is worth separating from the colour-value bugs, because those are data and this is not.
 
 ## Pattern 9 — names the repo invented or took from the wrong place
 
