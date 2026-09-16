@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T15:21:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T15:32:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1755,3 +1755,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md
+
+## FLAMEFANG_SNAKE_REBIRTH_1 Boomsnake reborn as Flamefang: un-cut, renamed, venomous
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLAMEFANG_SNAKE_REBIRTH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
+
+## EMBERGRASS_LEAFLESS_ALTS_1 EmberGrass leafless: additional variant sprites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EMBERGRASS_LEAFLESS_ALTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EMBERGRASS_LEAFLESS_ALTS_1.md
+
+## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md

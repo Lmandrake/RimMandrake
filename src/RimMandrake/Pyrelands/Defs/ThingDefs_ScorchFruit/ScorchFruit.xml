@@ -45,10 +45,13 @@
       </li>
     </comps>
     <graphicData>
-      <graphicClass>Graphic_Single</graphicClass>
+      <!-- Owner 2026-09-16: all four ash-buried pod candidates ship as
+           random variants ("Can't we have it have a few options it picks
+           between"). No tint: CutoutPlant multiplies, and (150,70,40)
+           turned the grey ash to mud — the colour is baked in. -->
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <texPath>Things/Plant/RM_FE_ScorchFruitPod</texPath>
-      <color>(150, 70, 40)</color>
       <shadowData>
         <volume>(0.1, 0.2, 0.1)</volume>
       </shadowData>
