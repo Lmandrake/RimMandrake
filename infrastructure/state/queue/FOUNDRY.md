@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T16:02:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T16:18:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,33 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
+## QUICKGRASS_GROWTH_STAGES_1 Quickgrass green-gold art plus three growth-stage graphics
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/QUICKGRASS_GROWTH_STAGES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUICKGRASS_GROWTH_STAGES_1.md
+
+## PYRELANDS_FIRE_CADENCE_1 Pyrelands fires arrive every few days as the biome clock
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PYRELANDS_FIRE_CADENCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FIRE_CADENCE_1.md
+
+## FURNACEBEAST_THERMAL_CYCLE_1 Furnace-beast thermal capacitor cycle: migration AI, true heat immunity, thornvine diet
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FURNACEBEAST_THERMAL_CYCLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FURNACEBEAST_THERMAL_CYCLE_1.md
+
 ## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
 state:    doing
 row:      unassigned
@@ -809,6 +836,24 @@ target:   v1
 kind:     task
 summary:  Owner card, 2026-09-14, verbatim: "Absolutely no boomalopes." Reverses the
 prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
+
+## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap
+prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
+
+## FLAMEFANG_SNAKE_REBIRTH_1 Boomsnake reborn as Flamefang: un-cut, renamed, venomous
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner sheet note, 2026-09-16, verbatim: "rename this to Flamefang and make it
+prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1526,16 +1571,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
-## PYRELANDS_SCORCHED_RUINS_1 Pyrelands mapgen ruins spawn scorched and burned
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_SCORCHED_RUINS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_SCORCHED_RUINS_1.md
-
 ## PYRELANDS_MAPGEN_SCRUB_1 Pyrelands mapgen: no ancient dangers, no scattered rock chunks
 state:    proposed
 row:      unassigned
@@ -1545,36 +1580,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_MAPGEN_SCRUB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_MAPGEN_SCRUB_1.md
-
-## QUICKGRASS_GROWTH_STAGES_1 Quickgrass green-gold art plus three growth-stage graphics
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUICKGRASS_GROWTH_STAGES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUICKGRASS_GROWTH_STAGES_1.md
-
-## PYRELANDS_FIRE_CADENCE_1 Pyrelands fires arrive every few days as the biome clock
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_FIRE_CADENCE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FIRE_CADENCE_1.md
-
-## FURNACEBEAST_THERMAL_CYCLE_1 Furnace-beast thermal capacitor cycle: migration AI, true heat immunity, thornvine diet
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FURNACEBEAST_THERMAL_CYCLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FURNACEBEAST_THERMAL_CYCLE_1.md
 
 ## RAZORJACK_IDENTITY_RESTYLE_1 Razorjack restyle: grass-camo art, our-modspace description, new SW name
 state:    proposed
@@ -1626,16 +1631,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/IRIAZ_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/IRIAZ_ART_REGEN_1.md
 
-## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FIREHAWK_FLIGHT_BEHAVIOR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
-
 ## SCORCHFRUIT_ART_REGEN_1 ScorchFruit art: half-buried in ash, cracking open, no stalk
 state:    proposed
 row:      unassigned
@@ -1645,16 +1640,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCORCHFRUIT_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCORCHFRUIT_ART_REGEN_1.md
-
-## BOOMSNAKE_CUT_CONFLICT_1 GR_Boomsnake wired live while its ThingDef is Cherry Picker cut
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## verify, no ## criteria
-summary:  GRBoomsnake's ThingDef was Cherry-Picker cut by BOOMFAMILYCUT1
-prose:    infrastructure/state/items/BOOMSNAKE_CUT_CONFLICT_1.md
 
 ## MANTISTANIS_CAMO_REGEN_1 Mantistanis eco-camouflage regen all facings
 state:    proposed
@@ -1756,16 +1741,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md
 
-## FLAMEFANG_SNAKE_REBIRTH_1 Boomsnake reborn as Flamefang: un-cut, renamed, venomous
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLAMEFANG_SNAKE_REBIRTH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
-
 ## EMBERGRASS_LEAFLESS_ALTS_1 EmberGrass leafless: additional variant sprites
 state:    proposed
 row:      unassigned
@@ -1795,13 +1770,3 @@ kind:     finding
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
-
-## LIQUID_SINK_DRAINAGE_1 Map-edge sinks that drain a canal on purpose - the inverse of a limitless source, so liquid leaving is transferred off-map rather than destroyed and overflow stays the only exception to conservation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIQUID_SINK_DRAINAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_SINK_DRAINAGE_1.md
