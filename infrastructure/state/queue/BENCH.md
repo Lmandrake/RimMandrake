@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T05:15:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T05:46:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -372,3 +372,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  XENOTYPECANONCORRECTION1
 prose:    infrastructure/state/items/XENOTYPE_CANON_CORRECTION_1.md
+
+## NORTH_STAR_PIT_PILOT_1 Pit north-star pilot: owner validates the DRAFT checklist already drafted into the Pits walk, then shows= is wired into Pits/validation.py and the run must flip Pits off GREEN - the falsification test for the whole design
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTH_STAR_PIT_PILOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
+
+## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTH_STAR_WALK_AUTHORING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md

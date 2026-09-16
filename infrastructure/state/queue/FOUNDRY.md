@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T05:15:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T05:46:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1695,3 +1695,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
+
+## NORTH_STAR_RUNNER_WIRING_1 Wire the north-star modules into modcheck's verdict: runner consults the visual floor and the judge, modcheck validate CLI, the new GREEN definition, and the hook that stops a DRAFT checklist greening a mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTH_STAR_RUNNER_WIRING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTH_STAR_RUNNER_WIRING_1.md
+
+## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
