@@ -898,3 +898,59 @@ already is, so the two unify.
 3. **Reading depth for free.** A filled cell shows its depth through vanilla's own shallow /
    chest-deep / deep ramp art (§13). A dry cell needs one inner-shadow edge treatment. Four depths ×
    dry/wet is a small finite art set — where a continuous Z would need arbitrary height rendering.
+
+## 22. Rulings 20-22 (owner, 2026-09-16): FlowWorks, farming, and the one shooting exception
+
+**20. The name is `FlowWorks`.** His proposal, and it beats my `Liquid Flow` suggestion — recorded as
+the choice, superseding §15's recommendation. Why it is better: **"Works" carries the *built* half of
+the mod** — canals, terraces, ladders, sluice gates, pumps, tanks — which "Flow" alone misses entirely,
+and which is now half the design after ruling 19 made excavation the primitive. It reads as flow +
+earthworks, it is liquid-agnostic (no "water" trap), it is short and memorable on a store page, and it
+promises no simulation.
+
+Per the naming scheme: `RimMandrake: FlowWorks`, packageId `mandrake.rm.flowworks`, namespace
+`RimMandrake.FlowWorks`, prefix stays `RM_`. ⛔ Still not renamed here — `NAMING_SCHEME_EXECUTION_1`
+owns migrations. **One check owed before publishing:** confirm no Workshop mod already uses the name
+(cannot be searched from the Laptop — WebSearch is dead on this model group; use Fetcher or the
+Desktop).
+
+**21. Terrace farming: YES, generally, and feature-gated.** *"YES if we can have this map into farming
+easily (don't need that for this scenario, but in general absolutely)."* So irrigation-by-terrace is
+built to work everywhere, on its own toggle, and the Jawa campaign is not required to use it — exactly
+CLAUDE.md's standing rule that biome-kit mechanics stay usable outside their biome. The mechanism is
+already free: §11's soak-factor pattern plus §18's `SoilRich` reclaim.
+
+**22. Dumping liquid on a trapped raider should be VERY effective.** Not a nuisance debuff. A pawn held
+in a SUPERDEEP cell that is then flooded is in serious trouble, and with a flammable liquid, finished.
+
+**23. The single shooting exception — and it is the cheap half of Law 2.**
+
+> *"someone in a pit should really only be able to shoot at others at the edges above them, and those
+> outside should only be able to shoot into the pit from the edge as well. But that's the only
+> mechanic."*
+
+🔑 **Why this does not breach Law 2.** He asked for a **restriction**, never a bonus — no height
+advantage, no cover modifier, no accuracy change. That distinction is the whole cost difference: a
+restriction is one boolean gate on an existing check, while a bonus reaches into hit chance, cover
+math, AI target selection and player expectation. He picked the side that does not own an elevation
+model.
+
+**Cheapest honest implementation, and the constraints it must respect:**
+
+- **One patch point.** A Harmony prefix on `Verb.CanHitTargetFrom` (verify the exact member on the
+  Desktop — engine internals are UNMEASURABLE on the Laptop) returning false for a disallowed pair.
+- **Applies at SUPERDEEP only.** Shallow, mid and deep are unaffected, so a pawn wading a terrace is
+  not blinded. This also matches "SUPERDEEP is the trapping pit level" — the rule exists for the
+  trapping case and should not leak into the others.
+- 🔴 **"At the edge" must mean 8-way adjacency to the pawn's OWN cell**, not adjacency to the whole
+  excavated region. Region adjacency needs a flood fill, and `CanHitTargetFrom` is called constantly —
+  the check has to be O(1): two depth-grid lookups and an adjacency test. A per-shot flood fill would
+  be a framerate defect, and it would also read worse, since "only whoever is right at my lip" is
+  exactly the fantasy.
+- ⚠️ **The raid AI will not understand it.** Raiders choose targets with their own reachability and LOS
+  notions, so denying the shot late can leave them repeatedly trying and failing, or milling about. The
+  honest mitigation is to make a SUPERDEEP occupant an invalid *ranged target* for AI selection, not
+  merely an illegal shot — otherwise the mechanic reads as broken pathing rather than as depth.
+- Consequences worth stating plainly: **turrets cannot shoot into a pit** unless adjacent, and **a
+  trapped raider can still shoot whoever stands at the lip** — so capture is not a clean win, which is
+  better gameplay and should be deliberate rather than discovered.
