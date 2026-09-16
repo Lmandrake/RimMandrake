@@ -141,14 +141,14 @@ player actually sees walking around.
 | ✅ | `nelvaanian` | Nelvaanian | `RSW_RimMandrakeNelvaanian` | R | TribeCivil:R |
 | ✅ | `ortolan` | Ortolan | `RSW_RimMandrakeOrtolan` | R | Jawa_HuttCartel:R, OutlanderCivil:R |
 | ✅ | `rakata` | Rakata | `RSW_RimMandrakeRakata` | R | Jawa_AscendantHelix:R |
-| ⬜ | `sith_pureblood` | Sith Kissai (Pureblood) | `RSW_RimMandrakeSithKissaiPureblood` | R | Jawa_AscendantHelix:R |
-| ⬜ | `massassi` | Sith Massassi (Pureblood) | `RSW_RimMandrakeSithMassassi` | R | Jawa_AscendantHelix:R |
-| ⬜ | `sith_species` | Sith Zugurak (Pureblood) | `RSW_RimMandrakeSithZ` | R | Jawa_AscendantHelix:R |
+| ✅ | `sith_pureblood` | Sith Kissai (Pureblood) | `RSW_RimMandrakeSithKissaiPureblood` | R | Jawa_AscendantHelix:R |
+| ✅ | `massassi` | Sith Massassi (Pureblood) | `RSW_RimMandrakeSithMassassi` | R | Jawa_AscendantHelix:R |
+| ✅ | `sith_species` | Sith Zugurak (Pureblood) | `RSW_RimMandrakeSithZ` | R | Jawa_AscendantHelix:R |
 | ✅ | `taung` | Taung | `RSW_RimMandrakeTaung` | R | Pirate:R, TribeCivil:R |
 | ✅ | `gungan` | gungan | `RSW_RimMandrakeGungan` | R | Jawa_DeepwaterCompact:R |
-| ⬜ | `dathomirian` | Dathomirian | `RSW_RimMandrakeDathomirian` | — | (none — empty in prefill) |
+| ✅ | `dathomirian` | Dathomirian | `RSW_RimMandrakeDathomirian` | — | (none — empty in prefill) |
 | ✅ | `jawa` | Jawa | `RSW_RimMandrakeJawa` | — | (none — empty in prefill) |
-| ⬜ | `yoda_species` | Yoder | `RSW_RimMandrakeYoderForceGremlin` | — | (none — empty in prefill) |
+| ✅ | `yoda_species` | Yoder | `RSW_RimMandrakeYoderForceGremlin` | — | (none — empty in prefill) |
 
 ## Progress log — appended as each entry lands
 
@@ -552,3 +552,88 @@ height/mass/skin/eye/lifespan in canon** (all Legends-only); **Ortolan height an
 lifespan**. Not fetched: the `starwars.com` Databank in all four cases, and the underlying
 print sources (*Galaxy at War*, *The Clone Wars Campaign Guide*, *Alien Archive*) — only
 Wookieepedia's transcription of them was read.
+
+### Batch — five species, 2026-09-15 (the final batch: Sith castes, Dathomirian, Yoda's species)
+
+`description.md` + images written for **all five** assigned: `sith_pureblood`
+(Kissai), `massassi`, `sith_species` (Zuguruk), `dathomirian`, `yoda_species`. All
+five directories were created from scratch. Every fetch went **straight through
+`curl` to the Fandom API**; no Fetcher needed. ⚠️ **None of the five has a
+`donor_current_sprite.png`** — all five render from shared mod genes whose textures
+live only in the deployed mod folder, so nothing on disk compares canon against
+current in-game art for any of them.
+
+🔑 **The three Sith xenotypes are castes of ONE species, and `sith_species/` now
+carries the shared-Sith anatomy that `sith_pureblood/` and `massassi/` point back
+to.** Canon-supported physical distinctions between the castes are thin: **Massassi**
+have two exclusives (taller/hulking 2–3 m, and large glowing yellow eyes with no
+pupil or sclera), **Zuguruk** have one (five human-like digits instead of the usual
+tridactyl hand), and 🔴 **Kissai have NONE — canon states no physical trait that
+distinguishes a Kissai from a mainline Sith.** The repo ships three separate
+xenotypes on an occupational distinction.
+
+🔴 Naming findings: **the canon spelling is Zuguruk, not "Zugurak"** (the def
+appears to have taken it from the wiki's image filename `File:Zugurak.png`, whose own
+lettered caption reads *Zuguruk*). **Yoda's species has no canonical name at all** —
+Lucas withheld it deliberately, both official Databank entries say "Unknown", and the
+wiki title *Yoda's species* carries a `{{Conjecture}}` banner; **"Yoder" and "Force
+Gremlin" are both inventions.** All three Sith castes are labelled **"(Pureblood)"**
+although canon is explicit that Sith Purebloods are *hybrids* "thought to be very
+different from the original Sith species as a whole" — a caste member is a **Red
+Sith**. All governed by `NAMING_SCHEME_EXECUTION_1`; flagged, not renamed.
+
+Every one of the five defs contradicts canon. The worst per species:
+
+- `RSW_RimMandrakeSithZ` — **skin genes are orange/brown/pale-brown with NO red gene
+  at all**, against "all Sith castes were red-skinned"; `ElongatedFingers` in place of
+  the sourced five-digit hand; vanilla `Head_Gaunt` where the other two castes get
+  `RSW_Head_Bone`; **no Force gene** on a species canon calls wholly Force-sensitive.
+- `RSW_RimMandrakeSithMassassi` — **no `nameMaker` at all**; no lifespan/maturation gene
+  against a sourced max of **50 years** (adult at 14, old at 35); **no
+  `Outland_ThickSkin`, which the Kissai def has instead** although the tough hide is
+  Massassi-exclusive canon; `Hair_BaldOnly` against a sourced **hair colour: red** and
+  against the *Massassi Warrior* concept sheet's long bound hair; the pupil-less
+  whole-eye yellow — their one exclusive visual trait — unrepresented.
+- `RSW_RimMandrakeSithKissaiPureblood` — cleanest of the three, but **no lifespan gene**
+  against a sourced **≤60 years**, `Skin_SlateGray`/`Skin_Orange` borrowed from the
+  other castes' colour fields, and `Outland_DeceleratedPregnancy` on a short-lived
+  species.
+- `RSW_RimMandrakeDathomirian` — **no striping or tattoo gene of any kind**, although
+  *facial tattoos* is one of only two infobox distinctions and **male natural striping**
+  is sourced; the single female skin gene is grey `(200,200,200)` where canon gives
+  white/blue/gray/tan; **red weighted equally with orange and yellow** for males where
+  canon says *few* had red; **no two-hearts/endurance gene**; `nameMaker` is
+  `RSW_NamerPersonPureblood`, the **Sith** namer, on a Zabrak subspecies.
+- `RSW_RimMandrakeYoderForceGremlin` — mechanically the best-aligned def in the batch
+  (`RSW_lifespan_nine` + `Outland_DeceleratedMaturation` are well sourced), but
+  **`RSW_Eyes_Big` = "large, black eyes" models Grogu's INFANT face** against an adult
+  whose sourced eyes are small, hooded and green-gold/brown; `Hands_Pig` against
+  sourced **three clawed fingers and three clawed toes**; `Hair_DarkBrown` against
+  sourced auburn/white and the sourced female-longer-hair dimorphism;
+  `RSW_BodySizeGene_smaller` is described as **`jawa size`** against a sourced
+  **0.66 m / 13 kg**.
+
+Negative references labelled rather than deleted:
+`sith_species/wookieepedia_zuguruk_bookofsith.jpg` and
+`.../wookieepedia_three_sith_castes.jpg` (both **negative on hue** — sepia parchment
+and violet colour casts respectively; prose wins on skin colour, images win on
+structure), `sith_species/wookieepedia_sith_pureblood_swtor.jpg` (a *hybrid*
+Pureblood, not a Red Sith), `sith_pureblood/wookieepedia_sith_king_adas.jpg` (a Sith
+King, not a Kissai), `massassi/wookieepedia_massassi_warriors_funeral.jpg` and
+`.../wookieepedia_massassi_architects.jpg` (**skin coloured blue-grey/violet** against
+five sources saying red), `dathomirian/wookieepedia_mother_talzin.jpg` (one Clan
+Mother's regalia, not a species baseline),
+`yoda_species/wookieepedia_grogu.jpg` (positive for the infant, **negative for the
+adult** — using it for an adult is exactly the error `RSW_Eyes_Big` makes).
+
+⚠️ Two further labelling problems in the sources themselves: **Wookieepedia's Kissai
+infobox image is `File:Massassi-JATM.jpg`**, the same file the species article captions
+as showing *both* the Kissai and Massassi castes — so no Kissai-only reference image
+exists. And **the `Massassi` infobox image (`Massassi-SWTOR.png`) shows the
+alchemically-altered Yavin 4 brute, not the species its own infobox numbers describe**;
+canon has **two distinct Massassi appearances** and `massassi/description.md` splits
+them.
+
+⚠️ `dathomirian` and `yoda_species` both have **empty matrix placements and
+`factionlessGenerationWeight: 0`**, so neither can appear in a game as shipped.
+
