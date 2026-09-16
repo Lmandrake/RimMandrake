@@ -166,9 +166,25 @@ than a battery at the same grade.
 no grade that surpasses the original, and **no `Rewoken`** — that top-grade name was
 ruled and reversed inside the same sitting, and the three-level ladder replaces it.
 
-Shipped defNames follow the ladder: `_Wrecked` → `_Defunct`, `_Repaired` →
-`_Refurbished`; `_Kludged` already matches. Stepping stays vanilla 1.6 `replaceTags`
-(build the next tier's blueprint over the old footprint — ordinary construction, no C#).
+Stepping stays vanilla 1.6 `replaceTags` (build the next tier's blueprint over the old
+footprint — ordinary construction, no C#).
+
+🔴 **The defName plan below is now AMBIGUOUS and needs a ruling.** It was written before
+the 1.0 rung existed:
+
+> ~~`_Wrecked` → `_Defunct`, `_Repaired` → `_Refurbished`; `_Kludged` already matches.~~
+
+`_Wrecked` → `_Defunct` still holds. But **`_Repaired` is donor-identical, which makes it
+the 1.0 rung**, not the 0.75 one — so renaming it `_Refurbished` would put the wrong
+number on it. **Two defs now need names and one of them must be authored from nothing:**
+the 0.75 Refurbished tier does not exist yet. Nobody has decided which def keeps which
+name. ⚠️ Also unresolved: a defName change ripples into any existing save, and this
+campaign ships as a frozen savegame.
+
+⛔ **Cosmetic changes need his permission first** (owner, 2026-09-15, ruled on the
+xenotype work but general): anything touching art, skin, heads, eyes, or
+`renderNodeProperties` may break animated faces, so ask rather than fix. That covers this
+mod's `texPath` decisions and every sprite in the grade ladder.
 
 **2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
 beyond or even equal to the original."* The ladder is **asymptotic, capped at 0.75 by
@@ -244,8 +260,17 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
 
 ## Still open
 
+- 🔴 **Which def gets which name** — see ruling 1. `_Repaired` is the 1.0 rung, so the
+  0.75 Refurbished tier must be authored, and the naming is undecided.
 - **Per-class Defunct values.** 0.001 is the battery number. Factories and other
   functional devices each need their own, and nobody has set them.
+- **Rekko's endgame vision is now settings-dependent.** His canon body-vision is *"full
+  restoration of the original"*, which at a 0.75 cap is undeliverable — but the 1.0 mod
+  option makes it deliverable. So whether the god of repair can ever be satisfied depends
+  on a player's settings toggle. Interesting rather than broken, but it wants a ruling.
+- **Layer-3 naming.** The spec calls it "the Salvation pack" / `mandrake.rut.salvation`;
+  this item calls it "Salvation Engine". The packageId does not exist yet, so nothing is
+  broken — but one of the two should win before it is minted.
 - **Grade steps are invisible to the god engine, and may be inverted.** Ninefold's
   repair hook fires on full hit points, not on a grade step, so refurbishing currently
   earns Rekko nothing; and `Patch_BuildingDeconstructed` fires a large negative Rekko on
