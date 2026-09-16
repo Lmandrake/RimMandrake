@@ -24,8 +24,8 @@ status-hint: species-agnostic covered-pit-trap framework — dig a pit in stages
 10. [B] repeat step 8-9 with a PLAYER-faction pawn instead of hostile → expect `counted=False` for that pawn in the REPORT_PIT `STANDING` line and no spring from that pawn alone (faction-exclusion check named in the .cs as a fixed bug)
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 145a6b5d90729cb4647c73762c1685886164f5ef612d2495fdc6338755402991
 
 ⚠️ **DRAFT — not a bar until the owner validates it.** Per
 `design/RimMandrake/north_star_validation_spec.md`, a DRAFT checklist cannot fail
