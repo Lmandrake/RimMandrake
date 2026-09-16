@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T16:18:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T18:27:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -852,7 +852,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  Owner sheet note, 2026-09-16, verbatim: "rename this to Flamefang and make it
+summary:  (no items/FLAMEFANG_SNAKE_REBIRTH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -1770,3 +1770,23 @@ kind:     finding
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
+
+## LIQUID_SINK_DRAINAGE_1 Map-edge sinks that drain a canal on purpose - the inverse of a limitless source, so liquid leaving is transferred off-map rather than destroyed and overflow stays the only exception to conservation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIQUID_SINK_DRAINAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_SINK_DRAINAGE_1.md
+
+## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_BUILD_PROGRAM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
