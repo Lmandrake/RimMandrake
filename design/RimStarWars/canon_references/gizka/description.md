@@ -32,10 +32,11 @@ mentioned in current Disney canon only much later, in the 2017 novel
 
 ## Visual brief
 All three candidate images are drawn from the same KOTOR-era in-game model
-and agree closely. Gizka reads as a **small, squat, low-slung
-quadruped with a sprawling frog/lizard stance** — front legs held
-close and bent, hind legs long, thin, and splayed wide with visible bony
-joints and clawed spread toes. The single most striking, model-consistent
+and agree closely. Gizka reads as a **small bipedal frog/lizard hopper** — it stands and moves
+on two long, thin hind legs with visible bony joints and clawed spread
+toes, while the tiny forelimbs are held up off the ground, never
+weight-bearing (clearest on the background gizka in
+`kotor_screenshot.jpg`). The single most striking, model-consistent
 feature across all three images is the **head**: oversized relative to the
 body, blunt and rounded with a **huge round bulging eye dominating the
 side/front of the face** (the in-game model reads almost one-eyed/cyclopean
@@ -59,7 +60,7 @@ Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
 ## Must show
-- [ ] Small, squat, low-slung quadruped in a sprawling frog/lizard stance — front legs bent and close, hind legs long, thin and splayed wide
+- [ ] Small hopper standing on TWO long, thin hind legs with visible bony joints — the hind legs do all the structural work; the tiny forelimbs are held up off the ground, never weight-bearing (bipedal read, per the owner's ruling below and the in-game stance in kotor_screenshot.jpg)
 - [ ] Oversized, blunt, rounded head dominated by a huge round bulging eye
 - [ ] A small pointed crest or ear-flap above the eye
 - [ ] Mottled olive-green and tan/khaki blotched skin pattern — not a flat green
@@ -97,3 +98,11 @@ none known
   gives a small vermin-scale size reference
 
 ## ruling
+2026-09-16, owner: "Check your canon. I see clear references to bipedal and no
+mention of four legs. I think this is a canon error in your search." Upheld on
+re-inspection: the background gizka in kotor_screenshot.jpg stands wholly on
+its two hind legs, forelimbs raised; the infobox render's thin forelimbs are
+not weight-bearing. The earlier Visual brief's "quadruped in a sprawling
+stance" was a misread of the foreground close-up and is superseded by the
+Must-show line above. Gizka renders BIPEDAL: two working hind legs, vestigial
+raised forelimbs.
