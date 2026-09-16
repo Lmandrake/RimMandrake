@@ -1281,6 +1281,51 @@ def run_validator(validator_script: Path, reference, candidate: Path,
         f"problem here"]
 
 
+# FACTS gate — owner ruling 2026-09-15. Single-file facts only; facing-set facts
+# (height agreement, symmetry, duplicates) need the siblings and belong to the sweep.
+# 🔴 DEFAULTS OFF. Set ARTPIPE_FACTS_GATE=1 to arm it.
+#
+# The owner ruled these facts may REFUSE, but a refusal regenerates — so a checker
+# that is wrong about a sprite refuses its replacement too and burns render quota in
+# a loop it cannot exit. The imagegen weekly cap has already been exhausted once.
+# art_review_facts_spec.md requires a bounded retry count, a PARKED state that keeps
+# the art WITH its findings, and those findings surfaced on a review sheet — in the
+# same change that arms the gate. None of those exist yet, so arming it now would
+# trade one silent failure for a louder one.
+#
+# Measured while wiring it: armed by default, this rejected selftest_artpipe.py's
+# synthetic reference-less fixture, taking that suite from "all checks passed" to one
+# failure. The fixture is a plain correctly-sized rectangle, which genuinely violates
+# transparency and boundaries — the gate was right and the fixture is not a sprite.
+# Same disabled-by-default shape the legibility gate already uses.
+FACTS_SINGLE_FILE_CHECKS = ("transparency_real", "boundaries_respected", "outline_coherence")
+
+
+def run_facts_gate(candidate: Path):
+    """Returns (verdict, details). verdict is pass | reject | gate_error | skipped.
+
+    Rejects on a `high` severity finding only. Severity is the checker's data; the
+    decision to refuse is made HERE, so the checker never grows a policy.
+    """
+    if os.environ.get("ARTPIPE_FACTS_GATE", "0") not in ("1", "true", "yes"):
+        return "skipped", []
+    try:
+        sys.path.insert(0, str(common.REPO_ROOT / "src" / "RimMandrake" / "Utils"))
+        import art_checks
+    except Exception as exc:                                  # noqa: BLE001
+        return "gate_error", [f"could not import art_checks: {exc}"]
+    try:
+        sprite = art_checks.load(Path(candidate))
+        findings = []
+        for name in FACTS_SINGLE_FILE_CHECKS:
+            findings.extend(getattr(art_checks, name)(sprite))
+    except Exception as exc:                                  # noqa: BLE001
+        return "gate_error", [f"art_checks raised on {candidate.name}: {exc}"]
+    high = [f for f in findings if f.severity == "high"]
+    details = [f"{f.check}: {f.detail}" for f in findings]
+    return ("reject" if high else "pass"), details
+
+
 def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S,
                          drawsize: float = 1.0):
     """Downscale-legibility gate, same error discipline as run_validator:
@@ -1465,6 +1510,32 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                                  + ("; ".join(lfindings[-2:]) if lfindings else "no detail"))[:200])
             return result
         result["legibility"] = "PASS" if lverdict == "pass" else "skipped"
+
+    # FACTS gate (owner ruling 2026-09-15): "These aren't 'quality' or 'downscaling'
+    # type metrics. These are basic facts that must be true." A fact may refuse, and
+    # it runs here rather than as an after-the-fact sweep because "I don't want these
+    # strange versions" — a defect that reaches his eye has already cost the review.
+    #
+    # This is NOT the fitted legibility gate he stood down: no score, no aggregate,
+    # no band. Each finding is one named fact that is false about this file.
+    #
+    # Single-file only. Facing-set facts (height agreement, symmetry, duplicate
+    # detection) need every sibling on disk and are checked by the sweep, not here.
+    fverdict, ffindings = run_facts_gate(out_png)
+    result["facts_findings"] = ffindings
+    if fverdict == "reject":
+        result.update(status="failed", worker_status="failed_art_facts",
+                       validator=("PASS" if verdict == "pass" else "skipped"),
+                       facts="REJECT",
+                       note=("art_checks facts violated: "
+                             + "; ".join(ffindings[:2]))[:200])
+        return result
+    if fverdict == "gate_error":
+        # The checker itself broke. Never blamed on the art, and never silently
+        # passed either — a fact-check that cannot run is reported as broken.
+        result["facts"] = "ERROR"
+    else:
+        result["facts"] = "PASS"
 
     result.update(status="ok", worker_status="ok",
                    validator=("PASS" if verdict == "pass" else "skipped"),
