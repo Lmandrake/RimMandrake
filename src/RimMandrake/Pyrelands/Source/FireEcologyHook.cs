@@ -141,6 +141,18 @@ namespace RimMandrake.StarWars.FireEcology
     // to 15x more often.
     public static class Patch_FireTick_AshAndScorchFruit
     {
+        // Fire thingIDNumbers that already took their one scorch-fruit roll.
+        // Never shrunk per-fire (despawn hooks cost more than they save);
+        // cleared wholesale when it grows past a bound no live map reaches.
+        private static readonly HashSet<int> rolledFires = new HashSet<int>();
+
+        // True exactly once per Fire instance.
+        private static bool MarkFireRolled(Fire fire)
+        {
+            if (rolledFires.Count > 100000) rolledFires.Clear();
+            return rolledFires.Add(fire.thingIDNumber);
+        }
+
         public static void Postfix(Fire __instance, int delta)
         {
             try
@@ -176,8 +188,17 @@ namespace RimMandrake.StarWars.FireEcology
                 // in a biome's ordinary wildPlants list). Plain 3x3 scan
                 // instead of a GenAdj/LINQ combinator: fewer ways to get the
                 // overload wrong, and this runs at most a few times a fire.
+                //
+                // ONE roll per Fire instance (a Fire thing sits on one cell),
+                // not per tick: the old per-tick chance compounded over a
+                // fire's lifetime, so every long-burning cell fruited and a
+                // map-wide burn seeded an orchard. Owner, 2026-09-16: "the
+                // fires generate way too many scorch fruits ... perhaps one
+                // in twenty squares" — scorchFruitChance is now that
+                // per-burned-cell probability, default 0.05.
                 if (RM_PyrelandsSettings.scorchFruitEnabled
-                    && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance * delta))
+                    && MarkFireRolled(__instance)
+                    && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance))
                 {
                     ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
                     // A map-wide burn runs hundreds of concurrent Fire things;
