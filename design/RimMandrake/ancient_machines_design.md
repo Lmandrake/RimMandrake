@@ -17,7 +17,7 @@
 Ancient machines do not break, they sag: found at a fraction of the capability
 their makers built into them, they still turn over, and a scavenger can drag
 one part of the way back but never all the way. There are exactly three states
-a found machine can be in — **Defunct**, **Kludged**, **Refurbished** — one
+a found machine can be in — **Wrecked**, **Kludged**, **Refurbished** — one
 ladder for every ancient thing, fixed installation or carried relic, and
 **three-quarters** of the original is the ceiling no hand passes unless the
 player switches the cap off himself. The original — the ordinary modern machine
@@ -89,7 +89,7 @@ for every ancient thing.
 
 | grade | of original | reads as |
 |---|---|---|
-| **Defunct** | 0.001 | inert. A sacred object, not a machine. |
+| **Wrecked** | 0.001 | inert. A sacred object, not a machine. |
 | **Kludged** | 0.2 | works, badly, visibly bodged. |
 | **Refurbished** | 0.75 | the default ceiling. Three-quarters. |
 | *the original, unmodified* | 1.0 | **unreachable by default** — a real reference point, not a grade |
@@ -115,11 +115,11 @@ defaults, not constants (§7).
 ⚠️ **And the ratios are PER DEVICE CLASS, not universal.** Owner: *"the 0.001
 weak output is intended for batteries, not factories and other functional
 devices, to allow the 'flickering faint LED look'."* 0.001 exists to make a dying
-battery flicker; it is the battery number and nothing else. **A Defunct factory
+battery flicker; it is the battery number and nothing else. **A Wrecked factory
 needs its own value and nobody has set one** — open (§9.1). The ruling is stated
-of the ratios generally, not of Defunct alone, so Kludged and Refurbished inherit
+of the ratios generally, not of Wrecked alone, so Kludged and Refurbished inherit
 the same shape and the settings screen must carry it rather than three global
-sliders. Only the Defunct case has actually been worked through.
+sliders. Only the Wrecked case has actually been worked through.
 
 ### 2.1 What the ratios are ratios OF
 
@@ -149,7 +149,7 @@ Column three is labelled by the def's shipped name, not by its grade: under ruli
 1 that def's values **are** the donor's, which makes it the **1.0 rung**. There is
 no 0.75 column, because no 0.75 def exists yet.
 
-| axis | Defunct (`_Wrecked`) | Kludged | `_Repaired` = **1.0** | donor = "modern" = 1.0 |
+| axis | Wrecked (`_Wrecked`) | Kludged | `_Repaired` = **1.0** | donor = "modern" = 1.0 |
 |---|---|---|---|---|
 | recipes | none — no comps at all | 3 of 6 | **6 of 6** | 6 of 6 |
 | power | none | 360 W | **300 W** | 300 W |
@@ -211,7 +211,7 @@ axes:
 
 **Recommendation, for a one-line ruling:** the capability contract for a
 VFE-Factory machine is *power efficiency + uptime*, with recipe breadth carrying
-the Defunct→Kludged step and overclock left out until U1 is settled. Throughput
+the Wrecked→Kludged step and overclock left out until U1 is settled. Throughput
 stays out of it until someone reads the donor's ProcessDefs on the Windows
 machine.
 
@@ -232,13 +232,13 @@ inverts the shape at the top: the cheapest step in capability terms should
 plainly be the dearest in components, or the cap is off in practice as well as
 in settings.)
 
-### 2.4 Defunct's 0.001 is doctrine, not a trickle
+### 2.4 Wrecked's 0.001 is doctrine, not a trickle
 
 0.001 exists to say *this is not dead*, which is the whole engineering
 character: a modern machine breaks, an ancient machine sags. It is not an
 instruction to ship a machine that produces one ingot per century.
 
-- On a **compound** machine, implement Defunct as **inert** — the shipped def
+- On a **compound** machine, implement Wrecked as **inert** — the shipped def
   already does exactly this (no comps block at all, `tickerType Never`,
   `isInert true`), and that is right: a powered comp doing nothing still costs
   a tick and still prints an inspect line promising something that will never
@@ -250,19 +250,19 @@ instruction to ship a machine that produces one ingot per century.
   LED look"* of a dying battery.
 
 🔴 **0.001 is therefore not the compound-machine number, and the compound number
-does not exist yet.** A Defunct factory needs its own Defunct value, per device
+does not exist yet.** A Wrecked factory needs its own Wrecked value, per device
 class, and nobody has set one — so the inert treatment above is a *shape*, not a
 ratio. Do not carry 0.001 across to a factory to close the gap; leave it open
 (§9.1).
 
-The shipped Defunct description must change either way: *"It has no power in it
+The shipped Wrecked description must change either way: *"It has no power in it
 and nothing to give"* states the opposite of the doctrine (§10).
 
 ### 2.5 Worth scales with size — and where that lands
 
 Ruling 1: a factory is worth far more than a battery at the same grade. In
 RimWorld the only expression of a building's worth is its market value, derived
-from its cost list — and the shipped Defunct tier costs **Steel 30**, a token
+from its cost list — and the shipped Wrecked tier costs **Steel 30**, a token
 put there as a testing affordance. A sacred relic the ship loves currently
 appraises at nothing.
 
@@ -403,7 +403,7 @@ and with only three grades there is very little room between them. This is on
 the open list; what follows is only the shape of the ruling, so it can be one
 line.
 
-The floor can sit at Defunct (meaningless), Kludged (relief: every relic
+The floor can sit at Wrecked (meaningless), Kludged (relief: every relic
 eventually works, badly, and the player's hand is what makes one good), or
 Refurbished (the ship finishes the game — and Ancient Components stop buying
 anything, contradicting ruling 8's "components buy the PEAK", because there
@@ -633,13 +633,13 @@ target `RM_WM_AutomatedSmelter_Wrecked`.
 
 Three things the grade ladder adds to it:
 
-1. **Which grade is the study target.** Today it is the Defunct tier alone. That
+1. **Which grade is the study target.** Today it is the Wrecked tier alone. That
    is probably right — you learn from the corpse, not from the thing you already
    fixed — but with three grades and two rungs it is now a choice. A second
    opportunity on the Kludged tier, feeding the project that unlocks
    Refurbished, is the obvious shape and is not authored.
 2. **The target can vanish.** The def's own header already flags it: after a
-   build-over replaces the Defunct machine, the Analyse target is gone. With two
+   build-over replaces the Wrecked machine, the Analyse target is gone. With two
    rungs this gets worse, because the player may want to keep studying after
    rung one.
 3. **`targetIterations 5.0`** under RR's default `ReverseEngineering` category is
@@ -686,8 +686,8 @@ the exception is load-bearing:
 | Ancient Components as the gate | on/off | on | off: grade steps cost only ordinary materials — the "I do not want a scarcity economy" switch |
 | Ancient Component cost multiplier | slider | 1.0 | the scarcity dial |
 | worth-by-size multiplier | slider | 1.0 | scales relic market value — the wealth/raid-points wire in §2.5 |
-| **the three grade ratios, per device class** | sliders | 0.001 / 0.2 / 0.75 | the ratios themselves. Owner: *"Mod settings should allow the player to modify the functionality of each setting."* Because the ratios are **per device class** (§2), one global triple is the wrong shape — a scalar (battery) group and a compound (factory) group at minimum, and the compound Defunct value is unset (§9.1) |
-| Defunct destructibility | on/off | on | whether a Defunct relic can be destroyed at all (§9.2-F) |
+| **the three grade ratios, per device class** | sliders | 0.001 / 0.2 / 0.75 | the ratios themselves. Owner: *"Mod settings should allow the player to modify the functionality of each setting."* Because the ratios are **per device class** (§2), one global triple is the wrong shape — a scalar (battery) group and a compound (factory) group at minimum, and the compound Wrecked value is unset (§9.1) |
+| Wrecked destructibility | on/off | on | whether a Wrecked relic can be destroyed at all (§9.2-F) |
 | grade-change signal | on/off | on | publishes the neutral signal layer 3 subscribes to. **Labelled**: off breaks dependent mods' reactions |
 
 **Degradation contract.** With every toggle off, layer 1
@@ -734,10 +734,10 @@ source says so itself.
 
 ### 9.1 Carried forward verbatim from the item's "Still open"
 
-- 🔴 **Per-class Defunct values.** 0.001 is the battery number, chosen for the
+- 🔴 **Per-class Wrecked values.** 0.001 is the battery number, chosen for the
   flickering-LED look. Factories and other functional devices each need their
   own, and nobody has set them. Nothing below is balanced against a compound
-  Defunct ratio because there is not one (§2.4).
+  Wrecked ratio because there is not one (§2.4).
 - Where relics are found, and where Ancient Components come from.
 - Mobile structures: which ones, and does a mobile relic still seat in a hull
   socket?
@@ -794,7 +794,7 @@ sacred and therefore unsellable.
 the grief-side and only Refurbishing feed the pride spike, or does one of the two
 shipped matrix lines go?
 
-**F. Can a Defunct ancient machine be destroyed at all?** The shipped def has
+**F. Can a Wrecked ancient machine be destroyed at all?** The shipped def has
 `useHitPoints True` and `leaveResourcesWhenKilled false`. "It is ROBUST, it
 SURVIVES" argues for a thing that cannot be killed — which would also be the
 speculative escape DESIGN.md §4 named for the Replace Stuff conflict
@@ -926,7 +926,7 @@ Keep: §5 (duplicate machine) is still live and belongs in `DESIGN.md`.
 | L256 | *"It does everything the original did."* — true of the **1.0 rung** and false of Refurbished at 0.75. It travels with the def to 1.0 rather than being deleted, and the 0.75 def needs its own description |
 | L272–276 | the *"Keep it that way"* instruction to match the donor field-for-field — **still correct**, because donor-identical is what 1.0 means. What changes is that this def is no longer the top *grade*: it becomes the option-gated 1.0 rung, and a new 0.75 def is authored below it (§2.2) |
 | L64, L138, L259 | texPaths, coupled to the `Textures/…/<Grade>/` folder names |
-| L74–79, L101 | the Defunct tier's build entry + token Steel 30 — *"Remove designationCategory before ship"*, and worth-by-size (§2.5) now argues the cost list means something |
+| L74–79, L101 | the Wrecked tier's build entry + token Steel 30 — *"Remove designationCategory before ship"*, and worth-by-size (§2.5) now argues the cost list means something |
 | L90–91 | `useHitPoints True` + `leaveResourcesWhenKilled false` — §9.2-F |
 | L104–107, L112–117, L190, L306–310 | comments naming "the wrecked tier" and the v1 cut |
 | header L12–52 | the whole ruling block predates rulings 0–9 |
@@ -1000,7 +1000,7 @@ owner's permission before it is made** (§3).
 
 ### 10.12 `infrastructure/state/canon.yml`
 
-- L1996–2000, `archotech_is_rakatan.src`: *"Found defunct, weakly functional or
+- L1996–2000, `archotech_is_rakatan.src`: *"Found wrecked, weakly functional or
   semi-functional"* — ruling 1 deletes that ladder. The entry needs the three
   named grades, the live ratios (0.001 / 0.2 / 0.75, per device class), the 1.0
   unmodified-donor rung and its default-off Mod Setting, and the "nothing equals
