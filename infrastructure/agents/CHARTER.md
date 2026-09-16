@@ -107,7 +107,10 @@ publisher, no staleness.
 **Rebooting a window is prepared, not improvised** (owner, 2026-09-06). At a real
 wave boundary — subagents all reported, everything committed and pushed, nothing
 mid-edit — and above all the moment you would say *"that's all I have for now"*,
-write the handoff with `python3 src/RimMandrake/Utils/handoff.py`, fill
+write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handoff.py`
+(the env var is required on any machine without a seat profile — the Mac laptop has none,
+and until 2026-09-16 `handoff.py` silently filed every laptop handoff as FOUNDRY's,
+carrying FOUNDRY's in-flight items; it now REFUSES rather than guessing), fill
 the four sections it leaves marked, pass `--check`, then say **HANDOFF READY** as
 your last line and start nothing new. He reboots on his own clock while the cache is
 warm; the phrase is the signal, and only a seat may say it — the script refuses to.

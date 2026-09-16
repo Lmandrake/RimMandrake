@@ -41,6 +41,22 @@ and nowhere else; never restate a model choice outside it.
   counts; `.claude/hooks/block_blind_scan.py` refuses and names the instrument).
   `0` means measured zero; ignorance answers `UNMEASURED`. The skill lives at
   `~/.claude/skills/measuring-large-artifacts`.
+- 🔴 **RimSage answers on the Windows Desktop ONLY — on the Mac laptop it has never
+  connected** (MEASURED 2026-09-16: five timed-out session logs 2026-09-02→09-16,
+  `mcp.rimsage.com` TCP-dead while general egress is fine, no `mcp__rimsage__*` tool in
+  the toolset at all, no cached decompiled tree). So on the laptop an **engine-internals
+  question is UNMEASURABLE** — say so rather than reasoning from a doc, and never brief a
+  subagent to "use RimSage" there: it costs a whole run to rediscover. Still fine offline
+  on either machine: the def dump (`measure`, `refresh.py`) for DEFS, and reading our own
+  source. ⚠️ **Several docs assert engine facts that trace to an earlier agent's prose,
+  not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
+  terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
+  those into measurements.
+- **A doc can describe defects that were fixed before the doc was written.**
+  `liquids_framework_design.md` (2026-09-13) blocked all engine work on three flood
+  defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
+  FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
+  "engine status" — and check whether an open item is asking for work already done.
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its
