@@ -156,6 +156,82 @@ def swap_to_test_list(package_ids=()):
     return r
 
 
+def northstar_for(mod):
+    """`(walk_path, parsed_north_star)` for `mod`, or `(None, None)` when it has
+    no validation walk at all. A mod with a walk but no `## north star` section
+    parses to `present=False`, which binds nothing -- the per-mod rollout the
+    owner ruled for on 2026-09-15 means an untouched mod must stay untouched."""
+    import northstar  # noqa: E402
+    walk = northstar.find_walk(ROOT, mod)
+    if not walk:
+        return None, None
+    return walk, northstar.parse(walk)
+
+
+def visual_floor(suite, ns):
+    """Answer the VISUAL floor for one mod, offline, before its run.
+
+    Returns `{"bar", "uncovered", "orphans"}`. A DRAFT or absent section yields
+    an empty bar and therefore no findings: `northstar.bar_for`'s rule, restated
+    here because this is the only place a run can be refused over appearance.
+
+    `orphans` is checked against must-show AND cannot-show ids, because a
+    component legitimately claims a cannot-show line -- photographing the defect
+    he would reject is exactly how that line gets tested.
+    """
+    import floor       # noqa: E402
+    import northstar   # noqa: E402
+    if not ns or ns["state"] != northstar.VALIDATED:
+        return {"bar": [], "uncovered": [], "orphans": []}
+    bar = list(ns["must_show"])
+    declared = bar + list(ns["cannot_show"])
+    components = suite.components_declared()
+    return {"bar": bar,
+            "uncovered": floor.uncovered_shows(bar, components),
+            "orphans": floor.orphan_shows(declared, components)}
+
+
+def refusal(fl):
+    """The one-line reason this mod cannot be run, or "" if it can.
+
+    An uncovered must-show line is as fatal as an uncovered Mod Settings toggle
+    (spec §3): the mod's stated experience has no test. An orphaned `shows=` is
+    a lint error for the same reason a patch that matches nothing is -- it
+    claims to cover something that does not exist.
+    """
+    parts = []
+    if fl["uncovered"]:
+        parts.append("validated must-show lines no component claims: %s"
+                     % ", ".join(fl["uncovered"]))
+    if fl["orphans"]:
+        parts.append("`shows=` ids absent from the validated checklist: %s"
+                     % ", ".join(fl["orphans"]))
+    return "; ".join(parts)
+
+
+def apply_judgement(summary, must_show_text, cannot_show_text=None,
+                    judge_runner=None):
+    """Grade the run's screenshots and fold the result into `all_green`.
+
+    Before this existed, `all_green` was the state assertions alone, so a mod
+    whose state was right and whose appearance was absent went GREEN -- the pit.
+    Both halves are now required, and neither can stand in for the other.
+
+    A run where no component claims anything judges nothing, `visual_all_green`
+    is trivially true, and `all_green` is untouched: pre-2026-09-15 behaviour for
+    every mod he has not validated.
+    """
+    import judge  # noqa: E402
+    visual = judge.judge_run(summary, must_show_text or {}, cannot_show_text or {},
+                             cwd=ROOT, runner=judge_runner)
+    summary["visual"] = visual
+    summary["visual_all_green"] = judge.visual_all_green(visual)
+    summary["state_all_green"] = summary["all_green"]
+    summary["all_green"] = bool(summary["all_green"] and
+                                summary["visual_all_green"])
+    return summary
+
+
 def _default_anchor(session):
     """MEASURED live 2026-09-12: a fixed guess (originally (500, 500)) was
     out of bounds on a 174x174 quicktest map and `get_cell_info` raising a
@@ -168,7 +244,8 @@ def _default_anchor(session):
     return r.get("sizeX", 200) // 2, r.get("sizeZ", 200) // 2
 
 
-def run_suite(suite, session, debug=False, anchor=None):
+def run_suite(suite, session, debug=False, anchor=None, mod=None,
+              judge_runner=None):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -180,8 +257,23 @@ def run_suite(suite, session, debug=False, anchor=None):
     `anchor`: (x, z) to build the test area around. Defaults to the current
     map's centre (queried live) rather than a hardcoded guess -- see
     `_default_anchor`.
+
+    `mod`: the mod's folder name. Supplying it brings in the VISUAL half -- the
+    floor is checked before any chain runs (an uncovered validated must-show
+    line returns `refused` and drives nothing), and the judge grades the
+    screenshots at the end. ⚠️ Omitting it gives a state-only verdict, which is
+    exactly the hole the pit fell through; `run()` always passes it, and the one
+    live Pits run of 2026-09-12 bypassed `run()` to call this directly.
     """
     from suite import TestContext  # noqa: E402  (modcheck package, same dir)
+    walk, ns = northstar_for(mod) if mod else (None, None)
+    if mod:
+        fl = visual_floor(suite, ns)
+        why = refusal(fl)
+        if why:
+            return {"chains": [], "all_green": False, "findings": [],
+                    "refused": why, "visual": [], "visual_all_green": False,
+                    "state_all_green": False, "walk": walk, "bar": fl["bar"]}
     if anchor is None:
         anchor = _default_anchor(session)
     findings = []
@@ -205,7 +297,15 @@ def run_suite(suite, session, debug=False, anchor=None):
     all_green = all(c["verdict"] == "PASS" or
                     (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
                     for chain in chains_out for c in chain["components"])
-    return {"chains": chains_out, "all_green": all_green, "findings": findings}
+    summary = {"chains": chains_out, "all_green": all_green,
+               "findings": findings, "refused": "", "walk": walk}
+    if mod:
+        import northstar  # noqa: E402
+        must_text, cannot_text = (northstar.text_for(walk) if walk
+                                  else ({}, {}))
+        apply_judgement(summary, must_text, cannot_text,
+                        judge_runner=judge_runner)
+    return summary
 
 
 def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False):
@@ -289,9 +389,24 @@ def run(mods, debug=False, dry_run=False):
                 continue
             mod_dir = find_mod_dir(mod_folder)
             suite = load_validation(mod_dir)
+            walk, ns = northstar_for(mod_folder)
+            fl = visual_floor(suite, ns)
+            why = refusal(fl)
+            if why:
+                # Refused BEFORE the game is touched: a mod whose stated
+                # experience has no test cannot be validated by running it.
+                summary = {"chains": [], "all_green": False, "findings": [],
+                           "refused": why, "visual": [],
+                           "visual_all_green": False, "state_all_green": False,
+                           "walk": walk, "bar": fl["bar"]}
+                results[mod_folder] = summary
+                record_run(mod_folder, mod_dir,
+                          "%s@%d" % (mod_folder, int(time.time())),
+                          False, walk=walk, refused=why)
+                continue
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
-                summary = run_suite(suite, s, debug=debug)
+                summary = run_suite(suite, s, debug=debug, mod=mod_folder)
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
             emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
@@ -300,7 +415,7 @@ def run(mods, debug=False, dry_run=False):
                 file_findings(item_id, mod_folder, summary["findings"])
             record_run(mod_folder, mod_dir,
                       "%s@%d" % (mod_folder, int(time.time())),
-                      summary["all_green"])
+                      summary["all_green"], walk=walk)
     finally:
         if not dry_run:
             restore_full()
