@@ -88,9 +88,13 @@ whatsoever** — and if the owner wants the recognisable Cathar, the three Legen
 
 **`donor_current_sprite.png` is the finding.** It is
 `RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Cathar/Male_Head_south.png` (512×512; the
-folder holds male/female × 3 facings plus `*m.png` mask variants). Correctly a **greyscale
-tintable mask**, so its lack of colour is not a defect and the palette findings above belong
-on the *skin genes*. What it lacks is **shape**: it is a **plain human ovoid head** with two
+folder holds male/female × 3 facings plus `*m.png` mask variants). **Colour is handled
+correctly and is not the defect**: the base texture is measured **pure greyscale** (chroma
+spread 0 across all 30,322 opaque pixels) and `SW_HeadTypes.xml` pairs
+`useSkinShader: false` with `shaderType: CutoutComplex` plus a real colour mask
+(`Male_Head_southm.png`, measured red-channel `(253,0,0)` with a darker `(127,0,0)` region),
+so the head does take a tint and the palette findings above belong on the *skin genes*, not
+on this file. What it lacks is **shape**: it is a **plain human ovoid head** with two
 ordinary dot eyes and a tiny inverted-triangle nose. **No muzzle, no mane, no fur texture, no
 fangs, no jaw ruff, no ear tufts.** The only other Cathar-specific art on disk is
 `SWX/Pawn/HeadAttachments/cathar/CatNose_{east,south}.png` — a nose overlay, with **no north

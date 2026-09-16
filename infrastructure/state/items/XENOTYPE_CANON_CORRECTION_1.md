@@ -23,6 +23,9 @@ rather than clerical:
 | Kel Dor | Duros |
 | Kaleesh | Nagai |
 
+Two species have **no `nameMaker` at all** and therefore fall back to default human names:
+**Iktotchi** and **Massassi**.
+
 ## Pattern 2 — head art borrowed from the wrong species
 
 | species | wears the head of | why it is wrong |
@@ -66,9 +69,15 @@ doubled lifespan still undershoots canon's 200+ years.
   grey (evenly-lit plate reads lavender-violet) · Ithorian blue (sourced orange absent).
 - **Missing entirely:** Chadra-Fan · Ugnaught · Abednedo's grey/cream · Ewok's black (cited,
   and the centre figure of its own infobox image).
-- 🔴 **Discarded:** Bothan and Gungan head types set `useSkinShader: false` over masks
-  measured as pure greyscale, so **no skin gene can ever tint those faces.** A different
-  class of bug — the colour is right and thrown away.
+- 🔴 **Discarded:** Bothan, Gungan **and Duros** head types set `useSkinShader: false` over
+  masks measured as pure greyscale, so **no skin gene can ever tint those faces.** A
+  different class of bug — the colour is right and thrown away. Duros is the worst of the
+  three: pure-greyscale texture with **no `CutoutComplex` and no mask at all**, so nothing
+  supplies the head a colour by any route. ⚠️ Needs in-game confirmation of what actually
+  renders.
+- Duros also has three **blue** skin genes on a species canon calls "smooth blue-**green**",
+  whose canon infobox image, Legends image and film photograph all read green or grey-green.
+  And its `RSW_Eyes_HugeRed` reuses the **Jawa** eye texture.
 
 ## Pattern 7 — aptitudes that invert the source
 
@@ -128,6 +137,19 @@ live-action Kuiil is dun grey-brown. Only evenly-lit plates were trusted, and mi
 images are kept as **labelled negative references** rather than deleted — including two in
 `rakata/` that Wookieepedia explicitly disowns (a mislabelled Mon Calamari, and a figure
 Lucasfilm confirmed is "generic alien extra #3457").
+
+## Not everything came back a complaint
+
+Worth recording so the library reads as evidence rather than advocacy:
+
+- **Batch H's four existing name-makers were all the right species**, and none of its five
+  species invented a body-size or lifespan gene. The bugs are not uniform.
+- **The Mirialan and Pantoran head graphics already bake canonically-placed markings, and
+  Pantoran's gold really is gold.** Do not "fix" these.
+- **`RSW_Beard_chinspines` exactly matches the Zygerrian chin spurs.**
+- **One finding reversed in the def's favour:** the Iktotchi reference images support the
+  def's reds *against* Wookieepedia's own "Tan/Pink" infobox. The images won, which is the
+  rule working in the direction nobody expected.
 
 ## Open for the owner
 
