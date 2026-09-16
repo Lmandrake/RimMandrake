@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T14:19:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T15:07:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1735,3 +1735,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLUID_SOURCE_STOCK_MODEL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLUID_SOURCE_STOCK_MODEL_1.md
+
+## CANAL_FILL_IN_DISPLACEMENT_1 Fill-in designator that displaces a canal cell's liquid back into connected channel and source, crediting whatever has room and destroying only the overflow - the single sanctioned place liquid leaves the world, and it must be disclosed not silent
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANAL_FILL_IN_DISPLACEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANAL_FILL_IN_DISPLACEMENT_1.md
+
+## TAR_VISCOUS_SURFACE_ART_1 Give tar a viscous surface instead of tinted water - adopt Alpha Biomes AB_Tar/AB_TarPits by the same MayRequire pattern ManyWaters already uses for AB_SlimeRamp, authoring bespoke art only if adoption cannot carry it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md

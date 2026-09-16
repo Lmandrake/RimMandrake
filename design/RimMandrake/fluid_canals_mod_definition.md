@@ -134,6 +134,39 @@ permanently launder the map's terrain.
 **Debits** happen at pulse boundaries only: canal fill debits `volumePerTile` per cell, a burn debits
 what it consumes, a pump debits via §8.
 
+### Filling a canal back in — displacement, and the one place liquid is destroyed
+
+**Owner, 2026-09-16:** *"There should also be a way to 'fill in' a canal that displaces liquid BACK.
+It does not destroy liquid if there's a place for it to go, but if it would 'overflow' it is
+destroyed."*
+
+So the dig designator gains an inverse — **fill in** — and filling a cell that holds liquid pushes
+that liquid outward rather than deleting it:
+
+1. Compute the displaced amount: whatever the cell held.
+2. Offer it to the connected liquid, nearest first — remaining channel cells below their brim, then
+   the source body up to `bodyCapacity`.
+3. Whatever finds room is **credited**, and the receiving cells' fill tiers rise, so displacement is
+   visible: filling in one end of a canal makes the rest of it deeper.
+4. Whatever does not find room **overflows and is destroyed**. This is the ONLY sanctioned place in
+   the design where liquid leaves the world without being spent, burned or pumped.
+
+🔑 **Why this matters more than it looks.** It makes conservation of mass a rule with exactly one
+stated exception rather than an aspiration with silent leaks, and the exception is one the player
+causes and can see. It also gives the defense loop a *reversible* move: a canal is no longer a
+one-way commitment of the source's stock — fill it back in before a raid that never came and you
+get most of your liquid back. That directly softens the "liquid spent is liquid gone" tension of
+loop step 3, which is a balance consequence worth him knowing about.
+
+**Consequences to build:** a fill-in designator, job and work giver mirroring the dig chain; a
+`TryCredit`-shaped displacement walk (§8 already has the credit primitive); and an overflow report so
+destroyed liquid is disclosed rather than silent — a message or an inspect line, since silent loss in
+a conservation-of-mass system reads as a bug.
+
+⚠️ Filling in must also restore the *original* terrain, not leave generic soil. The channel already
+knows how to give the floor back on drain (`SetTempTerrain` + `QueueRemoveTerrain`); a fill-in is the
+permanent version of the same idea and needs the same care about not laundering the map's terrain.
+
 ## 6. The channel-constraint problem
 
 `Flood_FluidCanal` subclasses vanilla's Odyssey `Flood` and inherits its gating: from the seed cell
@@ -246,8 +279,10 @@ channels (2026-09-12 standing rule).
    changes the designator, the art list and the stock math.
 2. **Sluice gates.** A buildable gate cell that holds liquid back until opened is the natural fit for
    step 3 and would replace the "leave the last cell undug" trick. This mod, or Liquid Logistics?
-3. **Does drained liquid come back?** Returned to the source's stock, or gone? Conservation of mass
-   argues return; the defense loop's tension argues loss. Different games.
+3. **Does drained liquid come back?** ⚠️ Half-ruled 2026-09-16: liquid displaced by **filling a canal
+   in** returns to whatever has room and only the overflow is destroyed (§5). The open half is
+   different — when a canal *drains on its own* (a release receding, evaporation), does that volume
+   return to the source or is it gone? Symmetry argues return; the defense loop's tension argues loss.
 4. **Does a burn consume the liquid?** A propane channel that burns a long time and is still full
    afterwards is free defense. Proposed: burning debits stock continuously — and say whether it also
    empties the *source*, since fire reaching it is your design.
@@ -401,6 +436,14 @@ natural quantisation, since a tier is a volume.
 `RM_Slime_Mud` → `RM_Slime_Liquid`) driven by a `terrainsByFertility` moisture band. It is a moisture
 continuum rather than a depth one, but the shape — several terrains, one substance, one gradient — is
 already established here and worth matching.
+
+🔴 **RULED — owner, 2026-09-16: "Agreed that Tar needs the viscosity most of all."** Tar is the top
+art priority of this mod. It is also the highest-leverage single fix, because tar is the defense
+spine's signature liquid (a burning tar moat) and it is the liquid currently *least* served by tinted
+water: water tinted black still ripples like water, which reads as an oil slick rather than as
+something a raider wades through. Adopt Alpha Biomes' `AB_Tar` / `AB_TarPits` surfaces first, by the
+same `MayRequire` pattern ManyWaters already uses for `AB_SlimeRamp`, and only author bespoke tar art
+if adoption cannot carry it.
 
 🔴 **The defect: differentiation between liquids is currently a colour multiply, not a look.** Every
 in-repo liquid tints the vanilla water ramp via `<color>(R,G,B)</color>`. So **tar today is tinted
