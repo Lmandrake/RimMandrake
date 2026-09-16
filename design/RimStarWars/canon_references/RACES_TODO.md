@@ -77,15 +77,15 @@ player actually sees walking around.
 
 | ✓ | slug | label | defName | tier | faction placements (matrix) |
 |---|------|-------|---------|------|------------------------------|
-| ⬜ | `abednedo` | Abednedo | `RSW_RimMandrakeAbednedo` | A | OutlanderCivil:A |
-| ⬜ | `arkanian` | Arkanian | `RSW_RimMandrakeArkanian` | A | Jawa_AscendantHelix:A |
-| ⬜ | `chadra_fan` | Chadra-Fan | `RSW_RimMandrakeChadraFan` | A | Jawa_Junkers:A, Empire:R, OutlanderCivil:R |
-| ⬜ | `feeorin` | Feeorin | `RSW_RimMandrakeFeeorin` | A | Jawa_Junkers:A, Jawa_HuttCartel:R |
+| ✅ | `abednedo` | Abednedo | `RSW_RimMandrakeAbednedo` | A | OutlanderCivil:A |
+| ✅ | `arkanian` | Arkanian | `RSW_RimMandrakeArkanian` | A | Jawa_AscendantHelix:A |
+| ✅ | `chadra_fan` | Chadra-Fan | `RSW_RimMandrakeChadraFan` | A | Jawa_Junkers:A, Empire:R, OutlanderCivil:R |
+| ✅ | `feeorin` | Feeorin | `RSW_RimMandrakeFeeorin` | A | Jawa_Junkers:A, Jawa_HuttCartel:R |
 | ✅ | `gamorrean` | Gamorrean | `RSW_RimMandrakeGamorrean` | A | Jawa_Junkers:A, Jawa_HuttCartel:S |
-| ⬜ | `gand` | Gand | `RSW_RimMandrakeGand` | A | Jawa_Junkers:A |
-| ⬜ | `geonosian` | Geonosian | `RSW_RimMandrakeGeonosianVariants` | A | Jawa_GeonosianFoundryHive:A |
+| ✅ | `gand` | Gand | `RSW_RimMandrakeGand` | A | Jawa_Junkers:A |
+| ✅ | `geonosian` | Geonosian | `RSW_RimMandrakeGeonosianVariants` | A | Jawa_GeonosianFoundryHive:A |
 | ✅ | `hutt` | Hutt | `RSW_RimMandrakeHutt` | A | Jawa_HuttCartel:A |
-| ⬜ | `ithorian` | Ithorian | `RSW_RimMandrakeIthorian` | A | OutlanderCivil:A, Jawa_WildsteamClan:S |
+| ✅ | `ithorian` | Ithorian | `RSW_RimMandrakeIthorian` | A | OutlanderCivil:A, Jawa_WildsteamClan:S |
 | ✅ | `jawa` | Jawa | `RSW_MandrakeJawa` | A | Jawa_IndigenousTribes:A, Jawa_HuttCartel:R |
 | ✅ | `klatooinian` | Klatoonian | `RSW_RimMandrakeKlatoonian` | A | Jawa_HuttCartel:A |
 | ⬜ | `lasat` | Lasat | `RSW_RimMandrakeLasat` | A | Jawa_WildsteamClan:A, TribeCivil:R |
@@ -154,3 +154,40 @@ This section is written **incrementally, as work completes**. An entry is only t
 after `description.md` plus its images are on disk.
 
 ### Batch 1 — the `A`-tier species (what the player actually sees)
+
+### Batch — seven species, 2026-09-15
+
+`description.md` written for **all seven** assigned: `abednedo`, `arkanian`,
+`chadra_fan`, `feeorin`, `gand`, `geonosian`, `ithorian`. Each has a real defName from
+`RimMandrakeXenotypes.xml`, sourced text (canon page; `Feeorin/Legends` for the Feeorin
+biology, since the canon page is a stub), a visual brief written from the images actually
+on disk, source URLs, per-image notes, and an empty `## ruling`. Every fetch went
+**straight through `curl` to the Fandom API** — no Fetcher needed on this pass.
+
+Each entry carries a **Def-versus-canon (flagged)** section. The concrete defects found:
+
+- `RSW_RimMandrakeIthorian` has **`nameMaker = RSW_KoTOR_NamerSullustan`** — the wrong
+  species' namer — and `ElongatedFingers`, which every canon image contradicts (Ithorian
+  hands are short and blunt).
+- `RSW_RimMandrakeGand`'s `<description>` is the single character `.`, and the species'
+  **silver compound eyes** — its only sourced eye colour — have no gene.
+- `RSW_RimMandrakeGeonosianVariants` carries `RSW_BodySizeGene_small` against a **sourced
+  1.7 m height**, and `AptitudeTerrible_Intellectual` against a species that engineered
+  droid foundries and the Death Star.
+- `RSW_RimMandrakeChadraFan` has **no head-type gene and no skin-colour gene**, and an
+  invented `RSW_lifespan_half`.
+- `RSW_RimMandrakeFeeorin` carries `DiseaseFree` + `TotalHealing` + `Outland_EggLayer`,
+  none sourced; its `chanceToUseNameMaker` is 0.
+- `RSW_RimMandrakeAbednedo`'s skin genes cover orange-to-brown but **not the grey-cream
+  the on-screen Abednedo actually is**.
+- `RSW_RimMandrakeArkanian` is the cleanest of the seven; its `Beauty_Pretty` pair is the
+  only unsourced trait of consequence.
+
+Negative references labelled rather than deleted: `geonosian/wookieepedia_geonosianconceptart.jpg`
+(Terryl Whitlatch **pre-final** concept art — multiple wing pairs and almond eyes, neither
+of which shipped), `geonosian/donor_current_sprite.png` (white-sclera round eyes, no
+mandibles), `gand/wookieepedia_zuckuss_sideshow.png` (fully masked — hides every
+anatomical feature), `feeorin/donor_current_sprite.png` (an essentially blank 4 KB canvas).
+
+⚠️ `chadra_fan/` has **no `donor_current_sprite.png`**, so nothing there compares canon
+against current mod art.
