@@ -158,7 +158,21 @@ def main():
     win = cw.get("context_window_size") or window_for(model_id, name)
     used = cw.get("total_input_tokens")
     pct = cw.get("used_percentage")
-    if used is None:                       # null until the first API response
+
+    # 🔴 `used_percentage` is the authoritative occupancy; `total_input_tokens` is
+    # NOT cumulative context. With prompt caching almost the whole context arrives
+    # as cache reads, so that field reports only the last request's uncached slice.
+    # Deriving the number FROM the percentage is what makes the bar and the digits
+    # incapable of disagreeing -- they now have one source.
+    #
+    # MEASURED 2026-09-16 (owner reported the mismatch): the bar drew 45% while the
+    # digits read "7k/1.00M  993k left", and summing the transcript's last usage
+    # (input + cache_creation + cache_read) gave 449,524. The digits were
+    # overstating remaining headroom by ~440k -- the dangerous direction, since the
+    # line exists to warn before a context blowout.
+    if pct is not None and win:
+        used = int(round(win * pct / 100.0))
+    elif used is None:                     # null until the first API response
         used = context_used(ev.get("transcript_path"))
     if pct is None and used is not None and win:
         pct = 100.0 * used / win
