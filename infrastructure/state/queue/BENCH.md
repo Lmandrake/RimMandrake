@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T05:46:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T11:44:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -379,8 +379,8 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NORTH_STAR_PIT_PILOT_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
 
 ## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
