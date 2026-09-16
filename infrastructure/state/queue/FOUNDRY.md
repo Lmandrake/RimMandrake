@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T22:51:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T22:59:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1770,3 +1770,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Sweep the remainder. MEASURED list as of 2026-09-16 — re-grep, since it will have
 prose:    infrastructure/state/items/STALE_RENAME_GATE_SWEEP_1.md
+
+## AFTERMATH_DEAD_LETTERS_1 Aftermath's payload letters never reach the screen: letterLabel/letterText declared at RM_AftermathRuleDef.cs:56-57 and read NOWHERE, so all 8 rules author a letter the player never sees; the single ReceiveLetter at AftermathRuleRunner.cs:337 is the telegraph only and hardcodes LetterDefOf.ThreatBig so every omen arrives identically
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/AFTERMATH_DEAD_LETTERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/AFTERMATH_DEAD_LETTERS_1.md
+
+## SALVAGECLAIM_WALK_STALE_1 design/validation_walks/RimMandrake/SalvageClaim.md names a subject that no longer exists (src/RimMandrake/SalvageClaim is gone, consolidated into RimProperty) - re-point or retire the walk, and check whether Property.md already covers it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SALVAGECLAIM_WALK_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SALVAGECLAIM_WALK_STALE_1.md
