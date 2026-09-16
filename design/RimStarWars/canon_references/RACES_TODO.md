@@ -111,12 +111,12 @@ player actually sees walking around.
 | ✅ | `devaronian` | Devaronian | `RSW_RimMandrakeDevaronian` | S | Jawa_HuttCartel:S |
 | ✅ | `ewok` | Ewok | `RSW_RimMandrakeEwok` | S | Jawa_WildsteamClan:S |
 | ✅ | `falleen` | Falleen | `RSW_RimMandrakeFalleen` | S | Jawa_HuttCartel:S |
-| ⬜ | `herglic` | Herglic | `RSW_RimMandrakeHerglic` | S | Jawa_DeepwaterCompact:S |
-| ⬜ | `muun` | Muun | `RSW_RimMandrakeMuun` | S | Jawa_AscendantHelix:S, Jawa_HuttCartel:R |
-| ⬜ | `neimoidian` | Neimoidian | `RSW_RimMandrakeNeimoidian` | S | Jawa_AscendantHelix:S |
-| ⬜ | `pyke` | Pyke | `RSW_RimMandrakePyke` | S | Jawa_HuttCartel:S, Pirate:R |
+| ✅ | `herglic` | Herglic | `RSW_RimMandrakeHerglic` | S | Jawa_DeepwaterCompact:S |
+| ✅ | `muun` | Muun | `RSW_RimMandrakeMuun` | S | Jawa_AscendantHelix:S, Jawa_HuttCartel:R |
+| ✅ | `neimoidian` | Neimoidian | `RSW_RimMandrakeNeimoidian` | S | Jawa_AscendantHelix:S |
+| ✅ | `pyke` | Pyke | `RSW_RimMandrakePyke` | S | Jawa_HuttCartel:S, Pirate:R |
 | ✅ | `rodian` | Rodian | `RSW_RimMandrakeRodian` | S | Jawa_HuttCartel:S, Jawa_Junkers:S, Pirate:R |
-| ⬜ | `selkath` | Selkath | `RSW_RimMandrakeSelkath` | S | Jawa_DeepwaterCompact:S |
+| ✅ | `selkath` | Selkath | `RSW_RimMandrakeSelkath` | S | Jawa_DeepwaterCompact:S |
 | ⬜ | `snivvian` | Snivvian | `RSW_RimMandrakeSnivvian` | S | Jawa_Junkers:S |
 | ⬜ | `sullustan` | Sullustan | `RSW_RimMandrakeSullustan` | S | OutlanderCivil:S |
 | ⬜ | `togorian` | Togorian | `RSW_RimMandrakeTogorian` | S | Jawa_WildsteamClan:S, Pirate:R, TribeCivil:R |
@@ -637,3 +637,134 @@ them.
 ⚠️ `dathomirian` and `yoda_species` both have **empty matrix placements and
 `factionlessGenerationWeight: 0`**, so neither can appear in a game as shipped.
 
+
+### Batch — cathar, chiss, duros, echani, iktotchi, 2026-09-15 (the five `R`-tier rares)
+
+`description.md` plus images written for **all five** assigned — every directory created
+from scratch, every defName verified against `RimMandrakeXenotypes.xml` (69 `XenotypeDef`s
+measured). Every fetch went **straight through `curl` to the Fandom API**; Fetcher was not
+needed once. Images are served as **WebP under `.png`/`.jpg` names** on the wiki and were
+re-encoded to real JPEG locally so they open.
+
+**Two of the five have near-empty canon articles** and their substance is Legends-only:
+**Echani** (canon article 1,873 chars, **every infobox field blank**, one anecdote about
+targons) and **Cathar** (canon article 4,985 chars carrying `{{Species-stub}}`, only
+`class` and `haircolor` filled). **Chiss**, **Duros** and **Iktotchi** have real canon
+articles, and Legends was still read for all five because the numbers live there.
+
+**No species in this batch has a canonical height, mass or lifespan** — all three fields
+are blank in all five canon infoboxes. Recorded as absent, never guessed. Correspondingly,
+**not one of the five invents a body-size or lifespan gene**, which is the batch's clearest
+piece of good news and should not be "fixed."
+
+The defects found:
+
+- 🔴 **`RSW_RimMandrakeChiss` carries `PsychicAbility_Deaf` on a species with canonical
+  Force-sensitives.** Chiss "Sight" is *rare*, not absent: Third Sight (precognition),
+  Second Sight (telepathy), almost always female, trained as **sky-walker navigators**. A
+  blanket psychic-deaf gene makes a canonical archetype unreachable. Its **infrared
+  vision — the only entry in the canon `distinctions` field — has no gene**, nor do
+  **sharper hearing** or **faster reflexes**; those are the species' three mechanical
+  facts and all three are missing. `Outland_HairColor_DarkAzure` is a bright blue where
+  canon is **"shimmering blue-black"** and Legends is **"typically jet black"**, and
+  `Hair_Grayless` forbids the specifically sourced detail that Chiss hair **"did on rare
+  occasions go gray with age."** One `Skin_Blue` against Legends' **"blue to silver"** with
+  **shade varying by ambient oxygen**.
+- 🔴 **`RSW_RimMandrakeDuros` cannot be green.** Three blue genes
+  (`Outland_Skin_DeepBlue`, `Skin_Blue`, `Outland_Skin_PaleAzure`) on a species whose prose
+  in both continuities is **"smooth blue-green skin"**, whose canon infobox also lists
+  **Green, Turquoise, Brown, Gray, Purple**, and whose canon infobox image, Legends infobox
+  image and film photograph are **all green or grey-green**. Worse, `SW_HeadTypes.xml` sets
+  `useSkinShader: false` on both Duros head types over a **measured pure-greyscale**
+  texture with **no `CutoutComplex` and no `*m.png` mask** — unlike Cathar and Iktotchi,
+  which pair the same flag with both — so **nothing on disk supplies the Duros head a
+  colour at all** (inference from disk; needs in-game confirmation). The head is a **plain
+  human ovoid** with none of the tall backswept dome that is the entire Duros silhouette,
+  even though `Fivehead` heads exist elsewhere in the same textures. `Outland_Scalebody` +
+  `RSW_butchergene_lizardskin` contradict **"smooth"** (reptilian *ancestry* is sourced;
+  a scaled surface is not). The species' one canon unusual ability — **stress-triggered
+  irritant oil in sacs along the ribs** — has no gene. `RSW_Eyes_HugeRed` is the right
+  idea but reuses the **Jawa** eye texture (`bigeyes/jawaeyes_red`).
+- 🔴 **`RSW_RimMandrakeEchani` excludes the Thyrsians and biologises what canon says is
+  cultural.** The Legends infobox lists skin **"Chalk-pale, *dark*"** and hair
+  **"White, *dark*"**, and the **Thyrsian** subspecies — source of the **Sun Guard** — is
+  explicitly dark-haired and dark-skinned, "a diametric contrast"; the def has only
+  `Skin_LightGray`/`Skin_SheerWhite`/`Hair_SnowWhite` plus `Hair_Grayless`.
+  **"Remarkable familial similarity"**, one of only three listed distinctions, has no gene.
+  `Turn_Gene_MeditationNeed` is unsourced *and* pushes toward the exact reading the article
+  disclaims in as many words: the Echani ability to pre-empt an opponent **"was not a
+  biological trait inherent to the Echani or their subspecies."** `Outland_LowFertility`
+  runs against Yusanis's **six** Handmaiden Sisters and "not at all unusual for children of
+  the same parents to be born … indistinguishable." And
+  **`<combatPowerFactor>0.6</combatPowerFactor>`** rates the galaxy's melee benchmark
+  species as *weaker* than baseline, in the same def that grants `MeleeDamage_Strong`,
+  `Turn_Gene_Duelist` and `AptitudeRemarkable_Melee`. Its `iconPath` is the vanilla
+  **Baseliner** icon.
+- 🔴 **`RSW_RimMandrakeIktotchi` has no `nameMaker` at all** — the only one of the five —
+  and no `RimMandrakeSWNames/…/Iktotchi` directory exists, so its pawns get default human
+  names where canon supplies Saesee Tiin, Ferren Barr, Talvee Chawin. `PsychicAbility_
+  Enhanced` inverts the caveat that decides the case here: precognition **"became very
+  limited as soon as they moved away from the moon,"** and every Iktotchi in this campaign
+  is off-world. **Horn colour cannot differ from skin colour** — greyscale texture plus a
+  **red-channel-only** mask (measured `(253,0,0)`/`(255,2,2)`, green channel empty) means
+  one tint drives both, where canon horns are consistently paler cream against reddish-tan
+  skin. **Horn dimorphism** (males' larger) and **horn regeneration** are unrepresented,
+  as is the Legends `distinctions` entry **Piloting** — the def carries **no Aptitude genes
+  at all**. `Immunity_Weak` is invented (the closest canon material is the *slander* that
+  Iktotchi **carried** the Omen Disease).
+- 🔴 **`RSW_RimMandrakeCathar` has no gold and no stripes.** Legends skin is
+  **"Gold to yellow-brown with dark stripes"**; the def carries `Skin_DeepRed`,
+  `Outland_Skin_Red`, `Skin_SlateGray` and two browns — **the one colour every reference
+  image agrees on is absent from the gene list**, and red and slate grey are unsourced.
+  No stripe or marking gene exists (same failure class as the anooba's "varying tones of
+  gray"). **Retractable claws** — "prominent, retractable claws that could deliver powerful
+  killing attacks," on "the perfect hand-to-hand specialists" — have no natural-weapon
+  gene, and `AptitudeStrong_Shooting` cuts against that framing. **Very sensitive hearing**,
+  the species' one explicit canon superlative ("even more so than Twi'leks or humans"), has
+  no gene. Art-side: `Ears_Pointed` gives elf ears where canon specifies **tufted** feline
+  ears, the head is a plain human ovoid with **no muzzle and no mane**, and the only
+  Cathar-specific overlay on disk (`CatNose`) has **no north facing** — in game a Cathar is
+  a tinted human with a cat nose.
+
+Credit where due: **all four namers that exist are the correct species** (`RSW_KoTOR_Namer
+Cathar`/`Duros`/`Echani` wired to real `SWX/<Species>/{First,Last,Nick}` files, and
+`RSW_ChissNameGenerator` assembling multi-part names that match canon's three-part
+family/given/social structure with `chanceToUseNameMaker` forcing it) — **no wrong-species
+namer in this batch.** The **Iktotchi** def is the best-aligned overall: `Outland_ThickSkin`,
+`Hands_Pig` (an unusually exact match for "broad hands … fatty digits … almost 1.5 times
+the size of a Human hand" *and* "limited manual dexterity"), `Hair_BaldOnly` and a head
+sprite whose **horns are present and correctly down-curved**. The **Chiss** cold-tolerance
+genes are properly sourced (Csilla's great ice age, underground survival, glacier cities).
+The **Echani** melee/crafting cluster is exactly right, and the repo's Echani *gear*
+(vibroswords, vibroblades, personal shields, light combat suits) matches canon better than
+its pawn side does.
+
+⚠️ **One place the images side with the def against the wiki's own prose, recorded honestly
+rather than manufactured into a defect:** the **Iktotchi** infoboxes say skin **Tan**
+(canon) / **Pink** (Legends) and the prose says "peach to brown", which alone would make
+`Skin_DeepRed`/`Skin_PaleRed` look invented — but the Legends infobox painting and the
+Ferren Barr comic are plainly **brick and orange-red**, and `Outland_Skin_PaleBrown` covers
+the tan end. Do not correct the reds away on the strength of the infobox.
+
+Negative / weak references labelled rather than deleted:
+`cathar/wookieepedia_canon_twins.jpg` (the **current-canon infobox image**, but a
+near-human stylised flash design with **no muzzle at all** — taken alone it would produce a
+Cathar with no feline silhouette); `echani/wookieepedia_handmaiden_brianna.jpg` (Brianna is
+**half-Echani** by the article's own text, so a blended reference — she is the warm end of
+"light skin", not the species centre); `duros/wookieepedia_cad_bane.jpg` (the one
+famously **blue** Duros — one character, not the species colour);
+`chiss/donor_current_sprite.png` (a **xenotype UI icon, not a sprite** — no Chiss pawn art
+exists in `src/` at all, the head coming from `Outland_SvelteHead`, a gene defined in an
+external mod).
+
+Unsourceable and recorded as absent rather than guessed: **height, mass and lifespan for
+all five** (blank in every canon infobox); **Echani height/mass/lifespan in Legends too**
+(also blank), and **the entire canon Echani appearance** — the canon infobox has no filled
+field of any kind; **Cathar eye colour** (blank in canon, blank in Legends). ⛔ **No
+Thyrsian reference image was obtainable** — `/wiki/Thyrsian` carries no infobox image — so
+the dark-skinned half of the Echani is unillustrated here. Not fetched: the
+`starwars.com` Databank in all five cases (the Duros and Iktotchi canon infoboxes cite it
+for skin colour, so it is the most promising unread source), and the underlying print
+sources (*Ultimate Alien Anthology*, *Alien Anthology*, *Galaxy at War*, *The Clone Wars
+Campaign Guide*, *Legacy Era Campaign Guide*, *Galaxy Guide 4*) — only Wookieepedia's
+transcription of them was read.
