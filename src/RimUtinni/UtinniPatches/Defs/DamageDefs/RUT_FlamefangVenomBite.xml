@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FlamefangVenomBite.xml            UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+
+  Delivery half of the venom mechanism — see HediffDefs/RUT_FlamefangVenom.xml
+  for the full citation of the vanilla pattern this copies (Cobra's ToxicBite
+  DamageDef, RimSage-verified: ParentName="Bite" + <additionalHediffs>
+  injecting a HediffDef scaled by <severityPerDamageDealt>). ParentName="Bite"
+  is a real, Name-attributed vanilla DamageDef (Defs/Core/DamageDefs/
+  Damages_MeleeWeapon.xml) so this inherits armorCategory/hediff/
+  hediffSolid/impactSoundType/workerClass etc. from it unchanged; only the
+  label and the venom injection are new.
+
+  Routed onto GR_Boomsnake's bite tool by Patches/FlamefangVenom.xml via the
+  matching ToolCapacityDefs/RUT_FlamefangBite.xml + Maneuvers/
+  RUT_FlamefangBite.xml pair (mirrors GeneticRim's own GR_VeryToxicBite
+  capacity/maneuver/damage trio, which this replaces on the tool).
+-->
+<Defs>
+
+  <DamageDef ParentName="Bite">
+    <defName>RUT_FlamefangVenomBite</defName>
+    <label>venomous bite</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RUT_FlamefangVenom</hediff>
+        <severityPerDamageDealt>0.06</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+
+</Defs>

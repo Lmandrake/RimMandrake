@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FlamefangBite.xml                 UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+
+  ToolCapacityDef + ManeuverDef pair routing GR_Boomsnake's bite tool to
+  RUT_FlamefangVenomBite (DamageDefs/) instead of GeneticRim's own
+  GR_VeryToxicBite. Shape copied from GR_VeryToxicBite's own trio in Vanilla
+  Genetics Expanded (Defs/ToolCapacityDefs/ToolCapacity.xml +
+  Defs/Maneuvers/Maneuvers.xml, both RimSage/grep-verified this pass) and
+  from vanilla Cobra's ToxicBite trio — same required fields, same shape.
+-->
+<Defs>
+
+  <ToolCapacityDef>
+    <defName>RUT_FlamefangBite</defName>
+    <label>venomous bite</label>
+  </ToolCapacityDef>
+
+  <ManeuverDef>
+    <defName>RUT_FlamefangBite</defName>
+    <requiredCapacity>RUT_FlamefangBite</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RUT_FlamefangVenomBite</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Bite_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Bite_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Bite_MeleeMiss</combatLogRulesMiss>
+  </ManeuverDef>
+
+</Defs>
