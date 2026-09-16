@@ -157,6 +157,53 @@ Everything above still applies. These are the differences:
 Source of truth for which droids are in scope: the `in repo` column of
 `design/RimStarWars/canon_references/DROIDS_INDEX.md`.
 
+## 🔴 What a regen is validated against — owner ruled 2026-09-15
+
+**Sourced canon plus the visual brief IS the target.** The owner does not rule every entry;
+he rules only where canon is ambiguous, where he wants to depart from canon deliberately, or
+where a regen is contested. So an empty `## ruling` section does **not** mean the entry is
+unusable — it means canon stands unopposed.
+
+Consequence for you: the entry must be good enough to be judged against directly. Which is
+why every entry carries the two sections below.
+
+## Two sections every entry must carry
+
+**`## Must show`** — three to six **testable** items distilled from that entry's own visual
+brief, each one a thing a reviewer can look at a sprite and answer yes or no about. Not
+prose, not atmosphere. Written as a checklist:
+
+```
+## Must show
+- [ ] Banded/striped coat, not flat grey — three independent images agree
+- [ ] Large erect ears with pink-toned interiors
+- [ ] Spiky dorsal mane from skull down the spine
+- [ ] Front legs visibly longer than hind (sloped, hyena stance)
+- [ ] Chin tusk projecting from the lower jaw
+```
+
+Distil from what the brief already says. **Add no new claims** — if it is not in the brief
+above it, it does not belong in the checklist. Where the brief flags that images contradict
+the prose, the checklist follows the images.
+
+**`## Engine limits`** — any constraint that makes part of the canon appearance
+**undisplayable as things stand**, so a regen brief cannot ask for the impossible. Write
+`none known` if there are none. The ones found so far:
+
+- **A single-channel tint mask cannot express a two-tone or patterned animal.** This blocks
+  the Herglic's orca eye-patch and throat, Lasat striping, Cathar striping, and any horn or
+  appendage that must differ in hue from skin (Iktotchi). Such a pattern needs **art**, not a
+  colour value.
+- **`useSkinShader: false` over a greyscale mask means no skin gene can tint that face.**
+  Known on Bothan, Gungan, Duros and Twi'lek heads; Duros and Twi'lek have no mask file at
+  all. ⚠️ Needs in-game confirmation of what actually renders.
+- **A red-channel-only mask** cannot give horns a different hue from skin (Iktotchi).
+- **Shared textures**: `Races_Primitive.xml` reuses the MSE droid texture, so editing it
+  changes two races.
+
+⛔ **Cosmetic changes need the owner's permission** before they are made — they can break
+animated faces. Recording a limit is not the same as fixing it.
+
 ## What to report
 
 Under 250 words: which species you completed, any def-versus-canon contradictions found,
