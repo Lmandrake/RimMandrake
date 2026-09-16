@@ -152,6 +152,17 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
 
 ## What is where
 
+**Art is judged against the canon library, and canon is the target** (owner, 2026-09-15).
+`design/RimStarWars/canon_references/` holds 137 entries — 45 creatures, 69 species, 23 droid
+chassis — each with sourced canon, a visual brief written against real reference images, a
+`## Must show` checklist and `## Engine limits`. **An empty `## ruling` means canon stands
+unopposed, not that the entry is unusable**; he rules only on ambiguity, deliberate
+departures and contested regens. `AGENT_BRIEF.md` there is the operating doc. 🔴 Keep the
+three defect classes apart — a **missing gene** is edited in the def, an **engine limit**
+needs new art or more mask channels, and a **rig limit** (Ithorian neck, Kaminoan
+proportions, Muun body, Lasat legs) cannot be fixed at all, so art chasing it is waste.
+⛔ **Cosmetic changes need his permission first** — they can break animated faces.
+
 ```
 src/                    mods, defs, C#, art            FOUNDRY owns
 design/                 campaign specs (Utinni)        the owner's, via BENCH
