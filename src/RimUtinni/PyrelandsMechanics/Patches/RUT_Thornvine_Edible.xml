@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_Thornvine_Edible.xml    FURNACEBEAST_THERMAL_CYCLE_1 · 2026-09-16
+  ============================================================================
+  Gives thornvine a nutrition value so a furnace-beast can actually eat one.
+
+  🔑 WHY NUTRITION HAS TO BE XML AND CANNOT BE DONE IN THE JOB-GIVER.
+  JobDriver_Ingest's first gate (RimWorld/JobDriver_Ingest.cs:33) refuses any
+  def whose IsNutritionGivingIngestible is false, and that is computed from the
+  Nutrition stat through IngestibleProperties' own cache. It has to be right at
+  def-load time. So the job-giver points the beast at the plant; this file is
+  what makes the plant food at all.
+
+  🔴 WHAT THIS FILE DELIBERATELY DOES NOT DO: raise preferability.
+  Thornvine ships preferability NeverForNutrition, and that is load-bearing.
+  VERIFIED against the engine: FoodUtility.BestFoodSourceOnMap's animal path
+  rejects anything at preferability <= 2 on its main pass, so with the value
+  left alone no ordinary grazer ever routes to a thornvine patch. Raising it to
+  RawBad would have fed thornvine to every herbivore in a 590-mod stack and
+  destroyed the one line the owner asked for — "it is one of the only things
+  that will strip a thornvine patch". The species exception lives in
+  JobGiver_RUT_FurnaceThermalCycle, which bypasses that search entirely.
+
+  ⚠️ A starving animal of any species can still reach it: BestFoodSourceOnMap's
+  desperate fallback pass drops the preferability filter. That is correct
+  behaviour (a dying grazer eats what is there) and is not the beast's routine
+  diet.
+
+  NUTRITION 0.25 — anchored, not invented: vanilla Plant_Grass is 0.5
+  (MEASURED, Core/ThingDefs_Plants). Half of grass: a real meal, a bad one.
+
+  Conditional rather than a bare Add, per the house rule: with Odyssey absent
+  (Plant_Thornvine) or the donor absent (GRim*), each operation is a silent
+  no-op instead of a red line at every launch.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       VANILLA (Odyssey). The thornvine the campaign actually has today.
+       Its own raw XML carries <statBases>, VERIFIED, so the match branch
+       is the live one; the nomatch branch exists only for the day Ludeon
+       moves the node.
+  ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="Plant_Thornvine"]/statBases</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="Plant_Thornvine"]/statBases</xpath>
+      <value>
+        <Nutrition>0.25</Nutrition>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="Plant_Thornvine"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Plant_Thornvine"]</xpath>
+        <value>
+          <statBases>
+            <Nutrition>0.25</Nutrition>
+          </statBases>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- ==================================================================
+       THE GRiNDTerra BIOMES DONOR — three sibling defs of the same family.
+
+       ⚠️ MEASURED 2026-09-16: grimterra.biomesmod is NOT on disk in this
+       install — neither Mods\ nor workshop\content\294100 holds any file
+       naming GRimThornvine, and it is not in ModsConfig.xml. These three
+       defNames come from
+       design/Jawa/worldbuilding/review/plant_register_rows.json, which
+       recorded them (nutrition: null, i.e. not food) while the donor was
+       installed. So expect validate_patch.py to report 0 matches for this
+       block: that is the CORRECT answer while the mod is away, not a
+       failure, and the Conditional makes it a silent no-op in game.
+
+       Wrapped in FindMod as the item asked. Note that FindMod returns TRUE
+       on no match, which is why each inner operation is ALSO a Conditional
+       — FindMod alone would not protect these.
+  ================================================================== -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="GRimThornvine"]/statBases</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="GRimThornvine"]/statBases</xpath>
+            <value>
+              <Nutrition>0.25</Nutrition>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="GRim1Thornvine"]/statBases</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="GRim1Thornvine"]/statBases</xpath>
+            <value>
+              <Nutrition>0.25</Nutrition>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="GRim2Thornvine"]/statBases</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="GRim2Thornvine"]/statBases</xpath>
+            <value>
+              <Nutrition>0.25</Nutrition>
+            </value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

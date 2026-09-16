@@ -51,8 +51,15 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         private IntVec3 burnCenter = IntVec3.Invalid;
         private bool? isPyrelandsCached;
 
+        /// <summary>PYRELANDS_FIRE_CADENCE_1 — the biome's fire clock. Owned here
+        /// rather than being its own MapComponent so the biome check, the tick
+        /// gate and the save block are paid for once. See PyrelandsFireFront for
+        /// why a clock and a reseed are two different mechanisms.</summary>
+        private readonly PyrelandsFireFront fireFront;
+
         public MapComponent_BurnLine(Map map) : base(map)
         {
+            fireFront = new PyrelandsFireFront(map);
         }
 
         /// <summary>The kit's single entry point. Null-safe for callers that may
@@ -109,6 +116,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Scribe_Values.Look(ref arsonDebt, "arsonDebt", 0f);
             Scribe_Values.Look(ref ticksSinceAnyFire, "ticksSinceAnyFire", 0);
             Scribe_Values.Look(ref lastReseedAttemptTick, "lastReseedAttemptTick", -99999);
+            fireFront.ExposeData();
         }
 
         public override void MapComponentTick()
@@ -132,6 +140,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Measure();
             AccrueArsonDebt();
             KeepTheBurnAlive();
+            fireFront.Tick();
         }
 
         private void Measure()
@@ -245,7 +254,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// </summary>
         private bool TryReseedStandingBurn()
         {
-            if (!CellFinderLoose.TryGetRandomCellWith(IsLawfulSeedCell, map,
+            if (!CellFinderLoose.TryGetRandomCellWith(IsLawfulBurnCell, map,
                     PyrelandsTuning.StandingBurnSeedTries, out IntVec3 cell))
             {
                 return false;
@@ -254,7 +263,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             return FireUtility.TryStartFireIn(cell, map, PyrelandsTuning.SmoulderFireSize, null);
         }
 
-        private bool IsLawfulSeedCell(IntVec3 c)
+        /// <summary>Where the BIOME may light — as opposed to where a raider or a
+        /// colonist may. Shared with PyrelandsFireFront so "the burn starts out in
+        /// the grass, away from what you built" is stated once.</summary>
+        internal bool IsLawfulBurnCell(IntVec3 c)
         {
             if (!c.InBounds(map) || c.Fogged(map) || c.Roofed(map))
             {

@@ -126,5 +126,88 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// <summary>"Smolder, not blaze: 1-2 cells" (§8c).</summary>
         internal const int FurnaceBedIgnitionMinCells = 1;
         internal const int FurnaceBedIgnitionMaxCells = 2;
+
+        // ---------------------------------------------------------------
+        // PYRELANDS_FIRE_CADENCE_1 — the biome's fire clock (PyrelandsFireFront).
+        // Owner, 2026-09-14: "the fires should come every few days, not a rare
+        // event." The range below IS that sentence; do not widen it into
+        // "occasionally" without a ruling.
+        // ---------------------------------------------------------------
+        internal const float FireFrontMinDays = 2f;
+        internal const float FireFrontMaxDays = 4f;
+
+        /// <summary>Cells lit on one bearing. A single smoulder in grass usually
+        /// dies before it becomes anything; a line walks. [INVENTED]</summary>
+        internal const int FireFrontWidthCells = 9;
+
+        /// <summary>Bigger than the reseed's smoulder — this one is meant to
+        /// take hold — but still well under a blaze. [INVENTED]</summary>
+        internal const float FireFrontFireSize = 0.35f;
+
+        /// <summary>Ember-grass cells sampled looking for a lawful origin before
+        /// falling back to any lawful cell on the map.</summary>
+        internal const int FireFrontEmberGrassTries = 30;
+        internal const int FireFrontSeedTries = 40;
+
+        // ---------------------------------------------------------------
+        // FURNACEBEAST_THERMAL_CYCLE_1 — the capacitor
+        // (CompFurnaceThermalCharge, JobGiver_RUT_FurnaceThermalCycle).
+        // ---------------------------------------------------------------
+        /// <summary>Charge is re-evaluated ~every 4 in-game minutes. Rare-tick
+        /// cadence: this is a weeks-long cycle, not a combat stat.</summary>
+        internal const int FurnaceChargeIntervalTicks = 250;
+
+        /// <summary>Above this ambient temperature the beast charges. Chosen at
+        /// the Deep Desert's daytime floor, so basking genuinely works out there
+        /// and an ordinary temperate map never charges one at all. [INVENTED]</summary>
+        internal const float FurnaceChargeAmbientC = 35f;
+
+        /// <summary>Degrees above the threshold at which charging is at full
+        /// rate. Beyond it the rate is capped — a 1000 degC reading must not fill
+        /// the capacitor in one check. [INVENTED]</summary>
+        internal const float FurnaceChargeAmbientSpanC = 45f;
+
+        /// <summary>At full rate, ~1.4 in-game days from empty to full
+        /// (0.004 x 240 checks/day). "Basking for weeks" in the description is
+        /// the WORLD leg; on a map the player watches, a day and a half of
+        /// standing in the heat is the readable version. [INVENTED]</summary>
+        internal const float FurnaceChargePerCheckAtFullHeat = 0.004f;
+
+        /// <summary>Below this the beast bleeds. The near-terminator leg.</summary>
+        internal const float FurnaceBleedAmbientC = 5f;
+        internal const float FurnaceBleedAmbientSpanC = 35f;
+
+        /// <summary>Slower than charging: "bleeding its banked warmth into the
+        /// cold air for weeks". [INVENTED]</summary>
+        internal const float FurnaceBleedPerCheckAtFullCold = 0.0015f;
+
+        /// <summary>Standing in the burn is the fast lane — ~2 in-game hours from
+        /// empty to full. This is what makes walking into a fire rational.
+        /// [INVENTED]</summary>
+        internal const float FurnaceChargePerCheckNearFire = 0.05f;
+        internal const float FurnaceChargeFireRadius = 6f;
+
+        /// <summary>Radiant push at full charge, per check. Deliberately under
+        /// the beast's own flat CompHeatPusher (heatPerSecond 18): this is the
+        /// part that runs down, not the main heater. [INVENTED]</summary>
+        internal const float FurnaceRadiantHeatPerCheckAtFullCharge = 6f;
+
+        /// <summary>Below this charge the beast seeks the burn; above the second
+        /// number it steps off it. The gap between them is hysteresis — without
+        /// it a beast at the threshold oscillates on and off the fire every
+        /// check. [INVENTED]</summary>
+        internal const float FurnaceChargeSeekBelow = 0.75f;
+        internal const float FurnaceChargeAvoidAbove = 0.95f;
+
+        /// <summary>Map-scale only. Further than this and going to the burn is
+        /// the WORLD migration's job (FURNACEBEAST_WORLD_MIGRATION_1), not this
+        /// job-giver's — so it returns no job rather than faking one.</summary>
+        internal const float FurnaceBurnSeekRadius = 60f;
+        internal const float FurnaceBurnCloseEnough = 8f;
+        internal const int FurnaceBurnBackOffCells = 14;
+
+        /// <summary>How far a hungry beast will walk for a thornvine patch.
+        /// [INVENTED]</summary>
+        internal const float FurnaceThornvineScanRadius = 30f;
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       FURNACEBEAST_THERMAL_CYCLE_1, part 3/4 — how the furnace-beast gets to
+       decide.
+
+       Same supported modder hook the fire-hawk uses and for the same reasons:
+       Core's Defs/ThinkTreeDefs/Animal.xml carries
+       <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>,
+       and a ThinkTreeDef declaring that insertTag is spliced in there. Not a
+       Harmony transpiler, not a PatchOperation into the vanilla Animal tree.
+       No MayRequire: Animal_PreWander is Core.
+
+       NO FACTION GATE, matching the fire-hawk. A tamed furnace-beast walks into
+       your burn and strips your thornvine exactly as a wild one does — the
+       ruling that a kept beast "never stops being a fire hazard" is the same
+       ruling, and a ThinkNode_ConditionalHasFaction wrapper here would quietly
+       undo it.
+
+       The species gate is the comp (CompFurnaceThermalCharge), checked in C# by
+       the job-giver: there is no per-species XML hook at this splice point.
+
+       insertPriority 54: just under the fire-hawk's 55, so the two igniters do
+       not contend for a number, and above RimProperty's theft nodes (50).
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RUT_FurnaceBeast_ThermalCycle</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>54</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>Misc</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.Utinni.PyrelandsMechanics.JobGiver_RUT_FurnaceThermalCycle" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

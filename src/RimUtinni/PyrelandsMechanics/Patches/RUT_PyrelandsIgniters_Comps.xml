@@ -73,6 +73,12 @@
 
              3. CompFurnaceBedIgnition — OURS. The bed-down smoulder.
                 🔴 NO TAMED EXEMPTION, by ruling. Do not add one.
+
+             4. CompFurnaceThermalCharge — OURS, FURNACEBEAST_THERMAL_CYCLE_1.
+                The capacitor itself: the 0-1 charge the owner's cycle runs on.
+                It is also the species marker JobGiver_RUT_FurnaceThermalCycle
+                gates on, so removing this node removes the fire-seeking and the
+                thornvine diet along with the charge.
         ============================================================ -->
         <li Class="PatchOperationAdd">
           <xpath>Defs/ThingDef[defName="RUT_FurnaceBeast"]</xpath>
@@ -86,6 +92,7 @@
                 <radius>4.9</radius>
               </li>
               <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceBedIgnition" />
+              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceThermalCharge" />
             </comps>
           </value>
         </li>
