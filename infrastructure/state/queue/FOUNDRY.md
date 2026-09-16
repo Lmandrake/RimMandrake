@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T22:59:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T23:42:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1790,3 +1790,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SALVAGECLAIM_WALK_STALE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SALVAGECLAIM_WALK_STALE_1.md
+
+## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
+
+## GRAFFITI_VARIANT_COUNTS_1 Graffiti variant counts are lopsided 6:2:2:2 - Scratches, TallyMarks and WarningGlyph have only 2 variants each so Graphic_Random repeats visibly on any spree; raise the three new marks toward parity (owner cut this from the visual checklist 2026-09-16, it is content work)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
+
+## GRAFFITI_WARNGLYPH_INUNIVERSE_1 Replace RM_Graffiti_WarningGlyph's 2 sprites: the modern ISO hazard triangle becomes an in-universe glyph (Aurebesh character or Jawa clan mark) - owner ruled replace 2026-09-16; keep the existing rough hand-painted brushwork, only the iconography changes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md
