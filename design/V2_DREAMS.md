@@ -2287,21 +2287,28 @@ full census, so whoever writes the spec never pays for it again.
 
 ## REALISTIC_FLUID_DYNAMICS_1 — water that actually sloshes
 
-Owner, 2026-09-02, explicitly not-v1: real fluid mechanics for FluidCanals — water
-flowing through canals and pooling in basins in a way that looks and behaves like an
-actual fluid, not a cellular flood-fill. `v1`'s `Flood_FluidCanal` (see
-`FLUID_CANAL_FLOOD_TUNING_GAPS_1`) subclasses vanilla's own `Flood`/`SeasonalFlood`
-cellular spread — a seed cell radiating outward tile-by-tile on a timer, no notion of
-volume conservation between connected bodies, no pressure, no flow direction, no
-settling to a common level. That's the honest v1 shape: cheap, robust, ships.
+🔴 **MOSTLY DELIVERED IN v1 — corrected 2026-09-16.** This entry described v1 as a seed cell
+radiating outward on a timer with *"no notion of volume conservation between connected bodies… no
+settling to a common level."* **That is no longer true of v1.** The owner's FlowWorks rulings of
+2026-09-16 (`design/RimMandrake/fluid_canals_mod_definition.md`) put connected volumes, real
+conservation of mass, and settling to a common level **into v1**: every excavated cell carries a depth
+and a fill, and each pulse sorts the connected set deepest-first, pours to full, then overflows into
+neighbours with room. `Flood_FluidCanal` is dropped entirely.
 
-The dream is upstream of that: canals and basins as connected VOLUMES that actually
-conserve and redistribute fluid — a reservoir draining into a canal network fills
-connected basins toward a common level, a breach empties the high side into the low
-side at a rate that reads as flow rather than tile-flood-fill, damming/blocking a
-canal visibly backs water up rather than just refusing further spread. Impressive to
-WATCH, not just mechanically present — this is squarely the "iterate by LOOKING"
-territory (`Agent_Policy.md`) other art/world work already lives in.
+So of the dream below, these are now **v1 behaviours**, falling out of a sort plus an overflow: a
+reservoir draining into a canal network filling connected basins toward a common level; a breach
+emptying the high side into the low; damming a canal backing water up rather than refusing to spread.
+
+**What is genuinely left of this dream** is only the simulation half — pressure, velocity, and visible
+*sloshing*: fluid motion as motion rather than as state, impressive to WATCH. ⛔ And that half is
+**forbidden by ruling, not merely deferred**: framework pillar 2 is *"pulsed spread only… no per-tick
+fluid sim, ever"*, an owner ruling. This entry therefore waits on him reversing that pillar, not on
+capacity — so do not pick it up as ordinary v2 work.
+
+Original text of the dream, kept because the LOOK is the part still wanted: canals and basins as
+connected VOLUMES that conserve and redistribute fluid, at a rate that reads as flow rather than
+tile-flood-fill. Impressive to WATCH, not just mechanically present — squarely the "iterate by
+LOOKING" territory (`Agent_Policy.md`) other art and world work already lives in.
 
 Not scoped, not designed, not estimated. No engine survey done for whether RimWorld's
 grid can support this without a real simulation layer (a cellular-automaton water
