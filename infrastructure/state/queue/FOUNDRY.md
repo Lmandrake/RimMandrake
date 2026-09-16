@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T14:05:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T14:12:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1719,7 +1719,7 @@ prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
 ## CANAL_CONSTRAINED_SPREAD_1 Constrain Flood_FluidCanal to the dug channel - today it inherits vanilla Flood gating and spreads across any open ground, so a canal does not contain its liquid, which every canal design assumes it does
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
