@@ -26,9 +26,12 @@ status-hint: engine for the graffiti program, superseding Mlie.GraffitiMod's van
 Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (Continued)'s art) actually read as legible marks on a wall at normal zoom is a human-pass concern (MOD_HUMAN_EXPLORATION_PASS_1). ⬇️ **Superseded as the authority by the `## north star` section below** — that question is now a binding bar, not a deferred concern.
 
 ## north star
-state: DRAFT — every line below was ruled or accepted in the owner's sitting of
-2026-09-16. It awaits only the one validate command; until that runs it binds
-nothing, per `design/RimMandrake/north_star_validation_spec.md`.
+state: DRAFT
+
+⚠️ Every line below was ruled or accepted in the owner's sitting of 2026-09-16 and
+awaits only the one validate command; until that runs it binds nothing, per
+`design/RimMandrake/north_star_validation_spec.md`. (`state:` is kept as a single
+bare token because `modcheck/cli.py` parses this field.)
 
 ### the experience  (OWNER'S WORDS — verbatim)
 
