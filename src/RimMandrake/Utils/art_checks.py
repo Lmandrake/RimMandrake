@@ -95,6 +95,15 @@ FACING_HEIGHT_MAX_RATIO = 1.35
 # GreenGoo scores 0.89 and he praised it. 0.80 sits in that gap. Donor art that
 # obeys the convention clusters 0.96-1.00.
 SYMMETRY_MIN_NS = 0.80
+# 🔴 KNOWN FALSE NEGATIVE, measured 2026-09-15. `Gizka_north.png` scores 0.845 —
+# it PASSES this bound — and is an unmistakable side profile of a lizard facing
+# right, one eye visible. Confirmed by looking, and a visual LLM judge returned
+# NO with the correct reason in 17.8s. A blobby profile is symmetric by accident,
+# so no value of this constant separates the two cases; raising it to 0.85 only
+# starts failing genuinely round animals. Treat this check as evidence that
+# north/south is WRONG, never as evidence that it is RIGHT. The defect class is
+# ARTPIPE_FACING_COHERENCE_1; the instrument that catches it is a visual judge
+# (design/RimMandrake/north_star_validation_spec.md §4a).
 # A profile that reads as symmetric is not a profile. Weaker evidence than the
 # north/south bound — no owner-confirmed case either way — so it is medium, and
 # the threshold is set high to avoid punishing a genuinely round animal.
