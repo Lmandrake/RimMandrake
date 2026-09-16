@@ -154,12 +154,17 @@ trench will, over hours, **fill that trench with tar**, exactly as asked.
 - **Grade matters.** Maps aren't ruled to carry per-tile elevation today, so
   the v1 slice fakes grade with a designated flow direction on the channel;
   true elevation-driven flow is a v2+ ask if the layout tooling grows one.
-- ~~**Volume is finite per pit.**~~ ⛔ SUPERSEDED by the 2026-09-02 ruling:
-  *"Don't make it finite, just make it slow to refill."* Reservoirs refill
-  slowly from the deep sources; scarcity is rate, not stock. Original text
-  kept for the shape of the comp: `CompTarReservoir` depletes as canals drain
-  it — a colony that floods its whole perimeter has spent a resource (fewer
-  archaeology finds, dryer moats), not pulled a free lever.
+- **Volume is finite per pit, AND it refills slowly.** Owner, 2026-09-16 —
+  scarcity is STOCK, a full reversal of the 2026-09-02 line ("scarcity is rate,
+  not stock") that this bullet used to carry. Note it is a THIRD position rather
+  than a return: the first design was finite with no refill, 2026-09-02 replaced
+  it with an unlimited rate, and the ruling now is finite *and* refilling —
+  slowly, from rain, season and ground seepage, slowest for a small body. So
+  `CompTarReservoir` depletes as canals drain it, exactly as this bullet
+  originally described: a colony that floods its whole perimeter has spent a
+  resource (fewer archaeology finds, dryer moats), not pulled a free lever — and
+  it gets it back if it waits long enough. A tar pit touching the map edge is a
+  limitless source and never meaningfully depletes.
 
 ### 4b. Tar moats — passive base defense
 
