@@ -1,20 +1,80 @@
 # Pit trap visual interface — design spec (PIT_TRAP_VISUAL_REDESIGN_1)
 
-For the owner's Thursday sitting. Owner's ask, verbatim (2026-09-13): *"we need
-to think now about very deeply what it looks like. It can't just be a simple
-trap graphic you get stuck on. So we need a big dark pit... thoroughly dream up
-the interface for this."*
+**This spec belongs to FlowWorks.** The pit is no longer its own mod: ruling 18
+(2026-09-16) made depth the primitive and dissolved `RimMandrake.Pits` into
+FlowWorks, and ruling 27 sequenced this art pass *after* that merge so sprites
+are drawn once against final def names. The mod's rulings live in
+`design/RimMandrake/fluid_canals_mod_definition.md` (still named for the mod's
+former name); the work item is `PIT_TRAP_VISUAL_REDESIGN_1`, blocked on
+`FLOWWORKS_BUILD_PROGRAM_1`. Read this spec WITH that doc, never alone.
 
-Scope: the LOOK and player interface of `RimMandrake.Pits` (RM_OpenPit_* traps,
-RM_PitCell_* prisoner pits). Mechanism design is settled
-(`design/Jawa/covered_pit_traps_spec.md`); this spec proposes what the player
-sees, marks every element BUILDABLE-AS-XML or NEEDS-C#, and ends in three
-candidate directions with a recommendation. Implementation is a follow-on build
-item once the owner picks.
+Owner's ask, verbatim (2026-09-13): *"we need to think now about very deeply what
+it looks like. It can't just be a simple trap graphic you get stuck on. So we
+need a big dark pit... thoroughly dream up the interface for this."*
 
-Every mechanism named here was verified against decompiled 1.6 source
-(RimSage) or the mod's own code on 2026-09-14; file:line cites are given where
-it matters.
+Scope: the LOOK and player interface of the pit — open traps and prisoner pits.
+It proposes what the player sees, marks every element BUILDABLE-AS-XML or
+NEEDS-C#, and ends in three candidate directions with a recommendation.
+
+## Status — what survived four later rulings, and what did not
+
+Written 2026-09-14. Four owner rulings landed on 2026-09-16 and this section
+records their effect rather than leaving the reader to guess.
+
+**Still good, and the reason to keep this file:**
+
+- §2's top-down depth grammar (near-black mouth, one lit inner-wall strip,
+  disturbed-earth spoil rim, drawSize overhang) and its Pyrelands-tuned palette.
+- §0's dissolution of the central tension — raiders never see pixels, so any
+  covered tell is mechanically free. Independent of every later ruling.
+- §7's three directions and the Direction B recommendation. **Ruling 19
+  strengthens it:** paying for four depths by painted composite multiplies
+  Direction A's sprite count, while B varies only a shared mouth gradient over
+  shared rim planes. (Inference from this spec's own sprite counts, not a
+  measurement.)
+- §8's mockup loop, which is the owner's standing process for this class of call.
+
+**Falsified or under-scoped by the later rulings — do not build from these
+as written:**
+
+- **Ruling 19 (four depths: shallow, mid, deep, SUPERDEEP; SUPERDEEP is the
+  trapping level).** §1's state table has no depth axis at all. Four depths must
+  be distinguishable top-down while LAW 2 forbids any elevation model, height
+  offset or perspective. This is the one open design question the item now
+  carries, and nothing in this file answers it.
+- **Ruling 25 (rain fills unroofed excavations)** and **ruling 26 (SUPERDEEP
+  captures regardless of fill).** §1's state table has no fill axis either, and
+  its claim that "covered+occupied cannot occur" was derived from a bool pair
+  that no longer bounds the states: a pit can now be covered and holding liquid,
+  or occupied and flooded. Ruling 25's own text names the covered-pit-full-of-
+  liquid contradiction as reopened.
+- **Ruling 18 + 27 (the merge).** Every `RM_OpenPit_*` / `RM_PitCell_*` defName
+  and every `Building_OpenPit.cs` file:line cite below is pre-merge. Re-measure
+  against FlowWorks' defs before citing any of it.
+- **§6's corpse-in-pit ruling** was framed as needing one decision; check it
+  against ruling 26 before putting it to the owner, since capture-regardless-of-
+  fill changes how a body ends up down there.
+
+## Provenance of the engine claims — trustworthy, and where they can be re-read
+
+**This document was authored on the Windows Desktop, where RimSage answers**
+(owner confirmed, 2026-09-16). So the engine-internals cites below are genuine
+decompiler reads, not an agent's recollection: `RimWorld/Building_Trap.cs:143-178`,
+`Verse/DeepResourceGrid.cs:106-118`, `Verse/AltitudeLayer.cs`'s layer values, and
+the `Printer_Plane` API that Direction B's print pass depends on. Treat them as
+measured.
+
+The operational consequence is only about *where*: **a Mac-laptop session cannot
+re-verify any of them** — RimSage has never connected there and there is no local
+decompiled tree — so from the laptop these are read-only facts to cite, never
+claims to re-derive or "confirm". Anything that needs a fresh engine read goes to
+the Desktop.
+
+Independently MEASURED offline, so it holds on either machine: `FloorEmplacement`
+is a real and usable `altitudeLayer` value — five of our own shipped defs already
+use it (`RUT_FoundrySalvageCache`, `RUT_FoundryTowerEntrance`,
+`RUT_LanternDeepEmergence`, and two Absorbed_KotorCore defs) — and `<drawSize>`
+is plain GraphicData XML.
 
 ---
 
@@ -221,13 +281,18 @@ Sprites: Direction A's list + 1 overlay outline atlas. **Total 9-10.**
 
 **Recommendation: Direction B**, with T1 as the covered tell, mote puffs on
 struggle, corpse-eject, the cell-def drawSize fix immediately, and the 2x2
-trap pit filed as its own gated item per §5. Direction A is the fallback if
-Thursday's ruling is "I want it in the game this week." C's overlay folds into
-either direction later without rework — it is deferrable, not exclusive.
+trap pit filed as its own gated item per §5. Direction A is the fallback if the
+ruling is "I want it in the game this week." C's overlay folds into either
+direction later without rework — it is deferrable, not exclusive.
+
+⚠️ Ruling 27 now sequences this behind the FlowWorks merge, so "this week" is no
+longer on the table as written — the fallback exists for a decision about
+*cost*, not about *schedule*. And the four-depth read (ruling 19) must be
+answered before either direction is drawn; see the Status section at the top.
 
 ## 8. Mockup loop (per the item's own process requirement)
 
-Owner rules on direction Thursday from THIS document; then, per his standing
+Owner rules on direction from THIS document; then, per his standing
 design loop, the build item opens with **offline PNG mockups** — the chosen
 direction rendered over a captured Pyrelands terrain screenshot at three
 vanilla zooms (empty / covered / occupied side by side), he picks, then the
