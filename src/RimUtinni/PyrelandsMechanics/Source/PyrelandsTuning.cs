@@ -150,6 +150,56 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         internal const int FireFrontSeedTries = 40;
 
         // ---------------------------------------------------------------
+        // DEEP_TRIBES_FIRE_RITE_1 — the Deep Tribes come to light it.
+        //
+        // OWNER, 2026-09-16, verbatim: "What about the biome sometimes spawning a
+        // small group of Deep Tribes to ignite the fire event, then harvesting the
+        // scorch fruit? That's canon in these parts."
+        //
+        // CANON: _freeze_rulings_2026-09-07.md R14 — "They are FIRE HARVESTERS —
+        // and they are the Deep Tribes. They come into the Pyrelands periodically,
+        // to perform their sacred Fire rites and reap its bounty, then return to
+        // their true homes in the deep desert." "The Pyre burns with or without
+        // them. It does not need them." That last sentence is why the rite is a
+        // FRACTION of the clock and never the whole of it.
+        // ---------------------------------------------------------------
+        /// <summary>Share of fire-clock firings that arrive as a rite instead of
+        /// as the biome's own front. One in three keeps the burn the biome's by
+        /// default, which is the ruling. [INVENTED]</summary>
+        internal const float FireRiteFraction = 0.33f;
+
+        /// <summary>"A small group" — the owner's words. [INVENTED]</summary>
+        internal const int FireRiteGroupMin = 3;
+        internal const int FireRiteGroupMax = 5;
+
+        /// <summary>How long the party works the burn before leaving with what it
+        /// took. Scorch-fruit "opens only in the burn and spoils within a day"
+        /// (the_pyrelands.md §5), so this is comfortably inside the window and
+        /// long enough for the front to have walked off its origin. [INVENTED]</summary>
+        internal const float FireRiteHarvestHours = 8f;
+
+        /// <summary>If the party cannot reach the origin at all, the rite still
+        /// happens — they light it where they got to. Half an in-game day of
+        /// walking is more than a map crossing. [INVENTED]</summary>
+        internal const int FireRiteTravelTimeoutTicks = 30000;
+
+        /// <summary>How far from the rite's origin a harvester will range looking
+        /// for pods. The front walks, so this is deliberately wider than the
+        /// ignition line. [INVENTED]</summary>
+        internal const float FireRiteHarvestRadius = 45f;
+
+        /// <summary>How near the origin they mill about between pods.</summary>
+        internal const float FireRiteWanderRadius = 12f;
+
+        /// <summary>Scorch-fruit one harvester will carry off before it stops
+        /// picking. The plant yields 5 a pod, so this is roughly five pods
+        /// each. [INVENTED]</summary>
+        internal const int FireRiteCarryPerPawn = 25;
+
+        /// <summary>Spread of the party around its map-edge entry cell.</summary>
+        internal const int FireRiteSpawnSpread = 8;
+
+        // ---------------------------------------------------------------
         // FURNACEBEAST_THERMAL_CYCLE_1 — the capacitor
         // (CompFurnaceThermalCharge, JobGiver_RUT_FurnaceThermalCycle).
         // ---------------------------------------------------------------

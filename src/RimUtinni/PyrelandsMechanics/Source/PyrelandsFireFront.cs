@@ -86,6 +86,19 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             Schedule(now);
+
+            // DEEP_TRIBES_FIRE_RITE_1 — sometimes this scheduled burn is not the
+            // biome's own, it is the Tribes'. The rite REPLACES the front rather
+            // than adding to it: the party walks in and lights it themselves when
+            // they arrive, so the clock has fired either way. Anything that stops
+            // the rite being sendable (no Tribes in this world, at war, nowhere to
+            // walk in from) falls straight through to the plain front below, which
+            // is what "all-off degrades to the fire clock" means.
+            if (TryRunRite())
+            {
+                return;
+            }
+
             int lit = TryStartFront();
             if (lit > 0 && PyrelandsMechanicsSettings.fireFrontLetterEnabled)
             {
@@ -128,6 +141,50 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return 0;
             }
             lastOrigin = origin;
+            return IgniteAt(origin, null);
+        }
+
+        /// <summary>
+        /// DEEP_TRIBES_FIRE_RITE_1 — roll the rite, and send it if it rolls.
+        /// Returns true only when a party is actually standing on the map with a
+        /// Lord; every other outcome returns false so the caller lights the plain
+        /// front instead and the clock never silently skips a beat.
+        /// </summary>
+        private bool TryRunRite()
+        {
+            if (!PyrelandsMechanicsSettings.fireRiteEnabled)
+            {
+                return false;
+            }
+            if (Rand.Value >= PyrelandsMechanicsSettings.fireRiteFraction)
+            {
+                return false;
+            }
+            if (!TryFindOrigin(out IntVec3 origin))
+            {
+                return false;
+            }
+            lastOrigin = origin;
+            return PyrelandsFireRite.TrySend(map, origin);
+        }
+
+        /// <summary>
+        /// Light a front on one bearing through <paramref name="origin"/>.
+        ///
+        /// 🔴 The instigator is the whole difference between the biome's front and
+        /// the Tribes' rite. Null is the biome (no arson debt, nobody's fault);
+        /// the lead harvester is the rite (still no arson debt — see
+        /// MapComponent_BurnLine.IsPlayerAttributed, which only counts fires whose
+        /// instigator belongs to the PLAYER — but every burn that follows now
+        /// carries their name, because Fire.TrySpread hands the instigator down to
+        /// every child fire).
+        /// </summary>
+        internal int IgniteAt(IntVec3 origin, Thing instigator)
+        {
+            if (!origin.IsValid)
+            {
+                return 0;
+            }
 
             // A bearing for the LINE itself; the burn then walks off it in
             // whichever direction vanilla's own spread maths prefers.
@@ -145,7 +202,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 {
                     continue;
                 }
-                if (FireUtility.TryStartFireIn(cell, map, PyrelandsTuning.FireFrontFireSize, null))
+                if (FireUtility.TryStartFireIn(cell, map, PyrelandsTuning.FireFrontFireSize, instigator))
                 {
                     lit++;
                 }

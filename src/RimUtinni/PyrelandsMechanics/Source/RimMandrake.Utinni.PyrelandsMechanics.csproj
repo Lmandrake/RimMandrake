@@ -54,6 +54,9 @@
     <Compile Include="PyrelandsFactions.cs" />
     <Compile Include="MapComponent_BurnLine.cs" />
     <Compile Include="PyrelandsFireFront.cs" />
+    <Compile Include="PyrelandsFireRite.cs" />
+    <Compile Include="LordJob_RUT_FireRite.cs" />
+    <Compile Include="JobGiver_RUT_HarvestScorchFruit.cs" />
     <Compile Include="CompFireHawkSpread.cs" />
     <Compile Include="JobGiver_RUT_FireHawkCarryEmber.cs" />
     <Compile Include="JobDriver_RUT_FireHawkCarryEmber.cs" />

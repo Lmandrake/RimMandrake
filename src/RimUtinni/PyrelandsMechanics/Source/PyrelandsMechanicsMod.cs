@@ -31,6 +31,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public static bool fireFrontEnabled = true;
         public static bool fireFrontLetterEnabled = true;
 
+        // DEEP_TRIBES_FIRE_RITE_1. Off means the fire clock lights every front
+        // itself, exactly as it did before this mechanism existed — which is what
+        // "all-off degrades gracefully" means here.
+        public static bool fireRiteEnabled = true;
+
         // FURNACEBEAST_THERMAL_CYCLE_1
         public static bool furnaceHeatImmunityEnabled = true;
         public static bool furnaceThermalChargeEnabled = true;
@@ -46,6 +51,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public static float fireFrontMinDays = PyrelandsTuning.FireFrontMinDays;
         public static float fireFrontMaxDays = PyrelandsTuning.FireFrontMaxDays;
         public static int fireFrontWidthCells = PyrelandsTuning.FireFrontWidthCells;
+        public static float fireRiteFraction = PyrelandsTuning.FireRiteFraction;
+        public static int fireRiteGroupMin = PyrelandsTuning.FireRiteGroupMin;
+        public static int fireRiteGroupMax = PyrelandsTuning.FireRiteGroupMax;
+        public static float fireRiteHarvestHours = PyrelandsTuning.FireRiteHarvestHours;
 
         public override void ExposeData()
         {
@@ -67,6 +76,12 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Scribe_Values.Look(ref fireFrontMaxDays, "fireFrontMaxDays", PyrelandsTuning.FireFrontMaxDays);
             Scribe_Values.Look(ref fireFrontWidthCells, "fireFrontWidthCells", PyrelandsTuning.FireFrontWidthCells);
 
+            Scribe_Values.Look(ref fireRiteEnabled, "fireRiteEnabled", true);
+            Scribe_Values.Look(ref fireRiteFraction, "fireRiteFraction", PyrelandsTuning.FireRiteFraction);
+            Scribe_Values.Look(ref fireRiteGroupMin, "fireRiteGroupMin", PyrelandsTuning.FireRiteGroupMin);
+            Scribe_Values.Look(ref fireRiteGroupMax, "fireRiteGroupMax", PyrelandsTuning.FireRiteGroupMax);
+            Scribe_Values.Look(ref fireRiteHarvestHours, "fireRiteHarvestHours", PyrelandsTuning.FireRiteHarvestHours);
+
             Scribe_Values.Look(ref furnaceBedIgnitionChance, "furnaceBedIgnitionChance", PyrelandsTuning.FurnaceBedIgnitionChance);
             Scribe_Values.Look(ref fireHawkCooldownTicks, "fireHawkCooldownTicks", PyrelandsTuning.FireHawkCooldownTicks);
             Scribe_Values.Look(ref arsonDebtRaidThreshold, "arsonDebtRaidThreshold", PyrelandsTuning.ArsonDebtRaidThreshold);
@@ -76,9 +91,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         public void DoWindowContents(Rect inRect)
         {
-            // Two columns: the kit grew past one screen when the fire clock and
-            // the furnace-beast's capacitor landed.
-            Listing_Standard list = new Listing_Standard { ColumnWidth = (inRect.width - 34f) / 2f };
+            // Three columns: the kit grew past one screen when the fire clock and
+            // the furnace-beast's capacitor landed, and past two when the Deep
+            // Tribes' fire rite did.
+            Listing_Standard list = new Listing_Standard { ColumnWidth = (inRect.width - 51f) / 3f };
             list.Begin(inRect);
 
             list.Label("The standing burn");
@@ -150,7 +166,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 "Off: a furnace-beast never smoulders the ground it slept on, tamed or wild.");
             list.Label("Chance per real rest: " + (furnaceBedIgnitionChance * 100f).ToString("0") + "%");
             furnaceBedIgnitionChance = list.Slider(furnaceBedIgnitionChance, 0f, 1f);
-            list.GapLine();
+            list.NewColumn();
 
             list.Label("The Tribes answer the burn");
             list.CheckboxLabeled("Arson-justice raids", ref arsonJusticeEnabled,
@@ -163,6 +179,26 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 "Off: the Tribes never send a peaceful party to walk a live burn-line.");
             list.Label("Minimum standing fires to draw a visit: " + flameHarvestMinFires);
             flameHarvestMinFires = Mathf.RoundToInt(list.Slider(flameHarvestMinFires, 1f, 50f));
+            list.GapLine();
+
+            list.Label("The Deep Tribes' fire rite");
+            list.CheckboxLabeled("The Tribes sometimes light the burn themselves", ref fireRiteEnabled,
+                "On (shipped): some of the fire clock's burns arrive as a rite — a small Deep "
+              + "Tribes party walks onto the map, torches the grass where they stand, works the "
+              + "burn for scorch-fruit and leaves with it. Off: the clock lights every front "
+              + "itself and the Tribes never come for it. Either way the burn happens on "
+              + "schedule; this only changes whose hand is on it.");
+            list.Label("Rites instead of plain fronts: " + (fireRiteFraction * 100f).ToString("0") + "%");
+            fireRiteFraction = list.Slider(fireRiteFraction, 0f, 1f);
+            list.Label("Party size: " + fireRiteGroupMin + " to " + fireRiteGroupMax);
+            fireRiteGroupMin = Mathf.RoundToInt(list.Slider(fireRiteGroupMin, 1f, 12f));
+            fireRiteGroupMax = Mathf.RoundToInt(list.Slider(fireRiteGroupMax, 1f, 12f));
+            if (fireRiteGroupMax < fireRiteGroupMin)
+            {
+                fireRiteGroupMax = fireRiteGroupMin;
+            }
+            list.Label("They work the burn for " + fireRiteHarvestHours.ToString("0.0") + " in-game hours");
+            fireRiteHarvestHours = list.Slider(fireRiteHarvestHours, 1f, 24f);
 
             list.End();
         }
