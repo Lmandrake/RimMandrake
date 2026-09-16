@@ -79,6 +79,30 @@ it isn't derivable from a binary Top-flag read and the old column had already pr
 untrustworthy. 1273 of 1757 rows changed continuity. Row count and 9-pipe integrity were
 checked before and after with a python script counting `|`-prefixed, 9-pipe,
 non-separator/non-header lines: 1757 before, 1757 after, both passes.
+
+2026-09-15 fourth pass: restored the "canon (+Legends)" distinction the third pass had
+flattened — a droid with articles in BOTH continuities, where the canon article is
+substantive and a Legends counterpart exists. This IS derivable from `{{Top}}`, contrary
+to the third pass's assumption: a bare `leg` token or a `canon=` parameter means the
+article itself IS the Legends side (Legends); a `legends=` parameter means the article
+IS canon and names its Legends counterpart (canon (+Legends)); neither means canon only.
+Re-fetched all 1757 rows' wikitext fresh (`/tmp/fetch_droid_fork.py`, stdlib-only, 0.25s
+delay, one retry — 1757/1757 fetches "ok", zero missing, zero errors) and recorded the
+verdict plus the raw `{{Top}}` match per row in `/tmp/droid_fork.tsv` for future
+spot-checking without refetching. Before: canon 662, Legends 1095 (1757 rows, 0
+composite). Fresh fork verdicts: canon 597, "canon (+Legends)" 65, Legends 1095 — every
+row previously marked Legends still fetched as Legends (0 disagreements), so the merge
+(`/tmp/merge_droid_fork.py`) only ever upgraded a "canon" row to "canon (+Legends)",
+never touching a Legends row or any other field. After: canon 597, "canon (+Legends)"
+65, Legends 1095 (1757 rows). Thirteen rows were hand-verified against live wikitext
+before and after merging: the three known forks (GNK-series power droid, ST-series and
+T-series military strategic analysis and tactics droid — all confirmed `legends=`,
+correctly landing on "canon (+Legends)"), plus 10 more randomly sampled across all three
+verdict buckets (4 canon (+Legends), 3 canon, 3 Legends) — all 10 matched their live
+`{{Top}}` exactly. No row was unclassifiable: every one of the 1757 fetches returned
+wikitext and every `{{Top}}` (or its absence) parsed cleanly into one of the three
+verdicts. Row count and 9-pipe integrity checked before and after with a python script
+counting `|`-prefixed, 9-pipe, non-separator/non-header lines: 1757 before, 1757 after.
 -->
 
 # Star Wars droids — canon INDEX
@@ -192,13 +216,13 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | 3PO-series protocol droid | Protocol droid / Class three | Cybot Galactica |  | Confederacy of Independent Systems (briefly, unwillingly); Royal House of Naboo; Galactic Republic; House of Organa | canon |  | [wiki](https://starwars.fandom.com/wiki/3PO-series_protocol_droid) |
 | 3PX-series protocol droid | Protocol droid / Class three droid | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/3PX-series_protocol_droid) |
 | 3Z3 medical droid | Medical droid / Class one droid | Industrial Automaton |  | Darth Krayt's Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/3Z3_medical_droid) |
-| 434 unit | Kitchen droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/434_unit) |
+| 434 unit | Kitchen droid |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/434_unit) |
 | 434-FPC Personal Chef Droid | Class three droid | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/434-FPC_Personal_Chef_Droid) |
 | 44-CRB crab droid |  |  |  | Pyke Syndicate | canon |  | [wiki](https://starwars.fandom.com/wiki/44-CRB_crab_droid) |
 | 47-B-series droid | Repair droid | Loratus Manufacturing |  | Alliance to Restore the Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/47-B-series_droid) |
 | 4C observation droid | Observation droid |  |  | Alliance to Restore the Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/4C_observation_droid) |
 | 4XB Programmer Droid | Class two | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/4XB_Programmer_Droid) |
-| 4XB programming droid | Programmer droid / Class 2 |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/4XB_programming_droid) |
+| 4XB programming droid | Programmer droid / Class 2 |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/4XB_programming_droid) |
 | 5-BT Threat Analysis Droid | Security | Arakyd Industries |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/5-BT_Threat_Analysis_Droid) |
 | 5DS Ebranite Relations Droid | Protocol droid | Cybot Galactica |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/5DS_Ebranite_Relations_Droid) |
 | 5M-Sec Droid | Security droid / Class three droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/5M-Sec_Droid) |
@@ -206,7 +230,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | 79 Human-Cyborg Relations Droid | Protocol | Duorq |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/79_Human-Cyborg_Relations_Droid) |
 | 850.AA Public Service Headquarters | Maintenance droid / Class five droid | Publictechnic |  | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/850.AA_Public_Service_Headquarters) |
 | 8D smelter droid | Smelter droid / Class five droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/8D_smelter_droid) |
-| 8D-series smelter droid | Smelter droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/8D-series_smelter_droid) |
+| 8D-series smelter droid | Smelter droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/8D-series_smelter_droid) |
 | 9D9-s54 Dianoga spy droid | Spy droid | Imperial Department of Military Research |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/9D9-s54_Dianoga_spy_droid) |
 | 9G Explorer Droid | Exploration | DeepSpace |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/9G_Explorer_Droid) |
 | 9PO-series protocol droid | Protocol | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/9PO-series_protocol_droid) |
@@ -226,7 +250,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | AAT Driver Battle Droid | Battle droid / Fourth-degree droid | Baktoid Combat Automata |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/AAT_Driver_Battle_Droid) |
 | AC series pilot droid | Pilot droid | Star Tours |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/AC_series_pilot_droid) |
 | AC1 surveillance droid | Security droid / Class five droid | Cybot Galactica |  | Galactic Empire; Alliance to Restore the Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/AC1_surveillance_droid) |
-| AC1-series surveillance droid | Probe | Cybot Galactica |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/AC1-series_surveillance_droid) |
+| AC1-series surveillance droid | Probe | Cybot Galactica |  | Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/AC1-series_surveillance_droid) |
 | ACC-7 assassin droid | Assassin droid / Class four droid | Arakyd Industries |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/ACC-7_assassin_droid) |
 | Acrobat droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Acrobat_droid) |
 | AD-4 Battledroid Centurion | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/AD-4_Battledroid_Centurion) |
@@ -260,7 +284,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | AP-3 attack droid | Battle droid / Class four droid |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/AP-3_attack_droid) |
 | APA-5 droid | Labor droid |  |  | New Republic; Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/APA-5_droid) |
 | APD-40 | Protocol droid / Class three droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/APD-40) |
-| AQ-series battle droid | Battle droid; Droid tank | Haor Chall Engineering Corporation |  | Confederacy of Independent Systems | canon | AQ battle droid (JDS) | [wiki](https://starwars.fandom.com/wiki/AQ-series_battle_droid) |
+| AQ-series battle droid | Battle droid; Droid tank | Haor Chall Engineering Corporation |  | Confederacy of Independent Systems | canon (+Legends) | AQ battle droid (JDS) | [wiki](https://starwars.fandom.com/wiki/AQ-series_battle_droid) |
 | Aqua droid | Battle droid / Class four droid |  |  | Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/Aqua_droid/Legends) |
 | Aquatic battle droid | Battle droid |  |  | Jedi Order (secretly) | canon |  | [wiki](https://starwars.fandom.com/wiki/Aquatic_battle_droid) |
 | AQX aquatic explorer droid | Exploration; Submersible |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/AQX_aquatic_explorer_droid) |
@@ -276,9 +300,9 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Aro-GX Security Droid | Security droid / Class four droid | Aro |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Aro-GX_Security_Droid) |
 | Articulated holographic color separator | Class five |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Articulated_holographic_color_separator) |
 | Artillery Droid AR-19 | Battle droid | Okara Droid Company |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Artillery_Droid_AR-19) |
-| AS-M12-series droid | Messenger droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/AS-M12-series_droid) |
+| AS-M12-series droid | Messenger droid |  |  | Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/AS-M12-series_droid) |
 | ASN courier droid | Courier droid / Class 3 |  |  | Zam Wesell; Galactic Empire; Crimson Dawn | canon |  | [wiki](https://starwars.fandom.com/wiki/ASN_courier_droid) |
-| ASP-19 Battle Droid | Labor droid | Industrial Automaton |  | Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/ASP-19_Battle_Droid) |
+| ASP-19 Battle Droid | Labor droid | Industrial Automaton |  | Jedi Order | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/ASP-19_Battle_Droid) |
 | ASP-19 battle droid | Training |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/ASP-19_battle_droid/Legends) |
 | ASP-19, Lightsaber Training Configuration, Mark IX | Training | Industrial Automaton |  | Order of the Sith Lords | Legends |  | [wiki](https://starwars.fandom.com/wiki/ASP-19%2C_Lightsaber_Training_Configuration%2C_Mark_IX) |
 | ASP-2 | Labor droid / Class 5 | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/ASP-2) |
@@ -302,7 +326,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Attack droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Attack_droid) |
 | Attuma Duum's security droid | Security droid / Class four droid |  |  | Attuma Duum | Legends |  | [wiki](https://starwars.fandom.com/wiki/Attuma_Duum%27s_security_droid) |
 | Auto-chauffeur |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Auto-chauffeur) |
-| Auto-fighter | Droid starfighter |  |  | Visler Korda's faction | canon |  | [wiki](https://starwars.fandom.com/wiki/Auto-fighter) |
+| Auto-fighter | Droid starfighter |  |  | Visler Korda's faction | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Auto-fighter) |
 | Automated fire extinguisher | Firefighter |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Automated_fire_extinguisher) |
 | Automated repair droid | Maintenance droid | Loratus Manufacturing |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Automated_repair_droid) |
 | Automated sentry gun | Sentry droid / Class four droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Automated_sentry_gun) |
@@ -329,13 +353,13 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | B1-Bokujin | Battle |  |  | Yakuza | canon |  | [wiki](https://starwars.fandom.com/wiki/B1-Bokujin) |
 | B1-SAL Probe Droid | Probe droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/B1-SAL_Probe_Droid) |
 | B1-series battle droid | Battle droid / Fourth-degree droid | Techno Union; Geonosis Industries |  | Trade Federation; Techno Union; Jedi Order (captured); Confederacy of Independent Systems | canon | B1 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B1-series_battle_droid) |
-| B1-series rocket battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Trade Federation | canon | B1 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B1-series_rocket_battle_droid) |
+| B1-series rocket battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Trade Federation | canon (+Legends) | B1 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B1-series_rocket_battle_droid) |
 | B1-series worker droid | Loader droid / Class five droid | AccuTronics |  | Galactic Empire; Radell Mining Corporation | Legends | B1 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B1-series_worker_droid) |
 | B1E unit | Medical droid / Class one droid |  |  | Corporate Sector Authority | Legends |  | [wiki](https://starwars.fandom.com/wiki/B1E_unit) |
 | B2 buzzsaw droid | Battle droid / Class four droid |  |  | Confederacy of Independent Systems | Legends | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2_buzzsaw_droid) |
 | B2 chainsaw droid | Battle droid |  |  | Confederacy of Independent Systems | Legends | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2_chainsaw_droid) |
 | B2 grapple droid | Battle droid | Baktoid Combat Automata *(Legends)* |  | Confederacy of Independent Systems | canon | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2_grapple_droid) |
-| B2 groundmech | Groundmech | Cybot Galactica |  | Andor family; Ferrix resistance movement | canon | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2_groundmech) |
+| B2 groundmech | Groundmech | Cybot Galactica |  | Andor family; Ferrix resistance movement | canon (+Legends) | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2_groundmech) |
 | B2-AA air assault super battle droid | Battle droid / Class four droid | Baktoid Combat Automata |  | Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/B2-AA_air_assault_super_battle_droid) |
 | B2-ACM Trooper | Battle droid |  |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/B2-ACM_Trooper) |
 | B2-HA super battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Bedlam Raiders | canon |  | [wiki](https://starwars.fandom.com/wiki/B2-HA_super_battle_droid) |
@@ -343,7 +367,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | B2-series super battle droid | Battle droid / Class four droid | Baktoid Combat Automata |  | Techno Union; Trade Federation; Confederacy of Independent Systems; Separatist holdouts | canon | B2 (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/B2-series_super_battle_droid) |
 | B2-X Computer Interface Unit | Computer interface unit | MerenData |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/B2-X_Computer_Interface_Unit) |
 | B25-SAL Probe Droid | Probe droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/B25-SAL_Probe_Droid) |
-| B3 battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/B3_battle_droid) |
+| B3 battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/B3_battle_droid) |
 | B3 ultra battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/B3_ultra_battle_droid) |
 | B3-A ultra battle droid | Ultra battle droid |  |  | Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/B3-A_ultra_battle_droid) |
 | B3NK series | Pilot | Loronar Corporation |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/B3NK_series) |
@@ -378,7 +402,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | BB-series astromech droid | Astromech droid / Class two droid | Industrial Automaton |  | New Republic; Resistance; First Order | canon |  | [wiki](https://starwars.fandom.com/wiki/BB-series_astromech_droid) |
 | BB9 | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/BB9) |
 | BCA-11/X lightsaber practice droid | Lightsaber practice droid | Baktoid Combat Automata |  | Jedi Order | Legends |  | [wiki](https://starwars.fandom.com/wiki/BCA-11/X_lightsaber_practice_droid) |
-| BD explorer droid | Explorer droid | Behold-Urwar Droid Concepts |  | Jedi Order; Mantis crew; Shadow University | canon |  | [wiki](https://starwars.fandom.com/wiki/BD_explorer_droid) |
+| BD explorer droid | Explorer droid | Behold-Urwar Droid Concepts |  | Jedi Order; Mantis crew; Shadow University | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/BD_explorer_droid) |
 | BD10-series assay support droid | Class three | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/BD10-series_assay_support_droid) |
 | BDM spydroid | Surveillance droid |  |  | Star Tours | canon |  | [wiki](https://starwars.fandom.com/wiki/BDM_spydroid) |
 | BDX droid | Explorer droid | Mubo (Refurbishment) |  | New Republic; Black Spire Outpost; Resistance | canon |  | [wiki](https://starwars.fandom.com/wiki/BDX_droid) |
@@ -421,10 +445,10 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Boss miner droid | Class five mining droid |  |  | Confederacy of Independent Systems; Nightsisters | Legends |  | [wiki](https://starwars.fandom.com/wiki/Boss_miner_droid) |
 | Botanical collection droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Botanical_collection_droid) |
 | BR-series | Astromech droid |  |  | Zero Company | canon |  | [wiki](https://starwars.fandom.com/wiki/BR-series) |
-| Brain walker |  |  |  | B'omarr Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Brain_walker) |
+| Brain walker |  |  |  | B'omarr Order | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Brain_walker) |
 | Brochure droid | Class three |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Brochure_droid) |
 | BRT supercomputer | Municipal Planning & Management | Aratech Repulsor Company | 200 BBY |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/BRT_supercomputer/Legends) |
-| BT-1 assassin droid | Assassin droid | Tarkin Initiative |  | Galactic Empire; Aphra's crew; Sith Order; Archaeologists | canon |  | [wiki](https://starwars.fandom.com/wiki/BT-1_assassin_droid) |
+| BT-1 assassin droid | Assassin droid | Tarkin Initiative |  | Galactic Empire; Aphra's crew; Sith Order; Archaeologists | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/BT-1_assassin_droid) |
 | BT-16 perimeter droid | Fourth degree | Arakyd Industries |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/BT-16_perimeter_droid) |
 | BT-series ordnance droid | Loader droid | Baktoid Fleet Ordnance |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/BT-series_ordnance_droid) |
 | BU-series bartender droid | Bartender | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/BU-series_bartender_droid) |
@@ -474,7 +498,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | CG guardian droid | Guardian droid |  |  | Hutt Clan | Legends |  | [wiki](https://starwars.fandom.com/wiki/CG_guardian_droid) |
 | Challat eater droid | Assassin |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Challat_eater_droid) |
 | Chameleon droid | Combat probe | Arakyd Industries; Techno Union *(Legends)* |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/Chameleon_droid) |
-| Chauffeur droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Chauffeur_droid) |
+| Chauffeur droid |  |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Chauffeur_droid) |
 | Chiba DR-10 protocol droid | Class three droid | Chiba Corporation |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Chiba_DR-10_protocol_droid) |
 | Chiewab Medical Droid | Medical droid / Class one droid | Chiewab Amalgamated Pharmaceuticals Company |  | Death Watch; Kaminoan cloners | Legends |  | [wiki](https://starwars.fandom.com/wiki/Chiewab_Medical_Droid) |
 | Chirq Council Mechanized Guardian | Battle |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Chirq_Council_Mechanized_Guardian) |
@@ -570,11 +594,11 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Design droid | Class three |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Design_droid) |
 | Detainment droid | Security |  |  | Galactic Empire; New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Detainment_droid) |
 | Devastator war droid | Assassin droid | Ubrikkian Steamworks |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Devastator_war_droid) |
-| DG-1B catering droid | Cooking droid / Class 3 | Industrial Automaton |  | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/DG-1B_catering_droid) |
+| DG-1B catering droid | Cooking droid / Class 3 | Industrial Automaton |  | Galactic Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/DG-1B_catering_droid) |
 | Diagnostics droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Diagnostics_droid) |
 | Digger series sixwunthree | Mining |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Digger_series_sixwunthree) |
 | Digit droid | Class five |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Digit_droid) |
-| Directional droid |  |  |  | Galactic Republic; Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Directional_droid) |
+| Directional droid |  |  |  | Galactic Republic; Jedi Order | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Directional_droid) |
 | Diver droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Diver_droid) |
 | DK-27 Guardian Droid | Security droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/DK-27_Guardian_Droid) |
 | DL-series | Security droid / Class four droid | Veril Line Systems |  | Star Tours | Legends |  | [wiki](https://starwars.fandom.com/wiki/DL-series) |
@@ -584,7 +608,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Dogbot | Assassin |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Dogbot) |
 | Domodroid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Domodroid) |
 | Doroido | Security droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Doroido) |
-| Doughnut dispenser droid | Cooking |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Doughnut_dispenser_droid) |
+| Doughnut dispenser droid | Cooking |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Doughnut_dispenser_droid) |
 | DP-2 probe droid | Probe droid / Class two droid | Duwani Mechanical Products |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/DP-2_probe_droid) |
 | DP-6 Guard Droid | Security droid |  | destroyed 3640 BBY, Corellia | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/DP-6_Guard_Droid) |
 | Dragon-bird robot drone | Training |  |  | Jedi Order | Legends |  | [wiki](https://starwars.fandom.com/wiki/Dragon-bird_robot_drone) |
@@ -611,7 +635,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Droideka Mark II | Battle droid / Class four droid | Phlac-Arphocc Automata Industries (designer); Zann Consortium Droid Works |  | Confederacy of Independent Systems; Separatist holdout; Zann Consortium | Legends | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/Droideka_Mark_II) |
 | Droideka Oppressor | Battle droid |  |  | Alliance to Restore the Republic; Galactic Empire | canon | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/Droideka_Oppressor) |
 | Droideka Sentinel | Battle droid |  |  | Alliance to Restore the Republic; Galactic Empire | canon | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/Droideka_Sentinel) |
-| Droideka Sharpshooter | Battle droid | Colicoid Creation Nest |  | Trade Federation; Confederacy of Independent Systems | canon | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/Droideka_Sharpshooter) |
+| Droideka Sharpshooter | Battle droid | Colicoid Creation Nest |  | Trade Federation; Confederacy of Independent Systems | canon (+Legends) | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/Droideka_Sharpshooter) |
 | Drone |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Drone) |
 | Dry Cleaner Droid | Cleaning |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Dry_Cleaner_Droid) |
 | DSD1 dwarf spider droid | Battle droid | Baktoid Armor Workshop |  | Commerce Guild; Trade Federation; Confederacy of Independent Systems | canon | DSD1 dwarf spider (JDS) | [wiki](https://starwars.fandom.com/wiki/DSD1_dwarf_spider_droid) |
@@ -645,7 +669,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | EG-series power droid | Power droid | Veril Line Systems |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/EG-series_power_droid) |
 | EI-9 network security droid | security droid / Class two droid | Arakyd Industries |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/EI-9_network_security_droid) |
 | Electric Caliph | Battle |  |  | Hutt Clan | Legends |  | [wiki](https://starwars.fandom.com/wiki/Electric_Caliph) |
-| Electrorefining droid | Mining droid / Fifth-degree droid |  |  | Techno Union | canon |  | [wiki](https://starwars.fandom.com/wiki/Electrorefining_droid) |
+| Electrorefining droid | Mining droid / Fifth-degree droid |  |  | Techno Union | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Electrorefining_droid) |
 | Elevator droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Elevator_droid) |
 | Eliminator 434-series assassin droid | Assassin droid / Class four droid | Unknown |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Eliminator_434-series_assassin_droid) |
 | Elite Droid 04-A | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Elite_Droid_04-A) |
@@ -664,7 +688,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | ERL-21 transcribot | Cam | Serv-O-Droid, Inc. |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/ERL-21_transcribot) |
 | Espionage droid | Spy |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Espionage_droid) |
 | EV-series |  | MerenData |  | Confederacy of Independent Systems; Galactic Empire; Alliance to Restore the Republic; Scourge (As a vessel) | canon |  | [wiki](https://starwars.fandom.com/wiki/EV-series) |
-| EV-series medical droid | Medical droid | MerenData |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/EV-series_medical_droid) |
+| EV-series medical droid | Medical droid | MerenData |  | Confederacy of Independent Systems | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/EV-series_medical_droid) |
 | EverAlert droid | Security | Justice Systems |  | Galactic Alliance | Legends |  | [wiki](https://starwars.fandom.com/wiki/EverAlert_droid) |
 | Evolution Droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Evolution_Droid) |
 | EVS Construction Droid | Heavy industry; Automated factory | Veril Line Systems |  | Galactic Empire; Archa Sabis's droid army; New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/EVS_Construction_Droid) |
@@ -737,10 +761,10 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Fungus droid | Surveillance and listening |  |  | New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Fungus_droid) |
 | FUS-3 | Worker droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/FUS-3) |
 | FX-14 medical droid | Medical droid / Class one droid |  |  | First Order | canon |  | [wiki](https://starwars.fandom.com/wiki/FX-14_medical_droid) |
-| FX-2 droid | Medical droid / Class one droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/FX-2_droid) |
-| FX-6 droid | Medical droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/FX-6_droid) |
+| FX-2 droid | Medical droid / Class one droid |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/FX-2_droid) |
+| FX-6 droid | Medical droid |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/FX-6_droid) |
 | FX-7 medical assistant droid | Medical droid / Class one droid | Medtech Industries |  | Galactic Republic; Alliance to Restore the Republic | canon | FX-7 (OuterRim) | [wiki](https://starwars.fandom.com/wiki/FX-7_medical_assistant_droid) |
-| FX-8 |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/FX-8) |
+| FX-8 |  |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/FX-8) |
 | FX-series medical assistant droid | Medical droid | Medtech Industries |  | Galactic Empire; Alliance to Restore the Republic | canon | FX-series (OuterRim) | [wiki](https://starwars.fandom.com/wiki/FX-series_medical_assistant_droid) |
 | G-100 remote banking droid | Mathematics | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/G-100_remote_banking_droid) |
 | G-12 service droid | Service |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/G-12_service_droid) |
@@ -772,7 +796,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | GG-series hospitality droid | Protocol | Adascorp |  | Adascorp | Legends |  | [wiki](https://starwars.fandom.com/wiki/GG-series_hospitality_droid) |
 | GH Maintenance Droid | Maintenance droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/GH_Maintenance_Droid) |
 | GH-7 medical analysis unit | Class 1 Medical droid | Chiewab Amalgamated Pharmaceuticals Company |  | Confederacy of Independent Systems; Galactic Republic; Polis Massa | Legends |  | [wiki](https://starwars.fandom.com/wiki/GH-7_medical_analysis_unit) |
-| GH-7 series medical assistance droid | Medical droid | Chiewab Amalgamated Pharmaceuticals |  | Polis Massa Base | canon |  | [wiki](https://starwars.fandom.com/wiki/GH-7_series_medical_assistance_droid) |
+| GH-7 series medical assistance droid | Medical droid | Chiewab Amalgamated Pharmaceuticals |  | Polis Massa Base | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/GH-7_series_medical_assistance_droid) |
 | GH-8 medical droid | Medical droid |  |  | Vashka City Medcenter One | canon |  | [wiki](https://starwars.fandom.com/wiki/GH-8_medical_droid) |
 | GHT-series Medevac unit | Class one droid | TelBrinTel Corporation |  | Alliance to Restore the Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/GHT-series_Medevac_unit) |
 | Giant armadillo | Droid tank |  |  | Trade Federation | Legends |  | [wiki](https://starwars.fandom.com/wiki/Giant_armadillo) |
@@ -782,7 +806,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Gladiator droid | Class four |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Gladiator_droid) |
 | GLD-M General Labor Droid/Mining | Mining | Industrial Automaton |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/GLD-M_General_Labor_Droid/Mining) |
 | GNK power droid | Power droid | Industrial Automaton |  | Galactic Republic | Legends | GNK gonk (KotOR + OuterRim) | [wiki](https://starwars.fandom.com/wiki/GNK_power_droid/Legends) |
-| GNK-series power droid | Power droid / Class two | Industrial Automaton |  | Galactic Republic; Alliance to Restore the Republic; Scourge (As a vessel); New Republic | canon | GNK gonk (KotOR + OuterRim) | [wiki](https://starwars.fandom.com/wiki/GNK-series_power_droid) |
+| GNK-series power droid | Power droid / Class two | Industrial Automaton |  | Galactic Republic; Alliance to Restore the Republic; Scourge (As a vessel); New Republic | canon (+Legends) | GNK gonk (KotOR + OuterRim) | [wiki](https://starwars.fandom.com/wiki/GNK-series_power_droid) |
 | Goliath Lifter | Labor droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Goliath_Lifter) |
 | Gorax Hunt Droid |  |  |  | Hunters of the Outer Rim | canon |  | [wiki](https://starwars.fandom.com/wiki/Gorax_Hunt_Droid) |
 | GP-2 medical droid | Medical droid |  |  | Galactic Alliance | Legends |  | [wiki](https://starwars.fandom.com/wiki/GP-2_medical_droid) |
@@ -829,7 +853,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | HK-51 series assassin droid | Assassin droid / Class four droid | Czerka Corporation | 3668 BBY | Sith Empire; Galactic Republic; Eternal Alliance; GenoHaradan | Legends |  | [wiki](https://starwars.fandom.com/wiki/HK-51_series_assassin_droid) |
 | HK-77 assassin droid | assassin droid / Class four droid |  |  | Confederacy of Independent Systems; HK-47's Droid Army; Various third parties | Legends |  | [wiki](https://starwars.fandom.com/wiki/HK-77_assassin_droid) |
 | HK-87 assassin droid | Assassin droid | Czerka corporation |  | Galactic Empire; Imperial Remnant; Droid Gotra; The Twins | canon |  | [wiki](https://starwars.fandom.com/wiki/HK-87_assassin_droid) |
-| HK-model gladiator droid | Assassin droid; Gladiator droid |  |  | Galactic Empire; Scourge (as a vessel); Imperial Remnant | canon |  | [wiki](https://starwars.fandom.com/wiki/HK-model_gladiator_droid) |
+| HK-model gladiator droid | Assassin droid; Gladiator droid |  |  | Galactic Empire; Scourge (as a vessel); Imperial Remnant | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/HK-model_gladiator_droid) |
 | HK-series assassin droid | Assassin; Protocol |  |  |  | Legends | HK-series (KotOR + OuterRim) | [wiki](https://starwars.fandom.com/wiki/HK-series_assassin_droid) |
 | HKB-3 hunter-killer droid | Battle droid / Class four droid | Baktoid Combat Automata |  | Trade Federation; Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/HKB-3_hunter-killer_droid) |
 | HL-117 hover loader droid | Loader |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/HL-117_hover_loader_droid) |
@@ -869,10 +893,10 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Hunter-killer war droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Hunter-killer_war_droid) |
 | Hunter-Seeker droid | Droid starfighter | Colicoid Creation Nest |  | Trade Federation; Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/Hunter-Seeker_droid) |
 | Hunter/killer droid | Battle |  |  | Xucphra Corporation | Legends |  | [wiki](https://starwars.fandom.com/wiki/Hunter/killer_droid) |
-| Hutt Guard Droid | Security droid |  |  | Hutt Clan | canon |  | [wiki](https://starwars.fandom.com/wiki/Hutt_Guard_Droid) |
+| Hutt Guard Droid | Security droid |  |  | Hutt Clan | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Hutt_Guard_Droid) |
 | Hutt security droid | Security droid |  |  | Hutt Clan | Legends |  | [wiki](https://starwars.fandom.com/wiki/Hutt_security_droid) |
 | Hutt war droid | Battle |  |  | Hutt Clan | Legends |  | [wiki](https://starwars.fandom.com/wiki/Hutt_war_droid) |
-| HV-7 | Loader droid |  |  | Morgan Elsbeth's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/HV-7) |
+| HV-7 | Loader droid |  |  | Morgan Elsbeth's forces | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/HV-7) |
 | HV-7 loading droid | Labor droid / Class 5 | Baktoid Industrial Systems |  | Mon Calamari Shipyards | Legends |  | [wiki](https://starwars.fandom.com/wiki/HV-7_loading_droid) |
 | HVAC droid | Specialized labor |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/HVAC_droid) |
 | HXZ-1 Immobilizer-series police droid | Fourth degree | Cybot Galactica |  | Police and civilian use | Legends |  | [wiki](https://starwars.fandom.com/wiki/HXZ-1_Immobilizer-series_police_droid) |
@@ -905,13 +929,13 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | IG-86 sentinel droid | Assassin droid; Sentry droid | Holowan Mechanicals |  | InterGalactic Banking Clan; Hutt Clan; Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/IG-86_sentinel_droid) |
 | IG-88 assassin droid | Assassin droid; War droid | Holowan Laboratories *(Legends)* | Shortly after the Clone Wars | IG-88's Droid Army; Zann Consortium; House of Thul *(Legends)* | canon |  | [wiki](https://starwars.fandom.com/wiki/IG-88_assassin_droid) |
 | IG-97 battle droid | Battle droid | Holowan Mechanicals |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/IG-97_battle_droid) |
-| IG-RM bodyguard and enforcer droid | Security droid; Assassin droid; Bodyguard droid / Class 4 | Holowan Laboratories |  | Broken Horn Syndicate; Galactic Empire; Mining Guild | canon |  | [wiki](https://starwars.fandom.com/wiki/IG-RM_bodyguard_and_enforcer_droid) |
+| IG-RM bodyguard and enforcer droid | Security droid; Assassin droid; Bodyguard droid / Class 4 | Holowan Laboratories |  | Broken Horn Syndicate; Galactic Empire; Mining Guild | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/IG-RM_bodyguard_and_enforcer_droid) |
 | IG-series | Assassin droid; Bodyguard droid / Fourth | Holowan Laboratories |  | Holowan Laboratories; InterGalactic Banking Clan; Confederacy of Independent Systems; Hutt Clans | canon |  | [wiki](https://starwars.fandom.com/wiki/IG-series) |
 | IG-series assassin droid | Assassin; IG-series |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/IG-series_assassin_droid) |
-| Illumi-droid | Light |  |  | Confederacy of Independent Systems; Preigo's Traveling World of Wonder | canon |  | [wiki](https://starwars.fandom.com/wiki/Illumi-droid) |
+| Illumi-droid | Light |  |  | Confederacy of Independent Systems; Preigo's Traveling World of Wonder | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Illumi-droid) |
 | IM series | Security droid | Droid Security Systems |  | Spaceport THX1138 | Legends |  | [wiki](https://starwars.fandom.com/wiki/IM_series) |
 | IM-6 Battlefield Medical Droid | Medical droid / Class one droid | Cybot Galactica |  | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/IM-6_Battlefield_Medical_Droid) |
-| IMG-099 Imperial Mark IV patrol droid | Sentry | Imperial Department of Military Research |  | Galactic Empire; Thrawn's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/IMG-099_Imperial_Mark_IV_patrol_droid) |
+| IMG-099 Imperial Mark IV patrol droid | Sentry | Imperial Department of Military Research |  | Galactic Empire; Thrawn's forces | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/IMG-099_Imperial_Mark_IV_patrol_droid) |
 | Imperial anti-security device | Combat probe |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_anti-security_device) |
 | Imperial assassin droid | Assassin |  |  | Imperial Remnant | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_assassin_droid) |
 | Imperial C-series war droid | War droid / Class four droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_C-series_war_droid) |
@@ -921,7 +945,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Imperial loader droid | Labor droid |  |  | Galactic Empire; Imperial Remnant; Lumini Pirates | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_loader_droid) |
 | Imperial Mark IV Sentinel Droid | Security droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_Mark_IV_Sentinel_Droid) |
 | Imperial medical droid | Medical droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_medical_droid) |
-| Imperial nanny droid | Medical droid; Nanny droid |  |  | Death Watch; Galactic Republic; Kaminoan government; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Imperial_nanny_droid) |
+| Imperial nanny droid | Medical droid; Nanny droid |  |  | Death Watch; Galactic Republic; Kaminoan government; Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Imperial_nanny_droid) |
 | Imperial Police Droid | Police droid |  |  | The Corner Shop; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Imperial_Police_Droid) |
 | Imperial Ravager Droid | Droid walker |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_Ravager_Droid) |
 | Imperial Reconnaissance Droid | Class four |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Imperial_Reconnaissance_Droid) |
@@ -936,12 +960,12 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Industrial Site Guard Droid MC-1K | Security droid / Class four droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Industrial_Site_Guard_Droid_MC-1K) |
 | Inert-screen load shifter | Loader |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Inert-screen_load_shifter) |
 | Inferno firefighting robo | Firefighter droid | Corporate Sector Authority |  | Corporate Sector Authority | Legends |  | [wiki](https://starwars.fandom.com/wiki/Inferno_firefighting_robo) |
-| Infiltrator demolition droid | Demolition droid | LIN Demolitionmech | 21 BBY | Confederacy of Independent Systems; Alliance to Restore the Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/Infiltrator_demolition_droid) |
+| Infiltrator demolition droid | Demolition droid | LIN Demolitionmech | 21 BBY | Confederacy of Independent Systems; Alliance to Restore the Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Infiltrator_demolition_droid) |
 | Infiltrator probe droid | Probe droid | Arakyd Industries/Imperial technicians |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Infiltrator_probe_droid) |
 | Information cataloging droid | Specialized labor | Kalibac Industries |  | Mid Rim Lending Network | Legends |  | [wiki](https://starwars.fandom.com/wiki/Information_cataloging_droid) |
 | Information retrieval droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Information_retrieval_droid) |
 | Information-collating droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Information-collating_droid) |
-| INS-444 | Maintenance droid / Class five | Publitechnic |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/INS-444) |
+| INS-444 | Maintenance droid / Class five | Publitechnic |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/INS-444) |
 | INS-444 window installation droid | Window installation droid / Class five droid | Publictechnic |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/INS-444_window_installation_droid) |
 | Internal systems probe droid | Probe droid | Arakyd Industries |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Internal_systems_probe_droid) |
 | Interrogation droid | Class four |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Interrogation_droid) |
@@ -978,7 +1002,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | IT-series utility droid | Maintenance droid | Duwani Mechanical Products |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/IT-series_utility_droid) |
 | IW-37 pincer loader droid | Labor droid / Class 5 | Cybot Galactica |  | Galactic Republic; Morgan Elsbeth's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/IW-37_pincer_loader_droid) |
 | IX-6 heavy combat droid | Battle droid / Class four droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/IX-6_heavy_combat_droid) |
-| J-1 proton cannon | Droid artillery |  | c. 21 BBY | Techno Union; Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/J-1_proton_cannon) |
+| J-1 proton cannon | Droid artillery |  | c. 21 BBY | Techno Union; Confederacy of Independent Systems | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/J-1_proton_cannon) |
 | J4-SN Chef Droid | Cooking droid |  |  | Hutt Cartel | Legends |  | [wiki](https://starwars.fandom.com/wiki/J4-SN_Chef_Droid) |
 | J4X droid | J4X droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/J4X_droid) |
 | J8O soldier droid | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/J8O_soldier_droid) |
@@ -1053,9 +1077,9 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | LE manifest droid | Manifest droid / Class three droid | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/LE_manifest_droid) |
 | LE-series droid | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/LE-series_droid) |
 | LE-series repair droid | Repair droid / Class two droid | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/LE-series_repair_droid) |
-| Legal-analyst droid | Analysis droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Legal-analyst_droid) |
+| Legal-analyst droid | Analysis droid |  |  | Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Legal-analyst_droid) |
 | LEP servant droid | Service droid / Class three droid | Coachelle Automata |  | Galactic Republic; Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/LEP_servant_droid/Legends) |
-| LEP-series service droid | Service droid / Class three | Coachelle Automata |  | Confederacy of Independent Systems; Galactic Republic; Galactic Empire; Hutt Clan | canon |  | [wiki](https://starwars.fandom.com/wiki/LEP-series_service_droid) |
+| LEP-series service droid | Service droid / Class three | Coachelle Automata |  | Confederacy of Independent Systems; Galactic Republic; Galactic Empire; Hutt Clan | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/LEP-series_service_droid) |
 | LGR series cooking droid | Cooking droid | Industrial Automaton |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/LGR_series_cooking_droid) |
 | Librarian droid | Class three |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Librarian_droid) |
 | Light droid | Specialized labor |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Light_droid) |
@@ -1073,7 +1097,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Lovolol cleaning droid | Cleaning |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Lovolol_cleaning_droid) |
 | LOW-MO | Worker droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/LOW-MO) |
 | LR-57 combat droid | Battle droid; Sentinel droid | Retail Caucus |  | Retail Caucus; Confederacy of Independent Systems | Legends | LR-57 (JDS) | [wiki](https://starwars.fandom.com/wiki/LR-57_combat_droid/Legends) |
-| LR-57 combat/retail droid | Battle droid | Retail Caucus |  | Retail Caucus; Confederacy of Independent Systems | canon | LR-57 (JDS) | [wiki](https://starwars.fandom.com/wiki/LR-57_combat/retail_droid) |
+| LR-57 combat/retail droid | Battle droid | Retail Caucus |  | Retail Caucus; Confederacy of Independent Systems | canon (+Legends) | LR-57 (JDS) | [wiki](https://starwars.fandom.com/wiki/LR-57_combat/retail_droid) |
 | LRD-series envoy droid | Protocol droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/LRD-series_envoy_droid) |
 | LSx-series slicer droid | Spy | Loronar Corporation |  | Galactic Empire; Alliance to Restore the Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/LSx-series_slicer_droid) |
 | Lubrication droid | Industrial droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Lubrication_droid) |
@@ -1100,7 +1124,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Malagarr battle droid | Battle droid |  |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Malagarr_battle_droid) |
 | Manifest droid | Protocol |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Manifest_droid) |
 | Manta droid subfighter | Droid vehicle; Submersible | Haor Chall Engineering |  | Trade Federation; Quarren Isolation League; Confederacy of Independent Systems; Great Houses of Serenno | Legends |  | [wiki](https://starwars.fandom.com/wiki/Manta_droid_subfighter) |
-| Manta droid submarine | Droid vehicle; Submersible | Haor Chall Engineering Corporation |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Manta_droid_submarine) |
+| Manta droid submarine | Droid vehicle; Submersible | Haor Chall Engineering Corporation |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Manta_droid_submarine) |
 | Mark I assault droid | Battle droid | Czerka Arms |  | Czerka Arms; Galactic Republic; Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Mark_I_assault_droid) |
 | Mark I training droid | Training droid |  |  | Jedi Order | Legends |  | [wiki](https://starwars.fandom.com/wiki/Mark_I_training_droid) |
 | Mark II assault droid | Battle droid |  |  | Various | Legends |  | [wiki](https://starwars.fandom.com/wiki/Mark_II_assault_droid) |
@@ -1218,7 +1242,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | MR-9 housekeeping droid | Cleaning |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/MR-9_housekeeping_droid) |
 | MRD-39B assassin droid | Assassin droid | Corporate Sector Authority |  | Corporate Sector Authority | Legends |  | [wiki](https://starwars.fandom.com/wiki/MRD-39B_assassin_droid) |
 | MRK-3 Assassin Prototype | Assassin droid | Chromium Kings |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/MRK-3_Assassin_Prototype) |
-| MSE series | Repair droid | Rebaxan Columni |  | Galactic Republic; Haddrex Gang; Confederacy of Independent Systems; Separatist holdouts | canon | MSE mouse (OuterRim) | [wiki](https://starwars.fandom.com/wiki/MSE_series) |
+| MSE series | Repair droid | Rebaxan Columni |  | Galactic Republic; Haddrex Gang; Confederacy of Independent Systems; Separatist holdouts | canon (+Legends) | MSE mouse (OuterRim) | [wiki](https://starwars.fandom.com/wiki/MSE_series) |
 | MSE-6 series repair droid | Maintenance droid | Rebaxan Columni |  | Haddrex Gang; Galactic Republic; Confederacy of Independent Systems; Separatist holdouts | canon | MSE-6 mouse (OuterRim) | [wiki](https://starwars.fandom.com/wiki/MSE-6_series_repair_droid) |
 | Multi-Environment Mining Droid MEMD-2 | 20,000 credits | Industrial Automaton |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Multi-Environment_Mining_Droid_MEMD-2) |
 | Municipal patrol droid Mark I | Sentry | Automata Galactica |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Municipal_patrol_droid_Mark_I) |
@@ -1258,7 +1282,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Observation droid (Clone Wars) | Probe droid | Arakyd Industries |  | Galactic Republic; Pyke Syndicate; Zygerrian Slave Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Observation_droid_%28Clone_Wars%29) |
 | Octoneedle | Security droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Octoneedle) |
 | Octuptarra combat tri-droid | Battle droid / Class four droid | Techno Union |  | Confederacy of Independent Systems; Techno Union | Legends |  | [wiki](https://starwars.fandom.com/wiki/Octuptarra_combat_tri-droid/Legends) |
-| Octuptarra tri-droid | Battle droid walker / Class four droid | Techno Union |  | Techno Union; Confederacy of Independent Systems; Scourge (As a vessel) | canon |  | [wiki](https://starwars.fandom.com/wiki/Octuptarra_tri-droid) |
+| Octuptarra tri-droid | Battle droid walker / Class four droid | Techno Union |  | Techno Union; Confederacy of Independent Systems; Scourge (As a vessel) | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Octuptarra_tri-droid) |
 | OD-1M Assault Droid | Battle droid | Ayor-v9 |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/OD-1M_Assault_Droid) |
 | ODX-series protocol droid | Protocol droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/ODX-series_protocol_droid) |
 | OG-9 homing spider droid | Battle droid / Fourth-degree droid | Baktoid Armor Workshop |  | Commerce Guild; Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/OG-9_homing_spider_droid) |
@@ -1280,7 +1304,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Orbot | Protocol droid / Class three droid | Serv-O-Droid, Inc. |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Orbot) |
 | Orbot Droid | Battle droid |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Orbot_Droid) |
 | Orchestra droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Orchestra_droid) |
-| Ore extraction droid | Mining droid / Fifth-degree droid |  |  | Techno Union | canon |  | [wiki](https://starwars.fandom.com/wiki/Ore_extraction_droid) |
+| Ore extraction droid | Mining droid / Fifth-degree droid |  |  | Techno Union | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Ore_extraction_droid) |
 | Ossus Stone Guardian | Security |  |  | Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Ossus_Stone_Guardian) |
 | OT-09 Defender Droid | Battle droid | Okara Droid Company |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/OT-09_Defender_Droid) |
 | OT-12 Battle Droid | Battle droid | Okara Droid Company |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/OT-12_Battle_Droid) |
@@ -1301,7 +1325,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | OX9 | Labor droid |  |  | Trade Federation | Legends |  | [wiki](https://starwars.fandom.com/wiki/OX9) |
 | P-2B Assault Droid | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/P-2B_Assault_Droid) |
 | P-series droideka | Battle droid | Colicoid Creation Nest |  | Trade Federation; Confederacy of Independent Systems | canon | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/P-series_droideka) |
-| P2 astromech unit | Astromech droid | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/P2_astromech_unit) |
+| P2 astromech unit | Astromech droid | Industrial Automaton |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/P2_astromech_unit) |
 | P2-series astromech droid | Astromech droid / Class two droid | Industrial Automaton |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/P2-series_astromech_droid) |
 | P2F hostile environment remote | Remote | Haor Chall Engineering Corporation |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/P2F_hostile_environment_remote) |
 | P4T protocol droid | Protocol droid / Class 3 |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/P4T_protocol_droid) |
@@ -1393,10 +1417,10 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | R37 Maintenance Droid | Maintenance |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/R37_Maintenance_Droid) |
 | R4 astromech droid | Astromech droid / Class two | Industrial Automaton |  | Galactic Republic; Jedi Order; Sith; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/R4_astromech_droid) |
 | R4 courier droid | Astromech droid (repurposed); Courier Droid | Industrial Automaton |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/R4_courier_droid) |
-| R4-P Astromech | Astromech droid / Class two droid | Industrial Automaton |  | Jedi Order; Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/R4-P_Astromech) |
+| R4-P Astromech | Astromech droid / Class two droid | Industrial Automaton |  | Jedi Order; Galactic Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/R4-P_Astromech) |
 | R4-P astromech droid | Astromech droid / Class two droid | Industrial Automaton; Kuat Systems Engineering (modification) |  | Jedi Order; Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/R4-P_astromech_droid) |
 | R5-series astromech droid | Astromech droid / Class two droid | Industrial Automaton |  | Alliance to Restore the Republic; Galactic Empire; Galactic Republic; New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/R5-series_astromech_droid) |
-| R6 astromech droid | Astromech droid / Class two | Industrial Automaton |  | New Republic; Plazir-15 government; Resistance | canon |  | [wiki](https://starwars.fandom.com/wiki/R6_astromech_droid) |
+| R6 astromech droid | Astromech droid / Class two | Industrial Automaton |  | New Republic; Plazir-15 government; Resistance | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/R6_astromech_droid) |
 | R6-series astromech droid | Astromech droid / Class two droid | Industrial Automaton |  | New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/R6-series_astromech_droid) |
 | R7-series astromech droid | Astromech droid / Class two droid | Industrial Automaton |  | New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/R7-series_astromech_droid) |
 | R8-series astromech droid | Astromech / Class two droid | Industrial Automaton |  | New Republic; Various | Legends |  | [wiki](https://starwars.fandom.com/wiki/R8-series_astromech_droid) |
@@ -1431,7 +1455,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Remote |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Remote) |
 | Remote droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Remote_droid) |
 | Repair drone | Maintenance |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Repair_drone) |
-| Replica droid | Protocol |  | By 200 BBY |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Replica_droid) |
+| Replica droid | Protocol |  | By 200 BBY |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Replica_droid) |
 | Republic shuttle probe droid | Probe droid |  |  | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Republic_shuttle_probe_droid) |
 | Repulsor pilot droid | Pilot |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Repulsor_pilot_droid) |
 | Repulsor-droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Repulsor-droid) |
@@ -1445,7 +1469,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | RHTC-560 Hunter Trainer | Training / Gladiatorial droid | Rodian D-Tec |  | Rodia; Bounty-hunting guilds; Planetary militias; Police academies | Legends |  | [wiki](https://starwars.fandom.com/wiki/RHTC-560_Hunter_Trainer) |
 | RIC-920 rickshaw droid | Labor droid | Serv-O-Droid, Inc. |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/RIC-920_rickshaw_droid) |
 | RIC-series general labor droid | Labor droid / Class five | Serv-O-Droid, Inc. |  | Plazir-15 government | canon |  | [wiki](https://starwars.fandom.com/wiki/RIC-series_general_labor_droid) |
-| Ringneck recon droid | Probe droid | Arakyd Industries |  | Confederacy of Independent Systems; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Ringneck_recon_droid) |
+| Ringneck recon droid | Probe droid | Arakyd Industries |  | Confederacy of Independent Systems; Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Ringneck_recon_droid) |
 | RIV-3T | Worker droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/RIV-3T) |
 | RJ unit |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/RJ_unit) |
 | RK-94 Protector Droid | Battle droid | Ayor-v9 |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/RK-94_Protector_Droid) |
@@ -1461,7 +1485,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Rocket battle droid | Battle droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Commerce Guild | Legends |  | [wiki](https://starwars.fandom.com/wiki/Rocket_battle_droid/Legends) |
 | ROLL-R | Worker droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/ROLL-R) |
 | Roller mine |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Roller_mine) |
-| Rolo droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Rolo_droid) |
+| Rolo droid |  |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Rolo_droid) |
 | Rover droid | Security droid |  |  | ComNet Corporation | Legends |  | [wiki](https://starwars.fandom.com/wiki/Rover_droid) |
 | Roving Eye observation droid | Cam droid / Class two droid |  |  | Darth Krayt's Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Roving_Eye_observation_droid) |
 | Royal Guard droid | Courier and messenger |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Royal_Guard_droid) |
@@ -1524,7 +1548,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Scrambler droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Scrambler_droid) |
 | Scrubber droid | Cleaning droid | Industrial Automaton *(Legends)* |  | Royal Naboo Security Forces; Galactic Republic; Kaminoan government; Alliance to Restore the Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/Scrubber_droid) |
 | Scum-scrubber | Sanitation |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Scum-scrubber) |
-| Scutiger-100 stealth droid | Assassin droid / Class four droid | Ghost Armaments |  | Confederacy military | canon |  | [wiki](https://starwars.fandom.com/wiki/Scutiger-100_stealth_droid) |
+| Scutiger-100 stealth droid | Assassin droid / Class four droid | Ghost Armaments |  | Confederacy military | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Scutiger-100_stealth_droid) |
 | SD-10 battle droid | Battle droid / Class four droid | Balmorran Arms |  | Galactic Empire; Balmorran Defense Force; Dark Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-10_battle_droid) |
 | SD-4 battle droid | Battle droid | Balmorran Arms |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-4_battle_droid) |
 | SD-5 battle droid | Battle droid | Balmorran Arms |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-5_battle_droid) |
@@ -1532,8 +1556,8 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | SD-6 Hulk infantry droid | Battle droid / Class four droid | Balmorran Arms |  | Galactic Republic; Galactic Empire; Independent | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-6_Hulk_infantry_droid) |
 | SD-60 Personal Defense Droid | Battle droid |  |  | The Shroud's organization | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-60_Personal_Defense_Droid) |
 | SD-9 battle droid | Battle droid / Class four droid | Balmorran Arms |  | Dark Empire; New Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-9_battle_droid) |
-| SD-K4 assassin droid | Assassin droid / Fourth-degree droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Death Watch; Galactic Empire; Alliance to Restore the Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/SD-K4_assassin_droid) |
-| SD-K4a mini-assassin droid | Assassin droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Death Watch; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/SD-K4a_mini-assassin_droid) |
+| SD-K4 assassin droid | Assassin droid / Fourth-degree droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Death Watch; Galactic Empire; Alliance to Restore the Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/SD-K4_assassin_droid) |
+| SD-K4a mini-assassin droid | Assassin droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Death Watch; Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/SD-K4a_mini-assassin_droid) |
 | SD-series battle droid | Battle droid | Balmorran Arms |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/SD-series_battle_droid) |
 | SD-X-series stealth battle droid | battle droid / Class four droid | Tendrando Arms |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/SD-X-series_stealth_battle_droid) |
 | SDMN series session droid | Entertainment | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/SDMN_series_session_droid) |
@@ -1558,7 +1582,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | SEN-TRI | Worker droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/SEN-TRI) |
 | Senate cam droid | Holocam |  |  | Galactic Republic; Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/Senate_cam_droid/Legends) |
 | Senate Guard analysis droid | Analysis |  |  | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Senate_Guard_analysis_droid) |
-| Senate hovercam droid | Cam droid / Class three droid | Cybot Galactica |  | Galactic Republic; Galactic Empire; New Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/Senate_hovercam_droid) |
+| Senate hovercam droid | Cam droid / Class three droid | Cybot Galactica |  | Galactic Republic; Galactic Empire; New Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Senate_hovercam_droid) |
 | Seneschal-series factotum droid | Service droid / Class three droid | Imperial DroidWorks |  | Sith Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Seneschal-series_factotum_droid) |
 | Sensor droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Sensor_droid) |
 | Sentinel (Contingency) | Holodroid |  | In or prior to 20 BBY | Galactic Empire; Sith | canon |  | [wiki](https://starwars.fandom.com/wiki/Sentinel_%28Contingency%29) |
@@ -1578,7 +1602,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Shield remote | Remote |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Shield_remote) |
 | Shoeshine droid | Class five |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Shoeshine_droid) |
 | Shopkeeper droid | Class three droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Shopkeeper_droid) |
-| Short-Range Transport droid | Labor droid |  |  | Stalgasin hive; Confederacy of Independent Systems; Plazir-15 government | canon |  | [wiki](https://starwars.fandom.com/wiki/Short-Range_Transport_droid) |
+| Short-Range Transport droid | Labor droid |  |  | Stalgasin hive; Confederacy of Independent Systems; Plazir-15 government | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Short-Range_Transport_droid) |
 | Shrine droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Shrine_droid) |
 | Siak-series protocol droid | Protocol droid / Class three droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Siak-series_protocol_droid) |
 | Siantide droid | Battle droid / Class four droid | War Trust | c. 3642 BBY | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Siantide_droid) |
@@ -1645,7 +1669,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | SR-78 Bulwark Defense Droid | Battle droid |  |  | The Shroud's organization | Legends |  | [wiki](https://starwars.fandom.com/wiki/SR-78_Bulwark_Defense_Droid) |
 | SRT autonomous short-range transport | Loader droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/SRT_autonomous_short-range_transport) |
 | Ssi-ruuvi security droid | Security droid | Ssi-ruuk |  | Ssi-ruuvi Imperium | Legends |  | [wiki](https://starwars.fandom.com/wiki/Ssi-ruuvi_security_droid) |
-| ST-series military strategic analysis and tactics droid | Tactical droid / Class four droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Infinite Coil; Separatist holdouts | canon | ST super tactical (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/ST-series_military_strategic_analysis_and_tactics_droid) |
+| ST-series military strategic analysis and tactics droid | Tactical droid / Class four droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Infinite Coil; Separatist holdouts | canon (+Legends) | ST super tactical (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/ST-series_military_strategic_analysis_and_tactics_droid) |
 | Stage VI Bio-Desolator Droid | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Stage_VI_Bio-Desolator_Droid) |
 | Staircase droid | Service droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Staircase_droid) |
 | Star Navigator droid | Pilot droid |  |  | Morgan Elsbeth's forces; Thrawn's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/Star_Navigator_droid) |
@@ -1689,7 +1713,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | T-44 Assault Droid | Battle droid | Kerkarr |  | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/T-44_Assault_Droid) |
 | T-831 |  | Zubintech |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/T-831) |
 | T-Series Imperial Protocol Droid | Protocol |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/T-Series_Imperial_Protocol_Droid) |
-| T-series military strategic analysis and tactics droid | Tactical droid / Class four droid | Baktoid Combat Automata |  | Atha Prime; Confederacy of Independent Systems; Zygerrian Slave Empire; Separatist holdouts | canon | T1 tactical (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/T-series_military_strategic_analysis_and_tactics_droid) |
+| T-series military strategic analysis and tactics droid | Tactical droid / Class four droid | Baktoid Combat Automata |  | Atha Prime; Confederacy of Independent Systems; Zygerrian Slave Empire; Separatist holdouts | canon (+Legends) | T1 tactical (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/T-series_military_strategic_analysis_and_tactics_droid) |
 | T-series tactical droid | Tactical droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Dark Worlds; Zygerrian Slave Empire | Legends | T1 tactical (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/T-series_tactical_droid/Legends) |
 | T0-D interrogation droid | Interrogation droid |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/T0-D_interrogation_droid) |
 | T1-series utility droid | Maintenance droid | Duwani Mechanical Products |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/T1-series_utility_droid) |
@@ -1720,7 +1744,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | TDA-series droid assistant | Protocol droid | AccuTronics |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/TDA-series_droid_assistant) |
 | TDK-160 research-assistant |  |  |  | Zerpen Industries | canon |  | [wiki](https://starwars.fandom.com/wiki/TDK-160_research-assistant) |
 | Teacher Droid | Teacher droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Teacher_Droid) |
-| Tech droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Tech_droid) |
+| Tech droid |  |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Tech_droid) |
 | Technical droid | Class two; Maintenance |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Technical_droid) |
 | Technical support droid |  |  |  | Galactic Republic | Legends |  | [wiki](https://starwars.fandom.com/wiki/Technical_support_droid) |
 | Technician Droid TE | Battle droid | Okara Droid Company |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Technician_Droid_TE) |
@@ -1759,7 +1783,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Trak-R | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Trak-R) |
 | Translator droid | Class three |  |  | Galactic Empire; First Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Translator_droid) |
 | Transport droid | Transport droid |  |  | Pixelito Port Hauling | canon |  | [wiki](https://starwars.fandom.com/wiki/Transport_droid) |
-| Transport ticketing droid |  |  |  | The Colossus | canon |  | [wiki](https://starwars.fandom.com/wiki/Transport_ticketing_droid) |
+| Transport ticketing droid |  |  |  | The Colossus | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Transport_ticketing_droid) |
 | Transportation droid | Class three |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Transportation_droid) |
 | TRD-2 sparring droid | Training droid | Balmorran Arms |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/TRD-2_sparring_droid) |
 | Treadwell Harvester Droid | Agricultural |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Treadwell_Harvester_Droid) |
@@ -1775,12 +1799,12 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | TT-8L series | Security droid | Serv-O-Droid, Inc. |  | Jabba's criminal empire; Guavian Death Gang | canon |  | [wiki](https://starwars.fandom.com/wiki/TT-8L_series) |
 | TT-8L/Y7 gatekeeper droid | Security droid / Class 5 | Serv-O-Droid, Inc. |  | Galactic Republic; Confederacy of Independent Systems; Jabba's criminal empire; Gideon's Imperial remnant | canon |  | [wiki](https://starwars.fandom.com/wiki/TT-8L/Y7_gatekeeper_droid) |
 | TTS-15 Series Tutorial Droid | Class three | Industrial Automaton |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/TTS-15_Series_Tutorial_Droid) |
-| TTS15-series education and tutorial droid | Educational | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/TTS15-series_education_and_tutorial_droid) |
+| TTS15-series education and tutorial droid | Educational | Industrial Automaton |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/TTS15-series_education_and_tutorial_droid) |
 | TTS20-series dialectic droid | Educational | Industrial Automaton |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/TTS20-series_dialectic_droid) |
 | Tunnel-grinder | Sanitation |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Tunnel-grinder) |
 | Turbolift droid |  |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Turbolift_droid) |
 | Turret droid | Battle droid |  |  | Trade Federation | Legends |  | [wiki](https://starwars.fandom.com/wiki/Turret_droid) |
-| Turret-droid | Combat droid |  |  | Golas Aram; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Turret-droid) |
+| Turret-droid | Combat droid |  |  | Golas Aram; Galactic Empire | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Turret-droid) |
 | Tutor droid | Class three |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Tutor_droid) |
 | TX-1118 Series "Terminax" Assassin Droid | Assassin | MerenData |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/TX-1118_Series_%22Terminax%22_Assassin_Droid) |
 | TX7 Long-Range Probe | Probe droid |  |  | House Thul | Legends |  | [wiki](https://starwars.fandom.com/wiki/TX7_Long-Range_Probe) |
@@ -1808,7 +1832,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Unidentified insectoid droid | Battle | Xylan |  | Xylan | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_insectoid_droid) |
 | Unidentified labor droid | General labor |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_labor_droid) |
 | Unidentified large-sensored astromech series | Astromech droid |  |  | New Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_large-sensored_astromech_series) |
-| Unidentified maintenance droid (ML-08) | Repair droid; Utility droid |  |  | Alliance to Restore the Republic; New Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_maintenance_droid_%28ML-08%29) |
+| Unidentified maintenance droid (ML-08) | Repair droid; Utility droid |  |  | Alliance to Restore the Republic; New Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_maintenance_droid_%28ML-08%29) |
 | Unidentified mining droid model | Mining droid / Class five droid |  |  | Kleb Zellock's criminal empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_mining_droid_model) |
 | Unidentified monster droid model | Battle droid |  |  | Droid Crush Pirates of Bestoon; Galactic Empire; Droid uprising; Scourge (As a vessel) | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_monster_droid_model) |
 | Unidentified probe droid model | Probe droid |  |  | Morgan Elsbeth's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_probe_droid_model) |
@@ -1818,7 +1842,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Unidentified science droid model | Medical droid; Science droid |  |  | Galactic Republic; Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_science_droid_model) |
 | Unidentified service droid model | Service |  |  | Galactic Empire; Scourge (As a vessel) | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_service_droid_model) |
 | Unidentified spider droid | Battle droid |  |  | Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_spider_droid) |
-| Unidentified tiered-dome astromech series | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_tiered-dome_astromech_series) |
+| Unidentified tiered-dome astromech series | Astromech droid |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_tiered-dome_astromech_series) |
 | Unidentified treaded droid model |  |  |  | Hez's Droid Market | canon |  | [wiki](https://starwars.fandom.com/wiki/Unidentified_treaded_droid_model) |
 | Union Sentry Droid | Battle droid | Neimoidian droid factory |  | Confederacy of Independent Systems; HK-47's Droid Army | Legends |  | [wiki](https://starwars.fandom.com/wiki/Union_Sentry_Droid) |
 | Updated battle droid | Battle droid / Class four droid |  | c. 20 BBY | Confederacy of Independent Systems | Legends |  | [wiki](https://starwars.fandom.com/wiki/Updated_battle_droid) |
@@ -1850,10 +1874,10 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | Vigilant 2X-series picket droid | Fourth Degree | Automata Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Vigilant_2X-series_picket_droid) |
 | Vindicator Lockjaw | Guard droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Vindicator_Lockjaw) |
 | Viper probe droid | Probe droid | Arakyd Industries | By 19 BBY | Galactic Empire; Second Revelation; New Republic; Imperial holdouts | canon |  | [wiki](https://starwars.fandom.com/wiki/Viper_probe_droid) |
-| Void-droid |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Void-droid) |
+| Void-droid |  |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Void-droid) |
 | VX series artillery droid | Artillery droid / Class four droid | Czerka Corporation |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/VX_series_artillery_droid) |
 | W-series droideka | Battle droid | Phlac-Arphocc Automata Industries |  | Trade Federation; Confederacy of Independent Systems | Legends | Droideka + Sharpshooter (JDS + OuterRim) | [wiki](https://starwars.fandom.com/wiki/W-series_droideka/Legends) |
-| WA-2G droid | Attendant droid |  |  | Pijali monarchy | canon |  | [wiki](https://starwars.fandom.com/wiki/WA-2G_droid) |
+| WA-2G droid | Attendant droid |  |  | Pijali monarchy | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/WA-2G_droid) |
 | Wall Crawler Droid | Security droid |  |  | Galactic Empire | Legends |  | [wiki](https://starwars.fandom.com/wiki/Wall_Crawler_Droid) |
 | War-robot | Battle droid / Class four droid | Xim the Despot |  | Xim's empire; Hutt Cartel | Legends |  | [wiki](https://starwars.fandom.com/wiki/War-robot) |
 | Warbot | Battle |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Warbot) |
@@ -1866,7 +1890,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | WBY series | Educational |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/WBY_series) |
 | WBY-102 FirstMate | Sailing droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/WBY-102_FirstMate) |
 | Weapons droid | Battle |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/Weapons_droid) |
-| WED 15 "Septoid 2" Treadwell toolkit droid | Maintenance droid / Class 5 |  |  | Alliance to Restore the Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/WED_15_%22Septoid_2%22_Treadwell_toolkit_droid) |
+| WED 15 "Septoid 2" Treadwell toolkit droid | Maintenance droid / Class 5 |  |  | Alliance to Restore the Republic | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/WED_15_%22Septoid_2%22_Treadwell_toolkit_droid) |
 | WED Treadwell repair droid | Repair droid / Class 5 | Cybot Galactica |  | Alliance to Restore the Republic; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/WED_Treadwell_repair_droid) |
 | WED-1016 'Techie' Droid | Maintenance droid | Cybot Galactica |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/WED-1016_%27Techie%27_Droid) |
 | WED-15 Septoid Treadwell | Maintenance droid / Class 5 | Cybot Galactica *(Legends)* |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/WED-15_Septoid_Treadwell) |
