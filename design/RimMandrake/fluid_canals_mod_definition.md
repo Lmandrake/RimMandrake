@@ -511,3 +511,56 @@ screen rather than letting a slider move two things silently.
 ⚠️ One open implementation point: he said a limitless source is *"some large number"*, while §5
 recommends a sentinel flag instead. Both give identical play; the flag avoids serialising and
 rendering a magic number. Treated as an implementation detail unless he wants the literal.
+
+## 15. Rulings — owner, 2026-09-16, third sitting: this mod is the engine
+
+**8. One engine, in FluidCanals; FloodedCanyon becomes a driver.** The occupancy engine — cells,
+fill tiers, hold, recede, soak, conservation bookkeeping — lives here and exposes a driver interface
+with a **per-driver recede policy**: `restore-original` for canals, `convert-to` for canyon floods
+("death, then soil"). FloodedCanyon keeps its biome, its phase clock and its own settings, and
+depends on this mod for motion.
+
+This needs no reversal: framework pillar 2 already reads *"all map motion is event-shaped (flood,
+drip, spill, **seasonal**) via the FluidCanals engine"* — seasonal being the canyon case exactly — and
+FloodedCanyon is absent from the §5 client map entirely. It grew outside the plan and duplicated the
+engine the plan had already named. Add it to that client map as **flood driver client**.
+
+Immediate consequence already filed as `CANYON_FLOOD_ERASES_CANALS_1`: today a canyon flood's
+permanent `SetTerrain` destroys a dug canal and returns it as `SoilRich`. Two owners for one cell is
+the bug the single engine removes.
+
+**9. Sinks.** His words: *"I suppose we should add Sinks too at the edge of the map that simply
+provide drainage from empty canals."* A sink is a map-edge drain: liquid entering it leaves the map.
+
+🔑 **A sink is the exact inverse of a limitless source, and that symmetry keeps conservation honest.**
+Under ruling 4 the off-map continuation of an edge-touching body *is* the reservoir, so liquid leaving
+through a sink is neither destroyed nor created — it is **transferred off-map**. That means a sink is
+NOT a second exception to conservation; overflow (§5) remains the only one. Worth stating plainly,
+because "a drain that deletes liquid" and "a drain that returns liquid to the world" look identical on
+screen and are very different rules.
+
+What a sink is for: emptying a canal **on purpose and now**, rather than waiting for ruling 6's
+passive return. So the player has three ways to clear a channel, with different costs — fill it in
+(liquid displaces back, terrain is restored, labor), wait (returns to source, slow, free), or drain to
+a sink (fast, liquid leaves the map, needs a sink built at an edge).
+
+**10. This mod needs a new name.** He ruled it, this date: *"clearly the Canals mod needs a better
+name now that it's a full liquid engine."* "FluidCanals" now names one driver of a mod that owns
+sources, sinks, occupancy, fill tiers, surface flooding and canals.
+
+⛔ **Do not rename anything yet.** CLAUDE.md: *"Old names migrate under NAMING_SCHEME_EXECUTION_1 — do
+not rename ahead of it."* A rename touches packageId, defNames, the C# namespace, the mod folder, the
+`.csproj`, the deployed folder under the game's Mods directory, and every doc citing them. Record the
+chosen name here; execute it under that item.
+
+**Recommended: `RimMandrake: Liquid Flow`** — packageId `mandrake.rm.liquidflow`, namespace
+`RimMandrake.LiquidFlow`, prefix stays `RM_`. It names the thing the mod actually owns (motion), is
+liquid-agnostic, and is what a Workshop user would search for.
+
+Rejected, with reasons, so they are not re-proposed:
+
+- **Hydrology / Watercourse / Aquifer** — all say *water*, and the roster's most important liquids are
+  tar, propane and slime. The mod would be misnamed on its own headline content.
+- **Fluid Dynamics** — implies simulation. Pillar 2 forbids a per-tick sim outright, so this name
+  promises the one thing the design rules out.
+- **Liquid Engine** — accurate and inert; "engine" is developer language on a store page.
