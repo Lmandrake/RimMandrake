@@ -98,17 +98,39 @@ well-formed images with correct alpha, coherent outlines and consistent palettes
 **Only something that looks at them can tell they are the wrong view.** This is
 why the ruleset has two tiers and cannot have one.
 
-## Open questions
+## 🔴 RULED — owner, 2026-09-15
 
-- **Does a Tier B violation refuse, or advise?** The framing ruling says facts may
-  refuse, and B1–B3 are facts. But a vision pass is itself a judgement, so a false
-  positive there blocks good art. Unruled.
-- **B5 vs the advisory demotion.** "Reads cartoonish" is the owner's real
-  criterion and he overruled me twice on it — but it is the closest of these to a
-  taste call. Whether it can refuse is unruled.
-- **Where does this run?** Inside the artpipe daemon before a render is accepted,
-  or as a separate sweep over what is already on disk. Both, probably, but the
-  daemon hook is what stops defects reaching his eye.
+> *"Yes 'reads cartoonish' should now refuse. Yes a vision violation can refuse.
+> Yes, it runs within the artpipe... I don't want these strange versions."*
+
+1. **Tier B violations REFUSE**, same as Tier A. A vision pass is a judgement, but
+   it is a judgement about a fact, and it blocks.
+2. **B5 refuses.** "Reads cartoonish" is a refusal condition, not an advisory note.
+   This does **not** reinstate the fitted legibility gate: B5 asks *is this the
+   shipped style* (true/false), never *how good is this* (a score).
+3. **It runs inside the artpipe**, gating delivery — not as an after-the-fact sweep
+   over what already shipped. His reason is the whole point: *"I don't want these
+   strange versions."* A defect that reaches his eye has already cost him the
+   review.
+
+⚠️ **The retry cap this creates, and why it is not optional.** Every check now
+refuses, and the artpipe's response to a refusal is to regenerate — so a check
+that is *wrong* about a sprite refuses the replacement too, and the pipeline
+burns render quota in a loop it cannot exit. That is not hypothetical on this
+project: the Codex imagegen weekly cap was already exhausted once (walled until
+2026-09-19 ~13:01 PDT), and an unbounded retry loop is the fastest way to spend
+the next one on nothing.
+
+So delivery-gating requires, in the same change as the gate itself:
+
+- a **bounded retry count** per target, after which the job stops regenerating;
+- a **PARKED state** that holds the sprite plus every finding against it, rather
+  than discarding or delivering it — a refusal must not silently destroy the art;
+- **the findings surfaced where he decides**, so a parked target reaches a review
+  sheet with the failed facts named. A check that refuses forever with nothing
+  visible is indistinguishable from a pipeline that has stopped working.
+
+🔑 Parked is not rejected. A check may be wrong; the owner is the appeal.
 
 ## Consumers
 
