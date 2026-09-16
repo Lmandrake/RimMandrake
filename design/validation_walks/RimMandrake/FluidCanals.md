@@ -4,6 +4,13 @@ deps: Ludeon.RimWorld.Odyssey (Flood is Odyssey-gated in the base game); none th
 list: minimal+Odyssey     # official DLC, not a workshop mod; check it is in the active list
 status-hint: dig a canal cell, let a fluid reservoir prime and then drip + re-flood adjacent terrain on two cadences — species/biome-agnostic engine, water is the one shipped fluid
 
+⚠️ **This walk describes the mod as it stands TODAY and is scheduled for replacement.** Every
+assertion below was verified against the code on 2026-09-16 and is accurate now — but
+`FLOWWORKS_BUILD_PROGRAM_1` deletes `CompFluidReservoir` and `RM_FluidSpring_Test` (a source becomes a
+SUPERDEEP cell, not a building) and drops the `Flood_FluidCanal` subclass, so the reservoir and flood
+assertions here die with them. Rewrite this walk and `validation.py` in that program's Phase 9, against
+the depth/fill primitive. Do not "fix" it earlier — until the build lands, this is the true description.
+
 ## must be true
 - `RM_DigCanal` designation exists and `RM_DigCanalJob`/`RM_DigCanalWorkGiver` drive a colonist to actually dig it (`JobDriver_DigCanal`, `WorkGiver_DigCanal`).
 - Digging a cell adjacent to a spring (`RM_FluidSpring_Test`, holds a `CompFluidReservoir` seeded with `RM_Fluid_Water`) triggers `CompFluidReservoir.Notify_CanalCellOpened` and spawns a `RM_FluidCanalFlood` (`Flood_FluidCanal`) that spreads `ShallowFloodwater` (temporary terrain layer) into adjacent open ground.
