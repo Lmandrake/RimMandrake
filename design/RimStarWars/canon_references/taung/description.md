@@ -127,6 +127,17 @@ whose art exists at `SWX/Pawn/HeadAttachments/taung/`), and its eyes are plain d
 slits rather than recessed glowing amber. Reasonable art; the defects in this species
 are in the gene list, not the sprite.
 
+## Must show
+- [ ] Broad, angular, plated skull with heavy bony ridges over the brow and crown sweeping back into pointed temple flanges
+- [ ] Wedge-shaped face narrowing to a pointed, downturned, beak-like chin/jaw; no visible external nose
+- [ ] Small, deep-set eyes recessed under the brow shelf, glowing yellow-amber
+- [ ] Long, dark, distinctly clawed fingers
+- [ ] Tall, lean-muscled, long-limbed (rangy) build, not bulky
+- [ ] Plate colour reads grey through olive-green, not one flat grey
+
+## Engine limits
+none known — the donor sprite's shortfalls (no faceted plate texture, no crown ridges, plain dark-slit eyes instead of glowing amber) are attributed in the entry to the gene list (missing/incomplete attachment genes), not to the rendering pipeline; the head base itself is already runtime-tinted (no `useSkinShader: false`).
+
 ## Def-versus-canon (flagged — not fixed)
 
 - 🔴 **`<description>` is the single character `.`** — the Taung ships with no

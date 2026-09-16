@@ -68,6 +68,16 @@ wings, a strong hooked/nut-cracking beak. The gray model gives the cleanest
 body-plan silhouette. The tan icon and the red mutant screenshot are both
 off-canon for color and should not be used as color references.
 
+## Must show
+- [ ] Peacock-blue wing and tail plumage — not drab, tan, or reddish-orange
+- [ ] Small yellow/gold head crest
+- [ ] Long trailing tail feathers with pale gold edging
+- [ ] Long, S-curved neck and an elongated, toothy-looking beak/skull
+- [ ] Clawed wings, foldable close to the body
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Peko-peko (current canon page, wikitext
   pulled 2026-09-13)

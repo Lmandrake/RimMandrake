@@ -146,6 +146,17 @@ eyebrow-ridges), and some Purebloods have *extra* pairs of cheek tendrils that t
 original species never had. Sek'nos Rath is the sourced **five-digit** Sith, i.e.
 the trait is not unique to Zuguruk in practice.
 
+## Must show
+- [ ] A tall, lean, upright engineer/artisan silhouette (tabard, leggings, greaves, boots, forearm bracer) — not a warrior's build
+- [ ] Skin read as crimson to obsidian per the sourced text — trust the prose over the two colour-distorted plates (sepia parchment wash; violet lighting), and use the saturated red canon image as the hue anchor instead
+- [ ] Bald, high-domed cranium with a broad flat nose and heavy brow; no cranial horn is visible in any reference
+- [ ] The right hand shows five ordinary-proportioned digits, not elongated ones — the one Zuguruk-exclusive trait
+- [ ] Paired cheek tendrils hanging from high cheekbones down past the jaw are canonical but not uniform — some individuals in the same reference image are smooth-faced with no visible tendrils
+- [ ] Heavy vertical bony ridging down the forehead/cheeks and a long bony chin appear on some individuals, not all — facial sharpness is variable across the caste
+
+## Engine limits
+none known
+
 ⚠️ **No `donor_current_sprite.png`.** The three Sith xenotypes render from shared
 mod genes, not species art: `RSW_Head_Bone` forces `RSW_Male_HeavyBoneNormal` /
 `RSW_Female_HeavyBoneNormal`, and **this xenotype does not even use that** — see

@@ -74,6 +74,16 @@ evidently refers to a different creature, not this one).
   every image's silhouette, ear-flap shape, horn, beak, and body proportions
   are mutually consistent.
 
+## Must show
+- [ ] Long, gently S-curved neck rising to a triangular head
+- [ ] A rhino/ceratopsian-style pointed nose horn or nasal ridge, with a beaked, slightly downturned mouth
+- [ ] Two large, wing-like skin-flap "ears" fanning out and back from the head/neck like a frill
+- [ ] Thick, heavily columnar legs (four) ending in broad clawed/hoofed feet, with deeply wrinkled/creased skin and scattered wart-like bumps
+- [ ] Muted dark olive-to-brownish-grey coloration — not saturated brown, not blue-grey — with darker striping/banding on the neck and back and a paler cream-to-tan underside
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Ronto (page; fetched via API due to
   direct-fetch blocking)

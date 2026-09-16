@@ -174,6 +174,17 @@ species art in this repo: `RSW_Eyes_Big` draws
 under `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, not here.
 Nothing in this repo compares canon against the sprite the player sees.
 
+## Must show
+- [ ] Adult skin is a mid, slightly desaturated sage-green with a yellow-olive cast — not bright lime, and not the infant's paler cool grey-green
+- [ ] Adult scalp, forehead and backs of the hands carry a dense network of fine wrinkles and low ridges
+- [ ] Ears are enormous, broad-based, held nearly horizontal (sweeping out and slightly back), wider than the head is tall, tapering to a fine point
+- [ ] Eyes are modest in size (not huge or black), heavily hooded, brownish-green with a clearly visible iris, pupil and white sclera
+- [ ] Three thick, stubby fingers per hand ending in dark horn-coloured claws, and three broad clawed toes per bare foot
+- [ ] Females (per the Yaddle reference) show long, thick hair falling past the shoulders, in contrast to males' sparse wispy white hair
+
+## Engine limits
+none known — there is no `donor_current_sprite.png` for this species (it renders from generic mod genes whose art lives only in the deployed mod folder outside this repo), so there is nothing on disk here to test against a rendering-pipeline constraint.
+
 ## Def-versus-canon (flagged — not fixed)
 
 `RSW_RimMandrakeYoderForceGremlin` is, on the mechanical side, **the best-aligned def

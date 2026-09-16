@@ -69,6 +69,16 @@ reference (a Kintan Strider, i.e. a Nikto):
   independent confirmation of structure across media, and as a green-subspecies
   datapoint.
 
+## Must show
+- [ ] Cranium covered in a plated carapace — large, hard, overlapping tessellated plate segments, helmet-like, distinct from the softer skin below
+- [ ] Two prominent horns curving up and inward from the cheeks/temples, large, pale, tusk-like and symmetrical, rising past eye level
+- [ ] Flat, deeply-creased face with radiating furrows from the eyes and mouth
+- [ ] Small, dark, deep-set eyes and a wide, down-turned mouth with a heavy protruding lower lip/chin pad
+- [ ] Skin reads as pale putty-tan/pinkish-tan for a "red" Nikto, not a saturated red
+
+## Engine limits
+none known
+
 ## donor art
 **donor_current_sprite.png is weak evidence, and there is a wiring defect behind
 it.** The copied file is `SWX/Pawn/HeadAttachments/nikto/facespines_south.png` —

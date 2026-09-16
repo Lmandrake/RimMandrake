@@ -69,6 +69,16 @@ the one feature that makes a vulptex recognizable as a vulptex rather than
 a generic white fox — and correct the body proportions toward a taller,
 longer-legged stance.
 
+## Must show
+- [ ] Coat reads as hard, faceted, glass-like crystal shards/spikes standing up off the body — not smooth fur
+- [ ] Tail is a dense brush of spike-like crystalline points, not a soft fluffy brush
+- [ ] Long, slender fox muzzle with very large, upright, triangular ears
+- [ ] Long, thin legs and an upright, deer-like stance — taller and leggier than a real-world fox, not low-slung
+- [ ] Coat colour is grey-blue-white with visible individual crystal facets
+
+## Engine limits
+none known — the donor sprite's mismatch (a low-slung, short-legged, smoothly-shaded body with no faceted texture at all) is recorded in the entry as an art/silhouette gap to correct in a regen, not as something the pipeline cannot render.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Vulptex (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Vulptex&prop=wikitext`,

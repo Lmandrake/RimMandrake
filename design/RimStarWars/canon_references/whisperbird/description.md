@@ -61,6 +61,16 @@ vulture-style head and legs, red beak tip — a raptor/vulture-shaped bird,
 not a songbird. Single-source image, but it agrees closely with the sourced
 text's "golden-colored" description, so treat it as reliable.
 
+## Must show
+- [ ] Golden/tan-brown body plumage overall
+- [ ] Dark brown-to-black barred/banded markings across the underside of both wings and a dark chest/belly patch
+- [ ] Bald, blue-gray, vulture-like head and upper neck (no feathers on the head), with a hooked beak carrying a reddish tip
+- [ ] Blue-gray legs and talons, with four sharp curved claws per foot
+- [ ] Broad swept wings on a lean, raptor-proportioned body — a bird-of-prey/vulture silhouette, not a songbird
+
+## Engine limits
+none known — only one candidate image exists for this species and no donor sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Whisperbird (current canon, one-word
   title — the lore-only Chiss board-game/naming reference; wikitext pulled

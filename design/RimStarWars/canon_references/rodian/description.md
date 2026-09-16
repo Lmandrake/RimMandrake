@@ -95,6 +95,17 @@ skull-spines, and the suction-cup digits.** (`HeadAttachments/rodian/mohawk_*.pn
 exists and is a small tuft, but it is wired to `RSW_Hair_rodian`, a hair gene, not
 to the head — it is not the bony crest.)
 
+## Must show
+- [ ] Large, hemispherical, pale iridescent lavender-white eyes with a faint internal sheen — not dark orbs; occupy roughly the upper half of the face and bulge outward past the skull profile
+- [ ] A conspicuous crest of small, backswept, fleshy knobs/spines atop the head — more prominent than the antennae
+- [ ] Two short, low, blunt antenna nubs at the temples, roughly level with the eyes — not large saucer-dishes on the crown
+- [ ] A smooth, tapering snout, noticeably smoother than the pebbly-textured body and hands
+- [ ] Mid-to-light yellow-green skin with darker green mottling (crest and snout sides darker, throat lighter) — not a flat green
+- [ ] Ordinary galactic workwear clothing, no species-specific costume
+
+## Engine limits
+none known — the pale iridescent eye quality, the dorsal spine crest, and the suction-cup digits are all missing art, not a pipeline limitation.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Rodian (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

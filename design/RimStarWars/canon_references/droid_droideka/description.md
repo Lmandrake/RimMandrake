@@ -144,7 +144,6 @@ tread surface. Nothing about the deployed sprite can be reused for the ball.
   Sniper (Legends) or Ultra Droideka. All nine are currently served by the one bronze
   deployed sprite.
 
-
 ## Must show
 - [ ] Deployed (upright) form only — arched dorsal shell, spherical lower body, three splayed clawed legs
 - [ ] Three red photoreceptors on the head/stalk assembly

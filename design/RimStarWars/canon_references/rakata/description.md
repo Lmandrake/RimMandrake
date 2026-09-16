@@ -330,6 +330,17 @@ the digitigrade legs, the tridactyl clawed hands, or the crest-sheathing hood.
   `Outland_WebbedFeet` is defensible from "amphibious," but the only *sourced*
   foot detail is clawed and, per the images, digitigrade.
 
+## Must show
+- [ ] Tall, backswept, blade- or fin-like cranial crest coming to a point — not a rounded dome
+- [ ] Eyes on short lateral stalks projecting horizontally out of each side of the head, forward-facing with a visible iris and eyelid, both visible in a front view outside the skull's width
+- [ ] A narrow vertical wedge face between the stalks, with a small, low, downturned mouth and small nostril slits — not a wide, thick-lipped mouth
+- [ ] Digitigrade legs — long shank, backward-angled hock, standing on clawed toes with the heel clear of the ground — not ordinary human plantigrade legs
+- [ ] Three-digit (tridactyl) hands and feet with pale, bone-coloured claws
+- [ ] `wookieepedia_comic_closeup.jpg` and `wookieepedia_poe_dameron_comic.jpg` are wiki-disowned/misattributed images (a mislabelled Mon Calamari and Lucasfilm's "generic alien extra #3457") and must not be used as appearance references
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Rakatan (Wookieepedia, **canon** tier; direct
   page HTML is Cloudflare-walled — wikitext pulled via

@@ -167,6 +167,17 @@ defining trait — that it is *feline* — is not represented on disk, and
   name is Togorian and the word is digitigrade. The file is generated, so the fix
   belongs in `gen_races_mod.py`, not the XML.
 
+## Must show
+- [ ] Short, broad, forward-projecting feline muzzle with a small triangular leathery nose and long white whiskers sweeping out from its sides
+- [ ] Upright, high-set, pointed ears with interior/tip tufts
+- [ ] Green or amber-yellow eyes with visible vertical slit pupils, set forward and close under a heavy brow
+- [ ] A heavy ruff/mane of longer fur around the neck, cheeks and chest, present on both sexes
+- [ ] Fur is striped (tabby banding), not a flat solid colour — grey-white with dark banding is the best-attested pattern
+- [ ] Digitigrade hind limbs with a raised heel, ending in a broad multi-toed foot with long curved claws
+
+## Engine limits
+none known — the entry attributes the current render (a vanilla furred-human head with no muzzle, whiskers, slit pupils or mane) to the def's gene choices (`RSW_Furskin_shortfur` pointing at base-game furred-human `HeadTypeDef`s, and a fur-colour gene wired to the wrong channel) rather than to a pipeline constraint; a proper feline head already exists in the mod (Cathar) and is simply not used here.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Togorian — canon article, a **stub**. Direct HTML

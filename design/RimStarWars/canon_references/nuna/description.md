@@ -56,6 +56,16 @@ blob-with-a-face rather than a standing biped — but the *silhouette family*
 is a genuine match to canon, which is not true of every creature audited so
 far in this library.
 
+## Must show
+- [ ] Heavy domed/ridged shell-like back rising to a peak
+- [ ] Wide, froglike head with a broad flat mouth and bulging pink or amber eyes
+- [ ] Floppy skin flaps hanging at the sides of the head (jowls/wattle, not ears)
+- [ ] Thick, bent hind legs ending in clawed, toed feet, doing the visible structural work of standing
+- [ ] Mottled olive-to-dark-green pebbled/warty skin — no feather texture, beak or wings anywhere
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Nuna (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Nuna&prop=wikitext`,

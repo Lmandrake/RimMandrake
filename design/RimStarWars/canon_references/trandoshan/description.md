@@ -88,6 +88,17 @@ supplies a small central crown ridge plus two brow ridges, which does add the
 crown/brow read. **Nothing on disk supplies the plate-scale texture, the visible
 resting teeth, or the clawed three-digit hands and feet.**
 
+## Must show
+- [ ] Coarse, large, raised, overlapping plate-scale texture, most pronounced on the forearms, backs of the hands, and lower legs/feet — not smooth skin
+- [ ] Warm tan/olive/khaki colour with a yellow-green cast and brown mottling, OR the cooler grey-tan live-action variant — never a flat green
+- [ ] Broad, heavy reptilian skull with a wide flat muzzle, no external ears, and small pointed teeth visible even with the mouth closed
+- [ ] Small, deep-set, orange-red eyes with slit pupils
+- [ ] Three thick digits on hands and feet ending in long, dark, curved claws that contrast against the paler scales
+- [ ] No feathers
+
+## Engine limits
+none known — the donor sprite's greyscale mask is correct/expected (the game tints it from the skin-colour gene); the missing plate-scale texture, visible resting teeth and clawed digits are recorded as absent art, not as something the pipeline cannot render.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Trandoshan (Wookieepedia article; direct page HTML
   is Cloudflare-walled — wikitext pulled via

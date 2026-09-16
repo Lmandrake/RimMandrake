@@ -131,7 +131,6 @@ balanced on two sticks**, with two hairlines above it.
 - The purple **Scourge-infected** sensor variant is sourced but has **no repo art**, and
   nothing in this repo depicts the droid-pyramid behaviour.
 
-
 ## Must show
 - [ ] Wide flared cone-shaped head, much wider than the body beneath it
 - [ ] One large black photoreceptor centred under the brim

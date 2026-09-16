@@ -193,7 +193,6 @@ the evidence that this chassis has no single canon colour.**
 - ⚠️ **JDS `skinShader` is `Cutout`** — no mask, no colour channel — so **that sprite's pixels
   are its shipping appearance and it can never roll a colour**, unlike its OuterRim twin.
 
-
 ## Must show
 - [ ] Three glowing yellow/cream photoreceptors in a triangle arrangement on the head
 - [ ] Tall, lean, humanoid frame with prominent exposed cylindrical joints at shoulder, elbow, hip, knee, and ankle

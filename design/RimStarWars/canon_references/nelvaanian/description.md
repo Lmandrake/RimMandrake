@@ -119,6 +119,17 @@ it has none of the three features that define a Nelvaanian head (long snout, lar
 pointed ears, visible canines). Treat it as a **negative reference**: it documents
 the bug, not the species.
 
+## Must show
+- [ ] Predominantly bare slate blue-grey skin over clearly-defined human musculature — NOT a full wolf pelt ("blue-furred" is misleading); fur only as short scruff on forearms, outer thighs, calves and jaw-line
+- [ ] Long, straight, black mane springing from the crown and running down the nape onto the shoulders
+- [ ] Long, narrow, canine/equine muzzle with a black nose pad and prominent sharp teeth, lower canines visible at rest
+- [ ] Small, dark, close-set eyes deeply recessed under a heavy overhanging brow ridge
+- [ ] Large, upright, pointed ears set high and angled outward from the skull, clearly visible past the mane
+- [ ] Bold black geometric spiral/meander body markings around the biceps, shoulders and sternum, present on every individual
+
+## Engine limits
+As things stand, the xenotype's `RSW_BothanHead` carries `useSkinShader: false` over its greyscale mask (`Defs/HeadTypeDefs/SW_HeadTypes.xml`), so no skin-colour gene reaches the face — a Nelvaanian pawn renders a blue body with a grey-white, untinted face. This is separate from the head shape being wrong (the Bothan head also lacks the snout and ears); even a correctly-tinted head asset would need this shader flag off to show blue skin on the face.
+
 ## Def-versus-canon (flagged — not fixed)
 
 - 🔴 **`RSW_BothanHead` is the wrong species' head.** A Nelvaanian's diagnostic

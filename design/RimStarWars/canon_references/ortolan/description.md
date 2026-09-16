@@ -94,6 +94,17 @@ the bug, not the species. (One mitigation: the Kubaz head base carries no
 `useSkinShader: false`, so the blue skin genes *will* tint it — the shape is wrong, not
 the colour.)
 
+## Must show
+- [ ] Enormous, narrow, tapering, PENDULOUS ears hanging from high on the skull down past the shoulders to roughly elbow level, drooping forward — not round elephant fans
+- [ ] A single huge rounded belly mass that the arms rest on, with no waist
+- [ ] Large, round, glossy, solid BLACK eyes with no visible sclera, iris, brow or lid, set wide and high on the skull
+- [ ] Short-to-medium thick trunk tapering and hanging straight down to about mid-chest, with no visible mouth from the front
+- [ ] Small, blunt hands with separate, clearly articulated short fingers and pale nails — dexterous, not trotters
+- [ ] Bare, hairless, slightly rubbery skin with no fur anywhere
+
+## Engine limits
+none known — the donor sprite's Kubaz head base does not carry `useSkinShader: false`, so the blue skin genes tint it correctly; only the head shape is wrong (missing/wrong art), not the colour pipeline.
+
 ## Def-versus-canon (flagged — not fixed)
 
 - 🔴 **`RSW_Head_kubaz` is the wrong species' head.** An Ortolan is a broad dome, a

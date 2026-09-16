@@ -141,7 +141,6 @@ colour drives.
   behind the body and pointing *up*. At RimWorld's top-down angle that is a reasonable
   projection of the same geometry, not an error.
 
-
 ## Must show
 - [ ] Tapered inverted-cone body, hovering and legless, narrowing to a point at the bottom
 - [ ] Three long, multi-jointed arms radiating outward from the top rim, ending in pointed claw graspers

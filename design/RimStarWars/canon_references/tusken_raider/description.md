@@ -134,6 +134,16 @@ a Sand Person. It cannot validate anything above. It also means the sexed
 appearance (cream-shrouded female vs. tan-wrapped male) is not represented at
 all, even though the mod does carry a separate `HeadSandF` file.
 
+## Must show
+- [ ] No skin, face, hair or eye visible on any individual — the mask and wrappings ARE the face
+- [ ] Male: head fully wrapped in bandage-like cloth strips, mask with two round dark lenses in raised metal rims, and a snout-like mouth grille with a projecting central tusk-tube, over a tan/ochre coarse robe with leather chest plates
+- [ ] Female: full-length pale cream/bone/ivory draped hooded shroud covering the entire body, topped by a tall, rigid, metallic domed mask PLATE (not a face-shaped mask) with a narrow eye slit
+- [ ] A ribbed/tubed mouth grille projecting forward and down from the lower face is present on the mask
+- [ ] Robe/cloth palette spans warm tan-ochre to cold dusty grey-black — not one fixed colour for every individual
+
+## Engine limits
+none known — the donor sprite's gap (a plain grey oval with no wrappings, mask, lens rims, grille or throat canister) is recorded as missing head/mask art, not a pipeline constraint; the mod does carry a separate `HeadSandF` file that could carry a distinct female silhouette.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Tusken_Raider (Wookieepedia article; direct page
   HTML is Cloudflare-walled — wikitext pulled via

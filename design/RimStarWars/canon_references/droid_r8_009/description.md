@@ -132,7 +132,6 @@ interface that lets it self-retask — has **no visual cue at all**, in canon or
 Canon gives it no visible dataport or probe arm. So there is nothing to correct there; it is
 a behavioural trait with no appearance.
 
-
 ## Must show
 - [ ] Tapered barrel body, wider at the top, capped by a low domed lid
 - [ ] Two thin whip antennae rising from the dome

@@ -98,6 +98,17 @@ list; this entry did not check that specific wiring, and given the confirmed orp
 found for the Nikto facespines it should not be assumed.** Nothing on disk supplies
 the long pointed nails.
 
+## Must show
+- [ ] Long, pointed, pale claw-like nails extending well past the fingertips — not suction-cup tips
+- [ ] Two large, wide, leaf-shaped ear-fins projecting horizontally outward and slightly back from the sides of the head, as wide as the head itself
+- [ ] Four thick, fleshy jaw tentacles hanging from below the mouth like a curling beard, reaching to about the collarbone
+- [ ] A tall, smooth cranial dome coming to a rounded point at the crown — narrow and peaked, distinct from the Mon Calamari's broader dome
+- [ ] Small eyes set close together and high on the face, much smaller than a Mon Calamari's
+- [ ] Mottled tan/ochre/pinkish-brown skin — not the infobox's saturated orange or purple
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Quarren (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

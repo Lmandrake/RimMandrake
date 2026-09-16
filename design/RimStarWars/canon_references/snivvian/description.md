@@ -110,6 +110,17 @@ placeholder icon** `UI/Icons/Xenotypes/Custom/CustomXenotypeIcon1`, not a Star W
 icon. So there is nothing on disk to compare canon against, and `donor_current_sprite.png`
 is absent by fact, not by oversight.
 
+## Must show
+- [ ] Broad, flat, forward-projecting muzzle carrying two enormous rounded nostrils on its front face — the largest feature of the face, bigger than the eyes
+- [ ] Heavy, protruding lower jaw with a thick lower lip, giving a mouth line that curves upward at the corners into a lopsided grin
+- [ ] Small, deep-set eyes placed high and wide under a heavily wrinkled, shelf-like brow
+- [ ] Leathery, wrinkled, hairless facial skin — never a smooth face
+- [ ] Where tusks appear, they are small, rise from the lower jaw at the mouth corners, and curve upward — never downward boar tusks, upper-jaw tusks, or present on every individual
+- [ ] Short, stocky, wide-shouldered build with a thick neck and no waist
+
+## Engine limits
+none known
+
 ### 🔴 Def-versus-canon contradictions (report only, do not fix)
 
 - **`RSW_Face_tusks` is labelled "large tusks"** (`Defs/GeneDefs/SW_Genes.xml:1610`,

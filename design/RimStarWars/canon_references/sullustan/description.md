@@ -105,6 +105,17 @@ silhouette is a circle where canon is widest-at-the-jowls. There is exactly one 
 type and one facial variant — no male/female or age variation, and no visor, tattoo
 or goatee variants for the Legends details.
 
+## Must show
+- [ ] Two enormous pendulous jowl "dewflap" lobes hanging from below the eyes down past the jawline, meeting under the chin — the head is widest at the jowls, low down, giving an inverted-teardrop silhouette
+- [ ] Large, round, glossy, solid-black eyes with no visible white or iris, occupying much of the upper face
+- [ ] Large, round ears set low and wide, projecting sideways from the skull at about mouth level — not high on the skull
+- [ ] Broad, high, domed cranium tapering to the rear, with no visible nose or nasal bridge
+- [ ] Completely bald head
+- [ ] Skin reads grey, grey-pink, or grey-blue — never human brown
+
+## Engine limits
+none known
+
 ### 🔴 Def-versus-canon contradictions (report only, do not fix)
 
 - **`Skin_Melanin2` / `Skin_Melanin3` / `Skin_Melanin4` are the only skin genes.**

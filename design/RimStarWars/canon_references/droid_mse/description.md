@@ -179,7 +179,6 @@ lightbar on top.**
 - **No repo art** for the grasping claws, the Scomp data probe, the open-interior/reprogrammable
   state, the Tagge Corporation gold emblem, or the four-large-wheel Polar mouse droid.
 
-
 ## Must show
 - [ ] Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt
 - [ ] No eyes/photoreceptor visible anywhere — deliberately blank face

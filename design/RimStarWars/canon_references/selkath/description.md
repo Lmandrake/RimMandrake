@@ -180,6 +180,17 @@ render node or a baked variant, so if the owner wants it, that is new art, not a
 change. There is **no Selkath body art on disk**, so the short stature, the claws and the
 paddle feet are unrepresented.
 
+## Must show
+- [ ] Broad, flattened, dome-crowned skull spreading into two large, downward-hanging cephalic lobes flanking the mouth — soft, mobile, moustache-like
+- [ ] Crown sweeps up and back into a low hammerhead-style crest, widest across the top
+- [ ] Small, dark eyes set far apart on the SIDES of the head, at the outer base of the crest — fish-like placement, not forward-facing like a primate's
+- [ ] Skin carries a reticulated net-like dark tracery, or irregular maroon/dark-red blotches over a pale base — never a single flat colour
+- [ ] Long, curved, pale claws on tapering fingers; large, splayed, paddle-like feet with two or three broad flattened toes ending in blunt hooflike claws
+- [ ] Slender, distinctly short (1.5 m) body with narrow, sloping shoulders and no chest bulk
+
+## Engine limits
+The head is built from single-channel greyscale tint masks (`RSW_Head_selkath` + `fishyjowls` attachment), so a skin-colour gene cannot produce the reticulated/blotched camouflage patterning — that needs a second render node or a baked variant, which is new art, not a colour change.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Selkath — canon article, a `{{Species-stub}}`. Direct
   HTML is Cloudflare-walled; wikitext pulled via

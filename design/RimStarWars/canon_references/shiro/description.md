@@ -77,6 +77,15 @@ the anchor for **body plan and shell texture** (hard ridged/spiny dome
 shell, stubby retractable head/legs/tail, turtle-like proportions), since
 the canon art is too low-detail/stylized to read shell texture from.
 
+## Must show
+- [ ] Green skin (per the canon infobox art and text) — treat as the color anchor over the duller mud-toned Legends group shot
+- [ ] Hard, ridged/spiny dome shell covering the back
+- [ ] Stubby, retractable head, legs and tail (turtle-like withdrawal into the shell)
+- [ ] Turtle-like rounded proportions overall — not a smooth or unarmoured body
+
+## Engine limits
+none known
+
 ## Watch out
 No local donor sprite exists: the RimWorld mod this defName comes from,
 `mlie.starwarsanimalcollection` ("Star Wars Animal Collection", 1.6 release),

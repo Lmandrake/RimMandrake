@@ -151,6 +151,17 @@ Well founded and worth keeping on record so a later pass does not "fix" them:
 hardest-working species in the galaxy). **Not represented anywhere and the most
 interesting hook in the article: red improves their work productivity.**
 
+## Must show
+- [ ] Skin is a weathered grey-tan/dun brown (the canon live-action Kuiil), not pink — pink is the Legends-only value
+- [ ] Broad, flat, upturned pig snout occupying the middle third of the face, prominent rather than small, merging into the brow with no bridge
+- [ ] Heavy overhanging brow ridge with a deep vertical furrow, and small, deep-set eyes
+- [ ] Wide, downturned mouth with a protruding lower lip and small blunt lower tusks visible
+- [ ] Long white hair worn only as mutton-chop side-whiskers and a chin beard, with a bald crown — not ordinary short hair
+- [ ] Large, pointed ears standing out from the head, on an oversized-head dwarf build (thick short limbs, barrel chest, broad shoulders)
+
+## Engine limits
+none known — the repo has no Ugnaught art of any kind (no head, body, hair or even a species-specific xenotype icon), so there is nothing on disk to test against a rendering constraint; every gap the entry records (skin, snout size, hair length) is a missing or wrong gene choice, not a pipeline limitation.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Ugnaught — canon article. HTML is Cloudflare-walled;

@@ -60,6 +60,16 @@ Wookieepedia analogues) rather than a contradiction, but not confirmed
 either way. Favor red/rust as the primary color anchor since it is the only
 one both an in-universe character quote AND an image agree on.
 
+## Must show
+- [ ] Stegosaur-like reptilian quadruped with a jagged spiked ridge running along the spine from head to tail
+- [ ] Thick, knobbed/bumpy armored hide over the whole body
+- [ ] Low-slung reptilian head with visible fangs/teeth and small eyes
+- [ ] Four heavy, thick, clawed legs on a stocky body ("battle tank" scale)
+- [ ] Rust-red/copper-brown as the primary colour anchor (a darker brown-black variant is attested but unconfirmed as a separate life stage)
+
+## Engine limits
+none known — no donor-mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Zakkeg (current canon, wikitext pulled
   2026-09-13)

@@ -184,6 +184,17 @@ by an arch, with two short tapering points at the sides.** Judged against the re
 - ⚠️ Male and female share one montral texture, so the "male montrals are more branched"
   distinction is not expressed.
 
+## Must show
+- [ ] Montrals are two thick, hollow cones rising well above the crown — roughly as tall again as the head itself
+- [ ] Montrals and both visible lekku carry dark transverse chevron/band markings on a pale cream-to-white base, not a flat colour
+- [ ] The pale montral/lekku base colour is visibly paler than the body skin colour (two distinct colour regions)
+- [ ] The two forward lekku descend well past the shoulders, at least to the chest (not stopping at jaw level)
+- [ ] A third, thicker posterior lek is present at the rear base of the skull, visible from a rear-facing (north) view
+- [ ] Face carries a patterned white marking (pattern varies by individual, but white presence is constant)
+
+## Engine limits
+none known — the montral texture's missing banding, the lekku stopping at jaw level, and the absent third lek are recorded in the entry as gaps in the existing art asset and the def's colour-gene pool (no pale hair-colour option feeds the montral tint), not as something the rendering pipeline is unable to express.
+
 ## 🔴 Def-versus-canon contradictions found
 
 Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.

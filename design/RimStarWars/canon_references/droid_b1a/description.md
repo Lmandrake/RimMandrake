@@ -134,7 +134,6 @@ wings-out silhouette in the air**; it is not usable for detail. Note the frame a
 a B2 grapple droid (the tall blue-grey figure at right), which is **not** a B1-A — do not
 read its colour as this droid's.
 
-
 ## Must show
 - [ ] Tan/beige base plating with rust-orange accent panels, not blue-grey/slate blue
 - [ ] Two long swept blade-like wings projecting past the shoulders

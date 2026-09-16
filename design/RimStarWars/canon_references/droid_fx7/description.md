@@ -140,7 +140,6 @@ blue-grey barrel wearing a crown of rings, with spider-thin arms hanging out of 
   canon name **"FX-7 medical assistant droid"**. Not an art matter, but it will show in
   tooltips.
 
-
 ## Must show
 - [ ] Legless, tapered vertical cylinder body, widest at a flared circular base pedestal
 - [ ] Steel blue-grey plating, not neutral grey
