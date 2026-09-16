@@ -142,6 +142,21 @@ defaulting to OFF**, allows full restoration to 1.0; with it off, 0.75 is the ha
 So the asymptote of ruling 2 is enforced by a default rather than by arithmetic, and a
 player may switch it off — deliberately his choice.
 
+🔴 **1.0 means the UNMODIFIED DONOR DEF — the ordinary modern machine.** Owner ruled
+this directly: *"this mod generally will be used when you CANNOT build the original
+technology (that's the current intention)."* So a Refurbished machine is a **substitute
+for something out of reach, not a better version of it.** Three-quarters of a working
+machine, built from scrap, when you could not have built the real one at all.
+
+**Every ratio is player-tunable.** Owner: *"Mod settings should allow the player to
+modify the functionality of each setting."* The three numbers are defaults, not
+constants.
+
+⚠️ **The ratios are PER DEVICE CLASS, not universal.** Owner: *"the 0.001 weak output is
+intended for batteries, not factories and other functional devices, to allow the
+'flickering faint LED look'."* 0.001 exists to make a dying battery flicker. A Defunct
+factory needs its own Defunct value — do not apply 0.001 across the board.
+
 Discrete states, each its own stat block and its own sprite — not a capacity curve and
 not a per-subsystem wear model. **One ladder for every Rakatan thing**, fixed
 installation or carried relic. **Worth scales with size**: a factory is worth far more
@@ -156,22 +171,22 @@ Shipped defNames follow the ladder: `_Wrecked` → `_Defunct`, `_Repaired` →
 (build the next tier's blueprint over the old footprint — ordinary construction, no C#).
 
 **2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
-beyond or even equal to the original."* The ladder is **asymptotic and capped at half**
-— a Jawa hand approaches the ancients' work and never arrives.
+beyond or even equal to the original."* The ladder is **asymptotic, capped at 0.75 by
+default** — a Jawa hand approaches the machine's original function and never arrives,
+unless the player switches the cap off himself.
 
-⛔ This kills any grade that surpasses Rakatan design. It does **not** touch the
-promise that a refurbished machine exceeds *modern* technology: beating rim-tech gear
-and equalling Rakatan work are different bars, and only the second is impossible.
+⛔ Kills any grade that surpasses the original.
 
-**3. The power curve falls out of 1 and 2 — and needs one confirmation.** If
-`Refurbished` is 0.5 of original **and** still beats modern technology, then original
-Rakatan capability is at least **2× modern rim-tech**, and realistically well beyond.
-⚠️ DERIVED, NOT RULED — it is a canon-shaped number nobody has said out loud, so it
-wants his yes before anything is balanced against it.
+**3. ⛔ "Refurbished exceeds modern technology" is WITHDRAWN.** The owner's early vision
+said a refurbished machine *"would exceed modern technology even in a still kludged
+manner."* Ruling 1's 1.0-is-the-donor-def settles it the other way: 0.75 is **below**
+modern, and that is the intent, because the mod is for when modern is not available to
+you at all.
 
-This is also the answer to the old "does refurbished-exceeds-modern break the power
-curve" question: the ceiling is no longer scarcity alone, it is **arithmetic**. Half of
-original is the most any player ever gets.
+⇒ The power curve question is therefore closed, and not by scarcity or by theology. **A
+refurbished ancient machine can never out-perform a machine you could simply have
+built.** Its value is availability, not power. Nothing in this mod needs balancing
+against a fear of it being too strong.
 
 **4. 🔴 Reaching for the top grade is PRIDE.** Owner, verbatim: *"Reaching towards it
 would definitely please Ozzik and anger others."* Note the inversion from the design's
@@ -188,20 +203,30 @@ clan's faith, so both sit in the dependent campaign mod.
 
 ⚠️ Salvation Engine therefore needs an **assembly** — a comp plus save/load persistence
 plus settings. `src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs` is the
-in-repo precedent to copy for the persistence. WreckedMachines itself may still be able
-to ship as pure XML, which is worth protecting.
+in-repo precedent to copy for the persistence.
+
+🔴 **WreckedMachines gets an assembly too — the pure-XML protection is REVERSED**
+(owner, 2026-09-15, later the same sitting). *"Every mod ships superb Mod Settings, no
+exceptions"* wins, and ruling 1 makes it mandatory anyway: the three ratios and the
+full-restoration cap are all player-tunable, which needs a settings screen. Its false
+exemption in `MOD_OPTIONS_RETROFIT_1` has been deleted.
 
 **6. 🔴 The urns feed Antiquities; the relics do not.** Owner, verbatim: *"The Urns
 feed antiquities, not the artifacts."* Antiquities' 48 read artifacts
 (`RUT_Antiquity_Urn`/`_Stele`/`_Gravegood`) remain its own economy, untouched. Rakatan
 relics move the gods instead — see 7.
 
-**7. Installing a relic moves the ship's standing with the gods.** Owner, verbatim:
-*"The ship has its literall 'mood' (vector among the gods) increased when ancient
-relic artifacts are installed on the ship."* ⚠️ UNRULED which scalar the divine engine
-means: **Satiation** (the signed per-god ledger moved by what the colony DOES) or
-**Mood** (each god's own weather, which canon F8 says is never printed as a number).
-Ask before building.
+**7. Installing a relic moves BOTH per-god scalars** (ruled 2026-09-15). Owner,
+verbatim: *"The ship has its literall 'mood' (vector among the gods) increased when
+ancient relic artifacts are installed on the ship."* Resolved as **both**: the permanent
+**Satiation** ledger records the act, and **Mood** lifts temporarily because a relic is
+a gift rather than a duty. The Mood half stays unprinted forever, per canon F8.
+
+🔴 **This needs new code one layer down: Ninefold has no public Mood mutator** — Mood is
+a private random walk with no external entry point. Owner authorized building **a
+generic external-impulse API** in Ninefold so any mod can nudge a god's Mood, with
+relics as its first caller. Open design question inside that: how an external nudge
+coexists with a walk that is meant to be the god's own.
 
 **8. Ship raises the FLOOR; components buy the PEAK.** Her recovery guarantees a
 climbing minimum grade across all seated relics; Ancient Components push an individual
@@ -219,7 +244,15 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
 
 ## Still open
 
-- **Confirm the 2× arithmetic** in ruling 3 — derived, never spoken.
+- **Per-class Defunct values.** 0.001 is the battery number. Factories and other
+  functional devices each need their own, and nobody has set them.
+- **Grade steps are invisible to the god engine, and may be inverted.** Ninefold's
+  repair hook fires on full hit points, not on a grade step, so refurbishing currently
+  earns Rekko nothing; and `Patch_BuildingDeconstructed` fires a large negative Rekko on
+  a completed deconstruct, so if a `replaceTags` build-over routes through that path,
+  refurbishing *angers* the god of repair. The hook exists (verified); the routing is
+  UNVERIFIED and needs the game. Fix per ruling 0: layer 1 publishes a neutral
+  "grade changed" signal, layer 3 listens. `ChronicleSubscriber` is the precedent.
 - Where relics are found, and where Ancient Components come from.
 - Mobile structures: which ones, and does a mobile relic still seat in a hull socket?
 - Can the ship's floor ever reach `Refurbished`, or does it stop at `Kludged` — with
