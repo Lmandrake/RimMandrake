@@ -38,6 +38,13 @@ namespace RimMandrake.StarWars.FireEcology
 
         public static bool biomeGenerationEnabled = true;
 
+        public static bool plantGrowthStagesEnabled = true;
+
+        // PYRELANDS_SCORCHED_RUINS_1: GenStep_ScorchPyrelandsRuins (FireEcologyHook.cs)
+        // reads this at mapgen time, per new map — flip it and the NEXT map generated
+        // honors it immediately, no restart needed (a map already on disk is untouched).
+        public static bool scorchedRuinsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -51,6 +58,8 @@ namespace RimMandrake.StarWars.FireEcology
             Scribe_Values.Look(ref ashfallAccumulationEnabled, "ashfallAccumulationEnabled", true);
             Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);
             Scribe_Values.Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", true);
+            Scribe_Values.Look(ref plantGrowthStagesEnabled, "plantGrowthStagesEnabled", true);
+            Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -103,6 +112,21 @@ namespace RimMandrake.StarWars.FireEcology
                 list.Label("Accumulation rate: " + ashfallRateMultiplier.ToString("0.00") + "x");
                 ashfallRateMultiplier = list.Slider(ashfallRateMultiplier, 0.25f, 3f);
             }
+            list.GapLine();
+
+            list.Label("Plant art");
+            list.CheckboxLabeled("Grass shows its growth stage", ref plantGrowthStagesEnabled,
+                "Quickgrass is drawn as a sprout, then half-grown, then tall lush grass as it "
+              + "regrows after a fire. Off: it is always drawn with its full-grown art (it still "
+              + "grows and still starts small — only the artwork stops changing).");
+            list.GapLine();
+
+            list.Label("Scorched ruins");
+            list.CheckboxLabeled("Ruins generate scorched and burned", ref scorchedRuinsEnabled,
+                "Ancient ruins (and mutator-placed ancient structures) on a Pyrelands map get "
+              + "ash terrain and soot filth laid over their footprint as the map is made. "
+              + "Off: ruins generate with plain ground, same as any other biome. Map-generation-"
+              + "affecting — only the NEXT map generated is affected; an existing map is untouched.");
             list.GapLine();
 
             list.Label("Biome placement (WORLDGEN-AFFECTING — new worlds only)");
