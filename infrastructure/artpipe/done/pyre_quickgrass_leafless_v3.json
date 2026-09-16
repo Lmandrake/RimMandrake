@@ -1,0 +1,16 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 1.0,
+  "id": "pyre_quickgrass_leafless_v3",
+  "priority": 90,
+  "prompt": "RimWorld top-down plant sprite, painterly vanilla-RimWorld plant art style: a single clump of quickgrass burned down to scorched stubble after a grass fire. Short broken stems standing in a low fan, charred grey-black and soot-dark at the tips and along most of their length, with a faint surviving green-gold remnant low at the bases where the fire did not reach - the same vivid green-and-yellow blade colour the living quickgrass carries, now reduced to a thin trace. Ash dust greys the whole clump. The stems are snapped and uneven, splayed out from a tight base, a low sparse silhouette much shorter than the living plant. Painterly rendering: soft shading down each stem, warm ash-grey highlights over cool black char. Single clump, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "Burned/ashen state of the NEW green-gold quickgrass (src/RimMandrake/Pyrelands/Textures/Things/Plant/RM_FE_Quickgrass/, 256x256 RGBA). Canvas matches the existing RM_FE_Quickgrass_LeaflessA.png (256x256, MEASURED). Painterly family (ART_PAINTERLY_RESTORATION_1); supersedes pyre_quickgrass_leafless_v1/v2, which were cel-shaded and drawn as a grazed green-teal lawn rather than a burn state. No facing - plants are single-facing. reference deliberately null: a reference= here would reskin-validate against the superseded sprite."
+}

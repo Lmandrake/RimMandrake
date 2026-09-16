@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 3.0,
+  "facing": "east",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_dalgo_v2_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dalgo, a reptilian riding mount. Vivid rust-orange hide with a paler cream-tan underside and belly, a long snout with visible sharp teeth including two lower tusks, and a tall sail-like heat-radiating dorsal crest running from the crown down the neck, its membrane translucent and veined. The long tail ends in a wide blade-like tip. Four strong legs, fully drawn with real joints and clawed feet. Painterly shading picking out the sail's veining and the folds of hide at the shoulders. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "PYRELANDS_FULL_REVIEW regen under the restored painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1, owner 2026-09-14). Identity sourced from the canon reference library design/RimStarWars/canon_references/dalgo/description.md (CANON_REFERENCE_LIBRARY_1) - the v1 render of this creature used the stood-down toy-figurine/leg-budget lawset and is superseded. Full regen, no reference (a reference here would reskin-validate against the wrong-style art). Same individual creature identity across all three facings; the prompt says nothing about orientation - the daemon supplies the facing convention."
+}

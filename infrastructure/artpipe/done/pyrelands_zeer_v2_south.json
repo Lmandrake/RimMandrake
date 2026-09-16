@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 3.0,
+  "facing": "south",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_zeer_v2_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Zeer, a tall giraffe-proportioned Naboo herd herbivore. A tawny-tan coat overlaid with bold dark rust-brown crosswise tiger-style banding running across the neck, shoulders and legs. A long slender neck carrying a small head, a pair of pale curved backward-hooked swiveling horns rising and curling from the crown, long thin legs with real joints and small hooves, and a long thin tufted tail. Calm grazing-animal bearing, soft painterly hide shading and visible muscle over the shoulder and haunch. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "PYRELANDS_FULL_REVIEW regen under the restored painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1, owner 2026-09-14). Identity sourced from the canon reference library design/RimStarWars/canon_references/zeer/description.md (CANON_REFERENCE_LIBRARY_1) - the v1 render of this creature used the stood-down toy-figurine/leg-budget lawset and is superseded. Full regen, no reference (a reference here would reskin-validate against the wrong-style art). Same individual creature identity across all three facings; the prompt says nothing about orientation - the daemon supplies the facing convention."
+}

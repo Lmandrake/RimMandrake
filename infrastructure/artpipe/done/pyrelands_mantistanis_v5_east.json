@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 3.5,
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_mantistanis_v5_east",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: a large mantis-like ambush hunter camouflaged for the Pyrelands grass sea, seen from directly above in RimWorld's top-down camera. Its angular carapace mimics the biome's flora: dry straw-gold and warm tan plates like standing quickgrass, broken by muted olive and green-gold streaks along the limbs, so a still mantis reads as a clump of tall grass. A pair of prominent raptorial forearms in the same dry-grass gold, edges shading to dull russet, folded in a calm ready posture - its defining feature, never raised to strike. Every colour on it is dry vegetation: straw, tan, olive, green-gold and dull russet only; it is a cold ambush predator that hides in grass, carrying no ember glow, no heat shimmer and no fire anywhere on it. Four slender walking legs support a low, poised body; a triangular head with large compound eyes and a pair of long thin antennae. Painterly shading across the carapace plates. Orientation, strict top-down insect: the mantis's body lies HORIZONTALLY across the image, its triangular head and two long antennae at the RIGHT edge and its abdomen at the LEFT edge. We look straight down on the flat of its back from above - the head lies flat against the ground plane, it is not raised or tilted up toward the viewer, and no upright head-and-shoulders pose appears. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "MANTISTANIS_CAMO_REGEN_1",
+  "style_notes": "MANTISTANIS_CAMO_REGEN_1. v4 north is accepted quality; only south and east are owed. MEASURED failure of the v4b attempts: they rendered head-up, because the daemon appends a mammal-shaped facing sentence ('walks toward the viewer, we see its FACE and chest') whenever a job carries a 'facing' field - wrong for a top-down insect. These two jobs carry NO 'facing' field on purpose and state the top-down insect orientation in the prompt body instead; the facing stays in the job id for wiring. Palette prompt reused verbatim from the accepted pyrelands_mantistanis_v4_north.json (straw-gold/olive grass camo, no red heat glow)."
+}
