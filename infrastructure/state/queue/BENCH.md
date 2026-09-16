@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T01:57:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T02:09:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -361,16 +361,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  RAKATANARCHOTECHMACHINES1
 prose:    infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md
-
-## SPECIES_CANON_LIBRARY_1 Canon reference library for the campaign's Star Wars races: appearance, behavior, unusual abilities and size, sourced with URLs and reference images, in the anooba canon_references template - the art-correction resource for race looks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SPECIES_CANON_LIBRARY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SPECIES_CANON_LIBRARY_1.md
 
 ## DROID_CANON_LIBRARY_1 Broad canon reference library for Star Wars droids - deliberately wider than current game content since droids are candidates for addition - adding manufacturer, typical racial ownership and era to the canon_references template
 state:    proposed
