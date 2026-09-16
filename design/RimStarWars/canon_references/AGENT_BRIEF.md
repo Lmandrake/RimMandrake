@@ -200,6 +200,24 @@ the prose, the checklist follows the images.
 - **A red-channel-only mask** cannot give horns a different hue from skin (Iktotchi).
 - **Shared textures**: `Races_Primitive.xml` reuses the MSE droid texture, so editing it
   changes two races.
+- 🔴 **The pawn rig itself.** RimWorld draws a pawn as a head plus a body on a fixed
+  human-shaped skeleton, so a species whose defining feature lives in **neck length, leg
+  form or overall proportion cannot express it at all** — no texture fixes this. Found on
+  **Ithorian** (forward-curving neck), **Kaminoan** (neck roughly twice head length, head
+  and neck about 20% of standing height), **Muun** (long-legged narrow body) and **Lasat**
+  (digitigrade legs on a human skeleton).
+
+  This is the hardest class of limit, because it is not a bug and not a missing asset — it
+  is the renderer. Record it plainly so nobody commissions art chasing it, and treat the
+  best achievable silhouette as the target instead.
+
+**Keep the three classes apart — their fixes are completely different:**
+
+| class | what it means | fix |
+|---|---|---|
+| **missing gene** | the def simply does not carry the trait | edit the def |
+| **engine limit** | the shader or mask pipeline cannot express it | new art, or a mask with more channels |
+| **rig limit** | the pawn skeleton cannot express it | nothing; retarget the goal |
 
 ⛔ **Cosmetic changes need the owner's permission** before they are made — they can break
 animated faces. Recording a limit is not the same as fixing it.
