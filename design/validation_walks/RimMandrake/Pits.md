@@ -23,6 +23,85 @@ status-hint: species-agnostic covered-pit-trap framework — dig a pit in stages
 9. [B] rimworld/execute_debug_action `{path naming "RMPits/Report pit state (RAW)", x, z}` on the sprung pit → Player.log shows `WOULD_SPRING=True`, a `HELD` block for the caught pawn with non-empty `hediffs=[...]` including `RM_PinnedInPit:...`
 10. [B] repeat step 8-9 with a PLAYER-faction pawn instead of hostile → expect `counted=False` for that pawn in the REPORT_PIT `STANDING` line and no spring from that pawn alone (faction-exclusion check named in the .cs as a fixed bug)
 
+## north star
+state: DRAFT
+validated-hash:
+
+⚠️ **DRAFT — not a bar until the owner validates it.** Per
+`design/RimMandrake/north_star_validation_spec.md`, a DRAFT checklist cannot fail
+a mod and cannot green one. Every line below is an agent's distillation of the
+owner's own recorded words; none of it is his ruling yet.
+
+### the experience  (OWNER'S WORDS — quoted, awaiting his own statement)
+
+2026-09-15, on seeing the shipped mod:
+
+> *"I was somewhat shocked and appalled when I saw the Pit mod doing precisely
+> what we asked it to do: and only that. A simple little trap that just Snares a
+> pawn to stand there staring at the camera, stuck in a trap with "Pit" written
+> on it. Not at all "falling in a pit" but I understand what happened."*
+
+2026-09-13, live, after watching a capture on a quicktest:
+
+> *"Looks like it was working. But we need to think now about very deeply what it
+> looks like. It can't just be a simple trap graphic you get stuck on. So we need
+> a big dark pit."*
+
+His own earlier ruled design for the covered state
+(`design/Jawa/covered_pit_traps_spec.md` §3, 2026-08-30) asks for invisibility at
+play zoom with *"a slight seam/discoloration at high zoom for the player's own
+eye"* — a tell that was specified and never built.
+
+🔑 The through-line in all three: **a pit is a hole you fall into and are gone.**
+The mechanics already do that; nothing on screen says so.
+
+### must show
+
+**The sprung trap pit**
+- [ ] `pit_reads_as_hole` — a sprung pit reads as a dark hole at play zoom with
+      its label hidden. Not an icon, not a decorated floor tile.
+- [ ] `pit_not_vanilla_trap` — does not read as vanilla's spike trap; the pit has
+      art of its own, at its own texture path.
+- [ ] `pit_occupant_below_floor` — a captured pawn is not drawn standing at floor
+      level. He must not be "staring at the camera".
+- [ ] `pit_occupied_distinguishable` — occupied and empty sprung pits are
+      distinguishable at a glance, with no tooltip and no click.
+- [ ] `pit_reads_at_size` — a pit larger than one cell fills its own footprint
+      rather than drawing in one corner.
+
+**The covered / armed state**
+- [ ] `pit_covered_invisible` — a covered pit is invisible at play zoom, matching
+      surrounding terrain.
+- [ ] `pit_covered_seam_at_max_zoom` — and carries a seam or discoloration at
+      maximum zoom, so the player who placed it can find it. This is the
+      specified-but-unbuilt tell.
+
+**The dig site in progress**
+- [ ] `digsite_stage_legible` — an unfinished dig site reads as excavation in
+      progress and its stage is apparent without selecting it.
+
+**The prisoner pit cell**
+- [ ] `pitcell_gate_state_legible` — gate open versus closed is visible on the
+      building itself.
+- [ ] `pitcell_occupant_visible` — a held prisoner is discernible as being down
+      in the cell, not standing on it.
+
+**Fittings**
+- [ ] `fitting_reads_distinct` — spiked, oiled, poison and water fittings are
+      distinguishable from bare and from each other.
+
+### cannot show
+
+- [ ] `never_snared_standing` — a pawn snared upright on a labelled tile. This is
+      the exact defect that prompted the north star system; if a screenshot shows
+      it, the mod is red regardless of every state assertion passing.
+
 ## anti-guessing notes
 - `RMPits`/`Report pit state (RAW)` etc. are DebugActionType.ToolMap leaves — not separately named jawa/ tools — so they are reached through the verbatim tool `rimworld/execute_debug_action`, which the tool list documents as executing "including ToolMap actions targeted by cell". The exact `path` string was not independently confirmed against a live `rimworld/search_debug_actions` call in this authoring pass; resolve it with that tool before running the walk (category constant is literally `"RMPits"` in `src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs`).
-- No [S] line: the mass-trigger and escape mechanics are the whole point and are fully script-checkable; nothing here is visual-only.
+- 🔴 **This walk previously carried the line "No [S] line: the mass-trigger and
+  escape mechanics are the whole point and are fully script-checkable; nothing
+  here is visual-only." That claim was wrong and is deleted.** It is the written
+  form of the reasoning that shipped a pawn standing in a 64px trap icon while
+  every state assertion passed. The mechanics being script-checkable is true and
+  says nothing about whether the mod looks like a pit. See the `## north star`
+  section above and `design/RimMandrake/north_star_validation_spec.md`.

@@ -63,10 +63,14 @@ class Component(object):
     """One `with t.component(...):` block's record. Appended to
     `TestContext.components` by `component()`'s context manager on exit."""
 
-    def __init__(self, name, toggle, beyond_toggle):
+    def __init__(self, name, toggle, beyond_toggle, shows=None):
         self.name = name
         self.toggle = toggle
         self.beyond_toggle = beyond_toggle
+        # must-show ids from the mod's walk `## north star` section that this
+        # component's screenshots are evidence for. State assertions cannot see
+        # appearance; `shows` is the only wiring between intent and evidence.
+        self.shows = list(shows or ())
         self.evidence = []          # list of {"call": ..., "result": ...}
         self.unverified = 0
         self.screenshots = []
@@ -83,6 +87,7 @@ class Component(object):
             "beyond_toggle": self.beyond_toggle, "verdict": verdict,
             "detail": self.detail, "evidence": self.evidence,
             "screenshots": self.screenshots, "checkpoints": self.checkpoints,
+            "shows": list(self.shows),
         }
 
 
@@ -115,8 +120,8 @@ class TestContext(object):
         return not self.upstream_failed
 
     # --------------------------------------------------------- component
-    def component(self, name, toggle=None, beyond_toggle=False):
-        return _ComponentCtx(self, name, toggle, beyond_toggle)
+    def component(self, name, toggle=None, beyond_toggle=False, shows=None):
+        return _ComponentCtx(self, name, toggle, beyond_toggle, shows)
 
     # ------------------------------------------------------------ setup
     def clear_area(self, size=40):
@@ -412,9 +417,9 @@ class TestContext(object):
 
 
 class _ComponentCtx(object):
-    def __init__(self, ctx, name, toggle, beyond_toggle):
+    def __init__(self, ctx, name, toggle, beyond_toggle, shows=None):
         self.ctx = ctx
-        self.component = Component(name, toggle, beyond_toggle)
+        self.component = Component(name, toggle, beyond_toggle, shows)
 
     def __enter__(self):
         self.ctx._current = self.component
