@@ -83,6 +83,12 @@
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_skill_unwired.py\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_forged_validation.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking nobody is hand-writing his validation"
           }
         ]
       }

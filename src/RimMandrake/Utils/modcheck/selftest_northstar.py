@@ -18,6 +18,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import floor          # noqa: E402
 import judge          # noqa: E402
 import northstar      # noqa: E402
+import runner         # noqa: E402
+import status         # noqa: E402
+import suite as suite_mod  # noqa: E402
 
 FAILED = []
 
@@ -232,6 +235,264 @@ def test_judge_run_skips_unclaimed_components():
        "and are not annotated -- exactly pre-2026-09-15 behaviour")
 
 
+# --------------------------------------------- the two checklists stay apart
+CANNOT_WALK = """\
+# Demo — validation walk
+
+## north star
+state: DRAFT
+validated-hash:
+
+### the experience  (OWNER'S WORDS)
+It should feel like a hole.
+
+- [ ] `not_a_claim` — a bullet in his prose is not a checklist line
+
+### must show
+- [ ] `reads_as_hole` — reads as a dark hole at play zoom, with its label
+      hidden and no icon on the floor
+
+### cannot show
+- [ ] `snared_standing` — a pawn snared upright on a labelled tile
+
+## anti-guessing notes
+- none
+"""
+
+
+def _cannot_walk(tmp):
+    d = os.path.join(tmp, "design", "validation_walks", "RimMandrake")
+    os.makedirs(d, exist_ok=True)
+    p = os.path.join(d, "Cannot.md")
+    with open(p, "w", encoding="utf-8") as fh:
+        fh.write(CANNOT_WALK)
+    return p
+
+
+def test_cannot_show_is_not_part_of_the_floor():
+    print("--- `cannot show` is a separate checklist, not a must-show ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        p = _cannot_walk(tmp)
+        ns = northstar.parse(p)
+        ok(ns["must_show"] == ["reads_as_hole"],
+           "only `### must show` lines are must-shows")
+        ok(ns["cannot_show"] == ["snared_standing"],
+           "`### cannot show` parses into its own list")
+        ok("not_a_claim" not in ns["must_show"] + ns["cannot_show"],
+           "a bullet under his prose is not silently promoted to a claim")
+        ok(ns["must_show_text"]["reads_as_hole"].endswith("no icon on the floor"),
+           "prose is joined across the wrapped continuation line")
+        northstar.record_validation(p)
+        ok(northstar.bar_for(p) == ["reads_as_hole"],
+           "the FLOOR is must-show only -- no component is obliged to "
+           "photograph a defect he would reject")
+        must, cannot = northstar.text_for(p)
+        ok(list(must) == ["reads_as_hole"] and list(cannot) == ["snared_standing"],
+           "the judge is handed the two polarities separately")
+
+
+def test_cannot_show_verdict_is_inverted():
+    print("--- a YES on a `cannot show` line FAILS the mod ---")
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as fh:
+        fh.write(b"\x89PNG\r\n\x1a\n")
+        img = fh.name
+    try:
+        comp = {"name": "c", "shows": ["snared_standing"], "screenshots": [img]}
+        cannot = {"snared_standing": "a pawn snared upright on a labelled tile"}
+
+        r = judge.judge_component(comp, {}, cannot,
+                                  runner=lambda p: (True, '{"verdict":"YES","why":"upright"}'))
+        ok(r[0]["polarity"] == judge.CANNOT and not r[0]["pass"],
+           "the defect IS on screen -- YES means red")
+        ok(not judge.visual_all_green(r), "and the run is not green")
+
+        r = judge.judge_component(comp, {}, cannot,
+                                  runner=lambda p: (True, '{"verdict":"NO","why":"in a hole"}'))
+        ok(r[0]["pass"] and judge.visual_all_green(r),
+           "the defect is absent -- NO clears the line")
+
+        r = judge.judge_component(comp, {}, cannot,
+                                  runner=lambda p: (True, "no idea"))
+        ok(r[0]["verdict"] == judge.UNJUDGEABLE and not r[0]["pass"],
+           "UNJUDGEABLE clears neither polarity")
+    finally:
+        os.unlink(img)
+
+
+# ------------------------------------------------------ runner-level wiring
+def _suite_with(shows_per_component):
+    """A real `Suite` whose components carry `shows=`, declared offline through
+    the same no-op probe the floor check uses -- no session, no game."""
+    s = suite_mod.Suite("Demo")
+
+    def make(i, shows):
+        def chain(t):
+            with t.component("c%d" % i, beyond_toggle=True, shows=shows):
+                t.screenshot()
+        return chain
+
+    for i, shows in enumerate(shows_per_component):
+        s.chain("chain%d" % i)(make(i, shows))
+    return s
+
+
+def test_declared_components_carry_shows():
+    print("--- the floor can be answered BEFORE a run ---")
+    s = _suite_with([["reads_as_hole"]])
+    declared = s.components_declared()
+    ok(declared and declared[0].get("shows") == ["reads_as_hole"],
+       "components_declared() reports `shows`, offline")
+
+
+def test_runner_refuses_an_unclaimed_validated_line():
+    print("--- REFUSED: a validated line no component claims ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        p = write_walk(tmp)
+        northstar.record_validation(p)
+        ns = northstar.parse(p)
+
+        fl = runner.visual_floor(_suite_with([["reads_as_hole"]]), ns)
+        ok(fl["uncovered"] == ["occupant_below_floor"], "names the uncovered id")
+        ok("occupant_below_floor" in runner.refusal(fl),
+           "and that is a refusal, not a warning")
+
+        fl = runner.visual_floor(
+            _suite_with([["reads_as_hole"], ["occupant_below_floor"]]), ns)
+        ok(runner.refusal(fl) == "", "fully claimed: nothing refuses the run")
+
+        fl = runner.visual_floor(
+            _suite_with([["reads_as_hole", "occupant_below_floor", "typo_id"]]), ns)
+        ok("typo_id" in runner.refusal(fl),
+           "an orphaned `shows=` refuses too -- claiming what nobody asked for")
+
+
+def test_a_draft_checklist_binds_nothing_at_runner_level():
+    print("--- a DRAFT checklist cannot refuse a mod either ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        ns = northstar.parse(write_walk(tmp))          # DRAFT
+        fl = runner.visual_floor(_suite_with([[]]), ns)
+        ok(fl == {"bar": [], "uncovered": [], "orphans": []},
+           "no bar, no floor, no refusal -- today's behaviour for 17 of 18 mods")
+
+
+def _summary(shows, verdict="PASS", shots=("x.png",)):
+    return {"chains": [{"name": "ch", "components": [
+        {"name": "c", "verdict": verdict, "shows": list(shows),
+         "screenshots": list(shots)}]}], "all_green": verdict == "PASS",
+        "findings": []}
+
+
+def test_state_green_plus_judge_no_is_not_green():
+    print("--- both halves are required, and neither substitutes ---")
+    text = {"reads_as_hole": "reads as a dark hole"}
+    yes = lambda p: (True, '{"verdict":"YES","why":"a hole"}')  # noqa: E731
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as fh:
+        fh.write(b"\x89PNG\r\n\x1a\n")
+        img = fh.name
+    try:
+        s = _summary(["reads_as_hole"], shots=(img,))
+        runner.apply_judgement(s, text, {},
+                               judge_runner=lambda p: (True, '{"verdict":"NO","why":"an icon"}'))
+        ok(s["state_all_green"] and not s["visual_all_green"] and not s["all_green"],
+           "state passed, the judge said NO, the mod is RED -- the pit's exact case")
+
+        s = _summary(["reads_as_hole"], shots=(img,))
+        runner.apply_judgement(s, text, {},
+                               judge_runner=lambda p: (True, '{"verdict":"UNJUDGEABLE","why":"wrong zoom"}'))
+        ok(not s["all_green"], "UNJUDGEABLE is not a pass at runner level either")
+
+        s = _summary(["reads_as_hole"], shots=(img,))
+        runner.apply_judgement(s, text, {}, judge_runner=yes)
+        ok(s["all_green"] and s["visual_all_green"], "both halves green is GREEN")
+
+        s = _summary(["reads_as_hole"], verdict="FAIL", shots=(img,))
+        runner.apply_judgement(s, text, {}, judge_runner=yes)
+        ok(not s["all_green"],
+           "a judge YES cannot rescue a failed state assertion")
+
+        # The evidence the sheet points at must actually be on disk. Caught this
+        # selftest's own first fixture, which claimed a screenshot named x.png.
+        s = _summary(["reads_as_hole"], shots=("/nonexistent/x.png",))
+        runner.apply_judgement(s, text, {}, judge_runner=yes)
+        ok(not s["all_green"] and s["visual"][0]["verdict"] == judge.UNJUDGEABLE,
+           "a claimed screenshot that is not on disk cannot pass, even on a YES")
+
+        s = _summary([])
+        runner.apply_judgement(s, {}, {}, judge_runner=lambda p: (True, "{}"))
+        ok(s["all_green"] and s["visual"] == [],
+           "a mod claiming nothing judges nothing and keeps its state verdict")
+    finally:
+        os.unlink(img)
+
+
+# ------------------------------------------------------- what GREEN now means
+def test_green_definition():
+    print("--- the five conditions of GREEN (spec section 5) ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        p = write_walk(tmp)                            # DRAFT
+        ok(status.verdict_for(True, p) == "DRAFT-CHECKLIST",
+           "an all-green run against a DRAFT bar is NOT green")
+        northstar.record_validation(p)
+        ok(status.verdict_for(True, p) == "PENDING-OWNER-REVIEW",
+           "validated, but his own eyes have not been on a sheet yet")
+        ok(status.verdict_for(True, p, reviewed=True) == "GREEN",
+           "reviewed once -- now GREEN")
+        ok(status.verdict_for(False, p, reviewed=True) == "RED",
+           "a failed half is RED regardless of review")
+        ok(status.verdict_for(True, p, refused="uncovered: x") == "REFUSED",
+           "a refused run reports REFUSED, not RED -- it never ran")
+        ok(status.verdict_for(True, None) == "GREEN",
+           "a mod with no walk greens exactly as it did before this system")
+
+        bare = os.path.join(tmp, "Bare.md")
+        with open(bare, "w", encoding="utf-8") as fh:
+            fh.write("# Bare\n\n## must be true\n- x\n")
+        ok(status.verdict_for(True, bare) == "GREEN",
+           "and so does a walk with no `## north star` section")
+
+
+def test_record_run_writes_the_gated_verdict():
+    print("--- the registry cannot record GREEN past the gate ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        walk = write_walk(tmp)
+        mod_dir = os.path.join(tmp, "mod")
+        os.makedirs(mod_dir)
+        with open(os.path.join(mod_dir, "About.xml"), "w") as fh:
+            fh.write("<x/>")
+
+        # Redirect the registry: this test must never touch the real one.
+        keep = (status.LOG_PATH, status.LOCK_PATH)
+        status.LOG_PATH = os.path.join(tmp, "modcheck_status.json")
+        status.LOCK_PATH = status.LOG_PATH + ".lock"
+        try:
+            e = status.record_run("Demo", mod_dir, "r1", True, walk=walk)
+            ok(e["status"] == "DRAFT-CHECKLIST",
+               "an all-green run against a DRAFT checklist is not written GREEN")
+
+            northstar.record_validation(walk)
+            e = status.record_run("Demo", mod_dir, "r2", True, walk=walk)
+            ok(e["status"] == "PENDING-OWNER-REVIEW",
+               "validated, and still not green until he has read a sheet")
+
+            e = status.record_owner_review("Demo", "yes, that's a pit", "r2")
+            ok(e["status"] == "GREEN" and e["owner_review"]["run_id"] == "r2",
+               "his review promotes it and records WHICH run he read")
+
+            e = status.record_run("Demo", mod_dir, "r3", True, walk=walk)
+            ok(e["status"] == "GREEN" and e["owner_review"]["run_id"] == "r2",
+               "later runs green directly -- his review is required once, and "
+               "survives a re-run naming the sheet he actually saw")
+
+            e = status.record_run("Demo", mod_dir, "r4", False, walk=walk,
+                                  refused="uncovered: occupant_below_floor")
+            ok(e["status"] == "REFUSED" and e["refused"],
+               "a refused run is recorded as REFUSED with its reason")
+            ok(status.check("Demo", mod_dir).startswith("REFUSED"),
+               "and `check` reports it as not-green, naming why")
+        finally:
+            status.LOG_PATH, status.LOCK_PATH = keep
+
+
 def main():
     for t in (test_parse_and_ids,
               test_missing_section_is_todays_behaviour,
@@ -241,7 +502,15 @@ def main():
               test_visual_floor,
               test_orphan_shows_is_a_lint_error,
               test_judge_parses_and_never_guesses,
-              test_judge_run_skips_unclaimed_components):
+              test_judge_run_skips_unclaimed_components,
+              test_cannot_show_is_not_part_of_the_floor,
+              test_cannot_show_verdict_is_inverted,
+              test_declared_components_carry_shows,
+              test_runner_refuses_an_unclaimed_validated_line,
+              test_a_draft_checklist_binds_nothing_at_runner_level,
+              test_state_green_plus_judge_no_is_not_green,
+              test_green_definition,
+              test_record_run_writes_the_gated_verdict):
         t()
     print()
     if FAILED:

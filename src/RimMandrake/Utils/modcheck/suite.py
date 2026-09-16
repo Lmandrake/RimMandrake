@@ -463,15 +463,19 @@ class Suite(object):
 
     def components_declared(self):
         """Run every chain fn with a NO-OP recording context (no session, no
-        game) to enumerate {"toggle", "beyond_toggle"} per component, for
-        `modcheck.floor.uncovered()`. Used by lint/floor checks that must
-        not touch a live game to answer 'is the floor met'."""
+        game) to enumerate {"toggle", "beyond_toggle", "shows"} per component,
+        for `modcheck.floor.uncovered()` and `floor.uncovered_shows()`. Used by
+        lint/floor checks that must not touch a live game to answer 'is the
+        floor met' -- including the VISUAL floor, which has to be answerable
+        BEFORE a run, since an uncovered must-show line refuses the mod rather
+        than failing it."""
         out = []
         probe = _DeclarationProbe()
         for _, fn in self.chains:
             probe.upstream_failed = False
             fn(probe)
-            out.extend({"toggle": c.toggle, "beyond_toggle": c.beyond_toggle}
+            out.extend({"toggle": c.toggle, "beyond_toggle": c.beyond_toggle,
+                        "shows": list(c.shows)}
                        for c in probe.components)
             probe.components = []
         return out

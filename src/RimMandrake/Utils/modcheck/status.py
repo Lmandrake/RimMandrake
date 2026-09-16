@@ -154,20 +154,99 @@ def save(data):
         raise
 
 
-def record_run(mod, mod_dir, run_id, all_green):
+def _checklist_state(walk):
+    """`(present, effective_state)` of a walk's `## north star`, or
+    `(False, None)` when there is no walk. Read here rather than passed in as a
+    boolean so a caller cannot hand this function a flattering answer."""
+    if not walk or not os.path.isfile(walk):
+        return False, None
+    import sys
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import northstar  # noqa: E402
+    ns = northstar.parse(walk)
+    return ns["present"], ns["state"]
+
+
+def verdict_for(all_green, walk, refused="", reviewed=False):
+    """The GREEN definition of north_star_validation_spec.md §5, in one place.
+
+    GREEN requires all five: state assertions pass, every validated must-show
+    line is claimed, every claim is judged, the checklist is VALIDATED, and he
+    has reviewed the sheet once. The last three are what this function adds.
+
+      REFUSED              the visual floor or an orphaned `shows=` (never ran)
+      RED                  something failed -- state or judge
+      DRAFT-CHECKLIST      both halves passed against a bar that is not his yet
+      PENDING-OWNER-REVIEW both halves passed; his own eyes not yet on a sheet
+      GREEN                all five
+
+    ⚠️ A mod whose walk has NO `## north star` section reaches GREEN exactly as
+    it did before this system existed. Enforcement is per mod, as he validates
+    (owner, 2026-09-15) -- that is what makes the whole change additive.
+    """
+    if refused:
+        return "REFUSED"
+    if not all_green:
+        return "RED"
+    present, state = _checklist_state(walk)
+    if present and state != "VALIDATED":
+        return "DRAFT-CHECKLIST"
+    if present and not reviewed:
+        return "PENDING-OWNER-REVIEW"
+    return "GREEN"
+
+
+def record_run(mod, mod_dir, run_id, all_green, walk=None, refused=""):
     """Called once per `modcheck run <mod>`. Never hand-called mid-run --
-    the runner calls this exactly once, after every chain has finished."""
+    the runner calls this exactly once, after every chain has finished.
+
+    `all_green` is the run's BOTH-HALVES verdict (state and judge); `walk` is the
+    mod's validation walk, whose checklist state and the owner's recorded review
+    decide whether an all-green run is allowed to be called GREEN."""
     with _locked():
         data = load()
+        prior = data.get(mod) or {}
+        review = prior.get("owner_review")
         data[mod] = {
             "hash": mod_hash(mod_dir),
             "run_id": run_id,
-            "status": "GREEN" if all_green else "RED",
+            "status": verdict_for(all_green, walk, refused, bool(review)),
             "ts": time.time(),
             "minor": None,
+            # His review survives a re-run: it is required only for a mod's
+            # FIRST green, and it names the run whose sheet he actually read.
+            "owner_review": review,
+            "refused": refused or None,
         }
         save(data)
     return data[mod]
+
+
+def record_owner_review(mod, said, run_id=None):
+    """Record that the owner personally reviewed this mod's sheet -- spec §5.5,
+    required once, before a mod's first GREEN, mirroring the whole-file-then-
+    incremental rule of `code_review_status.py`.
+
+    OWNER-AUTHORISED ONLY: `said` is his verbatim words, which the CLI requires
+    and this function records rather than re-derives. Promotes a run that was
+    waiting on exactly this to GREEN, and refuses a mod with no run to review --
+    there is no sheet to have read."""
+    with _locked():
+        data = load()
+        entry = data.get(mod)
+        if not entry:
+            raise RuntimeError(
+                "%s has no recorded run -- there is no sheet to review. Run "
+                "`modcheck run %s` first." % (mod, mod))
+        entry["owner_review"] = {"run_id": run_id or entry.get("run_id"),
+                                 "said": said, "ts": time.time()}
+        if entry.get("status") == "PENDING-OWNER-REVIEW":
+            entry["status"] = "GREEN"
+        data[mod] = entry
+        save(data)
+    return entry
 
 
 def declare_minor(mod, mod_dir, why):
@@ -192,14 +271,27 @@ def declare_minor(mod, mod_dir, why):
     return entry
 
 
+_NOT_GREEN_WHY = {
+    "RED": "RED (last run failed)",
+    "REFUSED": "REFUSED (visual floor -- see `refused` in the registry)",
+    "DRAFT-CHECKLIST": "DRAFT-CHECKLIST (both halves passed, but the "
+                       "must-show bar is not the owner's yet)",
+    "PENDING-OWNER-REVIEW": "PENDING-OWNER-REVIEW (both halves passed; needs "
+                            "`modcheck review <mod> --owner-said ...` once)",
+}
+
+
 def check(mod, mod_dir):
-    """GREEN / STALE / NEVER RUN. Never touches the game."""
+    """GREEN / STALE / NEVER RUN, or why it is not green. Never touches the
+    game. Only the literal string GREEN is a pass -- a gate reading this must
+    not treat PENDING-OWNER-REVIEW as one."""
     data = load()
     entry = data.get(mod)
     if not entry:
         return "NEVER RUN"
-    if entry.get("status") != "GREEN":
-        return "RED (last run failed)"
+    recorded = entry.get("status")
+    if recorded != "GREEN":
+        return _NOT_GREEN_WHY.get(recorded, str(recorded))
     if mod_hash(mod_dir) != entry.get("hash"):
         return "STALE"
     return "GREEN"

@@ -180,6 +180,14 @@ New module, `modcheck/judge.py`. Runs once at the end of a run, per the
 - **Output per claimed line**: `YES` / `NO` / `UNJUDGEABLE`, with one sentence of
   why. `UNJUDGEABLE` is a real verdict for a screenshot that cannot settle the
   line (wrong zoom, occluded subject) and never collapses to a pass.
+- **A `cannot show` line is judged with the opposite polarity**: it states a
+  defect, so `NO` clears it and `YES` fails the mod. The judge is asked the same
+  narrow factual question either way — is this statement true of this image —
+  and the polarity is applied by the runner, never by telling the model which
+  answer is wanted. (Built 2026-09-16. The first implementation collected every
+  checkbox id in the section into one list, which put the pit's own rejection
+  line into the visual FLOOR and would have demanded a component prove the
+  defect was on screen.)
 - **Transport is `claude -p`**, a subprocess, not an HTTP endpoint — the standing
   ruling of 2026-09-05 for every LLM consumer in this repo. No API key, no base
   URL.
@@ -255,20 +263,40 @@ pattern (per-mod hash, never hand-edited).
 report, cli, selftest; 18 `validation.py`; `modcheck_status.json`; 77 walk files
 with code-anchored `## must be true`.
 
+**Built 2026-09-16** (`NORTH_STAR_RUNNER_WIRING_1`), 66 offline checks in
+`modcheck/selftest_northstar.py`, none of which shells out:
+
+| # | item | where |
+|---|---|---|
+| 1 | `shows=` on `component()`; orphan-id lint | `suite.py`, `floor.orphan_shows` |
+| 2 | `uncovered_shows()` and the pre-run refusal | `floor.py`, `runner.visual_floor`/`refusal` |
+| 3 | `judge.py` + both halves required for green | `runner.apply_judgement` |
+| 4 | DRAFT/VALIDATED hash state; `modcheck validate` | `northstar.py`, `cli.py` |
+| 5 | the GREEN definition of §5 | `status.verdict_for`, `.claude/hooks/block_forged_validation.py` |
+
 **Owed:**
 
 | # | item | owner time |
 |---|---|---|
-| 1 | `shows=` on `component()`; orphan-id lint | none |
-| 2 | `uncovered_shows()` in `floor.py` | none |
-| 3 | `judge.py` + wiring into the verdict | none |
-| 4 | checklist DRAFT/VALIDATED hash state; `modcheck validate` | none |
-| 5 | the GREEN definition of §5, hook-enforced | none |
 | 6 | north star sections in 77 walks | **his vision + validation** |
 | 7 | `validation.py` for the 59 mods that have a walk and no script | none |
 
-Items 1–5 block the value of 6 and 7 and cost him nothing. **6 is the only
-bottleneck in the system** and the strategy for it is §8.
+**6 is the only bottleneck in the system** and the strategy for it is §8. Nothing
+in 1–5 blocks it any more.
+
+Two things 1–5 deliberately do NOT do, so nobody reads more into them:
+
+- **The toggle floor is still not wired into a run.** `floor.uncovered()` is
+  called only from `selftest.py`, exactly as before. The visual floor was wired
+  because it binds nothing until he validates a mod; wiring the toggle floor
+  would refuse mods today, against §MOD_OPTIONS_RETROFIT_1's own known gap.
+- **No mod's behaviour changed.** Every one of the 18 scripts has no `shows=`
+  and no walk has a VALIDATED checklist, so every run still resolves exactly as
+  it did. MEASURED 2026-09-16, the two recorded GREENs: **FluidCanals still
+  records GREEN** (its walk has no `## north star` section at all), and **Pits
+  records `DRAFT-CHECKLIST`** — its checklist exists and is not his yet. So the
+  pit stops being green the moment it is next run, before he validates anything,
+  which is the first half of §9's falsification test arriving early.
 
 ## 8. Getting 77 of them written
 
