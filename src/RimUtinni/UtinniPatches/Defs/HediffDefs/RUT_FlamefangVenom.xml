@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FlamefangVenom.xml                UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+
+  Owner sheet note, 2026-09-16, verbatim: "rename this to Flamefang and make
+  it venomous" — postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1's eviction
+  of GR_Boomsnake. This is the injected hediff half of the venom mechanism;
+  the delivery half (the DamageDef that injects it on a bite, and the tool
+  capacity/maneuver pair that routes GR_Boomsnake's bite through that
+  DamageDef) is RUT_FlamefangVenomBite (DamageDefs/) and RUT_FlamefangBite
+  (ToolCapacityDefs/ + Maneuvers/), wired onto the ThingDef by
+  Patches/FlamefangVenom.xml.
+
+  Mechanism modeled on vanilla's own venom pattern (RimSage-verified this
+  pass): Cobra's bite tool has capacity ToxicBite -> ManeuverDef ToxicBite ->
+  DamageDef ToxicBite, whose <additionalHediffs> block injects HediffDef
+  ToxicBuildup scaled by <severityPerDamageDealt> per hit
+  (Defs/Core/DamageDefs/Damages_MeleeWeapon.xml). GR_Boomsnake's own donor
+  tool already used the same pattern one level further specialized
+  (GeneticRim's GR_VeryToxicBite -> ToxicBuildup, 0.005/dmg) — this hediff is
+  a NEW, flavor-distinct venom (not a reskin of ToxicBuildup) so Flamefang's
+  bite reads as ITS OWN thing: a fire-following serpent's venom that burns
+  rather than a generic radiation-poisoning toxin.
+
+  Stage/comp shape cribbed from vanilla WoundInfection (painOffset per stage,
+  capMods on Consciousness/Moving) and ToxicBuildup (HediffCompProperties_
+  Immunizable so the body can fight it off over days rather than needing a
+  cure item) — both RimSage-verified this pass, no invented field names.
+  tendable/TendDuration so a colony medic can treat a bite same as any wound
+  infection.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_FlamefangVenom</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>flamefang venom</label>
+    <labelNoun>a dose of flamefang venom</labelNoun>
+    <description>A burning venom from a flamefang's bite. It does not spread like an infection so much as smolder in place, a coal lodged under the skin — hot, slow, and worse the longer it sits untreated.</description>
+    <defaultLabelColor>(0.85, 0.3, 0.05)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <tendable>true</tendable>
+    <lethalSeverity>1</lethalSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Immunizable">
+        <severityPerDayNotImmune>0.35</severityPerDayNotImmune>
+        <immunityPerDaySick>0.5</immunityPerDaySick>
+        <severityPerDayImmune>-0.6</severityPerDayImmune>
+        <immunityPerDayNotSick>-0.3</immunityPerDayNotSick>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>12</baseTendDurationHours>
+        <severityPerDayTended>-0.4</severityPerDayTended>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>onset</label>
+        <painOffset>0.05</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.3</minSeverity>
+        <label>spreading burn</label>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>searing burn</label>
+        <painOffset>0.3</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.85</minSeverity>
+        <label>critical burn</label>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.5</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.2</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

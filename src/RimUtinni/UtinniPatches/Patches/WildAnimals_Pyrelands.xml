@@ -19,27 +19,28 @@
   PYRELANDS_FIRE_WEB_COMMISSION_1 igniter builds, and the round-2 move-mapping
   import of Dalgo) — NOT re-derived or rescaled here. That JSON
   is the actual ruling; this file only wires it into the def the game reads.
-  The 13-animal sum is 4.41, not the placeholder's ~5.8 — a deliberate
-  consequence of using the owner's real per-species numbers rather than
-  matching the placeholder's total.
+  The 14-animal sum is 4.21 (GR_Boomsnake/Flamefang restored 2026-09-16, see
+  FLAMEFANG_SNAKE_REBIRTH_1 note below) — not the placeholder's ~5.8, a
+  deliberate consequence of using the owner's real per-species numbers rather
+  than matching the placeholder's total.
 
   🔴 2026-09-14 (BOOMALOPE_CUT_EVERYWHERE_1): vanilla Boomalope, originally
   wired here 2026-09-13 under the 2026-09-09 KEEP-reskinned card, is cut —
   owner ruling "Absolutely no boomalopes," reversing that card. Removed from
   the unconditional block and the roster below; counts corrected to 14/4.21.
 
-  🔴 2026-09-14 (BOOMSNAKE_CUT_CONFLICT_1): GR_Boomsnake's ThingDef was cut by
-  BOOM_FAMILY_CUT_1 (2026-09-10, 12:48 local) — its presence here traced to a
-  round-2 move-mapping decision recorded at 06:20 local the same day, BEFORE
-  the cut, mechanically re-applied into the_pyrelands.json by ROSTER_MOVE_APPLY_1
-  at 23:59 that same night despite design/Jawa/worldbuilding/review/round2/
-  biome_findings.md already recording (07:41 and again 17:45 local, hours
-  earlier) that "GR_Boomsnake's 'Pyrelands' move is voided by the boom-family
-  cut." No ruling ever restored it — the "GR_ correction pass" cited above
-  restored GR_Mantistanis (see its own roster "law" field), not GR_Boomsnake.
-  Removed from the Vanilla Genetics Expanded block and the roster below;
-  counts corrected to 13/3.71. Fire-follower niche stays AA_Razorjack's, per
-  the same day's recast.
+  🔴 2026-09-16 (FLAMEFANG_SNAKE_REBIRTH_1): GR_Boomsnake is BACK, reborn as
+  "Flamefang" — owner sheet note, verbatim: "rename this to Flamefang and make
+  it venomous," which postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1
+  (2026-09-14, which had un-wired it here after finding no ruling had ever
+  restored it post-BOOM_FAMILY_CUT_1). The Cherry Picker ThingDef cut is
+  reversed (see cherrypicker/CherryPicker.SHIP.xml and the ratified
+  deployed/config/v1_freeze copy); label/description are renamed into our own
+  modspace by RUT_FlamefangIdentity.xml, and its bite is venomous per
+  RUT_FlamefangVenom.xml. Re-added to the Vanilla Genetics Expanded block and
+  the roster below; counts corrected to 14/4.21. It is a distinct
+  venom-ambush niche, not the fire-follower niche — that stays AA_Razorjack's
+  (Sytheclaw) per the 2026-09-14 recast.
 
   🔑 STRUCTURE: one PatchOperationConditional-guarded PatchOperationReplace
   swaps the WHOLE node for the two commissioned igniters (both always
@@ -89,6 +90,10 @@
     RETIRED "Megafauna" workshop mod (AnimalBiomeDuplicates_Fix.xml's header,
     2026-09-05 retirements). Checked: the retired Megafauna mod is not present
     in the active ModsConfig.xml list; Vanilla Genetics Expanded is.
+    GR_Boomsnake       0.50  venom-ambush ("Flamefang", RUT_FlamefangIdentity.xml
+        renames label/description; RUT_FlamefangVenom.xml makes its bite
+        venomous) — restored 2026-09-16 per FLAMEFANG_SNAKE_REBIRTH_1, see
+        header note above. defName unchanged (NAMING_SCHEME_EXECUTION_1 owed).
 
   Star Wars Animal Collection (Continued) (mod name string "Star Wars Animal
   Collection (Continued)", packageId mlie.starwarsanimalcollection — confirmed
@@ -123,19 +128,20 @@
     Gizka               1.00  grain (ECOSYSTEM_PYRAMID_LAW_1: the most-seen animal)
 
   ============================================================================
-  LEFT OUT: vanilla Boomalope (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14 — see
-  above) and GR_Boomsnake (BOOMSNAKE_CUT_CONFLICT_1, 2026-09-14 — see above;
-  its ThingDef is Cherry-Picker cut by BOOM_FAMILY_CUT_1 and no ruling ever
-  restored it). Every other name in the item's checklist resolved to a real
-  defName in a real, active mod — RUT_FireHawk, RUT_FurnaceBeast, AA_Razorjack,
-  AA_Barbslinger, AA_FireWasp, GR_Mantistanis, Anooba, Iriaz,
-  Nuna, Orray, Zeer, Dalgo. One more name not in the item's own checklist but
-  present in the_pyrelands.json's ruled "fauna" array — Gizka — is wired too,
-  because the item's brief was to wire "the ruled fauna roster" and the JSON
-  is that roster; leaving it out would silently under-wire a roster the owner
-  already ruled complete. GR_Mantistanis looked riskiest at first (its
-  defining XML sits inside a workshop download whose internal folder is
-  named "Megafauna") but resolved cleanly: see the Megafauna-folder note above.
+  LEFT OUT: vanilla Boomalope only (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14 —
+  see above). GR_Boomsnake was left out here 2026-09-14 through 2026-09-16
+  (BOOMSNAKE_CUT_CONFLICT_1) and is now back, reborn as Flamefang
+  (FLAMEFANG_SNAKE_REBIRTH_1, 2026-09-16 — see header note above). Every
+  other name in the item's checklist resolved to a real defName in a real,
+  active mod — RUT_FireHawk, RUT_FurnaceBeast, AA_Razorjack, AA_Barbslinger,
+  AA_FireWasp, GR_Mantistanis, Anooba, Iriaz, Nuna, Orray, Zeer, Dalgo. One
+  more name not in the item's own checklist but present in
+  the_pyrelands.json's ruled "fauna" array — Gizka — is wired too, because
+  the item's brief was to wire "the ruled fauna roster" and the JSON is that
+  roster; leaving it out would silently under-wire a roster the owner already
+  ruled complete. GR_Mantistanis looked riskiest at first (its defining XML
+  sits inside a workshop download whose internal folder is named
+  "Megafauna") but resolved cleanly: see the Megafauna-folder note above.
   ============================================================================
 -->
 <Patch>
@@ -177,9 +183,10 @@
     </match>
   </Operation>
 
-  <!-- Vanilla Genetics Expanded: fire-follower predator hybrid. GR_Boomsnake
-       removed 2026-09-14 (BOOMSNAKE_CUT_CONFLICT_1) — its ThingDef is
-       Cherry-Picker cut by BOOM_FAMILY_CUT_1; no ruling ever restored it. -->
+  <!-- Vanilla Genetics Expanded: fire-follower predator hybrid, plus
+       GR_Boomsnake — restored 2026-09-16 as "Flamefang" (venom-ambusher),
+       FLAMEFANG_SNAKE_REBIRTH_1, superseding the 2026-09-14
+       BOOMSNAKE_CUT_CONFLICT_1 removal. -->
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Vanilla Genetics Expanded</li>
@@ -188,6 +195,7 @@
       <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
         <GR_Mantistanis>0.05</GR_Mantistanis>
+        <GR_Boomsnake>0.5</GR_Boomsnake>
       </value>
     </match>
   </Operation>
