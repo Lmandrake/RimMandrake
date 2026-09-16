@@ -53,10 +53,13 @@ Shape:
 > RimWorld zoom and below."
 
 Real anatomy (legs included) and high resolution are back — "as long as the
-user will actually see the resolution" (owner's words). The calm-flat-cel
-toy-figurine lawset, the ≤2-fused-stub leg budget, and the "no painterly"
-word-ban are gone as REQUIREMENTS; that craft is preserved as a selectable
-style option, never default — see `STYLE_CARTOONISH.md`.
+user will actually see the resolution" (owner's words).
+
+🔴 **Painterly is the ONLY style law. There is no cartoonish option** (owner,
+2026-09-15). The calm-flat-cel toy-figurine lawset, the ≤2-fused-stub leg
+budget, and the "no painterly" word-ban are deleted outright — not preserved,
+not selectable, not a fallback. Never author a prompt asking for flat cel
+shading, jointless or fused-stub limbs, or a toy/figurine read.
 
 **Resolution: `canvas` sizing is a rule of thumb, not a refusal.**
 `drawSize×128`, rounded up to the next power of two (floor 256), stays the

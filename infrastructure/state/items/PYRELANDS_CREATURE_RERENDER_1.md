@@ -26,9 +26,9 @@ CANON_REFERENCE_LIBRARY_1.
    roster in this file before generating anything.
 2. **Every creature re-rendered under the restored painterly style**
    (ART_PAINTERLY_RESTORATION_1 — the wave-4/5 prompt family is canonical;
-   the toy-figurine law and leg budget that stood here 2026-09-13 are
-   stood down, preserved only as a selectable option in
-   `infrastructure/artpipe/STYLE_CARTOONISH.md`, never default):
+   the toy-figurine law and leg budget that stood here 2026-09-13 are DELETED,
+   owner 2026-09-15 — painterly is the only style law, there is no cartoonish
+   option):
    - vivid distinctive coloration — no dull-brown collapse (owner ruling; the
      peko-peko cobalt render is the exemplar);
    - canon creatures: prompts authored FROM the canon reference library

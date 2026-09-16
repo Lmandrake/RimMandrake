@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T03:43:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T05:15:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,15 +107,6 @@ target:   v1
 kind:     design
 summary:  A design session (BENCH) to dream up the real interface, not a solo art
 prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
-
-## TOYFIG_LAW_PILOT_1 Toy-figurine law pilot: 4 creatures re-rendered under the law (neutral pose, jointless limbs, flat cel) for the owner's A/B before any mass regen
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/TOYFIG_LAW_PILOT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TOYFIG_LAW_PILOT_1.md
 
 ## ART_PAINTERLY_RESTORATION_1 MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled
 state:    doing
