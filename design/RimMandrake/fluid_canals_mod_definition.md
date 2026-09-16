@@ -166,6 +166,12 @@ single-cell release per channel cell along a path computed in advance. *For:* va
 channel-exact. *Against:* many ethereal driver things per fill, awkward lifetimes, and it converges
 on B's bookkeeping without B's control.
 
+🔑 **Three independent investigations converged on option B** (2026-09-16, separate agents on
+separate questions): the channel-constraint problem wants a channel-aware owner; irrigation wants a
+per-cell soak map on a `MapComponent` (§11, already built next door); and ignition wants something
+that can walk the liquid backwards toward its source (§12). All three are the same object. That
+convergence, not the spread bug alone, is the argument for B.
+
 **Recommendation: B, with A as a stopgap.** Ship A first — roughly a day, and it stops liquid
 leaking across open ground, the current mod's worst live behavior — then build B as the real home,
 because stock accounting, fill fraction and recession are things vanilla `Flood` structurally
@@ -341,3 +347,34 @@ machine: the exact member name and interpolation of a fertility growth factor, a
 `GrowthRateFactor_Drought` exists as named. Those come from repo prose written by earlier sessions,
 not from a decompiler. The mechanism above does not depend on them — a postfix multiplier needs no
 knowledge of the factors it multiplies — so irrigation can be built without settling either.
+
+## 12. Fire: what is unknown, and what is unaffected by not knowing
+
+**Still UNMEASURED after two independent attempts** (2026-09-16): whether RimWorld consults a
+`TerrainDef`'s flammability when spreading fire at all. Both agents were blocked by the same thing —
+RimSage has never connected from this machine and no decompiled engine tree is on disk. The
+circumstantial case that terrain flammability is real: `TerrainDef` inherits `BuildableDef` and so
+*can* carry a `Flammability` statBase, and wooden floors are widely observed to catch and spread fire
+with no Thing present. That is suggestive and it is **not evidence**; nobody has read
+`Fire`/`FireUtility` to name the method. Settle it on the Desktop before costing ignition.
+
+🔑 **But the design decision does not wait on it**, and this is the useful finding: vanilla `Fire`
+self-extinguishes once local fuel is gone. So even if terrain flammability works exactly as
+`About.xml` hopes, it buys only *catching* fire. Neither of his two actual requirements —
+**"burn for a very long time"** and **"they will also light their source"** — can come from vanilla
+`Fire` behaviour, because both require something that knows the shape of the liquid over time. That is
+the channel owner of §6 option B.
+
+**Recommended shape:** the `MapComponent` owns ignition state, burn duration and backward propagation
+along connected liquid cells, and spawns/despawns vanilla `Fire` per cell purely for visuals and
+damage. Bounded per-pulse walk, same shape as the fill; pillar 2 holds. A 200-cell canal alight is
+then one component doing a bounded walk, not 200 Things each ticking — which is the option to avoid.
+
+⚠️ **A contradiction I am NOT resolving from the evidence available here.** The fire investigation
+found `dubwise.rimefeller`, `sarg.alphabiomes`, `vanillaexpanded.vchemfuele` and `realify.firefoam`
+listed active in `deployed/config/ModsConfig.pre-rimdefdump-2026-08-10.xml`, while
+`liquids_framework_design.md` §5 states Rimefeller is "not in the campaign list". **That snapshot is
+from 2026-08-10 and is not the instrument** — the live list is `ModsConfig.xml` on the Windows
+machine, unreachable from here. Both claims may be true of different moments. Check the live list
+before either citing Rimefeller as prior art or repeating that it is absent; do not edit either
+document on the strength of a five-week-old snapshot.
