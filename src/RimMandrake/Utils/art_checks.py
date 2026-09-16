@@ -88,6 +88,18 @@ MARGIN_ADVISE_FRAC = 0.01
 # goes; this constant is the one place to move it.
 FACING_HEIGHT_MAX_RATIO = 1.35
 
+# North and south are FRONT and REAR views (owner ruling 2026-09-15), which on a
+# bilaterally symmetric animal makes them near-symmetric about the vertical axis.
+# East/west are profiles and must NOT be. Bounds are real observations, not taste:
+# Anooba's south scores 0.64 and the owner rejected it ("South isn't south"), while
+# GreenGoo scores 0.89 and he praised it. 0.80 sits in that gap. Donor art that
+# obeys the convention clusters 0.96-1.00.
+SYMMETRY_MIN_NS = 0.80
+# A profile that reads as symmetric is not a profile. Weaker evidence than the
+# north/south bound — no owner-confirmed case either way — so it is medium, and
+# the threshold is set high to avoid punishing a genuinely round animal.
+SYMMETRY_MAX_EW = 0.85
+
 # outline_coherence -----------------------------------------------------------
 # Luminance at or below this reads as a keyline against this art's midtones.
 # GUESS: 90/255. Measured effect: 54 of 57 Pyrelands facings score 1.000 at this
@@ -139,10 +151,10 @@ class Sprite:
     visible_bbox: tuple
     raw_bbox: tuple
     pixel_sha256: str
-    mask: Image.Image = field(repr=False, default=None)
-    lum: Image.Image = field(repr=False, default=None)
-    alpha: Image.Image = field(repr=False, default=None)
-    rgb: Image.Image = field(repr=False, default=None)
+    mask: Image.Image | None = field(repr=False, default=None)
+    lum: Image.Image | None = field(repr=False, default=None)
+    alpha: Image.Image | None = field(repr=False, default=None)
+    rgb: Image.Image | None = field(repr=False, default=None)
 
     @property
     def canvas(self) -> int:
@@ -321,6 +333,39 @@ def _hdetail(facings: dict, frac: dict) -> str:
 
 # --- 4. outline_coherence ---------------------------------------------------
 
+def facing_symmetry(creature: str, facings: dict) -> list:
+    """North/south must be symmetric front/rear views; east/west must be profiles.
+
+    Catches a profile used as a north, which no alpha, palette or outline test can
+    see. It CANNOT catch a face in the north: a frontal face is symmetric, and
+    Anooba's north scores 0.84 while showing teeth to camera.
+    """
+    out = []
+    for facing, sp in sorted(facings.items()):
+        if sp.mask is None or sp.visible_bbox == (0, 0, 0, 0):
+            continue
+        m = sp.mask.crop(sp.visible_bbox)
+        flipped = m.transpose(Image.FLIP_LEFT_RIGHT)
+        both = ImageChops.logical_and(m.convert("1"), flipped.convert("1"))
+        cnt = lambda img: sum(1 for v in img.convert("L").get_flattened_data() if v)
+        total = cnt(m)
+        score = (cnt(both) / total) if total else 0.0
+        inst = "mirror overlap of the visible silhouette about its own vertical axis"
+        if facing in ("north", "south") and score < SYMMETRY_MIN_NS:
+            out.append(Finding(
+                check="facing_symmetry", severity="high",
+                subject=f"{creature}:{facing}", measure=score, instrument=inst,
+                detail=f"{facing} is not a symmetric front/rear view "
+                       f"({score:.2f} < {SYMMETRY_MIN_NS}) — it reads as a profile"))
+        elif facing in ("east", "west") and score > SYMMETRY_MAX_EW:
+            out.append(Finding(
+                check="facing_symmetry", severity="medium",
+                subject=f"{creature}:{facing}", measure=score, instrument=inst,
+                detail=f"{facing} is symmetric ({score:.2f} > {SYMMETRY_MAX_EW}) — "
+                       f"a profile should not be"))
+    return out
+
+
 def outline_coherence(s: Sprite) -> list:
     boundary = ImageChops.subtract(s.mask, s.mask.filter(ImageFilter.MinFilter(3)))
     n_bnd = boundary.histogram()[255]
@@ -470,6 +515,7 @@ def run(paths, originals=False) -> list:
             creatures[creature_key(f)][facing] = sprites[f]
     for key, facings in sorted(creatures.items()):
         findings.extend(facing_height_consistency(key[1], facings))
+        findings.extend(facing_symmetry(key[1], facings))
 
     variants = defaultdict(list)
     bases = set(creatures)
