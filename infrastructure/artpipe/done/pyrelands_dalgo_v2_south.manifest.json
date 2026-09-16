@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 161.68249558401294,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 161.68249558401294,
+  "height": 512,
+  "id": "pyrelands_dalgo_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588917,
+    "primary_used_percent": 29.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T08-03-24-01a0aabe-79dd-7051-8d9f-5b3d55e3cc83.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 17.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T08-01-42-01a0aabc-e77a-7082-89a7-ed129d210f4c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_dalgo_v2_south",
+    "note": "Full no-reference south-facing painterly regeneration. First call returned no artifact; retry succeeded and was resized to exact 512\u00d7512 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_dalgo_v2_south\\pyrelands_dalgo_v2_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_dalgo_v2_south/pyrelands_dalgo_v2_south.png\n    512x512  rgba  206,641 bytes  (161s)\n"
+}

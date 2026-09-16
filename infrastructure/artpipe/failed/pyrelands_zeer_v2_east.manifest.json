@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 101.2092422900023,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 101.2092422900023,
+  "height": 1254,
+  "id": "pyrelands_zeer_v2_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/16/rollout-2026-09-16T08-08-38-01a0aac3-415c-7b12-a430-5b28123a3273.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 21.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588917,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/16/rollout-2026-09-16T08-07-08-01a0aac1-e18e-7390-8039-2ce7e193534f.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 19.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 512x512 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "pyrelands_zeer_v2_east",
+    "note": "Built-in image generation returned no image artifact on either attempt, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-91589ea8-d0e0-4019-8b7f-2e05fe464b71.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_zeer_v2_east/pyrelands_zeer_v2_east.png\n    1254x1254  rgba  766,395 bytes  (101s)\n"
+}

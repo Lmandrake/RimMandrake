@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 2.75,
+  "facing": "south",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_orray_v2_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Orray, a heavy-bodied low-slung Geonosian desert reptile that reads as a cross between an alligator and a horse. Sandy tan-brown to olive-grey hide, mottled, wrinkled and tuberculate, leathery and pebbled rather than hard-scaled, with a paler throat and belly. A long alligator-like snout, small eyes set high on the head, and four thick powerful legs with real elbow and knee anatomy ending in broad clawed toes. A long thick tapering tail. Painterly rendering of the wrinkled hide folds at the neck and joints. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "PYRELANDS_FULL_REVIEW regen under the restored painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1, owner 2026-09-14). Identity sourced from the canon reference library design/RimStarWars/canon_references/orray/description.md (CANON_REFERENCE_LIBRARY_1) - the v1 render of this creature used the stood-down toy-figurine/leg-budget lawset and is superseded. Full regen, no reference (a reference here would reskin-validate against the wrong-style art). Same individual creature identity across all three facings; the prompt says nothing about orientation - the daemon supplies the facing convention."
+}

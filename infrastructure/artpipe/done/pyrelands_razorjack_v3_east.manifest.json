@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 95.70538121601567,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 95.70538121601567,
+  "height": 512,
+  "id": "pyrelands_razorjack_v3_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/16/rollout-2026-09-16T08-07-55-01a0aac2-9afc-7b60-97ce-737e8c42f0c9.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/16/rollout-2026-09-16T08-06-26-01a0aac1-400c-7b01-98e8-cc406f0a3fc0.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 18.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "pyrelands_razorjack_v3_east",
+    "note": "Generated with built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha. Retry was required because ImageMagick was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_razorjack_v3_east\\pyrelands_razorjack_v3_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_razorjack_v3_east/pyrelands_razorjack_v3_east.png\n    512x512  rgba  136,414 bytes  (95s)\n"
+}

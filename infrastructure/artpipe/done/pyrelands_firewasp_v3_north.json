@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 1.0,
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_firewasp_v3_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: a Pyrelands fire wasp, a large predatory wasp that feeds on burning flesh and vegetation, seen from directly above in RimWorld's top-down camera. A hard segmented thorax and abdomen of deep charcoal-black chitin banded with molten ember-gold, a narrow waist, a pair of long translucent amber-orange wings held slightly open with fine dark veining, six slender black jointed legs, long thin antennae, and dark mandibles. Painterly rendering: warm light catching the gold bands and the wing membranes, soft shading inside the chitin segments. Orientation, strict top-down: the wasp's head and antennae point to the TOP edge of the image and its abdomen and sting point to the BOTTOM edge; we look straight down on its back. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "Painterly regen (ART_PAINTERLY_RESTORATION_1). No canon reference library entry for AA_FireWasp - identity derived from the donor sprite on disk (Alpha Animals, workshop 294100/1541721856/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_east.png: black segmented body, orange-gold abdomen, amber wings with dark veining, long antennae) plus the roster law text in design/Jawa/worldbuilding/biomes/rosters/the_pyrelands.json ('burning bite that feeds on the wound', small-predator, spd 1.5). NO 'facing' field on purpose: the daemon's facing sentence is mammal-shaped ('walks away, rear haunches') and is wrong for a top-down insect - the orientation is stated in the prompt body instead. Facing kept in the job id for wiring."
+}

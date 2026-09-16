@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-16T00:00:00Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_gizka_v2_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Gizka, a small squat sprawling frog-lizard pest. Mottled olive-green and tan-khaki blotched skin in soft painted leopard-toad camouflage patches, never a flat colour, with dull pink-red skin showing at the leg joints, belly and haunches. An oversized blunt rounded head dominated by one huge round bulging eye, a small pointed crest above it and a wide downturned mouth. Front legs held close and bent, hind legs long, thin and splayed wide with visible bony joints and clawed spread toes, all four legs drawn as real anatomy. Loose moist skin folds at the throat and haunches, soft painterly shading over the blotches. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "PYRELANDS_FULL_REVIEW regen under the restored painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1, owner 2026-09-14). Identity sourced from the canon reference library design/RimStarWars/canon_references/gizka/description.md (CANON_REFERENCE_LIBRARY_1) - the v1 render of this creature used the stood-down toy-figurine/leg-budget lawset and is superseded. Full regen, no reference (a reference here would reskin-validate against the wrong-style art). Same individual creature identity across all three facings; the prompt says nothing about orientation - the daemon supplies the facing convention."
+}

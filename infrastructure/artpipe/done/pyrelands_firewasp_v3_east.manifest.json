@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 91.20787916702102,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.20787916702102,
+  "height": 256,
+  "id": "pyrelands_firewasp_v3_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/16/rollout-2026-09-16T08-03-25-01a0aabe-7cb0-7163-b3f6-a0ab7746bc3b.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 16.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588917,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/16/rollout-2026-09-16T08-01-41-01a0aabc-e6e5-7341-a034-75558b751b24.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_firewasp_v3_east",
+    "note": "Generated with built-in imagegen, then downscaled to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_firewasp_v3_east\\pyrelands_firewasp_v3_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_firewasp_v3_east/pyrelands_firewasp_v3_east.png\n    256x256  rgba  58,788 bytes  (91s)\n"
+}

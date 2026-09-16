@@ -1,0 +1,58 @@
+{
+  "attempt_elapsed_s": 139.76983603500412,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 139.76983603500412,
+  "height": 256,
+  "id": "pyrelands_nuna_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/16/rollout-2026-09-16T08-06-54-01a0aac1-acae-7601-9ca9-341d601de7aa.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 20.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/16/rollout-2026-09-16T08-05-20-01a0aac0-3bfa-7082-ae54-63fe97b95fcc.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 18.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_nuna_v2_south",
+    "note": "Generated with built-in imagegen; first call returned no artifact, so one retry was used. Saved as an exact 256\u00d7256 transparent PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_nuna_v2_south\\pyrelands_nuna_v2_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_nuna_v2_south/pyrelands_nuna_v2_south.png\n    256x256  rgba  74,263 bytes  (140s)\n"
+}
