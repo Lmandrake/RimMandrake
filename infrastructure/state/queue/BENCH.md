@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T20:33:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T20:56:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -100,12 +100,12 @@ summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
 
 ## PIT_TRAP_VISUAL_REDESIGN_1 Design the pit trap's real visual interface (covered/sprung/occupied, size) - owner wants a big dark pit, not the vanilla trap icon
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    owner
 target:   v1
 kind:     design
-summary:  A design session (BENCH) to dream up the real interface, not a solo art
+summary:  One question is left, and nothing else owns it: how do four depths read on
 prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
 
 ## ART_PAINTERLY_RESTORATION_1 MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled
@@ -200,6 +200,16 @@ kind:     task
 blocked:  Owner-judged round that rides the beast graphics/lore pass — after the art wave and with him present.
 summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
 prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
+
+## PIT_TRAP_VISUAL_REDESIGN_1 Design the pit trap's real visual interface (covered/sprung/occupied, size) - owner wants a big dark pit, not the vanilla trap icon
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+blocked:  Re-scoped to the four-depth legibility question only. Spec half delivered by the VALIDATED Pits must-show list (hash 145a6b5d9072); art half parked behind the merge by ruling 27 (owner 2026-09-16, 'merge first, then fix the pit inside FlowWorks'). (on FLOWWORKS_BUILD_PROGRAM_1)
+summary:  One question is left, and nothing else owns it: how do four depths read on
+prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
