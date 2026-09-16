@@ -87,6 +87,26 @@ is another reason to prefer it.
   `Complete/<id>.txt.log`, rather than inferring it from files existing.
 - **If a fetch pattern fails twice, note it in the entry and move on.** Do not loop.
 
+## 🔴 Do not read oversized images — it kills your session
+
+An image over **2000px in either dimension** aborts the run outright when you view it, and
+you lose any species you had not yet written. One batch died this way with two of its five
+species unwritten.
+
+Wookieepedia images are frequently far larger than 2000px. So before viewing a downloaded
+image, check it and view a downscaled copy if needed:
+
+```
+sips -g pixelWidth -g pixelHeight <file>                 # check dimensions
+sips -Z 1600 <file> --out /tmp/<name>_small.jpg           # downscale a COPY to /tmp
+```
+
+Keep the full-size original in the entry directory — it is the reference asset. View only
+the `/tmp` copy. Never downscale the original in place.
+
+This is also a reason to write each entry as you finish it: a session that dies on image
+four does not take entries one through three with it.
+
 ## Discipline
 
 - **Every fact carries its source URL.** No URL, no fact.
