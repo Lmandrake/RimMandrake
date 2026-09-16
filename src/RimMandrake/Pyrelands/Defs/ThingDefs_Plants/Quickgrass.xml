@@ -33,6 +33,14 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_FE_Plant_Quickgrass</defName>
+    <!-- Growth-keyed stage art (QUICKGRASS_GROWTH_STAGES_1). Overrides
+         PlantBase's <thingClass>Plant</thingClass>; the subclass defers to
+         every rung of vanilla's own Plant.Graphic chain (sowing, polluted,
+         leafless) and only substitutes where vanilla would return this
+         def's own graphic. Vanilla's immatureGraphicPath cannot do this:
+         it is two-stage and gated on !HarvestableNow, which never becomes
+         false for a plant with no harvestedThingDef. -->
+    <thingClass>RimMandrake.StarWars.FireEcology.Plant_GrowthStaged</thingClass>
     <label>quickgrass</label>
     <description>A low, dense forage grass that comes back onto burned ground while the ash is still warm, green against the black inside a day or two. Its roots run absurdly deep for its size — down to the water table, in defiance of everything the surface suggests — and its blades carry more food than any wild grass has a right to. It was engineered that way, twenty-five millennia ago, by gardeners who wanted this ground to feed things. The gardeners are gone. The lawn is still working.</description>
     <statBases>
@@ -75,6 +83,25 @@
       <maxGrowthTemperature>80</maxGrowthTemperature>
       <growMinGlow>0.31</growMinGlow>
     </plant>
+    <!--
+      Owner, 2026-09-14: "just starting, half-grown, and then tall lush
+      grass grown high". Clean thirds — under 1/3 growth the sprout art,
+      under 2/3 the half-grown art, at or above it the def's own A/B tall
+      art in graphicData above.
+
+      Each path is a FOLDER, the same way texPath is for Graphic_Random:
+      the engine makes one random variant per PNG under it. Sprout and
+      half therefore need SEPARATE folders — four PNGs in one folder would
+      be a single four-way random mixing both stages.
+    -->
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.FireEcology.PlantGrowthStages">
+        <sproutGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Sprout</sproutGraphicPath>
+        <halfGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Half</halfGraphicPath>
+        <sproutMaxGrowth>0.33</sproutMaxGrowth>
+        <halfMaxGrowth>0.66</halfMaxGrowth>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>
