@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.Utinni.PyrelandsMechanics
@@ -39,6 +40,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
     public class CompFurnaceWarmthAura : ThingComp
     {
+        /// <summary>Aura radius at zero charge, as a fraction of the full one.
+        /// Not zero: a cold furnace-beast is still a very large warm animal.
+        /// [INVENTED]</summary>
+        private const float MinAuraFraction = 0.35f;
+
         public CompProperties_FurnaceWarmthAura Props => (CompProperties_FurnaceWarmthAura)props;
 
         public override void CompTickInterval(int delta)
@@ -58,7 +64,18 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return;
             }
 
-            float radius = PyrelandsMechanicsSettings.furnaceAuraRadius;
+            // FURNACEBEAST_THERMAL_CYCLE_1: the aura is the capacitor's output,
+            // not a constant. A run-down beast on the near-terminator leg is a
+            // cold animal; a beast fresh out of a burn is a walking hearth. The
+            // floor keeps a discharged beast faintly warm rather than making the
+            // mechanism vanish, and with the charge comp absent or switched off
+            // the radius is the full shipped value, unchanged.
+            CompFurnaceThermalCharge charge = beast.TryGetComp<CompFurnaceThermalCharge>();
+            float scale = (charge != null && PyrelandsMechanicsSettings.furnaceThermalChargeEnabled)
+                ? Mathf.Lerp(MinAuraFraction, 1f, charge.Charge)
+                : 1f;
+
+            float radius = PyrelandsMechanicsSettings.furnaceAuraRadius * scale;
             float radiusSq = radius * radius;
             IReadOnlyList<Pawn> pawns = beast.Map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)

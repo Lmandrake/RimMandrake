@@ -27,12 +27,25 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public static bool arsonJusticeEnabled = true;
         public static bool flameHarvestEnabled = true;
 
+        // PYRELANDS_FIRE_CADENCE_1
+        public static bool fireFrontEnabled = true;
+        public static bool fireFrontLetterEnabled = true;
+
+        // FURNACEBEAST_THERMAL_CYCLE_1
+        public static bool furnaceHeatImmunityEnabled = true;
+        public static bool furnaceThermalChargeEnabled = true;
+        public static bool furnaceFireSeekingEnabled = true;
+        public static bool furnaceThornvineDietEnabled = true;
+
         // ---- Tunables ---------------------------------------------------------
         public static float furnaceBedIgnitionChance = PyrelandsTuning.FurnaceBedIgnitionChance;
         public static int fireHawkCooldownTicks = PyrelandsTuning.FireHawkCooldownTicks;
         public static float arsonDebtRaidThreshold = PyrelandsTuning.ArsonDebtRaidThreshold;
         public static int flameHarvestMinFires = PyrelandsTuning.FlameHarvestMinFires;
         public static float furnaceAuraRadius = PyrelandsTuning.FurnaceAuraRadius;
+        public static float fireFrontMinDays = PyrelandsTuning.FireFrontMinDays;
+        public static float fireFrontMaxDays = PyrelandsTuning.FireFrontMaxDays;
+        public static int fireFrontWidthCells = PyrelandsTuning.FireFrontWidthCells;
 
         public override void ExposeData()
         {
@@ -43,6 +56,16 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Scribe_Values.Look(ref furnaceBedIgnitionEnabled, "furnaceBedIgnitionEnabled", true);
             Scribe_Values.Look(ref arsonJusticeEnabled, "arsonJusticeEnabled", true);
             Scribe_Values.Look(ref flameHarvestEnabled, "flameHarvestEnabled", true);
+            Scribe_Values.Look(ref fireFrontEnabled, "fireFrontEnabled", true);
+            Scribe_Values.Look(ref fireFrontLetterEnabled, "fireFrontLetterEnabled", true);
+            Scribe_Values.Look(ref furnaceHeatImmunityEnabled, "furnaceHeatImmunityEnabled", true);
+            Scribe_Values.Look(ref furnaceThermalChargeEnabled, "furnaceThermalChargeEnabled", true);
+            Scribe_Values.Look(ref furnaceFireSeekingEnabled, "furnaceFireSeekingEnabled", true);
+            Scribe_Values.Look(ref furnaceThornvineDietEnabled, "furnaceThornvineDietEnabled", true);
+
+            Scribe_Values.Look(ref fireFrontMinDays, "fireFrontMinDays", PyrelandsTuning.FireFrontMinDays);
+            Scribe_Values.Look(ref fireFrontMaxDays, "fireFrontMaxDays", PyrelandsTuning.FireFrontMaxDays);
+            Scribe_Values.Look(ref fireFrontWidthCells, "fireFrontWidthCells", PyrelandsTuning.FireFrontWidthCells);
 
             Scribe_Values.Look(ref furnaceBedIgnitionChance, "furnaceBedIgnitionChance", PyrelandsTuning.FurnaceBedIgnitionChance);
             Scribe_Values.Look(ref fireHawkCooldownTicks, "fireHawkCooldownTicks", PyrelandsTuning.FireHawkCooldownTicks);
@@ -53,13 +76,35 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
+            // Two columns: the kit grew past one screen when the fire clock and
+            // the furnace-beast's capacitor landed.
+            Listing_Standard list = new Listing_Standard { ColumnWidth = (inRect.width - 34f) / 2f };
             list.Begin(inRect);
 
             list.Label("The standing burn");
             list.CheckboxLabeled("The biome re-seeds its own burn", ref standingBurnReseedEnabled,
                 "Off: if every fire on a Pyrelands map goes out, it stays out — the biome "
               + "no longer lights a fresh smoulder after two quiet days.");
+            list.Gap();
+            list.CheckboxLabeled("The biome's fire clock", ref fireFrontEnabled,
+                "On (shipped): a line of grass goes up every few days on a Pyrelands map, "
+              + "whatever else is burning. Off: fires only ever arrive from lightning, "
+              + "animals and the re-seed above — which makes a burn a rare event rather "
+              + "than the biome's weather.");
+            list.Label("A front every " + fireFrontMinDays.ToString("0.0")
+                     + " to " + fireFrontMaxDays.ToString("0.0") + " days");
+            fireFrontMinDays = list.Slider(fireFrontMinDays, 0.5f, 15f);
+            fireFrontMaxDays = list.Slider(fireFrontMaxDays, 0.5f, 30f);
+            if (fireFrontMaxDays < fireFrontMinDays)
+            {
+                fireFrontMaxDays = fireFrontMinDays;
+            }
+            list.Label("Front width: " + fireFrontWidthCells + " cells");
+            fireFrontWidthCells = Mathf.RoundToInt(list.Slider(fireFrontWidthCells, 1f, 31f));
+            list.Gap();
+            list.CheckboxLabeled("Announce each front with a letter", ref fireFrontLetterEnabled,
+                "Off: the fire clock still runs, silently. The re-seed above is never "
+              + "announced either way.");
             list.GapLine();
 
             list.Label("The fire-hawk's twig");
@@ -70,7 +115,30 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             fireHawkCooldownTicks = Mathf.RoundToInt(list.Slider(fireHawkCooldownTicks / 2500f, 0.5f, 24f) * 2500f);
             list.GapLine();
 
+            list.NewColumn();
+
             list.Label("The furnace-beast's thermal circuit");
+            list.CheckboxLabeled("Total fire and heat immunity", ref furnaceHeatImmunityEnabled,
+                "On (shipped): a furnace-beast takes zero damage from every heat-category "
+              + "attack — flame, burn, incendiary, plasma. Off: it falls back to its very "
+              + "high XML heat armour, which is a good roll rather than a guarantee. It "
+              + "cannot catch fire either way (its flammability is zero).");
+            list.Gap();
+            list.CheckboxLabeled("Heat charge and bleed", ref furnaceThermalChargeEnabled,
+                "On (shipped): the beast banks heat in hot air and near fire, and bleeds it "
+              + "back out in the cold, pushing warmth around itself in proportion to what it "
+              + "is carrying. Off: no capacitor, no charge readout, and no radiant push — "
+              + "its flat heat-pusher and the aura below are unaffected.");
+            list.Gap();
+            list.CheckboxLabeled("Walks into the burn to charge", ref furnaceFireSeekingEnabled,
+                "On (shipped): an under-charged beast walks toward a burn on its map, and a "
+              + "full one steps back off it. Off: it ignores fire entirely.");
+            list.Gap();
+            list.CheckboxLabeled("Eats thornvine", ref furnaceThornvineDietEnabled,
+                "On (shipped): a hungry furnace-beast will strip a thornvine patch — it is "
+              + "one of the only things that will. Off: thornvine is left alone by everything "
+              + "again.");
+            list.Gap();
             list.CheckboxLabeled("Open-field warmth aura", ref furnaceWarmthAuraEnabled,
                 "Off: standing near a furnace-beast in the open no longer widens cold "
               + "tolerance or narrows heat tolerance. The beast's enclosed-space heat "

@@ -12,4 +12,12 @@
   <RUT_FireRaid>Fire raid</RUT_FireRaid>
   <RUT_FireRaidDesc>A burn went up on this land that nobody scheduled, and it was yours.\n\n{0} do not consider fire a hazard. They consider it a crop, and a crop has an owner and a season. Burning outside the season is theft from a debt that is not yours to collect — and they answer it the short way.</RUT_FireRaidDesc>
 
+  <!-- PYRELANDS_FIRE_CADENCE_1. No {0}: the front is nobody's, and naming an
+       instigator would contradict the null instigator it is actually lit with. -->
+  <RUT_FireFrontLetterLabel>The grass has gone up</RUT_FireFrontLetterLabel>
+  <RUT_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the Tribes plant firebreaks instead of fences. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RUT_FireFrontLetterText>
+
+  <!-- FURNACEBEAST_THERMAL_CYCLE_1. Inspect-pane label for the capacitor. -->
+  <RUT_FurnaceHeatCharge>Heat charge</RUT_FurnaceHeatCharge>
+
 </LanguageData>
