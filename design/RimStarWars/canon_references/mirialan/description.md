@@ -74,7 +74,7 @@ Per-image:
   **Green eyes, violet brows and deep-violet lips.** Stylised comic linework, so
   treat the outline as the artist's, but the marking vocabulary and placement match
   the other two exactly.
-- **`wookieepedia_mirialan_luminara_swm41.png`** (Luminara Unduli and a second
+- **`wookieepedia_luminaraunduli_swm41.png`** (Luminara Unduli and a second
   Mirialan, painted) is the **golden-yellow** case: near-black diamond marks in a
   vertical column on the chin below the lip, plus forehead and outer-eye marks on
   the second figure. Both wear head coverings, so this image says little about hair.
@@ -142,7 +142,7 @@ none known
   Cloudflare-walled — wikitext pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Mirialan&format=json&prop=wikitext`,
   36,347 chars, 2026-09-15)
-- https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png → `wookieepedia_mirialan_luminara_swm41.png` (already on disk under that name from an earlier pass; re-verified this pass)
+- https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png → `wookieepedia_luminaraunduli_swm41.png` (⚠️ this line previously cited the file as `wookieepedia_luminaraunduli_swm41.png` and claimed it was "already on disk under that name... re-verified this pass" — it never was. Corrected 2026-09-16 against the actual directory listing.)
 - `wookieepedia_mirialan_diplomat.png` corresponds to `File:Mirialan_Diplomat.png`,
   the canon infobox image; `wookieepedia_adysunzee_yttransparent.png` corresponds
   to `File:AdySunZee-YTtransparent.png`. Both were already on disk from an earlier
@@ -162,7 +162,7 @@ none known
 - `wookieepedia_adysunzee_yttransparent.png` — Ady Sun'Zee, close-up, **purple**
   skin with deep-violet chevron/diamond markings, green eyes. **The best view of
   the marking geometry**; stylised linework, so read the shapes not the rendering.
-- `wookieepedia_mirialan_luminara_swm41.png` — Luminara Unduli plus a second
+- `wookieepedia_luminaraunduli_swm41.png` — Luminara Unduli plus a second
   Mirialan, painted, **golden-yellow** skin with near-black chin and forehead
   diamonds. Third hue, third medium, same marking vocabulary — which is what makes
   the vocabulary canonical rather than one artist's habit.
