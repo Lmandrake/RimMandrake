@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T15:32:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T15:51:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1785,3 +1785,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
+
+## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     finding
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
