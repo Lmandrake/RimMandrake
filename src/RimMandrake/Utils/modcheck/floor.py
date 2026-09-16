@@ -24,3 +24,37 @@ def uncovered(toggles, components):
     """
     covered = {c["toggle"] for c in components if c.get("toggle")}
     return sorted(set(toggles) - covered)
+
+
+def uncovered_shows(must_show_ids, components):
+    """The VISUAL floor -- owner ruling 2026-09-15, north_star_validation_spec.md
+    section 3. Mirror of `uncovered` above: uncovered EXPERIENCE is as fatal as
+    an uncovered settings toggle.
+
+    `must_show_ids`: iterable of must-show ids from the mod's walk `## north
+    star` section -- pass ONLY the ids of a VALIDATED section. A DRAFT section
+    contributes nothing: it cannot fail a mod and cannot green one.
+    `components`: the same component dicts, each optionally carrying "shows".
+
+    Returns the sorted list of must-show ids no component claims. Empty means
+    the visual floor is met. Never raises; the caller decides fatality.
+    """
+    claimed = set()
+    for c in components:
+        claimed.update(c.get("shows") or ())
+    return sorted(set(must_show_ids) - claimed)
+
+
+def orphan_shows(must_show_ids, components):
+    """The reverse check: ids a component CLAIMS that the validated checklist
+    does not define. A lint error, never a silent pass -- claiming to show
+    something nobody asked for is the same defect class as a patch that matches
+    nothing (CLAUDE.md, 'A patch that matches nothing logs nothing').
+
+    Commonly means a must-show id was renamed and a `shows=` was left behind.
+    Returns the sorted list of orphaned ids.
+    """
+    claimed = set()
+    for c in components:
+        claimed.update(c.get("shows") or ())
+    return sorted(claimed - set(must_show_ids))
