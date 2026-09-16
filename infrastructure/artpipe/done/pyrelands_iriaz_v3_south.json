@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-16T16:00:00Z",
+  "drawsize": 1.65,
+  "facing": "south",
+  "facings": [
+    "north",
+    "south",
+    "east"
+  ],
+  "id": "pyrelands_iriaz_v3_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Iriaz, a long-necked antelope-proportioned Dantooine grazer. THE HEAD CARRIES EXACTLY ONE HORN: a single tall ridged backward-curving horn rising from the CENTRE of the crown, on the midline of the skull, like a single oryx horn or a narwhal tusk swept back - one horn only, a solitary unpaired spike. The skull is otherwise completely smooth and bare on both sides: no second horn, no matching horn on the other side, no pair, no antlers, no bony knobs, no ear horns. Muted green to olive-teal smooth reptilian-adjacent hide overlaid with vivid orange-yellow leopard-style spotted markings scattered across the neck, shoulders and flank. A horse-or-goat-like head, a thin whip-like tail, and four slim legs with real knee and hock joints ending in subtly clawed feet. Painterly shading picking out the ridges of the one horn and the soft sheen of the hide. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+  "style_notes": "PYRELANDS_CANON_CHECK_2026-09-16 regen, painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1). Judged against design/RimStarWars/canon_references/<slug>/description.md '## Must show'. Full regen, no reference (a reference would reskin-validate against the failing art). Prompt says nothing about compass orientation - the daemon supplies the facing convention (north=rear view no face, south=front view eyes to camera, per owner ruling 2026-09-15). IRIAZ: v2 FAILED the Must-show line 'A single long, ridged, backward-curving horn (the in-game model shows one dominant horn, not a pair)' - v2 rendered a symmetrical PAIR of horns on east and south. v2's prompt already said 'a single ... horn' and the model still drew two, so v3 states the one-horn constraint five different ways and explicitly forbids a second."
+}

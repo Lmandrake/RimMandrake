@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 105.33396310097305,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.33396310097305,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "pyrelands_iriaz_v3_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 72.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T08-40-46-01a0aae0-af25-78f3-8249-64dda9275255.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 24.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789588916,
+    "primary_used_percent": 66.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T08-38-52-01a0aade-f0d2-7e70-a01d-2af407bd8c87.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 23.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_iriaz_v3_north",
+    "note": "Generated via built-in imagegen: rear-facing Iriaz with one solitary midline horn; resized to exact 256x256 PNG while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_iriaz_v3_north\\pyrelands_iriaz_v3_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_iriaz_v3_north/pyrelands_iriaz_v3_north.png\n    256x256  rgba  24,036 bytes  (104s)\n"
+}
