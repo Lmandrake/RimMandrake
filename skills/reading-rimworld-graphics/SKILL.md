@@ -32,6 +32,22 @@ content decision.
 every vanilla item blank, which reads as a bug in your resolver when it is
 actually a missing source.
 
+⛔ **`resources.assets` exists only where the game is installed — the Windows
+machine.** There is no RimWorld install on the Laptop, so **any question of the
+form "what does vanilla do?" cannot be answered from there**, and the answer is
+not to substitute a mod. Measured 2026-09-15: asked whether vanilla animals use
+the pawn convention (south faces camera, north faces away) or a top-down
+orientation, and whether the base game is internally consistent, the Laptop could
+only reach donor mods — `SWBestiary`'s 190 three-facing sets, which are
+*evidence about donor practice*, not about vanilla.
+
+✅ **Say which you measured.** Donor art is a legitimate corpus and it settled the
+shape question (norths cluster at 0.96–1.00 mirror symmetry, with occasional
+shipped errors such as Nuna's inverted beak). But it cannot tell you whether
+vanilla shipped with variation, and reporting it as if it could would put a
+house convention forward as engine conformance. When the install is out of reach,
+name the gap and hand that half to the machine that has the file.
+
 ## Resolving a def's texPath
 
 `ThingDef.graphicData.texPath` is a **path prefix, not a filename** — no

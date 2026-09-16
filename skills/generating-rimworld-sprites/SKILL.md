@@ -281,6 +281,133 @@ and line quality, and mismatch is more obvious in game than missing detail.
 State the invariants every iteration: *"the silhouette, canvas, camera angle
 and palette stay exactly as they are; change only the surface"*.
 
+## 🔴 WHAT NORTH AND SOUTH MEAN — owner ruling, 2026-09-15
+
+> *"North facing is 'looking away from the player camera' (their butt). South
+> facing is 'looking at the player camera' (standard eyes-forward). We should NOT
+> have 'top down view rotated north or south.' That's not Rimworld perspectives.
+> Some of our animals currently show this."*
+
+| facing | what the viewer sees |
+|---|---|
+| **south** | the creature's **front** — eyes-forward, face and belly toward camera |
+| **north** | the creature's **rear** — its back, its behind; **no face, no eyes** |
+| **east / west** | a side **profile** |
+
+⛔ **A top-down view rotated 180° is NOT a north/south pair.** It is the same view
+turned around, and it is the specific defect the owner named. North and south must
+show *different surfaces of the animal* — back versus face — not one surface at
+two rotations.
+
+### Why this section exists — measured 2026-09-15
+
+Nothing in this skill previously said what north and south *mean*, and the cost
+showed up in one review sitting of 28 Pyrelands rows. Of 19 creature rows only
+about three had no defect against them, and the owner's own rejection notes were
+dominated by this one fact: *"North is HUGE compared to east, and South isn't
+south"* (Anooba) · *"Norht isn't north, south isn't very south either"* (Orray) ·
+*"south isn't south, north isn't north"* (Iriaz).
+
+🔴 **The donor art obeys the convention and our regenerated art breaks it.** Three
+creatures exist as both donor art and our override; mirror-symmetry measured on
+the visible silhouette:
+
+| creature | donor (SWBestiary) | our override |
+|---|---|---|
+| Dalgo | 0.96 / 0.97 | **0.31 / 0.18** |
+| Iriaz | 0.99 / 0.99 | **0.49 / 0.47** |
+| Nuna | 1.00 / 1.00 | 1.00 / 0.99 |
+
+Across 190 donor three-facing sets the convention is consistent (norths cluster
+0.96–1.00), with occasional shipped errors — Nuna's donor north shows a beak,
+which is inverted. ⛔ **Vanilla base-game art has NOT been checked**: there is no
+RimWorld install on the Laptop and no `resources.assets`, so whether vanilla
+itself is internally consistent is still owed from the Windows box.
+
+### Generate to satisfy this, not to be judged against it
+
+- **Say the surface, never the compass.** A prompt that says "north" invites a
+  top-down rotation. Say *"rear view, seen from behind, no face or eyes visible"*
+  and *"front view, eyes toward the viewer"*.
+- 🔑 **Derive facings from ONE master rather than prompting three.**
+  `ARTPIPE_FACING_COHERENCE_1` already rules this — *"N faces away, S faces toward,
+  facings derived from one master"* — and prompting three independently is
+  precisely why height, palette and facing all disagree: each is a separate roll of
+  the dice with no shared reference. It also takes 3 renders per creature to 1.
+- **Yield, measured**: 94 generations produced 65 sprites (1.45 attempts each);
+  25 of 65 targets needed more than one attempt, some three. Getting the facing
+  right in the prompt is the cheapest credit you will ever save.
+
+### What can be checked without a model, and what cannot
+
+Mirror symmetry about the vertical axis separates a profile-as-north from a real
+rear view: Orray's north scores **0.53** against a donor cluster of 0.96–1.00,
+and it agrees with the owner's eye on Orray, Iriaz and Anooba-south.
+
+⚠️ **Symmetry cannot catch a FACE in the north** — a frontal face is symmetric.
+Anooba's north scores 0.84 while showing teeth to camera. That one needs something
+that looks at the image.
+
+### 🔴 The general test — owner, 2026-09-15
+
+> *"Take any one of the facings and look for strong similarity in the others or
+> simple rotations or vertical/horizontal flipping. Any of those now produce a
+> strong warning EXCEPT for the valid east/west relationship."*
+
+**No facing may be another facing under any rigid transform.** Compare every pair
+across the eight dihedral transforms — identity, 90°, 180°, 270°, each with and
+without a flip. A strong match on any of them is a warning, because it means one
+view was manufactured from another instead of drawn.
+
+| pair | a strong match means | verdict |
+|---|---|---|
+| north ↔ south | a top-down rotation, or a copy | ⛔ warn |
+| north ↔ east | a profile reused as a rear view | ⛔ warn |
+| south ↔ east | a profile reused as a front view | ⛔ warn |
+| **east ↔ west** | **west is a horizontal flip of east** | ✅ **legitimate — the one exemption** |
+
+🔑 This single rule subsumes three separate defects found by hand: byte-identical
+duplicates (identity match), top-down rotations (180° match), and lazy flips. It
+replaces a colour-difference heuristic that could not be calibrated — silhouette
+overlap alone is not enough, since Porg scores 0.86 rotated and Porg is a
+*correct* pair, so the comparison must be on image content, not outline.
+
+The full ruleset, both tiers, lives in
+`design/RimMandrake/art_review_facts_spec.md`.
+
+### Measuring a sprite's extent — use the VISIBLE silhouette
+
+🔴 **Never take an alpha bounding box at `alpha > 0`.** Renders in this project
+carry a sub-visible export halo (alpha 1–16, under 6% opacity) on **13 of 19**
+rows sampled, which inflates the box far past the painted body:
+`FurnaceBeast_east` has 3,901 such pixels reaching y=480 while the body stops at
+y=400 — a 460px box around a 286px animal.
+
+Measuring at `alpha > 0` on downscaled thumbnails produced two false "clean"
+verdicts that were reported to the owner before being caught: FurnaceBeast at
+1.03× (really **1.64×**) and BarbSlinger at 1.15× (really **1.61×**). ✅ Threshold
+at **`alpha > 16` on the original**, never the thumbnail.
+
+That halo is itself a pipeline defect worth fixing at the export step rather than
+by re-rendering 13 sprites.
+
+### Two more traps from the same sitting
+
+- ⛔ **A delivered file is not proof a render happened.** Anooba's male sprite is
+  byte-identical to the female in all three facings; Nuna's male north and south
+  are the female's; GizkaW differs from Gizka on east alone. Duplicates masquerade
+  as finished work, and one of them *caused* an owner complaint he could only
+  phrase as *"north and south aren't the right color"*. **sha256 every facing and
+  variant** before calling a set complete.
+- ⛔ **Provenance is not appearance.** Pre-filling an art review with "this came
+  through the current pipeline, so keep it" mispredicted **6 of the owner's first
+  9 verdicts**. He rejected Bolotaur and Iriaz as *"cartoonish"* despite both
+  passing through the painterly wave. What the pipeline touched says nothing about
+  what the sprite looks like.
+
+⚠️ **This file needs a curation pass**: "Multi-facing assets" appears three times
+(from line 284, 336 and 414), the copies diverging after ~37 identical lines.
+
 ## Multi-facing assets
 
 RimWorld `Graphic_Multi` things ship four facings that must agree — a hole in
