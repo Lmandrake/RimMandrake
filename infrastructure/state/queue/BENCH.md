@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T22:14:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T22:42:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  (no items/NORTH_STAR_WALK_AUTHORING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md
 
 # IN PROGRESS
 
@@ -392,16 +401,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
-
-## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NORTH_STAR_WALK_AUTHORING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md
 
 ## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FluidCanals went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
 state:    proposed
