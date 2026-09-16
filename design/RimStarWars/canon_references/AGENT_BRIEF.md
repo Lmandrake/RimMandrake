@@ -53,11 +53,21 @@ say so plainly. **Never invent a defName.**
 
 ## Fetching
 
-**WebSearch is dead on this model group.** Use Fetcher — invoke the `fetcher` skill and
-follow it.
+**WebSearch is dead on this model group.**
 
-- **Wookieepedia article HTML is Cloudflare-walled.** Get text from the API:
-  `https://starwars.fandom.com/api.php?action=parse&page=<PageName>&format=json&prop=wikitext`
+🔑 **Try plain `curl` to the API first — it works, and it is far faster than Fetcher.**
+Measured 2026-09-15 by a batch that completed all seven of its species this way:
+`curl` to `starwars.fandom.com/api.php` returned wikitext directly with **no Cloudflare
+block**. Only the rendered article HTML is walled; the API is not. So:
+
+```
+curl -s 'https://starwars.fandom.com/api.php?action=parse&page=<PageName>&format=json&prop=wikitext'
+```
+
+Fall back to Fetcher (invoke the `fetcher` skill) only if `curl` is actually blocked.
+
+- **Never request the rendered article HTML** — that is the Cloudflare-walled path. Use the
+  API endpoint above.
 - **Page-title traps are real.** The Rakata article is titled **Rakatan**, and its actual
   substance lives in `Rakata/Legends`. If a main page is a stub with an empty infobox,
   check the `/Legends` variant before concluding the species is undocumented.
