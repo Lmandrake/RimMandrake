@@ -98,8 +98,20 @@ guess):**
   per its own About.xml (players never see the world-creation page).
 - `LoadTracer`, `RimDefDump`, `bridgetools/*` — dev tooling, never shipped
   to a player's game.
-- Every `*ArtOverride` mod and `WreckedMachines` — pure texture reskins, no
-  `Source/` dir, nothing to toggle beyond enabling/disabling the mod itself.
+- Every `*ArtOverride` mod — pure texture reskins, no `Source/` dir, nothing to
+  toggle beyond enabling/disabling the mod itself.
+
+⚠️ **`WreckedMachines` was on that line and does not belong there** (checked
+2026-09-15). The stated reason was false: it is not a texture reskin and it ships real
+content — `Defs/ThingDefs_Buildings/`, `Defs/ResearchProjectDefs/` and
+`Defs/Specials/`, including a `ResearchProjectDef` and a Research Reinvented
+opportunity. It has real features to toggle.
+
+🔴 Not resolved, though, because two owner rulings collide on it: *"Every mod ships
+superb Mod Settings, no exceptions"* (2026-09-12) against
+`RAKATAN_ARCHOTECH_MACHINES_1` ruling 5, which protects WreckedMachines shipping as
+pure XML — and a settings screen needs a `Mod`/`ModSettings` assembly, so it cannot
+stay XML-only and have one. Owner's call, one line either way.
 
 **NOT YET DONE — owed, and why this is BLOCKED not CLOSED:**
 1. **Live in-game verification.** Everything above is compile-verified only.
