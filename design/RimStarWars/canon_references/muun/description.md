@@ -145,6 +145,19 @@ not swept back**; there is **no nose, no mouth, no ear, no mottling and no creas
 because it is a head sprite on a standard RimWorld body, **the long-legged narrow
 silhouette — half of what makes a Muun a Muun — is not represented at all.**
 
+## Must show
+- [ ] Cranium is a tall, smooth, hairless dome sweeping up and back, roughly doubling the head's height above the brow — not a forward-bulging egg or a plain sphere
+- [ ] Skin is mottled pale grey-pink with darker freckles/blotches and fine creases — not flat pink
+- [ ] Small, dark, deep-set eyes under heavy hooded lids, with no visible brow ridge
+- [ ] Long, shallow, nearly bridgeless nose running to small nostrils above a small, thin-lipped, down-turned mouth
+- [ ] Small, flat ear disc set low and far back on the side of the head
+- [ ] Very long, thin legs under a slim waist, giving an overall gaunt, narrow, vertical silhouette (ribs and sternum visible, no chest musculature, when unclothed)
+
+## Engine limits
+- **The long-legged, narrow body silhouette — half of what makes a Muun a Muun — cannot be
+  represented by a head sprite on a standard RimWorld body.** This needs body art, not a
+  head-slot change or a recolour.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Muun — canon article. Direct HTML is Cloudflare-walled;
   wikitext pulled via

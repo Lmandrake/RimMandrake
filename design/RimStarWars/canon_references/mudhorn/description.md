@@ -45,6 +45,17 @@ pale/ivory, but the overall silhouette, horn placement, and general "shaggy
 dark rhino" read is already well aligned with canon — this is one of the
 better-matching donors found in this pass.
 
+## Must show
+- [ ] Heavily built, low-slung, rhinoceros-like quadruped entirely covered in thick, shaggy, matted wool/fur — not bare grey skin
+- [ ] Fur reads dark muddy brown throughout, lighter/dirtier where mud has dried and packed in, darker toward the legs and underside
+- [ ] Single large, thick, gently curved frontal horn in a contrasting pale ivory/bone-tan against the dark fur
+- [ ] Wide, lipless head with a visible row of blunt, slightly serrated teeth in an undershot jaw
+- [ ] Small, dark, close-set eyes
+- [ ] Four short, thick, stump-like legs supporting a low, heavy, rhino-proportioned body
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Mudhorn (Wookieepedia article text,
   pulled via
