@@ -41,6 +41,30 @@ barefoot** because they regard the ground as sacred and *"only wearing boots whi
 off-world"* — a directly usable apparel note. Shili's government could be led by a queen
 (Regasa, *Supreme Huntress of the United Tribes*).
 
+### The `Lekku` article (canon) — the precise geometry
+This is current canon, not Legends, and it is more specific than the species page:
+
+*"The name 'lekku' was also used to describe the striped head-tails of the Togruta. That
+species, however, had three such appendages: **two lekku to the front, falling over the
+chest, and one thicker lek that was centered at the rear base of their skull.** As seen on
+Governor Gupat Roshti, **male Togruta's lekku were shorter than those of females**. The loss
+of a lek, as seen on the bartender Selda, was not a crippling injury, but **the appendages
+did not grow back** afterwards. **A Togruta's montrals were connected to their lekku.** The
+**color of a Togruta's lekku was determined by their DNA.**"*
+
+🔑 **Growth is staged, and canon gives the stages:** *"Lekku grew as their wearer matured. As
+an infant, lekku were only found **around the Togruta's head**. In adolescence, the lekku
+extended only **slightly past the collarbones**, but could reach **below the waist** by
+adulthood."* The elder Gantika's reached only to her stomach — so length is not a
+monotonic function of age.
+
+Two notes from the same article worth carrying: lekku are shared by **Buktari, Twi'leks,
+Togruta, Tosarvi, Walunas and male Ozrelanso** — *"The Togruta sported three of them, while
+the other species had two"* — and Wookieepedia itself records that a licensed novel
+(*The High Republic: Into the Dark*) **misidentified a Togruta's lekku as her montrals.**
+Even professional Star Wars authors confuse these two organs, which is precisely why this
+entry spells the count out.
+
 ### Legends (`Togruta/Legends`) — where the only numbers live
 Legends infobox: **mammal**, **height 1.7 meters**, **lifespan up to 94 standard years**
 (child 1–11, young adult 12–17, adult 18–54, middle age 55–74, old 75–94, venerable 95+),
@@ -75,8 +99,9 @@ decision list):
 | --- | --- | --- |
 | Montral count | **Exactly two**, cone-like, atop the skull | curvature; **branching (more in males)**; length grows to maturity |
 | Lekku count | **Three** (canon); Legends allows a rare fourth | — |
-| Lekku arrangement | two forward over the chest, **one posterior** | length (**females longer**); the posterior lek only reaches full length in adolescence |
-| Stripe banding | present on montrals and lekku | **the pattern itself is individual, like a fingerprint**; lekku stripes darker than montral stripes |
+| Lekku arrangement | two forward, **falling over the chest**; **one thicker lek centred at the rear base of the skull** | length (**females longer, males shorter**); the posterior lek only reaches full length in adolescence |
+| Lekku length | grows with age: infant = **around the head only**; adolescent = **just past the collarbones**; adult = **can reach below the waist** | not monotonic — the elder Gantika's reached only her stomach |
+| Stripe banding | present on montrals and lekku; **lekku colour is determined by DNA** | **the pattern itself is individual, like a fingerprint**; lekku stripes darker than montral stripes |
 | Facial pigment | **white**, on the face | pattern is individual |
 | Skin | saturated single hue | blue / orange / purple / red / white / yellow (canon); +green in Legends |
 | Hair | **none** — the canon infobox haircolor field is empty and no Togruta has hair | — |
@@ -148,8 +173,10 @@ by an arch, with two short tapering points at the sides.** Judged against the re
   is simply absent from the art.
 - 🔴 **The lekku do not descend.** They stop at roughly jaw level, inside the head's own
   footprint. Canon lekku reach the chest or waist.
-- 🔴 **Only two lekku are represented.** The third, posterior lek — canon, and named in both
-  continuities — is absent.
+- 🔴 **Only two lekku are represented.** The third lek — canon in both continuities, and
+  specified by the `Lekku` article as **the thickest of the three, centred at the rear base
+  of the skull** — is absent. It would be visible in the `_north` (rear-facing) texture,
+  which is where the omission shows.
 - ⚠️ The montrals are **coloured by `colorType: Hair`**, i.e. by the pawn's hair-colour gene
   rather than skin. That is a defensible design (it does give the appendages an independent
   colour region, which the references demand) but the xenotype's hair-colour pool makes it
@@ -220,8 +247,10 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   (**46,001 chars, complete, read in full**, 2026-09-15).
 - https://starwars.fandom.com/wiki/Togruta/Legends — Legends article, same API route
   (**26,843 chars, complete**). Source of every number in this entry.
-- https://starwars.fandom.com/wiki/Lekku — source of the Togruta/Twi'lek comparison image
-  (58,332 chars pulled).
+- https://starwars.fandom.com/wiki/Lekku — **canon, and the source of the precise
+  geometry**: three lekku with the rear one thicker, the growth stages, DNA-determined
+  colour, male lekku shorter, and non-regrowth after loss. Same API route (58,332 chars,
+  complete). Also the source of the Togruta/Twi'lek comparison image.
 - https://starwars.fandom.com/wiki/Montral — pulled (17,026 chars); it is a short article
   and adds nothing beyond the species pages.
 - Databank: the canon infobox cites `{{Databank|togruta}}` →

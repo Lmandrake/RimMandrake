@@ -120,9 +120,9 @@ player actually sees walking around.
 | ⬜ | `snivvian` | Snivvian | `RSW_RimMandrakeSnivvian` | S | Jawa_Junkers:S |
 | ⬜ | `sullustan` | Sullustan | `RSW_RimMandrakeSullustan` | S | OutlanderCivil:S |
 | ⬜ | `togorian` | Togorian | `RSW_RimMandrakeTogorian` | S | Jawa_WildsteamClan:S, Pirate:R, TribeCivil:R |
-| ⬜ | `togruta` | Togruta | `RSW_RimMandrakeTogruta` | S | Jawa_WildsteamClan:S, OutlanderCivil:S |
+| ✅ | `togruta` | Togruta | `RSW_RimMandrakeTogruta` | S | Jawa_WildsteamClan:S, OutlanderCivil:S |
 | ✅ | `trandoshan` | Trandoshan | `RSW_RimMandrakeTrandoshan` | S | Jawa_HuttCartel:S, Jawa_Junkers:S |
-| ⬜ | `twilek` | Twi'lek | `RSW_RimMandrakeTwilek` | S | Jawa_HuttCartel:S, Jawa_Junkers:R, Pirate:R, OutlanderCivil:R |
+| ✅ | `twilek` | Twi'lek | `RSW_RimMandrakeTwilek` | S | Jawa_HuttCartel:S, Jawa_Junkers:R, Pirate:R, OutlanderCivil:R |
 | ✅ | `ugnaught` | Ugnaught | `RSW_RimMandrakeUgnaught` | S | Jawa_Junkers:S, Jawa_FreeDroidEnclaves:S, OutlanderCivil:R, Jawa_HuttCartel:R |
 | ✅ | `umbaran` | Umbaran | `RSW_RimMandrakeUmbaran` | S | Jawa_AscendantHelix:S |
 | ✅ | `weequay` | Weequay | `RSW_RimMandrakeWeequay` | S | Jawa_Junkers:S |
