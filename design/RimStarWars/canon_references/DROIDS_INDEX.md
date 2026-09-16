@@ -91,7 +91,25 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
   infobox-vs-category split from the original build is not recoverable from the
   table alone, so it is not restated here rather than guessed at.
 - 54 rows match a chassis this repo already ships.
-- 693 have a manufacturer; 890 have owners; 1577 have a class/role; 39 have a firstmade/retired date.
+- 693 have a manufacturer; 890 have owners; 1577 have a class/role; 48 have a firstmade/retired date
+  (era-fill pass, 2026-09-15 — see below).
+
+### Era-fill pass, 2026-09-15
+
+The owner asked for `era` explicitly, so it got a dedicated pass rather than a re-run of
+the original build: a script re-fetched all 1757 pages' live wikitext from the same
+MediaWiki API (`action=parse&prop=wikitext`), parsed the `{{DroidSeries}}` infobox's
+`firstmade`/`retired` fields (falling back to `{{Droid}}`'s `birth`/`death` for the small
+number of rows that are individual named droids, not series/models), and cross-checked
+old-style `{{Top}}` era icons (found none — 0 hits across all 1757 pages, consistent with
+the original build's measurement of 0 across 2,036 wikitexts). Result: **1710 of 1757
+rows (97.3%) have no era in Wookieepedia's own infobox** — confirmed blank, not
+unretrieved. Only 9 rows gained an era that the original build had missed; the other 39
+already-filled rows were re-derived identically (0 conflicts against the prior build).
+One row (`Overseer droid (Death Star)`) had a live `retired=[[Galactic Republic]]` value —
+a faction name in a date field, on the wiki's own page, not a scrape error — rejected and
+left blank rather than recorded as a plausible-looking but wrong date, per the same rule
+that fixed this exact row in the 2026-09-15 QA pass above.
 
 ## Index
 
@@ -340,7 +358,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | BL-39 interrogator droid | Interrogation droid | Aratech Repulsor Company |  | Darth Krayt's Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/BL-39_interrogator_droid) |
 | BL-series Battle Legionnaire | Battle droid / Class four droid | Baktoid Combat Automata |  | Confederacy of Independent Systems; Mandalorian Protectors | canon |  | [wiki](https://starwars.fandom.com/wiki/BL-series_Battle_Legionnaire) |
 | BL0-series non-lethal combat droid | Combat droid | Arakyd Industries |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/BL0-series_non-lethal_combat_droid) |
-| Black Sun gladiator droid | Gladiator | Black Sun |  | Black Sun | canon |  | [wiki](https://starwars.fandom.com/wiki/Black_Sun_gladiator_droid) |
+| Black Sun gladiator droid | Gladiator | Black Sun | destroyed discontinued 3.5 ABY | Black Sun | canon |  | [wiki](https://starwars.fandom.com/wiki/Black_Sun_gladiator_droid) |
 | Blaredroid | Nihil | Zeetar |  | Nihil | canon |  | [wiki](https://starwars.fandom.com/wiki/Blaredroid) |
 | Blastromech droid | Security |  |  | Alliance to Restore the Republic; Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/Blastromech_droid) |
 | Blayne's droid | Battle | Doctor Blayne |  | Doctor Blayne | canon |  | [wiki](https://starwars.fandom.com/wiki/Blayne%27s_droid) |
@@ -388,7 +406,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | C-Viper series | Security | Arakyd Industries |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/C-Viper_series) |
 | C0-RU Probe | Probe droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/C0-RU_Probe) |
 | C1-series astromech droid | Astromech droid / Class 2 | Industrial Automaton | retired Prior to or during 2 BBY | Galactic Republic; Alliance to Restore the Republic; New Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/C1-series_astromech_droid) |
-| C2-N Dominator Droid | Battle droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/C2-N_Dominator_Droid) |
+| C2-N Dominator Droid | Battle droid |  | destroyed 3640 BBY, Corellia | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/C2-N_Dominator_Droid) |
 | C2-R4 Multipurpose Unit |  | Squibs |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/C2-R4_Multipurpose_Unit) |
 | C3 |  |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/C3) |
 | C3-KR Probe Droid | Probe droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/C3-KR_Probe_Droid) |
@@ -523,7 +541,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | Doroido | Security droid |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Doroido) |
 | Doughnut dispenser droid | Cooking |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Doughnut_dispenser_droid) |
 | DP-2 probe droid | Probe droid / Class two droid | Duwani Mechanical Products |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/DP-2_probe_droid) |
-| DP-6 Guard Droid | Security droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DP-6_Guard_Droid) |
+| DP-6 Guard Droid | Security droid |  | destroyed 3640 BBY, Corellia | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DP-6_Guard_Droid) |
 | Dragon-bird robot drone | Training |  |  | Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Dragon-bird_robot_drone) |
 | Dressing droid | Service |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Dressing_droid) |
 | DRFT-R | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/DRFT-R) |
@@ -561,7 +579,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | DUM-series pit droid | Repair droid / Class 5 | Serv-O-Droid, Inc. |  | Galactic Republic; Alliance to Restore the Republic; Scourge (As a vessel); The Colossus | canon (+Legends) | DUM pit droid (OuterRim) | [wiki](https://starwars.fandom.com/wiki/DUM-series_pit_droid) |
 | DV4 maintenance droid | Maintenance |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/DV4_maintenance_droid) |
 | Dwarf probe droid | Probe droid | Arakyd Industries |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/Dwarf_probe_droid) |
-| DX-2 Dominator Droid | Battle droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DX-2_Dominator_Droid) |
+| DX-2 Dominator Droid | Battle droid |  | destroyed 3640 BBY, Corellia | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DX-2_Dominator_Droid) |
 | DX-5 Incinerator Droid | Battle droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DX-5_Incinerator_Droid) |
 | DX-6 Ravager | Battle droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DX-6_Ravager) |
 | DZ-70 fugitive tracker droid | Combat probe | Arakyd Industries |  | Confederacy of Independent Systems; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/DZ-70_fugitive_tracker_droid) |
@@ -691,7 +709,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | G2 repair droid | Maintenance droid | SoroSuub Corporation *(Legends)* | Between 19 BBY and 9 BBY – retired 12 ABY *(Legends)* | Resistance | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/G2_repair_droid) |
 | G30-MN mining unit | Mining |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/G30-MN_mining_unit) |
 | G4 | Service |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/G4) |
-| G4-B3 Heavy Fabricator | Labor droid |  |  | Karagga | canon |  | [wiki](https://starwars.fandom.com/wiki/G4-B3_Heavy_Fabricator) |
+| G4-B3 Heavy Fabricator | Labor droid |  | destroyed 3639 BBY, Nal Hutta | Karagga | canon |  | [wiki](https://starwars.fandom.com/wiki/G4-B3_Heavy_Fabricator) |
 | G9 droid |  | Verpine |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/G9_droid) |
 | GA Series Information Analysis Unit | Analysis | Cybot Galactica |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/GA_Series_Information_Analysis_Unit) |
 | GA-97 (Czerka) |  |  |  | Czerka Corporation | canon |  | [wiki](https://starwars.fandom.com/wiki/GA-97_%28Czerka%29) |
@@ -742,7 +760,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | Gulper (droid) | Security |  |  | Great Heep | canon |  | [wiki](https://starwars.fandom.com/wiki/Gulper_%28droid%29) |
 | GV/3-series guardian droid | Guardian droid / Fourth degree | Cybot Galactica |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/GV/3-series_guardian_droid) |
 | GX1-series battle droid | Battle droid | Trang Robotics |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/GX1-series_battle_droid) |
-| GXR-7 command droid | Battle droid |  |  | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/GXR-7_command_droid) |
+| GXR-7 command droid | Battle droid |  | destroyed 3643 BBY, the Brentaal Star | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/GXR-7_command_droid) |
 | GXR-7 Sentinel | Battle droid / Class four droid |  |  | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/GXR-7_Sentinel) |
 | GY-I information analysis droid | Information analysis droid / Class 1 | Cybot Galactica |  | Alliance to Restore the Republic; Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/GY-I_information_analysis_droid) |
 | Gyrowheel 1.42.08-series recycling droid | Recycling droid | Veril Line Systems |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Gyrowheel_1.42.08-series_recycling_droid) |
@@ -902,7 +920,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | ISB-120 | Interrogation | MerenData |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/ISB-120) |
 | ISF-E4 Eliminator Droid | Battle |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/ISF-E4_Eliminator_Droid) |
 | Isotope-5 droid | Battle droid |  |  | Hutt Cartel | canon |  | [wiki](https://starwars.fandom.com/wiki/Isotope-5_droid) |
-| ISS-944 Power Droid | Combat-prepared power droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/ISS-944_Power_Droid) |
+| ISS-944 Power Droid | Combat-prepared power droid |  | destroyed 3643 BBY, Emperor's Glory | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/ISS-944_Power_Droid) |
 | IT-000 interrogator droid | Interrogation droid / Class 4 | First Order Department of Military Research |  | First Order | canon |  | [wiki](https://starwars.fandom.com/wiki/IT-000_interrogator_droid) |
 | IT-1 | Interrogation |  |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/IT-1) |
 | IT-3 Interrogator | Interrogation droid |  |  | Galactic Empire; Imperial Remnant | canon |  | [wiki](https://starwars.fandom.com/wiki/IT-3_Interrogator) |
@@ -1169,7 +1187,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | Myrkr SS-23 | Agricultural |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/Myrkr_SS-23) |
 | N-101 Nemesis droid | Battle droid | Trang Robotics |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/N-101_Nemesis_droid) |
 | N2K-V5 Maintenance Droid | Maintenance |  |  | Hutt Cartel | canon |  | [wiki](https://starwars.fandom.com/wiki/N2K-V5_Maintenance_Droid) |
-| N4-10 Exterminator | Battle droid |  |  | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/N4-10_Exterminator) |
+| N4-10 Exterminator | Battle droid |  | destroyed 3642 BBY, Foundry | Galactic Republic | canon |  | [wiki](https://starwars.fandom.com/wiki/N4-10_Exterminator) |
 | N5 sentry droid | Security droid; Sentry droid | SoroSuub Corporation |  | Second Revelation; New Republic; Droid Gotra; The Twins | canon |  | [wiki](https://starwars.fandom.com/wiki/N5_sentry_droid) |
 | Nanny droid | Class three |  |  |  | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Nanny_droid) |
 | Nano-droid | Class five |  |  | Galactic Republic *(Legends)* | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/Nano-droid) |
@@ -1722,7 +1740,7 @@ via Fetcher. Article HTML is Cloudflare-walled; the API is not.
 | TX-1118 Series "Terminax" Assassin Droid | Assassin | MerenData |  | Galactic Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/TX-1118_Series_%22Terminax%22_Assassin_Droid) |
 | TX7 Long-Range Probe | Probe droid |  |  | House Thul | canon |  | [wiki](https://starwars.fandom.com/wiki/TX7_Long-Range_Probe) |
 | Tythonian War Droid | Battle droid | Weapon Master |  | Jedi Order | canon |  | [wiki](https://starwars.fandom.com/wiki/Tythonian_War_Droid) |
-| TZ-3 Dominator Droid | Battle droid |  |  | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/TZ-3_Dominator_Droid) |
+| TZ-3 Dominator Droid | Battle droid |  | destroyed 3640 BBY, Corellia | Sith Empire | canon |  | [wiki](https://starwars.fandom.com/wiki/TZ-3_Dominator_Droid) |
 | U2-C1-series housekeeping droid | Housekeeping droid / Class three droid | Publictechnic |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/U2-C1-series_housekeeping_droid) |
 | U5 | Astromech droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/U5) |
 | Ubrikkian Steamworks medical unit | Medical droid | Ubrikkian Steamworks |  | Confederacy of Independent Systems | canon |  | [wiki](https://starwars.fandom.com/wiki/Ubrikkian_Steamworks_medical_unit) |
