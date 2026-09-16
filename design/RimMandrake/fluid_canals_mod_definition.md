@@ -180,7 +180,8 @@ assume the method is virtual.
 
 ## 7. What the player must SEE
 
-Zero bespoke textures exist. The states art is needed for:
+Zero bespoke textures exist. The states art is needed for — and §13 says which of these can be
+**adopted** rather than drawn, which turns out to be most of them:
 
 1. **Dry dug channel** — reads as a trench, not a gravel path; directional/edge art so a run of cells
    looks like one excavation with walls.
@@ -370,7 +371,7 @@ along connected liquid cells, and spawns/despawns vanilla `Fire` per cell purely
 damage. Bounded per-pulse walk, same shape as the fill; pillar 2 holds. A 200-cell canal alight is
 then one component doing a bounded walk, not 200 Things each ticking — which is the option to avoid.
 
-⚠️ **A contradiction I am NOT resolving from the evidence available here.** The fire investigation
+⚠️ **A contradiction I am NOT resolving from the evidence available here** (see also §13's caveat). The fire investigation
 found `dubwise.rimefeller`, `sarg.alphabiomes`, `vanillaexpanded.vchemfuele` and `realify.firefoam`
 listed active in `deployed/config/ModsConfig.pre-rimdefdump-2026-08-10.xml`, while
 `liquids_framework_design.md` §5 states Rimefeller is "not in the campaign list". **That snapshot is
@@ -378,3 +379,54 @@ from 2026-08-10 and is not the instrument** — the live list is `ModsConfig.xml
 machine, unreachable from here. Both claims may be true of different moments. Check the live list
 before either citing Rimefeller as prior art or repeating that it is absent; do not edit either
 document on the strength of a five-week-old snapshot.
+
+## 13. The art: partial fill is nearly free, and tar currently looks like water
+
+Surveyed 2026-09-16. The picture is better than "zero textures" suggests, and it contains one real
+defect.
+
+🔑 **A fill-level progression already exists, and every liquid in this repo already rides it.**
+Vanilla ships depth tiers — `WaterShallow` / `WaterMovingChestDeep` / `WaterDeep` (plus ocean and
+polluted variants) off `WaterShallowBase` / `WaterChestDeepBase` / `WaterDeepBase` — each with its own
+**edge-aware "Ramp" texture** (`WaterShallowRamp`, `WaterChestDeepRamp`, `WaterDeepRamp`). All 17 of
+LiquidTypes' suites (`RM_Tar`, `RM_Ooze`, `RM_Propane`, `RM_AcidWater`, `RM_WaterBoiling`,
+`RM_WaterBrine` …) clone those bases and reuse those ramps verbatim.
+⇒ **`canal_partial_fill_distinct` costs almost nothing**: express fill as the tier the cell currently
+holds — trace/shallow → half/chest-deep → brimming/deep — and the edge-aware art, the depth reading and
+the movement cost all come for free from terrain that already exists. It also gives the stock model a
+natural quantisation, since a tier is a volume.
+
+**The repo's precedent for one substance in several states** is `GelatinousSlime`'s
+`SlimeTerrain.xml`: five terrains (`RM_Slime_Hardened` → `RM_Slime_Rich` → `RM_Slime_Grass` →
+`RM_Slime_Mud` → `RM_Slime_Liquid`) driven by a `terrainsByFertility` moisture band. It is a moisture
+continuum rather than a depth one, but the shape — several terrains, one substance, one gradient — is
+already established here and worth matching.
+
+🔴 **The defect: differentiation between liquids is currently a colour multiply, not a look.** Every
+in-repo liquid tints the vanilla water ramp via `<color>(R,G,B)</color>`. So **tar today is tinted
+water** — it ripples like water and reads like water — which fails the spirit of
+`slime_reads_as_viscous_not_water` and would fail the same test for tar. Real bespoke art for
+viscous liquids **exists and is adoptable but not yet adopted**: Alpha Biomes ships
+`Terrain/Surfaces/AB_SlimeRamp`, `AB_Tar` / `AB_ArtificialTar`, `AB_LiquidSlime`, `AB_PropaneLake`,
+`AB_TarPits` / `AB_TarPuddle` / `AB_TarLakes`. ManyWaters already tints `AB_SlimeRamp` for its slime
+rows under `MayRequire="sarg.alphabiomes"`, so the adoption pattern is written — it simply has not
+been applied to tar or propane. `AB_TarPits` is also recorded as placed on the frozen world across 62
+measured tiles.
+
+**So the authoring list shrinks to four things nothing can be adopted for:**
+
+1. **A dug channel that reads as an excavated channel** — the one genuinely new terrain look. No
+   "canal bed" art exists anywhere; `RM_Channel_Empty` is `Terrain/Surfaces/Gravel`.
+2. **A strained / depleted source** — no depletion-indicating graphic exists in ANY mod in this repo.
+   This is the visual expression of his whole stock ruling and it has no precedent to lean on.
+3. **A burning liquid surface** distinct from vanilla's fire overlay on ordinary ground.
+4. **Irrigated ground** — a damp ring beside a filled canal. (Partly free: `RecedeFlood()`'s
+   `SoilRich` swap already reads as darker, richer soil.)
+
+⚠️ **Caveat on this whole survey, stated because it would otherwise look like measurement.** The
+frozen def dump's `DUMP_ROOT` is a Windows path and the live `ModsConfig.xml` is on the Windows
+machine, so neither could be read from the Laptop this session. The in-repo XML claims above are
+first-hand reads. The **vanilla depth-tier claim and Alpha Biomes' active status are corroborated by
+several independently-dated repo artifacts** (frozen-dump comments citing `Terrain_Water.xml` with
+line numbers, real BiomeDef tile assignments, working patches against those defNames) — which is
+strong, and is still not a fresh `measure`. Re-verify both on the Desktop before art work starts.
