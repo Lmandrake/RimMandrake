@@ -70,8 +70,10 @@ how a race LOOKS lands on a gene, never on the XenotypeDef.
 
 ## Roster
 
-70 shipped xenotypes → **18 defNames complete**, **52 outstanding**. (The 18 done defNames sit
-in **17** directories, because both Jawa defs map to `jawa/`.) `tier` is the species' best placement across all
+70 shipped xenotypes → **50 defNames complete**, **20 outstanding**. (The 50 done defNames sit
+in **49** directories, because both Jawa defs map to `jawa/`.) ⚠️ Several agents tick this
+table concurrently, so **recount from the rows rather than trusting this line** — it is
+correct only as of the last edit. `tier` is the species' best placement across all
 factions and is the **priority order** for the outstanding work: an `A` species is what the
 player actually sees walking around.
 
@@ -131,19 +133,19 @@ player actually sees walking around.
 | ⬜ | `duros` | Duros | `RSW_RimMandrakeDuros` | R | OutlanderCivil:R, Pirate:R, Jawa_Junkers:R, Jawa_DeepwaterCompact:R |
 | ⬜ | `echani` | Echani | `RSW_RimMandrakeEchani` | R | Empire:R |
 | ⬜ | `iktotchi` | Iktotchi | `RSW_RimMandrakeIktotchi` | R | Jawa_AscendantHelix:R |
-| ⬜ | `zabrak` | Iridonian | `RSW_RimMandrakeIridonian` | R | TribeCivil:R |
-| ⬜ | `kaleesh` | Kaleesh | `RSW_RimMandrakeKaleesh` | R | TribeCivil:R |
-| ⬜ | `kel_dor` | Kel Dor | `RSW_RimMandrakeKelDor` | R | Jawa_AscendantHelix:R, OutlanderCivil:R |
-| ⬜ | `kubaz` | Kubaz | `RSW_RimMandrakeKubaz` | R | Jawa_HuttCartel:R, Jawa_Junkers:R, Jawa_AscendantHelix:R |
-| ⬜ | `mimbanese` | Mimbanese | `RSW_RimMandrakeMimbanese` | R | TribeCivil:R |
-| ⬜ | `nelvaanian` | Nelvaanian | `RSW_RimMandrakeNelvaanian` | R | TribeCivil:R |
-| ⬜ | `ortolan` | Ortolan | `RSW_RimMandrakeOrtolan` | R | Jawa_HuttCartel:R, OutlanderCivil:R |
+| ✅ | `zabrak` | Iridonian | `RSW_RimMandrakeIridonian` | R | TribeCivil:R |
+| ✅ | `kaleesh` | Kaleesh | `RSW_RimMandrakeKaleesh` | R | TribeCivil:R |
+| ✅ | `kel_dor` | Kel Dor | `RSW_RimMandrakeKelDor` | R | Jawa_AscendantHelix:R, OutlanderCivil:R |
+| ✅ | `kubaz` | Kubaz | `RSW_RimMandrakeKubaz` | R | Jawa_HuttCartel:R, Jawa_Junkers:R, Jawa_AscendantHelix:R |
+| ✅ | `mimbanese` | Mimbanese | `RSW_RimMandrakeMimbanese` | R | TribeCivil:R |
+| ✅ | `nelvaanian` | Nelvaanian | `RSW_RimMandrakeNelvaanian` | R | TribeCivil:R |
+| ✅ | `ortolan` | Ortolan | `RSW_RimMandrakeOrtolan` | R | Jawa_HuttCartel:R, OutlanderCivil:R |
 | ✅ | `rakata` | Rakata | `RSW_RimMandrakeRakata` | R | Jawa_AscendantHelix:R |
 | ⬜ | `sith_pureblood` | Sith Kissai (Pureblood) | `RSW_RimMandrakeSithKissaiPureblood` | R | Jawa_AscendantHelix:R |
 | ⬜ | `massassi` | Sith Massassi (Pureblood) | `RSW_RimMandrakeSithMassassi` | R | Jawa_AscendantHelix:R |
 | ⬜ | `sith_species` | Sith Zugurak (Pureblood) | `RSW_RimMandrakeSithZ` | R | Jawa_AscendantHelix:R |
-| ⬜ | `taung` | Taung | `RSW_RimMandrakeTaung` | R | Pirate:R, TribeCivil:R |
-| ⬜ | `gungan` | gungan | `RSW_RimMandrakeGungan` | R | Jawa_DeepwaterCompact:R |
+| ✅ | `taung` | Taung | `RSW_RimMandrakeTaung` | R | Pirate:R, TribeCivil:R |
+| ✅ | `gungan` | gungan | `RSW_RimMandrakeGungan` | R | Jawa_DeepwaterCompact:R |
 | ⬜ | `dathomirian` | Dathomirian | `RSW_RimMandrakeDathomirian` | — | (none — empty in prefill) |
 | ✅ | `jawa` | Jawa | `RSW_RimMandrakeJawa` | — | (none — empty in prefill) |
 | ⬜ | `yoda_species` | Yoder | `RSW_RimMandrakeYoderForceGremlin` | — | (none — empty in prefill) |
@@ -389,3 +391,164 @@ Chagrian mass, lifespan and diet; Ewok lifespan; canon Defel and canon Falleen h
 mass and lifespan. **Ewok is the only species in this batch with both height and mass
 sourced** (1 m / 30 kg).
 
+### Batch — five species, 2026-09-15 (`zabrak`, `kaleesh`, `kel_dor`, `kubaz`, `mimbanese`)
+
+`description.md` plus reference images written for **all five** assigned. Every defName verified
+present in `RimMandrakeXenotypes.xml`. All fetching went **straight through `curl` to the Fandom
+API** — no Fetcher needed, no Cloudflare block. **Kel Dor, Kubaz and Kaleesh canon pages are
+`{{Species-stub}}`s with no size data, so `/Legends` was pulled for each and is labelled as
+Legends throughout.** ⚠️ **Mimbanese is canon-only — there is no `Mimbanese/Legends`, so its
+height, mass and lifespan are UNSOURCED in any continuity and must not be invented.** No canon
+height, mass or lifespan exists for Zabrak, Kaleesh, Kel Dor or Kubaz either; all figures in
+those four entries are Legends and marked so.
+
+🔑 **The `zabrak`/Iridonian scope question is settled in the entry**: canon treats **Iridonian as
+a subspecies (the Iridonian article says "race") of the Zabrak species** — the Zabrak infobox
+lists `subspecies = Dathomirian, Iridonian`; the Iridonian infobox gives `class = Zabrak`. Both
+articles exist, and only the Iridonian one carries colour data. **`RSW_RimMandrakeIridonian`
+plainly and correctly means the Iridonian subgroup**, whose canon look is **Eeth Koth — pale tan
+skin, SHORT BLUNT cream horns, hairline-weight tattoos, long black hair — NOT Darth Maul**, who
+is **Dathomirian** and ships as a separate xenotype. Maul art is kept in `zabrak/` as a labelled
+*contrast* reference.
+
+🔑 **Mask-versus-face, written explicitly per the brief.** Kel Dor: 🔴 **the two long ivory tusks
+are FACE, not mask** — prose never mentions them and the mask hides them in every masked image;
+the mask is one assembly doing two jobs (goggles keep eye fluid from evaporating, respirator
+because **oxygen is poisonous**). ⚠️ The **only unmasked Kel Dor found in either continuity is
+Legends** (`PloKoonUnmasked-STD.jpg`); every canon image is masked. Kubaz: **the snout is face,
+the goggles are equipment** and their lens colour varies per individual (red / amber / black) —
+a Kubaz breathes fine, the eyewear is a light filter. Kaleesh: the mask is **cultural, not
+medical**, and 🔴 **it is BONE-WHITE — the red in the reference is CLOTH, not the mask.**
+Mimbanese: **no mask at all** — the large round pale-blue **lidless** eyes are face, and their
+dark orbital rims read as goggles only at small scale.
+
+**Every one of the five defs contradicts canon somewhere.** The concrete defects:
+
+- `RSW_RimMandrakeKelDor`: `<description>` is the single character `.`; `nameMaker` is
+  **`RSW_KoTOR_NamerDuros`** (wrong species); 🔴 **the species-defining "oxygen is poisonous"
+  biology is not in the gene list at all** — the mask is only a cosmetic head attachment — and
+  neither is the sourced vacuum-survival hide; 🔴 **no `HeadType/keldor` exists on disk**, so a
+  Kel Dor is a generic gaunt human head under a mask, with no tusks, furrowed cranium or lobe
+  clusters authored anywhere; `Hands_Pig` against a sourced three-fingers-and-a-thumb clawed
+  hand; three psychic genes on a species with no canon Force trait (Legends ties Force affinity
+  to a *minority* silver-iris marker only).
+- `RSW_RimMandrakeKubaz`: `<description>` is the single character `e`; 🔴 **no goggle/eyewear gene
+  exists and the donor head sprite draws BARE EYES WITH HUMAN EYEBROWS** — the one thing no canon
+  Kubaz image shows; 🔴 `Hair_BaldOnly` forbids the **pale spiky bristle crest** every reference
+  image shows (Legends' infobox says black hair — **images win, it is pale**). Class is sourced
+  three incompatible ways (insectoid / **elephantine**, Leland Chee / mammalian) and the def
+  silently picks insectoid. *Correct*: the namer, the dark-green + slate-gray skin, the
+  insectivore diet, `DarkVision`, `UVSensitivity_Mild`, `Outland_Voice_Insect`.
+- `RSW_RimMandrakeKaleesh`: `nameMaker` is **`RSW_KoTOR_NamerNagai`** (wrong species — and Nagai
+  is a separate def in the same file); 🔴 **six hair genes on a scaly reptilian whose canon
+  hair-colour field is blank**, and because `Outland_BaldMale` bald-caps only males the shipped
+  result is **long-haired female Kaleesh**; 🔴 `RSW_BodySizeGene_big` contradicted by the only
+  sourced numbers (**Legends 1.6–1.8 m, 80 kg** — human-normal); 🔴 the **extremely flammable
+  internal organs** — the species' one hard sourced vulnerability, and the reason Grievous burns
+  — are unrepresented. Also unrepresented: four-fingered hands with **two opposable thumbs**,
+  digitigrade stance, five-toed scute feet. *Correct*: `Skin_DeepRed`, `Outland_Eye_Yellow`,
+  `Outland_Nose_NoseSlits`, `Outland_ChinHorns`, `Outland_JawTusks`,
+  `Outland_EyeVisual_Recessed`, `Outland_Scalebody`, `Body_Thin`.
+- `RSW_RimMandrakeMimbanese`: `<description>` is the single character `e`; 🔴
+  **`AptitudePoor_Intellectual` + `RSW_GS_Primitive` directly contradict the sourced "both highly
+  aggressive and **highly intelligent**"** (the def keeps the aggression and inverts the
+  intelligence); 🔴 **`RSW_Head_Devolved` renders a Mimbanese with TUSKEN RAIDER HEAD ART** —
+  traced `SW_Genes.xml:2206` → `RSW_Male_DevolvedNormal`/`RSW_Female_DevolvedNormal` →
+  `SW_HeadTypes.xml:507`/`:234` → `graphicPath = SWX/Pawn/HeadType/Sov_tusken/HeadSandM|F`, a
+  blank rounded head with two dots for eyes, **no nose, no mouth, no horns**; the gene's own
+  label *"Devolved head"* editorialises against canon; 🔴 `RSW_Body_gaunt` + `Body_Thin` against
+  three references showing **ordinary human build** and **no sourced height or mass in any
+  continuity**. *Correct*: the namer, `Skin_DeepRed`, and `DarkVision` + `UVSensitivity_Mild`
+  (a genuinely well-chosen pair for "enhanced eyesight, adapted to the low light of their homes").
+- `RSW_RimMandrakeIridonian` is **the cleanest def reviewed in this batch** — accurate
+  `<description>`, right namer, and `RSW_Headbone_zabrak` ships **five horn-crown variants** of
+  correctly *stumped* Iridonian horns, matching canon's "placement, length and thickness varied
+  enormously." Still: 🔴 **the TWO HEARTS are unrepresented**, though they are the most-cited
+  distinction in canon *and* Legends and come with a stated effect ("could go faster for longer")
+  that maps almost verbatim onto a move-speed gene — **the largest single gap**; 🔴
+  `Outland_BaldMale` is contradicted by **Eeth Koth, the canonical male Iridonian, who has long
+  black hair** in the very image at the top of the Iridonian article; 🔴 `Hair_Gray` is the only
+  hair gene and **grey is sourced nowhere** (canon: black, purple); 🔴 `Outland_LowFertility`
+  contradicts *"a colonial species, having migrated and adapted to dominate many worlds."*
+  ⚠️ `SWX/Pawn/HeadAttachments/iridonian/` contains **`Maul_*.png`** — a *Dathomirian's* tattoo
+  pattern filed in the Iridonian set.
+
+Negative / contrast references kept and labelled rather than deleted:
+`mimbanese/donor_current_head_is_tusken_art.png` (**the Tusken head a Mimbanese actually renders
+with** — the defect itself), `zabrak/wookieepedia_dathomirian_maul.jpg` (wrong subspecies, kept
+so the distinction is checkable by eye), `kaleesh/wookieepedia_grievous_concept_alien_stage.jpg`
+(**pre-final Grievous concept sketches**, mutually inconsistent, none shipped — same status as
+the Whitlatch Geonosian art), `kaleesh/wookieepedia_eyes_closeup.jpg` (**Grievous the cyborg** —
+everything bone-coloured is his faceplate; valid for the yellow slit-pupil eyes only),
+`kel_dor/donor_current_sprite_headflaps.png` (smooth pointed flaps where canon has irregular
+pebbled lobe clusters).
+
+⚠️ **No donor face art exists for `kel_dor` or `kaleesh`** — neither has a `HeadType/` directory,
+so for those two nothing on disk compares canon facial anatomy against current mod art. The
+`zabrak` donor art is the only **positive** donor reference in this batch.
+
+### Batch — nelvaanian, ortolan, taung, gungan, 2026-09-15
+
+`description.md` plus images written for **all four** assigned: `nelvaanian`, `ortolan`,
+`taung`, `gungan` — all four directories created from scratch. Every defName verified
+against `RimMandrakeXenotypes.xml`. Every fetch went **straight through `curl` to the
+Fandom API**; no Fetcher needed. Two species were stubs as predicted and their substance
+came from the `/Legends` variant (**Nelvaanian** and **Taung**, both with completely empty
+canon infoboxes and no canon biology section at all); **Ortolan** and **Gungan** have
+full canon articles and needed no Legends fallback.
+
+Each entry carries a **Def-versus-canon (flagged)** section. The concrete defects found:
+
+- 🔴 **`RSW_RimMandrakeGungan` encodes the fandom stereotype the source explicitly
+  denies.** `AptitudePoor_Intellectual` and the def description's "lower intelligence
+  than humans" run straight against the article's *"Though sometimes dismissed as
+  primitive, the Gungans had advanced technology…"*, a Gungan **theoretical-hyperspace
+  physicist who taught at the Academy of Carida**, and Dave Filoni on the record that the
+  goofiness was **Jar Jar only**. Also: **nothing in the gene list makes a Gungan
+  amphibious** (the canon class is *amphibian*, and it is placed in
+  `Jawa_DeepwaterCompact`); one `Outland_Skin_PaleBrown` against **six sourced skin
+  colours**; the **Otolla/Ankura** race split unrepresented.
+- 🔴 **`RSW_RimMandrakeNelvaanian` wears the wrong species' head** — `RSW_BothanHead`, a
+  muzzle-less ear-less face, on a species whose two diagnostic features are a **long
+  lupine snout** and **large upright pointed ears**. `AptitudePoor_Medicine` contradicts
+  the shamans who brew the horax-scale elixir, and its `<description>` asserts scent and
+  hearing acuity **found in neither article**.
+- 🔴 **`RSW_RimMandrakeOrtolan` wears the Kubaz head** (`RSW_Head_kubaz` — narrow skull,
+  thin bristled snout) on a broad-domed trunk-and-huge-black-eyes species, and
+  **`Hands_Pig` destroys the species' one unique canon ability**: *"articulated digits…
+  able to absorb food and drink as well as play musical instruments."* Its `iconPath` is
+  the vanilla **Pigskin** icon; canon class is **elephantine**. Sourced **sensitive
+  hearing** and **nutrient-absorbing digits** have no genes; `AptitudePoor_Cooking` and
+  `Learning_Slow` are unsourced while the species' famous musicianship gets nothing.
+- 🔴 **`RSW_RimMandrakeTaung`'s `<description>` is the single character `.`** (same defect
+  as `RSW_RimMandrakeGand`), and **`Outland_AcceleratedAgeing` contradicts a sourced
+  85-year lifespan** — *longer* than a vanilla human. `RSW_Ears_smallwebbed` is unsourced
+  (no article mentions Taung ears); `KillThirst` encodes religious culture as biology.
+  Credit where due: its **`Outland_AcceleratedMaturation` is correct** (adulthood at 13),
+  it carries **no Force genes** against explicit canon Force-blindness, and its
+  **`RSW_Skin_DarkGreen` + `RSW_Skin_MidGray` pair is better than the prose** — the
+  article says grey, the wiki's own infobox art is olive-green.
+- 🔴 **A shared, previously unrecorded rendering defect: `<useSkinShader>false</useSkinShader>`.**
+  The **Bothan** head types (forced on the Nelvaanian) and **both Gungan** head types
+  carry it, and their textures are **measured pure-greyscale masks** (zero channel spread
+  across ~29–33 k opaque pixels) — so the skin-colour gene **never reaches the face**.
+  Both species render a grey-white head on a coloured body. The **Taung** and **Kubaz**
+  head bases do *not* carry the flag and do tint correctly.
+- ⚠️ **Three of the four defs have no `nameMaker` at all** (Ortolan, Taung, Gungan), so
+  their pawns get default human names — despite Taung canon supplying both a naming
+  principle and worked examples (Atin, Kot, Tor). Only the Nelvaanian has a species namer,
+  and it is the right one.
+
+Negative references labelled rather than deleted: `nelvaanian/donor_current_sprite.png`
+(the **Bothan** head the def forces — no Nelvaanian texture exists in `src/` at all),
+`ortolan/donor_current_sprite.png` (the **Kubaz** head — no Ortolan texture exists in
+`src/` at all), `taung/wookieepedia_taung_helmet_comparison.jpg` (the wiki's own caption
+says it shows a **helmet**, so its hair, skin and eyes are not anatomical evidence — and
+this species' art is masked almost everywhere).
+
+Unsourced and recorded as absent rather than guessed: **Nelvaanian lifespan**; **Taung
+height/mass/skin/eye/lifespan in canon** (all Legends-only); **Ortolan height and mass**
+(both blank in the infobox — "squat" is the only size word that exists); **Gungan
+lifespan**. Not fetched: the `starwars.com` Databank in all four cases, and the underlying
+print sources (*Galaxy at War*, *The Clone Wars Campaign Guide*, *Alien Archive*) — only
+Wookieepedia's transcription of them was read.
