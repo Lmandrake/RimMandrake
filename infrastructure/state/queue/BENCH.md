@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-15T23:44:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T01:57:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -381,3 +381,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_CANON_LIBRARY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_CANON_LIBRARY_1.md
+
+## XENOTYPE_CANON_CORRECTION_1 Nine patterns of xenotype defs disagreeing with canon, found by the species library - wrong-species namers, borrowed heads, placeholder descriptions, missing signature traits, invented genes, discarded skin colour, inverted aptitudes, backwards Force-sensitivity, invented names - fixes belong in gen_races_mod.py, owner rules what is a bug vs a deliberate departure
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  XENOTYPECANONCORRECTION1
+prose:    infrastructure/state/items/XENOTYPE_CANON_CORRECTION_1.md

@@ -1,0 +1,139 @@
+# XENOTYPE_CANON_CORRECTION_1
+
+Findings from building the species canon library (`SPECIES_CANON_LIBRARY_1`). Roughly 60
+species entries were written against sourced canon, and **every single species examined has
+at least one def that disagrees with canon.** The individual findings live in each
+`design/RimStarWars/canon_references/<slug>/description.md`; this file records the
+**patterns**, because they are generator bugs rather than sixty separate mistakes.
+
+⚠️ **Nothing has been fixed.** `RimMandrakeXenotypes.xml` is GENERATED
+(`src/RimMandrake/Utils/gen_races_mod.py`), so hand-edits would be overwritten. Fixes belong
+in the generator and its inputs. The owner has not ruled on any of this.
+
+## Pattern 1 — wrong-species name-makers
+
+A species is wired to another species' `nameMaker`. Five found, which makes this systematic
+rather than clerical:
+
+| species | gets the name-maker of |
+|---|---|
+| Ithorian | Sullustan |
+| Mon Calamari | Quarren (its canon rival) |
+| Ugnaught | Devaronian |
+| Kel Dor | Duros |
+| Kaleesh | Nagai |
+
+## Pattern 2 — head art borrowed from the wrong species
+
+| species | wears the head of | why it is wrong |
+|---|---|---|
+| Lasat | Cathar | feline head on a non-feline |
+| Nelvaanian | Bothan | no snout, on a long-snouted lupine |
+| Ortolan | Kubaz | wrong snout entirely |
+| Mimbanese | Tusken Raider | traced via `SW_HeadTypes.xml:507`/`:234` |
+
+## Pattern 3 — placeholder text shipped as player-facing description
+
+`<description>` is a single character. Five found: **Gand** (`.`), **Lasat** (`e`),
+**Ugnaught** (`.`), **Defel** (`.`), **Taung** (`.`). These render as tooltips in game.
+
+## Pattern 4 — the species' signature trait has no gene
+
+The thing the species is *known for* is absent from its def:
+
+- **Three aquatic species cannot breathe water** — Mon Calamari, Nautolan, Gungan. All three
+  sit in the Deepwater faction. Nautolan's temperature genes are additionally inverted.
+- **Defel** — no light-absorption or stealth gene of any kind. Its entire art inventory is
+  four small fangs.
+- **Falleen** — no colour-shift mechanism; four skin genes, all green.
+- **Kaminoan** — UV vision is its sole canon distinction and has no gene, while **Umbaran**
+  receives dark vision for the same trait.
+- **Kel Dor** — oxygen-poisoning biology entirely absent.
+- **Bothan** — mood-sensitive fur, the species' one listed distinction, absent.
+- **Ortolan** — `Hands_Pig` destroys digits that absorb food and play instruments.
+
+## Pattern 5 — genes invented where canon is blank
+
+Body-size and lifespan genes assigned to species whose infobox fields are empty: **Gand**,
+**Chadra-Fan**, **Geonosian**, **Feeorin**. Plus two that contradict a *sourced* figure —
+**Taung** has accelerated ageing against a sourced 85-year lifespan, and **Ugnaught**'s
+doubled lifespan still undershoots canon's 200+ years.
+
+## Pattern 6 — skin colour wrong, missing, or discarded
+
+- **Wrong:** Zygerrian red (canon: "Light") · Bith mid-brown (all Bith are pale) · Chagrian
+  orange (canon blue is causally load-bearing — it is evolved radiation resistance) · Umbaran
+  grey (evenly-lit plate reads lavender-violet) · Ithorian blue (sourced orange absent).
+- **Missing entirely:** Chadra-Fan · Ugnaught · Abednedo's grey/cream · Ewok's black (cited,
+  and the centre figure of its own infobox image).
+- 🔴 **Discarded:** Bothan and Gungan head types set `useSkinShader: false` over masks
+  measured as pure greyscale, so **no skin gene can ever tint those faces.** A different
+  class of bug — the colour is right and thrown away.
+
+## Pattern 7 — aptitudes that invert the source
+
+- **Geonosian** — terrible intellectual, for a species that engineered droid foundries.
+- **Gungan** — poor intellectual, against an article that explicitly rebuts the stereotype,
+  a Gungan hyperspace physicist, and Filoni on record.
+- **Mimbanese** — poor intellectual, against "highly intelligent".
+- **Nelvaanian** — poor medicine, against elixir-brewing shamans.
+- **Abednedo** — mining/construction, against a sourced linguist culture.
+- **Bith** — remarkable artistic, encoding a stereotype canon calls a misconception.
+
+## Pattern 8 — Force-sensitivity assigned backwards
+
+Two exact mirrors of each other: **Rakata** carry psychic genes though post-plague Rakata are
+Force-blind; **Devaronian** has canon elevated Force-sensitivity and no gene for it. **Cerean**
+carries enhanced psychic ability where the source says its sensitivity is ordinary.
+
+## Pattern 9 — names the repo invented or took from the wrong place
+
+- 🔴 **All three Sith castes are mislabelled "(Pureblood)".** Purebloods are *hybrids*; a
+  caste member is a Red Sith. The error is in all three defNames at once.
+- **`RSW_RimMandrakeSithZ` spells the caste "Zugurak"; canon is "Zuguruk".** It appears to
+  have been taken from a wiki image *filename*, whose own caption reads Zuguruk.
+- **Yoda's species has no canonical name — deliberately.** Lucas withheld it, both Databank
+  entries say "Unknown", and the wiki title carries a conjecture banner. The repo's "Yoder"
+  and "Force Gremlin" are inventions. Naming it is authoring, not correcting.
+
+## The Sith caste split does not survive canon
+
+The repo ships Kissai, Massassi and Zuguruk as three xenotypes. Canon supports a physical
+distinction for only two of them:
+
+| caste | canon-exclusive physical trait |
+|---|---|
+| **Massassi** | 2–3 m and hulking; whole-eye pupil-less yellow |
+| **Zuguruk** | five digits, against the usual tridactyl |
+| **Kissai** | **none** — nothing physically distinguishes a Kissai from a mainline Sith |
+
+So the split is **occupational, not physical.** Three xenotypes is a design choice, not a
+canon requirement — and if it stays, Kissai needs a reason to look different that canon will
+not supply.
+
+Worst individual wirings in this group: **Zuguruk has no red skin gene at all**; **Massassi
+has no `nameMaker`** while the tough-hide gene sits on Kissai instead; **Dathomirian has no
+striping or tattoo gene** and carries the Sith namer; and **Yoder's `RSW_Eyes_Big` models
+Grogu's infant face**, with `Hands_Pig` replacing sourced clawed tridactyl hands.
+
+## A methodological finding worth keeping
+
+**Reference images beat prose repeatedly, which is the reason this library exists.** Anooba
+text says "varying tones of gray" while three independent images show tiger stripes. Chagrian
+lethorns are fleshy lobes, not cream horns. Ithorian hands are blunt, not elongated.
+
+And **lighting is a trap**: Umbaran reads green-teal in a screencap and near-white on one
+character, purely from ambient light; Ugnaught reads salmon in Cloud City furnace light while
+live-action Kuiil is dun grey-brown. Only evenly-lit plates were trusted, and misleading
+images are kept as **labelled negative references** rather than deleted — including two in
+`rakata/` that Wookieepedia explicitly disowns (a mislabelled Mon Calamari, and a figure
+Lucasfilm confirmed is "generic alien extra #3457").
+
+## Open for the owner
+
+- Fix in the generator, or accept some of these as deliberate game-design departures from
+  canon? Several (aptitudes, lifespans) may be balance choices rather than errors.
+- The three aquatic species and the `useSkinShader` masks look like straightforward bugs.
+  Do they go to FOUNDRY now, or wait for a full ruling pass?
+- Bothan is a special case: canon deliberately has **no** appearance for them. Choosing one
+  is authoring, not correcting — his call alone.
