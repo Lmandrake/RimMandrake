@@ -30,7 +30,9 @@ namespace RimMandrake.StarWars.FireEcology
         public static float ashDustingChance = 0.02f;
 
         public static bool scorchFruitEnabled = true;
-        public static float scorchFruitChance = 0.0025f;
+        // Per-burned-cell probability (one roll per Fire instance), NOT
+        // per-tick. Owner 2026-09-16: "perhaps one in twenty squares".
+        public static float scorchFruitChance = 0.05f;
         public static int scorchFruitMapCap = 40;
 
         public static bool ashfallAccumulationEnabled = true;
@@ -53,7 +55,11 @@ namespace RimMandrake.StarWars.FireEcology
             Scribe_Values.Look(ref ashDustingEnabled, "ashDustingEnabled", true);
             Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", 0.02f);
             Scribe_Values.Look(ref scorchFruitEnabled, "scorchFruitEnabled", true);
-            Scribe_Values.Look(ref scorchFruitChance, "scorchFruitChance", 0.0025f);
+            // Key renamed with the semantics change (per-tick -> per-cell,
+            // 2026-09-16): a settings file saved under the old key holds a
+            // per-tick number that would read as ~1-in-400 cells; ignoring
+            // the old key gives everyone the new 0.05 default instead.
+            Scribe_Values.Look(ref scorchFruitChance, "scorchFruitChancePerCell", 0.05f);
             Scribe_Values.Look(ref scorchFruitMapCap, "scorchFruitMapCap", 40);
             Scribe_Values.Look(ref ashfallAccumulationEnabled, "ashfallAccumulationEnabled", true);
             Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);
@@ -95,8 +101,8 @@ namespace RimMandrake.StarWars.FireEcology
               + "Off: no scorch-fruit ever appears this way.");
             if (scorchFruitEnabled)
             {
-                list.Label("Rate: " + (scorchFruitChance / 0.0025f).ToString("0.00") + "x default");
-                scorchFruitChance = list.Slider(scorchFruitChance, 0.0025f * 0.25f, 0.0025f * 3f);
+                list.Label("Chance per burned cell: 1 in " + (1f / scorchFruitChance).ToString("0") + " (default 1 in 20)");
+                scorchFruitChance = list.Slider(scorchFruitChance, 0.0125f, 0.15f);
                 list.Label("Per-map cap: " + scorchFruitMapCap + " (stops seeding once a map holds this many)");
                 scorchFruitMapCap = (int)list.Slider(scorchFruitMapCap, 10f, 100f);
             }
