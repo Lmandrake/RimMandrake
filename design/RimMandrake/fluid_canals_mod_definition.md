@@ -564,3 +564,45 @@ Rejected, with reasons, so they are not re-proposed:
 - **Fluid Dynamics** — implies simulation. Pillar 2 forbids a per-tick sim outright, so this name
   promises the one thing the design rules out.
 - **Liquid Engine** — accurate and inert; "engine" is developer language on a store page.
+
+## 16. Rulings — owner, 2026-09-16, fourth sitting: it is ONE mod, called Fluidity
+
+**11. Fluidity.** *"I do want to absorb Many Waters and Canals together into a single Fluidity mod.
+All of it. Universal containers, flexible tubing, pumps, surface transient flow, canals, sources &
+sinks."* One shipped mod owns the whole liquid domain: the occupancy engine, the liquid roster, the
+hardware, and every driver.
+
+He answered the release-cadence objection directly — *"I understand your argument about constant
+updates. I don't think that's actually going to happen. We're going to include a big set of options.
+Others can extend later via our framework."* So the roster is authored broadly ONCE rather than
+accreting, and third parties extend through the registry instead of us shipping rows forever.
+
+⚠️ **This supersedes `liquids_framework_design.md` §5's client map** and, with it, `RimMandrake:
+Liquid Logistics` as a separate planned mod — its hoses, portable pumps, universal cargo tank,
+universal pump and per-net adapters are Fluidity's. §8's "interface other mods debit against" becomes
+an *internal* boundary rather than a cross-mod contract; keep the boundary anyway, because it is what
+stops the hardware reaching into the stock bookkeeping directly.
+
+🔑 **The one objection he did NOT overrule, restated honestly because it is now his to manage.**
+Many Waters' slime rows tint **Alpha Biomes'** `AB_SlimeRamp` under `MayRequire="sarg.alphabiomes"`
+and its bottle art tints **Dubs Bad Hygiene's** texture. Absorbed, those become Fluidity's own soft
+dependencies. This is *manageable and not fatal* — `MayRequire` degrades gracefully by design, which
+is why my original framing of it as disqualifying was too strong — **but it needs a deliberate
+fallback per row**, or slime and tar simply vanish for a player without Alpha Biomes. Ship each
+third-party-tinted row with a tinted-vanilla-ramp fallback so no liquid disappears; only its *look*
+degrades.
+
+**12. Sluice gates: YES.** A buildable gate cell that holds liquid back until opened. This retires
+the "leave the last cell undug" trick of loop step 3 and gives the defense spine a real trigger — dig
+the canal at leisure, gate it, open the gate when the raid commits. Now unambiguously this mod's,
+since there is only one mod.
+
+**13. Ignition is per-liquid: a creeping fuse OR a detonation.** *"YES on slowly moving ignition (or
+simple detonation for some things like astrofuel or chemfuel)."* So the registry row carries the
+ignition behaviour: tar and propane burn as a **travelling front** the player can watch and cut,
+while **astrofuel and chemfuel detonate**. This answers open question 5, and it answers it better than
+either single option — a fuse and a bomb are different fantasies, and the liquid decides which.
+
+Consequence: burn rate (ruling 7, one tier per day) applies to the *fuse* liquids. A detonating liquid
+does not burn down a tier a day — it is consumed at once, which needs its own stated cost and cannot
+inherit ruling 7's numbers.
