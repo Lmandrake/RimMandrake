@@ -78,6 +78,43 @@ Same shape as the species sweep: the defs and sprites disagree with canon.
 ⚠️ **`Races_Primitive.xml` reuses the MSE texture, so editing that texture changes two races.**
 Anyone fixing MSE art must check this first.
 
+## 🔴 Errors in OUR index, found by writing the entries
+
+These are defects in `DROIDS_INDEX.md` itself, not in the repo's defs — so they are ours to
+fix, and they are neither cosmetic nor def changes.
+
+1. **`:1650` maps the wrong canon droid to a repo sprite.** The row names the **T1-series
+   utility droid** — 0.96 m, Duwani, a KotOR II *maintenance* droid, Legends, no faction, no
+   weapons. The repo sprite is unmistakably the **T-series tactical droid**: 1.93 m, Baktoid,
+   CIS, donor mod `JDS_Separatists`, matching TA-175 exactly, and whose sourced alternate name
+   **is "the T-1"**. The repo label is correct; our mapping is wrong. Rows **1647/1648**, the
+   correct ones, are unmapped.
+2. **`:1650` is marked `canon` on an article carrying the Legends flag.** Continuity is wrong.
+3. **`:1603` (ST-series, canon, Baktoid) is unmapped**, while only its Legends twin at `:1627`
+   — which has a blank manufacturer — carries the chassis. Backwards.
+4. **Two repo donors are absent from the index entirely:**
+   `RSW_DW_Race_OuterRim_SuperTacticalDroid` and `RSW_DW_Race_OuterRim_TacticalDroid`.
+
+## More droid findings
+
+- **Scale is inconsistent rather than merely wrong**: KX is 2.16 m at `baseBodySize` 1, while
+  the buzz droid is 0.25 m at 0.7. There is no shared scale rule.
+- **`MoveSpeed` 2.0 is shared by the T-1 and the ST-series**, which erases canon's distinction
+  that one has "more fluid motion programming".
+- **"Pistoeka Sotage Droid"** — "Sabotage" is misspelled in the defName, the label *and* the
+  texture filenames. ⚠️ Upstream JDS content in a generated file, so not ours to fix casually,
+  and a defName change carries save risk.
+- The buzz droid sits under `DW_Family_Labour` despite being a saboteur.
+- **Folded forms are absent everywhere**: the Pistoeka sprite shows only the deployed form and
+  the folded sphere exists nowhere on disk, matching the droideka's missing ball and DUM's
+  truncated arms.
+
+✅ **Genuine matches worth protecting from a future "fix":** KX's `RGBA(20,20,20)` tint;
+LR-57's `MoveSpeed` 1.7 against canon "sluggish"; three photoreceptors on both super-tactical
+donors; and the OuterRim super tactical droid's **three-option random palette**, which
+mechanically reproduces canon's per-unit colour schemes. That last one is a genuinely good
+piece of design already in the repo.
+
 ## Still open
 
 - **Do individual droids get `description.md` entries** the way the 69 species did, and if so
