@@ -1,0 +1,122 @@
+{
+  "sheet": "pyrelands_art.html",
+  "posture": "blacklist",
+  "postureNote": "Default KEEP. Only rows you mark re-render / cut / needs-art are acted on.",
+  "criterion": "Pre-filled on PROVENANCE \u2014 whether a sprite came through the restored painterly wave and whether it has a structural defect I could prove (wrong facing, duplicate file). That ranks pipeline-currency, NOT beauty. I have not judged whether any of these are good art, and the rows you overrule are the ones worth having built this for.",
+  "options": [
+    "keep",
+    "rerender",
+    "cut",
+    "needsart"
+  ],
+  "decisions": {
+    "razorjack": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "barbslinger": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "firewasp": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "boomsnake": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "mantistanis": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "firehawk": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "furnacebeast": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "greengoo": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "orray": {
+      "value": "rerender",
+      "prefilled": true
+    },
+    "anooba_f": {
+      "value": "rerender",
+      "prefilled": true
+    },
+    "anooba_m": {
+      "value": "rerender",
+      "prefilled": true
+    },
+    "nuna_f": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "nuna_m": {
+      "value": "rerender",
+      "prefilled": true
+    },
+    "zeer": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "dalgo": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "gizka": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "gizka_w": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "bolotaur": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "gualaar": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "boomalope": {
+      "value": "needsart",
+      "prefilled": true
+    },
+    "embergrass": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "embergrass_leafless": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "quickgrass": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "quickgrass_stages": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "quickgrass_leafless": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "scorchfruit": {
+      "value": "keep",
+      "prefilled": true
+    },
+    "fulgurite": {
+      "value": "keep",
+      "prefilled": true
+    }
+  }
+}
