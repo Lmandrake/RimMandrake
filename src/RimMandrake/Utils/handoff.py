@@ -80,13 +80,37 @@ def sh(*args, **kw):
 
 
 def seat():
+    """Which seat is rebooting. REFUSES rather than guessing.
+
+    🔴 Fixed 2026-09-16, observed live from a MACBENCH session: this used to
+    `return "FOUNDRY"` whenever nothing identified the seat. On a machine with no
+    Windows Terminal seat profile (the Mac laptop) `AGENT_SEAT` is unset AND
+    `rimflow seat ready` REFUSES, so the regex never matched and **every handoff
+    written there was filed as FOUNDRY's** — this window's reboot produced a
+    `FOUNDRY_REBOOT_HANDOFF_*` listing FOUNDRY's six in-flight items as its own
+    unfinished work, and told the next FOUNDRY window the handoff was about it.
+
+    The seat is written into the handoff's filename, its `follows` link, its
+    unclosed-items query and its bridge check, so guessing it wrong is worse than
+    writing nothing. This now follows `rimflow`'s own stance verbatim: it cannot
+    tell, so it will not guess.
+    """
     for v in (os.environ.get("RIMFLOW_SEAT"), os.environ.get("AGENT_SEAT")):
         if v:
             return v.strip().upper()
     out = sh("python3", os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py"),
              "seat", "ready")
     m = re.match(r"^([A-Z]+) is ready", out or "")
-    return m.group(1) if m else "FOUNDRY"
+    if m:
+        return m.group(1)
+    raise SystemExit(
+        "REFUSED: handoff.py cannot tell which seat is rebooting, and it will not\n"
+        "guess. A wrong seat files one seat's reboot under another seat's name, and\n"
+        "hands it that seat's unfinished items.\n\n"
+        "Fix it with ONE of:\n"
+        "    RIMFLOW_SEAT=MACBENCH python3 src/RimMandrake/Utils/handoff.py\n"
+        "    export AGENT_SEAT=MACBENCH\n"
+        "    ./src/RimMandrake/Utils/set_agent_window.sh MACBENCH   (then reopen the tab)")
 
 
 def events():
