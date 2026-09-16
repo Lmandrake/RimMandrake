@@ -50,16 +50,13 @@ his yes.
 
 ## Sacred loot, and the ship that loves it
 
-Owner, verbatim: *"Defunct, weakly functional, or semi-functional versions will be
-found in the game and added to the ship by the player as a form of sacred loot. The
-ship LOVES these, and as it slowly gains the ability to auto-heal itself, so too will
-they become better over time."*
+Found machines are added to the ship by the player as sacred loot. The ship loves them,
+and as it regains the ability to heal itself, they improve with it.
 
 Two coupled ideas to design against:
 
-- **A found artefact has a functional grade** — defunct / weakly functional /
-  semi-functional — and installing it on the ship is an act with religious weight,
-  not just a stat gain.
+- **A found artefact arrives at a rung** — Wrecked, Kludged or Refurbished — and seating
+  it on the ship is an act with religious weight, not just a stat gain.
 - **The ship's self-healing lifts the artefacts with it.** They improve as it does.
   So the player's relationship to these objects is cumulative and long-arc, and the
   ship is the thing that redeems them.
@@ -120,71 +117,42 @@ genuinely publishable to strangers, which is the test of whether the neutrality 
 into the `RimMandrake` layer** — not a defName, not a label, not a description, not a
 comment. Any leak collapses the three layers back into one.
 
-**1. 🔴 The ladder is NAMED GRADES, and there are exactly THREE.** Owner's orders,
-verbatim: *"Defunct, Kludged, Refurbished. Only three levels (0.0001, 0.2, 0.5 of the
-original capability) One ladder for everything, with large artifacts (e.g. factories)
-worth much more than smaller items (e.g. batteries)."*
+**1. The ladder.** Four rungs. One ladder for every machine, fixed or carried.
 
-⚠️ **The ratios were revised the same evening — these are the live numbers**, owner
-verbatim: *"I take back the numerical values. They should now be 0.001, 0.2, and 0.75.
-The original item (unmodified) is of course 1.0. Wrecked machines can never restore
-fully to the original device (mod option, defaults to no)."*
-
-| grade | capability vs. original | reads as |
+| rung | capability vs. the original | reads as |
 |---|---|---|
-| **Defunct** | 0.001 | inert. A sacred object, not a machine. |
+| **Wrecked** | 0.001 | inert. A sacred object, not a machine. |
 | **Kludged** | 0.2 | works, badly, visibly bodged. |
-| **Refurbished** | 0.75 | the default ceiling. Three-quarters. |
-| *the original, unmodified* | 1.0 | **unreachable by default** — a real reference point, not a grade |
+| **Refurbished** | 0.75 | the ceiling a player normally reaches. |
+| **the original** | 1.0 | the ordinary modern machine. No tier name of its own. |
 
-**1.0 is a genuine rung that the player normally cannot stand on.** A **Mod Setting,
-defaulting to OFF**, allows full restoration to 1.0; with it off, 0.75 is the hard cap.
-So the asymptote of ruling 2 is enforced by a default rather than by arithmetic, and a
-player may switch it off — deliberately his choice.
+"Repaired" is not a level. It is a synonym for the original, so no def uses it.
 
-🔴 **1.0 means the UNMODIFIED DONOR DEF — the ordinary modern machine.** Owner ruled
-this directly: *"this mod generally will be used when you CANNOT build the original
-technology (that's the current intention)."* So a Refurbished machine is a **substitute
-for something out of reach, not a better version of it.** Three-quarters of a working
-machine, built from scrap, when you could not have built the real one at all.
+**1.0 is the unmodified donor def** — the ordinary machine you could have built anyway.
+A Mod Setting, **default OFF**, allows restoration all the way to it; with it off, 0.75
+is the cap. So a Refurbished machine is a substitute for something out of reach, not a
+better version of it: three-quarters of a working machine, built from scrap, when you
+could not have built the real one at all.
 
-**Every ratio is player-tunable.** Owner: *"Mod settings should allow the player to
-modify the functionality of each setting."* The three numbers are defaults, not
-constants.
+**Every ratio is player-tunable** — the three numbers are defaults, not constants.
 
-⚠️ **The ratios are PER DEVICE CLASS, not universal.** Owner: *"the 0.001 weak output is
-intended for batteries, not factories and other functional devices, to allow the
-'flickering faint LED look'."* 0.001 exists to make a dying battery flicker. A Defunct
-factory needs its own Defunct value — do not apply 0.001 across the board.
+⚠️ **Ratios are per device class.** 0.001 is the battery number, chosen so a dying
+battery flickers like a faint LED. A Wrecked factory needs its own value, and nobody has
+set one.
 
-Discrete states, each its own stat block and its own sprite — not a capacity curve and
-not a per-subsystem wear model. **One ladder for every Rakatan thing**, fixed
-installation or carried relic. **Worth scales with size**: a factory is worth far more
-than a battery at the same grade.
+Each rung is a discrete state with its own stat block and its own sprite — not a capacity
+curve, not a per-subsystem wear model. **Worth scales with size**: a factory is worth far
+more than a battery at the same rung.
 
-⛔ Deletes every earlier ladder proposal: no "weakly functional", no "semi-functional",
-no grade that surpasses the original, and **no `Rewoken`** — that top-grade name was
-ruled and reversed inside the same sitting, and the three-level ladder replaces it.
+**defNames.** `_Wrecked` and `_Kludged` are already correct. `_Repaired` is
+donor-identical, so it is the 1.0 case and needs no tier def of its own. **The 0.75
+`_Refurbished` tier does not exist yet and must be authored.** Stepping stays vanilla 1.6
+`replaceTags` — build the next tier's blueprint over the old footprint, ordinary
+construction, no C#.
 
-Stepping stays vanilla 1.6 `replaceTags` (build the next tier's blueprint over the old
-footprint — ordinary construction, no C#).
-
-🔴 **The defName plan below is now AMBIGUOUS and needs a ruling.** It was written before
-the 1.0 rung existed:
-
-> ~~`_Wrecked` → `_Defunct`, `_Repaired` → `_Refurbished`; `_Kludged` already matches.~~
-
-`_Wrecked` → `_Defunct` still holds. But **`_Repaired` is donor-identical, which makes it
-the 1.0 rung**, not the 0.75 one — so renaming it `_Refurbished` would put the wrong
-number on it. **Two defs now need names and one of them must be authored from nothing:**
-the 0.75 Refurbished tier does not exist yet. Nobody has decided which def keeps which
-name. ⚠️ Also unresolved: a defName change ripples into any existing save, and this
-campaign ships as a frozen savegame.
-
-⛔ **Cosmetic changes need his permission first** (owner, 2026-09-15, ruled on the
-xenotype work but general): anything touching art, skin, heads, eyes, or
-`renderNodeProperties` may break animated faces, so ask rather than fix. That covers this
-mod's `texPath` decisions and every sprite in the grade ladder.
+⛔ **Cosmetic changes need permission first.** Anything touching art, skin, heads, eyes or
+`renderNodeProperties` may break animated faces — ask rather than fix. That covers this
+mod's `texPath` decisions and every sprite in the ladder.
 
 **2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
 beyond or even equal to the original."* The ladder is **asymptotic, capped at 0.75 by
@@ -262,7 +230,7 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
 
 - 🔴 **Which def gets which name** — see ruling 1. `_Repaired` is the 1.0 rung, so the
   0.75 Refurbished tier must be authored, and the naming is undecided.
-- **Per-class Defunct values.** 0.001 is the battery number. Factories and other
+- **Per-class Wrecked values.** 0.001 is the battery number. Factories and other
   functional devices each need their own, and nobody has set them.
 - **Rekko's endgame vision is now settings-dependent.** His canon body-vision is *"full
   restoration of the original"*, which at a 0.75 cap is undeliverable — but the 1.0 mod
