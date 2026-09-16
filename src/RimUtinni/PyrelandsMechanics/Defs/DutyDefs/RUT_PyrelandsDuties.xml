@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    DEEP_TRIBES_FIRE_RITE_1 — what a Deep Tribes harvester does while the rite's
+    burn is standing. Assigned by LordToil_RUT_RiteHarvest, never by XML.
+
+    Shape copied from Core's Duties_NonPlayerHome.xml DefendBase: a
+    ThinkNode_Priority whose subnodes are tried in order, ending in a wander so
+    the duty always produces SOMETHING and the pawn never stands idle waiting
+    for the think tree to fall through to a default.
+
+    Order matters and is deliberate:
+      1. JobGiver_SeekSafeTemperature — vanilla. This is the "safe standoff from
+         the front" the sheet asks for, and it is reused rather than rewritten:
+         a harvester standing in air the burn has made lethal leaves before it
+         considers picking anything up.
+      2. The harvest itself. Refuses any pod in a burning cell, so the party
+         works behind the front rather than in it.
+      3. JobGiver_WanderNearDutyLocation — vanilla. The radius comes from the
+         duty (PawnDuty.wanderRadius, set by the toil), not from here, so the
+         one number lives in PyrelandsTuning with the rest of the kit.
+  -->
+  <DutyDef>
+    <defName>RUT_RiteHarvest</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_SeekSafeTemperature" />
+        <li Class="RimMandrake.Utinni.PyrelandsMechanics.JobGiver_RUT_HarvestScorchFruit" />
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <locomotionUrgencyOutsideRadius>Walk</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

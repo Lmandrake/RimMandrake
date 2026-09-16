@@ -110,6 +110,15 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         public void ClearArsonDebt() => arsonDebt = 0f;
 
+        /// <summary>DEEP_TRIBES_FIRE_RITE_1 — light the fire clock's line where a
+        /// harvest party is standing, attributed to them. The fire front is
+        /// private to this component so "where the biome may light" stays stated
+        /// once; this is the one door through it.</summary>
+        internal int IgniteRiteFront(IntVec3 origin, Thing instigator)
+        {
+            return fireFront.IgniteAt(origin, instigator);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
