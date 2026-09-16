@@ -128,11 +128,11 @@ player actually sees walking around.
 | ✅ | `weequay` | Weequay | `RSW_RimMandrakeWeequay` | S | Jawa_Junkers:S |
 | ✅ | `zeltron` | Zeltron | `RSW_RimMandrakeZeltron` | S | Jawa_HuttCartel:S |
 | ✅ | `kaminoan` | kaminoan | `RSW_RimMandrakeKaminoan` | S | Jawa_AscendantHelix:S |
-| ⬜ | `cathar` | Cathar | `RSW_RimMandrakeCathar` | R | Jawa_WildsteamClan:R, Pirate:R |
-| ⬜ | `chiss` | Chiss | `RSW_RimMandrakeChiss` | R | Empire:R |
-| ⬜ | `duros` | Duros | `RSW_RimMandrakeDuros` | R | OutlanderCivil:R, Pirate:R, Jawa_Junkers:R, Jawa_DeepwaterCompact:R |
-| ⬜ | `echani` | Echani | `RSW_RimMandrakeEchani` | R | Empire:R |
-| ⬜ | `iktotchi` | Iktotchi | `RSW_RimMandrakeIktotchi` | R | Jawa_AscendantHelix:R |
+| ✅ | `cathar` | Cathar | `RSW_RimMandrakeCathar` | R | Jawa_WildsteamClan:R, Pirate:R |
+| ✅ | `chiss` | Chiss | `RSW_RimMandrakeChiss` | R | Empire:R |
+| ✅ | `duros` | Duros | `RSW_RimMandrakeDuros` | R | OutlanderCivil:R, Pirate:R, Jawa_Junkers:R, Jawa_DeepwaterCompact:R |
+| ✅ | `echani` | Echani | `RSW_RimMandrakeEchani` | R | Empire:R |
+| ✅ | `iktotchi` | Iktotchi | `RSW_RimMandrakeIktotchi` | R | Jawa_AscendantHelix:R |
 | ✅ | `zabrak` | Iridonian | `RSW_RimMandrakeIridonian` | R | TribeCivil:R |
 | ✅ | `kaleesh` | Kaleesh | `RSW_RimMandrakeKaleesh` | R | TribeCivil:R |
 | ✅ | `kel_dor` | Kel Dor | `RSW_RimMandrakeKelDor` | R | Jawa_AscendantHelix:R, OutlanderCivil:R |
