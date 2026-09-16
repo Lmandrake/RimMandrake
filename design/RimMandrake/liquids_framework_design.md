@@ -15,14 +15,26 @@ bodies, rain, canal flooding, and fluid-to-fluid transformation.
 1. **One substance, many faces** — a liquid is defined once; terrain, bottle, canal,
    pipe, weather, worldmap and recipes are optional *form slots* on that definition.
 2. **Pulsed spread only** — all map motion is event-shaped (flood, drip, spill,
-   seasonal) via the FluidCanals engine. No per-tick fluid sim, ever. (Owner ruling.)
+   seasonal) via the **FlowWorks** engine (was "the FluidCanals engine" — renamed by his ruling of
+   2026-09-16, migration under `NAMING_SCHEME_EXECUTION_1`). No per-tick fluid sim, ever. (Owner
+   ruling.) 🔑 As of 2026-09-16 the engine's motion is a **sort plus an overflow** over the depth
+   grid — deepest cells fill first, a full cell overflows to neighbours with room — which is what
+   keeps this pillar satisfiable at all.
 3. **TerrainDef stays the engine face** — the registry points *at* terrain suites
    (including adopted vanilla/DLC/third-party terrains); it never replaces them.
 4. **Industry is found, not built** — crude conversions always buildable; household
    tier by research; industrial scale only as pre-placed set-pieces. (Campaign law;
    the public wave may allow building industrial via a settings switch.)
-5. **Every client ships alone** — the core is data + glue; each client mod is
-   independently playable and degrades gracefully when a sibling is absent.
+5. 🔴 **SUPERSEDED 2026-09-16 — "every client ships alone" no longer describes this family.** It
+   read: *"the core is data + glue; each client mod is independently playable and degrades gracefully
+   when a sibling is absent."* His consolidation ruling makes the core, the roster, the engine and the
+   hardware **one mod**, so there are no siblings left to ship apart. What survives of the pillar, and
+   still binds: **graceful degradation.** FlowWorks must work with any optional third party absent —
+   Alpha Biomes, Dubs Bad Hygiene, VE PipeSystem, VGE — which for the absorbed ManyWaters rows means a
+   tinted-vanilla fallback per row, so a liquid never *vanishes*, only its look degrades. The remaining
+   true siblings (`GelatinousSlime` registering rows, `WreckedMachines` owning conversion,
+   `FloodedCanyon` as a flood driver) each depend on FlowWorks one-way and must degrade to nothing
+   without it.
 6. **Superb Mod Settings** — every feature a toggle, defaults = shipped behavior,
    all-off is a working game (per the 2026-09-12 standing rule).
 
@@ -91,12 +103,17 @@ hemogen/beer/milk adoption rows, basic (alkaline) water, kolto/bacta healing row
 
 ## 4. Mechanics
 
-**Pulsed spread.** `Flood_FluidCanal` + `CompFluidReservoir` (drip + re-flood bursts)
-generalizes with one addition: a second priming path — reservoir comps on *natural
-sources* (slime vents, tar seeps, geysers, set-piece pump intakes) auto-prime on spawn,
-so natural bodies plug into canals with no player action. Spills are one-shot releases
-with small volume and short flood duration. Viscosity maps to `ticksPerTile` bands
-(Heavy = slow oozing — the slime look).
+**Pulsed spread — REWRITTEN 2026-09-16.** This paragraph described `Flood_FluidCanal` +
+`CompFluidReservoir` generalising with an auto-prime path for natural sources. Both halves of that
+are now dead: the vanilla `Flood` subclass is **dropped** for a `MapComponent`-owned walk, and
+`CompFluidReservoir` is **deleted** (ruling 24) because a source is no longer a building.
+
+What replaces it: every excavated cell carries `depth` D (shallow/mid/deep/SUPERDEEP) and `fill` F,
+with `0 ≤ F ≤ D`. Each pulse, over the connected excavated set — sort deepest-first, pour to `F = D`,
+and a full cell **overflows** into neighbours with room. A natural source is simply a SUPERDEEP cell
+that is already full, so it spills into any channel dug at its edge and needs no priming path at all.
+Spills are one-shot releases; viscosity maps to `ticksPerTile` bands (Heavy = slow oozing — the slime
+look). Detail: `design/RimMandrake/fluid_canals_mod_definition.md` §21.
 
 🔴 **Scarcity is STOCK, not rate — owner, 2026-09-16, a FULL REVERSAL of this
 document's original line.** Every source carries a real volume and conservation of mass
@@ -147,7 +164,7 @@ We register bottles as DBH drinkables and patch the water tag onto adopted terra
 with DBH absent (public), bottles are plain ingestibles with a hydration thought.
 Aquifer-remembers (draining degrades quality) deferred to v2.
 
-**Tanker raid** (pillar; lives in Liquid Logistics, §6): fly to a typed liquid body →
+**Tanker raid** (pillar; ~~lives in Liquid Logistics~~ — **FlowWorks'**, since 2026-09-16, §6): fly to a typed liquid body →
 deploy `RM_HoseSpool` (fast-build, cheap, fragile conduit-thing hose with a length cap
 — NOT terrain, NOT a VE pipe) from shore to ship tank → `RM_PumpPortable` (found or
 stolen, heavy) pulses N units per interval from any cell whose terrain belongs to a
@@ -175,7 +192,8 @@ Two routes, both v1:
   the Broker TAB of The Bazaar** (`design/RimMandrake/bazaar_trade_window_design.md`
   §2), our own Dialog_Trade replacement — which also supersedes the "no
   trade-window Harmony" caveat that applied when we only had a small rider
-  patch in mind. Liquid Logistics still owns the tank/pump/hose hardware.
+  patch in mind. **FlowWorks** owns the tank/pump/hose hardware (was Liquid Logistics, absorbed
+  2026-09-16); the Bazaar still owns the Broker tab.
 Bottles trade natively as ThingDefs either way (tradeTags per row).
 
 **Typed worldmap → mapgen.** One authoring pass writes `worldTag` values onto the
@@ -255,7 +273,7 @@ existing terrains (def-load test only) →
 ③ natural-source auto-prime + spills → ④ slime streams (Heavy FluidDefs, R/G/W/yellow
 rows) → ⑤ bottles + Mod Settings → ⑥ revert/rot specials → ⑦ thirst chain +
 WreckedMachines Distillation → ⑧ worldmap tags (bridge authoring) + landing paint
-GenStep → ⑨ Liquid Logistics (tank → pump → hose → tanker loop → trade, in that
+GenStep → ⑨ the hardware, in FlowWorks (tank → pump → hose → tanker loop → trade, in that
 order — the tank alone is already useful) → ⑩ found-industry set-pieces.
 
 ## 8. Measured facts this design leans on (frozen dump, capture 2026-08-29)
