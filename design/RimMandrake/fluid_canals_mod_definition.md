@@ -804,3 +804,97 @@ restatement, and it is the strongest single expression of the defense spine.
    §9 of `north_star_validation_spec.md` says the design fails if it does not turn the pit red. A
    consolidation that parks the pit fix would remove the one proof that the validation machinery works.
    Fix the pit, then merge it; the merge is a refactor and the pit is evidence.
+
+## 21. Ruling 19 + the scope discipline — four depths, and how to get terraces without a Z-system
+
+**Ruling 19 (owner, 2026-09-16).** Four depths: **shallow, mid, deep, SUPERDEEP** — all read as "how
+far below the surface are they?". The player may terrace terrain and fill the terraces with liquids at
+varying depths. Terraces can act as pits for capture. **SUPERDEEP is the trapping level.** **Natural
+sources are treated as SUPERDEEP.** **Ladders** can be built to climb up and down walls.
+
+He then asked to be challenged: *"How can we capture a lot of great ideas here and gameplay without
+inventing a whole z surface and physical fluid flow?"* This section is that answer.
+
+### LAW 1 — We dig down. We never build up.
+
+Depth is a property of **excavated cells only**. The surface is 0 and always will be. There are no
+hills, no mounds, no raised earth, no ramps up.
+
+🔑 This one asymmetry kills most of the cost of a Z-system, and the reason is worth stating: a real
+elevation model makes height a property of **every** cell, which forces every subsystem to interpret it
+— pathing, rendering, line of sight, cover, roofing, projectile arcs. Because nothing is ever *above*
+0, none of that is touched: a dug cell is just a cell carrying an integer, and RimWorld already lets a
+cell carry a cost and a building.
+
+**Guard this law explicitly**, because every future request will erode it. "Can we have a raised
+berm?" is a Z-system in disguise. The answer is a wall, or nothing.
+
+### LAW 2 — Depth affects MOVEMENT and LIQUID. It never affects sight or shooting.
+
+The moment depth grants a height advantage, cover bonus, or line-of-sight change, we own a full
+elevation model inside the combat system — and combat is the most interconnected code in the game.
+
+**Cut and stay cut:** height advantage, shooting down into a pit for a bonus, cover from below,
+falling damage between levels, thrown objects across levels, multi-level buildings, roofs at
+different heights, and pressure/siphons/head-height flow. Every one is defensible in isolation and
+each one alone converts this into a different project.
+
+### THE ALGORITHM — fill lowest first, then overflow. That is the whole "physics".
+
+At each pulse (never per tick — pillar 2), over the connected set of excavated cells:
+
+1. Sort by depth, deepest first.
+2. Pour available volume into the deepest cells until each reaches `F = D`.
+3. **A cell at `F = D` overflows into adjacent cells that have room**, and the sort repeats.
+
+It is a sort plus an overflow. No pressure, no velocity, no simulation — and it produces every
+behaviour he asked for:
+
+- **Terraces fill bottom-up.** The deep terrace fills before the shallow one, exactly as water does.
+- **A breach into a deeper cell drains the shallower one** — liquid seeks the low point for free.
+- **A spillway works.** A deliberately shallow cell between two deep ones becomes an overflow route.
+  Nobody codes it; players discover it and feel clever.
+- **Draining is a tactic.** Breach into a SUPERDEEP sink and the moat empties in one pulse.
+
+🔴 **The flaw this rule fixes, which the ruling as stated would otherwise have.** If natural sources
+are SUPERDEEP and flow is only "fill lowest first", liquid would **never leave a source** to fill a
+shallower canal — water does not run uphill, and the entire canal fantasy dies. The **overflow** step
+is what saves it: a natural source is a SUPERDEEP cell that is *already full*, so it spills into any
+shallower channel dug at its edge. Correct physics, produced by an integer comparison.
+
+### The consequence worth taking: a SOURCE stops being a building
+
+If a source is "a SUPERDEEP cell, full, replenished," then `CompFluidReservoir` and
+`RM_FluidSpring_Test` can disappear as concepts. A lake is not a building with a comp — it is deep
+full terrain. Limitless (ruling 16) is then "fed from off-map"; limited is "fed by rain, season and
+seepage" (ruling 2). Recommended, and flagged as an agent proposal rather than his ruling, because it
+deletes two shipped concepts.
+
+### Ladders — the whole vertical-movement system is one boolean
+
+A ladder is a **building on a dug cell that makes the cell exitable**. No vertical pathing, no
+climbing animation, no multi-level anything:
+
+| cell | pawn entering |
+|---|---|
+| shallow / mid | crosses, pays the cost |
+| deep | crosses slowly; may need a ladder to leave if flooded |
+| SUPERDEEP, no ladder | **falls in and is held** (Pits' machinery, ruling 18) |
+| SUPERDEEP, with ladder | walks in and out freely |
+
+🔑 And the ladder is instantly a tactical object made of one flag: **remove the ladder and whatever is
+down there is stranded.** That is a jailer mechanic for free — and it is what Pits' prisoner-cell gate
+already is, so the two unify.
+
+### Three pieces of exceptional content this buys, at no extra mechanical cost
+
+1. **Terrace farming.** Shallow terraces that hold water, on a desert world, with the reclaim rule
+   already making lakebed `SoilRich` (§18). Rice-paddy terracing becomes a player-authored form that
+   looks spectacular and needed no new mechanic. It also gives irrigation — his second-ranked
+   motivation — something to *build* rather than merely benefit from.
+2. **The flood pipeline as a weapon.** Dig SUPERDEEP, let a raider fall in, *then* flood it. Depth
+   turns his "dump liquid on them" into a sequence with a decision at each step, and it is the
+   strongest expression of the defense spine in the design.
+3. **Reading depth for free.** A filled cell shows its depth through vanilla's own shallow /
+   chest-deep / deep ramp art (§13). A dry cell needs one inner-shadow edge treatment. Four depths ×
+   dry/wet is a small finite art set — where a continuous Z would need arbitrary height rendering.
