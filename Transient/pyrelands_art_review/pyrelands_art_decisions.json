@@ -1,122 +1,175 @@
 {
-  "sheet": "pyrelands_art.html",
-  "posture": "blacklist",
-  "postureNote": "Default KEEP. Only rows you mark re-render / cut / needs-art are acted on.",
-  "criterion": "Pre-filled on PROVENANCE \u2014 whether a sprite came through the restored painterly wave and whether it has a structural defect I could prove (wrong facing, duplicate file). That ranks pipeline-currency, NOT beauty. I have not judged whether any of these are good art, and the rows you overrule are the ones worth having built this for.",
+  "criterion": "Pre-filled on PROVENANCE — whether a sprite came through the restored painterly wave and whether it has a structural defect I could prove (wrong facing, duplicate file). That ranks pipeline-currency, NOT beauty. I have not judged whether any of these are good art, and the rows you overrule are the ones worth having built this for.",
+  "decidedCount": 9,
+  "decisions": {
+    "anooba_f": {
+      "at": "2026-09-16T04:20:17.376Z",
+      "decision": "rerender",
+      "note": "North is HUGE compared to east, and South isn't south.",
+      "prefill": "rerender",
+      "prefilled": true,
+      "value": "rerender"
+    },
+    "anooba_m": {
+      "at": "2026-09-16T04:20:15.812Z",
+      "decision": "rerender",
+      "prefill": "rerender",
+      "prefilled": true,
+      "value": "rerender"
+    },
+    "barbslinger": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "bolotaur": {
+      "at": "2026-09-16T04:21:51.732Z",
+      "decision": "rerender",
+      "note": "cartoonish, redo to canon",
+      "prefill": "keep",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "boomalope": {
+      "at": "2026-09-16T04:21:58.171Z",
+      "decision": "cut",
+      "prefill": "needsart",
+      "prefilled": true,
+      "value": "needsart"
+    },
+    "boomsnake": {
+      "at": "2026-09-16T04:28:06.600Z",
+      "note": "rename this to Flamefang and make it venomous",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "dalgo": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "embergrass": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "embergrass_leafless": {
+      "at": "2026-09-16T04:22:11.534Z",
+      "note": "Add more! This is great, but add more alternates",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "firehawk": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "firewasp": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "fulgurite": {
+      "at": "2026-09-16T04:23:06.040Z",
+      "decision": "rerender",
+      "note": "This can't be right",
+      "prefill": "keep",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "furnacebeast": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "gizka": {
+      "at": "2026-09-16T04:21:32.314Z",
+      "decision": "rerender",
+      "note": "totally wrong. Four legs instead of 2. Not canon, Not facing differently. ",
+      "prefill": "keep",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "gizka_w": {
+      "at": "2026-09-16T04:21:34.821Z",
+      "note": "totally wrong. Four legs instead of 2. Not canon, Not facing differently. ",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "greengoo": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "gualaar": {
+      "at": "2026-09-16T04:21:55.658Z",
+      "decision": "rerender",
+      "prefill": "keep",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "iriaz": {
+      "at": "2026-09-16T04:20:55.915Z",
+      "decision": "rerender",
+      "note": "Looks cartoonish, south isn't south, north isn't north",
+      "prefill": ""
+    },
+    "mantistanis": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "nuna_f": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "nuna_m": {
+      "at": "2026-09-16T04:21:09.173Z",
+      "note": "north and south aren't the right color",
+      "prefilled": true,
+      "value": "rerender"
+    },
+    "orray": {
+      "at": "2026-09-16T04:20:37.747Z",
+      "decision": "rerender",
+      "note": "Norht isn't north, south isn't very south either",
+      "prefill": "rerender",
+      "prefilled": true,
+      "value": "rerender"
+    },
+    "quickgrass": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "quickgrass_leafless": {
+      "at": "2026-09-16T04:22:32.742Z",
+      "note": "Make the leafless look more burned, not just mowed",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "quickgrass_stages": {
+      "prefilled": true,
+      "value": "keep"
+    },
+    "razorjack": {
+      "at": "2026-09-16T04:25:13.582Z",
+      "note": "make the belly red and the top yellow-green to match the grass. Do not make it look like a lava beast.",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "scorchfruit": {
+      "at": "2026-09-16T04:22:51.725Z",
+      "note": "Love the Item, the pod shouldn't have a stalk but lay in ashes on the ground",
+      "prefilled": true,
+      "value": "keep"
+    },
+    "zeer": {
+      "prefilled": true,
+      "value": "keep"
+    }
+  },
   "options": [
     "keep",
     "rerender",
     "cut",
     "needsart"
   ],
-  "decisions": {
-    "razorjack": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "barbslinger": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "firewasp": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "boomsnake": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "mantistanis": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "firehawk": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "furnacebeast": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "greengoo": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "orray": {
-      "value": "rerender",
-      "prefilled": true
-    },
-    "anooba_f": {
-      "value": "rerender",
-      "prefilled": true
-    },
-    "anooba_m": {
-      "value": "rerender",
-      "prefilled": true
-    },
-    "nuna_f": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "nuna_m": {
-      "value": "rerender",
-      "prefilled": true
-    },
-    "zeer": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "dalgo": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "gizka": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "gizka_w": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "bolotaur": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "gualaar": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "boomalope": {
-      "value": "needsart",
-      "prefilled": true
-    },
-    "embergrass": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "embergrass_leafless": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "quickgrass": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "quickgrass_stages": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "quickgrass_leafless": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "scorchfruit": {
-      "value": "keep",
-      "prefilled": true
-    },
-    "fulgurite": {
-      "value": "keep",
-      "prefilled": true
-    }
-  }
+  "posture": "blacklist",
+  "postureNote": "Default KEEP. Only rows you mark re-render / cut / needs-art are acted on.",
+  "savedAt": "2026-09-15T21:28:07-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheet": "pyrelands_art.html",
+  "writeCount": 39
 }
