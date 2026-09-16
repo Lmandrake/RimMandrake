@@ -606,3 +606,82 @@ either single option — a fuse and a bomb are different fantasies, and the liqu
 Consequence: burn rate (ruling 7, one tier per day) applies to the *fuse* liquids. A detonating liquid
 does not burn down a tier a day — it is consumed at once, which needs its own stated cost and cannot
 inherit ruling 7's numbers.
+
+## 17. Rulings — owner, 2026-09-16, fifth sitting: the boundary, and three mechanics
+
+**14. Fluidity absorbs the registry — and the boundary is a PRINCIPLE, not a list.** *"(1) all the
+way… GelatinousSlime registers into it to make its special version of geneslime. Distillation is
+separate: converting one liquid type into another lays outside Fluidity and is a technology and
+machine ability, not a liquid property/behavior."*
+
+🔑 **The durable rule, worth more than the mod list it settles:**
+
+> **Fluidity owns what a liquid IS and what it DOES. A machine that TRANSFORMS one liquid into another
+> is technology, and lives elsewhere.**
+
+That decides every future case without another ruling — desalination, detox, tar-cracking, boiling,
+filtering are all *conversion*, so they stay in `WreckedMachines`' found-industry grammar no matter how
+liquid-flavoured they look. Viscosity, flammability, ignition behaviour, colour, depth, wetting and
+crossing are *properties and behaviour*, so they are Fluidity's.
+
+So the final shape:
+
+| | |
+|---|---|
+| **Fluidity** | the registry (`LiquidDef`, generator, `RM_LiquidProperties`), the occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, the roster (absorbing Many Waters), and the hardware (containers, tubing, pumps, adapters) |
+| **GelatinousSlime** | stays a sibling that **registers into** Fluidity — its slime is a row; its genes and hediffs ("geneslime") remain its own, because a gene is not a liquid property |
+| **WreckedMachines** | distillation and every other conversion, on the principle above |
+| **FloodedCanyon** | flood-driver client (ruling 8) |
+
+⚠️ Absorbing the registry makes Fluidity a **hard dependency** for anything liquid-adjacent, and
+`LiquidTypes` already ships 17 terrain suites whose defNames other mods patch. That migration is real
+work and belongs with `NAMING_SCHEME_EXECUTION_1`, not ahead of it.
+
+**15. Detonation propagates fast, then the whole run goes.** One mechanism — a travelling front — with
+speed as the only difference between a tar fuse and a chemfuel detonation, so a player can *just*
+outrun it. ⚠️ The performance case I flagged is now owed as a proof, not a note: "nearly at once"
+across a 200-cell run means a great many simultaneous explosions, and that must be measured before it
+ships. Bound it centrally (the engine drives the blasts) rather than spawning a Thing per cell.
+
+**16. Limitless = edge contact AND a minimum body size, and it is STICKY.** *"a large body shouldn't be
+able to 'flap between' because it can't be reduced, it's limitless once and for all."* Classified once,
+never re-evaluated — which removes the hysteresis problem the size floor would otherwise create, with
+no tuning and no flicker in the strained graphic.
+
+**17. A dry channel slows heavily — `pathCost` 30, matching Pits.** Makes his own line about "other
+established dug barriers" true for the first time; today's flat 6 is a fifth of a dug pit. Raiders
+still path through and pay, so a dry trench shapes an approach rather than denying it.
+
+## 18. Filling in natural water — advice he asked for (2026-09-16)
+
+His observation: the rules now let a player fill in naturally occurring shallow water, and *"that
+doesn't bug me at all… I had assumed it morphs into whatever terrain is most abundantly beside it.
+Your advice is welcome here."*
+
+**His instinct is right, and it needs two guards plus one addition.**
+
+1. 🔴 **Ignore water when computing "most abundant neighbour."** A shoreline cell's most abundant
+   neighbour is usually *more water*, so the naive rule fills water in with water and does nothing.
+   Take the most abundant **non-liquid** neighbour, and fall back to the map's dominant natural
+   terrain when a cell has none.
+2. **Land it in two stages: `Mud`, drying to soil.** A cell filled in becomes vanilla `Mud`, which
+   after some days becomes the neighbour-derived terrain. Costs no new art, and it reads correctly —
+   reclaimed lakebed *should* look raw for a while. It also gives the player a visible "this was water"
+   period rather than an instant swap, which is the difference between terraforming that feels earned
+   and terrain that pops.
+3. **Make the dried result FERTILE — `SoilRich`, not `Soil`.** Reclaimed lakebed is the best farmland
+   there is, and this is already the repo's own idiom: `FloodedCanyon.RecedeFlood()` converts flood
+   cells to `SoilRich` under the comment *"death, then soil"*. Following it makes filling in shallow
+   water a genuine **farming** strategy on a desert world, which serves irrigation — his second-ranked
+   motivation — without a single new mechanic.
+
+**Two consequences worth stating, both benign:**
+
+- **Filling in should cost something**, or draining the map becomes free labour with a fertility
+  reward. The natural cost is the fill material itself: a fill-in consumes rubble, sand or soil the
+  colonists haul. That also explains where the terrain came from, which the "abundant neighbour" rule
+  otherwise leaves unexplained.
+- **Sticky-limitless cannot be exploited by filling in**, and this resolves itself: supply requires a
+  canal to *contact a cell of the body*, so a body filled in has no cells left to contact. The
+  classification may outlive the water, but a zero-cell limitless source supplies nothing. No extra
+  rule needed — worth writing down precisely because it looks like a hole and is not.
