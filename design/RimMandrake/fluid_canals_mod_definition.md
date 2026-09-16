@@ -741,3 +741,66 @@ sitting unbuilt to an engine that is about to exist.
   will be discovered as "fire does nothing to a trapped pawn".
 - **Filling in a canal that contains a pit** — does the pit survive, or is it filled too? A rule is
   needed, because both readings are defensible.
+
+## 20. Ruling 18 — Pits IS Canals: depth is the primitive (owner, 2026-09-16)
+
+He overruled §19's composition model, with a better argument than the one it replaced:
+
+> *"I think Pit is indeed precisely the same thing as Canals and it's all one thing. It's effectively
+> the only 'z level' we bring into the terrain, and that's fundamental to how fluid flows... so yes it's
+> the same thing. Yes people get stuck in pits. Yes they can be used to trap people, dump liquid on
+> them, etc. It's all one thing."*
+
+🔑 **Why this is right and §19 was wrong.** RimWorld has no elevation. Both mods invent *below floor
+level* independently, and liquid behaviour is **defined** by depth — liquid seeks the low cell, fills to
+a level, and how deep it is decides whether you wade, drown or cannot climb out. §19 argued ownership
+hygiene; that was the weaker frame, because splitting depth across two mods means **two mods both own
+"how deep is this cell"** — the exact two-owners-one-cell defect §15 objects to in FloodedCanyon. So
+Pits is absorbed into Fluidity, and `pathCost` 30 (ruling 17) stops being "matching Pits" and becomes
+one mod's single answer.
+
+**The unified primitive.** Every excavated cell carries two small integers:
+
+- **`depth` (D)** — how far below floor level, 0 = surface. Set by digging, and by nothing else.
+- **`fill` (F)** — how much liquid is in it, `0 ≤ F ≤ D`. Set by the engine.
+
+Everything the family does is then a function of D and F on one cell:
+
+| reads | from |
+|---|---|
+| crossing cost, and whether a pawn falls in at all | **D** (dry) |
+| escape chance, once held | **D** — Pits' own `EscapeChance(pawn, depthTier)` already takes exactly this |
+| how much liquid a cell can hold | **D** — a pit is simply a cell with more tiers than a trench |
+| which liquid surface is drawn, and the wade cost | **F** — ruling 5's tier ladder |
+| whether the occupant can climb out at all | **F × the liquid's viscosity** — replacing `CompPitFitting`'s hardcoded `Water` enum |
+
+🔑 **This collapses three separately-invented ladders into one**: Fluidity's fill tiers (ruling 5),
+Pits' `depthTier`, and vanilla's shallow/chest-deep/deep water terrains. One depth scale drives escape,
+capacity, crossing and which terrain is drawn. That is the single largest simplification of this whole
+design, and it only became visible once the two mods were seen as one thing.
+
+**Canal and pit stop being types and become shapes**: a canal is a connected run of shallow
+excavations; a pit is one deep excavation; a dig site is an excavation in progress; a prisoner pit cell
+is a deep excavation with a gate. Capture is not a mod boundary, it is a **threshold on D** — a shallow
+trench taxes a crossing, a deep one takes the pawn — so it is a continuum rather than two mods'
+behaviours meeting awkwardly.
+
+**A mechanic he named in passing and should not be lost:** *"they can be used to trap people, dump
+liquid on them."* Liquid poured into an **occupied** excavation acts on the occupant — water drowns,
+acid burns, tar plus fire is the grimmest thing in the mod. That is a new interaction, not a
+restatement, and it is the strongest single expression of the defense spine.
+
+⚠️ **Two operational cautions, neither an objection.**
+
+1. **The validation unit grows.** modcheck's unit is one whole mod and the north star is per mod
+   (owner, 2026-09-15). Pits' checklist is 11 must-show lines and Fluidity's is 13; merged, one
+   checklist covers excavation, liquids, hardware, rows, capture and fire. His accepted mitigation —
+   grouping every line under its mechanic — still holds, but validating Fluidity will be a longer
+   sitting than either mod alone, and it will sit at **REFUSED** for a long time because most lines
+   will have no component claiming them. That is the system working, and it should be expected rather
+   than discovered.
+2. 🔴 **Do not let the merge stall the pit's visual redesign.** `PIT_TRAP_VISUAL_REDESIGN_1` and
+   `NORTH_STAR_PIT_PILOT_1` are the **falsification test for the entire north-star system** —
+   §9 of `north_star_validation_spec.md` says the design fails if it does not turn the pit red. A
+   consolidation that parks the pit fix would remove the one proof that the validation machinery works.
+   Fix the pit, then merge it; the merge is a refactor and the pit is evidence.
