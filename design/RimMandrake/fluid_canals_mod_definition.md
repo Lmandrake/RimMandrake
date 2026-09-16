@@ -244,8 +244,11 @@ channels (2026-09-12 standing rule).
    instantly once any connected cell lights (a punishment)?
 6. **Irrigation effect and radius.** Fertility bonus, growth-rate bonus, or a soil-terrain change?
    What radius, and does a *partially* filled canal irrigate at all?
-7. **Does slime escape time scale?** Flat, or by Moving / body size / mech mass? Flat is far easier
-   to tune and to read.
+7. **Does slime escape time scale?** ⚠️ Partly answered by §10: Pits already scales it (body size
+   against depth tier, health, manipulation). So "flat" is not the simple option, it is the
+   *divergent* one — it would give the campaign two different escape grammars. The real question is
+   narrower: does a slime canal reuse Pits' curve as-is, or does slime deserve to be harder than a
+   pit of the same depth?
 8. **What counts as limitless?** A narrow river touches two edges; a rain-fed pond may clip one.
    Should limitless require a minimum body size as well as edge contact?
 9. **Should a limitless body ever visibly recede?** "No" is simpler and consistent; "yes, locally,
@@ -256,3 +259,42 @@ channels (2026-09-12 standing rule).
     pawns is a pathing decision with raid-AI consequences, worth naming now.
 12. **Where do seeps and springs live?** Ruling 3 puts the drill in ManyWaters. Are found natural
     sources this mod's content too, or ManyWaters' — leaving FluidCanals only the test source?
+
+## 10. Established vocabulary to reuse (MEASURED 2026-09-16)
+
+The defense spine overlaps the Pits mod almost exactly, and this repo adopts existing grammar rather
+than inventing a parallel one. What Pits already established:
+
+- **The dug-obstacle cost convention lives on a BUILDING, not a terrain**: all three Pits ThingDefs
+  use `passability` Standable with `pathCost` **30** (`Pit_OpenPits.xml:39-41`,
+  `Pit_DigSites.xml:35-37`, `Pit_Cell.xml:64-66`). `RM_Channel_Empty` is a *terrain* at `pathCost`
+  **6** (`FluidCanal_Terrain.xml:16`). 🔑 So his line "an unfilled pit slows movement as per other
+  established dug barriers" is **not true today** — a dry channel costs a fifth of what a dug pit
+  costs. Matching the established feel means raising the channel's cost toward 30 or moving the
+  obstacle onto a building. Naming it because it is a one-line change that makes the dry-trench step
+  of the loop actually work.
+- **The escape clock already exists**: `PitEscapeUtility` runs a fixed struggle interval
+  (`StruggleIntervalTicks()`, 2500 ticks default, tunable through `PitsSettings.struggleIntervalHours`)
+  and rolls `EscapeChance(pawn, depthTier)` — body size against depth tier, health percentage,
+  manipulation — clamped to `[0.02, 0.95]`, with a failed attempt costing a small "thrashing" hediff
+  severity rather than real damage. Reuse this shape wholesale; a slime canal does not need a second
+  escape system.
+- **"Cannot climb out at all" is already a solved case**: `CompPitFitting`'s `Water` fitting sets
+  `BlocksEscape`, documented in `PitFittingType.cs:16` as "no climbing out at all", and
+  `Building_PitCell.EscapeBlocked` does the same for a closed gate. Both disable the roll entirely.
+  That is the exact precedent for his slime phrasing, already written and already tested.
+- **Slow-terrain analogues exist to match**: `RM_Slime_Liquid` at `pathCost` 25
+  (`GelatinousSlime/Defs/TerrainDefs/SlimeTerrain.xml:117-136`, whose own description says "wading it
+  is like wading warm syrup") and `RM_OozeDeep` at `pathCost` 200
+  (`LiquidTypes/Defs/TerrainDefs/RM_Ooze.xml:46-53`). Neither carries any escape or timing mechanic.
+- **North-star ids that genuinely transfer**: `pit_occupant_below_floor` and
+  `pit_occupied_distinguishable` are the same problem for a slime canal — a stuck pawn must not read
+  as standing on the surface staring at the camera. `pit_reads_as_hole` and `pit_covered_invisible`
+  are pit-specific and must not be copied.
+
+**What genuinely has no precedent**, so it is new mechanism and should be costed as such: a
+*slowed-but-not-captured* crossing (a slip chance), any fluid-conditional `pathCost` on the channel,
+and a pawn that is **stuck in place while still spawned**. Pits only knows one state — despawned into
+an `innerContainer` (`DestroyMode.Vanish`, which is why its validator asserts
+`expect_pawn_despawned`). The closest sketch of in-place stuckness is
+`design/Jawa/proposals/tar_pits_deep_design.md`'s hediff-based model, which was never built.
