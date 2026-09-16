@@ -70,8 +70,8 @@ how a race LOOKS lands on a gene, never on the XenotypeDef.
 
 ## Roster
 
-70 shipped xenotypes → **13 defNames complete**, **57 outstanding**. (The 13 done defNames sit
-in **12** directories, because both Jawa defs map to `jawa/`.) `tier` is the species' best placement across all
+70 shipped xenotypes → **18 defNames complete**, **52 outstanding**. (The 18 done defNames sit
+in **17** directories, because both Jawa defs map to `jawa/`.) `tier` is the species' best placement across all
 factions and is the **priority order** for the outstanding work: an `A` species is what the
 player actually sees walking around.
 
@@ -104,11 +104,11 @@ player actually sees walking around.
 | ✅ | `bith` | Bith | `RSW_RimMandrakeBith` | S | Jawa_AscendantHelix:S, Jawa_DeepwaterCompact:R |
 | ✅ | `bothan` | Bothan | `RSW_RimMandrakeBothan` | S | OutlanderCivil:S, Jawa_HuttCartel:R, Jawa_DeepwaterCompact:R |
 | ✅ | `cerean` | Cerean | `RSW_RimMandrakeCerean` | S | Jawa_AscendantHelix:S |
-| ⬜ | `chagrian` | Chagrian | `RSW_RimMandrakeChagrian` | S | Jawa_DeepwaterCompact:S |
-| ⬜ | `defel` | Defel | `RSW_RimMandrakeDefel` | S | Pirate:S |
-| ⬜ | `devaronian` | Devaronian | `RSW_RimMandrakeDevaronian` | S | Jawa_HuttCartel:S |
-| ⬜ | `ewok` | Ewok | `RSW_RimMandrakeEwok` | S | Jawa_WildsteamClan:S |
-| ⬜ | `falleen` | Falleen | `RSW_RimMandrakeFalleen` | S | Jawa_HuttCartel:S |
+| ✅ | `chagrian` | Chagrian | `RSW_RimMandrakeChagrian` | S | Jawa_DeepwaterCompact:S |
+| ✅ | `defel` | Defel | `RSW_RimMandrakeDefel` | S | Pirate:S |
+| ✅ | `devaronian` | Devaronian | `RSW_RimMandrakeDevaronian` | S | Jawa_HuttCartel:S |
+| ✅ | `ewok` | Ewok | `RSW_RimMandrakeEwok` | S | Jawa_WildsteamClan:S |
+| ✅ | `falleen` | Falleen | `RSW_RimMandrakeFalleen` | S | Jawa_HuttCartel:S |
 | ⬜ | `herglic` | Herglic | `RSW_RimMandrakeHerglic` | S | Jawa_DeepwaterCompact:S |
 | ⬜ | `muun` | Muun | `RSW_RimMandrakeMuun` | S | Jawa_AscendantHelix:S, Jawa_HuttCartel:R |
 | ⬜ | `neimoidian` | Neimoidian | `RSW_RimMandrakeNeimoidian` | S | Jawa_AscendantHelix:S |
@@ -303,4 +303,89 @@ wikitext pulled for every one of the four (none truncated).
 mass, lifespan, eye colour or even homeworld**, and **no Databank page exists** for the
 species — every number in that entry is Legends and is labelled so. The **Ugnaught** canon
 article carries `{{Expand|all sections}}` and also gives no height or mass.
+
+### Batch — Chagrian, Defel, Devaronian, Ewok, Falleen (2026-09-15)
+
+All five entries complete: directory, reference images and `description.md` on disk for
+`chagrian/`, `defel/`, `devaronian/`, `ewok/`, `falleen/`. All five defNames verified
+line-by-line against `RimMandrakeXenotypes.xml`. **21 Wookieepedia images downloaded**
+(image URLs resolved with `api.php?action=query&prop=imageinfo`, never guessed), plus a
+`donor_current_sprite.png` for every one of the five. Wikitext came through **Fetcher**;
+no fetch was truncated.
+
+**The `/Legends` trap fired on the two species this batch existed to get right.** Both
+`Defel` and `Falleen` have canon pages that omit the species' defining trait, and both
+required the `/Legends` variant:
+
+- `Defel` canon is a **4,585-char stub flagged `{{Update}}`**. The mechanism behind the
+  wraith appearance — the ultraviolet supergiant Ka'Dedus, Af'El's missing ozone layer,
+  the light-blindness, the visor, and the fact that Defels are **brightly coloured in
+  ultraviolet** (yellow-to-blue fur, green snout, orange jawline slits) — is **entirely
+  in `Defel/Legends`**.
+- 🔴 `Falleen` canon **never mentions colour-shifting skin at all.** The whole trait —
+  pigment tracking mood, mastered voluntary control, used as a covert political weapon,
+  green → red/orange on pheromone release — is **Legends only**. A pass that read only
+  the canon page would conclude Falleen are simply green.
+
+🔴 **Def-versus-canon findings from this batch** (reported, not fixed):
+
+- `RSW_RimMandrakeDefel` **has no light-absorption, invisibility, stealth or concealment
+  gene of any kind** — the species' one listed canon distinction, the reason it is
+  nicknamed *Wraith*, and the subject of every quote about it. Its `<description>` is a
+  **single period**. `AptitudeTerrible_Intellectual` + `AptitudeTerrible_Medicine` are
+  unsourced against a species canon casts as a mercenary and a fortune hunter, and the
+  six-miles-blood-scenting has no gene. Its **entire art inventory is four tiny fangs**
+  (`HeadAttachments/defel/teeth_{south,east}.png`).
+- `RSW_RimMandrakeFalleen` carries **four skin genes and every one is green** — no red,
+  no orange, and **no mechanism for pigment change**, so the trait cannot be represented.
+  Also missing the **mind-trick resistance** (same class of finding as the Hutt's
+  immunity), `RSW_lifespan_double` undershoots canon's **250/400 years**, and
+  `MeleeDamage_Strong` is the wrong stat for canon's twice-stated **"incredibly quick
+  reflexes."** Its `Outland_EggLayer` sits against the explicitly **mammalian** half of
+  repto-mammalian (canon cites breasts in both sexes). **Positive**: its
+  `ridgedspine_*` body attachment is a genuinely correct rendering of the canon
+  **dorsal spine** distinction — but it has **no `_south` variant**, so it is invisible
+  in the commonest camera facing.
+- `RSW_RimMandrakeChagrian` carries **`Outland_Skin_DeepOrange` + `Skin_Orange`** where
+  canon skin is **light blue → cerulean → indigo, and the blue is causally load-bearing**
+  (visible result of evolved radiation resistance under an unstable sun). That
+  **radiation resistance — the species' one hard canon trait — has no gene.** Nothing
+  represents the aquatic body plan or the sourced **2-meter** height.
+- `RSW_RimMandrakeDevaronian` sets **`Beard_NoBeardOnly` against a cited canon sentence**
+  that some males "grew sideburns as well as beards." Nothing represents canon's
+  **elevated Force-sensitivity frequency** — worth reading against `rakata/`, where
+  psychic genes were given to a species canon says is **Force-blind**: this library has
+  now found the same error in both directions. `Outland_Chest_Fur` puts on males a trait
+  canon assigns to **females**; `Outland_HairColor_BrightSage` is invented while
+  **brown**, the only hair colour the infobox cites, has no gene.
+- `RSW_RimMandrakeEwok` **has no black fur gene**, although canon names **black** as one
+  of the two most common colours, the infobox cites hair colour **black**, and the black
+  Ewok is the **centre figure of the species' own infobox image**. Its palette instead
+  finds room for `RSW_Hair_SlateBlue` and `RSW_Hair_SlateRed`, attested nowhere. No
+  stripe option despite canon's "a few sported stripes"; `Body_Hulk` on a sourced
+  **1 m / 30 kg** species; nothing for the cited **two-fingers-plus-thumb** hand.
+  **Defensible invention, flagged so it is not removed as a bug**: the
+  `Turn_Gene_GauranlenNeed` / `PruningAccelerated` pair is unsourced but thematically apt
+  for a Bright Tree Village species.
+
+**Two adult/juvenile proportion splits recorded**, matching the Hutt/Huttlet precedent:
+Ewok **woklings** have enormous domed eyes where adults have small beady ones (and some
+adults carry **pale fur eye-rings** that make small eyes read large — the likely origin
+of canon's "large, bright eyes"), and Chagrians pass through a **30 cm aquatic tadpole
+stage** kept in a sealed tub indoors.
+
+**Images-over-prose calls made this batch**: the Chagrian **lethorn** is a *fleshy
+skin-coloured lobe* ending in a purple→yellow pendant tip, not the cream horn the infobox
+sentence implies; Devaronian skin is **vermilion or pale flesh**, never the infobox's
+"brown"; Devaronian male horns are **large**, not the prose's "short"; and the Defel is
+**lean and long-armed** in every image against Legends' "nearly as wide."
+
+⚠️ **`chagrian/`, `falleen/` and `ewok/` articles all carry wiki maintenance banners**
+(`{{Expand|all sections}}` on the first two, `{{MultipleIssues|expand|image}}` on Ewok),
+and nearly all Chagrian biology and society detail traces to a **single source**, *Lead
+by Example*. **Genuinely unsourceable and recorded as absent rather than guessed**:
+Devaronian height, mass, lifespan and diet (blank in the infobox *and* the article body);
+Chagrian mass, lifespan and diet; Ewok lifespan; canon Defel and canon Falleen height,
+mass and lifespan. **Ewok is the only species in this batch with both height and mass
+sourced** (1 m / 30 kg).
 
