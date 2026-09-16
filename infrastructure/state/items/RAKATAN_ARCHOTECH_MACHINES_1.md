@@ -125,11 +125,22 @@ verbatim: *"Defunct, Kludged, Refurbished. Only three levels (0.0001, 0.2, 0.5 o
 original capability) One ladder for everything, with large artifacts (e.g. factories)
 worth much more than smaller items (e.g. batteries)."*
 
+⚠️ **The ratios were revised the same evening — these are the live numbers**, owner
+verbatim: *"I take back the numerical values. They should now be 0.001, 0.2, and 0.75.
+The original item (unmodified) is of course 1.0. Wrecked machines can never restore
+fully to the original device (mod option, defaults to no)."*
+
 | grade | capability vs. original | reads as |
 |---|---|---|
-| **Defunct** | 0.0001 | inert. A sacred object, not a machine. |
+| **Defunct** | 0.001 | inert. A sacred object, not a machine. |
 | **Kludged** | 0.2 | works, badly, visibly bodged. |
-| **Refurbished** | 0.5 | the ceiling. Half of what its makers built. |
+| **Refurbished** | 0.75 | the default ceiling. Three-quarters. |
+| *the original, unmodified* | 1.0 | **unreachable by default** — a real reference point, not a grade |
+
+**1.0 is a genuine rung that the player normally cannot stand on.** A **Mod Setting,
+defaulting to OFF**, allows full restoration to 1.0; with it off, 0.75 is the hard cap.
+So the asymptote of ruling 2 is enforced by a default rather than by arithmetic, and a
+player may switch it off — deliberately his choice.
 
 Discrete states, each its own stat block and its own sprite — not a capacity curve and
 not a per-subsystem wear model. **One ladder for every Rakatan thing**, fixed
