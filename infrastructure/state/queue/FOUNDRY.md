@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T02:09:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T02:16:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1675,3 +1675,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BARBSLINGER_REDESIGN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BARBSLINGER_REDESIGN_1.md
+
+## TWILEK_TROPE_GENES_MOVE_1 Move the Twi'lek submissive-aggression, high-libido and beautiful genes off the xenotype and onto individual pawns as a background or trait, so a stereotype is a fact about a person rather than about a race - a mechanism change, not a gene-list edit
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
+
+## XENOTYPE_NONCOSMETIC_FIXES_1 Fix the non-cosmetic xenotype canon defects in gen_races_mod.py: water-breathing for four aquatic species, five wrong-species nameMakers, two missing nameMakers, five one-character descriptions, Zuguruk spelling and Pureblood mislabel - COSMETIC GENES ARE OFF LIMITS (skin, heads, masks, eyes, hair, montrals) and labels only, never defNames, without a further ruling
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
