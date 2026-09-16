@@ -66,6 +66,12 @@ curl -s 'https://starwars.fandom.com/api.php?action=parse&page=<PageName>&format
 
 Fall back to Fetcher (invoke the `fetcher` skill) only if `curl` is actually blocked.
 
+⚠️ **Fetcher truncates at 50,000 characters, and long species articles exceed it.** A
+batch lost the Biology sections of two species this way. If you must use Fetcher and the
+text is cut off, **say in the entry that the remainder is UNREAD rather than absent** —
+those are different claims, and only one of them is honest. `curl` has no such cap, which
+is another reason to prefer it.
+
 - **Never request the rendered article HTML** — that is the Cloudflare-walled path. Use the
   API endpoint above.
 - **Page-title traps are real.** The Rakata article is titled **Rakatan**, and its actual
