@@ -96,6 +96,19 @@ semi-insectoid one. The sprite also has **no mandibles** (canon gives *two* sets
 and inner), **no crown lobes**, **no wattle** and **no snout**. This is the
 highest-value correction in this entry.
 
+## Must show
+This is a caste species with two distinct canon appearances — do not average them; a
+sprite should target one caste deliberately.
+- [ ] Warrior caste: gaunt, skeletal build — thin limbs with visible joint knobs, digitigrade legs, clawed three-toed feet
+- [ ] Warrior caste: one pair of long, narrow, translucent brown-red wings folded down the back — wings are earned/caste-specific, not universal (drones are born wingless)
+- [ ] Two sets of mandibles (outer and inner) used for gesture-communication
+- [ ] Elite caste: a broad, flaring, mitre-like crown of two flattened upswept lobes, deeply wrinkled leathery hide, and a long pendulous chin wattle
+- [ ] Eyes are small, dark, narrow and deep-set under hooded brow folds — never large, round, white-sclera eyes
+- [ ] Chitin colour can be dark orange-brown, mottled tan-olive-grey, or dusty mauve-pink depending on individual/caste — not one fixed hue
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged)
 - 🔴 **`RSW_BodySizeGene_small` directly contradicts the sourced height of 1.7 m.**
   Geonosians are human-average in stature. They are *gaunt* — thin, not small. Body_Thin

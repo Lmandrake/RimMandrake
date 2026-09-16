@@ -124,6 +124,18 @@ one thin vertical line above it.
   the vulnerable underbelly. The first is the droid's most distinctive canon behaviour and
   there is no art for it.
 
+
+## Must show
+- [ ] Small domed body slung between four long, wide-splayed, multi-jointed legs
+- [ ] Needle antenna rising straight up from the dome
+- [ ] Stubby cannon barrel projecting forward from the face, short and blunt (not a long thin needle)
+- [ ] Two large red photoreceptors in raised bezels plus a row of three small red lamps between them
+- [ ] Gray plating
+- [ ] Legs splayed to roughly 1.5× the body width, not tucked in as short stubs
+
+## Engine limits
+No `colorChannels` block — this sprite ships in the colour it was drawn in and cannot be tinted via the def; a colour correction would require a repaint.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/DSD1_dwarf_spider_droid — main article; wikitext pulled

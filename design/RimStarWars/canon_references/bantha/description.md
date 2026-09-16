@@ -43,6 +43,17 @@ than the real animal's heavy-set but clearly leonine-maned silhouette. A
 regen should exaggerate the horn spiral and add visible shaggy fur texture,
 especially the hanging beard under the chin.
 
+## Must show
+- [ ] Heavyset, shaggy, long-haired quadruped body
+- [ ] Pair of large, tightly-curled, ram-like spiraling horns
+- [ ] Hanging beard-like fringe of fur at the chin/chest
+- [ ] Body coat dark brown to near-black
+- [ ] Horns pale ivory/tan/cream, contrasting against the dark coat
+- [ ] Fully fur-covered body with no bare skin visible
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Bantha (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Bantha&prop=wikitext`,

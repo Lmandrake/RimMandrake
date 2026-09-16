@@ -180,6 +180,17 @@ this repo** — they live in the deployed mod folder under
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`. Nothing here compares
 canon against the sprite the player sees.
 
+## Must show
+- [ ] Female: bone-white to pale pearl-grey skin, hairless and hornless
+- [ ] Male: warm red-orange, golden-yellow, or (rarely) red skin, with black striping and a ring of short, stubby horns encircling the crown (not two forward-facing devil horns)
+- [ ] Male natural striping runs across the face, scalp, chest, shoulders and arms, not just the face
+- [ ] Female markings read as soft, smudged grey/dark tattoo shading in contrast to pale skin, not bold ink line-work (though bolder-marked females are also attested)
+- [ ] Nightsister red is cloth — strips of red/rust fabric wound over chalk-white to bone-grey skin, never a skin pigment
+- [ ] Horns present only on males; females are hornless
+
+## Engine limits
+none known — no species-specific shader or mask constraint is recorded for this head in the entry or brief (no `donor_current_sprite.png` exists in-repo to check against).
+
 ## Def-versus-canon (flagged — not fixed)
 
 `RSW_RimMandrakeDathomirian`. The `<description>` is unusually good — it states the

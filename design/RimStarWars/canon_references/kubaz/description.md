@@ -84,6 +84,17 @@ consistently **concealing**: hooded cloak (Legends), layered jacket with a bando
 boots (infobox), courier armour with helmet and satchels (courier). A Kubaz reads as *hiding*,
 which fits the spy/informant fiction.
 
+## Must show
+- [ ] Long, tapering, tubular snout projecting forward and angling downward from the mid-face, lighter mauve/grey-pink than the rest of the head, with a pattern of dark pits/pores along its underside and flanks
+- [ ] Eyes are never visible — always behind separate strapped goggles/eyewear (lens tint can vary between individuals)
+- [ ] Crest of stiff, spiky, pale (near-white, silver, or pale lavender-green) bristles standing up from the brow and running back over the crown — not black
+- [ ] Two-tone head: dark greenish-grey cranium against a lighter mauve-grey snout
+- [ ] Tall, narrow, upright biped build with no hunch or bulk
+- [ ] Long, thin, spindly fingers with prominent knuckles, where hands are visible
+
+## Engine limits
+none known
+
 ### Def-versus-canon (flagged — not fixed here)
 - 🔴 **`<description>` is the single character `e`** — no description ships for this xenotype.
 - 🔴 **No goggles / eyewear gene of any kind**, and 🔴 **the donor head sprite draws bare eyes

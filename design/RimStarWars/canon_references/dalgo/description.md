@@ -43,6 +43,16 @@ are also not legible on the donor sprite. Any regen should raise the body
 onto long thin legs, lengthen the snout, and keep the orange-with-cream-
 underside palette and dorsal crest.
 
+## Must show
+- [ ] Tall, long-legged reptilian runner build (raptor/theropod stance), not a low-slung lizard
+- [ ] Sail-like dorsal crest running from the crown of the head down the neck
+- [ ] Long snout with visible sharp teeth, including the two lower tusks
+- [ ] Rust-orange hide with a paler cream/tan underside and belly
+- [ ] Wide, blade-like tail tip
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Dalgo (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Dalgo&prop=wikitext`,

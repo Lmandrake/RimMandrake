@@ -84,6 +84,17 @@ with prominent saw-like interlocking teeth, a pair of small nose-horns, and a
 long thin tail. Render toward that reddish-brown-over-tan palette with the
 oversized jagged teeth as the creature's single most distinctive feature.
 
+## Must show
+- [ ] Low-slung, digitigrade quadruped with a long, tapering, rat-like tail
+- [ ] Reddish-brown to maroon dorsal/back coloring, fading to a lighter tan-grey underside and throat
+- [ ] Elongated snout packed with large interlocking jagged (saw-like) teeth, visible even with the jaw closed
+- [ ] Small red eyes
+- [ ] A pair of short, blunt, horn-like spikes near the nose
+- [ ] A wispy fringe of hair-like bristles along the belly and backs of the legs
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/api.php?action=parse&page=Grank&format=json&prop=wikitext
   (confirms `Grank` redirects to `Saw-toothed grank`; wikitext pulled

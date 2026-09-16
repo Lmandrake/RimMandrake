@@ -41,6 +41,15 @@ available. Given the total absence of canon-text detail, this is a
 reasonable design to keep or lightly extend (bigger frill, more visible
 mottling) rather than a confirmed mismatch to fix.
 
+## Must show
+- [ ] Stocky, quadrupedal, ceratopsian-like body plan
+- [ ] Bony head frill with multiple horns
+- [ ] Warm orange/tan hide mottled with darker rust-brown patches
+- [ ] Visibly smaller young present within a herd context (if depicting a herd)
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Corinathoth (Wookieepedia article text,
   pulled via

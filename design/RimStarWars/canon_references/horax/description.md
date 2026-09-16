@@ -79,6 +79,17 @@ clawed limbs, and a spiked/clubbed tail as a visible weapon. All three kept
 images agree with each other and with both text tiers — there is nothing to
 flag as a text/image mismatch this time.
 
+## Must show
+- [ ] Deep blue, heavily wrinkled hide
+- [ ] Large tan/beige horns sweeping up and out from the snout in a wide V
+- [ ] Orange/yellow eyes
+- [ ] Multiple long saber-like fangs visible in the upper and lower jaw
+- [ ] Thick clawed limbs
+- [ ] Spiked/clubbed tail visible as a distinct feature
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Horax (current canon page, wikitext
   pulled via API 2026-09-13)

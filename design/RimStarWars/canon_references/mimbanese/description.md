@@ -76,6 +76,17 @@ the sourced "improvised traps… covering themselves in mud for camouflage."
 limb thickness and shoulder width in all three references. **Nothing reads gaunt, thin or
 emaciated.**
 
+## Must show
+- [ ] Two large, round, protuberant, pale-blue eyes with no eyelid fold (a dark orbital rim, not goggle bezels) — a lidless read, not a masked one
+- [ ] Two rows of short horns above the brows, forming a serrated crown/V shape across the forehead
+- [ ] Broad, flattened, downward-tapering snout with paired nostril openings, no prominent mouth
+- [ ] Smooth, domed, hairless cranium with no visible ears
+- [ ] Face skin reads a saturated salmon/brick red (which can weather toward brown or grey), distinct from any similarly-red clothing worn over it
+- [ ] Silhouette buried in an enormous ragged ghillie cape of dried reeds/straw over slat plates, with ammunition bandoliers — not bare skin on display
+
+## Engine limits
+none known
+
 ### Def-versus-canon (flagged — not fixed here)
 - 🔴 **`AptitudePoor_Intellectual` and `RSW_GS_Primitive` directly contradict the sourced text**,
   which says the Mimbanese were **"both highly aggressive and highly intelligent."** The def

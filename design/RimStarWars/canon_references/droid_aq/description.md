@@ -189,6 +189,18 @@ Separatist amphibious asset stranded where its whole design is pointless — but
 **conscious** choice, and the owner's ruling, not an accident of which donor mod happened to
 carry the sprite.
 
+
+## Must show
+- [ ] Pale grey-white plating with teal/blue-green accent panels, not solid grey or solid blue
+- [ ] Bright red visor slit/lens visible in the small polygonal head
+- [ ] Wide swept shoulder yoke projecting past the body over a narrow tapering torso
+- [ ] Small polygonal head recessed between the shoulders, not projecting above them
+- [ ] Elongated legs with large splayed feet
+- [ ] Retractable cannon/barrel visible on the right wrist
+
+## Engine limits
+No `colorChannels` block or mask file on this chassis — colour is baked directly into the PNG, so correcting the colour requires a repaint (new art), not a def edit.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/AQ-series_battle_droid — main article; wikitext pulled via

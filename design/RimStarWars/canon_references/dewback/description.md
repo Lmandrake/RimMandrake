@@ -39,6 +39,17 @@ in every reference image. Any regen should correct the color to green/olive
 and give the body a longer, lower, more lizard-like silhouette with a visibly
 scaled hide.
 
+## Must show
+- [ ] Scaly, reptilian, elongated low-slung body — not a rounded, blobby, seal-like silhouette
+- [ ] Warm olive-green to yellow-green hide, darker/more mottled toward the back ridge
+- [ ] Long heavy tail
+- [ ] Broad, blunt-snouted head with a wide mouth
+- [ ] Short, thick legs built to carry a rider or pack saddle
+- [ ] Visible raised/pebbled scale texture
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Dewback (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Dewback&prop=wikitext`,

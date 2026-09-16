@@ -169,6 +169,27 @@ skull-ridge art on disk at all** — the facial ridges ride the generic
 `RSW_FacialRidges_bumpy` / `Outland_RidgedSkin` genes, which per the visual brief above
 is the wrong idiom (texture, not plates).
 
+## Must show
+Colour-shifting skin is the species' defining trait and canon (the current-canon
+article) never mentions it at all — the checklist below follows the Legends text and,
+above all, the images, per this library's own rule.
+- [ ] Resting state: mid-green skin with distinctly darker green mottling patches (hue itself can vary individual to individual, yellow-green through teal-green)
+- [ ] Shifted state: a complete repaint to fully saturated orange-red across the whole head and face — not a blush or flush on green skin, the same anatomy in a different hue
+- [ ] Skull ridges read as raised, structural scaled plates forming a crest silhouette — not a bumpy skin texture
+- [ ] Long, very dark (blue-black) hair gathered high and pulled into a single ponytail
+- [ ] Sleek, symmetrical, narrow, angular face; lean and upright build, never bulky
+- [ ] A vertical column of chevron/arrowhead dorsal plates down the back
+
+## Engine limits
+Each skin state (mottled green, or solid red) is a single flat hue and is individually
+displayable via an ordinary skin-tint gene — no single-channel-mask limit blocks either
+state on its own. What is missing is a mechanism for one pawn to shift between the two
+states (mood-driven or voluntary); the entry frames that as an unbuilt mechanism (a
+hediff, a mood-linked graphic, or a second skin gene), not an engine-level block. Separately,
+the current donor dorsal-spine attachment exists only in `_north`/`_east` — no `_south` — so
+it is invisible from the most common camera-facing view; that is a missing-art gap, not a
+shader limit.
+
 ## Repo def versus canon
 
 🔴 **The colour-shifting skin is entirely absent, and it is the point of the species.**

@@ -193,6 +193,16 @@ the evidence that this chassis has no single canon colour.**
 - ⚠️ **JDS `skinShader` is `Cutout`** — no mask, no colour channel — so **that sprite's pixels
   are its shipping appearance and it can never roll a colour**, unlike its OuterRim twin.
 
+
+## Must show
+- [ ] Three glowing yellow/cream photoreceptors in a triangle arrangement on the head
+- [ ] Tall, lean, humanoid frame with prominent exposed cylindrical joints at shoulder, elbow, hip, knee, and ankle
+- [ ] Broad flat chest plate with vertical ribbing at the sternum
+- [ ] Gold swirling/trim decoration on named-commander units
+
+## Engine limits
+The JDS variant's `skinShader` is `Cutout` with no mask and no colour channel, so that sprite's pixels are its shipping appearance and it can never roll a colour — unlike its OuterRim twin, which uses `CutoutComplex` with a three-option palette.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/ST-series_military_strategic_analysis_and_tactics_droid —

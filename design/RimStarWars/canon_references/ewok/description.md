@@ -127,6 +127,18 @@ otherwise assembled from generic genes (`Furskin`, `RSW_Eyes_Big`,
 an Ewok's face — **the pale short-furred muzzle** and the **pale eye-rings** — are
 unrepresented.
 
+## Must show
+- [ ] Short, rounded, pot-bellied torso with no visible neck; short stubby arms/legs; bare plantigrade feet with visible toes
+- [ ] A distinct pale, short-furred muzzle patch around the nose and mouth — the main facial landmark
+- [ ] Small dark button nose
+- [ ] Adult eyes are small, round and dark (not oversized); juveniles instead have proportionally huge, glossy, domed eyes
+- [ ] Round ears set high and wide on the skull (teddy-bear silhouette)
+- [ ] Fur colour can be solid deep black (with a paler muzzle), not only brown — the black individual is the centre figure of the species' own reference image
+
+## Engine limits
+none known — the current gap is missing art (only a round-ears mask exists in the repo,
+with no muzzle patch, eye-ring, or fur body), not a rendering constraint.
+
 ## Repo def versus canon
 
 🔴 **There is no black fur gene, and black is one of the two colours canon names as most

@@ -50,6 +50,15 @@ mismatch: any regen must replace the legged body with a radial mass of long
 thin tentacles beneath a small eyestalk, in deep purple/maroon tones, with a
 visible toothed central mouth.
 
+## Must show
+- [ ] Single dark reddish eyestalk (a small stalked eye) atop a bulbous head/body mass
+- [ ] Large circular mouth ringed with sharp teeth at the center where limbs converge
+- [ ] Several long, thin, tapering tentacles radiating/hanging downward — not four legs and a tail
+- [ ] Deep maroon/purple-brown base coloring with a wrinkled, ridged skin texture
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Dianoga (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Dianoga&prop=wikitext`,

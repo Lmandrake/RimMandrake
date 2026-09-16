@@ -147,6 +147,20 @@ better than a mere tall forehead. Three problems:
   There are also small tapering tufts at the temples whose purpose is unclear and which match
   nothing in the references.
 
+## Must show
+- [ ] A tall, narrow, bald, skin-toned cone rising vertically from the top of the skull,
+  roughly as tall again as the face beneath it
+- [ ] The cone is laterally compressed — a tapering wedge viewed front-on, not a circular
+  dome
+- [ ] Soft horizontal creases/wrinkles across the cone; completely hairless
+- [ ] Below the cone, an otherwise ordinary human face — no other alien features
+- [ ] Where hair is present, it grows only from the sides and back of the lower skull,
+  never on the cone itself
+- [ ] Eyes read yellow/amber
+
+## Engine limits
+none known
+
 ## Repo def versus canon — contradictions to report
 
 🔴 **`PsychicAbility_Enhanced` inverts the sourcing.** Legends states plainly that

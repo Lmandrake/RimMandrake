@@ -99,6 +99,17 @@ Wyyyschokk's signature mark is the abdomen cross; Kinrath's signature marks
 are the six-eye cluster and flower organ (current canon) or the long
 mantis-like neck-appendage (KOTOR/Legends) — neither has a cross marking.
 
+## Must show
+- [ ] Base colour is warm yellow/gold/tan-brown — no blue anywhere on the body
+- [ ] If depicting the current-canon "netcaster" design: six black eyes in a tight cluster above a six-petaled flower organ
+- [ ] If depicting the current-canon "netcaster" design: spoon-shaped body (narrow at top, wider toward the rear) with dark horizontal banding across the abdomen
+- [ ] If depicting the KOTOR/Legends design: a long, upward-curving segmented neck ending in a small mantis-like head, with no flower organ and no eye cluster
+- [ ] Four long, thin, multi-jointed legs (true of both design lineages)
+- [ ] Not confused with Wyyyschokk — no blue-grey body and no abdomen cross marking
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Kinrath (current canon page, retconned
   onto "Netcaster," wikitext pulled 2026-09-13 via MediaWiki API)

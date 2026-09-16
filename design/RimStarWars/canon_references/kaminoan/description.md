@@ -139,6 +139,19 @@ the almond black eyes, and a tapering lower face. What is wrong:
 - The head occupies only a small central fraction of the 512×512 canvas, so effective
   resolution for the detail above is low.
 
+## Must show
+- [ ] Neck is close to twice the length of the head; head-plus-neck reads as roughly a fifth of standing height — not a human head-on-neck
+- [ ] Skin is pale grey with a lavender/blue or green-blue cast, not flat white
+- [ ] Lips are a saturated pink/mauve accent against the otherwise pale, grey body
+- [ ] Eyes are enormous, almond-shaped, upswept at the outer corner, with a solid glossy black sclera and a large pale grey-white iris/pupil disc — not a plain black dot
+- [ ] There is a small keeled nose with two downward-facing nostrils, and a small closed mouth with full pink lips — the face is not featureless
+- [ ] Male has a low fore-aft fin crest plus small rear ridges on the crown; female has a smooth crestless cranium (any head-crescent ornament is worn jewellery, not anatomy)
+
+## Engine limits
+- The neck-to-head-to-height proportion above (neck ≈ 2× head length; head+neck ≈ 20% of
+  standing height) is **not representable in a head-only texture** — it needs body/neck art
+  or a head graphic that includes the neck column, not a recolour or a head-slot swap.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Kaminoan — canon article. HTML is Cloudflare-walled;

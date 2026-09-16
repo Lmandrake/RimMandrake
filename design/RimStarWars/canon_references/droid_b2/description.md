@@ -108,6 +108,17 @@ red sensor/chest light. Palette matches canon "dull silver".
 - **No repo art exists** for the buzzsaw, chainsaw, grapple, groundmech or mercenary
   sentry variants, nor for the cortosis C-B3.
 
+
+## Must show
+- [ ] Grey ("dull silver") plating overall
+- [ ] Enormous armoured shoulder pauldrons wider than the torso
+- [ ] No head visible as a separate shape — head sunk directly into the shoulder yoke with no neck
+- [ ] Thick arms, forearm diameter comparable to a B1's whole torso
+- [ ] Red sensor dot on the shoulder
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/B2-series_super_battle_droid — main article; wikitext

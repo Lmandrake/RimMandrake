@@ -81,6 +81,17 @@ silhouette. Nothing in either image contradicts "tall"; nothing in either image 
 *heavy* build — the read is tall and lean, which is what the 1.4–2 m Legends range plus
 "typically of the same weight as Humans" says.
 
+## Must show
+- [ ] Two long, pale ivory tusks curving downward and outward from the sides of the mouth — fully hidden by the mask when worn
+- [ ] Bald, bulbous, high-domed cranium in warm orange-tan, with deep engraved furrows/crevasses over the crown and cheeks
+- [ ] Clusters of fleshy, pebbled, irregular lobes on each side of the head where ears would be — not smooth pointed flaps
+- [ ] No projecting nose — a fluted mass of vertical folds runs down to the mouth
+- [ ] When masked, a single tan/bone-coloured rigid plate combining two dark angular goggle lenses and a central snouted respirator plate, with decorative side flanges
+- [ ] Hands show three fingers and a thumb (four digits total) with dark, sharply pointed claws
+
+## Engine limits
+none known
+
 ### Def-versus-canon (flagged — not fixed here)
 - 🔴 **`<description>` is the single character `.`** — no description ships for this xenotype.
   (Identical defect to `RSW_RimMandrakeGand`, found by the previous batch.)

@@ -154,6 +154,19 @@ wants the Narloch pattern it is not a colour change, it is new art. `Herglic_eas
 `Herglic_north.png` exist; there is **no Herglic body art on disk**, so a Herglic is a head
 on a standard RimWorld body, and the "extremely wide" proportion is unrepresented.
 
+## Must show
+- [ ] Head is a single smooth, bulbous, forward-swept dome with no neck and no chin
+- [ ] Wide lipless mouth-line spanning most of the head's width, curving up at the corners
+- [ ] Small eyes set low and wide near the mouth-line corners, with no other facial features besides the mouth
+- [ ] Skin colour reads slate-grey, blue-purple or pale — not uniform ink black
+- [ ] Body is extremely wide and barrel-chested relative to its height (human-scale height, not a giant)
+- [ ] If depicting a marked individual (e.g. Narloch), orca-style white eye-patch and white throat/belly against dark skin — not a flat single colour
+
+## Engine limits
+- A single-channel tint mask (the current head sprite's approach) cannot express the orca
+  eye-patch/white-throat countershading, or the white-striped variant Legends records —
+  that pattern needs new art or an additional render node, not a colour/gene change.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Herglic — canon article. Direct HTML is
   Cloudflare-walled; wikitext pulled via

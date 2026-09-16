@@ -141,6 +141,16 @@ colour drives.
   behind the body and pointing *up*. At RimWorld's top-down angle that is a reasonable
   projection of the same geometry, not an error.
 
+
+## Must show
+- [ ] Tapered inverted-cone body, hovering and legless, narrowing to a point at the bottom
+- [ ] Three long, multi-jointed arms radiating outward from the top rim, ending in pointed claw graspers
+- [ ] Small barrel/blaster appendage projecting from the bottom tip
+- [ ] Pale neutral grey-green (chrome-silver) body with red photoreceptor lens dots
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/K-X12_probe_droid — main article; wikitext pulled via

@@ -117,6 +117,22 @@ thin fingers.** The variable is hue, which runs **blue → grey-green → jade �
   Normal/Pointy/Wide variants** — a tall-forehead head, i.e. much closer to the canonical
   dome — but the head type the def actually points at is the plain `OR/…/Heads/Duros` one.
 
+## Must show
+- [ ] Tall, smooth cranium that swells upward and backward well past a human skull, narrowing to a small pinched chin (an inverted-teardrop head) — not a rounded human ovoid
+- [ ] Large almond eyes with a glowing orange-red iris and a horizontal slit pupil
+- [ ] No nose at all — at most a slight vertical ridge and a shallow depression beneath each eye
+- [ ] Lipless mouth: a narrow downturned slit with no lip roll
+- [ ] Totally bald, both sexes
+- [ ] Skin can be blue, grey-green, jade-green or pale celadon — not blue only
+
+## Engine limits
+- **The shipped head cannot show any skin colour at all.** `SW_HeadTypes.xml` sets
+  `useSkinShader: false` on both Duros head types with no `CutoutComplex` shader and no
+  `*m.png` colour mask file in the folder — measured pure greyscale (chroma spread 0) on
+  the current donor sprite. So none of the skin-colour genes (blue, green, or otherwise)
+  plausibly reach the face as things stand. ⚠️ This is an inference from def + texture
+  bytes, not an in-game observation — confirm in game before treating it as settled.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Duros — current canon; wikitext via

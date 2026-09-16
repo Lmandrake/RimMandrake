@@ -166,6 +166,20 @@ buildable. ⚠️ **Note the sprite is the Ualaq (four-eyed, furless) pattern, w
 text describes the furred two-eyed pattern** — the mod is internally inconsistent about
 which Aqualish it is depicting.
 
+## Must show
+- [ ] Two very large, round, glossy, domed black eyes set wide and low on a bald forehead
+- [ ] Completely bald, smooth, domed crown — never any hair on top
+- [ ] Two thick tusks curving down over the mouth, joined at the top into a two-lobed,
+  blunt, pale muzzle block (not sharp fangs)
+- [ ] No visible nose; nostril-like slits between and below the eyes
+- [ ] Cheek/jaw fur is not species-universal — the four-eyed Ualaq subspecies is entirely
+  hairless while others show a beard or side mane
+- [ ] Hand shape differs by subspecies: Aquala = digitless fins, Quara = five clawed
+  fingers, Ualaq = three-to-five fingered hairless hands
+
+## Engine limits
+none known
+
 ## Repo def versus canon — contradictions to report
 
 🔴 **`Hair_BaldOnly` + `Beard_NoBeardOnly` delete the feature the def's own description

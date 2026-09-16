@@ -105,6 +105,17 @@ ridge rather than glossy plate armor; enormous many-toothed jaw; ten legs
 across five pairs; long curling whip-tail; huge (building/vehicle scale) as
 established by the Mandalorian sequence and its ability to swallow a person.
 
+## Must show
+- [ ] Warm sandy tan/ochre coloring overall (desert camouflage) — no green, blue, or other saturated hue on the living creature
+- [ ] Weathered, cracked, pebbly/nodular hide with a row of low blunt dorsal spikes/ridges down the spine and tail — not smooth scale or glossy plate armor
+- [ ] An enormous elongated jaw packed with many long, narrow, backward-curving conical teeth
+- [ ] Ten legs across five pairs, thick and heavily muscled
+- [ ] A long tail that curls rather than dragging straight
+- [ ] Bright yellow-white acidic venom visible when spitting — the one strong saturated color on an otherwise monochrome-tan creature
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Greater_krayt_dragon (Wookieepedia, canon — main species article; fetched via MediaWiki API `action=parse&prop=wikitext`)
 - https://starwars.fandom.com/wiki/Krayt_dragon (Wookieepedia, canon — umbrella species article covering krayt dragons generally, including greater/leviathan subspecies and the Mandalorian/A New Hope history; fetched via MediaWiki API)

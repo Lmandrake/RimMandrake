@@ -42,6 +42,16 @@ designs. A reviewer should be aware the 1994 original sourcebook art (scaled,
 pangolin-like) looked nothing like either the donor sprite or the Disney
 Infinity figure.
 
+## Must show
+- [ ] Reddish-brown mottled body colouring, not scaled pangolin-grey
+- [ ] Cat/boar-like fanged face
+- [ ] Tall pointed ears (or horn-like projections)
+- [ ] Long spiked quill/horn projecting backward off the haunches/tail
+- [ ] Smooth mottled hide, not overlapping pointed pangolin-style scales
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Borcatu (Wookieepedia, fetched via the
   MediaWiki API `action=parse&prop=wikitext` endpoint, 2026-09-13)

@@ -66,6 +66,17 @@ sides (five pairs per the text; three pairs as actually modeled in
 *Republic Commando*). This is a small, floor-hugging arthropod — treat it as
 a scavenger/pest-scale creature, not anything human-sized.
 
+## Must show
+- [ ] Low, domed, segmented/ribbed shell (pillbug or hermit-crab silhouette)
+- [ ] Shell colour reddish-brown to maroon (the better-corroborated read; olive/khaki-brown is a secondary, less-corroborated variant)
+- [ ] Mottled tan/gold head with dark reddish spots
+- [ ] Dark, curved mandibles/tusks at the front
+- [ ] Bright yellow eyes
+- [ ] Many short jointed legs along the sides of the body
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Kreetle (Legends article, wikitext pulled
   2026-09-13 via `https://starwars.fandom.com/api.php?action=parse&page=Kreetle&format=json&prop=wikitext`)

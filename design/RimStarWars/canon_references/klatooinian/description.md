@@ -84,6 +84,17 @@ two features the infobox names as the species' distinctions.** Note also that
 `klatoonian/` folder and would give the short upturned muzzle, but the Klatooinian
 xenotype's own gene list does not include them.
 
+## Must show
+- [ ] Skin reads desaturated grey-green to olive (a mud-green, not bright green), with darker mottling in the creases
+- [ ] Heavy bony brow shelf runs straight across above the eyes and projects forward far enough to shadow them completely
+- [ ] Underbite: the lower jaw juts forward past the upper, with two small tusk-like teeth visible at the mouth corners, pointing up
+- [ ] Deep jowl folds run along the jaw line from below the ear to the chin
+- [ ] Small, dark, deep-set eyes lost under the brow shelf
+- [ ] Bald cranium — no hair on any of the three sourced individuals
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Klatooinian (Wookieepedia article; direct page HTML
   is Cloudflare-walled — wikitext pulled via

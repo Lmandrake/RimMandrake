@@ -74,6 +74,17 @@ art line up cleanly:
   the reference art, and the bicorn beak prongs are less pronounced/forked
   than in the references — worth sharpening on any redo, not a wrong hue.
 
+## Must show
+- [ ] Pterosaur-shaped body: long slender neck, elongated toothless beak, digit-supported membrane wings (not feathered), long thin tail
+- [ ] Blue-grey to slate-grey body coloring
+- [ ] Dark maroon/wine-red wing membranes
+- [ ] Pale tan/bone-colored beak, with the two-pronged (bicorn) hooked tip rendered gold or pale yellow
+- [ ] Red/orange eyes
+- [ ] Clawed hands/feet suited to perching and gripping (not a bird's talons)
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Dactillion (canon Wookieepedia article; page

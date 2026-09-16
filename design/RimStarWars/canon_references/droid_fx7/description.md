@@ -140,6 +140,17 @@ blue-grey barrel wearing a crown of rings, with spider-thin arms hanging out of 
   canon name **"FX-7 medical assistant droid"**. Not an art matter, but it will show in
   tooltips.
 
+
+## Must show
+- [ ] Legless, tapered vertical cylinder body, widest at a flared circular base pedestal
+- [ ] Steel blue-grey plating, not neutral grey
+- [ ] Dense vertical ribbing over the lower body (the folded arm bundle)
+- [ ] Stack of horizontal banded rings near the top, capped by a small domed sensor turret
+- [ ] At least one clawed instrument arm projecting past the body's outline
+
+## Engine limits
+The `skin` colour channel is set to identity white (`RGBA(255,255,255)`), a no-op tint — colour cannot be corrected through the def as it stands; the canon steel blue-grey requires a repaint.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/FX-7_medical_assistant_droid — wikitext via

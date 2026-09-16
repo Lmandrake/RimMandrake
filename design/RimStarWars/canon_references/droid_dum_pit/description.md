@@ -131,6 +131,18 @@ balanced on two sticks**, with two hairlines above it.
 - The purple **Scourge-infected** sensor variant is sourced but has **no repo art**, and
   nothing in this repo depicts the droid-pyramid behaviour.
 
+
+## Must show
+- [ ] Wide flared cone-shaped head, much wider than the body beneath it
+- [ ] One large black photoreceptor centred under the brim
+- [ ] Two long thin whip antennae rising from the crown
+- [ ] Rust-brown/copper weathered plating tint
+- [ ] Long thin arms hanging clear of the body, ending in three-fingered claws
+- [ ] Long legs with prominent ball knee-joints and broad flat splayed feet
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/DUM-series_pit_droid — main article; wikitext pulled via

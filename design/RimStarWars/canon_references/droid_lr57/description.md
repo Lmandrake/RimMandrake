@@ -174,6 +174,17 @@ strange — this droid is not humanoid.** What it shows:
   disk. Unlike the ball, though, the dormant state's art is nearly free: **two antennae and a
   patch of disturbed ground.**
 
+
+## Must show
+- [ ] Huge horizontal ribbed cylinder occupying roughly the top half of the whole droid, with no separate torso
+- [ ] Flat circular end-cap face carrying one large teardrop photoreceptor plus one small round one below it
+- [ ] Two long thin cannon arms projecting from the rear/underside, each ending in a fine double muzzle, projecting past the body's width
+- [ ] Two very long, whip-thin antennae rising vertically from the top of the cylinder
+- [ ] Warm mid-brown plating with darker brown shadow and rust-orange band accents
+
+## Engine limits
+`skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/LR-57_combat/retail_droid — canon article; wikitext via

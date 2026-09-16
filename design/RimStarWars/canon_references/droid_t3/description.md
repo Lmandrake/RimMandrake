@@ -144,6 +144,16 @@ geometry** — it is the clearest source for the four-leg arrangement. It is an 
 2406×974) and was **not viewed** in this pass; treat it as unverified-by-eye but retained
 because it is the only orthographic reference available.
 
+
+## Must show
+- [ ] One large main photoreceptor lens plus two smaller secondary lamps (three sensors total)
+- [ ] Broadcast antenna: thin hooked stalk rising off the back of the dome
+- [ ] Toroidal/dome head sitting low and wide over a blocky body
+- [ ] Brown-and-tan weathered plating, not white/cyan-tinted
+
+## Engine limits
+Only a single `skin` colour channel is defined — it can drive one hue, so it cannot express canon's two-tone brown-and-silver plating through tinting alone; a second channel or new art would be needed.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/T3-series_utility_droid — main article; text pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=T3-series_utility_droid&format=json&prop=wikitext`

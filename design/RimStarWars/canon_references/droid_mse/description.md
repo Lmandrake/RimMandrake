@@ -179,6 +179,19 @@ lightbar on top.**
 - **No repo art** for the grasping claws, the Scomp data probe, the open-interior/reprogrammable
   state, the Tagge Corporation gold emblem, or the four-large-wheel Polar mouse droid.
 
+
+## Must show
+- [ ] Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt
+- [ ] No eyes/photoreceptor visible anywhere — deliberately blank face
+- [ ] Wide, low silhouette much wider than tall (0.54 m by 0.25 m proportions)
+- [ ] Two comb-like sensor stalk arrays visible on the rear roof
+- [ ] Polished silver-grey trim strip along the base lip
+- [ ] Wheel bulge visible in the east/profile view
+
+## Engine limits
+Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, so editing this sprite changes two races.
+- The `skin` colour channel's `first` and `second` values are set identically (`RGBA(110,110,110,255)`), so no two-tone variation is available from the def as it stands — the whole droid tints as one flat colour.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/MSE-6_series_repair_droid — wikitext via

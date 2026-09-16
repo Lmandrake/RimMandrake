@@ -226,6 +226,16 @@ for a reference to draw from.
   holograms, reading a datapad, identifying clones by CT-number at range. It is a heavy-family
   combat pawn on disk, where canon is emphatic that T-1s **avoid the front lines**.
 
+
+## Must show
+- [ ] Visor head: wide flat helmet-like crown with a pair of horizontal slit photoreceptors behind a grille
+- [ ] Large dark vertically-ribbed rectangular grille filling the belly/lower chest
+- [ ] Boxy shoulder plates with visible round joint hubs
+- [ ] Weathered tan/bone plating over dark blue-grey
+
+## Engine limits
+`skinShader` is `Cutout` with no mask and no colour channel, so this chassis cannot roll a colour scheme even though canon states T-1s "often sported varying color schemes."
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/T-series_military_strategic_analysis_and_tactics_droid — the

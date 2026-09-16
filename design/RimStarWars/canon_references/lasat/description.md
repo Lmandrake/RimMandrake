@@ -104,6 +104,20 @@ infobox (1.2–1.9 m, thin fur, "large eyes for twilight vision") and matches
 nothing about the canon Lasat. **If a sprite ever comes back looking like this,
 it has been generated from the Legends article.**
 
+## Must show
+- [ ] Body is furred and tiger-striped — a desaturated grey-violet base coat with broad dark charcoal/near-black transverse bands, not a flat single colour
+- [ ] Ears are enormous, pointed, set high and wide on the skull, swept outward/upward with a visible tuft
+- [ ] Head is a deep, heavy muzzle (not a flat face), with a pronounced brow ridge and visible canines
+- [ ] Massive shoulders and chest tapering to a narrow waist, with large hands ending in black claws
+- [ ] Legs are digitigrade, with big splayed three-toed feet and black claws
+- [ ] Hue and stripe pattern vary by individual (no two Lasat identical) — not the flat-purple Jaro Tapal look or the gaunt, goggle-eyed Legends design
+
+## Engine limits
+- **Striping cannot be expressed by a single-channel tint mask.** A banded/patterned coat
+  needs art (multiple regions or a baked texture), not a flat skin-colour gene.
+- **Digitigrade legs with prehensile toes are a body-plan feature a human-skeleton RimWorld
+  pawn rig cannot express as things stand.**
+
 **Xenotype-versus-canon contradictions to fix:**
 
 - 🔴 **`RSW_CatharHead`.** The Lasat borrows the Cathar head. Cathar are a

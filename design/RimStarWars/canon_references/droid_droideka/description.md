@@ -144,6 +144,17 @@ tread surface. Nothing about the deployed sprite can be reused for the ball.
   Sniper (Legends) or Ultra Droideka. All nine are currently served by the one bronze
   deployed sprite.
 
+
+## Must show
+- [ ] Deployed (upright) form only — arched dorsal shell, spherical lower body, three splayed clawed legs
+- [ ] Three red photoreceptors on the head/stalk assembly
+- [ ] Two arm-mounted cannons held out to the sides
+- [ ] Dark bronze-brown (bronzium) plating, not white/light grey
+- [ ] Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizontal bar, single long sniper barrel, pale green-grey body with yellow trim
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Droideka — main article; wikitext pulled via

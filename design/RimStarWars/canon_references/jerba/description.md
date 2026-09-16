@@ -46,6 +46,17 @@ bantha art for the jerba (as a "smaller relative" placeholder), any dedicated
 jerba art should differentiate it with a visibly shaggier coat and smaller,
 straighter/ridged horns rather than the bantha's heavy curled horns.
 
+## Must show
+- [ ] Long, shaggy, unkempt coat — visibly longer and stringier than a bantha's, almost goat-like
+- [ ] Pair of short, forward-curving ridged horns — not large curled ram-spiral horns
+- [ ] Blunt, slightly undershot lower jaw with visible teeth
+- [ ] Coat colour reddish-brown to dark brown
+- [ ] Low-slung, sturdy quadruped body silhouette
+- [ ] Reads as smaller and more agile than a bantha, not a plain recolor of bantha art
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Jerba (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Jerba&prop=wikitext`,

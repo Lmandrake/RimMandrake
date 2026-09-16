@@ -149,6 +149,17 @@ Against `donor_current_sprite.png` (`GE3_body_south`, 512×512) and
   sharing `GE3_body` / `GE3_head` and differing only in colour and stats is precisely that. The
   invented part is only the word "labor" as a model name.
 
+
+## Must show
+- [ ] Weathered gunmetal/dull pewter plating with green-grey oxidation and brown grime, not gold and not clean
+- [ ] Black ribbed/segmented bellows at the upper arms, waist, upper thighs, and knees against pale hard plates
+- [ ] Keeled central breastplate with a vertical seam
+- [ ] Narrow tapered waist and separated legs on a lean humanoid silhouette
+- [ ] Head shows a large circular plate/disc on the crown, wide-set round photoreceptors, and a vertical ribbed grille mouth
+
+## Engine limits
+The protocol variant (GE3PD) defines no `colorChannels` block of its own and inherits whatever `DW_Family_Protocol` supplies, so its colour cannot be tuned independently of the parent family without adding an override.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/GE3-series_protocol_droid — main article; text pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=GE3-series_protocol_droid&format=json&prop=wikitext`

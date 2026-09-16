@@ -160,6 +160,17 @@ point of this chassis.** What it shows, and none of it survives into a RimWorld 
   canon states at **2.16 m**. Flagging, not fixing: if body size is doing any work as an
   in-world scale cue, this chassis is undersized relative to its own sourced height.
 
+
+## Must show
+- [ ] Near-black plating
+- [ ] Large, smoothly domed dorsal/shoulder carapace with an Imperial crest stencilled on the shoulder plate
+- [ ] Extreme limb length — arms hanging past the knee, legs with prominent exposed ring joints at knee and ankle
+- [ ] Small, smooth, egg-shaped head with two small round pale photoreceptors and a narrow slotted mouth grille
+- [ ] Thin gold arc accent on the shoulder carapace
+
+## Engine limits
+The forward-hunched stance is the chassis' defining posture and cannot be shown in a top-down sprite — it is structurally unavailable in this art format.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/KX-series_security_droid — main article; wikitext pulled via

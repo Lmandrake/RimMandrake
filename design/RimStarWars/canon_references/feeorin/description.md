@@ -67,6 +67,19 @@ head, no tendrils, no jaw, no skin. Whatever the mod renders for a Feeorin today
 file is not it, and the species' one defining feature (the tendril mass) has no art
 here at all. Do not treat this as evidence about anything except that art is owed.
 
+## Must show
+- [ ] A dense mass of thick, ropy tendrils (a dozen or more) erupting from the back/sides of the skull, hanging past the chest — the Nautolan-style arrangement
+- [ ] Tendrils are a distinctly paler, yellower green than the body — a two-tone head/tendril split, not one uniform colour
+- [ ] Bald, smooth, swept-back cranium, with tendril roots forming a raised collar around the back of the head
+- [ ] Heavily ridged face: strong brow, deep vertical/diagonal cheek creases, a heavy squared jaw, small deep-set eyes
+- [ ] Turquoise-cyan mottled body colour, not a flat single tone
+- [ ] Big, broad-shouldered, thick-limbed, visibly powerful/muscular build
+
+## Engine limits
+none known — the entry records no shader or mask constraint for this head; the current
+donor sprite is an essentially blank canvas (two eye marks only), which is a missing-art
+gap rather than a rendering constraint.
+
 ## Def-versus-canon (flagged)
 - 🔴 **`DiseaseFree` + `TotalHealing` are unsourced and enormous.** Canon says only
   that a unique metabolism made them **grow stronger with age rather than weaker**.

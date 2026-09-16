@@ -131,6 +131,21 @@ reverse emphasis — the **lobe is uniform skin colour** (it is skin) and the **
 the element that ramps, purple → yellow. Whoever corrects this should move the ramp
 onto the tip and flatten the lobe to skin value.
 
+## Must show
+- [ ] Two separate horn structures: upright primary horns (male only) rising from the top
+  of the skull, AND fleshy lateral head lobes (lethorns) hanging down each side that
+  terminate in a long tapering pendant tip
+- [ ] The lethorn lobes themselves are skin-coloured flesh, not horn material — only the
+  pendant tip is purple-to-yellow
+- [ ] Skin reads pale blue-grey to lavender/purple, heavily mottled with pale cream-yellow
+  patches — not a flat blue
+- [ ] Hairless, elongated cranial dome
+- [ ] Female lethorn lobes are shorter and blunter, curving forward to rounded tips near
+  the chin, with no long pendant tusk
+
+## Engine limits
+none known
+
 ## Repo def versus canon
 
 🔴 **The xenotype carries orange skin, and canon Chagrian skin has no orange in it.**

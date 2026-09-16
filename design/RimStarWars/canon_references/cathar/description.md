@@ -140,6 +140,23 @@ most defining canon feature — the projecting muzzle and mane — is not repres
   it alone to establish appearance.
 - `donor_current_sprite.png` — the shipped head mask. Evidence of the gap, not of canon.
 
+## Must show
+- [ ] Body fur golden-orange to yellow-brown, with darker shading over the muzzle, brow
+  and shoulders — no red, no grey
+- [ ] A true feline muzzle projecting forward from the face with a black nose pad and
+  visible fangs
+- [ ] A heavy, dark mane worn as thick ropes/dreadlocks, distinctly darker than the body
+  coat
+- [ ] Tufted, pointed, backswept ears
+- [ ] Amber/gold eyes with round pupils
+- [ ] Females have a flatter, more human face with long head-hair rather than a mane, and
+  no beard — not simply a smaller male
+
+## Engine limits
+Cathar striping (the sourced "dark stripes" over the gold-to-yellow-brown coat) cannot be
+expressed by a single-channel tint mask — a patterned two-tone coat needs painted art, not
+a colour-gene value.
+
 ## Def-versus-canon contradictions (report only — not fixed here)
 
 1. 🔴 **Skin-colour genes contain no gold or yellow, and add red and grey that nothing

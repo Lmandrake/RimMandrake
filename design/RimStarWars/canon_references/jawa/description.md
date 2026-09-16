@@ -107,6 +107,18 @@ the hood with a black void interior, the hem grammar, the crossed bandoliers —
 **does not exist as art yet.** For the player's own species that is the largest
 art gap in the roster.
 
+## Must show
+- [ ] Hood interior reads as a flat, featureless, opaque black void — no visible face, muzzle, chin or nose, only the two glowing eyes
+- [ ] Eyes are ovoid, close-set, no visible pupil or sclera structure, glowing yellow OR red-orange (either is correct)
+- [ ] Robe colour falls in the warm-brown to cold-dusty-grey-brown range, not bright saturated orange
+- [ ] Cowl is a soft fabric hood pulled forward over the brow, not a rigid cone
+- [ ] Hands are always covered — leather gloves or frayed cloth mitts — never bare skin
+- [ ] Gear worn as crossed bandoliers over the chest with pouches/tools, not a single belt
+
+## Engine limits
+none known — the missing hood/robe/bandolier art is a content gap (no sprite exists yet),
+not a rendering constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Jawa (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

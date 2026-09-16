@@ -229,6 +229,18 @@ slowest race in `Races_OuterRim.xml`, matching "march **slowly** across the batt
 Legends' generators-with-legs framing; and `combatPower 99999` on the PawnKindDef keeps the
 gonk out of raid-point selection, matching the Legends infobox `armament = None`.
 
+
+## Must show
+- [ ] Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)
+- [ ] Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet
+- [ ] No head, no arms, no lens, no neck — only an indicator panel as the "face"
+- [ ] Lit indicator panel with green/red or amber/orange lamps
+- [ ] Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body
+
+## Engine limits
+Both `skin` colour channels are set to the identical value (`RGBA(138,136,125,255)`), so the mask's separate upper-rim band renders exactly like the body — no two-tone is available from the def as it stands.
+- The indicator panel is masked black in the texture, so it can never be tinted or lit through the colour channels; any panel glow requires new art.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/GNK-series_power_droid — **canon** article; wikitext pulled

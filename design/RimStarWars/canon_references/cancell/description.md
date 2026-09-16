@@ -52,6 +52,15 @@ candidate image's palette well; the closest canon match for color is the Teth
 CGI render (red body, blue legs, green eyes) — a regen should push the donor's
 washed-out pink-tan toward that stronger red/blue/green palette.
 
+## Must show
+- [ ] Elongated, segmented dragonfly-like insectoid body
+- [ ] Two pairs of long, thin, translucent wings
+- [ ] Large compound eyes reading green
+- [ ] Body colour reads red/maroon with dark blue-black legs, not pale pink-tan
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Can-cell (Wookieepedia, fetched via the
   MediaWiki API `action=parse&prop=wikitext` endpoint, 2026-09-13)

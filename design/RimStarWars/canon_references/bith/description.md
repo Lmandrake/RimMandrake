@@ -158,6 +158,21 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
 - ⚠️ **The eyes are flat black discs** with no specular highlight, so they lose the wet
   glassy read that the canon text specifically calls out ("black, **glassy** eyes").
 
+## Must show
+- [ ] Huge, hairless, bulbous cranium swelling up and backward past the face (a heavy,
+  back-weighted teardrop, not a sphere or tall forehead)
+- [ ] Distinct vertical crease/furrow down the centre of the crown
+- [ ] Two very large, round, glossy, lidless black eyes set low and wide beneath the
+  cranial bulge
+- [ ] No nose — two vertical fleshy wrinkled folds run down the midface between the eyes
+  and the mouth
+- [ ] Small, thin-lipped, closed mouth with no fangs or visible teeth
+- [ ] No visible ears; skin reads pale (cream, bone, pale pink, or pale tan) — never dark
+  or brown
+
+## Engine limits
+none known
+
 ## Repo def versus canon — contradictions to report
 
 🔴 **`Skin_Melanin3` is a mid-brown human tone, and no Bith is brown.** Canon lists **cream,

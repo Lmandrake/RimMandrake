@@ -85,6 +85,17 @@ text/image mismatch on the core color family — brown-and-green is
 confirmed by every candidate image, just at different saturations and
 stylizations.
 
+## Must show
+- [ ] Broad, low-slung, thick pillar-like-legged quadruped body
+- [ ] Mottled brown-to-olive-green reptilian/amphibian hide
+- [ ] Pale cream/white underside and inner legs
+- [ ] Long, tapering cartilage tail
+- [ ] A single curved tusk jutting from the lower jaw
+- [ ] Broad feet with wide, splayed toes
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/api.php?action=parse&page=Fambaa&format=json&prop=wikitext
   (Wookieepedia current-canon page, wikitext pulled 2026-09-13)

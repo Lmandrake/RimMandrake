@@ -58,6 +58,19 @@ Two canon images, and they disagree about *colour* while agreeing completely abo
 races in this batch, no current mod art was captured for comparison, so nothing here
 validates or invalidates what the mod renders today.
 
+## Must show
+- [ ] Enormous, tall, upright bat-like ears, roughly as tall as the skull itself, thin
+  enough to read as translucent
+- [ ] Short, flat, forward-facing snout ending in a broad nose-pad (not a human nose)
+- [ ] Small mouth showing two prominent pointed upper incisors hanging over the lower lip
+- [ ] Big, round, forward-set eyes filling much of the face
+- [ ] Full body fur, with bare skin only on the ears, nose-pad, and palms/soles
+- [ ] Stocky, short-limbed body with a proportionally huge head relative to a roughly
+  one-metre stature
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged)
 - 🔴 **No dedicated head type gene.** The def builds the species from
   `RSW_Nose_SmallPig` + `Outland_Ears_Fleef` on `Body_Standard` — i.e. a human head

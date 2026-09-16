@@ -62,6 +62,16 @@ amphibian; tan/khaki-olive base coat with darker brown mottled spots; sail
 darker brown to near-black along its edge; toothy predator jaw; short legs;
 thick tail; desert/mudflat nesting habitat with a large speckled egg.
 
+## Must show
+- [ ] Dimetrodon-shaped body: squat, low-slung, thick tail, short stubby legs
+- [ ] Tall, rounded dorsal sail running most of the length of the spine
+- [ ] Tan/khaki-olive base coat with darker brown mottled spots
+- [ ] Sail colored darker brown-to-near-black at its trailing/upper edge, lighter tan at its base
+- [ ] Wide, toothy jaw with visible lower fangs
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Fanback (page; fetched via MediaWiki API
   `action=parse&prop=wikitext`, 2026-09-13, since the direct page URL

@@ -46,6 +46,18 @@ saturated red as the adult reference — closer to the reference's more muted
 juveniles. A regen should push the head toward a more vivid red and add the
 blue-toned eye patch.
 
+## Must show
+- [ ] Vivid red/crimson head and neck (adults)
+- [ ] Pale grey-blue patch of skin around the eye
+- [ ] Pale grey beak
+- [ ] Brown, ridged, feathered-looking body with a long neck
+- [ ] Sturdy clawed forelimbs used for foraging
+- [ ] Juveniles are smaller and more uniformly brown/olive, lacking the adult's vivid red
+  head
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Clodhopper (Wookieepedia, fetched via the
   MediaWiki API `action=parse&prop=wikitext` endpoint, 2026-09-13)

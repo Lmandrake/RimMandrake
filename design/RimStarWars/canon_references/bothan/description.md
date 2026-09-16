@@ -163,6 +163,27 @@ framing the cheeks and jaw**, and a **small dark triangular nose**. Three proble
 - ⚠️ **Eyes are plain human slots** rather than the small forward-set dark mammal eyes, and
   the fur ruff is a flat outline rather than the layered directional coat of the paintings.
 
+## Must show
+Canon fixes almost nothing here: no height, mass, skin colour, hair colour, eye colour or
+anatomical distinction is sourced for Bothans, and the one available reference book
+actively disowns the Legends silhouette. The items below are deliberately short and test
+only what is actually checkable — behaviour, and the constraints the sourced text and the
+disowned-art record impose even in the absence of a canon look.
+
+- [ ] No canon-attributed appearance claim is made — a sprite is not labelled "per canon"
+  for any physical trait, since none exists
+- [ ] If communication is represented at all, it is by growls (the one sourced canon
+  physical/behavioural fact) — expressed as behaviour/flavour, not as a visual feature
+- [ ] No tail is present — both available Legends references and the Legends text agree
+  the tail belongs only to Bothan/other-species hybrids, never to a full-blooded Bothan
+- [ ] If a beard or facial fur is shown, it can appear on either sex — Legends states
+  explicitly that both males and females sport beards, so it is not a male-only marker
+
+## Engine limits
+`useSkinShader: false` is set over the Bothan head's greyscale mask, so no skin/fur-colour
+gene can currently tint that face — the fur-colour findings in the visual brief cannot be
+expressed as a gene-driven tint on this head texture as things stand.
+
 ## Repo def versus canon — contradictions to report
 
 🔴 **The def's description is verbatim the Legends design that canon has X'd out.** It reads:

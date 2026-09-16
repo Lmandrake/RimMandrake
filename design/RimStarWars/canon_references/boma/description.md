@@ -43,6 +43,16 @@ squat with a stocky tail and blunt snouted head — this matches the small
 predatory-boma reading (image 1 and the infobox skincolor) well, and does
 not attempt the large-mount variant seen in image 2.
 
+## Must show
+- [ ] Squat, monstrous body with a wide face bearing 2 horns and 2 tusks
+- [ ] Thick, wrinkled, scaled hide reading green
+- [ ] Short, powerful, clawed legs
+- [ ] Low, bulldog/toad-like stance
+- [ ] Moderate-length tail
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Boma (Wookieepedia, text pulled via
   MediaWiki API `action=parse` 2026-09-13)
