@@ -1,6 +1,6 @@
 {
   "criterion": "Pre-filled on PROVENANCE — whether a sprite came through the restored painterly wave and whether it has a structural defect I could prove (wrong facing, duplicate file). That ranks pipeline-currency, NOT beauty. I have not judged whether any of these are good art, and the rows you overrule are the ones worth having built this for.",
-  "decidedCount": 9,
+  "decidedCount": 11,
   "decisions": {
     "anooba_f": {
       "at": "2026-09-16T04:20:17.376Z",
@@ -57,10 +57,16 @@
       "value": "keep"
     },
     "firehawk": {
+      "at": "2026-09-16T04:45:19.612Z",
+      "note": "Can we make this flap like a bird?",
       "prefilled": true,
       "value": "keep"
     },
     "firewasp": {
+      "at": "2026-09-16T04:44:39.573Z",
+      "decision": "rerender",
+      "note": "North is faing wrong",
+      "prefill": "keep",
       "prefilled": true,
       "value": "keep"
     },
@@ -108,6 +114,10 @@
       "prefill": ""
     },
     "mantistanis": {
+      "at": "2026-09-16T04:45:01.183Z",
+      "decision": "rerender",
+      "note": "Coloration varies between Eastn and N/S",
+      "prefill": "keep",
       "prefilled": true,
       "value": "keep"
     },
@@ -168,8 +178,8 @@
   ],
   "posture": "blacklist",
   "postureNote": "Default KEEP. Only rows you mark re-render / cut / needs-art are acted on.",
-  "savedAt": "2026-09-15T21:28:07-0700",
+  "savedAt": "2026-09-15T21:45:20-0700",
   "savedBy": "review-sheet-sidecar",
   "sheet": "pyrelands_art.html",
-  "writeCount": 39
+  "writeCount": 46
 }
