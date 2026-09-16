@@ -348,29 +348,37 @@ and it agrees with the owner's eye on Orray, Iriaz and Anooba-south.
 Anooba's north scores 0.84 while showing teeth to camera. That one needs something
 that looks at the image.
 
-### 🔴 The general test — owner, 2026-09-15
+### No facing may BE another facing — and what that test does and does not find
 
-> *"Take any one of the facings and look for strong similarity in the others or
-> simple rotations or vertical/horizontal flipping. Any of those now produce a
-> strong warning EXCEPT for the valid east/west relationship."*
+**✅ The identity case is the single highest-yield check in this skill.** Hash every
+facing and every variant; a match means a file was copied, not drawn. Measured
+2026-09-15, it found seven real pairs in one biome's roster: Anooba's male sprite
+is byte-identical to the female in **all three** facings, Nuna's male north and
+south are the female's, and GizkaW differs from Gizka on east alone. One of those
+*caused* an owner complaint he could only phrase as *"north and south aren't the
+right color"* — the colour was wrong because the file was the wrong animal's.
 
-**No facing may be another facing under any rigid transform.** Compare every pair
-across the eight dihedral transforms — identity, 90°, 180°, 270°, each with and
-without a flip. A strong match on any of them is a warning, because it means one
-view was manufactured from another instead of drawn.
+⛔ **The rotation/flip extension was measured and abandoned.** The idea was to
+catch a facing manufactured from another by testing all eight dihedral transforms
+(90/180/270, each with and without a flip), exempting east↔west since west
+legitimately *is* a flipped east. Across 84 within-set pairs, comparing at native
+scale over the union silhouette so shared transparency could not inflate the
+score, **nothing reached 0.90** — the whole corpus sits between 0.57 and 0.86.
+No defect here is a literal rotation of another facing.
 
-| pair | a strong match means | verdict |
-|---|---|---|
-| north ↔ south | a top-down rotation, or a copy | ⛔ warn |
-| north ↔ east | a profile reused as a rear view | ⛔ warn |
-| south ↔ east | a profile reused as a front view | ⛔ warn |
-| **east ↔ west** | **west is a horizontal flip of east** | ✅ **legitimate — the one exemption** |
+Three measurement traps burned on the way to that answer, all of which make the
+metric look like it works when it does not:
 
-🔑 This single rule subsumes three separate defects found by hand: byte-identical
-duplicates (identity match), top-down rotations (180° match), and lazy flips. It
-replaces a colour-difference heuristic that could not be calibrated — silhouette
-overlap alone is not enough, since Porg scores 0.86 rotated and Porg is a
-*correct* pair, so the comparison must be on image content, not outline.
+| what I did | why it lied |
+|---|---|
+| cropped each sprite to its own bbox and stretched both to 64×64 | destroys scale, so a wide profile and a narrow rear view look alike — Porg, a **correct** pair, scored 0.86 |
+| compared whole canvases at native scale | mostly-transparent 512×512 art matches on *emptiness*; every pair scored 0.83–0.98 |
+| `point(lambda v: 1 if …)` then `.convert("1")` | `convert("1")` thresholds at 128, so 1 → 0 and every IoU came out **0.00** on all 40 sets |
+
+🔑 The wrong views we actually have were drawn from the wrong angle, not
+manufactured — so **mirror symmetry catches them and exact-transform matching
+does not**. Keep the hash; do not add a fuzzy transform threshold without a corpus
+that separates.
 
 The full ruleset, both tiers, lives in
 `design/RimMandrake/art_review_facts_spec.md`.
