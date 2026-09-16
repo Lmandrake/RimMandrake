@@ -88,17 +88,17 @@ player actually sees walking around.
 | ✅ | `ithorian` | Ithorian | `RSW_RimMandrakeIthorian` | A | OutlanderCivil:A, Jawa_WildsteamClan:S |
 | ✅ | `jawa` | Jawa | `RSW_MandrakeJawa` | A | Jawa_IndigenousTribes:A, Jawa_HuttCartel:R |
 | ✅ | `klatooinian` | Klatoonian | `RSW_RimMandrakeKlatoonian` | A | Jawa_HuttCartel:A |
-| ⬜ | `lasat` | Lasat | `RSW_RimMandrakeLasat` | A | Jawa_WildsteamClan:A, TribeCivil:R |
-| ⬜ | `mon_calamari` | Mon Calamari | `RSW_RimMandrakeMonCalamari` | A | Jawa_DeepwaterCompact:A |
-| ⬜ | `nagai` | Nagai | `RSW_RimMandrakeNagai` | A | Pirate:A, TribeCivil:R |
-| ⬜ | `nautolan` | Nautolan | `RSW_RimMandrakeNautolan` | A | Jawa_DeepwaterCompact:A |
+| ✅ | `lasat` | Lasat | `RSW_RimMandrakeLasat` | A | Jawa_WildsteamClan:A, TribeCivil:R |
+| ✅ | `mon_calamari` | Mon Calamari | `RSW_RimMandrakeMonCalamari` | A | Jawa_DeepwaterCompact:A |
+| ✅ | `nagai` | Nagai | `RSW_RimMandrakeNagai` | A | Pirate:A, TribeCivil:R |
+| ✅ | `nautolan` | Nautolan | `RSW_RimMandrakeNautolan` | A | Jawa_DeepwaterCompact:A |
 | ✅ | `nikto` | Nikto | `RSW_RimMandrakeNikto` | A | Jawa_HuttCartel:A, Jawa_Junkers:S |
-| ⬜ | `pantoran` | Pantoran | `RSW_RimMandrakePantoran` | A | OutlanderCivil:A, Jawa_Junkers:R |
+| ✅ | `pantoran` | Pantoran | `RSW_RimMandrakePantoran` | A | OutlanderCivil:A, Jawa_Junkers:R |
 | ✅ | `quarren` | Quarren | `RSW_RimMandrakeQuarren` | A | Jawa_DeepwaterCompact:A |
 | ✅ | `tusken_raider` | Tusken | `RSW_RimMandrakeTusken` | A | TribeCivil:A |
 | ✅ | `wookiee` | Wookiee | `RSW_RimMandrakeWookiee` | A | Jawa_WildsteamClan:A |
-| ⬜ | `zygerrian` | Zygerrian | `RSW_RimMandrakeZygerrian` | A | Pirate:A, Jawa_HuttCartel:R, Jawa_Junkers:R |
-| ⬜ | `mirialan` | mirialan | `RSW_RimMandrakeMirialan` | A | OutlanderCivil:A |
+| ✅ | `zygerrian` | Zygerrian | `RSW_RimMandrakeZygerrian` | A | Pirate:A, Jawa_HuttCartel:R, Jawa_Junkers:R |
+| ✅ | `mirialan` | mirialan | `RSW_RimMandrakeMirialan` | A | OutlanderCivil:A |
 | ⬜ | `anzati` | Anzati | `RSW_RimMandrakeAnzati` | S | Pirate:S |
 | ⬜ | `aqualish` | Aqualish | `RSW_RimMandrakeAqualish` | S | Jawa_HuttCartel:S, Jawa_Junkers:S |
 | ⬜ | `bith` | Bith | `RSW_RimMandrakeBith` | S | Jawa_AscendantHelix:S, Jawa_DeepwaterCompact:R |
@@ -191,3 +191,78 @@ anatomical feature), `feeorin/donor_current_sprite.png` (an essentially blank 4 
 
 ⚠️ `chadra_fan/` has **no `donor_current_sprite.png`**, so nothing there compares canon
 against current mod art.
+
+### Batch — seven species, 2026-09-15 (second pass)
+
+`description.md` written for **all seven** assigned: `lasat`, `mirialan`,
+`mon_calamari`, `nagai`, `nautolan`, `pantoran`, `zygerrian`. Each carries a real
+defName from `RimMandrakeXenotypes.xml`, sourced text, a visual brief written from
+the images actually on disk, source URLs, per-image notes, and an empty `## ruling`.
+Wikitext came through **Fetcher** via `api.php?action=parse&…&prop=wikitext`
+(WebSearch is dead on this model group); image URLs were resolved with
+`api.php?action=query&prop=imageinfo` rather than guessed. **12 new reference images
+fetched** — `nagai` went 1 → 4 files, `lasat` 2 → 5, `pantoran` 3 → 5,
+`nautolan` 3 → 4, `mon_calamari` 4 → 5, `zygerrian` 4 → 5.
+
+**The `/Legends` page-title trap fired twice**: `Nagai` and `Zygerrian` both have
+canon pages with **no usable Biology section** (Nagai is a 6.5 KB stub; Zygerrian
+opens straight into *History*), and all their biology lives on `/Legends`.
+
+**Mislabelled-image check done**: md5-compared every file in `mon_calamari/` against
+every file in `rakata/` — **no overlap**, so the known-bad
+`File:RakatanOnMonCala-2015StarWars48.jpg` (held in `rakata/` as
+`wookieepedia_comic_closeup.jpg`) has not leaked in. Recorded in the Mon Calamari
+entry, along with the note that the Mon Calamari article *legitimately* cites
+*Star Wars* (2015) 48 for the "green" skin colour — so that issue number in a
+citation is not itself a contamination signal.
+
+**Def-versus-canon defects found (the highest-value output of this pass):**
+
+- 🔴 `RSW_RimMandrakeZygerrian` has **`Skin_DeepRed` + `Outland_Skin_Red`** where canon
+  skin is a **single entry, "Light"** ("sallow complexions" in Legends). No reference
+  shows red skin. Red is a canon *fur* colour only. Its **ear-horns** (from the
+  "evolved from a horned sentient canine species" ancestry, plainly visible on Atai
+  Molec) are absent, and `RSW_Ears_BigCat` is a **2.4 KB pair of small flat triangles**
+  against ears that are as tall as the face. Fangs and claws are in the def's own
+  description and in no gene.
+- 🔴 `RSW_RimMandrakeNagai` sets **`Eyes_Gray`** — the **Legends** colour. **Canon eye
+  colour is RED**, one of only five facts the canon stub states, and two of the three
+  usable images show red or red-amber. Its canonical **"face markings unique to each
+  member"** are unrepresented. Its `<description>` calls the species *"aggressive,
+  honor-bound"*, which appears in neither article.
+- 🔴 `RSW_RimMandrakeLasat`'s **`<description>` is the single character `e`** — a
+  placeholder shipping as the in-game tooltip. It borrows `RSW_CatharHead` (a *feline*
+  head for a deep-muzzled, bat-eared species classed only as `humanoid`), and **nothing
+  expresses the striping** even though canon states *"no two Lasat had the same
+  striping."* Also carries unsourced `WoundHealing_Slow` + `Superclotting`.
+- 🔴 **Amphibiousness is absent from BOTH aquatic species.**
+  `RSW_RimMandrakeMonCalamari` and `RSW_RimMandrakeNautolan` are classed
+  `amphibious humanoid` / `amphibian` with `aquatic` habitat, and no gene in either
+  def touches water-breathing. Mon Cal additionally loses its **hibernation
+  shell / biostasis** ability and its **skin-dries-out-of-water** vulnerability.
+- 🔴 `RSW_RimMandrakeNautolan` has **`MinTemp_SmallIncrease` + `MaxTemp_SmallDecrease`**,
+  narrowing the comfort band at both ends, against a species canon describes twice as
+  **"capable of surviving in extreme environments."** Backwards.
+- 🔴 `RSW_RimMandrakePantoran` is missing its sourced **exceptional hearing** (stated in
+  dialogue) and has **no eye-colour gene** — even though the article uses **eye colour
+  as the discriminator between Pantorans (gold) and Chiss (red)**, and both close-up
+  references show gold. Carries unsourced `Immunity_Weak`, `Beauty_Pretty`,
+  `Turn_Gene_HighBeautyStandard`.
+- 🔴 `RSW_RimMandrakeMirialan`'s **centuries-long lifespan is sourced canon and has no
+  gene.** Its `MinTemp_SmallIncrease` may be backwards — **Mirial is a COLD desert** —
+  and wants checking against the gene def.
+- ⚠️ `RSW_RimMandrakeMonCalamari` uses **`nameMaker = RSW_KoTOR_NamerQuarren`** — the
+  namer of the rival species it shares a homeworld with. Also carries
+  `Outland_DeceleratedPregnancy` against canon Mon Cal **spawning many offspring**, and
+  unsourced `KindInstinct`.
+
+**Positive findings worth keeping** (not everything is broken): `RSW_MirialanHead`
+already bakes canonically-placed geometric diamond markings into its greyscale mask;
+`RSW_PantoranHead` bakes its eye markings in as **real gold**, which is canon-correct
+and must not be "fixed" to greyscale; and `RSW_Beard_chinspines` is an exact match for
+the Zygerrian bony chin spurs.
+
+⚠️ **Two wikitext fetches hit Fetcher's 50,000-char cap and are TRUNCATED**:
+`Mon_Calamari` and `Zygerrian/Legends`. Both infoboxes and both *Biology and
+appearance* sections are inside the retrieved portion; everything below is **UNREAD,
+not absent**, and both entries say so.
