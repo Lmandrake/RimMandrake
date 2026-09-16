@@ -473,3 +473,41 @@ first-hand reads. The **vanilla depth-tier claim and Alpha Biomes' active status
 several independently-dated repo artifacts** (frozen-dump comments citing `Terrain_Water.xml` with
 line numbers, real BiomeDef tile assignments, working patches against those defNames) — which is
 strong, and is still not a fresh `measure`. Re-verify both on the Desktop before art work starts.
+
+## 14. Rulings — owner, 2026-09-16, second sitting
+
+**5. Fill is THREE TIERS, reusing vanilla's depth terrains.** Trace/shallow → half/chest-deep →
+brimming/deep. The edge-aware ramp art, the wade-depth reading and the movement cost all come from
+terrain that already ships (§13), and a tier *is* a volume, so the stock model quantises for free.
+Supersedes §13's framing of this as an open question, and answers open question 1.
+
+**6. A canal draining on its own RETURNS its volume to the source.** Symmetry with fill-in
+displacement. Conservation of mass is therefore near-total, with **exactly one exception in the whole
+design**: overflow when displaced liquid has nowhere to go (§5). Answers the open half of question 3.
+⚠️ Consequence he accepted: this removes most of the cost of a mistake, so "bank the source until a
+raid is inbound" is a weaker decision than it was under a lossy model. If the defense loop later feels
+slack, this is the line to revisit first — not the budget.
+
+**7. Burning consumes the liquid, but VERY slowly — with numbers.** His words:
+
+> *"Yes, but VERY slowly. Going down 1 'fullness' level of the canal should take a day, and thus for
+> sources going down 1 level should take 5 days (5:1 density argument again). Thus, for a small burning
+> moat, you may be able to pump/pipe liquid into it from a larger (non-burning) source to keep it
+> indefinitely filling, because the source is replenishing. A natural source connected off-screen can
+> effectively burn forever (a very very long time, as we ruled before... some large number)."*
+
+So burn is a **rate on the tier ladder of ruling 5**, not a timer:
+
+- one canal cell loses **one fill tier per day** while alight ⇒ a brimming cell burns ~3 days;
+- a source loses one level per **5 days**, the same 5:1 density relation as the supply budget;
+- therefore a **small moat fed by a larger source burns indefinitely**, because inflow outpaces burn —
+  that is a designed outcome, not a leak, and it makes piping liquid to a burning moat a real tactic;
+- a **limitless source burns effectively forever.**
+
+🔑 This is the first mechanic whose numbers come from the tier ladder, which means ruling 5 is now
+load-bearing for ruling 7 — a change to the tier count changes burn duration. Say so in the settings
+screen rather than letting a slider move two things silently.
+
+⚠️ One open implementation point: he said a limitless source is *"some large number"*, while §5
+recommends a sentinel flag instead. Both give identical play; the flag avoids serialising and
+rendering a magic number. Treated as an implementation detail unless he wants the literal.
