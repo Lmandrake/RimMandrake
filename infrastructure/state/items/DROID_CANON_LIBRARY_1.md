@@ -94,6 +94,15 @@ fix, and they are neither cosmetic nor def changes.
    — which has a blank manufacturer — carries the chassis. Backwards.
 4. **Two repo donors are absent from the index entirely:**
    `RSW_DW_Race_OuterRim_SuperTacticalDroid` and `RSW_DW_Race_OuterRim_TacticalDroid`.
+5. **The continuity column is wrong on at least four rows.** B1-A, K-X12 and R-8009 are all
+   marked `canon` while their articles carry the Legends flag, joining `:1650`. Of the rows
+   checked closely, only AQ was graded correctly — so continuity should be treated as
+   unreliable across the whole index until re-derived, not just on these four.
+
+**GNK's two rows are correct as they stand.** Canon treats GNK power droid and GNK-series power
+droid as **one droid across a continuity fork** — each article names the other in its `{{Top}}`
+template, which is Wookieepedia's convention for exactly this. Both rows stay; both map to one
+repo chassis.
 
 ## More droid findings
 
@@ -108,6 +117,22 @@ fix, and they are neither cosmetic nor def changes.
 - **Folded forms are absent everywhere**: the Pistoeka sprite shows only the deployed form and
   the folded sphere exists nowhere on disk, matching the droideka's missing ball and DUM's
   truncated arms.
+
+- **Colour channels wasted or misused.** GNK sets both colour channels to the same value, so
+  its two-tone mask does nothing, and its indicator panel is masked black and never lights,
+  though canon lights it amber, green or red. B1A is tinted pale blue-grey where all canon art
+  is tan with rust-orange — and the plain B1 **in the same file** already carries the correct
+  tan. The K-X12 assassin variant's photoreceptors are **magenta**, where canon is red and the
+  utility variant is correctly red.
+- **AQ's sprite is dark charcoal against a canon pale grey-white with teal accents**, and it has
+  no mask or colour channels at all — so that one is a repaint, not a def edit.
+- 🔑 **A canon trap worth knowing:** GNK's `sensor = Purple` is **conditional on Scourge
+  infection.** A naive read of the infobox gives every gonk droid purple eyes.
+- **Orphan art found:** `Textures/KotOR/Droid/gonk/` is referenced by no def anywhere in the
+  repo — and it is **the better of the two gonk assets.** Worth wiring up rather than
+  regenerating.
+- **AQ carries `CompDroidDetonation` with `energyDensity 0`**, which contradicts the rule stated
+  in its own rollout comment.
 
 ✅ **Genuine matches worth protecting from a future "fix":** KX's `RGBA(20,20,20)` tint;
 LR-57's `MoveSpeed` 1.7 against canon "sluggish"; three photoreceptors on both super-tactical
