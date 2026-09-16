@@ -229,7 +229,6 @@ slowest race in `Races_OuterRim.xml`, matching "march **slowly** across the batt
 Legends' generators-with-legs framing; and `combatPower 99999` on the PawnKindDef keeps the
 gonk out of raid-point selection, matching the Legends infobox `armament = None`.
 
-
 ## Must show
 - [ ] Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)
 - [ ] Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet

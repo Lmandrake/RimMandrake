@@ -129,6 +129,16 @@ makes the tattoos **clan- and family-specific and only present on some individua
   present on only *some* individuals; and the speculative different-visual-spectrum
   line (which should stay speculative).
 
+## Must show
+- [ ] Pale, cool, desaturated periwinkle/ice blue skin — not a saturated primary blue and not teal
+- [ ] Striking gold/yellow eyes
+- [ ] Fully human proportions and features (human nose, ears, hands, build) — appearance work is skin hue, eye colour, facial markings and hair, nothing structural
+- [ ] Where facial tattoos are present, they read as simple, sparse marks — gold is one canonical colour, but light blue-white and more elaborate (non-facial) linework are also canonical; not every Pantoran has them
+- [ ] Head hair (and, on males, facial hair) in white, black, or a pastel shade such as blue or lavender
+
+## Engine limits
+none known — the current `RSW_PantoranHead` mask already bakes in real gold facial markings correctly, so nothing here needs a shader or asset fix.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Pantoran (canon article; direct HTML is

@@ -70,6 +70,16 @@ the earlier "generic brown" mistake that motivated this reference library. Use t
 donor sprite only as a confirmation of palette/silhouette translation into game style,
 not as the canon anchor — the Bestiary painting is.
 
+## Must show
+- [ ] Flat, oval/lily-pad-shaped body held at the water's surface, olive-to-yellow-green with scattered purple/magenta round spots
+- [ ] A cluster of long, thin, pink (sometimes magenta-red) tendrils sprouting from the head/nape — the single most distinctive silhouette feature
+- [ ] A small dark purple beak and light brown/amber eyes on the flat head
+- [ ] Pale, semi-translucent green-gray paddle-like clawed legs (three pairs) visible below the flat top, claws tipped violet/purple
+- [ ] A long, fluked (fish-tail-shaped) tail trailing behind, same green base with occasional purple spotting
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Ollopom (Wookieepedia article, wikitext pulled via `https://starwars.fandom.com/api.php?action=parse&page=Ollopom&format=json&prop=wikitext`)
 - https://starwars.fandom.com/wiki/Category:Images_of_ollopoms (image inventory)

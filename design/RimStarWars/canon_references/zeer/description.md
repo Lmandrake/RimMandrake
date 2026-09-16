@@ -50,6 +50,15 @@ is not present anywhere on this machine's disk (Workshop cache or common
 Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
+## Must show
+- [ ] Long thin neck with a small head atop it (giraffe-like silhouette)
+- [ ] Long thin legs and a long thin tail, in giraffe-like proportion — not stocky
+- [ ] Tawny/tan base coat with dark rust-brown crosswise, tiger-style banding/striping on the neck, shoulders and legs — not giraffe-style blotches
+- [ ] A pair of pale, thin, curved horns swept back from the top of the head — not a single thick ridged horn
+
+## Engine limits
+none known — no donor mod screenshot or sprite could be obtained at all (the donor mod is not present anywhere on this machine's disk), so there is nothing on disk to test against a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Zeer/Legends (Wookieepedia article text,
   pulled via

@@ -157,6 +157,17 @@ jaw hardware rather than as the hanging barbels they should be. It also cannot s
 **long sinuous neck**, and there is **no Pyke body art on disk**, so the lanky proportion is
 unrepresented. `Normal_east.png` and `Normal_north.png` exist alongside it.
 
+## Must show
+- [ ] Pale white-blue, smooth, glossy, faintly veined cranium swelling up and back into a backswept, tapered point — bare skin, not a helmet
+- [ ] An undersized face sitting low on the front of that skull
+- [ ] Large, slanted, almond-shaped eyes (colour may be blue, magenta, purple, amber-brown or black)
+- [ ] Fleshy, tapering barbels hanging from both corners of the jaw
+- [ ] A broad, down-turned, lipless mouth slit, with small pointed ear-fin flaps at each side of the head near eye level
+- [ ] Two body forms exist: a tall, lanky, sinuous-necked form, and a short-necked, bloated, piscine form — a fitted cowl over the cranium and a separate respirator face mask (goggles + mouth tube) are both worn gear, not the Pyke's own face
+
+## Engine limits
+none known — the donor head is a correctly-tinted greyscale mask; the missing barbels, mouth and ear flaps are absent art, not a pipeline limitation.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Pyke — canon article. Direct HTML is Cloudflare-walled;
   wikitext pulled via

@@ -176,6 +176,17 @@ untinted for want of a mask, an eighteen-gene skin-colour palette would land on 
 grey-white head above a coloured body. **I could not settle this from disk — it needs one
 look in game.** Flagging the asymmetry, not asserting the bug.
 
+## Must show
+- [ ] Two lekku emerging from the crown/back of the skull, smooth and completely unbanded — no transverse stripes
+- [ ] Lekku are the same colour as the facial skin, or only very slightly darker — never a contrasting hue
+- [ ] Any lekku markings read as soft mottled blotches or patches, never regular transverse bands (banding is the Togruta cue, not Twi'lek)
+- [ ] No montrals and no horns anywhere on the head
+- [ ] Face is near-human: human eyes with visible whites, human nose, mouth and lips, no muzzle
+- [ ] Skin colour range includes cream/pale/tan individuals, not saturated hues only
+
+## Engine limits
+- All four Twi'lek `HeadTypeDef`s set `useSkinShader: false` and the Twi'lek head folder has **zero** `_m.png` mask files (measured) — unlike the Togruta heads, which set the same flag but ship a full mask set. If the heads render untinted for want of a mask, the xenotype's eighteen-gene skin-colour palette cannot reach the face at all, landing a grey-white head above a coloured body. Flagged in the entry as needing one in-game check before it is treated as confirmed.
+
 ## 🔴 Def-versus-canon contradictions found
 
 Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.

@@ -149,7 +149,6 @@ Against `donor_current_sprite.png` (`GE3_body_south`, 512×512) and
   sharing `GE3_body` / `GE3_head` and differing only in colour and stats is precisely that. The
   invented part is only the word "labor" as a model name.
 
-
 ## Must show
 - [ ] Weathered gunmetal/dull pewter plating with green-grey oxidation and brown grime, not gold and not clean
 - [ ] Black ribbed/segmented bellows at the upper arms, waist, upper thighs, and knees against pale hard plates

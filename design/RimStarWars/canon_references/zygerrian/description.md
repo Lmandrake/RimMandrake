@@ -163,6 +163,16 @@ black-outlined triangular cat ears. Against the references:
 - **Not representable, and worth recording rather than hiding**: the pronounced accent,
   the obesity variation, and "sallow complexion" as distinct from a flat light skin.
 
+## Must show
+- [ ] Skin is a single pale "Light" tone (pale pink-mauve through tan/grey-brown) — never red
+- [ ] Ears are enormous, broad, tall, upright, cupped forward, with visible internal cartilage ridging, rising well above the crown and roughly as tall as the face — not small triangular cat ears
+- [ ] Each ear carries a dark grey-black horn spur on its leading edge
+- [ ] Three bony grey spurs project downward from the chin (male-only; females have smooth cheeks)
+- [ ] Long fangs jut from the jaw and claws extend from the hands
+
+## Engine limits
+none known — every finding recorded here (red rather than "Light" skin, an undersized cat-ear attachment, missing ear-horns, missing fangs and claws) is attributed to specific gene/def choices, not to a rendering-pipeline constraint.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Zygerrian (canon article, **history-first with no

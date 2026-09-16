@@ -122,6 +122,16 @@ own: it renders from `RSW_Head_Bone`, which forces `RSW_Male_HeavyBoneNormal` /
 from the Feeorin**. Nothing in this repo lets canon be compared against the sprite
 that actually appears in game.
 
+## Must show
+- [ ] Saturated blood-red skin (deep crimson), with a pink-mauve variant also attested for some individuals
+- [ ] Eyes read as glowing white/blank with no visible iris or pupil in one reference, or white with small dark pupils in another — not simply a flat yellow disc
+- [ ] Long, horizontal cheek tendrils sweeping outward from the cheekbones, extending well past the width of the head — not a short chin-goatee
+- [ ] A single heavy central chin tendril hanging below the mouth, in addition to the paired cheek tendrils, at least sometimes ring/clasp-ornamented
+- [ ] Fully hooded priestly robes with gold trim — crown, cranial horns and baldness are not settled by any reference image, since every one is hooded
+
+## Engine limits
+none known
+
 ## Def-versus-canon (flagged — not fixed)
 
 `RSW_RimMandrakeSithKissaiPureblood` is the **best-formed of the three Sith

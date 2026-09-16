@@ -174,7 +174,6 @@ RimWorld pawn can never depict.
   RimWorld-native equivalents the canon text actually supports are **swarm counts (up to seven
   per missile)**, **dismantling other droids**, and **being killed by a single hit to the eye.**
 
-
 ## Must show
 - [ ] Deployed form only: two shell halves opened wide and held high to each side, outer faces mottled olive-khaki with dark grey ribbing
 - [ ] Compact dark near-black central body with a thin whip antenna rising from the top

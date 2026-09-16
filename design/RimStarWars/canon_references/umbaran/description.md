@@ -156,6 +156,17 @@ canon trait — ultraviolet vision — is given as `DarkVision` here and given *
 all** on `RSW_RimMandrakeKaminoan`, though the Kaminoan canon infobox lists it as that
 species' sole distinction.
 
+## Must show
+- [ ] Skin is a pale, desaturated lavender/lilac-violet (from the evenly-lit infobox), not grey and not green (battlefield-lit screencaps are not evidence of skin colour)
+- [ ] Gaunt, emaciated face: hollow cheeks, high hard cheekbones, a long narrow jaw tapering to a pointed chin, prominent brow
+- [ ] Dark-grey, hard-edged domino-style markings around the eye sockets are an available option (varies by individual — strongly present on some, nearly absent on others)
+- [ ] Eyes are pale/low-saturation but structurally normal, with a visible iris and pupil — never a blank solid-white eye
+- [ ] Hair is a real option, either silver-white and slicked straight back OR bald — not forced bald on every individual
+- [ ] Tall, slender, long-limbed, narrow-shouldered near-human build with no structural change from human
+
+## Engine limits
+none known — every finding in this entry (forced baldness, grey rather than violet skin, solid-white rather than structured eyes) is attributed to a specific gene choice (`Hair_BaldOnly`, `Skin_LightGray`, `Outland_Eye_White`) on a species built entirely from generic genes, not to a rendering-pipeline constraint.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Umbaran — canon article. HTML is Cloudflare-walled;

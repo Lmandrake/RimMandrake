@@ -38,6 +38,16 @@ only for unobstructed body-plan/proportion detail (leg count, snout length, tail
 No image shows a metal tail cap in clear detail, so that detail is text-only, unverified
 visually in this candidate set.
 
+## Must show
+- [ ] Heavy-bodied, low-slung quadruped stance with a long, alligator-like snout
+- [ ] Small eyes set high on the head
+- [ ] Thick, wrinkled/tuberculate reptilian hide — leathery/pebbled, not hard-scaled plates
+- [ ] Stubby, powerful legs with clawed toes
+- [ ] Sandy tan-brown to olive-grey mottled coloration — no bright colours
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Orray (Wookieepedia article; fetched via
   https://starwars.fandom.com/api.php?action=parse&page=Orray&format=json&prop=wikitext )

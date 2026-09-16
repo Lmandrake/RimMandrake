@@ -101,6 +101,17 @@ canon, and means the beard cannot appear. **Nothing on disk supplies the
 directional shaggy coat over the body**, the retractable claws, or the lighter
 face mask.
 
+## Must show
+- [ ] Long, shaggy, directional coat that falls downward and outward, longest at the shoulders, upper arms, chest and thighs — not a uniform plush
+- [ ] Face reads as a lighter-coloured, short-haired mask distinct from the darker body coat
+- [ ] Coat colour is mid warm brown (or grey-brown) with darker roots and lighter tips
+- [ ] Plantigrade legs — a long flat sole with five toes, not digitigrade
+- [ ] Prognathous muzzle/jaw with large canines visible under the beard
+- [ ] Retractable claws that sheath into the finger, not permanently protruding talons
+
+## Engine limits
+none known — the donor sprite is one of the better ones in the library (a dedicated Wookiee head with the right big, brown, fur-skinned build); the entry attributes the missing beard, directional coat, claws and face mask to gene choices (`Hair_BaldOnly` forcing every Wookiee beardless) and absent art, not to a pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Wookiee (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

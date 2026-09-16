@@ -176,6 +176,16 @@ difference is checkable.
   - **`Body_Standard`** is right. Legends' 1.8 m and the human build in both images support it,
     and it avoids the invented body-size genes that mar the Kaleesh and Mimbanese defs.
 
+## Must show
+- [ ] Crown of short, blunt, cream-ivory horns (stumped cones, not tall spikes) arcing across the brow and around the head, distinctly paler than the surrounding skin
+- [ ] Otherwise entirely human face structure (human nose, mouth, ears, eye placement) on pale tan/sallow yellow-ochre skin
+- [ ] Fine, hairline-weight dark tattoo lines on the chin and lower cheeks in a symmetric pattern — not bold blocks
+- [ ] Horns read as rigid, bone-coloured cranial projections rooted directly in the skull (real cranial projections, not skin growths or attachments)
+- [ ] Hair may be long, straight and black (as on the canonical male Eeth Koth) OR bald — not forced bald on every male
+
+## Engine limits
+none known — every finding recorded for this def (forced male baldness, grey as the only hair colour, no second-heart gene) is a gene/def choice, not a rendering-pipeline constraint; the existing `RSW_Headbone_zabrak` horn gene and `RSW_FacialRidges_iridonian` tattoo gene are both recorded as well-matched art.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Zabrak — canon **species** article; rendered HTML is
   Cloudflare-walled, wikitext pulled via

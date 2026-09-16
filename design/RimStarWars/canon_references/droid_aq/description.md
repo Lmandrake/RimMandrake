@@ -189,7 +189,6 @@ Separatist amphibious asset stranded where its whole design is pointless — but
 **conscious** choice, and the owner's ruling, not an accident of which donor mod happened to
 carry the sprite.
 
-
 ## Must show
 - [ ] Pale grey-white plating with teal/blue-green accent panels, not solid grey or solid blue
 - [ ] Bright red visor slit/lens visible in the small polygonal head

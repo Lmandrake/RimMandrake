@@ -57,6 +57,17 @@ silhouette (round egg shape, big head, tiny legs, short wings) and the
 white belly / dark back split are otherwise correctly captured by the donor
 sprite.
 
+## Must show
+- [ ] Round, egg/teardrop-shaped body with a disproportionately large head-to-body ratio
+- [ ] Huge, black-pupiled eyes dominating the face
+- [ ] Flat, BEAKLESS face — only a small nostril bump, no protruding beak shape
+- [ ] Short, furry-looking stub wings held close to the body
+- [ ] Thin orange legs with webbed feet tucked almost entirely under the round belly
+- [ ] White/cream face and underbelly, gray-to-brown mottled back and wings, warm orange-tan cheek/eye patches
+
+## Engine limits
+none known
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Porg (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Porg&prop=wikitext`,

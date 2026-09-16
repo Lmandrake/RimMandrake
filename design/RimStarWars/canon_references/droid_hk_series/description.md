@@ -175,7 +175,6 @@ Against the canon images the sprite silhouette is **broadly right and specifical
   reference and is the tallest/thinnest of the three; it is a guide-illustration plate rather
   than a game render.
 
-
 ## Must show
 - [ ] Rust-red/copper plating (HK-47/HK-series) with glowing yellow-orange photoreceptors
 - [ ] Narrow, vertically elongated, faceted wedge skull with a pronounced brow ridge and two photoreceptors set close together

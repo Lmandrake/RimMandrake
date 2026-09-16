@@ -82,6 +82,16 @@ recognizable Weequay feature — the one heavy topknot — cannot appear at all*
 the four hair-colour genes present alongside it have nothing to colour. **Nothing
 on disk supplies the cracked-hide surface texture either.**
 
+## Must show
+- [ ] Skin is a desaturated grey-brown putty colour (like dried clay/weathered leather), not blue, red or yellow
+- [ ] Deeply creased, furrowed, cracked-hide texture over the whole face and cranium — a whole-surface texture, not age wrinkles
+- [ ] Bald, high, domed cranium with one thick coarse topknot/ponytail growing from the back of the skull and hanging forward past the chest
+- [ ] Small, dark, deep-set eyes under a heavy creased brow
+- [ ] Small nodules/bumps scattered along the jaw (not true, tall horns)
+
+## Engine limits
+none known — the donor evidence shows the jaw nodules and grey-brown skin are already wired via existing genes; the missing topknot is attributed to the `Hair_BaldOnly` gene forcing every Weequay bald, and the missing cracked-hide texture to an absent head sprite, not to a pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Weequay (Wookieepedia article; direct page HTML is
   Cloudflare-walled — wikitext pulled via

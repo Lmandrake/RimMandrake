@@ -170,6 +170,17 @@ a live-action close-up):
   confirms the grey end of the canonical colour range plus the vertical jaw ridges. This is
   also the image that disproves "all Neimoidians are cowards."
 
+## Must show
+- [ ] Tall, narrow, vertically-elongated skull that tapers downward from a domed brow to a small chin — NOT a horned/mitred cone shape (that shape is a hat, worn over the head, and varies per individual)
+- [ ] Smooth, soft, mottled grey-green skin, heavily creased (long vertical cheek creases, crow's-feet, brow furrows) — never scaled
+- [ ] Large, wide-set, deep-set red-orange eyes with a horizontally-split pupil (a dark horizontal bar across the iris)
+- [ ] Noseless face — no nose bridge, at most small dark nostril holes low on the centre line
+- [ ] Small, thin-lipped, downturned mouth with several short vertical ridges on the chin/jaw below it
+- [ ] Long, thin, bony hands with five pointed fingers and prominent knuckles, often held clasped or steepled in a stooped, cringing posture
+
+## Engine limits
+none known
+
 **There is no Neimoidian head or body art in the repo** — the only Neimoidian texture on
 disk is `RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Neimoidian.png`, a UI icon, and
 the xenotype borrows `RSW_DurosHead`. **No `donor_current_sprite.png` is included**, because

@@ -108,7 +108,6 @@ red sensor/chest light. Palette matches canon "dull silver".
 - **No repo art exists** for the buzzsaw, chainsaw, grapple, groundmech or mercenary
   sentry variants, nor for the cortosis C-B3.
 
-
 ## Must show
 - [ ] Grey ("dull silver") plating overall
 - [ ] Enormous armoured shoulder pauldrons wider than the torso

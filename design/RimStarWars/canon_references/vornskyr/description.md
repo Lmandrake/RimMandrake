@@ -73,6 +73,16 @@ contradictory. Treat `wookieepedia_alienarchive.jpg` as the primary color
 anchor (matches infobox exactly) and the other two as showing the plausible
 range of variation (or inconsistent non-canon art), not settled fact.
 
+## Must show
+- [ ] Quadruped canine/reptile-hybrid predator body with tall pointed ears (bat-like or curved-horn-like)
+- [ ] Long, whip-thin tail ending in a distinct bushy/dark tuft
+- [ ] Narrow snarling muzzle with prominent visible fangs
+- [ ] Red eyes over gray/black skin as the primary colour anchor (the one yellow-eyed image is treated as an outlier, not a settled fact)
+- [ ] Gray-to-black hide or coat — texture ranges from smooth/hairless to shaggier pale fur across the references, so a single fixed coat length is not required
+
+## Engine limits
+none known — no donor-mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Vornskr (Legends-tagged article, wikitext
   pulled 2026-09-13; a plain `Vornskyr` title does not exist/redirects to

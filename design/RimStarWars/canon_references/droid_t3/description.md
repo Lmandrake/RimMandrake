@@ -144,7 +144,6 @@ geometry** — it is the clearest source for the four-leg arrangement. It is an 
 2406×974) and was **not viewed** in this pass; treat it as unverified-by-eye but retained
 because it is the only orthographic reference available.
 
-
 ## Must show
 - [ ] One large main photoreceptor lens plus two smaller secondary lamps (three sensors total)
 - [ ] Broadcast antenna: thin hooked stalk rising off the back of the dome

@@ -137,7 +137,6 @@ grey" and with the reference photograph.
   blue pilot B1, no worker/loader livery, and no folded/stowed pose. All of that is
   reskin-scale work on an existing correct silhouette.
 
-
 ## Must show
 - [ ] Long narrow head projecting forward past the shoulders
 - [ ] Narrow shoulders with thin arms held close to the body

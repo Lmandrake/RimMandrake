@@ -174,7 +174,6 @@ strange — this droid is not humanoid.** What it shows:
   disk. Unlike the ball, though, the dormant state's art is nearly free: **two antennae and a
   patch of disturbed ground.**
 
-
 ## Must show
 - [ ] Huge horizontal ribbed cylinder occupying roughly the top half of the whole droid, with no separate torso
 - [ ] Flat circular end-cap face carrying one large teardrop photoreceptor plus one small round one below it

@@ -103,7 +103,6 @@ copper joints are the single most distinctive BX colour cue and the repo already
   units. All three are marking/paint changes on an already-correct silhouette, so they are
   the cheapest variant art in this whole batch.
 
-
 ## Must show
 - [ ] Near-black (or light-gray) body plating, not the B1's tan/bone
 - [ ] Copper/burnt-orange accent segments at shoulder, elbow, and knee joints

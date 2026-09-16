@@ -24,6 +24,16 @@ Distinctive and vivid — not a generic brown hairy spider. The 2026-09-13
 canon-brief agent's brown-spider render is the negative example this library
 exists to prevent from recurring.
 
+## Must show
+- [ ] Blue-grey body (not brown)
+- [ ] Bold yellow-orange cross marking on the abdomen (the single most identifying feature — a render without it is not a Wyyyschokk)
+- [ ] Spiky bristle tufts
+- [ ] Blue-black legs
+- [ ] Clustered black eyes (a tight cluster, roughly eight, above the mandibles)
+
+## Engine limits
+none known — no donor mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Wyyyschokk (Wookieepedia — text pulled
   2026-09-13, underselling the visual; re-fetch for the full infobox image set)

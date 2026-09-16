@@ -102,7 +102,6 @@ MagnaGuard and match the reference closely.
 - **No repo art** depicts the electrostaff, but in RimWorld terms that is a weapon, not
   body art, so it is not a sprite defect.
 
-
 ## Must show
 - [ ] Helmet-like crown over two large round red or yellow photoreceptors, with a vertical ribbed grille/muzzle below
 - [ ] Red sensor dot centred on the chest

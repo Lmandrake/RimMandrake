@@ -142,6 +142,17 @@ and equally **nothing carrying the ears or the face markings.**
   "well known for their individualistic expression."
 - ⚠️ `Beard_NoBeardOnly` — no canon basis found either way.
 
+## Must show
+- [ ] Cold, chalky blue-white skin with grey-blue shadows — not warm ivory
+- [ ] RED or red-amber eyes — the only warm colour on the face
+- [ ] Long, narrow, pointed ears swept back and outward, projecting clearly beyond the skull
+- [ ] Thick dark grey-black horizontal bar beneath each eye spanning the cheekbone, with short drip-lines running down from it
+- [ ] Jet-black hair worn as a stiff upright crest/mohawk sweeping back off the crown
+- [ ] Lean, angular, gaunt face — high flat cheekbones, narrow jaw, sunken cheeks, on a tall thin wiry build
+
+## Engine limits
+none known
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Nagai (canon article, a **stub**; direct HTML is

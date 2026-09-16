@@ -124,7 +124,6 @@ one thin vertical line above it.
   the vulnerable underbelly. The first is the droid's most distinctive canon behaviour and
   there is no art for it.
 
-
 ## Must show
 - [ ] Small domed body slung between four long, wide-splayed, multi-jointed legs
 - [ ] Needle antenna rising straight up from the dome

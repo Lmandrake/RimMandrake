@@ -138,6 +138,16 @@ lands on a **gene choice**.
 7. **Not represented: two livers / alcohol tolerance** (Legends), and the **80-year
    lifespan**, which happens to match RimWorld baseline anyway.
 
+## Must show
+- [ ] Skin ranges from rose-magenta through mid-coral to deep coral-red — a range, not one fixed pink
+- [ ] Fully human face and proportions: human eyes, nose, mouth and ears, no markings, crests or non-human anatomy
+- [ ] Hair may either match the skin hue (pink/magenta) or contrast as dark black/near-black — both are valid, hair hue is not tied to skin hue
+- [ ] Human, slim, athletic build at ordinary human height (no structural or body-size change)
+- [ ] Dark lips and dark brows may read as a contrast feature against the red skin
+
+## Engine limits
+- Canon's dynamic feature — skin deepens to a darker red when the character is angry — is recorded in the entry as possibly not expressible: RimWorld's skin-colour gene assigns a fixed tone per pawn, with no mechanism to recolor skin at runtime based on mood or emotional state.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Zeltron — canon article. HTML is Cloudflare-walled;

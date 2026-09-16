@@ -42,6 +42,16 @@ upright/bipedal-reaching and add visible claws and small head horns; this is
 a bigger disagreement than the Dewback or Bantha cases and is worth flagging
 prominently for the owner's ruling.
 
+## Must show
+- [ ] Bipedal, upright, ape/yeti-like posture — not a quadrupedal, on-all-fours stance
+- [ ] Long, shaggy white fur coat, not brown/tan blotching
+- [ ] Dark, bald-looking bare skin confined to around the eyes/muzzle only
+- [ ] Visible sharp claws and fangs
+- [ ] Small cranial horns visible on the head silhouette
+
+## Engine limits
+none known — the donor sprite's disagreement (a quadrupedal, four-legged grazing-animal silhouette with brown blotching and no claws or horns) is recorded as a wrong body-plan/pose choice for a regen to correct, not as a rendering-pipeline constraint.
+
 ## Source URLs
 - https://starwars.fandom.com/wiki/Wampa (Wookieepedia article text, pulled
   via `starwars.fandom.com/api.php?action=parse&page=Wampa&prop=wikitext`,

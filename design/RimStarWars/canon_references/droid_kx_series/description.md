@@ -160,7 +160,6 @@ point of this chassis.** What it shows, and none of it survives into a RimWorld 
   canon states at **2.16 m**. Flagging, not fixing: if body size is doing any work as an
   in-world scale cue, this chassis is undersized relative to its own sourced height.
 
-
 ## Must show
 - [ ] Near-black plating
 - [ ] Large, smoothly domed dorsal/shoulder carapace with an Imperial crest stencilled on the shoulder plate

@@ -226,7 +226,6 @@ for a reference to draw from.
   holograms, reading a datapad, identifying clones by CT-number at range. It is a heavy-family
   combat pawn on disk, where canon is emphatic that T-1s **avoid the front lines**.
 
-
 ## Must show
 - [ ] Visor head: wide flat helmet-like crown with a pair of horizontal slit photoreceptors behind a grille
 - [ ] Large dark vertically-ribbed rectangular grille filling the belly/lower chest

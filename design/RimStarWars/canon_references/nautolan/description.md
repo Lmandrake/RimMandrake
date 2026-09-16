@@ -138,6 +138,16 @@ What is wrong:
   tendril spot patterning, tendrils as a permanent severable body part, and tendril
   length as an age cue.
 
+## Must show
+- [ ] Sallow, pale yellow-green (olive-khaki) skin, not a saturated bluer green
+- [ ] Enormous oval eyes reading as solid glossy black OR a red-amber iris around a dark pupil — either is canonical
+- [ ] Many (on the order of a dozen) tendrils rooted at the crown/back of the skull, hanging down over the shoulders and chest — not flaring outward like a headdress
+- [ ] Tendrils show darker olive spot/blotch patterning along their length
+- [ ] No nose or external nostril structure — a smooth face between the eyes down to a small, wide, thin-lipped mouth
+
+## Engine limits
+none known — a pattern (the tendril spotting) can live in a greyscale runtime-tinted mask; the current donor sprite simply has none painted in, which is a missing-art gap, not a pipeline limitation.
+
 ## Source URLs
 
 - https://starwars.fandom.com/wiki/Nautolan (canon article; direct HTML is
