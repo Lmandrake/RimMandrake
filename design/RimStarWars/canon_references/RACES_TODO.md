@@ -99,11 +99,11 @@ player actually sees walking around.
 | ✅ | `wookiee` | Wookiee | `RSW_RimMandrakeWookiee` | A | Jawa_WildsteamClan:A |
 | ✅ | `zygerrian` | Zygerrian | `RSW_RimMandrakeZygerrian` | A | Pirate:A, Jawa_HuttCartel:R, Jawa_Junkers:R |
 | ✅ | `mirialan` | mirialan | `RSW_RimMandrakeMirialan` | A | OutlanderCivil:A |
-| ⬜ | `anzati` | Anzati | `RSW_RimMandrakeAnzati` | S | Pirate:S |
-| ⬜ | `aqualish` | Aqualish | `RSW_RimMandrakeAqualish` | S | Jawa_HuttCartel:S, Jawa_Junkers:S |
-| ⬜ | `bith` | Bith | `RSW_RimMandrakeBith` | S | Jawa_AscendantHelix:S, Jawa_DeepwaterCompact:R |
-| ⬜ | `bothan` | Bothan | `RSW_RimMandrakeBothan` | S | OutlanderCivil:S, Jawa_HuttCartel:R, Jawa_DeepwaterCompact:R |
-| ⬜ | `cerean` | Cerean | `RSW_RimMandrakeCerean` | S | Jawa_AscendantHelix:S |
+| ✅ | `anzati` | Anzati | `RSW_RimMandrakeAnzati` | S | Pirate:S |
+| ✅ | `aqualish` | Aqualish | `RSW_RimMandrakeAqualish` | S | Jawa_HuttCartel:S, Jawa_Junkers:S |
+| ✅ | `bith` | Bith | `RSW_RimMandrakeBith` | S | Jawa_AscendantHelix:S, Jawa_DeepwaterCompact:R |
+| ✅ | `bothan` | Bothan | `RSW_RimMandrakeBothan` | S | OutlanderCivil:S, Jawa_HuttCartel:R, Jawa_DeepwaterCompact:R |
+| ✅ | `cerean` | Cerean | `RSW_RimMandrakeCerean` | S | Jawa_AscendantHelix:S |
 | ⬜ | `chagrian` | Chagrian | `RSW_RimMandrakeChagrian` | S | Jawa_DeepwaterCompact:S |
 | ⬜ | `defel` | Defel | `RSW_RimMandrakeDefel` | S | Pirate:S |
 | ⬜ | `devaronian` | Devaronian | `RSW_RimMandrakeDevaronian` | S | Jawa_HuttCartel:S |
@@ -121,11 +121,11 @@ player actually sees walking around.
 | ⬜ | `togruta` | Togruta | `RSW_RimMandrakeTogruta` | S | Jawa_WildsteamClan:S, OutlanderCivil:S |
 | ✅ | `trandoshan` | Trandoshan | `RSW_RimMandrakeTrandoshan` | S | Jawa_HuttCartel:S, Jawa_Junkers:S |
 | ⬜ | `twilek` | Twi'lek | `RSW_RimMandrakeTwilek` | S | Jawa_HuttCartel:S, Jawa_Junkers:R, Pirate:R, OutlanderCivil:R |
-| ⬜ | `ugnaught` | Ugnaught | `RSW_RimMandrakeUgnaught` | S | Jawa_Junkers:S, Jawa_FreeDroidEnclaves:S, OutlanderCivil:R, Jawa_HuttCartel:R |
-| ⬜ | `umbaran` | Umbaran | `RSW_RimMandrakeUmbaran` | S | Jawa_AscendantHelix:S |
+| ✅ | `ugnaught` | Ugnaught | `RSW_RimMandrakeUgnaught` | S | Jawa_Junkers:S, Jawa_FreeDroidEnclaves:S, OutlanderCivil:R, Jawa_HuttCartel:R |
+| ✅ | `umbaran` | Umbaran | `RSW_RimMandrakeUmbaran` | S | Jawa_AscendantHelix:S |
 | ✅ | `weequay` | Weequay | `RSW_RimMandrakeWeequay` | S | Jawa_Junkers:S |
-| ⬜ | `zeltron` | Zeltron | `RSW_RimMandrakeZeltron` | S | Jawa_HuttCartel:S |
-| ⬜ | `kaminoan` | kaminoan | `RSW_RimMandrakeKaminoan` | S | Jawa_AscendantHelix:S |
+| ✅ | `zeltron` | Zeltron | `RSW_RimMandrakeZeltron` | S | Jawa_HuttCartel:S |
+| ✅ | `kaminoan` | kaminoan | `RSW_RimMandrakeKaminoan` | S | Jawa_AscendantHelix:S |
 | ⬜ | `cathar` | Cathar | `RSW_RimMandrakeCathar` | R | Jawa_WildsteamClan:R, Pirate:R |
 | ⬜ | `chiss` | Chiss | `RSW_RimMandrakeChiss` | R | Empire:R |
 | ⬜ | `duros` | Duros | `RSW_RimMandrakeDuros` | R | OutlanderCivil:R, Pirate:R, Jawa_Junkers:R, Jawa_DeepwaterCompact:R |
@@ -266,3 +266,41 @@ the Zygerrian bony chin spurs.
 `Mon_Calamari` and `Zygerrian/Legends`. Both infoboxes and both *Biology and
 appearance* sections are inside the retrieved portion; everything below is **UNREAD,
 not absent**, and both entries say so.
+
+### Batch — Ugnaught, Umbaran, Zeltron, Kaminoan (2026-09-15)
+
+All four entries complete: directory, reference images and `description.md` on disk for
+`ugnaught/`, `umbaran/`, `zeltron/`, `kaminoan/`. All four defNames verified against
+`RimMandrakeXenotypes.xml`. 14 Wookieepedia images downloaded; canon **and** `/Legends`
+wikitext pulled for every one of the four (none truncated).
+
+🔴 **Def-versus-canon findings from this batch** (reported, not fixed):
+
+- `RSW_RimMandrakeUgnaught` is the worst-wired def seen so far. Its **`nameMaker` is
+  `RSW_KoTOR_NamerDevaronian`** — Ugnaughts get Devaronian names — and its
+  **`<description>` is a single period**. `Hair_ShortOnly` contradicts the canonical long
+  mutton-chop whiskers and fringe; it carries **no skin gene at all**, so Ugnaughts render
+  in baseline human tones where canon is dun grey-brown (live-action) or pink (Legends);
+  and `RSW_lifespan_double` undershoots canon's **200+ years / "centuries."**
+- `RSW_RimMandrakeUmbaran` forces **`Hair_BaldOnly` + `Beard_NoBeardOnly`** although canon
+  states plainly that Umbarans **do** have hair (Mee Deechi wears silver-white hair);
+  `Skin_LightGray` is the wrong direction for canon's "pale and bluish", which the
+  evenly-lit reference art shows as **pale lavender-violet**; and `Outland_Eye_White`
+  overshoots "colorless" — every image shows a pale but structured iris and pupil.
+- `RSW_RimMandrakeKaminoan`'s art **omits the species' defining feature**: the forced head
+  types have **no neck**, where measurement off the canon infobox plate puts the bare neck
+  at roughly **twice head length** and head-plus-neck at about **a fifth of standing
+  height**. `Outland_Blood_Cyan` is **unsourced** in both continuities.
+- ⚠️ **Cross-def inconsistency:** ultraviolet vision is the Kaminoan canon infobox's
+  *sole* listed distinction, yet the Kaminoan def has no gene for it, while the Umbaran
+  def gives `DarkVision` for the same canon trait.
+- `RSW_RimMandrakeZeltron` is mostly **well** founded — the psychic/pheromone/empathy
+  cluster maps almost one-to-one onto canon. Its skin genes cover only the pale half of
+  canon's **light pink to deep crimson** range, and `Turn_Gene_MotivationLow` is unsourced
+  and arguably contradicted.
+
+⚠️ **Zeltron's canon article is a `{{Species-stub}}`** (7,109 chars) with **no height,
+mass, lifespan, eye colour or even homeworld**, and **no Databank page exists** for the
+species — every number in that entry is Legends and is labelled so. The **Ugnaught** canon
+article carries `{{Expand|all sections}}` and also gives no height or mass.
+
