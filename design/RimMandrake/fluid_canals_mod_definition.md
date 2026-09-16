@@ -954,3 +954,47 @@ model.
 - Consequences worth stating plainly: **turrets cannot shoot into a pit** unless adjacent, and **a
   trapped raider can still shoot whoever stands at the lip** — so capture is not a clean win, which is
   better gameplay and should be deliberate rather than discovered.
+
+## 23. Rulings 24-27 (owner, 2026-09-16)
+
+**24. A source is not a building. Delete the comp.** `CompFluidReservoir` and `RM_FluidSpring_Test`
+disappear as concepts — a source is a SUPERDEEP cell at `F = D`, limitless when fed off-map (ruling 16)
+and limited when fed by rain, season and seepage (ruling 2). One primitive owns supply, and nothing has
+to stay in sync with the depth grid.
+
+⚠️ **The cost he accepted, restated so it is not a surprise:** this deletes the mod's only live-proven
+path. All three of FluidCanals' modcheck components assert against that comp (`primed=True`,
+`remainingVolume=60.0`, `nextDripTick - nowTick == 2500`) and its walk is written around
+`RM_FluidSpring_Test`. The validator and the walk must be rebuilt against the new primitive, and until
+they are, this mod has no live proof at all.
+
+**25. Rain fills excavations only where unroofed.** Roofing is the player's lever, and it costs nothing
+— RimWorld already tracks roof per cell. ⚠️ It also reopens the covered-pit contradiction of §19: a
+roofed pit full of liquid has a cover claiming the cell is hidden and a pool claiming it is not.
+Decide which is drawn, or roofing a trap produces a visual lie.
+
+**26. SUPERDEEP captures as if dry; shallower is wadeable.** Fill does not change whether a pawn falls
+in — SUPERDEEP always takes them, and *then* the liquid acts on them (ruling 22). No drowning model is
+needed, and the **trap-then-flood pipeline is the intended path to lethality**. Consequence he accepted:
+a brimming deep canal is a tax, never a barrier, so **stopping power comes entirely from SUPERDEEP
+pits** — a water moat alone stops nobody.
+
+**27. Merge first, then fix the pit inside FlowWorks.** Consolidation precedes the pit's art pass, so
+sprites are drawn once, against final def names and knowing they must read at four depths.
+
+### The mitigation for what ruling 27 parks — and it costs nothing
+
+Ruling 27 delays the pit's *art*, which would otherwise leave the north-star system with no end-to-end
+proof for weeks. It does not have to: **the proof does not need the art.**
+
+Validating Pits' existing DRAFT checklist **right now** takes it from GREEN to REFUSED immediately —
+eleven validated must-show lines, no component claiming any of them, so the visual floor refuses the
+mod. That is exactly §9's falsification test (*"Pits moves from GREEN to REFUSED-or-RED once its
+checklist is VALIDATED"*), it needs no sprite work, and it is one command:
+
+```
+python3 src/RimMandrake/Utils/modcheck/cli.py validate Pits --owner-said "<his words>"
+```
+
+So the system gets proven today, the art is fixed after the merge as he ruled, and nothing is
+sequenced behind anything. Recommended.
