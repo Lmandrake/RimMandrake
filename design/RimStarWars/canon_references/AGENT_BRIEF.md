@@ -129,6 +129,34 @@ four does not take entries one through three with it.
 - Do not modify any existing entry directory, and do not touch the 45 pre-existing creature
   entries.
 
+## If your subject is a DROID, three things change
+
+Everything above still applies. These are the differences:
+
+1. **Add a `## Provenance` section** after the sourced text, carrying **manufacturer**,
+   **era / time period**, and **typical owners** — which species, factions or worlds actually
+   used it. The owner asked for these three by name. Same rule as every other fact: each field
+   cites a URL or is absent. ⚠️ **Era is usually genuinely missing** — a script checked all
+   1,757 droid articles and only 48 carry one, so a blank here is the normal, correct answer
+   and the owner has ruled that it stays blank. Do not infer an era from the droid's name, its
+   manufacturer, or which film you remember it from.
+
+2. **One entry per REPO CHASSIS, not per canon variant.** The index's "in repo" column groups
+   them: 11 canon droideka variants share one repo sprite set, and 13 B1 variants share
+   another. The sprite is the unit of art correction, so write one entry covering the chassis
+   and **list the canon variants it stands for** inside it. Slug from the chassis, e.g.
+   `droid_droideka`, `droid_b1`, `droid_hk_series` — prefix `droid_` so droids sort together
+   and never collide with a species slug.
+
+3. **The def target is different.** Droids are not xenotypes. Find what actually defines them
+   in this repo — PawnKindDefs, ThingDefs, and the sprites under `design/Jawa/fauna/sprites/`
+   with names like `JDSCIS_B1_Security_Droid.png` and `OuterRim_MSEDroid.png`. Read
+   `design/Jawa/worldbuilding/droid_taxonomy.md` and `design/Jawa/reconciled_lore/08_droids.md`
+   first. **Never invent a defName** — if you cannot find one, say so.
+
+Source of truth for which droids are in scope: the `in repo` column of
+`design/RimStarWars/canon_references/DROIDS_INDEX.md`.
+
 ## What to report
 
 Under 250 words: which species you completed, any def-versus-canon contradictions found,
