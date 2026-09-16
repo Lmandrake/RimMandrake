@@ -1,13 +1,31 @@
 # Fluid Canals — mod definition
 
-Status: DRAFT — agent-drafted 2026-09-16 from the owner's bench session; his four rulings of that date are marked; nothing else here is ruled.
+Status: agent-drafted 2026-09-16 from the owner's bench session, then ruled heavily the same day —
+**27 numbered rulings** are recorded below and are his; unnumbered prose is still agent draft.
 
-Position in the family: FluidCanals is the **flow-engine client** of the liquids framework
-(`design/RimMandrake/liquids_framework_design.md` §5 client map). Liquid *types* are rows in the core
-registry (`LiquidDef`); pumps, tanks and hoses belong to `RimMandrake: Liquid Logistics` and are
-**not** this mod's to build — it only publishes the interface they debit against (§8). Framework
-pillar 2 — *pulsed spread only, no per-tick fluid sim, ever* — is an owner ruling, and everything
-below stays inside it.
+**The mod is named `FlowWorks`** (ruling 20): `RimMandrake: FlowWorks`, packageId
+`mandrake.rm.flowworks`, namespace `RimMandrake.FlowWorks`, prefix `RM_`. ⛔ This file and the mod
+folder keep the old FluidCanals name deliberately — ruling 20 gates the rename on
+`NAMING_SCHEME_EXECUTION_1`, and CLAUDE.md forbids renaming ahead of it. Do not "fix" the filename.
+
+Position in the family: FlowWorks is the **liquid engine itself** — depth is its primitive (ruling 18),
+and excavation plus the built half (canals, terraces, ladders, sluice gates, **pumps, tanks**) is now
+roughly half the design (rulings 19-20). Liquid *types* remain rows in the core registry (`LiquidDef`),
+per `design/RimMandrake/liquids_framework_design.md` §5.
+
+⚠️ **Deleted claim:** this header previously said pumps, tanks and hoses "belong to `RimMandrake:
+Liquid Logistics` and are **not** this mod's to build." Ruling 20 contradicts that in this same
+document by naming pumps and tanks as FlowWorks' own, and `LIQUID_LOGISTICS_MOD_1` was superseded
+2026-09-16 — that mod will never ship. The ruling wins.
+
+Framework pillar 2 — *pulsed spread only, no per-tick fluid sim, ever* — is an owner ruling, and
+everything below stays inside it.
+
+**The pit's visual/art spec is a separate document, not absent:**
+`design/RimMandrake/pit_trap_visual_interface_spec.md` — five states, the top-down depth grammar,
+a Pyrelands palette, and three costed directions with Direction B recommended, awaiting the owner's
+ruling. Ruling 27 sequences it after the merge; its own Status section records what rulings 18/19/25/27
+falsified in it. Read the two together before drawing anything.
 
 ## 1. What the mod is
 
