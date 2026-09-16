@@ -99,7 +99,15 @@ grammar in `design/NAMING_SCHEME_PLAN.md`: **RimMandrake** (any RimWorld game) /
 packageId `mandrake.<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`,
 C# namespaces nested `RimMandrake[.StarWars|.Utinni].<Mod>` (never bare
 `RimStarWars`/`RimUtinni`). "Jawa" is lore text only. Dev tooling is exempt.
-Old names migrate under NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
+
+🔴 **The migration is DONE — there is no rename gate any more.**
+`NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's
+own word (*"Deploy the full rename."*), which is why the mod set already carries
+`mandrake.rm.*` / `mandrake.rsw.*`. So when a mod is RENAMED after that date, the
+rename is simply owed work — execute it, do not defer it to a closed item. Three
+live docs were still citing that item as a reason to wait 16 days after it
+closed, which is how `FlowWorks` (named by ruling 20, 2026-09-16) kept shipping
+as `fluidcanals`. If you find another such citation, delete it.
 
 ## Every mod ships superb Mod Settings — owner, 2026-09-12
 

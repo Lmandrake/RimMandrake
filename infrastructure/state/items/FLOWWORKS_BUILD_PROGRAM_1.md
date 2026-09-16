@@ -64,10 +64,51 @@ The boundary is a principle, not a list: **FlowWorks owns what a liquid IS and D
 TRANSFORMS one liquid into another is technology and lives elsewhere.** That settles desalination,
 detox, tar-cracking and boiling without another ruling.
 
-⛔ **Renaming is `NAMING_SCHEME_EXECUTION_1`'s job** — `RimMandrake: FlowWorks`,
-`mandrake.rm.flowworks`, namespace `RimMandrake.FlowWorks`, prefix stays `RM_`. It touches packageId,
-defNames, namespace, folder, `.csproj`, the deployed folder under the game's Mods directory and every
-doc citing them. Do not rename ahead of that item.
+### 🔴 The rename executes HERE, in this phase. There is no gate.
+
+This phase previously said renaming was `NAMING_SCHEME_EXECUTION_1`'s job and must not run ahead of it.
+**That item closed 2026-08-31 at `54a8e28d`** on the owner's word (*"Deploy the full rename."*) — 16
+days before FlowWorks was even named. The gate was dead language copy-pasted forward, and it is why the
+mod still ships as `fluidcanals`. Owner, 2026-09-16, on being shown this: *"No... we rename right now.
+That's crazy."* He then ruled the execution into this phase rather than the Mac session, because two
+compiled assemblies are involved.
+
+Target (ruling 20): `RimMandrake: FlowWorks`, `mandrake.rm.flowworks`, namespace
+`RimMandrake.FlowWorks`, prefix stays `RM_`.
+
+**Blast radius, MEASURED on the Mac 2026-09-16 — do not re-derive this:**
+
+| What | Where |
+|---|---|
+| Mod folder | `src/RimMandrake/FluidCanals/` |
+| `namespace RimMandrake.FluidCanals` | 10 `.cs` under `Source/` (incl. `Debug/`) |
+| XML naming the namespace in class fields | 5 files: `ThingDefs/FluidCanal_ThingDefs.xml`, `FluidDefs/FluidCanal_Fluids.xml`, `WorkGiverDefs/FluidCanal_WorkGivers.xml`, `JobDefs/FluidCanal_JobDefs.xml`, `Patches/FluidCanal_OrdersPatch.xml` |
+| Display name + packageId | `About/About.xml` (`RimMandrake Fluid Canals`, `mandrake.rm.fluidcanals`) |
+| Filenames carrying the old name | `RimMandrake_FluidCanals.csproj`, `RimMandrakeFluidCanals_DefOf.cs`, `RimMandrakeFluidCanalsMod.cs`, `FluidCanalsDebugActions.cs`, `Flood_FluidCanal.cs`, the `FluidCanal_*.xml` set |
+| Live mod-id list | `src/RimMandrake/Utils/loadsweep/batch1.txt` line 7 |
+| Prose cross-refs in other mods | `Graffiti/validation.py`, `StructureInjections/validation.py`, `Greentide/Source/RM_{JobDriver,WorkGiver}_DigOutBuried.cs`, `MovingDunes/Source/RimMandrake_MovingDunes.csproj`, `ManyWaters/Defs/TerrainDefs/RM_ColoredWater.xml`, `Utils/loadsweep/DECISION_STRINGS.md` |
+| Docs | `design/RimMandrake/fluid_canals_mod_definition.md` (filename too), `pit_trap_visual_interface_spec.md`, `liquids_framework_design.md`, plus ~44 other `.md` |
+
+🔴 **Two silent-failure hazards, both assembly-bound — this is why it is Desktop work:**
+
+1. **`src/RimMandrake/FluidCanals/Assemblies/RimMandrakeFluidCanals.dll` is tracked in the repo** and
+   exports the OLD namespace. Rename the XML class fields without rebuilding and the mod throws config
+   errors on load. Rebuild in the same window.
+2. **The JawaBench bridge companion resolves this mod by REFLECTION STRING**, so a rename breaks it with
+   no compile error at all — it just returns "type not found".
+   `bridgetools/JawaBench.BridgeTools/JawaBenchFluidCanalTools.cs` holds
+   `"RimMandrake.FluidCanals.CompFluidReservoir"` and `"RimMandrake.FluidCanals.Flood_FluidCanal"`;
+   `bridgetools/prove_fluid_canal.py` probes `"RimMandrake.FluidCanals.FluidCanalsDebugActions"`.
+   ⚠️ Both are *already* doomed by ruling 24, which deletes `CompFluidReservoir` — so fold their rework
+   into this phase rather than porting the strings twice.
+
+⚠️ **`mandrake.rm.fluidcanals` is in the live `ModsConfig.xml`.** A packageId change desyncs the active
+mod list; update it in the same window (`rimworld-start-prep`), or the mod silently drops out.
+
+⛔ **Do NOT rewrite the old name in:** `Transient/**` (`.log` captures, `.rws.bak` savegames — they are
+point-in-time evidence), `infrastructure/state/modlists/**` (ModsConfig snapshots, same reason),
+`infrastructure/state/ledger/events.jsonl` (append-only), or `infrastructure/state/derived/**`
+(regenerated). Rewriting history there falsifies the record.
 
 **Deletions this phase requires** (ruling 24): `CompFluidReservoir` and `RM_FluidSpring_Test` go away —
 a source is a SUPERDEEP cell at `F = D`. ⚠️ This removes the mod's only live-proven path: all three

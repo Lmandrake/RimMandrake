@@ -174,7 +174,7 @@ but:
   different from the original Sith species as a whole."** A Kissai is a **Red Sith**,
   not a Pureblood. All three castes carry "(Pureblood)" in their label and
   `RSW_NamerPersonPureblood` as their namer. Governed by
-  `NAMING_SCHEME_EXECUTION_1` — flagged, not renamed.
+  `XENOTYPE_CANON_CORRECTION_1` — flagged, not yet renamed (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31).
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Kissai — wikitext via

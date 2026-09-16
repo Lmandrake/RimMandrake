@@ -1,4 +1,4 @@
-<!-- status: live — the three-tier naming scheme plan. Ruled in principle by the owner 2026-08-30; execution gated on token budget (NAMING_SCHEME_EXECUTION_1). Drafted + self-reviewed by the Fable seat, surveys MEASURED same day. -->
+<!-- status: live as the GRAMMAR; its migration is DONE. Ruled in principle by the owner 2026-08-30. NAMING_SCHEME_EXECUTION_1 closed 2026-08-31 at 54a8e28d on his word "Deploy the full rename." — so this doc is the naming authority for new and renamed mods, and is NO LONGER a gate anything waits behind. A mod renamed after 2026-08-31 is owed its rename as ordinary work. Drafted + self-reviewed by the Fable seat, surveys MEASURED 2026-08-30. -->
 # The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni
 
 _Owner's ruling (2026-08-30, verbatim anchor): "RimMandrake is the global fully
