@@ -196,6 +196,41 @@ species-level fact about every Twi'lek in the game. Canon treats the trope as so
 
 Flagged, not touched. This is a content decision and it is his alone.
 
+## 🔴 RULED — owner, 2026-09-15
+
+**Fix the clear-cut findings now. 🔴 But do NOT touch cosmetic genes.** Owner, verbatim:
+*"Fix the clear-cut ones now as long as you don't touch cosmetic genes. Cosmetics require
+asking permission, as they may mess with animated faces."*
+
+⛔ **The cosmetic gate.** Anything affecting appearance is OFF LIMITS without asking him
+first, because it can break animated faces. That covers: skin-colour genes · head types and
+borrowed heads · `useSkinShader` and mask files · eyes · hair · ears · montrals and lekku ·
+anything carrying `renderNodeProperties`. **So patterns 2, 6, 8b and 10 are GATED**, which is
+most of the visually interesting findings. Ask, do not fix.
+
+✅ **Cleared to fix now** — none of this is cosmetic:
+
+| what | pattern | scope |
+|---|---|---|
+| Four aquatic species get water-breathing | 4 | Mon Calamari, Nautolan, Gungan, Selkath |
+| Five wrong-species `nameMaker`s | 1 | Ithorian, Mon Calamari, Ugnaught, Kel Dor, Kaleesh |
+| Two missing `nameMaker`s | 1 | Iktotchi, Massassi |
+| Five one-character `<description>`s | 3 | Gand, Lasat, Ugnaught, Defel, Taung |
+| The Zuguruk misspelling and the Pureblood mislabel | 9 | three Sith defs |
+
+⚠️ **The two naming fixes need a decision before they are made.** Changing a *label* is
+harmless; changing a **defName** ripples into faction xenotype lists and any existing save,
+and this campaign ships as a frozen savegame. Default to fixing labels only and leaving
+defNames alone unless he says otherwise.
+
+⏸️ **Still awaiting his ruling:** aptitudes (pattern 7) and invented lifespans (pattern 5),
+both of which may be deliberate balance choices rather than errors.
+
+**The Twi'lek trope genes: MOVE THEM OFF THE SPECIES** (owner, same sitting). The three genes
+come off the xenotype and become something an individual pawn can carry — a background, a
+trait, a history of captivity — so it is a fact about a person rather than about a race. Note
+this is a mechanism change, not a gene-list edit, and is therefore real work.
+
 ## Open for the owner
 
 - Fix in the generator, or accept some of these as deliberate game-design departures from
