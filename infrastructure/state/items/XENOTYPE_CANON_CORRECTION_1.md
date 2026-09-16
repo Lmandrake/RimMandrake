@@ -71,12 +71,13 @@ doubled lifespan still undershoots canon's 200+ years.
   grey (evenly-lit plate reads lavender-violet) · Ithorian blue (sourced orange absent).
 - **Missing entirely:** Chadra-Fan · Ugnaught · Abednedo's grey/cream · Ewok's black (cited,
   and the centre figure of its own infobox image).
-- 🔴 **Discarded:** Bothan, Gungan **and Duros** head types set `useSkinShader: false` over
-  masks measured as pure greyscale, so **no skin gene can ever tint those faces.** A
-  different class of bug — the colour is right and thrown away. Duros is the worst of the
-  three: pure-greyscale texture with **no `CutoutComplex` and no mask at all**, so nothing
-  supplies the head a colour by any route. ⚠️ Needs in-game confirmation of what actually
-  renders.
+- 🔴 **Discarded:** Bothan, Gungan, **Duros and Twi'lek** head types set
+  `useSkinShader: false` over masks measured as pure greyscale, so **no skin gene can ever
+  tint those faces.** A different class of bug — the colour is right and thrown away. Duros
+  and Twi'lek are the worst: pure-greyscale texture with **no `CutoutComplex` and no mask at
+  all**, so nothing supplies the head a colour by any route, and Twi'lek's 18-gene palette may
+  never reach the head at all. ⚠️ Needs in-game confirmation of what actually renders — **the
+  top item for the next time the game is up.**
 - Duros also has three **blue** skin genes on a species canon calls "smooth blue-**green**",
   whose canon infobox image, Legends image and film photograph all read green or grey-green.
   And its `RSW_Eyes_HugeRed` reuses the **Jawa** eye texture.
@@ -162,6 +163,38 @@ Worth recording so the library reads as evidence rather than advocacy:
 - **One finding reversed in the def's favour:** the Iktotchi reference images support the
   def's reds *against* Wookieepedia's own "Tan/Pink" infobox. The images won, which is the
   rule working in the direction nobody expected.
+
+## Pattern 10 — a gene that is decoration where canon makes it an organ
+
+**Togruta montrals** are the clearest case. `RSW_TogrutaMontrals` and its abstract base carry
+`renderNodeProperties` **and nothing else** — no `capMods`, no `statFactors` — and the gene's
+description never mentions hearing. In canon the montrals *are* the auditory system, with 25 m
+echolocation. The art compounds it: montrals tint from **hair** colour, the xenotype's six hair
+genes are all saturated with `Hair_Grayless`, and canon montrals are pale with dark bands in
+every reference. The montral texture has **no banding at all**, the lekku stop at jaw level,
+and the third and thickest rear lek is missing entirely. Head variants 0–3 are byte-identical
+apart from the mask.
+
+Same shape as Kaminoan UV vision and Kel Dor's oxygen biology: the species' defining organ is
+present as a shape and absent as a function.
+
+## Two smaller findings
+
+- **Twi'lek has no red gene, so there are no Lethan Twi'leks** — one of only two named canon
+  races. Black, grey and pale are also missing, and pale is roughly a third of every crowd
+  shot. `Turn_Gene_FrailDigestion` inverts canon's multiple stomachs.
+- **Name-maker files that no rule references.** Togruta and Twi'lek both bind a `Last` name
+  file that appears in no rule, so **surnames are drawn from the first-name list.** Worth
+  checking across all 69, since it would be invisible in play except as odd names.
+
+## 🔴 One finding that is an owner call, not a bug
+
+The Twi'lek def carries `Turn_Gene_AgressionSubmissive`, `Libido_High` and `Beauty_Beautiful`.
+Together these **encode the slavery trope as biology** — the in-fiction stereotype becomes a
+species-level fact about every Twi'lek in the game. Canon treats the trope as something done
+*to* Twi'leks, not something true of them.
+
+Flagged, not touched. This is a content decision and it is his alone.
 
 ## Open for the owner
 
