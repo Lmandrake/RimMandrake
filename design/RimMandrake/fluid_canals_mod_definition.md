@@ -685,3 +685,59 @@ Your advice is welcome here."*
   canal to *contact a cell of the body*, so a body filled in has no cells left to contact. The
   classification may outlive the water, but a zero-cell limitless source supplies nothing. No extra
   rule needed — worth writing down precisely because it looks like a hole and is not.
+
+## 19. Canals and Pits — they compose, they do not merge
+
+He raised it 2026-09-16: *"It's worth thinking about how canals interact with Pits too."* The answer
+falls out of ruling 14's principle, and it removes work rather than adding it.
+
+**Pits already contains a liquid feature.** `CompPitFitting` ships a **`Water` fitting** whose
+documented behaviour (`PitFittingType.cs:16`) is *"no climbing out at all"* — it sets `BlocksEscape`
+and disables the escape roll entirely. So a water-filled pit exists today, implemented as an enum
+inside Pits with no liquid behind it.
+
+🔑 **The recommended division, following ruling 14 exactly:**
+
+> **Pits owns holes that hold pawns. Fluidity owns liquids and what they do. A trapping slime moat is
+> a line of PITS with slime in them — Fluidity never captures anybody.**
+
+Three consequences, each of which deletes planned work:
+
+1. **Fluidity does not need a capture mechanic at all.** §10 recorded that a pawn *stuck in place while
+   still spawned* has no precedent in this repo and would be new mechanism. Under this division it is
+   never needed: capture is Pits' despawn-into-`innerContainer`, which is built, tested and asserted by
+   its own validator (`expect_pawn_despawned`). The slime line of §10's "needs its own mechanism" list
+   is struck.
+2. **Fluidity does not need its own escape clock.** `PitEscapeUtility` already has the shape his slime
+   prose asks for — a struggle interval, a chance from body size against depth tier, health and
+   manipulation, and a hard `BlocksEscape` override. Slime supplies the *property*; the pit runs the
+   clock.
+3. **Pit liquid fittings become Fluidity rows.** The `Water` fitting stops being an enum value and
+   becomes "this pit contains liquid X", with `BlocksEscape` derived from that liquid's viscosity
+   rather than hardcoded. Then tar, slime and water pits all exist for free, and a *drained* pit
+   becomes an ordinary pit again.
+
+**Dependency direction: Pits depends on Fluidity. One way, no cycle.** Fluidity must not depend on
+Pits, or the two are mutually required and neither ships alone.
+
+**Pits become the deep cells of the network.** A pit adjacent to a channel is a channel cell with a
+much larger volume — which fits ruling 5's tier ladder directly, a pit simply having more tiers than a
+trench. That is also exactly what `design/Jawa/proposals/tar_pits_deep_design.md` already imagined
+(`CompTarReservoir`, tar moats as passive base defense), so this connects a design that has been
+sitting unbuilt to an engine that is about to exist.
+
+**Interaction hazards to settle before building either side:**
+
+- **Digging a canal onto a pit's cell.** `Designator_DigCanal` refuses edifices, but Pits' buildings are
+  `passability` Standable and so may not read as edifices — meaning the dig may be *allowed* today and
+  produce a cell that is both. Needs an explicit refusal, or an explicit conversion.
+- **A canyon flood over a pit** is the same defect already filed as `CANYON_FLOOD_ERASES_CANALS_1`:
+  permanent `SetTerrain` over a pit's cell. Fix both with one engine.
+- **A covered pit full of liquid** is a visual contradiction — the cover claims the cell is invisible
+  while the liquid claims it is a pool. Whichever wins, the other must not be drawn. This is a
+  must-show-line problem, not a mechanics problem.
+- **Fire reaching an occupied pit.** A burning tar canal that runs into a pit holding a pawn is
+  excellent and grim, but the burn model must know the pit has an occupant to damage. Name it now or it
+  will be discovered as "fire does nothing to a trapped pawn".
+- **Filling in a canal that contains a pit** — does the pit survive, or is it filled too? A rule is
+  needed, because both readings are defensible.
