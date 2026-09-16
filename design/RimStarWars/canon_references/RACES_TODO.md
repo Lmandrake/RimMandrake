@@ -58,7 +58,7 @@ how a race LOOKS lands on a gene, never on the XenotypeDef.
 - ⚠️ **`RSW_RimMandrakeKlatoonian` is a misspelling of the canon species name, which is
   Klatooinian** (two o's, `starwars.fandom.com/wiki/Klatooinian`). The def and the matrix key
   both carry the typo; the reference directory correctly uses `klatooinian/`. Renaming is
-  governed by `NAMING_SCHEME_EXECUTION_1` — **do not rename ahead of it** — but the entry
+  owed under `XENOTYPE_CANON_CORRECTION_1` (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31) — but the entry
   must not silently adopt the typo.
 - ⚠️ **`RSW_RimMandrakeIridonian`** — "Iridonian" is the demonym for a Zabrak from Iridonia,
   not a separate species; canon's species article is **Zabrak**.
@@ -580,7 +580,7 @@ wiki title *Yoda's species* carries a `{{Conjecture}}` banner; **"Yoder" and "Fo
 Gremlin" are both inventions.** All three Sith castes are labelled **"(Pureblood)"**
 although canon is explicit that Sith Purebloods are *hybrids* "thought to be very
 different from the original Sith species as a whole" — a caste member is a **Red
-Sith**. All governed by `NAMING_SCHEME_EXECUTION_1`; flagged, not renamed.
+Sith**. All owed under `XENOTYPE_CANON_CORRECTION_1`; flagged, not yet renamed (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31).
 
 Every one of the five defs contradicts canon. The worst per species:
 

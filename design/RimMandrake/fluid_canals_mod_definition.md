@@ -4,9 +4,15 @@ Status: agent-drafted 2026-09-16 from the owner's bench session, then ruled heav
 **27 numbered rulings** are recorded below and are his; unnumbered prose is still agent draft.
 
 **The mod is named `FlowWorks`** (ruling 20): `RimMandrake: FlowWorks`, packageId
-`mandrake.rm.flowworks`, namespace `RimMandrake.FlowWorks`, prefix `RM_`. ⛔ This file and the mod
-folder keep the old FluidCanals name deliberately — ruling 20 gates the rename on
-`NAMING_SCHEME_EXECUTION_1`, and CLAUDE.md forbids renaming ahead of it. Do not "fix" the filename.
+`mandrake.rm.flowworks`, namespace `RimMandrake.FlowWorks`, prefix `RM_`.
+
+🔴 **This file and the mod folder still say FluidCanals, and that is a DEBT, not a decision.** Ruling 20
+deferred the rename to `NAMING_SCHEME_EXECUTION_1` — but that item closed **2026-08-31** at `54a8e28d`,
+16 days before FlowWorks was named, so the gate never existed. Owner, 2026-09-16: *"No... we rename
+right now. That's crazy."* The rename now executes as part of **`FLOWWORKS_BUILD_PROGRAM_1` Phase 1**,
+on the Desktop, because two compiled assemblies and a set of reflection strings are involved — that
+item carries the full MEASURED blast radius and the two silent-failure hazards. Until it lands, expect
+the old name here and do not spend a session rediscovering why.
 
 Position in the family: FlowWorks is the **liquid engine itself** — depth is its primitive (ruling 18),
 and excavation plus the built half (canals, terraces, ladders, sluice gates, **pumps, tanks**) is now
@@ -566,10 +572,12 @@ a sink (fast, liquid leaves the map, needs a sink built at an edge).
 name now that it's a full liquid engine."* "FluidCanals" now names one driver of a mod that owns
 sources, sinks, occupancy, fill tiers, surface flooding and canals.
 
-⛔ **Do not rename anything yet.** CLAUDE.md: *"Old names migrate under NAMING_SCHEME_EXECUTION_1 — do
-not rename ahead of it."* A rename touches packageId, defNames, the C# namespace, the mod folder, the
-`.csproj`, the deployed folder under the game's Mods directory, and every doc citing them. Record the
-chosen name here; execute it under that item.
+✅ **The rename is owed and scheduled — `FLOWWORKS_BUILD_PROGRAM_1` Phase 1 executes it.** The former
+instruction here ("do not rename anything yet", citing `NAMING_SCHEME_EXECUTION_1`) was wrong: that item
+closed 2026-08-31 at `54a8e28d`. A rename does touch packageId, defNames, the C# namespace, the mod
+folder, the `.csproj`, the deployed folder under the game's Mods directory and every doc citing them —
+which is why it is Desktop work with a compiler, not why it is deferred. Phase 1 carries the MEASURED
+file-by-file blast radius.
 
 **Recommended: `RimMandrake: Liquid Flow`** — packageId `mandrake.rm.liquidflow`, namespace
 `RimMandrake.LiquidFlow`, prefix stays `RM_`. It names the thing the mod actually owns (motion), is
@@ -653,7 +661,8 @@ So the final shape:
 
 ⚠️ Absorbing the registry makes Fluidity a **hard dependency** for anything liquid-adjacent, and
 `LiquidTypes` already ships 17 terrain suites whose defNames other mods patch. That migration is real
-work and belongs with `NAMING_SCHEME_EXECUTION_1`, not ahead of it.
+work and rides `FLOWWORKS_BUILD_PROGRAM_1` Phase 1 alongside the rename — *not*
+`NAMING_SCHEME_EXECUTION_1`, which closed 2026-08-31.
 
 **15. Detonation propagates fast, then the whole run goes.** One mechanism — a travelling front — with
 speed as the only difference between a tar fuse and a chemfuel detonation, so a player can *just*
@@ -927,8 +936,10 @@ earthworks, it is liquid-agnostic (no "water" trap), it is short and memorable o
 promises no simulation.
 
 Per the naming scheme: `RimMandrake: FlowWorks`, packageId `mandrake.rm.flowworks`, namespace
-`RimMandrake.FlowWorks`, prefix stays `RM_`. ⛔ Still not renamed here — `NAMING_SCHEME_EXECUTION_1`
-owns migrations. **One check owed before publishing:** confirm no Workshop mod already uses the name
+`RimMandrake.FlowWorks`, prefix stays `RM_`. ⛔ Not yet renamed on disk — **`FLOWWORKS_BUILD_PROGRAM_1`
+Phase 1 owns it** (the `NAMING_SCHEME_EXECUTION_1` gate written here originally was already closed
+2026-08-31; owner reopened the question 2026-09-16: *"we rename right now"*).
+**One check owed before publishing:** confirm no Workshop mod already uses the name
 (cannot be searched from the Laptop — WebSearch is dead on this model group; use Fetcher or the
 Desktop).
 

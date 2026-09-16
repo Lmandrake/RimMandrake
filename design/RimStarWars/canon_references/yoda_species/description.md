@@ -207,7 +207,7 @@ way. The problems are naming and face:
 - 🔴 **Naming, per the top of this entry**: `Yoder` and `ForceGremlin` are both
   inventions on a species Lucas deliberately left unnamed, and both are baked into the
   defName, the label, the icon path (`Xenotype_ForceGremlin`) and the namer
-  (`RSW_KoTOR_NamerYoder`). Governed by `NAMING_SCHEME_EXECUTION_1` — flagged, not
+  (`RSW_KoTOR_NamerYoder`). Owed under `XENOTYPE_CANON_CORRECTION_1` — flagged, not
   renamed. Recording it because "the def has no canon name to be wrong about" is the
   wrong conclusion: canon's position is that the name is *withheld*, which is a fact
   the def contradicts by supplying one.

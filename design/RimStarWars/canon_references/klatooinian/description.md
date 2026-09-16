@@ -7,9 +7,9 @@ alongside the Hutts themselves.
 ⚠️ **Spelling: the repo's defName and texture folder say "Klatoonian"
 (`RSW_RimMandrakeKlatoonian`, `SWX/Pawn/HeadAttachments/klatoonian/`), but the
 canonical Star Wars spelling is "Klatooinian"** — two `o`s, then `i`. This
-directory uses the canonical spelling; the defName is cited as-is above and must
-NOT be renamed ahead of `NAMING_SCHEME_EXECUTION_1` (project CLAUDE.md: old names
-migrate under that item, never opportunistically).
+directory uses the canonical spelling; the defName is cited as-is above and its
+correction is owed under `XENOTYPE_CANON_CORRECTION_1`, where the owner rules bug vs deliberate
+departure (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31, so it gates nothing).
 
 ## Sourced text (Wookieepedia)
 Klatooinians are a sentient **humanoid** species from the planet **Klatooine** in

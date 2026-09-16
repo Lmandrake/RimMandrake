@@ -8,9 +8,9 @@ Assigned `Jawa_AscendantHelix: R`.
 `Zuguruk`; `Zugurak` returns `missingtitle` from the API. The likely origin of the
 repo's spelling is that the article's own infobox **image file is named
 `File:Zugurak.png`** while the article title, the body text and the caption
-*inside* that image all read **Zuguruk**. Renaming is governed by
-`NAMING_SCHEME_EXECUTION_1` — do not rename ahead of it — but the entry does not
-adopt the typo.
+*inside* that image all read **Zuguruk**. Renaming is owed under
+`XENOTYPE_CANON_CORRECTION_1`, where the owner rules bug vs deliberate departure (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31,
+so nothing is waiting on it). The entry does not adopt the typo.
 
 🔑 **This entry doubles as the shared-Sith anatomy reference**, because the repo
 ships three separate xenotypes (Kissai, Massassi, Zuguruk) that canon treats as

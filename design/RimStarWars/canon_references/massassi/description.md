@@ -217,7 +217,7 @@ none known
 - ⚠️ **Naming**: as with the other two castes, "(Pureblood)" is the wrong term — canon
   is explicit that **Sith Purebloods are hybrids and "were thought to be very
   different from the original Sith species as a whole."** A Massassi is a **Red Sith**.
-  Governed by `NAMING_SCHEME_EXECUTION_1` — flagged, not renamed.
+  Owed under `XENOTYPE_CANON_CORRECTION_1` — flagged, not yet renamed (the `NAMING_SCHEME_EXECUTION_1` gate closed 2026-08-31).
 - ✅ Well sourced and correctly present: `Aggression_HyperAggressive`,
   `MeleeDamage_Strong`, `AptitudeRemarkable_Melee`, `Robust`, `Pain_Reduced`,
   `WoundHealing_Fast`, `Body_Hulk`, `Outland_FaceTendrils`, `Outland_RidgedSkin`,

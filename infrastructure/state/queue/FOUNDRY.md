@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-16T20:56:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-16T22:12:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1760,3 +1760,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
+
+## STALE_RENAME_GATE_SWEEP_1 Sweep the dead NAMING_SCHEME_EXECUTION_1 rename gate out of ~10 design drafts (item closed 2026-08-31 at 54a8e28d); also fix liquids_framework_design.md still naming the mod Fluidity after ruling 20 named it FlowWorks
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STALE_RENAME_GATE_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STALE_RENAME_GATE_SWEEP_1.md
