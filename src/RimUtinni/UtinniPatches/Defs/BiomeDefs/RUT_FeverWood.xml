@@ -41,6 +41,7 @@
 
   <BiomeDef>
     <defName>RUT_FeverWood</defName>
+    <generatesNaturally>false</generatesNaturally>
     <label>the Fever Wood</label>
     <description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description>
     <workerClass>ReGrowthCore.UniversalBiomeWorker</workerClass>

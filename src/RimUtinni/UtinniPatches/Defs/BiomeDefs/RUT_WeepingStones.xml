@@ -43,6 +43,7 @@
 
   <BiomeDef>
     <defName>RUT_WeepingStones</defName>
+    <generatesNaturally>false</generatesNaturally>
     <label>the Weeping Stones</label>
     <description>High pale stone standing in the path of the sea-wind. Most of this country is bright, dry, wind-scoured ridge and shoulder -- but every cold shaded face of it weeps: thin black streaks of wet running down white rock, moss crowding the seep lines, and here and there a true pool with a green ring around it and a crowd at the water. An oasis here is never merely found water; it is a working thing, part stone, part machine, part congregation of everything that drinks.</description>
     <workerClass>VanillaBiomes.BiomeWorker_DesertOasis</workerClass>

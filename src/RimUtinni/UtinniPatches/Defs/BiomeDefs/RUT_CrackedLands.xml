@@ -37,6 +37,7 @@
 
   <BiomeDef>
     <defName>RUT_CrackedLands</defName>
+    <generatesNaturally>false</generatesNaturally>
     <label>the Cracked Lands</label>
     <description>Canyon country below the only dayside mountains that rain: mesas, hoodoos, slot canyons, clay pans split into polygons, dry and cracked and still. Then, rarely and without warning, the water comes down -- violent floods of hot, crud-laden water that are fertilizer, life, death and disaster all at once. It tears the canyon and leaves behind the one thing nowhere else on the dryland ladder has: actual soil, in the shade.</description>
     <workerClass>VanillaBiomes.BiomeWorker_Badlands</workerClass>

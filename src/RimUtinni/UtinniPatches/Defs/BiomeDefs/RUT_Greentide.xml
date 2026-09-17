@@ -48,6 +48,7 @@
 
   <BiomeDef>
     <defName>RUT_Greentide</defName>
+    <generatesNaturally>false</generatesNaturally>
     <label>the Greentide</label>
     <description>A gallery jungle hugging every mile of the rivers that fall off the Scald's rain-peaks -- a green ribbon a few tiles wide through country that gets deep-desert sun, visible from the dunes as a line of steam. The rivers steam all the time; the air holds more water than the river does. Under the steam, everything grows at a speed you can watch, everything eats everything in the open, and the crashing of trees is the background percussion of the place. There is no truce here.</description>
     <workerClass>BiomeWorker_CypreJungle</workerClass>
