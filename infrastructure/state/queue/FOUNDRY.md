@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:02:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T21:06:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Source
-prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
 state:    ready
@@ -199,7 +190,7 @@ summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when 
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -512,6 +503,15 @@ target:   v1
 kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Source
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    doing  (BLOCKED)
@@ -1031,6 +1031,16 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
+## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+blocked:  Four offline sessions (2026-09-05/06/09/10/12) exhausted static tracing: wire protocol, tool dispatch, main-thread queue, vanilla map generation, and the closed-source GABP SDK (decompiled directly) are all clean -- no cache/pooling/shared-state path found anywhere in the deterministic call graph. Diagnostic logging landed and is committed (36521df01, JawaBenchSocietyTools.WorldTileMapGenerate, tag [TILEGEN_SILENT_REUSE_1]) but not deployed -- companion DLL can't be overwritten while the game runs. Nothing further is offline-actionable; next step is a game-down deploy + live two-distinct-tile repro (confirming WorldObject occupancy via jawa/world_objects_get, not just world_tile_get) grepping Player.log for the tagged lines. (on COLD_LOAD_RUN_SHEET_4)
+summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
+prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
+
 ## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -1087,7 +1097,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     bug
-blocked:  ledger/prose mismatch: item's own text ends 'Left doing, blocked. Recommend the owner rule on scope' — TryLaunch's gizmo path is disabled whenever CanLaunch() is false, so the item's own live-verify plan targets a gravship code path that doesn't exist in the shipped game; source-side fix (572413c0) still stands for pods/shuttles. Needs an owner scope ruling: rescope to pods/shuttles + file a new gravship-specific item, or move the patch target to Building_GravEngine.InitiateTakeoff.
+blocked:  Stale block reason superseded: owner ruled 2026-09-11 (retarget to Building_GravEngine's real takeoff path), and the retarget was built same day (fb54a3f2, WorldComponent_GravshipController.InitiateTakeoff, CutsceneInProgress flag as commit marker; kept pods/shuttles patch renamed Patch_TransporterLaunched). Build 0W/0E, selftests 45/47 (2 pre-existing unrelated). Source-complete, nothing left offline -- NOT deployed (assembly change needs game-down window) and live PROVE/EXPECT (jawa/gravship_launch before/after) still owed. Correcting the stored block text so it stops reading as an unresolved scope question. (on COLD_LOAD_RUN_SHEET_4)
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
@@ -1220,6 +1230,16 @@ kind:     task
 blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the item's own note; needs owner to name mutators or rule on density approach
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+blocked:  Fully resolved offline: rename tool (jawa/world_landmark_rename) is fixed, deployed, and proven live per 2026-09-10 history. Nothing left is offline-actionable -- the 18 hand-named renames need (1) owner skim of names.md (not yet done) and (2) a live bridge session batched with OASIS_LANDMARK_PLACEMENT_1, which is itself needs=bridge/ready. BENCH holds the bridge this wave for the owner's Pyrelands session; no FOUNDRY bridge slot exists tonight. (on COLD_LOAD_RUN_SHEET_4)
+summary:  Source
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    doing  (BLOCKED)
