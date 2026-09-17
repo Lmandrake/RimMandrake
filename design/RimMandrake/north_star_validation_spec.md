@@ -279,9 +279,11 @@ assertion could pass. That is §Why's defect in the time dimension.
   frame count. That line needs a material-cache count, not an eye — and its own
   wording ("the symptom and the defect are the same thing") is what misfiled it.
 - **A line declares which it is, and the runner must be able to read it**, exactly
-  as a read line declares its evidence class (§10.2). A change line claimed by a
-  component that captured one frame is `UNJUDGEABLE`, never a partial pass — the
-  same rule as an open read line whose batch came back short (§10.5).
+  as a read line declares its evidence class (§10.2) — a parenthesised `(change)`
+  after the id, with a bare id meaning `(state)`, since state is the common case and
+  every line written before this ruling is one. A change line claimed by a component
+  that captured one frame is `UNJUDGEABLE`, never a partial pass — the same rule as
+  an open read line whose batch came back short (§10.5).
 - ⚠️ **UNMEASURED: how many frames make a change line decidable.** No defensible
   number was derived here and none is asserted. It is per line — a before/after
   pair settles an anger reaction; a rise-hold-release plainly needs three.
