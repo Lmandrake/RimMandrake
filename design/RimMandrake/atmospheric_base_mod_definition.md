@@ -344,8 +344,9 @@ been re-opened by the second. The cost he accepted is that nothing is visible un
 | 5 | Do positioned looping Sustainers behave acceptably when their mix changes as the camera moves? | Acoustic territory (§3). |
 | 6 | What happens to lights and sustainers during gravship **flight**? | Whether flight needs any handling at all, given landing is a reset. |
 | 7 | Is a fully-dark fixture distinguishable to the game's own light grid from an unpowered one? | Nothing — but it decides whether L8's writhe needs to be brighter than zero. |
+| 8 | Do Sustainers support a **partial volume ramp**, or only start and stop? | §3's bed-bending. `RM_MapComponent_SilenceCue` reportedly already carries a Desktop-verified finding that they do not — if so, beds cannot fade, and a mood's acoustic change is a cut rather than a swell. Added by §9a C5. |
 
-Phase 0 of the build programme is these seven, and nothing else.
+Phase 0 of the build programme is these eight, and nothing else.
 
 ---
 
