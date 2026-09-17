@@ -822,10 +822,10 @@
     "sha": "99a9e5cbc"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "d75497f513b07a34c73832269e995d6c719b8d3a41664098be956374397c710c",
-    "sha": "99a9e5cbc"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "06b1923b19c8aa59d742ac5d23d5516241be636c194dcdf4e63d2ae51123f810",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
     "cleanCount": 2,
@@ -1746,16 +1746,16 @@
     "sha": "0e38767e7"
   },
   "src/RimMandrake/FloodedCanyon/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "c48773af848af9e9b6d143a8b67ca08959e5ab44dcda149d37cc9135217190ec",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "35ce81b5c1092dcf21063bbd3d6f4429481bfd03c5d3361bbf8f60a77d1c5913",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "730bf3a09a294b1806e117622047308131ddfc1fb377d959e1b4a9aa613219ae",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "23098ce47de920ccd76576f81bb297a56a5e57018bc10388de5f5f0392462118",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/FloodedCanyon/Defs/GameConditionDefs/RM_FloodedCanyon_GameConditionDefs.xml": {
     "cleanCount": 1,
@@ -1788,10 +1788,10 @@
     "sha": "47ae589d5"
   },
   "src/RimMandrake/FloodedCanyon/Source/RM_MapComponent_CanyonFlood.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "94f4b1f133332f46cb6ae910344d295cfcaec808226de65c1f597601b6764833",
-    "sha": "47ae589d5"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "94ad5be912ef3211a616b2beb6ff56a6516ae51d9fce712109d230c4a5442e13",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/FloodedCanyon/Source/RM_Patch_Plant_GrowthRate.cs": {
     "cleanCount": 1,
@@ -4440,10 +4440,10 @@
     "sha": "c89c85687"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2b0c2c1f7d379f241837a385a0f36c109c7a3c925d68c62fd4e5616f4cf47bfc",
-    "sha": "9c1523eb"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "c6f08b134977d6a971e1ce6e837a193a2c5c91e2b279eca6069c96b7df88a621",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/StructureInjections/Templates/dwelling_test.txt": {
     "cleanCount": 1,
@@ -4456,6 +4456,48 @@
     "date": "2026-09-10",
     "hash": "1e47f06805b3a331dabbeda3cbbe8cc3889468130b5caa89b5dea10445867a1f",
     "sha": "b88a6f90"
+  },
+  "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarBadgeDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "c52019ba741039cb444e62329b875036f279a8f2d89afdbd4423c01aeae581bc",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarColumnDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "352fcbe28c146541e3bd45622a0f1267753117bfee326b4981cead7bf83b983a",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarIntelLayerDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "52bae175ff08cd7a9762008e9e3cb0e08da4b1240464b829697e1b8a278b40d2",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarTabDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "acd67f407d535fbf35e56931168098c2ee4e2fd9a4d002facdb4e3db15b58073",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/RM_BazaarSession.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "99ce817dee58baabfb40288a64cc2391d888c4ebcddb0f59b184a8ece1899f8d",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/RM_BazaarSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5331be519e21f51d1c818094799e31f981e746e054bd6bac5c04193b44316264",
+    "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheBazaar/Source/RM_Window_Bazaar.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4dfd09d78badd3294eab3fb9346e6318335cbe15c5d221916ab0945ae6accba8",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/TitanicCreatures/About/About.xml": {
     "cleanCount": 1,
@@ -6400,10 +6442,10 @@
     "sha": "c1ae25eaa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugActionTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "36fb54020587d901582642033ee93ceb956352725762eea11b875c53b5a2aac9",
-    "sha": "46567cc0"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "f8609a25904e65f37d76acb348ce71c7ffc286546b5880fd85575409c6687e3f",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugGems1.cs": {
     "cleanCount": 1,
@@ -6706,10 +6748,10 @@
     "sha": "18e0094e"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTypeVisibilityTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-08",
-    "hash": "12f89a8c1c956200a6c6d9c604d7ea681621a018c22f1a2d5affe2834594c2a7",
-    "sha": "2aeb5193"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "75bad6943d64e94fa1847189f9a642bd5b13e6138fa2b362bb18dd13c023c179",
+    "sha": "0aa131589"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchUIRootTools.cs": {
     "cleanCount": 1,
