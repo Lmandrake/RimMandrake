@@ -22,4 +22,111 @@ status-hint: three-tier restoration ladder for a wrecked VFE-Factory automated s
 6. [B] `jawa/spawn_thing {defName: "RM_WM_AutomatedSmelter_Wrecked"}` on `FactoryFloor` terrain → success, then `jawa/list_things` confirms it exists with 0 comps and `deconstructible=true`
 7. [B] `jawa/research_finish_project {defName: "RM_WM_AutomatedSmelterRestoration"}`, then attempt to build `RM_WM_AutomatedSmelter_Repaired` over the spawned wreck's cell (the `replaceTags` build-over) — confirm the build succeeds and the wreck is replaced, not stacked; this is DESIGN.md/the item file's own flagged "NOT VERIFIED AT RUNTIME" risk (Replace Stuff - Continued's Harmony postfix forcing `CanReplace=false` on non-deconstructible buildings — does not apply here since v1 ships `deconstructible=true`, but confirm live rather than trusting that reasoning)
 8. [B] (only if Research Reinvented is active) confirm `RM_WM_AnalyseWreckedSmelter` actually surfaces as a study option in the research UI for a colonist standing near the wrecked-tier building — flagged as unverified in the def's own header comment
-X. [S] (human pass) compare the WRECKED/KLUDGED/REPAIRED art against each other and the donor's own smelter sprite — deferred to MOD_HUMAN_EXPLORATION_PASS_1
+X. [S] (human pass) compare the WRECKED/KLUDGED/REPAIRED art against each other and the donor's own smelter sprite — ⬇️ **superseded as the authority by the `## north star` section below**, which makes this a binding bar rather than a deferred concern.
+
+## north star
+state: DRAFT
+validated-hash:
+
+The `state:` line above is authoritative; `design/RimMandrake/north_star_validation_spec.md`
+defines what each state means and §6 covers staleness. Ruled in the owner's sitting of
+2026-09-16 — his three rulings are marked 🔴 inline. Amend only in another sitting with
+him: the recorded hash covers this whole section, so any edit reverts it to DRAFT
+(`NORTHSTAR_HASH_SCOPE_1`).
+
+### the experience  (OWNER'S WORDS — verbatim)
+
+2026-09-01, filing `WRECKED_MACHINES_RESURRECTION_1`:
+
+> *"And then there's the speck for the Wrecked Machines mod... let's ressurect that
+> now! Fix it. Make it work in the new regime."*
+
+2026-09-15, filing `RAKATAN_ARCHOTECH_MACHINES_1` — the vision quote:
+
+> *"It becomes a core Rakatan tech trait: it's ROBUST. It SURVIVES. It degrades
+> gracefully whenever possible. Their ships are ancient and still somewhat
+> functional. Their batteries just slowly lose capacity over millenia yet still work.
+> And if we could refurbish them, they would exceed modern technology even in a still
+> kludged manner. The existing mod is about repairing big machines in place, and
+> that's excellent. […] Defunct, weakly functional, or semi-functional versions will
+> be found in the game and added to the ship by the player as a form of sacred loot."*
+
+📄 The mod's own About.xml is already written as vision prose, and is treated here as
+part of the experience statement:
+
+> *"Holy wreckage. The Kolyska's factory did not fail politely. Its machines are still
+> bolted to the deck where they died — split open, scavenged, corroded, half-buried in
+> their own slag. […] WRECKED — Dead. […] Occupies its tiles, does nothing, cannot be
+> removed. Scenery and reproach. […] REPAIRED — holes filled with metal that does not
+> match, cabling routed almost neatly, a few improvised vents still smoking. Full
+> function. **It will never look factory-fresh again.**"*
+
+🔑 Through-line: **a machine that died in place and survived dying.** Not rubble, not a
+fresh build — a thing that endured, and shows it.
+
+### must show
+
+**The three tiers, told apart**
+- [ ] `tiers_distinguishable_at_glance` — wrecked, kludged and repaired are told apart
+      at play zoom with no tooltip and no click. 🔴 **Owner ruling, 2026-09-16**: kept
+      as ONE line judging all three together. I challenged it — rendered at true play
+      zoom (drawSize 4×5 → 256×320 px), wrecked-vs-repaired is instant via the lit
+      ring, but wrecked-vs-kludged takes a beat since both are grey-brown domes and the
+      difference is voids-versus-patches. He looked and ruled the read sufficient. His
+      eye is the authority on whether art reads.
+- [ ] `wrecked_reads_as_dead` — a WRECKED machine reads as dead: split open, missing
+      chunks, nothing lit. *"Scenery and reproach."*
+- [ ] `kludged_reads_as_bodged` — a KLUDGED machine reads as bodged, not finished:
+      mismatched plate and exposed cabling visible on the sprite.
+- [ ] `repaired_reads_as_running` — a REPAIRED machine reads as running. The lit amber
+      ring is the tell the art already has, and the clearest in its family.
+- [ ] `repaired_never_factory_fresh` — even REPAIRED still shows its scars. Its own
+      About: *"It will never look factory-fresh again."*
+- [ ] `wrecked_degraded_not_absent` — a wreck reads as a machine that SURVIVED in a
+      degraded state, not as rubble or an empty footprint.
+
+**Placement in the world**
+- [ ] `wreck_occupies_its_tiles` — a wreck fills its own 3×4 footprint and reads as
+      bolted in place, not as a small prop in a large empty rectangle.
+- [ ] `wreck_reads_as_worth_saving` — a wreck reads as something a scavenger would
+      want, not as trash to clear. His *"sacred loot"*, *"Holy wreckage."*
+
+**The Rakatan reinterpretation**
+
+🔴 **Owner ruling, 2026-09-16**: these four lines are included NOW, with the cost
+accepted explicitly — they judge content that does not yet exist, because
+`RAKATAN_ARCHOTECH_MACHINES_1` is an unstarted design session. He chose to bind his
+freshest vision while it is still in his head rather than wait. Expect them to refuse
+this mod until that design lands; that is intended, not a defect.
+
+- [ ] `rakatan_reads_as_ancient` — a wreck reads as ANCIENT technology, not as
+      recently-broken industrial kit. *"Their ships are ancient and still somewhat
+      functional."*
+- [ ] `degradation_reads_as_graceful` — a partly-functional machine reads as working at
+      reduced capacity, not as broken-and-inert. *"It degrades gracefully whenever
+      possible… batteries just slowly lose capacity over millenia yet still work."*
+- [ ] `refurbished_reads_beyond_modern` — a refurbished Rakatan machine reads as BETTER
+      than its modern equivalent while still visibly kludged. *"They would exceed modern
+      technology even in a still kludged manner."* ⚠️ The hardest line here: "better than
+      modern" has no established visual vocabulary in this repo yet.
+- [ ] `rakatan_reads_as_sacred` — a Rakatan machine reads as venerable, something a Jawa
+      clan would revere rather than merely salvage. *"A form of sacred loot."*
+
+### cannot show
+
+- [ ] `never_two_identical_smelters` — ours and the donor's smelter appearing
+      indistinguishably in the build menu or on the map. 🔴 **True today by design, and
+      being fixed**: our own def file records that `VFEFactory_AutomatedSmelter` "is left
+      completely untouched and stays buildable", and About.xml calls the arrangement *"a
+      testing arrangement, not a finished one."* Owner ruling 2026-09-16, verbatim:
+      *"remove the VFE factory, not the manual one"* — so `VFEFactory_AutomatedSmelter`
+      leaves the build menu while the manual smelter is left alone.
+      → `WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1`.
+- [ ] `never_reads_as_donor_machine` — a tier that reads as the donor's intact VFE
+      smelter rather than as our wreck.
+
+### known non-visual blocker
+**This mod ships no Mod Settings at all** — no `ModSettings` or
+`DoSettingsWindowContents` anywhere under `src/RimMandrake/WreckedMachines/` (MEASURED
+2026-09-16). That violates the owner's every-mod-ships-settings ruling and will block a
+GREEN independently of every line above. → `WRECKEDMACHINES_MOD_SETTINGS_1`.

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T00:12:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T00:24:25Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1830,3 +1830,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NORTHSTAR_HASH_SCOPE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NORTHSTAR_HASH_SCOPE_1.md
+
+## WRECKEDMACHINES_MOD_SETTINGS_1 WreckedMachines ships NO Mod Settings at all (no ModSettings/DoSettingsWindowContents anywhere in the mod, MEASURED 2026-09-16) - violates MOD_OPTIONS_RETROFIT_1's every-mod-ships-settings ruling and blocks a GREEN independently of its north star
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WRECKEDMACHINES_MOD_SETTINGS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WRECKEDMACHINES_MOD_SETTINGS_1.md
+
+## WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1 Remove VFEFactory_AutomatedSmelter from the build menu so it no longer sits indistinguishably beside our RM_WM_AutomatedSmelter tiers - owner ruling 2026-09-16 verbatim: 'remove the VFE factory, not the manual one', so the MANUAL smelter is left untouched; About.xml calls the current coexistence a testing arrangement, not a finished one
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md
