@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:52:24Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-17T20:56:24Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Source
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
 state:    ready
@@ -918,15 +927,6 @@ kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
 
-## FLOWWORKS_MECHANICS_TABLE_STALE_1 FlowWorks' mechanics table (flowworks_mod_definition.md section 4) is stale in the DANGEROUS direction - it says UNBUILT for code that exists, so a seat reading it may rebuild what is already there. MEASURED 2026-09-17 on the Mac: the table calls 'Source stock / volume' UNBUILT with 'No stock of any kind exists' while RM_LiquidStock.cs is 424 lines implementing the 5:1 budget, sticky-limitless classification, recession and refill; it calls 'Spread confined to the channel' the biggest gap and UNBUILT while Flood_FlowWorks.CanFloodInto gates on RM_MapComponent_Excavation.CanLiquidEnter with channelConfinementEnabled defaulting true; and it describes source priming via CompFluidReservoir.Notify_CanalCellOpened when that comp is deleted from disk (only 4 deletion comments remain). RM_ExcavationDepth (119) and RM_LiquidBody (108) also exist unmentioned. Audit every row against the real source and correct it - this is the FLOOD_ENGINE_CORRECTIONS_1 trap (a doc blocking work on defects already fixed) repeating in the same mod family
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1473,7 +1473,7 @@ prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1481,19 +1481,9 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is UP
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
-
-## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-waiting:  needs `game-up`, game is DOWN
-summary:  Source
-prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 # NOT THIS TARGET
 
