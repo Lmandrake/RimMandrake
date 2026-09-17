@@ -15,6 +15,14 @@ command answers "is this set wireable" with measurements instead of memory:
                 at comparable height in the tile, flag > 12% of canvas);
                 sha256 pairwise duplicates (the anooba-female-was-the-male
                 class)
+  viewpoint   : the SOUTH facing must be drawn at eye level, face toward the
+                viewer — not from overhead (the mantistanis/firewasp/
+                furnace-beast top-down-south class, owner 2026-09-17). No
+                pixel statistic separates this (measured: S~N IoU/NCC put
+                good sets inside the failure band), so the judge is a
+                `claude -p` vision call. When claude is unavailable the
+                verdict is UNMEASURED and FLAGGED — never a silent pass.
+                --no-llm skips the check and prints that it was skipped.
 
 Exit 0 = every gate green. Exit 1 = at least one FLAG (wiring should stop
 and a human look). Numbers are printed either way — this reports, the
@@ -23,8 +31,10 @@ human rules.
 Usage:
   python3 facing_set_audit.py <north.png> <south.png> <east.png> [west.png]
   python3 facing_set_audit.py --set <dir-or-glob-prefix>   # finds *_north/_south/_east
+  python3 facing_set_audit.py --no-llm <...>               # offline: skip viewpoint
 """
 import hashlib
+import subprocess
 import sys
 from pathlib import Path
 
@@ -36,6 +46,35 @@ ANCHOR_DRIFT_FLAG = 12.0    # percent of canvas height, bbox bottom edge
 FRINGE_FLAG = 2.0           # percent of pixels at alpha 1..31
 MIDALPHA_FLAG = 10.0        # percent of pixels at alpha 32..223
 COVERAGE_RANGE = (2.0, 85.0)
+VIEWPOINT_TIMEOUT_S = 150   # claude -p is the ruled LLM transport; it can stall
+
+VIEWPOINT_PROMPT = (
+    "Read the image file {path} . It is a creature sprite for a top-down colony "
+    "game, meant to be the SOUTH facing: the creature seen from directly ahead "
+    "at roughly eye level, face and chest toward the viewer. Judge the CAMERA "
+    "ELEVATION actually drawn. Answer exactly one word: EYELEVEL (you mainly "
+    "see the face, chest, front of the body; the back is hidden) or OVERHEAD "
+    "(you mainly see the top of the head, spine, back, shell or shoulders — "
+    "looking down on the creature). One word only."
+)
+
+
+def viewpoint_south(path):
+    """EYELEVEL | OVERHEAD | UNMEASURED. Calibrated 2026-09-17 on 15 wired
+    Pyrelands sets + 1 known-bad control: 3/3 flagrant overheads caught, 0
+    false flags on the 10 clean fronts; high-angle crouches (razorjack,
+    barbslinger) sit near the boundary and may flag — that is a human-look
+    flag, not a defect of the sprite or of the judge."""
+    try:
+        out = subprocess.run(
+            ["claude", "-p", VIEWPOINT_PROMPT.format(path=path)],
+            capture_output=True, text=True, timeout=VIEWPOINT_TIMEOUT_S)
+        word = (out.stdout or "").strip().split()[-1].upper() if out.stdout.strip() else ""
+        if word in ("EYELEVEL", "OVERHEAD"):
+            return word
+        return "UNMEASURED"
+    except (OSError, subprocess.TimeoutExpired):
+        return "UNMEASURED"
 
 
 def measure(path):
@@ -72,6 +111,8 @@ def measure(path):
 
 def main(argv):
     args = argv[1:]
+    no_llm = "--no-llm" in args
+    args = [a for a in args if a != "--no-llm"]
     if args and args[0] == "--set":
         stem = args[1]
         paths = []
@@ -126,6 +167,17 @@ def main(argv):
     bottoms = [m["bottom_pct"] for m in ms if m["bbox"]]
     if bottoms and max(bottoms) - min(bottoms) > ANCHOR_DRIFT_FLAG:
         flags.append(f"bottom-anchor drift {max(bottoms)-min(bottoms):.1f}% > {ANCHOR_DRIFT_FLAG}%")
+
+    souths = [m["path"] for m in ms if "south" in Path(m["path"]).name.lower()]
+    if no_llm:
+        print("viewpoint check SKIPPED (--no-llm) — south camera elevation not judged")
+    else:
+        for sp in souths:
+            v = viewpoint_south(sp)
+            if v == "OVERHEAD":
+                flags.append(f"{Path(sp).name}: south drawn OVERHEAD (top-down), must be eye-level front")
+            elif v == "UNMEASURED":
+                flags.append(f"{Path(sp).name}: south viewpoint UNMEASURED (claude -p unavailable) — judge by eye")
 
     print(f"{'file':44s} {'canvas':>9s} {'major':>6s} {'cov%':>6s} {'fringe%':>8s} {'meanRGB':>13s}")
     for m in ms:
