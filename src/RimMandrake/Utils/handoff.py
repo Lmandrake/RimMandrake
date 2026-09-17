@@ -220,7 +220,15 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
 
     who = sh("python3", os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py"),
              "bridge", "who")
-    if seat() in who and "FREE" not in who.upper():
+    # 🔴 Exact holder match, not `seat() in who`. `cli.py`'s `_bridge_who` prints
+    # "bridge held by <holder> since ...", and a bare substring test means a seat
+    # whose name is a substring of another live seat's name (BENCH inside a
+    # MACBENCH-held bridge — MACBENCH is a real seat per `seat()`'s own docstring,
+    # even though `bridge give` only offers BENCH/FOUNDRY; `bridge take` gates on
+    # no such list) would have this seat wrongly told IT holds the bridge and
+    # must release something it never took.
+    m = re.match(r"^bridge held by (\S+)", who or "")
+    if m and m.group(1) == seat():
         bad.append("BRIDGE still held by %s — release it before rebooting:\n      %s"
                    % (seat(), who.splitlines()[0] if who else "?"))
 
