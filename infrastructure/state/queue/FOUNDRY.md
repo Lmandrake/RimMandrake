@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:29:54Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-17T20:35:42Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -549,24 +549,6 @@ kind:     design
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
-## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
-prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
-
-## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
-prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
-
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -908,15 +890,6 @@ target:   v1
 kind:     task
 summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap
 prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
-
-## FLAMEFANG_SNAKE_REBIRTH_1 Boomsnake reborn as Flamefang: un-cut, renamed, venomous
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FLAMEFANG_SNAKE_REBIRTH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
 
 ## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
 state:    doing
@@ -1298,6 +1271,26 @@ kind:     design
 blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
+## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  15 of 18 ranged-only kinds already fixed with faction-voice melee tags (validator clean, 2026-09-11). Remaining 5 undiagnosed kinds need a live per-pawn trait join via bridge spawn batches (no bridge access this seat); 3 Geonosian kinds separately need an owner ruling on melee-tag voice (only in-voice candidate priced 20950 vs 400-1200 budgets) -- unchanged since last check, re-verified state before blocking (on COLD_LOAD_RUN_SHEET_4)
+summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
+prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
+
+## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  mechanism fix already landed 2026-09-11 (RSW_MeeCatch/FaaCatch/LaaCatch item defs wired into BiomeFishTypes_Greentide.xml, validate_patch.py clean) -- item's own criteria requires a live quicktest fishing pass to prove the catch resolves to an item not a Pawn; no bridge access this seat (on COLD_LOAD_RUN_SHEET_4)
+summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
+prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
@@ -1950,16 +1943,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
-
-## PYRELANDS_SOUTH_TOPDOWN_REGEN_1 Regenerate three top-down south facings caught by the new viewpoint gate: GR_Mantistanis (v5 south, drained unattended, never eyeballed), FurnaceBeast (2026-09-13 set), AA_FireWasp (v3 - canon check graded symmetry, not camera elevation). South = eye-level front; regen via artpipe painterly family, re-run facing_set_audit before wiring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
 
 ## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
 state:    proposed
