@@ -10,9 +10,16 @@
     terrainAffordanceNeeded FactoryFloor · 300 W · heatPerSecond 14
 
   RULING (DESIGN.md §1, owner 2026-08-12): these are PARALLEL defs, not a
-  retexture. VFEFactory_AutomatedSmelter is left completely untouched and stays
-  buildable. The player therefore sees BOTH machines in the build menu — a known,
-  accepted cost of the testing phase, NOT acceptable at ship.
+  retexture. VFEFactory_AutomatedSmelter is left completely untouched as a
+  ThingDef — its stats, comps and processes are unchanged, and our Kludged/
+  Repaired tiers still call its own ProcessDefs — but it is no longer
+  BUILDABLE. WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1 (owner ruling 2026-09-16,
+  verbatim: "remove the VFE factory, not the manual one") closed the "both
+  appear in the build menu" gap that used to be documented here as a known,
+  accepted testing-phase cost: Defs/Patches/WreckedMachines_
+  HideDonorSmelter.xml clears its <designationCategory> so it can no longer
+  be newly built, while vanilla's own hand-run ElectricSmelter ("the manual
+  one") is untouched.
 
   RULING (DESIGN.md §1, owner 2026-08-12): "POWER DENSITY explodes, not the fact
   it's a machine." The wrecked tier is discharged, so it takes NO
