@@ -52,6 +52,26 @@ and nowhere else; never restate a model choice outside it.
   not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
   terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
   those into measurements.
+- 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
+  that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
+  cost a whole run rather than being truncated; the two that survived streamed output at 385 s
+  and 575 s. **Brief every writing subagent to create its output file as a skeleton FIRST and
+  fill it section by section** — a file write emits progress and persists partial work. A long
+  read-then-write brief is the shape that trips it.
+- 🔴 **`northstar.parse()` returns a DICT.** `getattr(w, "must_show")` yields `None` → `len()` 0,
+  so all four VALIDATED walks read as "0 bars" — an alarming wrong number that looks like a
+  catastrophic finding. Use `w["must_show"]`. 🔑 A count that is conveniently *or* alarmingly
+  round is a query bug until proven otherwise, and the alarming direction is the one you will
+  believe without checking.
+- 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returns **48** where the real active count
+  is **631** — it counts lines containing the tag, and that file puts many elements on one line.
+  Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
+  `infrastructure/state/modlists/`; the live file is a Windows path **unreachable from the Mac**,
+  so a laptop claim about the LIVE list is UNMEASURABLE and must say so (2026-09-17).
+- 🔴 **`handoff.py` cannot tell two BENCH windows apart.** It REFUSES on "BRIDGE still held by
+  BENCH" even when the hold belongs to the *other* window's live session, because both sign as
+  `BENCH`. ⛔ Do not release it to satisfy the gate — that breaks a live game. `--force` records
+  it as open, which is the correct exit, and the handoff must name whose hold it was.
 - 🔴 **An existence test is not an identity test, and a fixed line number is not a field.**
   `[ -e src/RimMandrake/Pits ]` passes while that folder holds only `__pycache__` — the mod
   merged into FlowWorks at `cade628c1`, yet its checklist is **VALIDATED with 12 binding bars**
@@ -137,6 +157,24 @@ called from a shell script without any API key."*
 - Affects `ORACLE_EXPERIMENT_SPIKE_1` (client rewrite owed) and
   `PLOT_MECHANISM_MODS_WAVE_1` Part 1 (the raid-redesigner's Oracle calls ride
   whatever `OracleClient` becomes).
+
+## A pit is a SUPERDEEP cell, not a building — owner, 2026-09-17
+
+*"I'm not really sure a pit is any different than a deep canal."* Ruled and fully
+specified, **nothing built**: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+A pit is depth 4 on the D/F primitive rulings 18/19 already established, so the
+fitting concept collapses to **spikes alone** (oil and poison are FluidDefs; the
+oubliette is CUT), an enclosed superdeep area is a room that becomes a prison room
+once a bed is in it, `capture down`/`convert down` happen from the lip because
+nobody who enters can leave, and TEMPERATURE is the softening mechanism.
+
+🔴 **The ITEM is the authority, not the spec.**
+`design/RimMandrake/pit_superdeep_collapse_spec.md` (1127 lines) was written BEFORE
+three rounds of rulings that changed ten of its answers; the item lists the revisions
+it is owed. ⛔ Do not read the spec and act on it without reading the item first —
+you would build the version he rejected. Door family is its own item,
+`FLOWWORKS_DOOR_FAMILY_1`: **two** stuffable defs, never the three he described and
+then talked himself out of.
 
 ## Shipping names are three-tier — owner, 2026-08-30
 
