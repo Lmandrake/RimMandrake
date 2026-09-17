@@ -29,14 +29,20 @@ time it is used, depth-derived movement cost, a three-tier fill ladder on
 vanilla's own edge-aware water ramps, and a `FluidDef` describing what a
 source carries. Water is the one liquid this pass, proving genericity.
 
-Not yet built, and named so nobody thinks they are missing: filling a channel
-back in, sluice gates, sinks, ladders, fall-in capture at SUPERDEEP (until it
-exists, pawns will not path into a SUPERDEEP cell at all), burning liquids,
-irrigation, and per-source stock accounting.
+A SUPERDEEP excavation is the trapping level and the only one: anything that
+walks into one falls in and is held there whether the hole is dry or brimming,
+and gets out only by climbing a ladder somebody built down there. Pull the
+ladder and they stay. Depth touches shooting in exactly one way, and it is a
+restriction rather than an advantage — whoever is in a superdeep hole can only
+trade fire with whoever is standing right at its lip, both directions.
+
+Not yet built, and named so nobody thinks they are missing: sluice gates,
+burning liquids, and irrigation.
 
 No DLC required. The engine writes the map's temporary terrain layer, which
 is base-game machinery, and ships its own temporary terrains rather than
-naming the Odyssey-only ones.
+naming the Odyssey-only ones. Harmony is required, for one patch: the
+superdeep shooting restriction.
 
 MERGED IN 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1) — one mod now owns
 the whole liquid domain, per the owner's ruling that depth is the single
@@ -72,9 +78,15 @@ FloodedCanyon (a flood-driver client).</description>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
     <li>sarg.alphabiomes</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
   </loadAfter>

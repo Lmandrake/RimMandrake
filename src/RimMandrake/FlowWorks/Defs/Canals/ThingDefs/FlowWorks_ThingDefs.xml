@@ -15,4 +15,120 @@
     <useHitPoints>false</useHitPoints>
   </ThingDef>
 
+  <!-- ==================================================================
+       PHASE 5 — THE SUPERDEEP HOLDER (ruling 26).
+
+       NOT player-buildable and not player-placeable: the depth engine
+       spawns exactly one of these on every cell the depth grid says is at
+       D = 4, and destroys it the moment a fill-in raises that cell
+       (RM_SuperdeepCapture). It is the hole's identity as a Thing, which
+       is the only way to reuse Pits' holder: capture, the struggle clock,
+       the release gizmo and drop-on-destroy are all inherited from
+       Building_OpenPit and none of them is rewritten here.
+
+       🔴 isEdifice FALSE, and it matters twice. Designator_FillInCanal
+       refuses any cell with an edifice in it, and the ladder has to share
+       this cell — an edifice here would make a superdeep cell both
+       unfillable and unladderable.
+
+       DRAWS NOTHING (drawerType None). The terrain already says "there is
+       a hole here" at four depths; a building sprite on top of it would
+       be a second, contradicting statement. The pit's own visual language
+       is PIT_TRAP_VISUAL_REDESIGN_1's, deferred by ruling 27 until after
+       the merge, and inventing a placeholder sprite now would be the
+       "two owners for one cell" disease in art form.
+       ================================================================== -->
+  <ThingDef>
+    <defName>RM_SuperdeepPit</defName>
+    <label>superdeep excavation</label>
+    <description>The floor of a superdeep excavation. Whatever falls in is down there until it climbs a ladder out.</description>
+    <thingClass>RimMandrake.FlowWorks.Building_SuperdeepPit</thingClass>
+    <category>Building</category>
+    <!-- 🔴 REQUIRED: without Normal, neither the fall-in scan nor the
+         inherited struggle clock nor innerContainer.DoTick ever runs. This
+         was measured the hard way once already on RM_OpenPitBase. -->
+    <tickerType>Normal</tickerType>
+    <drawerType>None</drawerType>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <isSaveable>true</isSaveable>
+    <building>
+      <isEdifice>false</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <!-- Bare: no fitting effect of its own. It is present so the liquid
+           standing in the cell can decide BlocksEscape by its viscosity
+           (CompPitFitting, Phase 5) — a flooded superdeep hole holds you,
+           a dry one you can struggle out of. -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_PitFitting">
+        <fittingType>Bare</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================================================================
+       PHASE 5 — THE LADDER. One boolean effect: a dug cell with a ladder
+       in it is exitable, and a dug cell without one is not. Removing it
+       strands whatever is down there, which is the jailer mechanic, and
+       it is the SAME gate Building_PitCell's closed door already uses
+       (Building_OpenPit.EscapeBlocked) rather than a second one.
+
+       It deliberately does NOT change pathing, passability, line of sight
+       or escape odds. Anything more is an elevation model in disguise.
+
+       PLACEHOLDER ART, and flagged as such: texPath borrows the vanilla
+       spike-trap sheet the pit family already ships against, so the mod
+       loads with no missing-texture error. Candidate art EXISTS but is
+       NOT wired and NOT ruled on by the owner —
+       Transient/flowworks_art_2026-09-16/buildings/RUT_Ladder_A.png and
+       RUT_Ladder_B.png. Do not copy either into Textures/ before he picks
+       one; note also that the candidates carry the RUT_ tier prefix while
+       this def is RM_ tier, which is itself a question for him.
+       ================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_Ladder</defName>
+    <label>ladder</label>
+    <description>A rough ladder braced against the wall of an excavation. Anything held at the bottom of a superdeep hole can climb it. Take the ladder away and they stay down there.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Structure</designationCategory>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <building>
+      <!-- Must share its cell with RM_SuperdeepPit. -->
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.PlaceWorker_LadderOnExcavation</li>
+    </placeWorkers>
+  </ThingDef>
+
 </Defs>

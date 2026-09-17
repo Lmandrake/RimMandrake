@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 5 — capture, ladders, ruling 23. -->
+  <RMFlow_SuperdeepLadderPresent>A ladder is standing here: whoever is down there can climb out.</RMFlow_SuperdeepLadderPresent>
+  <RMFlow_SuperdeepNoLadder>No ladder: whoever is down there is not climbing out.</RMFlow_SuperdeepNoLadder>
+  <RMFlow_LadderNeedsExcavation>Must be placed in an excavated cell.</RMFlow_LadderNeedsExcavation>
+
+</LanguageData>

@@ -21,6 +21,14 @@ namespace RimMandrake.FlowWorks.Pits
         // ~7-interval clock the two stages were written for.
         public float drowningSeverityPerInterval = 0.15f;
 
+        // FLOWWORKS PHASE 5. The viscosity at or above which the liquid standing
+        // in this pit's cell stops a pawn climbing out at all — read off
+        // FluidDef.ticksPerTile, which is the viscosity field the design already
+        // names. 60 is not a guess: it is RM_Fluid_Water's own shipped
+        // ticksPerTile, chosen so water blocks exactly as the hardcoded Water
+        // fitting type used to, and anything thicker blocks too.
+        public int escapeBlockingViscosityTicks = 60;
+
         // Oubliette: EMP damage applied once on capture (vanilla
         // DamageDefOf.EMP - the same damage type vanilla EMP grenades use to
         // stun mechanoids).
