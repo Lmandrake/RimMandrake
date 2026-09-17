@@ -17,10 +17,10 @@ must carry motion (L8).
 **Both channels ship together** — his ruling, against light-first. So nothing here is releasable
 until Phase 6 lands; the phase order below is build order, not release order.
 
-### Phase 0 — DESKTOP ONLY. Seven questions, no code.
+### Phase 0 — DESKTOP ONLY. Eight questions, no code.
 
 Spec §8 is the whole of this phase. Nothing else starts until it answers, because two of the
-seven can void a law:
+eight can void a law:
 
 1. 🔴 Does a per-frame hook exist that runs **while the game is paused**? **L10 falls if not** —
    every gesture would freeze the instant a letter pauses the game, including the Narrator's.
@@ -35,9 +35,17 @@ seven can void a law:
 5. Do positioned looping Sustainers behave acceptably when the mix changes as the camera moves?
 6. What happens to lights and Sustainers during gravship **flight**?
 7. Is a fully-dark fixture distinguishable from an unpowered one to the game's own light grid?
+8. Do Sustainers support a partial volume ramp, or only start and stop? `RM_MapComponent_SilenceCue`
+   reportedly holds a Desktop-verified finding that they do not — confirm it, because if beds
+   cannot fade then every acoustic mood change is a cut rather than a swell, and §3 needs rewording.
 
 Deliverable: answers recorded on this item with the instrument used for each, plus an explicit
 go/no-go on L10.
+
+🔴 **Two items block this programme regardless of Phase 0**, and both are the owner's:
+`ATMOSPHERIC_BASE_CANVAS_1` (the ship has 11 light-capable things out of 2002, measured) and
+`NINEFOLD_LOUDNESS_FRONT_1` (nothing computes rank). Phases 1-2 can proceed without them; Phase 3
+onward cannot.
 
 ### Phase 1 — the skeleton and the take-over
 
