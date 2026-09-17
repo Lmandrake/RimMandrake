@@ -164,6 +164,26 @@ def _validate(mod, owner_said):
     print("%s — %s" % (mod, walk))
     print("state on disk: %s%s" % (ns["state"],
                                    "" if not ns["reason"] else "  (%s)" % ns["reason"]))
+
+    # A present-but-misformatted section parses to zero bars, and validating
+    # that writes VALIDATED against an empty checklist: `bar_for()` then returns
+    # nothing, the visual floor finds nothing uncovered, and the mod silently
+    # STOPS being refused. Refusing here is the only thing standing between a
+    # formatting slip and a validation that means nothing. Both lists empty is
+    # the refusal; must-show empty with cannot-show present is a legitimate
+    # walk that only forbids things.
+    if not ns["must_show"] and not ns["cannot_show"]:
+        print("\nREFUSED: the `## north star` section parses to ZERO bars, so "
+              "validating it would\nrecord an approval that binds nothing and "
+              "silently stops %s being refused." % mod)
+        print("  Expected line format:  - [ ] `some_bar_id` — what must be "
+              "visible")
+        print("  under a `### must show` or `### cannot show` subheading.")
+        print("  Copy the shape from a walk that parses: "
+              "design/validation_walks/RimMandrake/FlowWorks.md")
+        print("  %s" % walk)
+        return 2
+
     print("\nThese lines BIND once validated. Every one of them refuses the mod "
           "until some\ncomponent claims it with `shows=`, and is then judged "
           "against a screenshot:\n")
@@ -173,7 +193,9 @@ def _validate(mod, owner_said):
         print("  cannot  %-32s %s" % (req_id, ns["cannot_show_text"][req_id]))
 
     if not owner_said:
-        print("\nNothing written. Read these to him; then re-run with "
+        print("\n%d must-show + %d cannot-show lines would bind %s."
+              % (len(ns["must_show"]), len(ns["cannot_show"]), mod))
+        print("Nothing written. Read these to him; then re-run with "
               "--owner-said \"<his verbatim words>\".")
         return 1
 

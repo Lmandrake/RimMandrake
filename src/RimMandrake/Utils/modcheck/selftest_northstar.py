@@ -91,6 +91,45 @@ def test_missing_section_is_todays_behaviour():
            "no visual bar, so the mod is unaffected by this system")
 
 
+def test_zero_bar_section_cannot_be_validated():
+    print("--- a present but misformatted section REFUSES validation ---")
+    import contextlib
+    import io
+
+    import cli
+
+    with tempfile.TemporaryDirectory() as tmp:
+        d = os.path.join(tmp, "design", "validation_walks", "RimMandrake")
+        os.makedirs(d)
+        p = os.path.join(d, "Misformatted.md")
+        with open(p, "w", encoding="utf-8") as fh:
+            fh.write("# Misformatted\n\n## north star\nstate: DRAFT\n"
+                     "validated-hash:\n\n### must show\n"
+                     "* not_the_bar_format - a bullet, not `- [ ] `id``\n")
+        ns = northstar.parse(p)
+        ok(ns["present"], "the section IS present -- which is why the old "
+                          "`not present` guard let this through")
+        ok(ns["must_show"] == [] and ns["cannot_show"] == [],
+           "yet it parses to ZERO bars")
+
+        real = northstar.find_walk
+        northstar.find_walk = lambda root, mod: p
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = cli._validate("Misformatted", "yes go ahead")
+            out = buf.getvalue()
+        finally:
+            northstar.find_walk = real
+
+        ok(rc == 2, "validate REFUSES (rc=2) even with --owner-said")
+        ok("REFUSED" in out and "ZERO bars" in out,
+           "and says why, naming the zero")
+        ok(northstar.parse(p)["state"] == northstar.DRAFT,
+           "nothing was written -- the walk is still DRAFT, so the mod keeps "
+           "being refused instead of silently greening")
+
+
 # ------------------------------------------------------ the validation gate
 def test_validation_and_tamper_reversion():
     print("--- validating records a hash; ANY later edit reverts to DRAFT ---")
@@ -496,6 +535,7 @@ def test_record_run_writes_the_gated_verdict():
 def main():
     for t in (test_parse_and_ids,
               test_missing_section_is_todays_behaviour,
+              test_zero_bar_section_cannot_be_validated,
               test_validation_and_tamper_reversion,
               test_declared_validated_without_hash_is_draft,
               test_whitespace_reflow_does_not_invalidate,
