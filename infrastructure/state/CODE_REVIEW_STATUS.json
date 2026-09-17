@@ -2334,10 +2334,10 @@
     "sha": "311d90fc5"
   },
   "src/RimMandrake/Greentide/Source/RM_JobDriver_DigOutBuried.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "8e43572425dad18546b73a1355a5a106bbf0bea1c076606ed27fafed014a09dc",
-    "sha": "2c8762586"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "d2d8a325b5cbf36b05ecacb0b58fbeabf84f03e044885e11ef196630355d5512",
+    "sha": "a136c3b7e"
   },
   "src/RimMandrake/Greentide/Source/RM_JobDriver_FreeMired.cs": {
     "cleanCount": 1,
@@ -2376,10 +2376,10 @@
     "sha": "dd56bb453"
   },
   "src/RimMandrake/Greentide/Source/RM_WorkGiver_DigOutBuried.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "412721318e926fe214d4e1bd3d53bb36bc1a840ca81ce42286ebfe6fca0a5b0f",
-    "sha": "2c8762586"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "a3402798d08daebb5fab23a809389f727da6c73a64fe958d49f3db24a1bbeea7",
+    "sha": "a136c3b7e"
   },
   "src/RimMandrake/Greentide/Source/RM_WorkGiver_FreeMired.cs": {
     "cleanCount": 1,
@@ -3534,10 +3534,10 @@
     "sha": "8be234dd"
   },
   "src/RimMandrake/ProximityHatch/Source/CompProperties_ProximityHatch.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "8e64b1e94cbbea18c4304a6c3d7087282e4a898210aa06812ec139e138b036f2",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "b71b8268e88ed5c8f58e515e239f3987b10bed4aebd6b22ab19c73ec53cbb742",
+    "sha": "a136c3b7e"
   },
   "src/RimMandrake/ProximityHatch/Source/CompProximityHatch.cs": {
     "cleanCount": 2,
@@ -13228,10 +13228,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RustCathedralHum/Source/RM_BiomeAttitudeDef.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "34295f43e6cb90d48ee8371c86bfaa43b42ce6547e98d107cd5ee4781bcb74fe",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "37c2d6d65cea02fd30405f613513f54174375f790cdcc559e66894418664e544",
+    "sha": "a136c3b7e"
   },
   "src/RimUtinni/RustCathedralHum/Source/RM_CathedralFishing.cs": {
     "cleanCount": 1,
@@ -13246,10 +13246,10 @@
     "sha": "e0f4ffdc7"
   },
   "src/RimUtinni/RustCathedralHum/Source/RM_MapComponent_BiomeAttitude.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "cb0ba0b0e7efd988d75e9e5cda0937bdde310aa88673e1109d84f3d667486258",
-    "sha": "e0f4ffdc7"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "6deea05627cb8b1c3c04f1b319369eec5ed3a25060aeabb528330287de040937",
+    "sha": "a136c3b7e"
   },
   "src/RimUtinni/RustCathedralHum/Source/RM_ThinkNode_ConditionalAttitudeBand.cs": {
     "cleanCount": 1,
