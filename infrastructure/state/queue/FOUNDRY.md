@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T22:48:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T23:10:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,6 +972,15 @@ kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
 
+## GRAFFITI_VARIANT_COUNTS_1 Graffiti variant counts are lopsided 6:2:2:2 - Scratches, TallyMarks and WarningGlyph have only 2 variants each so Graphic_Random repeats visibly on any spree; raise the three new marks toward parity (owner cut this from the visual checklist 2026-09-16, it is content work)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
+
 ## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
 state:    doing
 row:      unassigned
@@ -1886,16 +1895,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
-
-## GRAFFITI_VARIANT_COUNTS_1 Graffiti variant counts are lopsided 6:2:2:2 - Scratches, TallyMarks and WarningGlyph have only 2 variants each so Graphic_Random repeats visibly on any spree; raise the three new marks toward parity (owner cut this from the visual checklist 2026-09-16, it is content work)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
 
 ## WRECKEDMACHINES_MOD_SETTINGS_1 WreckedMachines ships NO Mod Settings at all (no ModSettings/DoSettingsWindowContents anywhere in the mod, MEASURED 2026-09-16) - violates MOD_OPTIONS_RETROFIT_1's every-mod-ships-settings ruling and blocks a GREEN independently of its north star
 state:    proposed
