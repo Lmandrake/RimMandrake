@@ -1,5 +1,6 @@
 # SeasWaterline — validation walk
-subject: src/RimStarWars/SeasWaterline  (packageId: mandrake.rsw.seaswaterline)
+subject: src/RimStarWars/SWBestiary  (packageId: mandrake.rsw.swbestiary)
+absorbed: SeasWaterline folded into SWBestiary at Patches/SeasWaterline/Waterline_Lane1.xml — owner-ruled "the fauna cell owns the seas wiring" (commit 0fbc0e149) — no longer ships alone.
 deps: mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued)), biomesteam.biomespollutedlands (Biomes! Polluted Lands), van.beasts (Dark Ages: Beasts and Monsters) — all required (modDependencies). loadAfter also names sarg.alphabiomes (already in the minimal list), zylle.morevanillabiomes, sarg.alphaanimals — soft, override-race only, not required to run this walk.
 list: minimal+mlie.starwarsanimalcollection+biomesteam.biomespollutedlands+van.beasts
 status-hint: patch-only mod giving Lake and Ocean their first wildAnimals commonality for a 13-creature cast (7 Star Wars aquatics + 5 BMT fish/turtle + DA_LeviathanCrab), because Ocean and Lake carry zero wildAnimals entries in the current stack.

@@ -1,5 +1,6 @@
 # Fire Ecology — validation walk
-subject: src/RimStarWars/FireEcology  (packageId mandrake.rsw.fireecology)
+subject: src/RimMandrake/Pyrelands  (packageId mandrake.rm.pyrelands)
+absorbed: FireEcology (dying id rsw.fireecology) was promoted whole to a RimMandrake-tier mod and renamed Pyrelands in Sprint wave A (commit 485380d4) — Pyrelands's own About.xml no longer mentions "FireEcology" by name; RimUtinni/PyrelandsFireEcology.md is the separate campaign-side wiring walk that still names it explicitly.
 deps: brrainz.harmony (hard), Ludeon.RimWorld base (declared modDependency, always present)
 list: minimal   # no third-party mod dependency; the ash ladder/terrain/weather all ride vanilla mechanisms
 status-hint: generic desert-savanna fire-ecology engine — scorchable-ground → ash-ladder terrain chain, a Black Rain weather that follows and extinguishes a large fire, fire-triggered fulgurites/scorch-fruit, a firefoam sprayer + firebreak strip. Campaign wiring (which biome uses it) lives in RimUtinni, not here.

@@ -1,5 +1,6 @@
 # TheftHauler — validation walk
-subject: src/RimMandrake/TheftHauler  (packageId mandrake.rm.theft_hauler)
+subject: src/RimMandrake/RimProperty  (packageId mandrake.rm.property)
+absorbed: TheftHauler (dying id rm.theft_hauler) merged into RimProperty at Source/TheftHauler + Patches/TheftHauler + Defs/TheftHauler in the Sprint wave A crime merge (commit f32eef5f5) — no longer ships alone.
 deps: mandrake.rm.property (hard, modDependencies); loadAfter also mandrake.rsw.droidworks (soft, MayRequire-gated patch only)
 list: minimal+property   # the Droidworks-marked-chassis patch check additionally needs +droidworks; note per-step
 status-hint: the heist verb — a pawn carrying `RM_TheftHaulerExtension` can uninstall ANY Building (not gated by ownership) into a haulable MinifiedThing via a right-click order, firing `RimMandrake.Property.PropertyEngine.Fire(TakingEvent(Act=Strip))` at the moment of uninstall. Ships a MayRequire-gated patch marking Droidworks' Muckraker Crab Droid chassis as the reused heavy hauler.

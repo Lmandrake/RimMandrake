@@ -1,5 +1,6 @@
 # ResearchKitEastFix — validation walk
-subject: src/RimMandrake/ResearchKitEastFix  (packageId mandrake.rm.researchkiteastfix)
+subject: src/RimMandrake/MandrakePatches  (packageId mandrake.rm.patches)
+absorbed: ResearchKitEastFix (dying id rm.researchkiteastfix) folded into MandrakePatches at Source/ResearchKitEastFix + Textures/Things/Items/{HiTechResearchKit,MultiAnalyzerResearchKit,RemoteResearchKit,SimpleResearchKit} in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: PeteTimesSix.ResearchReinvented (hard modDependency, "Research Reinvented" — owns the ThingDefs); loadAfter also names `aw.researchreinvented.retextured` ("Research Reinvented Retextured," a pure loose-texture mod with no packageId in modDependencies — soft, order-only)
 list: full   # neither donor mod is in the minimal list
 status-hint: restores the east-facing worn art of all four Research Reinvented field research kits (simple/hi-tech/multi-analyzer/remote) — both donor mods ship a fully-transparent (or entirely absent) `_east` file, so a pawn wearing any kit and facing east renders nothing visible.

@@ -1,5 +1,6 @@
 # Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk
-subject: src/RimMandrake/PhytokinBarkHeadFix  (packageId `mandrake.rm.phytokinbarkheadfix`)
+subject: src/RimMandrake/MandrakePatches  (packageId `mandrake.rm.patches`)
+absorbed: PhytokinBarkHeadFix (dying id rm.phytokinbarkheadfix) folded into MandrakePatches at Textures/Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal_east.png in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: `vanillaracesexpanded.phytokin` (Vanilla Races Expanded - Phytokin, third-party, hard modDependency)
 list: minimal+vanillaracesexpanded.phytokin
 status-hint: pure loose-texture supply mod, no defs and no code — ships one missing east-facing head texture (female Phytokin, bark skin, heavy jaw) at the filename the donor's own HeadTypeDef already asks for; the donor's art existed under a " copy" filename the game never looked for

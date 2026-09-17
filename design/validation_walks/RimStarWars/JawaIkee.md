@@ -1,5 +1,6 @@
 # JawaIkee — validation walk
-subject: src/RimStarWars/JawaIkee  (packageId mandrake.rsw.jawaikee)
+subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+absorbed: JawaIkee (dying id rsw.jawaikee) folded into SWBestiary at Source/JawaIkee + Defs/JawaIkee + Assemblies/JawaIkee.dll in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: sarg.alphaanimals (Alpha Animals, hard dep, provides AA_Eyeling); loadAfter mandrake.rsw.starwarsraces
 list: full   # needs Alpha Animals for AA_Eyeling AND starwarsraces for the tolerant XenotypeDefs
 status-hint: an ikee (Alpha Animals' AA_Eyeling) nearby gives Jawa/Hutt/etc a mood buff via RSW_Jawa_IkeeWatching; every other xenotype gets a creep-factor malus instead.

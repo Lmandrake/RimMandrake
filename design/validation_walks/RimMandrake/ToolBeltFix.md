@@ -1,5 +1,6 @@
 # ToolBeltFix — validation walk
-subject: src/RimMandrake/ToolBeltFix  (packageId mandrake.rm.toolbeltfix)
+subject: src/RimMandrake/MandrakePatches  (packageId mandrake.rm.patches)
+absorbed: ToolBeltFix (dying id rm.toolbeltfix) folded into MandrakePatches at Source/ToolBeltFix + Textures/Things/Apparel/ToolBelt in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: VanillaExpanded.VAEAccessories (hard modDependency, "Vanilla Apparel Expanded — Accessories" — this mod must load AFTER it; loose-PNG override, order-dependent)
 list: full   # third-party donor mod is not in the minimal list
 status-hint: one loose PNG replacing a donor-mod worn-apparel texture that ships present-but-fully-transparent (256x256, alpha max 0), so a colonist wearing the tool belt and facing west renders invisible.

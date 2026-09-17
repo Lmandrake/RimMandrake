@@ -1,5 +1,5 @@
 # Desert Vehicle Reskin — Alpha Vehicles Neolithic — validation walk
-subject: src/RimMandrake/DesertVehicleReskin  (packageId `mandrake.rm.desertvehiclereskin`)
+subject: src/RimStarWars/DesertVehicleReskin  (packageId `mandrake.rsw.desertvehiclereskin`)
 deps: `sarg.alphavehiclesneolithic` (Alpha Vehicles - Neolithic, third-party, hard modDependency); optionally `VanillaExpanded.VFEPropsandDecor` (MayRequire-guarded, one patch block)
 list: minimal+sarg.alphavehiclesneolithic
 status-hint: redraws Alpha Vehicles - Neolithic's draught animals as desert fauna (loose-PNG texture overrides, load-order dependent), retexts/retints 5 vehicle defs' labels+descriptions to match the new art, and widens draught-vehicle fuel (Harmony) from a single hardcoded ThingDef to any nutrition-giving vegetable-type food

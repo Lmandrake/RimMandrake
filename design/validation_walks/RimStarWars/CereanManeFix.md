@@ -1,5 +1,6 @@
 # CereanManeFix — validation walk
-subject: src/RimStarWars/CereanManeFix  (packageId: mandrake.rsw.cereanmanefix)
+subject: src/RimStarWars/StarWarsPatches  (packageId: mandrake.rsw.patches)
+absorbed: CereanManeFix (dying id rsw.cereanmanefix) folded into StarWarsPatches at Source/CereanManeFix + Textures/OuterRim/Hairs/Cerean/CereanMane_south.png in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: Neronix17.OuterRim.GalacticDiversity (Outer Rim - Galactic Diversity) — required
 list: minimal+Neronix17.OuterRim.GalacticDiversity
 status-hint: replaces the fully-transparent OuterRim/Hairs/Cerean/CereanMane_south.png so Ceans wearing HairDef OuterRim_CereanMane stop rendering bald from the front (south) view.

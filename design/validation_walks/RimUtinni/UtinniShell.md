@@ -1,5 +1,6 @@
 # UtinniShell — validation walk
-subject: src/RimUtinni/UtinniShell  (packageId mandrake.rut.shell)
+subject: src/RimUtinni/MenuShell  (packageId mandrake.rut.menushell)
+absorbed: UtinniShell (dying id rut.shell) folded into MenuShell at Defs/UtinniShell/VBE_Backgrounds_Utinni.xml + RimThemes/Utinni Shell/... in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: aRandomKiwi.RimThemes (modDependencies + loadAfter), vanillaexpanded.backgrounds (loadAfter, MayRequire-guarded)
 list: minimal+aRandomKiwi.RimThemes
 status-hint: the campaign's UI shell — one RimThemes theme ("Utinni Shell": rust plate, chalk graffiti, brass accent) plus one VBE main-menu background (Ishko at the temple gate, animated).
