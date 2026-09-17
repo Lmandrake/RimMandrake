@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:37:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:42:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -729,6 +729,33 @@ kind:     task
 summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
 prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
 
+## CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §4, RULED IN. An Imperial survey/research party works Cathedral-adjacent
+prose:    infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md
+
+## CATHEDRAL_DESCENT_REVEAL_SITE_1 The A7 real under-plate descent site + reveal beat + A1 Utinni-receiver lore propagation
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §5, A7 RULED: a real structure-injected site the player walks in v1 —
+prose:    infrastructure/state/items/CATHEDRAL_DESCENT_REVEAL_SITE_1.md
+
+## CATHEDRAL_MECHANOID_PASS_VERBS_1 GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
+prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
+
 ## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
 state:    doing
 row:      unassigned
@@ -1309,6 +1336,36 @@ blocked:  Verified offline: no RUT_HumCommentary RulePack exists anywhere in src
 summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
 prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
 
+## CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Verified offline: depends on item 1 (CATHEDRAL_REGARD_BLACKBOARD_1, still doing — real §2 inputs unbuilt) and item 3 (CATHEDRAL_STAGE_COMMENTARY_POOLS_1, already BLOCKED on RUST_CATHEDRAL_MECHANICS_1 — no RUT_HumCommentary RulePack exists, grep clean). Quest authoring would target a linter gate and stage-key source that don't exist yet; criteria also require a bridge quicktest (out of FOUNDRY-offline scope). Same root gate as sibling item 3. (on RUST_CATHEDRAL_MECHANICS_1)
+summary:  Arc §4, RULED IN. An Imperial survey/research party works Cathedral-adjacent
+prose:    infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md
+
+## CATHEDRAL_DESCENT_REVEAL_SITE_1 The A7 real under-plate descent site + reveal beat + A1 Utinni-receiver lore propagation
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Verified offline: depends on item 1 (CATHEDRAL_REGARD_BLACKBOARD_1, still doing) and item 3 (CATHEDRAL_STAGE_COMMENTARY_POOLS_1, BLOCKED on RUST_CATHEDRAL_MECHANICS_1 — no RUT_HumCommentary exists). Own criteria also require bridge + game-up (structure injection, escort run) — out of FOUNDRY-offline scope. Same root gate as CATHEDRAL_STAGE_COMMENTARY_POOLS_1 and CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1. (on RUST_CATHEDRAL_MECHANICS_1)
+summary:  Arc §5, A7 RULED: a real structure-injected site the player walks in v1 —
+prose:    infrastructure/state/items/CATHEDRAL_DESCENT_REVEAL_SITE_1.md
+
+## CATHEDRAL_MECHANOID_PASS_VERBS_1 GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Verified offline: depends on item 1 (CATHEDRAL_REGARD_BLACKBOARD_1) for stage+verbs source, still doing/unshipped (real §2 inputs unbuilt per its own note). No RUT_CathedralPass code exists yet (grep clean). Also verify criteria mandate a live quicktest with hostile faction-13 pawns (game-up, spawn-many) which is bridge/game-restart work outside FOUNDRY-offline scope tonight. Row-3 C# build genuinely owed but not startable against an unfinished dependency plus unreachable verification. (on CATHEDRAL_REGARD_BLACKBOARD_1)
+summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
+prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1340,36 +1397,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §4, RULED IN. An Imperial survey/research party works Cathedral-adjacent
-prose:    infrastructure/state/items/CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1.md
-
-## CATHEDRAL_DESCENT_REVEAL_SITE_1 The A7 real under-plate descent site + reveal beat + A1 Utinni-receiver lore propagation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §5, A7 RULED: a real structure-injected site the player walks in v1 —
-prose:    infrastructure/state/items/CATHEDRAL_DESCENT_REVEAL_SITE_1.md
-
-## CATHEDRAL_MECHANOID_PASS_VERBS_1 GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
-prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
 
 ## CATHEDRAL_EXPOSURE_COMPLETION_1 The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
 state:    proposed
