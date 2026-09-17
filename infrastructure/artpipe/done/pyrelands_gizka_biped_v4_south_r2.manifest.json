@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.42724954799633,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.42724954799633,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "pyrelands_gizka_biped_v4_south_r2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 51.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T20-17-13-01a0ad5e-4dfc-7c31-957f-07a1b9e17d45.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/16/rollout-2026-09-16T20-15-35-01a0ad5c-cf60-7010-9621-6f560a6ffcdd.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_gizka_biped_v4_south_r2",
+    "note": "Built-in imagegen; generated a two-eyed, frontal bipedal Gizka with raised vestigial forelimbs, then resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_gizka_biped_v4_south_r2\\pyrelands_gizka_biped_v4_south_r2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_gizka_biped_v4_south_r2/pyrelands_gizka_biped_v4_south_r2.png\n    256x256  rgba  58,639 bytes  (108s)\n"
+}

@@ -1,0 +1,31 @@
+{
+  "attempt_elapsed_s": 323.9319113379752,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 645.7987487759674,
+  "id": "pyrelands_gizka_biped_v4_south",
+  "meter_after": {
+    "ok": false,
+    "reason": "no rollout file found under this CODEX_HOME"
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/16/rollout-2026-09-16T17-52-44-01a0acda-05d2-7950-a700-0ada43fd6db2.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR codex exec exceeded 300s after 300s and nothing new reached /mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/generated_images. Raise --timeout, or check whether the Codex app needs re-authentication.\n--- last codex output ---\nReading additional input from stdin...\n\n",
+  "worker_stdout_tail": ""
+}

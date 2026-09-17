@@ -589,9 +589,15 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
             print(f"[codex] CODEX_HOME={env['CODEX_HOME']}", file=sys.stderr)
 
     try:
+        # stdin must be closed (DEVNULL): with an inherited non-console stdin
+        # (e.g. a daemon launched from a WSL pty), codex.exe prints "Reading
+        # additional input from stdin..." and blocks until EOF that never
+        # comes — every render then dies at the timeout with no image
+        # (measured 2026-09-16: 100% failure across w0/w1/w2 under one such
+        # daemon instance, while argument-passed prompts need no stdin).
         proc = subprocess.run(
             cmd, cwd=str(workdir), capture_output=True, text=True,
-            timeout=timeout, env=env
+            timeout=timeout, env=env, stdin=subprocess.DEVNULL
         )
     except subprocess.TimeoutExpired as exc:
         return 124, _as_text(exc.stdout) + _as_text(exc.stderr), True

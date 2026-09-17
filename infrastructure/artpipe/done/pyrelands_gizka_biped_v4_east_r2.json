@@ -1,0 +1,21 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "east",
+ "facings": [
+  "south",
+  "east"
+ ],
+ "id": "pyrelands_gizka_biped_v4_east_r2",
+ "priority": 100,
+ "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars Gizka, a small squat upright frog-lizard pest standing on two long thin powerful hind legs with visible bony knees and clawed spread toes carrying the whole body; tiny vestigial forelimbs held up against the chest, never touching the ground. An oversized blunt rounded head with TWO huge round bulging eyes, one on each side of the head \u2014 in a side profile only the near eye is visible \u2014 a small pointed crest above them and a wide downturned mouth. Mottled olive-green and tan-khaki blotched skin in soft painted leopard-toad camouflage patches, never a flat colour, with dull pink-red skin showing at the leg joints, belly and haunches. Loose moist skin folds at the throat. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Strict side profile seen exactly from the side at the creature's own eye level \u2014 NEVER a top-down or overhead view, never looking down on its back; only the near side of the body is visible.",
+ "reference": null,
+ "rimflow_item_id": "PYRELANDS_CREATURE_RERENDER_1",
+ "style_notes": "Giz art review regen (owner, 2026-09-16): east renders came out too top-down \u2014 owner ruled east/west facings must be SIDE PROFILES, not top-down; the daemon facing hook (artpiped.py) now states the camera sits at the creature's own eye level. Biped per the standing bipedal ruling in canon_references/gizka/description.md. Painterly wave-4/5 family (ART_PAINTERLY_RESTORATION_1). Full regen, no reference. Prompt says nothing about compass orientation \u2014 the daemon supplies the facing convention. r2: first run failed transiently (codex exec stdin hang, both workers, 300s timeout, no image). East anti-top-down language moved into the job prompt because the running daemon predates the artpiped.py hook fix."
+}
