@@ -5273,10 +5273,10 @@
     "sha": "fb248793"
   },
   "src/RimMandrake/Utils/migrate_names.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "1b4aeb2e84a4ffa64b5cece07ce22fc84d079bf3b76d807578b33843e2c874dc",
-    "sha": "39cd22d5"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "08fb02f3f306f8eda8f9e933bb07f70c5d695266bdebfdb923d0f4f267623138",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/mod_inventory.py": {
     "cleanCount": 2,
@@ -5344,10 +5344,10 @@
     "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/modset_builder.py": {
-    "cleanCount": 2,
-    "date": "2026-09-07",
-    "hash": "a95f4d3f499f99a5ea3df4b049f4064ceff894ebead6905dc719ab4c2c889ecf",
-    "sha": "09ce5b8f"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "4d1c7062bc79a7803392f241d3612778321574b27eb00bc26970f13aa16a664f",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 2,
@@ -5692,10 +5692,10 @@
     "sha": "9f6f93ea"
   },
   "src/RimMandrake/Utils/run_selftests.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b10e9900e584fd30f6998b61006b21270e485b5fcdd9c0ba54b6c369b44b0f70",
-    "sha": "3d3ceeae"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "6989f0107eaab24bf5ef2bc9a596ae5a75347e77cf9e3b1164b054363eab058c",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/salvation_description.py": {
     "cleanCount": 2,
@@ -5714,6 +5714,12 @@
     "date": "2026-09-06",
     "hash": "ffa032259471d1e12ce34468afa36dc5c07dc41c5f39db94c20383994f763cad",
     "sha": "b87a3622"
+  },
+  "src/RimMandrake/Utils/selftest_art_checks.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2f4330c6cab7fa1ed5b813126168f71215ced5a44911ef52807e4e5abd04de10",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
@@ -5794,10 +5800,10 @@
     "sha": "35c29544"
   },
   "src/RimMandrake/Utils/selftest_pit_logic.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "099f4694b3eb80709c4302429e582c2ab1d4145c93e3e13e0eaae483f160158b",
-    "sha": "1a7b3aa1"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "92d1e0dea4923c309c8ab376fe95a11ce697fdfd2d76ebe42dffd6cc14a953a8",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/selftest_property_fabric.py": {
     "cleanCount": 2,
@@ -5878,10 +5884,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/statusline.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b1818b94e68fb949abe5f3fd387e9563a00db1339632f7a0295412e08d759232",
-    "sha": "c057fb96"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "2d0f61c8552c4a628aa0dbbb3e89ce9e61acff573d21932f4fa4bc57098af831",
+    "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/structure_roster_lint.py": {
     "cleanCount": 2,
