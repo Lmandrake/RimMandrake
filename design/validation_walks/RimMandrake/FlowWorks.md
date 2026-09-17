@@ -22,8 +22,9 @@ the depth/fill primitive. Do not "fix" it earlier — until the build lands, thi
 - ⚠️ Spread is NOT channel-constrained: `Flood_FluidCanal` inherits vanilla `Flood`'s gating and spreads across any open, non-water, non-edifice ground, not along the dug channel. Recorded here because it is the engine's actual behaviour, and because the owner's 2026-09-16 design session assumes the opposite — see `design/RimMandrake/fluid_canals_mod_definition.md`.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rm.fluidcanals" and no XML error naming `FluidCanal_ThingDefs.xml`/`FluidCanal_Terrain.xml`/`FluidCanal_Fluids.xml`   # load-time
-2. [D] def read-back: `RimMandrake.FluidCanals.FluidDef` `RM_Fluid_Water` exists; `floodTerrain` = `ShallowFloodwater`; `volumePerTile` = 1; `ticksPerTile` = 60; `floodedTicks` = 300000
+1. [L] Player.log after load contains no "Config error in mandrake.rm.flowworks" and no XML error naming `FlowWorks_ThingDefs.xml`/`FlowWorks_Terrain.xml`/`FlowWorks_Fluids.xml`   # load-time
+   ⚠️ Until 2026-09-17 these four strings read `mandrake.rm.fluidcanals` and `FluidCanal_*.xml` — names that stopped existing at the rename and appear nowhere on disk. Because this step asserts an error's ABSENCE, it passed vacuously however broken the XML was. Corrected against `About/About.xml` (`mandrake.rm.flowworks`) and the three real files in `Defs/Canals/`. A negative check keyed to a dead name is a test that cannot fail, not a cosmetic staleness.
+2. [D] def read-back: `RimMandrake.FlowWorks.FluidDef` `RM_Fluid_Water` exists; `floodTerrain` = `ShallowFloodwater`; `volumePerTile` = 1; `ticksPerTile` = 60; `floodedTicks` = 300000
 3. [D] def read-back: `TerrainDef` `RM_Channel_Empty` exists; `affordances` contains `Diggable`; `natural` = true
 4. [D] def read-back: `ThingDef` `RM_FluidSpring_Test` exists; its `CompProperties_FluidReservoir` comp has `fluidDef` = `RM_Fluid_Water`, `dripVolume` = 3, `dripIntervalTicks` = 2500, `reFloodVolume` = 60, `reFloodIntervalTicks` = 180000
 5. [B] jawa/spawn_batch (or jawa/list_things) `defName=RM_FluidSpring_Test` to place a spring on the current map at a known cell, then `jawa/canal_dig {x,z}` on the cell adjacent to it → expect result names `mapId`/`mapTile` and no error
