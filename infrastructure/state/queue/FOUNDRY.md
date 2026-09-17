@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:15:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T21:15:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -846,6 +846,15 @@ kind:     task
 summary:  Part A (ships alone, complete): authored line pools per (personality × event
 prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
 
+## BAZAAR_BROKER_TAB_1 The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
+prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1529,6 +1538,16 @@ blocked:  Part A's event pool (push won/lost/crit/lockout/greeting/closing) and 
 summary:  Part A (ships alone, complete): authored line pools per (personality × event
 prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
 
+## BAZAAR_BROKER_TAB_1 The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Same open Bazaar dependency chain as the other two slices I checked this pass: BAZAAR_WINDOW_GRID_1 is still doing (no session/tab-host wired) and BAZAAR_PRICE_ENGINE_1 is BLOCKED on it. Also needs LIQUID_LOGISTICS_MOD_1's tank+API to exist for the Broker tab to render anything -- not checked this pass but a third named prerequisite. Not offline-actionable. (on BAZAAR_PRICE_ENGINE_1)
+summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
+prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1600,16 +1619,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
-
-## BAZAAR_BROKER_TAB_1 The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
-prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 ## BAZAAR_DISPLACEMENT_PASS_1 Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
 state:    proposed
