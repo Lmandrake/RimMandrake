@@ -232,8 +232,8 @@ shallow+deep only; ocean/moving variants exist where a consumer does
 ## 7. The RUT layer (thin, campaign-side)
 
 - Patches `RM_LiquidProperties` rows onto the already-shipped `RUT_ScaldWater*`
-  (which otherwise stands — no rename, no re-authoring ahead of
-  `NAMING_SCHEME_EXECUTION_1`) and onto the donor terrains the frozen map
+  (which otherwise stands — already carries the correct RUT tier prefix, no
+  rename or re-authoring owed) and onto the donor terrains the frozen map
   actually uses (`AB_PropaneLake`, `AB_Tar`, `AB_LiquidSlime`).
 - Sets the BiomeDef water-terrain overrides on `RUT_TheScald`,
   `RUT_TwilightSea`, `RUT_GreySea`, `RUT_PropaneLake` (worldmap tiles already

@@ -83,7 +83,7 @@ same question at smaller scale.
   model (spec exists at `design/Jawa/explosion_energy_model.md`) — all
   executable by any seat later.
 - **Everything the worldgen ruling killed**, and GREAT_NAMESPACE_RENAME
-  (executed under NAMING_SCHEME_EXECUTION_1).
+  (executed under `NAMING_SCHEME_EXECUTION_1`, closed 2026-08-31 — historical, not a live gate).
 - **Ikee posterchild, domestic-animal mutators, moons**: real ideas, small
   specs; they don't need Fable and shouldn't spend it.
 

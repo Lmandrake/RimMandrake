@@ -25,9 +25,9 @@ bodies, rain, canal flooding, and fluid-to-fluid transformation.
 1. **One substance, many faces** — a liquid is defined once; terrain, bottle, canal,
    pipe, weather, worldmap and recipes are optional *form slots* on that definition.
 2. **Pulsed spread only** — all map motion is event-shaped (flood, drip, spill,
-   seasonal) via the **FlowWorks** engine (was "the FlowWorks engine" — renamed by his ruling of
-   2026-09-16, migration under `NAMING_SCHEME_EXECUTION_1`). No per-tick fluid sim, ever. (Owner
-   ruling.) 🔑 As of 2026-09-16 the engine's motion is a **sort plus an overflow** over the depth
+   seasonal) via the **FlowWorks** engine (named by his ruling of 2026-09-16;
+   the rename is ordinary owed work under `FLOWWORKS_BUILD_PROGRAM_1`, no gate). No
+   per-tick fluid sim, ever. (Owner ruling.) 🔑 As of 2026-09-16 the engine's motion is a **sort plus an overflow** over the depth
    grid — deepest cells fill first, a full cell overflows to neighbours with room — which is what
    keeps this pillar satisfiable at all.
 3. **TerrainDef stays the engine face** — the registry points *at* terrain suites
@@ -228,33 +228,35 @@ auto-join the pantry.
 ## 5. Client-mod map
 
 🔴 **SUPERSEDED IN PART — owner, 2026-09-16: the many-clients shape is replaced by ONE mod,
-`Fluidity`.** *"I do want to absorb Many Waters and Canals together into a single Fluidity mod. All of
+named `FlowWorks` by ruling 20 the same day** (he called it "Fluidity" in the consolidation
+ruling below, earlier the same session; that name did not ship). *"I do want to absorb Many
+Waters and Canals together into a single Fluidity mod. All of
 it. Universal containers, flexible tubing, pumps, surface transient flow, canals, sources & sinks."*
 He answered this document's own cadence argument: *"I understand your argument about constant updates.
 I don't think that's actually going to happen. We're going to include a big set of options. Others can
 extend later via our framework."*
 
 **Certain**: `FlowWorks` + `ManyWaters` + the planned `RimMandrake: Liquid Logistics` + the surface
-flood driver all become **`Fluidity`**. Liquid Logistics therefore never ships as its own mod, and
+flood driver all become **`FlowWorks`**. Liquid Logistics therefore never ships as its own mod, and
 pillar 5 ("every client ships alone") no longer describes this family — one mod cannot ship alone
 *from itself*. The rows/hardware/engine boundaries survive as INTERNAL structure, which is still worth
 keeping: it is what stops the hardware writing stock bookkeeping directly.
 
 **Not yet ruled** — whether `LiquidTypes`/`RimMandrake: Liquids` (the registry), `GelatinousSlime` and
-`WreckedMachines`' distillation also dissolve into Fluidity, or stay as siblings extending it. Until
+`WreckedMachines`' distillation also dissolve into FlowWorks, or stay as siblings extending it. Until
 he rules, treat the rows below for those three as live. Design detail:
 `design/RimMandrake/flowworks_mod_definition.md` §16.
 
 | Mod | Becomes |
 |---|---|
-| **LiquidTypes** → `RimMandrake: Liquids` | the core registry + generator; keeps `RM_LiquidProperties` for foreign terrains — ⚠️ Fluidity boundary unruled |
-| ~~**FlowWorks**~~ → **`Fluidity`** | the whole domain: occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, roster, hardware. Renaming waits on `NAMING_SCHEME_EXECUTION_1` |
-| ~~**ManyWaters**~~ | **absorbed into Fluidity** — its coloured waters and slimes become Fluidity's rows, with a tinted-vanilla fallback per row so no liquid vanishes without Alpha Biomes |
-| **GelatinousSlime** | slime-mechanics client: hediffs/genes stay; its terrains adopted — ⚠️ Fluidity boundary unruled |
-| **WreckedMachines** | + Distillation module; wreck-tier grammar for found industry — ⚠️ Fluidity boundary unruled |
+| **LiquidTypes** → `RimMandrake: Liquids` | the core registry + generator; keeps `RM_LiquidProperties` for foreign terrains — ⚠️ FlowWorks boundary unruled |
+| **FlowWorks** | the whole domain: occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, roster, hardware. Named by ruling 20 (2026-09-16); the rename itself is `FLOWWORKS_BUILD_PROGRAM_1` Phase 1 work, not gated on anything |
+| ~~**ManyWaters**~~ | **absorbed into FlowWorks** — its coloured waters and slimes become FlowWorks' rows, with a tinted-vanilla fallback per row so no liquid vanishes without Alpha Biomes |
+| **GelatinousSlime** | slime-mechanics client: hediffs/genes stay; its terrains adopted — ⚠️ FlowWorks boundary unruled |
+| **WreckedMachines** | + Distillation module; wreck-tier grammar for found industry — ⚠️ FlowWorks boundary unruled |
 | **UtinniPatches (RUT)** | Ash'karr worldTag authoring pass; campaign settings defaults |
-| ~~**NEW `RimMandrake: Liquid Logistics`**~~ | **never ships as a mod** — hoses, portable pumps, universal cargo tank, universal pump, per-net adapters and trade-from-tank are Fluidity's |
-| **FloodedCanyon** | 🔴 was missing from this map entirely. Becomes the **flood-driver client**: keeps its biome and phase clock, depends on Fluidity for motion (ruling 8, 2026-09-16) |
+| ~~**NEW `RimMandrake: Liquid Logistics`**~~ | **never ships as a mod** — hoses, portable pumps, universal cargo tank, universal pump, per-net adapters and trade-from-tank are FlowWorks' |
+| **FloodedCanyon** | 🔴 was missing from this map entirely. Becomes the **flood-driver client**: keeps its biome and phase clock, depends on FlowWorks for motion (ruling 8, 2026-09-16) |
 
 **v1 third-party seams**: VE PipeSystem (pipe slot + tank adapters), DBH Lite + Thirst
 add-on (drinkables), VGE (astrofuel net adoption), Odyssey (Flood subclass, toxic-water

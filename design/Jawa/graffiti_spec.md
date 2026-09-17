@@ -197,9 +197,10 @@ rows — the marks ARE the livery, painted.
 | Aurebesh-lettered taunt/jest art variants (if wanted) | RimStarWars | rides `mandrake.rsw.*` art pass, note only |
 
 Migration note: the existing `SacredGraffiti` mod folder (old id
-`mandrake.sacredgraffiti`, the shipped Ishko mark) folds into
-`mandrake.rut.marks` during NAMING_SCHEME_EXECUTION_1 — it is already in the
-rename map.
+`mandrake.sacredgraffiti`, the shipped Ishko mark) still needs folding into
+`mandrake.rut.marks` — ordinary owed work (`NAMING_SCHEME_EXECUTION_1` closed
+2026-08-31, no gate remains), not yet done as of this sweep (2026-09-17:
+`src/RimMandrake/SacredGraffiti` still exists under the old name).
 
 ## 6. V1 slice vs the dream
 

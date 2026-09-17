@@ -474,7 +474,8 @@ quietly moving it.
 - **Tier: RimMandrake.StarWars** (owner verbatim: "this should clearly be a
   RimMandrake.StarWars level mod") — packageId `mandrake.rsw.sarlacc` (or per
   grammar at build), namespace `RimMandrake.StarWars.Sarlacc`, RSW_ prefixes.
-  Legacy `sw_` landmark defs migrate under NAMING_SCHEME_EXECUTION_1, not ahead.
+  Legacy `sw_` landmark defs are owed their migration as ordinary build work
+  (`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31 — no gate remains).
   Mod Settings per MOD_OPTIONS_RETROFIT_1 (feature toggles incl. rooting-in-play,
   changed-return hediffs, breach consequences).
 - **Fork 1 — swimmers ROOT IN PLAY.** A swimmer that finds a seep or runs dry

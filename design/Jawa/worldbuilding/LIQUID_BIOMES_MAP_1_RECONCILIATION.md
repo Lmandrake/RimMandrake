@@ -91,8 +91,9 @@ capture gap). `src/Jawa/Jawa_Patches` itself no longer exists — the mod split
 siblings, and the spec was never carried forward.
 
 ⇒ **Authored this pass**, renamed under the tier grammar (new authorship takes the new
-prefix directly rather than waiting on `NAMING_SCHEME_EXECUTION_1`, which only covers
-migrating OLD names) and rehomed to the live mod:
+prefix directly; migrating OLD names to the grammar is likewise no longer gated —
+`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31 and any such rename is now ordinary owed
+work) and rehomed to the live mod:
 `src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml` — six terrain defs
 (`RUT_ScaldWaterDeep/Shallow/OceanDeep/OceanShallow/MovingShallow/MovingChestDeep`),
 R-B4a's values verbatim: cyan glow `(2,154,229)`/radius 2, burn 1/300t (shallow+moving) /

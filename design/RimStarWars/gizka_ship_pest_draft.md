@@ -46,8 +46,8 @@ Parallel-content flag (not this item's fix): SWBestiary carries duplicate
 (`SoundDefs_SWBestiary.xml:2536-2626`) that predate the donor's activation;
 the donor now ships its own `Pawn_Gizka_*` set and the ThingDef references
 the donor's. The RSW_ set is currently unreferenced by any creature —
-reconcile under this item's build or NAMING_SCHEME_EXECUTION_1, whichever
-lands first.
+reconcile it (dedup or repoint) as ordinary cleanup under this item's build;
+no naming gate applies (`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31).
 
 UNKNOWN (owed before build, from the recon): whether the AssetBundle gizka
 sprite renders live (quicktest). If it does not, that becomes an art task —
