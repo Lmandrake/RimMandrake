@@ -109,10 +109,31 @@ namespace RimMandrake.Oracle
             Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.NeutralEvent);
         }
 
+        /// <summary>
+        /// Ships when the LLM path fails, per spec law #2. ORACLE_FALLBACK_UNVALIDATED_1
+        /// (2026-09-17): fallbackText is a CALLER argument and this used to hand it to
+        /// ReceiveLetter verbatim -- the one path guaranteed to run whenever validation
+        /// itself rejects a live reply was the one path never validated at all, and the
+        /// only call site today ships dev scaffolding with a "[FALLBACK]" marker. Hold
+        /// the fallback to the SAME bar as a live response; if it fails too, ship the
+        /// hardcoded safe text below rather than an exception, a blank letter, or a
+        /// silent no-op.
+        /// </summary>
+        private const string SafeFallbackText =
+            "The old machines hum on, patient, waiting for hands that have not yet come.";
+
         private static void DeliverFallback(string label, string fallbackText, string reason)
         {
+            string toDeliver = fallbackText;
+            if (!OracleValidator.TryValidateOhm(fallbackText, out string fallbackRejectReason))
+            {
+                Log.Message("RimMandrake.Oracle: fallback text itself rejected for \"" + label +
+                    "\" -- " + fallbackRejectReason + " -- shipping the safe default instead");
+                toDeliver = SafeFallbackText;
+            }
+
             Log.Message("RimMandrake.Oracle: falling back for \"" + label + "\" -- " + reason);
-            Find.LetterStack.ReceiveLetter(label, fallbackText, LetterDefOf.NeutralEvent);
+            Find.LetterStack.ReceiveLetter(label, toDeliver, LetterDefOf.NeutralEvent);
         }
     }
 }
