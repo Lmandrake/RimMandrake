@@ -200,20 +200,22 @@ the gods are still standing there when the lights go.
 - [ ] `reads_as_tenants_not_as_the_ship` — 📐 every effect reads as somebody using the wiring,
       never as the building having a feeling. Canon `narrator`: no integrating self, no ego, no
       moods-of-the-ship.
-- [ ] `drives_only_what_was_handed_over` — 🗣 a glowing animal, worn gear, a plant and a hologram
-      keep their own light in every scene. 🔴 The hologram case is now the strictest of the four:
-      a hologram is a god's body (2026-09-17), so a scheme dimming one is the framework driving
-      the speaker instead of the channel.
-- [ ] `default_scheme_is_livable` — 🗣🤔 the shipped default is restrained enough to live under
-      and does not read as a light show in an ordinary colony. He ruled gentle-by-default; the
-      "livable" bar is mine.
+      **Split into four by ruling 2026-09-17**, from one bar reading *"a glowing animal, worn gear,
+      a plant and a hologram keep their own light in every scene"* — one bar cannot be staged or
+      settled with four subjects in frame at once. Each below is one scene a component can build.
+- [ ] `animal_keeps_its_own_light` — 🗣 a glowing animal's own light is untouched in every scene.
+- [ ] `gear_keeps_its_own_light` — 🗣 worn gear that glows keeps its glow in every scene.
+- [ ] `plant_keeps_its_own_light` — 🗣 a glowing plant keeps its light in every scene.
+- [ ] `hologram_keeps_its_own_light` — 🗣 a god's hologram is lit exactly as itself in every
+      scene, blackout included. 🔴 The strictest of the four: a hologram is a god's body
+      (2026-09-17), so a scheme dimming one is the framework driving the speaker instead of the
+      channel. ⚠️ Deliberately paired with `never_dims_a_god` rather than folded into it — this
+      one asks that the hologram is right, that one that nothing made it wrong, and the pairing
+      is the same duplication spec §10.6 licenses where a validated line guards an enforcement
+      from being quietly weakened.
 
 ### cannot show
 
-- [ ] `never_interpolated_colour` — 📐 a visibly smooth colour fade. `TWINKLE_FLORA_SPIKE_1`
-      measured that a continuously varying colour mints a cached Material per value forever, so
-      the symptom and the defect are the same thing: if a screenshot sequence shows a smooth
-      fade, the mod is leaking.
 - [ ] `never_the_ship_emoting` — 📐 any effect that reads as the ship itself expressing a mood.
       The inverse of `reads_as_tenants_not_as_the_ship`, stated separately because it is the one
       failure a pleasing demo hides best.
@@ -225,6 +227,22 @@ the gods are still standing there when the lights go.
 - [ ] `never_dims_a_god` — 🗣 a god's hologram darkened, tinted or extinguished by anything this
       mod does, including a full blackout scheme. Ruled 2026-09-17: the holograms "work by
       themselves, without power", so the framework touching one is it driving the speaker.
+
+### resolved off this list — owner rulings, 2026-09-17
+
+Recorded so the absence reads as a decision and nobody restores either one.
+
+- **`default_scheme_is_livable` — CUT.** Its "restrained enough to live under" wording was an
+  agent's, not his, and living under something appears in no frame or sequence, so no judge could
+  settle it. ⚠️ The cost he accepted: gentle-by-default is now written down nowhere a check can
+  see, so a later agent shipping a light show as the shipped default is caught only by him
+  opening a colony.
+- **`never_interpolated_colour` — MOVED off the eye.** It described a Material leak
+  (`TWINKLE_FLORA_SPIKE_1`: a continuously varying colour mints a cached Material per value
+  forever) and asserted the symptom and the defect were the same thing. They are not: a frame
+  sequence proves that a colour changed, never that it changed *smoothly*, at any frame count. It
+  becomes a count of cached materials, owed on `NORTHSTAR_MOTION_FRAMES_1`. ⚠️ It cannot be built
+  yet — this mod has no code — and a lint owed is not a lint built.
 
 ### candidate lines  (NOT his — agent-drafted, bind nothing until promoted)
 
