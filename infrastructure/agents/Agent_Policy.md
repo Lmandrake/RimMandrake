@@ -74,6 +74,16 @@ and the window decides what is true. Never spawn a duplicate for "reliability".
 2. **Live bridge writes** — the world is frozen and hand-authored, no regenerate behind it.
 3. **The world, and art** — *"iterate by LOOKING"*; realism is not scoreable.
 4. **Text the owner reads as a conclusion** — above all a number.
+   ↳ 🔴 **One carve-out, owner ruling 2026-09-16: north-star `must read` verdicts.**
+   Verbatim: *"Let a model YES green a line."* A model judging a mod's letter or
+   flavour prose against a `must read` line MAY return a pass, and that pass greens
+   the line — it is not routed to him. The tier floor still applies (opus), and
+   `cannot read` lines stay absolute. Rationale and the residual risk are in
+   `design/RimMandrake/north_star_validation_spec.md` §10.4: the rule it replaced
+   would have made any text-first mod permanently ungreenable unattended, and an
+   off-register letter is a bounded, recoverable failure. **This carve-out is
+   read-verdict-only** — a number, a count, or a finding he will act on still lands
+   on row 3 and still comes to him.
 
 ## The escalation clause every cheap-worker prompt carries
 
