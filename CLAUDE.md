@@ -57,6 +57,24 @@ and nowhere else; never restate a model choice outside it.
   defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
   FOUNDRY to re-fix them. Check the code and the ledger before believing any doc's
   "engine status" — and check whether an open item is asking for work already done.
+- 🔴 **A gate cited by NAME outlives the item it names — check the item's state.**
+  `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's word,
+  yet ~20 live docs still said "do not rename ahead of it" 16 days later, which is why
+  FlowWorks (named by ruling 20) still ships as `fluidcanals`. Owner: *"That file may be
+  VERY old… do not accept stale info."* Sweep: `STALE_RENAME_GATE_SWEEP_1`.
+- **North stars: `Pits`, `Graffiti` and `WreckedMachines` are VALIDATED** — ⛔ do not
+  edit their `## north star` sections. The recorded hash covers the **whole section
+  including explanatory prose**, so fixing a stale caveat silently reverts a checklist
+  to DRAFT and the mod quietly stops being refused (hit live 2026-09-16;
+  `NORTHSTAR_HASH_SCOPE_1`, narrowed by the spec's own §6a axis-scoped hashing).
+  🔑 Therefore **write only state-independent prose inside that section** — never "binds
+  nothing until validated", which is false the moment it is. And `modcheck/cli.py
+  validate <Mod>` refuses unless BOTH `state:` and `validated-hash:` header lines exist
+  (blank is fine); omit `--owner-said` for a dry run that writes nothing.
+- **A number you brief a subagent with will come back to you.** A census reported "2 of
+  137 canon entries ruled"; the real figure is **25**. Two later agents measured 25 and
+  both explicitly refused to adjust to the briefed figure — the correct behaviour. When
+  two subagents disagree on a number, measure it yourself before it becomes a fact.
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its
@@ -140,6 +158,12 @@ a duplicate, write a pointer instead.
 Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Push immediately after
 committing; rejected push → `git pull --rebase`, never `--force`. Never a file over
 ~50 MB.
+
+🔴 **The pathspec goes on the `commit`, not just the `add`** — `git commit <paths> -F -`
+(hook-enforced). Four threads share this working tree *and* its index, so a bare
+`git commit -m` sweeps a peer's staged files into your commit under your message.
+⚠️ The hook is `PreToolUse`, so it refuses a **compound** command whole: if you chain a
+file write to a commit, the write never happens either. Keep writes and commits separate.
 
 ## Code isn't clean until a review says so
 
