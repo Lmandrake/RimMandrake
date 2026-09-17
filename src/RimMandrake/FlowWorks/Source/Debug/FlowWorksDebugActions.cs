@@ -73,6 +73,13 @@ namespace RimMandrake.FlowWorks
             IntVec3 c = UI.MouseCell();
             Map map = Find.CurrentMap;
             if (map == null) return;
+            // Same guard as InstantDig and ReportDepthGrid, and the same reason
+            // (fixed there 2026-09-02, opus code review): UI.MouseCell() returns
+            // off-map cells freely when zoomed out, and c.GetTerrain(map) below
+            // has no bounds check and throws IndexOutOfRangeException on one --
+            // in the primary verification tool for this whole mod. This sibling
+            // method was missed when the other two were fixed.
+            if (!c.InBounds(map)) { Log.Message("[RMFlowWorksDebug] " + c + " is off-map."); return; }
             StringBuilder sb = new StringBuilder();
             sb.Append("[RMFlowWorksDebug] REPORT_CELL pos=").Append(c);
             sb.Append(" terrain=").Append(c.GetTerrain(map).defName);
