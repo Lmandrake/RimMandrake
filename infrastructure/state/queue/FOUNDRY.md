@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T11:56:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T12:22:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1891,3 +1891,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NINEFOLD_LOUDNESS_FRONT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
+
+## FLOWWORKS_MECHANICS_TABLE_STALE_1 FlowWorks' mechanics table (flowworks_mod_definition.md section 4) is stale in the DANGEROUS direction - it says UNBUILT for code that exists, so a seat reading it may rebuild what is already there. MEASURED 2026-09-17 on the Mac: the table calls 'Source stock / volume' UNBUILT with 'No stock of any kind exists' while RM_LiquidStock.cs is 424 lines implementing the 5:1 budget, sticky-limitless classification, recession and refill; it calls 'Spread confined to the channel' the biggest gap and UNBUILT while Flood_FlowWorks.CanFloodInto gates on RM_MapComponent_Excavation.CanLiquidEnter with channelConfinementEnabled defaulting true; and it describes source priming via CompFluidReservoir.Notify_CanalCellOpened when that comp is deleted from disk (only 4 deletion comments remain). RM_ExcavationDepth (119) and RM_LiquidBody (108) also exist unmentioned. Audit every row against the real source and correct it - this is the FLOOD_ENGINE_CORRECTIONS_1 trap (a doc blocking work on defects already fixed) repeating in the same mod family
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md
