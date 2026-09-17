@@ -39,8 +39,19 @@ namespace RimMandrake.FluidCanals
 			// burning the full dig cost (3200 work) each time. Mirrors
 			// Designator_DigCanal.CanDesignateCell's own terrain gate and
 			// clears the stale designation instead of handing out a doomed job.
+			//
+			// Updated for ruling 19's depth ladder: an already-dug cell is no
+			// longer a reason to drop the job, it is a reason to dig DEEPER.
+			// The water and non-soil gates stand unchanged, and so does the
+			// reason they exist.
 			TerrainDef terrain = c.GetTerrain(pawn.Map);
-			if (terrain == RimMandrakeFluidCanals_DefOf.RM_Channel_Empty || terrain.IsWater || !terrain.IsSoil)
+			byte depth = RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			bool stale = terrain.IsWater
+				|| c.GetEdifice(pawn.Map) != null
+				|| depth >= RM_ExcavationDepth.MaxDepth
+				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil)
+				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFluidCanalsSettings.digToDepthEnabled);
+			if (stale)
 			{
 				des.Delete();
 				return false;

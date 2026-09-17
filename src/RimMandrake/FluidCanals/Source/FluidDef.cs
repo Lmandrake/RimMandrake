@@ -21,6 +21,23 @@ namespace RimMandrake.FluidCanals
 		/// for water) rather than authoring a parallel one.</summary>
 		public TerrainDef floodTerrain;
 
+		/// <summary>Ruling 5's tier 2 of 3 — half full, read as chest-deep.
+		/// <see cref="floodTerrain"/> is tier 1 (trace/shallow), so only the
+		/// upper rungs need naming. Must be temporary, same as tier 1.</summary>
+		public TerrainDef fillTerrainHalf;
+
+		/// <summary>Ruling 5's tier 3 of 3 — brimming, read as deep. Ruling 26:
+		/// fill never captures, so this stays passable however costly.</summary>
+		public TerrainDef fillTerrainBrim;
+
+		/// <summary>A flooded SUPERDEEP cell. Separate from
+		/// <see cref="fillTerrainBrim"/> because the temp layer wins in
+		/// TerrainAt: a passable fill over an impassable SUPERDEEP excavation
+		/// would make the hole walkable the moment it filled. Falls back to
+		/// the brim terrain when unset, which is the correct behaviour once
+		/// program 2 ships fall-in capture and ladders.</summary>
+		public TerrainDef fillTerrainSuperdeep;
+
 		/// <summary>Reservoir volume consumed per flooded tile. Lower = a
 		/// given reservoir reaches further before running dry.</summary>
 		public float volumePerTile = 1f;
@@ -38,6 +55,41 @@ namespace RimMandrake.FluidCanals
 		/// SeasonalFlood's own 240000-360000 flooded range.</summary>
 		public int floodedTicks = 300000;
 
+		/// <summary>The terrain that expresses a fill tier on a cell of depth
+		/// <paramref name="depth"/>. Tier 0 is dry and returns null.</summary>
+		public TerrainDef FillTerrainFor(int tier, byte depth)
+		{
+			if (tier <= 0)
+			{
+				return null;
+			}
+			if (depth >= RM_ExcavationDepth.Superdeep)
+			{
+				return fillTerrainSuperdeep ?? fillTerrainBrim ?? floodTerrain;
+			}
+			if (tier == 1)
+			{
+				return floodTerrain;
+			}
+			if (tier == 2)
+			{
+				return fillTerrainHalf ?? floodTerrain;
+			}
+			return fillTerrainBrim ?? fillTerrainHalf ?? floodTerrain;
+		}
+
+		/// <summary>True if this terrain is one THIS fluid's engine placed, so
+		/// the engine never strips a temp terrain some other system owns.</summary>
+		public bool OwnsFillTerrain(TerrainDef terrain)
+		{
+			if (terrain == null)
+			{
+				return false;
+			}
+			return terrain == floodTerrain || terrain == fillTerrainHalf
+				|| terrain == fillTerrainBrim || terrain == fillTerrainSuperdeep;
+		}
+
 		public override IEnumerable<string> ConfigErrors()
 		{
 			foreach (string error in base.ConfigErrors())
@@ -52,6 +104,15 @@ namespace RimMandrake.FluidCanals
 			{
 				yield return "floodTerrain " + floodTerrain.defName + " is not temporary. TerrainGrid.SetTempTerrain " +
 					"refuses any terrain without <temporary>true</temporary>, so this fluid would flood nothing at all.";
+			}
+			foreach (TerrainDef tier in new[] { fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep })
+			{
+				if (tier != null && !tier.temporary)
+				{
+					yield return "fill tier terrain " + tier.defName + " is not temporary. " +
+						"TerrainGrid.SetTempTerrain refuses any terrain without <temporary>true</temporary>, " +
+						"so this tier would render nothing and the cell would read as dry at full.";
+				}
 			}
 			if (volumePerTile <= 0f)
 			{

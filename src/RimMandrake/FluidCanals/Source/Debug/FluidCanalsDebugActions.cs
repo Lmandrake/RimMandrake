@@ -3,6 +3,12 @@ using System.Text;
 using LudeonTK;
 using Verse;
 
+// The legacy reservoir comp is [Obsolete] as a CONCEPT (owner ruling
+// 2026-09-16 / ruling 24: a source is terrain, not a building) but is still
+// the mod's one live-proven path, and this debug surface is precisely how it
+// gets proven. Suppressed here rather than removed.
+#pragma warning disable 618
+
 namespace RimMandrake.FluidCanals
 {
     // Bridge-reachable test surface, same pattern as RimMandrakePits'
@@ -26,10 +32,39 @@ namespace RimMandrake.FluidCanals
             // check and throws IndexOutOfRangeException on one, in the primary
             // verification tool for this whole mod.
             if (!c.InBounds(map)) { Log.Message("[RMFluidCanalsDebug] " + c + " is off-map."); return; }
-            map.terrainGrid.SetTerrain(c, RimMandrakeFluidCanals_DefOf.RM_Channel_Empty);
+            RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+            byte newDepth = (ex != null) ? ex.Deepen(c) : (byte)0;
             CompFluidReservoir.Notify_CanalCellOpened(map, c);
             Log.Message("[RMFluidCanalsDebug] INSTANT_DIG at " + c
+                + " D=" + newDepth + " (" + RM_ExcavationDepth.LabelOf(newDepth) + ")"
                 + " terrainNow=" + c.GetTerrain(map).defName);
+        }
+
+        [DebugAction(CAT, "Report depth grid (RAW)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void ReportDepthGrid()
+        {
+            IntVec3 c = UI.MouseCell();
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            if (!c.InBounds(map)) { Log.Message("[RMFluidCanalsDebug] " + c + " is off-map."); return; }
+            RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+            if (ex == null) { Log.Error("[RMFluidCanalsDebug] no RM_MapComponent_Excavation on this map."); return; }
+            byte d = ex.DepthAt(c);
+            byte f = ex.FillAt(c);
+            Log.Message("[RMFluidCanalsDebug] DEPTH_GRID pos=" + c
+                + " D=" + d + " (" + RM_ExcavationDepth.LabelOf(d) + ")"
+                + " F=" + f
+                + " tier=" + RM_ExcavationDepth.FillTier(f, d)
+                + " excavated=" + ex.IsExcavated(c)
+                + " source=" + ex.IsSourceCell(c)
+                + " canLiquidEnter=" + ex.CanLiquidEnter(c)
+                + " baseTerrain=" + map.terrainGrid.BaseTerrainAt(c).defName
+                + " tempTerrain=" + (map.terrainGrid.TempTerrainAt(c)?.defName ?? "none")
+                + " | MAP excavatedCells=" + ex.ExcavatedCellCount
+                + " overflowDestroyedTotal=" + ex.OverflowDestroyedTotal.ToString("F1")
+                + " activeFluid=" + (ex.ActiveFluid?.defName ?? "NULL"));
         }
 
         [DebugAction(CAT, "Report cell (RAW)",
@@ -87,3 +122,5 @@ namespace RimMandrake.FluidCanals
         }
     }
 }
+
+#pragma warning restore 618

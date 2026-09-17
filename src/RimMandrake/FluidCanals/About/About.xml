@@ -10,24 +10,29 @@
 biome-agnostic engine for canals that carry water, ooze, slime, oil, tar or
 fuel from a source into the terrain a colonist chooses.
 
-v1 slice (owner-ruled, 2026-09-01, "general RimMaster level" scope, promoted
-out of the tar-pits proposal's canal-flow-engineering row): dig a canal
-(`Designator_DigCanal`, a labor job on diggable soil), a `FluidDef` describing
-what a source carries, a `CompFluidReservoir` that seeds a flood once a canal
-reaches it, and `Flood_FluidCanal` (a `RimWorld.Flood` subclass — Odyssey's
-own flood-spread engine, reused rather than reinvented) that fills adjacent
-open ground with the fluid's terrain until the reservoir runs dry. Water is
-the one fluid shipped this pass, proving genericity; tar (the pass's own
-inspiration) is deliberately NOT included here — it is Utinni-tier content
-and belongs in its own client mod once this engine is live-proven.
+Depth is the primitive. Every excavated cell carries two small integers — D,
+how far below the surface it was dug (shallow, mid, deep, SUPERDEEP), and F,
+how much liquid is in it — and everything else is a function of those two on
+one cell: what it costs to cross, how much it holds, and which liquid surface
+is drawn. We dig down; we never build up. There is no elevation model, no
+height advantage, and no fluid simulation: liquid levels itself out on a
+pulse, by sorting the deepest cells first and letting a full one overflow
+into whatever has room.
 
-Deliberately smaller than the full canal vision: no elevation-driven grade
-(maps carry none yet), no custom fire subclass (vanilla ignition already
-works on any flammable terrain, so a fluid with flammability &gt; 0 needs
-nothing extra), no channel-only flow constraint (this pass floods outward
-across open passable ground from a canal-fed source, the same way vanilla's
-own SeasonalFlood does, not strictly along a dug channel — a v2 refinement).
-Requires Odyssey (Flood is Odyssey-gated in the base game).</description>
+A natural liquid body IS a source — deep terrain that is already full, which
+is why it spills into a shallower channel dug at its edge. Liquid stays in
+what has been excavated.
+
+Shipped: the depth/fill grid and its pulse engine
+(`RM_MapComponent_Excavation`), a dig designator that deepens a cell each
+time it is used, depth-derived movement cost, a three-tier fill ladder on
+vanilla's own edge-aware water ramps, and a `FluidDef` describing what a
+source carries. Water is the one liquid this pass, proving genericity.
+
+Not yet built, and named so nobody thinks they are missing: filling a channel
+back in, sluice gates, sinks, ladders, fall-in capture at SUPERDEEP (until it
+exists, pawns will not path into a SUPERDEEP cell at all), burning liquids,
+irrigation, and per-source stock accounting. Requires Odyssey.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

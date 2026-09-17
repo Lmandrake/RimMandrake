@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- Empty, dug channel. Reuses Gravel's own texture (a freshly-turned,
-       stony-soil look); no bespoke art this pass, stated plainly per this
-       item's own scope note. Walkable, passable, not water, so vanilla's
-       own Flood.CanFloodPotentiallySpreadInto treats it as open ground a
-       flood can travel through. -->
+  <!-- ══════════════════════════════════════════════════════════════════
+       THE DRY DEPTH LADDER — ruling 19 (four depths) + ruling 17 (pathCost 30).
+
+       D is the primitive (ruling 18). The RM_MapComponent_Excavation byte
+       grid is the AUTHORITY on a cell's depth; these four terrains are how
+       that integer becomes something vanilla already understands — a
+       pathCost, an art layer, and (at SUPERDEEP) impassability. The
+       component writes the matching terrain whenever D changes, and
+       re-derives D from terrain on a save that predates the grid.
+
+       pathCost per ruling 17: a dry channel "slows heavily", matching the
+       established dug-barrier cost Pits uses (30). Deeper costs more.
+       Numbers are the vanilla wade ladder read from Terrain_Water.xml
+       (WaterShallow 30 / WaterMovingChestDeep 42 / WaterDeep 300), so a
+       dry trench is never cheaper than wading one of equal depth.
+
+       ⚠️ NO BESPOKE ART THIS PASS. §13's authoring list item 1 ("a dug
+       channel that reads as an excavated channel") is still owed; these
+       reuse Gravel and lean on a darkening <color> ramp so the four depths
+       are at least DISTINGUISHABLE from each other in the meantime. That
+       is a stopgap, stated plainly, not the finished look.
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- D = 1, SHALLOW. Keeps the original defName: every existing save's
+       dug cells are this terrain, and the component reads them back as
+       D=1 rather than losing them. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Empty</defName>
-    <label>dug channel</label>
-    <description>An empty channel, dug to carry whatever a reservoir feeds into it.</description>
+    <label>shallow channel</label>
+    <description>A shallow channel, dug one level below the surface. Dry, it is a soft barrier — crossing it costs as much as wading shallow water. Dig it again to deepen it.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <renderPrecedence>325</renderPrecedence>
     <fertility>0</fertility>
-    <pathCost>6</pathCost>
+    <!-- Ruling 17: was 6, a fifth of a dug pit. 30 matches Pits and makes
+         the owner's own "as per other established dug barriers" true. -->
+    <pathCost>30</pathCost>
     <natural>true</natural>
     <edgeType>FadeRough</edgeType>
     <scatterType>Rocky</scatterType>
@@ -28,6 +51,185 @@
     <statBases>
       <Beauty>-2</Beauty>
     </statBases>
+  </TerrainDef>
+
+  <!-- D = 2, MID. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Channel_Mid</defName>
+    <label>channel</label>
+    <description>A channel dug two levels below the surface. Crossing it is slow work.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.78,0.75,0.70)</color>
+    <renderPrecedence>326</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>45</pathCost>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <!-- D = 3, DEEP. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Channel_Deep</defName>
+    <label>deep channel</label>
+    <description>A channel dug three levels below the surface. A pawn can still climb through it, but it costs dearly.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.58,0.55,0.51)</color>
+    <renderPrecedence>327</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>80</pathCost>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-4</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <!-- D = 4, SUPERDEEP — the trapping level (ruling 19).
+       🔴 IMPASSABLE ON PURPOSE, AND THIS IS A SCAFFOLD, NOT THE DESIGN.
+       Ruling 19 says a pawn without a ladder falls in and is HELD (Pits'
+       machinery). That capture mechanic does not exist in this mod yet —
+       it arrives with the Pits merge (ruling 18/27). Until it does, a
+       SUPERDEEP cell must not be walkable, or a pawn would stroll across
+       a hole that is supposed to swallow them. Traversability.Impassable
+       makes PathGrid.CalculatedCostAt return its 10000 sentinel, so the
+       pathfinder simply routes around it — VERIFIED against the
+       decompiled PathGrid, not assumed from pathCost magnitude.
+       Program 2 replaces this with fall-in + ladders. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Channel_Superdeep</defName>
+    <label>superdeep excavation</label>
+    <description>An excavation four levels below the surface — deep enough that anything entering it is not walking out unaided. Until ladders and fall-in capture are built, pawns will not path into it at all.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.38,0.36,0.33)</color>
+    <renderPrecedence>328</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>300</pathCost>
+    <passability>Impassable</passability>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-5</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       THE WET TIER LADDER — ruling 5.
+
+       F is rendered as a TIER, not a percentage: trace/shallow →
+       half/chest-deep → brimming/deep, off vanilla's own edge-aware ramp
+       art. Tier 1 reuses vanilla ShallowFloodwater verbatim (it is already
+       exactly this, and it is what the legacy Flood_FluidCanal release
+       path lays down). Tiers 2 and 3 are the missing rungs.
+
+       ALL of these are <temporary>true</temporary> — TerrainGrid.
+       SetTempTerrain hard-refuses anything else, and temporary is what
+       makes a release RECOVERABLE: the dug channel underneath survives and
+       comes back when the liquid leaves (owner ruling 2026-09-02).
+
+       Deliberately NO <tempTerrain><destroysFloors> — that flag MOVES the
+       floor out of underGrid permanently and RemoveTempTerrain never puts
+       it back, which is the exact damage that ruling removed.
+
+       Ruling 26: fill NEVER captures. A brimming deep canal is a tax, not
+       a barrier — so tier 3 is costly (300, vanilla WaterDeep's number)
+       but STANDABLE, unlike vanilla WaterDeep which is Impassable.
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- Tier 2 of 3 — half full, read as chest-deep. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Water_Half</defName>
+    <label>half-full channel</label>
+    <description>A channel filled to about half its depth. Wading it is chest-deep work.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <pathCost>42</pathCost>
+    <extraDraftedPerceivedPathCost>30</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>240</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Water_Brim</defName>
+    <label>brimming channel</label>
+    <description>A channel filled to its brim. Crossing it is punishing, but it is a tax, not a wall — depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- A FLOODED SUPERDEEP cell. Separate from tier 3 for one reason and it
+       is not cosmetic: the temp layer wins in TerrainAt, so a Standable
+       fill terrain laid over an Impassable RM_Channel_Superdeep would make
+       the hole walkable again the moment it filled — the exact "pawn falls
+       into an unfinished mechanic" this pass is avoiding. Stays Impassable
+       until program 2 ships fall-in capture and ladders. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Water_Superdeep</defName>
+    <label>flooded excavation</label>
+    <description>A superdeep excavation holding liquid. Nothing paths into it until ladders exist.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <pathCost>300</pathCost>
+    <passability>Impassable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
   </TerrainDef>
 
 </Defs>

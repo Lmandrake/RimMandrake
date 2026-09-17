@@ -17,7 +17,14 @@
   <RimMandrake.FluidCanals.FluidDef>
     <defName>RM_Fluid_Water</defName>
     <label>water</label>
+    <!-- Ruling 5's three-tier ladder. Tier 1 is vanilla ShallowFloodwater
+         verbatim; tiers 2 and 3 are the rungs vanilla has no temporary
+         version of. A tier IS a volume, so the stock model quantises for
+         free and the edge-aware ramp art comes with it at no cost. -->
     <floodTerrain>ShallowFloodwater</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Water_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Water_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Water_Superdeep</fillTerrainSuperdeep>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>

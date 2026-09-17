@@ -3,6 +3,12 @@ using Verse;
 
 namespace RimMandrake.FluidCanals
 {
+	/// 🔴 DEAD AS A CONCEPT alongside <see cref="CompFluidReservoir"/> — owner
+	/// ruling 2026-09-16 (ruling 24): a source is terrain, not a building.
+	/// Kept until the depth engine has its own live proof; see the comp for
+	/// the full note. Successor: <see cref="RM_MapComponent_Excavation"/>.
+	[System.Obsolete("A source is terrain, not a building (owner ruling 2026-09-16 / ruling 24). " +
+		"Successor: RM_MapComponent_Excavation. Dies with the migration.", false)]
 	public class CompProperties_FluidReservoir : CompProperties
 	{
 		public FluidDef fluidDef;
