@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T16:17:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T16:44:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1911,3 +1911,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
+
+## PYRELANDS_SOUTH_TOPDOWN_REGEN_1 Regenerate three top-down south facings caught by the new viewpoint gate: GR_Mantistanis (v5 south, drained unattended, never eyeballed), FurnaceBeast (2026-09-13 set), AA_FireWasp (v3 - canon check graded symmetry, not camera elevation). South = eye-level front; regen via artpipe painterly family, re-run facing_set_audit before wiring
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
