@@ -40,6 +40,15 @@
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
 
+  <!-- CANYON_FLOOD_ERASES_CANALS_1 / FLOWWORKS_BUILD_PROGRAM_1 ruling 8:
+       this mod is a flood-driver CLIENT of FlowWorks' occupancy engine, so
+       it compiles against FlowWorks' own assembly and declares
+       mandrake.rm.flowworks in About.xml. Build FlowWorks first; the DLL is
+       tracked in the repo, so a clean checkout already has one. -->
+  <PropertyGroup Condition="'$(FlowWorksDll)' == ''">
+    <FlowWorksDll>$(MSBuildThisFileDirectory)..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</FlowWorksDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_FloodedCanyonDefOf.cs" />
     <Compile Include="RM_FloodedCanyonMod.cs" />
@@ -68,6 +77,10 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>$(FlowWorksDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

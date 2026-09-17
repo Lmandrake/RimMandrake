@@ -9,6 +9,7 @@
       <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
       <value>
         <li>RimMandrake.FlowWorks.Designator_DigCanal</li>
+        <li>RimMandrake.FlowWorks.Designator_FillInCanal</li>
       </value>
     </match>
   </Operation>

@@ -5,50 +5,87 @@ using Verse;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>A canal-fed flood. Subclasses vanilla's own Flood (Odyssey) --
-	/// the cellular open-ground spread engine SeasonalFlood/TorrentialRainFlood
-	/// already use -- rather than writing a parallel spread tick from scratch.
-	/// Spreads from its seed cell across open, non-water, non-edifice ground
-	/// (vanilla's own gating, not channel-constrained) until its volume, set
-	/// by the CompFluidReservoir that spawned it, runs out.
+	/// <summary>A canal-fed release: an ethereal driver Thing that walks a
+	/// fluid outward from its seed cell, one tile per <c>ticksPerTile</c>,
+	/// until its volume runs out.
+	///
+	/// ⚠️ DLC-FREE BY CONSTRUCTION (FLOWWORKS_BUILD_PROGRAM_1 Phase 3).
+	/// This class used to subclass <c>RimWorld.Flood</c>. MEASURED against the
+	/// 1.6 assembly: <c>Flood</c> is Odyssey CONTENT — <c>Flood.SpawnSetup</c>
+	/// opens with <c>if (!ModLister.CheckOdyssey("Flood")) return;</c>
+	/// (RimWorld/Flood.cs:71), so without the DLC a subclass spawns, subscribes
+	/// to nothing, and never spreads. That single inheritance edge is what made
+	/// the whole merged mod hard-require Odyssey, which Pits/ManyWaters/
+	/// LiquidTypes never did.
+	///
+	/// The temp-terrain ENGINE it used underneath is Core and stays:
+	/// <c>Map.tempTerrain</c> is constructed unconditionally (Verse/Map.cs:585),
+	/// <c>TempTerrainManager.QueueRemoveTerrain</c> and the removal loop in
+	/// <c>Tick()</c> carry no DLC gate (RimWorld/TempTerrainManager.cs:44-68 —
+	/// the only <c>ModsConfig.OdysseyActive</c> checks in that class guard the
+	/// ice <c>FreezeManager</c>), and <c>TerrainGrid.SetTempTerrain</c>
+	/// (Verse/TerrainGrid.cs:396) refuses only a non-<c>temporary</c> def, never
+	/// a DLC-less game. So the spread walk is reimplemented here over Core
+	/// members and the recede policy is unchanged: SetTempTerrain +
+	/// QueueRemoveTerrain.
 	///
 	/// The fluid is laid on the map's TEMPORARY terrain layer and queued for
-	/// removal, exactly as SeasonalFlood does: a release is destructive while
-	/// it stands but RECOVERABLE -- whatever the cell already was is kept
-	/// underneath and comes back when the fluid drains.</summary>
-	public class Flood_FlowWorks : Flood
+	/// removal: a release is destructive while it stands but RECOVERABLE --
+	/// whatever the cell already was is kept underneath and comes back when the
+	/// fluid drains.
+	///
+	/// 🔑 The channel gate is now an ELIGIBILITY test rather than a refusal at
+	/// placement. Vanilla's spread pair (CanFloodSpreadInto /
+	/// CanFloodPotentiallySpreadInto) was private and non-virtual, so the old
+	/// subclass could only let the walk wander across open ground and decline to
+	/// write there -- and then needed a refused-cell counter to notice it was
+	/// stuck. Owning the walk removes both: a cell the channel refuses is never
+	/// a candidate, so the release cannot wander and the counter is gone.</summary>
+	public class Flood_FlowWorks : Thing
 	{
 		private FluidDef fluidDef;
 
 		private float remainingVolume;
 
-		/// <summary>Cells this release walked to and was refused by the channel
-		/// gate. Not scribed: a reload restarts the count, which only ever
-		/// gives a stuck flood one more chance to prove it is stuck.</summary>
-		private int refusedCells;
+		/// <summary>Tiles this release expects to place; fixes its expand rate,
+		/// its recede stagger and its expiry. Set once at spawn, then scribed.</summary>
+		private int estimatedFloodedTiles;
+
+		private int floodedTileCount;
+
+		/// <summary>Cells this release has laid fluid on. Scribed; also the
+		/// dedupe set, rehydrated into <see cref="placedLookup"/> on load.</summary>
+		private List<IntVec3> placedCells = new List<IntVec3>();
+
+		/// <summary>Cells whose cardinal neighbours may still be floodable. The
+		/// seed cell starts here and is never itself flooded -- same shape as
+		/// vanilla's initial-cell set, which seeds from river cells and floods
+		/// outward from them.</summary>
+		private List<IntVec3> frontier = new List<IntVec3>();
+
+		private readonly HashSet<IntVec3> placedLookup = new HashSet<IntVec3>();
 
 		/// <summary>Only reached by a flood whose fluidDef went missing; a real
 		/// one is destroyed on the next tick before this ever divides anything.</summary>
 		private const int FallbackTicksPerTile = 60;
 
-		/// <summary>Ticks per flooded tile -- the fluid's own flow rate.
+		/// <summary>Ticks per flooded tile -- the fluid's own flow rate, and
+		/// directly the expand interval now that this class owns its own walk.
 		///
 		/// Fixed 2026-09-02 (owner ruling on FLUID_CANAL_FLOOD_TUNING_GAPS_1,
-		/// finding 3): rate used to be an ACCIDENT of MaxFloodDurationTicks.
-		/// Base Flood computes ExpandIntervalTicks = MaxFloodDurationTicks /
-		/// estimatedFloodedTiles, so the old flat 30000 against a 12-tile
-		/// estimate meant one tile per 2500 ticks -- an in-game HOUR per tile,
-		/// and a 60-volume reservoir taking ~2.5 in-game days to spend. Rate is
-		/// now a real per-fluid field and MaxFloodDurationTicks is DERIVED from
-		/// it, so the base class's own division returns exactly ticksPerTile
-		/// and MaxFloodDurationTicks becomes a genuine duration again.</summary>
+		/// finding 3): rate used to be an ACCIDENT of MaxFloodDurationTicks,
+		/// because base Flood computed ExpandIntervalTicks = MaxFloodDurationTicks
+		/// / estimatedFloodedTiles. Rate is a real per-fluid field and the
+		/// duration is DERIVED from it, not the other way round.</summary>
 		private int TicksPerTile => (fluidDef != null) ? Mathf.Max(1, fluidDef.ticksPerTile) : FallbackTicksPerTile;
 
-		protected override int MaxFloodDurationTicks => TicksPerTile * Mathf.Max(1, estimatedFloodedTiles);
+		/// <summary>How long the whole release takes to finish spreading: one
+		/// tile per TicksPerTile, for every tile it can pay for.</summary>
+		private int FloodingTicks => TicksPerTile * Mathf.Max(1, estimatedFloodedTiles);
 
-		/// <summary>Tiles this release can actually pay for. Base Flood estimates
+		/// <summary>Tiles this release can actually pay for. Vanilla estimated
 		/// (seed cells x FloodWidthRange.max), which for a single-seeded canal
-		/// release is 12 regardless of how much fluid the reservoir holds.</summary>
+		/// release is 12 regardless of how much fluid the source holds.</summary>
 		private int PayableTiles
 		{
 			get
@@ -62,15 +99,14 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Past this the flood is done or provably stuck, and must not
-		/// keep ticking into every save. FloodingTicks is now exactly the time
-		/// needed to place every tile the reservoir can pay for; an equal grace
-		/// on top covers cells that only open up late (a pawn digging through,
-		/// a wall coming down), which is the sole legitimate reason a healthy
-		/// flood runs past its own budget.</summary>
+		/// keep ticking into every save. FloodingTicks is exactly the time needed
+		/// to place every tile the release can pay for; an equal grace on top
+		/// covers cells that only open up late (a pawn digging through, a wall
+		/// coming down), which is the sole legitimate reason a healthy flood runs
+		/// past its own budget.</summary>
 		private int ExpiryTick => spawnedTick + 2 * FloodingTicks;
 
-		/// <summary>Exposed for the bridge debug-report surface -- floodedTileCount
-		/// on the base class is protected.</summary>
+		/// <summary>Exposed for the bridge debug-report surface.</summary>
 		public int FloodedTileCount => floodedTileCount;
 
 		public float RemainingVolume => remainingVolume;
@@ -91,6 +127,26 @@ namespace RimMandrake.FlowWorks
 			base.ExposeData();
 			Scribe_Defs.Look(ref fluidDef, "fluidDef");
 			Scribe_Values.Look(ref remainingVolume, "remainingVolume", 0f);
+			Scribe_Values.Look(ref estimatedFloodedTiles, "estimatedFloodedTiles", 0);
+			Scribe_Values.Look(ref floodedTileCount, "floodedTileCount", 0);
+			Scribe_Collections.Look(ref placedCells, "placedCells", LookMode.Value);
+			Scribe_Collections.Look(ref frontier, "frontier", LookMode.Value);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
+			{
+				if (placedCells == null)
+				{
+					placedCells = new List<IntVec3>();
+				}
+				if (frontier == null)
+				{
+					frontier = new List<IntVec3>();
+				}
+				placedLookup.Clear();
+				for (int i = 0; i < placedCells.Count; i++)
+				{
+					placedLookup.Add(placedCells[i]);
+				}
+			}
 		}
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -98,12 +154,15 @@ namespace RimMandrake.FlowWorks
 			base.SpawnSetup(map, respawningAfterLoad);
 			if (respawningAfterLoad || !Spawned)
 			{
-				// Base SpawnSetup destroys the flood outright when no seed cell is
-				// open; estimatedFloodedTiles is scribed, so a reload keeps the
-				// value this branch already computed.
+				// estimatedFloodedTiles, the frontier and the placed set are all
+				// scribed, so a reload keeps exactly what this branch computed.
 				return;
 			}
 			estimatedFloodedTiles = PayableTiles;
+			placedCells.Clear();
+			placedLookup.Clear();
+			frontier.Clear();
+			frontier.Add(Position);
 		}
 
 		protected override void Tick()
@@ -112,10 +171,10 @@ namespace RimMandrake.FlowWorks
 			// removed mod, a save-compat gap) silently destroyed this flood every
 			// tick with nothing in the log -- indistinguishable from ordinary
 			// volume exhaustion. Only log the genuinely-unexpected case.
-			if (fluidDef == null)
+			if (fluidDef == null || fluidDef.floodTerrain == null)
 			{
-				Log.ErrorOnce("[RimMandrake.FlowWorks] a Flood_FlowWorks has no fluidDef " +
-					"(a removed mod's FluidDef?) -- destroying.", thingIDNumber ^ 0x3);
+				Log.ErrorOnce("[RimMandrake.FlowWorks] a Flood_FlowWorks has no fluidDef or no " +
+					"floodTerrain (a removed mod's FluidDef?) -- destroying.", thingIDNumber ^ 0x3);
 				Destroy();
 				return;
 			}
@@ -124,85 +183,136 @@ namespace RimMandrake.FlowWorks
 				Destroy();
 				return;
 			}
-			// Fixed 2026-09-02 (FLUID_CANAL_FLOOD_TUNING_GAPS_1 finding 2): base
-			// Flood has no destroy path when it runs out of reachable ground --
-			// noPossibleCell is private with no accessor -- so a flood walled in
-			// before its volume ran out ticked forever and scribed into every
-			// save. Safe to cut it off only now that MaxFloodDurationTicks is a
-			// real duration (finding 3, above) rather than a rate divisor. Every
-			// tile it already placed is already queued for removal, so an expired
-			// flood still drains correctly; nothing leaks.
+			// Fixed 2026-09-02 (FLUID_CANAL_FLOOD_TUNING_GAPS_1 finding 2): a
+			// flood walled in before its volume ran out ticked forever and
+			// scribed into every save. Every tile it already placed is already
+			// queued for removal, so an expired flood still drains correctly;
+			// nothing leaks.
 			if (Find.TickManager.TicksGame > ExpiryTick)
 			{
 				Destroy();
 				return;
 			}
-			base.Tick();
-		}
-
-		protected override IEnumerable<(IntVec3, int)> GetInitialCells(Map map)
-		{
-			yield return (Position, FloodWidthRange.RandomInRange);
-		}
-
-		protected override void SpreadFlood(IntVec3 cell, TerrainDef sourceTerrain)
-		{
-			if (fluidDef == null || fluidDef.floodTerrain == null || remainingVolume <= 0f)
+			// Nowhere left to grow from at all: provably finished or provably
+			// walled in, and either way there is nothing for a later tick to do.
+			if (frontier.Count == 0)
+			{
+				Destroy();
+				return;
+			}
+			if (!this.IsHashIntervalTick(TicksPerTile))
 			{
 				return;
 			}
-			// ════════════════════════════════════════════════════════════
-			// §4's "biggest gap", closed. Vanilla Flood walks any open,
-			// non-water, non-edifice ground, so a canal release leaked
-			// across the map instead of following the channel. The gating
-			// pair (CanFloodSpreadInto / CanFloodPotentiallySpreadInto) is
-			// PRIVATE and non-virtual on the base class — VERIFIED against
-			// the decompiled Flood, not assumed — so there is no override
-			// point and, without taking a Harmony dependency this mod does
-			// not have, the refusal has to happen here at placement.
-			//
-			// Consequence, stated because it is a real limitation: the walk
-			// still WANDERS across open ground, it just writes nothing and
-			// spends nothing there. A release that wanders long enough
-			// without placing anything is stuck by definition, so it is cut
-			// off rather than left to tick out its expiry doing nothing.
-			//
-			// The real flow is RM_MapComponent_Excavation's pulse; this path
-			// survives because it is the mod's one live-proven mechanism and
-			// ruling 24 does not get to break it before its replacement is
-			// proven too.
-			// ════════════════════════════════════════════════════════════
-			if (RimMandrakeFlowWorksSettings.channelConfinementEnabled)
+			SpreadOneTile();
+		}
+
+		/// <summary>One tile per expand interval, exactly as the base engine did.
+		/// A frontier cell with no floodable neighbour left is dropped rather
+		/// than re-examined every interval, so the walk cost falls as the
+		/// release closes out.</summary>
+		private void SpreadOneTile()
+		{
+			Map map = Map;
+			if (map == null)
 			{
-				RM_MapComponent_Excavation excavation = Map.GetComponent<RM_MapComponent_Excavation>();
-				if (excavation != null && !excavation.CanLiquidEnter(cell))
-				{
-					refusedCells++;
-					if (refusedCells > 8 * Mathf.Max(1, estimatedFloodedTiles) + 64)
-					{
-						Destroy();
-					}
-					return;
-				}
+				return;
 			}
-			// Fixed 2026-09-02 (owner ruling on FLUID_CANAL_FLOOD_TUNING_GAPS_1,
-			// finding 1): "floods must become recoverable, matching vanilla's
-			// SeasonalFlood pattern". SetTerrain wrote the fluid into the
-			// PERMANENT top layer -- any constructed floor gone for good, and the
-			// cell unre-diggable forever because Designator_DigCanal refuses
-			// water. SetTempTerrain writes the temp layer instead: the floor (or
-			// the dug channel) stays untouched underneath and TerrainAt reports
-			// it again the moment the queued removal fires.
-			//
-			// Deliberately NO tempTerrain.destroysFloors on the flood terrains --
-			// that flag is not "recoverable destruction", it MOVES the floor out
-			// of underGrid permanently (TerrainGrid.SetTempTerrain) and
-			// RemoveTempTerrain never puts it back, which is the exact damage
-			// this ruling removes. Vanilla's own ShallowFloodwater carries no
-			// tempTerrain block for the same reason.
+			// §4's "biggest gap", closed. Liquid may only enter a cell that has
+			// been excavated, or one already part of a liquid body -- the same
+			// test, because a natural body reads through as SUPERDEEP. With the
+			// gate consulted here, a refused cell is never a candidate, so the
+			// release cannot wander across open ground at all.
+			RM_MapComponent_Excavation excavation = RimMandrakeFlowWorksSettings.channelConfinementEnabled
+				? map.GetComponent<RM_MapComponent_Excavation>()
+				: null;
+
+			int attempts = frontier.Count;
+			while (attempts-- > 0 && frontier.Count > 0)
+			{
+				int pick = Rand.Range(0, frontier.Count);
+				IntVec3 from = frontier[pick];
+				IntVec3 target = IntVec3.Invalid;
+				int seen = 0;
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 n = from + GenAdj.CardinalDirections[i];
+					if (!CanFloodInto(map, n, excavation))
+					{
+						continue;
+					}
+					// Reservoir sample: every eligible neighbour equally likely,
+					// in one pass and with no allocation.
+					seen++;
+					if (Rand.Range(0, seen) == 0)
+					{
+						target = n;
+					}
+				}
+				if (!target.IsValid)
+				{
+					frontier.RemoveAt(pick);
+					continue;
+				}
+				PlaceFluid(map, target);
+				return;
+			}
+		}
+
+		/// <summary>Vanilla's own spread gating (CanFloodSpreadInto, which was
+		/// private on the base class), plus this mod's channel confinement.</summary>
+		private bool CanFloodInto(Map map, IntVec3 c, RM_MapComponent_Excavation excavation)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			if (placedLookup.Contains(c))
+			{
+				return false;
+			}
+			TerrainDef t = map.terrainGrid.TerrainAt(c);
+			if (t == null || t.IsWater)
+			{
+				return false;
+			}
+			if (map.terrainGrid.FoundationAt(c) != null)
+			{
+				return false;
+			}
+			if (c.GetEdifice(map) != null)
+			{
+				return false;
+			}
+			if (excavation != null && !excavation.CanLiquidEnter(c))
+			{
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>The recede policy, unchanged and Core-only (owner ruling
+		/// 2026-09-02, "floods must become recoverable"): SetTerrain wrote the
+		/// fluid into the PERMANENT top layer -- any constructed floor gone for
+		/// good, and the cell unre-diggable forever because Designator_DigCanal
+		/// refuses water. SetTempTerrain writes the temp layer instead: the floor
+		/// (or the dug channel) stays untouched underneath and TerrainAt reports
+		/// it again the moment the queued removal fires.
+		///
+		/// Deliberately NO tempTerrain.destroysFloors on the flood terrains --
+		/// that flag is not "recoverable destruction", it MOVES the floor out of
+		/// underGrid permanently (TerrainGrid.SetTempTerrain, Verse/TerrainGrid.cs:418)
+		/// and RemoveTempTerrain never puts it back, which is the exact damage
+		/// this ruling removes.</summary>
+		private void PlaceFluid(Map map, IntVec3 c)
+		{
 			int recedeStagger = Mathf.Max(0, estimatedFloodedTiles - floodedTileCount);
-			Map.terrainGrid.SetTempTerrain(cell, fluidDef.floodTerrain);
-			Map.tempTerrain.QueueRemoveTerrain(cell, spawnedTick + FloodingTicks + fluidDef.floodedTicks + recedeStagger);
+			map.terrainGrid.SetTempTerrain(c, fluidDef.floodTerrain);
+			map.tempTerrain.QueueRemoveTerrain(c, spawnedTick + FloodingTicks + fluidDef.floodedTicks + recedeStagger);
+			placedCells.Add(c);
+			placedLookup.Add(c);
+			frontier.Add(c);
+			floodedTileCount++;
 			remainingVolume -= fluidDef.volumePerTile;
 		}
 	}

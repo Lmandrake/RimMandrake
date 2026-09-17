@@ -10,6 +10,11 @@ namespace RimMandrake.FlowWorks
 
 		public static JobDef RM_DigCanalJob;
 
+		/// <summary>Phase 2's other half: the inverse of RM_DigCanal.</summary>
+		public static DesignationDef RM_FillInCanal;
+
+		public static JobDef RM_FillInCanalJob;
+
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells
 		/// survive the arrival of the depth ladder.</summary>
 		public static TerrainDef RM_Channel_Empty;

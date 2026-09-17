@@ -17,7 +17,9 @@ namespace RimMandrake.FlowWorks
 			defaultLabel = "Dig canal";
 			defaultDesc = "Carve a channel one level deeper. Designating a channel that is "
 				+ "already dug deepens it again — shallow, mid, deep, then SUPERDEEP. "
-				+ "Liquid fills the deepest cells first and overflows into shallower ones.";
+				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
+				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
+				+ "it leaves the map, which is how you empty a canal on purpose.";
 			icon = ContentFinder<Texture2D>.Get("UI/Designators/Mine", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;
@@ -34,7 +36,21 @@ namespace RimMandrake.FlowWorks
 			}
 			if (c.InNoBuildEdgeArea(Map))
 			{
-				return "TooCloseToMapEdge".Translate();
+				// PHASE 4, ruling 9 — SINKS. A sink is a map-edge drain, and the
+				// edge band is precisely where vanilla refuses construction, so
+				// with the edge refusal in place a sink could never be dug and
+				// the mechanic could not exist. With sinks ON, the band opens to
+				// the dig designator ONLY; nothing else about the no-build rule
+				// changes, and an excavation in the band drains off-map by
+				// definition. With sinks OFF, the old refusal stands unaltered.
+				if (!RimMandrakeFlowWorksSettings.edgeSinksEnabled)
+				{
+					return "TooCloseToMapEdge".Translate();
+				}
+				if (c.OnEdge(Map))
+				{
+					return "TooCloseToMapEdge".Translate();
+				}
 			}
 			if (Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) != null)
 			{

@@ -9,8 +9,10 @@
 
     No Harmony reference: everything here is a normal Thing/ThingComp/
     JobDriver/Designator/MapComponent/DefModExtension subclass through
-    vanilla extension points (including RimWorld.Flood, Odyssey's own
-    flood-spread engine), not a patch.
+    vanilla extension points, not a patch. No DLC reference either —
+    Flood_FlowWorks owns its own spread walk over Core members
+    (FLOWWORKS_BUILD_PROGRAM_1 Phase 3), because RimWorld.Flood is
+    Odyssey content.
 
     Source/Pits/SelfTest/ is a SEPARATE net8.0 project and is deliberately
     absent from the Compile list below; EnableDefaultCompileItems is false,
@@ -54,9 +56,14 @@
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />
+    <Compile Include="RM_LiquidBody.cs" />
+    <Compile Include="RM_LiquidStock.cs" />
     <Compile Include="Designator_DigCanal.cs" />
     <Compile Include="WorkGiver_DigCanal.cs" />
     <Compile Include="JobDriver_DigCanal.cs" />
+    <Compile Include="Designator_FillInCanal.cs" />
+    <Compile Include="WorkGiver_FillInCanal.cs" />
+    <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
   </ItemGroup>

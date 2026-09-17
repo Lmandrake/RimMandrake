@@ -30,9 +30,9 @@ renamed/fixed field does what its name says.
 
 ## Watch out
 
-- `Flood_FluidCanal` subclasses Odyssey's own Flood engine — a fix that forks
-  vanilla behavior instead of configuring it will drift on the next Odyssey
-  patch. Prefer configuration over override.
+- `Flood_FlowWorks` (was `Flood_FluidCanal`) no longer subclasses Odyssey's
+  `Flood` — since 2026-09-16 it is a plain `Thing` owning its own spread walk
+  over the Core temp-terrain machinery, and the mod is DLC-free.
 - The placement log's `thingsSpawned` is a NET count; do not use it to verify.
 - FLUID_CANAL_MECHANIC_1 (FOUNDRY, doing) is the umbrella; this item is its
   next concrete slice, not a competitor.

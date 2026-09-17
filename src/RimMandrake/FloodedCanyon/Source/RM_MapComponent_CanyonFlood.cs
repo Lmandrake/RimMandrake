@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.FlowWorks;
 using RimWorld;
 using Verse;
 using Verse.Sound;
@@ -6,26 +7,36 @@ using Verse.Sound;
 namespace RimMandrake.FloodedCanyon
 {
     // ════════════════════════════════════════════════════════════════════
-    // THE FLOOD CYCLE ENGINE. Auto-attached to every map by vanilla's own
-    // Map.FillComponents (any non-abstract MapComponent subclass with a
-    // (Map) constructor gets one instance per map — confirmed against the
-    // 1.6 assembly; no Harmony wiring needed, same as the sibling
-    // Greentide mod's own map components).
+    // THE FLOOD CYCLE CLOCK, AND A FLOWWORKS DRIVER CLIENT.
     //
-    // Deliberately does NOT subclass vanilla's Odyssey-gated `Flood` Thing
-    // (RimWorld/Flood.cs, ModLister.CheckOdyssey-gated, used by the sibling
-    // FluidCanals mod for a channel-fed release) and deliberately does NOT
-    // use TerrainGrid.SetTempTerrain either: every terrain marked
-    // `temporary="true"` in the base game (ShallowFloodwater, MarshFlood)
-    // is itself [MayRequireOdyssey] — MEASURED against the 1.6 assembly's
-    // own TerrainDefOf, RimSage 2026-09. This mod ships for every player,
-    // DLC or not, so the wall and its recede are both plain PERMANENT
-    // TerrainGrid.SetTerrain calls, driven by this component's own phase
-    // clock rather than TempTerrainManager: flood on with WaterMovingShallow
-    // (Core, always present), soil on with SoilRich, each cell converted
-    // back to soil ONLY if it still holds the exact flood terrain this
-    // mod placed — if a player built or dug there mid-flood, that change
-    // is left alone.
+    // Auto-attached to every map by vanilla's own Map.FillComponents (any
+    // non-abstract MapComponent subclass with a (Map) constructor gets one
+    // instance per map — confirmed against the 1.6 assembly; no Harmony
+    // wiring needed, same as the sibling Greentide mod's own map
+    // components).
+    //
+    // This mod owns the biome, the phase clock, the chime and the soak. It
+    // does NOT own what an excavated cell looks like — FlowWorks does
+    // (flowworks_mod_definition.md §15 ruling 8: one engine, per-driver
+    // recede policy, and this mod is the flood driver). Two owners for one
+    // cell is the disease; CANYON_FLOOD_ERASES_CANALS_1 was the symptom.
+    //
+    // So a flood cell takes one of two paths:
+    //
+    //   EXCAVATED (FlowWorks' depth grid says D > 0) — the flood raises
+    //     that cell's FILL through the engine (TryFloodDriverCell) and
+    //     recede lowers it back to what it held before. No terrain write of
+    //     ours ever lands on it, so a channel, a pit or a SUPERDEEP
+    //     excavation cannot be engulfed, and cannot be laundered into
+    //     SoilRich when the water leaves. The engine draws the liquid and
+    //     the engine takes it away.
+    //
+    //   EVERYTHING ELSE — unchanged: a plain PERMANENT TerrainGrid.SetTerrain
+    //     wall of WaterMovingShallow (Core, always present) driven by this
+    //     component's own phase clock, converted to SoilRich at recede and
+    //     ONLY if the cell still holds the exact flood terrain this mod
+    //     placed. If a player built or dug there mid-flood, that change is
+    //     left alone.
     //
     // One GameCondition (RM_CanyonFlood, plain vanilla GameCondition class
     // — nothing to override, every effect lives here) is registered purely
@@ -35,42 +46,12 @@ namespace RimMandrake.FloodedCanyon
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_CanyonFlood : MapComponent
     {
-        // CANYON_FLOOD_ERASES_CANALS_1: cells the player has excavated into a
-        // channel must never be engulfed by a canyon flood, so the flood's
-        // permanent SetTerrain can never launder them back to SoilRich at
-        // recede. Written as a def-name set, not a single constant, because
-        // FlowWorks program 2 (the shared occupancy engine's depth grid,
-        // spec §15 ruling 8) is expected to grow this list past FluidCanals'
-        // own RM_Channel_Empty; that grid REPLACES this set entirely once it
-        // exists — do not extend this list once the depth-grid client lands,
-        // fold into that instead.
-        //
-        // Why "skip", not "recoverable" (SetTempTerrain / QueueRemoveTerrain,
-        // FluidCanals' own Flood_FluidCanal.SpreadFlood mechanism): MEASURED
-        // against the decompiled Verse.TerrainGrid.SetTempTerrain (1.6) —
-        // it hard-refuses (Log.Error, no-op) any newTerr whose `temporary`
-        // field is not true. This mod's flood terrain, TerrainDefOf.
-        // WaterMovingShallow, carries no <temporary> block (confirmed via
-        // RimSage's merged def), so SetTempTerrain(cell, WaterMovingShallow)
-        // would silently fail to flood the cell at all — the recoverable
-        // path is not available without minting a new custom temporary
-        // terrain def, which is a bigger change than this defect warrants
-        // and would alter the flood's own visuals/mechanics. Routing the
-        // flood AROUND excavated cells, via the same Eligible() gate that
-        // already excludes water and edifices, needs no new def and cannot
-        // regress: a channel cell simply never enters activeFloodCells, so
-        // RecedeFlood's existing "only convert what I actually flooded"
-        // check leaves it alone by construction.
-        private static readonly HashSet<string> ExcavatedTerrainDefNames = new HashSet<string>
-        {
-            "RM_Channel_Empty",
-        };
+        // The engine. Looked up lazily because MapComponent construction
+        // order between two mods is not something either mod may assume.
+        private RM_MapComponent_Excavation excavationInt;
 
-        private static bool IsExcavatedCell(Map map, IntVec3 c)
-        {
-            TerrainDef t = map.terrainGrid.TerrainAt(c);
-            return t != null && ExcavatedTerrainDefNames.Contains(t.defName);
-        }
+        private RM_MapComponent_Excavation Excavation =>
+            excavationInt ?? (excavationInt = map.GetComponent<RM_MapComponent_Excavation>());
 
         private enum Phase : byte { Dry, Warned, Flooding }
 
@@ -86,7 +67,16 @@ namespace RimMandrake.FloodedCanyon
 
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
+        // NON-EXCAVATED cells only: an excavated one is never written here.
         private List<IntVec3> activeFloodCells = new List<IntVec3>();
+
+        // The excavated half of this cycle's footprint, and what each of
+        // those cells held before the flood raised it. Two parallel lists
+        // rather than a dictionary purely because Scribe_Collections writes
+        // a List<T> of values with no working-list dance; they are always
+        // the same length and are cleared together.
+        private List<IntVec3> raisedFillCells = new List<IntVec3>();
+        private List<int> raisedFillPrior = new List<int>();
 
         private List<IntVec3> tmpKeys = new List<IntVec3>();
         private List<int> tmpValues = new List<int>();
@@ -133,9 +123,11 @@ namespace RimMandrake.FloodedCanyon
         public string DebugStateReport()
         {
             return string.Format(
-                "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} soakedCells={5} active={6}",
+                "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
+                + "raisedFillCells={5} soakedCells={6} active={7} flowWorksEngine={8}",
                 phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
-                activeFloodCells.Count, soakUntilTick.Count, Active);
+                activeFloodCells.Count, raisedFillCells.Count, soakUntilTick.Count, Active,
+                Excavation != null ? "present" : "ABSENT");
         }
 
         public override void FinalizeInit()
@@ -233,11 +225,35 @@ namespace RimMandrake.FloodedCanyon
             int soakUntil = floodEndTick + DaysToTicks(RM_FloodedCanyonSettings.soakDecayDays);
 
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
+            RM_MapComponent_Excavation excavation = Excavation;
 
             activeFloodCells.Clear();
+            raisedFillCells.Clear();
+            raisedFillPrior.Clear();
             for (int i = 0; i < cells.Count; i++)
             {
                 IntVec3 c = cells[i];
+                // CANYON_FLOOD_ERASES_CANALS_1. An excavated cell belongs to
+                // FlowWorks: the flood raises its FILL and never its terrain,
+                // so a channel, a pit or a SUPERDEEP hole is filled by the
+                // water rather than erased by it. Prior F is recorded here,
+                // not in the engine, because only this driver knows what its
+                // own recede means.
+                if (excavation != null && excavation.IsExcavated(c))
+                {
+                    int prior = excavation.FillAt(c);
+                    if (excavation.TryFloodDriverCell(c))
+                    {
+                        raisedFillCells.Add(c);
+                        raisedFillPrior.Add(prior);
+                    }
+                    // Continue EITHER WAY. The engine owning the cell is the
+                    // invariant, not the raise succeeding: falling through to
+                    // SetTerrain here would put the flood's terrain back on an
+                    // excavated cell, which is the whole defect.
+                    soakUntilTick[c] = soakUntil;
+                    continue;
+                }
                 map.terrainGrid.SetTerrain(c, floodTerrain);
                 activeFloodCells.Add(c);
                 soakUntilTick[c] = soakUntil;
@@ -252,10 +268,22 @@ namespace RimMandrake.FloodedCanyon
             map.gameConditionManager.RegisterCondition(cond);
         }
 
-        // "Death, then soil": convert the wall back to real fertile ground
-        // now that it has stood its duration. A cell only converts if it
-        // still holds the exact flood terrain this mod placed — anything a
-        // player built, dug, or otherwise changed mid-flood is left alone.
+        // Two recede policies, one per cell class — ruling 8's "per-driver
+        // recede policy" made concrete:
+        //
+        //   convert-to      the non-excavated wall. "Death, then soil":
+        //                   convert it back to real fertile ground now that
+        //                   it has stood its duration. A cell only converts
+        //                   if it still holds the exact flood terrain this
+        //                   mod placed — anything a player built, dug, or
+        //                   otherwise changed mid-flood is left alone. That
+        //                   check is also what covers a cell excavated
+        //                   mid-flood: its terrain is no longer ours, so it
+        //                   is skipped.
+        //   restore-fill    the excavated half. Hand F back to what the cell
+        //                   held before the water arrived, through the engine
+        //                   that owns it. No terrain of ours ever touched it,
+        //                   so there is nothing to launder.
         private void RecedeFlood()
         {
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
@@ -268,23 +296,33 @@ namespace RimMandrake.FloodedCanyon
                 {
                     continue;
                 }
-                // Belt-and-suspenders on top of Eligible()'s upstream
-                // exclusion (see the class-level comment on
-                // ExcavatedTerrainDefNames): a channel cell can never equal
-                // floodTerrain by construction now, since it was never
-                // flooded, but the check is restated here so RecedeFlood
-                // documents the invariant it depends on rather than relying
-                // silently on a caller elsewhere never regressing.
-                if (IsExcavatedCell(map, c))
-                {
-                    continue;
-                }
                 if (map.terrainGrid.TerrainAt(c) == floodTerrain)
                 {
                     map.terrainGrid.SetTerrain(c, soilTerrain);
                 }
             }
             activeFloodCells.Clear();
+
+            RM_MapComponent_Excavation excavation = Excavation;
+            if (excavation != null)
+            {
+                int n = System.Math.Min(raisedFillCells.Count, raisedFillPrior.Count);
+                for (int i = 0; i < n; i++)
+                {
+                    IntVec3 c = raisedFillCells[i];
+                    if (!c.InBounds(map))
+                    {
+                        continue;
+                    }
+                    // Returns false if the cell stopped being excavated while
+                    // the flood stood (a fill-in), which is the correct
+                    // outcome: there is no F left to lower and the engine has
+                    // already decided what that cell is.
+                    excavation.TrySetDriverFill(c, raisedFillPrior[i]);
+                }
+            }
+            raisedFillCells.Clear();
+            raisedFillPrior.Clear();
         }
 
         private List<IntVec3> ComputeFloodCells(int target)
@@ -336,12 +374,14 @@ namespace RimMandrake.FloodedCanyon
             TerrainDef t = map.terrainGrid.TerrainAt(c);
             if (t == null || t.IsWater)
             {
+                // Covers an excavated cell that is ALREADY full: FlowWorks
+                // renders fill as water terrain, so a brimming channel reads
+                // as water and there is nothing for a flood to add.
                 return false;
             }
-            if (ExcavatedTerrainDefNames.Contains(t.defName))
-            {
-                return false;
-            }
+            // An excavated cell is deliberately NOT excluded any more. It is
+            // eligible, and StartFlood routes it to the engine instead of
+            // writing terrain on it (CANYON_FLOOD_ERASES_CANALS_1).
             if (c.GetEdifice(map) != null)
             {
                 return false;
@@ -400,10 +440,14 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref floodEndTick, "floodEndTick", -1);
             Scribe_Collections.Look(ref soakUntilTick, "soakUntilTick", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpValues);
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
+            Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
+            Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (soakUntilTick == null) soakUntilTick = new Dictionary<IntVec3, int>();
                 if (activeFloodCells == null) activeFloodCells = new List<IntVec3>();
+                if (raisedFillCells == null) raisedFillCells = new List<IntVec3>();
+                if (raisedFillPrior == null) raisedFillPrior = new List<int>();
             }
         }
     }

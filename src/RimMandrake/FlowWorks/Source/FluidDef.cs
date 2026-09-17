@@ -16,9 +16,9 @@ namespace RimMandrake.FlowWorks
 		/// (<c>&lt;temporary&gt;true&lt;/temporary&gt;</c>): a release is laid on
 		/// the map's TEMP terrain layer, above whatever the cell already was, so
 		/// a dug channel or a constructed floor underneath survives intact and
-		/// comes back when the fluid drains. Reuse a real vanilla temporary
-		/// terrain where one already has the right behavior (ShallowFloodwater
-		/// for water) rather than authoring a parallel one.</summary>
+		/// comes back when the fluid drains. It must be a def this mod (or a
+		/// client) ships: the base game's temporary water terrains all live in
+		/// Data/Odyssey, and naming one hard-requires the DLC.</summary>
 		public TerrainDef floodTerrain;
 
 		/// <summary>Ruling 5's tier 2 of 3 — half full, read as chest-deep.
@@ -54,6 +54,34 @@ namespace RimMandrake.FlowWorks
 		/// and hands the cell back. Default is the midpoint of vanilla
 		/// SeasonalFlood's own 240000-360000 flooded range.</summary>
 		public int floodedTicks = 300000;
+
+		// ── PHASE 4: stock, recession and refill ──────────────────────────
+
+		/// <summary>The 5:1 budget (§5). Each cell of a natural body supplies at
+		/// most this many canal cells' worth of fill, so
+		/// <c>capacity = sourceCells * canalCellsPerSourceCell * volumePerTile</c>.
+		/// The rule is per source CELL on purpose: a body's throughput is bounded
+		/// by how much of it a canal actually touches, independently of how big
+		/// the body is. That, not a magic number, is the answer to "can I drain
+		/// the ocean?".</summary>
+		public float canalCellsPerSourceCell = 5f;
+
+		/// <summary>Ruling 2's seepage baseline: fill-units a LIMITED body regains
+		/// per source cell per in-game day with no weather at all. Tuned so a
+		/// one-cell seep takes multiple seasons to refill the five canal cells it
+		/// can support — "slow and certain", never random.</summary>
+		public float groundOozePerSourceCellPerDay = 0.13f;
+
+		/// <summary>Multiplier on <see cref="groundOozePerSourceCellPerDay"/> at a
+		/// rain rate of 1. Rain is the fast lane; seepage is the floor.</summary>
+		public float rainRefillFactor = 3f;
+
+		/// <summary>What a receded cell of a NATURAL body becomes. A natural lake
+		/// cell is not temporary terrain, so RemoveTempTerrain cannot dry it and
+		/// the engine must write a dry terrain directly — which is exactly why
+		/// the original terrain is recorded first and restored on refill. Mud,
+		/// not soil: exposed lakebed should read raw (§18).</summary>
+		public TerrainDef recededTerrain;
 
 		/// <summary>The terrain that expresses a fill tier on a cell of depth
 		/// <paramref name="depth"/>. Tier 0 is dry and returns null.</summary>
@@ -125,6 +153,16 @@ namespace RimMandrake.FlowWorks
 			if (floodedTicks < 1)
 			{
 				yield return "floodedTicks must be >= 1.";
+			}
+			if (canalCellsPerSourceCell <= 0f)
+			{
+				yield return "canalCellsPerSourceCell must be > 0 -- a source cell that supplies zero "
+					+ "canal cells gives every limited body a capacity of nothing, and no canal ever fills.";
+			}
+			if (groundOozePerSourceCellPerDay < 0f)
+			{
+				yield return "groundOozePerSourceCellPerDay must be >= 0 -- a negative seepage drains a "
+					+ "body that nothing is drawing from.";
 			}
 		}
 	}

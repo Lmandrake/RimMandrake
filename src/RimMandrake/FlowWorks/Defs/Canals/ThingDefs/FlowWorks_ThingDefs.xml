@@ -3,7 +3,8 @@
 
   <!-- Invisible driver thing, same shape as vanilla SeasonalFlood and
        TorrentialRainFlood: an ethereal Thing whose thingClass IS the
-       Flood subclass doing the spreading. -->
+       class doing the spreading. Flood_FlowWorks subclasses Verse.Thing
+       directly, not Odyssey's RimWorld.Flood — see the class header. -->
   <ThingDef ParentName="EtherealThingBase">
     <defName>RM_FluidCanalFlood</defName>
     <category>Ethereal</category>

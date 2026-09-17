@@ -7,4 +7,13 @@
     <texturePath>Designations/Mine</texturePath>
   </DesignationDef>
 
+  <!-- Phase 2's other half. Reuses vanilla's own haul designation art: the
+       marker means "earth is coming back to this cell", which is exactly what
+       it is. No bespoke texture is owed here — the channel art is (§13). -->
+  <DesignationDef>
+    <defName>RM_FillInCanal</defName>
+    <targetType>Cell</targetType>
+    <texturePath>Designations/Haul</texturePath>
+  </DesignationDef>
+
 </Defs>
