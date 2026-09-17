@@ -295,3 +295,31 @@ def check(mod, mod_dir):
     if mod_hash(mod_dir) != entry.get("hash"):
         return "STALE"
     return "GREEN"
+
+
+def check_or_orphaned(mod):
+    """`check(mod, mod_dir)`, but resolves `mod_dir` itself (via
+    `runner.find_mod_dir`) instead of trusting a caller-supplied path, and
+    returns `"ORPHANED (no such mod folder)"` rather than raising when the
+    folder is gone.
+
+    This is the function the aggregate `status` (no-arg) view must call
+    per row, in place of printing the stored `entry["status"]` field
+    directly -- DETERMINISM_ASSESSMENT.md SS4's first structural fix: "A
+    summary must never be able to disagree with the detail it summarises."
+    Before this existed, `modcheck status` printed `Pits  GREEN` from the
+    stored field while `modcheck status Pits` (which already called
+    `check()`) printed `STALE` for the very same mod, and printed
+    `FluidCanals  GREEN` for a mod renamed away weeks earlier, because
+    `_mod_dir_or_die` (which would have raised) is only reachable from the
+    single-mod path, never the no-arg summary loop."""
+    import sys
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import runner  # noqa: E402  local import: avoids a module cycle with runner.py
+    try:
+        mod_dir = runner.find_mod_dir(mod)
+    except RuntimeError:
+        return "ORPHANED (no such mod folder)"
+    return check(mod, mod_dir)
