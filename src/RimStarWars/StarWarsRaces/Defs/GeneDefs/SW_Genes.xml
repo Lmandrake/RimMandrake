@@ -3391,6 +3391,37 @@
       </prefixSymbols>
     </symbolPack>
   </GeneDef>
+  <!-- Owner ruling 2026-09-17: Ugnaught skin is DULL PINK, on the films as canon.
+       His call settled a contradiction the reference library could not: the infobox
+       says "varying shades of pink" while the infobox's own live-action still is a
+       dun grey-brown, and the pink traces to a databank page nobody ever fetched.
+       He ruled from the films directly, which outranks both.
+       Authored rather than borrowed because the neighbouring mod's pink genes have
+       no readable RGB on this machine (their defs are not on disk here), so picking
+       one would have been a guess about someone else's palette. (168,124,124) is a
+       desaturated flesh pink — pink in hue, dull in saturation, kept light enough to
+       read as skin rather than as the slate red directly above. -->
+  <GeneDef ParentName="GeneSkinColorOverride">
+    <defName>RSW_Skin_DullPink</defName>
+    <label>dull pink skin</label>
+    <labelShortAdj>pink</labelShortAdj>
+    <description>Carriers of this produce a muted pigment that turns their skin a dull, fleshy pink.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
+    <skinColorOverride>(168,124,124)</skinColorOverride>
+    <displayOrderInCategory>78</displayOrderInCategory>
+    <symbolPack>
+      <prefixSymbols>
+        <li>
+          <symbol>pink</symbol>
+        </li>
+        <li>
+          <symbol>dull</symbol>
+        </li>
+        <li>
+          <symbol>flesh</symbol>
+        </li>
+      </prefixSymbols>
+    </symbolPack>
+  </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
     <defName>RSW_Skin_Turquoise</defName>
     <label>turquoise skin</label>
