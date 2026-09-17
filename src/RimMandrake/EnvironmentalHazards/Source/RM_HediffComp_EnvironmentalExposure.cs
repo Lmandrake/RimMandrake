@@ -51,7 +51,11 @@ namespace RimMandrake.EnvironmentalHazards
 
             if (onlyDuringWeather == null)
             {
-                yield return "HediffCompProperties_EnvironmentalExposure has no onlyDuringWeather; it would accrue in every weather, not just the biome's own.";
+                // Read the actual gate in RM_HediffComp_EnvironmentalExposure.SeverityChangePerDay:
+                // exposedNow short-circuits false when onlyDuringWeather is null, so this hediff
+                // would NEVER accrue (not "in every weather") — it would only ever apply
+                // severityPerDayUnexposed and heal itself off, silently inert.
+                yield return "HediffCompProperties_EnvironmentalExposure has no onlyDuringWeather; exposedNow can never be true, so this hediff will only ever heal (severityPerDayUnexposed) and never accrue, in any weather.";
             }
         }
     }
