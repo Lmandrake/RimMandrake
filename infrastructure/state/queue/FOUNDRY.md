@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T16:44:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T17:17:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1921,3 +1921,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
+
+## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BARBSLINGER_SCORPION_REDESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
