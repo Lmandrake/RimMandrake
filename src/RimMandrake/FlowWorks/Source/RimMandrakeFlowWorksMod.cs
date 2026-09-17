@@ -43,6 +43,26 @@ namespace RimMandrake.FlowWorks
         public static bool channelConfinementEnabled = true;
         public static bool digToDepthEnabled = true;
 
+        // ── UNPROVEN MECHANICS, OFF BY DEFAULT ───────────────────────────
+        // The standing rule is "defaults = shipped behavior". These two came
+        // in with the 2026-09-16 LiquidTypes merge, and LiquidTypes was never
+        // in the live ModsConfig — so their shipped behavior is that they have
+        // never run at all. LIQUID_TYPES_SPIKES_1 says it plainly of the
+        // ignition prototype: "has never ticked inside a running game".
+        // Faithful to that, both default OFF. Turning them ON is the owner's
+        // call AFTER a live proof, not a default an agent quietly chose for
+        // him — a merge must not smuggle unproven damage into a campaign.
+        //
+        // Gated at the top of each MapComponentTick rather than by dropping
+        // the component: a MapComponent is scribed per map, and removing one
+        // that a save already carries is a save-compat problem. Off means it
+        // ticks and returns; the component still exists, still loads, and
+        // flipping the toggle needs no new game.
+        //   9. liquidCorrosionEnabled  — LiquidCorrosionMapComponent
+        //  10. liquidIgnitionEnabled   — LiquidIgnitionMapComponent
+        public static bool liquidCorrosionEnabled = false;
+        public static bool liquidIgnitionEnabled = false;
+
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
 
         public static int FlowPerPulse => Mathf.Clamp(Mathf.RoundToInt(flowPerPulse), 1, 4);
@@ -55,13 +75,18 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref flowPerPulse, "flowPerPulse", 1f);
             Scribe_Values.Look(ref channelConfinementEnabled, "channelConfinementEnabled", true);
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
+            Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
+            Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 900f);
+            // Raised from 900 when the unproven-mechanics section landed: this
+            // is a FIXED view height, so content taller than it is clipped
+            // rather than scrolled to.
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 1400f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -111,6 +136,26 @@ namespace RimMandrake.FlowWorks
                      + "the source — a superdeep cell that is already full, which is why it "
                      + "spills into any shallower channel dug at its edge. There is nothing "
                      + "to place and nothing to tune.");
+
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Unproven mechanics — OFF by default");
+            Text.Font = GameFont.Small;
+            list.Label("These came in with the liquid-types merge and have never run inside a "
+                     + "live game. They are off because that is what has actually shipped, not "
+                     + "because they are broken. Turn one on when you want to test it, and "
+                     + "expect it to be rough.");
+
+            list.CheckboxLabeled("Liquid corrosion", ref liquidCorrosionEnabled,
+                "Standing in an acidic or caustic liquid damages a pawn and eats the apparel "
+              + "it is wearing, per that liquid's registry row. UNTESTED in a running game: "
+              + "it can destroy worn gear, and it acts on colonists exactly as it acts on "
+              + "raiders. Off: the rule is inert and liquids are just terrain.");
+
+            list.CheckboxLabeled("Liquid ignition", ref liquidIgnitionEnabled,
+                "A flammable liquid catches fire when something hot or electrical touches it — "
+              + "never spontaneously. UNTESTED in a running game, and it is a prototype rather "
+              + "than the finished burn model FlowWorks owes. Off: flammable liquids sit there.");
 
             list.End();
             Widgets.EndScrollView();

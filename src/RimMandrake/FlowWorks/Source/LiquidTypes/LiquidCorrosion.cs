@@ -41,6 +41,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
+            // OFF by default (RimMandrakeFlowWorksSettings.liquidCorrosionEnabled).
+            // "Defaults = shipped behavior", and this has never shipped: it
+            // arrived with the 2026-09-16 LiquidTypes merge and LiquidTypes
+            // was never in the live mod list, so its real shipped behavior is
+            // "does nothing". LIQUID_TYPES_SPIKES_1 says the same of its
+            // sibling — "has never ticked inside a running game". Turning it
+            // on is the owner's call after a live proof.
+            //
+            // Gated here rather than by removing the component: a MapComponent
+            // is scribed per map, so dropping one a save already carries is a
+            // save-compat problem. Off ticks and returns; the toggle needs no
+            // new game.
+            if (!RimMandrakeFlowWorksSettings.liquidCorrosionEnabled)
+            {
+                return;
+            }
             if (map.IsHashIntervalTick(TickInterval))
             {
                 DoCorrosionPass();

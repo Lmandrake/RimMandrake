@@ -67,6 +67,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
+            // OFF by default (RimMandrakeFlowWorksSettings.liquidIgnitionEnabled).
+            // "Defaults = shipped behavior", and this has never shipped:
+            // LIQUID_TYPES_SPIKES_1 records it verbatim — "has never ticked
+            // inside a running game" — and it arrived live only through the
+            // 2026-09-16 merge into an active mod. Turning it on is the
+            // owner's call after a live proof.
+            //
+            // Gated here rather than by removing the component: a MapComponent
+            // is scribed per map, so dropping one a save already carries is a
+            // save-compat problem. Off ticks and returns; the toggle needs no
+            // new game.
+            if (!RimMandrakeFlowWorksSettings.liquidIgnitionEnabled)
+            {
+                return;
+            }
             if (map.IsHashIntervalTick(TickInterval))
             {
                 ScanForIgnition();
