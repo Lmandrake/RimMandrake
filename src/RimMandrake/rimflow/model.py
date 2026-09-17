@@ -764,8 +764,12 @@ def read(path=None):
                             pass
             raise LedgerError(
                 "%s line %d is not valid JSON (%s). The ledger is append-only, so "
-                "this is almost certainly a torn write — do NOT edit around it; "
-                "look at the tail and repair it deliberately." % (path, i + 1, e))
+                "this is almost certainly a torn write — do NOT edit around it by "
+                "hand. Use src/RimMandrake/Utils/repair_torn_ledger.py (dry run by "
+                "default; --apply --owner-said \"…\" to write) — it removes ONLY lines "
+                "that fail to parse, backs up first to Transient/, and refuses past a "
+                "sanity cap of bad lines. Then commit and push the repaired file "
+                "deliberately." % (path, i + 1, e))
     return out
 
 
