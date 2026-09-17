@@ -91,7 +91,13 @@
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>
-    <plantDensity>0.85</plantDensity>
+    <plantDensity>1.15</plantDensity>
+    <!-- Owner ruling 2026-09-17, live walk: "massive more plants... choked with
+         grass. Barely any bare ground." Density raised 0.85 -> 1.15 and local
+         fertility IGNORED for wild spawning: the Rakatan quickgrass roots to the
+         water table by design, so the ash ladder's fertility rungs must not
+         thin the fuel bed. -->
+    <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <!-- Fast: the whole point of the grass below is that the fuel bed
          comes back before the scar has cooled. Vanilla savanna is 26-27. -->
     <wildPlantRegrowDays>9</wildPlantRegrowDays>
