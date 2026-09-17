@@ -315,6 +315,10 @@ namespace JawaBench.BridgeTools
                 // Game.CurrentMap's setter validates membership and notifies MapUI +
                 // AmbientSoundManager (Game.cs, read 2026-09-17); the camera does NOT
                 // follow it, so jump explicitly or every screenshot shows the old map.
+                // MEASURED same day: if the WORLD tab is rendered, the camera jump lands
+                // and the screen still shows the planet - hide the world layer too, the
+                // same call CameraJumper.TryJump performs.
+                CameraJumper.TryHideWorld();
                 Find.CameraDriver.JumpToCurrentMapLoc(target.Center);
                 var now = Current.Game.CurrentMap;
                 return (object)new
