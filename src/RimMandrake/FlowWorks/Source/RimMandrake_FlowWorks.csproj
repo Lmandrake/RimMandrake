@@ -126,6 +126,8 @@
     <Compile Include="LiquidTypes\RM_LiquidProperties.cs" />
     <Compile Include="LiquidTypes\LiquidCorrosion.cs" />
     <Compile Include="LiquidTypes\LiquidIgnition.cs" />
+    <!-- LIQUID_REGISTRY_CORE_1: the top-level LiquidDef registry skeleton. -->
+    <Compile Include="LiquidTypes\LiquidDef.cs" />
   </ItemGroup>
 
   <ItemGroup>
