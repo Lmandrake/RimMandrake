@@ -7,26 +7,17 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:33:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:36:00Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
 
-## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
-prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
-
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
 state:    ready
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     design
 summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
@@ -521,6 +512,15 @@ target:   v1
 kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
+## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
+prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
