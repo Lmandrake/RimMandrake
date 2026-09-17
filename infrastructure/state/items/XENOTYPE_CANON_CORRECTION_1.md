@@ -239,3 +239,57 @@ this is a mechanism change, not a gene-list edit, and is therefore real work.
   Do they go to FOUNDRY now, or wait for a full ruling pass?
 - Bothan is a special case: canon deliberately has **no** appearance for them. Choosing one
   is authoring, not correcting — his call alone.
+
+---
+
+# 🔴 OWNER RULINGS, 2026-09-17
+
+## Appearance — justification BEFORE any fix
+Verbatim: *"Fix skin color now automatically, then generate an in-game grid of those naked races
+facing south as a screenshot. THEN fix the appropriate headshape and repeat the screenshotting
+for review. But before, please present me the canon justification as there have been errors in
+downloaded canon as well. Walk me through the apparent discrepancies, what they are now, what
+you think they should have, and the precise canon citation and text guiding you to see this. I
+will manually confirm with a web search. Do this first."*
+
+Order of work, and it is not negotiable: **dossier → his verification → skin colour → grid
+screenshot → head shapes → grid screenshot again.** 🔑 **Our own canon library is NOT authority
+on its own** — he says the downloaded canon contains errors and he checks by search. A claim the
+library asserts without a source is reported as unsourced, never laundered into canon.
+Dossier: `Transient/canon_appearance_dossier.md`.
+
+## Canon gaps — match the nearest documented relative, and say which
+Where canon leaves body size or lifespan blank, derive from the closest species canon DOES
+document and record which one was borrowed from and why. A sourced figure always wins: Taung's
+accelerated ageing loses to its sourced 85 years, and Ugnaught's doubled lifespan is still short
+of canon's 200+.
+
+## Sith castes — keep three, separate them by dress and role, never by invented biology
+The priest caste gets **no** invented anatomy: it looks like a mainline Sith and is marked out by
+clothing, tattoos, faction role and naming. ⛔ Do not author a physical distinction for it.
+(The naming fixes are owed regardless — all three castes are mislabelled "(Pureblood)" when
+purebloods are hybrids, and "Zugurak" should be "Zuguruk". MEASURED 2026-09-17: the label appears
+on all three and the misspelling is in both the defName and the label.)
+
+## Aptitudes — fix all six, but confirm EACH with him first
+He chose the fix-all option and then constrained it: *"but confirm each change with me first."*
+So this is six individual confirmations, not one batch approval. ⛔ Do not apply any aptitude
+change unconfirmed.
+
+## New work he asked for
+`UNSUBSTANTIATED_SPECIES_ABILITIES_1` — the mirror audit: abilities the defs GRANT that canon
+does not substantiate. This item only ever looked the other way.
+
+# Correction to this item's own figures — MEASURED 2026-09-17
+
+**Pattern 3 undercounts.** It names five placeholder descriptions; there are **nine** single-
+character `<description>` values in `RimMandrakeXenotypes.xml`: Defel, Gand, **Hutt**, **Kel
+Dor**, **Kubaz**, Lasat, **Mimbanese**, Taung, Ugnaught. The four in bold were not on the filed
+list. Counted with `grep -c '<description>.</description>'` on the def itself.
+
+**Pattern 4's aquatic case may not be a data fix at all.** The four aquatic species do lack any
+water-breathing gene — CONFIRMED absent from both the xenotype file and our own `GeneDefs/`. But
+whether such a gene EXISTS to assign, in vanilla or a DLC, is **UNMEASURED on the Mac laptop**
+(no RimSage, no def dump reachable). If none exists, this is a mechanic somebody must build, not
+a value somebody forgot — a materially different piece of work. Measure it on the Desktop before
+scheduling it.

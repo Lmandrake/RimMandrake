@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T14:57:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T15:30:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -451,3 +451,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NORTH_STAR_ATMOSPHERIC_TBD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NORTH_STAR_ATMOSPHERIC_TBD_1.md
+
+## UNSUBSTANTIATED_SPECIES_ABILITIES_1 Reverse audit: every species ability the defs GRANT that canon does not substantiate - the mirror of XENOTYPE_CANON_CORRECTION_1, which only found abilities canon gives and the defs lack (owner asked 2026-09-17)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UNSUBSTANTIATED_SPECIES_ABILITIES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UNSUBSTANTIATED_SPECIES_ABILITIES_1.md
