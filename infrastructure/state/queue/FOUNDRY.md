@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:02:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:11:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -792,6 +792,33 @@ kind:     task
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
+## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level def
+prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
+
+## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
+prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
+
+## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
+prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1412,6 +1439,26 @@ blocked:  Armoury half fully resolved offline (kaitorisenkou.ModularWeapons2 + g
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
+## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Own spec's Watch-out: 'Depends on LIQUID_REGISTRY_CORE_1 (bottles are generator-emitted from rows).' Verified LIQUID_REGISTRY_CORE_1 is still doing (this session, 30880dca5): the LiquidDef C# skeleton exists but the v1 roster rows and generate_liquid_suite.py's row->bottle-ThingDef emission are not built yet, so RM_Bottle<Liquid> defs this item's chain requires do not exist. Also needs a live quicktest to verify (fill/dirty/wash loop, revert timers) which this pass cannot run (no bridge/restart). Left doing; re-check once LIQUID_REGISTRY_CORE_1 ships rows. (on LIQUID_REGISTRY_CORE_1)
+summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
+prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
+
+## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Watch-out names two deps: RM_GENSTEP_PLACED_SETPIECES_1 (done, b47fe61a0 -- clear) and LIQUID_REGISTRY_CORE_1 (still doing this session, 30880dca5 -- LiquidDef C# skeleton only, v1 rows not authored, so the setpieces have no liquid identity to read/convert). Third named dep LIQUID_LOGISTICS_MOD_1 is itself superseded by FLOWWORKS_BUILD_PROGRAM_1 -- stale reference for whoever picks this up next. Also art-heavy and needs a live quicktest, neither in scope this pass (no bridge/restart). Left doing. (on LIQUID_REGISTRY_CORE_1)
+summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
+prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
+
 ## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1464,16 +1511,6 @@ thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
 
-## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level def
-prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
-
 ## SLIME_STREAM_ROWS_1 R/G/W mucosal slime as distinct viscous stream/pool rows + yellow snot example row; purple dropped (owner 2026-09-13)
 state:    proposed
 row:      unassigned
@@ -1483,16 +1520,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Four slime rows: RED, GREEN, WHITE as distinct liquids (distinct hazards +
 prose:    infrastructure/state/items/SLIME_STREAM_ROWS_1.md
-
-## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
-prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 
 ## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
 state:    proposed
@@ -1523,16 +1550,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
-
-## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
-prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
 
 ## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
 state:    proposed
