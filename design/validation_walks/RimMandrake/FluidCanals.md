@@ -39,9 +39,25 @@ validated-hash:
 ⚠️ **DRAFT — not a bar until the owner validates it** with
 `modcheck validate FluidCanals --owner-said "…"`. Per
 `design/RimMandrake/north_star_validation_spec.md` a DRAFT checklist cannot fail a mod
-and cannot green one. Every `### must show` line below is distilled from his own words of
-2026-09-16 and adds no claim of its own; each names the phrase it came from. Lines that
-are an agent's inference sit in `### candidate lines` instead, where they cannot bind.
+and cannot green one. Every `### must show` line below is distilled from his own words and
+adds no claim of its own; each names the phrase it came from.
+
+✅ **WALKED WITH HIM 2026-09-17** — the whole checklist read back to him line by line, which
+produced rulings 34-36 (`flowworks_mod_definition.md` §25) and **deleted three lines rather
+than adding any**. What changed, so nobody restores a line he cut:
+
+- **The two source lines are gone.** Ruling 34: *"Strained isn't a thing anymore."* A reservoir
+  is deep filled terrain, so a drawn-down reservoir is partial fill on a deeper cell — the same
+  art as a partly filled channel. One line survives in its place, reframed.
+- **The irrigation line is gone.** Ruling 36: the yield is enough, and neither soil nor plants
+  need a watered look. This reverses what this walk and the mod definition both used to call the
+  visual the whole irrigation motivation rested on.
+- **Two candidates were promoted to real bars** — the fill front and the spent channel — and the
+  other two were dropped, so `### candidate lines` is now empty by resolution rather than by
+  neglect.
+- ⚠️ **Ids were renamed** where they said "source" (now "reservoir"). Permitted only because this
+  checklist is DRAFT and has never bound; §1's never-reuse-an-id rule applies from validation
+  onward.
 
 ### the experience  (OWNER'S WORDS — verbatim, bench session 2026-09-16)
 
@@ -72,9 +88,22 @@ scarcity ruling: **every source is stock**, refilling *"slowly, from rain and se
 ground liquids oozing in… it can take quite a while to fill up from a very small natural
 source."*
 
-🔑 The through-line: **a canal is the source, moved.** What the player digs becomes part of
-the body it came from — it holds the same liquid, it costs that body volume to fill, and the
-body shows the cost.
+2026-09-17, asked why no line covered pumping when his own description said the strained graphic
+would be reused for it — **the answer retired the concept instead**:
+
+> *"Strained isn't a thing anymore. We replaced 'sources' with just placed deep liquid reservoirs
+> just like a player would normally place on the map. Filled very deep tiles. Everything follows
+> from that."*
+
+🔑 The through-line: **a canal is the reservoir, moved.** What the player digs becomes part of the
+body it came from — it holds the same liquid, it costs that body volume to fill, and the body
+shows the cost.
+
+🔑 And after ruling 34 the through-line has one mechanism instead of two: **a reservoir and a canal
+are the same thing at different depths.** Both are excavated cells carrying a depth and a fill, so
+"the body shows the cost" is not a separate graphic — it is the fill level dropping, which is the
+line the channel already has. Every deleted line above was deleted because this collapsed two art
+systems into one.
 
 ### must show
 
@@ -92,59 +121,77 @@ body shows the cost.
 - [ ] `canal_fill_spreads_along_itself` — the liquid in an incompletely filled canal is
       spread through the channel rather than pooled in the cell it entered. From *"spread the
       water throughout themselves"*.
+- [ ] `canal_fill_front_watchable` — the arriving liquid has a visible fill front, so
+      viscosity is something you watch rather than infer: water almost at once, tar creeping.
+      **Promoted from candidate to bar 2026-09-17.** ⚠️ Judging it needs two frames rather than
+      one, which no other line on this list requires — that cost was stated and accepted.
 - [ ] `canal_holds_only_the_channel` — the liquid is inside the dug channel and not standing
-      on open ground beside it. From *"flows into the canal to fill it"*; today's flood is not
-      channel-constrained, so this line is expected to FAIL until that is fixed.
-- [ ] `canal_reads_as_same_liquid_as_source` — a filled canal reads as the same substance as
+      on open ground beside it. From *"flows into the canal to fill it"*.
+      ✅ **MEASURED 2026-09-17: this is now BUILT and expected to PASS**, reversing this line's
+      previous note that it must fail. `Flood_FlowWorks.CanFloodInto` gates on
+      `RM_MapComponent_Excavation.CanLiquidEnter`, behind the `channelConfinementEnabled`
+      setting, which defaults to **true** (`RimMandrakeFlowWorksMod.cs:43`). A player who turns
+      that setting off is choosing the old behaviour and is not a failure of this line.
+- [ ] `canal_reads_as_same_liquid_as_reservoir` — a filled canal reads as the same substance as
       the body it came from. From *"extending the source"*.
 
-**The source paying for it**
-- [ ] `source_strained_state_visible` — a drawn-down source is visibly strained, distinct
-      from a full one, at a glance. From *"a reduced graphic for the parent water source to
-      show that it is strained"*.
-- [ ] `source_body_recedes_visibly` — the parent body is visibly smaller after supplying a
-      canal. From *"the parent body of water reduces itself in proportion as well"*.
+**The reservoir paying for it**
+- [ ] `reservoir_fill_visibly_drops` — after supplying a canal, the reservoir is visibly less
+      full, and a small pond visibly shrinks at its far edge. From *"the parent body of water
+      reduces itself in proportion as well"*. 🔑 Ruling 34 makes this the **same art as
+      `canal_partial_fill_distinct`** on a deeper cell, so it demands nothing new to draw —
+      which is why the two strained-source lines it replaces could be deleted outright.
 
 **Defense**
 - [ ] `canal_burning_reads_as_burning_liquid` — a lit flammable canal reads as the liquid
       surface itself alight, not as ordinary fire standing on ground. From *"the canals can be
       lit and burn for a very long time"*.
-- [ ] `canal_fire_reaches_source` — fire is visibly present at the source, not only in the
-      channel. From *"They will also light their source at that time"*.
+- [ ] `canal_fire_reaches_reservoir` — fire is visibly present at the reservoir, not only in
+      the channel. From *"They will also light their source at that time"*.
+- [ ] `canal_spent_after_burn` — a burned-out channel reads as scorched and empty, not merely
+      dry. **Promoted from candidate to bar 2026-09-17**, so the defense use he ranked first
+      leaves a visible mark afterwards. Costs a third channel state to art, on top of dry and
+      filled; he took it while declining the matching exhausted-reservoir state, which is
+      consistent with ruling 34 — there is no reservoir object to be exhausted.
 - [ ] `slime_reads_as_viscous_not_water` — slime reads as opaque and viscous, never as tinted
       water. From *"so slippery that it is nearly impossible to cross"*.
 - [ ] `slime_occupant_below_surface` — a pawn caught in a slime canal is not drawn standing on
       the surface. Kin to Pits' `pit_occupant_below_floor`; his standing rejection of a pawn
       *"staring at the camera"* is the same defect.
 
-**Irrigation**
-- [ ] `irrigated_ground_visibly_differs` — ground and plants beside a filled canal are
-      visibly different from the same ground away from it. From *"all plants nearby the canal
-      react to the presence of the water as though watered"* — the whole irrigation motivation
-      rests on this being visible.
+⛔ **Irrigation has NO visual line, by ruling 36 (2026-09-17).** There used to be one here —
+`irrigated_ground_visibly_differs`, called "the whole irrigation motivation rests on this being
+visible." He was told the consequence is a player who may irrigate for hours without perceiving
+that it works, and ruled the yield is enough. Irrigation is still second in the motivation
+ranking and still tuned; it is simply not drawn, and **a future pass must not re-add this line
+as an oversight.**
 
 ### cannot show
 
-- [ ] `never_liquid_on_open_ground` — liquid standing on open ground the player never dug. This
-      is the current engine's actual behaviour and the most likely thing a screenshot catches.
+- [ ] `never_liquid_on_open_ground` — liquid standing on open ground the player never dug.
+      ⚠️ Was described here as "the current engine's actual behaviour"; that is **no longer
+      true** as of the channel-confinement measurement above, so this absolute now guards a fixed
+      behaviour against regression rather than describing a live defect.
 - [ ] `never_gravel_path` — a channel that reads as a gravel road.
-- [ ] `never_full_source_after_heavy_draw` — a source that looks untouched after filling a long
-      canal, which would make conservation of mass invisible and the stock ruling pointless.
+- [ ] `never_full_reservoir_after_heavy_draw` — a reservoir whose fill looks untouched after
+      filling a long canal, which would make conservation of mass invisible and the stock ruling
+      pointless.
 
-### candidate lines  (AGENT-INFERRED — not his words, and they bind nothing while they sit here)
+### candidate lines
 
-Promote any of these into `### must show` before validating, or delete them.
+**Empty — all four were resolved with him on 2026-09-17, none left parked.** Recorded so the
+absence reads as a decision:
 
-- `limited_vs_limitless_legible` — the player can tell a limited source from a limitless one
-  before committing labor. He ruled every source is stock, so this may not need to be visible
-  at all.
-- `canal_fill_front_watchable` — the arriving liquid has a visible fill front, so viscosity is
-  something you watch rather than infer. Motion is hard to judge from one screenshot.
-- `canal_spent_after_burn` — a burned-out channel reads as scorched and empty.
-- `source_exhausted_distinct_from_strained` — a third source state for empty, distinct from
-  strained.
+- `canal_fill_front_watchable` — **promoted** to a bar.
+- `canal_spent_after_burn` — **promoted** to a bar.
+- `limited_vs_limitless_legible` — **cut** by ruling 35. The classification stays real in the
+  simulation and is shown nowhere; do not re-add an indicator as a usability fix.
+- `source_exhausted_distinct_from_strained` — **cut.** Incoherent after ruling 34, which removed
+  both the source object and the strained state it was to be distinguished from.
 
 ## anti-guessing notes
 - `jawa/canal_dig` and `jawa/canal_cell_report` are cited verbatim from `Transient/bench_tools_dump.json`; both note the mod's own gizmo/dev-menu equivalents "never register live" (FLUID_CANAL_DEBUG_SURFACE_1), so these two ARE the only live-reachable surface — no separate `rimworld/execute_debug_action` route exists for this mod's report/dig actions.
 - 🔴 This walk USED TO CLAIM "No [S] line: nothing here is a visual-only concern". That claim was false and is deleted. MEASURED 2026-09-16: the mod ships **zero bespoke textures** — the dug channel borrows `Terrain/Surfaces/Gravel`, the test source borrows the drop-beacon sprite — so every state assertion above can pass while the player looks at gravel. That is exactly the defect class the north star system exists to catch (`design/RimMandrake/north_star_validation_spec.md`), and this walk was one of the 7 that dismissed the visual pass in writing.
 - Step 4 used to assert `volume` = 60 on the comp. **There is no `volume` field.** MEASURED 2026-09-16 from `Defs/ThingDefs/FluidCanal_ThingDefs.xml:51-57`: the comp is configured with `fluidDef`, `dripVolume` 3, `dripIntervalTicks` 2500, `reFloodVolume` 60, `reFloodIntervalTicks` 180000. The 60 that line was reaching for is `reFloodVolume`.
+- 🔴 **That comp no longer exists, so every step written against it is owed a rebuild.** MEASURED 2026-09-17: `CompFluidReservoir` is gone from disk — the only four remaining mentions in `src/RimMandrake/FlowWorks/` are comments recording its deletion, so ruling 24 was executed cleanly and there is no build break. But ruling 24 warned that "the validator and the walk must be rebuilt against the new primitive, and until they are, this mod has no live proof at all", and **that rebuild has not happened in this walk's `[D]` steps.** The new primitive is `RM_ExcavationDepth`'s depth/fill pair on `RM_MapComponent_Excavation`, with stock in `RM_LiquidStock` and body classification in `RM_LiquidBody`.
+- ⚠️ **This walk is filed under the mod's old name.** The mod is `FlowWorks` (`mandrake.rm.flowworks`) and was renamed on disk 2026-09-16; this file is still `FluidCanals.md` and its `subject:` line should be checked against `src/RimMandrake/FlowWorks/`. Not renamed in this pass because the owner chose the checklist walk-through over the naming sweep — `STALE_RENAME_GATE_SWEEP_1`.

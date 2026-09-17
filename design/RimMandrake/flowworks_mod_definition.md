@@ -1,7 +1,8 @@
 # FlowWorks — mod definition
 
-Status: agent-drafted 2026-09-16 from the owner's bench session, then ruled heavily the same day —
-**27 numbered rulings** are recorded below and are his; unnumbered prose is still agent draft.
+Status: agent-drafted 2026-09-16 from the owner's bench session, then ruled heavily — **36 numbered
+rulings** are recorded below and are his; unnumbered prose is still agent draft. Rulings 1-33 are
+2026-09-16; **34-36 are 2026-09-17** and each one DELETES art rather than adding it.
 
 **The mod is named `FlowWorks`** (ruling 20): `RimMandrake: FlowWorks`, packageId
 `mandrake.rm.flowworks`, namespace `RimMandrake.FlowWorks`, prefix `RM_`.
@@ -76,8 +77,9 @@ matters later, take it from the session record, not from here.
    cadence later. **BUILT.**
 5. **Watch it run.** The liquid walks the channel at its own viscosity — water almost at once, tar
    creeping — with fill visible cell by cell and partial fill within a cell.
-6. **Watch the source pay.** Its art drops to strained; its inspect pane reads remaining stock, or
-   *limitless*. A small pond visibly shrinks at its far edge.
+6. **Watch the reservoir pay.** Its fill level visibly drops — the same partial-fill art the
+   channel uses, because a reservoir is deep filled terrain and nothing else (ruling 34). A small
+   pond visibly shrinks at its far edge.
 7. **The raid hits.** Water: raiders wade at the wet terrain's cost, slowed and exposed for the
    crossing. Tar or propane: she ignites the channel, the whole length burns for a long time, and
    the fire runs back along the liquid to the source. Slime: entrants effectively cannot cross, and
@@ -247,18 +249,26 @@ Zero bespoke textures exist. The states art is needed for — and §13 says whic
 3. **Full channel.**
 4. **Burning channel** — a burning liquid surface, distinct from vanilla's fire overlay on ordinary
    ground.
-5. **Spent channel** — scorched, empty, after a burn.
-6. **Source: full / strained / exhausted** — three states on the source building; strained is reused
-   for pump draw, per the owner.
-7. **Limited vs limitless indicator** — UI, not terrain: an overlay glyph plus the inspect line.
-8. **Per-liquid surfaces** — water, salt water, coloured waters, tar, propane, slime R/G/W. Slime must
+5. **Spent channel** — scorched, empty, after a burn. *(A validated bar as of 2026-09-17.)*
+6. **Per-liquid surfaces** — water, salt water, coloured waters, tar, propane, slime R/G/W. Slime must
    not read as tinted water: opaque and matte.
-9. **A crossing cue at the channel lip** — the obstacle must be legible at a glance.
-10. **Irrigated soil** — a damp, darker ring beside a filled canal. The whole irrigation motivation
-    rests on this one visual.
-11. **Dig canal designator icon.**
-12. **Source buildings** — spring and seep here or in the data pack; the drill head is ManyWaters
-    (ruling 3), the pump intake Liquid Logistics.
+7. **A crossing cue at the channel lip** — the obstacle must be legible at a glance.
+8. **Dig canal designator icon.**
+
+🔑 **Three assets were DELETED from this list on 2026-09-17, and no substitute is owed.** Recording
+what went, because each was previously called load-bearing here:
+
+- **Source: full / strained / exhausted** — gone with ruling 34. A reservoir is deep filled terrain,
+  so a drawn-down reservoir is *asset 2* (partial fill) on a deeper cell. One art system covers both
+  halves of the mod. §5's note that "no depletion-indicating graphic exists in ANY mod in this repo"
+  described a gap that no longer needs filling.
+- **Limited vs limitless indicator** — cut by ruling 35. Nothing renders the distinction.
+- **Irrigated soil** — cut by ruling 36. This list used to say "the whole irrigation motivation rests
+  on this one visual"; he ruled the yield is enough, so the ring is not drawn.
+
+⚠️ **Source buildings** (spring and seep) also leave this list — ruling 24 already deleted the source
+*as a building*, and ruling 34 finishes it. The drill head remains ManyWaters' (ruling 3) and the pump
+intake Liquid Logistics'; neither is a source.
 
 ## 8. The interface other mods use
 
@@ -480,15 +490,21 @@ rows under `MayRequire="sarg.alphabiomes"`, so the adoption pattern is written �
 been applied to tar or propane. `AB_TarPits` is also recorded as placed on the frozen world across 62
 measured tiles.
 
-**So the authoring list shrinks to four things nothing can be adopted for:**
+**So the authoring list shrinks to two things nothing can be adopted for** *(was four; rulings 34 and
+36 removed two on 2026-09-17)*:
 
 1. **A dug channel that reads as an excavated channel** — the one genuinely new terrain look. No
    "canal bed" art exists anywhere; `RM_Channel_Empty` is `Terrain/Surfaces/Gravel`.
-2. **A strained / depleted source** — no depletion-indicating graphic exists in ANY mod in this repo.
-   This is the visual expression of his whole stock ruling and it has no precedent to lean on.
-3. **A burning liquid surface** distinct from vanilla's fire overlay on ordinary ground.
-4. **Irrigated ground** — a damp ring beside a filled canal. (Partly free: `RecedeFlood()`'s
-   `SoilRich` swap already reads as darker, richer soil.)
+2. **A burning liquid surface** distinct from vanilla's fire overlay on ordinary ground.
+
+Removed, with the reason, since both were called precedent-less here:
+
+- **A strained / depleted source** — retired by ruling 34. There is no depletion graphic to invent
+  because there is no source object to draw one on: a drawn-down reservoir is partial fill on a deeper
+  cell, which is the same art as a partly filled channel. The hardest item on this list dissolved into
+  one already on it.
+- **Irrigated ground** — cut by ruling 36, the yield being sufficient. *(Worth noting it was the
+  cheapest of the four anyway: `RecedeFlood()`'s `SoilRich` swap already reads as darker soil.)*
 
 ⚠️ **Caveat on this whole survey, stated because it would otherwise look like measurement.** The
 frozen def dump's `DUMP_ROOT` is a Windows path and the live `ModsConfig.xml` is on the Windows
@@ -674,7 +690,11 @@ ships. Bound it centrally (the engine drives the blasts) rather than spawning a 
 **16. Limitless = edge contact AND a minimum body size, and it is STICKY.** *"a large body shouldn't be
 able to 'flap between' because it can't be reduced, it's limitless once and for all."* Classified once,
 never re-evaluated — which removes the hysteresis problem the size floor would otherwise create, with
-no tuning and no flicker in the strained graphic.
+no tuning and no flicker.
+
+⚠️ **Still true, but no longer visible.** Ruling 35 (2026-09-17) cut every indicator of limited versus
+limitless, so this classification is now a simulation fact the player is never shown. It still governs
+whether a body can be drawn down; it just has no art and no overlay. Do not re-add one as a "fix".
 
 **17. A dry channel slows heavily — `pathCost` 30, matching Pits.** Makes his own line about "other
 established dug barriers" true for the first time; today's flat 6 is a fifth of a dug pit. Raiders
@@ -1070,3 +1090,60 @@ shadowed inner walls and perspective-drawn ladders. This directs PIT_TRAP_VISUAL
 FlowWorks excavation art: the dry-pit/canal-bed treatment should read as walls with depth, not a
 flat tile with a lip shadow. Reference screenshot:
 `design/RimMandrake/references/quarry_pit_perspective_2026-09-16.jpg`.
+
+## 25. Rulings 34-36 (owner, 2026-09-17, seventh sitting — walking the north-star checklist)
+
+Three rulings, produced by reading the walk's drafted `must show` lines back to him. **All three
+delete art.** Each is recorded with the line it killed, because every one of those lines was
+previously argued for in this document.
+
+**34. "Strained" is retired. A source is placed deep liquid reservoir terrain.** His words:
+
+> *"Strained isn't a thing anymore. We replaced 'sources' with just placed deep liquid reservoirs
+> just like a player would normally place on the map. Filled very deep tiles. Everything follows
+> from that."*
+
+This **finishes ruling 24** and promotes what §19 had explicitly flagged as an agent proposal rather
+than his ruling — *"the consequence worth taking: a SOURCE stops being a building"* — to settled
+design. A reservoir is authored the way a player would place terrain: very deep cells, filled.
+
+🔑 **What "everything follows from that" buys, and it is the largest simplification in this
+document.** A drawn-down reservoir is *partial fill on a deeper cell* — the same art, the same
+primitive and the same code path as a partly filled channel. So:
+
+- The three-state source art (full / strained / exhausted) is deleted, along with the source
+  buildings (spring, seep).
+- §5's hardest authoring item — *"no depletion-indicating graphic exists in ANY mod in this repo…
+  it has no precedent to lean on"* — dissolves into an asset already on the list. It was never a
+  gap; it was a consequence of sources being objects.
+- One art system now covers both halves of the mod, at both scales.
+
+⚠️ **Retained, and not to be confused with the above:** the *stock* itself (ruling 4) and conservation
+of mass are untouched. What is deleted is the source-as-object and every graphic that expressed its
+condition — not the fact that liquid spent is liquid gone.
+
+**35. Limited versus limitless is never shown to the player.** Card answer: "Stock replaced it — cut
+the idea." The classification stays real in the simulation (ruling 16, sticky) and governs whether a
+body can be drawn down; it gets **no overlay glyph, no inspect indicator, no art.**
+
+⚠️ Cost he accepted, stated on the card: a map-edge body genuinely is effectively endless, so the
+player loses a real planning signal and can over-commit labour to a small pond. ⛔ Do not re-add an
+indicator later as a usability "fix" — this is the ruling, not an oversight.
+
+**36. Irrigation needs no visual. The yield is enough.** Card answer: "Neither — yield is enough."
+Neither the soil nor the plants require a distinct watered look, so the damp ring is deleted.
+
+⚠️ This **reverses a claim this document made twice** — §7 asset 10 said *"the whole irrigation
+motivation rests on this one visual"* and §5 listed irrigated ground as one of four precedent-less
+items. He was told that the consequence is a player who may irrigate for hours without perceiving
+that it works, and ruled anyway. Irrigation is second in the motivation ranking (ruling 1) and is
+still tuned, just not drawn.
+
+### What this sitting did to the checklist
+
+The walk's `## north star` is rewritten in the same pass: two source lines and the irrigation line
+deleted, the reservoir-facing lines reframed onto deep filled terrain, the limited-versus-limitless
+candidate dropped, and **two candidates promoted to real bars** — a visible fill front (so viscosity
+is watched rather than inferred) and a spent channel that reads scorched and empty after a burn.
+He deliberately did **not** promote a separate exhausted-source state, which is consistent with
+ruling 34: there is no source object to be exhausted.
