@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T00:28:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T01:33:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -411,3 +411,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TEMP_TERRAIN_DLC_GATE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TEMP_TERRAIN_DLC_GATE_1.md
+
+## READ_LINE_REGISTRY_SHARED_1 OWNER RULING 2026-09-16: read-line ids are GLOBAL with a shared registry — recurring demands (no engineering marker in player text, tier-neutral prose) are authored ONCE and cited by every walk that holds them; mod-specific lines stay local. Amends spec §10.1's silence on per-mod vs global. Owed: the registry file, a lint that a cited line matches it, de-prefixing the Aftermath draft's ids, and reconciling Oracle's existing never_engineering_marker_in_player_text as the first registry entry. ⚠️ Editing a shared line re-hashes every walk citing it — cheapest to build now, at 3 validated walks
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/READ_LINE_REGISTRY_SHARED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/READ_LINE_REGISTRY_SHARED_1.md
+
+## REACTIVE_SHIP_LIGHTING_1 NO MOD OWNS mood lighting, reactive light pulses, or lights that act alive — MEASURED 2026-09-16: zero such dir in src/, zero ledger items, zero design-doc mentions; the 631-mod snapshot (2026-09-13) carries only STATIC sources (glowstoneforked, floorlights2, ledlightsstrip, nightlights) plus one darkness mod and one power-saver (lightsout), and none of their assemblies is readable from the laptop. His ruling cutting the omen lead-time line MOVES the warning burden onto lighting, so this capability is now load-bearing for the Aftermath omens
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/REACTIVE_SHIP_LIGHTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REACTIVE_SHIP_LIGHTING_1.md
