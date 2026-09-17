@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T18:57:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:32:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
-prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
-prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
 state:    ready
@@ -503,6 +485,15 @@ target:   v1
 kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
+
+## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
+prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    doing  (BLOCKED)
@@ -1099,6 +1090,16 @@ kind:     fix
 blocked:  Not a repo bug: repo's Absorbed_KotorCore_CrystalMapGenerator.xml already lists all 11 variants ungated (confirmed via deploy_custom_mods.py plan: file is under an ACTIVE DEPLOY_HOLD entry, 'donor guy762.mm.kotorcore still active, 2026-09-06'). Live game loads the donor's own un-absorbed CrystalMapGenerator.xml (workshop 3254370945), which gates 10/11 variants behind MayRequire=guy762.KotORWeapons -- a mod confirmed absent from live ModsConfig.xml -- leaving only ungated Stygium. Redeploying now would create a duplicate KOTOR_CrystalFormation defName against the still-active donor; pulling the crippled donor version into repo would be a regression. Real fix is retiring guy762.mm.kotorcore, already tracked and blocked elsewhere. (on DROID_DONOR_PATCH_GATE_1)
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
+
+## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Re-verified 2026-09-17 offline: build 0W/0E both mods, selftest 18/18 green (grew from 11/11), decouple still reflection-only both directions, no code drift/hard-reference regression since 35e0756c. Only remaining owed work is the live quicktest (reflection bind + StaticConstructorOnStartup ordering + Sh'kaar delta) -- needs a game load; ride the next load round (COLD_LOAD_RUN_SHEET_4, still open/needs-game-up). (on COLD_LOAD_RUN_SHEET_4)
+summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
+prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    doing  (BLOCKED)
