@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:29:54Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-17T20:35:42Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -491,6 +491,16 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Read every xenotype in src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/ and list the
 prose:    infrastructure/state/items/UNSUBSTANTIATED_SPECIES_ABILITIES_1.md
+
+## PYRELANDS_SOUTH_TOPDOWN_REGEN_1 Regenerate three top-down south facings caught by the new viewpoint gate: GR_Mantistanis (v5 south, drained unattended, never eyeballed), FurnaceBeast (2026-09-13 set), AA_FireWasp (v3 - canon check graded symmetry, not camera elevation). South = eye-level front; regen via artpipe painterly family, re-run facing_set_audit before wiring
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
 
 ## DETERMINISTIC_CHECKER_WAVE_1 walklint + modcheck doctor + bar-scoped north-star hash — C1/C2/C3 of the determinism assessment (owner picked 1+2+3, 2026-09-17)
 state:    proposed
