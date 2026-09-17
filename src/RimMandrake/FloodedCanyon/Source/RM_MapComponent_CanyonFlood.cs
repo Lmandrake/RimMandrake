@@ -35,6 +35,43 @@ namespace RimMandrake.FloodedCanyon
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_CanyonFlood : MapComponent
     {
+        // CANYON_FLOOD_ERASES_CANALS_1: cells the player has excavated into a
+        // channel must never be engulfed by a canyon flood, so the flood's
+        // permanent SetTerrain can never launder them back to SoilRich at
+        // recede. Written as a def-name set, not a single constant, because
+        // FlowWorks program 2 (the shared occupancy engine's depth grid,
+        // spec §15 ruling 8) is expected to grow this list past FluidCanals'
+        // own RM_Channel_Empty; that grid REPLACES this set entirely once it
+        // exists — do not extend this list once the depth-grid client lands,
+        // fold into that instead.
+        //
+        // Why "skip", not "recoverable" (SetTempTerrain / QueueRemoveTerrain,
+        // FluidCanals' own Flood_FluidCanal.SpreadFlood mechanism): MEASURED
+        // against the decompiled Verse.TerrainGrid.SetTempTerrain (1.6) —
+        // it hard-refuses (Log.Error, no-op) any newTerr whose `temporary`
+        // field is not true. This mod's flood terrain, TerrainDefOf.
+        // WaterMovingShallow, carries no <temporary> block (confirmed via
+        // RimSage's merged def), so SetTempTerrain(cell, WaterMovingShallow)
+        // would silently fail to flood the cell at all — the recoverable
+        // path is not available without minting a new custom temporary
+        // terrain def, which is a bigger change than this defect warrants
+        // and would alter the flood's own visuals/mechanics. Routing the
+        // flood AROUND excavated cells, via the same Eligible() gate that
+        // already excludes water and edifices, needs no new def and cannot
+        // regress: a channel cell simply never enters activeFloodCells, so
+        // RecedeFlood's existing "only convert what I actually flooded"
+        // check leaves it alone by construction.
+        private static readonly HashSet<string> ExcavatedTerrainDefNames = new HashSet<string>
+        {
+            "RM_Channel_Empty",
+        };
+
+        private static bool IsExcavatedCell(Map map, IntVec3 c)
+        {
+            TerrainDef t = map.terrainGrid.TerrainAt(c);
+            return t != null && ExcavatedTerrainDefNames.Contains(t.defName);
+        }
+
         private enum Phase : byte { Dry, Warned, Flooding }
 
         private Phase phase = Phase.Dry;
@@ -231,6 +268,17 @@ namespace RimMandrake.FloodedCanyon
                 {
                     continue;
                 }
+                // Belt-and-suspenders on top of Eligible()'s upstream
+                // exclusion (see the class-level comment on
+                // ExcavatedTerrainDefNames): a channel cell can never equal
+                // floodTerrain by construction now, since it was never
+                // flooded, but the check is restated here so RecedeFlood
+                // documents the invariant it depends on rather than relying
+                // silently on a caller elsewhere never regressing.
+                if (IsExcavatedCell(map, c))
+                {
+                    continue;
+                }
                 if (map.terrainGrid.TerrainAt(c) == floodTerrain)
                 {
                     map.terrainGrid.SetTerrain(c, soilTerrain);
@@ -287,6 +335,10 @@ namespace RimMandrake.FloodedCanyon
             }
             TerrainDef t = map.terrainGrid.TerrainAt(c);
             if (t == null || t.IsWater)
+            {
+                return false;
+            }
+            if (ExcavatedTerrainDefNames.Contains(t.defName))
             {
                 return false;
             }
