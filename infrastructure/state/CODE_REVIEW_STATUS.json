@@ -4607,6 +4607,18 @@
     "hash": "a618380326af472016c640bc41bda02adce5ff424a77b333560b2d5c28417a10",
     "sha": "3287ca65"
   },
+  "src/RimMandrake/Utils/art_checks.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1f058c9c22d19072450a9adbb158d2f1bb768e80074dbea8d74297d7af3bf2ca",
+    "sha": "69e7933af"
+  },
+  "src/RimMandrake/Utils/art_legibility.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d6699804fb6f333268df6abc644fad6333844948e9645eb97e482b97c9cf8a44",
+    "sha": "69e7933af"
+  },
   "src/RimMandrake/Utils/art_zoom_sim.py": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -4864,6 +4876,12 @@
     "date": "2026-09-03",
     "hash": "53d5376d9383e0b39b80e9ce99e5ee0bd0fbe5b02f10c2b7f8c79fee61d6a662",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/build_pyrelands_art_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e9e0e8de5832aed3579ea2b0ca2ea03d1fde42f7d07808809ef0e0fb898cea86",
+    "sha": "69e7933af"
   },
   "src/RimMandrake/Utils/build_salvation_rid.py": {
     "cleanCount": 2,
@@ -5157,6 +5175,12 @@
     "date": "2026-09-03",
     "hash": "ac2c9214d59e40406b20d147f072d68a618be4affca157007656ffd0371a1231",
     "sha": "8193b35c"
+  },
+  "src/RimMandrake/Utils/gm_blackboard_shadow.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3ac32272c110f0b2e785ee9abed5419bd54e54545735647b704824244a5c8204",
+    "sha": "69e7933af"
   },
   "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
     "cleanCount": 2,
