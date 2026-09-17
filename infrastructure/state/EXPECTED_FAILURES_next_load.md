@@ -78,3 +78,13 @@ Oracle, FluidCanals, MovingDunes, Wave-1 retirement (13 mods), JawaBench GM
 pair — all confirmed clean on the 2026-09-09/10 restart per
 `MODLIST_RESTORE_AND_BATCH_DEPLOY_1`. ManyWaters stays excluded (its own
 `thingClass` blocker, unfixed).
+
+## 2026-09-17 05:xx — DROID_REPAIR_FOR_PROFIT_EVENTS_1 minimal+droidrepairjobs load
+- mod list: MINIMAL (25) + mandrake.rut.droidrepairjobs inserted after mandrake.rsw.droidworks = 26 active
+- EXPECT: "mandrake.rut.droidrepairjobs" present in Player.log's active-mod dump
+- EXPECT: 0 "Could not resolve cross-reference" lines naming RUT_DroidJob/DroidRepairJob
+- EXPECT: 0 "^Config error in" lines naming RUT_DroidRepairJob/RUT_DroidJobFault
+- LIVE TEST (item's own run-sheet): jawa/fire_quest RUT_DroidRepairJob -> description non-blank, fee
+  numbers SCALED (not the 320/512/128 XML fallbacks) -> droid carries RUT_DroidJobFault -> fit an
+  Excellent RSW_DW_Part_Leg via RSW_DW_InstallLegActuator near RSW_DW_RepairBench -> at pickup expect
+  WorkFine branch, silver drop pod, +8 goodwill
