@@ -70,11 +70,14 @@ the owner promotes a line to a bar.
 and every line will fail on the day the code first runs. That is the intended state, and the
 WreckedMachines precedent covers it.
 
-⚠️ **One axis this system does not have.** The spec provides a **show** axis (visual) and a
-**read** axis (text). AtmosphericBase's entire sound channel — beds, stings, acoustic
-territory — is judgeable by neither: nothing is shown and nothing is read. A `must hear` axis
-is owed, or the sound half ships permanently unbindable. Filed as
-`NORTH_STAR_HEAR_AXIS_1`.
+✅ **The missing third axis is RULED — owner, 2026-09-17.** The spec provided a **show** axis
+(visual) and a **read** axis (text), and this mod's whole sound channel — beds, stings,
+acoustic territory — was judgeable by neither. He chose to specify a **`must hear`** axis, with
+one condition, verbatim: *"but don't block on it, it's just part of the playtest."*
+
+🔑 So the sound channel gets real lines, but **the hear axis is never a gate** — it cannot hold
+this mod or any other, and its lines are judged when he plays rather than before it ships. Sound
+work proceeds without waiting for the axis to exist. `NORTH_STAR_HEAR_AXIS_1`.
 
 Provenance tag per line: 🗣 his verbatim words or a ruling of his · 📐 measured from a file on
 disk this pass · 🤔 my inference, weakest, cut freely.
@@ -99,11 +102,29 @@ And the sentence that decides what darkness means here:
 > a writhing that lets you know that it's not a power outage. It's there for a reason. Figure
 > it out."*
 
+2026-09-17, second sitting — **what the gods themselves are, and what a dark ship means.** Asked
+how a blackout could ever be referred to, given the old rule required a lit room:
+
+> *"The blackout IS the thing referred to. The gods REALLY don't like blackouts. Fix that right
+> now! It becomes absolutely witnessed and referencable once resolved. And the gods will also be
+> holograms that work by themselves, without power."*
+
+And on the canvas, told that the ship holds 11 light-capable things among 2002:
+
+> *"We will add some lights for sure, and they will be irregular. The player can add more lights.
+> Removing lights below a threshold will anger the gods."*
+
 🔑 The through-line: **the ship is not alive, and it must still feel inhabited.** Canon forbids
 a ship with moods of its own (`canon.yml` `narrator`, 2026-08-30 — no integrating self, no ego,
 no self-description). So every effect this mod produces has to read as *somebody using the
 wiring*, never as the building emoting. A pretty ambience that reads as a mood of the ship is a
 failure of this mod even if the player likes it.
+
+🔑 The second sitting sharpens that into something checkable: **the tenants have bodies.** A god
+is a hologram that runs on nothing, so it is present in a dark ship, it is never something the
+framework drives, and the wiring is its voice rather than its self. That is why stripping the
+wiring is an injury (they get angry) and why a blackout is the loudest thing that can happen —
+the gods are still standing there when the lights go.
 
 ### must show
 
@@ -124,6 +145,20 @@ failure of this mod even if the player likes it.
       not a power outage".
 - [ ] `dark_leaves_reference_light` — 🗣 light the framework does not control stays lit through
       a blackout scene, proving the black was chosen.
+- [ ] `god_visible_through_a_blackout` — 🗣 when the power is gone, the god is still there to
+      look at: its hologram is lit and unaffected. Ruled 2026-09-17, "holograms that work by
+      themselves, without power". This is the line that makes a dark room a witnessed room.
+- [ ] `blackout_angers_visibly` — 🗣 once power returns, the lights show that the gods took the
+      outage badly — the restored scheme is not simply the one that was running before. Ruled:
+      "The gods REALLY don't like blackouts."
+
+**The canvas the ship actually has**
+- [ ] `pattern_reads_on_an_irregular_scatter` — 🗣 the swirl and the moving boundary read as
+      intentional across fixtures that are unevenly placed. Ruled 2026-09-17: the authored lights
+      "will be irregular", so anything that only looks right on a lattice fails here.
+- [ ] `stripping_fixtures_angers_visibly` — 🗣 tearing out the ship's lights past the threshold
+      visibly changes how the remaining ones behave. Ruled: "Removing lights below a threshold
+      will anger the gods."
 
 **The Narrator**
 - [ ] `narrator_arrival_unmistakable` — 🗣 his arrival is recognisable on FIRST encounter with no
@@ -144,7 +179,9 @@ failure of this mod even if the player likes it.
       never as the building having a feeling. Canon `narrator`: no integrating self, no ego, no
       moods-of-the-ship.
 - [ ] `drives_only_what_was_handed_over` — 🗣 a glowing animal, worn gear, a plant and a hologram
-      keep their own light in every scene.
+      keep their own light in every scene. 🔴 The hologram case is now the strictest of the four:
+      a hologram is a god's body (2026-09-17), so a scheme dimming one is the framework driving
+      the speaker instead of the channel.
 - [ ] `default_scheme_is_livable` — 🗣🤔 the shipped default is restrained enough to live under
       and does not read as a light show in an ordinary colony. He ruled gentle-by-default; the
       "livable" bar is mine.
@@ -163,6 +200,9 @@ failure of this mod even if the player likes it.
 - [ ] `never_an_uninterruptible_alarm` — 🗣 an alarm the Narrator cannot cut through, or an alarm
       left broken after he has finished.
 - [ ] `never_a_claim_surviving_a_landing` — 🗣 a mood visibly bleeding through the landing reset.
+- [ ] `never_dims_a_god` — 🗣 a god's hologram darkened, tinted or extinguished by anything this
+      mod does, including a full blackout scheme. Ruled 2026-09-17: the holograms "work by
+      themselves, without power", so the framework touching one is it driving the speaker.
 
 ### candidate lines  (NOT his — agent-drafted, bind nothing until promoted)
 

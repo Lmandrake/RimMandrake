@@ -31,7 +31,7 @@ are load-bearing enough that laws fall if they come back no.
 
 ## §1 The laws
 
-Fifteen invariants. Everything else in this document derives from them, and a change to one
+Seventeen invariants. Everything else in this document derives from them, and a change to one
 of them is a redesign rather than a tweak.
 
 ### The nature of the thing
@@ -77,7 +77,11 @@ the framework does *not* control stay lit and prove the black was chosen. *(rule
 absolutely black, but there will almost be a little motion... It's there for a reason. Figure
 it out.")*
 
-**L9 — No power, no channels.** A blackout is silence, not a scheme. *(ruled)*
+**L9 — No power, no channels — but the gods do not go away.** A power blackout is silence
+from the light and sound emitters, not a scheme. The gods themselves remain visible through
+it, because their holograms need no power (L16). *(ruled; narrowed by the owner's hologram
+ruling 2026-09-17 — the original law said only "a blackout is silence", which read as the
+gods being absent from their own ship whenever the lights failed)*
 
 ### Who speaks, and when
 
@@ -96,6 +100,23 @@ underneath it — that restoration *is* the Narrator's slow dim back. *(ruled)*
 
 **L15 — Look and cost may disagree, deliberately.** A cruel god may bathe the ship in
 excellent working light. *(ruled)*
+
+**L16 — A god's body is a hologram, and it runs on nothing.** The gods manifest as holograms
+that work by themselves, without power. A hologram is therefore **never an emitter** — it is
+not discovered, not claimed, not driven, and not extinguished by a blackout. This is why §2.1
+excludes holograms from framework control, and it is what leaves something to see in a dark
+ship. *(ruled 2026-09-17: "the gods will also be holograms that work by themselves, without
+power")*
+
+**L17 — Degrading the channel is an offence, and the gods feel it.** A power blackout angers
+them, and so does stripping the ship of fixtures: removing lights below a threshold angers the
+gods. The channel is their voice, so damage to it is not a neutral engineering event.
+*(ruled 2026-09-17: "The gods REALLY don't like blackouts" and "Removing lights below a
+threshold will anger the gods")*
+
+⚠️ L17 is the **only** inbound effect in the design — everything else in this document flows
+outward from the gods to the channels. It does not weaken L2: the channels remain an output
+device, and this is the player acting on the fixtures, not a god acting through them.
 
 ---
 
@@ -119,6 +140,11 @@ That's only if the scenario allows it, otherwise the scenario decides for itself
 lighting — "the obvious ones". **Never**: glowing animals, worn equipment, plants, holograms.
 That exclusion is load-bearing twice over — it keeps the framework out of things whose glow
 means something else, and it is what leaves reference light alive during an L8 blackout.
+
+🔑 **The hologram exclusion is now the strongest of the four**, because a hologram is what a
+god *is* (L16), not a lamp a god might borrow. Its glow means something else in the most
+literal way available: it is the speaker, not the channel. A framework that dimmed a god's
+own body during a scheme would be driving the thing it exists to express.
 
 Each emitter carries a position, its current quantised value, and a role: **mass** or
 **flasher** (assigned per-scheme, L7).
@@ -197,9 +223,9 @@ moving *front*, not the size of the grid.
 
 ### 2.7 Witness ledger
 
-For each gesture and each mood transition, whether **an awake colonist was in a lit affected
-room**, recorded against the event. A consumer must consult it before referring to the event
-in prose (L14).
+For each gesture and each mood transition, whether **an awake colonist was present in an
+affected group**, recorded against the event. A consumer must consult it before referring to
+the event in prose (L14).
 
 The definition is deliberately narrow — awake, on the map, in a room containing an affected
 emitter — and everything else counts as unwitnessed, because that is the honest direction to
@@ -207,6 +233,19 @@ be wrong in. This exists because the owner ruled that the player learns the voca
 **discovery, with the gods eventually telling them**: a letter saying *"you saw my current run
 green and did nothing"* is a lie if nobody was there, and one such lie costs more than the
 line was worth.
+
+🔑 **Presence, not illumination — and a blackout is witnessed absolutely.** The test is being
+there, not being able to see by the framework's own light. Ruled 2026-09-17, resolving §9a C3:
+
+- **A darkness is witnessed by anyone standing in it.** Light level does not enter the test.
+  The god's own hologram is lit and needs no power (L16), so a colonist in a pitch-dark
+  affected room genuinely has something in front of them — there is no case where the room is
+  affected, a pawn is awake in it, and nothing is perceivable.
+- 🔴 **A blackout is the referent, not merely a witnessed event.** It is the one thing the
+  gods most want to talk about (L17), and it becomes referable **once resolved** — the gods
+  speak about the dark after the power is back, not during it.
+- The original rule required a *lit* affected room, which made the most dramatic thing the
+  framework can do the one thing no god could ever mention. That was backwards and is deleted.
 
 ### 2.8 Two hook doors
 
@@ -435,16 +474,43 @@ would **ship its own alarm fixtures** (a strobe, a wall beacon, a floor strip) a
 The take-over-button ruling replaced that outright — there is no new hardware, and the flasher
 role moved to the scheme (L7).
 
+### Second sitting — owner, 2026-09-17
+
+Three cards, answering §9a's open corrections. **These added two laws and narrowed a third**, so
+they are a redesign of the darkness rules rather than a tweak.
+
+**On the canvas** (C1 — the ship had 11 light-capable things in 2002):
+
+> *"We will add some lights for sure, and they will be irregular. The player can add more lights.
+> Removing lights below a threshold will anger the gods."*
+
+**On the blackout and the witness ledger** (C3 — a blackout was unreferable):
+
+> *"The blackout IS the thing referred to. The gods REALLY don't like blackouts. Fix that right
+> now! It becomes absolutely witnessed and referencable once resolved. And the gods will also be
+> holograms that work by themselves, without power."*
+
+**On the sound channel's judgeability**, choosing a third `must hear` axis for the north-star
+system over binding only sound's fixed parts, with one condition attached:
+
+> *"but don't block on it, it's just part of the playtest"*
+
+🔑 **What the second sitting changed, in one line each**: L16 (a god's body is a hologram running
+on nothing) and L17 (degrading the channel angers the gods) are new; L9 no longer implies the gods
+vanish in a blackout; §2.7 tests presence rather than illumination; the canvas is authored in and
+irregular by requirement; and the sound axis is real but never a gate.
+
 ---
 
 ## §9a Corrections — what the repo says back to this design
 
 A hook census was run over the repo after the sitting
-(`design/RimMandrake/atmospheric_base_hook_ecosystem.md`). It contradicts this document in five
-places. Two are measured and settled; three need the owner. **None of them is fixed above — read
-this section as amending §2 and §8.**
+(`design/RimMandrake/atmospheric_base_hook_ecosystem.md`). It contradicted this document in five
+places. **Four are now settled — C1, C3 and C4 by the owner's rulings of 2026-09-17, C2 by
+measurement — and the laws above have been changed accordingly.** Only C5 is still owed a
+Desktop check.
 
-### 🔴 C1 — MEASURED: the tapestry has no canvas
+### ✅ C1 — RULED: the canvas is authored in, irregularly, and defended by the gods
 
 The newest exported ship layout, `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml`,
 holds **2002 things, of which 11 are light-capable: 6 `Brazier` and 5 `AncientLamp`.** Verified in
@@ -455,10 +521,27 @@ grid. And the Utinni ships as a **frozen savegame** — the player never builds 
 in-game construction fixes it. Braziers are fire, so it is not even certain that 5 of the 11 can
 take a colour at all.
 
-**This is the first thing to put in front of him.** Either the ship layout is re-lit deliberately
-— dozens of fixtures authored into it as part of this programme — or AtmosphericBase's real canvas
-is a player-built colony and the Utinni gets a much smaller version of the dream than the one he
-described. Tracked as `ATMOSPHERIC_BASE_CANVAS_1`.
+**Ruled 2026-09-17, verbatim:** *"We will add some lights for sure, and they will be irregular.
+The player can add more lights. Removing lights below a threshold will anger the gods."*
+
+Three consequences, all binding:
+
+1. **Fixtures are authored into the shipped layout** — the ship arrives with a canvas rather
+   than acquiring one. So the canvas is real from the first hour and does not depend on the
+   player choosing to build anything.
+2. 🔑 **The placement is IRREGULAR, and that is a design requirement, not a licence to be
+   sloppy.** A regular grid is the thing being ruled out. This has teeth for §2.6: the
+   compositor's territory boundaries and the "front" that moves between two claimants must read
+   as moving across an uneven scatter of fixtures, not as a wave crossing a lattice. Anything
+   that assumes even spacing is wrong.
+3. **The player may add more, and subtraction is punished, not prevented.** Removing fixtures
+   below a threshold angers the gods (L17) — so the canvas has a floor defended by consequence
+   rather than by a build restriction, which is what keeps L3 true (aboard the Utinni the player
+   never *chooses* the scheme) while still letting them own the ship.
+
+⚠️ **Two numbers are still unruled and are owed before Phase 1**: how many fixtures get authored
+in, and where the anger threshold sits. Both belong to the build programme, not here.
+Tracked as `ATMOSPHERIC_BASE_CANVAS_1`.
 
 ### 🔴 C2 — MEASURED: §2.5's rank supplier does not exist
 
@@ -477,24 +560,48 @@ state. Tracked as `NINEFOLD_LOUDNESS_FRONT_1`. Until it exists, AtmosphericBase 
 anything, and a compositor built against a rank it computes itself would be a second answer to a
 settled question.
 
-### ⚠️ C3 — L14 and L8 contradict each other
+### ✅ C3 — RULED and FIXED: the blackout is the referent, and the gods light themselves
 
-A witness requires an awake colonist **in a lit affected room** (§2.7). A chosen blackout (L8) has
-no lit room. So the most dramatic thing the framework can do is the one thing a god may never
-refer to afterwards — which is precisely backwards.
+A witness used to require an awake colonist **in a lit affected room**, so a blackout was the one
+thing a god could never afterwards refer to — backwards, since it is the most dramatic thing the
+framework can do.
 
-Needs his ruling. The narrow fix is to define witness by *presence in an affected group* rather
-than by illumination, which makes a pawn standing in a deliberate darkness a witness to it. That
-is a small change to §2.7 and I have not made it.
+**Ruled 2026-09-17, verbatim:** *"The blackout IS the thing referred to. The gods REALLY don't
+like blackouts. Fix that right now! It becomes absolutely witnessed and referencable once
+resolved. And the gods will also be holograms that work by themselves, without power."*
 
-### ⚠️ C4 — canon says the silent EIGHT express; L6 caps the tremor at three
+He gave more than the narrow fix. **Fixed in the laws above, same day:**
+
+- §2.7 now tests **presence in an affected group**, not illumination.
+- A blackout is witnessed **absolutely**, and is referable **once resolved** — the gods speak
+  about the dark after the power returns.
+- **L16 is new**: a god's body is a hologram that runs on nothing. This is what makes the
+  presence test honest rather than a fudge — there is always something lit to perceive, because
+  the god is lit and the blackout cannot touch it.
+- **L17 is new**: blackouts anger the gods, which is the same law that punishes stripping
+  fixtures (C1). The two rulings turned out to be one mechanic.
+- **L9 was narrowed** — it used to say a blackout is simply silence, which read as the gods
+  being absent from their own ship whenever the power failed.
+
+🔑 The hologram ruling also *strengthened* an exclusion that was already in §2.1: holograms were
+already barred from framework control for being things "whose glow means something else." They
+are the gods. The framework must never drive a god's own body.
+
+### ✅ C4 — SETTLED: canon is the fiction, L6 is the rendering
 
 `canon.yml` `in_front` says the silent eight express through flickers in their palettes. L6 caps
-the tremor at three, on his ruling that more than that reads as mud. Both cannot be literally true.
+the tremor at three, on his ruling that more than that reads as mud.
 
-Likely resolution, unruled: canon describes the *fiction* (all eight are present) and L6 the
-*rendering* (three are legible at once). Worth stating explicitly, because otherwise someone will
-later "fix" one to match the other.
+**Both stand, because they describe different things.** Canon states the fiction: all eight silent
+gods are present and pressing on the channel at all times. L6 states the rendering: at most three
+are legible at once, and the framework picks which. Neither is wrong and neither needs amending.
+
+⛔ **Do not "fix" either one to match the other.** Raising L6's cap to eight makes mud, which he
+ruled out; cutting canon to three makes the pantheon smaller than it is. This paragraph exists
+because the mismatch looks like a bug to anyone reading only one of the two files.
+
+*(Put to him 2026-09-17 with the fiction/rendering reading stated; he did not contest it. If he
+ever wants it the other way, this is the line to replace.)*
 
 ### ⚠️ C5 — the sound half collides with four systems, not one, and beds may not be able to fade
 
@@ -507,6 +614,12 @@ only start and stop, which changes what §3's mood-bending can be.
 ⚠️ Not verified in this window. Added to §8 as an eighth Phase 0 question. Also from the census,
 and relevant to L8: `juanlopez2008.lightsout` writes the same glow field the compositor would,
 which could make a chosen darkness unprovable.
+
+🔑 **Narrowed 2026-09-17 by L16, but not closed.** The *player-facing* half of "unprovable" is
+answered: a chosen dark no longer needs surviving lit fixtures to prove it was chosen, because
+the god's hologram is lit through any darkness and needs no power. What remains is purely
+technical — two mods writing one glow field is still a collision, and which write wins is still
+UNMEASURED from the Mac. That belongs in Phase 0 on the Desktop.
 
 ## §10 Still open
 
