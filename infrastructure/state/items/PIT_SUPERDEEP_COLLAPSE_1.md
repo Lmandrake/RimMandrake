@@ -405,11 +405,104 @@ NOT instant death.** Verbatim:
 - What replaces the anti-mechanoid case now the oubliette is cut, if anything. He
   did not ask for a replacement.
 
+## his rulings, third card round — the bars  (2026-09-17, same sitting)
+
+§9's last two questions plus the six new bar claims. **All ten of §9 are now ruled.**
+
+**[B-item] `capture down` / `convert down` require the warden ADJACENT to the lip.**
+The most physical option, reusing vanilla's "warden must reach the prisoner" job shape.
+⚠️ Carry the cost the spec priced: ruling 23 lets a superdeep occupant trade fire with
+whoever is at their own lip, so an adjacent warden stands in exactly the cell an armed
+occupant can shoot. A known and accepted risk now, not an oversight to design away.
+
+**[I] Merge rule: his approved wording wins; only genuinely new claims come to him.**
+⚠️ BENCH correction, made to him in the sitting: three pit bars were first described as
+*duplicates* of approved canal bars, and that was too strong. In each case the pit
+version is **broader or stronger**, so a merge means strengthening or generalising a bar
+he already validated:
+- `fill_tier_legible` (4 states) strengthens approved `canal_partial_fill_distinct` (2).
+- `fill_fluid_distinct` (all fluids) generalises approved
+  `slime_reads_as_viscous_not_water` (slime vs water).
+- `pit_reads_as_hole` and `canal_reads_as_dug_channel` are **not** the same read — a
+  trench you cross versus a hole you fall into. Keep both.
+- `pit_occupant_below_floor` generalises approved `slime_occupant_below_surface`, whose
+  own text already says *"Kin to Pits' `pit_occupant_below_floor`"*.
+
+### 🔴 The depth ruling — bigger than the bar that prompted it
+
+Asked whether `pit_depth_ladder_legible` should be narrowed, because ruling 19's single
+inner-shadow treatment probably cannot separate five levels, he **rejected the narrowing
+and raised the requirement instead**. Verbatim:
+
+> *"All depths must be visually legible and differentiable graphically. The pawn should
+> visibly rise up and lower down as they move over the depths. They should be low enough
+> that it is visually clear how they could not possibly climb out (the walls are higher
+> than their head by 20%)"*
+
+Three separate requirements, all new:
+
+1. 🔑 **ALL depths legible and differentiable graphically** — not merely "superdeep versus
+   the rest". Ruling 19's one-treatment-for-all-dry-depths is therefore **not
+   sufficient**, and this ruling effectively reopens that art rule. ⛔ Do not record this
+   bar as satisfied by ruling 19.
+2. 🔑 **The pawn visibly RISES AND LOWERS as they move over depths.** A rendering
+   feature, not art: a pawn's vertical draw offset varies with the depth of the cell they
+   occupy. It makes depth legible *and* makes an occupant read as down in the hole, in
+   one stroke.
+   - ⚠️ **This supersedes an inference BENCH recorded earlier today** from the Quarry
+     screenshot — that `pit_occupant_below_floor` "may need no custom pawn draw at all".
+     He has now ruled that there IS one. That note was marked UNCERTAIN and is retracted,
+     not left standing.
+3. 🔑 **The only number he has given here, and it is testable:** in a superdeep cell the
+   walls stand **higher than the occupant's head by 20%**, so it is visually obvious they
+   could not climb out. Measurable from a screenshot, which makes it an unusually strong
+   `must show` line.
+
+🔑 Together these answer what the spec called the single largest new visual risk. The
+collapse removes the container that hid the occupant, so a spawned pawn on terrain would
+otherwise look exactly like the original defect; a depth-varying draw offset plus walls
+20% over head height is the fix, and it came from him.
+
+### The six new bars — all six approved, two with wording he added
+
+- ✅ **`pit_trapped_reads_as_trapped`** — approved, and he chose to **word it against the
+  walls explicitly** rather than stating the experience alone, so the bar names the
+  mechanism: the occupant reads as trapped *because* the walls rise around them.
+  ⚠️ Deliberately against the house style of stating experience not solution; he chose
+  that knowingly, to tell whoever draws the art what must be true.
+- ✅ **`pit_depth_ladder_legible`** — approved and strengthened per the ruling above.
+- ✅ **`fill_tier_legible`** — approved. Ruling 5's three tiers plus dry is exactly four,
+  so it matches the ruled mechanism.
+- ✅ **`fill_fluid_distinct`** — approved, and it now has real work to do because fluid is
+  typed per liquid body ([F]), so two adjacent pits can hold different fluids. ⚠️ Implies
+  distinct art per fluid, which is unbudgeted.
+- ✅ **`spikes_read_distinct`** — approved, with a constraint on the art that is really a
+  constraint on the CAMERA. Verbatim:
+
+  > *"The spikes will barely be able to be tall enough to be visible most likely, but
+  > there should still be something showing their presence. make sure the viewing angle
+  > of the pit is such that SOME amount of spike is possible"*
+
+  🔑 The pit's viewing angle is **not free** — it must permit some amount of spike to
+  render. This binds ruling 33's Quarry-style perspective: it must not be so near-top-down
+  that spikes vanish. "Something showing their presence" is the floor; full spikes are not
+  required.
+- ✅ **`never_reads_as_building`** (cannot) — approved. The general form of his approved
+  `pit_not_vanilla_trap`, guarding exactly the failure this collapse exists to end.
+
 ## spec
 
-Not written yet. This is design work and goes to a backgrounded Fable subagent
-per `infrastructure/agents/Agent_Policy.md`, not authored in the BENCH window.
-The clarifying answers above are its input.
+`design/RimMandrake/pit_superdeep_collapse_spec.md` — written 2026-09-17, 1127 lines,
+10 sections. ⚠️ It was authored BEFORE the three card rounds above, so where it and this
+item disagree, **this item wins**: it carries his rulings and the spec carries the
+questions that produced them. The spec's §9 is fully answered here and should be read
+alongside, not instead of, these sections.
+
+Owed to the spec as a revision pass: the per-body fluid decision ([F]), the LAW 2
+exception ([D]), the depth × tier cost matrix ([E]), both hediffs surviving ([H]), the
+body-size field ([J]), the door family (now `FLOWWORKS_DOOR_FAMILY_1`), the Exposed
+Prisoner piggyback ([A-item]), BodySize-scaled spike damage ([G]), adjacent-lip capture
+([B-item]), and the depth/draw-offset/20%-walls ruling above.
 
 ## verify
 
