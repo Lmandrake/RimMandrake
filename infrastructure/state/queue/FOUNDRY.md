@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:32:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:33:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
-prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    ready
@@ -512,6 +503,15 @@ target:   v1
 kind:     task
 summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
 prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
+prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    doing  (BLOCKED)
@@ -1120,6 +1120,16 @@ kind:     task
 blocked:  candidate sheet delivered (commit 620bc909); awaiting owner's style pick per mockups-first doctrine, do not build until then
 summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
 prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Engine is already built (~1,900 lines, dotnet build 0W/0E 2026-09-09, selftest 13/13) and not deployable-alone offline: the one remaining gate (design §2/§7.1 shader-tint check -- does MatBases.Sand respect material color) needs a deploy + ModsConfig write + restart, which the item's own run sheet already says should ride the next load round rather than burn a slot solo. Re-blocking so this doesn't keep surfacing as a 'ready' offline pick; run sheet is in the item file (5 steps, MaterialColor -> VertexColor -> texture fallback). (on COLD_LOAD_RUN_SHEET_4)
+summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
+prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    doing  (BLOCKED)
