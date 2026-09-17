@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:54:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-17T22:00:46Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -252,7 +252,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
 state:    ready
@@ -260,7 +260,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  PYRELANDSFAUNAWIRING1 — wire ruled fauna roster into RMFEPyrelands
 prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
@@ -270,7 +270,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -280,7 +280,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
@@ -519,7 +519,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## criteria
-summary:  Not written yet. This is design work and goes to a backgrounded Fable subagent
+summary:  design/RimMandrake/pitsuperdeepcollapsespec.md — written 2026-09-17, 1127 lines,
 prose:    infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md
 
 ## FLOWWORKS_DOOR_FAMILY_1 Sluice and SecurityGrateDoor as STUFFABLE doors — cheap sluice passes liquid and holds small creatures, grate door passes liquid and holds a real prisoner, stuff decides armour and fire survival (owner commissioned 2026-09-17)

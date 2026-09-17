@@ -8867,3 +8867,5 @@
 {"seat":"FOUNDRY","event":"start","id":"ORACLE_FALLBACK_UNVALIDATED_1","ts":"2026-09-17T21:58:09Z"}
 {"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"Wave: reviewed JawaBenchMapInfoTools.cs (map_info/set_current_map), rimbench/clear_chunks.py, SWBestiary Livestock+SeaBeasts mockup-gen scripts, Graffiti+RimProperty validation.py. All 6 marked CLEAN, zero real bugs found — codebase outside Pyrelands/avoid-list is now almost fully reviewed (only Pyrelands .cs and one modcheck-family validation.py class remain dirty in the non-avoided tree).","ts":"2026-09-17T21:59:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"ORACLE_FALLBACK_UNVALIDATED_1","sha":"81325f011dfc45b9d2a940cd0d2a6651a7b7e67a","ts":"2026-09-17T22:00:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"XENOTYPE_NONCOSMETIC_FIXES_1","ts":"2026-09-17T22:00:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"XENOTYPE_NONCOSMETIC_FIXES_1","ts":"2026-09-17T22:00:46Z"}
