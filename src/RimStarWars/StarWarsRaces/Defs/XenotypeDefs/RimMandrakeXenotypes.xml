@@ -159,7 +159,11 @@
       <li>Beard_NoBeardOnly</li>
       <li>RSW_BithHead</li>
       <li>Body_Thin</li>
-      <li>Skin_Melanin3</li>
+      <li>Skin_SheerWhite</li>
+      <li>Skin_Melanin1</li>
+      <li>Outland_Skin_PaleGreen</li>
+      <li>Outland_Skin_PaleOrange</li>
+      <li>Outland_Skin_PalePink</li>
       <li>ElongatedFingers</li>
       <li>AptitudePoor_Mining</li>
       <li>AptitudePoor_Animals</li>
@@ -274,6 +278,9 @@
       <li>LowSleep</li>
       <li>Delicate</li>
       <li>Outland_AcceleratedPregnancy</li>
+      <li>RSW_Skin_MidGray</li>
+      <li>Outland_Skin_PaleBrown</li>
+      <li>Outland_Skin_Sandstone</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
       <li>Body_Standard</li>
@@ -311,8 +318,6 @@
       <li>Outland_DeceleratedPregnancy</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
-      <li>Outland_Skin_DeepOrange</li>
-      <li>Skin_Orange</li>
       <li>Skin_Blue</li>
       <li>Outland_Skin_DeepAzure</li>
       <li>Outland_Eye_Orange</li>
@@ -915,7 +920,7 @@
       <li>Body_Hulk</li>
       <li>Skin_PaleRed</li>
       <li>Outland_Skin_DeepSage</li>
-      <li>Outland_Skin_DeepAzure</li>
+      <li>Skin_Orange</li>
       <li>Outland_Skin_DeepBrown</li>
       <li>Outland_Skin_Brown</li>
       <li>ElongatedFingers</li>
@@ -1389,7 +1394,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeNelvaanian</defName>
     <label>Nelvaanian</label>
-    <description>Nelvaanians are a blue furred race of lupine humanoids distinguishable by their long snouts, sharp, canine-like teeth, and pointed ears. Their fingers possess sharpened claws as well as their feet. Befitting their lupine similarity, they also possess a keen sense of smell and acute hearing that is purported to be able to detect a creature's movement from a mile away</description>
+    <description>Nelvaanians are a blue furred race of lupine humanoids distinguishable by their long snouts, sharp, canine-like teeth, and pointed ears. Their fingers possess sharpened claws as well as their feet. Befitting their lupine similarity, they also possess a keen sense of smell and acute hearing</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon10</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -2088,7 +2093,8 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
       <li>Head_Gaunt</li>
-      <li>Skin_LightGray</li>
+      <li>Outland_Skin_PaleBlue</li>
+      <li>Outland_Skin_PaleAzure</li>
       <li>Outland_Eye_White</li>
       <li>DarkVision</li>
       <li>AptitudeRemarkable_Social</li>
@@ -2258,8 +2264,6 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
       <li>Beard_NoBeardOnly</li>
       <li>RSW_CatharHead</li>
       <li>Body_Thin</li>
-      <li>Skin_DeepRed</li>
-      <li>Outland_Skin_Red</li>
       <li>Outland_Skin_Brown</li>
       <li>Outland_Skin_PaleBrown</li>
       <li>RSW_Skin_MidGray</li>
