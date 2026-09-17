@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T22:00:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T22:48:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -927,6 +927,15 @@ kind:     task
 summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap
 prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
 
+## TWILEK_TROPE_GENES_MOVE_1 Move the Twi'lek submissive-aggression, high-libido and beautiful genes off the xenotype and onto individual pawns as a background or trait, so a stereotype is a fact about a person rather than about a race - a mechanism change, not a gene-list edit
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
+
 ## XENOTYPE_NONCOSMETIC_FIXES_1 Fix the non-cosmetic xenotype canon defects in gen_races_mod.py: water-breathing for four aquatic species, five wrong-species nameMakers, two missing nameMakers, five one-character descriptions, Zuguruk spelling and Pureblood mislabel - COSMETIC GENES ARE OFF LIMITS (skin, heads, masks, eyes, hair, montrals) and labels only, never defNames, without a further ruling
 state:    doing
 row:      unassigned
@@ -962,6 +971,15 @@ target:   v1
 kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
+
+## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1749,16 +1767,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BARBSLINGER_REDESIGN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BARBSLINGER_REDESIGN_1.md
 
-## TWILEK_TROPE_GENES_MOVE_1 Move the Twi'lek submissive-aggression, high-libido and beautiful genes off the xenotype and onto individual pawns as a background or trait, so a stereotype is a fact about a person rather than about a race - a mechanism change, not a gene-list edit
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
-
 ## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
 state:    proposed
 row:      unassigned
@@ -1918,16 +1926,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NINEFOLD_LOUDNESS_FRONT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
-
-## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
 
 ## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
 state:    proposed
