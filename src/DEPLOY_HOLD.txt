@@ -171,6 +171,20 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 #   reach for come from the live kotorcore meanwhile.
 Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
 
+# --- Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml: HELD until rpgwanderer.opturret retires --
+# 2026-09-17 (FOUNDRY, dirty-code-review wave), same shape as the KotorCore hold
+# above. The file's own header says it plainly: "Source pack stays active for
+# now (retirement is a separate later step) — do not deploy this file until
+# then, or duplicate defNames result" — RSW_Bullet_ArchotechChargeBlasterHeavy,
+# RSW_Gun_ArchotechChargeBlasterHeavyTurret and RSW_Turret_AutoChargeBlaster_OP
+# are hand-ported verbatim from rpgwanderer.opturret (workshop 3550061539) and
+# collide with the donor's own defNames while it is still in the load. A
+# comment nobody reads is not a rule — this is that header made mechanical.
+# ⇒ LIFT when rpgwanderer.opturret leaves ModsConfig.xml, the same day
+#   Turrets_DamageDoctrine.xml's retired PatchOperationFindMod-gated op can be
+#   deleted for good instead of just left retired in its own comment.
+Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml   # FOUNDRY: donor rpgwanderer.opturret still active, 2026-09-17
+
 # --- SeaBeasts nursery juveniles: AlphaGenes startup NRE, ROOT-CAUSED AND FIXED --
 # Pulled 2026-09-11 while bisecting a NullReferenceException in
 # AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch.Postfix, thrown during
