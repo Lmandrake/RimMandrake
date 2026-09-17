@@ -331,12 +331,21 @@ pattern (per-mod hash, never hand-edited).
 
 ### 6a. The hash is scoped per AXIS — required BEFORE any read line is written
 
-The property above is the design's best one and it has a defect of scale, filed
-as `NORTHSTAR_HASH_SCOPE_1`: the hash covers the whole section including its
-explanatory prose, so a well-meant typo fix destroys a validation silently. That
-item stands on its own. The `must read` axis makes a NARROWER cut of it
-mandatory, because without it the axis cannot be added to any already-validated
-mod at all.
+The property above is the design's best one, and its cost of scale is now a
+RULING rather than an open defect. 🔴 **Owner, 2026-09-17**, asked whether the
+hash should cover the bars instead of the whole section — verbatim: *"Change no
+code — you just re-validate when prose is corrected."*
+
+So the whole-section rule **STAYS**: correcting a stale caveat inside a hashed
+section reverts the checklist to DRAFT, and the sanctioned remedy is to correct
+it and re-validate in the same sitting. ⛔ Never leave false text standing to
+protect a hash — that trade is ruled against. Bar-scoped hashing is **declined,
+not deferred** (`NORTHSTAR_HASH_SCOPE_1` dropped).
+
+🔑 **The per-axis cut below is a DIFFERENT, narrower change, and he KEPT it** —
+asked separately in the same sitting. It survives because it costs no
+re-validation, and because without it the read axis cannot be added to any
+already-validated mod at all.
 
 **MEASURED 2026-09-16** (laptop, offline, against `northstar.py` as it stands and
 the two live validated walks):
@@ -361,10 +370,10 @@ So the rule is:
   will rule on appearance and on prose in different sittings.
 - ✅ **This migration costs no re-validation.** Excluding a block that does not
   exist changes nothing, so Pits and Graffiti keep the hashes they already
-  carry — measured above, not assumed. That is the only reason this cut is worth
-  making separately from `NORTHSTAR_HASH_SCOPE_1`, whose broader fix (hash the
-  bars, not the commentary) *will* change both recorded hashes and does need him
-  to re-validate or the CLI to re-record on his word.
+  carry — measured above, not assumed. That is precisely why he KEPT this cut on
+  2026-09-17 while declining the broader bar-vs-prose one: this cut is free,
+  whereas that one would have redefined what his four existing approvals cover
+  and cost a re-record on every one of them.
 - ⛔ **Do not write a read line into a walk that already has a VALIDATED
   `## must show` until this is built.** MEASURED 2026-09-16: today's
   `_checklists()` returns None polarity for a `must read` / `cannot read`

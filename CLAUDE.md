@@ -84,15 +84,22 @@ and nowhere else; never restate a model choice outside it.
   yet ~20 live docs still said "do not rename ahead of it" 16 days later, which is why
   FlowWorks (named by ruling 20) still ships as `fluidcanals`. Owner: *"That file may be
   VERY old… do not accept stale info."* Sweep: `STALE_RENAME_GATE_SWEEP_1`.
-- **North stars: `Pits`, `Graffiti` and `WreckedMachines` are VALIDATED** — ⛔ do not
-  edit their `## north star` sections. The recorded hash covers the **whole section
-  including explanatory prose**, so fixing a stale caveat silently reverts a checklist
-  to DRAFT and the mod quietly stops being refused (hit live 2026-09-16;
-  `NORTHSTAR_HASH_SCOPE_1`, narrowed by the spec's own §6a axis-scoped hashing).
+- **North stars: `FlowWorks`, `Graffiti`, `Pits` and `WreckedMachines` are VALIDATED** —
+  MEASURED 2026-09-17 through the parser: 13+3 / 8+2 / 11+1 / 12+2 = **44 bars**, every
+  recorded hash MATCHing. ⛔ Do not casually edit their `## north star` sections: the hash
+  covers the **whole section including explanatory prose**, so correcting a stale caveat
+  reverts the checklist to DRAFT and the mod quietly stops being refused (hit live
+  2026-09-16). 🔴 **Owner ruled 2026-09-17 that this stays as it is** — verbatim: *"Change
+  no code — you just re-validate when prose is corrected."* Bar-scoped hashing is
+  **declined, not deferred** (`NORTHSTAR_HASH_SCOPE_1` dropped), so the remedy for false
+  text in a hashed section is: correct it, then re-validate on his word, same sitting.
+  ⛔ Never leave false text standing to protect a hash — that trade is now ruled against.
   🔑 Therefore **write only state-independent prose inside that section** — never "binds
   nothing until validated", which is false the moment it is. And `modcheck/cli.py
   validate <Mod>` refuses unless BOTH `state:` and `validated-hash:` header lines exist
-  (blank is fine); omit `--owner-said` for a dry run that writes nothing.
+  (blank is fine), and since 2026-09-17 refuses a section parsing to **zero bars** — a
+  misformatted section used to record VALIDATED against an empty checklist, binding
+  nothing; omit `--owner-said` for a dry run that writes nothing.
 - **A number you brief a subagent with will come back to you.** A census reported "2 of
   137 canon entries ruled"; the real figure is **25**. Two later agents measured 25 and
   both explicitly refused to adjust to the briefed figure — the correct behaviour. When
