@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T11:16:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T11:56:27Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -451,13 +451,3 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ATMOSPHERIC_BASE_CANVAS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ATMOSPHERIC_BASE_CANVAS_1.md
-
-## ATMOSPHERIC_BASE_LAW_CONFLICTS_1 Three law conflicts in the AtmosphericBase spec needing his word: (1) L14+L8 contradict — a witness requires a LIT affected room, so a chosen blackout is the one thing a god may never afterwards refer to, which is backwards; narrow fix is to define witness by presence in an affected GROUP rather than by illumination. (2) canon.yml in_front says the silent EIGHT express through flickers while L6 caps the tremor at three on his ruling; likely canon describes the fiction and L6 the rendering, but unstated it will get 'fixed' in the wrong direction later. (3) juanlopez2008.lightsout writes the same glow field the compositor would, which may make L8's chosen darkness unprovable. See atmospheric_base_mod_definition.md §9a C3/C4/C5
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ATMOSPHERIC_BASE_LAW_CONFLICTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ATMOSPHERIC_BASE_LAW_CONFLICTS_1.md
