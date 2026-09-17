@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T13:39:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T13:54:56Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  (no items/NORTH_STAR_WALK_AUTHORING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -125,6 +116,15 @@ target:   v1
 kind:     decision
 summary:  ARTPAINTERLYRESTORATION1 — MAJOR RULING: the painterly style returns, the cartoonish pipeline stands down
 prose:    infrastructure/state/items/ART_PAINTERLY_RESTORATION_1.md
+
+## NORTH_STAR_WALK_AUTHORING_1 Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner reacts rather than composes, batched by visual family and ordered by visual surface area
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  1. Triage all 72 unauthored walks into bar owed / no bar / uncertain, on visual
+prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
