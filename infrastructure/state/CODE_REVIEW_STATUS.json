@@ -2873,6 +2873,12 @@
     "hash": "f6d218ea8490a3c48e1bf875f0ad26d9d63ae8023043aa5744267d012261350d",
     "sha": "7b9f17a9"
   },
+  "src/RimMandrake/Inhabited/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "796094ca113297c1d87763e9ea4396946723a533da14ba6fb286670864450df1",
+    "sha": "d28bf3edf"
+  },
   "src/RimMandrake/LiquidTypes/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -3430,6 +3436,12 @@
     "date": "2026-09-03",
     "hash": "4075a09872e2499a364b7a530430d9210024ba3bb26b066c626928b59cd7b519",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6b4d3bcf44e84c6543f04955d2f4cc6b8c7d75173f2f40b04f185f7280c46b02",
+    "sha": "d28bf3edf"
   },
   "src/RimMandrake/Oracle/About/About.xml": {
     "cleanCount": 2,
@@ -4636,6 +4648,12 @@
     "date": "2026-09-10",
     "hash": "1e47f06805b3a331dabbeda3cbbe8cc3889468130b5caa89b5dea10445867a1f",
     "sha": "b88a6f90"
+  },
+  "src/RimMandrake/StructureInjections/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "648b3ec8ece0f8aea81bbec141e54c2446184f12205a4cecaca96e2350e90252",
+    "sha": "d28bf3edf"
   },
   "src/RimMandrake/TheBazaar/Source/Defs/RM_BazaarBadgeDef.cs": {
     "cleanCount": 1,
@@ -10341,6 +10359,12 @@
     "hash": "447501ff1aa49949cbae4d3add3b7f1674eb165d7af35de2cc3c68b644a3ebdc",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/Droidworks/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b3d7ef3655c63830a4508c3dc877daf24d8b47b12b4a8804adc9403b9c0e2bc5",
+    "sha": "d28bf3edf"
+  },
   "src/RimStarWars/FambaaArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -10466,6 +10490,12 @@
     "date": "2026-09-11",
     "hash": "f37689e8183ce50eed4a64f9172291557cc164317e612075a4effe016fbb42af",
     "sha": "635efab7f"
+  },
+  "src/RimStarWars/JawaIonWeapons/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7a8a611fb7e79316dd992384ba045d84ca25008fec282d0a494f81f52d3fcaf1",
+    "sha": "d28bf3edf"
   },
   "src/RimStarWars/JawaRules/About/About.xml": {
     "cleanCount": 1,
@@ -11805,6 +11835,12 @@
     "hash": "f81dd801f228b21c3af75f6f9dcfed21eb41f61ee924c407ce902f489bc00e8b",
     "sha": "a492396b"
   },
+  "src/RimStarWars/StarWarsRaces/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "612d807ef4cab9b489078b7a19c3e2c64ed31964658c2e96e3822cc581cef95e",
+    "sha": "d28bf3edf"
+  },
   "src/RimStarWars/StructureInjectionsSW/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -12074,6 +12110,12 @@
     "date": "2026-09-11",
     "hash": "d163bf66e9046f3dfa5b4069a2ae93d1cd2846972b1050194767618659a2d938",
     "sha": "e758283f4"
+  },
+  "src/RimUtinni/Antiquities/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "befbf42d6a3f3fa793a51891294d1b3c38d191cb2c6ffe416598d7c1410e0488",
+    "sha": "d28bf3edf"
   },
   "src/RimUtinni/AshkarrFlora/About/About.xml": {
     "cleanCount": 1,
@@ -13161,6 +13203,12 @@
     "hash": "4ab87380f29a37958eaed3f8c02e20641bac2185a96cc4441df4862eecce07ae",
     "sha": "14cf4186"
   },
+  "src/RimUtinni/ResearchRetag/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "51faf47fecc3a942fbfe3640d3087b7d83e1410e183fa3f9b4f06a89ccf5e26e",
+    "sha": "d28bf3edf"
+  },
   "src/RimUtinni/RestrainingBolts/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-07",
@@ -13700,6 +13748,12 @@
     "date": "2026-09-12",
     "hash": "b15c81e55a7ae87da45b211cd85a9fd3d5b1636bb634a75ed23d7fed51e74459",
     "sha": "18e1ab1b6"
+  },
+  "src/RimUtinni/ShipMemory/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5e1017d5061ea9607b5ce08b1a4f21bf67dae24825fdfb061949432e3fcd021c",
+    "sha": "d28bf3edf"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
     "cleanCount": 2,
