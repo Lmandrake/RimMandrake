@@ -36,13 +36,14 @@ Until then this walk proves digging and terrain recovery, not filling.
 
 ## north star
 state: VALIDATED
-validated-hash: 4899e58a892ef1f86374562d1b049a8ba1ebf4a15e922cd7c77707dc2b725fb0
+validated-hash: 0aede731ac0ac71fc33c5ca1840ac72795bbd847f1895399fe235a0b1db81351
 
-⚠️ **DRAFT — not a bar until the owner validates it** with
-`modcheck validate FlowWorks --owner-said "…"`. Per
-`design/RimMandrake/north_star_validation_spec.md` a DRAFT checklist cannot fail a mod
-and cannot green one. Every `### must show` line below is distilled from his own words and
-adds no claim of its own; each names the phrase it came from.
+The `state:` line above is authoritative;
+`design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
+checklist binds only while that line reads VALIDATED. Every `### must show` line below is
+distilled from his own words and adds no claim of its own; each names the phrase it came
+from. Amend only in a sitting with him: the recorded hash covers this whole section, so any
+edit reverts it to DRAFT until he re-validates.
 
 ✅ **WALKED WITH HIM 2026-09-17** — the whole checklist read back to him line by line, which
 produced rulings 34-36 (`flowworks_mod_definition.md` §25) and **deleted three lines rather
@@ -57,9 +58,10 @@ than adding any**. What changed, so nobody restores a line he cut:
 - **Two candidates were promoted to real bars** — the fill front and the spent channel — and the
   other two were dropped, so `### candidate lines` is now empty by resolution rather than by
   neglect.
-- ⚠️ **Ids were renamed** where they said "source" (now "reservoir"). Permitted only because this
-  checklist is DRAFT and has never bound; §1's never-reuse-an-id rule applies from validation
-  onward.
+- ⚠️ **Ids were renamed** where they said "source" (now "reservoir"). That rename happened
+  BEFORE this checklist was first validated, which is the only reason it was permitted; §1's
+  never-reuse-an-id rule binds from that first validation onward, so no id here may be renamed
+  again without his word.
 
 ### the experience  (OWNER'S WORDS — verbatim, bench session 2026-09-16)
 
@@ -194,15 +196,15 @@ absence reads as a decision:
   both the source object and the strained state it was to be distinguished from.
 
 ## anti-guessing notes
-- 🔴 **The `## north star` section still opens with a DRAFT banner and still says the checklist
-  "has never bound". Both are FALSE as of 2026-09-17** — he validated it (`state: VALIDATED`,
-  hash `4899e58a…`, 13 must-show + 3 cannot-show binding). The false text is left standing
-  **deliberately**: the recorded hash covers the whole section including its prose, so correcting
-  those two sentences would revert his validation to DRAFT by mismatch and silently stop the mod
-  being refused. This note lives out here because everything above `## anti-guessing notes` is
-  inside the hashed region. It is the exact defect `NORTHSTAR_HASH_SCOPE_1` describes — hash the
-  bars, not the commentary — and it can only be fixed by that item, or by him re-validating after
-  the edit. ⛔ Do not "tidy" the banner; that is the trap, not the fix.
+- ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
+  It said the checklist "has never bound" while `state: VALIDATED` sat three lines above it, and
+  a note here instructed the reader ⛔ *not* to tidy it, because correcting it would revert his
+  validation by hash mismatch. **Owner ruled that trade away the same day** — verbatim: *"Change
+  no code — you just re-validate when prose is corrected."* So the banner was replaced with
+  state-independent prose and he re-validated in the same sitting; `NORTHSTAR_HASH_SCOPE_1` is
+  dropped, declined not deferred. 🔑 The general rule this leaves: **never leave false text
+  standing inside a hashed section to protect a hash** — correct it and re-validate. And write
+  only state-independent prose in there, so a state change cannot make the prose wrong.
 - `jawa/canal_dig` and `jawa/canal_cell_report` are cited verbatim from `Transient/bench_tools_dump.json`; both note the mod's own gizmo/dev-menu equivalents "never register live" (FLUID_CANAL_DEBUG_SURFACE_1), so these two ARE the only live-reachable surface — no separate `rimworld/execute_debug_action` route exists for this mod's report/dig actions.
 - 🔴 This walk USED TO CLAIM "No [S] line: nothing here is a visual-only concern". That claim was false and is deleted. MEASURED 2026-09-16: the mod ships **zero bespoke textures** — the dug channel borrows `Terrain/Surfaces/Gravel`, the test source borrows the drop-beacon sprite — so every state assertion above can pass while the player looks at gravel. That is exactly the defect class the north star system exists to catch (`design/RimMandrake/north_star_validation_spec.md`), and this walk was one of the 7 that dismissed the visual pass in writing.
 - 🔴 **That comp no longer exists, so every step written against it is owed a rebuild.** MEASURED 2026-09-17: `CompFluidReservoir` is gone from disk — the only four remaining mentions in `src/RimMandrake/FlowWorks/` are comments recording its deletion, so ruling 24 was executed cleanly and there is no build break. But ruling 24 warned that "the validator and the walk must be rebuilt against the new primitive, and until they are, this mod has no live proof at all", and **that rebuild has not happened in this walk's `[D]` steps.** The new primitive is `RM_ExcavationDepth`'s depth/fill pair on `RM_MapComponent_Excavation`, with stock in `RM_LiquidStock` and body classification in `RM_LiquidBody`.
