@@ -70,7 +70,33 @@ def main(argv=None):
     p_rev.add_argument("--owner-said", required=True)
     p_rev.add_argument("--run-id", help="defaults to the mod's last recorded run")
 
+    p_lint = sub.add_parser("lint", help="every identifier a validation walk "
+                                         "names must exist (walklint)")
+    p_lint.add_argument("--warn", action="store_true",
+                        help="also print WARN findings (UNKNOWN_ID, BAD_FILE), "
+                             "which never affect the exit code")
+
     args = ap.parse_args(argv)
+
+    if args.cmd == "lint":
+        import runner
+        import walklint
+        findings, counts = walklint.lint(runner.ROOT)
+        print("walklint: %d walks, %d packageIds, %d symbols indexed"
+              % (counts["walks"], counts["packageids"], counts["symbols"]))
+        if not counts["walks"] or not counts["packageids"]:
+            print("UNMEASURED: an index came back empty -- this is a query bug, "
+                  "not a clean repo. Refusing to report zero findings.")
+            return 2
+        shown = [f for f in findings
+                 if f[0] == walklint.FAIL or args.warn]
+        for f in shown:
+            print(walklint.format_finding(f))
+        n_fail = sum(1 for f in findings if f[0] == walklint.FAIL)
+        n_warn = sum(1 for f in findings if f[0] == walklint.WARN)
+        print("%d FAIL, %d WARN%s"
+              % (n_fail, n_warn, "" if args.warn else "  (--warn to see WARNs)"))
+        return 1 if n_fail else 0
 
     if args.cmd == "status":
         import status
