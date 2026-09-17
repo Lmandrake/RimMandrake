@@ -37,7 +37,7 @@ state: DRAFT
 validated-hash:
 
 ⚠️ **DRAFT — not a bar until the owner validates it** with
-`modcheck validate FluidCanals --owner-said "…"`. Per
+`modcheck validate FlowWorks --owner-said "…"`. Per
 `design/RimMandrake/north_star_validation_spec.md` a DRAFT checklist cannot fail a mod
 and cannot green one. Every `### must show` line below is distilled from his own words and
 adds no claim of its own; each names the phrase it came from.
@@ -121,10 +121,12 @@ systems into one.
 - [ ] `canal_fill_spreads_along_itself` — the liquid in an incompletely filled canal is
       spread through the channel rather than pooled in the cell it entered. From *"spread the
       water throughout themselves"*.
-- [ ] `canal_fill_front_watchable` — the arriving liquid has a visible fill front, so
+- [ ] `canal_fill_front_watchable` (change) — the arriving liquid has a visible fill front, so
       viscosity is something you watch rather than infer: water almost at once, tar creeping.
-      **Promoted from candidate to bar 2026-09-17.** ⚠️ Judging it needs two frames rather than
-      one, which no other line on this list requires — that cost was stated and accepted.
+      **Promoted from candidate to bar 2026-09-17.** Judging it needs two frames rather than
+      one; that cost was stated and accepted. ⚠️ It was recorded here as the only such line on the
+      list, which was wrong — `reservoir_fill_visibly_drops` and `never_full_reservoir_after_heavy_draw`
+      are the same shape, and all three are declared `(change)` per spec §4b.
 - [ ] `canal_holds_only_the_channel` — the liquid is inside the dug channel and not standing
       on open ground beside it. From *"flows into the canal to fill it"*.
       ✅ **MEASURED 2026-09-17: this is now BUILT and expected to PASS**, reversing this line's
@@ -136,7 +138,7 @@ systems into one.
       the body it came from. From *"extending the source"*.
 
 **The reservoir paying for it**
-- [ ] `reservoir_fill_visibly_drops` — after supplying a canal, the reservoir is visibly less
+- [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, the reservoir is visibly less
       full, and a small pond visibly shrinks at its far edge. From *"the parent body of water
       reduces itself in proportion as well"*. 🔑 Ruling 34 makes this the **same art as
       `canal_partial_fill_distinct`** on a deeper cell, so it demands nothing new to draw —
@@ -173,7 +175,7 @@ as an oversight.**
       true** as of the channel-confinement measurement above, so this absolute now guards a fixed
       behaviour against regression rather than describing a live defect.
 - [ ] `never_gravel_path` — a channel that reads as a gravel road.
-- [ ] `never_full_reservoir_after_heavy_draw` — a reservoir whose fill looks untouched after
+- [ ] `never_full_reservoir_after_heavy_draw` (change) — a reservoir whose fill looks untouched after
       filling a long canal, which would make conservation of mass invisible and the stock ruling
       pointless.
 

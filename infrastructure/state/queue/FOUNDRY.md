@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T13:29:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T13:39:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1901,3 +1901,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md
+
+## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
