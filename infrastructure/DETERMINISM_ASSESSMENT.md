@@ -323,7 +323,29 @@ they become owner cards, which is why `doctor` reports and never repairs.
 
 ---
 
-## 5. C3 — Bar-scoped north-star hash (`NORTHSTAR_HASH_SCOPE_1`, `proposed`)
+## 5. C3 — Bar-scoped north-star hash — 🔴 DECLINED BY THE OWNER, 2026-09-17
+
+⛔ **Do not build this.** Put to him as a card the day this assessment landed; his answer,
+verbatim: *"Change no code — you just re-validate when prose is corrected."*
+`NORTHSTAR_HASH_SCOPE_1` is **dropped — declined, not deferred.**
+
+The whole-section hash therefore stands as designed, and the remedy for false text inside a
+hashed section is to **correct it and re-validate in the same sitting**, never to leave it
+standing to protect a hash. The measurement below is kept because it is now the evidence for
+what that remedy COSTS, not an argument for changing the cut. The build plan that followed it
+(canonical-form surgery, a `rehash` verb, the migration) is deleted — git holds it at
+`d11280cda`.
+
+🔑 One consequence he ruled on separately, and KEPT: the spec's **§6a per-axis cut** survives.
+It is a different, narrower change that costs no re-validation, and without it no read line can
+be added to an already-validated walk. See `design/RimMandrake/north_star_validation_spec.md`
+§6a — that is where this rule now lives.
+
+🔑 A second consequence, built the same day (`4447ba4f6`): because re-validation is now the
+standing remedy, `modcheck validate` had to stop accepting a **zero-bar** section — see §7,
+which was a latent defect and is now on the critical path.
+
+### The measurement that justified asking him
 
 ### What an LLM does today
 
