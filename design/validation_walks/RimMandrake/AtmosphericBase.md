@@ -70,6 +70,26 @@ the owner promotes a line to a bar.
 and every line will fail on the day the code first runs. That is the intended state, and the
 WreckedMachines precedent covers it.
 
+🛑 **THE DEFINITION STOPS HERE — owner ruling, 2026-09-17, verbatim:** *"I'm not sure we should
+worry about how to automate these tests at this time. please stop the north star definition here
+and file it as TBD for now in terms of these highly subtle nuances until we can play with it
+live first."*
+
+- **This section is finished as a statement of intent and is NOT to be refined further** until he
+  has played the mod. Do not add bars, split bars, reword bars or chase the remaining nuance.
+- **How these bars get automated is TBD** — deliberately unanswered. `NORTHSTAR_MOTION_FRAMES_1`
+  (the frame-sequence judge, ruled earlier this same walk) and the material-cache count that
+  replaced the smooth-fade bar both stand as recorded work and are **not to be built on spec**
+  for this mod; they wait on live play. `NORTH_STAR_ATMOSPHERIC_TBD_1`.
+- **Final shape: 28 bars — 22 must-show, 6 cannot-show.** Recorded here so a later reader can tell
+  a finished-and-stopped section from an abandoned one.
+- ⚠️ It stays **DRAFT**, and that is the ruling rather than an omission. He did not validate it,
+  so per spec §3 it fails nothing and greens nothing — which is the correct state for a vision
+  recorded ahead of the code and ahead of any way to check it.
+- 🔑 The same instinct as his hear-axis condition six hours earlier (*"don't block on it, it's
+  just part of the playtest"*), now applied to the subtle end of the visual axis: the bars are
+  worth writing down and are not worth automating before he has seen the thing move.
+
 ✅ **The missing third axis is RULED — owner, 2026-09-17.** The spec provided a **show** axis
 (visual) and a **read** axis (text), and this mod's whole sound channel — beds, stings,
 acoustic territory — was judgeable by neither. He chose to specify a **`must hear`** axis, with
@@ -80,7 +100,7 @@ this mod or any other, and its lines are judged when he plays rather than before
 work proceeds without waiting for the axis to exist. `NORTH_STAR_HEAR_AXIS_1`.
 
 ✅ **A bar here may cite several frames — owner ruling, 2026-09-17.** Walking this checklist
-surfaced that **10 of its 23 bars are about CHANGE rather than a state**, while `judge.py` took
+surfaced that **10 of the 23 bars it then carried were about CHANGE rather than a state**, while `judge.py` took
 `shots[-1]` under a prompt telling the model to answer about that image alone:
 `territory_boundary_moves`, `tremor_reads_as_third_presence`, `dark_is_never_still`,
 `blackout_angers_visibly`, `stripping_fixtures_angers_visibly`, `narrator_arrival_unmistakable`,
@@ -195,6 +215,19 @@ the gods are still standing there when the lights go.
       because this checklist is DRAFT and has never bound.
 - [ ] `speed_lives_in_few_fixtures` — 🗣 a handful of fixtures carry the fast movement while the
       mass moves slowly, reading as a real alarm panel rather than a uniform strobe.
+- [ ] `partial_scheme_reads_as_itself` — 🗣 a god holding only part of the grid reads as that god,
+      not as something broken or half-finished. **Promoted 2026-09-17.** With the lights irregular
+      and few, a partial claim is the normal case rather than an edge one. Cost he accepted: it
+      constrains how few fixtures a claim may cover, decided before the ship's light count exists.
+- [ ] `two_gods_told_apart_in_one_view` — 🗣 two simultaneous claimants are distinguishable at play
+      zoom in a single view. **Promoted 2026-09-17** over the stated objection that it largely
+      restates `territory_boundary_visible` and that its camera constraint belongs on how evidence
+      is captured; he took it anyway, so both stand and the overlap is deliberate.
+- [ ] `omen_told_from_mood_in_one_cycle` — 🗣 a warning's arrival is distinguishable from ongoing
+      atmosphere within one cycle of the pattern. **Promoted 2026-09-17** over the stated objection
+      that `alarm_distinct_from_every_mood` already covers the ground; this one adds a time bound,
+      which no other bar carries. ⚠️ Two bars over one requirement: if either is ever edited, edit
+      both, or they will come to disagree.
 
 **The law that is easiest to break while looking good**
 - [ ] `reads_as_tenants_not_as_the_ship` — 📐 every effect reads as somebody using the wiring,
@@ -227,6 +260,11 @@ the gods are still standing there when the lights go.
 - [ ] `never_dims_a_god` — 🗣 a god's hologram darkened, tinted or extinguished by anything this
       mod does, including a full blackout scheme. Ruled 2026-09-17: the holograms "work by
       themselves, without power", so the framework touching one is it driving the speaker.
+- [ ] `never_tremor_reads_as_territory` — 🗣 the third god's stirring grown loud enough to be
+      mistaken for one of the two holding ground. **Promoted 2026-09-17** as a rejection rather
+      than a positive bar, because one sequence where the tremor reads as a claim settles it. Cost
+      he accepted: a ceiling on how expressive the silent eight may be, and they are the part of
+      the cast with the least design behind them.
 
 ### resolved off this list — owner rulings, 2026-09-17
 
@@ -244,10 +282,10 @@ Recorded so the absence reads as a decision and nobody restores either one.
   becomes a count of cached materials, owed on `NORTHSTAR_MOTION_FRAMES_1`. ⚠️ It cannot be built
   yet — this mod has no code — and a lint owed is not a lint built.
 
-### candidate lines  (NOT his — agent-drafted, bind nothing until promoted)
+### candidate lines
 
-- 🤔 A scheme holding only part of the grid still reads as itself, rather than as a fragment of
-  something.
-- 🤔 Two simultaneous gods are distinguishable at play zoom without moving the camera.
-- 🤔 The tremor never grows loud enough to be mistaken for territory.
-- 🤔 An omen's arrival is distinguishable from an ongoing mood within one cycle of the pattern.
+**Empty — all four were promoted with him on 2026-09-17, none left parked.** Recorded so the
+absence reads as a decision: `partial_scheme_reads_as_itself`,
+`two_gods_told_apart_in_one_view`, `omen_told_from_mood_in_one_cycle` and
+`never_tremor_reads_as_territory` are all bars now, the last of them as a rejection. Two were
+promoted over a stated overlap objection; both notes are on the lines themselves.
