@@ -394,12 +394,21 @@ to spend less of it.
 - **Batch by visual family, never alphabetically.** One sitting covers mods
   sharing a visual language (hazards; creatures; structures), so a judgement
   about one carries to the next.
-- **Order by PLAYER-FACING surface area, appearance or prose.** Mods whose
-  experience *is* appearance first (pits, graffiti, inhabited, wrecked machines,
-  antiquities); mods whose experience is prose get read lines instead (Oracle,
-  Aftermath, AftermathRites, PawnFlavor, JawaVoice — §10.6). A mod that is pure
-  arithmetic goes last and may honestly need neither — Visibility's walk says so
-  correctly, and that is a legitimate answer.
+- 🔴 **Order by WHAT IS BEING BUILT NOW — owner ruling, 2026-09-17.** The next
+  batches follow the programmes in flight (the liquid work, the atmosphere work),
+  not the mods with the most existing art. His reason to prefer it, accepted with
+  its cost stated: a checklist written *before* the art exists is a specification
+  that steers the build, while one written after is a grade handed down when
+  changing anything is expensive. **The cost he accepted:** already-shipped mods
+  stay unjudged longer, including ones with placeholder art already measured
+  (Antiquities, Inhabited).
+- **Then by PLAYER-FACING surface area, appearance or prose** — the ordering
+  within a batch, and the rule for everything not currently being built. Mods
+  whose experience *is* appearance first (pits, graffiti, inhabited, wrecked
+  machines, antiquities); mods whose experience is prose get read lines instead
+  (Oracle, Aftermath, AftermathRites, PawnFlavor, JawaVoice — §10.6). A mod that
+  is pure arithmetic goes last and may honestly need neither — Visibility's walk
+  says so correctly, and that is a legitimate answer.
 - 🔴 **Re-examine the 7 walks that dismissed the visual pass before trusting
   any of them.** Each is a written claim that nothing visual matters, and the
   pit proves how wrong such a claim can be while sounding reasonable. ⚠️ Three of
@@ -788,3 +797,37 @@ the line was written to be passed — and unlike a screenshot, nobody can re-che
 it later, because the letters are gone. A pass rate that rises across re-rolls
 with the persona block, the lint and the fallback all unchanged is not the mod
 improving; it is the sample being chosen.
+
+## 12. The `must hear` axis — ruled, and deliberately not a gate
+
+Owner ruling, 2026-09-17: **add a third `must hear` axis**, chosen over binding
+only sound's fixed parts (bed defs, cue strings, volumes) and over leaving sound
+unjudged. It came with a condition, verbatim:
+
+> *"but don't block on it, it's just part of the playtest"*
+
+🔴 **That condition is the design, not a caveat on it.** A hear line is authored,
+recorded and judged, but it **never refuses a mod and never holds a build**:
+
+- There is **no hear floor.** §10.5's read floor refuses a mod whose validated read
+  lines have no component claiming them. The hear axis has no equivalent — an
+  unclaimed hear line is not an error, because nothing about sound is expected to
+  be settled before he has played it.
+- **Sound work does not wait for this axis to exist.** AtmosphericBase's sound
+  channel proceeds now; the axis catches up. This is the opposite of the read
+  axis, which had to exist before Oracle could be judged at all.
+- **He is the only judge, always** — audio has no screenshot, so there is no
+  artifact a model can assess. Every hear line is effectively §10.2's `open`
+  class in terms of who may pass it, but *without* the sampling apparatus, because
+  a bed is not a generator: it is one authored sound that either plays in the right
+  place or does not.
+- **What it still catches, and why it is worth having**: authored sound that never
+  reaches the player's ears. That is this document's founding defect class in the
+  audio channel — the exact shape of Aftermath's eight letters that were written
+  and never sent.
+
+⚠️ **Not yet specified**: the section format, the evidence artifact, and whether a
+`hears=` join exists at all (it may not, since there is no floor to enforce). Those
+are owed on `NORTH_STAR_HEAR_AXIS_1` and are explicitly *not* blocking anything.
+Do not build a gate here later without his word — non-blocking is the ruling, not
+an interim state.
