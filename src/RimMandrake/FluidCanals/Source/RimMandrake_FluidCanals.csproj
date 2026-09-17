@@ -40,6 +40,8 @@
     <Compile Include="RimMandrakeFluidCanals_DefOf.cs" />
     <Compile Include="RimMandrakeFluidCanalsMod.cs" />
     <Compile Include="FluidDef.cs" />
+    <Compile Include="RM_ExcavationDepth.cs" />
+    <Compile Include="RM_MapComponent_Excavation.cs" />
     <Compile Include="Designator_DigCanal.cs" />
     <Compile Include="WorkGiver_DigCanal.cs" />
     <Compile Include="JobDriver_DigCanal.cs" />

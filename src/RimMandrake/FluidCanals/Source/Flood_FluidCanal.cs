@@ -22,6 +22,11 @@ namespace RimMandrake.FluidCanals
 
 		private float remainingVolume;
 
+		/// <summary>Cells this release walked to and was refused by the channel
+		/// gate. Not scribed: a reload restarts the count, which only ever
+		/// gives a stuck flood one more chance to prove it is stuck.</summary>
+		private int refusedCells;
+
 		/// <summary>Only reached by a flood whose fluidDef went missing; a real
 		/// one is destroyed on the next tick before this ever divides anything.</summary>
 		private const int FallbackTicksPerTile = 60;
@@ -145,6 +150,40 @@ namespace RimMandrake.FluidCanals
 			if (fluidDef == null || fluidDef.floodTerrain == null || remainingVolume <= 0f)
 			{
 				return;
+			}
+			// ════════════════════════════════════════════════════════════
+			// §4's "biggest gap", closed. Vanilla Flood walks any open,
+			// non-water, non-edifice ground, so a canal release leaked
+			// across the map instead of following the channel. The gating
+			// pair (CanFloodSpreadInto / CanFloodPotentiallySpreadInto) is
+			// PRIVATE and non-virtual on the base class — VERIFIED against
+			// the decompiled Flood, not assumed — so there is no override
+			// point and, without taking a Harmony dependency this mod does
+			// not have, the refusal has to happen here at placement.
+			//
+			// Consequence, stated because it is a real limitation: the walk
+			// still WANDERS across open ground, it just writes nothing and
+			// spends nothing there. A release that wanders long enough
+			// without placing anything is stuck by definition, so it is cut
+			// off rather than left to tick out its expiry doing nothing.
+			//
+			// The real flow is RM_MapComponent_Excavation's pulse; this path
+			// survives because it is the mod's one live-proven mechanism and
+			// ruling 24 does not get to break it before its replacement is
+			// proven too.
+			// ════════════════════════════════════════════════════════════
+			if (RimMandrakeFluidCanalsSettings.channelConfinementEnabled)
+			{
+				RM_MapComponent_Excavation excavation = Map.GetComponent<RM_MapComponent_Excavation>();
+				if (excavation != null && !excavation.CanLiquidEnter(cell))
+				{
+					refusedCells++;
+					if (refusedCells > 8 * Mathf.Max(1, estimatedFloodedTiles) + 64)
+					{
+						Destroy();
+					}
+					return;
+				}
 			}
 			// Fixed 2026-09-02 (owner ruling on FLUID_CANAL_FLOOD_TUNING_GAPS_1,
 			// finding 1): "floods must become recoverable, matching vanilla's

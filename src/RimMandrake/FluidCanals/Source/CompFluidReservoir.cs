@@ -19,6 +19,27 @@ namespace RimMandrake.FluidCanals
 	/// it is a rate (Props.dripVolume/dripIntervalTicks and
 	/// Props.reFloodVolume/reFloodIntervalTicks), not a stock, matching the
 	/// ruling's own framing ("scarcity is rate, not stock").</summary>
+	///
+	/// 🔴 DEAD AS A CONCEPT — owner ruling 2026-09-16 (ruling 24, and the
+	/// "a source IS terrain" ruling recorded on FLOWWORKS_BUILD_PROGRAM_1).
+	/// A source is not a building. It is a SUPERDEEP cell at F = D:
+	/// limitless when fed off-map (ruling 16), limited when fed by rain,
+	/// season and seepage (ruling 2). One primitive owns supply, and nothing
+	/// has to stay in sync with the depth grid.
+	///
+	/// ⚠️ NOT DELETED THIS PASS, DELIBERATELY. This comp and
+	/// RM_FluidSpring_Test are the mod's ONLY live-proven path — all three
+	/// of its modcheck components assert against this comp's runtime state
+	/// (primed, remainingVolume, nextDripTick). Deleting them before the
+	/// depth engine has its own live proof would leave the mod with no proof
+	/// at all. Deletion rides the migration, once
+	/// RM_MapComponent_Excavation is proven in a real game.
+	///
+	/// ⇒ Successor: <see cref="RM_MapComponent_Excavation"/>. Do not build
+	/// anything new against this.
+	[System.Obsolete("A source is terrain, not a building (owner ruling 2026-09-16 / ruling 24). " +
+		"Use RM_MapComponent_Excavation: a source is a SUPERDEEP cell at F = D. Kept only " +
+		"because it is the mod's one live-proven path; it dies with the migration.", false)]
 	public class CompFluidReservoir : ThingComp
 	{
 		private bool primed;
