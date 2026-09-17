@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:10:55Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-17T21:14:10Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -828,6 +828,15 @@ kind:     task
 summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
 prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
 
+## BAZAAR_HAGGLE_DUEL_1 The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; deterministic seeding — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
+prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1491,9 +1500,19 @@ blocked:  The item's own Watch-out names BAZAAR_WINDOW_GRID_1 as a dependency, a
 summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
 prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
 
+## BAZAAR_HAGGLE_DUEL_1 The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; deterministic seeding — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Real dependency chain still open: BAZAAR_WINDOW_GRID_1 is 'doing' (no WindowStack.Add intercept/session object wired per its own item text) and BAZAAR_PRICE_ENGINE_1 is explicitly BLOCKED on it. This item's crit-freebie/rumor-token mechanic reads the price engine's rumor layer, which does not exist yet. Not offline-actionable this pass. (on BAZAAR_PRICE_ENGINE_1)
+summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
+prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1501,7 +1520,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is LOADING
+waiting:  needs `bridge`, game is UP
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
@@ -1562,16 +1581,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
-
-## BAZAAR_HAGGLE_DUEL_1 The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; deterministic seeding — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
-prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
 
 ## BAZAAR_BANTER_LINES_1 The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
 state:    proposed
