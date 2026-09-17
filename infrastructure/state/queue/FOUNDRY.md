@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T00:28:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T01:33:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1860,3 +1860,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ORACLE_FALLBACK_UNVALIDATED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ORACLE_FALLBACK_UNVALIDATED_1.md
+
+## AFTERMATH_TELEGRAPH_REFERENT_1 RM_AftermathRule_AlliesArrive's one substitution slot has two referents: SendTelegraph formats with ResolveTargetFaction's result, the ALLY under AllyOfTrigger, but telegraphText means the DEFEATED faction while letterText on the same def means the ally — and only the wrong one is reachable, since letterText is read nowhere (see AFTERMATH_DEAD_LETTERS_1). VERIFIED in-window at AftermathRuleRunner.cs:261,307,336 and RM_AftermathRuleDefs.xml:64
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/AFTERMATH_TELEGRAPH_REFERENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/AFTERMATH_TELEGRAPH_REFERENT_1.md
