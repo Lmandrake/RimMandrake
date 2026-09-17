@@ -32,9 +32,10 @@ selling one raises the same Imperial heat as kyber, *plus* the wild cousins' per
 text-register grudge. That grudge is the mechanoid canon's charge, not this spec's.
 
 Absorption of the kyber family into our tier (`RUT_` names, Deeps genstep gate) is
-`crystal_mods_inventory.md` §4's owed pass, separate from this plot spec. Until it
-lands, all wiring below binds to the donor defNames above and migrates with the
-absorption under NAMING_SCHEME_EXECUTION_1 discipline (no early rename).
+`crystal_mods_inventory.md` §4's owed pass, separate from this plot spec — ordinary
+owed work, not gated on anything (`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31). Until
+that absorption lands, all wiring below binds to the donor defNames above and migrates
+with it.
 
 ## 2. What "a sale" is, and who can see it
 

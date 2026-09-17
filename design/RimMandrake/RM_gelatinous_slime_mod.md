@@ -363,7 +363,8 @@ campaign's consumer of the universal mod:
   native demonstrator, living in rolling stage-2 conversion (v1 §5 carried
   verbatim — equilibrium breeder, ban-5's transforming band, the bespoke
   slimified art pass calibrates the overlay). Label rename now; defName migration
-  rides `NAMING_SCHEME_EXECUTION_1`.
+  is ordinary owed work whenever this mod is built (`NAMING_SCHEME_EXECUTION_1`
+  closed 2026-08-31, no gate remains).
 - Loads the FROZEN SW gene lists (`the_slime_gene_lists.md`, P1–P3 provenance
   intact) as the campaign's archive, replacing the mod's vanilla default list.
 - Re-sources the antidote as Rot-derived; wires the mycoid-symbiote resistance
