@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T17:17:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T17:04:02Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -461,3 +461,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Read every xenotype in src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/ and list the
 prose:    infrastructure/state/items/UNSUBSTANTIATED_SPECIES_ABILITIES_1.md
+
+## DETERMINISTIC_CHECKER_WAVE_1 walklint + modcheck doctor + bar-scoped north-star hash — C1/C2/C3 of the determinism assessment (owner picked 1+2+3, 2026-09-17)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DETERMINISTIC_CHECKER_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DETERMINISTIC_CHECKER_WAVE_1.md

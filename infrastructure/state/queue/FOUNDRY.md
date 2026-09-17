@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T17:17:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T17:04:02Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1821,16 +1821,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md
-
-## NORTHSTAR_HASH_SCOPE_1 The north-star validated-hash covers the WHOLE section including explanatory prose, so fixing a stale caveat or a typo silently reverts a VALIDATED checklist to DRAFT - hash the BARS (the must-show/cannot-show ids and their assertions) not the commentary, or a well-meant doc edit destroys a validation and the mod silently stops being refused
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NORTHSTAR_HASH_SCOPE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NORTHSTAR_HASH_SCOPE_1.md
 
 ## WRECKEDMACHINES_MOD_SETTINGS_1 WreckedMachines ships NO Mod Settings at all (no ModSettings/DoSettingsWindowContents anywhere in the mod, MEASURED 2026-09-16) - violates MOD_OPTIONS_RETROFIT_1's every-mod-ships-settings ruling and blocks a GREEN independently of its north star
 state:    proposed
