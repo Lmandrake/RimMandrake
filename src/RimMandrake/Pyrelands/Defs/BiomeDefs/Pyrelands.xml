@@ -258,17 +258,21 @@
       2026-09-11: "the grass here has to be unique" — every generic grass
       (vanilla Plant_Grass/Plant_TallGrass included) is evicted; the second
       grass is RM_FE_Plant_Quickgrass, the Rakatan forage lawn (Quickgrass.xml).
-      Non-grass vanilla plants stay so the map does not read as a
-      single-plant tileset. RM_FE_Plant_ScorchFruit is deliberately NOT
-      here — that plant only ever exists where a fire has just been
-      (see ScorchFruit.xml).
+      RM_FE_Plant_ScorchFruit is deliberately NOT here — that plant only
+      ever exists where a fire has just been (see ScorchFruit.xml).
+
+      Owner ruling 2026-09-14 ("the Pyrelands should be FILLED with grass...
+      the only time it isn't grass is when it's burned, and then it's ash"):
+      Plant_TreeDrago, Plant_Agave and Plant_Dandelion are OUT — evicted live
+      on PYRE_WALK3 (692 instances destroyed to 0). Plant_Bush and
+      Plant_PincushionCactus were not named in that ruling and stay pending
+      his word (PYRELANDS_GRASS_SATURATION_1) — this is no longer "non-grass
+      vanilla plants stay on purpose," it is two leftover entries awaiting a
+      ruling, not a design choice.
     -->
     <wildPlants>
       <RM_FE_Plant_EmberGrass>9.0</RM_FE_Plant_EmberGrass>
       <RM_FE_Plant_Quickgrass>3.8</RM_FE_Plant_Quickgrass>
-      <!-- Owner 2026-09-14: "I still see the trees, agave, and dandelions.
-           I don't want those." Bush and pincushion cactus were not named
-           and stay pending his word. -->
       <Plant_Bush>0.55</Plant_Bush>
       <Plant_PincushionCactus>0.3</Plant_PincushionCactus>
     </wildPlants>
