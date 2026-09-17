@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:36:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:37:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -514,7 +514,7 @@ summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -710,6 +710,24 @@ target:   v1
 kind:     task
 summary:  Arc §3 bullet 1: stage sets the baseline the kit's composite band recovers
 prose:    infrastructure/state/items/CATHEDRAL_STAGE_HUM_BRIDGE_1.md
+
+## CATHEDRAL_MISSION_BOON_OFFERS_1 Deniably-sourced Assailant missions + Heat-gated gravtech boons
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §3 bullet 3. TOLERATED: first mission offers against the Assailant
+prose:    infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md
+
+## CATHEDRAL_STAGE_COMMENTARY_POOLS_1 Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
+prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
 
 ## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
 state:    doing
@@ -1141,6 +1159,16 @@ blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the 
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
+## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  thingClass fix verified correct and already committed (cade628c1); color-variant defs already authored. Remaining work is the live re-verify (deploy, re-enable mandrake.rm.manywaters, confirm zero 'has null thingClass' lines, game actually constructs) which needs a full cold-load restart -- do not touch ModsConfig.xml or the bridge for this from offline. (on COLD_LOAD_RUN_SHEET_4)
+summary:  🔴 Ruled 2026-09-13 (owner, liquids-framework bench sitting): ManyWaters
+prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
+
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1261,6 +1289,26 @@ blocked:  still correctly blocked: sole gate is owner ratifying the modcheck she
 summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
 prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
+## CATHEDRAL_MISSION_BOON_OFFERS_1 Deniably-sourced Assailant missions + Heat-gated gravtech boons
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Genuinely blocked, not just offline-stuck: spec depends on item 1 (CATHEDRAL_REGARD_BLACKBOARD_1, still doing — Regard counter not live) and item 3 (CATHEDRAL_STAGE_COMMENTARY_POOLS_1, still proposed — the bans-2/6 linter this item's quest strings must pass does not exist yet). No quest/boon authoring started; building now would duplicate or invalidate work once the linter and blackboard land. Re-check once both close. (on CATHEDRAL_STAGE_COMMENTARY_POOLS_1)
+summary:  Arc §3 bullet 3. TOLERATED: first mission offers against the Assailant
+prose:    infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md
+
+## CATHEDRAL_STAGE_COMMENTARY_POOLS_1 Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Verified offline: no RUT_HumCommentary RulePack exists anywhere in src/ yet (grep clean) — RUST_CATHEDRAL_MECHANICS_1 (its source, spec's Depends-on) is still doing/needs-bridge, not shipped. Stage-key source (item 1, CATHEDRAL_REGARD_BLACKBOARD_1) is also still doing. Authoring stage-keyed line pools or a linter against a RulePack/flag that don't exist yet would target nothing real and need redoing. Re-check once RUST_CATHEDRAL_MECHANICS_1 ships RUT_HumCommentary. (on RUST_CATHEDRAL_MECHANICS_1)
+summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
+prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1292,26 +1340,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CATHEDRAL_MISSION_BOON_OFFERS_1 Deniably-sourced Assailant missions + Heat-gated gravtech boons
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §3 bullet 3. TOLERATED: first mission offers against the Assailant
-prose:    infrastructure/state/items/CATHEDRAL_MISSION_BOON_OFFERS_1.md
-
-## CATHEDRAL_STAGE_COMMENTARY_POOLS_1 Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §3 bullet 2: the kit's RUTHumCommentary RulePack (kit §1) gains
-prose:    infrastructure/state/items/CATHEDRAL_STAGE_COMMENTARY_POOLS_1.md
 
 ## CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1 The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
 state:    proposed
