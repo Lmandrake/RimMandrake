@@ -91,7 +91,7 @@
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>
-    <plantDensity>1.15</plantDensity>
+    <plantDensity>1.55</plantDensity>
     <!-- Owner ruling 2026-09-17, live walk: "massive more plants... choked with
          grass. Barely any bare ground." Density raised 0.85 -> 1.15 and local
          fertility IGNORED for wild spawning: the Rakatan quickgrass roots to the
