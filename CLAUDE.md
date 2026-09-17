@@ -52,6 +52,28 @@ and nowhere else; never restate a model choice outside it.
   not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
   terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
   those into measurements.
+- 🔴 **An existence test is not an identity test, and a fixed line number is not a field.**
+  `[ -e src/RimMandrake/Pits ]` passes while that folder holds only `__pycache__` — the mod
+  merged into FlowWorks at `cade628c1`, yet its checklist is **VALIDATED with 12 binding bars**
+  against nothing. Test `$dir/About/About.xml`. Likewise a sweep reading `subject:` from **line
+  2** reported zero failures across 78 walks while missing the only file still broken, because
+  `AtmosphericBase.md` carries it on line 3. Read the first matching line, never an index. Both
+  checkers returned a confident clean bill of health (2026-09-17).
+- 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** — it calls `modlist_swap` and
+  swaps to MINIMAL. It reads like a query verb and is a Charter expensive-list action. On the
+  Mac it dies on the Windows path; on the Desktop it swaps his list unasked (2026-09-17).
+- 🔴 **A texture glob on `*south*` reads the MASK as often as the art.** `X_southm.png` is the
+  colour mask, saturated across ~99% of its pixels by convention (MEASURED 259,344 of 262,144),
+  so `glob(...)[0]` in filesystem order decides whether a head appears to carry baked colour —
+  it inverted 4 of 7 decisions in one pass, and the tell was male vs female Cathar reading 253
+  vs 0 on structurally identical files. **Measure `_south.png` alone** (2026-09-17).
+- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 17 mod
+  `validation.py` files**, so all 44 bars across the four VALIDATED mods are bound-and-uncovered
+  and every `modcheck run` returns REFUSED before the game is consulted. MEASURED twice
+  independently 2026-09-17. ⛔ **Do not trust `modcheck status`** — it prints `FluidCanals GREEN`
+  for a mod that does not exist and `FlowWorks NEVER RUN` for the one that does, because the
+  summary reads a stored field while the detail re-derives. Authoring more bars adds refusals,
+  not coverage; `NORTH_STAR_PIT_PILOT_1` is the falsification test and has never run.
 - **A doc can describe defects that were fixed before the doc was written.**
   `liquids_framework_design.md` (2026-09-13) blocked all engine work on three flood
   defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling
