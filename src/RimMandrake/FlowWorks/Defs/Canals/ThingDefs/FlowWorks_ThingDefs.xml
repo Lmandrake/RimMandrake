@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Invisible driver thing, same shape as vanilla SeasonalFlood and
+       TorrentialRainFlood: an ethereal Thing whose thingClass IS the
+       Flood subclass doing the spreading. -->
+  <ThingDef ParentName="EtherealThingBase">
+    <defName>RM_FluidCanalFlood</defName>
+    <category>Ethereal</category>
+    <drawerType>None</drawerType>
+    <selectable>false</selectable>
+    <thingClass>RimMandrake.FlowWorks.Flood_FlowWorks</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

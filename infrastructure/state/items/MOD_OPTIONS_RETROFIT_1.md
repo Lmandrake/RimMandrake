@@ -50,7 +50,7 @@ behavior, real gates wired into the actual mechanism (not stubs).
 Greentide (hand-built) = 46, plus 3 that already had settings before this
 item (GelatinousSlime, Oracle, EmpirePursuit) = 49 mods now carry a real Mod
 Settings screen:**
-RimMandrake: Aftermath, CreatureBehaviors, EnvironmentalHazards, FluidCanals,
+RimMandrake: Aftermath, CreatureBehaviors, EnvironmentalHazards, FlowWorks,
 Graffiti, Greentide, Inhabited, LoreStages, ManyWaters, MovingDunes, Ninefold,
 Pits, ProximityHatch, Pyrelands, RaidRedesigner, RimProperty, RustChrome,
 SacredGraffiti, ShipVermin, StructureInjections, TitanicCreatures, Visibility,

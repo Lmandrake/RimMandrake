@@ -1,6 +1,6 @@
 # FLUID_CANAL_MECHANIC_1 — general canal/fluid-flow mechanic, RimMandrake tier
 
-> 🔴 **Ruled 2026-09-13** (owner, liquids-framework bench sitting): FluidCanals
+> 🔴 **Ruled 2026-09-13** (owner, liquids-framework bench sitting): FlowWorks
 > is the framework's FLOW ENGINE (`design/RimMandrake/liquids_framework_design.md`
 > §4) — pulsed spread only, plus two new asks: natural-source auto-prime and
 > one-shot spills. Gate first: `FLOOD_ENGINE_CORRECTIONS_1` (the
@@ -28,8 +28,8 @@ epic. This pass builds the ENGINE CORE only, proven with one generic fluid
 (water), and explicitly ships nothing tar-specific — tar is Utinni-tier
 content and is the engine's first CLIENT, not part of the engine itself.
 
-New mod: `src/RimMandrake/FluidCanals/` (`mandrake.rm.fluidcanals`, `RM_`
-prefix, namespace `RimMandrake.FluidCanals`), per `NAMING_SCHEME_PLAN.md`'s
+New mod: `src/RimMandrake/FlowWorks/` (`mandrake.rm.flowworks`, `RM_`
+prefix, namespace `RimMandrake.FlowWorks`), per `NAMING_SCHEME_PLAN.md`'s
 RimMandrake tier test ("fully generalizable to any RimWorld game").
 
 **Built:**
@@ -42,7 +42,7 @@ RimMandrake tier test ("fully generalizable to any RimWorld game").
    bespoke art this pass, stated plainly.
 3. `Designator_DigCanal` + `RM_DigCanal` DesignationDef, registered into
    vanilla's `Orders` category (same list `Designator_Mine` lives in, via a
-   `PatchOperationAdd` patch — `Patches/FluidCanal_OrdersPatch.xml`).
+   `PatchOperationAdd` patch — `Patches/FlowWorks_OrdersPatch.xml`).
 4. `WorkGiver_DigCanal` + `JobDriver_DigCanal` — reuses vanilla's own
    `JobDriver_AffectFloor` (the `SmoothFloor` engine) for the labor loop
    (reservation, work-speed ticking via `MiningSpeed`, progress bar) rather
@@ -51,8 +51,8 @@ RimMandrake tier test ("fully generalizable to any RimWorld game").
 5. `CompFluidReservoir`/`CompProperties_FluidReservoir` — a finite-volume
    fluid source on a building. When a canal cell opens within 2 cells of an
    un-spent reservoir, it spends its WHOLE volume in one commit, spawning
-   one `Flood_FluidCanal`.
-6. **`Flood_FluidCanal` — subclasses `RimWorld.Flood`, the Odyssey-gated
+   one `Flood_FlowWorks`.
+6. **`Flood_FlowWorks` — subclasses `RimWorld.Flood`, the Odyssey-gated
    cellular flood-spread engine `SeasonalFlood`/`TorrentialRainFlood`
    already use, rather than writing a parallel per-tick spread
    `MapComponent` from scratch.** This is the single biggest de-risking
@@ -66,7 +66,7 @@ RimMandrake tier test ("fully generalizable to any RimWorld game").
    `CompFluidReservoir`(60 water). Explicitly flagged as a placeholder, not
    finished content — a real spring/seep/pipe-joint belongs to a content
    mod built on this engine.
-8. `Debug/FluidCanalsDebugActions.cs` — bridge-reachable `ToolMap` actions
+8. `Debug/FlowWorksDebugActions.cs` — bridge-reachable `ToolMap` actions
    (`Instant-dig canal at cell`, `Report cell (RAW)`) so live verification
    doesn't depend on a colonist actually walking a multi-thousand-work-unit
    dig job to completion, same pattern as `RimMandrakePits`' own debug
@@ -102,7 +102,7 @@ RimMandrake tier test ("fully generalizable to any RimWorld game").
   check `EXPECTED_FAILURES_next_load.md` discipline): place
   `RM_FluidSpring_Test`, use `Instant-dig canal at cell` on an adjacent
   diggable cell, confirm `CompFluidReservoir.Notify_CanalCellOpened` fires
-  and a `Flood_FluidCanal` spawns (`Report cell (RAW)` should show
+  and a `Flood_FlowWorks` spawns (`Report cell (RAW)` should show
   `[flood spawned=True ...]`), then step ticks and confirm neighboring open
   ground converts to `WaterShallow` terrain over time, up to the reservoir's
   60-volume budget, then the flood self-destroys.
@@ -130,34 +130,34 @@ not stock.
 ## written but implements the SUPERSEDED finite-reservoir spec, not this ruling
 
 The full v1 engine listed in `## spec` above already exists on disk
-(`src/RimMandrake/FluidCanals/` — `FluidDef`, `RM_Channel_Empty`,
+(`src/RimMandrake/FlowWorks/` — `FluidDef`, `RM_Channel_Empty`,
 `Designator_DigCanal`/`WorkGiver_DigCanal`/`JobDriver_DigCanal`,
-`CompFluidReservoir`, `Flood_FluidCanal` subclassing vanilla `Flood`,
+`CompFluidReservoir`, `Flood_FlowWorks` subclassing vanilla `Flood`,
 `RM_FluidSpring_Test`, the debug actions — all present, matching the spec
 1:1). Confirmed this pass:
-- `dotnet build RimMandrake_FluidCanals.csproj -c Release` — clean, 0/0.
-- `deploy_custom_mods.py --mod FluidCanals --apply` — deployed clean (DLL
+- `dotnet build RimMandrake_FlowWorks.csproj -c Release` — clean, 0/0.
+- `deploy_custom_mods.py --mod FlowWorks --apply` — deployed clean (DLL
   was stale by build timestamp only, XML already in sync). **Mod is not
   enabled in the live ModsConfig.xml** — never live-tested, per the item's
   own "verify" section which already flagged this as owed.
 
 🔴 **`CompFluidReservoir.cs`'s actual implementation is the ORIGINAL
 one-shot/finite design** ("spends its whole volume spawning ONE
-Flood_FluidCanal — a single committed release, not a continuous drip",
+Flood_FlowWorks — a single committed release, not a continuous drip",
 its own doc comment says so verbatim) — **this contradicts the ruling
 directly above**, which supersedes it same-day: "reservoirs are NOT finite
 — slow refill from deep sources; scarcity is rate, not stock." Not fixed
 this pass — reworking a one-shot-spend-and-self-destroy comp into a
 rate-limited continuous refill is a real architecture change (does the
-`Flood_FluidCanal` re-trigger periodically, or does the SAME flood object
+`Flood_FlowWorks` re-trigger periodically, or does the SAME flood object
 keep receiving volume over time rather than self-destroying at zero — that
-changes `Flood_FluidCanal.SpreadFlood`'s own exhaustion-detection path,
+changes `Flood_FlowWorks.SpreadFlood`'s own exhaustion-detection path,
 not just `CompFluidReservoir`) and picking between those shapes is a design
 call, not a bounded bug fix. Flagging plainly rather than guessing a rate
 number or a re-trigger mechanism under the owner's name.
 
 **Next step, not done here**: BENCH/owner decides the refill mechanism
 shape (steady drip into the same flood vs. periodic re-flood vs. something
-else), then FOUNDRY reworks `CompFluidReservoir`/`Flood_FluidCanal`
+else), then FOUNDRY reworks `CompFluidReservoir`/`Flood_FlowWorks`
 accordingly and this can finally get its owed live bridge-debug-action
 verification (mod would need enabling in ModsConfig first too).

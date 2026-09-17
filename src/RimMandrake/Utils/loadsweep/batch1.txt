@@ -4,14 +4,13 @@ mandrake.rut.ishkolandmarks
 mandrake.rut.empirepursuit
 mandrake.rut.factionslate
 mandrake.rsw.fireecology
-mandrake.rm.fluidcanals
+mandrake.rm.flowworks
 mandrake.rm.graffiti
 mandrake.rsw.jawarules
 mandrake.rsw.livestock
 mandrake.rm.ninefold
 mandrake.rm.oracle
 mandrake.rut.pawnflavor
-mandrake.rm.pits
 mandrake.rm.planetpresetprime
 mandrake.rut.plantgrowth
 mandrake.rm.property

@@ -23,7 +23,8 @@
   A PATCH, not an edit to LIQUID_TYPES_MOD_1's own generated RM_Tar.xml
   ("regenerate only against a re-frozen official dump, never a live
   capture... edit the table, never this file" — that file's own header).
-  No MayRequire/FindMod gate against mandrake.rm.liquidtypes: every other
+  No MayRequire/FindMod gate against mandrake.rm.flowworks (was
+  mandrake.rm.liquidtypes until the 2026-09-16 merge): every other
   Sump-side reference to RM_TarShallow/RM_TarDeep in this item (S1's
   RUT_MoatFusePost.xml conductingTerrains list) already assumes it is a
   live, always-loaded dependency with no gating — matching that precedent

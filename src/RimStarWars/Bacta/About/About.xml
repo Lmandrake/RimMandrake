@@ -25,6 +25,6 @@ No Harmony patches: the tank is a Building_Enterable with our own ThingComps, so
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.liquidtypes</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 </ModMetaData>

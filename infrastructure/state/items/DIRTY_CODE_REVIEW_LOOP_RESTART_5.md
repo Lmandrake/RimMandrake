@@ -127,7 +127,7 @@ immediately-offered FOUNDRY queue:
   actions never register (`GenTypes.AllTypes`, a lazily-cached list, vs.
   `GetTypeInAnyAssemblyRaw`, always fresh — explains why `FluidDef` resolves
   fine while its debug actions don't) and **disproved load-order as the
-  cause with a live before/after experiment** (moved FluidCanals from
+  cause with a live before/after experiment** (moved FlowWorks from
   position 19/20 to 14/20, identical symptom). Next step is a small
   reflection-probe bridge tool to read `allTypesCached`'s live contents —
   real, separate C# work, not more reading.

@@ -1,0 +1,67 @@
+using System.Collections.Generic;
+using RimWorld;
+using Verse;
+using Verse.AI;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>Pattern mirrors <see cref="WorkGiver_ConstructAffectFloor"/> --
+	/// scan for RM_DigCanal designations, hand out the dig job.</summary>
+	public class WorkGiver_DigCanal : WorkGiver_Scanner
+	{
+		public override PathEndMode PathEndMode => PathEndMode.Touch;
+
+		public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn)
+		{
+			foreach (Designation item in pawn.Map.designationManager.SpawnedDesignationsOfDef(RimMandrakeFlowWorks_DefOf.RM_DigCanal))
+			{
+				yield return item.target.Cell;
+			}
+		}
+
+		public override bool ShouldSkip(Pawn pawn, bool forced = false)
+		{
+			return !pawn.Map.designationManager.AnySpawnedDesignationOfDef(RimMandrakeFlowWorks_DefOf.RM_DigCanal);
+		}
+
+		public override bool HasJobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
+		{
+			Designation des = pawn.Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal);
+			if (des == null)
+			{
+				return false;
+			}
+			// Fixed 2026-09-02 (opus code review): this never re-checked terrain
+			// after designation. A live flood can convert a still-designated
+			// cell to water before a pawn reaches it; digging it back fires
+			// Notify_TerrainChanged, which resets the flood's "no possible
+			// cell" state and it re-floods -- an infinite dig/flood cycle
+			// burning the full dig cost (3200 work) each time. Mirrors
+			// Designator_DigCanal.CanDesignateCell's own terrain gate and
+			// clears the stale designation instead of handing out a doomed job.
+			//
+			// Updated for ruling 19's depth ladder: an already-dug cell is no
+			// longer a reason to drop the job, it is a reason to dig DEEPER.
+			// The water and non-soil gates stand unchanged, and so does the
+			// reason they exist.
+			TerrainDef terrain = c.GetTerrain(pawn.Map);
+			byte depth = RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			bool stale = terrain.IsWater
+				|| c.GetEdifice(pawn.Map) != null
+				|| depth >= RM_ExcavationDepth.MaxDepth
+				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil)
+				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled);
+			if (stale)
+			{
+				des.Delete();
+				return false;
+			}
+			return pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced);
+		}
+
+		public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
+		{
+			return JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_DigCanalJob, c);
+		}
+	}
+}

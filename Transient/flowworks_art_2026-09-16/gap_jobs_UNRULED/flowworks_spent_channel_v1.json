@@ -1,0 +1,20 @@
+{
+ "background": "opaque",
+ "canvas": {
+  "height": 1024,
+  "width": 1024
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_spent_channel_v1",
+ "priority": 100,
+ "prompt": "RimWorld terrain sprite, painterly vanilla-RimWorld art style, seamless tileable top-down texture, 1024x1024, RGB opaque, no alpha needed: a SPENT excavated channel bed — scorched and empty after a liquid fire has burned out and receded. Blackened and grey-ashen cracked ground, soot streaks radiating from where flame once sat, a few carbonised debris flecks, dry cracked caliche showing through the ash at the high points, no water, no flame, no smoke. Sits one tone darker and greyer than the matching dry RUT_CanalBed excavation bed it replaces — read this as scarred, not merely dry. Seamless at all four edges, no text, no watermark, no vignette.",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Spec section 7 item 5 ('spent channel — scorched, empty, after a burn') has no candidate and is not named as produced OR explicitly excluded in the README's 'Not produced here' list — treated as a gap. LATER — depends on Phase 6 (Fire) existing at all; sequence after flowworks_burning_liquid_surface_v1."
+}

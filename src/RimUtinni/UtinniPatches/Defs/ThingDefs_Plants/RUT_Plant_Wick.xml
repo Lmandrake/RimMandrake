@@ -33,7 +33,7 @@
   terrain is PlantUtility.CanEverPlantAt's wildTerrainTags overlap check
   (RimWorld/PlantUtility.cs:140, `WildTerrainTags.Overlaps(terrain.tags)`),
   which also gates player sowing, not only wild spread (same function feeds
-  both routes). RM_TarShallow / RM_TarDeep (src/RimMandrake/LiquidTypes/
+  both routes). RM_TarShallow / RM_TarDeep (src/RimMandrake/FlowWorks/Defs/LiquidTypes/
   Defs/TerrainDefs/RM_Tar.xml, LIQUID_TYPES_MOD_1's own generated file, read
   not edited this pass) both carry the vanilla `Water` tag inherited from
   WaterBase, and no other terrain the Sump biome can generate carries it

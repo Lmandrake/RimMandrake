@@ -34,7 +34,7 @@ genuinely operationally serious ones (see below).
   they've gone dirty again since (rimflow is actively edited every
   session), so this isn't virgin territory, just needs a fresh pass.
 - **~49 files across 11 mods confirmed NOT in the live `ModsConfig.xml`**
-  as of this session's check: Droidworks (21), FluidCanals (9), Oracle
+  as of this session's check: Droidworks (21), FlowWorks (9), Oracle
   (6), Spikes (3, no About.xml at all — standalone prototype source),
   StickCuisine (3), LongHunger (2), PhytokinBarkHeadFix (1),
   KotORBandolierNorthFix (1), Livestock (1), WeatherSuite (1),

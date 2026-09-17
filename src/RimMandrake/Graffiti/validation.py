@@ -23,7 +23,7 @@ both); `ThoughtWorker_ViewedGraffitiMark.cs` / `BreachBiasHook.cs` for
 This mod has NO DebugAction and NO Log.* call anywhere in Graffiti/Source/
 (grepped whole -- `ModExtension_Graffiti.cs`'s own comment independently
 confirms it: "there are zero Log. calls in the whole of Graffiti/Source/").
-Unlike Pits/FluidCanals, there is no purpose-built bridge read-back
+Unlike FlowWorks, there is no purpose-built bridge read-back
 channel here at all -- every component below reads back through a real
 bridge primitive instead (`jawa/ordered_job`, `jawa/pawn_force_mental_
 break`, `jawa/list_things`), never a log tag.
@@ -48,7 +48,7 @@ mod to exercise them:
     this mod's own shipped content.
   Building a real functional test for either would require a test-only
   `ThingDef`/`ThoughtDef` this mod does not ship (the `RM_FluidSpring_
-  Test` precedent in FluidCanals) -- out of scope for a validation.py-only
+  Test` precedent in the retired FluidCanals) -- out of scope for a validation.py-only
   pass. Both toggles therefore carry a setting write+read-back component
   (`viewer_reaction_toggle_flips`/`breach_bias_toggle_flips` below,
   restored by MODCHECK_SHELVED_TOGGLE_COMPONENTS_1 once `jawa/mod_settings_
@@ -127,7 +127,7 @@ def forced_paint_job(t):
                           targetAX=mark_x, targetAZ=mark_z,
                           waitTicks=450, timeoutSeconds=30)
         if t._guard():   # no-op under the offline declaration probe --
-                         # see FluidCanals/validation.py's own note on why.
+                         # see FlowWorks/validation.py's own note on why.
             accepted = bool((r or {}).get("accepted"))
             running = bool((r or {}).get("nowRunningRequested"))
             if not (accepted and running):

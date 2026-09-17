@@ -7,7 +7,7 @@ Naming per `design/NAMING_SCHEME_PLAN.md` — core and clients are RimMandrake t
 Ash'karr wiring lives in RimUtinni; cuisine consumers live in RimStarWars.
 
 🔴 **CORRECTED 2026-09-16 — `RimMandrake: Liquid Logistics` will never ship as a
-separate mod.** Ruling 11 of `design/RimMandrake/fluid_canals_mod_definition.md`
+separate mod.** Ruling 11 of `design/RimMandrake/flowworks_mod_definition.md`
 supersedes this: the hoses, portable pumps, universal cargo tank, universal pump and
 per-net adapters described below (§4's "Tanker raid"/"Universal tank interop", §5's
 client-mod row, §7 phase ⑨) are `FlowWorks`' own hardware, absorbed into the single
@@ -25,7 +25,7 @@ bodies, rain, canal flooding, and fluid-to-fluid transformation.
 1. **One substance, many faces** — a liquid is defined once; terrain, bottle, canal,
    pipe, weather, worldmap and recipes are optional *form slots* on that definition.
 2. **Pulsed spread only** — all map motion is event-shaped (flood, drip, spill,
-   seasonal) via the **FlowWorks** engine (was "the FluidCanals engine" — renamed by his ruling of
+   seasonal) via the **FlowWorks** engine (was "the FlowWorks engine" — renamed by his ruling of
    2026-09-16, migration under `NAMING_SCHEME_EXECUTION_1`). No per-tick fluid sim, ever. (Owner
    ruling.) 🔑 As of 2026-09-16 the engine's motion is a **sort plus an overflow** over the depth
    grid — deepest cells fill first, a full cell overflows to neighbours with room — which is what
@@ -67,7 +67,7 @@ requires at least one):
 | slot | meaning |
 |---|---|
 | `terrainSuite` | shallow/deep/chest-deep TerrainDef refs; may ADOPT existing terrains |
-| `canalFluid` | FluidCanals `FluidDef` ref (soft, MayRequire-style) — pulsed spread row |
+| `canalFluid` | FlowWorks `FluidDef` ref (soft, MayRequire-style) — pulsed spread row |
 | `bottled` + `unitsPerBottle` | the item form |
 | `bottleBehavior` | `revertsTo`+`revertTicks` (boiling/icy → fresh); `rotsTo`+`rotTicks` (blood) |
 | `pipeResource` | VE PipeSystem net (patched in only when VE Framework loads) |
@@ -113,7 +113,7 @@ hemogen/beer/milk adoption rows, basic (alkaline) water, kolto/bacta healing row
 
 ## 4. Mechanics
 
-**Pulsed spread — REWRITTEN 2026-09-16.** This paragraph described `Flood_FluidCanal` +
+**Pulsed spread — REWRITTEN 2026-09-16.** This paragraph described `Flood_FlowWorks` +
 `CompFluidReservoir` generalising with an auto-prime path for natural sources. Both halves of that
 are now dead: the vanilla `Flood` subclass is **dropped** for a `MapComponent`-owned walk, and
 `CompFluidReservoir` is **deleted** (ruling 24) because a source is no longer a building.
@@ -123,7 +123,7 @@ with `0 ≤ F ≤ D`. Each pulse, over the connected excavated set — sort deep
 and a full cell **overflows** into neighbours with room. A natural source is simply a SUPERDEEP cell
 that is already full, so it spills into any channel dug at its edge and needs no priming path at all.
 Spills are one-shot releases; viscosity maps to `ticksPerTile` bands (Heavy = slow oozing — the slime
-look). Detail: `design/RimMandrake/fluid_canals_mod_definition.md` §21.
+look). Detail: `design/RimMandrake/flowworks_mod_definition.md` §21.
 
 🔴 **Scarcity is STOCK, not rate — owner, 2026-09-16, a FULL REVERSAL of this
 document's original line.** Every source carries a real volume and conservation of mass
@@ -135,7 +135,7 @@ a small body. ⚠️ **This does not weaken pillar 2**: the volume is debited at
 never simulated per tick. A stock model and "no per-tick fluid sim, ever" are
 compatible, and the reversal is not licence for a sim. `CompFluidReservoir` is a rate
 today and must gain volume accounting; the design is drafted in
-`design/RimMandrake/fluid_canals_mod_definition.md` (DRAFT — the owner has ruled the
+`design/RimMandrake/flowworks_mod_definition.md` (DRAFT — the owner has ruled the
 reversal, not the mechanism).
 
 ⚠️ **Engine status — CORRECTED 2026-09-16 (this document was stale).** All three
@@ -151,7 +151,7 @@ pass owed** — the deleted claim that "nothing builds on the engine until those
 corrections land" was blocking work that had already landed.
 
 🔴 **The real engine gap, MEASURED 2026-09-16: spread is not channel-constrained.**
-`Flood_FluidCanal` inherits vanilla `Flood`'s gating and spreads from its seed across
+`Flood_FlowWorks` inherits vanilla `Flood`'s gating and spreads from its seed across
 any open, non-water, non-edifice ground — it does not follow the dug channel. Every
 canal fantasy in this document assumes a channel *contains* its liquid. This, not the
 fixed tuning defects, is what the engine owes.
@@ -234,7 +234,7 @@ He answered this document's own cadence argument: *"I understand your argument a
 I don't think that's actually going to happen. We're going to include a big set of options. Others can
 extend later via our framework."*
 
-**Certain**: `FluidCanals` + `ManyWaters` + the planned `RimMandrake: Liquid Logistics` + the surface
+**Certain**: `FlowWorks` + `ManyWaters` + the planned `RimMandrake: Liquid Logistics` + the surface
 flood driver all become **`Fluidity`**. Liquid Logistics therefore never ships as its own mod, and
 pillar 5 ("every client ships alone") no longer describes this family — one mod cannot ship alone
 *from itself*. The rows/hardware/engine boundaries survive as INTERNAL structure, which is still worth
@@ -243,12 +243,12 @@ keeping: it is what stops the hardware writing stock bookkeeping directly.
 **Not yet ruled** — whether `LiquidTypes`/`RimMandrake: Liquids` (the registry), `GelatinousSlime` and
 `WreckedMachines`' distillation also dissolve into Fluidity, or stay as siblings extending it. Until
 he rules, treat the rows below for those three as live. Design detail:
-`design/RimMandrake/fluid_canals_mod_definition.md` §16.
+`design/RimMandrake/flowworks_mod_definition.md` §16.
 
 | Mod | Becomes |
 |---|---|
 | **LiquidTypes** → `RimMandrake: Liquids` | the core registry + generator; keeps `RM_LiquidProperties` for foreign terrains — ⚠️ Fluidity boundary unruled |
-| ~~**FluidCanals**~~ → **`Fluidity`** | the whole domain: occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, roster, hardware. Renaming waits on `NAMING_SCHEME_EXECUTION_1` |
+| ~~**FlowWorks**~~ → **`Fluidity`** | the whole domain: occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, roster, hardware. Renaming waits on `NAMING_SCHEME_EXECUTION_1` |
 | ~~**ManyWaters**~~ | **absorbed into Fluidity** — its coloured waters and slimes become Fluidity's rows, with a tinted-vanilla fallback per row so no liquid vanishes without Alpha Biomes |
 | **GelatinousSlime** | slime-mechanics client: hediffs/genes stay; its terrains adopted — ⚠️ Fluidity boundary unruled |
 | **WreckedMachines** | + Distillation module; wreck-tier grammar for found industry — ⚠️ Fluidity boundary unruled |
@@ -278,7 +278,7 @@ predator incidents; tank-mixing accidents (cross-connected tanks brew
 fixed). What the engine actually owes in its place is **channel-constrained spread** and
 the **stock model** of the 2026-09-16 reversal. Their position in this order is the
 owner's call, not this correction's: both are drafted in
-`fluid_canals_mod_definition.md` and neither is ruled. → ② registry skeleton adopting
+`flowworks_mod_definition.md` and neither is ruled. → ② registry skeleton adopting
 existing terrains (def-load test only) →
 ③ natural-source auto-prime + spills → ④ slime streams (Heavy FluidDefs, R/G/W/yellow
 rows) → ⑤ bottles + Mod Settings → ⑥ revert/rot specials → ⑦ thirst chain +

@@ -1,0 +1,43 @@
+
+  sheet      D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\homeless_disposition_register.html
+  decisions  D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\homeless_disposition_register.decisions.json
+             125 rows · 125 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:42841/?t=qbuzjkBhpckm6ZfGzO9yLQ
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  opened with explorer.exe
+
+  "GET /?t=qbuzjkBhpckm6ZfGzO9yLQ HTTP/1.1" 200 -
+  "GET /decisions?t=qbuzjkBhpckm6ZfGzO9yLQ HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "GET /decisions?t=qbuzjkBhpckm6ZfGzO9yLQ HTTP/1.1" 200 -
+  "GET /?t=qbuzjkBhpckm6ZfGzO9yLQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions?t=qbuzjkBhpckm6ZfGzO9yLQ HTTP/1.1" 400 -

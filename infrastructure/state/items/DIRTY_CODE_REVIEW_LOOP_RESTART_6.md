@@ -146,7 +146,7 @@ Remaining 83 dirty files break down as:
   tackle them, that should be a deliberate decision, not "well
   everything else is done."**
 - **Confirmed NOT currently active (49 files)** — Droidworks (21),
-  FluidCanals (9), Oracle (6), Spikes (3, no About.xml at all —
+  FlowWorks (9), Oracle (6), Spikes (3, no About.xml at all —
   standalone prototype source, not even a packaged mod), StickCuisine
   (3), LongHunger (2), PhytokinBarkHeadFix (1), KotORBandolierNorthFix
   (1), Livestock (1), RiverSteam (1), WeatherSuite (1) — none of these

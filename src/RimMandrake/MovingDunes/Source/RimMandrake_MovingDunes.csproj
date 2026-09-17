@@ -3,7 +3,7 @@
   <!--
     MOVING_DUNES_BUILD_1. Same recipe as
     src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj (Harmony) and
-    src/RimMandrake/FluidCanals/Source/RimMandrake_FluidCanals.csproj (defs + Things).
+    src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj (defs + Things).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\MovingDunes\Source\RimMandrake_MovingDunes.csproj -c Release

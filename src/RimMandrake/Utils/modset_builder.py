@@ -77,10 +77,10 @@ TIERS = {
         "dlc": False,
     },
     "pits": {
-        "why": "Prove the RimMandrake Pits framework (dig stages, mass-sum "
+        "why": "Prove the pit framework inside FlowWorks (dig stages, mass-sum "
                "cover trigger, struggle escape) with nothing else on the map "
                "that could spring a trap or explain a failure.",
-        "want": [BRIDGE, "mandrake.rm.pits"],
+        "want": [BRIDGE, "mandrake.rm.flowworks"],
         "dlc": False,
     },
     "graffiti": {

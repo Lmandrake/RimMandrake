@@ -12,7 +12,7 @@ namespace RimMandrake.ProximityHatch
     //
     // Scan cadence deliberately follows the precedent already in this
     // codebase, RimMandrake.Pits.CompPitCoverTrigger
-    // (src/RimMandrake/Pits/Source/Trigger/CompPitCoverTrigger.cs): a manual
+    // (src/RimMandrake/FlowWorks/Source/Pits/Trigger/CompPitCoverTrigger.cs): a manual
     // tick countdown inside CompTick, not CompTickRare. The egg's ThingDef
     // needs tickerType Normal anyway for CompHatcher's own CompTick to
     // accumulate gestateProgress every tick, and the engine only invokes a

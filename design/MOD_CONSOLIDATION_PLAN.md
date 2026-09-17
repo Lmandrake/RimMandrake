@@ -68,7 +68,7 @@ tooling and stay as-is (§1b).
 
 ### 1b. Mechanics that stay their own mods (ruling 4)
 
-RM: RimChronicle (né Aftermath), FluidCanals, Inhabited, Oracle, Pits,
+RM: RimChronicle (né Aftermath), FlowWorks, Inhabited, Oracle, Pits,
 RimProperty (né Property, ← SalvageClaim, TheftHauler — R1), RaidRedesigner,
 RimPursuit (né Visibility, ← pursuit engine — R3), WreckedMachines,
 StrandedQuest (VERIFY tier). RSW: JawaRules, JawaVoice — **per-file triage
@@ -285,7 +285,7 @@ patches           MandrakePatches ◄─┐        StarWarsPatches ◄─┐    
                     5 RM fix mods ──┘          2 RSW fix mods ─┤
                                                DesertVehicleReskin (R11) ─┘
                   (Jawa_Patches' 95 files already landed in these three, 2385af29 — tombstone dies)
-solo mechanics    FluidCanals Oracle Pits    JawaRules JawaVoice (R13)        Antiquities Doctrine LanternDeeps
+solo mechanics    FlowWorks Oracle Pits    JawaRules JawaVoice (R13)        Antiquities Doctrine LanternDeeps
                   WreckedMachines            Cuisine                          PlantGrowth ResearchRetag AshkarrFlora
                   StrandedQuest(VERIFY tier)                                  RestrainingBolts ShipMemory
 dev-only (stay)   LoadTracer PlanetPresetPrime RimDefDump

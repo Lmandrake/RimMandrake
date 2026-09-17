@@ -44,7 +44,7 @@ mandatory register, not an oversight):
   live 2026-09-12 makes `rimworld/update_mod_settings` (t.set_setting)
   refuse with "Could not resolve field ... on ...Settings" (that tool's
   reflection walks INSTANCE fields on the ModSettings object; see
-  src/RimMandrake/Pits/validation.py's own note after `uncover_disarms`).
+  src/RimMandrake/FlowWorks/validation.py's own note after `uncover_disarms`).
   The same mechanical fact applies here without needing to re-discover it
   live. And even a working setter could prove nothing without (1)'s zero
   rule-defs, or (for the one WIRED trigger that needs no rule-def context

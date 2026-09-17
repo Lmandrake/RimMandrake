@@ -48,7 +48,7 @@ here on purpose to look green.
 MOD SETTINGS ARE STATIC FIELDS -- RM_NinefoldSettings's four fields
 (engineEnabled, firstContactLettersEnabled, eventMagnitudeMultiplier,
 moodWalkMultiplier) are all `public static`. Per the Pits pilot's own
-documented finding (src/RimMandrake/Pits/validation.py's trailing comment),
+documented finding (src/RimMandrake/FlowWorks/validation.py's trailing comment),
 `t.set_setting` / `rimworld/update_mod_settings` walks INSTANCE fields via
 reflection and refuses a static field outright ("Could not resolve field").
 No component here attempts a live toggle flip for that reason. Each of the

@@ -1,0 +1,20 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_tubing_v1",
+ "priority": 100,
+ "prompt": "RimWorld linear-building sprite, painterly vanilla-RimWorld art style, top-down read, 256x256, RGBA with a real alpha channel: a single straight segment of FlowWorks flexible liquid tubing — a ribbed, patched salvage hose lying flush along the ground, a scrap-metal clamp collar at each end where it would connect to the next segment, running edge-to-edge across the tile so segments tile into a continuous line. Palette matches the commission's existing hardware (scrap-metal rails and rusted hull-plate seen on the sluice gates and ladder): weathered dark rubber-and-canvas hose body, steel-grey clamp collars, faint rust streaks. Centered on the tile, no ground shadow, no surrounding scenery, no text, no watermark. Heavy clean black outline around the whole silhouette and major internal linework.",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Phase 8 hardware (flexible tubing) named in FLOWWORKS_BUILD_PROGRAM_1 but Phase 8 is not yet built — LATER. A conduit/pipe network piece likely needs turn/junction/endpoint variants beyond this single straight segment; this job covers only the straight piece. No design-doc section spells out appearance beyond the phase-8 name — flag for owner review before running."
+}

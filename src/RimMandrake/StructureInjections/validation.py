@@ -55,7 +55,7 @@ backed up by one `jawa/list_things` spot check per plan for a real
 placed Thing, because "the counts matched" and "specifically the RIGHT
 things landed in the RIGHT cells" are different claims. No independent
 terrain/roof read-back tool was found grounded for this repo (unlike
-FluidCanals' own bespoke `Report cell (RAW)` action) -- see "Still not
+FlowWorks' own bespoke `Report cell (RAW)` action) -- see "Still not
 proven" item 1.
 
 A GENUINE, CONFIRMED CROSS-MOD DEPENDENCY RISK in `moisture_farm_test.txt`
@@ -161,7 +161,7 @@ def replay_dwelling_plan(t):
         # Spot check: plan THING Wall 100 100 -> anchor + (100-100, 100-100)
         # = the anchor cell itself (FOOTPRINT 100 100 ...).
         if t._guard():   # no-op under the offline declaration probe --
-                         # see FluidCanals/validation.py's own note on why.
+                         # see FlowWorks/validation.py's own note on why.
             if _thing_count(t, "Wall", "%d,%d,3,3" % (x - 1, z - 1)) < 1:
                 raise ExpectationFailed(
                     "no Wall found near the anchor (%d,%d) after replaying "

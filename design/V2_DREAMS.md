@@ -2290,10 +2290,10 @@ full census, so whoever writes the spec never pays for it again.
 🔴 **MOSTLY DELIVERED IN v1 — corrected 2026-09-16.** This entry described v1 as a seed cell
 radiating outward on a timer with *"no notion of volume conservation between connected bodies… no
 settling to a common level."* **That is no longer true of v1.** The owner's FlowWorks rulings of
-2026-09-16 (`design/RimMandrake/fluid_canals_mod_definition.md`) put connected volumes, real
+2026-09-16 (`design/RimMandrake/flowworks_mod_definition.md`) put connected volumes, real
 conservation of mass, and settling to a common level **into v1**: every excavated cell carries a depth
 and a fill, and each pulse sorts the connected set deepest-first, pours to full, then overflows into
-neighbours with room. `Flood_FluidCanal` is dropped entirely.
+neighbours with room. `Flood_FlowWorks` is dropped entirely.
 
 So of the dream below, these are now **v1 behaviours**, falling out of a sort plus an overflow: a
 reservoir draining into a canal network filling connected basins toward a common level; a breach

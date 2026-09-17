@@ -21,7 +21,7 @@ Read directly from the live `ModsConfig.xml`
 `brrainz.rimbridgeserver`, `7f.alienworlds(.tidallylocked)`, `sarg.alphabiomes`,
 `oblitus.mylittleplanet`, `mandrake.rm.inhabited`, `neronix17.toolbox`,
 `Neronix17.OuterRim.Core`, `erdelf.HumanoidAlienRaces`, `mandrake.rsw.ionweapons`,
-`mandrake.rsw.droidworks`, `mandrake.rm.fluidcanals`, `mandrake.rut.shipmemory`,
+`mandrake.rsw.droidworks`, `mandrake.rm.flowworks`, `mandrake.rut.shipmemory`,
 `mandrake.rut.vaultdungeons`, `rw.mod.simplestairs`, `Kutte.Stairs`,
 `mlie.decorativecliffs`) — a reduced/test list, not the ~599-mod full stack the
 2026-09-08 commit log references. Per `CLAUDE.md`, `ModsConfig.xml` describes only the

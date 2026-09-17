@@ -6,16 +6,16 @@ the full original text (entries 1-3 filed 2026-09-06T22:10:31Z, 4-6 added
 ## FOUNDRY, 2026-09-07 -- worked on a fresh full 598-mod load
 
 **ENTRY 1 (FLUID_CANAL_DEBUG_SURFACE_1) -- INCONCLUSIVE, different reason than
-expected.** `jawa/type_visibility typeName=RimMandrake.FluidCanals.FluidCanalsDebugActions`
+expected.** `jawa/type_visibility typeName=RimMandrake.FlowWorks.FlowWorksDebugActions`
 returned `assemblyFound: false` (not the theorized `typeInAllTypes=false AND
-getTypesThrew=true AND typeInitializerNull=true`). Checked why: `mandrake.rm.fluidcanals`
+getTypesThrew=true AND typeInitializerNull=true`). Checked why: `mandrake.rm.flowworks`
 is not in `ModsConfig.FULL.LATEST.xml` at all -- confirmed via `deploy_custom_mods.py
---mod FluidCanals`, which reports "in sync (9 files)" but "not enabled in ModsConfig".
+--mod FlowWorks`, which reports "in sync (9 files)" but "not enabled in ModsConfig".
 The mod is correctly deployed, just off. This is consistent with `FLUID_CANAL_MECHANIC_1`
-(the underlying feature) still being unclosed/proposed -- FluidCanals is not
+(the underlying feature) still being unclosed/proposed -- FlowWorks is not
 campaign-ready yet, so its absence from the real list looks intentional, not a
 regression. The GenTypes.AllTypes recovery-path theory remains untested; needs
-FluidCanals actually enabled on some load to test at all.
+FlowWorks actually enabled on some load to test at all.
 
 **ENTRY 2a (DEV_LOG_AUTOOPEN_SUPPRESS_1) -- PASS, confirmed live + by screenshot.**
 `jawa/log_autoopen_suppress action=get` -> `installed: true, suppressed: true`
@@ -84,7 +84,7 @@ baseline, which stays owner-only at 584 mods, 2026-08-29).
 ## verify
 ```
 PROVE   the six per-entry outcomes above, each with its own evidence
-EXPECT  entries 5, 6, 2a fully close; 1 needs FluidCanals enabled somewhere to
+EXPECT  entries 5, 6, 2a fully close; 1 needs FlowWorks enabled somewhere to
         even test; 2b and 3 need one more session (2b: first-call-ordering on
         a cheap quicktest; 3: past NINEFOLD_DEBUG_GAME_READY_CRASH_1's known
         OOM risk, or a campaign-save load instead of the debug quicktest

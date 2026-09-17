@@ -1,0 +1,53 @@
+
+  sheet      D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\flora_assignment_register.html
+  decisions  D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\flora_assignment_register.decisions.json
+             288 rows · 288 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:45389/?t=IsfQSMGB5B6GQY_dVETRWQ
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=IsfQSMGB5B6GQY_dVETRWQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /plant_art/RG_Plant_AridGrass.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_HealrootWild.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_AridGrass.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_HealrootWild.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_Bush.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_Bush.detail.png HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "GET /?t=IsfQSMGB5B6GQY_dVETRWQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /plant_art/Plant_HealrootWild.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_HealrootWild.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_AridGrass.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_AridGrass.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_Bush.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_Bush.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.anchor.png HTTP/1.1" 200 -
+  "GET /?t=IsfQSMGB5B6GQY_dVETRWQ HTTP/1.1" 200 -
+  "GET /?t=IsfQSMGB5B6GQY_dVETRWQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /plant_art/RG_Plant_AridGrass.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_Dervish.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_HealrootWild.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/Plant_HealrootWild.anchor.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_AridGrass.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.detail.png HTTP/1.1" 200 -
+  "GET /plant_art/RG_Plant_CrimsonCushion.anchor.png HTTP/1.1" 200 -
+  "GET /?t=IsfQSMGB5B6GQY_dVETRWQ HTTP/1.1" 200 -
