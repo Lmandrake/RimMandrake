@@ -33,8 +33,8 @@ the depth/fill primitive. Do not "fix" it earlier — until the build lands, thi
 9. [S] LOOK at the dug channel and the flooded cells at play zoom: the channel reads as a dug channel rather than a gravel path, flooded cells read as the liquid they hold, and a partly-filled canal is distinguishable from a full one
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 4899e58a892ef1f86374562d1b049a8ba1ebf4a15e922cd7c77707dc2b725fb0
 
 ⚠️ **DRAFT — not a bar until the owner validates it** with
 `modcheck validate FlowWorks --owner-said "…"`. Per
@@ -192,6 +192,15 @@ absence reads as a decision:
   both the source object and the strained state it was to be distinguished from.
 
 ## anti-guessing notes
+- 🔴 **The `## north star` section still opens with a DRAFT banner and still says the checklist
+  "has never bound". Both are FALSE as of 2026-09-17** — he validated it (`state: VALIDATED`,
+  hash `4899e58a…`, 13 must-show + 3 cannot-show binding). The false text is left standing
+  **deliberately**: the recorded hash covers the whole section including its prose, so correcting
+  those two sentences would revert his validation to DRAFT by mismatch and silently stop the mod
+  being refused. This note lives out here because everything above `## anti-guessing notes` is
+  inside the hashed region. It is the exact defect `NORTHSTAR_HASH_SCOPE_1` describes — hash the
+  bars, not the commentary — and it can only be fixed by that item, or by him re-validating after
+  the edit. ⛔ Do not "tidy" the banner; that is the trap, not the fix.
 - `jawa/canal_dig` and `jawa/canal_cell_report` are cited verbatim from `Transient/bench_tools_dump.json`; both note the mod's own gizmo/dev-menu equivalents "never register live" (FLUID_CANAL_DEBUG_SURFACE_1), so these two ARE the only live-reachable surface — no separate `rimworld/execute_debug_action` route exists for this mod's report/dig actions.
 - 🔴 This walk USED TO CLAIM "No [S] line: nothing here is a visual-only concern". That claim was false and is deleted. MEASURED 2026-09-16: the mod ships **zero bespoke textures** — the dug channel borrows `Terrain/Surfaces/Gravel`, the test source borrows the drop-beacon sprite — so every state assertion above can pass while the player looks at gravel. That is exactly the defect class the north star system exists to catch (`design/RimMandrake/north_star_validation_spec.md`), and this walk was one of the 7 that dismissed the visual pass in writing.
 - Step 4 used to assert `volume` = 60 on the comp. **There is no `volume` field.** MEASURED 2026-09-16 from `Defs/ThingDefs/FluidCanal_ThingDefs.xml:51-57`: the comp is configured with `fluidDef`, `dripVolume` 3, `dripIntervalTicks` 2500, `reFloodVolume` 60, `reFloodIntervalTicks` 180000. The 60 that line was reaching for is `reFloodVolume`.
