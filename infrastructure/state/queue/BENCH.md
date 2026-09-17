@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T18:57:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:32:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -478,6 +478,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PIT_SUPERDEEP_COLLAPSE_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Not written yet. This is design work and goes to a backgrounded Fable subagent
 prose:    infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md
