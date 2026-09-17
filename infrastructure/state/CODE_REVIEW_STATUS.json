@@ -1319,6 +1319,12 @@
     "hash": "2492a539544b7781bd9c124eb5db26a55827eb894cb07c20ab43ce3430b5b34a",
     "sha": "670da445d"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "aeead9e5ab3e7ef84b3e638da13cb0bac50d0b6b5ff9d9f1f53778975d9dff3f",
+    "sha": "d3aa7fb5d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1398,10 +1404,10 @@
     "sha": "6f7f5ff61"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GnawTreeBaseExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "9e516376195442149f312ec0bae791c2cb93ec168bd5600ed2b9ed532f4b038a",
-    "sha": "0dedc6cfa"
+    "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs": {
     "cleanCount": 1,
@@ -1452,10 +1458,10 @@
     "sha": "b3a646c3f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_GnawTreeBase.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "741a95734cb816a74864abdb375e343098a5d90e0c8b10ccbf6b7049fb6ae901",
-    "sha": "0dedc6cfa"
+    "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_ReturnToWater.cs": {
     "cleanCount": 1,
@@ -1474,6 +1480,12 @@
     "date": "2026-09-14",
     "hash": "8335817cd10461f33606dfac71a1ed7df82e9e2ea76f8866ee061dd277b3b37c",
     "sha": "8801d8429"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_LurkingWaterExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "37c6379e3e046d804a26af56c825d21d9b45e4187764c65c83699ca87b05aee4",
+    "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs": {
     "cleanCount": 1,
@@ -1583,6 +1595,12 @@
     "hash": "ff8351497694b423011bfe30d32ccd113f1bf753bf80fa285744110d771b09df",
     "sha": "c76fc40a0"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_TenantTruceExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "21d3334c902bcbe79a82e7d67e93d388219388f506e1b67044e57fa49b4c1462",
+    "sha": "d3aa7fb5d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_TreeFallUtility.cs": {
     "cleanCount": 2,
     "date": "2026-09-14",
@@ -1607,6 +1625,12 @@
     "hash": "b2d163c1468678bfa1152dc0015ad84d6ca37d6f029e51c52a115e530d8de640",
     "sha": "6f7f5ff61"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_HaulPawnAndExit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "85ee48c087956e17b3e7d06f9e8124d3c2630d3b19029138737e1ca897ec2ea4",
+    "sha": "d3aa7fb5d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_Breaklight.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1618,6 +1642,12 @@
     "date": "2026-09-13",
     "hash": "24e20772e73769a2f2c791c9fe93afc991f86bd01d5bc4950943363f11bf9a50",
     "sha": "b62604fad"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_MirrorBreak.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e4095202a5b5f0745f81b11d9ba54ab9ebaa4dc501d6f61c845b5efb94be511e",
+    "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs": {
     "cleanCount": 1,
@@ -1636,6 +1666,12 @@
     "date": "2026-09-13",
     "hash": "0495ab98523c565169780c1ed176c98ac773e6037fbbc919da74d024357f4ef7",
     "sha": "0e38767e7"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RUT_TenantEmergenceSpawner.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fe0881b1e072316ef99f287c0379d7f980a83c5b66076237ac183cbf94680711",
+    "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_WeatherOverlay_ScaldSteam.cs": {
     "cleanCount": 1,
