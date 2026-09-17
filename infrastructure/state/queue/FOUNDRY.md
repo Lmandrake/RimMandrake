@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:37:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:52:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,6 +918,15 @@ kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
 
+## FLOWWORKS_MECHANICS_TABLE_STALE_1 FlowWorks' mechanics table (flowworks_mod_definition.md section 4) is stale in the DANGEROUS direction - it says UNBUILT for code that exists, so a seat reading it may rebuild what is already there. MEASURED 2026-09-17 on the Mac: the table calls 'Source stock / volume' UNBUILT with 'No stock of any kind exists' while RM_LiquidStock.cs is 424 lines implementing the 5:1 budget, sticky-limitless classification, recession and refill; it calls 'Spread confined to the channel' the biggest gap and UNBUILT while Flood_FlowWorks.CanFloodInto gates on RM_MapComponent_Excavation.CanLiquidEnter with channelConfinementEnabled defaulting true; and it describes source priming via CompFluidReservoir.Notify_CanalCellOpened when that comp is deleted from disk (only 4 deletion comments remain). RM_ExcavationDepth (119) and RM_LiquidBody (108) also exist unmentioned. Audit every row against the real source and correct it - this is the FLOOD_ENGINE_CORRECTIONS_1 trap (a doc blocking work on defects already fixed) repeating in the same mod family
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1814,16 +1823,6 @@ thin:     spec, verify and criteria all present
 summary:  Sweep the remainder. MEASURED list as of 2026-09-16 — re-grep, since it will have
 prose:    infrastructure/state/items/STALE_RENAME_GATE_SWEEP_1.md
 
-## AFTERMATH_DEAD_LETTERS_1 Aftermath's payload letters never reach the screen: letterLabel/letterText declared at RM_AftermathRuleDef.cs:56-57 and read NOWHERE, so all 8 rules author a letter the player never sees; the single ReceiveLetter at AftermathRuleRunner.cs:337 is the telegraph only and hardcodes LetterDefOf.ThreatBig so every omen arrives identically
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/AFTERMATH_DEAD_LETTERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/AFTERMATH_DEAD_LETTERS_1.md
-
 ## SALVAGECLAIM_WALK_STALE_1 design/validation_walks/RimMandrake/SalvageClaim.md names a subject that no longer exists (src/RimMandrake/SalvageClaim is gone, consolidated into RimProperty) - re-point or retire the walk, and check whether Property.md already covers it
 state:    proposed
 row:      unassigned
@@ -1894,16 +1893,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ORACLE_FALLBACK_UNVALIDATED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ORACLE_FALLBACK_UNVALIDATED_1.md
 
-## AFTERMATH_TELEGRAPH_REFERENT_1 RM_AftermathRule_AlliesArrive's one substitution slot has two referents: SendTelegraph formats with ResolveTargetFaction's result, the ALLY under AllyOfTrigger, but telegraphText means the DEFEATED faction while letterText on the same def means the ally — and only the wrong one is reachable, since letterText is read nowhere (see AFTERMATH_DEAD_LETTERS_1). VERIFIED in-window at AftermathRuleRunner.cs:261,307,336 and RM_AftermathRuleDefs.xml:64
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/AFTERMATH_TELEGRAPH_REFERENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/AFTERMATH_TELEGRAPH_REFERENT_1.md
-
 ## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
 state:    proposed
 row:      unassigned
@@ -1923,16 +1912,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NINEFOLD_LOUDNESS_FRONT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
-
-## FLOWWORKS_MECHANICS_TABLE_STALE_1 FlowWorks' mechanics table (flowworks_mod_definition.md section 4) is stale in the DANGEROUS direction - it says UNBUILT for code that exists, so a seat reading it may rebuild what is already there. MEASURED 2026-09-17 on the Mac: the table calls 'Source stock / volume' UNBUILT with 'No stock of any kind exists' while RM_LiquidStock.cs is 424 lines implementing the 5:1 budget, sticky-limitless classification, recession and refill; it calls 'Spread confined to the channel' the biggest gap and UNBUILT while Flood_FlowWorks.CanFloodInto gates on RM_MapComponent_Excavation.CanLiquidEnter with channelConfinementEnabled defaulting true; and it describes source priming via CompFluidReservoir.Notify_CanalCellOpened when that comp is deleted from disk (only 4 deletion comments remain). RM_ExcavationDepth (119) and RM_LiquidBody (108) also exist unmentioned. Audit every row against the real source and correct it - this is the FLOOD_ENGINE_CORRECTIONS_1 trap (a doc blocking work on defects already fixed) repeating in the same mod family
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLOWWORKS_MECHANICS_TABLE_STALE_1.md
 
 ## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
 state:    proposed
