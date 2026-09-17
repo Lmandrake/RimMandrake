@@ -233,7 +233,7 @@ stock bookkeeping directly.
 ## Phase 9 — Validation, and the pit's art
 
 Rewrite the walk and `validation.py` against the new primitive (the old ones assert a deleted comp).
-Rewrite the north star: the DRAFT checklist in `design/validation_walks/RimMandrake/FluidCanals.md` is
+Rewrite the north star: the DRAFT checklist in `design/validation_walks/RimMandrake/FlowWorks.md` is
 13 must-show + 3 cannot-show lines distilled from his own words, and it needs regrouping once depth is
 the primitive. Then the pit's visual redesign inside FlowWorks (`PIT_TRAP_VISUAL_REDESIGN_1`).
 
