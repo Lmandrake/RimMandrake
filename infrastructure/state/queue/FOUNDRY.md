@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:50:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T19:59:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -765,6 +765,15 @@ kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
 
+## ARTPIPE_FAILED_REQUEUE_1 ARTPIPE_FAILED_REQUEUE_1 clear the 46-job failed/ pile: drop 27 gemini-banned, requeue 16 codex transients, fix 3-job canvas-size bug
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  infrastructure/artpipe/failed/ held 46 job/manifest pairs at triage
+prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md
+
 ## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
 state:    doing
 row:      unassigned
@@ -773,6 +782,15 @@ target:   v1
 kind:     task
 summary:  First live wave (MODCHECKMATUREWAVE1, 2026-09-13, min16 environment):
 prose:    infrastructure/state/items/MODCHECK_SUITE_CORRECTIONS_1.md
+
+## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
+prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
@@ -800,6 +818,15 @@ target:   v1
 kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
+
+## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 ## QUICKGRASS_GROWTH_STAGES_1 Quickgrass green-gold art plus three growth-stage graphics
 state:    doing
@@ -1366,6 +1393,16 @@ blocked:  Verified offline: depends on item 1 (CATHEDRAL_REGARD_BLACKBOARD_1) fo
 summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
 prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
 
+## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Armoury half fully resolved offline (kaitorisenkou.ModularWeapons2 + guy762.MM.KotORCore, recorded in src/RimStarWars/Armoury/validation.py's docstring, verified still present). WreckedMachines/VFEFactory half cannot go further offline: the VE-sibling coupling is a runtime Harmony DefGenerator scan, not a static About.xml dependency, so naming the missing VE sibling(s) needs a live min16+candidates quicktest bisection through the bridge -- no bridge available this session (FOUNDRY afk-queue guardrail). (on COLD_LOAD_RUN_SHEET_4)
+summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
+prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1407,36 +1444,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
 prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
-
-## ARTPIPE_FAILED_REQUEUE_1 ARTPIPE_FAILED_REQUEUE_1 clear the 46-job failed/ pile: drop 27 gemini-banned, requeue 16 codex transients, fix 3-job canvas-size bug
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  infrastructure/artpipe/failed/ held 46 job/manifest pairs at triage
-prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md
-
-## DOING_SEDIMENT_RECLAIM_1 DOING_SEDIMENT_RECLAIM_1 reclaim 21 zombie doing items to ready (dead-session starts, last touch 2026-09-06..10)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  DOINGITEMSRECONCILE1's audit (2026-09-13) found these 21 FOUNDRY items in
-prose:    infrastructure/state/items/DOING_SEDIMENT_RECLAIM_1.md
-
-## MODCHECK_DONOR_ENVIRONMENTS_1 MODCHECK_DONOR_ENVIRONMENTS_1 Armoury and WreckedMachines modcheck environments: compose their donor mods (ModularWeapons2+KotOR sounds; VFEFactory chain) without the recipe-generator NRE
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
-prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
 ## LIQUID_REGISTRY_CORE_1 LiquidDef registry skeleton in LiquidTypes: property block + form slots, v1 rows adopting existing terrains, generator emits from rows
 state:    proposed
@@ -1617,26 +1624,6 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
-
-## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
-
-## PYRELANDS_MAPGEN_SCRUB_1 Pyrelands mapgen: no ancient dangers, no scattered rock chunks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_MAPGEN_SCRUB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_MAPGEN_SCRUB_1.md
 
 ## RAZORJACK_IDENTITY_RESTYLE_1 Razorjack restyle: grass-camo art, our-modspace description, new SW name
 state:    proposed
