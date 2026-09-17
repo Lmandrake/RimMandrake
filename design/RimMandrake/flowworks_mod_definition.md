@@ -93,26 +93,31 @@ refill in step 8 — are the mod.
 
 ## 4. Mechanics against the code
 
+*(Corrected 2026-09-17, FOUNDRY, per `FLOWWORKS_MECHANICS_TABLE_STALE_1` —
+BENCH's 2026-09-17 audit found 8+ of ~18 rows stale in the dangerous
+direction, calling shipped code UNBUILT. Every row below is re-checked
+against the current source, not the previous pass's prose.)*
+
 | Mechanic | State | Detail |
 |---|---|---|
 | Dig-canal designation, work giver, job | **BUILT** | `Designator_DigCanal` / `WorkGiver_DigCanal` / `JobDriver_DigCanal` carve `RM_Channel_Empty` into diggable soil; refuse edifices, water, existing channel, non-soil |
-| Source priming on canal contact | **BUILT** | `CompFluidReservoir.Notify_CanalCellOpened` primes on 8-way adjacency to the building's occupied rect and fires one release at once |
-| Recurring release cadence | **BUILT, wrong model** | Two independent releases off `CompTickRare` — drip (`dripVolume`/`dripIntervalTicks`) and re-flood (`reFloodVolume`/`reFloodIntervalTicks`). A **rate that can never run dry**; ruling 4 replaces it with a stock |
-| Recoverable release | **BUILT** | `SetTempTerrain` + `QueueRemoveTerrain`; a boxed-in flood self-destroys at `spawnedTick + 2 * FloodingTicks`; `ticksPerTile` is a real per-fluid field with `MaxFloodDurationTicks` derived from it. The three `FLUID_CANAL_FLOOD_TUNING_GAPS_1` defects were fixed 2026-09-02, item closed at 747b0025 |
-| Flow speed per liquid | **PARTIAL** | `FluidDef.ticksPerTile` is real and drives the rate; viscosity as a named concept with bands is UNBUILT and belongs to the registry's `viscosityClass` |
-| **Spread confined to the channel** | **UNBUILT — the biggest gap** | `Flood_FlowWorks` inherits vanilla's gating and spreads across any open, non-water, non-edifice ground. It does **not** follow the dug channel. §6 |
-| Source stock / volume | **UNBUILT** | No stock of any kind exists. §5 |
-| Limited vs limitless detection | **UNBUILT** | Nothing inspects a body's extent or its map-edge contact |
+| A source is a terrain cell, not a building | **BUILT** | Ruling 24 (owner, 2026-09-16) deleted `CompFluidReservoir` and its `Notify_CanalCellOpened` priming entirely (confirmed: zero remaining references outside deletion comments). A source is now a SUPERDEEP cell at `F = D`; `RM_MapComponent_Excavation`'s own pulse moves its liquid, no "priming" step exists or is needed |
+| Recurring release cadence | **BUILT — the stock model ruling 4 asked for** | The old drip/re-flood `CompTickRare` fields (`dripVolume`, `reFloodVolume`, etc.) are gone with the comp that owned them. `RM_MapComponent_Excavation`'s pulse (`pulseIntervalTicks`, `flowPerPulse`, both Mod Settings) plus `RM_LiquidStock`'s debit-at-pulse-boundary stock (§5) replace it — a rate that **can** run dry |
+| Recoverable release | **BUILT** | `Flood_FlowWorks : Thing` (reimplemented over Core `Map.tempTerrain`/`TerrainGrid.SetTempTerrain`, DLC-free per `FLOWWORKS_BUILD_PROGRAM_1` Phase 3 — no longer a `RimWorld.Flood` subclass) lays fluid on temporary terrain and queues its removal; a release is destructive while it stands but recoverable |
+| Flow speed per liquid | **PARTIAL** | `FluidDef.ticksPerTile` is real and drives the rate; viscosity as a named concept with bands is still UNBUILT — no `viscosityClass` field exists on `FluidDef.cs` |
+| Spread confined to the channel | **BUILT** | `Flood_FlowWorks.CanFloodInto` gates every candidate cell on `RM_MapComponent_Excavation.CanLiquidEnter`, and `channelConfinementEnabled` (Mod Settings) defaults **true** |
+| Source stock / volume | **BUILT** | `RM_LiquidStock.cs`, 424 lines: the 5:1 budget (`FluidDef.canalCellsPerSourceCell`), debits at pulse boundaries only. §5 |
+| Limited vs limitless detection | **BUILT** | `RM_LiquidStock.FormBody` flood-fills a body's contiguous same-suite cells and sets `limitless` from map-edge contact (`touchesEdge`) plus a minimum size (`RimMandrakeFlowWorksSettings.MinLimitlessBodyCells`); gated by `stickyLimitlessEnabled` |
 | Strained-source graphic | **UNBUILT** | And no art to draw it with |
-| Partial fill / fill progression | **UNBUILT** | Exactly one filled state: vanilla's `ShallowFloodwater` |
-| Parent body recedes in proportion | **UNBUILT** | Nothing writes back to the source body's cells |
-| Filled vs unfilled movement cost | **UNBUILT** | `RM_Channel_Empty` declares `pathCost` 6; no code varies cost with fill state |
-| Ignition, long burn, fire reaching the source | **UNBUILT** | ⚠️ UNVERIFIED premise: `About.xml:25-26` claims "vanilla ignition already works on any flammable terrain, so a fluid with flammability > 0 needs [nothing extra]". That is a previous agent's written claim, not a measured fact, and fire in RimWorld attaches to Things and cells — whether TerrainDef flammability is consulted at all is being checked against the decompiled engine. If the premise is false, ignition itself is new mechanism too. "Burns for a very long time" and "lights its source" are unbuilt either way |
+| Partial fill / fill progression | **BUILT** | Four terrain tiers per liquid — `RM_Fill_<Liquid>_Trace/Half/Brim/Superdeep` — exist for both shipped `FluidDef`s (`RM_Fluid_Water`, `RM_Fluid_Tar`) in `Canals/TerrainDefs/FlowWorks_Terrain.xml` |
+| Parent body recedes in proportion | **BUILT** | `RM_LiquidStock` recession (gated `recessionEnabled`): fewest same-liquid neighbours first, tie-broken by centroid distance then a deterministic per-cell hash; refill restores in reverse order |
+| Filled vs unfilled movement cost | **BUILT** | The dry ladder is differentiated (`pathCost` 30/45/80 on `RM_Channel_Empty/Mid/Deep`, 300 on `Superdeep`), and fill tiers vary too — water `Half` 42, `Brim`/`Superdeep` 300 (`Trace` inherits); tar `Trace` 100, `Half` 200, `Brim`/`Superdeep` 300. Not the flat `pathCost` 6 a stale reading once claimed |
+| Ignition, long burn, fire reaching the source | **PARTIAL — prototype exists, ships OFF** | `LiquidIgnitionMapComponent` (`LIQUID_TYPES_SPIKES_1`) triggers only on an adjacent existing `Fire` Thing, then calls `FireUtility.TryStartFireIn` — vanilla's own entry point, which then rides vanilla's own `TrySpread`. Gated off by default (`liquidIgnitionEnabled = false`) and never ticked in a live game. The premise once flagged UNVERIFIED is now confirmed via RimSage against `RimWorld/FireUtility.cs:40-58,230-241` and `RimWorld/Fire.cs:242-280`: both read `TerrainDef.GetStatValueAbstract(StatDefOf.Flammability)` directly, with **no trigger of their own** — so a fluid terrain shipping `Flammability > 0` would auto-ignite on vanilla's own schedule with no thermal/electrical cause, violating the hard ban. That is exactly why fluid terrain must ship `Flammability ≈ 0` and the trigger lives in this component instead. "Burns for a very long time" and "lights its source" remain unbuilt |
 | Slime near-uncrossable, slow to escape | **UNBUILT** | The mechanics live in GelatinousSlime (framework §5); the canal only has to be a legal place for slime to sit |
 | Irrigation — plants near a filled canal act watered | **UNBUILT here, but SOLVED next door** | No effect of any kind in FlowWorks — but `FloodedCanyon` already ships the whole mechanism and it is copyable nearly verbatim. §11 |
-| Liquid roster | **PARTIAL** | One `FluidDef`: `RM_Fluid_Water`. `RM_FluidSpring_Test` is self-labelled a test source, not content |
-| Mod Settings | **PARTIAL** | Three fields: `canalFlowEnabled`, `flowRateMultiplier`, `floodVolumeMultiplier`. Every mechanic added below needs its own toggle (2026-09-12 rule) |
-| Art | **UNBUILT** | Zero bespoke textures. Channel reuses `Terrain/Surfaces/Gravel`, the test source the drop-beacon sprite, the designator `UI/Designators/Mine`. §7 |
+| Liquid roster | **PARTIAL** | Two `FluidDef`s now: `RM_Fluid_Water`, `RM_Fluid_Tar`. `RM_FluidSpring_Test` no longer exists — ruling 24 removed the source-as-building concept it was testing |
+| Mod Settings | **BUILT** | `RimMandrakeFlowWorksMod.cs` carries 22 public settings fields (MEASURED), roughly one per mechanic per the 2026-09-12 rule — not the three (`canalFlowEnabled`, `flowRateMultiplier`, `floodVolumeMultiplier`) a stale reading once named, and the drip/re-flood fields it also named are gone with `CompFluidReservoir` |
+| Art | **UNBUILT** | Zero bespoke textures. Channel reuses `Terrain/Surfaces/Gravel`; every fill tier for BOTH water and tar reuses vanilla `Water*Ramp` textures (`TAR_VISCOUS_SURFACE_ART_1` tracks adopting Alpha Biomes' own tar art instead of authoring bespoke). The designator uses `UI/Designators/Mine`. §7 |
 
 ## 5. The source stock model
 
