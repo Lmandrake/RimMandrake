@@ -1,81 +1,30 @@
 {
- "generatedAt": "2026-09-17T18:57:00Z",
+ "generatedAt": "2026-09-17T22:39:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 627577,
-  "sha256_12": "b363c2200339"
+  "bytes": 647722,
+  "sha256_12": "909aba02ae18"
  },
- "head": "91ea31041",
+ "head": "ce29736c5",
  "counts": {
-  "red": 36,
-  "blue": 645,
-  "green": 1646,
-  "grey": 432,
-  "unmeasured": 0,
-  "total": 2759
+  "red": 37,
+  "blue": 687,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 2049,
+  "total": 2773
  },
  "loc": {
-  "red": 17293,
-  "blue": 247544,
-  "green": 431168,
-  "grey": 268115,
-  "unmeasured": 0,
-  "total": 964120
+  "red": 17605,
+  "blue": 261165,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 687034,
+  "total": 965804
  },
- "reviewEntries": 2523,
- "recidivists": [
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml",
-   "loc": 1176,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterRifle.xml",
-   "loc": 659,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml",
-   "loc": 467,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
-   "loc": 143799,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Utils/artpipe/selftest_artpipe.py",
-   "loc": 2797,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml",
-   "loc": 843,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Sith.xml",
-   "loc": 642,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroblade.xml",
-   "loc": 641,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml",
-   "loc": 334,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWClothes.xml",
-   "loc": 1918,
-   "cycles": 2
-  }
- ],
+ "reviewEntries": 2598,
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 2759 files (1646 clean, 432 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }
