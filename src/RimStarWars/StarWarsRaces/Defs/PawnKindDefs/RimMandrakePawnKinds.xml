@@ -811,7 +811,7 @@
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>RSW_RimMandrakeSithKissaiPureblood_Kind</defName>
-    <label>Sith Kissai (Pureblood)</label>
+    <label>Sith Kissai (Red Sith)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
     <apparelTags>
@@ -826,7 +826,7 @@
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>RSW_RimMandrakeSithMassassi_Kind</defName>
-    <label>Sith Massassi (Pureblood)</label>
+    <label>Sith Massassi (Red Sith)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
     <apparelTags>
@@ -841,7 +841,7 @@
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>RSW_RimMandrakeSithZ_Kind</defName>
-    <label>Sith Zugurak (Pureblood)</label>
+    <label>Sith Zuguruk (Red Sith)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
     <apparelTags>

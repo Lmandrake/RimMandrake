@@ -395,7 +395,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeDefel</defName>
     <label>Defel</label>
-    <description>.</description>
+    <description>Defel, sometimes called Wraiths, are a sentient species whose dark fur absorbs light, letting them fade into near invisibility in dim conditions. Most known Defel work the underworld as mercenaries and fortune hunters, trading on a reputation nobody can quite see coming.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon10</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -684,7 +684,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeGand</defName>
     <label>Gand</label>
-    <description>.</description>
+    <description>Gand are an insectoid species from the planet Gand, split between a Breathing subspecies and a Non-breathing subspecies that relies on an ammonia-filled encounter suit to survive off-world. Their findsmen track prey and fugitives alike through ritualized, clan-sanctioned hunts.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon8</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -806,7 +806,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeHutt</defName>
     <label>Hutt</label>
-    <description>e</description>
+    <description>Hutts are a massive, slug-like species that can live for a thousand years, hauling their reptilian bulk along on a single muscular tail rather than legs. Patient and calculating, they have used that long lifespan to build some of the galaxy's most enduring criminal empires.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon1</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -907,7 +907,6 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_KoTOR_NamerSullustan</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_big</li>
       <li>MoveSpeed_Slow</li>
@@ -974,7 +973,6 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_KoTOR_NamerNagai</nameMaker>
     <genes>
       <li>RSW_statgene_predator</li>
       <li>RSW_HeadAttachment_kaleeshmask</li>
@@ -1038,12 +1036,11 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeKelDor</defName>
     <label>Kel Dor</label>
-    <description>.</description>
+    <description>Kel Dor are a tall, orange-skinned species from the world of Dorin, whose atmosphere is toxic to nearly everyone else -- and whose own antiox breath mask and dark goggles are just as necessary once they leave it. Steady and disciplined by temperament, more than a few have found their way into the Jedi Order.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon5</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_KoTOR_NamerDuros</nameMaker>
     <genes>
       <li>RSW_Ears_weirdflap</li>
       <li>RSW_FacialRidges_bumpy</li>
@@ -1104,7 +1101,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeKubaz</defName>
     <label>Kubaz</label>
-    <description>e</description>
+    <description>Kubaz are a dark-skinned, insectivorous species from Kubindi, known for a long sensitive snout and large protruding eyes built for tracking scent and movement other species miss entirely. That same acute sense makes them prized -- and distrusted -- as spies and informants across the underworld.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon6</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1135,7 +1132,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeLasat</defName>
     <label>Lasat</label>
-    <description>e</description>
+    <description>Lasat are a tall, fur-covered warrior species native to Lira San who later settled the world of Lasan, prized for their strength, agility and prehensile feet. Nearly wiped out when their adopted homeworld was purged, the survivors carry their honor-bound fighting traditions with them into exile.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon10</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1172,7 +1169,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeMimbanese</defName>
     <label>Mimbanese</label>
-    <description>e</description>
+    <description>Mimbanese, also called Mimbanites, are a tribal species native to the swampy, subterranean world of Mimban, expert guerrilla fighters who seem to vanish into its mud and mist at will. Generations of war have made ambush and camouflage second nature to them.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon1</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1245,7 +1242,6 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_KoTOR_NamerQuarren</nameMaker>
     <genes>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_SmallDecrease</li>
@@ -1670,7 +1666,7 @@
   </XenotypeDef>
   <XenotypeDef>
     <defName>RSW_RimMandrakeSithKissaiPureblood</defName>
-    <label>Sith Kissai (Pureblood)</label>
+    <label>Sith Kissai (Red Sith)</label>
     <description>Kissai are a subspecies of the Sith race most notably known for their aptitude in the dark side of the force and function as a caste of dark priests and sorcerers.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
     <inheritable>true</inheritable>
@@ -1702,7 +1698,7 @@
   </XenotypeDef>
   <XenotypeDef>
     <defName>RSW_RimMandrakeSithMassassi</defName>
-    <label>Sith Massassi (Pureblood)</label>
+    <label>Sith Massassi (Red Sith)</label>
     <description>Massassi are a subspecies of the Sith race, a similar appearance of distinctive red ridged skin, with facial tendrils. However the similarities stop there, they are much larger, hulking forms, making them formidible warriors. They are known for having been responsible for many temples across the galaxy.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
     <inheritable>true</inheritable>
@@ -1735,8 +1731,8 @@
   </XenotypeDef>
   <XenotypeDef>
     <defName>RSW_RimMandrakeSithZ</defName>
-    <label>Sith Zugurak (Pureblood)</label>
-    <description>Zugurak  were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
+    <label>Sith Zuguruk (Red Sith)</label>
+    <description>Zuguruk were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1827,7 +1823,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeTaung</defName>
     <label>Taung</label>
-    <description>.</description>
+    <description>Taung are an ancient, clawed simian species native to Coruscant, renowned for their resilience and a stark warrior code settled through ritual combat. Driven from their homeworld, their descendants would forge the armor and war-mask traditions that became Mandalorian culture.</description>
     <iconPath>UI/Icons/Xenotypes/Impid</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -2045,12 +2041,11 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
   <XenotypeDef>
     <defName>RSW_RimMandrakeUgnaught</defName>
     <label>Ugnaught</label>
-    <description>.</description>
+    <description>Ugnaughts are a short, porcine humanoid species from Gentes, considered among the hardest-working tradesmen in the galaxy and prized wherever machinery needs tending. Long-lived and tenacious, they have served -- and outlasted -- masters from gas-mine overseers to Imperial garrisons.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon9</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_KoTOR_NamerDevaronian</nameMaker>
     <genes>
       <li>RSW_statgene_compliant</li>
       <li>RSW_Beard_Chops</li>

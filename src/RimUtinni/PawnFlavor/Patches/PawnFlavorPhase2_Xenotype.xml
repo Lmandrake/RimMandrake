@@ -2173,13 +2173,13 @@
               <match Class="PatchOperationReplace">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]/label</xpath>
                 <value>
-                  <label>Sith Kissai (Pureblood)</label>
+                  <label>Sith Kissai (Red Sith)</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]</xpath>
                 <value>
-                  <label>Sith Kissai (Pureblood)</label>
+                  <label>Sith Kissai (Red Sith)</label>
                 </value>
               </nomatch>
             </li>
@@ -2207,13 +2207,13 @@
               <match Class="PatchOperationReplace">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/label</xpath>
                 <value>
-                  <label>Sith Massassi (Pureblood)</label>
+                  <label>Sith Massassi (Red Sith)</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]</xpath>
                 <value>
-                  <label>Sith Massassi (Pureblood)</label>
+                  <label>Sith Massassi (Red Sith)</label>
                 </value>
               </nomatch>
             </li>
@@ -2241,13 +2241,13 @@
               <match Class="PatchOperationReplace">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithZ"]/label</xpath>
                 <value>
-                  <label>Sith Zugurak (Pureblood)</label>
+                  <label>Sith Zuguruk (Red Sith)</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
                 <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithZ"]</xpath>
                 <value>
-                  <label>Sith Zugurak (Pureblood)</label>
+                  <label>Sith Zuguruk (Red Sith)</label>
                 </value>
               </nomatch>
             </li>
