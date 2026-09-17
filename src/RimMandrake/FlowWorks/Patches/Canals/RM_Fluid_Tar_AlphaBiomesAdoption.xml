@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Fluid_Tar_AlphaBiomesAdoption.xml     hand-authored, FLOWWORKS_BUILD_PROGRAM_1 Phase 7
+  ============================================================================
+  Extends the MayRequire pattern ManyWaters already uses for RM_Slime_* (tint
+  AB_SlimeRamp, gated on sarg.alphabiomes, degrade to a working non-AB def
+  otherwise) to tar — per row, not globally, per the item's own instruction.
+
+  MECHANISM: RM_Fluid_Tar (Defs/Canals/FluidDefs/FlowWorks_Fluids.xml) and its
+  four temporary terrains (Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml) are
+  OUR OWN defNames and already resolve without any third-party mod — they ship
+  a near-black tint on vanilla's own WaterShallow/ChestDeep/Deep ramps as the
+  tinted-vanilla fallback the item requires, so tar never vanishes for a player
+  without Alpha Biomes. This patch only reaches into those already-resolvable
+  defs and swaps their LOOK when sarg.alphabiomes is active, exactly the "only
+  its look degrades" framing of ruling 11 (flowworks_mod_definition.md §16).
+
+  Every Operation is PatchOperationConditional on a real AB def actually being
+  loaded (never PatchOperationFindMod on the packageId alone — a stale/renamed
+  mod folder could satisfy FindMod while shipping no matching def), so a
+  missing or differently-versioned Alpha Biomes prints nothing, per doctrine
+  ("a patch that matches nothing logs nothing" is the ACCEPTED failure mode
+  here, not a silent bug — the fallback terrain still renders and still
+  floods).
+
+  DONOR FACTS, verified directly against Alpha Biomes' own XML on this machine
+  (workshop/content/294100/1841354677, packageId sarg.alphabiomes confirmed in
+  its own About.xml), NOT against flowworks_mod_definition.md's own citation of
+  this donor, which this pass found to be wrong on three of its four names:
+    - `AB_Tar` is real: TerrainDef, ParentName="WaterDeepBase",
+      texturePath Terrain/Surfaces/AB_TarDeepRamp (1.6/Defs/TerrainDefs/
+      Terrain_TarPits.xml). NOT <temporary>true</temporary> (WaterDeepBase
+      never sets it), so it cannot be used directly as a FluidDef floodTerrain
+      — ConfigErrors would refuse it. That is why this patch retextures OUR
+      temporary terrains rather than pointing FluidDef at AB_Tar itself.
+    - `AB_TarDeepRamp` is the ONLY tar water-ramp texture AB ships — there is
+      no shallow variant. AB's own "tar puddle" (AB_ArtificialTar) reuses the
+      same deep ramp at pathCost 200, confirming AB itself does not
+      distinguish tar depth by texture either. All four tiers below adopt this
+      one texture uniformly, same as the vanilla fallback's one-ramp-per-tier
+      convention.
+    - `AB_TarPits` (cited in the design doc as an adoptable "surface") is a
+      BiomeDef (1.6/Defs/BiomeDefs/Biomes_TarPits.xml), not a paintable
+      per-cell terrain. Not adoptable here at all.
+    - `AB_TarPuddle` (also cited) is a Plant ThingDef + a Filth texture
+      (1.6/Defs/ThingDefs_Plants/Plants_TarPits.xml), not a TerrainDef.
+    - `AB_TarLakes` (also cited) does not exist anywhere in Alpha Biomes 1.6.
+    - `AB_TarMud` ("tarred mud") IS real and IS the natural fit for a receded
+      tar lakebed — adopted onto RM_Fluid_Tar.recededTerrain below.
+  These three wrong names are a live finding for whoever next edits
+  flowworks_mod_definition.md §13; not corrected in that doc by this item
+  (out of scope — see the item's own file list), reported as an escalation.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_Tar"] -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_Tar"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/TerrainDef[defName="RM_Fill_Tar_Trace"]/texturePath</xpath>
+      <value>
+        <texturePath>Terrain/Surfaces/AB_TarDeepRamp</texturePath>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_Tar"] -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_Tar"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/TerrainDef[defName="RM_Fill_Tar_Half"]/texturePath</xpath>
+      <value>
+        <texturePath>Terrain/Surfaces/AB_TarDeepRamp</texturePath>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_Tar"] -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_Tar"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/TerrainDef[defName="RM_Fill_Tar_Brim"]/texturePath</xpath>
+      <value>
+        <texturePath>Terrain/Surfaces/AB_TarDeepRamp</texturePath>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_Tar"] -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_Tar"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/TerrainDef[defName="RM_Fill_Tar_Superdeep"]/texturePath</xpath>
+      <value>
+        <texturePath>Terrain/Surfaces/AB_TarDeepRamp</texturePath>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_TarMud"] -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_TarMud"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/RimMandrake.FlowWorks.FluidDef[defName="RM_Fluid_Tar"]/recededTerrain</xpath>
+      <value>
+        <recededTerrain>AB_TarMud</recededTerrain>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -74,6 +74,17 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// PHASE 5. §19's open question — "filling in a canal that contains a
+			// pit: does the pit survive?" — is STILL not decided here, and now
+			// there is a live occupant to lose by deciding it silently. Refusing
+			// while someone is held is the same non-decision the edifice branch
+			// above makes, and the engine's own FillIn path still drops an
+			// occupant safely if a cell is raised some other way.
+			Building_SuperdeepPit holder = RM_SuperdeepCapture.HolderAt(Map, c);
+			if (holder != null && holder.Sprung)
+			{
+				return "Someone is held down there. Get them out first.";
+			}
 			if (!excavation.CanFillIn(c))
 			{
 				// Natural water is deliberately excluded: §18 gives filling in a

@@ -67,10 +67,56 @@ namespace RimMandrake.FlowWorks.Pits
             }
         }
 
-        // Water pits never allow the struggle-escape roll at all (spec section 5:
-        // "no climbing out at all"). Building_OpenPit asks this before running
-        // PitEscapeUtility.
-        public bool BlocksEscape => Props.fittingType == PitFittingType.Water;
+        // ════════════════════════════════════════════════════════════════
+        // "No climbing out at all" (spec section 5). Building_OpenPit asks this
+        // before running PitEscapeUtility.
+        //
+        // FLOWWORKS PHASE 5 — THIS NOW DERIVES FROM THE LIQUID THAT IS ACTUALLY
+        // IN THE CELL, not from a hardcoded enum value. A pit is a SUPERDEEP
+        // excavation (ruling 18), the depth engine owns what liquid is in one and
+        // how much, and FluidDef.ticksPerTile IS the viscosity field — "Viscosity
+        // is ticksPerTile (already a real per-fluid field)". Tar should hold a
+        // pawn harder than water does, and that should not need a seventh enum
+        // member per liquid the registry ever adds.
+        //
+        // 🔑 EXTENDED, NOT FORKED, and calibrated so nothing that shipped moves:
+        //   • The threshold defaults to 60, which is exactly RM_Fluid_Water's own
+        //     shipped ticksPerTile — so water still blocks, which is the whole of
+        //     the behaviour the Water enum member expressed.
+        //   • A cell with no liquid in it (fill 0), or a pit standing on ground
+        //     the depth engine has no entry for at all — every pit built by the
+        //     Pits dig-site chain today — falls through to the ORIGINAL enum
+        //     test. RM_OpenPit_Water behaves precisely as it always has.
+        // ════════════════════════════════════════════════════════════════
+        public bool BlocksEscape
+        {
+            get
+            {
+                FluidDef liquid = OccupyingLiquid();
+                if (liquid != null)
+                {
+                    return liquid.ticksPerTile >= Props.escapeBlockingViscosityTicks;
+                }
+                return Props.fittingType == PitFittingType.Water;
+            }
+        }
+
+        /// <summary>The liquid standing in this pit's own cell, or null when the
+        /// cell is dry or the depth engine does not own it.</summary>
+        private FluidDef OccupyingLiquid()
+        {
+            Map map = parent?.Map;
+            if (map == null)
+            {
+                return null;
+            }
+            RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
+            if (engine == null || !engine.IsExcavated(parent.Position))
+            {
+                return null;
+            }
+            return engine.FillAt(parent.Position) > 0 ? engine.ActiveFluid : null;
+        }
 
         private bool CanSwim(Pawn p)
         {

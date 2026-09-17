@@ -40,4 +40,38 @@
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
 
+  <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 7 — "Tar needs the viscosity most of
+       all" (owner ruling, 2026-09-16). Same tier shape as water, own
+       temporary terrains (Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml),
+       tinted-vanilla by default and Alpha-Biomes-adopted when present
+       (Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml) — the floodTerrain
+       etc. references below are OUR OWN defNames either way, so this row
+       resolves whether or not sarg.alphabiomes is active; only the terrain's
+       own texture/receded-look changes underneath it. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Tar</defName>
+    <label>tar</label>
+    <floodTerrain>RM_Fill_Tar_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Tar_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Tar_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Tar_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <!-- Real viscosity: 6x water's 60 ticksPerTile (one in-game minute per
+         tile) — a tar release crawls a tile every six in-game minutes.
+         No owner number was ruled for the exact multiplier; this is a
+         single tunable field, chosen (not invented as a name) to read as
+         "far higher" per FluidDef.ticksPerTile's own doc comment, and it is
+         the one number in this row an owner pass can retune without
+         touching anything else. -->
+    <ticksPerTile>360</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <!-- Fallback lakebed reads as ordinary Mud, same as water; Alpha
+         Biomes' own AB_TarMud ("tarred mud") is adopted onto this field by
+         the same conditional patch when AB is present. -->
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
 </Defs>

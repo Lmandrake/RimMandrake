@@ -27,7 +27,21 @@ namespace RimMandrake.FlowWorks
 
 		public static FluidDef RM_Fluid_Water;
 
+		/// <summary>Phase 7's roster entry, his ruling "tar needs the
+		/// viscosity most of all" -- not yet wired to any source/driver
+		/// selection UI, but reachable via <c>ActiveFluid =</c> the way
+		/// debug tooling and a selftest already reach RM_Fluid_Water.</summary>
+		public static FluidDef RM_Fluid_Tar;
+
 		public static ThingDef RM_FluidCanalFlood;
+
+		/// <summary>PHASE 5, ruling 26. The holder the depth engine keeps on every
+		/// D = 4 cell so Pits' capture and struggle machinery can do the work.
+		/// Never player-buildable.</summary>
+		public static ThingDef RM_SuperdeepPit;
+
+		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
+		public static ThingDef RM_Ladder;
 
 		static RimMandrakeFlowWorks_DefOf()
 		{

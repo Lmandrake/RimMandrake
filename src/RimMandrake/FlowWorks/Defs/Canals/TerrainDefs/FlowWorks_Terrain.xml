@@ -106,26 +106,25 @@
   </TerrainDef>
 
   <!-- D = 4, SUPERDEEP — the trapping level (ruling 19).
-       🔴 IMPASSABLE ON PURPOSE, AND THIS IS A SCAFFOLD, NOT THE DESIGN.
-       Ruling 19 says a pawn without a ladder falls in and is HELD (Pits'
-       machinery). That capture mechanic does not exist in this mod yet —
-       it arrives with the Pits merge (ruling 18/27). Until it does, a
-       SUPERDEEP cell must not be walkable, or a pawn would stroll across
-       a hole that is supposed to swallow them. Traversability.Impassable
-       makes PathGrid.CalculatedCostAt return its 10000 sentinel, so the
-       pathfinder simply routes around it — VERIFIED against the
-       decompiled PathGrid, not assumed from pathCost magnitude.
-       Program 2 replaces this with fall-in + ladders. -->
+       🔴 PASSABLE, AND THAT IS THE MECHANIC. A pawn entering this cell is
+       CAPTURED (ruling 26: "SUPERDEEP captures as if dry"), held by
+       Building_SuperdeepPit on Pits' own despawn-into-innerContainer
+       machinery, and gets out only on the struggle clock with a ladder
+       standing in the cell. An Impassable terrain would make the
+       pathfinder route around the hole and the capture would never fire —
+       Traversability.Impassable makes PathGrid.CalculatedCostAt return its
+       10000 sentinel, VERIFIED against the decompiled PathGrid.
+       pathCost 300 keeps it a place nobody crosses by choice. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Superdeep</defName>
     <label>superdeep excavation</label>
-    <description>An excavation four levels below the surface — deep enough that anything entering it is not walking out unaided. Until ladders and fall-in capture are built, pawns will not path into it at all.</description>
+    <description>An excavation four levels below the surface. Anything that walks into it falls in and is held there; without a ladder standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.38,0.36,0.33)</color>
     <renderPrecedence>328</renderPrecedence>
     <fertility>0</fertility>
     <pathCost>300</pathCost>
-    <passability>Impassable</passability>
+    <passability>Standable</passability>
     <natural>true</natural>
     <edgeType>FadeRough</edgeType>
     <scatterType>Rocky</scatterType>
@@ -239,21 +238,141 @@
     </tags>
   </TerrainDef>
 
-  <!-- A FLOODED SUPERDEEP cell. Separate from tier 3 for one reason and it
-       is not cosmetic: the temp layer wins in TerrainAt, so a Standable
-       fill terrain laid over an Impassable RM_Channel_Superdeep would make
-       the hole walkable again the moment it filled — the exact "pawn falls
-       into an unfinished mechanic" this pass is avoiding. Stays Impassable
-       until program 2 ships fall-in capture and ladders. -->
+  <!-- A FLOODED SUPERDEEP cell. Still its own tier rather than tier 3,
+       because the temp layer wins in TerrainAt and a flooded superdeep
+       cell must keep reading as superdeep — but PASSABLE now, matching
+       RM_Channel_Superdeep. 🔑 RULING 26 IS EXACTLY THIS: "SUPERDEEP
+       captures as if dry" — fill changes nothing about whether a pawn
+       falls in, so dry and flooded must have the same passability or the
+       fill would silently become the barrier the ruling says it is not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Superdeep</defName>
     <label>flooded excavation</label>
-    <description>A superdeep excavation holding liquid. Nothing paths into it until ladders exist.</description>
+    <description>A superdeep excavation holding liquid. Whatever falls in is held there, and the liquid then goes to work on it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       THE TAR TIER LADDER — FLOWWORKS_BUILD_PROGRAM_1 Phase 7, his ruling
+       "Tar needs the viscosity most of all."
+
+       Same shape as the water ladder above (ParentName WaterShallow,
+       temporary, empty driesTo, canFreeze false), plus takeSplashes false
+       (tar does not splash) and a near-black tint so the TINTED-VANILLA
+       FALLBACK reads as tar rather than as plain water even before Alpha
+       Biomes' real art is adopted — §13's named disease ("tar rippling
+       like water") is a colour problem here, not a motion one; the ripple
+       animation itself is WaterShallow/Deep's own shader and is not fixed
+       by this fallback. Alpha Biomes' own `AB_Tar` proves the only donor
+       tar water-ramp texture is `AB_TarDeepRamp` (there is no shallow
+       variant — AB's own `AB_ArtificialTar` "tar puddle" reuses the same
+       deep ramp), so all four tiers below adopt that ONE texture uniformly
+       once Alpha Biomes is present; see
+       Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml for the
+       PatchOperationConditional that swaps it in, gated on `sarg.
+       alphabiomes` (verified against that mod's own About.xml) exactly the
+       way ManyWaters already gates RM_Slime_* on AB_SlimeRamp.
+
+       pathCost per tier is anchored to Alpha Biomes' own real tar-ground
+       costs (AB_TarMud 100, AB_ArtificialTar 200) rather than invented,
+       topping out at vanilla WaterDeep's 300 ceiling every other tier-3
+       terrain in this mod already uses. -->
+
+  <!-- Tier 1 of 3 — a trace of tar, read as shallow but already thick. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Tar_Trace</defName>
+    <label>shallow channel tar</label>
+    <description>A channel carrying a trace of tar -- black, patient, and already sucking at a boot even this shallow.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>false</takeSplashes>
+    <color>(28,24,20)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- Tier 2 of 3 — half full, read as chest-deep. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Tar_Half</defName>
+    <label>half-full channel tar</label>
+    <description>A channel filling with tar to about half its depth. Wading it is chest-deep, sucking work.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>false</takeSplashes>
+    <color>(28,24,20)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Tar_Brim</defName>
+    <label>brimming channel tar</label>
+    <description>A channel filled to its brim with tar. Crossing it is punishing, but it is a tax, not a wall -- depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>false</takeSplashes>
+    <color>(28,24,20)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- A FLOODED SUPERDEEP cell. Same reasoning as RM_Fill_Water_Superdeep:
+       the temp layer wins in TerrainAt, so this stays Impassable until
+       program 2 ships fall-in capture and ladders. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Tar_Superdeep</defName>
+    <label>flooded excavation, tar</label>
+    <description>A superdeep excavation holding tar. Nothing paths into it until ladders exist.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>false</takeSplashes>
+    <color>(28,24,20)</color>
     <pathCost>300</pathCost>
     <passability>Impassable</passability>
     <renderPrecedence>397</renderPrecedence>

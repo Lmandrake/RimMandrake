@@ -293,6 +293,16 @@ namespace RimMandrake.FlowWorks.Pits
         // attempt cost for) an escape while it holds.
         protected virtual bool EscapeBlocked => false;
 
+        // FLOWWORKS PHASE 5. The inverse gate: something in the cell makes
+        // climbing out possible that otherwise would not be. Building_SuperdeepPit
+        // overrides it with "a ladder is standing here", so a ladder beats a
+        // fitting that blocks escape (deep water, tar) instead of leaving a pawn
+        // held in a hole that visibly has a way out of it.
+        //
+        // Default false, so every pit that shipped before this line behaves
+        // exactly as it did: a blocking fitting still blocks.
+        protected virtual bool EscapeAssisted => false;
+
         internal void RunStruggleInterval()
         {
             if (EscapeBlocked) return;
@@ -309,7 +319,7 @@ namespace RimMandrake.FlowWorks.Pits
                 if (p.Dead) continue;
 
                 fitting?.OnStruggleInterval(p);
-                if (fitting != null && fitting.BlocksEscape) continue;
+                if (fitting != null && fitting.BlocksEscape && !EscapeAssisted) continue;
                 // Mod option: PitsSettings.escapeEnabled. Off, occupants stay
                 // pinned until manually released; fitting effects above still ran.
                 if (!PitsSettings.escapeEnabled) continue;

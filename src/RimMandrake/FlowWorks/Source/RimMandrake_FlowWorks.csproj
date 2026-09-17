@@ -7,9 +7,12 @@
     (Source/ManyWaters/, merged from ManyWaters) and the liquid registry
     (Source/LiquidTypes/, merged from RimMandrake: Liquid Types).
 
-    No Harmony reference: everything here is a normal Thing/ThingComp/
-    JobDriver/Designator/MapComponent/DefModExtension subclass through
-    vanilla extension points, not a patch. No DLC reference either —
+    HARMONY, as of Phase 5 and for exactly one mechanic: ruling 23's shooting
+    restriction is a prefix on Verb.CanHitTargetFrom plus a postfix on
+    AttackTargetFinder.BestAttackTarget (RM_Patch_SuperdeepShooting.cs).
+    Everything else here remains a normal Thing/ThingComp/JobDriver/
+    Designator/MapComponent/DefModExtension subclass through vanilla
+    extension points. No DLC reference either —
     Flood_FlowWorks owns its own spread walk over Core members
     (FLOWWORKS_BUILD_PROGRAM_1 Phase 3), because RimWorld.Flood is
     Odyssey content.
@@ -47,6 +50,13 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <!-- Reference only; Harmony itself must come from brrainz.harmony at
+       runtime, which is why Private is false below. Same path the sibling
+       FloodedCanyon csproj uses. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <!-- The canal / depth engine. RM_MapComponent_Excavation is the core
        (ruling 18: depth is the primitive). CompFluidReservoir and
        CompProperties_FluidReservoir are GONE, deleted by ruling 24. -->
@@ -66,6 +76,13 @@
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
+    <!-- PHASE 5: capture at SUPERDEEP, ladders, and ruling 23's shooting rule.
+         Building_SuperdeepPit subclasses Pits' Building_OpenPit below — one
+         assembly is exactly what makes that reuse free. -->
+    <Compile Include="Superdeep\RM_LadderUtility.cs" />
+    <Compile Include="Superdeep\Building_SuperdeepPit.cs" />
+    <Compile Include="Superdeep\RM_SuperdeepCapture.cs" />
+    <Compile Include="RM_Patch_SuperdeepShooting.cs" />
   </ItemGroup>
 
   <!-- Pits, merged 2026-09-16 (rulings 18/27). Namespace
@@ -126,6 +143,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

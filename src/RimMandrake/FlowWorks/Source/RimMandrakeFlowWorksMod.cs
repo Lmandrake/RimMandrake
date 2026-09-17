@@ -97,6 +97,34 @@ namespace RimMandrake.FlowWorks
         public static float refillRateMultiplier = 1f;
         public static float rainFillPerPulse = 0.1f;
 
+        // ══════════════════════════════════════════════════════════════════
+        // PHASE 5 — CAPTURE, LADDERS, AND THE ONE SHOOTING RULE.
+        //
+        // ⚠️ ITS OWN CONTIGUOUS SECTION, same discipline as Phase 4 above:
+        // fields, ExposeData lines and the screen block are each kept whole and
+        // touch nothing around them, so a concurrent lane editing this file
+        // does not have to rewrite these lines to land its own.
+        //
+        // Defaults = what this phase ships. All three OFF degrades to the
+        // pre-Phase-5 engine: nothing captures, nothing is stranded, and every
+        // verb's line of fire is vanilla's again.
+        //  19. superdeepCaptureEnabled     — ruling 26, fall-in at D = 4
+        //  20. superdeepCapturesOwnFaction — whether your own hole takes you too
+        //  21. ladderRequiredToExitEnabled — the jailer mechanic
+        //  22. superdeepShootingRuleEnabled— ruling 23, 8-way adjacency only
+        //
+        // 🔴 ONE DISCLOSED DEVIATION from "all-off = exactly as before". Before
+        // this phase RM_Channel_Superdeep was <passability>Impassable</passability>,
+        // a placeholder whose own def comment says "until fall-in capture and
+        // ladders exist". They exist now, so it is passable, and passability is a
+        // per-Def field that no runtime toggle can move. With capture off a
+        // SUPERDEEP cell is therefore a very costly hole (pathCost 300) rather
+        // than a wall. That is the placeholder retiring, not a mechanic hiding.
+        public static bool superdeepCaptureEnabled = true;
+        public static bool superdeepCapturesOwnFaction = false;
+        public static bool ladderRequiredToExitEnabled = true;
+        public static bool superdeepShootingRuleEnabled = true;
+
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
@@ -126,6 +154,11 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
             Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
+            // ── Phase 5 (see the block above; kept contiguous on purpose) ──
+            Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
+            Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
+            Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
+            Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -133,11 +166,12 @@ namespace RimMandrake.FlowWorks
         public void DoWindowContents(Rect inRect)
         {
             // Raised from 900 when the unproven-mechanics section landed, and
-            // from 1400 when Phase 4's stock section did: this is a FIXED view
+            // from 1400 when Phase 4's stock section did, and from 3000 when
+            // Phase 5's capture/ladder/shooting section did: this is a FIXED view
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3000f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3800f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -290,6 +324,43 @@ namespace RimMandrake.FlowWorks
               + "leaves the map. It is not destroyed — it goes where an edge-touching lake's "
               + "water comes from. This also lets you dig in that strip at all, which the game "
               + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
+
+            // ══════════════════════════════════════════════════════════════
+            // PHASE 5 SECTION — kept whole and kept last, see the field block.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Falling in, ladders and shooting");
+            Text.Font = GameFont.Small;
+            list.Label("A superdeep excavation is the trapping level — the only depth that takes "
+                     + "anyone. Everything shallower is wadeable however full it is: a brimming "
+                     + "deep canal is a tax on crossing it, never a barrier, so stopping power "
+                     + "comes from superdeep holes and nothing else.");
+
+            list.CheckboxLabeled("Superdeep cells capture", ref superdeepCaptureEnabled,
+                "Anyone who walks into a superdeep excavation falls in and is held there, whether "
+              + "it is dry or brimming. They take a fall, and whatever liquid is down there then "
+              + "goes to work on them. They struggle to climb out on the same clock a pit trap "
+              + "uses. Off: a superdeep cell is just a very slow hole to cross.");
+
+            list.CheckboxLabeled("Your own hole takes your own people", ref superdeepCapturesOwnFaction,
+                "Off (the default), a superdeep excavation you dug ignores your own colonists, the "
+              + "same way your own armed pit traps do — otherwise nobody could ever get down there "
+              + "to build the ladder. On, the ground does not care whose side you are on.");
+
+            list.CheckboxLabeled("A ladder is needed to get out", ref ladderRequiredToExitEnabled,
+                "Without a ladder standing in it, a superdeep hole holds whoever is in it "
+              + "indefinitely — pull the ladder and they are stranded, which is a jailer as much "
+              + "as a trap. With a ladder, they can climb, and the ladder beats deep liquid that "
+              + "would otherwise make climbing impossible. Off: no ladder is needed and the "
+              + "struggle roll is the only thing between an occupant and the surface.");
+
+            list.CheckboxLabeled("Superdeep limits who can shoot whom", ref superdeepShootingRuleEnabled,
+                "Someone standing in a superdeep hole can only trade fire with whoever is in one "
+              + "of the eight cells touching theirs, and that cuts both ways: a turret cannot "
+              + "shoot into the hole unless it is right at the lip, and whoever is down there can "
+              + "still shoot anyone who comes to the edge. It is a restriction only — nothing here "
+              + "changes accuracy, cover or sight. Off: depth never affects shooting at all.");
 
             list.End();
             Widgets.EndScrollView();
