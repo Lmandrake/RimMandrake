@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T17:47:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T18:57:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -471,3 +471,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DETERMINISTIC_CHECKER_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DETERMINISTIC_CHECKER_WAVE_1.md
+
+## PIT_SUPERDEEP_COLLAPSE_1 Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room for prisoner storage, a ladder that works like a prison door, a sluice gate that works like a door (owner ruling 2026-09-17)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PIT_SUPERDEEP_COLLAPSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md
