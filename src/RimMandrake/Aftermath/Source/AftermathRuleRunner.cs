@@ -127,7 +127,9 @@ namespace RimMandrake.Aftermath
             {
                 if (!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, heldDays)) continue;
                 float points = StorytellerUtility.DefaultThreatPointsNow(map);
-                if (TryQueue(def, home, map, points, new List<Pawn> { prisoner }, "PrisonerHeldTooLong"))
+                // Rule 4 has no separate trigger/payload faction split - the
+                // prisoner's own home faction is both.
+                if (TryQueue(def, home, home, map, points, new List<Pawn> { prisoner }, "PrisonerHeldTooLong"))
                     queuedAny = true;
             }
             return queuedAny;
@@ -148,7 +150,14 @@ namespace RimMandrake.Aftermath
                 if (!AftermathRuleEligibility.IsEligible(def, record.Outcome, survivors)) continue;
                 Faction targetFaction = ResolveTargetFaction(def, record);
                 if (targetFaction == null) continue;
-                TryQueue(def, targetFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
+                // AFTERMATH_TELEGRAPH_REFERENT_1: the telegraph is always
+                // about the faction THIS BATTLE was fought against
+                // (record.RaidFaction), never the resolved payload faction -
+                // for SameAsTrigger the two are the same Faction reference,
+                // so this is a no-op there; only AllyOfTrigger (targetFaction
+                // = the ally, record.RaidFaction = who you actually fought)
+                // makes them differ.
+                TryQueue(def, targetFaction, record.RaidFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
             }
         }
 
@@ -184,7 +193,10 @@ namespace RimMandrake.Aftermath
                 if (!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def)) continue;
                 Faction targetFaction = ResolveTargetFaction(def, record);
                 if (targetFaction == null) continue;
-                TryQueue(def, targetFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
+                // AFTERMATH_TELEGRAPH_REFERENT_1: same fix as OnBattleClosed
+                // - telegraphText's referent is who this MAP's battle was
+                // against, not the (possibly different) payload faction.
+                TryQueue(def, targetFaction, record.RaidFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
             }
         }
 
@@ -196,7 +208,13 @@ namespace RimMandrake.Aftermath
         // whether this def actually queued something, so a caller that needs
         // to know (OnPrisonerHeldTooLong, to mark the captivity episode as
         // fired) can.
-        private bool TryQueue(RM_AftermathRuleDef def, Faction targetFaction, Map map, float points, List<Pawn> actors, string outcomeLabel)
+        // AFTERMATH_TELEGRAPH_REFERENT_1: telegraphFaction is who the
+        // telegraph text is ABOUT (the battle you were just in) -
+        // targetFaction is who the queued PAYLOAD incident/letter is about
+        // (may be a different faction under AllyOfTrigger). Every caller
+        // except OnBattleClosed/OnMentalBreakNearBattle's AllyOfTrigger case
+        // passes the same Faction reference for both.
+        private bool TryQueue(RM_AftermathRuleDef def, Faction targetFaction, Faction telegraphFaction, Map map, float points, List<Pawn> actors, string outcomeLabel)
         {
             if (targetFaction == null || map == null) return false;
 
@@ -256,9 +274,12 @@ namespace RimMandrake.Aftermath
             };
 
             Find.Storyteller.incidentQueue.Add(incidentDef, fireTick, parms);
-            queued.Add(new QueuedAftermathMarker(targetFaction, fireTick));
+            // AFTERMATH_DEAD_LETTERS_1: carry the def so OnPayloadLanded can
+            // find its letterLabel/letterText again once this incident
+            // actually fires.
+            queued.Add(new QueuedAftermathMarker(targetFaction, fireTick, def));
 
-            SendTelegraph(def, targetFaction);
+            SendTelegraph(def, telegraphFaction);
 
             // CHRONICLE_NINEFOLD_DECOUPLE_1: this used to reach into
             // GameComponent_Ninefold.ApplyDelta with def.godTie as a God
@@ -330,11 +351,46 @@ namespace RimMandrake.Aftermath
             return true;
         }
 
-        private static void SendTelegraph(RM_AftermathRuleDef def, Faction targetFaction)
+        private static void SendTelegraph(RM_AftermathRuleDef def, Faction telegraphFaction)
         {
             string label = def.telegraphLabel ?? def.label ?? def.defName;
-            string text = string.Format(def.telegraphText ?? "{0} is stirring.", targetFaction.Name);
-            Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.ThreatBig, null, targetFaction);
+            string text = string.Format(def.telegraphText ?? "{0} is stirring.", telegraphFaction.Name);
+            Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.ThreatBig, null, telegraphFaction);
+        }
+
+        // AFTERMATH_DEAD_LETTERS_1: fires when the queued PAYLOAD incident
+        // itself lands (not the telegraph, which already fires at queue
+        // time above) - the "ships a templated letter baseline per rule"
+        // requirement def.letterLabel/letterText never reached. Called from
+        // Patch_PayloadLanded's postfix on IncidentWorker.TryExecute, the
+        // one seam every IncidentDef (RaidEnemy AND ShortCircuit alike,
+        // verified via RimSage against RimWorld/IncidentWorker.cs:183)
+        // funnels a successful fire through, unlike IncidentWorker_Raid.
+        // TryGenerateRaidInfo (raid-shaped incidents only, already used by
+        // Patch_RaidGenerated for a different purpose).
+        public void OnPayloadLanded(IncidentDef incidentDef, Faction faction, Map map)
+        {
+            if (incidentDef == null || faction == null) return;
+
+            QueuedAftermathMarker marker = queued.FirstOrDefault(q =>
+                q.Faction == faction && q.Def != null && q.Def.payloadIncidentDefName == incidentDef.defName);
+            if (marker == null) return;
+
+            // Matched and about to deliver its letter - remove now rather
+            // than waiting for the tick-based housekeeping sweep, so a
+            // second incident of the same defName for the same faction
+            // (a fresh, later-queued rule) cannot match this same marker
+            // again before FireTick has actually passed.
+            queued.Remove(marker);
+            SendPayloadLetter(marker.Def, faction);
+        }
+
+        private static void SendPayloadLetter(RM_AftermathRuleDef def, Faction faction)
+        {
+            if (string.IsNullOrEmpty(def.letterText)) return; // optional field - nothing to deliver
+            string label = def.letterLabel ?? def.telegraphLabel ?? def.label ?? def.defName;
+            string text = string.Format(def.letterText, faction.Name, def.LabelCap);
+            Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.ThreatBig, null, faction);
         }
 
         public override void ExposeData()

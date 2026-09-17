@@ -54,6 +54,7 @@
     <Compile Include="BattleRecord.cs" />
     <Compile Include="MapComponent_BattleRecorder.cs" />
     <Compile Include="Patch_RaidGenerated.cs" />
+    <Compile Include="Patch_PayloadLanded.cs" />
     <Compile Include="Patch_LordLifecycle.cs" />
     <Compile Include="Patch_ColonistCasualty.cs" />
     <Compile Include="Patch_MentalBreakNearBattle.cs" />

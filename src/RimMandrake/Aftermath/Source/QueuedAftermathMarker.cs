@@ -15,20 +15,32 @@ namespace RimMandrake.Aftermath
         public Faction Faction;
         public int FireTick;
 
+        // AFTERMATH_DEAD_LETTERS_1: which rule queued this, so the payload's
+        // own letterLabel/letterText can be sent when it actually lands
+        // (Patch_PayloadLanded's postfix on IncidentWorker.TryExecute,
+        // matched back here by faction + payloadIncidentDefName in
+        // AftermathRuleRunner.OnPayloadLanded). Null-safe everywhere this is
+        // read - an old save from before this field existed loads it as
+        // null and simply never sends the baseline letter for that marker's
+        // in-flight incident (housekeeping still prunes it on FireTick).
+        public RM_AftermathRuleDef Def;
+
         public QueuedAftermathMarker()
         {
         }
 
-        public QueuedAftermathMarker(Faction faction, int fireTick)
+        public QueuedAftermathMarker(Faction faction, int fireTick, RM_AftermathRuleDef def = null)
         {
             Faction = faction;
             FireTick = fireTick;
+            Def = def;
         }
 
         public void ExposeData()
         {
             Scribe_References.Look(ref Faction, "faction");
             Scribe_Values.Look(ref FireTick, "fireTick", 0);
+            Scribe_Defs.Look(ref Def, "def");
         }
     }
 }
