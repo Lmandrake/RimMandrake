@@ -7,12 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-<<<<<<< Updated upstream
-as-of: 2026-09-17T21:19:32Z (the last event's own timestamp, not the render clock)
-=======
-as-of: 2026-09-17T21:23:02Z (the last event's own timestamp, not the render clock)
->>>>>>> Stashed changes
-game:  UP   bridge: BENCH
+as-of: 2026-09-17T21:54:15Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1554,7 +1550,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1562,7 +1558,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
@@ -1893,16 +1889,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
-
-## GRAFFITI_WARNGLYPH_INUNIVERSE_1 Replace RM_Graffiti_WarningGlyph's 2 sprites: the modern ISO hazard triangle becomes an in-universe glyph (Aurebesh character or Jawa clan mark) - owner ruled replace 2026-09-16; keep the existing rough hand-painted brushwork, only the iconography changes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GRAFFITI_WARNGLYPH_INUNIVERSE_1.md
 
 ## WRECKEDMACHINES_MOD_SETTINGS_1 WreckedMachines ships NO Mod Settings at all (no ModSettings/DoSettingsWindowContents anywhere in the mod, MEASURED 2026-09-16) - violates MOD_OPTIONS_RETROFIT_1's every-mod-ships-settings ruling and blocks a GREEN independently of its north star
 state:    proposed
