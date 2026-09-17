@@ -21,7 +21,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -34,7 +33,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -48,7 +46,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -76,7 +73,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -89,7 +85,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -102,7 +97,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -116,7 +110,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -130,7 +123,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -143,7 +135,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -213,7 +204,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -226,7 +216,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -383,7 +372,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -396,7 +384,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -415,7 +402,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -428,7 +414,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -442,7 +427,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
@@ -466,7 +450,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -479,7 +462,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -492,7 +474,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -635,7 +616,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -763,7 +743,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -776,7 +755,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -814,7 +792,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -893,7 +870,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -913,7 +889,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -926,7 +901,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -939,7 +913,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -952,7 +925,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
@@ -965,7 +937,6 @@
     </requiredGenes>
     <modExtensions>
       <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
-        <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
   </HeadTypeDef>
