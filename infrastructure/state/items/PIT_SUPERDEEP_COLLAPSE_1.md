@@ -315,7 +315,86 @@ Heatstroke/Hypothermia keep doing physical harm; his own cover-is-mercy hediff
 - Cost he accepted: two systems on one pawn that a player must tell apart, and they
   can disagree.
 
-## open questions still outstanding
+## his rulings, second card round  (2026-09-17, same sitting)
+
+**[J] The body-size gate SURVIVES, as a per-depth field on the primitive.** Each
+depth carries a max body size, so a shallow pit genuinely cannot hold what a chasm
+can, and the existing dig-site fiction ("heavier game", "megafauna") stays true.
+- Cost he accepted: `RM_ExcavationDepth` widens beyond the two integers it holds now.
+- 🔑 **This couples with [G] below**: body size now decides BOTH whether a depth holds
+  you and how hard the spikes hit you. Two mechanics, one stat, pulling in opposite
+  directions — a big creature is harder to hold and takes more spike damage. That is
+  coherent and worth stating in the spec as a deliberate pairing rather than two
+  unrelated uses of `BodySize`.
+
+**[C] A trapped mech is killable from the lip — and he commissioned a door family
+off the back of it.** He took option 1, then added:
+
+> *"plus maybe it's handy to keep a hostile mech until you want to release it via a
+> sliuce gate? Speaking of which, we should commission a grating door as a "prisoner
+> door" for the end of a canal as well... so that fluid can easily enter without
+> needing to open it. Sliuce should be cheap to build and really designed to hold in
+> small creatures or allow water to flow only. The metal sluice is more armored, can
+> survive burning, and can hold tough prisoners. A steel grating is just as strong for
+> prisoners but allows liquids to flow and can survive burning. Those are the three.
+> Though I'd be happy if we just had Sluice and SecurityGrateDoor and allowed them to
+> be stuffably made too, and the player can just learn what happens if you're made of
+> wood"*
+
+- 🔑 **A trapped hostile mech becomes a STORED ASSET**, not a problem: hold it, then
+  release it through a sluice when you want it loose. That reframes [C] entirely — the
+  pit is a mech holding pen, and "unreachable hostile" was the wrong framing.
+- 🔑 **His own preferred shape is the SIMPLER one, and it should be built:** two defs,
+  **`Sluice`** and **`SecurityGrateDoor`**, both **stuffable**, with the stuff
+  deciding armour, fire survival and how tough a prisoner they hold — *"the player can
+  just learn what happens if you're made of wood"*. Stuffability replaces the
+  hardcoded three-tier ladder he described first (cheap sluice / armoured metal sluice
+  / steel grating). ⛔ Do not build three fixed defs; that is the version he talked
+  himself out of in the same breath.
+- The functional split that must survive stuffing: a **sluice** passes liquid and
+  holds small creatures; a **grate door** passes liquid AND holds a real prisoner.
+  Both are doors in the §4 sense — not openable from inside a superdeep cell.
+- ⚠️ **This is NEW CONTENT, not part of the collapse.** It is a door family for
+  FlowWorks and probably wants its own item; recorded here because it was ruled here.
+  It also answers §4's sluice-gate question with a concrete def roster.
+
+**[A-item] The debuff is "Exposed Prisoner", and it PIGGYBACKS on vanilla's existing
+moral machinery.** Verbatim:
+
+> *"Exposed Prisoner should be the debuff, and it should hit compassionate folks like
+> when you turn beggars away and ignore psychopaths or "hard" morality cultures.
+> Borrow their structure and piggyback, so we don't end up making a whole new moral
+> axis."*
+
+- 🔑 **The instruction is architectural, not just thematic: do NOT invent a new moral
+  axis.** Use the shape vanilla already has for rejecting beggars and similar acts — a
+  thought that compassionate pawns feel, that psychopaths and hard-morality cultures
+  do not.
+- That resolves the spec's hard case for free. §9 warned the cost "has to attach to a
+  duration with no acting pawn"; piggybacking on the existing structure sidesteps
+  building a duration-tracked mood system from scratch.
+- ⛔ Still do not invent the precept's numbers or its exact def shape without him —
+  but the STRUCTURE is now ruled, and it is "copy the existing one", not "design one".
+
+**[G] Spikes fire on ANY descent, the jump gizmo warns and confirms — and they are
+NOT instant death.** Verbatim:
+
+> *"it isn't instantly lethal, it just inflicts a massive Sharp damage. If you're
+> incredibly armored you might survive. Don't use instant death, use regular damage.
+> Reason metaphorically to determine what that damage might be. The fact that it's
+> based on gravity is interesting: that means the heavier things have more momentum
+> than lighter things, cancelling their ordinarily higher health, so I think the damage
+> should be scaled proportional to bodysize."*
+
+- ⛔ **No instant-death path.** Massive **Sharp** damage through the normal damage
+  pipeline, so armour, body parts and luck all apply and a heavily armoured pawn can
+  survive.
+- 🔑 **Damage scales proportional to `BodySize`** — his reasoning: the fall is
+  gravity-driven, so heavier things carry more momentum, which cancels the higher
+  health they would otherwise enjoy. So a thrumbo is not safer than a squirrel merely
+  for being large.
+- The magnitude is to be reasoned "metaphorically" rather than given: ⛔ do not invent
+  a number and present it as his. Propose one with the reasoning shown, for his word.
 
 - The shape of the mood/ideoligion cost of temperature torture. He flagged it
   explicitly — *"not something nice colonists do"* — and did not specify it.

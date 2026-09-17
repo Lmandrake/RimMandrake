@@ -7,7 +7,11 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
+<<<<<<< Updated upstream
 as-of: 2026-09-17T21:19:32Z (the last event's own timestamp, not the render clock)
+=======
+as-of: 2026-09-17T21:23:02Z (the last event's own timestamp, not the render clock)
+>>>>>>> Stashed changes
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,3 +525,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Not written yet. This is design work and goes to a backgrounded Fable subagent
 prose:    infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md
+
+## FLOWWORKS_DOOR_FAMILY_1 Sluice and SecurityGrateDoor as STUFFABLE doors — cheap sluice passes liquid and holds small creatures, grate door passes liquid and holds a real prisoner, stuff decides armour and fire survival (owner commissioned 2026-09-17)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_DOOR_FAMILY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_DOOR_FAMILY_1.md
