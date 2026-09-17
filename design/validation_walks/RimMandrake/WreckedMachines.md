@@ -26,13 +26,13 @@ X. [S] (human pass) compare the WRECKED/KLUDGED/REPAIRED art against each other 
 
 ## north star
 state: VALIDATED
-validated-hash: 6ab55cd8349ce2d439f6f265fa819826b2e471e9e1dd2b430964a13632e9ac68
+validated-hash: 70881b98e8c1c01754802ea14a6db3e7650d9ac9dd502a246c95fa7f9ea9806c
 
 The `state:` line above is authoritative; `design/RimMandrake/north_star_validation_spec.md`
 defines what each state means and §6 covers staleness. Ruled in the owner's sitting of
 2026-09-16 — his three rulings are marked 🔴 inline. Amend only in another sitting with
-him: the recorded hash covers this whole section, so any edit reverts it to DRAFT
-(`NORTHSTAR_HASH_SCOPE_1`).
+him: the recorded hash covers this whole section, so any edit reverts it to DRAFT until he
+re-validates.
 
 ### the experience  (OWNER'S WORDS — verbatim)
 
