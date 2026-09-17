@@ -265,6 +265,56 @@ it:
   limited-vs-limitless glyph, the damp irrigation ring. ⛔ Do not restore any of
   them while rewriting the pit bars.
 
+## his rulings on the spec's open questions  (2026-09-17, same sitting)
+
+Four of §9's ten answered by card, after the spec landed. §9 letters in brackets.
+
+**[F] Fluid identity is typed per LIQUID BODY — not per cell, not per map.** He took
+the middle option the spec surfaced. A pit fed by its own sluice is its own body, so
+his answer 7 (oil in this pit, poison in that) ships without a per-cell grid.
+- ✅ Cheaper than per-cell: new state on the body plus a save migration, and a single
+  canal's behaviour is unchanged.
+- 🔴 **The unresolved case is body MERGING.** Two pits joined by a channel become one
+  body. The spec flagged this: their fluids must either merge or refuse to, and
+  nothing decides which. **That is now the first thing the implementation must ask
+  him** — it is a gameplay-visible rule, not an implementation detail.
+- ⛔ `ActiveFluid` as a single per-map field is therefore retired, not kept.
+
+**[D] LAW 2 gets a SECOND STATED EXCEPTION.** He chose D2 over deriving room-hood
+from a built lip, so depth is permitted to reach room detection.
+- This is a **policy** ruling and stands on its own; the spec's blocking unmeasurable
+  does not threaten it, it only prices it. ⚠️ If vanilla's region/room builder never
+  considers `TerrainDef` at all, cashing this exception needs a **Harmony patch on
+  region building** rather than a terrain choice — read `RegionAndRoomUpdater`,
+  `RegionMaker`, `Region.Room`/`District` on the Desktop before estimating.
+- ⚠️ The spec's own caution stands and should be written into the exception when it is
+  authored: ruling 23 is a RESTRICTION on an existing check, whereas this is an
+  ADDITION that makes new systems read depth. **Word the exception so it does not
+  become a general precedent** for any future system that wants to read D.
+- ⛔ `RM_ExcavationDepth.cs`'s LAW 2 docstring still says "and nothing else". That is
+  TRUE today and becomes false when the collapse ships, so it is rewritten as part of
+  the implementation — not now, and not ahead of the exception's agreed wording.
+
+**[E] Real path cost, done properly as a depth × tier matrix.** He rejected both the
+cheap fixes — relying on perceived cost, and flattening the tiers upward.
+- Fixes the live contradiction MEASURED today: `RM_Fill_Water_Half` 42 against dry
+  `RM_Channel_Mid` 45, so a half-flooded cell is currently CHEAPER to cross than a dry
+  one, against his ruling that flooded slows you more.
+- Cost he accepted: each fluid goes from 4 terrains to **12**, and `FluidDef`'s
+  shipped shape changes. This is the largest of the three options and touches a def
+  format already in the game.
+- 🔑 It also preserves what ruling 5's three fill tiers exist for — flattening upward
+  would have eroded the depth read to buy a cheaper fix.
+
+**[H] Both hediffs stay: vanilla for damage, `RM_PitExposure` for resistance.**
+Heatstroke/Hypothermia keep doing physical harm; his own cover-is-mercy hediff
+(2026-08-30) becomes the accumulator that drives resistance down.
+- 🔑 So §5's temperature mechanism **does not replace** a mechanism he ruled — it sits
+  beside it, and the two are tuned independently: "this is hurting them" and "this is
+  breaking them" are separate dials.
+- Cost he accepted: two systems on one pawn that a player must tell apart, and they
+  can disagree.
+
 ## open questions still outstanding
 
 - The shape of the mood/ideoligion cost of temperature torture. He flagged it
