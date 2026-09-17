@@ -40,7 +40,7 @@
     <waterBodyType>None</waterBodyType>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>heavy</viscosityClass>
+        <viscosityClass>Heavy</viscosityClass>
         <pH>7</pH>
       </li>
     </modExtensions>
