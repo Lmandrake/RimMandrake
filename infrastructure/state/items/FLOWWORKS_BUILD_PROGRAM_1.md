@@ -266,8 +266,9 @@ LIES    a flood that leaves the channel; a source that never runs down; conserva
   Decide which is drawn.
 - **Fire reaching an occupied pit** must know there is an occupant, or it will be found later as "fire
   does nothing to a trapped pawn".
-- **Filling in a canal that contains a pit** — does the pit survive? Both readings are defensible, so
-  it needs a rule before someone picks one silently.
+- **Filling in a canal that contains a pit** — RULED 2026-09-16 (ruling 29, by card): the fill
+  DESTROYS the pit. Code owed: `Designator_FillInCanal` still refuses edifice cells and must be
+  changed to destroy a Pits building on the filled cell.
 - **Every mechanic ships its own Mod Settings toggle**, defaults equal to shipped behaviour, all-off
   leaving a mod that still digs dry channels (standing rule, 2026-09-12). With this many mechanics the
   settings screen is large by design — group it by phase.
