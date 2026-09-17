@@ -25,8 +25,8 @@ status-hint: three-tier restoration ladder for a wrecked VFE-Factory automated s
 X. [S] (human pass) compare the WRECKED/KLUDGED/REPAIRED art against each other and the donor's own smelter sprite — ⬇️ **superseded as the authority by the `## north star` section below**, which makes this a binding bar rather than a deferred concern.
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 6ab55cd8349ce2d439f6f265fa819826b2e471e9e1dd2b430964a13632e9ac68
 
 The `state:` line above is authoritative; `design/RimMandrake/north_star_validation_spec.md`
 defines what each state means and §6 covers staleness. Ruled in the owner's sitting of

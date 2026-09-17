@@ -600,32 +600,50 @@ which the batch-1 draft flagged as an open question and which this axis answers.
   read axis authorable and largely *runnable* on this laptop, unlike the visual
   floor.
 
-### 10.4 Who judges — the judge may only ever make a read verdict WORSE
+### 10.4 Who judges — a model MAY pass a read line (owner ruling, 2026-09-16)
 
 The visual judge of §4 is reused for its transport and its narrow-question
-discipline, and **not** for its authority. Three constraints, and the first is the
-whole answer.
+discipline.
 
-- 🔴 **On `open` lines, a model may not return a passing verdict.** Its `YES` is
-  recorded as `NEEDS-OWNER`, which clears nothing and cannot green a mod
-  (§5, item 3).
-  It may return `NO` — with a quoted span from the captured text — and it may
-  return `UNJUDGEABLE`. The asymmetry is the design, and the reason is
-  falsifiability: a `NO` that quotes the offending sentence is *checkable in
-  seconds* and the owner can overrule it, while a `YES` on "reads as a god" is
-  unfalsifiable, free to produce, and produced by the same kind of thing that
-  wrote the prose. Allow the cheap direction; forbid the expensive one.
+🔴 **OWNER RULING, 2026-09-16, verbatim: "Let a model YES green a line."** This
+**replaces** the asymmetry originally specified here, under which a model's `YES` on
+an `open` line was recorded `NEEDS-OWNER` and could green nothing. He was shown that
+cost and the objection — that the same kind of thing which wrote the prose would be
+certifying it, and that `Agent_Policy.md`'s forbidden-place #4 covers text he reads as
+a conclusion — and ruled against it anyway. **His reasoning is sound and worth stating,
+because the two failure modes are not the same size.** The asymmetry's cost was
+*unbounded and unrecoverable*: any mod with an open read line could never go GREEN
+unattended, ever — a permanent tax on the one resource this entire system exists to
+conserve. The cost he accepted instead is *bounded and recoverable*: a tonally-flat
+letter slips through, he meets it in play, and re-opens the line. An off-register
+letter is nowhere near the severity of a pawn standing upright in a 64px trap icon,
+which is what the visual axis exists for.
+
+So, as of this ruling:
+
+- **A model judge may return a passing verdict on any read line, `open` ones
+  included, and that pass greens the line.** There is no `NEEDS-OWNER` gate.
+- ⚠️ **Residual risk, stated rather than argued:** on `open` lines the grader and the
+  generator may be the same model (the UNMEASURED note below), so a pass there is the
+  weakest verdict this system produces. Weight it accordingly — when a letter reads
+  wrong in play, suspect the line before suspecting the letter.
+- 🔴 **`cannot read` lines are untouched and remain absolute.** They find violations
+  rather than granting passes: zero occurrences, one counterexample settles it
+  (§10.2). A model reporting a violation with a quoted span is checkable in seconds,
+  which is the cheap direction the ruling never contested.
 - **On `fixed`, `enumerated` and `absolute` lines the judge may pass, exactly as
   on the visual axis.** The object is stable and pinned by a hash, so a judged
   verdict is a real regression guard on a real artifact. The distinction is the
   artifact's stability, not taste: a sprite does not change between runs and
   neither does a `const string`; an open generator's output is a new object every
   time, so there is nothing for a regression guard to guard.
-- 🔴 **Model tier is opus, and the verdict goes to him.** `Agent_Policy.md`'s
-  catcher table, row 4 — *"Only the owner's eye — art, the world, prose he reads
-  → opus, and it goes to him"* — and its list of four places a cheaper tier is
-  forbidden outright, #4: *"Text the owner reads as a conclusion."* A read verdict
-  is precisely that.
+- 🔴 **Model tier is opus.** `Agent_Policy.md`'s catcher table, row 4 — *"Only the
+  owner's eye — art, the world, prose he reads → opus"*. The tier requirement stands
+  untouched by the 2026-09-16 ruling: he lifted the *authority* limit, not the *tier*
+  floor, so a read verdict is never delegated to a cheaper model. That policy's
+  forbidden-place #4 (*"Text the owner reads as a conclusion"*) now carries an
+  explicit carve-out for north-star read verdicts, recorded there in the same change
+  as this one.
 - ⛔ **No fan-out, no voting, no second opinion.** One judge, one owner. Several
   reviewers agreeing on a contested register question is evidence of a shared
   blind spot, not of quality — and register is the contested case by definition,
