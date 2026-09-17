@@ -334,6 +334,60 @@ def t_status_registry_roundtrip_and_staleness():
         shutil.rmtree(d)
 
 
+def t_status_rename_key_moves_entry_and_refuses_collision():
+    d = tempfile.mkdtemp()
+    real_log, real_lock = status.LOG_PATH, status.LOCK_PATH
+    status.LOG_PATH = os.path.join(d, "modcheck_status.json")
+    status.LOCK_PATH = status.LOG_PATH + ".lock"
+    try:
+        mod_dir = os.path.join(d, "mod")
+        os.makedirs(mod_dir)
+        with open(os.path.join(mod_dir, "Foo.xml"), "w") as f:
+            f.write("<A/>")
+        status.record_run("OldName", mod_dir, "run1", all_green=True)
+
+        try:
+            status.rename_key("NoSuchKey", "New", "test")
+            check("rename_key: refuses when the old key has no entry", False)
+        except RuntimeError:
+            check("rename_key: refuses when the old key has no entry", True)
+
+        entry = status.rename_key("OldName", "NewName", "renamed for test")
+        data = status.load()
+        check("rename_key: old key is gone", "OldName" not in data, data)
+        check("rename_key: new key holds the moved entry",
+             data.get("NewName", {}).get("run_id") == "run1", data)
+        check("rename_key: returns the moved entry",
+             entry.get("run_id") == "run1", entry)
+
+        status.record_run("Collider", mod_dir, "run2", all_green=True)
+        try:
+            status.rename_key("NewName", "Collider", "test")
+            check("rename_key: refuses to clobber an existing destination key",
+                 False)
+        except RuntimeError:
+            check("rename_key: refuses to clobber an existing destination key",
+                 True)
+        data = status.load()
+        check("rename_key: a refused rename leaves both keys untouched",
+             "NewName" in data and "Collider" in data, data)
+
+        try:
+            status.forget_key("NoSuchKey", "test")
+            check("forget_key: refuses when the key has no entry", False)
+        except RuntimeError:
+            check("forget_key: refuses when the key has no entry", True)
+
+        status.forget_key("NewName", "test cleanup")
+        data = status.load()
+        check("forget_key: the key is gone", "NewName" not in data, data)
+        check("forget_key: an unrelated key is untouched",
+             "Collider" in data, data)
+    finally:
+        status.LOG_PATH, status.LOCK_PATH = real_log, real_lock
+        shutil.rmtree(d)
+
+
 # ------------------------------------------------------------------ report
 
 def t_report_renders_verdict_and_mod_name():
@@ -453,6 +507,7 @@ TESTS = [
     t_mod_hash_changes_with_content,
     t_mod_hash_ignores_validation_py,
     t_status_registry_roundtrip_and_staleness,
+    t_status_rename_key_moves_entry_and_refuses_collision,
     t_report_renders_verdict_and_mod_name,
     t_run_dry_run_never_calls_subprocess,
     t_restore_full_runs_even_when_a_mod_load_fails,

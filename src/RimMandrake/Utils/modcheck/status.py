@@ -271,6 +271,51 @@ def declare_minor(mod, mod_dir, why):
     return entry
 
 
+def rename_key(old, new, why):
+    """Move `old`'s recorded entry to `new` -- for a mod renamed since it was
+    last run (MEASURED 2026-09-17: `FluidCanals` sat GREEN under its dead
+    pre-rename name while the mod ships as `FlowWorks`, and a fresh run under
+    the new name writes a SEPARATE entry rather than updating the old one, so
+    the stale key sits unreferenced forever). This is the rename/forget verb
+    the naming migration owed this registry -- hand-editing the JSON is
+    forbidden (module docstring), so this is the only sanctioned way to move
+    a key.
+
+    Refuses if `old` has no entry (nothing to move) or `new` already has one
+    (a rename must never silently clobber a live mod's own run history --
+    `forget_key` the dead one first if that is genuinely what is wanted)."""
+    with _locked():
+        data = load()
+        if old not in data:
+            raise RuntimeError(
+                "%s has no recorded entry -- nothing to rename." % old)
+        if new in data:
+            raise RuntimeError(
+                "%s already has a recorded entry -- renaming %s onto it would "
+                "overwrite that entry's own run history. `forget %s` first if "
+                "the old key is genuinely dead and disposable, or resolve by "
+                "hand." % (new, old, old))
+        entry = data.pop(old)
+        entry["renamed_from"] = {"old": old, "why": why, "ts": time.time()}
+        data[new] = entry
+        save(data)
+    return entry
+
+
+def forget_key(key, why):
+    """Delete `key`'s entry outright -- for an orphaned key with no successor
+    worth preserving (never for a live mod's own bad run; a fresh `run` is
+    the way to replace that). Refuses a key with no entry: nothing to forget.
+    `why` is recorded nowhere durable past this call's own log line -- if the
+    reason matters later, it belongs in the commit message that calls this."""
+    with _locked():
+        data = load()
+        if key not in data:
+            raise RuntimeError("%s has no recorded entry -- nothing to forget." % key)
+        del data[key]
+        save(data)
+
+
 _NOT_GREEN_WHY = {
     "RED": "RED (last run failed)",
     "REFUSED": "REFUSED (visual floor -- see `refused` in the registry)",
