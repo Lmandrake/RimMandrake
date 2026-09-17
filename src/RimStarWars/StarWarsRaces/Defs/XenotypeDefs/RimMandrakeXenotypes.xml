@@ -2006,10 +2006,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <nameMaker>RSW_KoTOR_NamerTwilek</nameMaker>
     <genes>
       <li>Turn_Gene_Uncertain</li>
-      <li>Turn_Gene_AgressionSubmissive</li>
-      <li>Libido_High</li>
       <li>Outland_LowFertility</li>
-      <li>Beauty_Beautiful</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
       <li>RSW_TwilekHead</li>
