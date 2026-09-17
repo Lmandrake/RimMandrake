@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T12:22:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T13:09:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -451,3 +451,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ATMOSPHERIC_BASE_CANVAS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ATMOSPHERIC_BASE_CANVAS_1.md
+
+## NORTHSTAR_MOTION_FRAMES_1 A north-star line about CHANGE is evidenced by an ordered frame sequence, not one screenshot - owner ruling 2026-09-17, spec 4b. judge.py takes shots[-1] under a prompt telling the model to answer about that image alone, so 10 of AtmosphericBase's 23 bars (travelling boundary, writhing dark, rise-hold-release, restore-to-substrate, both anger reactions, identity on two channels) are structurally unjudgeable while every state assertion passes. Owed: a line declares state-vs-change, the judge takes a sequence, a change line claimed with one frame is UNJUDGEABLE never a partial pass. Separately move never_interpolated_colour off the eye onto a material-cache count - differing stills cannot settle smoothness at any frame count
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_MOTION_FRAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_MOTION_FRAMES_1.md

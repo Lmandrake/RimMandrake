@@ -79,6 +79,19 @@ one condition, verbatim: *"but don't block on it, it's just part of the playtest
 this mod or any other, and its lines are judged when he plays rather than before it ships. Sound
 work proceeds without waiting for the axis to exist. `NORTH_STAR_HEAR_AXIS_1`.
 
+✅ **A bar here may cite several frames — owner ruling, 2026-09-17.** Walking this checklist
+surfaced that **10 of its 23 bars are about CHANGE rather than a state**, while `judge.py` took
+`shots[-1]` under a prompt telling the model to answer about that image alone:
+`territory_boundary_moves`, `tremor_reads_as_third_presence`, `dark_is_never_still`,
+`blackout_angers_visibly`, `stripping_fixtures_angers_visibly`, `narrator_arrival_unmistakable`,
+`narrator_restores_substrate`, `god_identity_on_two_channels`, `speed_lives_in_few_fixtures`,
+`never_interpolated_colour`. He ruled the judge takes an ordered sequence for such a line —
+spec §4b, owed on `NORTHSTAR_MOTION_FRAMES_1`.
+
+🔑 One consequence lands on this list rather than on the machinery: **a sequence proves something
+CHANGED, never that it changed SMOOTHLY.** So `never_interpolated_colour` is not an eye's
+question at any frame count and wants a material-cache count instead.
+
 Provenance tag per line: 🗣 his verbatim words or a ruling of his · 📐 measured from a file on
 disk this pass · 🤔 my inference, weakest, cut freely.
 

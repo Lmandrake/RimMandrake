@@ -112,7 +112,8 @@ not summarised, not tidied. This is the only part an agent never writes.
 
 ### must show
 Grouped by the mechanic each line belongs to. Every line has a stable id and is
-answerable yes/no by LOOKING at one screenshot.
+answerable yes/no by LOOKING — at one screenshot for a line about a state, at an
+ordered sequence for a line about change (§4b).
 
 - [ ] `pit_reads_as_hole` — a sprung pit reads as a dark hole at play zoom with
       its label hidden, not as an icon on the floor
@@ -189,9 +190,11 @@ The floor is per AXIS: §10.5 adds `uncovered_reads()`, the same shape again ove
 New module, `modcheck/judge.py`. Runs once at the end of a run, per the
 2026-09-12 ruling that the LLM never drives.
 
-- **Input per screenshot**: the image, the component's name, and the *specific
+- **Input per line**: the evidence, the component's name, and the *specific
   must-show lines it claims*. Never a bare "does this look right" — that
-  question is unanswerable and its answer is worthless.
+  question is unanswerable and its answer is worthless. The evidence is one
+  image for a line about a state and an ordered sequence for a line about
+  change — §4b.
 - **Output per claimed line**: `YES` / `NO` / `UNJUDGEABLE`, with one sentence of
   why. `UNJUDGEABLE` is a real verdict for a screenshot that cannot settle the
   line (wrong zoom, occluded subject) and never collapses to a pass.
@@ -250,6 +253,40 @@ Two consequences beyond this spec:
   confirmed on a live shipped sprite rather than inferred.
 - Any future claim that a geometric check makes visual judgement unnecessary
   should be tested against this case first. It is the counterexample.
+
+### 4b. A bar may cite several frames — owner ruling, 2026-09-17
+
+**A must-show line whose subject is CHANGE is evidenced by an ordered sequence of
+frames, judged as one line.** Chosen over rewriting such lines to fit a single
+frame, over demoting them to playtest-only as the hear axis is (§12), and over
+giving motion its own axis.
+
+The problem it answers, MEASURED 2026-09-17 while walking AtmosphericBase: that
+mod's checklist carries **10 of 23 bars about change over time** — a boundary
+that travels, a darkness that writhes, a rise-hold-release, a return to what was
+underneath, two anger reactions each needing a before and an after — and
+`judge.py` took `shots[-1]`, the last screenshot only, under a prompt instructing
+the model to answer about that image alone. So the half of that mod carrying the
+owner's actual vision was structurally unjudgeable, silently, while every state
+assertion could pass. That is §Why's defect in the time dimension.
+
+- **The frames are already captured.** `component.screenshots` is a list and
+  `t.screenshot()` already appends; only the judge's input shape changes. This is
+  why the small option was the right one.
+- 🔑 **A sequence proves that something CHANGED, not that it changed SMOOTHLY.**
+  Stated as a limit rather than discovered: `never_interpolated_colour` asks
+  whether a fade is continuous, and differing stills cannot settle that at any
+  frame count. That line needs a material-cache count, not an eye — and its own
+  wording ("the symptom and the defect are the same thing") is what misfiled it.
+- **A line declares which it is, and the runner must be able to read it**, exactly
+  as a read line declares its evidence class (§10.2). A change line claimed by a
+  component that captured one frame is `UNJUDGEABLE`, never a partial pass — the
+  same rule as an open read line whose batch came back short (§10.5).
+- ⚠️ **UNMEASURED: how many frames make a change line decidable.** No defensible
+  number was derived here and none is asserted. It is per line — a before/after
+  pair settles an anger reaction; a rise-hold-release plainly needs three.
+
+Owed on `NORTHSTAR_MOTION_FRAMES_1`; nothing about the single-frame bars waits on it.
 
 ## 5. What GREEN means, restated
 
