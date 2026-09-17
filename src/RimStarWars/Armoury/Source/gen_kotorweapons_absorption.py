@@ -187,9 +187,30 @@ R = Report()
 
 
 def existing_defnames_in(defs_root, exclude_dir):
-    """defName -> source file, for every def already under defs_root EXCEPT
-    this generator's own output tree (exclude_dir) -- a rerun must not
-    treat its own last run as a foreign pack to collide against."""
+    """(tag, defName) -> source file, for every def already under defs_root
+    EXCEPT this generator's own output tree (exclude_dir) -- a rerun must not
+    treat its own last run as a foreign pack to collide against.
+
+    Keyed by (tag, defName), not bare defName: RimWorld's defName uniqueness
+    is per-DefType, not global -- a ThingDef and a HediffDef sharing a name
+    is not a real collision. gen_kotorcore_absorption.py's own docstring
+    documents this exact bug in "the two prior generators" (this one and
+    gen_jds_armory_absorption.py, both keyed on bare defName) and fixed it
+    for itself; ported the same fix here rather than leaving this sibling
+    generator wrongly dropping same-name-different-DefType pairs (kotorcore's
+    own source has three: deathstickHigh, RhydoniumHigh, SpiceHigh).
+
+    Also indexes abstract templates (Name="X" Abstract="True") under a
+    "Name:"-prefixed key in the same (tag, ...) keyspace -- these have no
+    <defName> so the loop above never sees them, but RimWorld's XML-
+    inheritance node registry is keyed on Name= too, and two absorption
+    passes registering the same Name= in the same final mod folder throws
+    "Could not register node named X ... already used in this mod". Found
+    live: guy762_GrenadeBeltBase/StealthField_Base/StealthDeactivate_Base
+    absorbed independently by both this generator and
+    gen_kotorcore_absorption.py (shared abstracts across the two source
+    packs) -- see that script's own existing_defnames_in() for the sibling
+    fix this one was missing."""
     out = {}
     for dirpath, dirnames, files in os.walk(defs_root):
         if os.path.abspath(dirpath) == os.path.abspath(exclude_dir) or \
@@ -207,7 +228,10 @@ def existing_defnames_in(defs_root, exclude_dir):
             for el in tree.getroot():
                 dn = el.find("defName")
                 if dn is not None and dn.text:
-                    out[dn.text.strip()] = os.path.relpath(p, defs_root)
+                    out[(el.tag, dn.text.strip())] = os.path.relpath(p, defs_root)
+                nm = el.attrib.get("Name")
+                if nm:
+                    out[(el.tag, "Name:" + nm)] = os.path.relpath(p, defs_root)
     return out
 
 
@@ -395,16 +419,36 @@ def main():
                 continue
 
             if dn:
-                if dn in existing:
-                    R.warn("defName %r (from %s) COLLIDES with already-absorbed %s -- SKIPPED" % (dn, rel, existing[dn]))
+                key = (el.tag, dn)
+                if key in existing:
+                    R.warn("defName %r <%s> (from %s) COLLIDES with already-absorbed %s -- SKIPPED" % (dn, el.tag, rel, existing[key]))
                     n_dropped += 1
                     continue
-                if dn in all_new_defnames:
-                    R.warn("defName %r (from %s) COLLIDES within this pack's own output (also in %s) -- SKIPPED"
-                           % (dn, rel, all_new_defnames[dn]))
+                if key in all_new_defnames:
+                    R.warn("defName %r <%s> (from %s) COLLIDES within this pack's own output (also in %s) -- SKIPPED"
+                           % (dn, el.tag, rel, all_new_defnames[key]))
                     n_dropped += 1
                     continue
-                all_new_defnames[dn] = rel
+                all_new_defnames[key] = rel
+
+            # Same Name= collision check as existing_defnames_in(), for
+            # abstract templates with no <defName> -- see that function's
+            # comment for why this is a separate keyspace and why it's
+            # needed at all.
+            nm = el.attrib.get("Name")
+            if nm:
+                nkey = (el.tag, "Name:" + nm)
+                if nkey in existing:
+                    R.warn("Name=%r <%s> (from %s) COLLIDES with already-absorbed abstract %s -- SKIPPED"
+                           % (nm, el.tag, rel, existing[nkey]))
+                    n_dropped += 1
+                    continue
+                if nkey in all_new_defnames:
+                    R.warn("Name=%r <%s> (from %s) COLLIDES within this pack's own output (also in %s) -- SKIPPED"
+                           % (nm, el.tag, rel, all_new_defnames[nkey]))
+                    n_dropped += 1
+                    continue
+                all_new_defnames[nkey] = rel
 
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "iconPath", tex_paths)
