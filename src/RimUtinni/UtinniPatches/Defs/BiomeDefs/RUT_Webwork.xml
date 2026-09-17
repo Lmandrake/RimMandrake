@@ -52,6 +52,7 @@
 
   <BiomeDef>
     <defName>RUT_Webwork</defName>
+    <generatesNaturally>false</generatesNaturally>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_FrontCreepExtension">
         <frontThingDefNames>
