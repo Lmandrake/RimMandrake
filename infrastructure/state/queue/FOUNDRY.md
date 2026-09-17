@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:11:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:27:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -819,6 +819,33 @@ kind:     task
 summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
 prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
 
+## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  rimworld/searchdebugactions (ANY query, even "Inhabited") and
+prose:    infrastructure/state/items/DEBUG_ACTION_ENUM_CRASH_1.md
+
+## BAZAAR_WINDOW_GRID_1 The Bazaar slice 1: Dialog_Trade replacement via WindowStack.Add intercept + virtualized grid, presets, wishlist, plugin defs — silver math identical to vanilla — model: opus
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  New mod src/RimMandrake/TheBazaar/ (mandrake.rm.bazaar). RMWindowBazaar
+prose:    infrastructure/state/items/BAZAAR_WINDOW_GRID_1.md
+
+## BAZAAR_PRICE_ENGINE_1 The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
+prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -856,7 +883,7 @@ summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 myno
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
 ## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1459,6 +1486,26 @@ blocked:  Watch-out names two deps: RM_GENSTEP_PLACED_SETPIECES_1 (done, b47fe61
 summary:  Set-pieces scattered via RMGENSTEPPLACEDSETPIECES1's shared scatterer:
 prose:    infrastructure/state/items/LIQUID_INDUSTRY_SETPIECES_1.md
 
+## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  jawa/debug_action_yielders built and compiles clean (0 errors) -- root cause confirmed via RimSage: vanilla DebugTabMenu_Actions.InitActions invokes every [DebugActionYielder] with no try/catch, RitualSiegeWithSpecifics NREs with no game loaded, RimBridgeServer ships assemblies-only so PrepareNode can't be patched. Same jawa/-replacement pattern as DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1. Needs a game-down window to deploy the companion DLL (can't deploy while RimWorld is running -- memory-mapped) then a live bridge call to prove it, not something to trigger mid-AFK-session. (on COLD_LOAD_RUN_SHEET_4)
+summary:  rimworld/searchdebugactions (ANY query, even "Inhabited") and
+prose:    infrastructure/state/items/DEBUG_ACTION_ENUM_CRASH_1.md
+
+## BAZAAR_PRICE_ENGINE_1 The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  The item's own Watch-out names BAZAAR_WINDOW_GRID_1 as a dependency, and its two read-side consumers (session-guarded Tradeable.GetPriceFor postfix, intel/broker rendering) both need a live Bazaar session concept that slice 1 does not build yet -- this session's pass on BAZAAR_WINDOW_GRID_1 shipped only plugin-def scaffolding + an inert Dialog_Trade subclass, no WindowStack.Add intercept, no session object wired to a real window. Seeding also reads WORLDMAP_LIQUID_TAGS_1's store, itself gated on LIQUID_REGISTRY_CORE_1's roster rows (open, incomplete) -- a second soft dependency, null-tolerant per the item's own text but still nothing to seed against yet. Model:opus, two real dependencies still open -- not a fit for a third AFK slice on the same epic this pass. (on BAZAAR_WINDOW_GRID_1)
+summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
+prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
+
 ## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1468,6 +1515,16 @@ kind:     defect
 blocked:  Matches an already-fixed, not-yet-live-confirmed bug (GR_Mantistanis dangling ref, GIDDYUP_NULLKEY_CRASH_1/90d58be79). Piggyback on GIDDYUP_NULLKEY_COLD_READING_1's cold-load reading rather than a separate live test; re-open only if the crash still fires after that reading confirms the fix live. (on GIDDYUP_NULLKEY_COLD_READING_1)
 summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
+
+## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  All named def-side gaps closed (TreeDrago/Agave/Dandelion evicted, now Bush/PincushionCactus too, 47aabd98c) -- wildPlants is now just the two RM_FE_ grasses. What's left is live-only: clear existing Bush/PincushionCactus instances, and a look at the ground fill with only two species carrying it. Rides the next load round. (on COLD_LOAD_RUN_SHEET_4)
+summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1550,36 +1607,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
-
-## DEBUG_ACTION_ENUM_CRASH_1 search_debug_actions/list_debug_action_children(Actions) crash on any broad query (RitualSiegeWithSpecifics NREs in PrepareNode)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  rimworld/searchdebugactions (ANY query, even "Inhabited") and
-prose:    infrastructure/state/items/DEBUG_ACTION_ENUM_CRASH_1.md
-
-## BAZAAR_WINDOW_GRID_1 The Bazaar slice 1: Dialog_Trade replacement via WindowStack.Add intercept + virtualized grid, presets, wishlist, plugin defs — silver math identical to vanilla — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  New mod src/RimMandrake/TheBazaar/ (mandrake.rm.bazaar). RMWindowBazaar
-prose:    infrastructure/state/items/BAZAAR_WINDOW_GRID_1.md
-
-## BAZAAR_PRICE_ENGINE_1 The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
-prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
 
 ## BAZAAR_HAGGLE_DUEL_1 The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; deterministic seeding — model: opus
 state:    proposed
