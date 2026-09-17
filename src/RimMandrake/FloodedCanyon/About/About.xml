@@ -12,9 +12,14 @@
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
   <description>FLOOD_CANYON_BIOME_1 (owner ruling, 2026-09-12, verbatim on the filing
 event: the flood-witness work restructures into its own standalone biome mod —
@@ -44,7 +49,11 @@ shipped behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
      Then the wall arrives: a footprint of the canyon floor floods for a
      set duration, at light and non-fatal hazard to anyone caught standing
      in it, and drains to real fertile soil once it recedes — "death, then
-     soil" as an engine, not a set piece.
+     soil" as an engine, not a set piece. Ground that has been EXCAVATED is
+     not converted at all: the flood fills those cells through RimMandrake:
+     FlowWorks, which owns depth and fill, and empties them again when it
+     recedes. A dug channel, a pit or a superdeep excavation therefore
+     survives a flood instead of being erased by it.
   3. Soak-driven growth: ground the flood just soaked carries a temporary
      plant-growth-rate multiplier that decays over a few days, so the newly
      wet floor visibly rushes to green before drying out — a light,

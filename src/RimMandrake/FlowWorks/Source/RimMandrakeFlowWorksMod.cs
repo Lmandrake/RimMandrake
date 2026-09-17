@@ -63,6 +63,42 @@ namespace RimMandrake.FlowWorks
         public static bool liquidCorrosionEnabled = false;
         public static bool liquidIgnitionEnabled = false;
 
+        // ══════════════════════════════════════════════════════════════════
+        // PHASE 4 — STOCK, DISPLACEMENT, RECESSION, REFILL, SINKS.
+        //
+        // ⚠️ DELIBERATELY ITS OWN SECTION, top to bottom: fields, ExposeData
+        // lines and the screen block below all sit together and touch nothing
+        // above them. A second lane was adding unrelated toggles to this file
+        // in the same window; keeping Phase 4 in one contiguous run is what
+        // makes both changes land without either rewriting the other's lines.
+        //
+        // Defaults = the behaviour this phase ships, per the standing rule
+        // (owner, 2026-09-12). ALL-OFF degrades exactly to the pre-Phase-4
+        // engine: dry digging, the sort-and-overflow pulse, limitless sources,
+        // nothing receding, nothing refilling, nothing draining off-map.
+        //  11. fillInEnabled              — the fill-in designator exists at all
+        //  12. fillInDisplacementEnabled  — displaced liquid is credited back
+        //  13. sourceBudgetEnabled        — the 5:1 budget; off = limitless all
+        //  14. stickyLimitlessEnabled     — edge + size classification
+        //  15. recessionEnabled           — a spent body gives up cells
+        //  16. refillEnabled              — seepage, rain and season
+        //  17. rainFillsExcavationsEnabled— ruling 25, roof grid consulted
+        //  18. edgeSinksEnabled           — map-edge drainage
+        public static bool fillInEnabled = true;
+        public static bool fillInDisplacementEnabled = true;
+        public static bool sourceBudgetEnabled = true;
+        public static bool stickyLimitlessEnabled = true;
+        public static bool recessionEnabled = true;
+        public static bool refillEnabled = true;
+        public static bool rainFillsExcavationsEnabled = true;
+        public static bool edgeSinksEnabled = true;
+        public static float sourceBudgetMultiplier = 1f;
+        public static float minLimitlessBodyCells = 50f;
+        public static float refillRateMultiplier = 1f;
+        public static float rainFillPerPulse = 0.1f;
+
+        public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
+
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
 
         public static int FlowPerPulse => Mathf.Clamp(Mathf.RoundToInt(flowPerPulse), 1, 4);
@@ -77,16 +113,31 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
+            // ── Phase 4 (see the block above; kept contiguous on purpose) ──
+            Scribe_Values.Look(ref fillInEnabled, "fillInEnabled", true);
+            Scribe_Values.Look(ref fillInDisplacementEnabled, "fillInDisplacementEnabled", true);
+            Scribe_Values.Look(ref sourceBudgetEnabled, "sourceBudgetEnabled", true);
+            Scribe_Values.Look(ref stickyLimitlessEnabled, "stickyLimitlessEnabled", true);
+            Scribe_Values.Look(ref recessionEnabled, "recessionEnabled", true);
+            Scribe_Values.Look(ref refillEnabled, "refillEnabled", true);
+            Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
+            Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
+            Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
+            Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
+            Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
+            Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
 
         public void DoWindowContents(Rect inRect)
         {
-            // Raised from 900 when the unproven-mechanics section landed: this
-            // is a FIXED view height, so content taller than it is clipped
-            // rather than scrolled to.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 1400f);
+            // Raised from 900 when the unproven-mechanics section landed, and
+            // from 1400 when Phase 4's stock section did: this is a FIXED view
+            // height, so content taller than it is clipped rather than scrolled
+            // to. Anyone adding a block here raises this number in the same
+            // edit or their block is invisible.
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3000f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -156,6 +207,89 @@ namespace RimMandrake.FlowWorks
                 "A flammable liquid catches fire when something hot or electrical touches it — "
               + "never spontaneously. UNTESTED in a running game, and it is a prototype rather "
               + "than the finished burn model FlowWorks owes. Off: flammable liquids sit there.");
+
+            // ══════════════════════════════════════════════════════════════
+            // PHASE 4 SECTION — kept whole and kept last, see the field block.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Stock, recession and drainage");
+            Text.Font = GameFont.Small;
+            list.Label("How much liquid a natural body actually has, what happens when a canal "
+                     + "drinks it dry, and where liquid goes when you fill a channel back in. "
+                     + "Everything here is on by default; turn it all off and sources are "
+                     + "bottomless, nothing recedes and nothing drains, which is how the mod "
+                     + "behaved before this.");
+
+            list.CheckboxLabeled("Fill in channels", ref fillInEnabled,
+                "Adds the 'fill in canal' order — the opposite of digging. Each application "
+              + "raises a cell one level; taking it all the way back to the surface restores "
+              + "the terrain that was there before you dug. Off: the order refuses and the "
+              + "tool is inert.");
+
+            list.CheckboxLabeled("Filling in displaces liquid", ref fillInDisplacementEnabled,
+                "Liquid pushed out of a cell you are filling flows into the rest of the "
+              + "channel and back into the body it came from, so the rest of the canal gets "
+              + "deeper. Only what finds no room anywhere is lost, and you are told when that "
+              + "happens. Off: displaced liquid is simply lost — still reported, never silent.");
+
+            list.CheckboxLabeled("Sources have a stock", ref sourceBudgetEnabled,
+                "A natural body supplies a limited amount: each of its cells is worth a few "
+              + "canal cells and no more, however big the pond looks. Run it down and the "
+              + "canal stops filling. Off: every source is bottomless.");
+
+            list.Gap();
+            list.Label("Source budget: " + (5f * sourceBudgetMultiplier).ToString("F1")
+                     + " canal cells per source cell");
+            sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
+            list.Label("The trade the whole stock model turns on. Lower makes water precious and "
+                     + "a canal a real commitment; higher makes ponds generous.");
+
+            list.CheckboxLabeled("Big bodies are limitless", ref stickyLimitlessEnabled,
+                "A body that touches the map edge and is large enough is treated as fed from "
+              + "off-map: it never runs down and never recedes. This is decided ONCE, the first "
+              + "time you draw from it, and never revisited — so a lake cannot flicker between "
+              + "limitless and limited. Off: every body is limited, including the ocean.");
+
+            list.Gap();
+            list.Label("Smallest limitless body: " + MinLimitlessBodyCells + " cells");
+            minLimitlessBodyCells = list.Slider(minLimitlessBodyCells, 1f, 400f);
+            list.Label("A body must touch the map edge AND be at least this big to count as "
+                     + "limitless. Raise it to make even edge-clipping ponds exhaustible.");
+
+            list.CheckboxLabeled("Bodies recede when drawn down", ref recessionEnabled,
+                "A limited body that has been spent gives up cells from its outer edge inward, "
+              + "so you can see it shrinking. The original terrain of every cell it gives up is "
+              + "recorded and handed back when the water returns — a receding pond never "
+              + "permanently changes your map. Off: the stock runs down invisibly.");
+
+            list.CheckboxLabeled("Bodies refill", ref refillEnabled,
+                "Seepage, rain and the season slowly put liquid back into a limited body, and "
+              + "its cells come back in the order it gave them up. A very small seep takes "
+              + "multiple seasons. Off: what you spend is gone for good.");
+
+            list.Gap();
+            list.Label("Refill speed: " + refillRateMultiplier.ToString("F2") + "x");
+            refillRateMultiplier = list.Slider(refillRateMultiplier, 0.1f, 5f);
+            list.Label("Slow and certain is the intent, not random. At 1x a one-cell seep needs "
+                     + "the better part of a year to refill what it can support.");
+
+            list.CheckboxLabeled("Rain fills open excavations", ref rainFillsExcavationsEnabled,
+                "Rain falls into any excavated cell that is NOT roofed. Roof a pit and it stays "
+              + "dry in a downpour — that is the point, and it makes roofing a real decision. "
+              + "Off: weather never touches a channel.");
+
+            list.Gap();
+            list.Label("Rain fill speed: " + rainFillPerPulse.ToString("F2") + " level(s) per pulse");
+            rainFillPerPulse = list.Slider(rainFillPerPulse, 0.01f, 1f);
+            list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
+                     + "roughly an in-game hour to add one level.");
+
+            list.CheckboxLabeled("Map-edge sinks drain", ref edgeSinksEnabled,
+                "A channel dug into the strip along the map edge is a drain: liquid reaching it "
+              + "leaves the map. It is not destroyed — it goes where an edge-touching lake's "
+              + "water comes from. This also lets you dig in that strip at all, which the game "
+              + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
 
             list.End();
             Widgets.EndScrollView();

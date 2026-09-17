@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- The one fluid this v1 slice ships, chosen to prove genericity: reuses
-       vanilla's own ShallowFloodwater terrain verbatim (real swim/extinguish
-       behavior, the plant-sparing "Flood" tag, zero new art). Tar and the rest
-       of the owner's named roster (ooze, slime, oil, propane) are deliberately
-       NOT authored here; they are Utinni-tier content and belong in their own
-       client mod once this engine is live-proven, per this item's own scope
-       note.
+  <!-- The one fluid this v1 slice ships, chosen to prove genericity. Tar and
+       the rest of the owner's named roster (ooze, slime, oil, propane) are
+       deliberately NOT authored here; they are Utinni-tier content and belong
+       in their own client mod once this engine is live-proven, per this
+       item's own scope note.
 
-       floodTerrain MUST be temporary=true (see FluidDef.ConfigErrors).
-       ShallowFloodwater is the temporary sibling of WaterShallow, and is
-       exactly what vanilla's own SeasonalFlood lays down: a release is
-       destructive while it stands but recoverable, per the owner's
-       2026-09-02 ruling. -->
+       Every tier terrain MUST be temporary=true (see FluidDef.ConfigErrors),
+       and every one of them is OURS: the base game's only temporary water
+       terrains (ShallowFloodwater, MarshFlood) ship in Data/Odyssey and
+       naming one hard-required the DLC. The temp-terrain engine itself is
+       Core, so RM_Fill_Water_Trace clones ShallowFloodwater's properties
+       DLC-free and the release stays destructive-while-standing but
+       recoverable, per the owner's 2026-09-02 ruling. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Water</defName>
     <label>water</label>
-    <!-- Ruling 5's three-tier ladder. Tier 1 is vanilla ShallowFloodwater
-         verbatim; tiers 2 and 3 are the rungs vanilla has no temporary
-         version of. A tier IS a volume, so the stock model quantises for
-         free and the edge-aware ramp art comes with it at no cost. -->
-    <floodTerrain>ShallowFloodwater</floodTerrain>
+    <!-- Ruling 5's three-tier ladder, all three rungs ours and all three
+         parented to vanilla WaterShallow. A tier IS a volume, so the stock
+         model quantises for free and the edge-aware ramp art comes with it
+         at no cost. -->
+    <floodTerrain>RM_Fill_Water_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_Water_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Water_Brim</fillTerrainBrim>
     <fillTerrainSuperdeep>RM_Fill_Water_Superdeep</fillTerrainSuperdeep>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
+    <!-- Phase 4. The 5:1 budget is the owner's number, stated per SOURCE CELL:
+         a five-cell pond supports twenty-five canal cells and no more, however
+         much water a five-cell pond "obviously" holds. recededTerrain is what a
+         dried lakebed cell shows while the body is down; the ORIGINAL terrain is
+         recorded per cell before the write and restored on refill, so recession
+         cannot launder the map. -->
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
 
 </Defs>

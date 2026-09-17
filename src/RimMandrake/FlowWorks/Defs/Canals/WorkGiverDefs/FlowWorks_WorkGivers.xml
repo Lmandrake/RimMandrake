@@ -16,4 +16,24 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- Phase 2's other half. Same work type and the same capacity requirement as
+       digging: it is the same shovel, moving the same earth the other way. A
+       LOWER priorityInType than the dig so a colony that has ordered both does
+       its digging first — a half-dug channel that gets filled in before it is
+       finished is labour spent on nothing. -->
+  <WorkGiverDef>
+    <defName>RM_FillInCanalWorkGiver</defName>
+    <label>fill in canals</label>
+    <giverClass>RimMandrake.FlowWorks.WorkGiver_FillInCanal</giverClass>
+    <workType>Mining</workType>
+    <verb>fill in</verb>
+    <gerund>filling in a canal</gerund>
+    <priorityInType>19</priorityInType>
+    <scanCells>true</scanCells>
+    <scanThings>false</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

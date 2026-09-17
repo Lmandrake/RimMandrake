@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -47,6 +48,40 @@ namespace RimMandrake.FlowWorks
 
 		private int nextPulseTick = -1;
 
+		/// <summary>PHASE 4. The map's memory of what a cell was before FlowWorks
+		/// touched its base terrain — written the first time a cell is dug, and
+		/// the first time a natural liquid cell is dried by recession.
+		///
+		/// 🔴 THIS IS WHAT STOPS THE ENGINE LAUNDERING THE MAP. A receding pond
+		/// writes dry terrain over a lake cell; a fill-in takes an excavation
+		/// back to the surface. Without a record, both hand back generic soil
+		/// and the map is permanently, silently altered by a mechanic that is
+		/// supposed to be reversible. §5 names this explicitly and it is the one
+		/// piece of Phase 4 that is a correctness requirement rather than a
+		/// feature.</summary>
+		private Dictionary<int, TerrainDef> originalTerrain = new Dictionary<int, TerrainDef>();
+
+		private List<int> originalTerrainKeys;
+
+		private List<TerrainDef> originalTerrainValues;
+
+		/// <summary>PHASE 4. Stock, budget, classification, recession, refill.
+		/// Held here rather than in a MapComponent of its own so that debits
+		/// land in a defined order relative to the flow that caused them.</summary>
+		private RM_LiquidStock stock = new RM_LiquidStock();
+
+		/// <summary>Rain arrives in fractions of a fill level; a level is an
+		/// integer. This carries the remainder between pulses so a light drizzle
+		/// eventually fills a trench instead of rounding to nothing forever.</summary>
+		private float rainAccumulator;
+
+		/// <summary>Disclosed the same way <see cref="overflowDestroyedTotal"/>
+		/// is, and kept SEPARATE from it on purpose (ruling 9): liquid down a
+		/// sink is transferred off-map, not destroyed. A drain that deletes
+		/// liquid and a drain that returns it to the world look identical on
+		/// screen and are very different rules, so they are different counters.</summary>
+		private float sinkTransferredTotal;
+
 		/// <summary>The running conservation ledger. Every pulse's debits and
 		/// credits must sum to zero except liquid destroyed by §5 overflow —
 		/// the ONE sanctioned place in the whole design where liquid leaves the
@@ -79,6 +114,10 @@ namespace RimMandrake.FlowWorks
 		public float OverflowDestroyedTotal => overflowDestroyedTotal;
 
 		public int ExcavatedCellCount => excavatedCells.Count;
+
+		/// <summary>PHASE 4's stock model, for inspect strings and debug
+		/// surfaces. Never null after construction.</summary>
+		public RM_LiquidStock Stock => stock;
 
 		public FluidDef ActiveFluid
 		{
@@ -121,9 +160,26 @@ namespace RimMandrake.FlowWorks
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
+			// PHASE 4. Everything persistent the stock model adds is scribed
+			// here: the original-terrain record, the bodies (their sticky
+			// classification, stock, capacity, footprint and receded list, via
+			// RM_LiquidBody.ExposeData), the rain remainder and the sink total.
+			Scribe_Collections.Look(ref originalTerrain, "RM_originalTerrain",
+				LookMode.Value, LookMode.Def, ref originalTerrainKeys, ref originalTerrainValues);
+			Scribe_Deep.Look(ref stock, "RM_liquidStock");
+			Scribe_Values.Look(ref rainAccumulator, "RM_rainAccumulator", 0f);
+			Scribe_Values.Look(ref sinkTransferredTotal, "RM_sinkTransferredTotal", 0f);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				EnsureGrids();
+				if (originalTerrain == null)
+				{
+					originalTerrain = new Dictionary<int, TerrainDef>();
+				}
+				if (stock == null)
+				{
+					stock = new RM_LiquidStock();
+				}
 			}
 		}
 
@@ -133,6 +189,15 @@ namespace RimMandrake.FlowWorks
 			EnsureGrids();
 			RehydrateFromTerrainIfEmpty();
 			RebuildExcavatedSet();
+			if (originalTerrain == null)
+			{
+				originalTerrain = new Dictionary<int, TerrainDef>();
+			}
+			if (stock == null)
+			{
+				stock = new RM_LiquidStock();
+			}
+			stock.RebuildIndex(map);
 		}
 
 		/// <summary>A save written before this grid existed has dug cells on the
@@ -251,6 +316,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return d;
 			}
+			// PHASE 4: remember what was here BEFORE the first cut, so a fill-in
+			// can hand the exact terrain back instead of generic soil. Recorded
+			// on the transition out of surface only — deepening an existing
+			// channel must not overwrite the record with RM_Channel_Empty.
+			if (d == RM_ExcavationDepth.Surface)
+			{
+				RecordOriginalTerrain(c);
+			}
 			d = (byte)(d + 1);
 			depthGrid[i] = d;
 			excavatedCells.Add(c);
@@ -282,6 +355,258 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		// ── filling in (PHASE 2's other half) ─────────────────────────────
+
+		/// <summary>Can this cell be filled back in? Excavated cells only. A
+		/// natural water cell is NOT fillable here: §18 gives that its own rule
+		/// (most-abundant non-liquid neighbour, mud drying to rich soil, a haul
+		/// cost) and it is a separate mechanic wearing the same word.</summary>
+		public bool CanFillIn(IntVec3 c)
+		{
+			return c.InBounds(map) && depthGrid[map.cellIndices.CellToIndex(c)] != 0;
+		}
+
+		/// <summary>
+		/// Raise a cell one level, displacing whatever no longer fits.
+		///
+		/// OWNER, 2026-09-16: <i>"There should also be a way to 'fill in' a canal
+		/// that displaces liquid BACK. It does not destroy liquid if there's a
+		/// place for it to go, but if it would 'overflow' it is destroyed."</i>
+		///
+		/// The displaced amount is what the new, shallower cell can no longer
+		/// hold: <c>F - (D-1)</c>, clamped at zero. A trench holding one level
+		/// out of four loses nothing when it is raised to three — the liquid
+		/// simply sits higher, which is what actually happens when you shovel
+		/// earth in under it.
+		///
+		/// Returns the new D.
+		/// </summary>
+		public byte FillIn(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return RM_ExcavationDepth.Surface;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			byte d = depthGrid[i];
+			if (d == 0)
+			{
+				return RM_ExcavationDepth.Surface;
+			}
+			byte f = fillGrid[i] > d ? d : fillGrid[i];
+			byte newD = (byte)(d - 1);
+			int displaced = f - newD;
+			if (displaced < 0)
+			{
+				displaced = 0;
+			}
+			depthGrid[i] = newD;
+			fillGrid[i] = (byte)(f - displaced);
+			if (newD == RM_ExcavationDepth.Surface)
+			{
+				excavatedCells.Remove(c);
+				fillGrid[i] = 0;
+				// The temp fill layer must come off BEFORE the base terrain is
+				// restored, or a brimming cell hands back its floor and keeps
+				// standing water on top of it.
+				ClearFillTerrain(c);
+				RestoreOriginalTerrain(c);
+			}
+			else
+			{
+				TerrainDef want = RM_ExcavationDepth.DryTerrainFor(newD);
+				if (want != null && map.terrainGrid.BaseTerrainAt(c) != want)
+				{
+					map.terrainGrid.SetTerrain(c, want);
+				}
+				ApplyFillTerrain(c, ActiveFluid);
+			}
+			if (displaced > 0)
+			{
+				Displace(c, displaced);
+			}
+			return newD;
+		}
+
+		/// <summary>
+		/// The displacement walk. Offer the liquid to the connected body,
+		/// NEAREST FIRST — remaining channel cells below their brim, then the
+		/// natural body up to its capacity — and destroy only what finds no
+		/// room anywhere.
+		///
+		/// 🔑 That last clause is the ONE sanctioned exception to conservation
+		/// of mass in this whole design, which is why it routes through
+		/// <see cref="NotifyOverflowDestroyed"/> and is announced rather than
+		/// quietly dropped. Everything else here is a transfer.
+		/// </summary>
+		private void Displace(IntVec3 from, int units)
+		{
+			if (!RimMandrakeFlowWorksSettings.fillInDisplacementEnabled)
+			{
+				// All-off degradation: no displacement at all, every unit is
+				// overflow. Still disclosed — the exception does not become
+				// silent just because the mechanic is switched off.
+				NotifyOverflowDestroyed(units);
+				return;
+			}
+			int remaining = units;
+			// LOCAL collections, not the pulse's shared scratch. A fill-in runs
+			// from a JobDriver, not from inside DoPulse, so today they cannot
+			// collide — but "cannot collide today" is how a reentrancy bug gets
+			// written, and the walk is bounded and infrequent enough that the
+			// allocation is free.
+			HashSet<IntVec3> seen = new HashSet<IntVec3>();
+			Queue<IntVec3> queue = new Queue<IntVec3>();
+			List<IntVec3> credited = new List<IntVec3>();
+			seen.Add(from);
+			queue.Enqueue(from);
+			int walked = 0;
+			while (queue.Count > 0 && remaining > 0 && walked < MaxComponentCells)
+			{
+				IntVec3 c = queue.Dequeue();
+				walked++;
+				if (c != from)
+				{
+					if (IsSourceCell(c))
+					{
+						// The natural body is the last resort and the reason a
+						// fill-in is REVERSIBLE: liquid you spent digging comes
+						// back to the pond you took it from.
+						float accepted = stock.TryCredit(map, c, remaining, this);
+						remaining -= Mathf.FloorToInt(accepted);
+						continue; // never expand through a source
+					}
+					int ci = map.cellIndices.CellToIndex(c);
+					int room = depthGrid[ci] - fillGrid[ci];
+					if (room > 0)
+					{
+						int take = room < remaining ? room : remaining;
+						fillGrid[ci] += (byte)take;
+						remaining -= take;
+						credited.Add(c);
+					}
+				}
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 n = c + GenAdj.CardinalDirections[i];
+					if (!n.InBounds(map) || seen.Contains(n))
+					{
+						continue;
+					}
+					if (IsExcavated(n) || IsSourceCell(n))
+					{
+						seen.Add(n);
+						queue.Enqueue(n);
+					}
+				}
+			}
+			FluidDef fluid = ActiveFluid;
+			for (int i = 0; i < credited.Count; i++)
+			{
+				ApplyFillTerrain(credited[i], fluid);
+			}
+			if (remaining > 0)
+			{
+				NotifyOverflowDestroyed(remaining);
+				Messages.Message(
+					"Filling in displaced more liquid than the channel could hold — "
+					+ remaining + " level(s) overflowed and were lost.",
+					new TargetInfo(from, map), MessageTypeDefOf.NeutralEvent, false);
+			}
+		}
+
+		// ── the original-terrain record ───────────────────────────────────
+
+		/// <summary>Remember a cell's base terrain the first time this engine
+		/// overwrites it. Idempotent: the FIRST record wins, because the whole
+		/// point is what was there before FlowWorks, not before the last
+		/// change.</summary>
+		public void RecordOriginalTerrain(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			if (originalTerrain.ContainsKey(i))
+			{
+				return;
+			}
+			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
+			if (t != null)
+			{
+				originalTerrain[i] = t;
+			}
+		}
+
+		/// <summary>Put back exactly what was there. Falls back to the cell's
+		/// current terrain when nothing was recorded — which can only happen for
+		/// a cell dug by a save that predates this record, and handing back what
+		/// is already there is strictly better than guessing soil.</summary>
+		public void RestoreOriginalTerrain(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			TerrainDef original;
+			if (!originalTerrain.TryGetValue(i, out original) || original == null)
+			{
+				return;
+			}
+			originalTerrain.Remove(i);
+			if (map.terrainGrid.BaseTerrainAt(c) != original)
+			{
+				map.terrainGrid.SetTerrain(c, original);
+			}
+		}
+
+		/// <summary>Recession's write: dry one cell of a NATURAL body. The
+		/// original terrain is recorded first, without exception — a receding
+		/// pond must not permanently launder the map (§5).</summary>
+		public void DryNaturalCell(IntVec3 c, FluidDef fluid)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+			RecordOriginalTerrain(c);
+			TerrainDef dry = fluid != null ? fluid.recededTerrain : null;
+			if (dry == null)
+			{
+				// No recede terrain authored for this liquid: leave the cell
+				// alone rather than inventing one. The stock still ran down and
+				// the body still stops supplying; only the visible recession is
+				// missing, and a missing visual beats a wrong terrain write.
+				return;
+			}
+			map.terrainGrid.SetTerrain(c, dry);
+		}
+
+		// ── map-edge sinks (ruling 9) ─────────────────────────────────────
+
+		/// <summary>An excavated cell close enough to the map edge that liquid
+		/// reaching it leaves the map. No building and no new def: the edge band
+		/// vanilla already refuses construction in (GenGrid.NoBuildEdgeWidth,
+		/// 10) is exactly the strip where a channel has nowhere left to go.
+		///
+		/// 🔑 A sink is the INVERSE of a limitless source, not a second
+		/// conservation exception (ruling 9). Liquid down a sink is transferred
+		/// off-map to the same off-map world an edge-touching body draws from.
+		/// It is counted separately from destroyed overflow for that reason.</summary>
+		public bool IsSinkCell(IntVec3 c)
+		{
+			if (!RimMandrakeFlowWorksSettings.edgeSinksEnabled || !c.InBounds(map))
+			{
+				return false;
+			}
+			return depthGrid[map.cellIndices.CellToIndex(c)] != 0
+				&& c.CloseToEdge(map, GenGrid.NoBuildEdgeWidth);
+		}
+
+		public float SinkTransferredTotal => sinkTransferredTotal;
+
 		// ── the pulse ─────────────────────────────────────────────────────
 
 		public override void MapComponentTick()
@@ -306,6 +631,16 @@ namespace RimMandrake.FlowWorks
 		/// "physics" — no pressure, no velocity, no simulation.</summary>
 		private void DoPulse()
 		{
+			// PHASE 4. Rain lands BEFORE the sort, so the water it adds is part
+			// of the "before" the conservation ledger measures and cannot read
+			// as a leak. It is genuine external input, like a limitless source.
+			ApplyRain();
+			// PHASE 4. Stock first too: recession and refill decide which source
+			// cells are still wet, and the flow below reads that.
+			if (stock != null)
+			{
+				stock.Pulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
+			}
 			if (excavatedCells.Count == 0)
 			{
 				return;
@@ -354,6 +689,42 @@ namespace RimMandrake.FlowWorks
 		private void ResolveComponent()
 		{
 			float before = 0f;
+			for (int i = 0; i < pulseComponent.Count; i++)
+			{
+				IntVec3 c = pulseComponent[i];
+				if (IsExcavated(c))
+				{
+					before += fillGrid[map.cellIndices.CellToIndex(c)];
+				}
+			}
+
+			// PHASE 4, ruling 9 — SINKS, drained before the flow so the room a
+			// sink opens is room this same pulse can pour into. That is what
+			// makes "breach into a sink and the moat empties" read as a drain
+			// rather than as a slow leak.
+			float externalDrain = 0f;
+			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
+			{
+				int drainPerCell = RimMandrakeFlowWorksSettings.FlowPerPulse;
+				for (int i = 0; i < pulseComponent.Count; i++)
+				{
+					IntVec3 c = pulseComponent[i];
+					if (!IsExcavated(c) || !IsSinkCell(c))
+					{
+						continue;
+					}
+					int ci = map.cellIndices.CellToIndex(c);
+					int take = fillGrid[ci] < drainPerCell ? fillGrid[ci] : drainPerCell;
+					if (take <= 0)
+					{
+						continue;
+					}
+					fillGrid[ci] -= (byte)take;
+					externalDrain += take;
+				}
+				sinkTransferredTotal += externalDrain;
+			}
+
 			pulseRecipients.Clear();
 			for (int i = 0; i < pulseComponent.Count; i++)
 			{
@@ -363,7 +734,6 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				int idx = map.cellIndices.CellToIndex(c);
-				before += fillGrid[idx];
 				if (fillGrid[idx] < depthGrid[idx])
 				{
 					pulseRecipients.Add(c);
@@ -395,6 +765,16 @@ namespace RimMandrake.FlowWorks
 					}
 					if (IsSourceCell(donor))
 					{
+						// PHASE 4. The 5:1 budget bites HERE and nowhere else: a
+						// limitless body always pays, a limited one pays until
+						// its stock is gone and then stops feeding the canal.
+						// A failed debit must NOT move liquid — a transfer that
+						// happens after its debit failed is precisely the silent
+						// leak the ledger below exists to catch.
+						if (!stock.TryDebit(map, donor, ActiveFluid != null ? ActiveFluid.volumePerTile : 1f, this))
+						{
+							break;
+						}
 						// Credited from off-map / from the body itself. Under
 						// ruling 16 a source is sticky-limitless, so this is a
 						// real external credit and not an unbalanced ledger.
@@ -419,14 +799,16 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			// The ledger. Every transfer inside the component is -1 and +1, so
-			// the only legitimate change in total fill is what sources credited
-			// in. Anything else is a leak, and a leak is a bug.
-			float imbalance = after - before - externalCredit;
+			// the only legitimate changes in total fill are what sources
+			// credited in and what left down a sink. Anything else is a leak,
+			// and a leak is a bug.
+			float imbalance = after - before - externalCredit + externalDrain;
 			if (Prefs.DevMode && Mathf.Abs(imbalance) > 0.001f)
 			{
 				Log.Warning("[RimMandrake.FlowWorks] conservation ledger does not balance: " +
 					"before=" + before.ToString("F1") + " after=" + after.ToString("F1") +
 					" sourceCredit=" + externalCredit.ToString("F1") +
+					" sinkDrain=" + externalDrain.ToString("F1") +
 					" imbalance=" + imbalance.ToString("F1") + ". This is a defect, not an overflow.");
 			}
 			RenderComponentFill();
@@ -474,6 +856,13 @@ namespace RimMandrake.FlowWorks
 				bool source = IsSourceCell(n);
 				if (source)
 				{
+					// PHASE 4. A spent LIMITED body is not a donor. Skipping it
+					// here rather than failing the debit later means the picker
+					// can still find a wet neighbour in the same iteration.
+					if (!stock.CanSupply(map, n, this))
+					{
+						continue;
+					}
 					dn = RM_ExcavationDepth.Superdeep;
 					fn = RM_ExcavationDepth.Superdeep;
 				}
@@ -503,6 +892,65 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return best;
+		}
+
+		// ── rain (ruling 25) ──────────────────────────────────────────────
+
+		/// <summary>
+		/// RULING 25, verbatim: <i>"Rain fills excavations only where
+		/// unroofed."</i> Roofing is the player's lever and it costs nothing —
+		/// the engine already tracks roof per cell, so this is one grid read.
+		///
+		/// Rain arrives in fractions of a level and a level is an integer, so
+		/// the remainder is carried between pulses. Without that a light drizzle
+		/// would round to zero forever and the whole mechanic would read as
+		/// broken in exactly the weather where a player expects to see it.
+		///
+		/// This is the second place liquid legitimately enters the world (the
+		/// first being a limitless body). It runs before the ledger's "before"
+		/// is measured, so it can never be mistaken for a leak.
+		/// </summary>
+		private void ApplyRain()
+		{
+			if (!RimMandrakeFlowWorksSettings.rainFillsExcavationsEnabled || excavatedCells.Count == 0)
+			{
+				return;
+			}
+			float rainRate = map.weatherManager != null ? map.weatherManager.RainRate : 0f;
+			if (rainRate <= 0.01f)
+			{
+				return;
+			}
+			rainAccumulator += rainRate * RimMandrakeFlowWorksSettings.rainFillPerPulse;
+			int levels = 0;
+			while (rainAccumulator >= 1f && levels < RM_ExcavationDepth.MaxDepth)
+			{
+				rainAccumulator -= 1f;
+				levels++;
+			}
+			if (levels == 0)
+			{
+				return;
+			}
+			FluidDef fluid = ActiveFluid;
+			foreach (IntVec3 c in excavatedCells)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				if (fillGrid[i] >= depthGrid[i])
+				{
+					continue;
+				}
+				// The roof grid IS the rule. A roofed excavation stays dry in a
+				// downpour, which is what makes roofing a trap a real decision.
+				if (map.roofGrid.Roofed(c))
+				{
+					continue;
+				}
+				int room = depthGrid[i] - fillGrid[i];
+				int add = room < levels ? room : levels;
+				fillGrid[i] += (byte)add;
+				ApplyFillTerrain(c, fluid);
+			}
 		}
 
 		// ── rendering F ───────────────────────────────────────────────────
@@ -551,6 +999,20 @@ namespace RimMandrake.FlowWorks
 			map.terrainGrid.SetTempTerrain(c, want);
 		}
 
+		/// <summary>Strip this engine's own fill terrain from one cell, and only
+		/// its own — the same ownership rule <see cref="ApplyFillTerrain"/>
+		/// follows, because a fill-in must not tear down a release some other
+		/// path is still standing on.</summary>
+		private void ClearFillTerrain(IntVec3 c)
+		{
+			FluidDef fluid = ActiveFluid;
+			TerrainDef cur = map.terrainGrid.TempTerrainAt(c);
+			if (cur != null && fluid != null && fluid.OwnsFillTerrain(cur))
+			{
+				map.terrainGrid.RemoveTempTerrain(c);
+			}
+		}
+
 		// ── the gate the legacy flood consults ────────────────────────────
 
 		/// <summary>§4's "biggest gap", closed: liquid may only enter a cell
@@ -560,6 +1022,71 @@ namespace RimMandrake.FlowWorks
 		public bool CanLiquidEnter(IntVec3 c)
 		{
 			return DepthAt(c) > RM_ExcavationDepth.Surface;
+		}
+
+		// ════════════════════════════════════════════════════════════════
+		// DRIVER API — CANYON_FLOOD_ERASES_CANALS_1.
+		//
+		// ⚠️ ADDITIVE REGION. Everything above is the engine; this is the
+		// whole of the surface a flood-driver client (ruling 8: FloodedCanyon
+		// is a driver, this mod is the engine) may touch. Nothing above was
+		// changed to add it.
+		//
+		// The read half already existed and needs nothing new: IsExcavated,
+		// DepthAt, FillAt and CanLiquidEnter are all public. Only the WRITE
+		// half is new, and it has to be, because the defect is precisely that
+		// a driver was writing terrain on a cell this engine owns. A driver
+		// that could only ASK would still have to act with SetTerrain, which
+		// is the two-owners disease itself. So a driver raises and lowers F
+		// here instead, and the engine remains the only thing that ever
+		// decides what an excavated cell looks like.
+		// ════════════════════════════════════════════════════════════════
+
+		/// <summary>Set an excavated cell's F on behalf of a flood driver, and
+		/// redraw it. Clamped to 0 &lt;= F &lt;= D, so a driver can never invent
+		/// depth — LAW 1 is unreachable from here.
+		///
+		/// Returns FALSE for a cell this engine does not own (not excavated),
+		/// which is the driver's signal to keep its own behaviour for that cell.
+		/// A caller must record the previous <see cref="FillAt"/> itself if it
+		/// intends to restore it: this engine deliberately keeps no per-driver
+		/// undo stack, because the next pulse may legitimately move that liquid
+		/// somewhere else and a stale undo would resurrect it.</summary>
+		public bool TrySetDriverFill(IntVec3 c, int fill)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			byte d = depthGrid[i];
+			if (d == 0)
+			{
+				return false;
+			}
+			if (fill < 0)
+			{
+				fill = 0;
+			}
+			if (fill > d)
+			{
+				fill = d;
+			}
+			fillGrid[i] = (byte)fill;
+			FluidDef fluid = ActiveFluid;
+			if (fluid != null)
+			{
+				ApplyFillTerrain(c, fluid);
+			}
+			return true;
+		}
+
+		/// <summary>Fill an excavated cell to its brim on behalf of a driver —
+		/// what "a flood arrives at this cell" means once depth is the
+		/// primitive. Same contract as <see cref="TrySetDriverFill"/>.</summary>
+		public bool TryFloodDriverCell(IntVec3 c)
+		{
+			return TrySetDriverFill(c, DepthAt(c));
 		}
 	}
 }

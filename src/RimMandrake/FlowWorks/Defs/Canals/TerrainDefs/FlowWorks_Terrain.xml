@@ -145,9 +145,18 @@
 
        F is rendered as a TIER, not a percentage: trace/shallow →
        half/chest-deep → brimming/deep, off vanilla's own edge-aware ramp
-       art. Tier 1 reuses vanilla ShallowFloodwater verbatim (it is already
-       exactly this, and it is what the legacy Flood_FlowWorks release
-       path lays down). Tiers 2 and 3 are the missing rungs.
+       art. All three rungs are OURS.
+
+       🔴 WHY TIER 1 IS NOT VANILLA ShallowFloodwater. Every temporary
+       terrain the base game ships lives in Data/Odyssey — ShallowFloodwater
+       and MarshFlood are both in Defs/Odyssey/TerrainDefs/Terrain_Temporary.xml,
+       and Core's own Terrain_Water.xml:20 reaches them only through
+       MayRequire="Ludeon.RimWorld.Odyssey". Naming one made this mod
+       hard-require the DLC (FLOWWORKS_BUILD_PROGRAM_1 Phase 3). The temp
+       terrain ENGINE is Core — TerrainGrid.SetTempTerrain refuses a
+       non-temporary def and nothing else — so the fix is to ship our own
+       temporary def, cloned from ShallowFloodwater's properties, and depend
+       on no DLC at all.
 
        ALL of these are <temporary>true</temporary> — TerrainGrid.
        SetTempTerrain hard-refuses anything else, and temporary is what
@@ -162,6 +171,29 @@
        a barrier — so tier 3 is costly (300, vanilla WaterDeep's number)
        but STANDABLE, unlike vanilla WaterDeep which is Impassable.
        ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- Tier 1 of 3 — a trace of liquid, read as shallow. A property-for-
+       property clone of Odyssey's ShallowFloodwater (ParentName WaterShallow,
+       temporary, the Flood tag, canFreeze false, an empty driesTo so a
+       moisture pump cannot turn temp terrain into stony soil) with none of
+       its DLC gating. Same parent, so the edge-aware WaterShallowRamp art,
+       the wade cost, extinguishesFire and the water depth shader all come
+       free and it reads identically in play. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Water_Trace</defName>
+    <label>shallow channel water</label>
+    <description>A channel carrying a trace of liquid — ankle-to-knee deep, enough to wade and enough to put out a fire.</description>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
 
   <!-- Tier 2 of 3 — half full, read as chest-deep. -->
   <TerrainDef ParentName="WaterShallow">

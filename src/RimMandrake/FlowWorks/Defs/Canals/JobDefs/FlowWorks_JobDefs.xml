@@ -8,4 +8,11 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <JobDef>
+    <defName>RM_FillInCanalJob</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_FillInCanal</driverClass>
+    <reportString>filling in a canal.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
 </Defs>
