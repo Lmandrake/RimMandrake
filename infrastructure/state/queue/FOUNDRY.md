@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:27:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:29:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -477,15 +477,6 @@ kind:     task
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
-## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
-prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -855,15 +846,6 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thegreentide.md (FROZEN, §4b, §4c,
 prose:    infrastructure/state/items/GREENTIDE_MECHANICS_2.md
 
-## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
-
 ## BIOME_KITS_PUSH_TO_TEST_1 Push every biome mechanics kit (Forge/Scald/Miasma/Sump/FeverWood/RustCathedral/Greentide/Scarlands) through spike+build passes toward live-test readiness, offline only, placeholder creature content until the roster pass
 state:    doing
 row:      unassigned
@@ -881,15 +863,6 @@ target:   v1
 kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
-
-## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 ## QUICKGRASS_GROWTH_STAGES_1 Quickgrass green-gold art plus three growth-stage graphics
 state:    doing
@@ -1236,16 +1209,6 @@ blocked:  Re-verified 2026-09-17 offline: build 0W/0E both mods, selftest 18/18 
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
-## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  game just cycled DOWN->LOADING (owner broadcast) and bridge held by BENCH (WORLDMAP_FINAL_REVIEW_1, non-stale) -- wait for game UP + bridge free, do not deploy a new mod while the game is mid-load
-summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
-prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1505,26 +1468,6 @@ kind:     task
 blocked:  The item's own Watch-out names BAZAAR_WINDOW_GRID_1 as a dependency, and its two read-side consumers (session-guarded Tradeable.GetPriceFor postfix, intel/broker rendering) both need a live Bazaar session concept that slice 1 does not build yet -- this session's pass on BAZAAR_WINDOW_GRID_1 shipped only plugin-def scaffolding + an inert Dialog_Trade subclass, no WindowStack.Add intercept, no session object wired to a real window. Seeding also reads WORLDMAP_LIQUID_TAGS_1's store, itself gated on LIQUID_REGISTRY_CORE_1's roster rows (open, incomplete) -- a second soft dependency, null-tolerant per the item's own text but still nothing to seed against yet. Model:opus, two real dependencies still open -- not a fit for a third AFK slice on the same epic this pass. (on BAZAAR_WINDOW_GRID_1)
 summary:  WorldComponent RMBazaarEconomy: bucket-keyed multiplier store
 prose:    infrastructure/state/items/BAZAAR_PRICE_ENGINE_1.md
-
-## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-blocked:  Matches an already-fixed, not-yet-live-confirmed bug (GR_Mantistanis dangling ref, GIDDYUP_NULLKEY_CRASH_1/90d58be79). Piggyback on GIDDYUP_NULLKEY_COLD_READING_1's cold-load reading rather than a separate live test; re-open only if the crash still fires after that reading confirms the fix live. (on GIDDYUP_NULLKEY_COLD_READING_1)
-summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
-
-## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  All named def-side gaps closed (TreeDrago/Agave/Dandelion evicted, now Bush/PincushionCactus too, 47aabd98c) -- wildPlants is now just the two RM_FE_ grasses. What's left is live-only: clear existing Bush/PincushionCactus instances, and a look at the ground fill with only two species carrying it. Rides the next load round. (on COLD_LOAD_RUN_SHEET_4)
-summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 

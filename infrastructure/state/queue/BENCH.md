@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:27:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:29:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -160,6 +160,16 @@ blocked:  Runs AFTER the art/normalization wave (owner's framing); wave 8 live n
 summary:  the ask
 prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
 
+## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  game just cycled DOWN->LOADING (owner broadcast) and bridge held by BENCH (WORLDMAP_FINAL_REVIEW_1, non-stale) -- wait for game UP + bridge free, do not deploy a new mod while the game is mid-load
+summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
+prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
+
 ## PLAYER_START_SITE_1 The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (Zeddo's Yard on the Fall Line vs Gorga's shadow by the Cathedral); owner picks, then build + pin scenario start (2026-09-08)
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -219,6 +229,26 @@ kind:     design
 blocked:  Re-scoped to the four-depth legibility question only. Spec half delivered by the VALIDATED Pits must-show list (hash 145a6b5d9072); art half parked behind the merge by ruling 27 (owner 2026-09-16, 'merge first, then fix the pit inside FlowWorks'). (on FLOWWORKS_BUILD_PROGRAM_1)
 summary:  One question is left, and nothing else owns it: how do four depths read on
 prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
+
+## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+blocked:  Matches an already-fixed, not-yet-live-confirmed bug (GR_Mantistanis dangling ref, GIDDYUP_NULLKEY_CRASH_1/90d58be79). Piggyback on GIDDYUP_NULLKEY_COLD_READING_1's cold-load reading rather than a separate live test; re-open only if the crash still fires after that reading confirms the fix live. (on GIDDYUP_NULLKEY_COLD_READING_1)
+summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
+
+## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  All named def-side gaps closed (TreeDrago/Agave/Dandelion evicted, now Bush/PincushionCactus too, 47aabd98c) -- wildPlants is now just the two RM_FE_ grasses. What's left is live-only: clear existing Bush/PincushionCactus instances, and a look at the ground fill with only two species carrying it. Rides the next load round. (on COLD_LOAD_RUN_SHEET_4)
+summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
