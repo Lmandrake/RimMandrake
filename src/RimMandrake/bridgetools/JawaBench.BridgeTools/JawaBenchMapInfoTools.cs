@@ -273,5 +273,67 @@ namespace JawaBench.BridgeTools
                 };
             });
         }
+        [Tool(
+            "jawa/set_current_map",
+            Description =
+                "Switch Find.CurrentMap (and jump the camera) to another LOADED map by " +
+                "Map.uniqueID - the id jawa/world_tile_map_generate returns. Every " +
+                "current-map tool (screenshots, spawn, list_pawns, map_info) then operates " +
+                "on that map. Fills the hole named in jawa/get_terrain_batch's description: " +
+                "nothing else exposes the Game.CurrentMap setter. Refuses an unknown id and " +
+                "lists the loaded maps so the caller never has to guess. Verify with " +
+                "jawa/map_info afterwards - the read-back is the evidence, not this call.",
+            ResultDescription =
+                "success, mapId, tile (world tile id, -1 if invalid), biome, mapCount, " +
+                "previousMapId, ticksGame; on refusal loadedMaps [{mapId, tile, biome}].")]
+        public static async Task<object> SetCurrentMap(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Map.uniqueID of a loaded map to make current.")]
+            int mapId)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Current.Game == null) return Fail("No game is loaded.");
+                var maps = Find.Maps;
+                if (maps == null || maps.Count == 0) return Fail("No maps are loaded.");
+                Map target = null;
+                for (int i = 0; i < maps.Count; i++)
+                    if (maps[i].uniqueID == mapId) { target = maps[i]; break; }
+                if (target == null)
+                    return Fail("No loaded map has uniqueID " + mapId + ".", new
+                    {
+                        loadedMaps = maps.Select(m => new
+                        {
+                            mapId = m.uniqueID,
+                            tile = SafeTileId(m),
+                            biome = m.Biome != null ? m.Biome.defName : null
+                        }).ToList()
+                    });
+                int prev = Current.Game.CurrentMap != null ? Current.Game.CurrentMap.uniqueID : -1;
+                Current.Game.CurrentMap = target;
+                // Game.CurrentMap's setter validates membership and notifies MapUI +
+                // AmbientSoundManager (Game.cs, read 2026-09-17); the camera does NOT
+                // follow it, so jump explicitly or every screenshot shows the old map.
+                Find.CameraDriver.JumpToCurrentMapLoc(target.Center);
+                var now = Current.Game.CurrentMap;
+                return (object)new
+                {
+                    success = now != null && now.uniqueID == mapId,
+                    mapId = now != null ? now.uniqueID : -1,
+                    tile = now != null ? SafeTileId(now) : -1,
+                    biome = now != null && now.Biome != null ? now.Biome.defName : null,
+                    mapCount = maps.Count,
+                    previousMapId = prev,
+                    ticksGame = TicksGameSafe()
+                };
+            });
+        }
+
+        private static int SafeTileId(Map m)
+        {
+            try { return m.Tile.tileId; } catch { return -1; }
+        }
+
     }
 }
