@@ -220,6 +220,51 @@ two plus what is installed or built on the cell.
 ladder; `RM_OpenPit_*` as buildings; every def pointing at
 `Things/Building/Security/TrapSpikeArmed`.
 
+## the art is already ruled, and Quarry is the proof it works
+
+He raised Quarry again in this sitting — *"There is also the great Quarry reference
+to check out. It almost DOES this..."* It is `ogliss.thewhitecrayon.quarry`,
+**active in the live list**, and it was already his **ruling 33** (2026-09-16):
+
+> *"The pit graphic itself should have some perspective to it. Check out quarry mod
+> for art and inspiration. They already do this."*
+
+BENCH LOOKED at the reference on disk
+(`design/RimMandrake/references/quarry_pit_perspective_2026-09-16.jpg`),
+2026-09-17. What it shows, and why it matters to this item:
+
+- 🔑 **The depth read comes from the WALL FACES, not from the occupant.** The north
+  and west edges draw the *inner face* of the excavation — lit tan rim above,
+  shadowed earth below. Pawns are drawn at ordinary scale standing on the pit
+  floor, and they read as being down in it purely because walls rise around them.
+- 🔑 **Therefore `pit_occupant_below_floor` may need no custom pawn draw at all.**
+  Quarry achieves it with terrain and edge art. If that holds, a whole class of
+  work — and the `IThingHolderWithDrawnPawn` machinery in `Building_OpenPit` —
+  deletes rather than moves. ⚠️ UNCERTAIN: this is a read of a screenshot, not of
+  Quarry's code. Verify against its source on the Desktop before relying on it.
+- **Ladders are drawn on the walls, in perspective** — three of them. Under today's
+  ruling those are mechanical, not decorative.
+- **It is a multi-cell enclosed space that reads as a room**, with irregular organic
+  edges rather than a tile grid — which is `pit_reads_at_size` and "this defines a
+  room" both satisfied by the same art.
+- **No Building is involved.** Quarry is terrain. That is existence proof that the
+  collapse ruled here can look right, which is the strongest argument available for
+  it.
+
+And the visual half was already ruled before today, so the spec must not re-decide
+it:
+
+- **Ruling 19** — depth is visible through fill-tier ramps for wet cells and **"one
+  inner-shadow edge treatment"** for dry. That IS the Quarry wall face.
+- **Ruling 20** — the name FlowWorks celebrates the **built** half: *"the terraces,
+  ladders, sluice gates"*. Ladders and sluice gates were already in the concept;
+  today's ruling gives them mechanics.
+- **Ruling 33** — perspective, Quarry's manner: *"walls with depth, not a flat tile
+  with a lip shadow"*.
+- **Rulings 34-36** (2026-09-17) all DELETE art — the three-state source, the
+  limited-vs-limitless glyph, the damp irrigation ring. ⛔ Do not restore any of
+  them while rewriting the pit bars.
+
 ## open questions still outstanding
 
 - The shape of the mood/ideoligion cost of temperature torture. He flagged it
