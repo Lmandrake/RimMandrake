@@ -277,6 +277,19 @@ def game_running():
     return (time.time() - os.path.getmtime(PLAYERLOG)) < 180
 
 
+def full_mod_count():
+    """Current size of the full mod list, for the tier-savings line.
+
+    Never a baked-in baseline -- the owner's full list keeps growing (measured
+    2026-09-06: a dated snapshot read 568 while the live list was already 598),
+    so a literal number here goes stale the same way and just lies quietly.
+    """
+    try:
+        return len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
+    except Exception:
+        return None
+
+
 def write_config(pids, version_from):
     tree = ET.parse(version_from)
     root = tree.getroot()
@@ -365,7 +378,9 @@ def main():
     if missing:
         print("\n  ! NOT INSTALLED (tier is incomplete): %s" % missing)
         return 1
-    print("\n  %d mods, down from 568." % len(ordered))
+    full_n = full_mod_count()
+    print("\n  %d mods%s." % (len(ordered),
+                              ", down from %d" % full_n if full_n else ""))
 
     if not a.apply:
         print("  plan only. Re-run with --apply to write ModsConfig.xml.")
