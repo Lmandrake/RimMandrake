@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T20:56:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T21:02:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1862,16 +1862,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WRECKEDMACHINES_MOD_SETTINGS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WRECKEDMACHINES_MOD_SETTINGS_1.md
-
-## WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1 Remove VFEFactory_AutomatedSmelter from the build menu so it no longer sits indistinguishably beside our RM_WM_AutomatedSmelter tiers - owner ruling 2026-09-16 verbatim: 'remove the VFE factory, not the manual one', so the MANUAL smelter is left untouched; About.xml calls the current coexistence a testing arrangement, not a finished one
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md
 
 ## ORACLE_FALLBACK_UNVALIDATED_1 Oracle's fallback text bypasses OracleValidator: RequestOhmLetter takes fallbackText as a CALLER argument and DeliverFallback ships it verbatim to ReceiveLetter, so the path taken WHEN VALIDATION REJECTS is itself unvalidated - and the only call site today (DebugActions_Oracle.cs:44,46) supplies dev scaffolding, the label 'Ohm speaks (Oracle spike)' and a body prefixed '[FALLBACK]'; validate fallbacks on the same bar as live responses and reject bracket markers
 state:    proposed
