@@ -280,7 +280,7 @@ each landing. No persistence machinery is owed.
 
 The nine signatures, the omen looks and the Narrator's exact gesture parameters are **an owner
 sitting**, not agent work. Candidate schemes to react to are drafted in
-`Transient/dynamiclighting_scheme_catalog_DRAFT_2026-09-16.md`.
+`design/RimMandrake/atmospheric_base_scheme_catalog.md`.
 
 ---
 
@@ -305,7 +305,7 @@ because the owner's framing is that *the settings exist to show off what it can 
 ## §6 What must hook in
 
 Measured to exist in this repo, 2026-09-16. Detail and ranking in
-`Transient/atmosphericbase_hook_ecosystem_DRAFT_2026-09-16.md`.
+`design/RimMandrake/atmospheric_base_hook_ecosystem.md`.
 
 | mod | what it pushes |
 |---|---|
@@ -435,6 +435,77 @@ The take-over-button ruling replaced that outright — there is no new hardware,
 role moved to the scheme (L7).
 
 ---
+
+## §9a Corrections — what the repo says back to this design
+
+A hook census was run over the repo after the sitting
+(`design/RimMandrake/atmospheric_base_hook_ecosystem.md`). It contradicts this document in five
+places. Two are measured and settled; three need the owner. **None of them is fixed above — read
+this section as amending §2 and §8.**
+
+### 🔴 C1 — MEASURED: the tapestry has no canvas
+
+The newest exported ship layout, `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml`,
+holds **2002 things, of which 11 are light-capable: 6 `Brazier` and 5 `AncientLamp`.** Verified in
+this window by parsing the layout, after a first query returned a wrong zero.
+
+A framework that treats a grid of lights as a tapestry has, on the ship it was designed for, no
+grid. And the Utinni ships as a **frozen savegame** — the player never builds it, so no amount of
+in-game construction fixes it. Braziers are fire, so it is not even certain that 5 of the 11 can
+take a colour at all.
+
+**This is the first thing to put in front of him.** Either the ship layout is re-lit deliberately
+— dozens of fixtures authored into it as part of this programme — or AtmosphericBase's real canvas
+is a player-built colony and the Utinni gets a much smaller version of the dream than the one he
+described. Tracked as `ATMOSPHERIC_BASE_CANVAS_1`.
+
+### 🔴 C2 — MEASURED: §2.5's rank supplier does not exist
+
+`GameComponent_Ninefold`'s entire public read surface is `GetSatiation`, `GetMood`, `GetBand` and
+`IsUnveiled`, plus `ApplyDelta`, `TryFirstContact`, `NotifyViolentDeath` and `Notify_Launched`.
+Verified this window.
+
+There is **no loudness, no front, and no change notification** — it is pull-only. So §2.5's "rank
+is read, never invented here" is correct as a law and has nothing to read from. Canon rules that
+engagement makes a god louder and the loudest is in front; satiation and mood are the engagement,
+but the derivation from them to loudness has never been written, and neither has the mid-map flip
+or the landing reckoning.
+
+**The law stands and the work moves**: loudness belongs in Ninefold, which owns the pantheon's
+state. Tracked as `NINEFOLD_LOUDNESS_FRONT_1`. Until it exists, AtmosphericBase cannot rank
+anything, and a compositor built against a rank it computes itself would be a second answer to a
+settled question.
+
+### ⚠️ C3 — L14 and L8 contradict each other
+
+A witness requires an awake colonist **in a lit affected room** (§2.7). A chosen blackout (L8) has
+no lit room. So the most dramatic thing the framework can do is the one thing a god may never
+refer to afterwards — which is precisely backwards.
+
+Needs his ruling. The narrow fix is to define witness by *presence in an affected group* rather
+than by illumination, which makes a pawn standing in a deliberate darkness a witness to it. That
+is a small change to §2.7 and I have not made it.
+
+### ⚠️ C4 — canon says the silent EIGHT express; L6 caps the tremor at three
+
+`canon.yml` `in_front` says the silent eight express through flickers in their palettes. L6 caps
+the tremor at three, on his ruling that more than that reads as mud. Both cannot be literally true.
+
+Likely resolution, unruled: canon describes the *fiction* (all eight are present) and L6 the
+*rendering* (three are legible at once). Worth stating explicitly, because otherwise someone will
+later "fix" one to match the other.
+
+### ⚠️ C5 — the sound half collides with four systems, not one, and beds may not be able to fade
+
+§3 records one accepted overlap (`RustCathedralHum`). The census names **four more ambient systems
+in the live list** — `swablu.ambience`, `neronix17.outerrim.core`, `dorbo.watersfx`, and RimTunes'
+dynamic music — and reports that `RM_MapComponent_SilenceCue` already carries a Desktop-verified
+finding that **Sustainers have no partial volume ramp**. If that holds, beds cannot fade in or out,
+only start and stop, which changes what §3's mood-bending can be.
+
+⚠️ Not verified in this window. Added to §8 as an eighth Phase 0 question. Also from the census,
+and relevant to L8: `juanlopez2008.lightsout` writes the same glow field the compositor would,
+which could make a chosen darkness unprovable.
 
 ## §10 Still open
 
