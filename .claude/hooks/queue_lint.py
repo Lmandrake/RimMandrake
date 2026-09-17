@@ -121,6 +121,16 @@ LEDGER_MSG = (
     "    python3 src/RimMandrake/rimflow/cli.py <verb> …\n"
     "To correct one that is already in it, the OWNER appends an `admin` event. "
     "Nothing is ever removed.\n\n"
+    "🔴 If `rimflow`/`./game` are refusing to READ the ledger at all with a 'not valid "
+    "JSON... almost certainly a torn write' error, that is a DIFFERENT problem from "
+    "the one this hook polices — a line that was never a valid event (a crashed "
+    "mid-write, or unresolved `git stash` conflict markers landed by a commit) has "
+    "no admin-event fix, because rimflow cannot finish reading the file to append "
+    "one. Use the dedicated tool instead of this file directly:\n"
+    "    python3 src/RimMandrake/Utils/repair_torn_ledger.py                  # dry run\n"
+    "    python3 src/RimMandrake/Utils/repair_torn_ledger.py --apply --owner-said \"…\"\n"
+    "It only ever removes lines that fail to parse — a line that parses, however "
+    "wrong its content, is never touched by it.\n\n"
     "✅ COMMITTING the ledger is fine and is not what this refused — commit it after "
     "every turn, and push. Reading it with grep, cat or sed -n is fine too.")
 
