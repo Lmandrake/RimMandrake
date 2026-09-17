@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:14:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T21:15:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -837,6 +837,15 @@ kind:     task
 summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
 prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
 
+## BAZAAR_BANTER_LINES_1 The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Part A (ships alone, complete): authored line pools per (personality × event
+prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1510,6 +1519,16 @@ blocked:  Real dependency chain still open: BAZAAR_WINDOW_GRID_1 is 'doing' (no 
 summary:  One patience meter per trader session (4–9, personality/goodwill adjusted;
 prose:    infrastructure/state/items/BAZAAR_HAGGLE_DUEL_1.md
 
+## BAZAAR_BANTER_LINES_1 The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Part A's event pool (push won/lost/crit/lockout/greeting/closing) and personality set (stingy/desperate/gullible/volatile) are defined by BAZAAR_HAGGLE_DUEL_1's spec, which I just blocked this pass -- that item is itself blocked on BAZAAR_PRICE_ENGINE_1, which is blocked on BAZAAR_WINDOW_GRID_1 (still doing, no session object/banter-strip home to author into). No enum, no strip, no mod home for the content yet -- not offline-actionable this pass despite 'ships alone' framing. (on BAZAAR_HAGGLE_DUEL_1)
+summary:  Part A (ships alone, complete): authored line pools per (personality × event
+prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1581,16 +1600,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
 prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
-
-## BAZAAR_BANTER_LINES_1 The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Part A (ships alone, complete): authored line pools per (personality × event
-prose:    infrastructure/state/items/BAZAAR_BANTER_LINES_1.md
 
 ## BAZAAR_BROKER_TAB_1 The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
 state:    proposed
