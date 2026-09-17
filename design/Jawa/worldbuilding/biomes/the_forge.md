@@ -200,9 +200,12 @@ geology; its life is overhead or between raindrops.
   cycle, flash-interval growth), beldon herd + tibanna harvest system,
   vapor-column flight layer for the sky fauna, tower dungeon shell, the
   Contagion die-off ring, geothermal industry hooks.
-- `TIBANNA_EMBARGO_PLOT_1` (to file) — the Empire's gas monopoly as a
-  campaign clock: the metered harvest, the dwindling ammunition, the
-  resolution the owner ruled must come.
+- `TIBANNA_EMBARGO_PLOT_1` (filed; spec DRAFTED 2026-09-11 →
+  `tibanna_embargo_plot_spec.md`, both cards RULED 2026-09-12) — the
+  Empire's gas monopoly as a campaign clock: the metered harvest, the
+  dwindling ammunition, the resolution the owner ruled must come. Source
+  cut executed (`TIBANNA_SOURCE_CUT_1`, closed); build surfaces (§7 of the
+  spec) still owed.
 - **Roster** — rides the full assignment pass: Beldon (icon carve-out;
   reference image on file), Aerofleet→Fumerider rename, fleet fliers,
   flash-flora + fireweed.
