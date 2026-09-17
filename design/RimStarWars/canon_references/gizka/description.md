@@ -31,29 +31,26 @@ mentioned in current Disney canon only much later, in the 2017 novel
 *Aftermath: Empire's End*.
 
 ## Visual brief
-All three candidate images are drawn from the same KOTOR-era in-game model
-and agree closely. Gizka reads as a **small bipedal frog/lizard hopper** — it stands and moves
-on two long, thin hind legs with visible bony joints and clawed spread
-toes, while the tiny forelimbs are held up off the ground, never
-weight-bearing (clearest on the background gizka in
-`kotor_screenshot.jpg`). The single most striking, model-consistent
-feature across all three images is the **head**: oversized relative to the
-body, blunt and rounded with **TWO huge round bulging eyes, one on each
-side of the head** — the reference shots are near-profile angles where only
-the near eye is visible, so a straight-on front (south) view must show
-BOTH, never a single central cyclops eye (owner ruling below) — a small
-pointed crest or ear-flap above them, and a downturned wide mouth. Skin is a mottled
-**olive-green and tan/khaki blotched pattern** (leopard/toad-camouflage
-style patches, not a flat color, confirming the infobox's plain "green"
-citation only partially), with dull pink-red skin showing at the leg
-joints, belly, and haunches. `wookieepedia_concept_art.jpg` is a cleaner
-painted rendering of the same model showing the same blotch pattern, big
-eye, and sprawled crouching stance from a similar angle.
-`kotor_screenshot.jpg` shows two gizka together in an in-game cargo-hold
-setting (the "Trouble with Gizka" sequence), confirming the pack/infestation
-behavior from the text and giving a size reference against the corridor
-architecture — gizka read as roughly knee-height or smaller, consistent
-with a fast-breeding vermin-scale creature rather than a large animal.
+Judged against the owner's two supplied reference images
+(`owner_reference_sideview.jpg`, `owner_reference_card.jpg`, both of the
+KOTOR in-game model — owner ruling below). Gizka is a **small bipedal
+DINOSAUR-like reptile, emphatically not a frog or toad**: a compact
+theropod build with the **body held horizontal** over two strong hind
+legs, and a **thick tapering tail extending behind for balance** — the
+tail is prominent in both references and is part of the silhouette. Small
+vestigial forelimbs are held tucked against the chest, never
+weight-bearing. The **head** is oversized relative to the body with a
+**rounded, blunt, beak-like snout**, broad fleshy cheeks, a downturned
+mouth, and a **backswept crest at the rear of the skull**. **TWO
+modest-sized eyes sit on the sides of the head** — never a single central
+cyclops eye, and never huge bulging frog eyes dominating the face; a
+front (south) view shows both. Hide is **scaly and mottled in tan, warm
+orange-brown and olive patches** (the side-view reference reads warm
+tan-orange; the card reads greener) — never a flat colour — with paler
+skin at the belly and joints. `kotor_screenshot.jpg` shows two gizka in
+the *Ebon Hawk* cargo hold, confirming pack/infestation behavior and a
+size reference — roughly knee-height or smaller, a fast-breeding
+vermin-scale creature rather than a large animal.
 
 No donor mod screenshot could be obtained — `mlie.starwarsanimalcollection`
 is not present anywhere on this machine's disk (Workshop cache or common
@@ -61,11 +58,12 @@ Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
 ## Must show
-- [ ] Small hopper standing on TWO long, thin hind legs with visible bony joints — the hind legs do all the structural work; the tiny forelimbs are held up off the ground, never weight-bearing (bipedal read, per the owner's ruling below and the in-game stance in kotor_screenshot.jpg)
-- [ ] Oversized, blunt, rounded head dominated by huge round bulging eyes — TWO, one per side of the head; a front (south) view shows both, never a single central cyclops eye
-- [ ] A small pointed crest or ear-flap above the eyes
-- [ ] Mottled olive-green and tan/khaki blotched skin pattern — not a flat green
-- [ ] Dull pink-red skin visible at the leg joints, belly and haunches
+- [ ] Small bipedal dinosaur-like reptile — theropod build, body held HORIZONTAL over two strong hind legs; NOT a frog, NOT a toad, NOT an upright hopper
+- [ ] A thick tapering TAIL extending behind for balance — part of the silhouette in every facing
+- [ ] Tiny vestigial forelimbs tucked against the chest, never weight-bearing
+- [ ] Oversized head with a rounded, blunt, beak-like snout, broad cheeks and a backswept crest at the rear of the skull
+- [ ] TWO modest-sized eyes on the sides of the head — a front (south) view shows both; never a single central cyclops eye, never huge bulging frog eyes
+- [ ] Scaly mottled hide in tan, warm orange-brown and olive patches — not a flat colour
 - [ ] Roughly knee-height or smaller — a vermin-scale creature, not a large animal
 
 ## Engine limits
@@ -88,12 +86,15 @@ none known
   screenshot, two gizka aboard the Ebon Hawk cargo hold)
 
 ## Candidate images
-- `wookieepedia_infobox.jpg` — species infobox render: close 3/4 view of
-  the in-game model, oversized head, huge round eye, mottled
-  olive-green/tan blotched skin, sprawled clawed legs
-- `wookieepedia_concept_art.jpg` — painted concept-art rendering of the
-  same model from a similar angle, confirms blotch pattern, big eye and
-  crouched stance
+- `owner_reference_sideview.jpg` — 🔴 the owner's supplied reference (2026-09-16),
+  side view of the KOTOR model: horizontal dinosaur posture, counterbalancing
+  tail, beak-like snout, backswept skull crest, small side-set eye, warm
+  tan-orange mottled hide. THE authority for body plan and silhouette.
+- `owner_reference_card.jpg` — the owner's second supplied reference, 3/4
+  front view of the same model in grass: confirms the crest, the beaked
+  snout, both eyes, and the green/tan/orange mottle
+- `wookieepedia_infobox.jpg` — species infobox render, close head/body view
+- `wookieepedia_concept_art.jpg` — painted rendering of the same model
 - `kotor_screenshot.jpg` — in-game screenshot of two gizka in the *Ebon
   Hawk* cargo hold ("Trouble with Gizka"), confirms pack behavior and
   gives a small vermin-scale size reference
@@ -115,3 +116,11 @@ image model took literally on the front view; the phrasing is removed and the
 brief now states two eyes, one per side, both visible from the front. Same
 sitting: east-facing versions came out too top-down — east/west must be side
 profiles, now enforced in the daemon's facing hook (artpiped.py).
+
+2026-09-16, owner, on the v4 biped renders, supplying two KOTOR reference
+images: "Use these as gizka references. You just made a frog. I don't want a
+frog." The frog/toad reading is DEAD: gizka is a small dinosaur-like biped —
+horizontal body, counterbalancing tail, beaked snout, backswept skull crest,
+modest side-set eyes. The Visual brief and Must show are rewritten against
+his two images (`owner_reference_sideview.jpg`, `owner_reference_card.jpg`),
+which outrank the wookieepedia thumbnails wherever they disagree.
