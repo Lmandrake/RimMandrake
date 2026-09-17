@@ -86,7 +86,9 @@ surfaced that **10 of its 23 bars are about CHANGE rather than a state**, while 
 `blackout_angers_visibly`, `stripping_fixtures_angers_visibly`, `narrator_arrival_unmistakable`,
 `narrator_restores_substrate`, `god_identity_on_two_channels`, `speed_lives_in_few_fixtures`,
 `never_interpolated_colour`. He ruled the judge takes an ordered sequence for such a line —
-spec §4b, owed on `NORTHSTAR_MOTION_FRAMES_1`.
+spec §4b, owed on `NORTHSTAR_MOTION_FRAMES_1`. `alarm_distinct_from_every_mood` joined them
+later in the same walk, making **11** — its bar is a comparison against the mood schemes, so it
+needs their captures too, not only its own.
 
 🔑 One consequence lands on this list rather than on the machinery: **a sequence proves something
 CHANGED, never that it changed SMOOTHLY.** So `never_interpolated_colour` is not an eye's
@@ -182,8 +184,15 @@ the gods are still standing there when the lights go.
 **Identity and legibility**
 - [ ] `god_identity_on_two_channels` — 🗣 a god is recognisable by hue in a still frame AND by
       motion in a dim one, so losing either channel does not lose identity.
-- [ ] `alarm_reads_in_the_first_second` — 🤔 an alarm reads as an alarm at a glance, with no
-      learning required. Inferred from the omen brief that created this mod.
+- [ ] `alarm_distinct_from_every_mood` — 🗣 an alarm is recognisable without any text by a player
+      who knows the ship: its behaviour is distinguishable from every mood scheme this mod ships.
+      Learning is allowed; reading a label is not. **Ruled 2026-09-17**, replacing an
+      agent-inferred *"reads as an alarm at a glance, no learning required"* bar that collided
+      with `reads_as_tenants_not_as_the_ship` — a warning legible on sight reads as the ship
+      warning you, which canon forbids. ⚠️ The bar is worded against the DIFFERENCE because that
+      is what a frame sequence can settle; *"a player who has learned it"* appears in no frame and
+      the judge cannot stand in for that player. Id renamed rather than reused — permitted only
+      because this checklist is DRAFT and has never bound.
 - [ ] `speed_lives_in_few_fixtures` — 🗣 a handful of fixtures carry the fast movement while the
       mass moves slowly, reading as a real alarm panel rather than a uniform strobe.
 
