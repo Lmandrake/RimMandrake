@@ -107,44 +107,62 @@ failure of this mod even if the player likes it.
 
 ### must show
 
-1. **Two gods hold visibly separate territory, and the boundary moves.** 🗣 ruled — "a pattern
-   that swirls between one and the other"; 📐 canon.yml `in_front`: "the corridors will show
-   this in different colored areas even perhaps that slowly move throughout the ship". A player
-   looking at the ship can point at where one ends and the other begins.
-2. **A third presence is visible without being identifiable as territory.** 🗣 ruled; 📐 canon:
-   the silent eight express through "flickers in their palettes". The tremor must read as
-   *someone else is stirring*, in a palette that is that god's own.
-3. **A chosen darkness is never mistakable for a power failure.** 🗣 ruled. Motion in the dark,
-   and uncontrolled light left standing.
-4. **The Narrator's arrival is unmistakable on first encounter**, with no text required to
-   explain it. 🗣 ruled — reserved bright white, a rise, a hold, a slow return.
-5. **The lights return exactly to what they were doing before he spoke.** 🗣 ruled — this is the
-   half of the gesture that makes the other half legible.
-6. **A god is identifiable by hue and by motion independently** — the same god recognisable in a
-   dim scene by how it moves, and in a still frame by its colour. 🗣 ruled.
-7. **An alarm reads as an alarm at a glance**, in the first second, with no learning required.
-   🤔 inferred from the omen brief that created this mod.
-8. **A few fixtures carry the speed and the mass moves slowly** — and it reads as a real alarm
-   panel rather than as a uniform strobe. 🗣 ruled.
-9. **The ship looks inhabited by tenants, not animated by itself.** 📐 canon's no-moods-of-the-ship
-   law, made visual: no effect may read as the building having a feeling.
-10. **Nothing the player did not hand over is ever driven.** 🗣 ruled — a glowing animal, worn
-    gear, a plant and a hologram keep their own light in every scene.
-11. **The default scheme at install is restrained enough to live under** — it must not read as a
-    light show in an ordinary colony. 🗣 ruled (gentle by default), 🤔 the "restrained" bar is mine.
+**Two gods sharing one hull**
+- [ ] `territory_boundary_visible` — 🗣 two claimants hold visibly separate areas and a player
+      can point at where one ends and the other begins. Ruled: "a pattern that swirls between
+      one and the other"; canon.yml `in_front`: "different colored areas even perhaps that
+      slowly move throughout the ship".
+- [ ] `territory_boundary_moves` — 🗣 that boundary is seen to travel, not merely to exist. A
+      static split is a different and lesser thing.
+- [ ] `tremor_reads_as_third_presence` — 🗣📐 a god beyond the top two is visible as *someone
+      else stirring* without holding territory, in a palette that is its own. Canon: the silent
+      eight express through "flickers in their palettes".
+
+**Darkness**
+- [ ] `dark_is_never_still` — 🗣 a chosen darkness always carries motion, so it cannot be read
+      as a power failure. Ruled: "a little flickering, a writhing that lets you know that it's
+      not a power outage".
+- [ ] `dark_leaves_reference_light` — 🗣 light the framework does not control stays lit through
+      a blackout scene, proving the black was chosen.
+
+**The Narrator**
+- [ ] `narrator_arrival_unmistakable` — 🗣 his arrival is recognisable on FIRST encounter with no
+      text explaining it: the reserved rise to bright white, held, then released.
+- [ ] `narrator_restores_substrate` — 🗣 the lights return to exactly what they were doing before
+      he spoke. This is the half that makes the other half legible.
+
+**Identity and legibility**
+- [ ] `god_identity_on_two_channels` — 🗣 a god is recognisable by hue in a still frame AND by
+      motion in a dim one, so losing either channel does not lose identity.
+- [ ] `alarm_reads_in_the_first_second` — 🤔 an alarm reads as an alarm at a glance, with no
+      learning required. Inferred from the omen brief that created this mod.
+- [ ] `speed_lives_in_few_fixtures` — 🗣 a handful of fixtures carry the fast movement while the
+      mass moves slowly, reading as a real alarm panel rather than a uniform strobe.
+
+**The law that is easiest to break while looking good**
+- [ ] `reads_as_tenants_not_as_the_ship` — 📐 every effect reads as somebody using the wiring,
+      never as the building having a feeling. Canon `narrator`: no integrating self, no ego, no
+      moods-of-the-ship.
+- [ ] `drives_only_what_was_handed_over` — 🗣 a glowing animal, worn gear, a plant and a hologram
+      keep their own light in every scene.
+- [ ] `default_scheme_is_livable` — 🗣🤔 the shipped default is restrained enough to live under
+      and does not read as a light show in an ordinary colony. He ruled gentle-by-default; the
+      "livable" bar is mine.
 
 ### cannot show
 
-1. **No interpolated colour, ever.** 📐 `TWINKLE_FLORA_SPIKE_1`: a continuously varying colour
-   mints a cached Material per value forever. A smooth fade is the signature of the bug, so a
-   visible smooth fade is itself a violation.
-2. **No effect that reads as the ship expressing itself.** 📐 canon `narrator` — the inverse of
-   must-show 9, stated separately because it is the one failure a pleasing demo can hide.
-3. **No white used as a dominant colour by anything but the Narrator.** 🗣 ruled and enforced.
-4. **No alarm the Narrator cannot interrupt**, and no gesture that leaves the alarm broken
-   afterwards. 🗣 ruled.
-5. **No claim visibly surviving a landing.** 🗣 ruled — the reset is a story beat, so a mood that
-   bleeds through it is a visible lie.
+- [ ] `never_interpolated_colour` — 📐 a visibly smooth colour fade. `TWINKLE_FLORA_SPIKE_1`
+      measured that a continuously varying colour mints a cached Material per value forever, so
+      the symptom and the defect are the same thing: if a screenshot sequence shows a smooth
+      fade, the mod is leaking.
+- [ ] `never_the_ship_emoting` — 📐 any effect that reads as the ship itself expressing a mood.
+      The inverse of `reads_as_tenants_not_as_the_ship`, stated separately because it is the one
+      failure a pleasing demo hides best.
+- [ ] `never_white_but_the_narrator` — 🗣 bright white dominant in any scheme or god signature
+      that is not his.
+- [ ] `never_an_uninterruptible_alarm` — 🗣 an alarm the Narrator cannot cut through, or an alarm
+      left broken after he has finished.
+- [ ] `never_a_claim_surviving_a_landing` — 🗣 a mood visibly bleeding through the landing reset.
 
 ### candidate lines  (NOT his — agent-drafted, bind nothing until promoted)
 
