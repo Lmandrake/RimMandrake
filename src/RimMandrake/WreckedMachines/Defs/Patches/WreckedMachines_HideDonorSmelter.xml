@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines_HideDonorSmelter.xml          mandrake.rm.wreckedmachines
+
+  WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1. Owner ruling 2026-09-16, verbatim:
+  "remove the VFE factory, not the manual one." About.xml called the donor's
+  Automated Smelter staying buildable alongside our three restoration tiers
+  "a testing arrangement, not a finished one" — this file finishes it.
+
+  WHICH SMELTER, EXACTLY
+  =======================
+  There are two smelters in play and only one is in scope:
+
+    * VFEFactory_AutomatedSmelter — the donor's fully-automated smelter
+      (Buildings_Factories.xml, packageId VanillaExpanded.VFEFactory,
+      workshop 3686924415, /1.6/Defs/ThingDefs_Buildings/Buildings_
+      Factories.xml:185). Auto-pulls from hoppers, no player attention once
+      running. THIS is "the VFE factory" the ruling names — it is exactly
+      what our RM_WM_AutomatedSmelter_Wrecked/Kludged/Repaired ladder exists
+      to replace narratively, and it is the def our own def file's header
+      already documents as "a known, accepted cost of the testing phase,
+      NOT acceptable at ship."
+
+    * ElectricSmelter — VANILLA's own hand-run smelter (queue a "Smelt
+      weapon"/"Smelt apparel" bill, work it like any other bench). This is
+      "the manual one" the ruling protects. It is not part of VFE-Factory,
+      it is not touched by anything in this mod, and this file does not
+      reference it at all — named here only so nobody "fixes" it later
+      by mistake.
+
+  WHY designationCategory AND NOT DELETING THE DEF
+  ==================================================
+  Same reasoning as the proven precedent in this stack
+  (RSW_Armoury/Patches/Warcasket_BuildPathCut.xml, which removed the
+  droid-factory-class building the same way): our own Kludged and Repaired
+  tiers reference the donor's ProcessDefs directly (VFEFactory_
+  SmeltMetalFromSlag, _SmeltMetalFromMechSlag, _SmeltWeapon —
+  Buildings_WreckedMachines_AutomatedSmelter.xml). Deleting
+  VFEFactory_AutomatedSmelter itself, or its recipes, would either break
+  those references or require duplicating the recipes into our own defs for
+  no reason. Clearing <designationCategory> removes it from the Architect
+  menu — the only place a player can newly acquire one — while leaving the
+  ThingDef, its comps and its processes completely intact for anything that
+  still reads them (including, if the donor mod ever spawns one via a quest
+  or map-gen, an already-placed instance).
+
+  Wrapped in PatchOperationFindMod so this is a silent no-op if VFE-Factory
+  is ever removed (impossible today — About.xml lists it as a hard
+  modDependency — but free insurance). PatchOperationConditional guards the
+  cut itself so a VFE-Factory update that restructures the def makes this
+  fall silent rather than error.
+
+  VERIFY AFTER THE NEXT LOAD
+  ===========================
+    * Architect > Factories: NO "automated smelter" (the donor's). Our own
+      three RM_WM_AutomatedSmelter_* tiers are unaffected — they carry their
+      own designationCategory (WreckedMachines) or none, per their own def.
+    * Architect > Production: vanilla's "electric smelter" is present and
+      unchanged.
+    * grep Player.log for "Could not resolve cross-reference" — no new hits
+      naming VFEFactory_AutomatedSmelter or its processes; our own tiers
+      still resolve their <li>VFEFactory_Smelt...</li> process references.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Furniture Expanded - Factory</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/designationCategory</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/designationCategory</xpath>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

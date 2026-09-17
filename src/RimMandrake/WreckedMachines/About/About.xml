@@ -27,11 +27,12 @@ Advancing a tier costs materials, tools and earned knowledge, never a research
 grind alone.
 
 This mod ships its own art for all three states and does not replace or alter
-any other mod's buildings. The donor mod's original machine is left completely
-untouched and stays buildable alongside these — which means, for now, that both
-appear in the build menu. That is deliberate: it makes the two comparable side
-by side in one colony, and it keeps this mod removable. It is a testing
-arrangement, not a finished one.</description>
+any other mod's buildings. The donor mod's original Automated Smelter ThingDef
+is left completely untouched — its stats, comps and recipes are unchanged, and
+our Kludged/Repaired tiers still run its own processes — but it no longer
+appears in the Architect build menu, so a player cannot build a fresh one
+alongside these three. Vanilla's own hand-run electric smelter is untouched
+and unrelated.</description>
 
   <modDependencies>
     <li>

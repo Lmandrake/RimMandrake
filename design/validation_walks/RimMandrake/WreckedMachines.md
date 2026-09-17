@@ -115,13 +115,15 @@ this mod until that design lands; that is intended, not a defect.
 ### cannot show
 
 - [ ] `never_two_identical_smelters` — ours and the donor's smelter appearing
-      indistinguishably in the build menu or on the map. 🔴 **True today by design, and
-      being fixed**: our own def file records that `VFEFactory_AutomatedSmelter` "is left
-      completely untouched and stays buildable", and About.xml calls the arrangement *"a
-      testing arrangement, not a finished one."* Owner ruling 2026-09-16, verbatim:
-      *"remove the VFE factory, not the manual one"* — so `VFEFactory_AutomatedSmelter`
-      leaves the build menu while the manual smelter is left alone.
-      → `WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1`.
+      indistinguishably in the build menu or on the map. `WRECKEDMACHINES_VFE_SMELTER_
+      REMOVAL_1` closed source-side 2026-09-17: `Defs/Patches/WreckedMachines_
+      HideDonorSmelter.xml` clears `VFEFactory_AutomatedSmelter`'s
+      `<designationCategory>` (PatchOperationFindMod-guarded on the donor mod, same
+      technique as `RSW_Armoury/Patches/Warcasket_BuildPathCut.xml`), per owner ruling
+      2026-09-16 verbatim *"remove the VFE factory, not the manual one"* — vanilla's
+      `ElectricSmelter` ("the manual one") is untouched. Live verify still owed: a
+      game-up load must confirm Architect > Factories no longer offers the donor
+      smelter and no new "Could not resolve cross-reference" appears.
 - [ ] `never_reads_as_donor_machine` — a tier that reads as the donor's intact VFE
       smelter rather than as our wreck.
 
