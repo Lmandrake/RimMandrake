@@ -76,7 +76,16 @@ def main(argv=None):
                         help="also print WARN findings (UNKNOWN_ID, BAD_FILE), "
                              "which never affect the exit code")
 
+    sub.add_parser("doctor", help="the five registries keyed on a mod's folder "
+                                  "name must agree with disk. Reports and "
+                                  "stops -- never repairs; the ownership calls "
+                                  "it surfaces are the owner's")
+
     args = ap.parse_args(argv)
+
+    if args.cmd == "doctor":
+        import doctor
+        return doctor.main([])
 
     if args.cmd == "lint":
         import runner
@@ -109,12 +118,19 @@ def main(argv=None):
             return 0
         import northstar
         import runner
+        # Re-derive per row rather than printing entry["status"]. The stored
+        # field is what made this summary disagree with `status <mod>`: it
+        # printed `Pits GREEN` while the per-mod view printed STALE, and
+        # `FluidCanals GREEN` for a mod renamed away weeks earlier.
         for mod, entry in sorted(data.items()):
             walk = northstar.find_walk(runner.ROOT, mod)
             ns = northstar.parse(walk) if walk else None
             bar = ("checklist %s (%d lines)" % (ns["state"], len(ns["must_show"]))
                    if ns and ns["present"] else "no checklist")
-            print("%-30s %-22s %s" % (mod, entry.get("status"), bar))
+            live = status.check_or_orphaned(mod)
+            stored = entry.get("status")
+            drift = "" if live.split(" (")[0] == stored else "   [stored: %s]" % stored
+            print("%-30s %-22s %s%s" % (mod, live, bar, drift))
         return 0
 
     if args.cmd == "declare":
