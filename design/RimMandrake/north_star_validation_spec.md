@@ -57,7 +57,7 @@ That is the class of defect this document exists to make impossible to pass.
 | human-visual `[S]` steps across all 77 walks | 75 (~1 per mod) |
 | walks explicitly dismissing the visual pass | 7 |
 
-The two GREEN entries are FluidCanals and Pits. The Pits GREEN came from
+The two GREEN entries are FlowWorks and Pits. The Pits GREEN came from
 `MODCHECK_RUNNER_SWAP_LIVE_PROOF_1` on config `min+Pits` — a run proving the
 *runner* worked, never a judgement of the pit.
 
@@ -371,7 +371,7 @@ Two things 1–5 deliberately do NOT do, so nobody reads more into them:
   would refuse mods today, against §MOD_OPTIONS_RETROFIT_1's own known gap.
 - **No mod's behaviour changed.** Every one of the 18 scripts has no `shows=`
   and no walk has a VALIDATED checklist, so every run still resolves exactly as
-  it did. MEASURED 2026-09-16, the two recorded GREENs: **FluidCanals still
+  it did. MEASURED 2026-09-16, the two recorded GREENs: **FlowWorks still
   records GREEN** (its walk has no `## north star` section at all), and **Pits
   records `DRAFT-CHECKLIST`** — its checklist exists and is not his yet. So the
   pit stops being green the moment it is next run, before he validates anything,

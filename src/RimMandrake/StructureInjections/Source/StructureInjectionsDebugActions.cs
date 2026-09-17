@@ -6,7 +6,7 @@ using Verse;
 namespace RimMandrake.StructureInjections
 {
     // Bridge-reachable proof surface for GenStep_RimplacePlan, mirroring
-    // PitDebugActions' pattern (src/RimMandrake/Pits/Source/Debug/). ToolMap
+    // PitDebugActions' pattern (src/RimMandrake/FlowWorks/Source/Pits/Debug/). ToolMap
     // actions are reachable from RimBridge by x/z, so this is how a quicktest
     // proves the ordering guarantee (foundation -> terrain -> things
     // transmitters-first -> roof) without a full LandmarkDef/TileMutatorDef

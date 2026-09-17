@@ -1,0 +1,126 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    FLOWWORKS_BUILD_PROGRAM_1 Phase 1. ONE assembly for the whole liquid
+    domain: the canal/depth engine (Source/), the pit family (Source/Pits/,
+    merged from RimMandrake Pits), the water-effects engine
+    (Source/ManyWaters/, merged from ManyWaters) and the liquid registry
+    (Source/LiquidTypes/, merged from RimMandrake: Liquid Types).
+
+    No Harmony reference: everything here is a normal Thing/ThingComp/
+    JobDriver/Designator/MapComponent/DefModExtension subclass through
+    vanilla extension points (including RimWorld.Flood, Odyssey's own
+    flood-spread engine), not a patch.
+
+    Source/Pits/SelfTest/ is a SEPARATE net8.0 project and is deliberately
+    absent from the Compile list below; EnableDefaultCompileItems is false,
+    so nothing there is picked up implicitly.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\FlowWorks\Source\RimMandrake_FlowWorks.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeFlowWorks</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <!-- The canal / depth engine. RM_MapComponent_Excavation is the core
+       (ruling 18: depth is the primitive). CompFluidReservoir and
+       CompProperties_FluidReservoir are GONE, deleted by ruling 24. -->
+  <ItemGroup>
+    <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
+    <Compile Include="RimMandrakeFlowWorksMod.cs" />
+    <Compile Include="FluidDef.cs" />
+    <Compile Include="RM_ExcavationDepth.cs" />
+    <Compile Include="RM_MapComponent_Excavation.cs" />
+    <Compile Include="Designator_DigCanal.cs" />
+    <Compile Include="WorkGiver_DigCanal.cs" />
+    <Compile Include="JobDriver_DigCanal.cs" />
+    <Compile Include="Flood_FlowWorks.cs" />
+    <Compile Include="Debug\FlowWorksDebugActions.cs" />
+  </ItemGroup>
+
+  <!-- Pits, merged 2026-09-16 (rulings 18/27). Namespace
+       RimMandrake.FlowWorks.Pits; file order preserved from the retired
+       RimMandrake_Pits.csproj. -->
+  <ItemGroup>
+    <Compile Include="Pits\RimMandrakePits_DefOf.cs" />
+    <Compile Include="Pits\PitsMod.cs" />
+    <Compile Include="Pits\TerrainMimic\Building_TerrainMimicCover.cs" />
+    <Compile Include="Pits\Trigger\CompProperties_PitCoverTrigger.cs" />
+    <Compile Include="Pits\Trigger\CompPitCoverTrigger.cs" />
+    <Compile Include="Pits\Trigger\PitCoverTier.cs" />
+    <Compile Include="Pits\DigStage\PitDepthTier.cs" />
+    <Compile Include="Pits\DigStage\CompProperties_PitDigStage.cs" />
+    <Compile Include="Pits\DigStage\CompPitDigStage.cs" />
+    <Compile Include="Pits\DigStage\Building_PitDigSite.cs" />
+    <Compile Include="Pits\DigStage\WorkGiver_DigPitDeeper.cs" />
+    <Compile Include="Pits\DigStage\JobDriver_DigPitDeeper.cs" />
+    <Compile Include="Pits\Fitting\PitFittingType.cs" />
+    <Compile Include="Pits\Fitting\CompProperties_PitFitting.cs" />
+    <Compile Include="Pits\Fitting\CompPitFitting.cs" />
+    <Compile Include="Pits\Escape\PitEscapeUtility.cs" />
+    <Compile Include="Pits\Holding\Building_OpenPit.cs" />
+    <Compile Include="Pits\Holding\Building_PitCell.cs" />
+    <Compile Include="Pits\Debug\PitDebugActions.cs" />
+  </ItemGroup>
+
+  <!-- ManyWaters, merged 2026-09-16. Namespace
+       RimMandrake.FlowWorks.ManyWaters (was the bare `RiverSteamHook`;
+       RimUtinni: UtinniPatches' ManyWaters_RiverSteam_Ashkarr.xml names
+       the modExtension by full type name and was updated in the same
+       change). -->
+  <ItemGroup>
+    <Compile Include="ManyWaters\RiverSteamHook.cs" />
+    <Compile Include="ManyWaters\RiverSteamSettings.cs" />
+  </ItemGroup>
+
+  <!-- The liquid registry, merged 2026-09-16 (ruling 14). Namespace
+       RimMandrake.FlowWorks.LiquidTypes. -->
+  <ItemGroup>
+    <Compile Include="LiquidTypes\RM_LiquidProperties.cs" />
+    <Compile Include="LiquidTypes\LiquidCorrosion.cs" />
+    <Compile Include="LiquidTypes\LiquidIgnition.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

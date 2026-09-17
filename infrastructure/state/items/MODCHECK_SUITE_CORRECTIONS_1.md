@@ -1,7 +1,7 @@
 
 ## spec
 First live wave (MODCHECK_MATURE_WAVE_1, 2026-09-13, min16 environment):
-2 GREEN (Pits 3/3, FluidCanals 3/3), 12 RED, 2 aborted. Evidence per mod:
+2 GREEN (Pits 3/3, FlowWorks 3/3), 12 RED, 2 aborted. Evidence per mod:
 `Transient/modcheck/<Mod>_20260913T*.html` + `<Mod>_summary.json` (raw
 read-backs per component), run log
 `Transient/modcheck_wave_bridge_20260913.log`. Most REDs are SUITE

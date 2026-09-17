@@ -73,6 +73,18 @@ FlowWorks (WebSearch is dead on this model group; use Fetcher or the Desktop).
 
 ## Phase 1 — Consolidate, then rename
 
+**✅ EXECUTED — BENCH-orchestrated lane, 2026-09-16.** Rename (ruling 20), ruling-24
+deletions, and the Pits+ManyWaters+LiquidTypes merge into `src/RimMandrake/FlowWorks`
+(one assembly, `RimMandrakeFlowWorks.dll`) landed together: build 0 errors, 54/54
+selftests, validate_patch 0 errors, both silent-failure hazards cleared (DLL rebuilt
+same pass; bridge reflection strings reworked, `jawa/canal_dig` stubbed to an honest
+ruling-24 refusal). Deploy-time obligations and the open escalations (newly-live
+LiquidCorrosion/LiquidIgnition MapComponents, the now-applying CompatIndex patch,
+the Odyssey hard dependency pending the Phase-3 decouple, Phase-9 validation-walk
+regrouping) are recorded in the Phase-1 closing commit's lane report. The measured
+blast-radius table below is a point-in-time record of the PRE-rename state — do not
+"fix" its old names.
+
 His ruling 27 is merge-before-art, and consolidating first also avoids building the primitive in one
 mod and moving it. Into **one mod**: `FluidCanals` + `Pits` + `ManyWaters` + `LiquidTypes` (the
 registry). `GelatinousSlime` stays a sibling that *registers rows* and keeps its genes.

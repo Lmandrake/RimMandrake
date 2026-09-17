@@ -21,6 +21,6 @@ transmutations_out, sheet ref. This file only says how to read and change it._
   there), and slime water counts as **toxic water for distillation purposes**.
 - **Stack mapping (owed, before any item defs)**: Dubs Bad Hygiene is live in
   the stack (`DBH_` defs MEASURED 1,262 in the 2026-09-05 capture) and grades
-  water in its C# — verify its actual grades (and FluidCanals, and the four
+  water in its C# — verify its actual grades (and FlowWorks, and the four
   liquid biomes of `LIQUID_BIOMES_MAP_1`) against this table before authoring
   any water item/terrain defs. Do not assume DBH's kinds are the ceiling.

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T01:33:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T03:58:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -402,7 +402,7 @@ thin:     no ## verify
 summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
 
-## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FluidCanals went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
+## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FlowWorks went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
 state:    proposed
 row:      unassigned
 needs:    bridge

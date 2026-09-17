@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace RimMandrake.Greentide
 {
-	/// <summary>GREENTIDE_STANDALONE_MOD_1 (M8). Pattern mirrors FluidCanals'
+	/// <summary>GREENTIDE_STANDALONE_MOD_1 (M8). Pattern mirrors FlowWorks'
 	/// WorkGiver_DigCanal exactly: scan for the dig-out designation, hand out
 	/// the job, and drop a stale designation if the cache is somehow already gone.</summary>
 	public class RM_WorkGiver_DigOutBuried : WorkGiver_Scanner

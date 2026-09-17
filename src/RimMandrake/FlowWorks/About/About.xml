@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: FlowWorks</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.flowworks</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Dig a channel, let a fluid flow into it: a species- and
+biome-agnostic engine for canals that carry water, ooze, slime, oil, tar or
+fuel from a source into the terrain a colonist chooses.
+
+Depth is the primitive. Every excavated cell carries two small integers — D,
+how far below the surface it was dug (shallow, mid, deep, SUPERDEEP), and F,
+how much liquid is in it — and everything else is a function of those two on
+one cell: what it costs to cross, how much it holds, and which liquid surface
+is drawn. We dig down; we never build up. There is no elevation model, no
+height advantage, and no fluid simulation: liquid levels itself out on a
+pulse, by sorting the deepest cells first and letting a full one overflow
+into whatever has room.
+
+A natural liquid body IS a source — deep terrain that is already full, which
+is why it spills into a shallower channel dug at its edge. Liquid stays in
+what has been excavated.
+
+Shipped: the depth/fill grid and its pulse engine
+(`RM_MapComponent_Excavation`), a dig designator that deepens a cell each
+time it is used, depth-derived movement cost, a three-tier fill ladder on
+vanilla's own edge-aware water ramps, and a `FluidDef` describing what a
+source carries. Water is the one liquid this pass, proving genericity.
+
+Not yet built, and named so nobody thinks they are missing: filling a channel
+back in, sluice gates, sinks, ladders, fall-in capture at SUPERDEEP (until it
+exists, pawns will not path into a SUPERDEEP cell at all), burning liquids,
+irrigation, and per-source stock accounting. Requires Odyssey.
+
+MERGED IN 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1) — one mod now owns
+the whole liquid domain, per the owner's ruling that depth is the single
+primitive underneath all of it:
+
+PITS (was mandrake.rm.pits). The earth that swallows: dig a pit in stages,
+arm it with a terrain-mimic cover, and enough mass crossing it drops whoever
+stood there into the hole below. Escape is a struggle clock scored off
+bodysize, health and manipulation, not a coin flip. The same holder doubles
+as a gated holding-platform pit cell for prisoners. A pit is not a separate
+thing from a canal — it is one deep excavation, and a canal is a connected
+run of shallow ones.
+
+WATER EFFECTS (was mandrake.rm.manywaters). The generic water-effects
+engine: animated river-steam ambience off a biome's own opt-in extension,
+RM_DeepSand (impassable, fishable sand built the way vanilla deep water is),
+and the coloured-water and coloured-slime terrain, fleck and bottle
+families. Biome-agnostic; the Ash'karr wiring lives in RimUtinni.
+
+LIQUID TYPES (was mandrake.rm.liquidtypes). The liquid registry: per-liquid
+TerrainDef suites cloned off vanilla water — tar, ooze, propane, acid,
+brine, coolant, ichor and the rest — plus the RM_LiquidProperties extension
+the C# reads for what native fields cannot say (pH/corrosion, damage on
+immersion versus contact).
+
+NOT merged, and staying siblings on the owner's boundary principle —
+FlowWorks owns what a liquid IS and DOES; a machine that TRANSFORMS one
+liquid into another is technology: GelatinousSlime (registers rows, keeps
+its genes), WreckedMachines (distillation and every other conversion), and
+FloodedCanyon (a flood-driver client).</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>RimWorld - Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>sarg.alphabiomes</li>
+    <li>Dubwise.DubsBadHygiene.Lite</li>
+  </loadAfter>
+</ModMetaData>

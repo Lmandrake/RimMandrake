@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T01:33:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T03:58:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -854,6 +854,33 @@ target:   v1
 kind:     task
 summary:  (no items/FLAMEFANG_SNAKE_REBIRTH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLAMEFANG_SNAKE_REBIRTH_1.md
+
+## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     finding
+summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
+
+## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DEEP_TRIBES_FIRE_RITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEP_TRIBES_FIRE_RITE_1.md
+
+## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
+prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1731,16 +1758,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
 
-## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     finding
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
-
 ## LIQUID_SINK_DRAINAGE_1 Map-edge sinks that drain a canal on purpose - the inverse of a limitless source, so liquid leaving is transferred off-map rather than destroyed and overflow stays the only exception to conservation
 state:    proposed
 row:      unassigned
@@ -1751,15 +1768,15 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LIQUID_SINK_DRAINAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LIQUID_SINK_DRAINAGE_1.md
 
-## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
+## PYRELANDS_TERRAIN_BURNDEF_1 RM_FE terrain burnedDef flammable config errors on load
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
-prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
 
 ## STALE_RENAME_GATE_SWEEP_1 Sweep the dead NAMING_SCHEME_EXECUTION_1 rename gate out of ~10 design drafts (item closed 2026-08-31 at 54a8e28d); also fix liquids_framework_design.md still naming the mod Fluidity after ruling 20 named it FlowWorks
 state:    proposed

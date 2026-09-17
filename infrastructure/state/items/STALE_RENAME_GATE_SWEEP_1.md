@@ -16,7 +16,7 @@ accept stale info."*
 ## Already fixed 2026-09-16 (do not redo)
 
 `CLAUDE.md`, `design/NAMING_SCHEME_PLAN.md`, `FLOWWORKS_BUILD_PROGRAM_1.md`
-Phase 1, `design/RimMandrake/fluid_canals_mod_definition.md` (4 citations), and
+Phase 1, `design/RimMandrake/flowworks_mod_definition.md` (4 citations), and
 7 canon-library files (`sith_species`, `klatooinian`, `yoda_species`,
 `sith_pureblood`, `massassi`, `RACES_TODO.md` ×2) — the canon ones now point at
 `XENOTYPE_CANON_CORRECTION_1`, which is where a xenotype defName fix actually

@@ -5,7 +5,7 @@
   OWED MIGRATION: the liquids framework (design/RimMandrake/liquids_framework_design.md,
   ruled 2026-09-13) makes every fluid a LiquidDef row in RimMandrake: Liquids, with
   `bottled`, `trade` and `cuisineTags` form slots. That def type does NOT exist on disk
-  yet — src/RimMandrake/LiquidTypes/Source holds only RM_LiquidProperties (the terrain-side
+  yet — src/RimMandrake/FlowWorks/Source/LiquidTypes holds only RM_LiquidProperties (the terrain-side
   DefModExtension), LiquidCorrosion and LiquidIgnition; there is no `class LiquidDef`
   anywhere in src/. LIQUID_REGISTRY_CORE_1 builds it.
 

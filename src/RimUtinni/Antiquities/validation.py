@@ -41,7 +41,7 @@ not an oversight):
   keyTextChanceScale) -- the identical shape the Pits pilot already found
   live 2026-09-12 makes `rimworld/update_mod_settings` (t.set_setting)
   refuse (that tool's reflection walks INSTANCE fields on the ModSettings
-  object; see src/RimMandrake/Pits/validation.py's own note after
+  object; see src/RimMandrake/FlowWorks/validation.py's own note after
   `uncover_disarms`). This suite therefore cannot flip any of the four away
   from its shipped default, and instead:
 

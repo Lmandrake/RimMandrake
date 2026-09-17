@@ -2,7 +2,7 @@
 <Patch>
   <!-- Ash'karr's river steam, wired as DATA (MANYWATERS_GENERIC_SPLIT_1).
 
-       ManyWaters (mandrake.rm.manywaters) is a RimMandrake-tier generic
+       ManyWaters (merged into mandrake.rm.flowworks 2026-09-16) is a RimMandrake-tier generic
        water-effects engine, so it names no biome of its own. Until this patch
        existed, MapComponent_RiverSteam gated on the literal string
        "ZBiome_Grasslands" inside the engine's C# — backwards: which biome
@@ -31,7 +31,11 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ManyWaters</li>
+      <!-- Merged into FlowWorks 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1).
+           PatchOperationFindMod matches ModLister.HasActiveModWithName - the mod's
+           <name>, never its packageId - so this string must track the About.xml
+           name exactly, and a stale one no-ops the whole wiring in silence. -->
+      <li>RimMandrake: FlowWorks</li>
     </mods>
     <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
@@ -46,14 +50,14 @@
         <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
           <value>
-            <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
+            <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
           </value>
         </match>
         <nomatch Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
           <value>
             <modExtensions>
-              <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
+              <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
             </modExtensions>
           </value>
         </nomatch>

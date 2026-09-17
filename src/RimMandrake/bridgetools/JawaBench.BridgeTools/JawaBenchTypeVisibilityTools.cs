@@ -1,7 +1,7 @@
 // JawaBenchTypeVisibilityTools.cs - is a given type actually IN GenTypes.AllTypes, and if
 // not, exactly why.
 //
-// FLUID_CANAL_DEBUG_SURFACE_1. FluidCanals' [DebugAction]s never appear in the dev menu,
+// FLUID_CANAL_DEBUG_SURFACE_1. FlowWorks' [DebugAction]s never appear in the dev menu,
 // while the same mod's defs resolve fine and its assembly loads with no logged error. The
 // item's own round-2 investigation established that these are two INDEPENDENT paths and
 // ran out of things reading could settle:
@@ -19,7 +19,7 @@
 //
 // ⛔ `x.TypeInitializer != null` silently DROPS every surviving type that has no static
 // constructor - and a `static class` whose only members are consts and methods has no
-// .cctor at all. FluidCanalsDebugActions is exactly that shape. So one unresolvable
+// .cctor at all. FlowWorksDebugActions is exactly that shape. So one unresolvable
 // reference anywhere in the assembly can delete the debug-action class from AllTypes while
 // leaving every type that happens to own a static field. That is a per-type drop with no
 // load-order dependency, which matches the symptom the item measured (moving the mod from
@@ -77,7 +77,7 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description =
-                "Full type name, e.g. RimMandrake.FluidCanals.FluidCanalsDebugActions. Matched " +
+                "Full type name, e.g. RimMandrake.FlowWorks.FlowWorksDebugActions. Matched " +
                 "case-insensitively against Type.FullName, and as a suffix so the bare class " +
                 "name also works when it is unambiguous.")]
             string typeName = null,
@@ -90,7 +90,7 @@ namespace JawaBench.BridgeTools
             await Task.CompletedTask;
 
             if (string.IsNullOrWhiteSpace(typeName))
-                return Fail("typeName is required, e.g. RimMandrake.FluidCanals.FluidCanalsDebugActions.");
+                return Fail("typeName is required, e.g. RimMandrake.FlowWorks.FlowWorksDebugActions.");
 
             var wanted = typeName.Trim();
             if (maxLoaderExceptions < 0) maxLoaderExceptions = 0;

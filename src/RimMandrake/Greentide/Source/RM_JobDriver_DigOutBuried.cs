@@ -7,7 +7,7 @@ namespace RimMandrake.Greentide
 	/// <summary>
 	/// GREENTIDE_STANDALONE_MOD_1 (M8). Digs out whatever RM_MapComponent_MudSwallow
 	/// buried at a designated cell. Reuses vanilla JobDriver_AffectFloor (same
-	/// engine as FluidCanals' JobDriver_DigCanal) for reservation, work-speed
+	/// engine as FlowWorks' JobDriver_DigCanal) for reservation, work-speed
 	/// ticking and the progress bar; only DoEffect and the work amount differ.
 	/// </summary>
 	public class RM_JobDriver_DigOutBuried : JobDriver_AffectFloor

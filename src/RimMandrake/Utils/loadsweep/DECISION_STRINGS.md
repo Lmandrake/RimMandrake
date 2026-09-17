@@ -17,9 +17,9 @@ imranfish.xmlextensions, brrainz.rimbridgeserver.
 - `[JawaBench] ready:` present; context line `modSet 33/`
 - jawa/get_defs returns non-null for ALL 13 sentinels:
   DamageDef:RSW_RN2_SteelBall (Armoury) · TerrainDef:RSW_FE_Ash_Trace (FireEcology-RSW)
-  ThingDef:RM_FluidSpring_Test (FluidCanals) · ThingDef:RM_Graffiti_Vandal (Graffiti)
+  TerrainDef:RM_Channel_Empty (FlowWorks) · ThingDef:RM_Graffiti_Vandal (Graffiti)
   LandmarkDef:RUT_LightlessSink (IshkoDarkLandmarks) · ThingDef:RSW_Cindermare (Livestock)
-  TraitDef:RUT_Jawa_WaterDiscipline (PawnFlavor) · ThingDef:RM_PitCell_Single (Pits)
+  TraitDef:RUT_Jawa_WaterDiscipline (PawnFlavor) · ThingDef:RM_PitCell_Single (FlowWorks)
   ThingDef:RUT_Skewer (StickCuisine) · QuestScriptDef:RM_Stranded (StrandedQuest)
   SoundDef:RSW_Ingest_Glitterstim (SWBestiary) · GameConditionDef:RSW_WS_TerminatorFront
   (WeatherSuite) · ScenPartDef:RUT_RuthlessPursuingMechanoids (EmpirePursuit)

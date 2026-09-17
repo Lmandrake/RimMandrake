@@ -1,0 +1,20 @@
+{
+ "background": "opaque",
+ "canvas": {
+  "height": 1024,
+  "width": 1024
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_irrigated_soil_v1",
+ "priority": 100,
+ "prompt": "RimWorld terrain sprite, painterly vanilla-RimWorld art style, seamless tileable top-down texture, 1024x1024, RGB opaque: irrigated ground — a damp, darker ring of soil beside a filled canal, distinct from RotSporeKit's dry desert terrains and from plain SoilRich. Rich dark-brown moist earth, subtly mottled, a few small damp specular patches where water has wicked up from the channel, faint fine cracking only at the outer dry-transition edge. Palette anchored darker and cooler than the campaign's dry-ground vocabulary (Palettes/sandscoured.md) and darker than vanilla SoilRich — this must read as visibly wetter than ordinary rich soil at a glance. Seamless at all four edges, no text, no watermark, no standing water puddles (that is the filled-channel terrain's job, not this ring's).",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Spec section 7 item 10 and section 13 item 4: 'irrigated ground' explicitly named 'not produced here' in the README, noted as 'partly free' via RecedeFlood()'s SoilRich swap — confirm whether that swap already covers this before spending the render. LATER — ties to Phase 4/terrace-farming (ruling 21), not yet built."
+}

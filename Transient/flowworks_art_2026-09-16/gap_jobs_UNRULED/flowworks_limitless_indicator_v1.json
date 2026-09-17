@@ -1,0 +1,20 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 128,
+  "width": 128
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_limitless_indicator_v1",
+ "priority": 100,
+ "prompt": "RimWorld UI inspect-panel glyph icon on a FULLY TRANSPARENT background with a real alpha channel, 128x128, the measured vanilla designator canvas. A small chunky pictorial glyph reading 'LIMITLESS' vs 'LIMITED' liquid supply: an infinity-loop water droplet — a single stylised droplet shape whose lower half tapers into a small closed infinity loop. Flat saturated cyan-blue fill (matching vanilla's directional-action cyan used on Haul/RemoveFloor), thick even black outline, simple flat internal shading, no gradients or glow, no background panel, no text, no watermark. The glyph must read clearly as a tiny overlay badge at 16px, not just at full size.",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Spec section 7 item 7: 'limited vs limitless indicator — UI, not terrain: an overlay glyph plus the inspect line' — no candidate exists and it is not named in the README's 'Not produced here' list either; treated as an overlooked gap. LATER — ties to Phase 4 stock/conservation (limitless-source ruling), not yet built. A LIMITED-state companion glyph (e.g. a plain droplet, no loop) is a natural v1 sibling not covered by this single job."
+}

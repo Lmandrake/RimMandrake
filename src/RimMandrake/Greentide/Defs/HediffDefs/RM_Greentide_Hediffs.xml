@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- GREENTIDE_STANDALONE_MOD_1 (M8, mire half). Severity is driven entirely
      by RM_MapComponent_TerrainMire (C#); stages are read-only presentation +
-     capMods, same shape as RM_PinnedInPit in src/RimMandrake/Pits. stuckThreshold
+     capMods, same shape as RM_PinnedInPit in src/RimMandrake/FlowWorks. stuckThreshold
      on RM_MireExtension (default 0.85) matches this hediff's own "mired" stage
      floor — keep both in sync if either is retuned. -->
 <Defs>

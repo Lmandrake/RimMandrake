@@ -80,7 +80,7 @@
       </li>
       <!-- M1: the fresh->brine axis. Fresh band left unnamed (leaves vanilla
            water untouched); brackish/brine grades from LIQUID_TYPES_MOD_1
-           (mandrake.rm.liquidtypes); the driest brine-adjacent band reuses
+           (merged into mandrake.rm.flowworks 2026-09-16); the driest brine-adjacent band reuses
            this same mod's own RUT_Jawa_SaltCrust (no new terrain def), only
            ever repainting the two muck terrains RUT_Miasma's own
            terrainsByFertility already uses below. -->
@@ -89,12 +89,12 @@
           <li>
             <max>0.34</max>
           </li>
-          <li MayRequire="mandrake.rm.liquidtypes">
+          <li MayRequire="mandrake.rm.flowworks">
             <max>0.66</max>
             <terrainShallow>RM_WaterBrackishShallow</terrainShallow>
             <terrainDeep>RM_WaterBrackishDeep</terrainDeep>
           </li>
-          <li MayRequire="mandrake.rm.liquidtypes">
+          <li MayRequire="mandrake.rm.flowworks">
             <max>1</max>
             <terrainShallow>RM_WaterBrineShallow</terrainShallow>
             <terrainDeep>RM_WaterBrineDeep</terrainDeep>

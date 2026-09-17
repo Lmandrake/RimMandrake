@@ -1,0 +1,20 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 1024,
+  "width": 1024
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_burning_liquid_surface_v1",
+ "priority": 100,
+ "prompt": "RimWorld terrain overlay sprite, painterly vanilla-RimWorld art style, seamless tileable top-down texture, 1024x1024, RGBA with a real alpha channel so it composites over an existing filled-channel water terrain: a burning liquid surface, distinct from vanilla's ordinary grass/wood fire overlay. Rolling orange-yellow flame sheets sitting flush on a dark liquid surface, licking flame tips, drifting black smoke wisps at low opacity, faint orange glow bleeding into the surrounding alpha falloff. No solid ground, no embers on dry terrain, no text, no watermark, no border. The flame layer must read as floating ON a liquid, not as grass fire — flatter, glossier highlights, no scorched-earth cracking. Seamless at all four edges so it tiles across a multi-cell canal run.",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Spec section 7 item 4 and section 13 item 3: burning liquid surface explicitly named 'not produced here' in the README. LATER — ties to Phase 6 (Fire), which is not yet built. Canvas set to 1024x1024 to match the terrain convention this overlay sits on top of; confirm against the actual overlay-layer convention (may differ from opaque terrain) before running."
+}

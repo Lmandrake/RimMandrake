@@ -642,7 +642,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `Aftermath.md` | RimMandrake: Aftermath — validation walk | — |
 | `DesertVehicleReskin.md` | Desert Vehicle Reskin — Alpha Vehicles Neolithic — validation walk | — |
-| `FluidCanals.md` | RimMandrake Fluid Canals — validation walk | — |
+| `FlowWorks.md` | RimMandrake: FlowWorks — validation walk | — |
 | `Graffiti.md` | RimMandrake: Graffiti Framework — validation walk | — |
 | `GravshipAstronautFix.md` | Missing North Facings — Vanilla Gravship Expanded — validation walk | — |
 | `Inhabited.md` | Inhabited (local) — validation walk | — |

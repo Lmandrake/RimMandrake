@@ -1,0 +1,20 @@
+{
+ "background": "transparent",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-16T00:00:00Z",
+ "drawsize": 1.0,
+ "facing": "top",
+ "facings": [
+  "top"
+ ],
+ "id": "flowworks_source_strained_v1",
+ "priority": 100,
+ "prompt": "RimWorld building sprite, painterly vanilla-RimWorld art style, top-down three-quarter read: a FlowWorks liquid source marker showing its STRAINED state — the middle of three depletion states (full / strained / exhausted) on a natural liquid source. A shallow basin of dark water rimmed by exposed wet mud and a visible waterline mark higher up the basin wall showing where the level used to sit, some cracked damp clay at the drying edges, a thin trickle still feeding the pool. Palette: water reads near vanilla WaterChestDeepRamp tones (about RGB 74,85,90), the exposed mud rim uses the campaign's dry-ground vocabulary — desert sand at full bright reads about RGB 107,86,57. Single object, centered, no ground shadow beyond the basin itself, no surrounding scenery, no text, no watermark. Heavy clean black outline around the whole silhouette and major internal linework, thick enough to read at standard RimWorld zoom.",
+ "reference": null,
+ "rimflow_item_id": "FLOWWORKS_BUILD_PROGRAM_1",
+ "style_notes": "GAP fill for FLOWWORKS art candidate set (audit 2026-09-16). Spec section 13 item 2 / section 7 item 6: 'strained/depleted source' has no precedent anywhere in the repo. LATER — sources may become terrain-only under section 21's proposal (CompFluidReservoir deletion), not yet ruled; this job assumes the building-marker reading is still wanted and should be re-checked against that ruling before running. Not Phase 2, not Phase 8 — ties to Phase 4 stock/conservation, which is not yet built."
+}

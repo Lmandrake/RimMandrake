@@ -2,17 +2,17 @@
 
 Status: **DRAFT — agent-drafted, not owner-validated.** Per `design/RimMandrake/
 north_star_validation_spec.md`, a DRAFT checklist cannot fail or green a mod;
-this file exists to satisfy §20's caution in `fluid_canals_mod_definition.md`
+this file exists to satisfy §20's caution in `flowworks_mod_definition.md`
 ("the validation unit grows... His accepted mitigation — grouping every line
 under its mechanic — still holds") before the real `## north star` sections in
-`design/validation_walks/RimMandrake/Pits.md` and `FluidCanals.md` are merged
+`design/validation_walks/RimMandrake/Pits.md` and `FlowWorks.md` are merged
 into one walk under whatever the rename lands as. It does not replace either
 walk file, and does not itself bind anything — promotion into a real `##
 north star` section still needs his validation per that spec's §1/§6.
 
 **Why this file exists separately rather than editing the walk files in
 place**: the merge (ruling 18) hasn't landed in code or in the walk-file
-structure yet — `Pits.md` and `FluidCanals.md` are still two files for two
+structure yet — `Pits.md` and `FlowWorks.md` are still two files for two
 mods, and FOUNDRY_BOOKKEEPING lane doesn't own rewriting either walk's live
 `## north star` DRAFT section mid-build. This is the union, read for planning
 `FLOWWORKS_BUILD_PROGRAM_1`'s verify pass and for whoever merges the walks.
@@ -20,7 +20,7 @@ mods, and FOUNDRY_BOOKKEEPING lane doesn't own rewriting either walk's live
 **Provenance of every line below**: `pit_*` and `pitcell_*`/`fitting_*`/
 `digsite_*` lines are copied verbatim from `design/validation_walks/RimMandrake/
 Pits.md`'s existing DRAFT `## north star`. `canal_*`/`source_*`/`slime_*`/
-`irrigated_*` lines are copied verbatim from `FluidCanals.md`'s. No new
+`irrigated_*` lines are copied verbatim from `FlowWorks.md`'s. No new
 must-show claim is invented here — only grouping and a program tag are added,
 per the north-star spec's own rule that "an agent distils... and adds no new
 claims."
@@ -30,64 +30,64 @@ claims."
 - [ ] `digsite_stage_legible` (Pits) — an unfinished dig site reads as
       excavation in progress; stage is apparent without selecting it.
       **PROGRAM 1** — the dig-to-depth designator is Lane A's.
-- [ ] `canal_reads_as_dug_channel` (FluidCanals) — a dug channel reads as
+- [ ] `canal_reads_as_dug_channel` (FlowWorks) — a dug channel reads as
       excavated ground with walls, not a path or a floor.
       **PROGRAM 1** — Lane D art candidate, no adoptable precedent (spec §13).
-- [ ] `canal_dry_reads_as_obstacle` (FluidCanals) — an unfilled channel is
+- [ ] `canal_dry_reads_as_obstacle` (FlowWorks) — an unfilled channel is
       legible as an obstacle to crossing, no tooltip needed.
       **PROGRAM 1** — this is the pathCost-30 ladder (ruling 17/18), directly
       covered by the item's `## verify` check 5.
 
 ## Group: Pulse engine / fill and overflow — Lane A
 
-- [ ] `canal_partial_fill_distinct` (FluidCanals) — a partly filled canal is
+- [ ] `canal_partial_fill_distinct` (FlowWorks) — a partly filled canal is
       distinguishable at a glance from a full one.
       **PROGRAM 1** — this is ruling 5's tier ladder, folded into the D/F
       primitive (ruling 18); vanilla's depth-tier ramp art carries it near-free
       (spec §13/§21).
-- [ ] `canal_fill_spreads_along_itself` (FluidCanals) — liquid in an
+- [ ] `canal_fill_spreads_along_itself` (FlowWorks) — liquid in an
       incompletely filled canal spreads through the channel rather than
       pooling where it entered.
       **PROGRAM 1** — this is the sort-deepest-first-then-overflow algorithm
       (ruling 19), covered by the item's `## verify` checks 2-3.
-- [ ] `canal_holds_only_the_channel` (FluidCanals) — liquid stays inside the
+- [ ] `canal_holds_only_the_channel` (FlowWorks) — liquid stays inside the
       dug channel, not on open ground beside it. Expected to FAIL until the
       channel-constraint fix (spec §6) lands.
       **PROGRAM 1** — the single biggest correctness gap named in the spec;
       Lane A owns the channel-aware walk that replaces vanilla `Flood`'s
       unconstrained gating.
-- [ ] `canal_reads_as_same_liquid_as_source` (FluidCanals) — a filled canal
+- [ ] `canal_reads_as_same_liquid_as_source` (FlowWorks) — a filled canal
       reads as the same substance as the body it came from.
       **PROGRAM 1** — falls out of the unified primitive; no separate mechanism.
 
 ## Group: Stock / body model — Lane B
 
-- [ ] `source_strained_state_visible` (FluidCanals) — a drawn-down source is
+- [ ] `source_strained_state_visible` (FlowWorks) — a drawn-down source is
       visibly strained, distinct from full, at a glance.
       **PROGRAM 1** — Lane D art candidate (no precedent anywhere in repo,
       spec §13); Lane B supplies the state it renders.
-- [ ] `source_body_recedes_visibly` (FluidCanals) — the parent body is visibly
+- [ ] `source_body_recedes_visibly` (FlowWorks) — the parent body is visibly
       smaller after supplying a canal.
       **PROGRAM 1** — ruling 4's stock model, recession rule in spec §5,
       directly covered by the item's `## verify` check 2 (conservation).
 
 ## Group: Defense — fire (fuse/detonation) — deferred
 
-- [ ] `canal_burning_reads_as_burning_liquid` (FluidCanals) — a lit flammable
+- [ ] `canal_burning_reads_as_burning_liquid` (FlowWorks) — a lit flammable
       canal reads as the liquid surface alight, not ordinary ground fire.
       **DEFERRED to program 2** — fire, per BENCH's lane note.
-- [ ] `canal_fire_reaches_source` (FluidCanals) — fire is visibly present at
+- [ ] `canal_fire_reaches_source` (FlowWorks) — fire is visibly present at
       the source, not only in the channel.
       **DEFERRED to program 2** — fire.
 
 ## Group: Defense — slime / capture — deferred
 
-- [ ] `slime_reads_as_viscous_not_water` (FluidCanals) — slime reads as
+- [ ] `slime_reads_as_viscous_not_water` (FlowWorks) — slime reads as
       opaque and viscous, never tinted water.
       **DEFERRED to program 2** — capture/ladders/shooting exception per
       BENCH's lane note; slime's viscosity-drives-escape link is ruling 18's
       "F × the liquid's viscosity" row, which is capture machinery.
-- [ ] `slime_occupant_below_surface` (FluidCanals) — a pawn caught in a slime
+- [ ] `slime_occupant_below_surface` (FlowWorks) — a pawn caught in a slime
       canal is not drawn standing on the surface.
       **DEFERRED to program 2** — same reason; kin to `pit_occupant_below_
       floor` below.
@@ -141,7 +141,7 @@ claims."
 
 ## Group: Irrigation — deferred, unassigned lane
 
-- [ ] `irrigated_ground_visibly_differs` (FluidCanals) — ground/plants beside
+- [ ] `irrigated_ground_visibly_differs` (FlowWorks) — ground/plants beside
       a filled canal visibly differ from ground away from it.
       **DEFERRED** — not named in Lane A-E of BENCH's note at all. Flag for
       BENCH: either fold into a future lane or confirm it stays out of program
@@ -151,13 +151,13 @@ claims."
 
 ## cannot show (must NOT be true of any program-1 screenshot)
 
-- [ ] `never_liquid_on_open_ground` (FluidCanals) — liquid standing on ground
+- [ ] `never_liquid_on_open_ground` (FlowWorks) — liquid standing on ground
       the player never dug. **PROGRAM 1** — this is exactly what
       `canal_holds_only_the_channel` above is fixing; the two are the same
       defect stated as a positive and a negative claim.
-- [ ] `never_gravel_path` (FluidCanals) — a channel that reads as a gravel
+- [ ] `never_gravel_path` (FlowWorks) — a channel that reads as a gravel
       road. **PROGRAM 1** — Lane D art.
-- [ ] `never_full_source_after_heavy_draw` (FluidCanals) — a source that
+- [ ] `never_full_source_after_heavy_draw` (FlowWorks) — a source that
       looks untouched after filling a long canal. **PROGRAM 1** — Lane B
       conservation, covered by item `## verify` check 2.
 - [ ] `never_snared_standing` (Pits) — a pawn snared upright on a labelled

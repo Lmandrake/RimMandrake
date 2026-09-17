@@ -10,9 +10,9 @@
 **Reading the brief.** ManyWaters' own About.xml says it "gathers all water
 effects/*types*", so the coherent reading is: **ManyWaters becomes the
 RimMandrake-tier roster of coloured liquid TerrainDefs (water and slime),
-FluidCanals consumes them** (`FluidDef.floodTerrain` is already just "which
+FlowWorks consumes them** (`FluidDef.floodTerrain` is already just "which
 TerrainDef"), and Utinni patches decide which biome/canal gets which colour.
-Slime is not a conflation: FluidCanals' About names slime as a fluid it will
+Slime is not a conflation: FlowWorks' About names slime as a fluid it will
 carry, and the only slime water in the stack today is Alpha Biomes'
 `AB_LiquidSlime` (third-party, `WaterShallowBase` + its own `AB_SlimeRamp`
 texture + `Map/WaterDepth`) — i.e. slime already IS "water with a different
@@ -43,7 +43,7 @@ XML-only, no shader work) — exactly Alpha Biomes' own route.
 
 **2. Many colours of slime — whose feature.** Split, along the line already
 drawn today:
-- **FluidCanals owns identity**: one `FluidDef` per (fluid, colour) → one
+- **FlowWorks owns identity**: one `FluidDef` per (fluid, colour) → one
   **temporary** slime TerrainDef (`FluidDef.ConfigErrors` refuses
   non-temporary; `ShallowFloodwater` is the model). `ticksPerTile` makes it
   viscous; nothing else changes.
@@ -96,7 +96,7 @@ roster past the single quicktest-gate check without that ruling.
   whether (a) needs the texture-recolour fallback) — UNVERIFIED, needs a
   live quicktest check, one tinted def is enough to answer it.
 - Whether `jawa/set_terrain` can lay a `temporary` def for a look-test (it
-  calls `SetTerrain`, not `SetTempTerrain`, per FluidCanals' own notes) — v1
+  calls `SetTerrain`, not `SetTempTerrain`, per FlowWorks' own notes) — v1
   sidesteps by testing standing (non-temporary) variants only.
 - `AB_LiquidSlime` ships from Alpha Biomes' `1.5/` folder only; not
   confirmed it loads under 1.6.

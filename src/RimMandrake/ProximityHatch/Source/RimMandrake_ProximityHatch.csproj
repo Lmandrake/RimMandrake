@@ -2,7 +2,7 @@
 
   <!--
     EGG_PROXIMITY_HATCH_TRIGGER_1. Same recipe as RimMandrake_Pits
-    (src/RimMandrake/Pits/Source/RimMandrake_Pits.csproj). No Harmony
+    (src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj). No Harmony
     reference: this is a normal ThingComp subclass through the vanilla
     CompHatcher extension point, not a patch.
 

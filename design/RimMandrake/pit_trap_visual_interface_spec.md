@@ -4,8 +4,8 @@
 (2026-09-16) made depth the primitive and dissolved `RimMandrake.Pits` into
 FlowWorks, and ruling 27 sequenced this art pass *after* that merge so sprites
 are drawn once against final def names. The mod's rulings live in
-`design/RimMandrake/fluid_canals_mod_definition.md` (still named for the mod's
-former name); the work item is `PIT_TRAP_VISUAL_REDESIGN_1`, blocked on
+`design/RimMandrake/flowworks_mod_definition.md`; the work item is
+`PIT_TRAP_VISUAL_REDESIGN_1`, blocked on
 `FLOWWORKS_BUILD_PROGRAM_1`. Read this spec WITH that doc, never alone.
 
 Owner's ask, verbatim (2026-09-13): *"we need to think now about very deeply what
