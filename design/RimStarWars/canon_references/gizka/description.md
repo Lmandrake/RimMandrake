@@ -38,10 +38,11 @@ toes, while the tiny forelimbs are held up off the ground, never
 weight-bearing (clearest on the background gizka in
 `kotor_screenshot.jpg`). The single most striking, model-consistent
 feature across all three images is the **head**: oversized relative to the
-body, blunt and rounded with a **huge round bulging eye dominating the
-side/front of the face** (the in-game model reads almost one-eyed/cyclopean
-from a straight-on angle — see `kotor_screenshot.jpg`), a small pointed
-crest or ear-flap above it, and a downturned wide mouth. Skin is a mottled
+body, blunt and rounded with **TWO huge round bulging eyes, one on each
+side of the head** — the reference shots are near-profile angles where only
+the near eye is visible, so a straight-on front (south) view must show
+BOTH, never a single central cyclops eye (owner ruling below) — a small
+pointed crest or ear-flap above them, and a downturned wide mouth. Skin is a mottled
 **olive-green and tan/khaki blotched pattern** (leopard/toad-camouflage
 style patches, not a flat color, confirming the infobox's plain "green"
 citation only partially), with dull pink-red skin showing at the leg
@@ -61,8 +62,8 @@ entry.
 
 ## Must show
 - [ ] Small hopper standing on TWO long, thin hind legs with visible bony joints — the hind legs do all the structural work; the tiny forelimbs are held up off the ground, never weight-bearing (bipedal read, per the owner's ruling below and the in-game stance in kotor_screenshot.jpg)
-- [ ] Oversized, blunt, rounded head dominated by a huge round bulging eye
-- [ ] A small pointed crest or ear-flap above the eye
+- [ ] Oversized, blunt, rounded head dominated by huge round bulging eyes — TWO, one per side of the head; a front (south) view shows both, never a single central cyclops eye
+- [ ] A small pointed crest or ear-flap above the eyes
 - [ ] Mottled olive-green and tan/khaki blotched skin pattern — not a flat green
 - [ ] Dull pink-red skin visible at the leg joints, belly and haunches
 - [ ] Roughly knee-height or smaller — a vermin-scale creature, not a large animal
@@ -106,3 +107,11 @@ not weight-bearing. The earlier Visual brief's "quadruped in a sprawling
 stance" was a misread of the foreground close-up and is superseded by the
 Must-show line above. Gizka renders BIPEDAL: two working hind legs, vestigial
 raised forelimbs.
+
+2026-09-16, owner (giz art review): gizka has TWO eyes. The south-facing
+review renders showed a single central cyclops eye — that came from this
+entry's own earlier "reads almost one-eyed/cyclopean" phrasing, which the
+image model took literally on the front view; the phrasing is removed and the
+brief now states two eyes, one per side, both visible from the front. Same
+sitting: east-facing versions came out too top-down — east/west must be side
+profiles, now enforced in the daemon's facing hook (artpiped.py).

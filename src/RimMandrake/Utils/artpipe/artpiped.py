@@ -1136,10 +1136,19 @@ def build_job_prompt(job: dict) -> str:
                       "of its head. No face, no eyes visible."),
             "south": ("Facing: south — the creature walks TOWARD the "
                       "viewer; we see its FACE and chest straight on."),
-            "east": ("Facing: east — strict side profile, the creature's "
-                     "head points to the RIGHT edge of the image."),
-            "west": ("Facing: west — strict side profile, the creature's "
-                     "head points to the LEFT edge of the image."),
+            # Owner ruling 2026-09-16 (gizka east review): east/west must be
+            # side PROFILES, never a top-down/overhead view — "strict side
+            # profile" alone still let the model raise the camera.
+            "east": ("Facing: east — strict side profile with the camera at "
+                     "the creature's own eye level, the creature's head "
+                     "points to the RIGHT edge of the image. NOT a top-down "
+                     "or overhead view: we do not look down on its back, and "
+                     "only the near side of the body is visible."),
+            "west": ("Facing: west — strict side profile with the camera at "
+                     "the creature's own eye level, the creature's head "
+                     "points to the LEFT edge of the image. NOT a top-down "
+                     "or overhead view: we do not look down on its back, and "
+                     "only the near side of the body is visible."),
         }
         parts.append(facing_direction.get(str(job["facing"]).lower(),
                                           f"Facing: {job['facing']}."))
