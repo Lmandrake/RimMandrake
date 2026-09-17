@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>Replaces sarg.alphaanimals' AA_FireWasp art (all three
 lifeStages share one texPath) with custom generated Pyrelands-themed art
-(pyrelands_firewasp_v2). The dessicated-corpse texture
+(pyrelands_firewasp_v3). The dessicated-corpse texture
 (AA_Dessicated_FireWasp) stays on donor art. LABEL/ART ONLY - no defName
 touched, no Defs, no Patches, loose Textures/ only, same relative path
 (Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_&lt;facing&gt;) the donor uses

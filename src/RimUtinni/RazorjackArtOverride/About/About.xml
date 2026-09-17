@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>Replaces sarg.alphaanimals' AA_Razorjack art (all three
 lifeStages share one texPath) with custom generated Pyrelands-themed art
-(pyrelands_razorjack_v2). The dessicated-corpse texture
+(pyrelands_razorjack_v3, south from the _r2 pass). The dessicated-corpse texture
 (AA_Dessicated_Razorjack) stays on donor art. LABEL/ART ONLY - no defName
 touched, no Defs, no Patches, loose Textures/ only, same relative path
 (Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_&lt;facing&gt;) the donor uses
