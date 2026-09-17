@@ -943,6 +943,16 @@ Phase 1 owns it** (the `NAMING_SCHEME_EXECUTION_1` gate written here originally 
 (cannot be searched from the Laptop — WebSearch is dead on this model group; use Fetcher or the
 Desktop).
 
+⇒ **Checked 2026-09-16, FOUNDRY bookkeeping pass on `FLOWWORKS_BUILD_PROGRAM_1`:** WebSearch
+was NOT dead on this session's model — four distinct queries (plain, steamcommunity-scoped,
+fandom/moddb/mod.io-scoped) plus a direct `curl` of the Workshop browse page and an attempted
+headless-Chromium render (blocked by a missing `libasound.so.2`, not fixable without `sudo`
+here) all returned real, differentiated results and **none named a RimWorld mod "FlowWorks."**
+Verdict: **no collision found**, moderate confidence — the one route that would be conclusive
+(a live, JS-executed Workshop search; the new Steam Community UI serves an unfiltered
+~13,089-item total to a non-JS fetch, not search-filtered results) was not reachable from this
+machine. Re-run with a working browser or on the Desktop before publishing; this does not
+close the check.
 **21. Terrace farming: YES, generally, and feature-gated.** *"YES if we can have this map into farming
 easily (don't need that for this scenario, but in general absolutely)."* So irrigation-by-terrace is
 built to work everywhere, on its own toggle, and the Jawa campaign is not required to use it — exactly

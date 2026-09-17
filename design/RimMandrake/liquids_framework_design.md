@@ -6,6 +6,16 @@ campaign-first. Supersedes and absorbs `design/Jawa/proposals/water_economy_deep
 Naming per `design/NAMING_SCHEME_PLAN.md` — core and clients are RimMandrake tier;
 Ash'karr wiring lives in RimUtinni; cuisine consumers live in RimStarWars.
 
+🔴 **CORRECTED 2026-09-16 — `RimMandrake: Liquid Logistics` will never ship as a
+separate mod.** Ruling 11 of `design/RimMandrake/fluid_canals_mod_definition.md`
+supersedes this: the hoses, portable pumps, universal cargo tank, universal pump and
+per-net adapters described below (§4's "Tanker raid"/"Universal tank interop", §5's
+client-mod row, §7 phase ⑨) are `FlowWorks`' own hardware, absorbed into the single
+liquid-domain mod along with the occupancy engine, the registry and the canal/pit
+family (rulings 11, 14, 18 of the same document). `LIQUID_LOGISTICS_MOD_1` is stale
+in the ledger and needs closing by whoever owns it next — see
+`FLOWWORKS_BUILD_PROGRAM_1`.
+
 The dream this scopes: every liquid in the game interchangeable across every place
 liquids appear — terrain (rivers/lakes/oceans), bottles and buckets, pipes, worldmap
 bodies, rain, canal flooding, and fluid-to-fluid transformation.
