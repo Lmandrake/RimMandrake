@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T19:59:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T20:02:59Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -801,6 +801,15 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thegreentide.md (FROZEN, §4b, §4c,
 prose:    infrastructure/state/items/GREENTIDE_MECHANICS_2.md
 
+## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
+
 ## BIOME_KITS_PUSH_TO_TEST_1 Push every biome mechanics kit (Forge/Scald/Miasma/Sump/FeverWood/RustCathedral/Greentide/Scarlands) through spike+build passes toward live-test readiness, offline only, placeholder creature content until the roster pass
 state:    doing
 row:      unassigned
@@ -1403,6 +1412,16 @@ blocked:  Armoury half fully resolved offline (kaitorisenkou.ModularWeapons2 + g
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
 
+## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+blocked:  Matches an already-fixed, not-yet-live-confirmed bug (GR_Mantistanis dangling ref, GIDDYUP_NULLKEY_CRASH_1/90d58be79). Piggyback on GIDDYUP_NULLKEY_COLD_READING_1's cold-load reading rather than a separate live test; re-open only if the crash still fires after that reading confirms the fix live. (on GIDDYUP_NULLKEY_COLD_READING_1)
+summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1614,16 +1633,6 @@ kind:     task
 thin:     no ## criteria
 summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
 prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
-
-## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
 
 ## RAZORJACK_IDENTITY_RESTYLE_1 Razorjack restyle: grass-camo art, our-modspace description, new SW name
 state:    proposed
