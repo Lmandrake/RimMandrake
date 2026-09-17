@@ -1,5 +1,5 @@
-# RimMandrake Fluid Canals — validation walk
-subject: src/RimMandrake/FluidCanals  (packageId `mandrake.rm.fluidcanals`)
+# RimMandrake FlowWorks — validation walk
+subject: src/RimMandrake/FlowWorks  (packageId `mandrake.rm.flowworks`)
 deps: Ludeon.RimWorld.Odyssey (Flood is Odyssey-gated in the base game); none third-party
 list: minimal+Odyssey     # official DLC, not a workshop mod; check it is in the active list
 status-hint: dig a canal cell, let a fluid reservoir prime and then drip + re-flood adjacent terrain on two cadences — species/biome-agnostic engine, water is the one shipped fluid
