@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: The Bazaar</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.bazaar</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The deal is the gameplay: for a Jawa, information is loot, reading
+the trader is a skill, and walking away richer than you should have is the
+fantasy. Vanilla trade is a spreadsheet checkout; The Bazaar replaces the
+trade window with a searchable, sortable, column-configurable grid, intel
+layers gated by Social skill and found artifacts, and a whole-deal haggle
+duel at confirm time.
+
+BAZAAR_WINDOW_GRID_1, slice 1 (this build): plugin def scaffolding
+(RM_BazaarColumnDef/BadgeDef/TabDef/IntelLayerDef + worker base classes),
+the RM_Window_Bazaar Dialog_Trade subclass, and a Mod Settings skeleton.
+
+NOT YET SHIPPED: the WindowStack.Add Harmony intercept that actually
+substitutes RM_Window_Bazaar for vanilla's Dialog_Trade, the virtualized
+grid body, the price engine, the haggle duel and banter. See
+`design/RimMandrake/bazaar_trade_window_design.md` for the full design and
+`Source/RM_Window_Bazaar.cs` for the specific hazard the intercept still
+owes (double TradeSession.SetupWith).
+
+No DLC required. Vanilla TradeSession/TradeDeal/Tradeable are untouched by
+this mod at every stage of the design — it never rewrites trade execution,
+only the window drawn over it.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

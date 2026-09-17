@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BAZAAR_WINDOW_GRID_1, slice 1: plugin def scaffolding, the RM_Window_Bazaar
+    stub and a Mod Settings skeleton. No Harmony reference yet: this slice
+    ships no [HarmonyPatch] code. The WindowStack.Add intercept (design
+    doc, section 2) is the next slice; add the 0Harmony reference alongside
+    it, same pattern as RimMandrake_FlowWorks.csproj.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\TheBazaar\Source\RimMandrake_Bazaar.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeBazaar</AssemblyName>
+    <RootNamespace>RimMandrake.Bazaar</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_BazaarSettings.cs" />
+    <Compile Include="RM_BazaarSession.cs" />
+    <Compile Include="RM_Window_Bazaar.cs" />
+    <Compile Include="Defs\RM_BazaarColumnDef.cs" />
+    <Compile Include="Defs\RM_BazaarBadgeDef.cs" />
+    <Compile Include="Defs\RM_BazaarTabDef.cs" />
+    <Compile Include="Defs\RM_BazaarIntelLayerDef.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
