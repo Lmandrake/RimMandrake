@@ -8805,3 +8805,13 @@
 {"seat":"FOUNDRY","event":"claim","id":"AFTERMATH_DEAD_LETTERS_1","ts":"2026-09-17T20:43:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"AFTERMATH_DEAD_LETTERS_1","ts":"2026-09-17T20:43:28Z"}
 {"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"Wave: reviewed 14 files (bridgetools debug-action census tools, StructureInjections plan-test surface, FloodedCanyon's CanyonFlood map component + its FlowWorks excavation call sites, TheBazaar's 7-file scaffolding slice, 2 small XML/Def files). Zero real bugs found; all marked clean. Commit 1cdc095a3.","ts":"2026-09-17T20:46:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_MECHANICS_TABLE_STALE_1","ts":"2026-09-17T20:50:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_MECHANICS_TABLE_STALE_1","ts":"2026-09-17T20:50:42Z"}
+{"seat":"FOUNDRY","event":"claim","id":"AFTERMATH_DEAD_LETTERS_1","ts":"2026-09-17T20:51:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"AFTERMATH_DEAD_LETTERS_1","ts":"2026-09-17T20:51:59Z"}
+{"seat":"FOUNDRY","event":"claim","id":"AFTERMATH_TELEGRAPH_REFERENT_1","ts":"2026-09-17T20:52:00Z"}
+{"seat":"FOUNDRY","event":"start","id":"AFTERMATH_TELEGRAPH_REFERENT_1","ts":"2026-09-17T20:52:01Z"}
+{"seat":"FOUNDRY","event":"note","id":"AFTERMATH_DEAD_LETTERS_1","text":"Wired via Patch_PayloadLanded (postfix on IncidentWorker.TryExecute) + AftermathRuleRunner.OnPayloadLanded, matched back through a new Def field on QueuedAftermathMarker. selftest_aftermath 18/18, full suite 54/56 (2 pre-existing unrelated: art_checks, tool_metadata). Source-only - live PROVE still owed to a game-up session.","ts":"2026-09-17T20:52:18Z"}
+{"seat":"FOUNDRY","event":"close","id":"AFTERMATH_DEAD_LETTERS_1","sha":"ed8398f9d6fc44cff992ff325ea4dfa16b74ef8c","ts":"2026-09-17T20:52:19Z"}
+{"seat":"FOUNDRY","event":"note","id":"AFTERMATH_TELEGRAPH_REFERENT_1","text":"TryQueue now takes a separate telegraphFaction (record.RaidFaction) alongside targetFaction (resolved payload faction) - AlliesArrive's telegraph now names the defeated faction, its letter still names the arriving ally. Same commit as AFTERMATH_DEAD_LETTERS_1 (ed8398f9d6fc44cff992ff325ea4dfa16b74ef8c).","ts":"2026-09-17T20:52:21Z"}
+{"seat":"FOUNDRY","event":"close","id":"AFTERMATH_TELEGRAPH_REFERENT_1","sha":"ed8398f9d6fc44cff992ff325ea4dfa16b74ef8c","ts":"2026-09-17T20:52:24Z"}
