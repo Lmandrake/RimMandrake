@@ -7,39 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T05:08:46Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-17T11:16:34Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
-prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
-
-## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     feature
-summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
-prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
 state:    ready
@@ -67,15 +40,6 @@ target:   v1
 kind:     task
 summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
-## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Source
-prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    ready
@@ -1288,7 +1252,27 @@ prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is DOWN
+summary:  Source
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 # NOT THIS TARGET
 
