@@ -1,0 +1,120 @@
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_Ladder_A.png
+RUT_Ladder_A.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  15.3%   solid px 10,015
+  subject   76x241 at (90,7)  aspect 0.315
+  centroid  (127,125)
+  alpha mix clear 84.72% | fringe 0.00% | mid 2.01% | solid 1.87%
+  corners   [0, 0, 0, 0]
+  sha256    442f523ee3a602b9
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_Ladder_B.png
+RUT_Ladder_B.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  16.4%   solid px 10,737
+  subject   68x241 at (94,7)  aspect 0.282
+  centroid  (127,118)
+  alpha mix clear 83.62% | fringe 0.00% | mid 1.75% | solid 1.56%
+  corners   [0, 0, 0, 0]
+  sha256    d868d8639fdd31c6
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_SluiceGate_A_closed.png
+RUT_SluiceGate_A_closed.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  39.8%   solid px 26,080
+  subject   241x126 at (7,65)  aspect 1.913
+  centroid  (127,132)
+  alpha mix clear 60.21% | fringe 0.00% | mid 1.23% | solid 1.38%
+  corners   [0, 0, 0, 0]
+  sha256    abdb765865619c80
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_SluiceGate_A_open.png
+RUT_SluiceGate_A_open.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  65.8%   solid px 43,119
+  subject   205x241 at (25,7)  aspect 0.851
+  centroid  (127,136)
+  alpha mix clear 34.21% | fringe 0.00% | mid 1.63% | solid 1.36%
+  corners   [0, 0, 0, 0]
+  sha256    88334699bdc8e083
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_SluiceGate_B_closed.png
+RUT_SluiceGate_B_closed.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  37.3%   solid px 24,446
+  subject   241x130 at (7,63)  aspect 1.854
+  centroid  (127,130)
+  alpha mix clear 62.70% | fringe 0.00% | mid 0.97% | solid 0.89%
+  corners   [0, 0, 0, 0]
+  sha256    725e7dd1be6d81e2
+--- Transient/flowworks_art_2026-09-16/buildings/RUT_SluiceGate_B_open.png
+RUT_SluiceGate_B_open.png
+  canvas    256x256   aspect 1.000
+  alpha     yes
+  coverage  38.2%   solid px 25,047
+  subject   241x192 at (7,32)  aspect 1.255
+  centroid  (128,113)
+  alpha mix clear 61.78% | fringe 0.00% | mid 1.57% | solid 1.47%
+  corners   [0, 0, 0, 0]
+  sha256    9f90f7a739407e1f
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_DigCanal_A.png
+RUT_Designator_DigCanal_A.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  46.8%   solid px 7,665
+  subject   114x120 at (7,4)  aspect 0.950
+  centroid  (67,79)
+  alpha mix clear 53.22% | fringe 0.00% | mid 1.98% | solid 1.84%
+  corners   [0, 0, 0, 0]
+  sha256    82612e22f8f172d9
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_DigCanal_B.png
+RUT_Designator_DigCanal_B.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  53.4%   solid px 8,752
+  subject   120x120 at (4,4)  aspect 1.000
+  centroid  (65,82)
+  alpha mix clear 46.58% | fringe 0.00% | mid 2.53% | solid 2.42%
+  corners   [0, 0, 0, 0]
+  sha256    d810b2218e842715
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_DigDeeper_A.png
+RUT_Designator_DigDeeper_A.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  43.8%   solid px 7,168
+  subject   107x120 at (10,4)  aspect 0.892
+  centroid  (63,77)
+  alpha mix clear 56.25% | fringe 0.00% | mid 1.95% | solid 2.08%
+  corners   [0, 0, 0, 0]
+  sha256    37f73ccee6cbeb19
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_DigDeeper_B.png
+RUT_Designator_DigDeeper_B.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  41.9%   solid px 6,867
+  subject   101x120 at (13,4)  aspect 0.842
+  centroid  (63,82)
+  alpha mix clear 58.09% | fringe 0.00% | mid 1.95% | solid 3.34%
+  corners   [0, 0, 0, 0]
+  sha256    b302acf9bb518528
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_FillIn_A.png
+RUT_Designator_FillIn_A.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  51.7%   solid px 8,476
+  subject   112x120 at (8,4)  aspect 0.933
+  centroid  (60,73)
+  alpha mix clear 48.27% | fringe 0.00% | mid 2.76% | solid 3.19%
+  corners   [0, 0, 0, 0]
+  sha256    318588738482c881
+--- Transient/flowworks_art_2026-09-16/designators/RUT_Designator_FillIn_B.png
+RUT_Designator_FillIn_B.png
+  canvas    128x128   aspect 1.000
+  alpha     yes
+  coverage  57.1%   solid px 9,350
+  subject   111x120 at (8,4)  aspect 0.925
+  centroid  (60,70)
+  alpha mix clear 42.93% | fringe 0.00% | mid 3.67% | solid 3.52%
+  corners   [0, 0, 0, 0]
+  sha256    8158316fb0c58c32

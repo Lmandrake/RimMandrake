@@ -1,0 +1,438 @@
+[
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_A_shallow.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 143.6,
+  "gain": 0.667,
+  "luma_final": 95.3,
+  "mean_rgb": [
+   117.7,
+   91.1,
+   58.0
+  ],
+  "seam_h": 1.04,
+  "seam_v": 0.98,
+  "sha256": "4203e33bd657035f"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_A_mid.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 91.9,
+  "gain": 0.667,
+  "luma_final": 60.8,
+  "mean_rgb": [
+   75.7,
+   57.6,
+   38.4
+  ],
+  "seam_h": 1.53,
+  "seam_v": 1.5,
+  "sha256": "097da576003b0975"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_A_deep.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 52.3,
+  "gain": 0.667,
+  "luma_final": 34.4,
+  "mean_rgb": [
+   41.3,
+   32.8,
+   24.9
+  ],
+  "seam_h": 1.31,
+  "seam_v": 1.08,
+  "sha256": "43c1ff7f2d556e00"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_A_superdeep.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 22.7,
+  "gain": 0.667,
+  "luma_final": 14.6,
+  "mean_rgb": [
+   17.4,
+   14.0,
+   10.2
+  ],
+  "seam_h": 1.24,
+  "seam_v": 1.15,
+  "sha256": "78df033db21d8f5e"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_B_shallow.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 146.3,
+  "gain": 0.655,
+  "luma_final": 95.3,
+  "mean_rgb": [
+   110.8,
+   92.1,
+   70.8
+  ],
+  "seam_h": 1.16,
+  "seam_v": 1.18,
+  "sha256": "c127683b0574f613"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_B_mid.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 96.2,
+  "gain": 0.655,
+  "luma_final": 62.4,
+  "mean_rgb": [
+   75.9,
+   59.5,
+   42.5
+  ],
+  "seam_h": 1.13,
+  "seam_v": 1.49,
+  "sha256": "3a728b2cb11c9763"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_B_deep.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 61.6,
+  "gain": 0.655,
+  "luma_final": 39.9,
+  "mean_rgb": [
+   49.0,
+   37.8,
+   26.6
+  ],
+  "seam_h": 1.21,
+  "seam_v": 1.2,
+  "sha256": "465795aa3dcea827"
+ },
+ {
+  "set": "terrain",
+  "file": "RUT_CanalBed_B_superdeep.png",
+  "canvas": [
+   1024,
+   1024
+  ],
+  "mode": "RGB",
+  "luma_raw": 29.0,
+  "gain": 0.655,
+  "luma_final": 18.5,
+  "mean_rgb": [
+   20.7,
+   17.9,
+   15.7
+  ],
+  "seam_h": 1.07,
+  "seam_v": 1.39,
+  "sha256": "92c99d80f52aac51"
+ },
+ {
+  "set": "terrain-edge",
+  "file": "RUT_CanalLipShadow_shallow.png",
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "peak_alpha": 76,
+  "falloff_cells": 0.16,
+  "sha256": "ae4c3a1f7f61ab42"
+ },
+ {
+  "set": "terrain-edge",
+  "file": "RUT_CanalLipShadow_mid.png",
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "peak_alpha": 122,
+  "falloff_cells": 0.24,
+  "sha256": "a232d912976504b9"
+ },
+ {
+  "set": "terrain-edge",
+  "file": "RUT_CanalLipShadow_deep.png",
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "peak_alpha": 168,
+  "falloff_cells": 0.34,
+  "sha256": "3899d15d85534f60"
+ },
+ {
+  "set": "terrain-edge",
+  "file": "RUT_CanalLipShadow_superdeep.png",
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "peak_alpha": 219,
+  "falloff_cells": 0.46,
+  "sha256": "4a564696160e467f"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 15.3,
+  "fringe_px": 0,
+  "bbox": [
+   90,
+   7,
+   165,
+   247
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_Ladder_A.png",
+  "sha256": "05992827bd0be8ce"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 16.4,
+  "fringe_px": 0,
+  "bbox": [
+   94,
+   7,
+   161,
+   247
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_Ladder_B.png",
+  "sha256": "5a664cbeedf99f7b"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 39.8,
+  "fringe_px": 0,
+  "bbox": [
+   7,
+   65,
+   247,
+   190
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_SluiceGate_A_closed.png",
+  "sha256": "8603780dc1bc6571"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 65.8,
+  "fringe_px": 0,
+  "bbox": [
+   25,
+   7,
+   229,
+   247
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_SluiceGate_A_open.png",
+  "sha256": "4844ae5c06a4f770"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 37.3,
+  "fringe_px": 0,
+  "bbox": [
+   7,
+   63,
+   247,
+   192
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_SluiceGate_B_closed.png",
+  "sha256": "f34115f03b50e995"
+ },
+ {
+  "canvas": [
+   256,
+   256
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 38.2,
+  "fringe_px": 0,
+  "bbox": [
+   7,
+   32,
+   247,
+   223
+  ],
+  "corners_clear": true,
+  "set": "building",
+  "file": "RUT_SluiceGate_B_open.png",
+  "sha256": "b2f9d619fccf582d"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 46.8,
+  "fringe_px": 0,
+  "bbox": [
+   7,
+   4,
+   120,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_DigCanal_A.png",
+  "sha256": "75ae56e0b90b8e0d"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 53.4,
+  "fringe_px": 0,
+  "bbox": [
+   4,
+   4,
+   123,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_DigCanal_B.png",
+  "sha256": "5dcf19f9baeb9243"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 43.8,
+  "fringe_px": 0,
+  "bbox": [
+   10,
+   4,
+   116,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_DigDeeper_A.png",
+  "sha256": "37721087be0621df"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 41.9,
+  "fringe_px": 0,
+  "bbox": [
+   13,
+   4,
+   113,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_DigDeeper_B.png",
+  "sha256": "a145a852f798ea8e"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 51.7,
+  "fringe_px": 0,
+  "bbox": [
+   8,
+   4,
+   119,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_FillIn_A.png",
+  "sha256": "3b8d87d35e026619"
+ },
+ {
+  "canvas": [
+   128,
+   128
+  ],
+  "mode": "RGBA",
+  "coverage_pct": 57.1,
+  "fringe_px": 0,
+  "bbox": [
+   8,
+   4,
+   118,
+   123
+  ],
+  "corners_clear": true,
+  "set": "designator",
+  "file": "RUT_Designator_FillIn_B.png",
+  "sha256": "86b3db2100820de3"
+ }
+]
