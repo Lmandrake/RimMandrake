@@ -8,7 +8,8 @@
   </supportedVersions>
   <description>Replaces VanillaExpanded.VGeneticsE's GR_Mantistanis art
 (Megafauna module, all three lifeStages share one texPath) with custom
-generated Pyrelands-themed art (pyrelands_mantistanis_v2). The
+generated Pyrelands-themed art (pyrelands_mantistanis_v4 north,
+v5 east/south). The
 dessicated-corpse texture (GR_Dessicated_Mantistanis) stays on donor art.
 LABEL/ART ONLY - no defName touched, no Defs, no Patches, loose Textures/
 only, same relative path
