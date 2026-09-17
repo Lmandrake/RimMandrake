@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T00:24:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T00:28:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1850,3 +1850,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1.md
+
+## ORACLE_FALLBACK_UNVALIDATED_1 Oracle's fallback text bypasses OracleValidator: RequestOhmLetter takes fallbackText as a CALLER argument and DeliverFallback ships it verbatim to ReceiveLetter, so the path taken WHEN VALIDATION REJECTS is itself unvalidated - and the only call site today (DebugActions_Oracle.cs:44,46) supplies dev scaffolding, the label 'Ohm speaks (Oracle spike)' and a body prefixed '[FALLBACK]'; validate fallbacks on the same bar as live responses and reject bracket markers
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ORACLE_FALLBACK_UNVALIDATED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ORACLE_FALLBACK_UNVALIDATED_1.md
