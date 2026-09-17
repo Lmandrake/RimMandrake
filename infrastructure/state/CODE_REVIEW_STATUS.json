@@ -3282,10 +3282,10 @@
     "sha": "80f5da8f"
   },
   "src/RimMandrake/Oracle/Source/OracleClient.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b8ec61f2e58fa448d3bed79f2e4ad94e907f4702b4249d3a0abc1121b72690be",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "9c19ad6f94b90db50894a410908ff457d96ab8768d9845f77aa2618b48747f27",
+    "sha": "0afdb147c"
   },
   "src/RimMandrake/Oracle/Source/OracleGameComponent.cs": {
     "cleanCount": 2,
@@ -8542,10 +8542,10 @@
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "987aa2ed9d9a83a49456f32a1af52b49a1c85c7656f17d806bd43b955e48ae20",
-    "sha": "ef81a0b7"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "087cb00e4edef6fe37010c3b4472b23834101e4ca097a41114b1d64bd53a5772",
+    "sha": "0afdb147c"
   },
   "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Sonic_Cannon.xml": {
     "cleanCount": 1,
@@ -8992,10 +8992,10 @@
     "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
-    "cleanCount": 2,
-    "date": "2026-09-07",
-    "hash": "8edbc44eb1b6d59226fba66d4d03227740ba4bb43e69689922d0378e3ff7b942",
-    "sha": "972798af"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "7ec0ec3d2e12154942f398f9c9c34e34c1238e95597ebe206bba199ddcd0433b",
+    "sha": "0afdb147c"
   },
   "src/RimStarWars/Armoury/Source/gen_armour_patch.py": {
     "cleanCount": 3,
@@ -9016,16 +9016,16 @@
     "sha": "ee0b3ad6"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorcore_absorption.py": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "d7177945d82701405dc4359e5a445a568bb6019841abaf1bff8fdde440cb77da",
-    "sha": "ab37da311"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "0373f621246aab04333f6e91b8100c8ef7b36945bb9a2e79a38086bfe38619fa",
+    "sha": "0afdb147c"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorweapons_absorption.py": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "589dc8bd9829d32c1f9c61daeb614a240fd4504d72cc5315906a41027919af93",
-    "sha": "ab37da311"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "45a27e10d38aa684c3b604975bf13de34067e3996d7be370f11f7651e36d238e",
+    "sha": "0afdb147c"
   },
   "src/RimStarWars/Armoury/Source/gen_sovsith_absorption.py": {
     "cleanCount": 1,
@@ -11560,10 +11560,10 @@
     "sha": "e69e40f3"
   },
   "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "0080bc07810234d575b1efdbf18d733d6c9331b1c18634ffc4ca82ed3be98b43",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "08c554e2736f128562e740cb309009d21011c1426500b097d60ce7f863cc2f9c",
+    "sha": "0afdb147c"
   },
   "src/RimStarWars/StarWarsRaces/Defs/Misc/SW_Categories.xml": {
     "cleanCount": 1,
@@ -15262,10 +15262,10 @@
     "sha": "212775b67"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "a7e2d02dfdcd2425e1640a51720720d0a00149167bc3684b09476dcfa34c1a5e",
-    "sha": "b3a646c3f"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "8e437811e008e98afb635e61e95cbc2c1591a71491267ded436123c7737e7706",
+    "sha": "0afdb147c"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
     "cleanCount": 1,
