@@ -32,6 +32,25 @@ become *shapes*. Liquid moves by a **sort plus an overflow** at pulse boundaries
 
 ## Phase 0 — DESKTOP ONLY, and it blocks real decisions
 
+**✅ BOTH BLOCKERS MEASURED — BENCH on the Desktop via RimSage, 2026-09-16:**
+
+1. **Temp terrain is CORE, not Odyssey.** `Map.tempTerrain` is constructed and
+   ticked unconditionally (`Map.cs:585`, `Map.cs:972`, scribed at 889);
+   `TempTerrainManager.Tick()`'s removal queue and `QueueRemoveTerrain` carry NO
+   DLC gate — the only `ModsConfig.OdysseyActive` checks in the class guard the
+   ice `FreezeManager` steady effects. `TerrainGrid.SetTempTerrain/
+   RemoveTempTerrain/TempTerrainAt` are ungated (TerrainGrid.cs's Odyssey checks
+   at 553/558 are substructure paths). The Odyssey lock on `ShallowFloodwater`/
+   `MarshFlood` is def-level `[MayRequireOdyssey]` CONTENT gating. ⇒ FlowWorks
+   ships its own `temporary="true"` terrains DLC-free; the recede policy unifies
+   on `SetTempTerrain` + `QueueRemoveTerrain`.
+2. **Ruling 23's patch point confirmed**: `public virtual bool
+   Verb.CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)` at
+   `Verse/Verb.cs:710` — virtual, prefix-able; the AI-selection side should
+   also gate (see Phase 5's invalid-target note).
+
+Still open from this phase: the FlowWorks Workshop name check (needs Fetcher/web).
+
 🔴 **RimSage has never connected from the Laptop** (five session logs, 2026-09-02 → 09-16, all
 timeouts; the hosted service returns HTTP 000; no decompiled tree on disk). So engine internals are
 **UNMEASURABLE** there. Both facts below need ILSpy/dnSpy on the real `Assembly-CSharp.dll`, or

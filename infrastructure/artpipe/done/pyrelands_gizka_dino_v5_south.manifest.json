@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 88.3898705499887,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 88.3898705499887,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "pyrelands_gizka_dino_v5_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/16/rollout-2026-09-16T20-57-49-01a0ad83-7722-7bc3-b31f-a1d8c41b2f0a.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 51.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/16/rollout-2026-09-16T20-17-19-01a0ad5e-64b8-74b3-8c9a-fe3126895f67.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_gizka_dino_v5_south",
+    "note": "Generated with built-in imagegen, then resized to exactly 256x256 while preserving transparent alpha. No reference image field was used.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_gizka_dino_v5_south\\pyrelands_gizka_dino_v5_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_gizka_dino_v5_south/pyrelands_gizka_dino_v5_south.png\n    256x256  rgba  53,731 bytes  (88s)\n"
+}
