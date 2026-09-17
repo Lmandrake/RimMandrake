@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T21:54:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-17T22:00:46Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -927,6 +927,15 @@ kind:     task
 summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap
 prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
 
+## XENOTYPE_NONCOSMETIC_FIXES_1 Fix the non-cosmetic xenotype canon defects in gen_races_mod.py: water-breathing for four aquatic species, five wrong-species nameMakers, two missing nameMakers, five one-character descriptions, Zuguruk spelling and Pureblood mislabel - COSMETIC GENES ARE OFF LIMITS (skin, heads, masks, eyes, hair, montrals) and labels only, never defNames, without a further ruling
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
+
 ## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
 state:    doing
 row:      unassigned
@@ -1550,7 +1559,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1558,7 +1567,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is UP
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
@@ -1750,16 +1759,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TWILEK_TROPE_GENES_MOVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILEK_TROPE_GENES_MOVE_1.md
 
-## XENOTYPE_NONCOSMETIC_FIXES_1 Fix the non-cosmetic xenotype canon defects in gen_races_mod.py: water-breathing for four aquatic species, five wrong-species nameMakers, two missing nameMakers, five one-character descriptions, Zuguruk spelling and Pureblood mislabel - COSMETIC GENES ARE OFF LIMITS (skin, heads, masks, eyes, hair, montrals) and labels only, never defNames, without a further ruling
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
-
 ## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
 state:    proposed
 row:      unassigned
@@ -1899,16 +1898,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WRECKEDMACHINES_MOD_SETTINGS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WRECKEDMACHINES_MOD_SETTINGS_1.md
-
-## ORACLE_FALLBACK_UNVALIDATED_1 Oracle's fallback text bypasses OracleValidator: RequestOhmLetter takes fallbackText as a CALLER argument and DeliverFallback ships it verbatim to ReceiveLetter, so the path taken WHEN VALIDATION REJECTS is itself unvalidated - and the only call site today (DebugActions_Oracle.cs:44,46) supplies dev scaffolding, the label 'Ohm speaks (Oracle spike)' and a body prefixed '[FALLBACK]'; validate fallbacks on the same bar as live responses and reject bracket markers
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ORACLE_FALLBACK_UNVALIDATED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ORACLE_FALLBACK_UNVALIDATED_1.md
 
 ## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
 state:    proposed
