@@ -282,6 +282,13 @@ def _matte_fill(s: Sprite) -> list:
 
 def boundaries_respected(s: Sprite) -> list:
     w, h = s.size
+    if s.visible_bbox == (0, 0, 0, 0):
+        # No visible content at all: margins computed from an empty bbox would
+        # read as top=0/left=0 and get reported as "touches the canvas edge,
+        # clipped" — the wrong diagnosis for a blank/fully-transparent file.
+        # transparency_real() and facing_height_consistency() already flag an
+        # empty sprite on their own terms; this check has nothing to say here.
+        return []
     x0, y0, x1, y1 = s.visible_bbox
     margins = {"top": y0, "bottom": h - y1, "left": x0, "right": w - x1}
     detail = ", ".join("%s=%dpx(%.3f)" % (k, v, v / s.canvas)

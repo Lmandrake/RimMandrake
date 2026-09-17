@@ -233,16 +233,22 @@ def compute_conduct_posture(regard, clean_streak, mission_completions, previous_
     hysteresis margin between climb and demote floors, same shape as the
     kit's own band hysteresis. previous_posture anchors both directions so
     a single poll's regard reading cannot skip a rung."""
+    # Each branch is gated on previous_posture, never on the already-updated
+    # local `posture` -- gating on the local would let one poll's reading
+    # satisfy a climb AND the next climb's floor at once (or a demote and the
+    # next demote's floor at once), promoting/demoting two rungs in a single
+    # poll. That contradicts this function's own contract above, and was
+    # found doing exactly that in code review, 2026-09-17.
     posture = previous_posture
-    if posture == 0 and regard >= CATHEDRAL_STAGE_TOLERATED_REGARD_FLOOR \
+    if previous_posture == 0 and regard >= CATHEDRAL_STAGE_TOLERATED_REGARD_FLOOR \
             and clean_streak >= CATHEDRAL_REGARD_CLEAN_STREAK_TOLERATED_FLOOR:
         posture = 1
-    if posture == 1 and regard >= CATHEDRAL_STAGE_VOUCHED_REGARD_FLOOR \
+    elif previous_posture == 1 and regard >= CATHEDRAL_STAGE_VOUCHED_REGARD_FLOOR \
             and mission_completions >= CATHEDRAL_STAGE_VOUCHED_MISSIONS_REQUIRED:
         posture = 2
-    if posture == 2 and regard < CATHEDRAL_STAGE_DEMOTE_VOUCHED_FLOOR:
+    elif previous_posture == 2 and regard < CATHEDRAL_STAGE_DEMOTE_VOUCHED_FLOOR:
         posture = 1
-    if posture == 1 and regard < CATHEDRAL_STAGE_DEMOTE_TOLERATED_FLOOR:
+    elif previous_posture == 1 and regard < CATHEDRAL_STAGE_DEMOTE_TOLERATED_FLOOR:
         posture = 0
     return posture
 
@@ -381,22 +387,12 @@ class ShadowBlackboard:
         # zero absent signal (no drift-to-baseline was ruled OUT for the
         # satiation vector specifically -- Regard is a different number and
         # a slow pull toward neutral is a deliberate, documented shadow-mode
-        # choice, not a copy of that ruling).
-        regard_delta = 0.0
-        if delta_lost > 0:
-            regard_delta -= CATHEDRAL_REGARD_LOSS_PER_KYBER_SALE * delta_lost
-        if cathedral_ground:
-            if self.heat >= HEAT_HIGH_BAND:
-                regard_delta -= CATHEDRAL_REGARD_LOSS_HEAT_NEAR
-            elif self.heat <= HEAT_LOW_BAND:
-                regard_delta += CATHEDRAL_REGARD_GAIN_LOW_HEAT_NEAR
-        if self.cathedral_regard > 0:
-            regard_delta -= min(self.cathedral_regard, CATHEDRAL_REGARD_DECAY_TOWARD_ZERO)
-        elif self.cathedral_regard < 0:
-            regard_delta += min(-self.cathedral_regard, CATHEDRAL_REGARD_DECAY_TOWARD_ZERO)
-        self.cathedral_regard += regard_delta
-        record["cathedral_regard_delta_this_poll"] = round(regard_delta, 3)
-        record["cathedral_regard_after"] = round(self.cathedral_regard, 3)
+        # choice, not a copy of that ruling). Computed ONCE, in the
+        # consolidated §2 fold below (CATHEDRAL_REGARD_BLACKBOARD_1) -- this
+        # used to be a separate mini-computation applied here AND folded again
+        # into the larger one below, which double-applied the kyber-sale loss,
+        # the heat-near-Cathedral term and the decay-toward-zero term every
+        # poll (found and fixed in code review, 2026-09-17).
 
         # --- Orbital-detection timer: drains faster at high Heat, pauses on
         # a dark tile (build_plan.md's "dark-tile pause"), never drains
