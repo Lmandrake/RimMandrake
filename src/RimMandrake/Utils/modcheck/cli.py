@@ -4,6 +4,8 @@
     python.exe src/RimMandrake/Utils/modcheck/cli.py run <mod> [<mod>...] [--debug]
     python3     src/RimMandrake/Utils/modcheck/cli.py status
     python3     src/RimMandrake/Utils/modcheck/cli.py declare <mod> minor --why "..."
+    python3     src/RimMandrake/Utils/modcheck/cli.py rename-key <old> <new> --why "..."
+    python3     src/RimMandrake/Utils/modcheck/cli.py forget-key <key> --why "..."
     python3     src/RimMandrake/Utils/modcheck/cli.py validate <mod> [--owner-said "..."]
     python3     src/RimMandrake/Utils/modcheck/cli.py review <mod> --owner-said "..."
 
@@ -12,6 +14,12 @@ same WSL-loopback reason every other bridge driver does
 (rimbridge_client.py). `status` and `declare` touch only
 `infrastructure/state/modcheck_status.json` and run fine under plain
 `python3`.
+
+`rename-key` and `forget-key` are the two verbs `modcheck_status.json` owed
+the naming migration (MEASURED 2026-09-17: `FluidCanals` sat GREEN under its
+dead pre-rename name while the mod ships as `FlowWorks`) -- the only
+sanctioned way to move or drop a key, since hand-editing that file is
+forbidden.
 
 `validate` and `review` are the two OWNER-AUTHORISED verbs added 2026-09-15
 (design/RimMandrake/north_star_validation_spec.md): `validate` turns a mod's
@@ -56,6 +64,18 @@ def main(argv=None):
     p_decl.add_argument("mod")
     p_decl.add_argument("severity", choices=["minor"])
     p_decl.add_argument("--why", required=True)
+
+    p_ren = sub.add_parser("rename-key", help="move a registry entry from an old "
+                                              "mod key to its new name")
+    p_ren.add_argument("old")
+    p_ren.add_argument("new")
+    p_ren.add_argument("--why", required=True)
+
+    p_forget = sub.add_parser("forget-key", help="delete a registry entry outright "
+                                                 "-- for an orphaned key with no "
+                                                 "successor worth preserving")
+    p_forget.add_argument("key")
+    p_forget.add_argument("--why", required=True)
 
     p_val = sub.add_parser("validate", help="record the owner's validation of a "
                                             "mod's `## north star` checklist")
@@ -137,6 +157,18 @@ def main(argv=None):
         import status
         entry = status.declare_minor(args.mod, _mod_dir_or_die(args.mod), args.why)
         print("declared minor: %s at %s" % (args.mod, entry["hash"][:12]))
+        return 0
+
+    if args.cmd == "rename-key":
+        import status
+        status.rename_key(args.old, args.new, args.why)
+        print("renamed: %s -> %s" % (args.old, args.new))
+        return 0
+
+    if args.cmd == "forget-key":
+        import status
+        status.forget_key(args.key, args.why)
+        print("forgotten: %s" % args.key)
         return 0
 
     if args.cmd == "validate":

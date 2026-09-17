@@ -20,9 +20,14 @@
     "status": "RED",
     "ts": 1789295394.5104144
   },
-  "FluidCanals": {
+  "FlowWorks": {
     "hash": "e9033a2a76d25b4eb0337d9340b5bbc6a8d2a27366d6dacecca3117151f5c0d8",
     "minor": null,
+    "renamed_from": {
+      "old": "FluidCanals",
+      "ts": 1789685428.0722578,
+      "why": "MODCHECK_STATUS_ORPHANED_BY_RENAME_1: FluidCanals is the dead pre-rename key for the mod that ships as FlowWorks (ruling 20, 2026-09-16); no live FlowWorks entry existed to collide with"
+    },
     "run_id": "FluidCanals@1789295363",
     "status": "GREEN",
     "ts": 1789295364.2275925
