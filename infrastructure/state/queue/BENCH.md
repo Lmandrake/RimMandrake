@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T03:58:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T05:08:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -402,7 +402,7 @@ thin:     no ## verify
 summary:  1. The owner reads the DRAFT section and validates, edits, or rejects it.
 prose:    infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md
 
-## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FlowWorks went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
+## TEMP_TERRAIN_DLC_GATE_1 DESKTOP FIRST TASK - can we ship our OWN temporary=true terrains? Every base-game temporary terrain is MayRequireOdyssey, which is why FloodedCanyon went permanent-SetTerrain and DLC-free while FluidCanals went temp-terrain and Odyssey-locked. If TerrainDef.temporary and TempTerrainManager are Core, the whole liquids family drops its hard Odyssey dependency and the two terrain models unify
 state:    proposed
 row:      unassigned
 needs:    bridge
@@ -431,3 +431,33 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/REACTIVE_SHIP_LIGHTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/REACTIVE_SHIP_LIGHTING_1.md
+
+## NORTH_STAR_HEAR_AXIS_1 The north-star system has a SHOW axis and a READ axis and no HEAR axis, so AtmosphericBase's entire sound channel (beds, stings, acoustic territory) is judgeable by neither — nothing is shown and nothing is read. Either a must-hear axis is specified (with its own falsification test and axis-scoped hash, mirroring §10/§11/§6a for read) or the sound half of every future ambient mod ships permanently unbindable. Found while drafting the AtmosphericBase walk 2026-09-16
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTH_STAR_HEAR_AXIS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTH_STAR_HEAR_AXIS_1.md
+
+## ATMOSPHERIC_BASE_CANVAS_1 🔴 THE TAPESTRY HAS NO CANVAS — MEASURED 2026-09-16: the newest exported ship layout (design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml) holds 2002 things of which ELEVEN are light-capable, 6 Brazier + 5 AncientLamp, and braziers may not take a colour at all. AtmosphericBase animates a grid of lights; the Utinni has no grid, and it ships as a frozen savegame so the player never builds one. Either the layout is deliberately re-lit as part of the programme (dozens of fixtures authored in) or the Utinni gets a much smaller dream than the one he described. His call, and it gates the whole programme's value
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ATMOSPHERIC_BASE_CANVAS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ATMOSPHERIC_BASE_CANVAS_1.md
+
+## ATMOSPHERIC_BASE_LAW_CONFLICTS_1 Three law conflicts in the AtmosphericBase spec needing his word: (1) L14+L8 contradict — a witness requires a LIT affected room, so a chosen blackout is the one thing a god may never afterwards refer to, which is backwards; narrow fix is to define witness by presence in an affected GROUP rather than by illumination. (2) canon.yml in_front says the silent EIGHT express through flickers while L6 caps the tremor at three on his ruling; likely canon describes the fiction and L6 the rendering, but unstated it will get 'fixed' in the wrong direction later. (3) juanlopez2008.lightsout writes the same glow field the compositor would, which may make L8's chosen darkness unprovable. See atmospheric_base_mod_definition.md §9a C3/C4/C5
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ATMOSPHERIC_BASE_LAW_CONFLICTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ATMOSPHERIC_BASE_LAW_CONFLICTS_1.md
