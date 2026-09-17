@@ -566,7 +566,9 @@ screen and are very different rules.
 What a sink is for: emptying a canal **on purpose and now**, rather than waiting for ruling 6's
 passive return. So the player has three ways to clear a channel, with different costs — fill it in
 (liquid displaces back, terrain is restored, labor), wait (returns to source, slow, free), or drain to
-a sink (fast, liquid leaves the map, needs a sink built at an edge).
+a sink (fast, liquid leaves the map). Ruled 2026-09-16 (sixth sitting, ruling 28): a sink is an **edge
+band, not a built structure** — any excavated cell near the map edge drains off-map; nothing to
+construct.
 
 **10. This mod needs a new name.** He ruled it, this date: *"clearly the Canals mod needs a better
 name now that it's a full liquid engine."* "FlowWorks" now names one driver of a mod that owns
@@ -1035,3 +1037,36 @@ python3 src/RimMandrake/Utils/modcheck/cli.py validate Pits --owner-said "<his w
 
 So the system gets proven today, the art is fixed after the merge as he ruled, and nothing is
 sequenced behind anything. Recommended.
+
+## 24. Rulings 28-33 (owner, 2026-09-16, sixth sitting — by card and by phone review)
+
+**28. Sinks are an edge band, not a built structure.** Card answer: "Edge band (as built)" — any
+excavated cell near the map edge drains off-map; no sink building, no sink art. §9's earlier "needs a
+sink built at an edge" phrasing is superseded in place above. Consequence accepted with it: digging
+near the map edge is permitted when sinks are enabled.
+
+**29. Filling in a cell that holds a pit DESTROYS the pit.** Card answer: "Fill destroys the pit" —
+filling swallows the pit like the earth it is; a misclick can eat a built trap and that is the
+accepted trade. Code owed: `Designator_FillInCanal` currently refuses edifice cells and must instead
+destroy a Pits building on the filled cell (owed to the next FlowWorks code pass).
+
+**30. Refill time is size-independent, as built.** Card answer: "Fine as is" — a 1-cell seep and a
+100-cell pond refill in the same absolute time; the rate scales with size and that satisfies
+"slowest for a small body" in absolute units. No sublinear factor.
+
+**31. Gizka dino v5 accepted** (phone review page): wire it — north render, facing gate, then the
+override mod. (Star Wars art lane, recorded here only because it rode the same sitting.)
+
+**32. FlowWorks art from the phone review: ladder ACCEPTED; sluice gate A ACCEPTED for wood and
+stone.** His words: "Ladder accepted. Sluice gate a is good for wood and stone. Should make a
+matching one for stone and metal too for harsher fluids. Same perspective as wood use it as a seed."
+So: a stone-and-metal sluice variant for harsher fluids is owed, generated with sluice A as the seed
+image, same perspective and composition.
+
+**33. The pit graphic gets real perspective, in the Quarry mod's manner.** His words: "The pit
+graphic itself should have some perspective to it. Check out quarry mod for art and inspiration.
+They already do this." He attached a Quarry screenshot: dark excavated earth with a lit top rim,
+shadowed inner walls and perspective-drawn ladders. This directs PIT_TRAP_VISUAL_REDESIGN_1 and the
+FlowWorks excavation art: the dry-pit/canal-bed treatment should read as walls with depth, not a
+flat tile with a lip shadow. Reference screenshot:
+`design/RimMandrake/references/quarry_pit_perspective_2026-09-16.jpg`.
