@@ -22,6 +22,7 @@ namespace RimMandrake.Oracle
                 ("names Zizzik", "Even Zizzik fears my spine when it runs hot.", false),
                 ("empty", "", false),
                 ("over length cap", new string('x', OracleValidator.MaxLength + 1), false),
+                ("bracket marker", "[FALLBACK] My spine settles where you touched it.", false),
             };
 
             int pass = 0, fail = 0;
@@ -43,7 +44,7 @@ namespace RimMandrake.Oracle
             Current.Game.GetComponent<OracleGameComponent>().RequestOhmLetter(
                 "Ohm speaks (Oracle spike)",
                 "The crew just repaired a damaged hull plate near the reactor. React to it in your voice.",
-                "[FALLBACK] My spine settles where you touched it. Good work, small hands.");
+                "My spine settles where you touched it. Good work, small hands.");
             Log.Message("RimMandrake.Oracle: Ohm letter requested -- watch the letter stack.");
         }
     }

@@ -52,6 +52,12 @@ namespace RimMandrake.Oracle
                 return false;
             }
 
+            if (text.IndexOf('[') >= 0 || text.IndexOf(']') >= 0)
+            {
+                reason = "bracket marker (dev scaffolding tell, e.g. \"[FALLBACK]\")";
+                return false;
+            }
+
             reason = null;
             return true;
         }
