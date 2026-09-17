@@ -1,6 +1,7 @@
 # DesertFixtures — validation walk
-subject: src/RimUtinni/DesertFixtures
-packageId: mandrake.rut.desertfixtures  (from About.xml, verbatim)
+subject: src/RimUtinni/StructureInjectionsRUT
+packageId: mandrake.rut.injections  (from About.xml, verbatim)
+absorbed: DesertFixtures (dying id rut.desertfixtures) folded into StructureInjectionsRUT at Defs/DesertFixtures/ThingDefs_Buildings/RUT_DesertFixtures_Buildings.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none (only Ludeon.RimWorld in modDependencies+loadAfter)
 list: minimal
 status-hint: One real, player-buildable, stuffable wall-slot window (`RUT_WindowAdobe`, `ParentName="Wall"`) — the only wall-slot window in the mod stack with a `designationCategory`, i.e. the only one actually buildable rather than ruin-scatter decoration.

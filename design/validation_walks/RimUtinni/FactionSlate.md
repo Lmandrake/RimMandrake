@@ -1,5 +1,6 @@
 # FactionSlate — validation walk
-subject: src/RimUtinni/FactionSlate  (packageId: mandrake.rut.factionslate)
+subject: src/RimUtinni/UtinniPatches  (packageId: mandrake.rut.patches)
+absorbed: FactionSlate (dying id rut.factionslate) folded into UtinniPatches at Patches/FactionSlate/OnlyOurFactions.xml in Sprint wave A (commit 485380d4) — no longer ships alone.
 deps: none in modDependencies/loadAfter — but 23 packageIds are pinned via `forceLoadAfter` (see must-be-true; this mod's whole purpose only exercises on the full list)
 list: full
 status-hint: Zeroes `startingCountAtWorldCreation` on 46 non-campaign FactionDefs so the Configure Factions page shows only the campaign's own slate — every Operation is a `PatchOperationConditional` on the def's existence (no `<nomatch>`, deliberately silent on a dropped mod), and `forceLoadAfter` exists specifically so a late-loading mod's faction is still caught.

@@ -1,5 +1,6 @@
 # BeastNorm — validation walk
-subject: src/RimStarWars/BeastNorm  (packageId mandrake.rsw.beastnorm)
+subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+absorbed: BeastNorm (dying id rsw.beastnorm) folded into SWBestiary at Patches/BeastNorm/BeastNorm_Law3.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued))
 list: minimal+mlie.starwarsanimalcollection
 status-hint: patches best-hit melee tool power/cooldown on 105 SW beasts (bs>=1) to scale with bodySize (power=15*bs, DPS=10*sqrt(bs)), and raises manhunterOnDamageChance/manhunterOnTameFailChance on big herbivores (bs>=1.5, no carnivore tag) so docility reads as "provoked", not passive.

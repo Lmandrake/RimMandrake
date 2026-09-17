@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-17T14:34:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-17T14:57:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -123,7 +123,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     design
-summary:  1. Triage all 72 unauthored walks into bar owed / no bar / uncertain, on visual
+summary:  1. ✅ DONE 2026-09-17. Triage all 72 on visual surface only, from what each mod actually
 prose:    infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -431,26 +431,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/REACTIVE_SHIP_LIGHTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/REACTIVE_SHIP_LIGHTING_1.md
-
-## NORTH_STAR_HEAR_AXIS_1 The north-star system has a SHOW axis and a READ axis and no HEAR axis, so AtmosphericBase's entire sound channel (beds, stings, acoustic territory) is judgeable by neither — nothing is shown and nothing is read. Either a must-hear axis is specified (with its own falsification test and axis-scoped hash, mirroring §10/§11/§6a for read) or the sound half of every future ambient mod ships permanently unbindable. Found while drafting the AtmosphericBase walk 2026-09-16
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NORTH_STAR_HEAR_AXIS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NORTH_STAR_HEAR_AXIS_1.md
-
-## ATMOSPHERIC_BASE_CANVAS_1 🔴 THE TAPESTRY HAS NO CANVAS — MEASURED 2026-09-16: the newest exported ship layout (design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml) holds 2002 things of which ELEVEN are light-capable, 6 Brazier + 5 AncientLamp, and braziers may not take a colour at all. AtmosphericBase animates a grid of lights; the Utinni has no grid, and it ships as a frozen savegame so the player never builds one. Either the layout is deliberately re-lit as part of the programme (dozens of fixtures authored in) or the Utinni gets a much smaller dream than the one he described. His call, and it gates the whole programme's value
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ATMOSPHERIC_BASE_CANVAS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ATMOSPHERIC_BASE_CANVAS_1.md
 
 ## NORTHSTAR_MOTION_FRAMES_1 A north-star line about CHANGE is evidenced by an ordered frame sequence, not one screenshot - owner ruling 2026-09-17, spec 4b. judge.py takes shots[-1] under a prompt telling the model to answer about that image alone, so 10 of AtmosphericBase's 23 bars (travelling boundary, writhing dark, rise-hold-release, restore-to-substrate, both anger reactions, identity on two channels) are structurally unjudgeable while every state assertion passes. Owed: a line declares state-vs-change, the judge takes a sequence, a change line claimed with one frame is UNJUDGEABLE never a partial pass. Separately move never_interpolated_colour off the eye onto a material-cache count - differing stills cannot settle smoothness at any frame count
 state:    proposed

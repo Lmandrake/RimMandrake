@@ -1,5 +1,6 @@
 # SeaBeasts — validation walk
-subject: src/RimStarWars/SeaBeasts  (packageId mandrake.rsw.seabeasts)
+subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+absorbed: SeaBeasts (dying id rsw.seabeasts) folded into SWBestiary at Defs/SeaBeasts + Source/art/SeaBeasts + Textures/Pawn/Animal/SeaBeasts in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: Ludeon.RimWorld.Odyssey (hard modDependency — Crab and Pinniped BodyDefs are Odyssey-only)
 list: minimal+Ludeon.RimWorld.Odyssey
 status-hint: 18 Naboo/Star Wars sea creatures across six roles (opee silt-ambushers, colo harpooners, sando leviathans, scalefish shoal grazers, a scavenger swarm, colossal filter-feeder neutrals) — zero C#, no swimmer pathgrid, plain seafloor-map animals per the ruled aquatic-movement decision. Dev/bridge-spawn only: none have wildBiomes yet (RM_SeafloorBiome does not exist), so they never wild-spawn today.

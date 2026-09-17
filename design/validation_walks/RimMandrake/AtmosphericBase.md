@@ -1,6 +1,6 @@
 # RimMandrake: AtmosphericBase — validation walk
 
-subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)
+subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)   # INTENDED path — mod NOT BUILT, so this folder does not exist yet; see status-hint. Not a stale subject.
 deps: none intended (loadAfter Ludeon.RimWorld only)
 list: minimal
 status-hint: 🔴 **NOT BUILT.** Designed in one owner sitting 2026-09-16; the definition is

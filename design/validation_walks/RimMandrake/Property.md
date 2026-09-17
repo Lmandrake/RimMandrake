@@ -1,5 +1,6 @@
 # Property — validation walk
-subject: src/RimMandrake/Property  (packageId mandrake.rm.property)
+subject: src/RimMandrake/RimProperty  (packageId mandrake.rm.property)
+absorbed: Property's folder was renamed RimProperty and merged with SalvageClaim and TheftHauler in the Sprint wave A crime merge (commit f32eef5f5); the packageId is unchanged and Property's own content is RimProperty's root (Source/PropertyEngine.cs etc.), not a subfolder.
 deps: none (modDependencies: Ludeon.RimWorld only)
 list: minimal
 status-hint: decaying-claim ownership fabric — (claimant, strength, basis, timestamp) records per Thing, computed virtually by default, recorded only for the exception list (stolen/purchased/claim-fee-paid/gifted/inherited/looted); no Harmony hooks auto-fire it, pure C# API for other mods to call.

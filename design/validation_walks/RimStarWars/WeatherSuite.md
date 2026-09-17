@@ -1,5 +1,5 @@
 # WeatherSuite — validation walk
-subject: src/RimStarWars/WeatherSuite  (packageId `mandrake.rsw.weathersuite`, from About/About.xml)
+subject: src/RimMandrake/WeatherSuite  (packageId `mandrake.rm.weathersuite`, from About/About.xml)
 deps: none (Ludeon.RimWorld only) — this is deliberately the generic engine half of WEATHER_SUITE_SLICE_1; the `PlanetGeometryDef` INSTANCE with Ash'karr's real substellar-point numbers is not shipped here, only the `PlanetGeometryDef` Def TYPE and the mechanism that reads it (About/About.xml, `Source/WeatherSuiteHook.cs` header)
 list: minimal — and minimal is the interesting case: with no `PlanetGeometryDef` instance loaded (no RimUtinni wiring mod), the terminator/nightside geometry checks are proven-inert, not merely untested
 status-hint: a fixed-geometry "arc from the substellar point" test any tidally-locked SW planet can reuse, driving a permanent terminator-front storm (vanilla `GameCondition_Flashstorm`, unmodified) and a nightside-gated maximized dark-side aurora (a small subclass of vanilla `GameCondition_Aurora`), plus a Tier-1 forecast-instrument building that reads the map's real weather-commonality table read-only (About/About.xml)

@@ -1,5 +1,6 @@
 # VaultDungeons — validation walk
-subject: src/RimUtinni/VaultDungeons  (packageId mandrake.rut.vaultdungeons)
+subject: src/RimUtinni/StructureInjectionsRUT  (packageId mandrake.rut.injections)
+absorbed: VaultDungeons (dying id rut.vaultdungeons) folded into StructureInjectionsRUT at Defs/VaultDungeons + Source/VaultDungeons in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: OskarPotocki.VanillaFactionsExpanded.Core (KCSG framework, modDependencies + loadAfter)
 list: minimal+OskarPotocki.VanillaFactionsExpanded.Core
 status-hint: six Forsaken-vault dungeons (three KCSG StructureLayoutDef templates x concentric rings) plus the VAULT_THAW_QUEST_FAMILY_1 quest layer that places each as a fixed-tile Site.

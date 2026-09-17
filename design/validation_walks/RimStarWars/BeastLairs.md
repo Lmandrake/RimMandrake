@@ -1,5 +1,6 @@
 # BeastLairs — validation walk
-subject: src/RimStarWars/BeastLairs  (packageId mandrake.rsw.beastlairs)
+subject: src/RimStarWars/StructureInjectionsSW  (packageId mandrake.rsw.injections)
+absorbed: BeastLairs (dying id rsw.beastlairs) folded into StructureInjectionsSW at Defs/BeastLairs + Textures/Things/Building/RSW_BeastNest_Large in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none (Ludeon.RimWorld only)
 list: minimal
 status-hint: adds RSW_BeastNest_Large, a 3x3 non-buildable map-gen scatter prop (dressing for a lair, not a spawner) that scatters its own filth once on spawn via vanilla CompSpawnerFilth.

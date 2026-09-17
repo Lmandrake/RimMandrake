@@ -1,5 +1,6 @@
 # SauridFrillFix — validation walk
-subject: src/RimMandrake/SauridFrillFix  (packageId mandrake.rm.sauridfrillfix)
+subject: src/RimMandrake/MandrakePatches  (packageId mandrake.rm.patches)
+absorbed: SauridFrillFix (dying id rm.sauridfrillfix) folded into MandrakePatches at Textures/Pawn/CenterFrill/CenterFrill8_north.png in Sprint wave A (commit 7e6eda0bd) — no longer ships alone; it carried no code, so unlike the other five folded fixes it has no Source/ subfolder.
 deps: vanillaracesexpanded.saurid (hard modDependency, "Vanilla Races Expanded - Saurid" — this mod must load AFTER it; loose-PNG override, order-dependent)
 list: full   # third-party donor mod is not in the minimal list; no minimal+ variant exists for it
 status-hint: one loose PNG replacing a donor-mod texture whose real filename carries a stray trailing hyphen ("CenterFrill8_north-.png"), so the game never finds it and Graphic_Multi silently falls back to the south sprite for that direction.

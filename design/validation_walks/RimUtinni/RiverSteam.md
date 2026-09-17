@@ -1,5 +1,6 @@
 # RiverSteam — validation walk
-subject: src/RimUtinni/RiverSteam
+subject: src/RimMandrake/FlowWorks  (packageId mandrake.rm.flowworks)
+absorbed: RiverSteam (dying id rut.riversteam) moved to RimMandrake/ManyWaters in Sprint wave A (commit 485380d4), then ManyWaters itself merged into FlowWorks's three-mod build (FLOWWORKS_BUILD_PROGRAM_1) — its code now lives at FlowWorks/Source/ManyWaters/RiverSteamHook.cs. FlowWorks is a VALIDATED north-star mod; do not touch FlowWorks.md's own `## north star` section on its account.
 deps: none (Ludeon.RimWorld base only)
 list: minimal
 status-hint: Pure-ambience MapComponent — periodic steam-puff flecks over river cells on the Pyrelands (ZBiome_Grasslands) only; no gameplay effect, no defs, no Harmony patch.

@@ -1,5 +1,6 @@
 # BlastDoorFrameAsyncFix — validation walk
-subject: src/RimStarWars/BlastDoorFrameAsyncFix  (packageId: mandrake.rsw.blastdoorframeasyncfix)
+subject: src/RimStarWars/StarWarsPatches  (packageId: mandrake.rsw.patches)
+absorbed: BlastDoorFrameAsyncFix (dying id rsw.blastdoorframeasyncfix) folded into StarWarsPatches at Source/BlastDoorFrameAsyncFix + its Textures/.../Blast/SWDoorBlastBDoor_FrameAsync art in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: Lumi.doorsexpanded (Doors Expanded Star Wars edition) — required, this mod loadAfters it
 list: minimal+Lumi.doorsexpanded
 status-hint: replaces 3 blank east split-frame textures (+ their _eastm masks) for Doors Expanded SW edition's blast doors, so the inner frame stops vanishing behind the leaves when the door faces east/west.

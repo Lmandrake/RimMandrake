@@ -1,5 +1,6 @@
 # Helix Tellurox — validation walk
-subject: src/RimStarWars/HelixTellurox  (packageId mandrake.rsw.helixtellurox)
+subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+absorbed: HelixTellurox (dying id rsw.helixtellurox) folded into SWBestiary at Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none
 list: minimal
 status-hint: Tellurox — Ascendant Helix labour-line draft/pack animal with a PERMANENT non-molting shell; first-rate plate only from slaughtering a mature working animal, never a shear cycle. Not yet wired into HorrorWastes' curated wild-spawn cast (owner-documented follow-up, out of scope here).

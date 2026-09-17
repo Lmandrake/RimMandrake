@@ -1,5 +1,6 @@
 # Livestock — validation walk
-subject: src/RimStarWars/Livestock  (packageId `mandrake.rsw.livestock`, from About/About.xml)
+subject: src/RimStarWars/SWBestiary  (packageId `mandrake.rsw.swbestiary`)
+absorbed: Livestock (dying id rsw.livestock) folded into SWBestiary at Source/Livestock + Defs/Livestock in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: sarg.alphabiomes (Alpha Biomes) — loadAfter only, needed solely for `Patches/ForsakenCrags_WildSpawns.xml` (targets `BiomeDef[defName="AB_RockyCrags"]`); everything else in this mod (both animal ThingDefs/PawnKindDefs, the karrask recipe/materials, the DamageDef/HediffDef pair, `CompLightAversion.cs`) needs only Ludeon.RimWorld
 list: minimal for everything except the wild-spawn patch check; minimal+sarg.alphabiomes for that one
 status-hint: two untameable Forsaken Crags predators (cindermare — kills by a cold-drain grip, not a bite; skarnix — flees lit ground via a C# comp) plus karrask, a tameable Jawa farm animal whose shed cures (vanilla `CompProperties_Shearable` + a plain bench `RecipeDef`) into a real armor Stuff (About/About.xml)
