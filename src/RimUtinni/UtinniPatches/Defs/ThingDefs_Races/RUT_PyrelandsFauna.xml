@@ -91,7 +91,8 @@
       </li>
     </tools>
     <race>
-      <body>Bird</body>
+      <body>RUT_FireHawkBody</body>
+      <renderTree>RUT_FireHawk</renderTree>
       <predator>true</predator>
       <maxPreyBodySize>0.5</maxPreyBodySize>
       <baseBodySize>0.65</baseBodySize>
@@ -141,21 +142,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.1</drawSize>
         </bodyGraphicData>
