@@ -14289,11 +14289,197 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "fa90b445"
   },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Loader/BGLoader.jpg": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "af11cc48ea557091cc494f57c71bc16699b7d028f3da044496e1d0cf57f0d173",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Loader/LoaderBar.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fe0222130ff6c884010a4ef3e078d0febc21d9fc3726eb4abbaffc0e4d0e8a99",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Loader/TextBar.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d0eed3c505c169a0f1ab34f85088ac123dbf7a4b2065b1434fffef161ef00f21",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Misc/Icon.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0a98314c9b209872e910ba8280268e8438f5643fa04333a5535083837b437a28",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/Command.BGTex.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9ebc9f4aeba0776ea7f05428ac89e252f9ab52c6c0378314e83936af6a2b346e",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a0e3927ef57515612af5506e91ba45711090dbf11e89385efcf9c5123c12b601",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_mobunloo.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2ffb908d025f325c8b17d660e84f6aae5428ff5b9237f3bb5108a7f38629d7cd",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_ohm.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ba133f42545459cae3f6c398867e5446b868d57dcd81311bef9c655e04ccf29f",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_oomo.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d7e06ba29556a54016a1433af5ead337a23c5871d6fb0a7221f2af2ec344282b",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_ozzik.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "faf196b1502af95df2a5b967394880960000d94ba0675411be8a140ebf965487",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_rekko.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6b56884a1932bebf33e62d6fc01e2211ac37c46c577291a42d25c7c844c05452",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_shkaar.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "94704fb030455d445d2e4edcb2fa65c3c307df84cc9e62a76dddccb37ef9ba65",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_tabaa.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e9bc49ccee87da45849a64e3b7c3aa2c3c056e4f934cecd27d5eef2d743c801f",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/UI_BackgroundMain.BGPlanet_zizzik.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5b55a3b833adc1b2276066759fd31c80e5435b12d4aa26fc3a88c6e1a2fe9c05",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/Widgets.ButtonBGAtlas.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e70d9340c4842431100605ffe2143e92d46e32e8a1eb061ec7f898d430a3007a",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/Widgets.ButtonBGAtlasClick.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "cdd5ecaff620e826d039ea96f6677e376d3439aa2c8c3aa1e3d2194e91df5d39",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/Textures/Widgets.ButtonBGAtlasMouseover.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "08e8e7484fd42bb54b75f01cf503d583a76eb35f80b7474c17dfd4b9fa259dba",
+    "sha": "0b7206abc"
+  },
   "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/meta.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "c3cd069eef20e6bde89534741bb24a24ef435e7ae13a8d943839249136fa5787",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Ishko.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "76de479e0f54f1e40cc1ac092adbe21bb269df8cfc1e6db11576098cdb6ffec5",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Mobunloo.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3287cb42824808eac3595707bef08835c139f575419de9a0fd5fc2b36f32b01c",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Ohm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f9f4e527a49a066e36b7ae710cd0371c85194f5af9f962f5aadf884da8ce0197",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Oomo.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8e6d11f6d879420c09b09b53b963bd7cba10c3ffb63e3ae421adbff3be4d6c3f",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Ozzik.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "c5ed2629f4441448368518a8a5ded8eab6670bf90dee13cc890aa40266e7e728",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Rekko.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2fe02c1a7328aacedb7418135f1d1bc668df0414a80483ccb6eb95523ed15943",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Shkaar.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "92946b3e96687b9f31449c30e87f0f0fdbd011aba6ce4a368d59db705f8df051",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Tabaa.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bc63c4cad6ea497748e05ef95402c680877814530c70a5a3557825e4d06d79f9",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_God_Zizzik.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b61651ffe45b088d7b5ebd3e63a59ad26ab5a62f1706f88c4445d0b4499ead8b",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_PantheonSlide.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "38b6652bb6267adc897fc914d7449e492b82ebe27dbf7b6205663f285a08f6be",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/UI/Backgrounds/utinni_menu_1.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a0e3927ef57515612af5506e91ba45711090dbf11e89385efcf9c5123c12b601",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Textures/UI/HeroArt/BGPlanet.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "38b6652bb6267adc897fc914d7449e492b82ebe27dbf7b6205663f285a08f6be",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/Videos/UI/Backgrounds/utinni_menu_1.webm": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bfb5efb7fec199128699fcdf8cd540a9717dc6cf3cad4693af9b9b0babeb07a3",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/.gitignore": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bd79d622805b4a783c057d7df21084f7f94d7e4d866ce1d5b36e31f384688df2",
+    "sha": "0b7206abc"
   },
   "src/RimUtinni/MenuShell/_artsrc/animate_god_ozzik.py": {
     "cleanCount": 1,
@@ -14349,11 +14535,53 @@
     "hash": "783cbc1c1638f6d9d4969e6e0c1d6ba2a674c4376669fbc658e4392374bb2fc3",
     "sha": "fa90b445"
   },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_loadscreens_contact_sheet_2026-09-09.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "cc7436a2250831f8d337ae473058132badc57c24891aea1381b48398529d210f",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_shots_2026-09-09/raw/shot1_terminator_crossing.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fbce5678fe85d81cc77184081324241119040493a2ea154851bc3a0af3bcf2b9",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_shots_2026-09-09/raw/shot2_day_night_symmetric.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1f3854e92e31acd055a5d63158d8c8cb7efc52b107e816ae0f01f7e6cb64612e",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_shots_2026-09-09/raw/shot3_limb_terminator_pass.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ec56657adfa24532ddf8cfdb8bfb9037c570bccbebae846d9439e49f791694bd",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_shots_2026-09-09/raw/shot4_nightside_colony_lights.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7f684bd786ef42545a064b31dce1496bd39ece28f16c0f54cf96dc3356e4e2a8",
+    "sha": "0b7206abc"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/planetary_beauty_shots_2026-09-09/raw/shot5_subsolar_dayside.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "436e2099eacde6898277ad2b26bf722d01fdf46068f1a8f61311219b638c23b7",
+    "sha": "0b7206abc"
+  },
   "src/RimUtinni/MenuShell/_artsrc/scene_anim.py": {
     "cleanCount": 1,
     "date": "2026-09-10",
     "hash": "2f09edfba2acbe24551c6150a40d469ef9127bd44c1a9bade929e19dd5c62d6b",
     "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b3c1d1df879f686475958cc9cfd55930962941bbec83a87e50bbd92840e61737",
+    "sha": "0b7206abc"
   },
   "src/RimUtinni/MycoidColossusArtOverride/About/About.xml": {
     "cleanCount": 1,
