@@ -96,7 +96,7 @@ PROMISES = [
 #          not yet picked up).
 WHISPERS = [
     (1, "Something Buried", None, None, "no-mechanism"),
-    (2, "The Listening Dark", None, None, "no-mechanism"),
+    (2, "The Listening Dark", "listening_dark", ("Hollow", "Caves"), "done"),
     (3, "Old Reasons", None, None, "no-mechanism"),
     (4, "The Wrong Spark", None, None, "no-mechanism"),
     (5, "Soft Ground", None, None, "no-mechanism"),
@@ -116,7 +116,7 @@ WHISPERS = [
     (19, "The Mirage Twin", None, None, "no-mechanism"),
     (20, "The Rootstock", "rootstock", "DryLake", "done"),
     (21, "The Sleeper's Knock", None, None, "no-mechanism"),
-    (22, "The Sarlacc Sign", None, None, "no-mechanism"),
+    (22, "The Sarlacc Sign", "sarlacc_sign", "sw_SarlaccLair", "done"),
 ]
 
 
@@ -182,20 +182,25 @@ def whisper_genstep_exists(slug):
 
 
 def whisper_patch_wires_mutator(mutator):
+    # `mutator` may be a single defName (str) or a tuple of defNames - a
+    # row whose roster line names multiple anchors (e.g. WHISPER #2's own
+    # "(Hollow/Caves mutators)") must have a patch wiring EVERY named
+    # anchor, not just one, to actually deliver what the row promises.
     if mutator is None:
         return False
+    mutators = (mutator,) if isinstance(mutator, str) else tuple(mutator)
+    all_texts = []
     for tier_dir in TIER_DIRS.values():
         patches_dir = tier_dir / "Patches"
         if not patches_dir.exists():
             continue
         for patch_file in patches_dir.glob("*.xml"):
             try:
-                text = patch_file.read_text(encoding="utf-8")
+                all_texts.append(patch_file.read_text(encoding="utf-8"))
             except OSError:
                 continue
-            if f'defName="{mutator}"' in text:
-                return True
-    return False
+    combined = "\n".join(all_texts)
+    return all(f'defName="{m}"' in combined for m in mutators)
 
 
 def check_whisper(row):

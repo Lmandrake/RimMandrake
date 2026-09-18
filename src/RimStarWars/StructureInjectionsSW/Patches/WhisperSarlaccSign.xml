@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WhisperSarlaccSign.xml   StructureInjectionsSW   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires WHISPER #22 The Sarlacc Sign onto sw_SarlaccLair
+  (Mlie.StarWarsAnimalCollection, MayRequire="Ludeon.RimWorld.Odyssey" on
+  its own def). Same safety convention as RimUtinni's Patches/
+  WhisperBatch1.xml/WhisperBatch2.xml: the PatchOperationAdd is wrapped in a
+  PatchOperationConditional whose xpath is IDENTICAL to the inner
+  operation's target, so an absent/renamed mod or mutator makes the whole
+  <li> a silent no-op.
+
+  UNLIKE Cavern/DryLake/Hollow/Caves (which carry no <extraGenSteps> element
+  in vanilla and get a whole new element added to the TileMutatorDef node),
+  sw_SarlaccLair ALREADY has one - <extraGenSteps><li>sw_SarlaccPit</li>
+  </extraGenSteps> - confirmed by reading the mod's own source XML directly
+  (SW_Buildings_Natural.xml), not assumed. So this Add's xpath targets that
+  existing <extraGenSteps> list directly and appends one more <li>, the same
+  shape WhisperBatch1.xml's Choir Wind -> RUT_Monument patch already used
+  for the same reason (RUT_Monument is PROMISE #8's own mutator and already
+  had a responder <li> of its own).
+  ============================================================================
+-->
+<Patch>
+
+  <!-- WHISPER #22 The Sarlacc Sign -> sw_SarlaccLair (Mlie.StarWarsAnimalCollection). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="sw_SarlaccLair"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="sw_SarlaccLair"]/extraGenSteps</xpath>
+      <value>
+        <li>RSW_GenStep_WhisperSarlaccSign</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

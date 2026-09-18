@@ -621,3 +621,159 @@ whispers now exists and is proven wired (not just designed). Left
 `doing` — nowhere near "genuinely all 22 whispers," which was never a
 realistic bar for one pass per this item's own dispatch instructions.
 
+## 2026-09-17 (FOUNDRY, BELT-mode fanout) — whisper batch 2: 2 more rows, one real cross-item finding, one lint fix
+
+Re-derived state first per standing lesson (queue items decay): re-ran
+`structure_roster_lint.py` before touching anything — still exactly
+16/22 promises, 3/22 whispers, 0 lint failures, unchanged since
+2026-09-12. Re-read `sacred_sites_pass_1.md` §1a/§1b in full before
+picking rows, per the dispatch's own method.
+
+**Went through all 19 MISSING-MECHANISM whisper rows against the
+territory table looking for a nameable, CONFIRMED anchor** (never trusted
+the stale `defs.sqlite`, capture 2026-09-12 — a `validate_patch.py`
+`PatchOperationConditional` probe against the live 632-active-mod set,
+`--defs` on the real Data/Mods/Workshop roots, is the authority used
+throughout):
+
+- **#2 The Listening Dark** (Ishko, nightside) — the roster's own line
+  names the anchor explicitly: "(Hollow/Caves mutators)". Both confirmed
+  real: `Hollow` (Odyssey, `TileMutators_Natural.xml`, 1 match) and
+  `Caves` (Core, `MapGeneration/TileMutators.xml`, 1 match) — neither
+  carries an `<extraGenSteps>` element in vanilla (checked directly in
+  both source files), so both patches Add a whole new element to the
+  `TileMutatorDef` node, same shape as Cavern/DryLake in
+  `WhisperBatch1.xml`. **Built**: `design/Jawa/templates/listening_dark.lua`
+  — a small static nook (2 `Shelf`, 1 `TorchLamp` — the roster's "free
+  hidden base") plus one `SculptureSmall` marker standing in for
+  "something already listens" (no watcher/eavesdropping ThingDef exists;
+  same substitute-prop discipline every prior batch used). The cave
+  network itself is native to the anchor mutators, not authored here.
+  `lint`: 0 findings. No AI/threat mechanic built — declared, same
+  discipline as Choir Wind/Rootstock.
+- **#22 The Sarlacc Sign** (RSW, sarlacc-adjacent) — anchor
+  `sw_SarlaccLair` (`Mlie.StarWarsAnimalCollection`, requires
+  `Ludeon.RimWorld.Odyssey` on its own def), confirmed real (1 match,
+  `SW_Buildings_Natural.xml`) — this is PROMISE #2's own adopted mutator,
+  already the shipped precedent per the roster's §0. 🔴 **Unlike Hollow/
+  Caves/Cavern/DryLake, `sw_SarlaccLair` ALREADY carries an
+  `<extraGenSteps><li>sw_SarlaccPit</li></extraGenSteps>` in the mod's own
+  source** (checked directly, not assumed) — the patch Adds into that
+  EXISTING list, same shape Choir Wind's `RUT_Monument` patch already
+  used, not the "whole new element" shape. **Built**:
+  `design/Jawa/templates/sarlacc_sign.lua` — 3-5 `SculptureSmall` markers
+  scattered unevenly along the footprint edge standing in for "edge-of-map
+  burrow signs" (no burrow/totem ThingDef exists). This exact idiom
+  ("ring it with SculptureSmall warning totems x3-5 unevenly") is
+  independently specified for this same roster row in
+  `structure_procedural_spec.md` §8.11 (`beast_lair.lua`'s own sarlacc
+  variation) — confirms it as an already-graded design choice, not
+  invented here. "Small livestock vanish near edges" (the active
+  predation mechanic) is NOT built — declared, same discipline as every
+  static-only whisper. `lint`: 0 findings.
+
+**3 candidates investigated and explicitly rejected, not silently
+skipped**:
+- **#11 Static Ghosts** (Ohm country) — `sacred_sites_pass_1.md` §1b names
+  `AB_MechanoidIntrusion` as Ohm's territory. Probed it directly: **0
+  matches** as a `TileMutatorDef` xpath (`validate_patch.py` guard test:
+  "test xpath matches 0 nodes"). Confirmed why by reading Alpha Biomes'
+  own source: `AB_MechanoidIntrusion` is a **BiomeDef**
+  (`Biomes_MechanoidIntrusion.xml`, and used as a `wildBiomes` dictionary
+  key elsewhere), not a `TileMutatorDef` — it has no `extraGenSteps` hook
+  to patch (§0b's own stated architecture limit: "there is no equivalent
+  field on BiomeDef"). Real, confirmed negative finding, not an
+  assumption.
+- **#1 Something Buried** / **#16 The Prospector's Bones** (Rekko) —
+  Rekko's territory per `sacred_sites_pass_1.md` §1a/§1b is `Ruins`-class
+  landmarks. Checked: `Ruins` and `AncientQuarry` are **LandmarkDefs**
+  (`Odyssey/Defs/TileMutators/Landmarks.xml`), not `TileMutatorDef`s —
+  same architecture limit as Static Ghosts, confirmed by reading the
+  source directly rather than assumed from the name. Both rows also lack
+  a single specific anchor (#1 says "any"), and both are already claimed
+  by `structure_procedural_spec.md` §8.14 (`cache.lua`, "roster whisper #8
+  The Debtor's Cache, #1 Something Buried") under the sibling item
+  `INHABITED_AUGMENTATION_BUILD_1` — building a competing mechanism here
+  would duplicate, not fill, the gap.
+- **#15 Quicksand Veins** — anchor `AB_QuicksandPits` (Alpha Biomes)
+  IS confirmed real (1 match), but the roster's own line names no god and
+  no content beyond what the anchor mutator already does natively
+  ("mass-triggered natural hazard cells" is `AB_QuicksandPits`'s own
+  vanilla behavior) — wiring it would mean either inventing unstated prop
+  content or reusing `GenStep_Whisper_NoOp` with its hardcoded "Never Was"
+  log line mislabeling a genuinely different row. Left `MISSING-MECHANISM`
+  rather than force either.
+- **#21 The Sleeper's Knock** (RUT, Rakatan traces) — anchor
+  `RUT_RakatanTrace` (our own promise mutator) is real and buildable
+  (same shape as Choir Wind → `RUT_Monument`), but the roster's own line
+  names ZERO physical vocabulary — "rhythmic knocking from below on a
+  timer; stops if answered wrongly" is 100% an audio/timer mechanic with
+  nothing to place. Placing an invented marker prop here (unlike Choir
+  Wind, whose line explicitly says "wind... sings", giving a real
+  substitution target) would be inventing content the roster never
+  described. Left `MISSING-MECHANISM`, honestly, same discipline as
+  Dead Crawler/Signal Mast.
+
+**🔴 Real cross-item finding, not touched**:
+`design/Jawa/worldbuilding/structure_procedural_spec.md` (Fable-drafted,
+BENCH-graded 2026-09-05) records the owner's verdict on
+`REVIEW_tile_structures_21` the same night: *"A LOT more work is
+required... these are pretty horrible... try much harder on them all and
+not accept any rooms yet."* Neither this item's own 2026-09-09 nor
+2026-09-12 pass (both of which explicitly re-read the whole item history
+first) ever surfaced this. Resolved before treating it as a live
+blocker: it is NOT a blanket rejection of this item's own track. The
+much-harder R1-R5 rework is tracked by a **separate, sibling item**,
+`INHABITED_AUGMENTATION_BUILD_1` (filed 2026-09-05, same day), which owns
+`structure_procedural_spec.md` §8's 14 heavier archetypes end-to-end
+(14/14 built+wired, 0/14 placed as of its own 2026-09-12 note) —
+confirmed by reading both items' full history, not inferred. This item's
+lightweight promise/whisper templates (markers, small nooks, terrain
+dressing) are a distinct, still-valid, still-continuing track the owner
+has not blocked. Also confirmed **no wiring collision**: `beast_lair.lua`
+(§8.11, INHABITED's own build) uses a brand-new `RSW_BeastLair` mutator
+for hand-placement, never patches `sw_SarlaccLair`'s `extraGenSteps` — so
+this pass's Sarlacc Sign whisper and INHABITED's sarlacc-flavor beast lair
+option coexist without either overwriting the other. Worth a line for
+whoever next touches either item, since the omission cost real
+investigation time this pass.
+
+**Lint script extended** (not rewritten): `structure_roster_lint.py`'s
+`WHISPERS` table only supported one mutator per row; #2's own roster line
+names two ("Hollow/Caves"). `whisper_patch_wires_mutator` now accepts a
+tuple and requires a patch for EVERY named anchor, not just one — a row
+naming two anchors that only wired one would previously have reported
+`covered` on a partial build; it cannot now.
+
+**Wiring**: `Defs/GenStepDefs_Whisper_Batch2.xml` + `Patches/
+WhisperBatch2.xml` (new, `mandrake.rut.injections`) for Listening Dark;
+`Defs/GenStepDefs_Whisper_Batch1.xml` + `Patches/WhisperSarlaccSign.xml`
+(new — RSW tier's first whisper files, `mandrake.rsw.injections`) for
+Sarlacc Sign. `validate_patch.py` against the whole `Defs/`+`Patches/` of
+both tiers, live 632-mod set: **59 files, 0 errors, 6 warnings** — 5
+pre-existing (unrelated `DarkTower`/`VaultDungeons`/`WarLab` texPath
+warnings, and the same "class not resolved from load set" info already
+accepted on `WhisperBatch1.xml`), 1 new: `GenStep_RandomSelector` flagged
+WARN (not info) on the RSW file specifically because `mandrake.rsw.
+injections` ships no `Assemblies/` at all — a validator heuristic gap
+(it has no vanilla-class allowlist), not a real defect: `GenStep_
+RandomSelector` is the same confirmed-vanilla class `mandrake.rut.
+injections`'s own Batch1/Batch2 files already reference bare, without
+incident, since 2026-09-12. `rimplace selftest`: 62/62, unaffected.
+
+**NOT deployed, NOT added to ModsConfig this pass** — same discipline as
+every prior batch; owner was actively testing something live in-game
+during this pass per the dispatch, so the bridge/ModsConfig/deploy were
+never touched. `mandrake.rut.injections` remains absent from the live
+`ModsConfig.xml` exactly as found 2026-09-09, unrelated to and unchanged
+by this pass.
+
+**Coverage after this pass: 16/22 promises (unchanged), 5/22 whispers
+(up from 3/22), 0 coverage-law violations.** 17 whisper rows remain
+`MISSING-MECHANISM`, honestly — most still have no TileMutatorDef anchor
+at all (confirmed for 3 more this pass) or are pure incident/timer/audio
+mechanics with no physical vocabulary to place. Nothing invented to pad
+the count. Left `doing` — 6 promise gaps still need an owner ruling or a
+design pass, most whisper rows still have no mechanism, and the live
+mapgen-ordering proof (owed since 2026-08-31) is still open.
+

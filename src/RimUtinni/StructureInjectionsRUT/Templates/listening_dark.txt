@@ -1,0 +1,10 @@
+# rimplace flat plan v2
+# template  listening_dark (sha e666fbc898301fc2)
+# min_rect  4x4   baked at 4x4
+FOOTPRINT	0	0	4	4
+CLEAR	-1	-1	6	6	soft
+CLEAR	0	0	4	4	all
+THING	Shelf	0	1	0	-
+THING	Shelf	3	3	0	-
+THING	TorchLamp	2	2	0	-
+THING	SculptureSmall	2	0	0	-

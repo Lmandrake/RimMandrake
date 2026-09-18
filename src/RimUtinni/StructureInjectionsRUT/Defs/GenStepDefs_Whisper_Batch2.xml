@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TILE_STRUCTURE_DESIGNS_1 whisper subsystem, batch 2 - one more row
+       (#2 The Listening Dark, Ishko, nightside), same shape as
+       GenStepDefs_Whisper_Batch1.xml's #12/#18/#20. The roster's own line
+       for this row names BOTH anchors explicitly - "(Hollow/Caves
+       mutators)" - so it gets two GenStepDefs, one per anchor, each with a
+       single option (same declared "fires every time this mutator
+       generates, not RARE" limitation Never Was already carries - a future
+       batch adding more options at a higher relative weight is what makes
+       any of these actually rare).
+
+       Hollow is Odyssey-gated (confirmed: TileMutators_Natural.xml,
+       MayRequire absent on the def itself but the file's own mod scope is
+       Odyssey-only). Caves is vanilla Core (confirmed:
+       Core/Defs/MapGeneration/TileMutators.xml, no MayRequire at all) - so
+       RUT_GenStep_WhisperCaves carries no MayRequire, unlike every other
+       whisper/promise GenStepDef in this program so far. -->
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_WhisperHollow</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/listening_dark.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_WhisperCaves</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/listening_dark.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+</Defs>
