@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_LIVE_PREPARATIONS_1 — two memory thoughts.
+
+    RUT_EuphoricBrewMemory is the pleasure brew's "strong short thought"
+    (M4, pure XML). +30 for a day, stacking to 2, is INVENTED-BUILD, pitched
+    deliberately above vanilla's own ambrosia memory: the brew cannot be
+    stored, cannot be shipped, and dies in two days, so its mood payoff has
+    to justify walking to a guarded grove for it.
+
+    RUT_SoldRotTreasureMemory is OWNER CARD 6, RULED 2026-09-17: "a pawn
+    carrying the Rot symbiont takes a mood debuff when the colony sells the
+    Rot's treasures — selling a part of yourself." It is given by
+    RM_Patch_TreasureSaleConscience, driven by the
+    RUT_RotTreasureConscience def in Defs/Misc/, never by a hardcoded
+    defName. -9 for 6 days, stacking to 3, is INVENTED-BUILD: enough that a
+    symbiont colony feels a treasure trade and reconsiders a second one,
+    never enough to break a colonist on its own. Card 6 frames it as the
+    pawn's new CONSCIENCE, so the text is the pawn's own, not the colony's.
+  -->
+
+  <ThoughtDef>
+    <defName>RUT_EuphoricBrewMemory</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>2</stackLimit>
+    <stackedEffectMultiplier>0.6</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>euphoric crown brew</label>
+        <description>I drank it beside the vat while it was still warm and the whole world was briefly, completely fine.</description>
+        <baseMoodEffect>30</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RUT_SoldRotTreasureMemory</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>sold a part of myself</label>
+        <description>We sold what the grove gave us. I carry the same thing in my blood, and I felt it leave with the caravan.</description>
+        <baseMoodEffect>-9</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

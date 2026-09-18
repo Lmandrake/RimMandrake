@@ -164,6 +164,27 @@ namespace RimMandrake.EnvironmentalHazards
     //      accruing from Sheen-fall weather entirely, everywhere. The three
     //      reskinned Sheen weathers themselves (the ban-3 fix) are pure
     //      cosmetic WeatherDefs and keep occurring either way.
+    //  32. livePrepStrictViability — the Rot's live preparations
+    //      (ROT_LIVE_PREPARATIONS_1, "viability: strict/lenient"). The
+    //      kit's own settings law says ban 4 is never fully off, so this is
+    //      a two-position dial, not an off switch. Strict (shipped): a
+    //      live-prep item carrying RM_LivePrepExtension is ruined by cold
+    //      exactly as its vanilla CompTemperatureRuinable says — a fridge
+    //      kills it. Lenient: temperature stops ruining those items at all,
+    //      and they still expire on their CompLifespan clock. Nothing else
+    //      that uses CompTemperatureRuinable (eggs, fermenting) is touched
+    //      in either position.
+    //  33. treasureConscienceEnabled — RM_TreasureConscienceDef /
+    //      RM_Patch_TreasureSaleConscience (ROT_LIVE_PREPARATIONS_1, owner
+    //      card 6). Off: selling items marked as some conscience's treasure
+    //      no longer gives its memory thought to carriers of that
+    //      conscience's hediffs. Thoughts already held run out on their own
+    //      normal duration rather than being stripped.
+    //  34. sunlightScaldEnabled — RM_HediffComp_SunlightScald
+    //      (ROT_LIVE_PREPARATIONS_1, the Sheenblood symbiont's cost). Off: a
+    //      carrier's scald severity freezes exactly where it is — never
+    //      reset to zero, so turning this back on resumes rather than
+    //      forgiving. The hediff's own stages are untouched.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -199,6 +220,9 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool warmGroundEnabled = true;
         public static float warmGroundOffsetCelsius = 18f;
         public static bool sheenExposureEnabled = true;
+        public static bool livePrepStrictViability = true;
+        public static bool treasureConscienceEnabled = true;
+        public static bool sunlightScaldEnabled = true;
 
         public override void ExposeData()
         {
@@ -235,6 +259,9 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref warmGroundEnabled, "warmGroundEnabled", true);
             Scribe_Values.Look(ref warmGroundOffsetCelsius, "warmGroundOffsetCelsius", 18f);
             Scribe_Values.Look(ref sheenExposureEnabled, "sheenExposureEnabled", true);
+            Scribe_Values.Look(ref livePrepStrictViability, "livePrepStrictViability", true);
+            Scribe_Values.Look(ref treasureConscienceEnabled, "treasureConscienceEnabled", true);
+            Scribe_Values.Look(ref sunlightScaldEnabled, "sunlightScaldEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -327,6 +354,16 @@ namespace RimMandrake.EnvironmentalHazards
                 "Unroofed pawns stop accumulating Sheen coating during Sheen-fall weather, and it "
               + "can no longer seed spore flesh. The Sheen-fall/storm/mist weathers themselves "
               + "keep occurring either way.");
+            list.CheckboxLabeled("Live preparations: strict viability", ref livePrepStrictViability,
+                "Strict: a living brew or symbiont is ruined by cold, so a fridge destroys it and it "
+              + "must be drunk where it was made. Lenient: cold no longer ruins it — but it still "
+              + "dies of old age within a couple of days either way.");
+            list.CheckboxLabeled("Treasure-sale conscience", ref treasureConscienceEnabled,
+                "A colonist carrying a symbiont stops feeling anything when the colony sells the "
+              + "treasures that symbiont came from.");
+            list.CheckboxLabeled("Sunlight scald", ref sunlightScaldEnabled,
+                "A hediff built to burn its carrier in direct sunlight stops building up; whatever "
+              + "severity a carrier already has is frozen, not cleared.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");

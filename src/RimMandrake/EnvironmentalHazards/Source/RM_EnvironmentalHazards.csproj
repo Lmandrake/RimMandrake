@@ -152,6 +152,12 @@
     <Compile Include="RUT_HediffComp_SheenExposure.cs" />
     <Compile Include="RM_WarmGroundExtension.cs" />
     <Compile Include="RM_MapComponent_WarmGround.cs" />
+    <Compile Include="RM_TreasureConscienceDef.cs" />
+    <Compile Include="RM_Patch_TreasureSaleConscience.cs" />
+    <Compile Include="RM_IngestionOutcomeDoer_AgeReversal.cs" />
+    <Compile Include="RM_HediffComp_HealPermanentWounds.cs" />
+    <Compile Include="RM_HediffComp_SunlightScald.cs" />
+    <Compile Include="RM_Patch_LivePrepViability.cs" />
   </ItemGroup>
 
   <ItemGroup>

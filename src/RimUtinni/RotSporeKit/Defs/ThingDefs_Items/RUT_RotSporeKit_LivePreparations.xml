@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ════════════════════════════════════════════════════════════════════════
+    ROT_LIVE_PREPARATIONS_1 — the eight live preparations (M4, bans 4).
+    Three teas, four symbionts, one export payload.
+
+    BAN 4 IS ENFORCED BY THE ENGINE, NOT BY DISCIPLINE. Every def in this
+    file carries BOTH:
+
+      CompProperties_TemperatureRuinable  minSafeTemperature 8 °C — a fridge
+        RUINS it. (VERIFIED this pass: RimWorld/CompTemperatureRuinable.cs
+        adds ruinedPercent whenever AmbientTemperature < minSafeTemperature,
+        broadcasts RuinedByTemperature at 100%, and renders the "Freezing:
+        n%" inspect line for free.) maxSafeTemperature is left at vanilla's
+        100 °C default: heat is not the threat the sheet describes.
+      CompProperties_Lifespan             lifespanTicks 150000 — 2.5 in-game
+        days (60,000 ticks/day), then it is gone. Delay kills.
+
+    Both are VANILLA comps on purpose. The obvious build was an RM_ subclass
+    carrying the strict/lenient threshold, but mandrake.rm.environmentalhazards
+    is not in the live mod list (ENVHAZARDS_NEVER_ACTIVATED_1), a
+    MayRequire'd <li> would simply drop, and the teas would quietly become
+    storable — ban 4 defeated by a mod-list decision nobody connected to it.
+    With vanilla comps the ban holds on any install at all, and the lenient
+    OPTION is a patch in that mod on top (RM_Patch_LivePrepViability).
+
+    tickerType Rare on every def: both comps tick through CompTickRare, and
+    without it neither clock runs at all.
+
+    MODEXTENSIONS, both MayRequire'd on the <li> (never on a def or an
+    Operation — kit law):
+      RM_LivePrepExtension      the live-prep tag. Read by the lenient
+                                option, and by selftest_live_prep.py, which
+                                FAILS if a def carrying it lacks either comp
+                                above — the linter this ticket demands.
+      RM_TreasureMarkerExtension  owner card 6: selling this is "selling a
+                                part of yourself". The tag is matched by
+                                RUT_RotTreasureConscience (Defs/Misc/).
+
+    SCARCITY (card 1: "darned hard to obtain even with pilgrimage"):
+    stackLimit 5, one brew per bill, six ingredient units per brew against a
+    plant harvestYield of 3. MarketValue is high and tradeability Sellable
+    precisely so card 6's conscience has something to bite on — a treasure
+    nobody would sell is not a temptation.
+
+    ART OWED: every texPath here is a PLACEHOLDER reusing already-shipped
+    RotSporeKit item art. Bespoke sprites owed for all eight.
+    ════════════════════════════════════════════════════════════════════════
+  -->
+
+  <!-- ══════════════════ TEA 1 — AGE REVERSAL (owner card 1) ══════════════════
+       5 biological years on the first cup, capped at adult, and a pawn can
+       benefit only once per year. All three clauses live in the doer's
+       fields below; satedDurationTicks 3600000 = 60,000 ticks/day x 60 days
+       = one in-game year. The doer is MayRequire'd, so without
+       environmentalhazards this is an inert (but still perishable) cup
+       rather than a load error.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Tea_AgeReversal</defName>
+    <label>ageless brew</label>
+    <description>A thin, faintly warm liquor pressed from ageless cap flesh within minutes of cutting it. Drunk fresh, it unpicks years of accumulated damage in a single afternoon — and then the body is saturated, and will take nothing more from it for a year. Nobody has ever managed to carry a cup home.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>820</MarketValue>
+      <Mass>0.3</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Liquor</foodType>
+      <baseIngestTicks>300</baseIngestTicks>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <humanlikeOnly>true</humanlikeOnly>
+      <outcomeDoers>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_IngestionOutcomeDoer_AgeReversal" MayRequire="mandrake.rm.environmentalhazards">
+          <yearsReversed>5</yearsReversed>
+          <satedHediff>RUT_AgeReversalSated</satedHediff>
+          <satedDurationTicks>3600000</satedDurationTicks>
+          <humanlikeOnly>true</humanlikeOnly>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ TEA 2 — BIOREGENERATION ══════════════════
+       Grants RUT_Bioregenerating (5 days, one permanent wound or chronic
+       condition per day). The healing comp is on the HEDIFF, not here.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Tea_Bioregeneration</defName>
+    <label>regenerant brew</label>
+    <description>Veil tissue steeped just short of boiling, so the cells survive the cup. For a few days afterward the drinker's body treats every old injury as new work in progress, and finishes it properly.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_B</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>640</MarketValue>
+      <Mass>0.3</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Liquor</foodType>
+      <baseIngestTicks>300</baseIngestTicks>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_Bioregenerating</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ TEA 3 — THE PLEASURE BREW ══════════════════
+       PURE XML, as the spec requires: chemical joy from the ingestible
+       block, and the strong short thought via specialThoughtDirect (the
+       vanilla field for "eating this gives this memory" — there is no
+       vanilla IngestionOutcomeDoer that gives a thought, verified this
+       pass: the six shipped doers are GiveHediff, OffsetNeed,
+       OffsetPsyfocus, OffsetHemogen, Psilocap and UseThing).
+       No CompProperties_Drug and no chemical: it cannot be stockpiled,
+       cannot be put in a drug policy, and dies in two days, so it can never
+       become a habit in the mechanical sense. Nothing to be addicted to.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Tea_Pleasure</defName>
+    <label>euphoric crown brew</label>
+    <description>The crown's cap wrung out over heat into half a cup of something that smells like a remembered summer. It is the most straightforwardly wonderful thing on this planet and it is gone by the day after tomorrow.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Drug/Ambrosyx</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>310</MarketValue>
+      <Mass>0.3</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Liquor</foodType>
+      <baseIngestTicks>300</baseIngestTicks>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <joy>0.95</joy>
+      <joyKind>Chemical</joyKind>
+      <specialThoughtDirect>RUT_EuphoricBrewMemory</specialThoughtDirect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ SYMBIONT 1 — QUICKFLESH ══════════════════
+       "Implantation = ingesting the live symbiont item" (M4). Every
+       symbiont below is swallowed alive and gives a PERMANENT hediff — no
+       Disappears comp on any of them. The bargain is the hediff's; the item
+       just delivers it.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Symbiont_Quickflesh</defName>
+    <label>quickflesh symbiont</label>
+    <description>A palm-sized fold of living tissue, warm and slightly mobile. Swallowed, it finds the underside of the skin and settles in for good, rebuilding damage faster than any human body manages — on an appetite to match.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomLog_b</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>700</MarketValue>
+      <Mass>0.4</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <baseIngestTicks>420</baseIngestTicks>
+      <ingestCommandString>Swallow {0}</ingestCommandString>
+      <ingestReportString>Swallowing {0}.</ingestReportString>
+      <humanlikeOnly>true</humanlikeOnly>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_Sym_Quickflesh</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ SYMBIONT 2 — NIGHTWAKE ══════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Symbiont_Nightwake</defName>
+    <label>nightwake symbiont</label>
+    <description>A pale, slow-moving thread coiled in a leaf of veil tissue. It wants the base of a skull, and once it has one its host will never sleep again — nor be entirely predictable again either.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>760</MarketValue>
+      <Mass>0.4</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <baseIngestTicks>420</baseIngestTicks>
+      <ingestCommandString>Swallow {0}</ingestCommandString>
+      <ingestReportString>Swallowing {0}.</ingestReportString>
+      <humanlikeOnly>true</humanlikeOnly>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_Sym_Nightwake</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ SYMBIONT 3 — SHEENBLOOD ══════════════════
+       TWO outcome doers, because the benefit half is ticket 2's own
+       RUT_SheenSymbiosis def (the Sheen ladder's immunityHediff already
+       points at it) and the cost half is this kit's RUT_Sym_Sheenblood.
+       Both are given on the same swallow; neither is MayRequire'd because
+       both are plain vanilla GiveHediff doers naming defs in this mod and
+       the Sheen ticket's.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Symbiont_Sheenblood</defName>
+    <label>sheenblood symbiont</label>
+    <description>A bead of the Rot's own reproductive tissue, kept alive in a drop of its own sleet. Swallowing it is the formal act of giving up: the Sheen stops treating the host as material. The sun, which the Rot has never met, is a different matter.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_B</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>880</MarketValue>
+      <Mass>0.4</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <baseIngestTicks>420</baseIngestTicks>
+      <ingestCommandString>Swallow {0}</ingestCommandString>
+      <ingestReportString>Swallowing {0}.</ingestReportString>
+      <humanlikeOnly>true</humanlikeOnly>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_SheenSymbiosis</hediffDef>
+          <severity>1</severity>
+        </li>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_Sym_Sheenblood</hediffDef>
+          <severity>0.01</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ SYMBIONT 4 — MYCOID (Slime export) ══════════════════
+       the_slime.md's slimification-resistance symbiote. Ships the ITEM and
+       the marker hediff; the resistance EFFECT is the Slime kit's own to
+       wire ("ship the items, let the Slime kit wire the effects"). Nothing
+       here reads RUT_Sym_Mycoid — that is correct and deliberate, not an
+       omission.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RUT_Symbiont_Mycoid</defName>
+    <label>mycoid symbiont</label>
+    <description>A dense grey button of gut-wall fungus, bred for a job that has nothing to do with this biome. It is worth what it is worth because of somewhere else — a place where being digested is the local weather.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>540</MarketValue>
+      <Mass>0.4</Mass>
+      <DeteriorationRate>8</DeteriorationRate>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <baseIngestTicks>420</baseIngestTicks>
+      <ingestCommandString>Swallow {0}</ingestCommandString>
+      <ingestReportString>Swallowing {0}.</ingestReportString>
+      <humanlikeOnly>true</humanlikeOnly>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_Sym_Mycoid</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════ THE TOXIC INJECTION (Slime export) ══════════════════
+       "The intentionally toxic injection is a live-prep item whose only
+       consumer is the Slime kit — ship the items, let the Slime kit wire
+       the effects." So this is an INERT PAYLOAD: no outcomeDoers, no
+       ingestible block at all, no hediff. It is a thing you can brew, carry
+       for two days and hand to a mechanism that does not exist yet.
+       Deliberately NOT given a guessed toxic effect: that would be building
+       the Slime's half of a mechanic nobody has ruled on.
+       It is still a live prep (both comps, both clocks) and still a Rot
+       treasure for card 6.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LivePrep_ToxicInjection</defName>
+    <label>toxic injection</label>
+    <description>A loaded gut-bladder of something the grove makes when it is being spiteful, kept alive because dead it is merely unpleasant. What it is actually for is not a question this biome answers.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>5</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>420</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>8</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
