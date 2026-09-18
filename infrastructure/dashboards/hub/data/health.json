@@ -1,30 +1,81 @@
 {
- "generatedAt": "2026-09-18T16:56:00Z",
+ "generatedAt": "2026-09-18T17:11:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 706896,
-  "sha256_12": "46b80cba888f"
+  "bytes": 669062,
+  "sha256_12": "75327b87fa3d"
  },
- "head": "ccf00b248",
+ "head": "1fe5e9e0a",
  "counts": {
-  "red": 0,
-  "blue": 0,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 2997,
-  "total": 2997
+  "red": 29,
+  "blue": 804,
+  "green": 1797,
+  "grey": 371,
+  "unmeasured": 0,
+  "total": 3001
  },
  "loc": {
-  "red": 0,
-  "blue": 0,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 1011380,
-  "total": 1011380
+  "red": 12066,
+  "blue": 320357,
+  "green": 591319,
+  "grey": 90616,
+  "unmeasured": 0,
+  "total": 1014358
  },
  "reviewEntries": 2943,
- "recidivists": [],
+ "recidivists": [
+  {
+   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
+   "loc": 122,
+   "cycles": 5
+  },
+  {
+   "path": "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs",
+   "loc": 126,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml",
+   "loc": 1062,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+   "loc": 486,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml",
+   "loc": 411,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml",
+   "loc": 372,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimMandrake/Inhabited/Defs/PlaceDefs/Places_Inhabited.xml",
+   "loc": 139,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
+   "loc": 134,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimMandrake/RimProperty/Source/PropertyTuning.cs",
+   "loc": 100,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/ShipShields/About/About.xml",
+   "loc": 81,
+   "cycles": 2
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read; the rimflow ledger could not be replayed (LedgerError: /mnt/d/Luke/dev/Rimworld/infrastructure/state/ledger/events.jsonl line 9271 is not valid JSON (Expecting value: line 1 column 1 (char 0)). The ledger is append-only, so this is almost certainly a torn write \u2014 do NOT edit around it by hand. Use src/RimMandrake/Utils/repair_torn_ledger.py (dry run by default; --apply --owner-said \"\u2026\" to write) \u2014 it removes ONLY lines that fail to parse, backs up first to Transient/, and refuses past a sanity cap of bad lines. Then commit and push the repaired file deliberately.) \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "measurementOk": true,
+ "headline": "OK: measured 3001 files (1797 clean, 371 dirty, 0 unmeasured)."
 }
