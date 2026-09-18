@@ -30,7 +30,7 @@ suppression.
 
 - `CAVERNS_PARITY_BUILD_1` (BENCH, doing) — build LANDED at `cd88cd08c`+`f0becf6f9`
   (donor-free defs, DLL clean, incident suppression, KotOR twin injector,
-  regression guard). NEXT, in order: (1) queue the 26 art jobs
+  regression guard). NEXT: in order, (1) queue the 26 art jobs
   (`src/RimUtinni/LanternDeeps/ART_JOBS.md`) through the artpipe — NOT yet queued;
   (2) shutdown-window deploy of the whole mod + drop the DEPLOY_HOLD lines;
   (3) dump refresh rides that restart (marker armed); (4) quicktest that ENTERS a
@@ -40,37 +40,46 @@ suppression.
   owner's actual CUT ruling retires Biomes! Caverns and the MapComponent_CaveFungus
   crash dies everywhere.
 - `WORLDMAP_DOCS_PASS_1` (BENCH, doing) — 15+ rulings landed in docs and ledger.
-  Remaining: (a) the landmark review sheet (owner picked sheet-based curation;
+  NEXT: (a) the landmark review sheet (owner picked sheet-based curation;
   BIOME_LANDMARK_REFINEMENT_1, use review-sheets skill, 8 dense biomes);
   (b) REGIONS_THAT_LIE re-audit against today's world, then card only still-true
   rows; (c) residual stale-directive rows in
   `Transient/worldmap_docs_pass_agenda_2026-09-18.md` (41 found, the decision-grade
   ones ruled; the mechanical strikes can be swept).
 - `RESEARCH_TRIO_RETIRE_1` (FOUNDRY, unblocked) — route RULED (port the 4 ruled
-  projects, retire the trio); full execution spec is on the item. Briefing:
+  projects, retire the trio). NEXT: FOUNDRY executes the spec on the item. Briefing:
   `Transient/research_trio_briefing_2026-09-18.md`.
-- For FOUNDRY, filed this session: `WALK_FEATURE_KEY_1` (walk model ruled),
+- For FOUNDRY, filed this session (NEXT: each is claimable as filed, specs on the items): `WALK_FEATURE_KEY_1` (walk model ruled),
   `WORLDGEN_CLICK_RECONCILE_1` (verify the 09-12 save against gate docs),
   `FULL_LOAD_RESIDUE_TRIAGE_1` (RSW patchfails ×10, RSW_*Juv config errors ×42,
   TYR Scribe refs ×10 — evidence files in Transient), `VGE_CENSUS_PORT_CUT_1`,
-  `TREE_TRIO_RETIRE_1` (gated on jungle/forest regen), `CAVERNS_PARITY_BUILD_1`
-  spawned `BITTERLEAF`-lore already recorded in the world definition.
+  `TREE_TRIO_RETIRE_1` (gated on jungle/forest regen). Bitterleaf's
+  island-prison-colony lore is already recorded in the world definition —
+  no item needed.
 
-## Traps learned (all in LESSONS_INBOX)
+## Traps learned
 
 - **Full-tree `deploy_custom_mods.py` plan reported FlowWorks "in sync" while 4
   files drifted** — the drift carried the water-terrain bug into a full load.
-  Re-plan per-mod before trusting a full-tree "in sync".
+  Re-plan per-mod before trusting a full-tree "in sync" (filed: LESSONS_INBOX).
 - **`--mod X --apply` syncs the WHOLE mod** — the Maguana apply carried the peer
   window's undeployed Pufferpig/Qormot/Ronto bestiary WIP to the game folder
-  (275 files where ~8 were mine). Read the plan and count files first.
+  (275 files where ~8 were mine). Read the plan and count files first (filed: LESSONS_INBOX).
 - `jawa/world_neighbors` takes `path` = an OUTPUT FILE and dumps the whole
-  adjacency CSV (a stray file named "17007" exists somewhere from a mis-call).
+  adjacency CSV — a stray file named "17007" exists from a mis-call (see: rimworld-world-editing skill section 6, the two-signatures note).
 - index.lock storms: the peer window commits in bursts; a retry loop without a
   real sleep (plain `sleep` is blocked; use `python3 -c "import time..."`) burns
-  itself out in ms. A 0-byte lock >90s old with `pgrep git` empty is stale.
+  itself out in ms. A 0-byte lock >90s old with `pgrep git` empty is stale (see: this handoff; recurred 4x in one sitting).
 - The proposals-suite memory said "none ruled" — it was written the day BEFORE the
-  review; the suite is FULLY RULED 2026-09-02 (memory corrected).
+  review; the suite is FULLY RULED 2026-09-02 (filed: memory proposals-suite-2026-08-31.md, corrected in place).
+
+## Filed and still open — the next seat's queue
+
+- `CAVERNS_PARITY_BUILD_1` · `WORLDMAP_DOCS_PASS_1` (both BENCH, half-done above)
+- `RESEARCH_TRIO_RETIRE_1` · `WALK_FEATURE_KEY_1` · `WORLDGEN_CLICK_RECONCILE_1` ·
+  `FULL_LOAD_RESIDUE_TRIAGE_1` · `VGE_CENSUS_PORT_CUT_1` · `TREE_TRIO_RETIRE_1` ·
+  `BIOME_LANDMARK_REFINEMENT_1` (sheet ordered) — all FOUNDRY/BENCH per their files
+
 
 ## Closed since the last handoff (14)
 
@@ -85,7 +94,17 @@ UI_SHELL_SLICE_BUILD_1. Also unblocked: WEAPONS_DONOR_RETIREMENT_1 (kotorcore
 dep caveat noted), LIVESTOCK_STARTER_TRIO_1 (richer moornak owed),
 DESERT_WRAPS_ART_COMMISSION_1 (pick landed 09-10, matrix buildable).
 
-## Game and bridge state — read before touching the game
+## Commits
+
+```
+44f41d160 LESSONS: session lines
+a27de427e BENCH handoff 202609181226 + derived state sync
+ce9682702..f0becf6f9  caverns parity build, incident suppression, Maguana port
+94eff3de5..4b0b100a8  worldmap pass rulings, roads, Bitterleaf, decay sweep closes
+cb54695c7..1fe5e9e0a  wake repairs, modlist sitting, deferred cards
+```
+
+## Game / bridge / tree state at wrap
 
 - **Game UP** on the full 635 list, **his campaign save
   `CANONICAL_ASHKARR_START_2026-09-12.rws` is LOADED over the bridge** (loaded
