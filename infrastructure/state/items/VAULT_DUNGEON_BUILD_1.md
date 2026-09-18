@@ -459,3 +459,62 @@ honest state is that everything FOUNDRY can build offline for this item is
 built and re-confirmed clean; what remains is bridge-gated (Type-2 proof, V5
 placement) or owner-gated (hand-finish, dialogue). Nothing invented or
 padded to make this pass look bigger than it was.
+
+## 2026-09-18 (FOUNDRY) — MINIMAL-list regression found and fixed, fresh live re-proof
+
+Picked up as a fresh task brief that assumed the three templates still
+needed building — **wrong, checked first**: they were fully built and
+quicktest-proven 2026-09-02/06 and re-confirmed clean every pass since.
+🔴 **Correction to that brief**: it proposed 300×300 as a "provisional"
+LARGE quicktest size — that number was already superseded by the owner's
+own **325×325** ruling (2026-09-01, spec §3.9) before this pass started;
+not re-litigated, just flagged so it isn't repeated.
+
+**Real regression found and fixed**: `infrastructure/state/modlists/
+ModsConfig.MINIMAL.xml` still named the dead packageId
+`mandrake.rut.vaultdungeons` — absorbed into `StructureInjectionsRUT`
+(`mandrake.rut.injections`) back on 2026-09-09. Every MINIMAL-list restart
+since then silently tested **zero vault content** while reporting a clean
+load. Fixed: swapped in `mandrake.rut.injections` plus its own
+`mandrake.rm.injections` dependency (the GenStep_RimplacePlan engine mod,
+no deps of its own). Commit content confirmed on `origin/main` as
+`c2e8ad4ca` (hash was rewritten mid-rebase by the heavy concurrent repo
+activity tonight — several other FOUNDRY passes were committing at the
+same time; content is what matters and it landed correctly).
+
+**Live re-proof this pass** (bridge taken, backed up the exact live
+ModsConfig.xml first since the stored `FULL.LATEST` snapshot was already
+one mod stale against the true live 634, MINIMAL restart on the corrected
+list, all three templates placed via `jawa/kcsg_place`, screenshotted,
+restored to the real 634-mod list afterward and md5-verified byte-identical
+to the pre-swap backup, bridge released):
+
+- **Type 1** (mechanoid garrison) — **PASS**. Outer wall ring, garrison band
+  with guardian pawns and turrets, core with loot items, core wall with its
+  own offset door, no floating pieces, no straight-line skip of the ring.
+- **Type 3** (frozen Rakata) — **PASS**. Outer/core wall rings with offset
+  doors, 4 caskets + `RUT_VaultHeart` in the core, garrison band
+  deliberately near-empty per the "near-silence" design.
+- **Type 2** (flesh weapon loose) — reproduces the **known 2026-09-06 gap,
+  unchanged**: `Flesh` terrain paints correctly but the walls/guardians/
+  wreckage grid is silently absent, because its third-party symbol source
+  mods (Alpha Animals' `AA_BlackJellyWall`/`AA_GreenGoo`, VFE Insectoids 2's
+  `VFEI2_InfestedShipPart`/`Chunk`, GravTech's turrets) still aren't on the
+  MINIMAL list. Confirmed a test-scope gap, not a template defect — those
+  mods ARE active in the owner's real 634-mod list. **Did not chase adding
+  them this pass** — same call three prior passes made: transitive-
+  dependency cascade risk for a check that only re-confirms an
+  already-proven pattern (Type 1's guardians, Type 3's caskets/turrets).
+
+Screenshots: `Transient/vault_quicktest_2026-09-18/`.
+
+**Still correctly held for the owner, unchanged**: all six real-site
+hand-finish passes, wake/loot/leave dialogue reconciliation against
+`dungeons_arc_spec.md` §3.10's owner-accepted text
+(`VAULT_THAW_QUEST_FAMILY_1`'s own file), Type-2's live third-party-symbol
+proof, V5's landmark placement on tile 37. Neither `mandrake.rut.injections`
+nor `mandrake.rut.utinnipatches` is ACTIVE in the owner's live `ModsConfig`
+right now (informational only, unchanged from the 2026-09-17 earlier-today
+finding — enabling mods is a live/ModsConfig decision outside this pass).
+
+Staying `doing` per this item's own "Watch out" section.
