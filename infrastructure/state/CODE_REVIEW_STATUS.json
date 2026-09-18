@@ -15346,10 +15346,10 @@
     "sha": "d9ff62d8"
   },
   "src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "f573abba763b79c8637cf895e9c07c5d187645513500a795482a08092d6d79fe",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "2b131a435ecd8be628788e8f4911eac1ff1f7fc88c5bfa2f515a4c5615245fc8",
+    "sha": "59173f610"
   },
   "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml": {
     "cleanCount": 1,
@@ -15508,16 +15508,16 @@
     "sha": "0afdb147c"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "ed883e63d6ca30e1351543e732f2074431dedd30054b5f80dce6097fabec87f8",
-    "sha": "b62604fad"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "ab41fd7831c29b128a7be1cd048585af9d914119008190ac26a4158ffff87a23",
+    "sha": "59173f610"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VaporDrifter_AerofleetWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "beca4f96c703b58fd6bf07ba284f2c6da1bae1433692fadf992b0b6a210f44e0",
-    "sha": "0cdbc22b8"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "b544f58562da22f06fd35e2e28659aebdb03612b1720c7064cba0506683a3a5e",
+    "sha": "59173f610"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml": {
     "cleanCount": 1,
