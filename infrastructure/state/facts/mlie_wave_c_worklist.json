@@ -15,28 +15,13 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 71,
+  "remaining_worklist_count": 68,
   "remaining_worklist": [
     {
       "donor_defName": "Fambaa",
       "biomes": [
         "BiomeCypreJungle",
         "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "FeralNerf",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "FrilledGorg",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -289,13 +274,6 @@
       "donor_defName": "Neebray",
       "biomes": [
         "PoisonForest"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Nerf",
-      "biomes": [
-        "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -585,5 +563,10 @@
     "Falumpaset",
     "Fanback",
     "FeralGrazer"
+  ],
+  "ported_and_wired_this_pass_2026-09-17_batch8": [
+    "FeralNerf",
+    "Nerf",
+    "FrilledGorg"
   ]
 }
