@@ -182,3 +182,38 @@ correctly left alone.
 re-run). `## criteria` remains entirely unchecked — no live signal fired, no
 letter seen, no casket opened under quest control — so this is **not**
 closeable this pass. Left `doing`.
+
+## 2026-09-18 (FOUNDRY, second pass same day) — re-verify, no new build
+
+Picked this item up again shortly after the pass immediately above. Found no
+undone offline work: re-read the full design doc
+(`design/Jawa/worldbuilding/vault_thaw_quest_family.md`) end to end — §5
+findings #2-4 stay proposed-not-built per the 2026-09-01 owner ruling against
+writing C# ahead of a go-ahead, and "per-site hand-finish" (V5's landmark
+etc.) is `VAULT_DUNGEON_BUILD_1` §3.9 scope, not this item's. So this pass
+re-verified rather than re-did:
+
+- `gen_vault_quests.py` regenerated → `git status --porcelain` on
+  `Defs/VaultDungeons/` shows **0 diff**: `RUT_VaultThaw.xml`,
+  `SitePartDefs_Vaults.xml`, `IncidentDefs_Vaults.xml`,
+  `HistoryEventDefs_Vaults.xml` all byte-identical to committed.
+- `validate_quest.py --dir` on the 8 QuestScriptDefs: identical **8
+  errors / 6 warnings** to every prior run — same V6 casket-signal-suffix
+  false positive, same `woken.`/`helix.` raid-tag warnings, same
+  `RUT_VaultClaimConflict` no-Fail warning. No new finding.
+
+**One material change since the pass above, worth flagging rather than
+acting on**: live `ModsConfig.xml` now lists `mandrake.rut.injections` as
+**active** (632 active mods, parsed via `ElementTree`, not a `<li>` grep) —
+the blocker recorded two sections up ("not active … needs a restart") may no
+longer hold. `infrastructure/state/BRIDGE` also now reads **FREE, released by
+BENCH 2026-09-18T22:07:19Z**. I did not act on either: this pass was scoped
+offline-only (quest/def authoring, no bridge), and a `ModsConfig.xml` entry
+describes the *next* load, not necessarily what a currently-running game
+process has loaded — so whether the two owed quicktests
+(`RUT_GiveQuest_VaultThaw_V6_Umbra`, `_V1_RustCathedral`) can fire right now
+without a restart is still unconfirmed, just newly plausible. Whoever takes
+the bridge next on this item: check that before assuming a restart is owed.
+
+**Status unchanged**: `## criteria` entirely unchecked, no live signal fired.
+Left `doing`.
