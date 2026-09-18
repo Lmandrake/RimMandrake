@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 125.5073525849948,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 125.5073525849948,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "alientree_v2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789714969,
+    "primary_used_percent": 14.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/17/rollout-2026-09-17T21-31-32-01a0b2c8-b3b6-77c0-bca5-34344183d86c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 49.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789624299,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/16/rollout-2026-09-16T22-06-00-01a0adc1-e3a1-7092-ad31-f282b4b4be9c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "alientree_v2",
+    "note": "Generated with built-in imagegen; preserved true alpha and normalized the render to exactly 1024x1024. No backdrop, ground shadow, or hard black outline.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\alientree_v2\\alientree_v2.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/alientree_v2/alientree_v2.png\n    1024x1024  rgba  1,410,471 bytes  (124s)\n"
+}

@@ -6,7 +6,7 @@
  "GR_Mantistanis": 3.5,
  "RUT_FireHawk": 1.1,
  "RUT_FurnaceBeast": 3.2,
- "generatedBy": "ART_QUEUE_DRAWSIZE_BACKFILL_1 v5 (+donor SWAC pawnkinds)",
+ "generatedBy": "ART_QUEUE_DRAWSIZE_BACKFILL_1 v5 (+donor SWAC pawnkinds) + FLORA_LEGIBILITY_BAR_1 hand-fix (alientree family: was resolving to the WRONG, purged donor defName AA_AlienTree instead of the shipped AB_AlienTree/_Polluted/HalfAlienTree; drawsize now sourced from the frozen flora_assignment_register.decisions.json)",
  "rule": "PawnKindDef lifeStages bodyGraphicData drawSize (adult) > ThingDef graphicData; class from plant/category/race; absent=1.0",
  "sizebin_ds_rule": {
   "huge": 2.2,
@@ -77,21 +77,21 @@
   },
   "alientree": {
    "class": "flora",
-   "defName": "AA_AlienTree",
-   "drawsize": 1.0,
-   "ds_source": "default-1.0"
+   "defName": "AB_AlienTree",
+   "drawsize": 5.0,
+   "ds_source": "flora-register-note-cells:5 (sizeBin large superseded by the owner-written note; flora:the_contagion:AB_AlienTree)"
   },
   "alientreepolluted": {
    "class": "flora",
-   "defName": "AA_AlienTree",
-   "drawsize": 1.0,
-   "ds_source": "default-1.0"
+   "defName": "AB_AlienTree_Polluted",
+   "drawsize": 1.6,
+   "ds_source": "flora-sizebin:large (flora:the_contagion:AB_AlienTree_Polluted)"
   },
   "ambrosia": {
    "class": "flora",
-   "defName": "AA_Heat_Ambrosia",
+   "defName": "Plant_Ambrosia",
    "drawsize": 1.0,
-   "ds_source": "default-1.0"
+   "ds_source": "flora-sizebin:medium (flora:weeping_stones:Plant_Ambrosia)"
   },
   "anooba": {
    "class": "creature",
@@ -381,6 +381,12 @@
    "drawsize": 1.6,
    "ds_source": "flora-sizebin:large"
   },
+  "gizka": {
+   "class": "creature",
+   "defName": "Gizka",
+   "drawsize": 0.87,
+   "ds_source": "donor-pawnkind-xml SWAC 3497316713 adult"
+  },
   "globularplant": {
    "class": "flora",
    "defName": "AB_GlobularPlant",
@@ -455,9 +461,9 @@
   },
   "halfalientree": {
    "class": "flora",
-   "defName": "AA_AlienTree",
-   "drawsize": 1.0,
-   "ds_source": "default-1.0"
+   "defName": "AB_HalfAlienTree",
+   "drawsize": 5.0,
+   "ds_source": "flora-register-note-cells:5 (sizeBin large superseded by the owner-written note; flora:the_contagion:AB_HalfAlienTree)"
   },
   "hardygrass": {
    "class": "flora",
@@ -1015,12 +1021,6 @@
    "class": "creature",
    "defName": "Zeer",
    "drawsize": 4.0,
-   "ds_source": "donor-pawnkind-xml SWAC 3497316713 adult"
-  },
-  "gizka": {
-   "class": "creature",
-   "defName": "Gizka",
-   "drawsize": 0.87,
    "ds_source": "donor-pawnkind-xml SWAC 3497316713 adult"
   }
  },

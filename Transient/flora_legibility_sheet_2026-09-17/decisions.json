@@ -1,0 +1,664 @@
+{
+ "decisions": {
+  "jogantree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "hubbagourd_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "globularplant_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "healroot_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "poisonplanttallgrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "iashiphus_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tinklegrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantstikehr_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "hardygrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "arpeau_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "poxsorghum_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantseptimum_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "lilacbeacon_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "gargantuanlithops_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantleaf_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "ripthorn_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "firevine_fireweed_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "ravennettle_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "largeslimytree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "gutterplantain_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "redplantstall_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "slimyfern_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "sewerreed_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "magmacactus_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "primordialtallgrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "aaklac_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "creepstern_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bush_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "firevinetree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "slimytree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "sagecrust_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "slimecasia_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bloddle_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "toxicivy_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "agariluxprime_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "chakroot_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "twistingthorngrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "wildrashroot_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "gomphoeria_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "halfalientree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "crimsoncushion_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "graygrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "mangrovetree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "agaricusdomecap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantgamma_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tumorbulbhyacinth_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "glowinggrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "heatsinkfungus_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantagaritox_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "greylady_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "snaketails_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "aridgrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "abtoxigrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "brambles_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "dribblingcap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bryolux_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "mangrovepalm_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bubblespore_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "firelavender_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "rainbowtongue_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "hydenocktree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "witchesoyster_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "flakespirefungus_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "martyr_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "parasiticmangrove_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "redbugloss_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tanglerootmangrove_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "arbuscularmycorrhiza_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "shinecap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bloodbouquet_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "glowstool_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "jungletree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "pusmelon_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "redleaves_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "rimenodules_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "primordialgrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "wildradagast_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "shrublow_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tropicalchokevine_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "giantagarilux_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "keeningcordax_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "mujafruit_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "alientree_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "twistingthornwood_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "doomsprout_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "recurvedstropharia_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "alientreepolluted_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "scorchedstars_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "nogtyl_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "toxicgamma_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "eclipsusleaves_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "frostleaf_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "toxipotato_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tallslimygrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bindweed_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tangletea_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "dervish_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "tooketrap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "glowingagarilux_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "reeds_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "skulltop_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "greenrockfern_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "grimmoss_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "fruitingbodies_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "eclipsusflower_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "gianttoxicflower_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "rgtoxigrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "talltoxigrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "poisonshrub_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "agarilux_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "aliengrass_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "violetwimple_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "crystalflower_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "toxibulb_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "crimsoncap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "ambrosia_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "bleedingtooth_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "crystalhorn_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "felucianglowspore_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "weepingtoxberry_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "dewshrooms_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "wrinklecap_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "twisteddandelion_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "sugarfamewort_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "nuitae_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "mortalmorel_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "brightbells_v1": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "probe_Plant_Grass": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "probe_Plant_Bush": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "probe_Plant_Agave": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "probe_Plant_TreeBirch": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  },
+  "probe_Plant_TreeOak": {
+   "decision": "works",
+   "prefill": "works",
+   "note": ""
+  }
+ }
+}
