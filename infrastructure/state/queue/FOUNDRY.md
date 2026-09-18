@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T00:34:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T00:40:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -792,6 +792,15 @@ kind:     task
 summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
 prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 
+## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
+prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
+
 ## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
 state:    doing
 row:      unassigned
@@ -1533,6 +1542,16 @@ blocked:  Own spec's Watch-out: 'Depends on LIQUID_REGISTRY_CORE_1 (bottles are 
 summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
 prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 
+## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  Own spec's Watch-out: 'Depends on LIQUID_BOTTLE_LOOP_1.' Verified this session: LIQUID_REGISTRY_CORE_1 now has 10 v1 LiquidDef rows (RM_LiquidDefRegistry.xml) and the distillable flag (six water-family rows true, matches WRECKED_DISTILLATION_MODULE_1's list), but generate_liquid_suite.py has NO bottle-ThingDef emission function (only build_terrain_xml/build_compat_patch/build_liquiddef_xml exist) -- only Chemfuel's row sets a bottled{} slot, adopting the vanilla item; every water-family row's bottled slot is still null. So no RM_Bottle<Liquid> defName exists anywhere in the repo to register as a DBH drinkable, and this item's own DBH-registration patch would target nothing -- exactly the 'a patch that matches nothing logs nothing' trap its own Watch-out warns against, and its own verify text requires checking the landed LIVE def, which cannot exist. LIQUID_BOTTLE_LOOP_1 (blocked this session on the same root cause, 30880dca5) is upstream of me, not LIQUID_REGISTRY_CORE_1 directly -- rows exist now, bottles still do not. (on LIQUID_BOTTLE_LOOP_1)
+summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
+prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
+
 ## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1634,16 +1653,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Four slime rows: RED, GREEN, WHITE as distinct liquids (distinct hazards +
 prose:    infrastructure/state/items/SLIME_STREAM_ROWS_1.md
-
-## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
-prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
 
 ## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
 state:    proposed
