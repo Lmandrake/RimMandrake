@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — KraytDragon creature port (Pass 14).
+  Ported from mlie.starwarsanimalcollection's `KraytDragon` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Distinct species from the ALREADY-PORTED `RSW_GreaterKraytDragon`
+  (Pass 12) — the donor ships both as separate subspecies, confirmed by
+  reading both ThingDefs directly (different body plans, stats, art).
+
+  Body: the donor's custom `KraytDragon` BodyDef needs only its tail
+  repointed to the ALREADY-PORTED Wave B `RSW_SW_Spikes` BodyPartDef and
+  `RSW_SWTailAttackTool` BodyPartGroupDef (the same tail
+  RSW_GreaterKraytDragon already uses) — every other part vanilla Core
+  (Head/Skull/Brain/Eye/Nose/AnimalJaw, Leg/Foot/Paw). Ported as
+  RSW_KraytDragon (RSW_MlieWaveC_Bodies.xml).
+
+  Resources: `leatherDef` (`Leather_KraytDragon`) and `specificMeatDef`
+  (`Krayt_Meat`) BOTH ALREADY EXIST as `RSW_Leather_KraytDragon`/
+  `RSW_Krayt_Meat` — ported for GreaterKraytDragon (Pass 12), which shares
+  the exact same 2 donor resource defNames, confirmed against both
+  species' own ThingDef XML directly, not assumed — no new leather/meat
+  needed. 2 new eggs (RSW_EggKraytDragonFertilized/UnFertilized, texPath
+  swresource/EggSpiked — ALREADY EXTRACTED, Pass 12, reused unchanged) and
+  its own butcher-body-part trophy (RSW_KraytDragonSkull, texPath
+  swresource/Trophies/KraytDragonSkull, newly extracted this pass,
+  distinct from GreaterKraytDragon's own RSW_KraytPearl trophy). All in
+  RSW_MlieWaveC_Resources.xml. The donor's own `KraytDragonHorn` trophy
+  (used only by 2 generic crafting recipes, not by this species' own
+  butcherBodyPart) is left unported — out of scope, same as the recipe
+  system generally.
+
+  Ability: `<race><specialTrainables>` AND PawnKindDef `<abilities>` both
+  reference `SW_Calamity`, ALREADY PORTED (Pass 12, `RSW_SW_Calamity`) —
+  repointed directly, same dual wiring GreaterKraytDragon/Fambaa/Horax use,
+  no new ability port needed.
+
+  🔑 **canCrossBreedWith updated on both sides, not just this file**: the
+  donor's own KraytDragon lists `KraytDragon` (itself) and `KellDragon`
+  (still unported); ported here as `RSW_KraytDragon`/`KellDragon` (self
+  repointed since this species is now ported, KellDragon left bare per
+  standing "leave pointing at still-bare donor names" precedent). Also
+  fixed the OTHER side of this relationship, flagged for exactly this
+  moment by Pass 12's own header comment: `RSW_GreaterKraytDragon.xml`'s
+  `canCrossBreedWith` bare `<li>KraytDragon</li>` repointed to
+  `<li>RSW_KraytDragon</li>` in the same pass (KellDragon there stays bare,
+  still unported).
+
+  No ArtOverride collision — a full `find src/RimStarWars -maxdepth 1
+  -iname "*ArtOverride*"` for KraytDragon-named folders found none (only
+  `GreaterKraytDragonArtOverride`, a distinct species). All art shipped
+  from SWBestiary.
+
+  Art: 12 PNGs extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) — KraytDragon_j_south/
+  east/north (3), KraytDragon_j_Dessicated (1), KraytDragon_m_south/east/
+  north (3, adult male), KraytDragon_f_south/east/north (3, adult female),
+  KraytDragon_Dessicated (1), KraytDragonSkull (1) — all confirmed non-zero
+  and PIL-openable. The donor's own `KraytDragonHorn` texture (also in the
+  bundle) was seen in the inventory listing but deliberately not extracted,
+  matching the unported-resource decision above.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (ExtremeDesert 0.15, renamed in place from the bare donor
+  row).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_KraytDragon</defName>
+    <label>krayt dragon</label>
+    <description>Krayt dragons are large, carnivorous reptiles from Tatooine, a desert planet in the galaxy's Outer Rim Territories. They come in two native subspecies and, despite their fierceness, are hunted for the valuable skulls.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>3600</MarketValue>
+      <ArmorRating_Sharp>0.60</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.99</ArmorRating_Heat>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>front left leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>front right leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>Tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggKraytDragonUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggKraytDragonFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <predator>true</predator>
+      <body>RSW_KraytDragon</body>
+      <baseHungerRate>0.55</baseHungerRate>
+      <baseBodySize>12</baseBodySize>
+      <baseHealthScale>10</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>100</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <leatherDef>RSW_Leather_KraytDragon</leatherDef>
+      <specificMeatDef>RSW_Krayt_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>RSW_KraytDragon</li>
+        <li>KellDragon</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <TemperateForest>0.0</TemperateForest>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <IceSheet>0.0</IceSheet>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.01</Tundra>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.15</ExtremeDesert>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_KraytDragon_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_KraytDragon_Death</soundDeath>
+          <soundCall>RSW_Pawn_KraytDragon_Call</soundCall>
+          <soundAngry>RSW_Pawn_KraytDragon_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_KraytDragon</defName>
+    <label>krayt dragon</label>
+    <race>RSW_KraytDragon</race>
+    <combatPower>750</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>krayt hatchling</label>
+        <labelPlural>krayt hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_j</texPath>
+          <drawSize>3.3</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_j</texPath>
+          <drawSize>3.1</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_j_Dessicated</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_m</texPath>
+          <drawSize>6.3</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_f</texPath>
+          <drawSize>6.1</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_Dessicated</texPath>
+          <drawSize>6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_m</texPath>
+          <drawSize>8.3</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_f</texPath>
+          <drawSize>8.1</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KraytDragon/KraytDragon_Dessicated</texPath>
+          <drawSize>8</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>RSW_KraytDragonSkull</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

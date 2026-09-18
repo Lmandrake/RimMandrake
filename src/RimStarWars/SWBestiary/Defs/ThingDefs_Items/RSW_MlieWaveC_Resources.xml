@@ -1634,4 +1634,142 @@
       <MarketValue>30.0</MarketValue>
     </statBases>
   </ThingDef>
+<!-- Pass 14 (2026-09-18): KraytDragon needs its own butcher-body-part trophy
+  (`RSW_KraytDragonSkull`, texPath swresource/Trophies/KraytDragonSkull,
+  newly extracted this pass, `ParentName` kept as the donor's own
+  `ResourceBase`, same as RSW_HoraxMaw) and 2 eggs
+  (RSW_EggKraytDragonFertilized/UnFertilized, texPath swresource/EggSpiked —
+  ALREADY EXTRACTED, Pass 12/RSW_GreaterKraytDragon, reused unchanged;
+  `hatcherPawn` repointed to `RSW_KraytDragon`). Its `leatherDef`
+  (`Leather_KraytDragon`) and `specificMeatDef` (`Krayt_Meat`) both already
+  exist as `RSW_Leather_KraytDragon`/`RSW_Krayt_Meat` (Pass 12, ported for
+  GreaterKraytDragon which shares the same 2 donor resource defNames,
+  confirmed against both species' own ThingDef XML directly) — no new
+  leather/meat needed. The donor's own `KraytDragonHorn` trophy resource
+  (used only by 2 generic crafting recipes, `Recipes_Skull.xml`/
+  `Recipes_Ivory.xml`, not by any species' own butcherBodyPart) is left
+  unported — out of this item's fauna-geometry scope, same as the recipe
+  system generally. KowakianMonkeyLizard needs a new meat
+  (`RSW_Anthropoid_Meat`, texPath swresource/Meat_Anthropoid, newly
+  extracted this pass, `ParentName="RSW_SWanimals_RawMeatBase"` matching
+  every other Wave B/C raw-meat port) — its `leatherDef` (`Leather_Mammavian`)
+  already exists as `RSW_Leather_Mammavian` (Wave B); no eggs (not an
+  egg-layer). Klorslug's `leatherDef` (`Leather_Insectile`) and
+  `specificMeatDef` (`Insectile_Meat`) both already exist as
+  `RSW_Leather_Insectile`/`RSW_Insectile_Meat` (Pass 3, CanCell) — only its 2
+  eggs are newly ported (RSW_EggKlorslugFertilized/UnFertilized, texPath
+  swresource/EggSlick, newly extracted this pass; `hatcherPawn` repointed to
+  `RSW_Klorslug`).
+-->
+<ThingDef ParentName="ResourceBase">
+    <defName>RSW_KraytDragonSkull</defName>
+    <label>krayt dragon skull</label>
+    <description>A krayt dragon skull. Not only is it intimidating but its presence tells of a great hunt.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/KraytDragonSkull</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2300</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>6.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKraytDragonFertilized</defName>
+    <label>krayt dragon egg (fert.)</label>
+    <description>Fertilized Krayt Dragon egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(156,148,125)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_KraytDragon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKraytDragonUnFertilized</defName>
+    <label>krayt dragon egg (unfert.)</label>
+    <description>Unfertilized Krayt Dragon egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(156,148,125)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>140.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Anthropoid_Meat</defName>
+    <label>anthropoid meat</label>
+    <description>A piece of meat from a anthropoid creature.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Anthropoid</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKlorslugFertilized</defName>
+    <label>k'lor'slug egg (fert.)</label>
+    <description>A fertilized k'lor'slug egg. If all goes well, it should hatch into a baby k'lor'slug. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSlick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,200,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Klorslug</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKlorslugUnFertilized</defName>
+    <label>k'lor'slug egg (unfert.)</label>
+    <description>An unfertilized k'lor'slug egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSlick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,200,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

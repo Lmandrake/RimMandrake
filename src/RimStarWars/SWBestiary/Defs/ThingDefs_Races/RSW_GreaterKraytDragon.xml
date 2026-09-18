@@ -39,12 +39,11 @@
   `swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated` path (the same
   one the other 2 lifeStages already use), not carried over verbatim.
 
-  `canCrossBreedWith` (`KellDragon`, `KraytDragon`) is left pointing at the
-  donor's still-bare, still-unported defNames — correct while Mlie stays
-  active and those species remain installed unmodified, same pattern as
-  RSW_FeralGrazer's canCrossBreedWith (2026-09-17). Flagged here for whoever
-  ports KellDragon/KraytDragon next: rename these entries to their RSW_
-  equivalents at that point.
+  🔑 **`canCrossBreedWith` updated, Pass 14 (2026-09-18)**: `KraytDragon`
+  repointed to `RSW_KraytDragon` now that species is ported (same pass);
+  `KellDragon` stays bare, still unported, same "leave pointing at
+  still-bare donor names" precedent as RSW_FeralGrazer's canCrossBreedWith
+  (2026-09-17). Flagged here for whoever ports KellDragon next.
 
   🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
   `GreaterKraytDragonArtOverride` (mandrake.rsw.greaterkraytdragonartoverride)
@@ -178,7 +177,7 @@
       </specialTrainables>
       <canCrossBreedWith>
         <li>KellDragon</li>
-        <li>KraytDragon</li>
+        <li>RSW_KraytDragon</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>0.0</AridShrubland>
