@@ -46,9 +46,9 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
+from game_paths import LOCALLOW
 
-SCREENSHOT_DIR = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                  "RimWorld by Ludeon Studios/Screenshots")
+SCREENSHOT_DIR = os.path.join(LOCALLOW, "Screenshots")
 
 
 def connect():
@@ -328,8 +328,7 @@ def save_game(rb, name):
 
 
 def _saves_dir():
-    return ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-            "RimWorld by Ludeon Studios/Saves")
+    return os.path.join(LOCALLOW, "Saves")
 
 
 def parse_roster(s):
