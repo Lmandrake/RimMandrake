@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T03:42:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T03:49:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## GIZKA_TRIBBLE_ADAPTATION_1 Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
-prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing  (BLOCKED)
