@@ -586,6 +586,265 @@ def build_compat_patch(out_dir: Path):
     return out_path, all_targets
 
 
+# --- v1 LiquidDef registry rows (LIQUID_REGISTRY_CORE_1, design §3) --------
+# Each row is the top-level RimMandrake.FlowWorks.LiquidTypes.LiquidDef
+# instance -- the registry BENCH filed this item to build, distinct from the
+# LIQUID_ROWS terrain-suite table above (LIQUID_TYPES_MOD_1's older roster,
+# which these rows ADOPT rather than regenerate — design §2: "no terrain is
+# re-authored").
+#
+# Scope of THIS pass, and why it stops here: every hard reference below
+# resolves under "minimal list + the mod" alone (this item's own verify) --
+# vanilla Core defs (WaterShallow/Deep, WaterOceanShallow/Deep, Chemfuel,
+# AcidBurn, Frostbite) and FlowWorks' own already-shipped terrain/FluidDefs
+# (RM_AcidShallow/Deep, RM_TarShallow/Deep, RM_WaterBrine*, RM_Propane*,
+# RM_WaterBoiling*, RM_WaterFrigid*, RM_WaterPoisoned*, RM_Fluid_Water,
+# RM_Fluid_Tar). Nothing here references an optional third-party def
+# (Odyssey toxic suites, Alpha Biomes slime, VGE astrofuel) -- those need a
+# MayRequire-gated PATCH onto the row, not a hard field reference, and are
+# left for the pass that builds that adoption.
+#
+# Explicitly DEFERRED, not forgotten:
+#   - Slime RED/GREEN/WHITE/YELLOW: design §7 phase ④ ("slime streams"), its
+#     own build slice after this one (②) -- and the only always-loaded slime
+#     terrain in this mod is GelatinousSlime's RM_Slime_Liquid, a SEPARATE
+#     mod not guaranteed present under "the mod" alone; the tinted
+#     RM_Slime_<Colour> defs in ManyWaters/RM_ColoredWater.xml are
+#     MayRequire="sarg.alphabiomes" and would red-error a minimal-list load.
+#   - Blood: item-only bottled row (design §3), phase ⑤/⑥ -- no bottle
+#     ThingDef exists yet (LIQUID_BOTTLE_LOOP_1 territory).
+#   - Astrofuel: "adopts VGE" needs a soft MayRequire-gated adoption patch,
+#     not a hard bottled.bottle reference -- VGE is absent from the minimal
+#     list and a hard reference to VGE_Astrofuel* would fail the def-load
+#     verify outright.
+#   - trade/cuisineTags/conversions slots: left null across every row here.
+#     No economy numbers or cuisine-tag vocabulary were asked for by this
+#     item's own verify (row resolution), and inventing marketValue/cuisine
+#     tags now risks being wrong ahead of the Bazaar (§9) and RSW cuisine
+#     mod that actually consume them.
+#
+# worldTag convention (unruled before this pass -- WORLDMAP_LIQUID_TAGS_1
+# hasn't authored the map side yet): a row's own defName IS its worldTag, so
+# that later item can write the LiquidDef's defName straight onto a world
+# tile and resolve it with DefDatabase<LiquidDef>.GetNamed(tag). Set on the
+# three of the frozen world's four authored bodies this pass gives a full
+# row to (boiling ocean, two brine seas, propane lake -- design §3's "every
+# authored body gets at least a minimal row, or ruling 5 cannot hold").
+LIQUID_DEF_ROWS = {
+    "freshwater": {
+        "defName": "RM_Liquid_FreshWater",
+        "label": "fresh water",
+        "description": "Water, unmodified — the baseline every other row is measured against.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "WaterShallow", "deep": "WaterDeep"},
+        "canalFluid": "RM_Fluid_Water",
+        "thirstQuality": "Potable",
+    },
+    "saltwater": {
+        "defName": "RM_Liquid_SaltWater",
+        "label": "salt water",
+        "description": "The open sea — undrinkable raw, and the product most conversions start from.",
+        "viscosityClass": "Water",
+        "pH": 8,  # [INVENTED] real seawater runs ~8.1; mildly basic, below the pH>10 corrosion band
+        "terrainSuite": {"shallow": "WaterOceanShallow", "deep": "WaterOceanDeep"},
+        "thirstQuality": "Fouled",
+    },
+    "boiling": {
+        "defName": "RM_Liquid_BoilingWater",
+        "label": "boiling water",
+        "description": "Kept liquid by heat rather than depth. Steam stands off the surface even in still air.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
+        "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
+    },
+    "icy": {
+        "defName": "RM_Liquid_IcyWater",
+        "label": "icy water",
+        "description": "Water cold enough to steal warmth through boots and gloves alike.",
+        "viscosityClass": "Thick",
+        "pH": 7,
+        "damageOnContact": {"damageDef": "Frostbite", "amount": 1},
+        "damageOnImmersion": {"damageDef": "Frostbite", "amount": 3},
+        "corrodesApparel": False,
+        "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
+    },
+    "toxic": {
+        "defName": "RM_Liquid_ToxicWater",
+        "label": "toxic water",
+        "description": "Water carrying more than it should. Nothing in it is inert.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_WaterPoisonedShallow", "deep": "RM_WaterPoisonedDeep"},
+        "thirstQuality": "Toxic",
+    },
+    "acid": {
+        "defName": "RM_Liquid_AcidWater",
+        "label": "acid water",
+        "description": "Water gone wrong — the color isn't life, it's reaction.",
+        "viscosityClass": "Water",
+        "pH": 2,
+        "damageOnContact": {"damageDef": "AcidBurn", "amount": 1},
+        "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 3},
+        "corrodesApparel": True,
+        "terrainSuite": {"shallow": "RM_AcidShallow", "deep": "RM_AcidDeep"},
+    },
+    "tar": {
+        "defName": "RM_Liquid_Tar",
+        "label": "tar",
+        "description": "Black and patient. It does not drown you so much as keep you.",
+        "viscosityClass": "Heavy",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_TarShallow", "deep": "RM_TarDeep"},
+        "canalFluid": "RM_Fluid_Tar",
+    },
+    "brine": {
+        "defName": "RM_Liquid_Brine",
+        "label": "brine",
+        "description": "Salt concentrated past drinking, dense enough to feel underfoot.",
+        "viscosityClass": "Thick",
+        "pH": 8,  # [INVENTED] matches the brine terrain's own extension value
+        "corrodesApparel": False,
+        "terrainSuite": {"shallow": "RM_WaterBrineShallow", "deep": "RM_WaterBrineDeep"},
+        # No canalFluid: RM_Fluid_Brine does not exist yet -- FlowWorks_Fluids.xml
+        # ships only water and tar this pass. Owed to whoever authors the
+        # brine canal's own temporary fill terrains.
+        "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
+        "thirstQuality": "Fouled",
+    },
+    "propane": {
+        "defName": "RM_Liquid_Propane",
+        "label": "liquid propane",
+        "description": "Thin, cold, and utterly indifferent to fire until something else provides the spark.",
+        "viscosityClass": "Thin",
+        "pH": 7,
+        "flammable": True,
+        "igniteTemp": 40,  # [INVENTED] matches the propane terrain's own extension value
+        "terrainSuite": {"shallow": "RM_PropaneShallow", "deep": "RM_PropaneDeep"},
+        # No canalFluid: RM_Fluid_Propane does not exist yet, same gap as brine.
+        "worldTag": "RM_Liquid_Propane",  # frozen world's propane lake under Umbra, LIQUID_BIOMES_MAP_1
+    },
+    "chemfuel": {
+        "defName": "RM_Liquid_Chemfuel",
+        "label": "chemfuel",
+        "description": "Refined fuel, adopted as-is — the vanilla item already is this liquid's bottled form.",
+        "viscosityClass": "Water",  # [INVENTED] thin/pourable, no engine field measures it
+        "pH": 7,
+        "flammable": True,
+        # Adopts the vanilla ThingDef directly (design §3: "adopts the vanilla
+        # item") rather than authoring a new bottle -- one Chemfuel item IS
+        # one unit of this liquid. No terrain/canal form in v1.
+        "bottled": {"bottle": "Chemfuel", "unitsPerBottle": 1},
+    },
+}
+
+
+def _xv(v):
+    if v is True:
+        return "true"
+    if v is False:
+        return "false"
+    return v
+
+
+def _damage_spec_xml(indent, tag, spec):
+    if not spec:
+        return []
+    return [
+        f"{indent}<{tag}>",
+        f"{indent}  <damageDef>{spec['damageDef']}</damageDef>",
+        f"{indent}  <amount>{spec['amount']}</amount>",
+        f"{indent}</{tag}>",
+    ]
+
+
+def build_liquiddef_xml(row):
+    lines = ["  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>"]
+    lines.append(f"    <defName>{row['defName']}</defName>")
+    lines.append(f"    <label>{row['label']}</label>")
+    lines.append(f"    <description>{row['description']}</description>")
+    if "viscosityClass" in row:
+        lines.append(f"    <viscosityClass>{row['viscosityClass']}</viscosityClass>")
+    if "pH" in row:
+        lines.append(f"    <pH>{row['pH']}</pH>")
+    lines += _damage_spec_xml("    ", "damageOnContact", row.get("damageOnContact"))
+    lines += _damage_spec_xml("    ", "damageOnImmersion", row.get("damageOnImmersion"))
+    if "corrodesApparel" in row:
+        lines.append(f"    <corrodesApparel>{_xv(row['corrodesApparel'])}</corrodesApparel>")
+    if "flammable" in row:
+        lines.append(f"    <flammable>{_xv(row['flammable'])}</flammable>")
+    if "igniteTemp" in row:
+        lines.append(f"    <igniteTemp>{row['igniteTemp']}</igniteTemp>")
+
+    suite = row.get("terrainSuite")
+    if suite:
+        lines.append("    <terrainSuite>")
+        for slot in ("shallow", "deep", "chestDeep"):
+            if suite.get(slot):
+                lines.append(f"      <{slot}>{suite[slot]}</{slot}>")
+        lines.append("    </terrainSuite>")
+
+    if row.get("canalFluid"):
+        lines.append(f"    <canalFluid>{row['canalFluid']}</canalFluid>")
+
+    bottled = row.get("bottled")
+    if bottled:
+        lines.append("    <bottled>")
+        lines.append(f"      <bottle>{bottled['bottle']}</bottle>")
+        lines.append(f"      <unitsPerBottle>{bottled.get('unitsPerBottle', 1)}</unitsPerBottle>")
+        if bottled.get("revertsTo"):
+            lines.append(f"      <revertsTo>{bottled['revertsTo']}</revertsTo>")
+            lines.append(f"      <revertTicks>{bottled['revertTicks']}</revertTicks>")
+        if bottled.get("rotsTo"):
+            lines.append(f"      <rotsTo>{bottled['rotsTo']}</rotsTo>")
+            lines.append(f"      <rotTicks>{bottled['rotTicks']}</rotTicks>")
+        lines.append("    </bottled>")
+
+    if row.get("worldTag"):
+        lines.append(f"    <worldTag>{row['worldTag']}</worldTag>")
+
+    if row.get("thirstQuality"):
+        lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
+
+    lines.append("  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>")
+    return "\n".join(lines)
+
+
+def build_liquiddef_registry(out_dir: Path):
+    """Emits the v1 LiquidDef registry rows (LIQUID_REGISTRY_CORE_1, design
+    §3) into one file. See LIQUID_DEF_ROWS' own module comment for exactly
+    which rows this pass covers and why the rest are deferred."""
+    blocks = [build_liquiddef_xml(row) for row in LIQUID_DEF_ROWS.values()]
+    xml = f"""<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidDefRegistry.xml         GENERATED by generate_liquid_suite.py
+  ============================================================================
+  The v1 LiquidDef registry (LIQUID_REGISTRY_CORE_1, design §3). Regenerates
+  from LIQUID_DEF_ROWS in
+  src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py; edit the table,
+  never this file.
+
+  Ten rows this pass: fresh/salt/boiling/icy/toxic/acid water, tar, brine,
+  propane, chemfuel — every one resolving only against vanilla Core defs and
+  FlowWorks' own already-shipped terrain/FluidDefs, so it loads clean under
+  a minimal mod list with no third-party dependency. Slime (RED/GREEN/WHITE/
+  YELLOW), blood and astrofuel are deliberately NOT here — see the table's
+  own module comment for why each is deferred to a later build phase.
+  ============================================================================
+-->
+<Defs>
+
+{(chr(10) * 2).join(blocks)}
+
+</Defs>
+"""
+    out_path = out_dir / "RM_LiquidDefRegistry.xml"
+    out_path.write_text(xml, encoding="utf-8")
+    return out_path
+
+
 def main():
     root = Path(__file__).resolve().parent.parent
     # Merged into FlowWorks 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1):
@@ -595,8 +854,10 @@ def main():
     # "Patches/" only) while the def loader choked on its <Patch> root.
     terrain_dir = root / "Defs" / "LiquidTypes" / "TerrainDefs"
     patch_dir = root / "Patches" / "LiquidTypes"
+    liquiddef_dir = root / "Defs" / "LiquidTypes" / "LiquidDefs"
     terrain_dir.mkdir(parents=True, exist_ok=True)
     patch_dir.mkdir(parents=True, exist_ok=True)
+    liquiddef_dir.mkdir(parents=True, exist_ok=True)
 
     with open(DUMP_PATH, encoding="utf-8") as f:
         dump = json.load(f)
@@ -609,6 +870,9 @@ def main():
     patch_path, targets = build_compat_patch(patch_dir)
     print(f"WROTE {patch_path}")
     print(f"  match-validation targets (expect 1 hit each via validate_patch.py --defs): {targets}")
+
+    liquiddef_path = build_liquiddef_registry(liquiddef_dir)
+    print(f"WROTE {liquiddef_path}")
 
 
 if __name__ == "__main__":
