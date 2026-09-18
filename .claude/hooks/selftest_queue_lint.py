@@ -282,6 +282,12 @@ CASES = [
      {}, "git commit TRANSIENT_new.md -m x", "BUILD", ["TRANSIENT_new.md"]),
     ("ALLOW an already-tracked root file", ALLOW, None,
      {"README.md": "# repo edited\n"}, "git commit README.md -m x", "BUILD", None),
+    # 🔴 `p.isupper()` on a path is unreachable for any ".md" file — the extension is
+    # always lowercase, so it can never be true. Fixed to test p[:-3] (the name without
+    # the extension) instead. New, untracked all-caps doc names must be let through
+    # without a TRANSIENT_ prefix, same as README.md/CLAUDE.md.
+    ("ALLOW a new all-caps root doc, like CHARTER.md", ALLOW, None,
+     {}, "git commit CHARTER.md -m x", "BUILD", ["CHARTER.md"]),
 
     # ---- 3b. an owner ruling unlocks the ruled item ------------------------
     # 🔑 Added 2026-08-29: the hook refused a write TWICE after the owner had ruled
