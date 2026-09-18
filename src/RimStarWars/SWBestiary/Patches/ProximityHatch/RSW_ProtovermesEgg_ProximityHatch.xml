@@ -12,25 +12,37 @@
   canBePredatorPrey false because it hunts) - "hatch at you" reads as a
   threat rather than a curiosity.
 
-  MayRequire-gated on the engine mod's own packageId: absent it, this file
-  is a silent no-op and RSW_ProtovermesEggFertilized keeps hatching on its
-  vanilla CompHatcher timer only, exactly as it does today. loadAfter
-  mandrake.rm.proximityhatch is declared in this mod's own About.xml so the
-  CompProperties_ProximityHatch TYPE is already loaded when this patch runs.
+  Gate: PatchOperationFindMod on the engine mod's display name. ⚠️ MayRequire
+  on an <Operation> is INERT (MEASURED 2026-09-17 against 1.6 source —
+  ModContentPack.LoadPatches never reads the attribute; PatchOperation has
+  no such field), and loadAfter only orders load sequence between mods that
+  are BOTH active — it does not force the type to exist when
+  mandrake.rm.proximityhatch is not loaded at all. Un-gated, the
+  <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch">
+  below would try to resolve a type from an absent mod's assembly and
+  discard this whole FILE the moment that mod is inactive. FindMod is the
+  only real per-operation gate; without the engine mod this operation is
+  now a true no-op, and RSW_ProtovermesEggFertilized keeps hatching on its
+  vanilla CompHatcher timer only, exactly as it does today.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.proximityhatch">
-    <xpath>/Defs/ThingDef[defName="RSW_ProtovermesEggFertilized"]/comps</xpath>
-    <value>
-      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch">
-        <!-- Close-range ambush, not a nest you can see coming from across
-             the map - three cells is roughly "the pawn is standing right
-             next to it" by the time the egg reacts. -->
-        <triggerRadius>3</triggerRadius>
-        <scanIntervalTicks>60</scanIntervalTicks>
-      </li>
-    </value>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Proximity Hatch</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_ProtovermesEggFertilized"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch">
+          <!-- Close-range ambush, not a nest you can see coming from across
+               the map - three cells is roughly "the pawn is standing right
+               next to it" by the time the egg reacts. -->
+          <triggerRadius>3</triggerRadius>
+          <scanIntervalTicks>60</scanIntervalTicks>
+        </li>
+      </value>
+    </match>
   </Operation>
 
 </Patch>

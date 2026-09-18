@@ -8,10 +8,15 @@
   RUT_ForgePulse only exists when mandrake.rm.environmentalhazards is
   active (MayRequire-gated def), so a bare <li> baked directly into the
   BiomeDef would be a dangling cross-reference the moment that mod is
-  absent. MayRequire on the Operation itself makes this patch a true
-  no-op (not merely a silently-false match) when the mod is missing.
-  Same pattern SCALD_MECHANICS_1's RUT_ScaldSteamLock_BiomeWiring.xml
-  already established for this exact file family.
+  absent. Gate: PatchOperationFindMod on the kit's display name. ⚠️
+  MayRequire on an <Operation> is INERT (MEASURED 2026-09-17 against 1.6
+  source — ModContentPack.LoadPatches never reads the attribute); this
+  operation's own xpath (targeting our always-loaded RUT_TheForge) does
+  not depend on the gated mod either, so without a real gate it would run
+  every load and inject the dangling RUT_ForgePulse reference regardless.
+  FindMod is the only real per-operation gate. Same pattern
+  SCALD_MECHANICS_1's RUT_ScaldSteamLock_BiomeWiring.xml now carries for
+  this exact file family.
 
   RUT_TheForge.xml carries no <biomeMapConditions> node at all today (only
   wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so
@@ -27,13 +32,18 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
-    <value>
-      <biomeMapConditions>
-        <li>RUT_ForgePulse</li>
-      </biomeMapConditions>
-    </value>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+      <value>
+        <biomeMapConditions>
+          <li>RUT_ForgePulse</li>
+        </biomeMapConditions>
+      </value>
+    </match>
   </Operation>
 
 </Patch>

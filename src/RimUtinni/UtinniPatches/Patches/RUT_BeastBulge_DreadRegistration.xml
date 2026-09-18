@@ -10,11 +10,16 @@
   designed exactly for this: any dread source attaches it without the
   MapComponent (or S3's own def) needing to know about the other.
 
-  MayRequire on the Operation: RM_CompDreadSource only exists when
-  mandrake.rm.environmentalhazards is active — same "MayRequire on the
-  Operation itself makes this a true no-op, not a dangling cross-reference"
-  posture RUT_SumpDuskLock_BiomeWiring.xml already documents in this same
-  folder. (RUT_BeastBulge.xml's own ThingDef is itself MayRequire-gated at
+  Gate: PatchOperationFindMod on the kit's display name. ⚠️ MayRequire on
+  an <Operation> is INERT (MEASURED 2026-09-17 against 1.6 source —
+  ModContentPack.LoadPatches never reads the attribute; PatchOperation has
+  no such field). Un-gated, the <li Class="RimMandrake.EnvironmentalHazards.
+  CompProperties_DreadSource"> below would try to resolve a type from an
+  absent mod's assembly and discard this whole FILE, not just the parent
+  def, the moment mandrake.rm.environmentalhazards is inactive — which per
+  ENVHAZARDS_NEVER_ACTIVATED_1 is every load so far. FindMod is the only
+  real per-operation gate; without the kit this operation is now a true
+  no-op. (RUT_BeastBulge.xml's own ThingDef is itself MayRequire-gated at
   the top level, so this patch only ever matches when both are already
   present together.)
 
@@ -27,13 +32,18 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.environmentalhazards">
-    <xpath>/Defs/ThingDef[defName="RUT_BeastBulge"]/comps</xpath>
-    <value>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DreadSource">
-        <radius>8</radius>
-      </li>
-    </value>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RUT_BeastBulge"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DreadSource">
+          <radius>8</radius>
+        </li>
+      </value>
+    </match>
   </Operation>
 
 </Patch>
