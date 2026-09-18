@@ -2,8 +2,9 @@
 """naming_lint.py — the three-tier naming gate (design/NAMING_SCHEME_PLAN.md §6).
 
 Warn-mode by default: reports violations, exits 0. --strict exits 1 on any
-violation (the future hard gate; wiring into deploy is NAMING_SCHEME_EXECUTION_1's
-job — this script deliberately touches nothing else).
+violation (the future hard gate; wiring --strict into deploy is still owed
+work, tracked separately from this script, which deliberately touches
+nothing else).
 
 Checks per mod folder (any dir with About/About.xml under src/):
   packageId   matches  mandrake.(rm|rsw|rut).<name>

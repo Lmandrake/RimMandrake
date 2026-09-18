@@ -17,8 +17,9 @@
 
     RM_ prefix: NEW defNames take the three-tier grammar in
     design/NAMING_SCHEME_PLAN.md (RimMandrake tier - a scrap-seat archetype is
-    not campaign content). The Inhabited_* names around it migrate under
-    NAMING_SCHEME_EXECUTION_1 rather than being renamed ahead of it.
+    not campaign content). The Inhabited_* names around it are owed the same
+    migration as ordinary build work (NAMING_SCHEME_EXECUTION_1 closed
+    2026-08-31, no gate remains).
   -->
   <RimMandrake.Inhabited.InhabitedPlaceDef>
     <defName>RM_InhabitedPlace_Scrapyard</defName>

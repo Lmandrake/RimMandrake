@@ -93,7 +93,9 @@
     GR_Boomsnake       0.50  venom-ambush ("Flamefang", RUT_FlamefangIdentity.xml
         renames label/description; RUT_FlamefangVenom.xml makes its bite
         venomous) — restored 2026-09-16 per FLAMEFANG_SNAKE_REBIRTH_1, see
-        header note above. defName unchanged (NAMING_SCHEME_EXECUTION_1 owed).
+        header note above. defName unchanged — it is the donor mod's own
+        defName, not a naming-scheme migration (see
+        RUT_FlamefangIdentity.xml's header).
 
   Star Wars Animal Collection (Continued) (mod name string "Star Wars Animal
   Collection (Continued)", packageId mlie.starwarsanimalcollection — confirmed
