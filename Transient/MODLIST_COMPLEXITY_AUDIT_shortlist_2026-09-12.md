@@ -1,5 +1,12 @@
 # MODLIST_COMPLEXITY_AUDIT_1 — ranked keep-or-cut shortlist (beyond Giddy-Up)
 
+**RULED 2026-09-18 (owner sitting, MODLIST_DEFERRED_CARDS_1) — do not re-serve
+these rows:** #6 romance pile KEEP ALL EIGHT (no trim); #7 VGE census-port-cut
+approved with C#-properties caveat → `VGE_CENSUS_PORT_CUT_1`; #8 caverns family
+KEEP until our own biomes retire them, deepscan running →
+`BIOMES_CAVERNS_DEEPSCAN_1`; #11 tree trio ALL THREE ruled out, gated on
+jungle/forest vegetation regen → `TREE_TRIO_RETIRE_1`.
+
 Background analysis, 2026-09-12 (second pass). Ranked by risk-to-contribution,
 worst first. Every claim about this machine is from disk; web-sourced background
 is labeled. Giddy-Up/Run-and-Gun excluded (sibling item GIDDYUP_KEEP_OR_CUT_1).
