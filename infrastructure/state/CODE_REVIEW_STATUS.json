@@ -1799,6 +1799,270 @@
     "hash": "bad2bfa7b7ea109d0ad9326f99aa68e8f9b94032df4d487b0fab04885d5ebd5b",
     "sha": "47ae589d5"
   },
+  "src/RimMandrake/FlowWorks/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e2c08b2826245bfd7a6091c9b2a3922b738772a22672af9e3da7372200e50d7a",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/DesignationDefs/FlowWorks_Designations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d66267b4399413145ffea602502f7b2c7f76d584df0b05c5819c186550d34449",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "93b68280ef4380e20564f12e2820fe238549f22e3c1cde096d191d40ad6ea7c4",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/JobDefs/FlowWorks_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e0321438b6c7acc8a4e1d74ef3b1683415c5ecfb6dc92561800465d2ee6cf7ff",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6fab09a6ef9cc87267452362360a4dc8ce15265df439f5da7d2f43a0463453f6",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/ThingDefs/FlowWorks_ThingDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5237bb36813f07ef84d1aee601974a3a67fabf9db4b9e099887b08b2b09ff887",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Canals/WorkGiverDefs/FlowWorks_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9a61c1c2dfc5c8fdc7480ec3874139e767436110d4b0f05c0005272cb31c866b",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/JobDefs/RM_LiquidBottleJobs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d6db2f97d7a3c42b9d2a192eec0b6e3bdb5f5655e8a98d0439594ee0cfc9f056",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "29d1d0085f01c590fe8fabbd0250f4440e2615fcf6c6853dbfea297953762e08",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "509070492b8443a15a842b10201b215960f5b1e0df06f701d46d169f6b78a97f",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Ammonia.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "50c1ed324c6fe50cbb18e7f93ee2c05dac9986b14fad8f8dd1c35a1f9fcaa3c1",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Churnmud.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0ee3d3ef9211727cb4e1cd8c209f0eae9eae7be4bfe952bbe8622e3bbb3c3a1e",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Coolant.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "091309c7b6a5c91411e34fe99067cf8710eced5fc18ec644e1170eee4c287f65",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "364c8f2d9f0be9442dc2353e10c40b29ab73069cf8c852d81971f3e6c51aa7e9",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Ichor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b7a8f44b9e04638d03a2292bcd07e349d34dbd79fe53685c43eeb5ee69af7c69",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Ooze.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ec5b3fb9606ae6da123188b1e879de9527279ea524fa7df3a7100a2b18b56edc",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Propane.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "219392194a2757f96372c18b0c000228ec3e197cfbe58089db67a170dff04de0",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_ReactionLiquor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "18a226856e9c237c0b5040434c751f8e787549c6475344b20d1f359ca9c156bf",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Tar.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "495386e5593e26d149ad8b3b74f88a26662e62b90b6b829e020995b3f5dbab4b",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterBoiling.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e6513468b312638f9732c045bf321c1a351c188ab6db0b5bbafb663f5e148490",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterBrackish.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8fe60c44c83f65c9c978ace214a9f33e7b7434eca154d8409eefabea09924b8d",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterBrine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7acc1fd4207bc7cfb86158837b9cc414d5968ef26b2472bda45d925ef55279d6",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterFrigid.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "81a1f92740aff9921c8833c1db2f885edd2f071960dcdfaa46ff4e34124b4c0f",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterMineral.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ab1e7e543a032d87e49b5cfe719f6f68857dd52d579da321f1072a25f0a03b24",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterPoisoned.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "13ca20d7721ca6dd024e8d3f0aef3906d9330f3c4ab3f2e12648d65464bfcc35",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidBottles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "37961e666befa64a461f05942a81e29c8aab5a5b4f8d2c9b40c3644bcc40285a",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidBottles_Base.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1b26eed6fc46610a7c572c281981378a97e0d952d4f1f82c08e4035931b843d1",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8713397da595493136cc4a3f3dae4c024fcf61a09da177505f99f51eeaea3f71",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/ManyWaters/FleckDefs/RM_ColoredSteam.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5f0a33a236fc1b9f2a4c27b2ab8ede45b9a5f31dab9e3e2ef817b8d83286e9d0",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fc6d9911dea360d9084bd5b910ae07c2dc12075748f58ab137fca3ccc6d405a2",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/ManyWaters/TerrainDefs/RM_DeepSand.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8ac3d2024b8bd1e6a95ed3b4839eca9247015bb6fbc45292a1f7c30f67992fdd",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/ManyWaters/ThingDefs/RM_ColoredWaterBottles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e1dc11470288cf22bcdbcdb1ebe0dd51c8910fd498b08cfbe1f5b7544d72e734",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/DesignationDefs/Pit_Designations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "c2ded1ee10b8d31c790e05a22e56d3f8963a52f986ecb4b9ec4397de5da0f564",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/HediffDefs/Pit_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fbeeafdeb5b2f2e27f73913c3d69100ddab50a1796ad58d40bbe008769b593e7",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/JobDefs/Pit_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9561695d38f9a8a27514ba473d72b5af881c4c2984133f42697030f087e437da",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/Pit_Cell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "319c2fcb4fe5976f1df870a7c10dcb7c14a6f7f5763362b9468599ee093178b6",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/Pit_DigSites.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "62727b942553937675931f9edf94a6a5c376885f024be9c9981b74baa4c273b5",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/Pit_OpenPits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f491f519bb4b46eecba2903b92511ed150b04df4ff35c70ab36ae960e3863e4c",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Defs/Pits/WorkGiverDefs/Pit_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6b41e19faa5573449b01656e180da1276e7964bc2d7bc9faea30bf0b66ad57ca",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Languages/English/Keyed/FlowWorks_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "64aaaf71db1a3a109e433c1d8163ae0fd83bf9541d29925faa288691d7b461b0",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Languages/English/Keyed/Pit_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3ebf4df69aa696a83a08f69e637982704c78805395e98cf784f0df135135b5e7",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f595e391d89dbc7bbd11fd626409399df70c22c1259515d826d2032ec9530ed1",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Patches/FlowWorks_OrdersPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b638320bdb8c5c4408c406ca7d1c4c03c28372ca5687756df36afc53123b5f0a",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_LiquidProperties_CompatIndex.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "05b68d6668d2aaf1e9e0de54915cf9f5004c94e1c2e9b3eaeaaa17de1ac6a961",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/Debug/FlowWorksDebugActions.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -1841,11 +2105,35 @@
     "hash": "fbb0c54380594e3edc2f87ceca48a1de067c96fc066bcc8b40a7930fc36f8d6e",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/IngestionOutcomeDoer_BottleResidue.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6c0521436d8153b48875a178e28003930f882e44556b5ebc0b7c122fc87ff01c",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_FillBottle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1ecbdec0f642c6d5e306aeda5e9ae33f16c9ed42d81a4876b50078c3c73b6b9e",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_WashBottle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "efdf14ef763703ec10508df8b7baa7b14eb52275ce704045392cc62738ddc8cf",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidCorrosion.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "a10056b35553e00ea85d498a5eafeaffc6a9f0442e2e0ae68c2cb401ba8cf3f6",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "104637559539cd72b693c168f7750918ac18bd03f392a28a9876a311401d0c17",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidIgnition.cs": {
     "cleanCount": 1,
@@ -1853,11 +2141,35 @@
     "hash": "63fc076d01e1f1fd4ef3c24cca47870059bf61f348deaa07162e8ae4fd9704ed",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_BottledLiquidExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bfe4b9e9500a2d4866ef32f2d59080fdf0d03a8d61fb6f0770baad5f7c8919f6",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a0fc101ab032db005d55c551b34aba1d8d63a6be4681eba7b9981b3036445fef",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "5d1dbff11aaa644dd413093f1a9abb7d1713afcf6267dbc332e1cce5431cd79f",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_FillBottle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4da9ab8bc18c578c3f7a2e60a873006a17cd6152891819b2dc9a7bc5303b5d70",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_WashBottle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "16fb3f88e59caeac9ca48f83dade3fc936f9e5567bea720cde61b62ca9a120f2",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamHook.cs": {
     "cleanCount": 1,
@@ -1871,17 +2183,47 @@
     "hash": "0e5eae530139137c4be4fa7eb8f4e6db8ec4452de1f08b567dacb2de13722414",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/Pits/Debug/PitDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f7a08d07a030d24fdfee83cb20bbcec46a870090dd731bed41851fdae6589b4d",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/DigStage/Building_PitDigSite.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "456eb4d7ebb65add438bcac7d9234b9a4a1605d154efe3c825ddfcdf3cc019b2",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/Pits/DigStage/CompPitDigStage.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "17bdaa7f38c6d26c5c79da7fd2a05636549f22be84e605ef61a59e0735f7691a",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/Pits/DigStage/CompProperties_PitDigStage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "fec42e87a7a182e57650670b53fca8124c784c0ca8d2d94ba5e3fa8664700c66",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/DigStage/JobDriver_DigPitDeeper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bfa387d79e5a5c450182e1e184683296141f4380a30528f73bf0c89685a9e220",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/Pits/DigStage/PitDepthTier.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "05f78a1719ac2248a2b7666f4646022f6725c0120daf2ba449b57b0365a8049a",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/DigStage/WorkGiver_DigPitDeeper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0f43ee5bc83a1bcfc31bc0a565c1210b15efdb4cce259dd23c3ae51e34253e25",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/Pits/Escape/PitEscapeUtility.cs": {
     "cleanCount": 1,
@@ -1895,11 +2237,71 @@
     "hash": "3726ba0c6d856d1f3d165877dede149b17c07e51b5ed964005144fc45b6082d8",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/Pits/Fitting/CompProperties_PitFitting.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "df56053600528dac753827ccf0d3df9320b2ee2571a7f95adf7ec54731074a9e",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/Fitting/PitFittingType.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "eb7f1678c4b57e9ce1fd39f96a705cb6a8e1118ba1a61003503edcf4100cd189",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/Holding/Building_OpenPit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6108468122b0e66a09f224b54da54973750567c403ef71f047b61ed92356403b",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/Holding/Building_PitCell.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "247ea00ca9eda3c4e9782d797ce2929ee9c72378f16fd3ffe1c093f9e1aca8d6",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/PitsMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "594c148528e9c0018270d6ef995c4a594d7f68cbec960df40b3e9a1cfbc1b83b",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/RimMandrakePits_DefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d27d1d91ec061d34ea33b40678191bf48d4cb4bfcbf9e03655bf14621ec6aa3a",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "82f8acfd3b98950ee76d9dbfbc097fc88476f71936327a69d2fb95ca4a3215c7",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/TerrainMimic/Building_TerrainMimicCover.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "44c29e4ff182913437c20c2dd049a29da0c5d0ef8d8a5ca7a5c79e52f9e9ba56",
+    "sha": "d0b0d6b7b"
+  },
   "src/RimMandrake/FlowWorks/Source/Pits/Trigger/CompPitCoverTrigger.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
     "hash": "68308154e18ecb5268fb3d8be7d619007286b269f09335127fb26d482099f85d",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/Trigger/CompProperties_PitCoverTrigger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "563a984be697568b32b9a8926c97b930350a358f6a7b041fa76125875ef8896a",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/Pits/Trigger/PitCoverTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d404c5a500d639ee77385aba76fb3126ae830976300da9fa918282de3b342f32",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs": {
     "cleanCount": 1,
@@ -1932,10 +2334,16 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "9169faa7a002a76e9bee33f08731a693de562097f8ba8ad4e9add8e21cc2a1bd",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
-    "hash": "8443d518ca6336fc436dbc4c29534fcaf2839381b2a2bd87399c71c30d7696f2",
-    "sha": "b32878458"
+    "hash": "1a74e5aa6fb822c142099d7740eea767079cbbccdd0979c584bd44c7467c7190",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/Superdeep/Building_SuperdeepPit.cs": {
     "cleanCount": 1,
@@ -1966,6 +2374,18 @@
     "date": "2026-09-17",
     "hash": "a0fc123f6260366a3b4d196940bc8e109ae93fd8d9bc205a761489d366359a73",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e5280f4e2b99b07a25feed9a8b16df580928fb77710b5d2ad8c7c400e11330dd",
+    "sha": "d0b0d6b7b"
+  },
+  "src/RimMandrake/FlowWorks/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7f7a5731ebd14722ea8842aac07816db3d348841b0e2da244e8b93f2fd12f6a1",
+    "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/GelatinousSlime/About/About.xml": {
     "cleanCount": 1,
