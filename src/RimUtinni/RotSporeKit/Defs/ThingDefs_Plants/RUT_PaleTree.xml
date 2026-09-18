@@ -121,9 +121,6 @@
       <MeditationFocusStrength>0.28</MeditationFocusStrength>
       <MeditationPlantGrowthOffset>0</MeditationPlantGrowthOffset>
     </statBases>
-    <thingCategories>
-      <li>Plants</li>
-    </thingCategories>
     <thingClass>Plant</thingClass>
     <tickerType>Long</tickerType>
     <useHitPoints>True</useHitPoints>
@@ -206,9 +203,6 @@
       <BeautyOutdoors>1</BeautyOutdoors>
       <MaxHitPoints>85</MaxHitPoints>
     </statBases>
-    <thingCategories>
-      <li>Plants</li>
-    </thingCategories>
     <thingClass>Plant</thingClass>
     <tickerType>Long</tickerType>
     <useHitPoints>True</useHitPoints>
