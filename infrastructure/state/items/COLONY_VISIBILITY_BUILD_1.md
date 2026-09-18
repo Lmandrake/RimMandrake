@@ -83,6 +83,81 @@ JawaDoctrineCore.dll`) that nothing else needs touching.
   survival, concealed construction, darkness, blackout reign, Unseen
   Berth, the Unburdening rite) is still not wired to anything —
   `Adjust()` is ready, nothing calls it yet.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent)
+
+**Task briefing was stale — corrected first.** The task handed to this pass
+assumed the currently-loaded DLL predates the 2026-09-02 tile-memory-decay
+work (because that pass's own deploy attempt was refused by the file lock).
+Checked properly instead of assumed: `md5sum` of the deployed
+`Mods/Visibility/Assemblies/RimMandrakeVisibility.dll` is byte-identical to
+the repo's committed `src/RimMandrake/Visibility/Assemblies/
+RimMandrakeVisibility.dll` at current HEAD, whose most recent touching
+commit is `7a14e5ed2` (2026-09-11, `MOD_OPTIONS_RETROFIT_1` — the Mod
+Settings retrofit, which itself came AFTER all the tile-memory-decay commits:
+`2746864e0`/`c279f1ce2`/`2827b64fc`/`b2abec307`/`8a24dcd78`). No commit since
+`7a14e5ed2` touches any `.cs` file in this mod (only `1c06dcf5c` added
+`validation.py`, no code). So **the currently-loaded DLL is the FULL current
+build** — tile-memory decay AND the Mod Settings retrofit both included —
+not the pre-decay version the briefing described. That was already true by
+the 2026-09-13 entry above (which itself says "deploy_custom_mods.py --mod
+Visibility reported already in sync") and has not regressed since.
+
+**What that means the threat-point Prefix test already covers**: the
+2026-09-13 live proof (200→320 pts, factor 1.60) ran against code that
+is — confirmed via the same md5 check — functionally identical to what's
+loaded right now (no logic changes since, only the unrelated Mod Settings
+UI layer added in `7a14e5ed2`). Separately, `DIRTY_CODE_REVIEW_STANDING_LOOP_1`
+(2026-09-12, ledger) full-file-reviewed `ColonyVisibilityRaidPatch.cs` post-
+retrofit and confirmed `enableRaidScaling`/`launchResetMultiplier` are read at
+their real gates, no double-scaling, `IncidentParms` mutation propagates as
+designed. **Read `RM_VisibilitySettings`/`Prefix_ScaleHostilePoints` myself
+this pass too**: `enableRaidScaling` defaults `true`, gates the effect (not
+the dial itself); no `ModConfigs` XML for this mod exists on disk yet
+(checked), so the live game is running on that default, not some
+saved-off toggle.
+
+**Attempted a fresh live re-fire anyway** (bridge taken, game confirmed
+`RUNNING`, `mapCount=9`, `ticksGame≈130976`, paused throughout, `jawa/
+list_pawns` 35 before and after, nothing touched). Hit a real, reproducible
+bridge limitation rather than getting a clean new data point: `Set Colony
+Visibility (dev)` opens `LudeonTK.Dialog_DebugOptionListLister` (confirmed
+via `rimworld/get_ui_state`), `rimworld/get_ui_layout` correctly locates each
+preset row's button (`ui-element:N:4:4` etc., verified against each row's
+screen `rect`, not guessed from element order alone — the first attempt
+guessed wrong and hit the dialog's close-X button instead), and
+`rimworld/click_ui_target` reports `"changed": true` / `"Activated UI target
+button"` and the dialog closes normally — but no
+`[RimMandrake.Visibility] shipVisibility set...` line ever appears in
+`jawa/drain_log` (checked both filtered and unfiltered) or in `Player.log`.
+This is the SAME failure mode `CAST_ROSTER_269_LOAD_1` already documented
+for `Dialog_DebugOptionListLister` picker rows ("click registers as a
+selection and the action does not complete") — now independently reproduced
+on a second, unrelated debug action of the same UI kind, which generalizes
+that trap rather than being specific to the roster picker. Consequence:
+`validation.py`'s own assumed mechanism (`rimworld/execute_debug_action`
+with a literal two-level path like `"Actions\\Set Colony Visibility
+(dev)\\0 (Hidden)"`) **does not work at all** — that path lookup fails
+outright ("Could not find debug action") because the presets are a runtime
+dialog, not debug-tree nodes; and the click-driven fallback this pass tried
+instead is the one CAST_ROSTER already showed is unreliable for this exact
+widget. Left the toggle-round-trip and strength-slider live checks
+untried rather than burn more bridge time on a mechanism already shown not
+to complete.
+
+**Net effect on this item's own criteria**: the threat-point Prefix's live
+firing/multiplying claim is unweakened — it still rests on the 2026-09-13
+direct proof plus the 2026-09-12 code review, both against code confirmed
+byte-identical to what's deployed today — but this pass could not add a
+THIRD independent live data point because the only available lever
+(the dev debug action) is not reliably drivable over the bridge. Whoever
+next wants a fresh live number here should either fix/replace
+`DebugActions_Visibility.SetVisibility` to not require a
+`Dialog_DebugOptionListLister` (e.g. a chain of single-preset `[DebugAction]`
+leaves, each directly executable by path with no picker), or accept the
+existing 09-13 proof as standing evidence. Tile-memory round trip remains
+untouched and still needs real travel time — not attempted this pass, per
+the task's own scope.
 - Sh'kaar's escalation multiplier seam exists (`ShkaarEscalationMultiplier`,
   default 1f) but nothing sets it.
 - No live proof this Prefix actually fires and multiplies correctly —
