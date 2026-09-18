@@ -109,7 +109,7 @@ AridShrubland,Ronto,ronto,Star Wars Animal Collection (Continued),huge-grazer,6,
 AridShrubland,Scurrier,scurrier,Star Wars Animal Collection (Continued),small-runway,0.20000000298023224,0.8,,,0.555,keep,arid_shrubland: bs 0.2 (MEASURED); small-band legal here (no small speed ban); prep §3.2,0
 AridShrubland,Sketto,sketto,Star Wars Animal Collection (Continued),small-runway,0.4000000059604645,0.8,,,0.56,keep,arid_shrubland: bs 0.4 (MEASURED); prep §3.2,0
 AridShrubland,RSW_ImperialToad,imperial toad,RimMandrake: SW — Bestiary,small-runway,0.30000001192092896,0.7,,,0.558,keep,arid_shrubland: bs 0.3 (MEASURED); prep §3.2 [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_ImperialToad port],0
-AridShrubland,Igitz,igitz,Star Wars Animal Collection (Continued),small-runway,0.3199999928474426,0.7,,,0.558,keep,"arid_shrubland: SW small predator, bs 0.32 (MEASURED) — under-fuzz hunter",0
+AridShrubland,RSW_Igitz,igitz,RimMandrake: SW — Bestiary,small-runway,0.3199999928474426,0.7,,,0.558,keep,"arid_shrubland: SW small predator, bs 0.32 (MEASURED) — under-fuzz hunter [MLIE_FAUNA_ABSORPTION_1 Pass 10: repointed to RSW_ port]",0
 AridShrubland,Terrorworm,terrorworm,Horrors (Continued),medium-tunnel,0.6000000238418579,0.7,,,0.657,keep,"arid_shrubland: tunnel-shaped predator — ""long, thin, terrible things shaped like the corridors"" donor (prep §3.4)",0
 AridShrubland,Urusai,urusai,Star Wars Animal Collection (Continued),medium-interface,0.75,0.7,,,0.619,keep,arid_shrubland: bs 0.75 (MEASURED); prep §3.2,0
 AridShrubland,Kybuck,kybuck,Star Wars Animal Collection (Continued),medium-runner,1,0.6,,,0.425,keep,"arid_shrubland: non-predator runner, bs 1.0 spd 6.0 (MEASURED); prep §3.2",0
@@ -176,7 +176,7 @@ BiomeCypreJungle,AA_Razorjack,razorjack,Alpha Animals,floor-predator,1,0.2,,,0.5
 BiomeCypreJungle,PekoPeko,Peko-peko,Star Wars Animal Collection (Continued),flier,2.5,0.2,,,0.662,import,the_greentide: §4 The Fliers; floats over water (MEASURED special) — river-line bird analog,0
 BiomeCypreJungle,RSW_Dalgo,dalgo,RimMandrake: SW — Bestiary,brake,2.5,0.18,,,0.672,keep,the_greentide: §4 The Brakes — fast-metabolism grazer-pack mowing the growth line,0
 BiomeCypreJungle,Hawkbat,hawk-bat,Star Wars Animal Collection (Continued),flier-predator,2,0.18,,,0.65,keep,the_greentide: §4 The Fliers; canopy predator (bs 2.0 MEASURED),0
-BiomeCypreJungle,Hssiss,hssiss,Star Wars Animal Collection (Continued),lunger-junior,2.75,0.18,,,0.794,keep,"the_greentide: §4 The Lungers (junior); venomous water lizard, SW icon (KOTOR dark-side dragon)",0
+BiomeCypreJungle,RSW_Hssiss,hssiss,RimMandrake: SW — Bestiary,lunger-junior,2.75,0.18,,,0.794,keep,"the_greentide: §4 The Lungers (junior); venomous water lizard, SW icon (KOTOR dark-side dragon) [MLIE_FAUNA_ABSORPTION_1 Pass 10: repointed to RSW_ port]",0
 BiomeCypreJungle,RSW_Dianoga,dianoga,RimMandrake: SW — Bestiary,lunger,4,0.15,,,0.74,adjust-keep,the_greentide: §4 The Lungers + ban 6 no safe standing water — THE submerged invisible predator; SW icon; comm 0.05→0.15 (deep water must carry risk) — MLIE_FAUNA_ABSORPTION_1 Wave C port,0
 BiomeCypreJungle,RSW_Dragonsnake,dragonsnake,RimMandrake: SW — Bestiary,lunger,4,0.12,,,0.792,adjust-keep,"the_greentide: §4 The Lungers + ban 6; Dagobah water predator, SW icon; comm 0.05→0.12 — MLIE_FAUNA_ABSORPTION_1 Wave C port",0
 BiomeCypreJungle,Lylek,lylek,Star Wars Animal Collection (Continued),apex,5,0.05,,,1.0,keep,"the_greentide: §9 the ambient ducks before the apex arrives — the biome requires an apex terror; evicted from both deserts (prep §1.3/§2.3), legal here where pursuit is not banned",0
@@ -200,7 +200,7 @@ Desert,Scavrat,Scavrats,Star Wars Animal Collection (Continued),ship-vermin,0.5,
 Desert,Shyrack,shyrack,Star Wars Animal Collection (Continued),ambush-flier,0.75,0.6,,,0.639,keep,desert: ban 3 pass: spd 1.5 (MEASURED); cave-mouth ambusher,0
 Desert,AA_DesertAve,desert ave,Alpha Animals,navigator,1,0.4,,,0.425,keep,desert: fast NON-predator = endurance-navigator archetype; ban 3 bans only pursuit predators (prep §2.5 q3: yes),0
 Desert,RSW_Gorg,gorg,Star Wars Animal Collection (Continued),ambush-small,0.30000001192092896,0.4,,,0.558,keep,"desert: SW ambush frog, spd 2.9 (MEASURED) — positional (prep §2.2)",0
-Desert,Gutkurr,gutkurr,Star Wars Animal Collection (Continued),burst-predator,2,0.4,,,0.78,adjust-keep,desert: owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3,0
+Desert,RSW_Gutkurr,gutkurr,RimMandrake: SW — Bestiary,burst-predator,2,0.4,,,0.78,adjust-keep,desert: owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3 [MLIE_FAUNA_ABSORPTION_1 Pass 10: repointed to RSW_ port],0
 Desert,Jamel,Jamel,Star Wars Animal Collection (Continued),herd,1.899999976158142,0.4,,,0.447,keep,"desert: slow herd endurer, camel-analog inside the familiar-architecture carve-out (prep §2.2; ban 9 wants architecture, not nameable species)",0
 Desert,LongtailGorg,longtail gorg,Star Wars Animal Collection (Continued),ambush-small,0.6000000238418579,0.4,,,0.565,keep,"desert: SW ambush frog, spd 2.3 (MEASURED)",0
 Desert,Ronto,ronto,Star Wars Animal Collection (Continued),huge-herd,6,0.4,,,0.717,keep,"desert: icon, herd, leggy giant — carries its own shade (prep §2.2)",0
@@ -208,7 +208,7 @@ Desert,Sketto,sketto,Star Wars Animal Collection (Continued),ambush-small,0.4000
 Desert,WompRat,womp rat,Star Wars Animal Collection (Continued),ambush-small,0.75,0.4,,,0.569,keep,desert: ban 3 pass: spd 3.9 < 4.5 (MEASURED); icon; also injected on the Fall Line,0
 Desert,Wraid,wraid,Star Wars Animal Collection (Continued),burst-predator,3,0.4,,,0.758,adjust-keep,desert: owner card 2026-09-09: slowed 5.0→4.4 — legal burst predator under ban 3 proxy (predator + spd < 4.5),0
 Desert,RSW_Eopie,eopie,RimMandrake: SW — Bestiary,herd,1.399999976158142,0.3,,,0.455,keep,desert: icon pack animal (prep §2.2); spd 4.3 non-pursuit — MLIE_FAUNA_ABSORPTION_1 Wave C port,0
-Desert,Hrumph,hrumph,Star Wars Animal Collection (Continued),herd,2.5,0.3,,,0.463,import,desert: bulk-move from shrubland (bs 2.5 in banned 1.5–3.5 there); spd 4.5 non-pred,0
+Desert,RSW_Hrumph,hrumph,RimMandrake: SW — Bestiary,herd,2.5,0.3,,,0.463,import,desert: bulk-move from shrubland (bs 2.5 in banned 1.5–3.5 there); spd 4.5 non-pred [MLIE_FAUNA_ABSORPTION_1 Pass 10: repointed to RSW_ port],0
 Desert,IridonianReek,iridonian reek,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.522,import,desert: bulk-move; herd herbivore spd 5.5 non-pred (MEASURED),0
 Desert,Jimvu,jimvu,Star Wars Animal Collection (Continued),herd,2,0.3,,,0.45,import,"desert: bulk-move; fast herbivore (spd 6.0 non-pred, MEASURED) — endurance navigator",0
 Desert,Kwi,Kwi,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.545,import,desert: bulk-move; herd herbivore spd 5.0 non-pred (MEASURED),0
@@ -317,7 +317,7 @@ Volcano,BMT_Maguana,maguana,Biomes! Caverns,ground-slow,2.0999999046325684,0.15,
 Volcano,RSW_Beldon,beldon,RimMandrake: SW — Bestiary,sky-herd,6,0.08,,,0.65,keep,"the_forge: §4 sheet-named: 'vast, placid, drifting over the melt'; icon carve-out in full; tibanna monopoly basis (§6 ban 5); MEASURED bs 6, spd 2, floats, detonates on death [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Beldon port]",0
 Wasteland,RSW_BloodletterPetrel,bloodletter petrel,RimMandrake: SW — Bestiary,wretched-small,0.3199999928474426,0.7,,,0.548,keep,wasteland: Polluted Lands — the mod's register is contamination-shaped (prep §4.2) [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_BloodletterPetrel port],0
 Wasteland,RSW_FleeceSpider,fleece spider,RimMandrake: SW — Bestiary,wretched-small,0.3199999928474426,0.7,,,0.608,keep,wasteland: prep §4.2; bs 0.32 (MEASURED) [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_FleeceSpider port],0
-Wasteland,RSW_Borcatu,Borcatu,RimMandrake: SW — Bestiary,wretched-small,0.4000000059604645,0.7,,,0.58,keep,"wasteland: ruin-scavenger read (prep §4.2); bs 0.4 (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Borcatu port]",0
+Wasteland,RSW_Borcatu,Borcatu,RimMandrake: SW — Bestiary,wretched-small,0.4000000059604645,0.7,,,0.58,keep,wasteland: ruin-scavenger read (prep §4.2); bs 0.4 (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Borcatu port],0
 Wasteland,GR_Beetlefleet,beetlefleet,Vanilla Genetics Expanded,wretched-small,0.30000001192092896,0.7,,,0.558,keep,"wasteland: §4.2 wretched register — named keep: vermin-of-ruin read (bs 0.3, spd 2.5 MEASURED); VGE hybrid, protected mechanics lane",0
 Wasteland,GR_ParagonRat,rodent paragon,Vanilla Genetics Expanded,wretched-small,0.30000001192092896,0.7,,,0.558,keep,"wasteland: §4.2 wretched register — named keep (bs 0.3 MEASURED); VGE hybrid, protected mechanics lane",0
 Wasteland,AA_Eyeling,ikee,Alpha Animals,wretched-small,0.4000000059604645,0.6,,,0.56,keep,wasteland: born-wrong read (prep §4.2); bs 0.13 (MEASURED); dual home with ExtremeDesert,0

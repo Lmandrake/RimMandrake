@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Hssiss creature port (Pass 10).
+  Ported from mlie.starwarsanimalcollection's `Hssiss` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Hssiss` BodyDef needed a defName rename plus
+  repointing its tail to the ALREADY-PORTED Wave B `RSW_SWTailAttackTool`
+  group and its jaw's toxic-bite group to `RSW_SWToxicAppendage` — ported
+  as RSW_Hssiss (RSW_MlieWaveC_Bodies.xml, Pass 10). Its 2 tusk parts keep
+  the bare `TuskAttackTool` group, which is **Alpha Animals**
+  (`sarg.alphaanimals`, confirmed via the frozen official def dump per the
+  Boma/Pass 9 correction) — not Mlie content, no MayRequire gate needed,
+  matching every other species that uses this same group. Every other
+  part (Tail, Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/
+  Skull/Brain/Eye x2/Nose/AnimalJaw, 4x Leg/Paw) is vanilla Core.
+
+  `leatherDef` is newly ported as `RSW_Leather_Dark` (donor `Leather_Dark`,
+  texPath swresource/Leather_Tough — reuses the SAME art RSW_Leather_Tough
+  already extracted, Pass 3 — no new PNG). `specificMeatDef` repoints to
+  the already-ported RSW_Saurian_Meat (Wave B). Its 2 eggs are newly ported
+  (RSW_EggHssissFertilized/UnFertilized, texPath swresource/EggScaled,
+  newly extracted this pass).
+
+  No `canCrossBreedWith` in the donor.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 25 PNGs (base + Dessicated
+  + Swimming, plus 3 alternateGraphics recolor variants A/B/C each with
+  their own Swimming pair — no CutoutComplex recolor masks needed, this
+  species' alternateGraphics swaps the whole texPath rather than tinting a
+  shared base), all confirmed non-zero and PIL-openable. texPaths otherwise
+  unchanged text — art sits at Textures/swanimals/Hssiss/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `BiomeCypreJungle` only (0.18,
+  status `keep`) — the donor's own `wildBiomes` lists TropicalRainforest/
+  TropicalSwamp/TemperateSwamp/TemperateForest/ColdBog at nonzero weight
+  (kept verbatim below, unmodified, per every prior pass's convention), but
+  `cast_assignment.csv`'s own ground truth has exactly one live row for
+  this species. Repointed from the bare "Hssiss" entry in
+  cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Hssiss</defName>
+    <label>hssiss</label>
+    <description>Hssiss (or "dark side dragons") were a poisnous reptile native to the planet Ambria. They were slow but aggressive ambush predators that preferred to live near bodies of water. Hssiss could be found all over the galaxy, especially on worlds where the "dark side" was strong (with most being descended from those brought by the many historical "Sith" armies).</description>
+    <statBases>
+      <MoveSpeed>2.75</MoveSpeed>
+      <MarketValue>750</MarketValue>
+      <ComfyTemperatureMin>-7</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.25</ArmorRating_Heat>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>poisonous fangs</label>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggHssissUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggHssissFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~4</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Hssiss</body>
+      <predator>true</predator>
+      <baseBodySize>2.75</baseBodySize>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseHealthScale>3.0</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Dark</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.50</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeExpectancy>20</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Hssiss_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Hssiss_Death</soundDeath>
+          <soundCall>RSW_Pawn_Hssiss_Call</soundCall>
+          <soundAngry>RSW_Pawn_Hssiss_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Hssiss</defName>
+    <label>hssiss</label>
+    <race>RSW_Hssiss</race>
+    <combatPower>450</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <alternateGraphicChance>0.75</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Hssiss/HssissA</texPath>
+        <swimmingTexPath>swanimals/Hssiss/HssissA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Hssiss/HssissB</texPath>
+        <swimmingTexPath>swanimals/Hssiss/HssissB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Hssiss/HssissC</texPath>
+        <swimmingTexPath>swanimals/Hssiss/HssissC_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hssiss/Hssiss_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

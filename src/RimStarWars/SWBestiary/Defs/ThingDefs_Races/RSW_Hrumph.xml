@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Hrumph creature port (Pass 10).
+  Ported from mlie.starwarsanimalcollection's `Hrumph` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: stays vanilla Core `QuadrupedAnimalWithHooves` — no BodyDef port
+  needed.
+
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Reptomammal (Pass 9, Gornt)/RSW_Pachydermoid_Meat (Pass 1,
+  Mudhorn). No egg comp — live birth via `litterSizeCurve`, no new
+  resource needed at all.
+
+  No `canCrossBreedWith` in the donor.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 8 PNGs (base + Dessicated,
+  juvenile Hrumph_j variants with the same set), all confirmed non-zero and
+  PIL-openable. texPaths otherwise unchanged text — art sits at
+  Textures/swanimals/Hrumph/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `Desert` only (0.3, status
+  `import`) — the donor's own `wildBiomes` lists TemperateForest/
+  TemperateSwamp/AridShrubland/TropicalSwamp at nonzero weight (kept
+  verbatim below, unmodified, per every prior pass's convention), but
+  `cast_assignment.csv`'s own ground truth has exactly one live row for
+  this species, `Desert` 0.3, reason "bulk-move from shrubland (bs 2.5 in
+  banned 1.5–3.5 there)". Repointed from the bare "Hrumph" entry in
+  cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Hrumph</defName>
+    <label>hrumph</label>
+    <description>The hrumphs were powerful, thick-necked herbivores native to planet Naboo, but also found on other worlds like Aargonar. Hrumphs received their name from the loud, deep, guttural sounds they produced. They had four long horns for defense and for the protection of their two long, sensitive ears. They were not choosy about their food which made them hardy enough to survive on many other worlds.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>150</MarketValue>
+      <FilthRate>14</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHungerRate>0.45</baseHungerRate>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Reptomammal</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <roamMtbDays>3.0</roamMtbDays>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>40</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.5</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>1.0</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1.0, 1)</li>
+          <li>(1.5, 1.7)</li>
+          <li>(2.0, 0.7)</li>
+          <li>(3.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>RSW_Pawn_Hrumph_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Hrumph_Death</soundDeath>
+          <soundCall>RSW_Pawn_Hrumph_Call</soundCall>
+          <soundAngry>RSW_Pawn_Hrumph_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Hrumph</defName>
+    <label>hrumph</label>
+    <race>RSW_Hrumph</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>1.45</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph_j</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph_Dessicated</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Hrumph/Hrumph_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -46,7 +46,9 @@
       <value>
         <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep -->
         <RSW_Jellypot>0.7</RSW_Jellypot> <!-- jellypot - ambush-small, keep -->
+        <RSW_Gutkurr>0.4</RSW_Gutkurr> <!-- gutkurr - burst-predator, adjust-keep -->
         <RSW_Eopie>0.3</RSW_Eopie> <!-- eopie - herd, keep -->
+        <RSW_Hrumph>0.3</RSW_Hrumph> <!-- hrumph - herd, import -->
         <RSW_Nuna>0.2</RSW_Nuna> <!-- nuna - herd-small, keep -->
         <RSW_Bolotaur>0.1</RSW_Bolotaur> <!-- bolotaur - herd, import -->
         <RSW_Clodhopper>0.1</RSW_Clodhopper> <!-- clodhopper - ambush-small, keep -->
@@ -66,14 +68,12 @@
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
-        <Gutkurr>0.4</Gutkurr> <!-- gutkurr - burst-predator, adjust-keep -->
         <Jamel>0.4</Jamel> <!-- Jamel - herd, keep -->
         <LongtailGorg>0.4</LongtailGorg> <!-- longtail gorg - ambush-small, keep -->
         <Ronto>0.4</Ronto> <!-- ronto - huge-herd, keep -->
         <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
-        <Hrumph>0.3</Hrumph> <!-- hrumph - herd, import -->
         <IridonianReek>0.3</IridonianReek> <!-- iridonian reek - herd, import -->
         <Jimvu>0.3</Jimvu> <!-- jimvu - herd, import -->
         <Kwi>0.3</Kwi> <!-- Kwi - herd, import -->
@@ -167,6 +167,7 @@
         <RSW_Corinathoth>0.4</RSW_Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - small-runway, keep -->
         <RSW_MossBeetle>0.3</RSW_MossBeetle> <!-- moss beetle - small-runway, keep -->
+        <RSW_Igitz>0.7</RSW_Igitz> <!-- igitz - small-runway, keep -->
         <RSW_Cannok>0.16</RSW_Cannok> <!-- cannok - medium-interface, keep -->
         <RSW_Convor>0.08</RSW_Convor> <!-- convor - flier-interface, keep -->
         <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep -->
@@ -198,7 +199,6 @@
         <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
-        <Igitz>0.7</Igitz> <!-- igitz - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
         <Kybuck>0.6</Kybuck> <!-- kybuck - medium-runner, keep -->
         <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
@@ -347,6 +347,7 @@
         <RSW_Dragonsnake>0.12</RSW_Dragonsnake> <!-- dragonsnake - lunger, adjust-keep -->
         <RSW_Falumpaset>0.3</RSW_Falumpaset> <!-- falumpaset - brake, import -->
         <RSW_Beldon>0.008</RSW_Beldon> <!-- beldon - flier-giant, keep -->
+        <RSW_Hssiss>0.18</RSW_Hssiss> <!-- hssiss - lunger-junior, keep -->
       </value>
     </match>
   </Operation>
@@ -369,7 +370,6 @@
         <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
         <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - flier-predator, keep -->
-        <Hssiss>0.18</Hssiss> <!-- hssiss - lunger-junior, keep -->
         <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
       </value>
     </match>

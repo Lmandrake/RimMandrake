@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Gutkurr creature port (Pass 10).
+  Ported from mlie.starwarsanimalcollection's `Gutkurr` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Gutkurr` BodyDef needed a defName rename plus
+  repointing its 2 sickled-claw parts to the ALREADY-PORTED Wave B
+  `RSW_SWClaws` BodyPartGroupDef — ported as RSW_Gutkurr
+  (RSW_MlieWaveC_Bodies.xml, Pass 10). Every other part/group (Tail, Spine,
+  Stomach, Heart, Lung x2, Kidney x2, Liver, Hump, Neck/Head/Skull/Brain/
+  Eye x2/Ear x2/Nose/AnimalJaw, HeadAttackTool, Teeth, 2x InsectLeg/Foot,
+  Feet) is vanilla Core.
+
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Insectile/RSW_Insectile_Meat (RSW_MlieWaveC_Resources.xml,
+  Pass 3, CanCell — same donor Leather_Insectile/Insectile_Meat this species
+  itself is named alongside). Its 2 eggs are newly ported
+  (RSW_EggGutkurrFertilized/UnFertilized, texPath swresource/EggInsectile —
+  already extracted, Pass 3, reused unchanged, no new art).
+
+  No `canCrossBreedWith` in the donor.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 4 PNGs (base + Dessicated,
+  no juvenile/alternate-color variant), all confirmed non-zero and
+  PIL-openable. texPaths otherwise unchanged text — art sits at
+  Textures/swanimals/Gutkurr/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `Desert` only (0.4) — the donor's
+  own `wildBiomes` lists several biomes at nonzero weight (kept verbatim
+  below, unmodified, as every prior pass does), but `cast_assignment.csv`'s
+  own ground truth ("dumps and harvests decay" doctrine, per the Fanback
+  staleness lesson) has exactly one live row for this species, `Desert`
+  0.4, status `adjust-keep`. Repointed from the bare "Gutkurr" entry in
+  cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+
+  ⚠️ **Known gap, flagged not fixed, matching the Wave A wiring-gap
+  precedent (2026-09-09)**: `cast_assignment.csv`'s own reason field notes
+  "owner card 2026-09-09: slowed 4.5→4.4" — this tuning is applied by a
+  SEPARATE generated file, `BiomeFaunaStatAdjustments_Generated.xml`
+  (source: `design/Jawa/worldbuilding/biomes/rosters/desert.json`'s
+  `stat_adjustments`), which still targets the bare donor `Gutkurr`
+  defName, not `RSW_Gutkurr`. Now that the wild population spawns as
+  `RSW_Gutkurr`, that MoveSpeed 4.5→4.4 adjustment no longer applies to it
+  — this ThingDef ships with the donor's unadjusted base `MoveSpeed>4.5`
+  (below), matching every prior pass's "copy the base stat verbatim, tuning
+  is a separate patch layer" convention. NOT hand-patched here: both the
+  stat-adjustment file and its roster-JSON source are GENERATED/owned by a
+  different process (`gen_stat_adjustments.py`, BIOME_FAUNA_ASSIGNMENT_
+  SITTING_1 authority) — regenerating them is owed to whoever next runs
+  that generator or the owner's own biome-sheet sitting, not this porting
+  pass.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Gutkurr</defName>
+    <label>gutkurr</label>
+    <description>Gutkurrs were fierce insectile predators native to the planet Ryloth. They were aggressive and displayed very limited intelligence, however they were observed to work in small hunting packs. These traits however has made them popular game animals and "pets" for criminal organisations across the galaxy, spreading these monsterous creatures to many worlds.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <MarketValue>1000</MarketValue>
+      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.30</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      <ToxicResistance>0.8</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.80</Wildness>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGutkurrUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGutkurrFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>left sickled claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWClaws</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right sickled claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWClaws</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beaked maw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Gutkurr</body>
+      <predator>true</predator>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>3.5</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <lifeExpectancy>20</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.6</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.8</Desert>
+        <ExtremeDesert>0.04</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Gutkurr_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Gutkurr_Death</soundDeath>
+          <soundCall>RSW_Pawn_Gutkurr_Call</soundCall>
+          <soundAngry>RSW_Pawn_Gutkurr_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Gutkurr</defName>
+    <label>gutkurr</label>
+    <race>RSW_Gutkurr</race>
+    <combatPower>450</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>gutkurr chick</label>
+        <labelPlural>gutkurr chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.3, 0.2)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gutkurr/Gutkurr_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
