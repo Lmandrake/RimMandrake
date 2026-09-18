@@ -8,8 +8,11 @@ records that its RimStarWars-tier engine mod (`src/RimStarWars/FireEcology`,
 packageId `mandrake.rsw.fireecology`) and its RimUtinni-tier wiring mod
 (`src/RimUtinni/FireEcology`, renamed `PyrelandsFireEcology` the same day
 for a folder-collision bug) were the original two halves. On disk today
-there is no `src/RimStarWars/FireEcology` at all, and
-`src/RimUtinni/PyrelandsFireEcology/About.xml`'s own description names its
+there is no `src/RimStarWars/FireEcology` at all, and the RimUtinni-tier
+wiring mod `PyrelandsFireEcology` was RETIRED outright 2026-09-17
+(FIREECOLOGY_SHIM_RETIREMENT_1 -- all four of its patches targeted the
+ZBiome_Grasslands donor, which PYRELANDS_WORLD_SWITCH_1 removed from the
+worldmap; measured: nothing of value remained). Its About.xml named its
 dependency as `mandrake.rm.pyrelands`, "generic desert fire-ecology
 engine" -- confirmed by grep: only `src/RimMandrake/Pyrelands/About/About.xml`
 carries that packageId, and its `Source/FireEcologyHook.cs` is a byte-for-

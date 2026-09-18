@@ -64,7 +64,7 @@ tooling and stay as-is (§1b).
 | **water** | **ManyWaters `mandrake.rm.manywaters` (R10, NEW)** — all water effects/types (steaming, boiling, …) ← RiverSteam's fleck effect. Since ruled a data-pack client of the liquids framework (`design/RimMandrake/liquids_framework_design.md`, owner 2026-09-13) | — | RiverSteam's Ashkarr wiring → UtinniPatches (judgment call — see §7.11) |
 | **art / UI** | RustChrome `mandrake.rm.rustchrome` | — | MenuShell `mandrake.rut.menushell` ← UtinniShell (R10) · AshkarrLandmarkArt stays separate (R10) |
 | **patches** | MandrakePatches `mandrake.rm.patches` ← 5 RM fix mods (Jawa_Patches' 8 RM files already landed, 2385af29) | StarWarsPatches `mandrake.rsw.patches` ← 2 RSW fix mods + DesertVehicleReskin (R11) (28 RSW files already landed) | UtinniPatches `mandrake.rut.patches` ← FactionSlate (VERIFY) (57 RUT files already landed) |
-| **terrain / weather** | **Pyrelands `mandrake.rm.pyrelands` (R9, NEW)** = FireEcology engine + generic biome content (self-contained) · **WeatherSuite `mandrake.rm.weathersuite` (R9)** promoted whole to RM | — | AshkarrWeatherSuite stays (uniquely-Ashkarr wiring); PyrelandsFireEcology's Ashkarr residue → UtinniPatches, folder dies |
+| **terrain / weather** | **Pyrelands `mandrake.rm.pyrelands` (R9, NEW)** = FireEcology engine + generic biome content (self-contained) · **WeatherSuite `mandrake.rm.weathersuite` (R9)** promoted whole to RM | — | AshkarrWeatherSuite stays (uniquely-Ashkarr wiring); PyrelandsFireEcology RETIRED outright 2026-09-17 (FIREECOLOGY_SHIM_RETIREMENT_1 — measured: no Ashkarr residue existed to fold) |
 
 ### 1b. Mechanics that stay their own mods (ruling 4)
 
@@ -83,8 +83,7 @@ RestrainingBolts, ShipMemory. Dev-only mods stay: LoadTracer,
 PlanetPresetPrime, RimDefDump. R14 — NO retirements approved: SeasWaterline
 stays pending (VERIFY); BirthHatchDemo stays, gated on
 EGG_PROXIMITY_HATCH_TRIGGER_1 (VERIFY). Only the SPLIT_Phase3/Jawa_Patches
-tombstone is removed. Folders that die by merge: PyrelandsFireEcology and
-RiverSteam (their Ashkarr residues fold into UtinniPatches — §7.11).
+tombstone is removed. Folders that die: PyrelandsFireEcology ✅ DELETED 2026-09-17 (straight deletion, FIREECOLOGY_SHIM_RETIREMENT_1 — no residue existed) and RiverSteam (Ashkarr residue folds into UtinniPatches — §7.11).
 
 ### 1c. The Ninefold / Property / Visibility / Doctrine cluster — RULED (R1/R2/R3)
 
@@ -275,7 +274,7 @@ crime             RimProperty (R1) ◄── SalvageClaim
 pursuit           RimPursuit (R3, NEW) = Visibility ◄── EmpirePursuit engine ──promoted from──►  EmpirePursuit (RUT data pack, stays)
 chronicle         RimChronicle (R5) = Aftermath ──engine──────────────────►   ChronicleRites (né AftermathRites)
 weather/fire      WeatherSuite (R9, promoted) ◄──── WeatherSuite (RSW, dies)  AshkarrWeatherSuite (stays, wiring)
-                  Pyrelands (R9, NEW) ◄──── FireEcology (RSW, dies)           PyrelandsFireEcology (dies: generic→Pyrelands,
+                  Pyrelands (R9, NEW) ◄──── FireEcology (RSW, dies)           PyrelandsFireEcology (DELETED 2026-09-17,
                                                                                 Ashkarr residue→UtinniPatches)
 water             ManyWaters (R10, NEW) ◄── RiverSteam effect                 RiverSteam wiring → UtinniPatches (folder dies)
 inhabited         Inhabited ──engine──────────────────────────────────────►   AshkarrInhabited
@@ -326,8 +325,7 @@ dies-with-donor                              KotORBandolierNorthFix · MSEDroidF
    NAMING_SCHEME_PLAN §7.4's display amendment, with the display-name
    rule: RimProperty displays as "RimProperty", never
    "RimMandrake: RimProperty". ✅ ChronicleRites name stands.
-   ✅ PyrelandsFireEcology's and RiverSteam's Ashkarr residues fold into
-   UtinniPatches; both folders die. ✅ DesertVehicleReskin's fold rides
+   ✅ PyrelandsFireEcology DELETED outright 2026-09-17 (no residue existed; FIREECOLOGY_SHIM_RETIREMENT_1). RiverSteam's Ashkarr residue folds into UtinniPatches; its folder dies. ✅ DesertVehicleReskin's fold rides
    the R4 rename machinery. ⚠️ STILL VERIFY: Pyrelands BiomeDef donor
    ownership (own the def vs keep the zylle.morevanillabiomes dep) —
    resolve before calling the RM biome self-contained.

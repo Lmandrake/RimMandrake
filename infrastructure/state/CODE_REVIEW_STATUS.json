@@ -1967,126 +1967,6 @@
     "hash": "a0fc123f6260366a3b4d196940bc8e109ae93fd8d9bc205a761489d366359a73",
     "sha": "b32878458"
   },
-  "src/RimMandrake/FluidCanals/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "a6825457843c7bfe8bcf6a889bc087865adb4f0a0095b7bd661831a041c0273b",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Defs/DesignationDefs/FluidCanal_Designations.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "2c9eb19e78548fd4a2645334aacbed8722ff258ebe31b23797e89919e16ba060",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Defs/FluidDefs/FluidCanal_Fluids.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "ec4a75fad79e38664a6591e8a1d498f654eccbed9c1da9cf5f223d26c8f57bb4",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Defs/JobDefs/FluidCanal_JobDefs.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "361a9dc051a5a4f06978aff282a0ea347c0c608f15a61d839852bb7a3bfe86d2",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Defs/TerrainDefs/FluidCanal_Terrain.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "cd1f1ae656153ed243617c8ca714c19a6e4f74556239a9e03b75bd1fac45f110",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Defs/ThingDefs/FluidCanal_ThingDefs.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "664406ab8e833feab0314b513b94409ceb5cdc76493bce0bfd0179eb3f1443b9",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/FluidCanals/Defs/WorkGiverDefs/FluidCanal_WorkGivers.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "c8b3e319365d6c89350b18606b2a3aa7adba63f65ce1c7d0494302876406028f",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "92e56d4f"
-  },
-  "src/RimMandrake/FluidCanals/Patches/FluidCanal_OrdersPatch.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "d2fc6cefd2d30e42d862591c24e6da33ae85e9abe70ada8303b8aaf614d048f9",
-    "sha": "52dee04f"
-  },
-  "src/RimMandrake/FluidCanals/Source/CompFluidReservoir.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "2bbfb87a65118625d9d30f1b6f97dfcaac66118dd04729c4b1de548f2e6eaf3e",
-    "sha": "5f12f476e"
-  },
-  "src/RimMandrake/FluidCanals/Source/CompProperties_FluidReservoir.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "6d862fe4972bbb26eaad6fec0c22a26abd4a18dc9e270a6de3c8d3303a9dfbe1",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/FluidCanals/Source/Debug/FluidCanalsDebugActions.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "d744c4a7b894bd8d4c6ac71b8bc80b9b6812190920794cc7e0fba8f50718d958",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/FluidCanals/Source/Designator_DigCanal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "56c46d155166a1900dcffc1011c616f67e1511c2066c972904de98ce62fa9860",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/FluidCanals/Source/Flood_FluidCanal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "eb424683e6c13e879dcc11b096c2d8b9b12d265f57ce2ea18fdd54a8572fc81d",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/FluidCanals/Source/FluidDef.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "a9bb482e47deff0d1c36b0d6ec95aff1441724f8e54a3a48053a3513f6b85395",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/FluidCanals/Source/JobDriver_DigCanal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "1f1af27a77ca0c170c34d7cbe4f9098bfbc2f1e0a41df6806d23d85471658ebe",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/FluidCanals/Source/RimMandrakeFluidCanalsMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "9516989fb06b16c38246349158bf88f0592d29969782b101928b1e180a321f78",
-    "sha": "d8a0b9b7d"
-  },
-  "src/RimMandrake/FluidCanals/Source/RimMandrakeFluidCanals_DefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "a86de451fef2be3b5e75f09fc7b6d3a0dd96bf34ebcf146adea97ed8e1f27b97",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/FluidCanals/Source/RimMandrake_FluidCanals.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "aa13e510001552af3a335c19263002f4b74854cf1cfd13f2d5724026d75d30d6",
-    "sha": "ce01a5a8a"
-  },
-  "src/RimMandrake/FluidCanals/Source/WorkGiver_DigCanal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "5fc9bade1bf699bba7c0b05c4936d5052c4f62029d03b50f3d0cf65b26df04cb",
-    "sha": "43f96b1b"
-  },
   "src/RimMandrake/GelatinousSlime/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -2891,48 +2771,6 @@
     "hash": "796094ca113297c1d87763e9ea4396946723a533da14ba6fb286670864450df1",
     "sha": "d28bf3edf"
   },
-  "src/RimMandrake/LiquidTypes/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "12ef2c140bec8f13f04417830f7c6c4ed3650f5dca2017e6e648a8a80d544cfb",
-    "sha": "bda42ac64"
-  },
-  "src/RimMandrake/LiquidTypes/Defs/Patches/RM_LiquidProperties_CompatIndex.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "958fe3228137afccb2f0ea3b6d17f820fdb53800adf739bf211d880fa8d3aecb",
-    "sha": "bda42ac64"
-  },
-  "src/RimMandrake/LiquidTypes/Defs/TerrainDefs/RM_AcidWater.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "c15685301d149e843a6c19131777071c3f905b5ccad082a5bbbc36b23bf543b2",
-    "sha": "bda42ac64"
-  },
-  "src/RimMandrake/LiquidTypes/Source/LiquidCorrosion.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "95d15b46667f95d4d926080ea14f8fba5b504034345b3fc30191785e1c354ce2",
-    "sha": "47ae589d5"
-  },
-  "src/RimMandrake/LiquidTypes/Source/LiquidIgnition.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "c094207ef2f56d3b8f6f8f05bf6e242eda29936e977fb3a4766db0331903c52f",
-    "sha": "47ae589d5"
-  },
-  "src/RimMandrake/LiquidTypes/Source/RM_LiquidProperties.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "09c6f86bfcc672a17c030b477a69084495960c0e0523a1a58c0ff402e13984dc",
-    "sha": "47ae589d5"
-  },
-  "src/RimMandrake/LiquidTypes/Tools/generate_liquid_suite.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "bbf3ca0857925023013a3ca29d4512f349a222306233a5fc892768bcf4581608",
-    "sha": "47ae589d5"
-  },
   "src/RimMandrake/LoadTracer/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -3130,60 +2968,6 @@
     "date": "2026-09-09",
     "hash": "9296150cf86557eed9f1c26edf524ec4becef7cd531e9d18f399ac38a1c1d269",
     "sha": "bb73b6bd"
-  },
-  "src/RimMandrake/ManyWaters/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "6b096a846a8257717ce2e96ea7964b3ab89336e39770bafb9129f3fdd7718500",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/ManyWaters/Defs/FleckDefs/RM_ColoredSteam.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "5f0a33a236fc1b9f2a4c27b2ab8ede45b9a5f31dab9e3e2ef817b8d83286e9d0",
-    "sha": "bb73b6bd"
-  },
-  "src/RimMandrake/ManyWaters/Defs/TerrainDefs/RM_ColoredWater.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "fe344ba2a637ded82b8a396ad9ae11a73674bb4da848cf3c2fd2dc17fae1d40b",
-    "sha": "bb73b6bd"
-  },
-  "src/RimMandrake/ManyWaters/Defs/TerrainDefs/RM_DeepSand.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "8ac3d2024b8bd1e6a95ed3b4839eca9247015bb6fbc45292a1f7c30f67992fdd",
-    "sha": "0c9c0cff"
-  },
-  "src/RimMandrake/ManyWaters/Defs/ThingDefs/RM_ColoredWaterBottles.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "e1dc11470288cf22bcdbcdb1ebe0dd51c8910fd498b08cfbe1f5b7544d72e734",
-    "sha": "3e7a8571"
-  },
-  "src/RimMandrake/ManyWaters/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "0c9c0cff"
-  },
-  "src/RimMandrake/ManyWaters/Source/RiverSteamHook.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "393a89884a7bd33a019c8f84095b609ed648122d8201ec2682a9ffb64410698f",
-    "sha": "5f12f476e"
-  },
-  "src/RimMandrake/ManyWaters/Source/RiverSteamHook.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "fc1e668e63d1610e1e132221dd17e8d7b9573616e6fa1a02d1cc56a0fd43992a",
-    "sha": "ce01a5a8a"
-  },
-  "src/RimMandrake/ManyWaters/Source/RiverSteamSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "a42c5f077653b002bce4097aa9ea3ebce734b582d4ec3cb9d28268fc9e40828f",
-    "sha": "f69955e42"
   },
   "src/RimMandrake/MovingDunes/About/About.xml": {
     "cleanCount": 1,
@@ -3526,204 +3310,6 @@
     "date": "2026-09-04",
     "hash": "f5eaf566417ccc57632c29c772907cc6697e5734fd992ab01db21fedbdea3ba6",
     "sha": "43f96b1b"
-  },
-  "src/RimMandrake/Pits/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "55cfecc130da658feec5e650231335f8d8dd49a74f5080c32bcecd5d45b9ba73",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Defs/DesignationDefs/Pit_Designations.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "c2ded1ee10b8d31c790e05a22e56d3f8963a52f986ecb4b9ec4397de5da0f564",
-    "sha": "71cceeb1"
-  },
-  "src/RimMandrake/Pits/Defs/HediffDefs/Pit_Hediffs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "fbeeafdeb5b2f2e27f73913c3d69100ddab50a1796ad58d40bbe008769b593e7",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Defs/JobDefs/Pit_JobDefs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "c4e72b09c3bad9180b18140b0998cd7b1128f8ab5da604924ed2afc851435747",
-    "sha": "71cceeb1"
-  },
-  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_Cell.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "b54429a4b27dff0508f432de8504dbbdbe6214c9302cc619e1262c83f425d08f",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_DigSites.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "1663c5a5b16ada5729110e60a877df9d27e39b0bd56062ffa619e8fad6e3224f",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_OpenPits.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "fa568b06f24a4bf9698143080b0e90ad73d298a79c318ccb0ecb2142a677ea61",
-    "sha": "54ac7d7ee"
-  },
-  "src/RimMandrake/Pits/Defs/WorkGiverDefs/Pit_WorkGivers.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "ada02fe81cfc7e1d6279bd5ce14959d70ea6fd3cabed98a37d8b777587924184",
-    "sha": "71cceeb1"
-  },
-  "src/RimMandrake/Pits/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "b88a6f90"
-  },
-  "src/RimMandrake/Pits/Languages/English/Keyed/Pit_Keys.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "3ebf4df69aa696a83a08f69e637982704c78805395e98cf784f0df135135b5e7",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "19fc1a5ef140fa3178249d5fb430ac897f2de32758f588a538716cce8f1b13a8",
-    "sha": "42c76948"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/Building_PitDigSite.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "56f5ba7e4d59d8543c11f2250f0647d6a7d3c680ea72196084905aba3497d33f",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/CompPitDigStage.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "033a2dc55af674d37f0ea39fad904f9369361161c5ecba6c2e94538273fd2ebf",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/CompProperties_PitDigStage.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e6d0bf34fe4081f353377e21f034eecf6fd4a46e52e802e98b979b36b1ead640",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/JobDriver_DigPitDeeper.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "26d48b21ead6103245fa9397dccfc328d7bc241f7c9414388c794052d0449549",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/PitDepthTier.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "a28f237b0f0d8820634f0cfed9d9e21e2f8c324bdb2c03557afee4a9ee50c9b0",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/DigStage/WorkGiver_DigPitDeeper.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "adfbfdb000bd503eb7cca14f3529c2c32080c0afeb88f832c6191b6e00e59a83",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Escape/PitEscapeUtility.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "09d2477bbcfe556f9ecf7ff497e98f89dd8af95edf926f17ec2c9e44effb9061",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/Fitting/CompPitFitting.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ea067eb13bc26c5d435c452c9ec54ee78e988fa94f7ef8b9e3edf9d636e9af99",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Fitting/CompProperties_PitFitting.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "31ba5d64335c4986031bb46a3f57e6a0c1516720bea3b1b3cd8115110a09ba23",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Fitting/PitFittingType.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "4ca4b6b71950bc9af2c8109d31a8994dbf418f1c821c95823b2bc1597481971e",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Holding/Building_OpenPit.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "f0ffcbe598c31db3dce12d7b15ca35da8db6ce1b5cec1ac28cf03b6677959bec",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/Holding/Building_PitCell.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "6330834502adb37e1f5996cad13eab1d31ec92dc2d3f68b4da262c27d213f7bf",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/PitsMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "4bd039e0b3b4fa2d30bac16d1a280de9d4f0441ad6c3f17d3cd3efcbaeb029ad",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/RimMandrakePits_DefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "75ec17b1ca5a877855094352e94ae5c0ddd5c3a463f5ca43d54e8e5a6e979bd8",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/RimMandrake_Pits.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "9a853419227d30eefe03522bdb7a8ea8c1954b5308e7094fd0534ae1c65bf406",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/SelfTest/Program.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a8435730caef0862521503878274cb88175873d943f97f6d6fc16789317c0d50",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/SelfTest/RimMandrakePits.SelfTest.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "62f79016aa46b5fa97a02cc650565a548d66911217c1938c697053b3ea0c0ca2",
-    "sha": "e01583ae"
-  },
-  "src/RimMandrake/Pits/Source/TerrainMimic/Building_TerrainMimicCover.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "43af4948d47a90285c8600982d6bc49b1f472be2f782e6b60dee10bfdf42d0fb",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Trigger/CompPitCoverTrigger.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "a10d3a9876baef9f2b34a9de787750df6c02d59dfa12261a790aaf917dc2340b",
-    "sha": "4b440f019"
-  },
-  "src/RimMandrake/Pits/Source/Trigger/CompProperties_PitCoverTrigger.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "6781b97fbdbbe2de26952ad1ac9949bcc6930bf1c62f90596530f5cbda22739e",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/Source/Trigger/PitCoverTier.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e1fcea21f8139c030002c8e1681f2292aebd1de642f44c23bd085e54f12abb5b",
-    "sha": "ecc86a6f"
-  },
-  "src/RimMandrake/Pits/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "f06026ff41352388f74fbdc77bf9f28d5518581f91ad186a342a1f04764e2e4e",
-    "sha": "aa2e63220"
   },
   "src/RimMandrake/PlanetPresetPrime/About/About.xml": {
     "cleanCount": 2,
@@ -6771,12 +6357,6 @@
     "hash": "52115b11ea9379f520d2e539e7236c13aec5dc19f4b88e77b51fa826538692a1",
     "sha": "c1ae25eaa"
   },
-  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFluidCanalTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "a049677a896aba172a581868fa2badc5382d97c1f36fcc2efbf951bf6f2ae6d9",
-    "sha": "3ea1ca20"
-  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -7100,12 +6680,6 @@
     "date": "2026-09-03",
     "hash": "a130103abeac8d0c991122ceb7a2bb60c4690b47684d2bad5cfb29a53b199aa6",
     "sha": "353b3c33"
-  },
-  "src/RimMandrake/bridgetools/prove_fluid_canal.py": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "c28eb32a744b12c154846c84ae53bacdbf60da740f36a4fd7b6234eb128dc399",
-    "sha": "52dee04f"
   },
   "src/RimMandrake/bridgetools/prove_gravship.py": {
     "cleanCount": 1,
@@ -7507,60 +7081,6 @@
     "cleanCount": 2,
     "date": "2026-09-06",
     "hash": "388e255ae83ee8bff3803972a3e2b19704ee7dd9de9c8b0cbad336174420e6c0",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_Building_KotORGunsmithWorkbench.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "ce3d7ca7bdc4bf6c2b6b96516a1c73f2f2decd5263d8fe1c5ab5e04c5bb37f4e",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_ArmorBasic.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "bd74519f27992e1be1d40f26c2b99e739560968a28bfe1ec94c91367fba815aa",
-    "sha": "3621ca51c"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_ArmorHvyHatsRobes.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "014d8d206c6b5587f457b0ce46e7fb6d835e49c3ffb924d0e3237b52d9537385",
-    "sha": "3621ca51c"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_MeleeBasic.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "57590e413c1b43d10f7c53e9a942015cb10965beabb176b013fb2545e6ddeb29",
-    "sha": "3621ca51c"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_RangedBasic.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "f2c5453631eda5b7f4afbdaf2faf408394da4f5789f0b4ef99e158332bbc0b6a",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartsMountsBase.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "3e54d7883b3a6143e051139576d8e58a9472788c4bf6df36ce4c03544a3ab628",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Armor.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "a50f651f36baf35e85d00542b833d7696e5bc01b43cd91d5effd78bd476991e0",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Melee.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "16cbd2348f861b01752f305f9e6f7bfdc595ffd4055034749177065033875d1d",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Ranged.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "a29ac72367067a3a2c202cd97677be43777f5fa4e5ca7a6d7b93de0a3626091c",
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/NO_DBH/Absorbed_Kotorcore_NO_DBH_Building_PropWaterTank.xml": {
@@ -8331,102 +7851,6 @@
     "hash": "2477b7fc1eef5f95d53f6701780337ec1689f7916611785956a37574b79a2431",
     "sha": "85401ce7"
   },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_HelmetArmorTech.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "e9506dbb5598b07fa6b75d29a3284f60203d607ad0c8543a507acb43f93103d9",
-    "sha": "3621ca51c"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_JetpackMissile.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "af2bd5e04090261770b02405c04b4fd0821c61dc87887cd4eab429f2648ed237",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_ElectroStaff.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "91ca5432c71b23ebf9db7cc7736f60897eaf30f6792ad06fa0f432539324542b",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_StunBaton.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "813b51fe975b7514c1e8567d83f51cd591eebdcd5013905e0d833dc0dc4f37ab",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_VibroDoubleblade.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "3f0086ded2f21d60f6d8e8b7471c8c0c78c78d16f5d5436c5cd00a889f1dfcfa",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroaxe.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "5b34032fe6f867e814c9208ba3c07a923df640e3dce834f01a19e46ea155fccb",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroblade.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "e9d5c9bf14d397481bff584b095e7a557849665af1be6c79c69db760a7c99d41",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroglaive.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "11b7a60ac647fe394fa959f5306b7d6ff5c8fa120c6fe87c60060382bc6d5247",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibrosword.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "224db3617ce33b5333ed863e8c932d0c209ff4a407075acd1dde104af9a37e73",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_BowcasterSlugrifles.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "66798a32458b25af218b16ac385fc10eb28e5acfc8b42f8ca4a4ed7f54fd1009",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_LightHeavyRepeaters.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "c3bba4137733596d2218575bd74c40ce698640fc5f66600c23e1afb863fca62e",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_blasterDMG.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "d75cf61f2a1b58075d85f5226a1bb1ff662fe0848747a9bf5cdb0c5d4eb64616",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_disruptorDMG.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "a41855a347074027308351932476d99bbde379b098d09ab9c8bfaf4669d925c1",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_ionDMG.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "d633f8bd3a26b8ea59db9f43f4e9f48c72ef3bcf7030baff0c0ecfb534cb99a8",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_stunDMG.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "a469fc4cd97f22493021c4bd681794e3b830cd816ad243cb4e7ae44f0e96fe40",
-    "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_Wristgun.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "1ea4ab47c910ba5f7fa5e80e83c11630744f6ebc6402dd01948d47a7dbbbf447",
-    "sha": "afcfa347"
-  },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml": {
     "cleanCount": 4,
     "date": "2026-09-11",
@@ -8552,12 +7976,6 @@
     "date": "2026-09-06",
     "hash": "dc5a585061ef9ce2b823d76c4bb063600ab25760f8e37cb57e796faeeb28e724",
     "sha": "85401ce7"
-  },
-  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORModularWristLauncher.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "1b4dc018c76dde8113f5c10d0c42e70f5d36c866440833b382d43b44c878531d",
-    "sha": "6784196e"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORMountedWeapons.xml": {
     "cleanCount": 2,
@@ -14822,42 +14240,6 @@
     "date": "2026-09-17",
     "hash": "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df",
     "sha": "38ce6b1fa"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "3e9ea234fc33fc800a0259c56fbfb77c2cf18391eabb8dd77d72347877c8184f",
-    "sha": "3ea1ca20"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "6e65d276"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsGround_ScorchableTerrain.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "739d84b94ae5a8d05572df02cd57d58e282957ad0521def222db1bcd0898d6c2",
-    "sha": "3ea1ca20"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_BlackRain.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "53a34ae60531455e794ae1317a51aea469f3e792e673b3f4096bdfa08de08de7",
-    "sha": "3ea1ca20"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_RuledTable.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "a7486b97c74a8c4658c79bb0ec9dcc2b91cd266aa2301d240674fa72af58259a",
-    "sha": "2c8762586"
-  },
-  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_Stage0.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "22a895836c2f357c94bcbf5a43dedfa6dc08393ad9ec698fb4c079368593ee3e",
-    "sha": "3ea1ca20"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
     "cleanCount": 2,

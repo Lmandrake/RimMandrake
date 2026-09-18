@@ -36,7 +36,6 @@ Seven mechanisms, all riding defs that already exist:
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.pyrelands</li>
-    <li>mandrake.rut.fireecology</li>
     <li>mandrake.rut.patches</li>
   </loadAfter>
 </ModMetaData>
