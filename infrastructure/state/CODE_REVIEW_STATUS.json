@@ -2982,10 +2982,10 @@
     "sha": "dfa5bdd3"
   },
   "src/RimMandrake/Inhabited/Defs/GenStepDefs/GenSteps_Inhabited.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "d3ec3033e8a14e8ae8b3f68cbeda0b859247a6ee237ae60e0c7618f58735cb56",
-    "sha": "dfa5bdd3"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "aa7f4537f097b0f56148c1162d36a57493a9c977d7881fed32d5286e506a4bd8",
+    "sha": "38a129f28"
   },
   "src/RimMandrake/Inhabited/Defs/GenStepDefs/GenSteps_InhabitedSettlement.xml": {
     "cleanCount": 2,
@@ -3000,10 +3000,10 @@
     "sha": "1db48f7d"
   },
   "src/RimMandrake/Inhabited/Defs/PlaceDefs/Places_Inhabited.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "01d874a20f0ede6f827236a572ced4d0849d7daa20ee98764525311c649d9eba",
-    "sha": "dfa5bdd3"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "ece62a4930ee25b118452845526a79c5b932d692c9906fe7e1754b211758bdc8",
+    "sha": "38a129f28"
   },
   "src/RimMandrake/Inhabited/Defs/TileMutatorDefs/TileMutatorDefs_Inhabited.xml": {
     "cleanCount": 2,
@@ -12190,10 +12190,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ResearchProjects.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "fdb5874a5918c2b6f458e3b2f39965133e0a68b468b9a5b405ea38ff0fa5ace5",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "90cb924162394b6dcfba67246b7bbc41567a22d941d4b164ecd0448bd1daa680",
+    "sha": "38a129f28"
   },
   "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_SoundDefs.xml": {
     "cleanCount": 1,
@@ -12202,10 +12202,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ThingDefs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "dcba3ab9f37a84b91757a789c32f4d1ac936a9b191e603455a740e288db2ba09",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "029acabf5f98745690c71aaca47376b8a7ceb0a89438bcf784ed8273a3105955",
+    "sha": "38a129f28"
   },
   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml": {
     "cleanCount": 2,
@@ -13036,10 +13036,10 @@
     "sha": "52dee04f"
   },
   "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "0c040dfbf1cc485c68ff323c7a96af5078b4e5e8d224c44ead529970c4c27227",
-    "sha": "52dee04f"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "111c43825887ec78f1e769bbb736e60ac37c2acdfdc76576fc1d64459fe2bb25",
+    "sha": "38a129f28"
   },
   "src/RimUtinni/AshkarrFlora/LICENSE": {
     "cleanCount": 1,
@@ -15238,10 +15238,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RustCathedralHum/Defs/ThingDefs_Items/RUT_CoolantEel.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "6025046d8095316088be9785f382a98e0583fe1be43a3a26d6531cec5bb05c67",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "f0a914bfc6e4e838bd61db022d7beae65ec97df54ea12a7ddc7a43a841dd6791",
+    "sha": "38a129f28"
   },
   "src/RimUtinni/RustCathedralHum/Defs/ThingDefs_Races/RUT_LivingBolt.xml": {
     "cleanCount": 1,
