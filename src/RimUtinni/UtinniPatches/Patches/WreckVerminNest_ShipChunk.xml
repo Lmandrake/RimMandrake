@@ -21,10 +21,21 @@
      it would be everywhere.
 
      Gate, matching this file's siblings (JawaGroundHulk_Register.xml):
-       OUTER MayRequire tests the wiring's own two ingredients are both
-       active — mandrake.rm.shipvermin (owns RM_CompProperties_VerminNest)
-       and Ludeon.RimWorld.Odyssey (owns ShipChunk_Mech). If either is
-       absent this whole Operation is dropped at load and nothing dangles.
+       OUTER two nested PatchOperationFindMod tests the wiring's own two
+       ingredients are both active — mandrake.rm.shipvermin (owns
+       RM_CompProperties_VerminNest) and Odyssey (owns ShipChunk_Mech). If
+       either is absent this whole Operation is dropped at load and
+       nothing dangles. ⚠️ MayRequire on an <Operation> is INERT (MEASURED
+       2026-09-17 against 1.6 source — ModContentPack.LoadPatches never
+       reads the attribute); the original MayRequire="mandrake.rm.
+       shipvermin,Ludeon.RimWorld.Odyssey" here did nothing, and since
+       ShipChunk_Mech's own existence already depends on Odyssey, the
+       INNER <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+       below would try to resolve a type from mandrake.rm.shipvermin's
+       assembly and discard this whole FILE the moment that mod is
+       inactive while Odyssey is active. FindMod is the only real
+       per-operation gate (nested because its own `mods` list is an OR,
+       not an AND, so both requirements need their own FindMod).
        INNER PatchOperationConditional tests the def itself exists before
        touching its <comps>, same discipline as every other patch in this
        folder — defensive against Odyssey ever renaming or dropping it.
@@ -69,44 +80,54 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.shipvermin,Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Ship Vermin</li>
+    </mods>
+    <match Class="PatchOperationFindMod">
+      <mods>
+        <li>Odyssey</li>
+      </mods>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
 
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
-            <value>
-              <comps />
-            </value>
-          </nomatch>
-        </li>
-
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
-          <value>
-            <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
-              <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
-              <nestSpawnRadius>4</nestSpawnRadius>
-              <populationGroupTag>ShipVermin</populationGroupTag>
-              <populationHardCap>12</populationHardCap>
+            <li Class="PatchOperationConditional">
+              <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+                <value>
+                  <comps />
+                </value>
+              </nomatch>
             </li>
-          </value>
-        </li>
 
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/tickerType</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
-            <value>
-              <tickerType>Normal</tickerType>
-            </value>
-          </nomatch>
-        </li>
+            <li Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
+              <value>
+                <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+                  <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+                  <nestSpawnRadius>4</nestSpawnRadius>
+                  <populationGroupTag>ShipVermin</populationGroupTag>
+                  <populationHardCap>12</populationHardCap>
+                </li>
+              </value>
+            </li>
 
-      </operations>
+            <li Class="PatchOperationConditional">
+              <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/tickerType</xpath>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+                <value>
+                  <tickerType>Normal</tickerType>
+                </value>
+              </nomatch>
+            </li>
+
+          </operations>
+        </match>
+      </match>
     </match>
   </Operation>
 

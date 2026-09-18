@@ -9,9 +9,14 @@
   RUT_GreentideWetBulbLock only exists when mandrake.rm.environmentalhazards
   is active (MayRequire-gated def), so a bare <li> baked directly into the
   BiomeDef would be a dangling cross-reference the moment that mod is
-  absent. MayRequire on the Operation itself makes this patch a true no-op
-  (not merely a silently-false match) when the mod is missing. Same shape
-  as RUT_ScaldSteamLock_BiomeWiring.xml (SCALD_MECHANICS_1 S1).
+  absent. Gate: PatchOperationFindMod on the kit's display name, wrapping
+  the whole Conditional below. ⚠️ MayRequire on an <Operation> is INERT
+  (MEASURED 2026-09-17 against 1.6 source — ModContentPack.LoadPatches
+  never reads the attribute); the Conditional's own xpath test is
+  structural, not gated on the absent mod, so without a real gate this
+  patch would run every load and inject the dangling reference regardless.
+  FindMod is the only real per-operation gate. Same shape as
+  RUT_ScaldSteamLock_BiomeWiring.xml (SCALD_MECHANICS_1 S1).
 
   RUT_Greentide.xml carried no <biomeMapConditions> node at all when this
   file was first authored (M1), so this originally only added the whole
@@ -26,22 +31,27 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
-    <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
-      <value>
-        <li>RUT_GreentideWetBulbLock</li>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]</xpath>
-      <value>
-        <biomeMapConditions>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>
+        <value>
           <li>RUT_GreentideWetBulbLock</li>
-        </biomeMapConditions>
-      </value>
-    </nomatch>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]</xpath>
+        <value>
+          <biomeMapConditions>
+            <li>RUT_GreentideWetBulbLock</li>
+          </biomeMapConditions>
+        </value>
+      </nomatch>
+    </match>
   </Operation>
 
 </Patch>

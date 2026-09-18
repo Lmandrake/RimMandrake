@@ -9,9 +9,15 @@
   biomeMapConditions field — RUT_ScaldSteamLock only exists when
   mandrake.rm.environmentalhazards is active (MayRequire-gated def), so a
   bare <li> baked directly into the BiomeDef would be a dangling
-  cross-reference the moment that mod is absent. MayRequire on the Operation
-  itself makes this patch a true no-op (not merely a silently-false match)
-  when the mod is missing.
+  cross-reference the moment that mod is absent. Gate: PatchOperationFindMod
+  on the kit's display name, wrapping the whole Conditional below. ⚠️
+  MayRequire on an <Operation> is INERT (MEASURED 2026-09-17 against 1.6
+  source — ModContentPack.LoadPatches never reads the attribute); the
+  Conditional's own xpath test (does RUT_TheScald already carry
+  biomeMapConditions) is structural, not gated on the absent mod, so
+  without a real gate this patch would run every load and inject the
+  dangling reference regardless. FindMod is the only real per-operation
+  gate.
 
   RUT_TheScald.xml carries no <biomeMapConditions> node at all today (only
   wildAnimals/baseWeatherCommonalities/terrainsByFertility), so this adds
@@ -19,16 +25,21 @@
   -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/biomeMapConditions</xpath>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
-      <value>
-        <biomeMapConditions>
-          <li>RUT_ScaldSteamLock</li>
-        </biomeMapConditions>
-      </value>
-    </nomatch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/biomeMapConditions</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
+        <value>
+          <biomeMapConditions>
+            <li>RUT_ScaldSteamLock</li>
+          </biomeMapConditions>
+        </value>
+      </nomatch>
+    </match>
   </Operation>
 
 </Patch>
