@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T16:31:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T17:01:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,15 +89,6 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
-
-## MODLIST_DEFERRED_CARDS_1 Deferred modlist cards (owner 2026-09-12: not for right now): romance pile trim, VGE census-then-port, Biomes Caverns justify-or-cut, tree retexture pick — evidence in Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-12.md, reserve for a future sitting
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
-prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
 
 ## PIT_TRAP_VISUAL_REDESIGN_1 Design the pit trap's real visual interface (covered/sprung/occupied, size) - owner wants a big dark pit, not the vanilla trap icon
 state:    doing  (BLOCKED)
