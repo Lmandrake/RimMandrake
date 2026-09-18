@@ -324,10 +324,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/worldbuilding/biomes/rosters/_consolidate.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "2fdfaf689c5990cf54be2bfaeafa05c65769126695bdeab57cf42a0968fdf4b1",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "a8b2f4b65cef699b2b55b1155d76649f5cf82ebf0d664c4ba3703ab87ed3ee34",
+    "sha": "40c4d4fed"
   },
   "design/Jawa/worldbuilding/biomes/rosters/_validate.py": {
     "cleanCount": 1,
@@ -552,10 +552,10 @@
     "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/codex_image.py": {
-    "cleanCount": 4,
-    "date": "2026-09-10",
-    "hash": "b4c4d65e56d6b765ce4399e2506d887a82b4cf22dfe3034b7c4e4ae82f49e0ff",
-    "sha": "7dabaa86"
+    "cleanCount": 5,
+    "date": "2026-09-17",
+    "hash": "d0eaca7a58c680ee1427f21b35a813fa41606e326c011ed5e91ba6cf5278a60a",
+    "sha": "40c4d4fed"
   },
   "skills/generating-images/scripts/codex_queue_runner.py": {
     "cleanCount": 1,
@@ -882,10 +882,10 @@
     "sha": "20ce46f24"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-14",
-    "hash": "08708a95771ebb01dbb43bc97b5496e18d44d13f36de13947dfac717d5615951",
-    "sha": "3bcf80ccf"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "d6d771b9ba3a8cf4aade39d3665b6042a67d27652b89f437aa29588a6124d05e",
+    "sha": "40c4d4fed"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
@@ -14608,10 +14608,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "0b8cf0d18ed4cc90ce986ad0f83036e8f0938b14b0c05ff8adcecf77b9b8a5dd",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "ac8ea51f76895310f8d30e6f95c953147ed07e656f070f4f97501cfe33fe88ff",
+    "sha": "40c4d4fed"
   },
   "src/RimUtinni/PlantGrowth/About/About.xml": {
     "cleanCount": 1,
@@ -14698,10 +14698,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-17",
-    "hash": "be7715af041637e6649162e6b4fee1016553c94afb1feda79597b1d30be01922",
-    "sha": "d966fa898"
+    "hash": "c984e96d582d26d0076ff00be208c97185e751fdfbe65b05023d9b9667b36983",
+    "sha": "40c4d4fed"
   },
   "src/RimUtinni/PyrelandsMechanics/Defs/HediffDefs/RUT_PyrelandsHediffs.xml": {
     "cleanCount": 1,
@@ -15190,10 +15190,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RustCathedralHum/Defs/RM_BiomeAttitudeDefs/RUT_RustCathedralAttitude.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "7a3d412168a7d42e7ecab41047f2e1ccfa850ec5a4c98b39168e0b62d5f9878f",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "dcf2b1595fafb3a47784d4db4d809b3d4f9d3bb7269b5111fda553c967c3a058",
+    "sha": "40c4d4fed"
   },
   "src/RimUtinni/RustCathedralHum/Defs/SoundDefs/RUT_HumLayers.xml": {
     "cleanCount": 1,

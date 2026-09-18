@@ -171,19 +171,23 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 #   reach for come from the live kotorcore meanwhile.
 Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
 
-# --- Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml: HELD until rpgwanderer.opturret retires --
-# 2026-09-17 (FOUNDRY, dirty-code-review wave), same shape as the KotorCore hold
-# above. The file's own header says it plainly: "Source pack stays active for
-# now (retirement is a separate later step) — do not deploy this file until
-# then, or duplicate defNames result" — RSW_Bullet_ArchotechChargeBlasterHeavy,
-# RSW_Gun_ArchotechChargeBlasterHeavyTurret and RSW_Turret_AutoChargeBlaster_OP
-# are hand-ported verbatim from rpgwanderer.opturret (workshop 3550061539) and
-# collide with the donor's own defNames while it is still in the load. A
-# comment nobody reads is not a rule — this is that header made mechanical.
-# ⇒ LIFT when rpgwanderer.opturret leaves ModsConfig.xml, the same day
-#   Turrets_DamageDoctrine.xml's retired PatchOperationFindMod-gated op can be
-#   deleted for good instead of just left retired in its own comment.
-Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml   # FOUNDRY: donor rpgwanderer.opturret still active, 2026-09-17
+# --- Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml: HOLD WAS STALE, LIFTED 2026-09-18 --
+# Added 2026-09-17 (FOUNDRY, dirty-code-review wave) on the file's own header
+# comment ("do not deploy until [donor] retires"), mechanically, WITHOUT
+# checking whether that retirement had already happened. It had:
+# `rpgwanderer.opturret` was retired from ModsConfig.xml on 2026-08-31/09-01
+# (see WEAPONS_DONOR_RETIREMENT_1.md), and the original 7a3b6572f hold on this
+# same file was already lifted once, at d2afe3c4d, for exactly that reason.
+# 2026-09-17's entry re-imposed a hold on a donor that had been gone for over
+# two weeks — a stale-claim bug in this very review loop, not a real state
+# change.
+# MEASURED 2026-09-18 against the LIVE ModsConfig.xml (634 active mods) AND
+# the repo's ModsConfig.FULL.LATEST.xml (635 mods, captured 2026-09-17 21:11,
+# after the stale hold was added): `rpgwanderer.opturret` is absent from
+# both; `guy762.mm.kotorcore` (the still-valid KotorCore hold above) remains
+# active in both. No duplicate-defName risk — lifted, not re-superseded.
+# Deploying the file itself is a separate action, owed to the next deploy
+# pass, not this review.
 
 # --- SeaBeasts nursery juveniles: AlphaGenes startup NRE, ROOT-CAUSED AND FIXED --
 # Pulled 2026-09-11 while bisecting a NullReferenceException in
