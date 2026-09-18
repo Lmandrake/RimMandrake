@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T04:11:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T05:02:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,3 +522,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_DENSITY_TRIPLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_DENSITY_TRIPLE_1.md
+
+## HANDOFF_RITUAL_OPTIMIZATION_1 Handoff ritual optimization (audit-driven): wake side in seat files, NEXT:/(filed:) enforcement, --check heading+WHOSE hardening, commits cap, --harvest extractor, 30-day --cull. Evidence: Transient/handoff_audit/
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HANDOFF_RITUAL_OPTIMIZATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HANDOFF_RITUAL_OPTIMIZATION_1.md

@@ -30,8 +30,17 @@ judgment sections, and only when `--check` passes. That phrase is the owner's
 signal to reboot; a script that could emit it would eventually emit it wrongly.
 
     handoff.py                write the skeleton (gates first, --force to skip)
-    handoff.py --check        gates + TODO scan only; exit 1 if not ready
+    handoff.py --check        gates + content scan; exit 1 if not ready
+    handoff.py --wake         the READ side: latest handoff + live pointer status
+    handoff.py --harvest      lesson sections since the last drain -> Transient/
+    handoff.py --cull [--apply]  superseded+harvested handoffs older than 30 days
     handoff.py --since <sha>  window start override (default: the last handoff)
+
+The content checks and the wake/harvest/cull modes are audit-driven (2026-09-17,
+three-arm audit in `Transient/handoff_audit/`): measured pointer pickup was ~25%
+overall and near-100% for pointers with a concrete `NEXT:` action; 7 of 11 recent
+handoffs shipped an unattributed dirty-tree dump `--check` could not see; and 43
+of 171 lesson-claims were stranded in handoffs no durable doc ever received.
 """
 
 import argparse
@@ -50,6 +59,8 @@ ITEMS = os.path.join(ROOT, "infrastructure", "state", "items")
 BRIDGE = os.path.join(ROOT, "infrastructure", "state", "BRIDGE")
 
 TODO = "<<< WRITE THIS >>>"
+WHOSE = "<<< WHOSE? >>>"
+CULL_DAYS = 30  # owner ruling 2026-09-18: superseded + harvest-covered + older
 
 # The sections a script cannot produce. Each is a real question the next seat
 # will ask on wake, in the order they will ask it.
@@ -63,11 +74,27 @@ JUDGEMENT_SECTIONS = [
      "mod that vanished from his list, a change he can veto. Say what you shipped "
      "deliberately with a flag raised. Empty is a legitimate answer."),
     ("What is half-done, and where it stops",
-     "Anything left mid-flight, and the exact next action. An item in `doing` "
-     "with no line here is a trap for the next seat."),
+     "Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one "
+     "imperative action>`. A pointer without a ledger item id does not survive a "
+     "seat change, and a pointer without a NEXT: measured ~0% pickup. An item in "
+     "`doing` with no line here is a trap for the next seat."),
     ("Traps learned",
      "Instruments that lied, silent failures, commands that ate their own input. "
-     "Also file these to LESSONS_INBOX.md."),
+     "ONE line each, ending with where it now lives -- file it to "
+     "LESSONS_INBOX.md the moment it is learned, then cite `(filed: "
+     "LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is "
+     "already recorded somewhere durable."),
+]
+
+# --check verifies these headings exist (prefix match; the mechanical ones carry
+# counts in their titles). A hand-written handoff with its own headers used to
+# pass --check trivially because it contained no TODO marker (measured
+# 2026-09-17, BENCH_REBOOT_HANDOFF_202609132330.md): the template is the contract.
+CANONICAL_HEADINGS = [t for t, _ in JUDGEMENT_SECTIONS] + [
+    "Closed since the last handoff",
+    "Filed and still open",
+    "Commits",
+    "Game / bridge / tree state at wrap",
 ]
 
 
@@ -128,11 +155,17 @@ def events():
     return out
 
 
-def handoff_files():
-    """Every handoff for this seat, unordered — ordering is never by name here."""
-    s = seat()
+def handoff_files(all_seats=False):
+    """Handoffs on disk, unordered — ordering is never by name here.
+
+    `all_seats` serves --harvest and --cull, which sweep the whole corpus and
+    must not require a resolvable seat."""
     if not os.path.isdir(ITEMS):
         return []
+    if all_seats:
+        return [fn for fn in os.listdir(ITEMS)
+                if "_REBOOT_HANDOFF_" in fn and fn.endswith(".md")]
+    s = seat()
     return [fn for fn in os.listdir(ITEMS)
             if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")]
 
@@ -171,10 +204,9 @@ def previous_handoff():
     #     `..._20260906C` and `..._202609062326`, and digits sort before letters,
     #     so the newest file sorted THIRD. Filenames are not a clock.
     best = (None, None)
+    times = _corpus_commit_times()
     for fn in handoff_files():
-        rel = os.path.join("infrastructure", "state", "items", fn)
-        raw = sh("git", "log", "-1", "--format=%cI", "--", rel)
-        ts = _to_utc_z(raw) if raw else raw
+        ts = times.get(fn)
         if ts and (best[1] is None or ts > best[1]):
             best = (fn, ts)
     return best
@@ -277,12 +309,215 @@ def window_is_empty(since_sha, since_ts):
     return not moved and not commits
 
 
+def _section(text, title):
+    """Body of `## <title>...` up to the next `## ` heading, or None."""
+    m = re.search(r"^## %s.*?$(.*?)(?=^## |\Z)" % re.escape(title), text,
+                  re.M | re.S)
+    return m.group(1) if m else None
+
+
+def _bullets(body):
+    """Top-level `- ` bullets with their continuation lines folded in — a
+    pointer check that only reads a bullet's first line misses a marker that
+    wrapped (the line-2-vs-line-3 subject bug, CLAUDE.md 2026-09-17)."""
+    out, cur = [], None
+    for l in body.splitlines():
+        if l.startswith("- "):
+            if cur is not None:
+                out.append(cur)
+            cur = l
+        elif cur is not None and l.strip():
+            cur += " " + l.strip()
+    if cur is not None:
+        out.append(cur)
+    return out
+
+
 def todo_scan(path):
+    """Everything --check demands of the handoff's CONTENT. Each check maps to a
+    measured failure mode from the 2026-09-17 audit (Transient/handoff_audit/):
+    unfilled markers, off-template files, unattributed dirty-tree dumps, prose
+    pointers with no next action, traps re-explained instead of cited."""
     if not os.path.isfile(path):
         return ["the handoff file does not exist yet — run without --check first"]
     text = io.open(path, encoding="utf-8").read()
+    bad = []
     n = text.count(TODO)
-    return ["%d unfilled section(s) still carry %s" % (n, TODO)] if n else []
+    if n:
+        bad.append("%d unfilled section(s) still carry %s" % (n, TODO))
+    n = text.count(WHOSE)
+    if n:
+        bad.append("%d uncommitted-file line(s) still carry %s — say whose each "
+                   "one is" % (n, WHOSE))
+    missing = [h for h in CANONICAL_HEADINGS
+               if not re.search(r"^## %s" % re.escape(h), text, re.M)]
+    if missing:
+        bad.append("canonical heading(s) missing — the template is the contract: "
+                   + ", ".join(missing))
+
+    # Half-done: a pointer without a concrete next action dies unread —
+    # measured ~25% pickup overall, near-100% with a NEXT:.
+    body = _section(text, "What is half-done, and where it stops")
+    if body:
+        loose = [b for b in _bullets(body) if "NEXT:" not in b]
+        if loose:
+            bad.append("half-done pointer(s) without a `NEXT:` action:\n      "
+                       + "\n      ".join(b[:120] for b in loose[:6]))
+
+    # Traps: one line plus where it now lives, never a re-explanation.
+    body = _section(text, "Traps learned")
+    if body:
+        loose = [b for b in _bullets(body)
+                 if not re.search(r"\((filed|see):", b)]
+        if loose:
+            bad.append("trap(s) with no `(filed: ...)`/`(see: ...)` citation — "
+                       "file each to LESSONS_INBOX.md (or cite where it already "
+                       "lives):\n      " + "\n      ".join(b[:120] for b in loose[:6]))
+    return bad
+
+
+def wake():
+    """The READ side of the ritual: print this seat's latest committed handoff
+    with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
+    46 of 76 pointers were never consumed — a handoff nobody is obliged to
+    read is write-only by construction. Run on the first turn after a reboot."""
+    prev_name, _ = previous_handoff()
+    if not prev_name:
+        print("no committed handoff for %s — nothing to wake from" % seat())
+        return 0
+    text = io.open(os.path.join(ITEMS, prev_name), encoding="utf-8").read()
+    print(text)
+    ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
+    if ids:
+        last = {}
+        for e in sorted(events(), key=lambda x: x.get("ts") or ""):
+            if e.get("event") in ("file", "start", "close", "block", "drop",
+                                  "supersede"):
+                last[e.get("id")] = e.get("event")
+        print("=" * 66)
+        print("POINTER STATUS (ledger, re-derived now — the handoff above is a")
+        print("snapshot and may be stale):")
+        open_ids = []
+        for i in dict.fromkeys(ids):
+            st = last.get(i, "not in ledger")
+            print("  %-48s %s" % (i, st))
+            if st in ("file", "start", "block", "not in ledger"):
+                open_ids.append(i)
+        print("open pointers: %d — pick each up, close it, or say in your first"
+              % len(open_ids))
+        print("reply why not. Silence is how 60% of pointers died.")
+    return 0
+
+
+def _corpus_commit_times():
+    """{handoff filename: newest commit ts, ledger format} for ALL seats, in
+    ONE git call — a per-file `git log` across this 67-file corpus on the
+    drvfs mount measures in minutes, not seconds (hit live 2026-09-18)."""
+    out = sh("git", "log", "--format=@@%cI", "--name-only", "--",
+             "infrastructure/state/items/*_REBOOT_HANDOFF_*.md")
+    times, ts = {}, ""
+    for line in out.splitlines():
+        if line.startswith("@@"):
+            ts = _to_utc_z(line[2:].strip())
+        elif line.strip():
+            fn = os.path.basename(line.strip())
+            if fn not in times:  # log is newest-first; first sighting wins
+                times[fn] = ts
+    return times
+
+
+def last_drain_ts():
+    """Commit time (ledger-format UTC) of the last LESSONS_INBOX drain — the
+    newest commit in which the inbox SHRANK (deletions > additions, via one
+    `--numstat` walk). Ordinary filing only appends; only a curation drain
+    removes lines. None if no drain is on record."""
+    out = sh("git", "log", "--format=@@%cI", "--numstat", "--",
+             "infrastructure/state/LESSONS_INBOX.md")
+    ts = ""
+    for line in out.splitlines():
+        if line.startswith("@@"):
+            ts = line[2:].strip()
+        elif line.strip():
+            parts = line.split("\t")
+            if (len(parts) == 3 and parts[0].isdigit() and parts[1].isdigit()
+                    and int(parts[1]) > int(parts[0])):
+                return _to_utc_z(ts)
+    return None
+
+
+def harvest(since_ts):
+    """Extract every filled 'The one thing to carry forward' + 'Traps learned'
+    section from ALL seats' handoffs committed after since_ts into one
+    Transient/ file — the pre-chewed input for the curation sitting. The
+    2026-09-17 audit found 43 of 171 lesson-claims stranded in handoffs no
+    durable doc ever received; this makes the drain a read, not an excavation."""
+    if since_ts is None:
+        since_ts = last_drain_ts()
+    times = _corpus_commit_times()
+    rows = []
+    for fn in sorted(handoff_files(all_seats=True)):
+        ts = times.get(fn, "")
+        if since_ts and ts and ts <= since_ts:
+            continue
+        text = io.open(os.path.join(ITEMS, fn), encoding="utf-8").read()
+        secs = []
+        for title in ("The one thing to carry forward", "Traps learned"):
+            body = _section(text, title)
+            if body and TODO not in body and body.strip():
+                secs.append("### %s\n\n%s" % (title, body.strip()))
+        if secs:
+            rows.append("## %s (%s)\n\n%s"
+                        % (fn[:-3], ts or "uncommitted", "\n\n".join(secs)))
+    stamp = datetime.datetime.utcnow().strftime("%Y%m%d")
+    out = os.path.join(ROOT, "Transient", "handoff_harvest_%s.md" % stamp)
+    hdr = ("# Handoff harvest %s — lesson sections since %s\n\n"
+           "Input for the curation sitting: promote what deserves it into "
+           "skills / CLAUDE.md / facts, then this file is disposable "
+           "(Transient).\n\n" % (stamp, since_ts or "the beginning"))
+    io.open(out, "w", encoding="utf-8").write(hdr + "\n\n".join(rows) + "\n")
+    print("wrote %s — %d handoff(s) with lesson content since %s"
+          % (os.path.relpath(out, ROOT), len(rows), since_ts or "ever"))
+    return 0
+
+
+def cull(apply_):
+    """Handoffs that have served both consumers — superseded by a newer one for
+    the same seat AND committed before the last lessons drain — and are older
+    than CULL_DAYS. Owner ruling 2026-09-18: delete at 30 days, git is the
+    archive. Without --apply this only lists."""
+    drain = last_drain_ts()
+    now = datetime.datetime.now(datetime.timezone.utc)
+    times = _corpus_commit_times()
+    newest, info = {}, []
+    for fn in handoff_files(all_seats=True):
+        ts = times.get(fn, "")
+        st = fn.split("_REBOOT_HANDOFF_")[0]
+        info.append((fn, st, ts))
+        if ts and (st not in newest or ts > newest[st][1]):
+            newest[st] = (fn, ts)
+    cands = []
+    for fn, st, ts in info:
+        if not ts or newest.get(st, (None,))[0] == fn:
+            continue  # uncommitted, or a seat's latest — never culled
+        age = (now - datetime.datetime.fromisoformat(
+            ts.replace("Z", "+00:00"))).days
+        if age < CULL_DAYS or drain is None or ts >= drain:
+            continue  # too young, or not harvest-covered yet
+        cands.append((fn, ts, age))
+    if not cands:
+        print("nothing to cull: no handoff is superseded + harvest-covered + "
+              "older than %d days" % CULL_DAYS)
+        return 0
+    for fn, ts, age in sorted(cands):
+        print("%s  (%s, %dd)" % (fn, ts, age))
+    if apply_:
+        for fn, _, _ in cands:
+            os.remove(os.path.join(ITEMS, fn))
+        print("deleted %d — commit the deletions with explicit paths; git is "
+              "the archive." % len(cands))
+    else:
+        print("%d candidate(s). `--cull --apply` deletes them." % len(cands))
+    return 0
 
 
 def build(since_sha, since_ts, prev_name):
@@ -335,11 +570,12 @@ def build(since_sha, since_ts, prev_name):
         L.append("<!-- %s -->" % prompt)
         if title.startswith("What is half-done") and open_doing:
             L.append("<!-- These are the items you started this window and did not")
-            L.append("     close. Say what state each is in and the exact next action,")
-            L.append("     or close/block it. --check refuses while any is unaccounted")
-            L.append("     for, so deleting a line here is not a way past it. -->")
+            L.append("     close. Say what state each is in and ONE imperative NEXT:")
+            L.append("     action, or close/block it. --check refuses while any is")
+            L.append("     unaccounted for or lacks a NEXT:, so deleting a line here")
+            L.append("     is not a way past it. -->")
             for i in open_doing:
-                L.append("- `%s` — %s" % (i, TODO))
+                L.append("- `%s` — %s; NEXT: %s" % (i, TODO, TODO))
             L.append("")
         else:
             L.append(TODO)
@@ -367,7 +603,15 @@ def build(since_sha, since_ts, prev_name):
     L.append("## Commits")
     L.append("")
     L.append("```")
-    L.append(commits or "(none)")
+    # Git is the provenance: past 20 lines a dump stops being read and starts
+    # being scrolled (one audited handoff carried 556 commit lines, mostly
+    # other seats'). The range pointer reproduces the rest in one command.
+    clines = (commits or "(none)").splitlines()
+    if len(clines) > 20:
+        L.extend(clines[:20])
+        L.append("... %d more: git log --oneline %s" % (len(clines) - 20, rng))
+    else:
+        L.extend(clines)
     L.append("```")
     L.append("")
 
@@ -378,10 +622,11 @@ def build(since_sha, since_ts, prev_name):
     L.append("- Bridge: %s" % (bridge or "unknown"))
     L.append("")
     if dirty:
-        L.append("Uncommitted (say for each whether it is yours or another seat's):")
+        L.append("Uncommitted (replace each %s with whose it is —" % WHOSE)
+        L.append("yours, the other seat's, a subagent's):")
         L.append("")
         L.append("```")
-        L.extend(dirty)
+        L.extend("%s   %s" % (l, WHOSE) for l in dirty)
         L.append("```")
     else:
         L.append("Working tree clean apart from untracked `Transient/`.")
@@ -394,11 +639,35 @@ def build(since_sha, since_ts, prev_name):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--check", action="store_true",
-                    help="gates + unfilled-section scan only; exit 1 if not ready")
+                    help="gates + content scan only; exit 1 if not ready")
+    ap.add_argument("--wake", action="store_true",
+                    help="print the seat's latest handoff + live pointer status "
+                         "— run on the first turn after a reboot")
+    ap.add_argument("--harvest", action="store_true",
+                    help="extract lesson sections since the last LESSONS_INBOX "
+                         "drain into Transient/ for the curation sitting")
+    ap.add_argument("--cull", action="store_true",
+                    help="list handoffs superseded + harvest-covered + older "
+                         "than %d days" % CULL_DAYS)
+    ap.add_argument("--apply", action="store_true",
+                    help="with --cull: actually delete the candidates")
     ap.add_argument("--since", help="commit to measure the window from")
     ap.add_argument("--force", action="store_true",
                     help="write the skeleton even if a gate fails")
     a = ap.parse_args()
+
+    # Corpus modes first: they sweep all seats and must not demand a
+    # resolvable seat identity.
+    if a.harvest:
+        since_ts = None
+        if a.since:
+            raw = sh("git", "log", "-1", "--format=%cI", a.since)
+            since_ts = _to_utc_z(raw) if raw else a.since
+        return harvest(since_ts)
+    if a.cull:
+        return cull(a.apply)
+    if a.wake:
+        return wake()
 
     s = seat()
     prev_name, prev_ts = previous_handoff()

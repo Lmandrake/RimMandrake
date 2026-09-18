@@ -32,9 +32,15 @@ work you pull while he is silent follows FOUNDRY's rules instead.
 ## Start of turn
 
 ```
+python3 src/RimMandrake/Utils/handoff.py --wake   # FIRST turn after a reboot only
 python3 src/RimMandrake/rimflow/cli.py seat ready
 python3 src/RimMandrake/rimflow/cli.py next --seat BENCH     # only if he is silent
 ```
+
+`--wake` prints your predecessor's handoff with each pointer's live ledger
+state. Pick each open pointer up, close it, or say in your first reply why not —
+measured 2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread,
+and the wake step is the fix.
 
 Game-state sentence from him → run `./game --said "<his words>" <state>` on the spot.
 
