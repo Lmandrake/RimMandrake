@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T08:33:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T09:25:28Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1916,3 +1916,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ENVHAZARDS_DLL_REBUILD_OWED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ENVHAZARDS_DLL_REBUILD_OWED_1.md
+
+## GIZKA_NEWGAME_NRE_FIX_1 Fix gizkastowaway's new Game() reading-policy NRE so it can be re-activated
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     investigate
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GIZKA_NEWGAME_NRE_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIZKA_NEWGAME_NRE_FIX_1.md
+
+## VALIDATE_PATCH_FULL_TREE_SWEEP_1 First-ever full validate_patch.py sweep of UtinniPatches+SWBestiary surfaces 37 errors/2193 warnings across 408 files, never triaged
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md
