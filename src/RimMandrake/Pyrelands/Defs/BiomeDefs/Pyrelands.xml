@@ -91,11 +91,16 @@
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>
-    <!-- Owner 2026-09-17: "three times that. No more small nudges" — 3x the
-         1.0 the running game actually showed (a startup rewriter was eating
-         every XML value above 1.0; see RM_PyrelandsDensityEnforcer.cs, which
-         re-asserts this number after all mods load). Keep both in step. -->
-    <plantDensity>3.0</plantDensity>
+    <!-- Owner 2026-09-18, minimal-list live review: the engine's desired cover
+         per cell is min(plantDensity * fertility^2, 1) — fertility multiplies in
+         TWICE (WildPlantSpawner.GetDesiredPlantsCountAt x GetBaseDesiredPlantsCountAt),
+         so density 3 held only ~58% of plantable ground ("Way too sparse").
+         16 saturates gravel (0.28 fert, needs >=13) and light ash (0.25, needs 16),
+         holding ~96% of plantable cells — the approved painted look; rock, water
+         and deep ash stay bare. A startup rewriter on the full list still eats
+         values above 1.0; RM_PyrelandsDensityEnforcer.cs re-asserts this number
+         after all mods load. Keep both in step. -->
+    <plantDensity>16</plantDensity>
     <!-- Owner ruling 2026-09-17, live walk: "massive more plants... choked with
          grass. Barely any bare ground." Density raised 0.85 -> 1.15 and local
          fertility IGNORED for wild spawning: the Rakatan quickgrass roots to the

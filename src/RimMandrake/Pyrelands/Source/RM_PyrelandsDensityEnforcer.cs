@@ -32,7 +32,10 @@ namespace RimMandrake.StarWars.FireEcology
     {
         // Keep equal to Defs/BiomeDefs/Pyrelands.xml. The XML states intent;
         // this class is what makes it stick.
-        public const float PlantDensity = 3f;        // 3x the 1.0 the owner walked
+        // Desired cover per cell is min(plantDensity * fertility^2, 1) — 16
+        // saturates every terrain down to light ash (0.25 fert); owner approved
+        // the resulting ~96%-of-plantable look live, 2026-09-18.
+        public const float PlantDensity = 16f;
         public const float WildPlantRegrowDays = 9f; // the XML's own value, un-eaten
 
         public RM_PyrelandsDensityEnforcer(Game game)
