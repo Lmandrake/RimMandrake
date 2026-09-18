@@ -124,7 +124,7 @@
     <wildAnimals>
       <Ollopom MayRequire="mlie.starwarsanimalcollection">0.7</Ollopom>  <!-- ollopom - small-resident, keep -->
       <Fanback MayRequire="mlie.starwarsanimalcollection">0.5</Fanback>  <!-- fanback - large-resident, adjust-keep -->
-      <ColossusToad MayRequire="zylle.morevanillabiomes">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep -->
+      <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal, not zylle.morevanillabiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
       <Dewback MayRequire="mlie.starwarsanimalcollection">0.4</Dewback>  <!-- dewback - large-resident, import -->
       <Boma MayRequire="mlie.starwarsanimalcollection">0.15</Boma>  <!-- boma - large-margin, keep -->
       <Dactillion MayRequire="mlie.starwarsanimalcollection">0.15</Dactillion>  <!-- dactillion - flier-mount, keep -->
