@@ -270,10 +270,20 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref mirrorPoolsEnabled, "mirrorPoolsEnabled", true);
         }
 
+        private static Vector2 scrollPosition = Vector2.zero;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // 35 checkboxes (most with a two-line tooltip) plus three labeled
+            // sliders — this is a FIXED view height, so content taller than it
+            // is clipped rather than scrolled to. Same pattern as
+            // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
+            // the same edit as whoever adds the next toggle, or their block is
+            // invisible.
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3400f);
+            Widgets.BeginScrollView(inRect, ref scrollPosition, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("This is a toolkit other content uses to build hazards — turning a "
                      + "piece off only matters if some installed content actually uses it.");
@@ -392,6 +402,7 @@ namespace RimMandrake.EnvironmentalHazards
             warmGroundOffsetCelsius = list.Slider(warmGroundOffsetCelsius, 0f, 30f);
 
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
