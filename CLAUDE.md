@@ -91,7 +91,17 @@ and nowhere else; never restate a model choice outside it.
   `validation.py` files** (RE-MEASURED 2026-09-17), so every VALIDATED mod's must-show bars are
   bound-and-uncovered and a `modcheck run` against one returns REFUSED before the game is
   consulted. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
-  falsification test and has never run. ✅ **The "modcheck status reads a stored field" bug is
+  falsification test and has never run. 🔴 **And the 81 walk findings are NOT rot:**
+  `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
+  24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate
+  per-feature walks sharing a live mod's subject** (MEASURED 2026-09-18). Of the 33 failing
+  walks, 25 have a fully live subject and the defect is a stale id inside a STEP, and **0 are
+  genuinely orphaned**. ⛔ Never "fix" a walk on an ORPHAN_WALK finding alone, and ⛔ do not
+  rebuild the 43-row decision sheet: the owner ruled it was never his to adjudicate
+  (*"this doesnt feel like a sheet I should be asked"*) and its data was wrong besides — a walk's
+  subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
+  regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
+  ruling (`feature:` key vs collapsing 34 walks into 10) is still OWED BY HIM. ✅ **The "modcheck status reads a stored field" bug is
   FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
   first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
   STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
@@ -235,6 +245,23 @@ committing; rejected push → `git pull --rebase`, never `--force`. Never a file
 `git commit -m` sweeps a peer's staged files into your commit under your message.
 ⚠️ The hook is `PreToolUse`, so it refuses a **compound** command whole: if you chain a
 file write to a commit, the write never happens either. Keep writes and commits separate.
+
+🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
+tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
+commit, so `git fsck --unreachable` + `git cat-file -p <sha>` restores them byte-exact. Brief
+every subagent that `reset --hard`, `checkout --` and `stash` on shared paths are FORBIDDEN and
+that a conflict is reported back, never cleared — "leave those files alone" reads as licence to
+clear them another way.
+
+🔴 **`git rebase --continue` saying "You must edit all merge conflicts" while `git status` says
+all conflicts are fixed means the WORKTREE is dirty, not that a conflict remains.** Usually
+self-inflicted: `code_review_status.py`'s `_trigger_health_rebuild` spawns the health publisher,
+so every `prune`/`list` re-dirties 5 tracked artifacts. Commit them and the rebase finishes
+(MIN_INTERVAL is 900 s, so it holds long enough).
+
+⚠️ **A `cd` in one Bash call PERSISTS into later calls.** `modcheck` needs
+`python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`, and after that `cd` a git query
+or a glob makes `infrastructure/` look DELETED. Use absolute paths, or `cd` back.
 
 ## Code isn't clean until a review says so
 
