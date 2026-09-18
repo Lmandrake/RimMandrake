@@ -3,12 +3,27 @@
   <!--
     ROT_GUARDIAN_GROVES_1. The three RUT_LiveIngredient_* harvested from
     src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_GuardianGroves.xml's
-    guarded mushrooms — plain ThingDefs ONLY this pass, per the build brief:
-    NO CompTemperatureRuinable, NO CompLifespan. ROT_LIVE_PREPARATIONS_1
-    (ticket 5, M4) owns decorating these three defNames with both comps
-    ("even the ingredients die if delayed/refrigerated") and whatever
-    RecipeDefs turn them into the three teas. Handoff is these three exact
-    defNames — do not rename them.
+    guarded mushrooms — now carrying the live-prep pair.
+
+    ROT_LIVE_PREPARATIONS_1 (ticket 5, M4) decorated all three with
+    CompTemperatureRuinable (minSafeTemperature 8 C — a fridge ruins them)
+    and CompLifespan (150000 ticks = 2.5 in-game days), plus tickerType
+    Rare, without which neither comp ticks at all. Ban 4 therefore reaches
+    the INGREDIENTS too: even raw cut flesh dies if delayed or
+    refrigerated, so a grove harvest cannot be warehoused and brewed at
+    leisure back home. Both comps are VANILLA on purpose — they hold on any
+    install, with or without mandrake.rm.environmentalhazards.
+
+    Both modExtensions are ticket 5's as well: RM_LivePrepExtension is the
+    tag src/RimUtinni/RotSporeKit/selftest_live_prep.py enforces both comps
+    against, and RM_TreasureMarkerExtension makes an ingredient one of the
+    Rot's treasures for owner card 6's sale conscience. Each is MayRequire'd
+    on its own <li> — an ungated modExtension whose class cannot resolve
+    discards the WHOLE def.
+
+    The recipes that turn these into teas and symbionts are
+    Defs/RecipeDefs/RUT_RotSporeKit_LivePrepRecipes.xml. These three
+    defNames are a handoff contract — do not rename them.
 
     No ingestible block on purpose: these are brewing ingredients, not food
     a colonist should eat raw off the shelf (same posture RUT_ChitinPlating
@@ -45,6 +60,23 @@
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="ResourceBase">
@@ -71,6 +103,23 @@
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="ResourceBase">
@@ -97,5 +146,22 @@
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>8</minSafeTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>150000</lifespanTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <preparationFamily>RotLivePrep</preparationFamily>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <treasureTag>RotTreasure</treasureTag>
+      </li>
+    </modExtensions>
   </ThingDef>
 </Defs>

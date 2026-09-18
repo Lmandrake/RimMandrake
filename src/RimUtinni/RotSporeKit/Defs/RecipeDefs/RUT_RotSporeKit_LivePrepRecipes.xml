@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_LIVE_PREPARATIONS_1 — the eight bills of RUT_BrewingVessel.
+
+    SCARCITY IS IN THESE NUMBERS (card 1: "darned hard to obtain even with
+    pilgrimage — keep yields low"). Six ingredient units per single product,
+    against ROT_GUARDIAN_GROVES_1's harvestYield of 3 per guarded mushroom:
+    two successful harvests of a defended plant per cup, and the cup dies in
+    2.5 days. There is no bulk variant of any of these on purpose — a
+    bulkRecipeCount would have quietly turned a pilgrimage into a
+    production line.
+
+    workAmount 1400-2000 and Intellectual as the work skill: brewing is the
+    short part; walking there was the expensive part.
+
+    unfinishedThingDef is deliberately absent. An unfinished thing would sit
+    on the bench across a save/interrupt as a stockpilable half-tea, which
+    is the shape ban 4 exists to forbid.
+
+    Every recipe names RUT_BrewingVessel ONLY. These cannot be made at a
+    drug lab or a campfire — the vessel is the mechanism that forces the
+    expedition.
+  -->
+
+  <RecipeDef Name="RUT_LivePrepRecipeBase" Abstract="True">
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <workSkill>Intellectual</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Brewing</soundWorking>
+    <recipeUsers>
+      <li>RUT_BrewingVessel</li>
+    </recipeUsers>
+    <researchPrerequisite>RUT_AdvancedFungi</researchPrerequisite>
+    <skillRequirements>
+      <Intellectual>5</Intellectual>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- ── THE THREE TEAS ── -->
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_AgelessBrew</defName>
+    <label>brew ageless brew</label>
+    <description>Press ageless cap flesh into a single cup of ageless brew. It must be drunk within two days and cannot be refrigerated.</description>
+    <jobString>Brewing ageless brew.</jobString>
+    <workAmount>2000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_AgelessCap</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_AgelessCap</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Tea_AgeReversal>1</RUT_Tea_AgeReversal>
+    </products>
+    <displayPriority>0</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_RegenerantBrew</defName>
+    <label>brew regenerant brew</label>
+    <description>Steep regenerant veil tissue into a single cup of regenerant brew. It must be drunk within two days and cannot be refrigerated.</description>
+    <jobString>Brewing regenerant brew.</jobString>
+    <workAmount>1800</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_RegenerantVeil</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_RegenerantVeil</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Tea_Bioregeneration>1</RUT_Tea_Bioregeneration>
+    </products>
+    <displayPriority>1</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_EuphoricBrew</defName>
+    <label>brew euphoric crown brew</label>
+    <description>Wring a euphoric crown cap out over heat into a single cup. It must be drunk within two days and cannot be refrigerated.</description>
+    <jobString>Brewing euphoric crown brew.</jobString>
+    <workAmount>1400</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_EuphoricCrown</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_EuphoricCrown</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Tea_Pleasure>1</RUT_Tea_Pleasure>
+    </products>
+    <displayPriority>2</displayPriority>
+  </RecipeDef>
+
+  <!-- ── THE FOUR SYMBIONTS ──
+       Each is cultured from the grove ingredient whose own bargain it
+       carries: quickflesh from the regenerant veil (healing), nightwake
+       from the euphoric crown (the nervous system), sheenblood from the
+       ageless cap (the Rot's own reproductive line). The mycoid needs two
+       ingredients because it is bred for somewhere else and nothing here
+       supplies it alone. -->
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_QuickfleshSymbiont</defName>
+    <label>culture quickflesh symbiont</label>
+    <description>Culture a living quickflesh symbiont from regenerant veil tissue. It must be swallowed within two days and cannot be refrigerated.</description>
+    <jobString>Culturing a quickflesh symbiont.</jobString>
+    <workAmount>2200</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_RegenerantVeil</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_RegenerantVeil</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Symbiont_Quickflesh>1</RUT_Symbiont_Quickflesh>
+    </products>
+    <displayPriority>3</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_NightwakeSymbiont</defName>
+    <label>culture nightwake symbiont</label>
+    <description>Culture a living nightwake symbiont from euphoric crown caps. It must be swallowed within two days and cannot be refrigerated.</description>
+    <jobString>Culturing a nightwake symbiont.</jobString>
+    <workAmount>2200</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_EuphoricCrown</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_EuphoricCrown</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Symbiont_Nightwake>1</RUT_Symbiont_Nightwake>
+    </products>
+    <displayPriority>4</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_SheenbloodSymbiont</defName>
+    <label>culture sheenblood symbiont</label>
+    <description>Culture a living sheenblood symbiont from ageless cap flesh. It must be swallowed within two days and cannot be refrigerated.</description>
+    <jobString>Culturing a sheenblood symbiont.</jobString>
+    <workAmount>2400</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_AgelessCap</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_AgelessCap</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Symbiont_Sheenblood>1</RUT_Symbiont_Sheenblood>
+    </products>
+    <displayPriority>5</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_MycoidSymbiont</defName>
+    <label>culture mycoid symbiont</label>
+    <description>Culture a living mycoid symbiont, bred to be unpalatable to things that dissolve people. It must be swallowed within two days and cannot be refrigerated.</description>
+    <jobString>Culturing a mycoid symbiont.</jobString>
+    <workAmount>2600</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_RegenerantVeil</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_AgelessCap</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_RegenerantVeil</li>
+        <li>RUT_LiveIngredient_AgelessCap</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Symbiont_Mycoid>1</RUT_Symbiont_Mycoid>
+    </products>
+    <displayPriority>6</displayPriority>
+  </RecipeDef>
+
+  <!-- ── THE EXPORT PAYLOAD ── -->
+
+  <RecipeDef ParentName="RUT_LivePrepRecipeBase">
+    <defName>RUT_Brew_ToxicInjection</defName>
+    <label>fill toxic injection</label>
+    <description>Fill a gut-bladder with living toxin cultured from euphoric crown caps. It stays dangerous for two days and cannot be refrigerated.</description>
+    <jobString>Filling a toxic injection.</jobString>
+    <workAmount>1600</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_LiveIngredient_EuphoricCrown</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_LiveIngredient_EuphoricCrown</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_LivePrep_ToxicInjection>1</RUT_LivePrep_ToxicInjection>
+    </products>
+    <displayPriority>7</displayPriority>
+  </RecipeDef>
+
+</Defs>

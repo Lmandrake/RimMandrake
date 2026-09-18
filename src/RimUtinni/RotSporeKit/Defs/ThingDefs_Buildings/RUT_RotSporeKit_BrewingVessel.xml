@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_LIVE_PREPARATIONS_1 — M4's brew station. "You come to the biome, you
+    brew in your vessel at the grove, you drink or implant it NOW."
+
+    DELIBERATELY CHEAP AND PORTABLE-ISH. WorkToBuild 900 and a neolithic bill
+    of RUT_MushroomLeather + WoodLog, no power and no research beyond the
+    kit's existing RUT_AdvancedFungi row: the whole point of M4 is that an
+    expedition BUILDS one at the grove it walked to, brews, drinks, and
+    walks home with nothing. A steel-and-power bench would have made the
+    brewing happen back at the colony, which is exactly the shape ban 4
+    exists to prevent. Its cost is the pilgrimage, not the bench.
+
+    Cleanliness -4 and no CompAffectedByFacilities: this is a hot open vat of
+    living fungal tissue, not a lab, and no tool cabinet speeds it up.
+
+    ART OWED: texPath/uiIconPath are PLACEHOLDERS — vanilla's brewery sheet
+    tinted toward the kit's pale-violet palette. A bespoke vat sprite is
+    owed to the art pipeline.
+  -->
+  <ThingDef ParentName="BenchBase">
+    <defName>RUT_BrewingVessel</defName>
+    <label>brewing vessel</label>
+    <description>A wide fungal-leather vat on a low frame, built to be assembled where the ingredients grow. Everything the Rot gives up that is worth having is still alive when it is cut, and stops being worth having within a couple of days — so the vessel goes to the grove, not the other way round. The brew is drunk standing beside it.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.9,1.9)</drawSize>
+      <color>(190, 170, 205)</color>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.45</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>900</WorkToBuild>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <size>(2,1)</size>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <costList>
+      <RUT_MushroomLeather>40</RUT_MushroomLeather>
+      <WoodLog>25</WoodLog>
+    </costList>
+    <researchPrerequisites>
+      <li>RUT_AdvancedFungi</li>
+    </researchPrerequisites>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+</Defs>
