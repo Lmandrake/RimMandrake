@@ -6166,10 +6166,10 @@
     "sha": "6d60a241"
   },
   "src/RimMandrake/Utils/run_expectations.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b3ece5680a06f587ea9c35ff35718c7daffad2391230435b0c443abf0227f8a9",
-    "sha": "9f6f93ea"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "e869e72cecde509f943720ebcaa9a44c6b3456ead124b10df498fb88b52b56a6",
+    "sha": "cbef8404e"
   },
   "src/RimMandrake/Utils/run_selftests.py": {
     "cleanCount": 3,
@@ -6250,10 +6250,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/selftest_expectations_manifest.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "6e145ed2a01ab587062732fb9795b0d53c7329a4b0fdad703d230c599673ffab",
-    "sha": "35c29544"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "b001833a2aea25905c666c3e5587de9173ee32b77f247c13ea0a9386ca6b0c5f",
+    "sha": "cbef8404e"
   },
   "src/RimMandrake/Utils/selftest_frozen_dumps.py": {
     "cleanCount": 2,
