@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:28:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:36:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1865,16 +1865,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1.md
-
-## ENVHAZARDS_DLL_REBUILD_OWED_1 EnvironmentalHazards repo DLL is stale vs source (RM_RootCausewayBiomeExtension.cs 21:29 > DLL build 20:12) — rebuild + redeploy
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ENVHAZARDS_DLL_REBUILD_OWED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ENVHAZARDS_DLL_REBUILD_OWED_1.md
 
 ## GIZKA_NEWGAME_NRE_FIX_1 Fix gizkastowaway's new Game() reading-policy NRE so it can be re-activated
 state:    proposed

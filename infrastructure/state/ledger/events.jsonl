@@ -9225,3 +9225,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","ts":"2026-09-18T14:27:12Z"}
 {"seat":"FOUNDRY","event":"start","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","ts":"2026-09-18T14:27:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","sha":"d1c62223c","ts":"2026-09-18T14:28:00Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:20Z"}
+{"seat":"FOUNDRY","event":"start","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:24Z"}
+{"seat":"FOUNDRY","event":"close","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","sha":"60e2d841b092276cb75161490a0b43fe4c032d90","ts":"2026-09-18T14:36:31Z"}
