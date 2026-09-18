@@ -34,7 +34,7 @@
     <settlementSelectionWeight>0</settlementSelectionWeight>
     <movementDifficulty>0.5</movementDifficulty>
     <forageability>0.5</forageability>
-    <foragedFood>RUT_RawDulcis</foragedFood>
+    <foragedFood>RUT_DeepRawDulcis</foragedFood>
     <wildPlantRegrowDays>5</wildPlantRegrowDays>
     <disableShadows>true</disableShadows>
     <disableSkyLighting>false</disableSkyLighting>
@@ -119,18 +119,18 @@
       <RUT_Fungusfern>0.5</RUT_Fungusfern>
       <RUT_CrystaltipBrambles>0.3</RUT_CrystaltipBrambles>
       <RUT_YumBulbs>0.3</RUT_YumBulbs>
-      <RUT_DulcisPlant>0.02</RUT_DulcisPlant>
+      <RUT_DeepDulcisPlant>0.02</RUT_DeepDulcisPlant>
 
       <!-- trees -->
       <RUT_Crystalcap>0.5</RUT_Crystalcap>
 
       <!-- other harvestable -->
-      <RUT_GreyLady>0.02</RUT_GreyLady>
+      <RUT_DeepGreyLady>0.02</RUT_DeepGreyLady>
 
       <!-- hydrophytes -->
-      <RUT_Arpeau>0.05</RUT_Arpeau>
+      <RUT_DeepArpeau>0.05</RUT_DeepArpeau>
       <RUT_LuminousSpout>0.2</RUT_LuminousSpout>
-      <RUT_Nuitae>0.4</RUT_Nuitae>
+      <RUT_DeepNuitae>0.4</RUT_DeepNuitae>
 
       <!-- special: the sowable lanternstone line -->
       <RUT_Lanternstone_Sowable>0.1</RUT_Lanternstone_Sowable>

@@ -107,7 +107,6 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RSW_MutagenicNorphea MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
-      <BMT_ChemSnail MayRequire="biomesteam.biomescaverns">0.3</BMT_ChemSnail>  <!-- chem snail - the-Patient, keep -->
       <Gornt MayRequire="mlie.starwarsanimalcollection">0.3</Gornt>  <!-- gornt - the-Patient, keep -->
       <Eopie MayRequire="mlie.starwarsanimalcollection">0.25</Eopie>  <!-- eopie - the-Patient, keep -->
       <RSW_SandLeaper MayRequire="mandrake.rsw.swbestiary">0.2</RSW_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
