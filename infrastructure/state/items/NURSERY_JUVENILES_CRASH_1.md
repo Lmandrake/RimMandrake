@@ -50,6 +50,42 @@ sync). `DEPLOY_HOLD.txt` entry updated in place to record the resolution
 No config-error / NRE regression from this file's PawnKindDefs on a live
 load; the nursery juveniles spawn and their `RaceProps` resolve normally.
 
+## 2026-09-18 re-verification (FOUNDRY, offline/BELT) — CLOSING
+Re-checked from scratch, not trusting the item's own prose. Confirmed by
+reading actual XML: the `Name=` disambiguation (`RSW_<X>_Kind` on all 7
+PawnKindDefs) is present and correct in all 3 base files and matches the
+7 `ParentName` refs in `SeaBeasts_NurseryJuveniles.xml`. `diff`'d the repo
+copy against the live deployed game copy
+(`C:\Program Files (x86)\Steam\...\Mods\SWBestiary\...`) — byte-identical,
+fix is genuinely live, not just on disk here.
+
+Also checked the alternative theory (discarded def via bad `<li Class=>` or
+inert-`MayRequire`-on-`<Operation>`, per `MAYREQUIRE_OPERATION_INERT_SWEEP_1`):
+none of the 3 SeaBeasts base files or the nursery file carry that pattern —
+their only `MayRequire` uses are field-level (`<specificMeatDef MayRequire=...>`),
+which IS honored by the engine. Not the cause here.
+
+Investigated `Transient/Player.log.alphagenes_nre_fullload_2026-09-17`, which
+shows the identical `AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch` NRE
+recurring 6 days after this fix shipped — looked alarming at first. Traced it:
+no `RSW_Mee`/`RSW_Faa`/etc. or SeaBeasts context anywhere near that crash;
+the file active in that load window was
+`SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml` — a
+different creature entirely, killed by the inert-`MayRequire`-on-`Operation`
+Class= pattern, independently root-caused and fixed today under
+`MAYREQUIRE_OPERATION_INERT_SWEEP_1` (closed 2026-09-18). **Not a regression
+of this item's fix** — same generic AlphaGenes symptom, unrelated def, unrelated
+mechanism. Confirmed RUT_Miasma's 9(7 currently listed)-entry wildAnimals
+block all reference live `*Juv` defNames that exist in
+`SeaBeasts_NurseryJuveniles.xml`.
+
+Closing on the strength of this: root cause confirmed correct, fix confirmed
+deployed and matching, and the one live-symptom overlap since traced to an
+unrelated, separately-fixed cause. A dedicated fresh full-load harvest
+checking specifically for `RSW_Mee`/nursery-context errors (not just "any
+AlphaGenes NRE") is still owed to the next UP window — this task cannot
+drive the bridge or restart the game.
+
 ## Watch out
 🔑 This is a general RimWorld modding trap worth carrying forward: giving a
 ThingDef and its paired PawnKindDef the SAME `Name=` (as opposed to the same

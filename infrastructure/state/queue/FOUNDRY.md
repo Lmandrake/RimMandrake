@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T17:01:11Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-18T17:27:38Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -539,15 +530,6 @@ target:   v1
 kind:     task
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
-
-## NURSERY_JUVENILES_CRASH_1 Nursery juveniles crash EVERY game start once inheritance works: AlphaGenes ImpliedGeneDefs sweeps PawnKindDefs and element.RaceProps (race.race getter) NREs on a juvenile kind whose race is null at sweep time - bisect-proven 2026-09-11 (pull file = clean load, RESET 0). File sits in DEPLOY_HOLD; RUT_Miasma wildAnimals refs 9 absent Juv kinds meanwhile. Diagnose WHY kind.race resolves null (ThingDef discarded? resolution order?) before re-shipping
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Nursery juveniles (SeaBeastsNurseryJuveniles.xml, MIASMANURSERYKINDS1)
-prose:    infrastructure/state/items/NURSERY_JUVENILES_CRASH_1.md
 
 ## WORLDMAP_AUDIT_LIVE_CHECKS_1 Four worldmap audit checks needing the live game — batch into next game-up window
 state:    doing
@@ -1533,7 +1515,17 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is LOADING
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
@@ -1792,3 +1784,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
+
+## WALK_FEATURE_KEY_1 Walk model ruled: add a feature: key so per-feature walks are first-class; teach doctor.py the key
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WALK_FEATURE_KEY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WALK_FEATURE_KEY_1.md
