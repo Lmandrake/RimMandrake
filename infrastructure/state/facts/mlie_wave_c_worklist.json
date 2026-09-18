@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 33,
+  "remaining_worklist_count": 32,
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
     "RSW_LavaFlea",
@@ -44,18 +44,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Mynock",
-      "biomes": [
-        "AridShrubland",
-        "Desert",
-        "ExtremeDesert",
-        "PoisonForest",
-        "Scarlands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true,
-      "blocked_2026-09-18": "defName collision with the already-live, owner-authored src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml -- see skipped_this_pass_2026-09-18_batch18. Needs an owner decision before porting."
-    },
     {
       "donor_defName": "Orray",
       "biomes": [
@@ -524,6 +512,21 @@
         "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ],
+  "declined_species": [
+    {
+      "donor_defName": "Mynock",
+      "biomes": [
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert",
+        "PoisonForest",
+        "Scarlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true,
+      "blocked_2026-09-18": "defName collision with the already-live, owner-authored src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml -- see skipped_this_pass_2026-09-18_batch18. Needs an owner decision before porting.",
+      "declined_permanently_2026-09-18": "Owner ruling: leave the donor Mynock unported. RSW_Mynock stays the owner-authored ship-vermin species (SHIP_VERMIN_MOD_1, 2026-09-11); the donor bare Mynock rides mlie.starwarsanimalcollection permanently, never absorbed."
     }
   ]
 }
