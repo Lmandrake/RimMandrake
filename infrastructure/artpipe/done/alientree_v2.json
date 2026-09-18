@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-18T04:31:28Z",
+  "drawsize": 5.0,
+  "facing": null,
+  "facings": [],
+  "id": "alientree_v2",
+  "priority": 90,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a big, dominant plant filling most of the frame \u2014 a gnarled, warped alien tree with asymmetric mottled bark and thin drooping branches, in a mottled, radiation-scarred blight zone. Single organism, centered, no ground shadow, no background scenery. Soft-edged natural silhouette with interior shading and gradient for depth, matching vanilla RimWorld flora convention \u2014 NO hard black outline stroke (grass, bushes and trees ship without a keyline; only creatures/pawns do).",
+  "reference": null,
+  "rimflow_item_id": "FLORA_LEGIBILITY_BAR_1",
+  "style_notes": "FLORA_LEGIBILITY_BAR_1 spec item 2: regen of alientree_v1, which shipped at 256x256 because drawsize_backfill.json's 'alientree' stem was wrongly resolved to the purged donor defName AA_AlienTree (drawsize default-1.0) instead of the shipped AB_AlienTree (sizeBin large, owner note '5 cells wide' -> drawsize 5.0 -> canvas_for_cells(5.0)=1024 per the now-wired canvas law). Also drops the v1 prompt's 'heavy black outline' line \u2014 flora is exempt from the creature keyline convention (class_convention.png, MEASURED 2026-09-13). Source row: flora:the_contagion:AB_AlienTree, sizeBin large, note '5 cells wide'."
+}

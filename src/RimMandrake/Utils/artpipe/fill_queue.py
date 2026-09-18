@@ -111,9 +111,10 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     # REFUSAL past the ceiling without an 'oversize_reason' (owner-locked
     # 2026-09-13); that lock is reversed. Below 128 still warns (a decor
     # sprite may legitimately be small).
-    import math
+    # The actual arithmetic now lives once, in common.canvas_for_cells —
+    # FLORA_LEGIBILITY_BAR_1 spec item 3 (this used to re-derive it inline).
     ds = float(row.get("drawsize") or 1.0)
-    ceiling = max(256, 2 ** math.ceil(math.log2(max(1.0, ds * 128))))
+    ceiling = common.canvas_for_cells(ds)
     if max(canvas["width"], canvas["height"]) > ceiling and not (row.get("oversize_reason") or "").strip():
         print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} exceeds the "
               f"drawSize×128 rule-of-thumb ceiling {ceiling} for drawsize {ds} — filing anyway "

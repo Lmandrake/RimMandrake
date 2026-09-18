@@ -78,6 +78,68 @@ MANIFEST_SCHEMA = HERE / "manifest.schema.json"
 AGENTS_MD = HERE / "AGENTS.md"
 
 
+# --------------------------------------------------------------------------
+# canvas law (FLORA_LEGIBILITY_BAR_1 spec item 3 / ART_PAINTERLY_RESTORATION_1)
+# --------------------------------------------------------------------------
+#
+# ONE canonical implementation of "size (in cells) x 128 px/cell, rounded up
+# to a power of two, floor 256" — the same law `gen_creature_register.py`,
+# `gen_weapon_register.py`, `gen_furniture_register.py`, `gen_vehicle_register.py`
+# and `gen_plant_register.py` each spell out inline as
+# `clamp(ceil_pow2(cells * 128), 256, 1024)`, and `fill_queue.py`'s advisory
+# ceiling check used to duplicate a fifth time. This is the one place that
+# formula lives now; those callers may switch to it, and any FUTURE
+# canvas-computing script (flora job authoring included) should call this
+# rather than re-deriving the arithmetic.
+#
+# Floor 256 is the owner's prefer-higher tiebreak (ART_PAINTERLY_RESTORATION_1,
+# 2026-09-14); 1024 is the image model's real ceiling per
+# `generating-rimworld-sprites/SKILL.md` ("past ~1024-1280px you are
+# upscaling, not adding detail").
+CANVAS_FLOOR_PX = 256
+CANVAS_CEILING_PX = 1024
+
+
+def canvas_for_cells(cells: float) -> int:
+    """cells (drawSize, or a plant's own mature-size measure) -> canvas edge
+    px: ceil_pow2(cells * 128), clamped to [CANVAS_FLOOR_PX, CANVAS_CEILING_PX].
+    `cells <= 0` is treated as 1.0 rather than raising — a caller with an
+    unmeasured size should pass 1.0 itself and record that it did, not rely
+    on this function to paper over it silently."""
+    import math
+    want = max(1.0, float(cells)) * 128.0
+    px = CANVAS_FLOOR_PX
+    while px < want and px < CANVAS_CEILING_PX:
+        px *= 2
+    return max(CANVAS_FLOOR_PX, min(CANVAS_CEILING_PX, px))
+
+
+_CELLS_NOTE_RE = None  # compiled lazily — most callers never need it
+
+
+def cells_from_register_note(note: str) -> float | None:
+    """A flora register decision's free-text `note` sometimes carries an
+    explicit cell count the owner wrote down himself — "5 cells wide", "5
+    cells" — which is a MEASUREMENT (his own number), not a guess, and is
+    more precise than the coarse small/medium/large/huge categorical sizeBin
+    it sits beside. Returns None (never a guessed number) when no such
+    pattern is present.
+
+    Deliberately narrow: only "<number> cell(s)", optionally followed by one
+    more word ("wide") — matches
+    `design/Jawa/worldbuilding/review/flora_assignment_register.decisions.json`'s
+    actual usage (checked 2026-09-17: "5 cells wide", "5 cells") and nothing
+    fuzzier, so it never mis-parses an unrelated number in a longer note."""
+    global _CELLS_NOTE_RE
+    if _CELLS_NOTE_RE is None:
+        import re
+        _CELLS_NOTE_RE = re.compile(r"(\d+(?:\.\d+)?)\s*cells?\b", re.IGNORECASE)
+    if not note:
+        return None
+    m = _CELLS_NOTE_RE.search(note)
+    return float(m.group(1)) if m else None
+
+
 def _import_codex_image():
     """The one place this module reaches into codex_image.py — shared by
     `_default_codex_home_root()` and `codex_sandbox_preflight()` so both use

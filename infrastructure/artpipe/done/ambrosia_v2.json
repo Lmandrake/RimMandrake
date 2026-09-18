@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T04:33:37Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "ambrosia_v2",
+  "priority": 90,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a lush flowering bush whose identity IS its flowers \u2014 several LARGE, vivid golden-amber blooms, wide open petals, dominating the entire silhouette and filling most of the frame, with only a small base of dark mineral-streaked wet stone visible beneath the foliage (the stone is a minor accent, never co-equal with the blooms). Single organism, centered, no ground shadow, no background scenery. Soft-edged natural silhouette with interior shading and gradient for depth, matching vanilla RimWorld flora convention \u2014 NO hard black outline stroke.",
+  "reference": null,
+  "rimflow_item_id": "FLORA_LEGIBILITY_BAR_1",
+  "style_notes": "FLORA_LEGIBILITY_BAR_1 spec item 4: regen of ambrosia_v1. Owner flag: 'What the heck is this? Ambrosia is supposed to have big gol[den blooms]'. Root cause identified as a generation-PROMPT problem, not a legibility-model one: v1's prompt said 'a substantial shrub-sized clump...delicate flowering plant with soft golden petals, among mineral-streaked, weeping stone seeps', and the render (confirmed byte-identical to the currently-deployed UtinniPatches/Textures/Things/Plant/Ambrosia/Ambrosia_A.png) gives the dark rock base roughly equal visual weight to the flowers, so the blooms read as a secondary detail rather than a big dominant feature. This prompt keeps the same weeping-stones flavor but makes the blooms unambiguously the dominant subject and shrinks the rock to a minor base accent, per the owner's own words. Canvas unchanged (drawsize 1.0/medium sizeBin -> 256, per canvas_for_cells) \u2014 this is a composition fix, not a resolution fix. Source row: flora:weeping_stones:Plant_Ambrosia, sizeBin medium."
+}
