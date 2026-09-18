@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:13:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T01:38:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1017,6 +1017,33 @@ kind:     task
 summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
 
+## ROT_SPORECLOUD_PORT_1 Port RUT_SporeCloud off the donor's compiled GameCondition to RC4's GameCondition_EnvironmentalWeather (unblocks BMT_FAUNA_ABSORPTION_1 gate 3)
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/ROT_SPORECLOUD_PORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_SPORECLOUD_PORT_1.md
+
+## ROT_DECAY_HARVEST_1 The gut digests: RM_MapComponent_AcceleratedRot (exposed rottables/corpses/filth) + RM_MapComponent_LivingProduce freezer-heat
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/ROT_DECAY_HARVEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_DECAY_HARVEST_1.md
+
+## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1943,16 +1970,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md
 
-## ROT_SPORECLOUD_PORT_1 Port RUT_SporeCloud off the donor's compiled GameCondition to RC4's GameCondition_EnvironmentalWeather (unblocks BMT_FAUNA_ABSORPTION_1 gate 3)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_SPORECLOUD_PORT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_SPORECLOUD_PORT_1.md
-
 ## ROT_SHEEN_WEATHER_1 The Sheen: RUT_ weather reskin defs + permanent exposure condition + SporeFlesh ladder (fixes the live ban-3 'Rain' violation)
 state:    proposed
 row:      unassigned
@@ -1962,16 +1979,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_SHEEN_WEATHER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_SHEEN_WEATHER_1.md
-
-## ROT_DECAY_HARVEST_1 The gut digests: RM_MapComponent_AcceleratedRot (exposed rottables/corpses/filth) + RM_MapComponent_LivingProduce freezer-heat
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_DECAY_HARVEST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_DECAY_HARVEST_1.md
 
 ## ROT_WARM_MAT_1 Metabolic warmth: RM_MapComponent_WarmGround mat-floored room heating + RUT_GrownFurnace plant/building loop + RUT_Gene_Furnaceblood (fallback strength)
 state:    proposed
@@ -2002,16 +2009,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_GUARDIAN_GROVES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_GUARDIAN_GROVES_1.md
-
-## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
 
 ## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
 state:    proposed

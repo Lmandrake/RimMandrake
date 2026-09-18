@@ -21,7 +21,7 @@ status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all
    "Could not resolve cross-reference: No Verse.PawnKindDef named ... to give to
    RimWorld.BiomeAnimalRecord"
 2. [B] generate a fresh RM_FE_Pyrelands map ON A TILE WHOSE NEIGHBOURS ARE ALSO
-   RM_FE_Pyrelands (⚠️ Odyssey blends NEIGHBOUR biomes into a map's edge zones,
+   RM_FE_Pyrelands (⚠️ m00nl1ght.geologicallandforms.biometransitions blends NEIGHBOUR biomes into a map's edge zones (owner confirmed 2026-09-17; deactivated in the live list for the R&D phase, still in ModsConfig.FULL.LATEST for play),
    so a lone re-tiled scratch tile censuses as contaminated when it is not —
    measured 2026-09-17: 78% foreign plants, 45 alien defs led by
    GRim*/TreePalma/Areebian*, regionally zoned, on a tile ringed by GRiNDTerra
