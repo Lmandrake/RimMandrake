@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:45:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T01:53:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,3 +521,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Not written. Design work; goes to a backgrounded high-tier subagent per
 prose:    infrastructure/state/items/FLOWWORKS_DOOR_FAMILY_1.md
+
+## DESERT_TRIBES_FIRE_HARVEST_1 Scenario event: deep-desert tribes occasionally arrive in the Pyrelands to light the fires for harvesting (moved out of the dead FireEcology shim per owner ruling)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_TRIBES_FIRE_HARVEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_TRIBES_FIRE_HARVEST_1.md
