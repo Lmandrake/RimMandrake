@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — KowakianMonkeyLizard creature port
+  (Pass 14). Ported from mlie.starwarsanimalcollection's
+  `KowakianMonkeyLizard` ThingDef/PawnKindDef pair (Races_Animal_SW.xml,
+  workshop folder 3497316713), renamed under the RSW_ tier prefix.
+  Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `KowakianMonkeyLizard` BodyDef needs only its
+  tail part repointed to the ALREADY-PORTED Wave B `RSW_SW_DexterousTail`
+  BodyPartDef — every other part is a plain bipedal-primate composition of
+  vanilla Core parts (Clavicle/Ribcage/Sternum/Pelvis/Neck/Head/Skull/
+  Brain/Eye/Ear/Nose/Beak, Shoulder/Arm/Hand/Finger, Leg/Femur/Tibia/Foot/
+  Toe). Its own tools (fists->LeftHand/RightHand, bite->Beak,
+  head->HeadAttackTool) are all vanilla groups the donor leaves bare, no
+  custom groups involved. Ported as RSW_KowakianMonkeyLizard
+  (RSW_MlieWaveC_Bodies.xml).
+
+  Resources: `leatherDef` (`Leather_Mammavian`) ALREADY EXISTS as
+  `RSW_Leather_Mammavian` (Wave B) — new meat needed
+  (`RSW_Anthropoid_Meat`, texPath swresource/Meat_Anthropoid, newly
+  extracted this pass, `ParentName="RSW_SWanimals_RawMeatBase"` matching
+  every other Wave B/C raw-meat port). No egg comp (not an egg-layer). No
+  ability — its only `specialTrainables` entry is vanilla `AttackTarget`,
+  left bare.
+
+  No ArtOverride collision — a full `find src/RimStarWars -maxdepth 1
+  -iname "*ArtOverride*"` for a KowakianMonkeyLizard-named folder found
+  none. All art shipped from SWBestiary.
+
+  Art: 19 PNGs extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) — base
+  KowakianMonkeyLizard_south/east/north (3), KowakianMonkeyLizard_Dessicated
+  (1, one shared texture across all 3 life stages), plus the donor's own
+  5-variant `alternateGraphics` set (A/B/C/D/E, 80% chance per PawnKindDef,
+  each with its own south/east/north facings, 15 PNGs) — all confirmed
+  non-zero and PIL-openable.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AridShrubland 0.01, renamed in place from the bare donor
+  row).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_KowakianMonkeyLizard</defName>
+    <label>kowakian monkey-lizard</label>
+    <description>Kowakian monkey-lizards were a bipedal reptillian primate species native to a jungle-like Outer Rim planet called Kowak. Their intelligence and cunning made them popular exports as exotic pets, with some specimens escaping and establishing wild colonies.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left fist</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>LeftHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right fist</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RightHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_KowakianMonkeyLizard</body>
+      <petness>0.50</petness>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHungerRate>0.125</baseHungerRate>
+      <baseHealthScale>0.45</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Mammavian</leatherDef>
+      <specificMeatDef>RSW_Anthropoid_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>30</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.1</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_KowakianMonkeyLizard_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_KowakianMonkeyLizard_Death</soundDeath>
+          <soundCall>RSW_Pawn_KowakianMonkeyLizard_Call</soundCall>
+          <soundAngry>RSW_Pawn_KowakianMonkeyLizard_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_KowakianMonkeyLizard</defName>
+    <label>kowakian monkey-lizard</label>
+    <race>RSW_KowakianMonkeyLizard</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>1.30</ecoSystemWeight>
+    <wildGroupSize>3~7</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardA</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardB</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardC</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardD</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE</texPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.1, 0.1, 0.1)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

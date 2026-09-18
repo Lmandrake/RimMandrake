@@ -1558,3 +1558,148 @@ worklist together).
 
 **Remaining**: 48 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 14: 3 more species ported: KraytDragon, KowakianMonkeyLizard, Klorslug (48 -> 45 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is KraytDragon,
+KowakianMonkeyLizard, Klorslug — checked `find src/RimStarWars -maxdepth 1
+-iname "*ArtOverride*"` first, no dedicated override exists for any of the
+3 (only `GreaterKraytDragonArtOverride`, a distinct already-ported species),
+so all 3 shipped straight through with no facing carve-out needed.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+all 3 turned out to be entirely already-ported-group composition — defName
+rename only, no new BodyPartDef/BodyPartGroupDef needed for any of them.
+KraytDragon's own `KraytDragon` BodyDef needs only its tail repointed to
+the ALREADY-PORTED Wave B `RSW_SW_Spikes`/`RSW_SWTailAttackTool` (the same
+tail RSW_GreaterKraytDragon already uses) — every other part vanilla Core.
+KowakianMonkeyLizard's only custom part is its `SW_DexterousTail`, ALREADY
+PORTED in Wave B (`RSW_SW_DexterousTail`) — its own tools (fists->LeftHand/
+RightHand, bite->Beak, head->HeadAttackTool) are all vanilla groups the
+donor leaves bare. Klorslug's tail-stinger (`SWToxicAppendage`) and 2
+claw-arms (`SWLeftLegClawAttackTool`/`SWRightLegClawAttackTool`) are ALL
+ALREADY PORTED in Wave B (the same 2 claw groups RSW_Acklay already uses).
+Ported as RSW_KraytDragon/RSW_KowakianMonkeyLizard/RSW_Klorslug
+(RSW_MlieWaveC_Bodies.xml).
+
+**Resources**: KraytDragon's `leatherDef` (`Leather_KraytDragon`) and
+`specificMeatDef` (`Krayt_Meat`) BOTH ALREADY EXIST as
+`RSW_Leather_KraytDragon`/`RSW_Krayt_Meat` — ported for GreaterKraytDragon
+(Pass 12), which shares the exact same 2 donor resource defNames,
+confirmed against both species' own ThingDef XML directly, not assumed —
+no new leather/meat needed. KraytDragon needs its own butcher-body-part
+trophy (`RSW_KraytDragonSkull`, texPath swresource/Trophies/
+KraytDragonSkull, newly extracted, `ParentName="ResourceBase"` matching the
+donor's own, same as RSW_HoraxMaw) — distinct from GreaterKraytDragon's own
+`RSW_KraytPearl` trophy — and 2 eggs (RSW_EggKraytDragonFertilized/
+UnFertilized, texPath swresource/EggSpiked — ALREADY EXTRACTED, Pass 12,
+reused unchanged; `hatcherPawn` repointed to `RSW_KraytDragon`). The
+donor's own `KraytDragonHorn` trophy resource (used only by 2 generic
+crafting recipes, `Recipes_Skull.xml`/`Recipes_Ivory.xml`, not by any
+species' own butcherBodyPart) is left unported — out of this item's
+fauna-geometry scope, same as the recipe system generally.
+KowakianMonkeyLizard's `leatherDef` (`Leather_Mammavian`) ALREADY EXISTS as
+`RSW_Leather_Mammavian` (Wave B) — needed a new meat (`RSW_Anthropoid_Meat`,
+texPath swresource/Meat_Anthropoid, newly extracted,
+`ParentName="RSW_SWanimals_RawMeatBase"`); no eggs (not an egg-layer).
+Klorslug's `leatherDef` (`Leather_Insectile`) and `specificMeatDef`
+(`Insectile_Meat`) BOTH ALREADY EXIST as `RSW_Leather_Insectile`/
+`RSW_Insectile_Meat` (Pass 3, CanCell) — only its 2 eggs are newly ported
+(RSW_EggKlorslugFertilized/UnFertilized, texPath swresource/EggSlick,
+newly extracted; `hatcherPawn` repointed to `RSW_Klorslug`). All resources
+in RSW_MlieWaveC_Resources.xml.
+
+No new abilities: KraytDragon's `<race><specialTrainables>` AND PawnKindDef
+`<abilities>` both reference `SW_Calamity`, ALREADY PORTED (Pass 12,
+`RSW_SW_Calamity`) — repointed directly, same dual wiring
+GreaterKraytDragon/Fambaa/Horax use. KowakianMonkeyLizard's and Klorslug's
+only `specialTrainables` entries are vanilla `AttackTarget`, left bare.
+
+🔑 **`canCrossBreedWith` updated on BOTH sides, not just the newly-ported
+file** — Pass 12's own header comment on `RSW_GreaterKraytDragon.xml`
+flagged exactly this moment: "whoever ports KellDragon/KraytDragon next,
+rename these entries to their RSW_ equivalents." KraytDragon is that
+species this pass, so `RSW_GreaterKraytDragon.xml`'s bare
+`<li>KraytDragon</li>` is now `<li>RSW_KraytDragon</li>` (`KellDragon`
+stays bare, still unported). The donor's own KraytDragon lists itself
+(`KraytDragon`) and `KellDragon` in its own `canCrossBreedWith` — ported
+here as `RSW_KraytDragon` (self, repointed since this species is now
+ported) and `KellDragon` (left bare, same "leave pointing at still-bare
+donor names" precedent as RSW_FeralGrazer's canCrossBreedWith,
+2026-09-17).
+
+Sounds for all 3 species were already absorbed in the 2026-09-02 sound
+wave (`RSW_Pawn_{KraytDragon,KowakianMonkeyLizard,Klorslug}_*`) — confirmed
+present, wired, not re-done.
+
+Art: 43 PNGs extracted this pass via `extract_bundle.py` against the live
+Steam workshop bundle (workshop folder 3497316713) — KraytDragon 12
+(_j_south/east/north, _j_Dessicated, _m_south/east/north adult male,
+_f_south/east/north adult female, _Dessicated, plus its own
+KraytDragonSkull trophy), KowakianMonkeyLizard 19 (base south/east/north +
+Dessicated + the donor's own 5-variant `alternateGraphics` set A-E x
+south/east/north, 15 PNGs), Klorslug 7 (south/east/north adult, j_south/
+east/north juvenile "wisp", Dessicated), plus EggSlick_a/b (2, Klorslug
+eggs) and Meat_Anthropoid_a/b/c (3, KowakianMonkeyLizard meat) — all
+confirmed non-zero and PIL-openable via PIL before wiring in. The donor's
+own `KraytDragonHorn` and `GreaterKraytDragon_*` textures (also matched by
+the bundle's own inventory listing) were deliberately not extracted,
+matching the unported-resource/already-ported-species decisions above.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `ExtremeDesert`
+(`RSW_KraytDragon` 0.15), `AridShrubland` (`RSW_KowakianMonkeyLizard`
+0.01), `BiomeCypreJungle` (`RSW_Klorslug` 0.4) — renamed in place from the
+bare donor entries in both `BiomeCast_Ashkarr.xml` copies and
+`cast_assignment.csv` (mod column repointed to `RimMandrake: SW —
+Bestiary`, reason field annotated), same pattern as every prior wave.
+Checked all 3 Mlie-touching patch files named in this item's own spec
+(`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — no
+`PatchOperation` in any of them targets KraytDragon/KowakianMonkeyLizard/
+Klorslug (`AnimalDessicatedTexPaths_Fix.xml` mentions bare `KraytDragon`
+once, but only in explanatory comment prose contrasting it with Yobshrimp's
+missing juvenile-dessicated art — no actual patch target). Also checked
+for stray `canCrossBreedWith` references elsewhere in SWBestiary (found and
+fixed the one real hit, `RSW_GreaterKraytDragon.xml`, above).
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files (3 species, `RSW_GreaterKraytDragon.xml`, `RSW_MlieWaveC_Bodies.xml`,
+`RSW_MlieWaveC_Resources.xml`), BOTH with `--live` (freshest available
+capture, `2026-09-18T02-17-44Z`, 632 mods — confirmed via its own
+`manifest.json`; live `ModsConfig.xml` now shows 634 — correctly NOT
+re-harvested mid-pass, per "ModsConfig describes the next load" doctrine)
+AND `--defs` against the full load set (`Data` + `Mods` + the Steam
+Workshop content root). `--live`-only surfaced 3 pre-existing errors on
+`RSW_GreaterKraytDragon` (its own base-facing texPath, not shipped there
+because `GreaterKraytDragonArtOverride` covers it — same expected
+`--live`-vs-`--defs` gap Pass 13 documented) that vanished once `--defs`
+could see the already-deployed override mod in the live `Mods` folder —
+**0 errors, 0 warnings** with `--defs`. One real bug caught and fixed by
+this same `--live` run before it was mistaken for another ArtOverride false
+positive: an illegal literal `--list` inside this file's own XML comment
+(not an em dash) broke the whole file's parse — reworded, not just
+escaped. Both `BiomeCast_Ashkarr.xml` copies checked separately against
+`--live`: 0 errors, 0 warnings each, no mention of any of the 3 species.
+All new defNames confirmed unique in-repo (the only 2-file hits are each
+species' own ThingDef+BodyDef pair sharing a defName across def types,
+same as every prior species).
+
+**Not done this pass**: no deploy — the bridge is currently HELD by
+another window (FOUNDRY, "VAULT_DUNGEON_BUILD_1 quicktest proof") for
+unrelated work, so this pass is offline-authoring only, matching several
+prior passes' own "no deploy this pass" precedent; no live cold-load
+proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+KraytDragon/KowakianMonkeyLizard/Klorslug removed from
+`remaining_worklist`, count 48 -> 45, recorded under
+`ported_and_wired_this_pass_2026-09-18_batch14`.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 45 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`).

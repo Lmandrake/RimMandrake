@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Klorslug creature port (Pass 14). Ported
+  from mlie.starwarsanimalcollection's `Klorslug` ThingDef/PawnKindDef pair
+  (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Klorslug` BodyDef is entirely
+  already-ported-group composition — its poisonous tail stinger
+  (`SWToxicAppendage`) and its 2 claw-arms (`SWLeftLegClawAttackTool`/
+  `SWRightLegClawAttackTool`) are ALL ALREADY PORTED in Wave B (the same 2
+  claw groups RSW_Acklay already uses) — defName rename only, ported as
+  RSW_Klorslug (RSW_MlieWaveC_Bodies.xml). Its circular-teeth/head stay
+  vanilla `Teeth`/`HeadAttackTool`, left bare.
+
+  Resources: `leatherDef` (`Leather_Insectile`) and `specificMeatDef`
+  (`Insectile_Meat`) BOTH ALREADY EXIST as `RSW_Leather_Insectile`/
+  `RSW_Insectile_Meat` (Pass 3, CanCell) — no new leather/meat needed. Only
+  its 2 eggs are newly ported (RSW_EggKlorslugFertilized/UnFertilized,
+  texPath swresource/EggSlick, newly extracted this pass; `hatcherPawn`
+  repointed to `RSW_Klorslug`). No ability — its only `specialTrainables`
+  entry is vanilla `AttackTarget`, left bare.
+
+  No ArtOverride collision — a full `find src/RimStarWars -maxdepth 1
+  -iname "*ArtOverride*"` for a Klorslug-named folder found none. All art
+  shipped from SWBestiary.
+
+  Art: 7 PNGs extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) — Klorslug_south/east/
+  north (3, adult), Klorslug_j_south/east/north (3, "wisp" juvenile life
+  stage), Klorslug_Dessicated (1, one shared texture across all 3 life
+  stages) — all confirmed non-zero and PIL-openable.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (BiomeCypreJungle 0.4, renamed in place from the bare donor
+  row).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Klorslug</defName>
+    <label>k'lor'slug</label>
+    <description>K'lor'slugs were poisonous vermiforms native to the swamps of planet Noe'ha'on, but could be found in sizable populations on other worlds (including Korriban and Taris). They were known to invade the darkest spots on unsanitary space vehicles and breed (aiding in their spread to new planets). Because of their notoriety as an aggressive and deadly species (especially among the spacers who encountered them aboard their starships) they were used as a holomonster playing piece in the popular strategy game, dejarik.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <ComfyTemperatureMin>-0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>600</MarketValue>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>poisonous tail-stinger</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>6</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>6</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>circular teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggKlorslugUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggKlorslugFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>3~6</eggCountRange>
+      </li>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Klorslug</body>
+      <baseHungerRate>0.50</baseHungerRate>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>15</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.2</AridShrubland>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.08</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>RSW_Pawn_Klorslug_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Klorslug_Death</soundDeath>
+          <soundCall>RSW_Pawn_Klorslug_Call</soundCall>
+          <soundAngry>RSW_Pawn_Klorslug_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Klorslug</defName>
+    <label>k'lor'slug</label>
+    <race>RSW_Klorslug</race>
+    <combatPower>250</combatPower>
+    <ecoSystemWeight>0.40</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>k'lor'slug wisp</label>
+        <labelPlural>k'lor'slug wisps</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_j</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.6, 0.33)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Klorslug/Klorslug_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

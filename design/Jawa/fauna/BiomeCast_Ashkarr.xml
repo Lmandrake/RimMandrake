@@ -217,7 +217,7 @@
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
         <RSW_FeralNerf>0.04</RSW_FeralNerf> <!-- feral nerf - medium-runner, keep -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
-        <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
+        <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
       </value>
     </match>
   </Operation>
@@ -362,7 +362,7 @@
         <Worrt>0.7</Worrt> <!-- worrt - ambush, keep -->
         <Shiro>0.5</Shiro> <!-- shiro - floor-ambush, keep -->
         <ShiroTrap>0.5</ShiroTrap> <!-- shiro-trap - floor-ambush, keep -->
-        <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
+        <RSW_Klorslug>0.4</RSW_Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
         <RSW_Gelagrub>0.3</RSW_Gelagrub> <!-- gelagrub - gnawer, import -->
@@ -446,7 +446,7 @@
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <Kreetle>0.2</Kreetle> <!-- kreetle - grain-scale, keep -->
         <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
-        <KraytDragon>0.15</KraytDragon> <!-- krayt dragon - giant, keep -->
+        <RSW_KraytDragon>0.15</RSW_KraytDragon> <!-- krayt dragon - giant, keep -->
         <RSW_GraniteSlug>0.1</RSW_GraniteSlug> <!-- granite slug - grain-scale, keep -->
         <Scurrier>0.1</Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
         <RSW_Gizka>0.01</RSW_Gizka> <!-- gizka - grain-scale, keep -->
