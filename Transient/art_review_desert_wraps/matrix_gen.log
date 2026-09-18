@@ -1,0 +1,15 @@
+TOTAL JOBS: 60
+OK   wrap_A_bound__Male_north  48s  1125KB
+OK   wrap_A_bound__Male_east  100s  1108KB
+OK   wrap_A_bound__Female_south  88s  772KB
+OK   wrap_A_bound__Female_north  51s  1088KB
+FAIL wrap_A_bound__Female_east attempt 1  28s  rc=1 esets in about 3 hours 34 minutes. No file was generated or saved.
+
+The imagegen skill permits a CLI fallback only with your confirmation and a locally configured `OPENAI_API_KEY`.
+tokens used
+9,744
+FAIL wrap_A_bound__Female_east attempt 2  24s  rc=1 about 3½ hours. No file was created.
+
+If you want, retry after the reset, or explicitly ask me to use the API/CLI fallback—which requires `OPENAI_API_KEY` to be configured locally.
+tokens used
+1,881
