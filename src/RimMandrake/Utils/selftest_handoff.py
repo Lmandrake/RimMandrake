@@ -45,25 +45,68 @@ check(all(t and p for t, p in handoff.JUDGEMENT_SECTIONS),
 check(handoff.TODO in ("<<< WRITE THIS >>>",),
       "the unfilled marker is the loud one the doc promises")
 
-print("handoff: todo_scan counts unfilled sections")
-with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False,
-                                 encoding="utf-8") as fh:
-    fh.write("# x\n\n%s\n\nprose\n\n%s\n" % (handoff.TODO, handoff.TODO))
-    unfilled = fh.name
-with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False,
-                                 encoding="utf-8") as fh:
-    fh.write("# x\n\nall written out, nothing left\n")
-    filled = fh.name
+print("handoff: todo_scan enforces the audited content contract")
+
+
+def _doc(half_done="- `AN_ITEM_1` — parked at step 2; NEXT: run the probe",
+         traps="- a tool lied about a count (filed: LESSONS_INBOX)",
+         extra=""):
+    """A template-conforming handoff with substitutable judgment bodies."""
+    bodies = {
+        "The one thing to carry forward": "nothing this wave",
+        "What the owner should see": "nothing",
+        "What is half-done, and where it stops": half_done,
+        "Traps learned": traps,
+    }
+    parts = ["# X_REBOOT_HANDOFF_000000000000 — READ FIRST on wake", ""]
+    for t, _p in handoff.JUDGEMENT_SECTIONS:
+        parts += ["## %s" % t, "", bodies.get(t, "x"), ""]
+    parts += ["## Closed since the last handoff (0)", "", "none", "",
+              "## Filed and still open (0) — the next seat's queue", "",
+              "none", "", "## Commits", "", "```", "(none)", "```", "",
+              "## Game / bridge / tree state at wrap", "", "- ok", extra, ""]
+    return "\n".join(parts)
+
+
+def _tmp(text):
+    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False,
+                                     encoding="utf-8") as fh:
+        fh.write(text)
+        return fh.name
+
+
+fixtures = {
+    "unfilled": _tmp(_doc(half_done=handoff.TODO, traps=handoff.TODO)
+                     + "\n%s\n" % handoff.TODO),
+    "filled": _tmp(_doc()),
+    "offtemplate": _tmp("# x\n\nall written out, nothing left\n"),
+    "no_next": _tmp(_doc(half_done="- `AN_ITEM_1` — parked, someone should look")),
+    "unfiled_trap": _tmp(_doc(traps="- a long re-explanation of a known trap")),
+    "whose": _tmp(_doc(extra="\n```\n M some/file.xml   %s\n```" % handoff.WHOSE)),
+}
 try:
-    p = handoff.todo_scan(unfilled)
-    check(len(p) == 1 and "2 unfilled" in p[0],
-          "two markers report as two unfilled sections (%r)" % (p[:1],))
-    check(handoff.todo_scan(filled) == [],
-          "a fully written handoff scans clean")
-    check(len(handoff.todo_scan(unfilled + ".nope")) == 1,
+    p = handoff.todo_scan(fixtures["unfilled"])
+    check(any("3 unfilled" in x for x in p),
+          "three markers report as three unfilled sections (%r)" % (p[:1],))
+    check(handoff.todo_scan(fixtures["filled"]) == [],
+          "a fully written, template-conforming handoff scans clean")
+    check(len(handoff.todo_scan(fixtures["filled"] + ".nope")) == 1,
           "a missing handoff file is itself a problem, not a pass")
+    p = handoff.todo_scan(fixtures["offtemplate"])
+    check(any("heading" in x for x in p),
+          "a hand-written file without the canonical headings is refused "
+          "(it used to pass trivially)")
+    p = handoff.todo_scan(fixtures["no_next"])
+    check(any("NEXT:" in x for x in p),
+          "a half-done pointer without a NEXT: action is refused")
+    p = handoff.todo_scan(fixtures["unfiled_trap"])
+    check(any("filed" in x for x in p),
+          "a trap with no (filed:/see:) citation is refused")
+    p = handoff.todo_scan(fixtures["whose"])
+    check(any("WHOSE" in x for x in p),
+          "an unattributed dirty-tree line is refused")
 finally:
-    for f in (unfilled, filled):
+    for f in fixtures.values():
         try:
             os.unlink(f)
         except OSError:

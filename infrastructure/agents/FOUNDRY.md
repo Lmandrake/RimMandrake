@@ -64,10 +64,16 @@ python3 src/RimMandrake/Utils/handoff.py          write the skeleton (it gates f
 python3 src/RimMandrake/Utils/handoff.py --check  gates + unfilled-section scan
 ```
 
-It fills what a script can know — items closed and filed in the window, the commits,
-game/bridge/tree state — and leaves four sections marked `<<< WRITE THIS >>>` that it
-cannot: the one thing to carry forward, what the OWNER should see, what is half-done
-and where it stops, and the traps. Fill those, `--check`, commit, push.
+It fills what a script can know — items closed and filed in the window, the commits
+(capped at 20 lines; git is the provenance), game/bridge/tree state — and leaves four
+sections marked `<<< WRITE THIS >>>` that it cannot: the one thing to carry forward,
+what the OWNER should see, what is half-done and where it stops, and the traps. Fill
+those, `--check`, commit, push. The shape is enforced (audit-driven, 2026-09-17):
+every half-done pointer is `- ITEM_ID — state; NEXT: <one imperative action>` (a
+concrete NEXT: measured near-100% pickup, prose ~0%); every trap is ONE line ending
+`(filed: LESSONS_INBOX)` or `(see: <item/doc>)`, never a re-explanation; every
+`<<< WHOSE? >>>` on an uncommitted file must name a seat. `--check` refuses all
+three omissions.
 
 ⛔ **The script never says HANDOFF READY.** Only you do, once `--check` passes and you
 judge the wave genuinely closed — then say it as the last line of your reply and stop.
@@ -77,9 +83,15 @@ after saying it.
 ## Start of turn
 
 ```
+python3 src/RimMandrake/Utils/handoff.py --wake   # FIRST turn after a reboot only
 python3 src/RimMandrake/rimflow/cli.py seat ready
 python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY
 ```
+
+`--wake` prints your predecessor's handoff with each pointer's live ledger state.
+Pick each open pointer up, close it, or say in your first reply why not — measured
+2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread, and the wake
+step is the fix.
 
 ## Model
 
