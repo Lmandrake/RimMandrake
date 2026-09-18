@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 81.00261936800234,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.00261936800234,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "canon_borcatu_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T00-08-02-01a0b357-fb77-7911-8990-af9598ee4921.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T00-06-43-01a0b356-c5de-7473-8141-d0555e1bdc25.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 51.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "canon_borcatu_v1_north",
+    "note": "Built-in imagegen; generated a rear-facing north-view Borcatu, resized to exactly 256x256, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_borcatu_v1_north\\canon_borcatu_v1_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_borcatu_v1_north/canon_borcatu_v1_north.png\n    256x256  rgba  40,401 bytes  (80s)\n"
+}
