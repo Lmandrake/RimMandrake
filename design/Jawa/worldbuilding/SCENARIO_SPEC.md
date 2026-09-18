@@ -1,6 +1,13 @@
 <!-- status: live -->
 # SCENARIO_SPEC.md — how the campaign starts
 
+> 🔴 **The world-creation click is BEHIND US — owner ruling 2026-09-18 (worldmap
+> docs pass): `CANONICAL_ASHKARR_START_2026-09-12.rws` exists, start tile 17007.**
+> Every "before the owner makes the world" sequencing line below is a record of
+> that already-executed run, not a live pre-condition. Whether the shipped save
+> matches this spec exactly (founders, ship, stock, leader titles) is verified
+> against the save itself under `WORLDGEN_CLICK_RECONCILE_1`, not assumed either way.
+
 DECIDE owns this file. Chain step 12. It had no document at all until now.
 
 **Owner's ruling, 2026-08-14:** *"The pawns emerge upon the broken gravship after
