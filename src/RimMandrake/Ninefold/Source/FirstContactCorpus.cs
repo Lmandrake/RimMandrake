@@ -24,12 +24,10 @@ namespace RimMandrake.Ninefold
     // live mutation") for this pass. The letter text below never promises
     // an effect this build does not actually deliver.
     //
-    // Only the seven gods with an existing, verified event hook are wired
-    // (see GameComponent_Ninefold.TryFirstContact callers). Ishko (a raid
-    // survived unseen) and Oomo (the first coupling) have no event hook
-    // this mod can bind to without new RimSage research into the exact
-    // API -- genuinely incomplete on the mechanical side, not a voice-text
-    // gap, and left out of this switch entirely (GetChain returns false).
+    // 2026-09-18 (Ishko/Oomo research pass): both remaining gods now have a
+    // verified, grounded hook (see Patch_KillManner.cs's Ishko branch and
+    // the new Patch_Lovin.cs), so all nine chains are wired -- GetChain no
+    // longer has an unreachable default case for a real god.
     public static class FirstContactCorpus
     {
         public static bool GetChain(God god, out string title, out string text)
@@ -151,8 +149,39 @@ namespace RimMandrake.Ninefold
                         "This religion wants my colony a little broken.";
                     return true;
 
+                case God.Ishko:
+                    title = "Ishko the Unmaskable";
+                    text =
+                        "The first raid, and the colony fights from cover. Every exterior " +
+                        "light dies at once -- unbidden -- and all ambient sound aboard " +
+                        "drops to a two-second hush, as if the ship itself held its " +
+                        "breath. In the darkness of the viewports: two points of " +
+                        "orange.\n\n" +
+                        "\"They walked within a stone's throw of your walls and saw a " +
+                        "dune, a rock, a nothing. Understand what you are inside: a thing " +
+                        "built to be unseen between the stars. A pair of orange eyes has " +
+                        "watched you from the dark since the day you landed. Tonight they " +
+                        "are pleased.\"\n\n" +
+                        "The dark is on my side -- someone is keeping it that way.";
+                    return true;
+
+                case God.Oomo:
+                    title = "Oomo the Unspilled";
+                    text =
+                        "The first night two Jawa share a bunk, every tap, cistern and " +
+                        "recycler aboard begins to thrum in time -- a deep slow pulse " +
+                        "like a heart underwater -- and condensation beads on the temple " +
+                        "walls until the sacred chamber glistens. The ship sweats. It " +
+                        "lasts until dawn.\n\n" +
+                        "\"Waters passed between two of you tonight, and not one drop of " +
+                        "it was lost. The vessel has carried ten thousand cradles in its " +
+                        "time -- ask it, someday, what it once seeded -- and it remembers " +
+                        "what a colony is FOR. Oomo the Unspilled counts every mouthful, " +
+                        "every egg, every shared bed. He has begun counting yours.\"\n\n" +
+                        "The ship counts every mouth and every bed.";
+                    return true;
+
                 default:
-                    // Ishko and Oomo: no wired trigger yet (see class header).
                     title = null;
                     text = null;
                     return false;

@@ -192,3 +192,82 @@ errors) re-verified as the final step, after every change above.
   `CODE_REVIEW_STATUS.json` — new/changed tonight, authored solo; they need
   an independent full-file review before that mark, same as any other new
   code in this repo.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Ishko/Oomo research + code review
+
+**Task 2 first, because it changed nothing: the line directly above is
+STALE.** `code_review_status.py check` against the exact 8 files touched by
+the 2026-09-09 wiring commit (`13584e061`) — `FirstContactCorpus.cs`,
+`GameComponent_Ninefold.cs`, `Patch_BuildingDeconstructed.cs`,
+`Patch_TradeCompleted.cs`, `Patch_DroidOnline.cs`, `Patch_BattleResolved.cs`,
+`Patch_ResearchCompleted.cs`, `Patch_MentalBreakStarted.cs` — returns CLEAN
+for all eight, hashes matching current disk content, dated 2026-09-09 through
+2026-09-11. In fact every file under `Ninefold/Source/` is CLEAN. A pass
+between 09-09 and 09-11 (not narrated in this item) already did this review
+and never corrected the "none... marked CLEAN" line above. Corrected here per
+"inaccurate material is deleted" — no new review spent re-doing already-done
+work. Swept `ChronicleSubscriber.cs`'s two signal strings (`"battle.closed"`,
+`"chronicle.rule.queued"`) against the Aftermath producer's own constants
+(`src/RimMandrake/Aftermath/Source/ChronicleEvent.cs:65,71`) for the
+signal-string-mismatch bug class this item's history already hit once — they
+match exactly; no new instance found.
+
+**Task 1: both remaining gods had a real, groundable hook after all —
+verified via RimSage (connected this session; this machine is the Windows
+Desktop), not guessed.**
+
+- **Oomo — grounded, wired.** `divine_satiation_engine.md` §3③ ("sex/lovin'
+  pleases him") and `first_contact_chains.md` ③'s SHOCK ("the first night two
+  Jawa share a bunk") both point at vanilla's Lovin' mechanic. Read
+  `Source/RimWorld/JobDriver_Lovin.cs` in full via RimSage: the completion
+  toil is an anonymous delegate (not patchable directly), but it
+  unconditionally calls `Find.HistoryEventsManager.RecordEvent(new
+  HistoryEvent(HistoryEventDefOf.GotLovin, ...))` (line 107) for every
+  completed coupling. `HistoryEventsManager.RecordEvent(HistoryEvent, bool =
+  true)` (`Source/RimWorld/HistoryEventsManager.cs`) is public with exactly
+  one overload — the same ledger `IdeoUtility.Notify_HistoryEvent` reads from
+  inside that call. New file `Patch_Lovin.cs`: Harmony postfix on
+  `RecordEvent`, filters `historyEvent.def == HistoryEventDefOf.GotLovin`,
+  applies `ApplyDelta(God.Oomo, EventMagnitude.Small, ...)` and calls
+  `TryFirstContact(God.Oomo)`. This was a genuine double gap — Oomo had **no**
+  ambient lovin' delta either, not just no first-contact hook.
+- **Ishko — half-grounded, wired on the groundable half; the other half
+  confirmed genuinely absent, not modeled.** `first_contact_chains.md` ④'s
+  SHOCK is an OR: "the first raid... fights from cover" **or** "is simply not
+  found." Searched RimSage for a raid-detection/stealth signal (raid
+  give-up-and-leave, a "threat passed undetected" `HistoryEventDef`, any
+  `Lord`/`LordToil` signal for it) — nothing found; vanilla RimWorld has no
+  detection/stealth state for raids at all. The "fights from cover" half,
+  though, was already grounded and wired — it's the exact same
+  ranged-kill-at-a-remove proxy `Patch_KillManner.cs` already uses for
+  Ishko's ongoing ambient satiation (verified there against decompiled source
+  in an earlier pass: `Pawn.Kill`'s `DamageInfo.Weapon.IsRangedWeapon`).
+  Added one line, `comp.TryFirstContact(God.Ishko);`, inside that existing
+  `ranged && byPlayer` branch — no new hook needed, same disclosed-
+  approximation move Sh'kaar's chain already makes (battle → death). "Simply
+  not found" is not modeled; there is nothing to bind it to.
+
+**Wired both into the corpus and vector.** `FirstContactCorpus.cs` gained
+`case God.Ishko` / `case God.Oomo` (text trimmed from `first_contact_chains.md`
+④/③, same as the other seven — no new voice text invented, same 2026-09-01
+owner authority already covering this item's provisional corpus).
+`GameComponent_Ninefold.cs`'s header comment and the `FireFirstContact`
+"Ishko/Oomo — no corpus entry wired yet" comment are updated to say all nine
+are now wired. Build re-verified clean as the final step:
+`dotnet build Ninefold.csproj -c Release` → **0 Warnings, 0 Errors**.
+`git diff --stat` before committing showed only the intended files — no
+silent revert from the shared worktree.
+
+**Left DIRTY on purpose:** `Patch_Lovin.cs` (new) and the three files edited
+this pass (`Patch_KillManner.cs`, `FirstContactCorpus.cs`,
+`GameComponent_Ninefold.cs`) are self-authored tonight and were not
+self-marked clean — same convention as every prior Ninefold pass, which
+always sent a fresh-context/independent reviewer at new code rather than the
+author certifying it. Owed to the next pass.
+
+**No `needs: owner` items came out of this.** Both hooks are grounded; the
+one genuinely unmodelable half (Ishko's "undetected raid") needed no ruling,
+just confirmation it doesn't exist in the engine. Left `doing`, not closed —
+the item's remaining scope (live proof of all 9 first-contact chains,
+narrator-corpus dispatch beyond first contact) is unchanged and untouched
+this pass.

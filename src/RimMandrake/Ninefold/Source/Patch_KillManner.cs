@@ -42,6 +42,23 @@ namespace RimMandrake.Ninefold
             {
                 comp.ApplyDelta(God.Ishko, EventMagnitude.Small,
                     "a kill at a remove, the hand unseen");
+
+                // NINEFOLD_ENGINE_M0_1 (Ishko/Oomo research pass, 2026-09-18):
+                // first_contact_chains.md (4)'s SHOCK is "the first raid...
+                // and the colony fights from cover" OR "is simply not
+                // found." Vanilla RimWorld has no detection/stealth state
+                // for a raid (checked: no HistoryEventDef, IncidentWorker,
+                // or Lord/LordToil signal for "threat passed undetected" --
+                // searched via RimSage, nothing found), so only the first
+                // half of that OR is groundable. This hook -- the SAME
+                // ranged-kill-at-a-remove proxy already verified and wired
+                // for Ishko's ongoing ambient satiation just above -- is the
+                // grounded stand-in for "fights from cover", the same kind
+                // of approximation Sh'kaar's chain already discloses
+                // (Patch_BattleResolved: "third violent battle" read as
+                // third violent DEATH). "Simply not found" has no engine
+                // hook and is not modeled.
+                comp.TryFirstContact(God.Ishko);
             }
             else if (melee)
             {
