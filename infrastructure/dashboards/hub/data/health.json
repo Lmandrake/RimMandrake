@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-18T19:23:00Z",
+ "generatedAt": "2026-09-18T19:39:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 672176,
-  "sha256_12": "6b46dd45cbcc"
+  "bytes": 673175,
+  "sha256_12": "9b9de46f3e37"
  },
- "head": "3b1db3f94",
+ "head": "44f41d160",
  "counts": {
-  "red": 27,
-  "blue": 822,
+  "red": 24,
+  "blue": 810,
   "green": 1793,
-  "grey": 373,
+  "grey": 390,
   "unmeasured": 0,
-  "total": 3015
+  "total": 3017
  },
  "loc": {
-  "red": 17017,
-  "blue": 320447,
-  "green": 588251,
-  "grey": 90743,
+  "red": 10661,
+  "blue": 321817,
+  "green": 588442,
+  "grey": 95732,
   "unmeasured": 0,
-  "total": 1016458
+  "total": 1016652
  },
  "reviewEntries": 2943,
  "recidivists": [
@@ -28,6 +28,11 @@
    "path": "src/RimUtinni/UtinniPatches/About/About.xml",
    "loc": 122,
    "cycles": 5
+  },
+  {
+   "path": "src/RimMandrake/Utils/gen_pawnkind_roster.py",
+   "loc": 2986,
+   "cycles": 4
   },
   {
    "path": "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs",
@@ -68,14 +73,9 @@
    "path": "src/RimMandrake/RimProperty/Source/PropertyTuning.cs",
    "loc": 100,
    "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/ShipShields/About/About.xml",
-   "loc": 81,
-   "cycles": 2
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3015 files (1793 clean, 373 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3017 files (1793 clean, 390 dirty, 0 unmeasured)."
 }
