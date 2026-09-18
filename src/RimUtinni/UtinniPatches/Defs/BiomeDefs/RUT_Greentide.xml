@@ -253,16 +253,34 @@
          wave alongside the water's other 7 species). maxFishPopulation 720
          carries the donor's own measured default forward (per the
          "donor default stands" convention RUT_WeepingStones.xml also uses),
-         since this field was NEVER set on this def before (default 0). -->
+         since this field was NEVER set on this def before (default 0).
+
+         FISH_BESTIARY_BUILD_1 wave 4 (2026-09-18): the remaining 7 species +
+         rareCatchesSetMaker added, completing §2C's table exactly as
+         specified — RUT_Zeev/Uvva/Karrun/Dubbol into freshwater_Common,
+         RUT_Lozh/Saava/Tuun into freshwater_Uncommon, RUT_RareGreentideCatches
+         (RUT_GreentideFish_Items.xml / RUT_RareGreentideCatches.xml, both
+         new this wave) onto rareCatchesSetMaker. No MayRequire on the new
+         RUT_ entries — native to this same mod, same convention every other
+         water's own-mod species already use. maxFishPopulation/scalefish
+         entries above are untouched. -->
     <maxFishPopulation>720</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <freshwater_Common>
         <RSW_MeeCatch MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeCatch>
+        <RUT_Zeev>0.4</RUT_Zeev>
+        <RUT_Uvva>0.3</RUT_Uvva>
+        <RUT_Karrun>0.3</RUT_Karrun>
+        <RUT_Dubbol>0.2</RUT_Dubbol>
       </freshwater_Common>
       <freshwater_Uncommon>
         <RSW_FaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaCatch>
         <RSW_LaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaCatch>
+        <RUT_Lozh>0.3</RUT_Lozh>
+        <RUT_Saava>0.25</RUT_Saava>
+        <RUT_Tuun>0.15</RUT_Tuun>
       </freshwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareGreentideCatches</rareCatchesSetMaker>
     </fishTypes>
   </BiomeDef>
 

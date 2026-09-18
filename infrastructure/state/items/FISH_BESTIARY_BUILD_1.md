@@ -408,3 +408,97 @@ still correctly HELD with no biome-side binding), so its 7 species + fry +
 rare table are the more useful next unit of work, not a fresh unknown.
 
 **Git**: see the commit this section ships with.
+
+## 2026-09-18 wave 4 (FOUNDRY, belt mode, subagent)
+
+**Greentide's remaining 7 species + `RUT_LungerFry` + `RUT_RareGreentideCatches`,
+built and wired onto the LIVE `RUT_Greentide` BiomeDef (§2C).**
+
+**Built (`RUT_GreentideFish_Items.xml`, Defs/ThingDefs_Items/, new):**
+`RUT_Zeev` (squid, common), `RUT_Uvva` (floater, common), `RUT_Karrun`
+(crustacean, common), `RUT_Dubbol` (cucumber, common 0.2), `RUT_Lozh` (eel,
+uncommon, no `statBases` override per the eel-register-verbatim convention
+`RUT_Zhurr`/`RUT_Niim`/`RUT_Ozhu` already used), `RUT_Saava` (jellyfish,
+uncommon, `FoodPoisonChanceFixedHuman` 0.05), `RUT_Tuun` (octopus, uncommon
+0.15). Full stats/description per §2C's own species blocks and the §0
+register-delta table. Plus `RUT_LungerFry` (§2C.rare's headline prize) —
+shoal register, `FishBase` baseline with the doc's one deliberate override
+(`MarketValue` 12, same single-stat-override pattern `RSW_LaaCatch` already
+used), ships now per owner ruling 6 ahead of the Lunger race landing in the
+roster; it is a fish **item** (`ParentName="FishBase"`), never a juvenile
+creature or PawnKindDef — its parent-creature link is fiction only, nothing
+the engine resolves.
+
+**`RUT_RareGreentideCatches`** (Defs/ThingSetMakerDefs/, new,
+`ParentName="RareFishingCatchesBase"`) — all three of the doc's options:
+(weight 4) `RUT_LungerFry` x1; (weight 2) "a karrun's find" —
+`ComponentIndustrial` x1, the churnmud giving back what it swallowed;
+(weight 1) `RSW_LaaCatch` x3-4 (`MayRequire="mandrake.rsw.swbestiary"`,
+the pre-existing scalefish catch item — a different mod's def, referenced
+not duplicated). No corpses, per the doc's own instruction.
+
+**Wiring, confirmed against the LIVE def, not the dead donor:** all 7 species
+added directly to `RUT_Greentide.xml`'s existing `fishTypes` block (which
+wave 3 already moved onto the live def) —
+`RUT_Zeev`/`RUT_Uvva`/`RUT_Karrun`/`RUT_Dubbol` into `freshwater_Common`
+alongside the pre-existing `RSW_MeeCatch`; `RUT_Lozh`/`RUT_Saava`/`RUT_Tuun`
+into `freshwater_Uncommon` alongside `RSW_FaaCatch`/`RSW_LaaCatch`;
+`rareCatchesSetMaker` set to `RUT_RareGreentideCatches` (previously unset).
+🔴 **Re-measured before considering this done** (not just trusted wave 3's
+own finding): `world/ASHKARR_WORLDMAP_tiles.csv` via `csv.DictReader` —
+`RUT_Greentide` 235 tiles, `BiomeCypreJungle` 0 tiles, matching wave 3's own
+figures exactly. The edit landed in `RUT_Greentide.xml`, the live def; the
+dead donor file (`BiomeFishTypes_Greentide.xml`) was already deleted last
+wave and stays deleted. Every one of the 8 new/touched `fishTypes` entries
+(7 species + the rare table) is a `ParentName="FishBase"` **item** def — none
+is a race or PawnKindDef — confirmed by reading this wave's own new file
+back and by `grep -rl` across `src/` finding no other file naming any of the
+8 new defNames, so the wave-1 scalefish race-vs-item bug cannot recur here.
+
+**Verify**: `validate_patch.py` run twice on the 3 touched/new files: static
+(0 errors, 0 warnings), then `--defs` against all three real content roots
+(Steam Workshop `294100`, `RimWorld/Mods`, `RimWorld/Data`) —
+**634/634 active mods found on disk, 8,850 def files, 0 errors, 0
+warnings**; every `ParentName` (`FishBase`/`RareFishingCatchesBase`)
+resolved clean against the real load set, every texPath resolved.
+
+🔴 **Shared-worktree finding this wave, worth a heads-up for whoever picks up
+wave 5**: mid-wave, a concurrent agent's `git pull --rebase --autostash` (the
+worktree is genuinely busy tonight — 21 autostash entries accumulated in
+`git stash list` by the time this was caught) silently reverted the
+in-progress edit to `RUT_Greentide.xml` back to its pre-wave-4 (wave 3)
+content — `git diff` on it read clean, as if the edit had never happened.
+The two new untracked files (`RUT_GreentideFish_Items.xml`,
+`RUT_RareGreentideCatches.xml`) were unaffected — a bare `git stash`
+(no `-u`) never touches untracked files, only modifications to
+already-tracked ones. Recovered by finding the exact autostash merge commit
+that carried the edit (`git log --oneline -1 'stash@{0}^2'` → the
+`index on main:` parent; `git diff 'stash@{0}^1' 'stash@{0}' -- <path>`
+isolated the clean diff) and re-applying it with `git apply`. Re-validated
+clean afterward (see above) — nothing else in this wave's own changes was
+touched. **Lesson for the next agent**: after any autostash-driven pull on
+this tree, diff every file you have an in-progress edit on against what you
+last wrote, not just against what you expect — a stash pop can silently
+lose a tracked-file edit while leaving new files untouched.
+
+**No live bridge quicktest this wave**: `rimflow bridge who` showed BENCH
+holding it (idle 54 min — past the 45-min staleness window, but for its own
+named "rot wave: deploy + restart cycle + live quicktest battery," i.e.
+plausibly mid-restart with no bridge traffic during a ~15-minute cold load,
+not actually abandoned) — not force-taken, per "one bridge driver at a time"
+and this session's own shared-worktree caution about the concurrent
+634-mod restart cycle tonight. A live Greentide fishing pass (proving out
+both this wave's roster and wave 3's live-BiomeDef fix together) is still
+owed to whoever next holds the bridge.
+
+**Remaining scope, unchanged**: Twilight's remaining 7 species
+(`pallu`/`tikkarr`/`nuudal`/`kellu`/`murrol`/`hollu`/`oobo`) +
+`RUT_RareTwilightCatches` — **wave 5's pick.** Twilight is correctly HELD
+(one shared surface+deep `RUT_TwilightSea` BiomeDef, per §2D) — its own
+resolution (a separable under-roof water def or the diving-mods map layer)
+is needed before any `fishTypes` binding can land, same as every prior
+wave's note. The 8 species themselves can still be authored as ThingDefs
+ahead of that resolution, same posture this wave took with `RUT_LungerFry`
+ahead of the Lunger creature.
+
+**Git**: see the commit this section ships with.
