@@ -1704,6 +1704,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerPersonPureblood</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_big</li>
       <li>WoundHealing_Fast</li>
