@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T03:29:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T03:31:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1970,3 +1970,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md
+
+## AQUATIC_WATER_BREATHING_GENE_1 Design and build a real water-breathing mechanism (gene or hediff) for the 4 aquatic xenotypes currently missing one entirely
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/AQUATIC_WATER_BREATHING_GENE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
