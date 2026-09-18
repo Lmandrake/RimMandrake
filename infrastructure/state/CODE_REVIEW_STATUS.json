@@ -15970,16 +15970,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/StructureLayoutDefs_WarLab.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "0102b3098f2bece7cf3666c77c9125403e1ba342e782c4fe649639eb691161f3",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "80167f10054edd96bdf5fac69a0bc575636defd8d1060843eb66be7a25a145bc",
+    "sha": "6e9893f19"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/SymbolDefs_WarLab.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "75fa47286bebe11f1f07347daf99425942c85c96fa56e0e2745d5dba7472638d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "3c41af358eb44e65f57a43ccdb43f462574b0dabfccb9e573c722701c40b19e0",
+    "sha": "6e9893f19"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabArchive.xml": {
     "cleanCount": 1,
@@ -16042,10 +16042,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/RimMandrake.Utinni.StructureInjectionsRUT.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "3ba8f3e7f3d9bbac4f93428350fb9bfad12dae29a6c1a6ceb1343dcdca146490",
-    "sha": "02648abb2"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "b00337c805100fbaadc56b9f8158e2dc271ba06cfab67734784e697f4ab4bb13",
+    "sha": "6e9893f19"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/StructureInjectionsRUTSettings.cs": {
     "cleanCount": 2,
