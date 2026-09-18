@@ -2162,4 +2162,40 @@
       </li>
     </comps>
   </ThingDef>
+<!-- Pass 20 — Ronto's own leather/meat, ported verbatim from the donor. -->
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Ronto</defName>
+    <label>ronto hide</label>
+    <description>The pelt of an Ronto. Harvested from a large, hardy animal. This thick skin protects very well.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Tough</texPath>
+      <color>(100,75,55)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>2.3</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.3</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(100,75,55)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Ronto_Meat</defName>
+    <label>ronto meat</label>
+    <description>A piece of meat from a ronto.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Ronto</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

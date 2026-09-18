@@ -105,7 +105,7 @@ AridShrubland,RSW_Eopie,eopie,RimMandrake: SW — Bestiary,medium-pack,1.3999999
 AridShrubland,RSW_Kreetle,kreetle,RimMandrake: SW — Bestiary,small-runway,0.20000000298023224,0.8,,,0.605,keep,arid_shrubland: bs 0.2 (MEASURED); prep §3.2 [MLIE_FAUNA_ABSORPTION_1 Pass 15: repointed to RSW_ port],0
 AridShrubland,RSW_Lothcat,loth-cat,RimMandrake: SW — Bestiary,small-runway,0.3499999940395355,0.8,,,0.559,keep,"arid_shrubland: icon (bs 0.35, MEASURED); prep §3.2 [MLIE_FAUNA_ABSORPTION_1 Pass 17: repointed to RSW_ port]",0
 AridShrubland,RSW_Mudhorn,mudhorn,RimMandrake: SW — Bestiary,huge-predator-exception,4,0.8,,,0.73,keep,arid_shrubland: owner card 2026-09-09: the ONE huge-predator icon exception to the giants-are-indifferent law [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Mudhorn port],0
-AridShrubland,Ronto,ronto,Star Wars Animal Collection (Continued),huge-grazer,6,0.8,,,0.717,keep,"arid_shrubland: indifferent giant, herd (prep §3.2); the giants' floor",0
+AridShrubland,RSW_Ronto,ronto,RimMandrake: SW — Bestiary,huge-grazer,6,0.8,,,0.717,keep,"arid_shrubland: indifferent giant, herd (prep §3.2); the giants' floor [MLIE_FAUNA_ABSORPTION_1 Pass 20: repointed to RSW_ port]",0
 AridShrubland,Scurrier,scurrier,Star Wars Animal Collection (Continued),small-runway,0.20000000298023224,0.8,,,0.555,keep,arid_shrubland: bs 0.2 (MEASURED); small-band legal here (no small speed ban); prep §3.2,0
 AridShrubland,Sketto,sketto,Star Wars Animal Collection (Continued),small-runway,0.4000000059604645,0.8,,,0.56,keep,arid_shrubland: bs 0.4 (MEASURED); prep §3.2,0
 AridShrubland,RSW_ImperialToad,imperial toad,RimMandrake: SW — Bestiary,small-runway,0.30000001192092896,0.7,,,0.558,keep,arid_shrubland: bs 0.3 (MEASURED); prep §3.2 [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_ImperialToad port],0
@@ -116,7 +116,7 @@ AridShrubland,RSW_Kybuck,kybuck,RimMandrake: SW — Bestiary,medium-runner,1,0.6
 AridShrubland,RSW_Massiff,massiff,RimMandrake: SW — Bestiary,medium-interface,0.8500000238418579,0.6,,,0.611,keep,"arid_shrubland: owner card 2026-09-09: Massiff to shrubland medium band; bs 0.85, spd 5.0 legal HERE (prep §3.2 tunnel-runner shape) [MLIE_FAUNA_ABSORPTION_1 Pass 17: repointed to RSW_ port]",0
 AridShrubland,Scavrat,Scavrats,Star Wars Animal Collection (Continued),ship-vermin,0.5,0.6,,,0.613,import,"fall_line: the name is the job — eats what falls (prep §8.4); generalist, fast-cycling, non-territorial (ban 6 pass)",0
 AridShrubland,RSW_Bantha,bantha,RimMandrake: SW — Bestiary,huge-grazer,4,0.5,,,0.5,keep,arid_shrubland: icon herd giant (prep §3.2) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Bantha port],0
-AridShrubland,Pufferpig,Pufferpig,Star Wars Animal Collection (Continued),small-runway,0.5,0.5,,,0.413,keep,"arid_shrubland: SW small non-predator, bs 0.5 (MEASURED)",0
+AridShrubland,RSW_Pufferpig,Pufferpig,RimMandrake: SW — Bestiary,small-runway,0.5,0.5,,,0.413,keep,"arid_shrubland: SW small non-predator, bs 0.5 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 20: repointed to RSW_ port]",0
 AridShrubland,RSW_Anooba,anooba,RimMandrake: SW — Bestiary,medium-interface,0.949999988079071,0.4,,,0.574,adjust-keep,"arid_shrubland: interface killer, bs 0.95 spd 5.0 (MEASURED; prep §3.2); comm raised 0.16→0.4 absorbing its Desert eviction [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Anooba port]",0
 AridShrubland,RSW_Corinathoth,corinathoth,RimMandrake: SW — Bestiary,huge-grazer,4,0.4,,,0.6,keep,"arid_shrubland: slow herd giant, bs 4.0 spd 2.0 (MEASURED); prep §3.2",0
 AridShrubland,RSW_Gizka,gizka,RimMandrake: SW — Bestiary,small-runway,0.18000000715255737,0.4,,,0.555,keep,arid_shrubland: icon; bs 0.18 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 12: repointed to RSW_ port],0
@@ -129,7 +129,7 @@ AridShrubland,Mynock,mynock,Star Wars Animal Collection (Continued),ship-vermin,
 AridShrubland,VFEI2_Fuelmite,fuelmite,Vanilla Factions Expanded - Insectoids 2,ship-vermin,1.350000023841858,0.3,,,0.934,import,"fall_line: ""fuelmite"" — eats fuel (prep §8.4); homeless after the dune-sea band cut",0
 AridShrubland,AA_Cactipine,cactipine,Alpha Animals,small-venom,0.5,0.25,,,0.562,keep,"arid_shrubland: venom-quilled small, bs 0.5 (MEASURED)",0
 AridShrubland,RSW_Grank,Grank,RimMandrake: SW — Bestiary,medium-interface,0.8500000238418579,0.2,,,0.621,keep,"arid_shrubland: SW interface killer, bs 0.85 spd 5.0 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 12: repointed to RSW_ port]",0
-AridShrubland,Qormot,qormot,Star Wars Animal Collection (Continued),medium-interface,1,0.2,,,0.575,keep,"arid_shrubland: SW edge-pouncer, bs 1.0 (MEASURED)",0
+AridShrubland,RSW_Qormot,qormot,RimMandrake: SW — Bestiary,medium-interface,1,0.2,,,0.575,keep,"arid_shrubland: SW edge-pouncer, bs 1.0 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 20: repointed to RSW_ port]",0
 AridShrubland,Strill,strill,Star Wars Animal Collection (Continued),medium-interface,1,0.2,,,0.615,keep,"arid_shrubland: SW icon (Mandalorian strill), bs 1.0 (MEASURED)",0
 AridShrubland,RSW_Cannok,cannok,RimMandrake: SW — Bestiary,medium-interface,0.8500000238418579,0.16,,,0.581,keep,"arid_shrubland: SW (KOTOR), bs 0.85 (MEASURED)",0
 AridShrubland,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),flier-interface,0.4000000059604645,0.15,,,0.56,keep,arid_shrubland: SW bird-analog — the dive route on the interface (§4),0
@@ -203,7 +203,7 @@ Desert,RSW_Gorg,gorg,Star Wars Animal Collection (Continued),ambush-small,0.3000
 Desert,RSW_Gutkurr,gutkurr,RimMandrake: SW — Bestiary,burst-predator,2,0.4,,,0.78,adjust-keep,desert: owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3 [MLIE_FAUNA_ABSORPTION_1 Pass 10: repointed to RSW_ port],0
 Desert,RSW_Jamel,Jamel,RimMandrake: SW — Bestiary,herd,1.899999976158142,0.4,,,0.447,keep,"desert: slow herd endurer, camel-analog inside the familiar-architecture carve-out (prep §2.2; ban 9 wants architecture, not nameable species) — MLIE_FAUNA_ABSORPTION_1 Wave C port",0
 Desert,RSW_LongtailGorg,longtail gorg,RimMandrake: SW — Bestiary,ambush-small,0.6000000238418579,0.4,,,0.565,keep,"desert: SW ambush frog, spd 2.3 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 16: repointed to RSW_ port]",0
-Desert,Ronto,ronto,Star Wars Animal Collection (Continued),huge-herd,6,0.4,,,0.717,keep,"desert: icon, herd, leggy giant — carries its own shade (prep §2.2)",0
+Desert,RSW_Ronto,ronto,RimMandrake: SW — Bestiary,huge-herd,6,0.4,,,0.717,keep,"desert: icon, herd, leggy giant — carries its own shade (prep §2.2) [MLIE_FAUNA_ABSORPTION_1 Pass 20: repointed to RSW_ port]",0
 Desert,Sketto,sketto,Star Wars Animal Collection (Continued),ambush-small,0.4000000059604645,0.4,,,0.56,keep,"desert: desert skitterer, spd 3.0 (MEASURED) (prep §2.2)",0
 Desert,WompRat,womp rat,Star Wars Animal Collection (Continued),ambush-small,0.75,0.4,,,0.569,keep,desert: ban 3 pass: spd 3.9 < 4.5 (MEASURED); icon; also injected on the Fall Line,0
 Desert,Wraid,wraid,Star Wars Animal Collection (Continued),burst-predator,3,0.4,,,0.758,adjust-keep,desert: owner card 2026-09-09: slowed 5.0→4.4 — legal burst predator under ban 3 proxy (predator + spd < 4.5),0

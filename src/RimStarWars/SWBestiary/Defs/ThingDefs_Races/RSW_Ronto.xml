@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Ronto creature port.
+  Ported from mlie.starwarsanimalcollection's `Ronto` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its own
+  `<race><body>` points at `QuadrupedAnimalWithHooves`, confirmed VANILLA
+  CORE (Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml) — left bare, no
+  BodyDef ported. `leatherDef` (`Leather_Ronto`) ported this pass as
+  `RSW_Leather_Ronto` (RSW_MlieWaveC_Resources.xml) — its own texPath
+  (`swresource/Leather_Tough`) is the donor's OWN reuse of the Leather_Tough
+  texture, no new art needed (`RSW_Leather_Tough`'s art already sits in this
+  mod from Pass 3/Borcatu). `specificMeatDef` (`Ronto_Meat`) ported this pass
+  as `RSW_Ronto_Meat`, texPath `swresource/Meat_Ronto` (newly extracted, 3
+  PNGs) — no `<ingestible>` override in the donor's own def (inherits the
+  abstract base's bare Meat block), so no new tasteThought needed. Its
+  Odyssey specialTrainable (`SW_Spur`) repoints to the ALREADY-PORTED
+  `RSW_SW_Spur` (RSW_MlieWaveB_Abilities.xml, ported alongside Kybuck, Pass
+  16) — no new ability needed. Adult lifeStage sounds (`Pawn_Ronto_*`) were
+  already absorbed in the 2026-09-02 sound wave — confirmed present in
+  SoundDefs_SWBestiary.xml, wired, not re-done. No `canCrossBreedWith`
+  (donor sets none, and no already-ported species lists bare `Ronto` either).
+
+  🔑 **Ronto's art is a locked exemplar, not ported this pass**: per
+  `RontoArtOverride` (mandrake.rsw.rontoartoverride, already-live, owner
+  ruling 2026-09-11 — "Star Wars-named creatures keep their canon identity")
+  and its canon reference entry (`design/RimStarWars/canon_references/ronto/`,
+  which explicitly names `defName: Ronto (third-party,
+  mlie.starwarsanimalcollection, not vendored)`), the base
+  `Ronto_{south,east,north}` facing across all life stages is ALREADY
+  covered by fully regenerated painterly art at the SAME relative path
+  (`swanimals/Ronto/Ronto_<facing>`) the donor used — its own About.xml
+  states its later load order wins the same-path resolution, so this port's
+  texPath stays bare `swanimals/Ronto/Ronto` unchanged, same as it always
+  was. Per this pass's own standing instruction, that art was NOT touched,
+  NOT regenerated, and NOT overwritten — only `Ronto_Dessicated` (not
+  covered by the override) was extracted this pass via extract_bundle.py
+  against the same AssetBundle every prior wave used (1 PNG). The donor's
+  own unreferenced `RontoPack_{south,east,north}` saddle-variant textures
+  (3 PNGs) were excluded — unreferenced by the def, same "unreferenced-by-
+  the-def" precedent as every prior wave's "Pack" exclusions. Sits at
+  Textures/swanimals/Ronto/ (Dessicated only) and
+  Textures/swresource/Meat_Ronto/ (the new meat).
+
+  Wired into the live cast this same pass: AridShrubland 0.8, Desert 0.4
+  (per cast_assignment.csv's current rows for this species), repointed from
+  the bare "Ronto" entries in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Ronto</defName>
+    <label>ronto</label>
+    <description>Ronto were large, quadruped mammals that were commonly used as beasts of burden on Tatooine. They were known for their loyalty and strength, being able to carry heavy cargo. Their tolerance to heat and relatively low food consuption made them a popular export to arid worlds as beasts of burden.</description>
+    <statBases>
+      <MoveSpeed>4.7</MoveSpeed>
+      <MarketValue>1000</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.60</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>6</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>8.0</baseHealthScale>
+      <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
+      <petness>0.10</petness>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <packAnimal>true</packAnimal>
+      <trainability>Advanced</trainability>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <leatherDef>RSW_Leather_Ronto</leatherDef>
+      <specificMeatDef>RSW_Ronto_Meat</specificMeatDef>
+      <lifeExpectancy>80</lifeExpectancy>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1.7)</li>
+          <li>(2, 1)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.2</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Ronto_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Ronto_Death</soundDeath>
+          <soundCall>RSW_Pawn_Ronto_Call</soundCall>
+          <soundAngry>RSW_Pawn_Ronto_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Ronto</defName>
+    <label>ronto</label>
+    <race>RSW_Ronto</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>ronto calf</label>
+        <labelPlural>ronto calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.7, 0.6, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto</texPath>
+          <drawSize>7.0</drawSize>
+          <shadowData>
+            <volume>(1, 0.8, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Ronto/Ronto_Dessicated</texPath>
+          <drawSize>7.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -7831,4 +7831,194 @@
       </parts>
     </corePart>
   </BodyDef>
+<!--
+  Pass 20 — RSW_Qormot body, ported from donor `Qormot` BodyDef
+  (Bodies_Animal_StarWars.xml). Its 2 quill-prong parts repoint
+  SW_LeftHorn/SW_RightHorn -> RSW_SW_LeftHorn/RSW_SW_RightHorn and the
+  SWHornAttackTool group -> RSW_SWHornAttackTool (both already-ported Wave
+  B, RSW_MlieWaveB_BodyParts.xml). Every other part is vanilla Core,
+  defName rename only.
+-->
+<BodyDef>
+    <defName>RSW_Qormot</defName>
+    <label>quadrupedal cyclopean animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>crooked tail</customLabel>
+          <coverage>0.07</coverage>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>primary lung</customLabel>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>primary kidney</customLabel>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Hump</def>
+          <customLabel>quilled hump</customLabel>
+          <coverage>0.10</coverage>
+          <height>Top</height>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.20</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>central eye</customLabel>
+                  <coverage>0.24</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left quilled ear</customLabel>
+                  <coverage>0.07</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right quilled ear</customLabel>
+                  <coverage>0.07</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>RSW_SW_LeftHorn</def>
+                  <customLabel>left quill prong</customLabel>
+                  <coverage>0.01</coverage>
+                  <groups>
+                    <li>RSW_SWHornAttackTool</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>RSW_SW_RightHorn</def>
+                  <customLabel>right quill prong</customLabel>
+                  <coverage>0.01</coverage>
+                  <groups>
+                    <li>RSW_SWHornAttackTool</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front left tridactyl paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontLeftPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front right tridactyl paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontRightPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left tridactyl paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear right tridactyl paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
 </Defs>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Qormot creature port.
+  Ported from mlie.starwarsanimalcollection's `Qormot` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom `Qormot`
+  BodyDef (Bodies_Animal_StarWars.xml) needs its 2 quill-prong parts'
+  `SW_LeftHorn`/`SW_RightHorn` repointed to the ALREADY-PORTED Wave B
+  `RSW_SW_LeftHorn`/`RSW_SW_RightHorn`, and its `SWHornAttackTool` group
+  repointed to the ALREADY-PORTED `RSW_SWHornAttackTool` (RSW_MlieWaveB_
+  BodyParts.xml) — every other part (Body/Tail/Spine/Stomach/Heart/Lung/
+  Kidney/Liver/Hump/Neck/Head/Skull/Brain/Eye/Ear x2/Nose/AnimalJaw, 4x
+  Leg/Paw) is vanilla Core. Ported as RSW_Qormot (RSW_MlieWaveC_Bodies.xml).
+  `leatherDef` (`Leather_Reptomammal`) ALREADY EXISTS as
+  `RSW_Leather_Reptomammal` and `specificMeatDef` (`Reptomammal_Meat`)
+  ALREADY EXISTS as `RSW_Reptomammal_Meat` (Wave B) — no new resource
+  needed. No `specialTrainables` at all (donor leaves it bare). Adult
+  lifeStage sounds (`Pawn_Qormot_*`) were already absorbed in the
+  2026-09-02 sound wave — confirmed present in SoundDefs_SWBestiary.xml,
+  wired, not re-done. No `canCrossBreedWith` (donor sets none, and no
+  already-ported species lists bare `Qormot` either).
+
+  No `*ArtOverride` mod exists for Qormot (checked first). 4 PNGs extracted
+  this pass via extract_bundle.py against the same AssetBundle every prior
+  wave used: `Qormot_{south,east,north}` (base facing — the donor's own
+  PawnKindDef references this bare texPath, with per-life-stage `<color>`
+  tinting doing the age differentiation, NOT a separate texture) and
+  `Qormot_Dessicated`. The donor's own `Qormot_{south,east,north}m` variants
+  (3 PNGs) were excluded — unreferenced by the donor's own PawnKindDef
+  (no `femaleBodyGraphicData` or per-sex block anywhere in its `<race>` or
+  lifeStages, confirmed directly off the donor XML), same "unreferenced-by-
+  the-def" precedent as every prior wave's "Pack"/unused-frame exclusions.
+  Sits at Textures/swanimals/Qormot/.
+
+  Wired into the live cast this same pass: AridShrubland 0.2 (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Qormot" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Qormot</defName>
+    <label>qormot</label>
+    <description>Qormots were omnivorous forest creatures from the planet Yeshocq. During the mating season their ferocity increased, usually making anyone bold (or foolish) enough to stray into Qormot territory a likely target. However, much to the dismay of the game hunters who exported these creatures to various worlds, their seasonal aggression diminished heavily when transplanted.</description>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-13</ComfyTemperatureMin>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>quills</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>9.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Qormot</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.30</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <leatherDef>RSW_Leather_Reptomammal</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <lifeExpectancy>8</lifeExpectancy>
+      <gestationPeriodDays>10.0</gestationPeriodDays>
+      <manhunterOnTameFailChance>0.6</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <wildBiomes>
+        <AridShrubland>0.2</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.6</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <BorealForest>0.4</BorealForest>
+        <Tundra>0.2</Tundra>
+        <ColdBog>0.1</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Qormot_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Qormot_Death</soundDeath>
+          <soundCall>RSW_Pawn_Qormot_Call</soundCall>
+          <soundAngry>RSW_Pawn_Qormot_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Qormot</defName>
+    <label>qormot</label>
+    <race>RSW_Qormot</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>qormot cub</label>
+        <labelPlural>qormot cubs</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(150,193,69)</color>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(174,193,69)</color>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(193,168,69)</color>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Qormot/Qormot_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

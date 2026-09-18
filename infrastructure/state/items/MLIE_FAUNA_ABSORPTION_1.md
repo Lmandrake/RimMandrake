@@ -134,17 +134,14 @@ item's own criteria.
 - [x] A full non-scan-grade defName sweep run before Wave C is scoped — DONE
       2026-09-12: superseded the stale ~135 scan-grade guess with a measured
       count. See "2026-09-12 (FOUNDRY)" below.
-- [~] Wave C (remainder): 42 of 90 measured-live species absorbed so far
-      (most recently Fambaa, Horax, Kinrath — Pass 13, 2026-09-18; before
-      that Gizka, Grank, GreaterKraytDragon, Hawkbat — Pass 12). The
-      91-species sweep total is corrected to 90 — `Nuna` was a stale
-      worklist entry (already ported+wired in Wave B, flagged by Pass 11,
-      verified and removed, see "2026-09-18 Pass 12" below). Fambaa (the
-      standing ArtOverride-gated caution named in every pass since Pass 8)
-      was successfully ported this pass, same ArtOverride-aware method Pass
-      12 proved on Gizka/Grank/GreaterKraytDragon/Hawkbat — no species is
-      being deliberately skipped any more. 48 remain — full worklist in
-      `infrastructure/state/facts/mlie_wave_c_worklist.json`.
+- [~] Wave C (remainder): 63 of the 89 addressable measured-live species
+      absorbed so far (most recently Pufferpig, Qormot, Ronto — Pass 20,
+      2026-09-18). The 90-species sweep total is corrected to 89 addressable
+      — `Mynock` is declined PERMANENTLY (owner ruling, see Pass 18/19: the
+      donor `Mynock` collides with the already-live owner-authored
+      `RSW_Mynock` ship-vermin species; the donor bare `Mynock` rides
+      `mlie.starwarsanimalcollection` forever, never absorbed). 26 remain —
+      full worklist in `infrastructure/state/facts/mlie_wave_c_worklist.json`.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
       later item — this item's own bar is "the replacement exists and
@@ -2563,3 +2560,107 @@ worklist together).
 
 **Remaining**: 29 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), front now Pufferpig/Qormot/Ronto.
+
+## 2026-09-18 (FOUNDRY) — Pass 20: 3 more species finished: Pufferpig, Qormot, Ronto (29 -> 26 remaining)
+
+**Picked this item up mid-flight, not from scratch.** `rimflow show` +
+`check_git_locks.py` came back clear, but `git status` on `src/RimStarWars/
+SWBestiary` showed 7 untracked paths already sitting on disk: complete
+`RSW_Pufferpig.xml`/`RSW_Qormot.xml`/`RSW_Ronto.xml` ThingDef/PawnKindDef
+pairs (each with a full header comment describing exactly what it needs) and
+their extracted `Textures/` — but none of the 3 support files their own
+header comments named (`RSW_MlieWaveC_Bodies.xml` for Qormot's BodyDef,
+`RSW_MlieWaveC_Resources.xml` for Ronto's leather/meat,
+`RSW_MlieWaveC_Abilities.xml` for Pufferpig's `RSW_SW_GoldForage`) had
+actually been touched, and none of the cast-wiring (`BiomeCast_Ashkarr.xml`
+x2, `cast_assignment.csv`, the worklist json) had happened either — grepped
+all 6 to confirm before assuming. Matches this project's own "a backgrounded
+agent dies at 600s of silence, leaves partial writes" trap: an earlier
+pass/subagent got through writing the 3 primary def files and extracting art,
+then stopped before finishing. Nothing was reverted — the existing 3 files
+were read in full, cross-checked against their own header comments'
+mechanism claims, and confirmed correct verbatim ports before treating them
+as this pass's own starting point.
+
+**Finished the 3 support ports, checked directly against the donor's own
+XML, not assumed from the header prose**:
+- **Qormot's own custom `Qormot` BodyDef** (`Bodies_Animal_StarWars.xml`) —
+  ported as `RSW_Qormot` (`RSW_MlieWaveC_Bodies.xml`), its 2 quill-prong
+  parts repointed `SW_LeftHorn`/`SW_RightHorn` → the ALREADY-PORTED Wave B
+  `RSW_SW_LeftHorn`/`RSW_SW_RightHorn`, its `SWHornAttackTool` group →
+  ALREADY-PORTED `RSW_SWHornAttackTool`; every other part vanilla Core,
+  defName rename only.
+- **Ronto's own `Leather_Ronto`/`Ronto_Meat`** (`Items_Resource_swanimal_
+  Items.xml`) — ported verbatim as `RSW_Leather_Ronto`/`RSW_Ronto_Meat`
+  (`RSW_MlieWaveC_Resources.xml`), texPaths unchanged
+  (`swresource/Leather_Tough` reuse / `swresource/Meat_Ronto`).
+- **Pufferpig's own Royalty-gated `SW_GoldForage` ability**
+  (`SW_Abilities.xml`) — ported as `RSW_SW_GoldForage` (AbilityDef +
+  TrainableDef pair, `RSW_MlieWaveC_Abilities.xml`), defName rename only,
+  donor's own gating quirk preserved verbatim (matches the existing header
+  comment's own description, now correct rather than aspirational).
+
+**Real defect caught and fixed by validation, not assumed clean**:
+`validate_patch.py --live` flagged `RSW_SW_GoldForage`'s own
+`<iconPath>UI/Abilities/Ability_AnimalGoldForage</iconPath>` as missing —
+the 3 pre-existing files never shipped this PNG (only the def XML existed).
+Extracted it via `extract_bundle.py` (`python.exe`, native `C:\...` bundle
+path, same AssetBundle every prior wave used — 128x128, confirmed
+PIL-openable) and placed at `Textures/UI/Abilities/Ability_AnimalGoldForage.png`.
+No `*ArtOverride` mod exists for Pufferpig or Qormot (checked, matches their
+own header comments); Ronto's base facing IS covered by the already-live
+`RontoArtOverride` (`mandrake.rsw.rontoartoverride`, confirmed by reading its
+own `About.xml` — covers exactly `Ronto_{south,east,north}`, matching its
+header comment) — that gap is the expected `--live`-vs-`--defs` pattern every
+prior ArtOverride pass documented, confirmed resolved once `--defs` could see
+the deployed override mod.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`**, cross-checked against
+`cast_assignment.csv` as ground truth: `RSW_Pufferpig` (AridShrubland 0.5),
+`RSW_Qormot` (AridShrubland 0.2), `RSW_Ronto` (AridShrubland 0.8, Desert
+0.4) — renamed in place from the bare donor entries in the same
+`MayRequire="mlie.starwarsanimalcollection"` block each already sat in
+(same precedent as every prior pass). `git diff --stat` confirmed exactly 4
+lines changed in each `BiomeCast_Ashkarr.xml` copy (2 line-replacements x2
+= 8 diff lines) and exactly 4 lines changed in `cast_assignment.csv` before
+staging.
+
+Checked all 3 Mlie-touching patch files named in this item's own spec
+(`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`): zero
+references to Pufferpig/Qormot/Ronto in any of the three.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files (3 species + `RSW_MlieWaveC_Bodies.xml`/`Resources.xml`/
+`Abilities.xml`), both `--live` (freshest available capture,
+`2026-09-18T17-31-09Z`, 635 mods per its own manifest — live `ModsConfig.xml`
+reads 636 active; per `modsconfig-describes-the-next-load` doctrine this
+describes the NEXT load, not the running game, so the newest capture was
+still the right target) and `--defs` against the full load set (`Data` +
+`Mods` + the Steam Workshop content root) — **0 errors, 0 warnings** with
+`--defs` (the GoldForage icon and Ronto override gaps both resolved once
+`--defs` could see this mod's own new PNG and the deployed
+`RontoArtOverride`). Both `BiomeCast_Ashkarr.xml` copies checked separately
+against `--live`: 0 errors, 0 warnings. All new defNames confirmed unique
+in-repo (`RSW_Qormot`: 2 files, its own ThingDef+PawnKindDef pair plus the
+new BodyDef, same as every prior species with a ported body). All 14
+touched/new PNGs confirmed non-zero and PIL-openable.
+
+**Not done this pass**: no deploy, no bridge — this item's own standing
+instruction is offline-authoring only regardless of bridge state; no live
+cold-load proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Pufferpig/Qormot/Ronto removed from `remaining_worklist`, count 29 -> 26,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch20`.
+
+**Remaining**: 26 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), front now Runyip/Scavrat/Scurrier. Noted for
+whoever picks up the next batch: `Shaak` (2 further down the list) has no
+ArtOverride; `Shiro` (5th) DOES have one
+(`mandrake.rsw.shiroartoverride`, checked this pass — covers
+`Shiro_{south,east,north}` base facing across all life stages, dessicated
+corpse texture and the separate `ShiroTrap` creature stay on donor art, same
+pattern as every other override mod) — check it before extracting Shiro's
+art, same as every prior override-linked species.
