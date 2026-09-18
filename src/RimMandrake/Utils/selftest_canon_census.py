@@ -75,16 +75,26 @@ TMP = tempfile.mkdtemp(prefix="canon_census_selftest_")
 # ---- 1. RULED marker -------------------------------------------------------
 make_entry(TMP, "ruled_one", "**RULED**\n2026-09-17, owner: fake ruling text.")
 
-# ---- 2. all four known empty-boilerplate wordings (+ variants) ------------
+# ---- 2. every empty-boilerplate wording that really occurs -----------------
+# MEASURED against the live corpus 2026-09-18: SEVEN distinct wordings across the
+# 111 unruled entries, not the four the assessment claimed. They differ by
+# "owner"/"the owner", by the noun (race/creature/species/chassis) and in one droid
+# entry by a trailing sentence still inside the parens. Counts at that measurement:
+# race 66, creature 19, the-owner-chassis 17, chassis 5, the-owner-race 2,
+# the-owner-chassis-with-trailer 1, species 1.
 WORDINGS = [
     "unruled_race", "(empty — owner has not reviewed this race yet)",
     "unruled_creature", "(empty — owner has not reviewed this creature yet)",
-    "unruled_species", "(empty — the owner has not reviewed this species yet)",
+    "unruled_species", "(empty — owner has not reviewed this species yet)",
     "unruled_chassis", "(empty — the owner has not reviewed this chassis yet)",
     "unruled_chassis_short", "(empty — owner has not reviewed this chassis yet)",
+    "unruled_race_the", "(empty — the owner has not reviewed this race yet)",
     "unruled_chassis_extra",
     "(empty — the owner has not reviewed this chassis yet. \U0001F534 extra "
     "trailing sentence still inside the parens.)",
+    # Not in the corpus today, kept because the parser is shape-based and must not
+    # start depending on the exact noun list.
+    "unruled_species_the", "(empty — the owner has not reviewed this species yet)",
 ]
 for slug, body in zip(WORDINGS[0::2], WORDINGS[1::2]):
     make_entry(TMP, slug, body)
@@ -112,9 +122,16 @@ eq(reason is not None and "RULED" in reason, True,
 
 # ---- 5. census() totals and buckets on the mixed fixture -------------------
 result = CC.census(TMP)
-eq(result["total"], 9, "census counts all 9 fixture entries")
-eq(len(result["ruled"]), 1, "exactly one fixture entry is ruled")
-eq(len(result["unruled"]), 6, "exactly six fixture entries are unruled boilerplate")
+# Derived from the fixture list, not hardcoded: adding a real boilerplate wording is
+# how this file stays honest, and a count that has to be edited by hand to do that
+# turns a new wording into a test failure instead of new coverage.
+N_UNRULED = len(WORDINGS) // 2
+N_RULED, N_NONCONF = 1, 2
+eq(result["total"], N_UNRULED + N_RULED + N_NONCONF,
+   "census counts every fixture entry")
+eq(len(result["ruled"]), N_RULED, "exactly one fixture entry is ruled")
+eq(len(result["unruled"]), N_UNRULED,
+   "every boilerplate wording fixture classifies unruled")
 eq(len(result["non-conforming"]), 2, "exactly two fixture entries are non-conforming")
 eq(sorted(s for s, _ in result["non-conforming"]), ["blank_one", "prose_one"],
    "the non-conforming bucket names exactly the blank and free-form-prose entries")
@@ -148,4 +165,4 @@ if FAILS:
         print("  " + f)
     sys.exit(1)
 print("ok  selftest_canon_census.py — ruled/unruled/non-conforming classification, "
-      "all four boilerplate wordings, gizka/zeer shapes, --lint and --list")
+      "all SEVEN real boilerplate wordings, gizka/zeer shapes, --lint and --list")

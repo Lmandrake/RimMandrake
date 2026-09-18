@@ -630,7 +630,10 @@ and ORPHANED as **separate** numbers so they can never merge again.
 **C8 — the canon census, ended.** **CONFIRMED, 0.03 s:** 137 entry dirs (23 `droid_*`);
 **24** carry `**RULED**`; `gizka` carries a ruling in free-form prose (a dated owner
 quote with no marker) → **25**, exactly CLAUDE.md's corrected figure; **111** carry the
-`(empty — owner has not reviewed…)` boilerplate in four different wordings; `zeer`'s
+`(empty — owner has not reviewed…)` boilerplate in **seven** different wordings
+(re-MEASURED 2026-09-18 — this said four, and four is wrong: they differ by
+"owner"/"the owner", by the noun race/creature/species/chassis, and one droid entry
+carries a trailing sentence inside the parens. Counts: 66/19/17/5/2/1/1); `zeer`'s
 ruling section is genuinely blank. So: a `canon census` verb that prints
 `ruled / unruled / non-conforming`, plus a lint that a `## ruling` body must be either
 the boilerplate empty marker or a `**RULED**` block. **That converts the number two
@@ -725,6 +728,42 @@ Each of these was run in this session, on this laptop, offline, in the times sho
 **Total runtime of every checker proposed here: under 3 seconds.** The LLM work it
 replaces, on today's evidence alone, is a bench sitting plus a full agent run plus a
 196 k-token subagent — and it recurs on every rename, merge and re-tier.
+
+---
+
+## 11a. What has SHIPPED (keep this current)
+
+- **C1 `modcheck lint` (walklint)** — shipped 2026-09-17. Reports 40 FAIL / 15 WARN today;
+  its suite gate is deliberately NOT armed while live findings exist.
+- **C2 `modcheck doctor`** — shipped 2026-09-17. 41 FAIL / 28 WARN.
+- **C3 bar-scoped north-star hash** — 🔴 **DECLINED by the owner** 2026-09-17, see §5.
+- **C5 `validate` refuses a zero-bar section** — shipped 2026-09-17.
+- **C7 the phantom backlog** — shipped 2026-09-18 (`4de31d6f5`). `prune --apply` dropped 97;
+  `list` now prints a TALLY counting ORPHANED apart from DIRTY, sharing ONE predicate with
+  prune. ⚠️ The publisher change this section asked for is NOT needed and was not made:
+  `codebase_health.review_verdicts` only ever iterates live files, so an orphan entry never
+  entered its census. The merge was in `code_review_status.py list`, and that is where it
+  was fixed.
+- **C8 the canon census** — shipped 2026-09-18 (`4a022088e`), `Utils/canon_census.py` with
+  `--list` and `--lint`. Live: ruled 24 / unruled 111 / non-conforming 2. `gizka` is counted
+  **non-conforming on purpose** — keeping "ruled" a mechanical marker test is the point of
+  C8, since a prose classifier clever enough to recognise it is the same heuristic that
+  produced the disputed "2"; the report prints the human-legible 25 as a note.
+- **C9 the red checker** — shipped 2026-09-18 (`ceb78be3e`). ⚠️ This section's premise was
+  wrong: the exec-bit finding is NOT spurious. `./game`, `./bridge` and `show.sh` were
+  100644 with `core.fileMode=true`, so `./game` genuinely could not run on the Mac. Fixed
+  with `git update-index --chmod=+x` rather than by making the assertion
+  platform-conditional — the check was right and the tree was wrong. `run_selftests` now
+  separates the buckets: **6** unmeasured (not the 8 claimed below), 6 real FAILs.
+- **Owed and not built:** C4 `modcheck floor --all`, C6 `rimflow lint --citations`.
+- **Also owed:** arming C1's suite gate after a findings cleanup, and
+  `bridgetools/selftest_tool_metadata.py` adopting the UNMEASURED phrase so its
+  Windows-toolchain absence stops counting as a failure.
+
+The walk-findings decision sheet the owner asked for is built:
+`Transient/walk_decisions_sheet.html`, rulings in
+`design/validation_walks/WALK_DECISIONS.json`, regenerate with
+`python3 src/RimMandrake/Utils/make_walk_sheet.py`.
 
 ---
 
