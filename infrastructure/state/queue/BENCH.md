@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:53:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-18T02:07:41Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -242,7 +242,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
 state:    ready
@@ -250,7 +250,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  PYRELANDSFAUNAWIRING1 — wire ruled fauna roster into RMFEPyrelands
 prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
@@ -260,7 +260,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -270,7 +270,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
@@ -528,6 +528,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_TRIBES_FIRE_HARVEST_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner, 2026-09-17, verbatim, ruling the FireEcology shim dead: "The shim
 prose:    infrastructure/state/items/DESERT_TRIBES_FIRE_HARVEST_1.md
