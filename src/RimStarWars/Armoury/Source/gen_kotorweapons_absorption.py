@@ -491,13 +491,15 @@ def main():
         with open(manifest_path, "w", encoding="utf-8") as f:
             f.write(
                 "guy762.KotORWeapons elements EXCLUDED from absorption -- each references a\n"
-                "comp class confirmed to live in guy762.mm.kotorcore's own bundled DLLs\n"
-                "(CompExtraSounds / MentalBreakBlocker / SecondaryMineableYield /\n"
-                "SelfHediffVerb), which retire alongside kotorcore's Defs/. Absorbing these\n"
-                "verbatim today would silently break once kotorcore's C# is gone, unless\n"
-                "kotorcore's DLLs are kept active standalone or these classes are ported\n"
-                "into Jawa_Armoury's own assembly -- WEAPONS_ABSORPTION_WAVE_1's undecided\n"
-                "comp-porting fork. Not written to any Defs/ file; regenerate this list by\n"
+                "namespace confirmed to live in guy762.mm.kotorcore's OWN bundled DLLs\n"
+                "(AthenaPort.dll, SWCP_Core.dll, SWCP_Currencies.dll,\n"
+                "SWCP_RimframeGrineerDoors.dll, taranchuk_homingprojectiles.dll under\n"
+                "kotorcore's AdditionalMods/SharedCodeFromShun/) or ModularWeapons2 (cut,\n"
+                "ARMOUR_MW2_CUT_1), not an independent framework that stays active\n"
+                "regardless -- see BLOCKED_NAMESPACES and its comment in this script for the\n"
+                "measured basis. CompExtraSounds/MentalBreakBlocker/SecondaryMineableYield/\n"
+                "SelfHediffVerb are ported into JawaArmoury's own assembly and are NO LONGER\n"
+                "blocked here. Not written to any Defs/ file; regenerate this list by\n"
                 "rerunning gen_kotorweapons_absorption.py.\n\n"
                 "defName\tsource file\tmatched class\n"
             )

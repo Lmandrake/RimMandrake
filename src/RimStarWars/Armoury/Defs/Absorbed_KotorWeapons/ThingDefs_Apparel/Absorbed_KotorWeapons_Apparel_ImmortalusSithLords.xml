@@ -969,8 +969,6 @@ UPGRADE SLOTS:
       <MoveSpeed>-0.5</MoveSpeed>
       <MeleeDodgeChance>-0.5</MeleeDodgeChance>
       <IncomingDamageFactor>-0.15</IncomingDamageFactor>
-      <MeleeDamageFactor>0.2</MeleeDamageFactor>
-      <!---->
       <VEF_MassCarryCapacity>20</VEF_MassCarryCapacity>
       <DecompressionResistance MayRequire="kentington.saveourship2">0.75</DecompressionResistance>
       <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">0.32</VacuumResistance>
