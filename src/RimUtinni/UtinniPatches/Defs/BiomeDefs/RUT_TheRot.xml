@@ -10,14 +10,15 @@
     MEASURED live on V25 (sheet SS0, post cold-tail repaint 2026-09-08): 2,258 tiles,
     arc 74-135, temp p10/median/p90 -35.5/-18.8/+12.9 C.
 
-    Weather LEFT AT DONOR VALUES, deliberately: ban 3 reads "No water rain (R-H1) —
-    the Sheen is emission; a water-rain weather def here is a violation," but SS4b
-    is explicit that this is a RESKIN, not a removal — "Sheen-fall (re-skin of the
-    donor's 'very common rains')." The donor's Rain/RainyThunderstorm/FoggyRain
-    commonalities ARE the Sheen mechanically; renaming the WeatherDefs themselves is
-    separate, un-owed content (no bespoke WeatherDef exists yet). Kept as-is rather
-    than zeroed, which would have silently deleted the Sheen instead of reskinning
-    it.
+    ROT_SHEEN_WEATHER_1 (this pass): baseWeatherCommonalities below now points at
+    our own RUT_SheenFall/RUT_SheenStorm/RUT_SheenMist WeatherDefs
+    (RotSporeKit/Defs/WeatherDefs/RUT_RotSporeKit_SheenWeathers.xml — full clones of
+    Rain/RainyThunderstorm/FoggyRain, same commonality numbers, rainRate kept so
+    fires still douse) in place of the donor rows, closing ban 3's live text
+    violation ("No water rain — a water-rain weather def here is a violation").
+    RUT_SheenExposureLock (biomeMapConditions below) is the permanent condition
+    that turns those weathers into the exposure ladder (RUT_SheenCoating ->
+    RUT_SporeFlesh); full mechanism in that GameConditionDef's own header.
 
     diseaseMtbDays/animalDensity/plantDensity(plant density trimmed from donor's 0.2
     — see below) match the donor's read-in values (sheet SS0 "Donor inventory taken
@@ -118,11 +119,14 @@
     </terrainsByFertility>
     <baseWeatherCommonalities>
       <Clear>8</Clear>
-      <Rain>10</Rain>
+      <RUT_SheenFall MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenFall>
       <DryThunderstorm>1</DryThunderstorm>
-      <RainyThunderstorm>10</RainyThunderstorm>
-      <FoggyRain>10</FoggyRain>
+      <RUT_SheenStorm MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenStorm>
+      <RUT_SheenMist MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenMist>
     </baseWeatherCommonalities>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rut.rotsporekit">RUT_SheenExposureLock</li>
+    </biomeMapConditions>
     <wildAnimals>
       <BMT_ChemSnail MayRequire="biomesteam.biomescaverns">0.7</BMT_ChemSnail>  <!-- chem snail - ingest-strange, keep -->
       <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
@@ -184,8 +188,26 @@
       Settings dial, not per-biome (RM_EnvironmentalHazardsSettings.
       acceleratedRotItemMultiplier / acceleratedRotCorpseMultiplier).
     -->
+    <!--
+      ROT_WARM_MAT_1 (M3, "metabolic warmth"). Same generic RM_-tier idiom.
+      The mat is the LIVING ground: the biome's own two natural terrains, plus
+      the two RotSporeKit floors that are themselves mycelium. RUT_MushroomFloor
+      and RUT_MoonlessCarpet are deliberately absent — they are dead material
+      milled from the jungle, and flooring over the mat with dead material
+      stopping the heat IS the trade the mechanic is built on.
+      Warmth itself is one Mod Settings dial (RM_EnvironmentalHazardsSettings.
+      warmGroundOffsetCelsius), not a per-biome field.
+    -->
     <modExtensions>
       <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
+        <warmTerrains>
+          <li>AB_MycoticGrass</li>
+          <li>AB_MycoticSoilRich</li>
+          <li MayRequire="mandrake.rut.rotsporekit">RUT_MycelialSoil</li>
+          <li MayRequire="mandrake.rut.rotsporekit">RUT_MycelialMatting</li>
+        </warmTerrains>
+      </li>
     </modExtensions>
   </BiomeDef>
 
