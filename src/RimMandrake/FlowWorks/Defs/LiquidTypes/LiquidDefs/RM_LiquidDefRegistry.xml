@@ -33,6 +33,10 @@
     <bottled>
       <bottle>RM_Bottle_FreshWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_FreshWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_FreshWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -51,6 +55,10 @@
     <bottled>
       <bottle>RM_Bottle_SaltWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_SaltWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_SaltWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -69,6 +77,10 @@
     <bottled>
       <bottle>RM_Bottle_BoilingWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_BoilingWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_BoilingWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -96,6 +108,10 @@
     <bottled>
       <bottle>RM_Bottle_IcyWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_IcyWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_IcyWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -113,6 +129,10 @@
     <bottled>
       <bottle>RM_Bottle_ToxicWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_ToxicWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_ToxicWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Toxic</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -139,6 +159,10 @@
     <bottled>
       <bottle>RM_Bottle_AcidWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_AcidWater</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_AcidWater</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -156,6 +180,10 @@
     <bottled>
       <bottle>RM_Bottle_Tar</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_Tar</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_Tar</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -174,6 +202,10 @@
     <bottled>
       <bottle>RM_Bottle_Brine</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_Brine</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_Brine</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
@@ -194,6 +226,10 @@
     <bottled>
       <bottle>RM_Bottle_Propane</bottle>
       <unitsPerBottle>1</unitsPerBottle>
+      <bucket>RM_Bucket_Propane</bucket>
+      <unitsPerBucket>5</unitsPerBucket>
+      <barrel>RM_Barrel_Propane</barrel>
+      <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>

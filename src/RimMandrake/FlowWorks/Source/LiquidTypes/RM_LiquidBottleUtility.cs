@@ -88,10 +88,46 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         }
 
         /// <summary>Nearest reachable cell whose terrain matches any
-        /// LiquidDef carrying a bottled form -- the fill job's target.</summary>
-        public static bool TryFindFillCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid, float maxDist = 60f)
+        /// LiquidDef carrying a bottled form for the given container size --
+        /// the fill job's target. Defaults to Bottle so every pre-existing
+        /// caller keeps its old behavior untouched.</summary>
+        public static bool TryFindFillCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
+            float maxDist = 60f, RM_ContainerSize size = RM_ContainerSize.Bottle)
         {
-            return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true, requireFreshWaterOnly: false);
+            return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true,
+                requireFreshWaterOnly: false, size: size);
+        }
+
+        /// <summary>The liquid-agnostic EMPTY ThingDef for a given container
+        /// size -- what the wash job hands back, and what a fill attempt
+        /// against a liquid with no matching-sized bottled form leaves alone.</summary>
+        public static ThingDef EmptyDefFor(RM_ContainerSize size)
+        {
+            switch (size)
+            {
+                case RM_ContainerSize.Bucket:
+                    return RimMandrakeFlowWorks_DefOf.RM_BucketEmpty;
+                case RM_ContainerSize.Barrel:
+                    return RimMandrakeFlowWorks_DefOf.RM_BarrelEmpty;
+                default:
+                    return RimMandrakeFlowWorks_DefOf.RM_BottleEmpty;
+            }
+        }
+
+        /// <summary>The liquid-agnostic DIRTY ThingDef for a given container
+        /// size -- what a "use" outcome leaves behind when the dirty stage
+        /// toggle is on.</summary>
+        public static ThingDef DirtyDefFor(RM_ContainerSize size)
+        {
+            switch (size)
+            {
+                case RM_ContainerSize.Bucket:
+                    return RimMandrakeFlowWorks_DefOf.RM_BucketDirty;
+                case RM_ContainerSize.Barrel:
+                    return RimMandrakeFlowWorks_DefOf.RM_BarrelDirty;
+                default:
+                    return RimMandrakeFlowWorks_DefOf.RM_BottleDirty;
+            }
         }
 
         /// <summary>Nearest reachable FRESH water edge -- the spec's "wash
@@ -104,7 +140,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         }
 
         private static bool TryFindLiquidCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
-            float maxDist, bool requireBottled, bool requireFreshWaterOnly)
+            float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size = RM_ContainerSize.Bottle)
         {
             cell = IntVec3.Invalid;
             liquid = null;
@@ -128,7 +164,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     continue;
                 }
-                if (requireBottled && candidate.bottled?.bottle == null)
+                if (requireBottled && candidate.bottled?.FilledDefFor(size) == null)
                 {
                     continue;
                 }

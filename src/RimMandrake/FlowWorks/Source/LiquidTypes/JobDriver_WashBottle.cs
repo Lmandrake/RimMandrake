@@ -6,8 +6,9 @@ using Verse.AI;
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
     /// <summary>Mirror of <see cref="JobDriver_FillBottle"/>, run in reverse:
-    /// carries one RM_BottleDirty to fresh water and swaps it for one
-    /// RM_BottleEmpty there. LIQUID_BOTTLE_LOOP_1.</summary>
+    /// carries one dirty container to fresh water and swaps it for the
+    /// correctly-sized empty sibling there, read off the carried Thing's own
+    /// RM_BottledLiquidExtension.size. LIQUID_BOTTLE_LOOP_1.</summary>
     public class JobDriver_WashBottle : JobDriver
     {
         private const int WashTicks = 120;
@@ -46,8 +47,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
+                RM_BottledLiquidExtension ext = carried.def.GetModExtension<RM_BottledLiquidExtension>();
+                RM_ContainerSize size = ext?.size ?? RM_ContainerSize.Bottle;
+                ThingDef emptyDef = RM_LiquidBottleUtility.EmptyDefFor(size);
+                if (emptyDef == null)
+                {
+                    return;
+                }
                 carried.Destroy();
-                Thing empty = ThingMaker.MakeThing(RimMandrakeFlowWorks_DefOf.RM_BottleEmpty);
+                Thing empty = ThingMaker.MakeThing(emptyDef);
                 empty.stackCount = 1;
                 GenPlace.TryPlaceThing(empty, pawn.Position, Map, ThingPlaceMode.Near);
             };

@@ -391,23 +391,25 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             list.GapLine();
             Text.Font = GameFont.Medium;
-            list.Label("Bottles: fill, use, wash");
+            list.Label("Bottles, buckets, barrels: fill, use, wash");
             Text.Font = GameFont.Small;
-            list.Label("An empty bottle filled at a matching liquid's shore becomes a filled bottle; "
-                     + "drinking or otherwise using one leaves a bottle behind to deal with. Bottles are "
-                     + "loot, not free.");
+            list.Label("An empty container filled at a matching liquid's shore becomes a filled one; "
+                     + "drinking or otherwise using one leaves a container behind to deal with. Buckets "
+                     + "hold five bottles' worth, barrels twenty-five — same chain, same labour. "
+                     + "Containers are loot, not free.");
 
-            list.CheckboxLabeled("Bottle fill/wash labour", ref bottleLoopEnabled,
-                "Colonists automatically carry an empty bottle to a matching liquid's edge to fill it, "
-              + "and a dirty bottle to fresh water to wash it — no order needed, the same way an empty "
-              + "fuel tank is a standing invitation to refuel. Off: bottles still fill and empty by hand "
-              + "if you carry and drink them yourself, but nothing does the fetching for you.");
+            list.CheckboxLabeled("Container fill/wash labour", ref bottleLoopEnabled,
+                "Colonists automatically carry an empty bottle, bucket or barrel to a matching liquid's "
+              + "edge to fill it, and a dirty one to fresh water to wash it — no order needed, the same "
+              + "way an empty fuel tank is a standing invitation to refuel. Off: containers still fill "
+              + "and empty by hand if you carry and drink them yourself, but nothing does the fetching "
+              + "for you.");
 
-            list.CheckboxLabeled("Using a bottle leaves it dirty", ref bottleDirtyStageEnabled,
-                "Drinking a filled bottle leaves a dirty bottle that needs washing before it can be "
-              + "filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
-              + "bottle directly and no dirty bottles are minted; any a save already holds are still "
-              + "washable.");
+            list.CheckboxLabeled("Using a container leaves it dirty", ref bottleDirtyStageEnabled,
+                "Drinking a filled bottle or bucket leaves a dirty one that needs washing before it can "
+              + "be filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
+              + "container directly and no dirty ones are minted; any a save already holds are still "
+              + "washable. Barrels are the bulk trade good and are never drunk from directly.");
 
             list.End();
             Widgets.EndScrollView();

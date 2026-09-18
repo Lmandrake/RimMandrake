@@ -181,6 +181,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public ThingDef bottle;
         public int unitsPerBottle = 1;
 
+        /// <summary>Bucket sibling -- LIQUID_BOTTLE_LOOP_1's third slice,
+        /// "buckets = larger bottle, same chain". Optional: null on a row
+        /// that ships no bucket (matches <see cref="bottle"/>'s own
+        /// optionality at the row level -- only <see cref="bottled"/> itself
+        /// being non-null is what ConfigErrors requires a bottle for).</summary>
+        public ThingDef bucket;
+        public int unitsPerBucket = 5;
+
+        /// <summary>Barrel sibling -- the ~25-unit bulk/trade sibling
+        /// (owner-ruled 2026-09-13, "very scavenger"). Optional. Ships with
+        /// no &lt;ingestible&gt; block by generator convention
+        /// (generate_liquid_suite.py) -- a barrel is the bulk TRADE good
+        /// (tradeable for free via ResourceBase, zero patches), not
+        /// something a pawn drinks from directly. "Fill/empty bills at a
+        /// tank" -- the spec's other named barrel behavior -- stays
+        /// deferred: no tank building exists yet in FlowWorks or
+        /// WreckedMachines (see LIQUID_BOTTLE_LOOP_1's own notes).</summary>
+        public ThingDef barrel;
+        public int unitsPerBarrel = 25;
+
         /// <summary>Boiling/icy water bottled fresh reverts to this liquid
         /// after <see cref="revertTicks"/>.</summary>
         public LiquidDef revertsTo;
@@ -192,6 +212,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public ThingDef rotsTo;
         public int rotTicks;
 
+        /// <summary>The filled ThingDef for a given container size -- the
+        /// one place the fill JobDriver reads to stay generic across all
+        /// three tiers rather than branching per size.</summary>
+        public ThingDef FilledDefFor(RM_ContainerSize size)
+        {
+            switch (size)
+            {
+                case RM_ContainerSize.Bucket:
+                    return bucket;
+                case RM_ContainerSize.Barrel:
+                    return barrel;
+                default:
+                    return bottle;
+            }
+        }
+
         public IEnumerable<string> ConfigErrors(string ownerDefName)
         {
             if (bottle == null)
@@ -201,6 +237,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             if (unitsPerBottle < 1)
             {
                 yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBottle must be >= 1.";
+            }
+            if (bucket != null && unitsPerBucket < 1)
+            {
+                yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBucket must be >= 1.";
+            }
+            if (barrel != null && unitsPerBarrel < 1)
+            {
+                yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBarrel must be >= 1.";
             }
             if (revertsTo != null && revertTicks < 1)
             {

@@ -48,8 +48,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 }
 
                 ThingDef residueDef = RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled
-                    ? RimMandrakeFlowWorks_DefOf.RM_BottleDirty
-                    : RimMandrakeFlowWorks_DefOf.RM_BottleEmpty;
+                    ? RM_LiquidBottleUtility.DirtyDefFor(ext.size)
+                    : RM_LiquidBottleUtility.EmptyDefFor(ext.size);
                 if (residueDef == null)
                 {
                     return;
