@@ -6,9 +6,9 @@ namespace RimMandrake.Property
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for RimProperty.
     //
-    // Five independently-gateable mechanics, found by reading every .cs
-    // file in this mod before writing this (walkable commerce added by
-    // SETTLEMENT_VERBS_WAVE_1):
+    // Six independently-gateable mechanics, found by reading every .cs
+    // file in this mod before writing this (walkable commerce and
+    // pickpocket added by SETTLEMENT_VERBS_WAVE_1):
     //   1. Perception/propagation (PropertyEngine.RollPerceptionAndPropagate)
     //      — witnesses seeing a theft and telling their faction.
     //   2. Animal theft (AnimalTheftUtility.FindStealTarget, the single
@@ -21,6 +21,9 @@ namespace RimMandrake.Property
     //   5. Walkable commerce (FloatMenuOptionProvider_BuyMerchandise /
     //      BuyMerchandiseUtility) — the right-click "buy this from its
     //      current owner" order.
+    //   6. Pickpocket (FloatMenuOptionProvider_Pickpocket /
+    //      PickpocketUtility) — the right-click "lift something from their
+    //      inventory" order.
     //
     // The claim engine itself (ClaimEngine/ClaimDecay/GameComponent_
     // PropertyLedger/PropertyEngine.Fire's WasAuthorized resolution) is left
@@ -65,6 +68,10 @@ namespace RimMandrake.Property
         public static bool walkableCommerceEnabled = true;
         public static float walkableCommerceMarkup = PropertyTuning.WalkableCommerceMarkup;
 
+        // --- Pickpocket (SETTLEMENT_VERBS_WAVE_1, crime-suite pass) -------------
+        public static bool pickpocketEnabled = true;
+        public static float pickpocketMinItemValueSilver = PropertyTuning.PickpocketMinItemValueSilver;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -82,6 +89,8 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref salvageClaimFeeMultiplier, "salvageClaimFeeMultiplier", 1f);
             Scribe_Values.Look(ref walkableCommerceEnabled, "walkableCommerceEnabled", true);
             Scribe_Values.Look(ref walkableCommerceMarkup, "walkableCommerceMarkup", PropertyTuning.WalkableCommerceMarkup);
+            Scribe_Values.Look(ref pickpocketEnabled, "pickpocketEnabled", true);
+            Scribe_Values.Look(ref pickpocketMinItemValueSilver, "pickpocketMinItemValueSilver", PropertyTuning.PickpocketMinItemValueSilver);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -148,6 +157,17 @@ namespace RimMandrake.Property
             {
                 list.Label("  Price markup: " + walkableCommerceMarkup.ToString("0.00") + "x market value");
                 walkableCommerceMarkup = list.Slider(walkableCommerceMarkup, 0.5f, 3f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Pickpocket (lift an item from someone's own inventory)", ref pickpocketEnabled,
+                "Lets a pawn right-click another pawn to lift something out of their carried inventory. "
+              + "Never their equipped weapon or worn apparel. Risk of being noticed uses the same "
+              + "witness settings above. Off: that order never appears.");
+            if (pickpocketEnabled)
+            {
+                list.Label("  Not worth the risk below: " + pickpocketMinItemValueSilver.ToString("0") + " silver");
+                pickpocketMinItemValueSilver = list.Slider(pickpocketMinItemValueSilver, 0f, 50f);
             }
 
             list.End();

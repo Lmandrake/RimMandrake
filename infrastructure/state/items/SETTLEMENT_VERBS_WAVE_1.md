@@ -1,3 +1,114 @@
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — third verb family built: crime suite
+
+Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`
+item 9: **salvage-law gray zone (built, 2026-09-01) · walkable commerce
+(built, 2026-09-12) · crime suite (pickpocket built THIS pass; night
+burglary/fencing/smuggling still unbuilt) · social fabric (unbuilt)**. Three
+of four now have at least one live-code-complete piece; social fabric
+remains untouched — no capacity left this pass to start it (see the item's
+own steer against a shallow stub, same reasoning the 2026-09-12 pass gave for
+skipping crime suite/social fabric that time).
+
+**Built this pass** (`mandrake.rm.property`, same mod as SalvageClaim/
+WalkableCommerce — `src/RimMandrake/RimProperty/Source/Pickpocket/`): a
+right-click `FloatMenuOptionProvider_Pickpocket` order, the exact same shape
+as `FloatMenuOptionProvider_PaySalvageClaim`/`BuyMerchandise` (needs a
+selected acting pawn + a clicked target Pawn; no JobDriver, the whole
+transaction — including the physical hand-off — runs instantly from the
+option's own delegate).
+
+**Checked first, per this pass's own brief**: does crime map onto an
+already-implemented case? Yes, and it's the same "fabric already implements
+the RESULT" situation Claim/Buy were in, but for a DIFFERENT reason than
+those two. Claim/Buy fire `TakingAct.Claim`/`Buy`, whose `PropertyEngine.
+Fire` case sets `WasAuthorized = true` unconditionally — never witnessed, by
+definition. Pickpocket fires plain `TakingAct.Take` against a Thing a
+target Pawn currently possesses (`ClaimEngine.FindPossessor`'s
+`Pawn_InventoryTracker` case resolves a virtual `Situational` claim to that
+Pawn at strength 0.9) with actor != that Pawn — `PropertyEngine.IsAuthorized`
+correctly refuses it, `Fire`'s `Take` case records a `ClaimBasis.Stolen`
+record for the ORIGIN claimant (the victim) at strength 1.0 and rolls
+perception (`RollPerceptionAndPropagate`), all already built and already
+exercised by AnimalTheft (unattended ground items) and TheftHauler
+(buildings, via `Strip`). Pickpocket is the first verb to point `Take` at a
+PERSON's own carried inventory rather than an unattended item or a building
+— that target-kind gap, not the claim/perception math, is what this pass
+actually built. `PickpocketUtility.FindStealableItem` picks the highest
+`MarketValue*stackCount` item in the target's `Pawn_InventoryTracker`
+container above a tunable floor (`PropertySettings.
+pickpocketMinItemValueSilver`, default 5 silver, `PropertyTuning.
+PickpocketMinItemValueSilver`) — reuses the fabric's own published stat, no
+second pricing model.
+
+**The one physical hand-off this wave actually performs**: unlike the
+claim-fee/buy verbs (deliberately provenance-record-only, no inventory
+move), a pickpocket that doesn't move anything isn't a theft, so
+`PickpocketUtility.TransferToActor` calls `ThingOwner.
+TryTransferToContainer` with `canMergeWithExistingStacks: false` —
+deliberately not the API default. `GameComponent_PropertyLedger.
+RecordClaim`'s own doc comment explains why: the ledger keys claim records
+on the Thing INSTANCE, and a stack-merge into something the actor already
+carries would `Destroy()` the just-stolen Thing and orphan the `Stolen`
+record `PropertyEngine.Fire` recorded against it moments earlier in the same
+delegate. `Fire` is called BEFORE the transfer (same ordering AnimalTheft/
+TheftHauler already use — "at the moment of taking, not haul-pickup"),
+because `ClaimEngine.ResolveClaim` needs to see the item still in the
+target's inventory to resolve the victim's `Situational` claim correctly.
+
+**Where it differs from the prior two verbs, deliberately**: scoped to the
+target Pawn's `Pawn_InventoryTracker` only — never an equipped weapon
+(`Pawn_EquipmentTracker`) or worn apparel (`Pawn_ApparelTracker`), same
+"no ripping slotted gear off a living body" simplification the prior passes
+already applied to their own target kinds. Gated off `targetPawn.
+HostileTo(actor)` — pickpocketing mid-firefight isn't this verb; that's
+vanilla's own attack/capture territory. Not gated on the target being awake
+or downed: `PerceptionUtility.RollWitnesses` already excludes anyone
+`!Awake()` or `Downed` from personally witnessing, so a sleeping or downed
+target's own perception risk drops out for free with no special-casing —
+this incidentally covers part of "night burglary"'s flavor (an unaware
+target) through the SAME code path, but this pass makes no claim to have
+built burglary as its own verb: no unattended-building/container target
+kind, no night/day gate, no gate-search interaction. Fencing (needs a
+buyer/vendor NPC) and smuggling past gate searches (needs a district/gate
+concept) are explicitly OUT — both need groundwork from
+`SETTLEMENT_VISIT_LOOP_1` (still `doing`) that doesn't exist yet, same
+reasoning the 2026-09-12 pass gave for leaving all of crime suite untouched
+that time.
+
+Mod Settings retrofitted (`PropertySettings.cs`): `pickpocketEnabled`
+(default on) and `pickpocketMinItemValueSilver` slider (0-50 silver), same
+checkbox+slider pattern as every other gateable mechanic in this mod. Module
+doc-comment count at the top of `PropertySettings.cs` updated from five to
+six gateable mechanics.
+
+**Verified this pass**: `dotnet build RM_Property.csproj -c Release`
+(via the Windows-native `dotnet.exe`, D-drive path — this box has no
+`dotnet` on the WSL `PATH`) compiles clean, 0 warnings, 0 errors, DLL
+rebuilt at `src/RimMandrake/RimProperty/Assemblies/RimMandrakeProperty.dll`.
+`deploy_custom_mods.py --mod RimProperty` (plan only) reports drift, as
+expected — **not deployed**: the game is up tonight and `mandrake.rm.
+property` is already an active, loaded mod, same posture as the 2026-09-12
+pass. `selftest_property_fabric.py` (the offline C# decay/claimant-math
+selftest) still passes 20/20, unaffected — it doesn't touch anything this
+pass changed. Ran the full `run_selftests.py` sweep afterward: 58/60 passed;
+the two failures (`selftest_art_checks.py`, `selftest_one_path_seam.py`) are
+pre-existing, unrelated to this pass (art-check tooling and an unrelated
+LocalLow path literal in `artpipe/build_flora_legibility_sheet.py`), not
+introduced by this change. No new XML/patches shipped (C#-only, same as
+SalvageClaim/WalkableCommerce), so `validate_patch.py` has nothing to check.
+**Not live-quicktest-observed** (needs the bridge, which is contended
+tonight per the shared-worktree note) — same "left `doing`, not closed"
+posture every prior pass on this item took.
+
+**Owner note (MODE=afk, filing rather than waiting)**: this pass reads
+"crime suite" as satisfied by ONE genuinely-scoped verb (pickpocket), not
+all four of its spec-item-9 sub-list. If the owner intends "crime suite" to
+mean the whole sub-list before this family counts as built, that's a scope
+call only he can make — flagging it explicitly rather than guessing either
+way. Fencing and smuggling in particular are blocked on `SETTLEMENT_VISIT_
+LOOP_1`'s cast-NPC/vendor and district-gate concepts landing first, not on
+anything in this pass's control.
+
 ## 2026-09-12 (FOUNDRY) — second verb family built: walkable commerce
 
 Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`
