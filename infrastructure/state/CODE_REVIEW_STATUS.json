@@ -12441,6 +12441,12 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
+  "src/RimUtinni/AftermathRites/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "09eb728d8e7bca8a1cbbcd6fca37fac3ed1eb672a6d1fce4d644a6105c6f61e0",
+    "sha": "562ae2718"
+  },
   "src/RimUtinni/AgaripodArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -14596,10 +14602,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "70c9030298d858a9b4566283b143e67c6fcea7c59358a9c115e6517028670999",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "05146f0b877428aee6ee90790e226f2a1b8eb9cee0d5a79122aca53603a1a713",
+    "sha": "562ae2718"
   },
   "src/RimUtinni/RotSporeKit/Defs/DamageDefs/RUT_RotSporeKit_DamageDefs.xml": {
     "cleanCount": 1,
@@ -14630,6 +14636,12 @@
     "date": "2026-09-09",
     "hash": "06f79663c081267ee0dfa91d1b11136a11b6aa1cdf84e12ce374db7249bfeff3",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_SheenHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "475c547b4aa868b676a6b6597b14f65657fec94b5d36a99ecfd7c040d917b7c0",
+    "sha": "562ae2718"
   },
   "src/RimUtinni/RotSporeKit/Defs/PlantBases/RUT_RotSporeKit_PlantBases.xml": {
     "cleanCount": 1,
@@ -14684,6 +14696,12 @@
     "date": "2026-09-17",
     "hash": "c2dcd8f8fd4bf6b7b3df4df29b3e1b97f0122007a04fe3ce4345d97942f6dd54",
     "sha": "785100e16"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "540184506dd45371ac2214016e2e90635af1f5aac4d646ababb4e51b50991252",
+    "sha": "562ae2718"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
     "cleanCount": 1,
