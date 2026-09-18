@@ -363,7 +363,7 @@
         <Shiro>0.5</Shiro> <!-- shiro - floor-ambush, keep -->
         <ShiroTrap>0.5</ShiroTrap> <!-- shiro-trap - floor-ambush, keep -->
         <RSW_Klorslug>0.4</RSW_Klorslug> <!-- k'lor'slug - gnawer, keep -->
-        <Mott>0.4</Mott> <!-- mott - brake, import -->
+        <RSW_Mott>0.4</RSW_Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
         <RSW_Gelagrub>0.3</RSW_Gelagrub> <!-- gelagrub - gnawer, import -->
         <RSW_Kinrath>0.3</RSW_Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
@@ -601,7 +601,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
       <value>
-        <Neebray>0.8</Neebray> <!-- neebray - small-flier, keep -->
+        <RSW_Neebray>0.8</RSW_Neebray> <!-- neebray - small-flier, keep -->
         <Mynock>0.2</Mynock> <!-- mynock - small, import -->
         <RSW_GraniteSlug>0.15</RSW_GraniteSlug> <!-- granite slug - grain, import -->
       </value>
@@ -905,7 +905,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
-        <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
+        <RSW_Ollopom>0.7</RSW_Ollopom> <!-- ollopom - small-resident, keep -->
         <RSW_Jamel>0.1</RSW_Jamel> <!-- Jamel - pilgrim, import -->
       </value>
     </match>
