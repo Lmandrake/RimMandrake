@@ -1,0 +1,221 @@
+{
+ "posture": "blacklist",
+ "sheetId": "walk_decisions_20260918",
+ "decisions": {
+  "design/validation_walks/RimMandrake/AtmosphericBase.md": {
+   "decision": "markok",
+   "prefill": "markok",
+   "note": "walk declares NOT BUILT; annotate so the checker stops flagging it"
+  },
+  "design/validation_walks/RimMandrake/DesertVehicleReskin.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "live mod with a vacuous step: fix the identifier"
+  },
+  "design/validation_walks/RimMandrake/FlowWorks.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "subject is live; the finding is in the step text"
+  },
+  "design/validation_walks/RimMandrake/GravshipAstronautFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "live mod with a vacuous step: fix the identifier"
+  },
+  "design/validation_walks/RimMandrake/PhytokinBarkHeadFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "live mod with a vacuous step: fix the identifier"
+  },
+  "design/validation_walks/RimMandrake/Pits.md": {
+   "decision": "",
+   "prefill": "",
+   "note": "blocked by PIT_SUPERDEEP_COLLAPSE_1 \u2014 left undecided on purpose"
+  },
+  "design/validation_walks/RimMandrake/Property.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimMandrake/ResearchKitEastFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rm.patches \u2014 proven by src/RimMandrake/MandrakePatches/Source/ResearchKitEastFix on disk"
+  },
+  "design/validation_walks/RimMandrake/SalvageClaim.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rm.property \u2014 proven by src/RimMandrake/RimProperty/Source/SalvageClaim on disk"
+  },
+  "design/validation_walks/RimMandrake/SauridFrillFix.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimMandrake/TheftHauler.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rm.property \u2014 proven by src/RimMandrake/RimProperty/Patches/TheftHauler on disk"
+  },
+  "design/validation_walks/RimMandrake/ToolBeltFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rm.patches \u2014 proven by src/RimMandrake/MandrakePatches/Source/ToolBeltFix on disk"
+  },
+  "design/validation_walks/RimStarWars/BeastLairs.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.injections \u2014 proven by src/RimStarWars/StructureInjectionsSW/Defs/BeastLairs on disk"
+  },
+  "design/validation_walks/RimStarWars/BeastNorm.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.swbestiary \u2014 proven by src/RimStarWars/SWBestiary/Patches/BeastNorm on disk"
+  },
+  "design/validation_walks/RimStarWars/BlastDoorFrameAsyncFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.patches \u2014 proven by src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix on disk"
+  },
+  "design/validation_walks/RimStarWars/CereanManeFix.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.patches \u2014 proven by src/RimStarWars/StarWarsPatches/Source/CereanManeFix on disk"
+  },
+  "design/validation_walks/RimStarWars/FireEcology.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimStarWars/HelixTellurox.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.swbestiary \u2014 proven by src/RimStarWars/SWBestiary/Defs/HelixTellurox on disk"
+  },
+  "design/validation_walks/RimStarWars/JawaIkee.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.swbestiary \u2014 proven by src/RimStarWars/SWBestiary/Source/JawaIkee on disk"
+  },
+  "design/validation_walks/RimStarWars/Livestock.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "live mod with a vacuous step: fix the identifier"
+  },
+  "design/validation_walks/RimStarWars/SeaBeasts.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.swbestiary \u2014 proven by src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts on disk"
+  },
+  "design/validation_walks/RimStarWars/SeasWaterline.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rsw.swbestiary \u2014 proven by src/RimStarWars/SWBestiary/Patches/SeasWaterline on disk"
+  },
+  "design/validation_walks/RimStarWars/WeatherSuite.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "live mod with a vacuous step: fix the identifier"
+  },
+  "design/validation_walks/RimUtinni/AshkarrWeatherSuite.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimUtinni/DesertFixtures.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rut.injections \u2014 proven by src/RimUtinni/StructureInjectionsRUT/Defs/DesertFixtures on disk"
+  },
+  "design/validation_walks/RimUtinni/Doctrine.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimUtinni/FactionSlate.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rut.patches \u2014 proven by src/RimUtinni/UtinniPatches/Patches/FactionSlate on disk"
+  },
+  "design/validation_walks/RimUtinni/PawnFlavor.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimUtinni/RestrainingBolts.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "subject is live; the finding is in the step text"
+  },
+  "design/validation_walks/RimUtinni/RiverSteam.md": {
+   "decision": "delete",
+   "prefill": "delete",
+   "note": "no subject and no absorber found \u2014 nothing left to validate"
+  },
+  "design/validation_walks/RimUtinni/StructureInjectionsRUT.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "subject is live; the finding is in the step text"
+  },
+  "design/validation_walks/RimUtinni/UtinniShell.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rut.menushell \u2014 proven by src/RimUtinni/MenuShell/Defs/UtinniShell on disk"
+  },
+  "design/validation_walks/RimUtinni/VaultDungeons.md": {
+   "decision": "repoint",
+   "prefill": "repoint",
+   "note": "absorbed into mandrake.rut.injections \u2014 proven by src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons on disk"
+  },
+  "collision:src/RimMandrake/FlowWorks": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 1 of them; merging into FlowWorks would concatenate bars written for different features"
+  },
+  "collision:src/RimMandrake/MandrakePatches": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 5 of them; merging into GravshipAstronautFix would concatenate bars written for different features"
+  },
+  "collision:src/RimMandrake/Pyrelands": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 1 of them; merging into FireEcology would concatenate bars written for different features"
+  },
+  "collision:src/RimMandrake/RimProperty": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 2 of them; merging into Property would concatenate bars written for different features"
+  },
+  "collision:src/RimStarWars/SWBestiary": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 6 of them; merging into BeastNorm would concatenate bars written for different features"
+  },
+  "collision:src/RimStarWars/StarWarsPatches": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 2 of them; merging into BlastDoorFrameAsyncFix would concatenate bars written for different features"
+  },
+  "collision:src/RimStarWars/StructureInjectionsSW": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 1 of them; merging into BeastLairs would concatenate bars written for different features"
+  },
+  "collision:src/RimUtinni/MenuShell": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 1 of them; merging into MenuShell would concatenate bars written for different features"
+  },
+  "collision:src/RimUtinni/StructureInjectionsRUT": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 2 of them; merging into DesertFixtures would concatenate bars written for different features"
+  },
+  "collision:src/RimUtinni/UtinniPatches": {
+   "decision": "featurekey",
+   "prefill": "featurekey",
+   "note": "keep them as per-feature walks under a new `feature:` key rather than losing 1 of them; merging into FactionSlate would concatenate bars written for different features"
+  }
+ }
+}
