@@ -308,11 +308,28 @@ class Graph:
             elem_kind = meta[2]
         return ("variable", name, elem_kind, list(values), refid, meta)
 
-    def node(self, type_, name, pos=None, **fields):
+    def _floatrange_field(self, name, rng):
+        """Build a ("floatrange", name, (min,max)) field tuple. Shared by
+        node() and tile_req() so a FloatRange is never dropped just because
+        it isn't one of that builder's named parameters -- the same trap
+        _variable_field() exists to avoid for Variable fields (found live
+        2026-09-06 on AllowedRiverTypes). Found again for FloatRange
+        2026-09-18 (GL_EMIT_FLOATRANGE_GENERIC_DROP_1): build_desertplateau's
+        generic node-reconstruction branch parsed every source node's
+        <FloatRange> entries into a local `floatranges` dict but only ever
+        forwarded it to worldTileReq via tile_req()'s named parameters,
+        silently dropping a FloatRange field on any other node type. `rng`
+        of None means the source landform does not carry this requirement at
+        all (write() emits nothing for it, matching the source)."""
+        return ("floatrange", name, tuple(rng) if rng is not None else None)
+
+    def node(self, type_, name, pos=None, floatranges=None, **fields):
         nid = self._node_ctr
         self._node_ctr += 1
         n = _Node(nid, type_, name, pos if pos is not None else "0,0")
         self._nodes.append(n)
+        for fname, rng in (floatranges or {}).items():
+            n.fields.append(self._floatrange_field(fname, rng))
         for k, v in fields.items():
             if isinstance(v, list):
                 n.fields.append(self._variable_field(type_, k, v))
@@ -404,7 +421,7 @@ class Graph:
             ("DepthInCaveSystemRequirement", depth_in_cave_system),
             ("MapSizeRequirement", map_size),
         ):
-            n.fields.append(("floatrange", name, rng))
+            n.fields.append(self._floatrange_field(name, rng))
         n.fields.append(("scalar", "boolean", "AllowSettlements", allow_settlements))
         n.fields.append(("scalar", "boolean", "AllowSites", allow_sites))
         return n
@@ -583,7 +600,13 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                 pos=sn["pos"],
             )
         else:
-            node = g.node(type_, sn["name"], pos=sn["pos"], **kwargs)
+            # floatranges is forwarded here (not just to tile_req()'s named
+            # params) so a <FloatRange> on any node type OTHER than
+            # worldTileReq/landformManifest survives -- GL_EMIT_FLOATRANGE_
+            # GENERIC_DROP_1, found 2026-09-08: this branch used to forward
+            # only `kwargs` (scalar + Variable fields), silently dropping
+            # floatranges entirely.
+            node = g.node(type_, sn["name"], pos=sn["pos"], floatranges=floatranges, **kwargs)
             if frequency is not None and sn["old_id"] == "5" and type_ == "gridPerlin":
                 for i, f in enumerate(node.fields):
                     if f[0] == "scalar" and f[2] == "Frequency":
@@ -601,19 +624,28 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                         node.fields[i] = ("scalar", f[1], "Angle", repr(float(rotate_deg)))
 
         # Safety net for the named-parameter builders above (manifest, tile_req):
-        # any source Variable they don't forward by name would otherwise be
-        # silently dropped, exactly like AllowedRiverTypes was. Carry through
-        # anything still missing so a future landform's node shape can't hide
-        # the same bug (GL_EMITTER_OBJECT_GAP_1).
+        # any source Variable or FloatRange they don't forward by name would
+        # otherwise be silently dropped, exactly like AllowedRiverTypes was
+        # (GL_EMITTER_OBJECT_GAP_1) and like a FloatRange on a future
+        # worldTileReq field would be (GL_EMIT_FLOATRANGE_GENERIC_DROP_1) --
+        # tile_req() already names all 11 FloatRange fields the shipped
+        # corpus carries today, so this is presently a no-op there, but it
+        # keeps the two named-parameter builders from silently regressing
+        # the same way the generic branch did.
         if type_ in ("landformManifest", "worldTileReq"):
-            present = {f[1] for f in node.fields if f[0] == "variable"}
+            present_var = {f[1] for f in node.fields if f[0] == "variable"}
+            present_fr = {f[1] for f in node.fields if f[0] == "floatrange"}
             for entry in sn["ordered"]:
-                if entry[0] != "variable":
-                    continue
-                _, vname, obj = entry
-                if obj is not None and vname not in present:
-                    node.fields.append(g._variable_field(type_, vname, obj["values"]))
-                    present.add(vname)
+                if entry[0] == "variable":
+                    _, vname, obj = entry
+                    if obj is not None and vname not in present_var:
+                        node.fields.append(g._variable_field(type_, vname, obj["values"]))
+                        present_var.add(vname)
+                elif entry[0] == "floatrange":
+                    _, fname, mn, mx = entry
+                    if fname not in present_fr:
+                        node.fields.append(g._floatrange_field(fname, (mn, mx)))
+                        present_fr.add(fname)
 
         for p in sn["ports"]:
             if p["dynamic"] == "True":
@@ -822,11 +854,52 @@ def _run_selftest_one(census, source_path, tmp_path):
     return all(ok for _, ok, _ in checks), checks
 
 
+def _run_floatrange_generic_test():
+    """GL_EMIT_FLOATRANGE_GENERIC_DROP_1 regression test.
+
+    None of today's 44 shipped landforms put a <FloatRange> on any node type
+    other than worldTileReq, so the corpus-driven checks in run_selftest()
+    above cannot exercise -- and therefore cannot regression-guard -- the
+    generic (non-worldTileReq/non-landformManifest) node-reconstruction
+    branch's handling of FloatRange fields. This constructs one directly:
+    a `gridPerlin` node (a real, plain node type with no special-cased
+    builder) carrying a synthetic FloatRange field via g.node()'s
+    `floatranges=` parameter, writes it, and confirms the field round-trips
+    with the exact min/max byte-for-byte -- proving the shared
+    `_floatrange_field()` path (not a worldTileReq/landformManifest-only
+    special case) is what emits it.
+    """
+    g = Graph()
+    g.node(
+        "gridPerlin", "Synthetic FloatRange Node", pos="0,0",
+        floatranges={"SyntheticTestRequirement": (1.5, 3.5)},
+        Frequency=0.02,
+    )
+    tmp_path = os.path.join(tempfile.gettempdir(), "gl_emit_selftest_floatrange_generic.xml")
+    g.write(tmp_path)
+
+    root = ET.parse(tmp_path).getroot()
+    fr_el = None
+    for node_el in root.find("Nodes").findall("Node"):
+        if node_el.get("type") == "gridPerlin":
+            fr_el = node_el.find("FloatRange[@name='SyntheticTestRequirement']")
+            break
+
+    if fr_el is None:
+        return False, "no <FloatRange name='SyntheticTestRequirement'> emitted on the gridPerlin node -- dropped"
+    mn, mx = fr_el.findtext("min"), fr_el.findtext("max")
+    ok = (mn == "1.5" and mx == "3.5")
+    return ok, f"min={mn!r} max={mx!r} (want '1.5'/'3.5')"
+
+
 def run_selftest():
     """Rebuild EVERY *.xml under the Landforms-v1 source directory via the
     builder (not DesertPlateau alone -- that single-file selftest is what
     let 14/44 landforms ship one <Object> short, GL_EMITTER_OBJECT_GAP_1)
-    and census-compare each rebuild to its own source."""
+    and census-compare each rebuild to its own source. Also runs the
+    synthetic FloatRange-on-a-generic-node-type check
+    (_run_floatrange_generic_test), since no real landform in the corpus
+    exercises that path."""
     census = _load_gl_schema_census()
     landforms_dir = os.path.dirname(SOURCE_DESERTPLATEAU)
     source_paths = sorted(
@@ -856,7 +929,17 @@ def run_selftest():
                 if not cok:
                     print(f"      [{'PASS' if cok else 'FAIL'}] {label}: {detail}")
 
-    total = len(source_paths)
+    try:
+        fr_ok, fr_detail = _run_floatrange_generic_test()
+    except Exception as e:  # noqa: BLE001 - report and keep going
+        fr_ok, fr_detail = False, repr(e)
+    if fr_ok:
+        n_pass += 1
+        print("  [OK] synthetic:floatrange-on-generic-node-type")
+    else:
+        print(f"  [FAIL] synthetic:floatrange-on-generic-node-type: {fr_detail}")
+
+    total = len(source_paths) + 1
     print(f"SELFTEST {'PASS' if n_pass == total else 'FAIL'} {n_pass}/{total}")
     return n_pass == total
 
