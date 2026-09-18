@@ -134,8 +134,9 @@ item's own criteria.
 - [x] A full non-scan-grade defName sweep run before Wave C is scoped — DONE
       2026-09-12: superseded the stale ~135 scan-grade guess with a measured
       count. See "2026-09-12 (FOUNDRY)" below.
-- [~] Wave C (remainder): 2 of 91 measured-live species absorbed this pass
-      (Iriaz, Mudhorn). 89 remain — full worklist in
+- [~] Wave C (remainder): 35 of 91 measured-live species absorbed so far
+      (most recently IridonianReek, Jakobeast, Jamel, Jimvu — Pass 11,
+      2026-09-18). 56 remain — full worklist in
       `infrastructure/state/facts/mlie_wave_c_worklist.json`.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
@@ -1090,4 +1091,125 @@ unattempted. The 5 ArtOverride-linked species confirmed live this pass
 ArtOverride-aware pass when their turn comes.
 
 **Remaining**: 60 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), plus Fambaa.
+
+## 2026-09-18 (FOUNDRY, belt mode) — Pass 11: 4 more species ported: IridonianReek, Jakobeast, Jamel, Jimvu (60 -> 56 remaining)
+
+Same pipeline, front of `mlie_wave_c_worklist.json`'s `remaining_worklist`,
+skipping Fambaa (still needs its own careful ArtOverride-gated pass) and the
+5 ArtOverride-linked species confirmed live in Pass 10
+(Gizka/Grank/GreaterKraytDragon/Hawkbat/Horax) in favor of the next 4
+ordinary species with none.
+
+🔑 **IridonianReek's body is a real cross-reference, not a naming
+coincidence**: its `race/body` points at the donor's `Reek` BodyDef — the
+SAME body plan the standalone `Reek` species uses, but `Reek` itself is
+absent from the live cast (dropped 2026-09-09, confirmed again this pass —
+0 hits in `cast_assignment.csv`) and stays out of scope entirely. Ported
+the shared body as `RSW_Reek` (RSW_MlieWaveC_Bodies.xml) purely because
+IridonianReek's own ThingDef needs it, repointing its 3 horn parts to the
+ALREADY-PORTED Wave B `RSW_SW_LeftHorn`/`RSW_SW_RightHorn`/`RSW_SW_FrontHorn`
+and `RSW_SWHornAttackTool` group. Its PawnKindDef also reuses plain Reek's
+own calf and dessicated art (`swanimals/Reek/Reek_j*`,
+`swanimals/Reek/Reek_Dessicated`) for every life stage except the adult
+living graphic — confirmed against the donor's own XML, not assumed;
+extracted those Reek-named textures alongside IridonianReek's own. Its
+adult-stage sounds repoint to `RSW_Pawn_Reek_*` (not
+`RSW_Pawn_IridonianReek_*`) — confirmed the donor deliberately reuses plain
+Reek's clips, same as the already-documented Sarlacc-ambient/
+FrilledGorg-reuses-Gorg precedent.
+
+Jakobeast's own `Jakobeast` BodyDef needed a defName rename only — its Horn
+part's bare `HornAttackTool` group is vanilla Core (distinct from the
+SW-prefixed `SWHornAttackTool` IridonianReek/Boma use), confirmed by
+checking it is NOT among the ported Wave B custom groups; its 2 Tusk parts'
+`TuskAttackTool` group is Alpha Animals (per the Boma/Pass 9 correction),
+left bare exactly as the donor leaves it. Jimvu's `Jimvu` BodyDef is, like
+Anooba/Borcatu, entirely vanilla-part composition (a 6-legged/hexapod
+stance built from ordinary Leg/Paw parts) — defName rename only. Jamel
+needs no BodyDef at all: vanilla Core `QuadrupedAnimalWithHoovesAndHump`,
+same as Falumpaset.
+
+**Resources**: Jamel and Jimvu needed **none** — both repoint entirely to
+already-ported resources (`RSW_Leather_Reptomammal`/vanilla `Cameloid_Meat`
+for Jamel; vanilla `Leather_Plain`/`RSW_Reptomammal_Meat` for Jimvu).
+IridonianReek repoints to already-ported `RSW_Leather_Tough`/`RSW_Tough_Meat`
+(both Pass 3/Wave B) — also no new resource. Jakobeast needed 2 new ports:
+`RSW_Leather_Bright` (reuses ALREADY-extracted art, `swresource/Leather_Fur`,
+present on disk from an earlier wave's port of a different resource sharing
+the same donor texture — confirmed before reusing, not assumed) and
+`RSW_Felinoid_Meat` (new art, `Meat_Felinoid_a/b/c.png`, extracted this
+pass) — plus its own butcher-trophy resource `RSW_JakobeastHorn`
+(`ParentName="ResourceVerbBase"`, same pattern as RSW_BanthaHorn/
+RSW_MudhornSkull/RSW_NerfHorn), new art, `bodyPartGroup="HornAttackTool"`
+matching the bare vanilla group its own Horn tool uses. All added to
+`RSW_MlieWaveC_Resources.xml`.
+
+Sounds for all 4 species were already absorbed in the 2026-09-02 sound wave
+(`RSW_Pawn_{IridonianReek→Reek/ReekBaby,Jakobeast,Jamel,Jimvu}_*`) —
+confirmed present, wired, not re-done.
+
+Art: 28 PNGs extracted via `extract_bundle.py` against the live Steam
+workshop bundle (workshop folder 3497316713) — IridonianReek 3, Reek 5
+(the calf/dessicated set IridonianReek's own PawnKindDef reuses, NOT the
+full 23-texture Reek family — the unused plain-adult and Pack variants were
+left out), Jakobeast 8 (4 adult + 4 juvenile facings/dessicated) plus
+JakobeastHorn 1, Jamel 4 (its own `JamelPack_*` variants excluded as
+unreferenced by any def, same precedent as Falumpaset's excluded "Pack"
+files), Jimvu 4, Meat_Felinoid 3 — all confirmed non-zero and PIL-openable
+before wiring in. `*ArtOverride` check done against the full current
+~26-mod folder listing (`find src/RimStarWars -maxdepth 1 -iname
+"*ArtOverride*"`): none of the 4 collide (nor does Reek).
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`**: `Desert` (`RSW_Jamel` 0.4,
+`RSW_IridonianReek` 0.3, `RSW_Jimvu` 0.3, `RSW_Jakobeast` 0.2),
+`ZBiome_DesertOasis` (`RSW_Jamel` 0.1) — renamed in place from the bare
+donor entries, same pattern as every prior wave. Checked all 3
+Mlie-touching patch files named in this item's own spec
+(`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — no
+references to Jakobeast/Jamel/Jimvu/IridonianReek in any of them. Also
+checked for stray bare `<li>Jakobeast</li>`/`<li>Jamel</li>`/etc.
+`canCrossBreedWith` references elsewhere in SWBestiary (none found — no
+already-ported species cross-breeds with these 4).
+
+⚠️ **Stale worklist entry found, flagged not fixed (out of this pass's own
+scope)**: `mlie_wave_c_worklist.json`'s `remaining_worklist` still lists
+`Nuna` even though `RSW_Nuna` has been ported and wired since Wave B
+(2026-09-09, "keep both" ruling — `already_ported_and_wired_before_this_pass`
+at the top of the same file names it). Not removed this pass to avoid
+scope creep beyond the 4 species actually worked; whoever next touches the
+worklist should drop it as already-done, not port it again.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files, BOTH with `--live` (fresh capture `2026-09-18T02-17-44Z`, 632 mods —
+confirmed against live `ModsConfig.xml`'s 632 active mods before trusting
+it) AND with `--defs` pointing at the real RimWorld Data/Mods/Workshop
+roots for full ParentName/Class resolution — **0 errors, 0 warnings both
+ways**. Both `BiomeCast_Ashkarr.xml` copies checked separately: deployed
+copy 0 errors, 1 pre-existing unrelated warning (the documented Comigo
+xpath ambiguity); design copy 0 errors, 0 warnings this run. Neither
+mentions any of the 4 new species names in an error/warning. All new
+defNames confirmed unique in-repo (the only 2-file hits are each species'
+own ThingDef+BodyDef pair sharing a defName across def types, same as every
+prior species).
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` (34 files
+written clean) and `--mod UtinniPatches --apply` (2 files, including the
+patched `BiomeCast_Ashkarr.xml`, written clean — the other new file in that
+batch, `RotGuardianGroves_WildSpawn.xml`, belongs to a different concurrent
+agent's work, not this pass). **No live cold-load proof yet** — owed to the
+next natural restart, matching every prior wave's established pattern.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+IridonianReek/Jakobeast/Jamel/Jimvu removed from `remaining_worklist`,
+count 60 -> 56, recorded under `ported_and_wired_this_pass_2026-09-18_batch11`.
+
+**Not done this pass**: Fambaa still unattempted (still needs its own
+careful ArtOverride-gated pass). The stale `Nuna` worklist entry flagged
+above, not removed. The 5 ArtOverride-linked species confirmed live in
+Pass 10 still need their own ArtOverride-aware pass when their turn comes.
+
+**Remaining**: 56 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), plus Fambaa.

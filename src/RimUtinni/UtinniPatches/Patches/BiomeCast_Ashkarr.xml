@@ -68,14 +68,14 @@
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
-        <Jamel>0.4</Jamel> <!-- Jamel - herd, keep -->
+        <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
         <LongtailGorg>0.4</LongtailGorg> <!-- longtail gorg - ambush-small, keep -->
         <Ronto>0.4</Ronto> <!-- ronto - huge-herd, keep -->
         <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
-        <IridonianReek>0.3</IridonianReek> <!-- iridonian reek - herd, import -->
-        <Jimvu>0.3</Jimvu> <!-- jimvu - herd, import -->
+        <RSW_IridonianReek>0.3</RSW_IridonianReek> <!-- iridonian reek - herd, import -->
+        <RSW_Jimvu>0.3</RSW_Jimvu> <!-- jimvu - herd, import -->
         <Kwi>0.3</Kwi> <!-- Kwi - herd, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <Skalder>0.3</Skalder> <!-- skalder - huge-herd, import -->
@@ -83,7 +83,7 @@
         <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
         <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
         <RSW_FrilledGorg>0.2</RSW_FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
-        <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
+        <RSW_Jakobeast>0.2</RSW_Jakobeast> <!-- jakobeast - herd, import -->
         <RSW_Nerf>0.2</RSW_Nerf> <!-- nerf - herd, keep -->
         <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
@@ -906,7 +906,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
-        <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
+        <RSW_Jamel>0.1</RSW_Jamel> <!-- Jamel - pilgrim, import -->
       </value>
     </match>
   </Operation>

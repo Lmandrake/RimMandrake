@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 11 — Jamel creature port.
+  Ported from mlie.starwarsanimalcollection's `Jamel` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's `body` is the vanilla Core
+  `QuadrupedAnimalWithHoovesAndHump` (same as Falumpaset) — no BodyDef port
+  needed. `leatherDef` repoints to the already-ported `RSW_Leather_Reptomammal`
+  (RSW_MlieWaveC_Resources.xml, Pass 9/Gutkurr era). `specificMeatDef` stays
+  vanilla Core `Cameloid_Meat` (same as Falumpaset/Eopie) — **no new
+  resource needed at all this species**.
+
+  Sounds repoint to the already-absorbed sound wave (`RSW_Pawn_Jamel_*`,
+  2026-09-02). texPaths are unchanged text — extracted art sits at
+  Textures/swanimals/Jamel/ (extract_bundle.py against the same live Steam
+  workshop bundle every prior wave used; the donor's own `JamelPack_*`
+  variants are unreferenced by any def — excluded, same precedent as
+  Falumpaset's excluded "Pack" variants). No `*ArtOverride` mod exists for
+  Jamel (checked against the full current ~26-mod `*ArtOverride` folder
+  listing before porting).
+
+  Wired into the live cast this same pass, BOTH of its rows: Desert (0.4)
+  and ZBiome_DesertOasis (0.1), per cast_assignment.csv's current rows,
+  repointed from the bare "Jamel" entries in cast_assignment.csv /
+  BiomeCast_Ashkarr.xml (both the design and deployed copies).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Jamel</defName>
+    <label>Jamel</label>
+    <description>Jamel were a slow moving reptomammal creature native to the planet Utapau. Jamels were one of the many creatures used as beasts of burden on their planet of origin and exported offworld for such purposes. Their natural resilience meant they made great livestock even in harsh environments.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.10</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>1.9</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Reptomammal</leatherDef>
+      <specificMeatDef>Cameloid_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <petness>0.40</petness>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <lifeExpectancy>50</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.08</ExtremeDesert>
+        <TropicalRainforest>0.6</TropicalRainforest>
+        <TropicalSwamp>0.00</TropicalSwamp>
+        <TemperateSwamp>0.00</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Jamel_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Jamel_Death</soundDeath>
+          <soundCall>RSW_Pawn_Jamel_Call</soundCall>
+          <soundAngry>RSW_Pawn_Jamel_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Jamel</defName>
+    <label>jamel</label>
+    <race>RSW_Jamel</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>1.2</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>jamel faun</label>
+        <labelPlural>jamel fauns</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jamel/Jamel_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
