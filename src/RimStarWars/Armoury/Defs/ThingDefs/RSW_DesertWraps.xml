@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- DESERT_WRAPS_ART_COMMISSION_1 — new native content, RSW_ prefix per
+     design/NAMING_SCHEME_PLAN.md. ORIGINAL ART, commissioned from the written
+     design capture design/Jawa/desert_wraps_design_capture.md (prose+numbers
+     only, taken from the Workshop mod "Rimwars - Sand People Xenotype
+     (Continued)" before the owner unsubscribed). No donor pixels were used as
+     an input to any generation call anywhere in this pipeline.
+
+     Owner ruling 2026-09-10 (ledger 05:57:04Z): ALL FOUR wrap styles ship —
+     "stunning, we need all of them" — full body-type (Male/Female/Fat/Hulk/
+     Thin) x direction (south/north/east) matrix, per DESERT_WRAPS_ART_COMMISSION_1.
+
+     Grayscale, Stuff-colored on purpose (design capture SS3, delta (a)): unlike
+     our absorbed SovereignTusken Wraps (Absorbed_KotorCore_Apparel_SovereignTusken.xml,
+     ColorGenerator_Options hard-locked to a single tan), these four carry NO
+     colorGenerator so RimWorld's default Stuff-color multiply tints them from
+     whatever cloth/leather the crafter used — same mechanism the donor family
+     itself used, and more flexible for reuse across factions/palettes.
+
+     Tag RUT_DesertWrap is the hook UtinniPatches uses to wire these onto the
+     RUT_Jawa_DeepDesert_* (Tusken-flavoured) pawnkinds; see
+     src/RimUtinni/UtinniPatches/Patches/DesertWrapsApparelWiring.xml. -->
+<Defs>
+
+  <ThingDef Name="RSW_DesertWrapBase" ParentName="ApparelMakeableBase" Abstract="True">
+    <techLevel>Neolithic</techLevel>
+    <tradeability>Sellable</tradeability>
+    <costStuffCount>120</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToMake>2200</WorkToMake>
+      <Mass>0.45</Mass>
+      <Flammability>0.2</Flammability>
+      <StuffEffectMultiplierArmor>0.5</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.1</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.3</StuffEffectMultiplierInsulation_Heat>
+      <EquipDelay>3</EquipDelay>
+    </statBases>
+    <thingCategories Inherit="False">
+      <li>Apparel</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Neck</li>
+        <li>Torso</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Hands</li>
+        <li>Legs</li>
+        <li>Feet</li>
+      </bodyPartGroups>
+      <layers>
+        <li>OnSkin</li>
+      </layers>
+      <tags>
+        <li>RUT_DesertWrap</li>
+      </tags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers Inherit="False">
+        <li>CraftingSpot</li>
+      </recipeUsers>
+    </recipeMaker>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DesertWrapBase">
+    <defName>RSW_DesertWrap_Spiral</defName>
+    <label>spiral desert wraps</label>
+    <description>A full-body wrap of cloth or hide, bound by three long converging seams that spiral in toward the hip. The sparest of the desert-wrap family -- no belt, no patch, nothing but the wrap and the wind.</description>
+    <graphicData>
+      <texPath>SWApparel/DesertWraps/Spiral/Wraps</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>SWApparel/DesertWraps/Spiral/Wraps</wornGraphicPath>
+      <tags Inherit="True">
+        <li>RUT_DesertWrap_Spiral</li>
+      </tags>
+    </apparel>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DesertWrapBase">
+    <defName>RSW_DesertWrap_Banded</defName>
+    <label>banded desert wraps</label>
+    <description>A full-body wrap wound in eleven or twelve tight parallel bands from shoulder to hem, like a bandage roll wound around a body. Denser and heavier-looking than the spiral wrap, with no gap in the coil anywhere.</description>
+    <graphicData>
+      <texPath>SWApparel/DesertWraps/Banded/Wraps</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>SWApparel/DesertWraps/Banded/Wraps</wornGraphicPath>
+      <tags Inherit="True">
+        <li>RUT_DesertWrap_Banded</li>
+      </tags>
+    </apparel>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DesertWrapBase">
+    <defName>RSW_DesertWrap_Segmented</defName>
+    <label>segmented desert wraps</label>
+    <description>A two-layer desert wrap: a broad shoulder mantle with its own scalloped hem worn over a banded under-wrap. The mantle squares the silhouette off at the shoulders, giving this style the most armored, raider-like read of the four.</description>
+    <graphicData>
+      <texPath>SWApparel/DesertWraps/Segmented/Wraps</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>SWApparel/DesertWraps/Segmented/Wraps</wornGraphicPath>
+      <tags Inherit="True">
+        <li>RUT_DesertWrap_Segmented</li>
+      </tags>
+    </apparel>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DesertWrapBase">
+    <defName>RSW_DesertWrap_Draped</defName>
+    <label>draped desert wraps</label>
+    <description>A heavily weathered, field-repaired desert wrap: a ragged torn hem, an unwound band trailing loose across the chest, and a dark stitched repair patch on the flank. Reads as a garment that has survived a great many sandstorms.</description>
+    <graphicData>
+      <texPath>SWApparel/DesertWraps/Draped/Wraps</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>SWApparel/DesertWraps/Draped/Wraps</wornGraphicPath>
+      <tags Inherit="True">
+        <li>RUT_DesertWrap_Draped</li>
+      </tags>
+    </apparel>
+  </ThingDef>
+
+</Defs>
