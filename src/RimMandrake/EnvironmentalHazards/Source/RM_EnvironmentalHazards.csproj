@@ -77,6 +77,7 @@
     <Compile Include="RM_CompGatherableCalmGated.cs" />
     <Compile Include="RUT_HaulPawnAndExit.cs" />
     <Compile Include="RM_HaulVictimAIUtility.cs" />
+    <Compile Include="RM_JobDriver_StunVictim.cs" />
     <Compile Include="RM_CompResourceCondenser.cs" />
     <Compile Include="RUT_IncidentWorker_WalkerSurfacing.cs" />
     <Compile Include="RM_LotteryTableDef.cs" />
