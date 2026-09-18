@@ -39,19 +39,14 @@
   class silently discards the WHOLE def — MayRequire keeps that failure mode
   a clean no-op rather than a load error.
 
-  🔴 NOT DONE THIS PASS, DOCUMENTED, NOT GUESSED: this terrain is not yet
-  painted onto any generated Fever Wood map. RUT_FeverWood.xml's own
-  terrainsByFertility currently lists only vanilla Soil/SoilRich — adding a
-  fertility band pointing at this MayRequire-gated terrain risks a dangling
-  cross-reference in that already-shipped, FROZEN-sheet biome if
-  mandrake.rm.environmentalhazards is ever absent from the active mod list;
-  deciding the actual fertility threshold is also an unspecified tuning call
-  the kit spec does not give a number for. The correct route is either a
-  GenStep pass (same shape as F6's boughway painting, itself blocked on
-  GREENTIDE_MECHANICS_1) or a carefully-guarded terrainsByFertility edit —
-  neither attempted here. This def is real, valid, and reachable via dev-mode
-  terrain placement today; it does nothing in ordinary generated play until
-  that painting step lands.
+  PAINTED as of the FEVER_WOOD_MECHANICS_1 F1 build pass, 2026-09-18: a
+  GenStep, not a terrainsByFertility band (the correct route this header
+  originally named) — RUT_FeverWood.xml's BiomeDef now carries
+  RM_MirrorPoolBiomeExtension pointing poolTerrain at this def;
+  RM_GenStep_ScatterPools (RimMandrake.EnvironmentalHazards) scatters 3-6
+  small pools per generated map per the owner's 2026-09-18 ruling on this
+  item's ledger. Registration: RUT_FeverWood_ScatterPoolsGenStep.xml /
+  RUT_FeverWood_ScatterPoolsGenStep_Register.xml.
 -->
 <Defs>
 

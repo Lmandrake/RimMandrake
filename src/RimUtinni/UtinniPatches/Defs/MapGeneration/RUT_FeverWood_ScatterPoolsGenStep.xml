@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWood_ScatterPoolsGenStep.xml   UtinniPatches - FEVER_WOOD_MECHANICS_1 F1 build pass
+
+  Declares the GenStepDef for RM_GenStep_ScatterPools (this pass's own new
+  class — src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs).
+  Registration is the separate Patches/RUT_FeverWood_ScatterPoolsGenStep_Register.xml,
+  same two-file shape as RUT_Greentide_RootCausewaysGenStep.xml /
+  RUT_Greentide_RootCausewaysGenStep_Register.xml.
+
+  order 226: after RUT_GenStep_LivingBoles (222) so an already-placed bole's
+  spawned Thing (non-Standable cells) is naturally avoided by this step's own
+  site search, and before RUT_GenStep_RootCauseways (228) so its
+  basinTerrains allowlist correctly excludes the pool cells this step just
+  painted — see RM_GenStep_ScatterPools.cs's own header for the full
+  ordering rationale.
+
+  The class is a no-op on any biome without RM_MirrorPoolBiomeExtension
+  (only RUT_FeverWood carries it this pass), so registering globally on
+  Base_Player is safe for every other biome too — same posture as
+  RUT_GenStep_LivingBoles/RUT_GenStep_RootCauseways.
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_GenStep_ScatterPools</defName>
+    <order>226</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_ScatterPools" />
+  </GenStepDef>
+
+</Defs>

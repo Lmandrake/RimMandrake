@@ -138,6 +138,22 @@
            around the registered pools is the honest fix, not a drawn-
            fiction bridge). No basin hazard of its own to route OVER here
            (unlike Greentide's churnmud), so this is purely an exclude. -->
+      <!-- F1: the mirror pools. OWNER RULING 2026-09-18 (FEVER_WOOD_MECHANICS_1
+           ledger): "3-6 small pools per generated map, scattered with a
+           minimum spacing between them, never a single large landmark-sized
+           pool" — see RM_MirrorPoolBiomeExtension.cs's own field docs for how
+           poolCountRange/poolRadiusRange encode that. poolTerrain is the F1
+           TerrainDef itself (RUT_FeverWoodMirrorPool.xml), which already
+           carries RM_LurkingWaterExtension — RUT_MapComponent_TheTenant scans
+           the terrain grid for that extension directly, so painting this
+           terrain is the whole wiring; no marker Thing or pool-identity list
+           is needed. Ordered (RUT_FeverWood_ScatterPoolsGenStep.xml, order
+           226) between F7's boles (222) and F6's causeways (228) so the
+           causeways' basinTerrains allowlist below correctly routes around
+           real pool cells. -->
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
+        <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
+      </li>
       <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
         <causewayTerrain>RUT_Boughway</causewayTerrain>
         <basinTerrains>

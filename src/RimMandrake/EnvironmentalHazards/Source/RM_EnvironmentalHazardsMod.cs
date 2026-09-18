@@ -185,6 +185,10 @@ namespace RimMandrake.EnvironmentalHazards
     //      carrier's scald severity freezes exactly where it is — never
     //      reset to zero, so turning this back on resumes rather than
     //      forgiving. The hediff's own stages are untouched.
+    //  35. mirrorPoolsEnabled — RM_GenStep_ScatterPools (FEVER_WOOD_MECHANICS_1
+    //      F1). WORLDGEN-AFFECTING: off means no mirror pools are painted on
+    //      any map generated while it is off. Maps already generated keep
+    //      whatever pools they already have.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -223,6 +227,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool livePrepStrictViability = true;
         public static bool treasureConscienceEnabled = true;
         public static bool sunlightScaldEnabled = true;
+        public static bool mirrorPoolsEnabled = true;
 
         public override void ExposeData()
         {
@@ -262,6 +267,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref livePrepStrictViability, "livePrepStrictViability", true);
             Scribe_Values.Look(ref treasureConscienceEnabled, "treasureConscienceEnabled", true);
             Scribe_Values.Look(ref sunlightScaldEnabled, "sunlightScaldEnabled", true);
+            Scribe_Values.Look(ref mirrorPoolsEnabled, "mirrorPoolsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -364,6 +370,9 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Sunlight scald", ref sunlightScaldEnabled,
                 "A hediff built to burn its carrier in direct sunlight stops building up; whatever "
               + "severity a carrier already has is frozen, not cleared.");
+            list.CheckboxLabeled("Mirror pool placement (WORLDGEN-AFFECTING)", ref mirrorPoolsEnabled,
+                "A biome built to scatter small still-water pools stops placing new ones on any map "
+              + "generated while this is off. Maps already generated keep whatever pools they already have.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
