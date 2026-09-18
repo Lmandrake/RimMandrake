@@ -128,6 +128,36 @@
       <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
     </wildPlants>
     <wildPlantRegrowDays>28</wildPlantRegrowDays>
+
+    <!-- FISH_BESTIARY_BUILD_1 wave 3 (2026-09-18): fishTypes/maxFishPopulation
+         wired DIRECTLY onto this def — same dead-mechanism correction as
+         RUT_WeepingStones.xml (see its header for the full finding).
+         `SandFishing_CrackedLands.xml` patched the donor `ZBiome_Badlands`'s
+         fishTypes (wave 1/2), but this def (`RUT_CrackedLands`,
+         BIOME_OWNERSHIP_WAVE_1) is a standalone BiomeDef with no ParentName
+         and was never patched itself — MEASURED via
+         `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12): RUT_CrackedLands
+         covers 970 tiles, ZBiome_Badlands covers zero. The BiomeDef-patching
+         Operation in `SandFishing_CrackedLands.xml` is removed this wave
+         (dead, superseded by the block below); its OTHER Operation (the
+         RUT_Vhessa addition to `RSW_RareSandCatches`, a different mod's
+         ThingSetMakerDef, unaffected by this bug) is untouched. Values below
+         are copied verbatim from that now-dead patch — no roster change. -->
+    <maxFishPopulation>90</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
+        <RUT_Tubbik>1</RUT_Tubbik>
+        <RUT_Zhurr>0.6</RUT_Zhurr>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
+        <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
+        <RUT_Hurrok>0.8</RUT_Hurrok>
+        <RUT_Vhessa>0.4</RUT_Vhessa>
+      </freshwater_Uncommon>
+      <rareCatchesSetMaker MayRequire="mandrake.rsw.swbestiary">RSW_RareSandCatches</rareCatchesSetMaker>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>

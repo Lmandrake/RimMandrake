@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 3 — the Weeping Stones' rare-catch pool
+  (fish_bestiary_commission_2026-09-10.md §2A.rare), parented on vanilla's
+  own `RareFishingCatchesBase` the same way RUT_RareScaldCatches/
+  RSW_RareSandCatches are, so it plugs straight into
+  BiomeDef.fishTypes.rareCatchesSetMaker (RUT_WeepingStones.xml).
+
+  Both of the doc's two options ship, thin on purpose per the doc's own
+  instruction: (weight 4) RUT_SeepStone x1-2, the headline mineral prize;
+  (weight 1) a "vobbal tower" — Silver 8-20, "somebody's offering, stacked
+  and re-stacked for a decade." ⛔ No corpses in this table — the pool is
+  never a hunting story (weeping_stones.md §6/§10, repeated in the biome
+  file and here).
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RUT_RareOasisCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_SeepStone</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~2</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>Silver</li>
+                </thingDefs>
+              </filter>
+              <countRange>8~20</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>
