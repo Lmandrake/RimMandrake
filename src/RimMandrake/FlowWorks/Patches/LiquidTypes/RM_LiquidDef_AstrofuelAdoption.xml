@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidDef_AstrofuelAdoption.xml     HAND-AUTHORED (LIQUID_TYPES_MOD_1)
+  ============================================================================
+  design/RimMandrake/liquids_framework_design.md §3: "Astrofuel — adopts
+  Vanilla Gravship Expanded — the VGE_Astrofuel* net (pipe/tap/valve/drain/
+  giant tank/synthesizer) already exists in the campaign dump; optional-
+  checked, supported when present" and §8's own measured line: "VGE_Astrofuel*
+  full pipe net present — astrofuel row adopts, builds nothing."
+
+  Hand-authored rather than added to LIQUID_DEF_ROWS (generate_liquid_suite.py)
+  because that table emits UNCONDITIONAL <RimMandrake.FlowWorks.LiquidTypes.
+  LiquidDef> defs straight into RM_LiquidDefRegistry.xml — a hard <bottle>
+  reference to VGE_Astrofuel (a ThingDef field, confirmed by reading
+  Source/LiquidTypes/LiquidDef.cs's LiquidBottledForm.bottle) would be an
+  unresolved cross-reference (a red Player.log error) the moment Vanilla
+  Gravship Expanded is inactive — this item's own registry is supposed to
+  load clean under "minimal list + the mod" alone. Same reasoning the compat
+  index's own docstring already gives for the acid/slime/normal-water rows:
+  a patch that references an absent target must be PatchOperationConditional-
+  guarded, never a hard field.
+
+  So: no static LiquidDef ships for astrofuel at all when VGE is absent —
+  matching the design's own "supported when present", not "always present,
+  broken when absent". When VGE_Astrofuel (the ThingDef) exists, this ADDS a
+  brand-new top-level LiquidDef into /Defs, entirely inside the conditional
+  match, so by the time cross-references resolve VGE_Astrofuel is already
+  known to exist in the same patch pass — the identical ordering the existing
+  compat-index Operations already rely on.
+
+  packageId confirmed via the frozen dump (OFFICIAL-2026-08-29,
+  defs/ThingDef.json): VGE_Astrofuel -> modName "Vanilla Gravship Expanded -
+  Chapter 1", packageId "vanillaexpanded.gravship". Gated on the def's own
+  existence (the established convention in this mod's compat patches), not
+  PatchOperationFindMod, so no packageId string needs to stay in sync with a
+  donor mod's own naming.
+
+  Values, same minimal-invention posture as the chemfuel row (an adopted
+  item, not a re-authored liquid): viscosityClass/pH [INVENTED, no engine
+  field measures either for an adopted item] mirror chemfuel's own row
+  exactly. flammable=true is cited (astrofuel explodes/burns per its own
+  CompProperties_Explosive/Flammable in the frozen dump). No terrainSuite,
+  canalFluid or pipeResource — the design's own "adopts, builds nothing":
+  VGE's astrofuel net is its own pipe system, not something this mod feeds
+  or drains before a WORLDMAP_LIQUID_TAGS_1-class item (or VGE's own pipe
+  net) decides to wire it, out of scope here.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VGE_Astrofuel"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs</xpath>
+      <value>
+        <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+          <defName>RM_Liquid_Astrofuel</defName>
+          <label>astrofuel</label>
+          <description>Refined gravship propellant, adopted as-is — the Vanilla Gravship Expanded item already is this liquid's bottled form.</description>
+          <viscosityClass>Water</viscosityClass>
+          <pH>7</pH>
+          <flammable>true</flammable>
+          <bottled>
+            <bottle>VGE_Astrofuel</bottle>
+            <unitsPerBottle>1</unitsPerBottle>
+          </bottled>
+        </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
