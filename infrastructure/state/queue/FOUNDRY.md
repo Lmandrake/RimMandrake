@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:39:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T15:03:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -242,15 +242,6 @@ target:   v1
 kind:     task
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
-
-## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
-prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
 state:    doing
@@ -945,15 +936,6 @@ kind:     defect
 summary:  Owner report (2026-09-14): "when they go north, they're looking south. and
 prose:    infrastructure/state/items/PYRELANDS_FACING_REGRESSION_1.md
 
-## ANOOBA_DRAWSIZE_FIX_1 Anooba renders far oversized on Pyrelands map
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  Subject: the PawnKindDef that actually spawns in Pyrelands — the DONOR
-prose:    infrastructure/state/items/ANOOBA_DRAWSIZE_FIX_1.md
-
 ## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
 state:    doing
 row:      unassigned
@@ -990,15 +972,6 @@ kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
-## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     finding
-summary:  (no items/CANYON_FLOOD_ERASES_CANALS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANYON_FLOOD_ERASES_CANALS_1.md
-
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1025,15 +998,6 @@ target:   v1
 kind:     build
 summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
-
-## MODCHECK_STATUS_ORPHANED_BY_RENAME_1 modcheck_status.json records the canal mod's GREEN under the dead key FluidCanals while the mod ships as FlowWorks, and there is no CLI verb to move or forget a key in a file the rules forbid hand-editing. MEASURED 2026-09-17: status keys include FluidCanals GREEN (run_id FluidCanals@1789295363); find_walk and cli.py both resolve FlowWorks correctly now, so a FlowWorks run writes a NEW entry and the stale GREEN sits unreferenced forever. This defeats the north-star falsification test for this mod - the spec's proof is a GREEN turning REFUSED, and a before-and-after under two different names shows no transition at all. Owed: a rename/forget verb on modcheck status, then move this key. Check the same orphaning for every mod renamed since the naming migration
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MODCHECK_STATUS_ORPHANED_BY_RENAME_1.md
 
 ## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
 state:    doing
@@ -1414,16 +1378,6 @@ kind:     bug
 blocked:  15 of 18 ranged-only kinds already fixed with faction-voice melee tags (validator clean, 2026-09-11). Remaining 5 undiagnosed kinds need a live per-pawn trait join via bridge spawn batches (no bridge access this seat); 3 Geonosian kinds separately need an owner ruling on melee-tag voice (only in-voice candidate priced 20950 vs 400-1200 budgets) -- unchanged since last check, re-verified state before blocking (on COLD_LOAD_RUN_SHEET_4)
 summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
 prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
-
-## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  mechanism fix already landed 2026-09-11 (RSW_MeeCatch/FaaCatch/LaaCatch item defs wired into BiomeFishTypes_Greentide.xml, validate_patch.py clean) -- item's own criteria requires a live quicktest fishing pass to prove the catch resolves to an item not a Pawn; no bridge access this seat (on COLD_LOAD_RUN_SHEET_4)
-summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
-prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
