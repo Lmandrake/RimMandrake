@@ -34,7 +34,7 @@
         <xpath>/Defs/TerrainDef[defName="ToxicWaterShallow"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>2</pH>
             <corrodesApparel>true</corrodesApparel>
           </li>
@@ -48,7 +48,7 @@
         <xpath>/Defs/TerrainDef[defName="ToxicWaterDeep"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>2</pH>
             <corrodesApparel>true</corrodesApparel>
           </li>
@@ -62,7 +62,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterShallow"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -75,7 +75,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterDeep"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -88,7 +88,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterOceanShallow"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -101,7 +101,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterOceanDeep"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -114,7 +114,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterMovingShallow"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -127,7 +127,7 @@
         <xpath>/Defs/TerrainDef[defName="WaterMovingChestDeep"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -140,7 +140,7 @@
         <xpath>/Defs/TerrainDef[defName="Marsh"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>water</viscosityClass>
+            <viscosityClass>Water</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -153,7 +153,7 @@
         <xpath>/Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>thick</viscosityClass>
+            <viscosityClass>Thick</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
@@ -166,7 +166,7 @@
         <xpath>/Defs/TerrainDef[defName="AB_LiquidSlime"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>thick</viscosityClass>
+            <viscosityClass>Thick</viscosityClass>
             <pH>7</pH>
           </li>
         </value>
