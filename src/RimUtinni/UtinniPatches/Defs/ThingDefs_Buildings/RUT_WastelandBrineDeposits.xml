@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WastelandBrineDeposits.xml          UtinniPatches · authored 2026-09-18
+  ============================================================================
+  FISH_BESTIARY_BUILD_1 wave 2 — the Wasteland brine-battery archetype's
+  delivery mechanism. Wave 1 built RUT_Tekk/RUT_Drazz/RUT_BrinePlate
+  (RUT_WastelandBrine_Items.xml) but left them UNWIRED: fishing cannot reach
+  the Wasteland's water (that finding is corrected, but the mining decision
+  is not reopened — see RUT_WastelandBrineWater.xml's header). Owner ruling,
+  2026-09-18: mining the pool floor is the mechanism, matching the spec's
+  own flavor line (fish_bestiary_commission_2026-09-10.md §4.3: "the pool
+  you want to mine has one, and it is a capacitor").
+
+  ===========================================================================
+  CRIB TARGET — Core's own RockBase/MineableSteel family, read in full this
+  pass (Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml), same shape
+  RUT_ScaldWrecks.xml already used for this mod's OTHER water-terrain
+  scatter (ShipChunkBase there; RockBase here — different vanilla family,
+  same "crib the working shipped def" method).
+  ===========================================================================
+  Standard vanilla ore veins (MineableSteel/Gold/etc) are ParentName="RockBase"
+  with building.isNaturalRock=true + building.veinMineable=true — that pair is
+  what routes them through GenStep_RocksFromGrid's rock-wall generation, which
+  only ever runs on land/rock cells, never on water. These three defs are
+  RockBase too (same Mineable thingClass, same mineable=true, same
+  mineableThing/mineableYield fields Verse.Mineable actually reads) but with
+  veinMineable=false and isNaturalRock=false — Core's own CollapsedRocks
+  (same file) is the precedent for a RockBase def that ships neither flag,
+  scattered as a discrete building instead of embedded in a rock wall. That is
+  exactly what a GenStep_ScatterThings pass (RUT_WastelandBrineScatter.xml,
+  this folder's sibling) needs: a placeable Building, not a vein-generation
+  participant.
+
+  🔴 TERRAIN AFFORDANCE — verified by direct read, not assumed, same fact
+  RUT_ScaldWrecks.xml's own header already established for this mod:
+  BuildingBase's default terrainAffordanceNeeded is Light; RockBase does not
+  override it. ToxicWaterShallowBase's affordance list (RUT_WastelandBrineWater.xml,
+  inherited from Core's Terrain_Water.xml) is ShallowWater/WaterproofConduitable/
+  Bridgeable/Walkable — no Light. All three defs below explicitly override
+  terrainAffordanceNeeded to Walkable, the one affordance
+  RUT_WastelandBrineShallow/MovingShallow actually carry, or GenSpawn.CanSpawnAt's
+  own GenConstruct.CanBuildOnTerrain check (Verse/GenSpawn.cs, verified) would
+  refuse every scatter attempt silently.
+
+  Graphic: vanilla Things/Building/Linked/RockFlecked_Atlas (the same CutoutComplex
+  ore-vein atlas MineableSteel/Silver/Gold/etc already use, recolored per deposit
+  the same way those defs differ only by color/colorTwo) — this is NOT placeholder
+  art needing a DEPLOY_HOLD: it is real, already-loaded, correctly CornerFiller-
+  linked vanilla art, repurposed the same way the vanilla ore family itself
+  differs def-to-def. No new texture owed.
+
+  Common/uncommon/rare tiers carried over from the original (dead) fishTypes
+  plan (§2G's table: saltwater_Common tekk / saltwater_Uncommon drazz /
+  rareCatchesSetMaker brine plate) as countPer10kCellsRange spread in the
+  sibling GenStepDefs, not as building.mineableScatterCommonality (that field
+  only matters to the vein-generation system this file deliberately does not
+  use — see above).
+
+  🔴 DEFERRED, not silently dropped: no discharge/shock hazard on MINING a
+  drazz deposit (the spec's own flavor: "it discharges as defense... Landed
+  carefully... it goes on discharging for an hour"). That needs a new comp
+  (something like CompProperties_ExplosiveOnDamaged, hooked to the mining
+  strike) which is new C# this wave's own scope note (matching
+  RUT_ScaldWrecks.xml's own restraint on its loot-ThingSetMaker idea) declines
+  to add on top of the mechanism itself. RUT_BrineShock (wave 1's ingestion
+  hediff, unaffected) still fires on eating a raw drazz once mined.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_BrineDeposit_Tekk</defName>
+    <label>tekk bed</label>
+    <description>A crust of salt-white mineral over a shallow shelf, crawling with plate-scrapers just under the surface. Break the crust and they scatter for the taking.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(214,209,196)</color>
+      <colorTwo>(168,160,138)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_Tekk</mineableThing>
+      <mineableYield>3</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_BrineDeposit_Drazz</defName>
+    <label>drazz bed</label>
+    <description>A stack of mineral wafers half-buried in the pool floor, salt-white and dark by turns — the owner, dormant and heavy, waiting under the crust. Mining it out is the only way anyone gets one without a dry line and a lot of patience.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(120,120,128)</color>
+      <colorTwo>(70,74,86)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_Drazz</mineableThing>
+      <mineableYield>1</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_BrineDeposit_BrinePlate</defName>
+    <label>spent electrode bed</label>
+    <description>A drazz's discarded plates, gone still and cold, pressed into the mineral crust by seasons of brine. Rarer than a living bed and worth the extra digging.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(96,100,112)</color>
+      <colorTwo>(58,150,196)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_BrinePlate</mineableThing>
+      <mineableYield>2</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

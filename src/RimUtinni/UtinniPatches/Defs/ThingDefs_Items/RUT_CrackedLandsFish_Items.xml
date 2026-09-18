@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 2 — the Cracked Lands' 4 new catch items
+  (fish_bestiary_commission_2026-09-10.md §2B): RUT_Tubbik (floater),
+  RUT_Zhurr (eel), RUT_Hurrok (cucumber), RUT_Vhessa (squid). These join the
+  already-shipped RSW_DuneCrawler and the BMT_Rocktooth/BMT_Boneblade donor
+  pair (kept permanently per the owner's own ratification — see
+  SandFishing_CrackedLands.xml, this folder's sibling, for the wiring half).
+
+  Per-biome mod home (owner ruling 3): `ZBiome_Badlands` (More Vanilla
+  Biomes) has no dedicated Ash'karr biome mod of its own beyond UtinniPatches,
+  which already carries this water's fish wiring (SandFishing_CrackedLands.xml,
+  SAND_SWIMMERS_MOD_1) — so these land here, not in a new mod invented to
+  dodge that open question (wave 1's own flag, now resolved the same way for
+  Cracked Lands as the doc's "Watch out" text anticipated).
+
+  Register stats per the commission's own §0 envelope table; ANTI-EXPONENTIAL
+  law held (nothing exceeds vanilla FishBase's Nutrition 0.25 / MarketValue
+  6.5 tier except where the register table itself sets a different baseline).
+  zhurr (eel) carries NO statBases override — the eel register's own row
+  (0.25/6.5/0.5/2d) is vanilla FishBase verbatim, same convention RUT_Niim
+  (wave 1, Twilight) already used for its own shoal-register verbatim case.
+
+  Placeholder art (owed, not generated this pass): every texPath below reuses
+  a non-fish sprite already physically present in THIS mod's own Textures/
+  folder (the SandSwimmer convention), distinct within this table per the
+  commission's own art law (§0 "Art").
+-->
+<Defs>
+
+  <!-- tubbik — floater, common. "flood-fry." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Tubbik</defName>
+    <label>tubbik</label>
+    <description>A Spender. A pea-sized gas-bladder animal that exists for the flood-weeks and nothing else: the first rise lifts a billion of them out of the clay, they feed, they breed, they die, and the carpet of them on the falling water is what the fliers commute in for. Between floods the water holds only stragglers. Cooked in a mass it is a paste; the Farmers call it flood-bread and are not joking.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- zhurr — eel, common (weight 0.6). "pan-sleeper." Eel register verbatim
+       (vanilla FishBase tier), no statBases override. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Zhurr</defName>
+    <label>zhurr</label>
+    <description>A Sealed one. For the dry years it lies in a wax-lined cell under the cracked pan, banked to almost nothing — you have walked on thousands. Water wakes it; it rises through the softened clay into the canyon pools, feeds, breeds, and seals itself down again before the pan cracks. Its shed cell-lining is the crack-wax the Farmers trade. Landed, it is cool and dry and does not struggle, as if it has already decided to wait this out too.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- hurrok — cucumber, uncommon. "crack-tongue." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Hurrok</defName>
+    <label>hurrok</label>
+    <description>A Patient one. A ridged, rubbery, arm-long thing that wedges itself into the seep-cracks where the hidden water is and lies there, year-round, filtering. The shade-line's browsers step over it. It is armored where it faces the canyon and soft where it faces the rock, and it does not come out — you catch one by catching the crack it lives in. Chewy. The name is the sound it makes when pulled.</description>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- vhessa — squid, uncommon (weight 0.4). "the wall." Also the §2B.rare
+       stack prize below (SandFishing_CrackedLands.xml wires this defName into
+       RSW_RareSandCatches, weight 1, countRange 2~3 — "the wall let go all
+       at once"). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Vhessa</defName>
+    <label>vhessa</label>
+    <description>A Patient one, and the reason the canyon water has no truce. A pale slot-canyon squid that hangs in the roofed water with its arms laid flat along the rock wall like roots, invisible, and takes what comes down to drink. It has no need to hurry. Landed, it is mostly arm, and the arms keep working for a while. The Farmers say you have not caught one — it has let go of the wall to see what you are.</description>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

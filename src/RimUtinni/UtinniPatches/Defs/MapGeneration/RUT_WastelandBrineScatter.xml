@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WastelandBrineScatter.xml           UtinniPatches · authored 2026-09-18
+  ============================================================================
+  FISH_BESTIARY_BUILD_1 wave 2 — the scatter half. RUT_WastelandBrineDeposits.xml
+  declares the three deposit ThingDefs; this file places them. Same crib shape
+  as RUT_ScaldWreckScatter.xml (this same folder, this same mod): plain
+  GenStepDefs wrapping GenStep_ScatterThings, terrain-validated by tag rather
+  than defName (Verse/GenStep_ScatterThings.cs CanScatterAt, verified this
+  pass), so no C# subclass is needed. RUT_WastelandBrineShallow tag lives only
+  on the two shallow RUT_WastelandBrine* terrains (RUT_WastelandBrineWater.xml),
+  so this scope is self-confining the same way the Scald wreck scatter's own
+  header explains.
+
+  ONE GenStepDef per deposit type (GenStep_ScatterThings carries a single
+  <thingDef>, not a list — same fact the Scald wreck header already names).
+
+  TUNING — carries the original (dead) fishTypes plan's own common/uncommon/
+  rare tiers (§2G's table) forward as relative scatter density, all values
+  otherwise INVENTED, stated plainly (no source names a deposit count for
+  this mechanic):
+    tekk (was saltwater_Common)     -> 1.2~1.8 per 10k cells
+    drazz (was saltwater_Uncommon)  -> 0.4~0.6 per 10k cells
+    brine plate (was rareCatchesSetMaker, weight 3 of the 2-option rare
+      table)                        -> 0.15~0.25 per 10k cells
+  These are CEILINGS on attempts (JawaScrapfields.xml's own documented
+  arithmetic, cited by RUT_ScaldWreckScatter.xml too), not a promised count:
+  terrainValidationAllowed rejects every cell outside RUT_WastelandBrineShallow,
+  and that terrain only exists at all where RUT_Wasteland generates a
+  lake/river feature on a given map — most Wasteland maps have none.
+
+  minSpacing 4/5/6 (rising with rarity, same direction Scald's own three
+  silhouettes used a flat 6 for — these differ because unlike three wreck
+  SHAPES that must never stack, these are three separate RESOURCE TIERS that
+  should be allowed to sit closer together within their own tier while still
+  clearing the engine's hardcoded cluster radius of 4).
+  terrainValidationRadius 1 — each deposit is a 1x1 footprint (RockBase
+  default), so radius 1 covers the origin cell plus one ring, same margin
+  logic as the Scald wreck's radius-2-for-a-2x2-footprint.
+  allowInWaterBiome true — matches the Scald wreck precedent; RUT_Wasteland
+  itself is not water-typed (isWaterBiome unset), so this is defensive
+  parity rather than a load-bearing requirement here.
+
+  order 971/972/973 — after JawaScrapfields' 960 and the Scald's own
+  965-967 (no interaction: different biomes, different terrain tags), well
+  after terrain generation so RUT_WastelandBrineShallow already exists on
+  the map when each validator reads it.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterWastelandBrineTekk</defName>
+    <order>971</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_BrineDeposit_Tekk</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>4</minSpacing>
+      <countPer10kCellsRange>1.2~1.8</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterWastelandBrineDrazz</defName>
+    <order>972</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_BrineDeposit_Drazz</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>5</minSpacing>
+      <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_Jawa_ScatterWastelandBrinePlate</defName>
+    <order>973</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RUT_BrineDeposit_BrinePlate</thingDef>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <countPer10kCellsRange>0.15~0.25</countPer10kCellsRange>
+      <terrainValidationRadius>1</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_WastelandBrineShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

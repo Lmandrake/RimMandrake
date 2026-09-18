@@ -25,13 +25,22 @@
   CONSEQUENCE: this file still builds RUT_Tekk/RUT_Drazz/RUT_BrinePlate as
   real ThingDefs (they carry standalone value — resources, a rare-catch
   prize, the raw-shock hediff) but this build does NOT wire a `fishTypes`
-  or `rareCatchesSetMaker` patch onto the `Wasteland` BiomeDef: that wiring
-  would be dead on arrival, unreachable by any player action, which is worse
-  than the CLAUDE.md-documented "patch matches nothing" trap — it would
-  apply cleanly and still never fire. The brine-battery archetype needs a
-  DIFFERENT delivery mechanism than rod-fishing (mining the pool floor, a
-  GenStep scatter, a caravan/quest reward) — a real open question for
-  whoever picks up wave 2, not decided here.
+  or `rareCatchesSetMaker` patch onto ANY BiomeDef: fishing is not this
+  archetype's delivery mechanism (see wave 2 below), so that wiring would be
+  dead on arrival regardless of which biome def it targeted.
+
+  🔴 wave 2 correction (2026-09-18): the analysis above is about the DONOR
+  `Wasteland` BiomeDef (Mlie.AdvancedBiomes) — the live campaign map does not
+  use it. MEASURED via world/ASHKARR_WORLDMAP_tiles.csv: `RUT_Wasteland`
+  covers all 1853 Wasteland tiles, bare "Wasteland" covers zero. `RUT_Wasteland`
+  left its own water terrain fields unset, so any water it generated fell
+  back to vanilla FRESHWATER (Verse/MapGenUtility.cs:182) — fishing there
+  would in fact have worked, before wave 2. This does not undo the owner's
+  ruling: mining the pool floor is the archetype's mechanism on its own
+  merits (the spec's own flavor, §4.3), not a workaround for a bug that, on
+  the actual live biome, did not exist. See RUT_WastelandBrineWater.xml/
+  RUT_WastelandBrineDeposits.xml/RUT_WastelandBrineScatter.xml (this folder
+  and its siblings) for the built mechanism.
 
   Placeholder art: non-fish sprites already in this mod's own Textures/.
 -->
