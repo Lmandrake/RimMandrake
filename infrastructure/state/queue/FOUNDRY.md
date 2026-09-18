@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T09:25:28Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-18T09:26:35Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1933,6 +1933,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Surfaced as a side finding during FISHBESTIARYBUILD1 wave 3 (2026-09-18):
 prose:    infrastructure/state/items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md

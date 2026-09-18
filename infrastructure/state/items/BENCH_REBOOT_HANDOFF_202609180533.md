@@ -1,157 +1,144 @@
 # BENCH_REBOOT_HANDOFF_202609180533 — READ FIRST on wake
 
 Follows `BENCH_REBOOT_HANDOFF_202609180411`. Everything below is committed and pushed unless a
-line says otherwise. **Game and bridge state is the last section — read it
-before touching the game.**
+line says otherwise. **Game and bridge state is the last section — read it before touching the
+game.** This was a rot-development wave that turned into a campaign-load rescue.
 
 ## The one thing to carry forward
 
-<!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
-**The 81 walk findings are NOT rot, and `doctor`'s ORPHAN_WALK is asserting a model a
-third of the corpus does not follow.** MEASURED 2026-09-18 with a subject parser that reads
-each walk's own `subject:` line: of the 33 failing walks, **25** have a fully live subject and
-the defect is a stale identifier inside a STEP, 6 ship with no packageId on the subject line,
-1 declares NOT BUILT deliberately, 1 is absorbed with an absorber proven on disk, and **0 are
-genuinely orphaned**. `doctor` derives a walk's mod from the walk's BASENAME
-(`mod_name_from_walk`), never from its subject line, so its 24 ORPHAN_WALKs and 10
-SUBJECT_COLLISIONs are ONE phenomenon: **34 of 78 walks are deliberate per-feature walks
-sharing a live mod's subject.**
+🔴 **`mandrake.rsw.gizkastowaway` deterministically breaks `new Game()` on the full mod list —
+it is now DEACTIVATED, and that is the only reason the campaign loads.** Every save-load and
+quicktest on the full 635 threw an NRE in `RimWorld.ReadingPolicyDatabase.GenerateStartingPolicies`
+(null Type into `GenTypes.SameOrSubclassOf`). CONFIRMED by removal: with gizka off, a dev
+quicktest's `new Game()` completes and `CANONICAL_ASHKARR_START_2026-09-12.rws` loads to Playing
+with 0 reading-policy NRE. gizka shipped unproven because its own tests only ever ran a minimal
+list, which does not trip it. **⛔ Do NOT re-activate gizka until `GIZKA_NEWGAME_NRE_FIX_1` lands.**
+It is removed from BOTH the live ModsConfig and `ModsConfig.FULL.LATEST.xml` (backup:
+`infrastructure/state/modlists/ModsConfig.BEFORE_GIZKA_DEACTIVATE.20260918_012858.xml`), so a
+`--restore` will not re-break the campaign. Its Harmony patches (Scenario.PostGravshipLanded /
+Thing.Destroy / TradeDeal / Quest.End / Pawn.Kill) do not obviously touch reading policies — the
+mechanism is a full-set interaction, not yet pinned.
 
-⛔ **Do not "fix" a walk on an ORPHAN_WALK finding alone, and do not rebuild the decision
-sheet.** A 43-row sheet was built for these findings and deleted the same day — the owner's
-instinct (*"this doesnt feel like a sheet I should be asked"*) was right twice: wrong as a
-format, because where an absorbed mod went is provable from disk and was never his to
-adjudicate; and wrong as DATA, because its backtick-only packageId regex read `None` for 50 of
-78 walks. Full account in `DETERMINISM_ASSESSMENT.md` §11a.
+🔑 The instrument that cracked it: **log-diff across the day.** Afternoon full-list logs (14:09,
+16:31) reached map-finish with ZERO reading-policy NREs; tonight's did not — so the crash was NEW
+tonight, which collapsed a 600-mod hunt to the two mods newly activated tonight, of which one
+(env hazards) was cleared by the tier-list quicktest and the other (gizka) was never load-tested.
 
 ## What the owner should see
 
-<!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
-**1. 🔴 The one decision he still owes: the walk model.** Adopt the per-feature
-convention with a `feature:` key so `modcheck run` can reach all 34, or collapse 34 walks into
-10. He was asked, replied "advise", and my advice REVERSED once measured — I first said merge
-(believing the walks were rot), then retracted: a third of the corpus already follows the
-convention, so modelling it is not premature abstraction. Still unruled.
+**1. ✅ His campaign is loadable again.** It was fully blocked (no save would load) when he went
+AFK; it loads now. The two review shots he asked for were captured and sent to his device:
+`Transient/pyrelands_density3_final_20260918.png` (Pyrelands at live plantDensity 3.0 — a
+fire-ecology biome, dense rust EmberGrass, not a uniform lush field) and
+`Transient/firehawk_wingflap_final_20260918.png`.
 
-**2. His absorbed-walk ruling is recorded and is nearly a no-op.** Verbatim choice: *"Delete
-the stale walk, rewrite against the absorber."* ⚠️ It applies to **ONE** walk, not the ~30 I
-implied when I asked. Do not go rewriting 30 walks on the strength of that ruling.
+**2. 🔴 Decision owed: gizka.** He ruled gizka IN (`GIZKA_TRIBBLE_ADAPTATION_1`); I took it OUT to
+make his campaign load. He can (a) accept it off until the C# is fixed, or (b) want it back
+sooner. The fix path is `GIZKA_NEWGAME_NRE_FIX_1`.
 
-**3. 🔴 The FULL modlist still restores the stale pre-merge mods.** Re-MEASURED 2026-09-18 by
-PARSING `ModsConfig.FULL.PRECAPTURE.20260917_085900.xml` (631 active): `mandrake.rm.fluidcanals`
-PRESENT, `mandrake.rm.pits` PRESENT, `mandrake.rm.flowworks` **ABSENT**, and
-`mandrake.rm.environmentalhazards` ABSENT (matching `ENVHAZARDS_NEVER_ACTIVATED_1`). Restoring
-that list loads the pre-merge FluidCanals and Pits and never loads FlowWorks — a ~15-minute
-cold load proving nothing. ⛔ The live file is a Windows path unreachable from the Mac and
-editing it is a Charter expensive-list action: **his hands, on the Desktop.**
+**3. 👁 FireHawk art colour.** The named review save's staged 5 hawks were gone from the loaded
+map (abandon-timer cull); fresh ones were spawned. The wing-flap render tree WORKS (wings at
+differing flap positions), but the art reads "armored grey-green flyer" more than fiery hawk and
+the red under-glow is faint. Worth his eye on the colour intent.
 
-**4. Coverage is still zero — independently re-confirmed.** `shows=` appears in **0** of
-**54** mod `validation.py` files (my own measurement 2026-09-18, matching CLAUDE.md's 0-of-54,
-which the Desktop had already corrected at `7fc491ebc`; the Desktop's VALIDATION_SCRIPT_BACKFILL_1
-tripled the script count without adding one line of coverage). ⚠️ I told him CLAUDE.md's figure
-was "stale at 17" — that was MY stale reading, corrected here. Every `modcheck run` still
-returns REFUSED before the game is consulted, and `NORTH_STAR_PIT_PILOT_1` has never run.
+**4. Fauna sitting draft awaits his ruling.** `Transient/rot_fauna_assignment_draft_20260918.md`
+— 16 rows / 5 kin cliques for the WoundLink + KinMending + alarm-responder assignments, with 3
+questions that genuinely need him (alarm-misfire tolerance, patch-now vs wait for
+BMT_FAUNA_ABSORPTION_1, cross-species kin tags). Chosen "draft first then sit" per his card.
 
-**5. Shipped deliberately, flagged:** three scripts gained the exec bit in git
-(`game`, `bridge`, `show.sh`, now 100755). Inert on Windows, and it is why `./game` can run on
-the Mac at all. Say so if a Windows-side diff looks odd.
+**5. Pyrelands north-star re-VALIDATED** (10 bars) on his word this session; density tripling
+proven live 3.0 (regrow 9.0), the C# enforcer caught the startup rewriter red-handed in the log.
 
 ## What is half-done, and where it stops
 
-<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. -->
-- `DETERMINISTIC_CHECKER_WAVE_1` — C1/C2/C5/C7/C8/C9 shipped, C3 declined by him.
-  **NEXT:** build C4 `modcheck floor --all` (~90 LOC, the triage join nobody has used); then C6
-  `rimflow lint --citations`. ⛔ Neither as a blocking PreToolUse hook (§10.9).
-- `DETERMINISTIC_CHECKER_WAVE_1` — C1's suite gate is deliberately NOT armed (41 live findings;
-  a permanently red checker is a disbelieved one). **NEXT:** arm it only after the walk-model
-  ruling lands and the findings are cleared.
-- `DETERMINISTIC_CHECKER_WAVE_1` — `bridgetools/selftest_tool_metadata.py` is a third
-  Windows-toolchain absence that does not carry the UNMEASURED phrase, so it still counts as a
-  real FAIL. **NEXT:** give it the phrase `UNMEASURED, not a pass or a fail` rather than
-  widening the matcher in `run_selftests.py`, which would be inventing a signal.
-- `PIT_SUPERDEEP_COLLAPSE_1` — fully ruled, nothing built; the ITEM not the 1127-line spec is
-  the authority. **NEXT:** revise the spec against the item's ten owed revisions BEFORE any
-  code, and put his first implementation question to him: two pits joined by a channel become
-  one liquid body — do their fluids merge or refuse to?
-- `FLOWWORKS_DOOR_FAMILY_1` — filed, no spec. **NEXT:** spec it and build the TWO-def stuffable
-  version (`Sluice`, `SecurityGrateDoor`); ⛔ never the three he talked himself out of.
-- Code-review census scope — `find_untracked` scans only `src/`, so new `.claude/hooks/*.py`
-  and `skills/**/*.py` land invisible (today just 2 unentered hook files, 0 in skills).
-  **NEXT:** widen `UNTRACKED_SCAN_DIR` to those two trees; I told him I would rather than spend
-  his attention on it.
-Nothing is mid-edit. The 5 generated codebase-health artifacts are committed rather than left
-dirty, deliberately — the rebase trap below is why leaving them dirty blocks a rebase.
+- `GIZKA_NEWGAME_NRE_FIX_1` — filed, not started. **NEXT:** bisect gizka alone onto a mid-size
+  list that still trips the NRE; find the type/GameComponent/patch that nulls a reading-policy
+  reflection; fix additively; prove `new Game()` clean on the full list; then re-add gizka to
+  live + FULL.LATEST. Restores his ruling safely.
+- `FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1` — root cause fixed (stale deployed DLL redeployed;
+  game DLL now carries `RM_BottledLiquidExtension`). **NEXT:** confirm on the next harvest that the
+  ~33 RM_LiquidBottles defdiscards are gone (discards dropped 82→49 already this load); then close.
+- `ENVHAZARDS_DLL_REBUILD_OWED_1` — filed. Deployed DLL works (VaporDrifter present, tier
+  quicktest clean) but source is ahead (`RM_RootCausewayBiomeExtension.cs`). **NEXT:** rebuild +
+  redeploy in a shutdown window; low urgency, not a blocker.
+- `ROT_PALE_TREE_1` — reopened→fixed→ready. The `compClass` on CompProperties_SpawnSubplant was
+  missing (props ctor doesn't set it → bare ThingComp → InitializeComps catch killed all 9 comps
+  silently). Fixed + deployed (`f4d8dbf2b`). **NEXT:** re-proof on a load — spawn RUT_PaleTree,
+  expect NO MissingMethodException and live meditation/psylinkable fields (baseline: the 2 MMEs
+  in the pre-fix log are startup-only).
+- `ROT_ART_WAVE_1` — 22 artpipe jobs filed to `infrastructure/artpipe/active/`
+  (`Transient/rot_art_jobs_20260918.md`). **NEXT:** as the daemon finishes each, review vs the
+  def's flavor, place at texPath (rename shared placeholders so unrelated defs keep art), deploy,
+  verify render. Owed inside it: brewing vessel east/north views; RUT_LivingFurnaceCap
+  MortalMorel-folder/HealingMorel-files naming mismatch; gene icon may not belong in artpipe.
+- `ROT_HEALTH_SHARING_1` — built, BLOCKED (content-blind, 0 carriers). **NEXT:** the fauna sitting
+  (draft above) assigns carriers; per-clique KinMending strength lives on
+  `CompProperties_KinMending.extraSeverityHealedPerDay` = one small hediff def per clique.
+- Six rot items CLOSED this wave on live battery evidence (see Closed section). Nothing mid-edit.
 
 ## Traps learned
 
-<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it to LESSONS_INBOX.md the moment it is learned, then cite `(filed: LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
-- 🔴 **A subagent that runs `git reset --hard HEAD` to clear a conflict destroys the
-  parent seat's staged work** — same tree, same index. It took 3 of my staged files; recovered
-  byte-exact from dangling blobs via `git fsck --unreachable` + `git cat-file -p`, because
-  `git add` writes blobs before any commit. Brief subagents that `reset --hard`/`checkout --`/
-  `stash` on shared paths is FORBIDDEN — "leave those files alone" reads as licence to clear
-  them another way. (filed: LESSONS_INBOX)
-- 🔴 **`git rebase --continue` refuses with "You must edit all merge conflicts" while
-  `git status` says all conflicts are fixed** — the real cause is an unclean worktree, and here
-  it was self-inflicted: `code_review_status.py`'s own `_trigger_health_rebuild` spawns the
-  health publisher, so every `prune`/`list` call re-dirties 5 tracked artifacts. Commit them
-  (MIN_INTERVAL is 900 s, so it holds) or the rebase can never finish. (filed: LESSONS_INBOX)
-- 🔴 **A walk's subject `packageId` is backticked in 28 walks, BARE in 34 and absent in 16** —
-  a backtick-only regex reads `None` for 50 of 78 and callers then treat the subject as
-  MISSING. `modcheck/doctor.py`'s `_SUBJECT_PKGID_RE` already handles all three; parse the
-  subject PATH as primary evidence since it is always present. (filed: LESSONS_INBOX)
-- **`modcheck` must be run as a module from its package root** — `python3 -m modcheck.cli lint`
-  with `cwd=src/RimMandrake/Utils`. ⚠️ A `cd` in a Bash call PERSISTS across later calls, and
-  querying git or globbing from that subdirectory makes `infrastructure/` look deleted — it
-  cost a real scare this window. (see: this handoff)
-- **The assessment's own premises were wrong twice and are now corrected in place**: C7's
-  "make the health publisher separate DIRTY from ORPHANED" was unnecessary (`review_verdicts`
-  only iterates live files, so an orphan never entered its census), and C9's "the exec-bit
-  finding is spurious here" was false. (see: DETERMINISM_ASSESSMENT.md §11a)
-- **A subagent's own report can contradict itself** — C8's claimed 7 boilerplate wordings while
-  its selftest printed "four" and covered six fixtures. Re-measuring gave 7, and the fixture
-  totals are now DERIVED from the wording list so a new wording adds coverage instead of
-  breaking a test. Verify a subagent's numbers by running its tool. (see: DETERMINISM_ASSESSMENT.md §11a)
+- 🔴 **The shared working tree + index is brutal on git under a peer's commit burst.** A
+  `pull --rebase` collided with another window committing live into the same index, leaving a
+  DETACHED HEAD that both windows then committed onto while a third pushed separately — three
+  divergent lineages. Recovered by converging them in an isolated `git worktree add --detach
+  origin/main` + cherry-pick, then `git push origin HEAD:main`, then reattaching main. **A stale
+  `.git/index.lock` at 0 bytes with no `pgrep git` is a crashed leftover — safe to rm; a live
+  `pgrep git` is a peer, wait it out.** (worth LESSONS_INBOX)
+- 🔴 **"Could not find type named X" with the .cs in the compile list and the namespace matching
+  is a DEPLOY gap, not a source bug** — the game-copy DLL is behind the repo DLL. Diagnose with
+  md5 repo-vs-game AND a binary grep for the type name (type metadata is UTF-8, so a plain
+  `grep -a` finds it even though string constants are UTF-16). FlowWorks was exactly this.
+- 🔴 **A missing `compClass` silently kills EVERY comp on a def** — `CompProperties_SpawnSubplant`
+  doesn't set compClass in its ctor, so omitting it instantiates bare `Verse.ThingComp`, and
+  `InitializeComps`' try/catch wraps the whole loop → one bad comp takes all of them, no
+  Psylinkable, no error a player sees. Vanilla anima tree carries `<compClass>CompSpawnSubplant`.
+- **`handoff.py` prefills the skeleton from recent commits/state, which can be ANOTHER window's
+  wave** — this file came pre-populated with a walk-findings/determinism handoff that was not this
+  session. Rewrite the prose; don't trust the autofill. (this handoff)
+- **RimSage's index predates Odyssey 1.6 reading policies** — `read_csharp_symbol
+  RimWorld.ReadingPolicyDatabase` returns "not found", so an Odyssey-internals question is
+  unanswerable there even on the Desktop. Reason from log-diff instead.
 
-## Closed since the last handoff (1)
+## Closed since the last handoff (7)
 
-- `HANDOFF_RITUAL_OPTIMIZATION_1` — 217075133
+- `ROT_SPORECLOUD_PORT_1` — f4d8dbf2b (Battery F PASS)
+- `ROT_DECAY_HARVEST_1` — f4d8dbf2b (Battery C PASS)
+- `ROT_SHEEN_WEATHER_1` — f4d8dbf2b (Battery E PASS ×4)
+- `ROT_WARM_MAT_1` — f4d8dbf2b (Battery D PASS)
+- `ROT_GUARDIAN_GROVES_1` — f4d8dbf2b (Battery H PASS ×2, alarm blocked-by-design)
+- `ROT_LIVE_PREPARATIONS_1` — f4d8dbf2b (Battery I PASS)
+- All closed with `--owner-said "Continue developing the rot"` (they belonged to FOUNDRY/OWNER).
 
-## Filed and still open (0) — the next seat's queue
+## Filed and still open (4) — the next seat's queue
 
-Nothing filed in this window.
+- `GIZKA_NEWGAME_NRE_FIX_1` — fix gizka's new-Game() NRE so it can be re-activated (his ruling restored)
+- `FULL_LIST_CANNOT_LOAD_GAME_1` — RESOLVED-by-deactivation, real fix owed = GIZKA_NEWGAME_NRE_FIX_1
+- `FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1` — root-caused + redeployed; confirm discards clear, then close
+- `ENVHAZARDS_DLL_REBUILD_OWED_1` — repo DLL stale vs source; rebuild+redeploy, low urgency
+- `ROT_ART_WAVE_1` — 22 artpipe jobs to land as the daemon finishes
 
-## Commits
+## Commits (this session, newest first)
 
 ```
-8b00caf67 Ledger: his absorbed-walk ruling, and the sheet retracted with the re-measurement
-3a11c60cc Delete the walk decision sheet — he was right, and its data was wrong too
-77041ca73 rimflow: file+close DIRTY_CODE_REVIEW_LOOP_RESTART_15 (this wave's continuity note)
-7aea51f56 VAULT_DUNGEON_BUILD_1: record 2026-09-18 pass in the item file
-b224e70a8 chore: publish codebase-health artifacts (generated; they block a rebase when left dirty)
-260383a30 handoff.py: a blank line ends a bullet in _bullets
-c93a3a75d VAULT_DUNGEON_BUILD_1: fresh quicktest screenshots, all 3 templates
-2398d6a13 Code review: lift a stale DEPLOY_HOLD entry, mark 6 files clean
-10013ce07 MLIE_FAUNA_ABSORPTION_1 Pass 15: port Kreetle, Krykna, Kwi (45 -> 42 remaining)
-c2e8ad4ca MINIMAL modlist: fix stale mandrake.rut.vaultdungeons packageId
-896456979 Ledger: C8 shipped and verified, walk decision sheet delivered
-342362f69 The boilerplate has SEVEN wordings, not four — and record what shipped
-0dc1a8cfc Lesson: a subagent's `git reset --hard` eats the parent seat's staged work
-4bcd53961 The walk decision sheet he asked for — 43 rows, pre-filled, nothing applied
-4a022088e Add canon_census.py: ruled/unruled/non-conforming census + lint (C8)
-559e52278 rimflow: ledger sync (HANDOFF_RITUAL_OPTIMIZATION_1 close)
-217075133 HANDOFF_RITUAL_OPTIMIZATION_1: audit-driven handoff ritual v2
-e7a523ae6 rimflow: file+close DIRTY_CODE_REVIEW_LOOP_RESTART_14 (this wave's continuity note)
-f42da4dd6 Code review: mark clean RUT_Greentide/RUT_TarMoat, code_review_status.py, artpipe cluster
-ceb78be3e C9: 13 reds were 6 — fix the exec bit, and stop printing UNMEASURED as FAILED
-... 12 more: git log --oneline 12a11996c..HEAD
+d0e9773c6 CONFIRMED: gizkastowaway breaks new Game() on the full list — deactivated, campaign loads again
+596c9204c Full-list NRE diagnosis: new tonight; gizka-deactivate experiment; FlowWorks redeployed
+ee05d75b6 rimflow: file FULL_LIST_CANNOT_LOAD_GAME_1 — full list NREs in new Game(); density readback PASS 3.0
+adfce7160 rimflow: Load B up — density enforcer caught the rewriter live; file FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1
+e53bde3a7 rimflow: rot wave closes (6 items on battery evidence), ROT_ART_WAVE_1 filed, Pyrelands re-validated
+f4d8dbf2b ROT_PALE_TREE_1: restore the compClass vanilla carries on CompProperties_SpawnSubplant
+78b80640c ROT_PALE_TREE_1: drop explicit thingCategories duplicating the inherited Plants entry
+5a10d06d3 rimflow: ledger sync (bridge take, game down, rot-wave cycle start)
+6b41e3094 Rot wave: decision strings + assembly signatures for the two-load cycle
 ```
 
 ## Game / bridge / tree state at wrap
 
-- running   : UNMEASURED   (could not run tasklist.exe — no reading taken)
-- recorded  : UP
-- Bridge: FREE    since 2026-09-18T03:58:39Z
-
-Working tree clean apart from untracked `Transient/`.
-
+- running   : RUNNING   (1 RimWorldWin64 process, bridge answered before release)
+- recorded  : UP  (full 634-mod list — gizka OFF; a driver left it Playing/paused on a dev map)
+- Bridge: FREE   (released by BENCH this wrap)
+- His campaign save is INTACT — not overwritten. The loaded dev map is disposable; he loads his
+  save fresh when he returns.
+- Tree: everything above committed and pushed (HEAD d0e9773c6). Untracked `Transient/` artifacts
+  only. A few harmless duplicate `autostash` entries remain in `git stash list` from the rebase
+  recovery — droppable, they hold no unique work.
