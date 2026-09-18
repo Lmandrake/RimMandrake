@@ -710,3 +710,90 @@ by checking for a matching `*ArtOverride` folder before porting.
 
 **Remaining**: 74 of the Wave C worklist, plus Fambaa (already flagged
 above as also needing the override check when its turn comes).
+
+## 2026-09-17 (FOUNDRY, belt mode) — 3 more species ported: Falumpaset, Fanback, FeralGrazer (74 -> 71 remaining)
+
+Same pipeline, next 3 off the front of `mlie_wave_c_worklist.json`'s
+`remaining_worklist`. Falumpaset and FeralGrazer use vanilla Core bodies
+(`QuadrupedAnimalWithHoovesAndHump`/`QuadrupedAnimalWithHoovesAndHorn`) — no
+BodyDef port needed. Fanback's custom `Fanback` BodyDef needed a defName
+rename only — every referenced `<def>` is vanilla Core; its two groups
+repoint to the already-ported `RSW_SWTailAttackTool` (Wave B) and
+`TuskAttackTool`.
+
+🔴 **Real factual correction found and fixed mid-pass**: two prior-pass
+header comments (`RSW_Boma.xml`, `RSW_MlieWaveC_Bodies.xml`) claimed
+`TuskAttackTool` is "vanilla Core". Traced it through the frozen official
+def dump (`defs.sqlite`) this pass: it is actually **Alpha Animals**
+(`sarg.alphaanimals`). No functional change — Alpha Animals is part of the
+frozen `OFFICIAL-2026-08-29` target mod list, and both the donor and our
+ports leave the group bare (no MayRequire gate either way) — but the
+comment was wrong and is now corrected in both files, per this repo's
+"inaccurate material is deleted, not superseded-in-place" rule.
+
+**Resources**: Falumpaset needed none (repoints to the already-ported
+`RSW_Leather_Tough`, Pass 3; `specificMeatDef` stays vanilla
+`Cameloid_Meat`, same as Eopie). FeralGrazer needed `RSW_Leather_Nerf`
+(donor's `Leather_Nerf` shares the exact same texPath as `Leather_Tough` —
+no new leather art) and `RSW_Nerf_Meat` (new art). Fanback needed
+`RSW_Gorg_Meat` (new art) plus 2 eggs (`RSW_EggFanbackFertilized`/
+`UnFertilized`, texPath `swresource/EggSpeckled` — already extracted, Pass
+4/Clodhopper, reused unchanged). All added to `RSW_MlieWaveC_Resources.xml`.
+
+**First port to carry `canCrossBreedWith`**: FeralGrazer's (`Grazer`,
+`FeralNerf`, `Nerf`) is left pointing at the donor's still-bare,
+still-unported defNames — correct while Mlie stays active and those
+species remain installed unmodified. Flagged in the def's own header
+comment for whoever ports Grazer/FeralNerf/Nerf next: rename these entries
+to their RSW_ equivalents at that point, same as every prior cast-rename.
+
+🔑 **Stale worklist caught before it did damage**: `mlie_wave_c_worklist.json`
+listed Fanback's biomes as `BiomeCypreJungle`/`COMIGO_GreaterSwamp_Tropical`.
+Neither matches the live `cast_assignment.csv` or `BiomeCast_Ashkarr.xml` —
+Fanback's only real row is `ZBiome_DesertOasis` (0.5, large-resident).
+Used `cast_assignment.csv` as ground truth ("dumps and harvests decay"
+doctrine) and wired Fanback there only. The facts file is stale on this
+one row — flagged rather than trusted blind; worth a full resweep of the
+remaining 71 entries' biome lists before the next pass leans on them
+uncritically without cross-checking the CSV.
+
+Art: 36 PNGs extracted via `extract_bundle.py` against the same
+AssetBundle every prior wave used (Falumpaset 19 of 22 — excluded 3
+unreferenced "Pack" variants, same precedent as Eopie/Dactillion; Fanback
+7; FeralGrazer 4; Meat_Nerf 3; Meat_Gorg 3), all confirmed non-zero and
+PIL-openable. Checked for a `*ArtOverride` mod before porting each species
+(per the Dragonsnake/Anooba art-collision trap, 2026-09-12) — none exists
+for any of the 3.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`**: `BiomeCypreJungle` (`RSW_Falumpaset`
+0.3), `Desert` (`RSW_Falumpaset` 0.2, `RSW_FeralGrazer` 0.1),
+`ZBiome_DesertOasis` (`RSW_Fanback` 0.5) — renamed in place from the bare
+donor entries, same pattern as every prior wave. Checked all 3
+Mlie-touching patch files named in this item's own spec:
+`AnimalBiomeDuplicates_Fix.xml` has one dedup guard for the donor's own
+`Falumpaset` (Operation 8, `ExtremeDesert`) — left untouched, it targets
+the DONOR's still-active ThingDef, not our new `RSW_Falumpaset`. No other
+references in any of the 3 patch files.
+
+**Validated**: `validate_patch.py` against all 6 directly-authored/touched
+def files — 0 errors, 0 warnings. Both `BiomeCast_Ashkarr.xml` copies
+checked separately: 0 mentions of Falumpaset/Fanback/FeralGrazer in any
+error or warning; the ~549 remaining errors are the same pre-existing
+generator-noise from unrelated donor-mod dead references this item has
+documented since 2026-09-12 (the "938 `PatchOperationConditional`/`Remove`
+blocks" design/deployed divergence, still not regenerated). Validated
+against the newest available capture (`2026-09-14T03-32-18Z`, 589 mods)
+per "ModsConfig describes the NEXT load" doctrine — live `ModsConfig.xml`
+now shows 634 active mods, correctly NOT re-harvested mid-pass.
+
+**Not done this pass**: no deploy (offline authoring only, scoped to 3
+species to keep the batch reviewable, matching most prior sub-passes) —
+deploy + cold-load proof owed to the next natural restart. The stale
+worklist-biome resweep flagged above. Fambaa's ArtOverride-gated port
+(not attempted this pass).
+
+Commit: `de99b5f8a`.
+
+**Remaining**: 71 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), plus Fambaa.
