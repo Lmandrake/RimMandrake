@@ -87,6 +87,10 @@
     <Compile Include="WeatherPulseExtension.cs" />
     <Compile Include="RM_GameCondition_WeatherPulse.cs" />
     <Compile Include="RM_MapComponent_FlashCycle.cs" />
+    <Compile Include="RM_AcceleratedRotExtension.cs" />
+    <Compile Include="RM_MapComponent_AcceleratedRot.cs" />
+    <Compile Include="RM_LivingProduceExtension.cs" />
+    <Compile Include="RM_MapComponent_LivingProduce.cs" />
     <Compile Include="RUT_Plant_FlashFlora.cs" />
     <Compile Include="RUT_WeatherOverlay_ScaldSteam.cs" />
     <Compile Include="RM_PlaceWorker_OnRequiredVentComp.cs" />
@@ -145,6 +149,9 @@
     <Compile Include="RM_WanderingVortex.cs" />
     <Compile Include="RUT_IncidentWorker_SteamDevil.cs" />
     <Compile Include="RUT_IncidentWorker_SporeCloud.cs" />
+    <Compile Include="RUT_HediffComp_SheenExposure.cs" />
+    <Compile Include="RM_WarmGroundExtension.cs" />
+    <Compile Include="RM_MapComponent_WarmGround.cs" />
   </ItemGroup>
 
   <ItemGroup>

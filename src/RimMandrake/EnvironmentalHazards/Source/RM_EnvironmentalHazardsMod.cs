@@ -146,6 +146,24 @@ namespace RimMandrake.EnvironmentalHazards
     //      (ROT_DECAY_HARVEST_1). Off: a def carrying
     //      RM_LivingProduceExtension stops pushing any heat into its room;
     //      it still rots, ferments, or does whatever else it already did.
+    //  29. warmGroundEnabled — RM_MapComponent_WarmGround
+    //      (ROT_WARM_MAT_1). Off: a biome carrying RM_WarmGroundExtension
+    //      stops heating its mat-floored rooms entirely; those rooms need
+    //      heaters like anywhere else. Nothing else about the mat terrain
+    //      (growing, beauty, walking on it) changes either way.
+    //  30. warmGroundOffsetCelsius — the SAME mechanism's warmth dial, in °C
+    //      above the outdoor temperature. It scales both the temperature the
+    //      mat aims a room at AND how much heat the mat can actually deliver
+    //      per sweep, so the dial moves the whole mechanism coherently
+    //      instead of moving a ceiling a cold room never reaches. The
+    //      absolute cap (21 °C) is authoring, not a player option — the mat
+    //      is never a comfortable room on its own in real cold.
+    //  31. sheenExposureEnabled — RM_HediffComp_SheenExposure
+    //      (ROT_SHEEN_WEATHER_1, RimUtinni RotSporeKit "the Sheen"). Off: the
+    //      RUT_SheenCoating hediff (and the RUT_SporeFlesh it can seed) stops
+    //      accruing from Sheen-fall weather entirely, everywhere. The three
+    //      reskinned Sheen weathers themselves (the ban-3 fix) are pure
+    //      cosmetic WeatherDefs and keep occurring either way.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -178,6 +196,9 @@ namespace RimMandrake.EnvironmentalHazards
         public static float acceleratedRotItemMultiplier = 12f;
         public static float acceleratedRotCorpseMultiplier = 20f;
         public static bool livingProduceHeatEnabled = true;
+        public static bool warmGroundEnabled = true;
+        public static float warmGroundOffsetCelsius = 18f;
+        public static bool sheenExposureEnabled = true;
 
         public override void ExposeData()
         {
@@ -211,6 +232,9 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref acceleratedRotItemMultiplier, "acceleratedRotItemMultiplier", 12f);
             Scribe_Values.Look(ref acceleratedRotCorpseMultiplier, "acceleratedRotCorpseMultiplier", 20f);
             Scribe_Values.Look(ref livingProduceHeatEnabled, "livingProduceHeatEnabled", true);
+            Scribe_Values.Look(ref warmGroundEnabled, "warmGroundEnabled", true);
+            Scribe_Values.Look(ref warmGroundOffsetCelsius, "warmGroundOffsetCelsius", 18f);
+            Scribe_Values.Look(ref sheenExposureEnabled, "sheenExposureEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -296,6 +320,13 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Living produce room heat", ref livingProduceHeatEnabled,
                 "A stockpiled crop or food built to radiate warmth stops pushing any heat into its "
               + "room; it still rots, ferments, or does whatever else it already did.");
+            list.CheckboxLabeled("Warm ground (living mat heating)", ref warmGroundEnabled,
+                "A biome built with warm living ground stops heating rooms floored on it; those "
+              + "rooms need heaters like anywhere else.");
+            list.CheckboxLabeled("Sheen exposure (the Rot)", ref sheenExposureEnabled,
+                "Unroofed pawns stop accumulating Sheen coating during Sheen-fall weather, and it "
+              + "can no longer seed spore flesh. The Sheen-fall/storm/mist weathers themselves "
+              + "keep occurring either way.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
@@ -307,6 +338,12 @@ namespace RimMandrake.EnvironmentalHazards
             acceleratedRotItemMultiplier = list.Slider(acceleratedRotItemMultiplier, 1f, 40f);
             list.Label("Accelerated rot, corpses: " + acceleratedRotCorpseMultiplier.ToString("0.0") + "x vanilla's rate");
             acceleratedRotCorpseMultiplier = list.Slider(acceleratedRotCorpseMultiplier, 1f, 40f);
+
+            list.Label("Warm ground: up to " + warmGroundOffsetCelsius.ToString("0") + " C above the outdoor temperature");
+            list.Label("How much warmth living ground gives a room floored on it, and how fast it "
+                     + "delivers it. Never past 21 C, so it helps a lot in the cold without ever "
+                     + "replacing a heater.");
+            warmGroundOffsetCelsius = list.Slider(warmGroundOffsetCelsius, 0f, 30f);
 
             list.End();
         }
