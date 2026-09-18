@@ -389,3 +389,73 @@ CATHEDRAL) who may have their own pending game-up work. Left owed.
 
 Staying `doing`. Nothing in this pass required or made a creative call the
 owner hasn't already ruled or blessed.
+
+## 2026-09-17 (FOUNDRY) — bridge held by BENCH this pass; offline re-verify only, one new finding
+
+Owner actively testing live in-game and BENCH held the bridge for a Pyrelands
+checkout — same discipline as `TILE_STRUCTURE_DESIGNS_1`'s batch model: did
+the offline-provable portion, left the live-proof step explicitly owed, never
+touched the bridge/ModsConfig/deploy.
+
+**Re-verified this item's own scope from scratch rather than trusting the
+2026-09-12 tally (5 days old, shared worktree):**
+- `Source/gen_vault_layouts.py` re-run: byte-identical output, no drift
+  (`git status --short` on `Defs/VaultDungeons/` and `Source/VaultDungeons/`
+  empty after regen).
+- `validate_patch.py` on the whole `Defs/VaultDungeons/` tree against the
+  **current live 632-active-mod set** (`--defs` Data+Mods+Workshop, up from
+  593/594/596 in every prior note — the mod list has grown since): **7
+  files, 0 errors, 1 warning** (the same pre-existing `RUT_VaultHeart`
+  vanilla-asset-bundle texPath advisory every prior pass already classified
+  as a false positive — unchanged).
+- Deployed copies checked byte-for-byte against the repo, not assumed:
+  `.../Mods/StructureInjectionsRUT/Defs/VaultDungeons/` and
+  `.../Mods/UtinniPatches/Defs/LandmarkDefs/RUT_Slough_GelatinousBreach.xml`
+  both diff clean against `src/RimUtinni/...` — no deploy drift.
+- Confirmed the six sites' tile bindings in
+  `Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml` (`RUT_VaultThaw_V1..V6`,
+  literal `QuestNode_Set siteTile`) match this item's own site table exactly:
+  678/4000/9167/17461/37/20853 for V1–V6. This is the "world_commit
+  placement" work for vault CONTENT — already done, via the sibling item's
+  quest-Site divergence, confirmed still correct rather than re-asserted from
+  memory.
+- Spot-checked 4 of Type-2's 5 flagged third-party defNames
+  (`AA_BlackJellyWall`, `AA_GreenGoo`, `VFEI2_InfestedShipPart`,
+  `VFEI2_InfestedShipChunk`) resolve to a real `<defName>` in the live
+  workshop content on disk (their source mods' packageIds are confirmed
+  ACTIVE in the current 632-mod `ModsConfig.xml`) — consistent with the
+  2026-09-06 finding, not new. Did not finish checking `Fleshmass`/
+  `GTbc_GravRailArtillery`/`GTbc_TheSingularityCannon` (killed the sweep
+  partway through, diminishing return: Type-1's use of the two GravTech
+  turrets is already live-proven since 2026-09-06, and `Fleshmass` is
+  Anomaly DLC content, not a genuine unknown). This does not close the
+  Type-2 quicktest gap — resolving as a defName is not the same as placing
+  and looking, which still needs `ModsConfig.MINIMAL.xml` extended and a
+  restart, correctly left undone this pass (bridge held).
+
+**🔴 New finding this pass, not previously recorded in this item's own
+file**: read (never wrote) the live `ModsConfig.xml` — **neither
+`mandrake.rut.injections` (the vault template/quest mod) nor
+`mandrake.rut.utinnipatches` (V5's landmark) is currently ACTIVE** in the
+owner's live 632-mod list, though both are deployed to the Mods folder
+byte-identical to the repo. So right now, independent of anything left owed
+in this item, the entire vault arc is **inert in the live game** — not a
+defect in this item's own build (every prior pass already logged "not added
+to ModsConfig this pass" as a deliberate deferral), but worth surfacing
+plainly since the owner is testing live tonight and would see nothing of
+this arc regardless of template/dialogue state. No action taken — enabling
+mods is a live/ModsConfig change, explicitly off-limits this pass.
+
+**Not done, still correctly held** (unchanged from 2026-09-12): Type-2's
+live quicktest proof (needs `ModsConfig.MINIMAL.xml` + restart); V5's
+landmark placement on tile 37; the six real-site hand-finish passes (owner);
+wake/loot/leave dialogue reconciliation against `dungeons_arc_spec.md`
+§3.10's owner-accepted text (still `VAULT_THAW_QUEST_FAMILY_1`'s own file,
+not touched here, confirmed still open/mid-build via that item's own state).
+
+Staying `doing`. This pass found no drift, no regression, and no new
+offline-buildable content this item's own scope is still missing — the
+honest state is that everything FOUNDRY can build offline for this item is
+built and re-confirmed clean; what remains is bridge-gated (Type-2 proof, V5
+placement) or owner-gated (hand-finish, dialogue). Nothing invented or
+padded to make this pass look bigger than it was.
