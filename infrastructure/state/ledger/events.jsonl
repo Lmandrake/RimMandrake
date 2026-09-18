@@ -9271,3 +9271,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","ts":"2026-09-18T16:50:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","ts":"2026-09-18T16:50:48Z"}
 {"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","sha":"384fc2982","ts":"2026-09-18T16:51:19Z"}
+{"seat":"BENCH","event":"claim","id":"MODLIST_DEFERRED_CARDS_1","ts":"2026-09-18T16:53:35Z"}
+{"seat":"BENCH","event":"start","id":"MODLIST_DEFERRED_CARDS_1","ts":"2026-09-18T16:53:36Z"}

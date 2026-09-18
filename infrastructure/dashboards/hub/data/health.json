@@ -1,30 +1,30 @@
 {
- "generatedAt": "2026-09-18T16:14:00Z",
+ "generatedAt": "2026-09-18T16:56:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 696594,
-  "sha256_12": "4315956ad604"
+  "bytes": 706896,
+  "sha256_12": "46b80cba888f"
  },
- "head": "de5e7698d",
+ "head": "ccf00b248",
  "counts": {
-  "red": 34,
-  "blue": 794,
+  "red": 0,
+  "blue": 0,
   "green": 0,
   "grey": 0,
-  "unmeasured": 2167,
-  "total": 2995
+  "unmeasured": 2997,
+  "total": 2997
  },
  "loc": {
-  "red": 16964,
-  "blue": 312078,
+  "red": 0,
+  "blue": 0,
   "green": 0,
   "grey": 0,
-  "unmeasured": 681883,
-  "total": 1010925
+  "unmeasured": 1011380,
+  "total": 1011380
  },
  "reviewEntries": 2943,
  "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read; the rimflow ledger could not be replayed (LedgerError: /mnt/d/Luke/dev/Rimworld/infrastructure/state/ledger/events.jsonl line 9271 is not valid JSON (Expecting value: line 1 column 1 (char 0)). The ledger is append-only, so this is almost certainly a torn write \u2014 do NOT edit around it by hand. Use src/RimMandrake/Utils/repair_torn_ledger.py (dry run by default; --apply --owner-said \"\u2026\" to write) \u2014 it removes ONLY lines that fail to parse, backs up first to Transient/, and refuses past a sanity cap of bad lines. Then commit and push the repaired file deliberately.) \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }
