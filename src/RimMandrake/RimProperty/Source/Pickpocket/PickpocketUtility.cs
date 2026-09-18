@@ -60,7 +60,14 @@ namespace RimMandrake.Pickpocket
             ThingOwner dest = actor?.inventory?.innerContainer;
             if (source == null || dest == null || item == null) return false;
 
-            return source.TryTransferToContainer(item, dest, item.stackCount, canMergeWithExistingStacks: false);
+            // FOUNDRY note 2026-09-18: this file was on disk but never in
+            // RM_Property.csproj's explicit <Compile> list (see the csproj's
+            // own comment) — so it went uncompiled from d95d7ec55 until this
+            // pass's fix. The first real build turned up this ACTUAL bug:
+            // ThingOwner.TryTransferToContainer's overload used here returns
+            // the transferred COUNT (int), not bool, in this RimWorld API
+            // version — a bare `return ...;` does not compile (CS0029).
+            return source.TryTransferToContainer(item, dest, item.stackCount, canMergeWithExistingStacks: false) > 0;
         }
     }
 }
