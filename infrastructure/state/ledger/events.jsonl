@@ -8968,3 +8968,5 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-18T02:02:55Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-18T02:03:19Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-18T02:07:41Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"while the game loads to test pyrelands","ts":"2026-09-18T02:14:20Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-18T02:14:21Z"}
