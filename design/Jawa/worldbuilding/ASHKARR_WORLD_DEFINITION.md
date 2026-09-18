@@ -551,20 +551,21 @@ problem at the same time.** `AB_RockyCrags` currently spans **−82 °C to +19.8
 lizard and a snow-thing on the same ground. Splitting its coldest extent off gives both
 biomes a coherent thermal range. Carried by `HORROR_WASTES_ON_NIGHTSIDE_1`.
 
-## 7. Factions — 120 settlements
+## 7. Factions — the LIVE roster is canon (owner ruling 2026-09-18, worldmap docs pass)
 
-> 📌 **2026-09-08 review note (C1): the LIVE roster is canon and smaller than this
-> table** — 95 NPC settlements measured on V27; the owner performed and adopted the
-> settlement rejigger, so where a row's count disagrees with the live map (Hutt Cartel
-> 17 → 12 live, Homestead 33 → 27, Jawa Trade Moot 4 → 2, Free Droid Enclaves and
-> Junkers −1 each), the map wins and the row's count is a pre-rejigger target kept for
-> its lore rulings. Count from `objects` live, never from this table.
-
-> 📌 **Corrected 2026-08-22: this section said 72.** The map has **120**, across the same
-> 12 factions. Homestead Defense League 13 → 37 and Hutt Cartel 8 → 19 on the owner's
-> ruling that *"the moisture farmers could definitely be all over the place"*; Free Droid
-> Enclaves 3 → 12 and Ascendant Helix 3 → 7 on his later go-ahead. The authoritative count
-> is `world/ASHKARR_WORLDMAP_settlements.csv`, and `_meta.json` is regenerated from it.
+> 🔴 **THE SETTLEMENT COUNT IS THE LIVE WORLD'S, ALWAYS** — owner card 2026-09-18:
+> *"Live roster is canon."* Measure with `jawa/world_objects_get {"def":"Settlement"}`
+> on the live game (or the canonical start save); never quote a number from any doc,
+> this one included. The 72 (WORLD_REDRAFT's run), the 120 (2026-08-22 expansion) and
+> the 95 (V27 measurement) that used to compete in this header are all historical
+> snapshots — git holds their stories.
+>
+> **MEASURED 2026-09-18 on the canonical save, live: 96 NPC settlements**, 13 factions:
+> Homestead Defense League 27 · Hutt Cartel 12 · Wildsteam Clan 9 · Deep Desert
+> Tribes 9 · Free Droid Enclaves 7 · Ascendant Helix 7 · Deepwater Compact 6 ·
+> Geonosian Foundry Hive 5 · Blackstar Company 4 · the Junkers 4 · Galactic Empire 3 ·
+> Jawa Trade Moot 2 · New Arrivals 1. (FACTION_SPEC's weight rows sum to ~96 — spec
+> and world agree; per-row disagreements are pre-rejigger lore targets, the map wins.)
 
 Counts from `tidally_locked_world.md`'s arc-aware table, which **supersedes**
 `faction_world_spec.md` §4 (still written in latitude bands, never rewritten).
