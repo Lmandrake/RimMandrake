@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T06:52:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T07:12:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,3 +522,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_DENSITY_TRIPLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_DENSITY_TRIPLE_1.md
+
+## FULL_LIST_CANNOT_LOAD_GAME_1 Full 635-mod list throws a deterministic NRE in new Game() — no save loads, no map generates
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     investigate
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FULL_LIST_CANNOT_LOAD_GAME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FULL_LIST_CANNOT_LOAD_GAME_1.md
