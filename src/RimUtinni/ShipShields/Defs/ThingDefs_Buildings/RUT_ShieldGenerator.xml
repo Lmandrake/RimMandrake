@@ -22,10 +22,13 @@
     hard-depends on Odyssey already). Real art is owed; do not treat this
     texPath as final.
 
-    NOT in this build (see About.xml / item file for the full account):
-    predictive shield-failure alerts, small-animal repulsion and direct
-    weather-damage negation under the particulate screen, and the
-    no-hard-landing-gate landing advisory.
+    Predictive shield-failure alerts, small-animal repulsion and direct
+    weather-damage negation under the particulate screen, the
+    no-hard-landing-gate landing advisory, and its escalating-damage/
+    lava-burst half (ShieldHazardExposureTracker) are all built too — see
+    About.xml / item file for the full account. Still NOT in this build:
+    real art (placeholder vanilla texture only) and any live/bridge test —
+    this mod has never been deployed or enabled in ModsConfig.xml.
   -->
 
   <ThingDef ParentName="BuildingBase">

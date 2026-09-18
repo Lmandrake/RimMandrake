@@ -1,5 +1,167 @@
 # SHIELD_MODS_LEVERAGE_1 — particulate screen finished, predictive-failure and landing-advisory built, offline-verified only (FOUNDRY, 2026-09-12)
 
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — escalating landing-hazard damage built
+
+Builds the one piece the 2026-09-12 session explicitly left unbuilt: "the
+design doc's other landing-gate half — escalating damage ticks for staying
+unshielded, and the 'lava landing causes immediate severe damage' case."
+Read the exact ruling text first (`design/Jawa/proposals/
+ship_shields_deep_design.md` §6, row `no-hard-landing-gate` and the ruling
+table at the top) before designing anything.
+
+**The ruling text does NOT actually call for a ramping per-hit magnitude —
+this changes what "escalating" can honestly mean.** §6's own words: "the
+hazard applies from tick one at full raw strength (no shield, no bubble) —
+the same consequence a shielded ship risks only if its shield later
+fails." That is a flat, immediate, full-strength consequence, not a slow
+ramp-up. Building a literal magnitude ramp would have contradicted the
+ruling's own text. So "escalating" is built honestly in the two places the
+ruling *does* support:
+1. The Thing-damage application **rate** doubles once a hazard has been
+   unshielded continuously for ~6 in-game hours (`EscalationStepTicks`) —
+   total accrued damage over time escalates; any single hit never does.
+2. A second, harsher letter (`LetterDefOf.ThreatBig`) fires once that same
+   step is crossed — still only a letter, never a block, matching "advise…
+   but no more than that."
+
+**Vanilla already delivers "full raw strength from tick one" to PAWNS for
+free — confirmed via rimsage, not assumed, and deliberately not
+re-implemented.** Every organic pawn's `OrganicStandard`
+`HediffGiverSetDef` (`Defs/Core/HediffGiverSetDefs/HediffGiverSets.xml`)
+already carries `HediffGiver_Hypothermia`, `HediffGiver_Heat`, and
+`HediffGiver_Terrain`. `HediffGiver_Terrain.OnIntervalPassed`
+(`Verse/HediffGiver_Terrain.cs`) already ignites pawns standing on lava
+terrain (`ignitePawnsIntervalTicks`) and applies `DamageDefOf.Burn` ticks
+(`burnDamage`/`burnIntervalTicks`, both real fields on `TerrainDefOf.
+LavaDeep`/`LavaShallow`), and `HediffGiver_Heat` already grows Heatstroke
+from ambient temperature — none of this needs our mod's involvement, and
+building a parallel pawn-damage system on top would have doubled the tick.
+**What vanilla does NOT do is damage the ship's own structures** for
+sitting unshielded in a hazard — the ruling's own "the environment…
+immediately goes to work on the ship… its hull is thick and can take a lot
+of damage" language is about the SHIP, not just its crew. Vanilla's real
+building-scale precedent for this shape of effect is `CompTemperatureDamaged`
+(`Verse/CompTemperatureDamaged.cs`: an out-of-range Thing takes
+`DamageDefOf.Deterioration` on an interval) — confirmed via rimsage before
+being reused as the pattern (not the class itself, since it's a per-def
+opt-in comp and our damage needs to be conditioned on shield coverage, not
+a static safe-range).
+
+**Built, all in `src/RimUtinni/ShipShields/Source/`:**
+- **`ShieldHazardUtility.cs` (new).** Extracted the hazard-detection and
+  module-ready-and-powered logic out of `ShieldLandingAdvisory.cs` into one
+  shared static class (`HasHeatHazard`, `HasParticulateHazard`,
+  `HasLavaAtLanding`, `IsHazardShielded`, `Generators`) — a refactor, not a
+  behavior change, so the existing one-time advisory letter and the new
+  per-tick tracker read the exact same signals instead of two independently
+  maintained copies drifting apart.
+- **`ShieldHazardExposureTracker.cs` (new) — a `MapComponent`, not a
+  `GameComponent`.** The hazard state tracked (is *this map* currently
+  hot/dusty, is *this map's* generator powered and configured) is
+  inherently per-map; `MapComponent` is vanilla's real per-map
+  tracked-state primitive — every non-abstract subclass with a `(Map)`
+  constructor is auto-instantiated per map by `Map.FillComponents`
+  (confirmed via rimsage read of `Verse/Map.cs`, not assumed), which is a
+  cleaner fit than one `GameComponent` hand-juggling a dictionary of
+  per-map records.
+  - `MapComponentTick()` (gated to every 250 ticks, matching this mod's
+    existing interval convention) tracks how long each of the two hazards
+    (heat, particulate) has been continuously active AND unshielded
+    (`ShieldHazardUtility.IsHazardShielded` false for the matching mode).
+    While active, it applies `DamageDefOf.Deterioration` damage
+    (4 HP, to up to 3 Things per application) to a small random sample of
+    Things near the ship every 2000 ticks, dropping to every 1000 ticks
+    once the ~6-hour escalation step is crossed (see above).
+  - **Scoping "near the ship" without guessing a footprint**: if any
+    `RUT_ShieldGenerator` exists on the map, damage is scoped to that
+    generator's own real `CompShieldGenerator.Props.radius` (the field the
+    XML already sets). If none exists, it falls back to
+    `Building_GravEngine.AllConnectedSubstructureNoRegen` — the grav
+    engine's own real connected-substructure footprint (confirmed via
+    rimsage read of `RimWorld/Building_GravEngine.cs`) — the `NoRegen`
+    variant specifically because the plain `AllConnectedSubstructure`
+    getter triggers a visual section-layer regen meant for gizmo-driven
+    calls, wrong for a background tick running every 1-2k ticks. If even
+    that's empty (no grav engine at all), it falls back to a fixed radius
+    around `map.Center` equal to the shipped generator's own default bubble
+    radius (14.9) — this mod's one canonical "near the ship" scale, used
+    only when there's no real building or footprint to read from.
+  - **`OnGravshipLanded(Map map)`** — the lava carve-out. Called from
+    `HarmonyPatches.cs`'s existing `Scenario.PostGravshipLanded` postfix,
+    alongside (not replacing) `ShieldLandingAdvisory.Evaluate`. Checks
+    `ShieldHazardUtility.HasLavaAtLanding` — active `GameConditionDefOf.
+    LavaFlow` OR a real map-terrain scan for `TerrainDefOf.LavaDeep`/
+    `LavaShallow` cells, because a hand-placed `LavaLake`/`LavaCrater` tile
+    mutator writes that terrain permanently at map generation with no
+    `GameCondition_LavaFlow` ever registered (confirmed via rimsage read of
+    `RimWorld/TileMutatorWorker_LavaLake.cs`) — a condition-only check would
+    miss a hand-placed lava lake entirely. If lava is present, fires one
+    `GenExplosion.DoExplosion` burst (radius 8, `DamageDefOf.Flame`, 140
+    base damage, 50% chance to start a fire) plus one `ThreatBig` letter.
+    **Deliberately unconditional on shield state** — the ruling names lava
+    as the worst case specifically *because* no shield configuration makes
+    it safe ("Landing on lava should be the worst case… (don't do that)"),
+    framed as the exception to the shielded/unshielded table, not another
+    row in it.
+- **Mod Settings** (`ShipShieldsSettings.cs`): two new toggles
+  (`landingHazardExposureEnabled`, `lavaLandingBurstEnabled`) plus a damage
+  multiplier slider for the lava burst (`lavaLandingBurstDamageMultiplier`,
+  matching the existing `collapseExplosionDamageMultiplier` convention).
+  Both default **on** — defaults = shipped behavior per
+  `MOD_OPTIONS_RETROFIT_1`, and the ruling's own severity intent ("its hull
+  can take a lot of damage," "lava… the worst case") argues for real
+  consequence by default, toggleable off.
+- **`ShieldLandingAdvisory.cs`**: refactored to call `ShieldHazardUtility`
+  instead of its own private duplicate logic. Letter text and behavior are
+  byte-identical to the 2026-09-12 build — this is a move, not a rewrite.
+- **`HarmonyPatches.cs`**: the `Scenario.PostGravshipLanded` postfix now
+  calls both `ShieldLandingAdvisory.Evaluate` and
+  `ShieldHazardExposureTracker.OnGravshipLanded`.
+
+**Every new API confirmed via rimsage before being called, nothing
+guessed**: `MapComponent`'s `(Map)` constructor + auto-instantiation
+(`Verse/Map.cs` `FillComponents`), `HediffGiverSetDef`'s `OrganicStandard`
+set and `HediffGiver_Terrain`/`HediffGiver_Heat`/`HediffGiver_Hypothermia`,
+`TerrainDefOf.LavaDeep`/`LavaShallow` fields (`burnDamage`,
+`burnIntervalTicks`, `ignitePawnsIntervalTicks`), `CompTemperatureDamaged`
+as the building-damage precedent, `DamageDefOf.Deterioration`/`Flame`,
+`GenExplosion.DoExplosion`'s full signature (reused from this mod's own
+existing collapse-explosion call), `GravshipUtility.
+GetPlayerGravEngine_NewTemp`, and `Building_GravEngine.
+AllConnectedSubstructureNoRegen`.
+
+**Verification performed**: `dotnet build` (via the Windows-native
+`dotnet.exe` at `C:\Users\Mandrake\.dotnet\dotnet.exe`, invoked with the
+Windows-style project path per this csproj's own build comment) — **0
+warnings, 0 errors, first try**. `git diff --stat` on this mod's own paths
+before committing, confirming no other window's concurrent work was
+touched or reverted. **This is still compile-only, offline verification —
+zero live/bridge testing of anything in this mod, same as every prior
+session.** Nothing has ever been spawned, landed on with a real gravship,
+or watched tick in a running game.
+
+**Deploy status unchanged, still explicitly owed**: not deployed (the live
+DLL is very likely OS-locked by a running `RimWorldWin64.exe` during this
+belt-mode session; no attempt made, matching every prior session's
+posture). `ModsConfig.xml` untouched — enabling this mod is still a
+separate, ceremony-gated step this session does not take.
+
+**First live pass, unchanged core list plus this session's two new
+mechanisms**: land a gravship on a hand-placed lava-lake tile (not just a
+`LavaFlow`-condition map) with no shield configured and confirm the
+immediate burst + letter fire exactly once; leave a landed, unshielded
+gravship on a hot or dusty map for several in-game hours and confirm
+Things near it (or near the grav engine, if no generator is built yet)
+visibly lose hit points at the base rate, then confirm the rate audibly/
+visibly doubles and the escalation letter fires once past the ~6-hour
+mark; confirm the whole system goes silent the moment a matching shield
+module is installed and powered. Plus the unchanged 2026-09-12 list:
+spawn `RUT_ShieldGenerator`, fire a fast and slow projectile at it in
+Bubble mode, install both modules and confirm mode-cycling, force-drain
+hit points to confirm the collapse explosion and predictive-failure
+letter, and verify the particulate screen repels a wild animal and blocks
+a Toxic Fallout tick.
+
 ## Build (FOUNDRY, 2026-09-12) — resumes the 2026-09-09 slice
 
 Game was mid-cold-load all session (RimWorldWin64.exe running, ShipShields

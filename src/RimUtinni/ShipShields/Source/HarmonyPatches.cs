@@ -106,8 +106,13 @@ namespace RimMandrake.Utinni.ShipShields
 
     // shd:no-hard-landing-gate. Scenario.PostGravshipLanded is a confirmed-
     // live, fires-for-every-gravship-landing hook (GIZKA_HOLD_HOOK_SPIKE_1,
-    // 2026-09-12) -- a postfix here is a one-time advisory check, never a
-    // per-tick hazard system.
+    // 2026-09-12) -- a postfix here fires two independent, additive
+    // one-time landing checks: the advisory letter (unchanged since
+    // 2026-09-12) and the lava-landing immediate damage burst (2026-09-18,
+    // ShieldHazardExposureTracker.cs's class header). Neither is a per-tick
+    // hazard system; the per-tick escalating-damage half is
+    // ShieldHazardExposureTracker's own MapComponentTick, running
+    // independently every map tick regardless of this hook.
     [HarmonyPatch(typeof(Scenario), nameof(Scenario.PostGravshipLanded))]
     public static class Patch_Scenario_PostGravshipLanded
     {
@@ -115,6 +120,7 @@ namespace RimMandrake.Utinni.ShipShields
         public static void Postfix(Map map)
         {
             ShieldLandingAdvisory.Evaluate(map);
+            ShieldHazardExposureTracker.OnGravshipLanded(map);
         }
     }
 }

@@ -51,9 +51,18 @@ in-game hour, clearing once it recovers.
 Landing-hazard advisory (shd:no-hard-landing-gate): a Harmony postfix on the
 confirmed-live `Scenario.PostGravshipLanded` hook sends a single non-blocking
 letter if the landing map has an extreme-heat or airborne-particulate hazard
-with no matching shield configured and powered. The design doc's other half
-(escalating damage ticks for staying unshielded) is a separate, larger
-mechanism and remains open work — see the item file.
+with no matching shield configured and powered.
+
+The design doc's other half of that same ruling row is now built too:
+`ShieldHazardExposureTracker` (a per-map `MapComponent`) applies periodic
+`Deterioration` damage to Things near the ship for every hazard that stays
+active and unshielded, with the application rate (never the per-hit amount —
+the ruling's own text is "full raw strength from tick one," not a ramp)
+doubling after a long unshielded stretch, plus a second, harsher letter at
+that point. Landing on active lava (the ruling's named worst case) fires one
+immediate damage burst and letter, unconditional on shield state — no shield
+configuration makes lava safe. Both pieces are Mod Settings toggles. See the
+item file for the full account.
 
 Full spec: design/Jawa/proposals/ship_shields_deep_design.md. Survey and
 scoping history: infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md,
