@@ -40,6 +40,23 @@
   measured/tuned against play — the owner's verify pass should retune it). Fish
   Nutrition/MarketValue are held at vanilla tier on the RSW side; this is the only
   yield lever touched here, and it is a straight cut, not a multiplier.
+
+  FISH_BESTIARY_BUILD_1 wave 2 (2026-09-18): the 4 new species this water was
+  owed (§2B: RUT_Tubbik/RUT_Zhurr floater+eel commons, RUT_Hurrok/RUT_Vhessa
+  cucumber+squid uncommons — defs in this folder's sibling
+  RUT_CrackedLandsFish_Items.xml) are added into the SAME two bucket
+  PatchOperationReplace values below, alongside the already-shipped
+  RSW_DuneCrawler/BMT_Rocktooth/BMT_Boneblade — a full replace of the whole
+  bucket dictionary each time (PatchOperationReplace on a Dictionary field
+  fully overwrites it), so the new species are folded into the existing
+  values rather than appended by a second operation. The BMT pair stays
+  PERMANENT per this morning's ratification (§2B's own note) — no
+  retirement logic added. A third operation appends the §2B.rare addition
+  (RUT_Vhessa x2-3 stack, weight 1) to RSW_RareSandCatches' own options list
+  via PatchOperationAdd, keeping that ThingSetMakerDef itself (owned by
+  SWBestiary, a different mod) unedited — this mod patches it instead of
+  hand-editing another mod's def, same ownership discipline the "per-biome
+  mods" ruling asks for.
 -->
 <Patch>
 
@@ -56,6 +73,8 @@
           <value>
             <freshwater_Common>
               <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
+              <RUT_Tubbik>1</RUT_Tubbik>
+              <RUT_Zhurr>0.6</RUT_Zhurr>
             </freshwater_Common>
           </value>
         </li>
@@ -76,6 +95,8 @@
             <freshwater_Uncommon>
               <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
               <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
+              <RUT_Hurrok>0.8</RUT_Hurrok>
+              <RUT_Vhessa>0.4</RUT_Vhessa>
             </freshwater_Uncommon>
           </value>
         </li>
@@ -95,6 +116,36 @@
         </li>
 
       </operations>
+    </match>
+  </Operation>
+
+  <!-- FISH_BESTIARY_BUILD_1 wave 2 — §2B.rare addition: "the wall let go all
+       at once." RSW_RareSandCatches is SWBestiary's own def (RimStarWars
+       tier); patched rather than hand-edited, keeping ownership at the mod
+       that shipped it. PatchOperationFindMod (not a bare MayRequire) per
+       validate_patch.py's own advisory: wraps the whole operation so an
+       absent target mod is a clean no-op, never a red load error. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: SW — Bestiary</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingSetMakerDef[defName="RSW_RareSandCatches"]/root/options</xpath>
+      <value>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_Vhessa</li>
+                </thingDefs>
+              </filter>
+              <countRange>2~3</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </value>
     </match>
   </Operation>
 

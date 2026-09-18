@@ -158,3 +158,127 @@ this wave — bridge time went to the engine-mechanism research above instead
 calling that table done.
 
 **Git**: see the commit this section ships with.
+
+## 2026-09-18 wave 2 (FOUNDRY, belt mode, subagent)
+
+**Thread A — the Wasteland brine-mining mechanism, built and wired.**
+
+🔴 **Correction to wave 1's own finding, MEASURED before building anything.**
+Wave 1's "fishing is ENGINE-DEAD" analysis read the DONOR `Wasteland`
+BiomeDef (Mlie.AdvancedBiomes) — the live Ash'karr map does not use it.
+MEASURED via `world/ASHKARR_WORLDMAP_tiles.csv` (proper `csv.DictReader`
+column read, not a scan): `RUT_Wasteland` covers all **1853** Wasteland
+tiles; bare `Wasteland` covers **zero**. `RUT_Wasteland` itself left its own
+`waterDeepTerrain`/`waterShallowTerrain`/etc. fields unset, so any water it
+generated fell back to vanilla `TerrainDefOf.WaterDeep` (`Verse/
+MapGenUtility.cs:182`, `?? TerrainDefOf.WaterDeep`) — ordinary freshwater.
+Fishing on the actual live biome would in fact have worked before this wave.
+This does **not** reopen fishing as the mechanism: the owner's mining ruling
+stands on the spec's own flavor line (§4.3, "the pool you want to mine has
+one, and it is a capacitor"), not as a bug workaround. Both the wrong-def
+finding and this non-reversal are documented in-file (RUT_WastelandBrineWater.xml,
+RUT_WastelandBrine_Items.xml headers) so the record doesn't carry the stale claim.
+
+**Built:**
+- `RUT_WastelandBrineDeep`/`Shallow`/`MovingShallow`/`MovingChestDeep`
+  (`RUT_WastelandBrineWater.xml`, Defs/TerrainDefs/) — four TerrainDefs based
+  on Odyssey's `ToxicWater*Base` family (matches the donor's own hypersaline
+  flavor and `water_taxonomy.csv`'s "radiologically live"), same crib shape
+  as `RUT_ScaldWater.xml`. The two shallow variants carry a new
+  `RUT_WastelandBrineShallow` tag (GenStep_ScatterThings' own tag-based
+  `CanScatterAt`, verified by reading `Verse/GenStep_ScatterThings.cs`
+  directly this pass).
+- `RUT_Wasteland.xml` now wires its four lake/river water fields to those
+  terrains (were previously unset). `oceanDeepTerrain`/`oceanShallowTerrain`
+  deliberately left unset — the pools are "basins sealed from the seas"
+  (wasteland.md). Scope is biome-wide (all 1853 tiles), same scope wave 1's
+  own dead fishTypes plan already accepted — the SS8 per-tile mutator
+  palette that would scope this to exactly "three hypersaline pools" is its
+  own future authoring pass, not built here.
+- `RUT_BrineDeposit_Tekk`/`_Drazz`/`_BrinePlate` (`RUT_WastelandBrineDeposits.xml`,
+  Defs/ThingDefs_Buildings/) — three `ParentName="RockBase"` Mineable
+  ThingDefs (thingClass Mineable, `veinMineable false`/`isNaturalRock false`
+  — Core's own `CollapsedRocks` is the precedent for a RockBase def that
+  isn't vein-generated), each yielding one of wave 1's three items
+  (`mineableThing`/`mineableYield`). `terrainAffordanceNeeded` explicitly set
+  to `Walkable` on all three — verified by direct read of `Verse/GenSpawn.cs`
+  (`GenConstruct.CanBuildOnTerrain`) that a Building-category ThingDef left
+  at `BuildingBase`'s default `Light` affordance can never pass a placement
+  check on shallow water (no `Light` affordance there), same fact
+  `RUT_ScaldWrecks.xml` already established for this mod's OTHER
+  water-terrain scatter. Graphic reuses vanilla `RockFlecked_Atlas`
+  (recolored per deposit, same convention the vanilla ore family itself
+  uses) — real art, not a placeholder needing `DEPLOY_HOLD.txt`.
+- Three `GenStep_ScatterThings` GenStepDefs (`RUT_WastelandBrineScatter.xml`,
+  Defs/MapGeneration/, orders 971-973) scattering the three deposits onto
+  cells tagged `RUT_WastelandBrineShallow`, `countPer10kCellsRange` carrying
+  the original common/uncommon/rare tiers forward as relative density
+  (1.2~1.8 / 0.4~0.6 / 0.15~0.25). Registered onto `Base_Player.genSteps`
+  globally (`RUT_WastelandBrineScatter_Register.xml`, Patches/) — safe
+  because the terrain tag is the real scope, same reasoning
+  `RUT_ScaldWreckScatter_Register.xml` already gives for its own three
+  wreck GenStepDefs.
+
+**Deferred, not silently dropped:** no discharge/shock hazard on MINING a
+drazz deposit (the spec's own flavor line) — needs a new comp hooked to the
+mining strike, which is new C# this wave declines to add on top of the base
+mechanism, same restraint `RUT_ScaldWrecks.xml`'s own header already took on
+its loot-ThingSetMaker idea. `RUT_BrineShock` (wave 1's raw-ingestion
+hediff) is unaffected and still fires once a drazz is mined and eaten raw.
+
+**No live bridge quicktest this wave**: `rimflow bridge who` showed BENCH
+holding it with recent activity (idle 9 min on the second check, well inside
+the 45-min stale window) for its own rot-wave restart cycle — not taken, per
+"one bridge driver at a time." A live Wasteland-map quicktest (confirm the
+deposits generate and are genuinely mineable) is owed to whoever next holds
+the bridge.
+
+**Thread B — Cracked Lands roster (4 species + rare-table addition), built and wired.**
+
+Picked as the smallest well-specified deferred water (no retirement logic,
+unlike Weeping Stones). Per-biome mod home: `ZBiome_Badlands` (More Vanilla
+Biomes) has no dedicated Ash'karr biome mod beyond `UtinniPatches`, which
+already carries this water's fish wiring (`SandFishing_CrackedLands.xml`,
+`SAND_SWIMMERS_MOD_1`) — built there, per the doc's own "Watch out" note.
+
+- `RUT_Tubbik` (floater, common), `RUT_Zhurr` (eel, common 0.6),
+  `RUT_Hurrok` (cucumber, uncommon), `RUT_Vhessa` (squid, uncommon 0.4) —
+  `RUT_CrackedLandsFish_Items.xml`, Defs/ThingDefs_Items/. `RUT_Zhurr` carries
+  no `statBases` override (eel register is vanilla `FishBase` verbatim, same
+  convention wave 1's `RUT_Niim` already used).
+- `SandFishing_CrackedLands.xml` extended: the two existing
+  `PatchOperationReplace` bucket values (freshwater_Common/_Uncommon) now
+  fold the 4 new species in alongside the already-shipped
+  `RSW_DuneCrawler`/`BMT_Rocktooth`/`BMT_Boneblade` (a `PatchOperationReplace`
+  on a Dictionary field fully overwrites it, so this is one edit, not an
+  append). BMT pair stays PERMANENT, no retirement logic added, per this
+  morning's ratification. A new `PatchOperationFindMod` operation appends
+  the §2B.rare option (`RUT_Vhessa` x2-3 stack, weight 1, "the wall let go
+  all at once") to `RSW_RareSandCatches`' own options list — patched, not
+  hand-edited, since that ThingSetMakerDef belongs to SWBestiary (a
+  different mod), matching the "per-biome mods" ownership discipline.
+  `maxFishPopulation` (90) untouched — "stands."
+
+**Deferred to wave 3+**: Weeping Stones (6 species + `swfish_` retirement —
+still untouched, still correctly not retired), Greentide's remaining 7 +
+`RUT_LungerFry` + `RUT_RareGreentideCatches`, Twilight's remaining 7 +
+`RUT_RareTwilightCatches`. Weeping Stones is the next natural pick (smallest
+remaining after Cracked Lands) but needs the `swfish_` reference sweep done
+carefully — check every existing xpath/table/quest that names
+`swfish_Burra/Daggert/Nyork/See` before retiring, not just the fishTypes bucket.
+
+**Verify**: `validate_patch.py` run static, then with `--defs` against all
+three real content roots (Steam Workshop `294100`, `RimWorld/Mods`,
+`RimWorld/Data`) — **8 files touched/new this wave (5 Thread A, 2 Thread B +
+1 shared item-file correction already counted in Thread A's 6), 634/634
+active mods found on disk, 8,850 def files, 0 errors, 0 warnings**; every
+`ParentName` (`RockBase`/`ToxicWater*Base`/`FishBase`) and every xpath
+(including the two new `PatchOperationFindMod`-wrapped operations) resolved
+against the real load set with exactly the expected hit count. Full-repo
+selftests run (`run_selftests.py`, 58/60 passed): the 2 failures
+(`selftest_art_checks.py`, `selftest_one_path_seam.py`) are pre-existing,
+unrelated to this wave (a flora-sheet script's LocalLow literal and a
+sprite-duplicate-detection threshold issue) — confirmed by reading their
+own output, not assumed. No live bridge quicktest this wave (see Thread A).
+
+**Git**: see the commit this section ships with.

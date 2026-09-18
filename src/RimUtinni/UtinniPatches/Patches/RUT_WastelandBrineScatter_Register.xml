@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WastelandBrineScatter_Register.xml  UtinniPatches · authored 2026-09-18
+  ============================================================================
+  FISH_BESTIARY_BUILD_1 wave 2 — the registration half. RUT_WastelandBrineScatter.xml
+  declares three GenStepDefs; a GenStepDef on its own runs on no map, the same
+  fact RUT_ScaldWreckScatter_Register.xml (this same mod) already documents.
+
+  SCOPE: Base_Player, GLOBAL — same justification RUT_ScaldWreckScatter_Register.xml
+  already gives for its own three wreck GenStepDefs: each scatter step's OWN
+  terrain validator (terrainValidationAllowed -> RUT_WastelandBrineShallow) already
+  confines it to cells carrying that tag, and only the two RUT_WastelandBrine*
+  shallow terrains (RUT_WastelandBrineWater.xml) carry it — nowhere else in the
+  load order does. Registering onto Base_Player is still correct: the player's
+  own settled map is where a brine-deposit scatter should visibly land.
+
+  Target: Core/Defs/MapGeneration/BasePlayerMapGenerator.xml, MapGeneratorDef
+  ParentName="MapCommonBase" Name="Base_Player", <genSteps> a plain list of
+  GenStepDef names.
+
+  No MayRequire needed on this patch — its three GenStepDefs are this mod's
+  own, always loaded together with this patch. Conditional test xpath is
+  identical to the inner Add's xpath, same discipline as its own precedent.
+
+  Not held via DEPLOY_HOLD.txt: unlike RUT_ScaldWreckScatter_Register.xml, none
+  of the three ThingDefs this patch's GenStepDefs name are missing art (see
+  RUT_WastelandBrineDeposits.xml's own header) — nothing here is a dangling
+  cross-reference.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RUT_Jawa_ScatterWastelandBrineTekk</li>
+        <li>RUT_Jawa_ScatterWastelandBrineDrazz</li>
+        <li>RUT_Jawa_ScatterWastelandBrinePlate</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

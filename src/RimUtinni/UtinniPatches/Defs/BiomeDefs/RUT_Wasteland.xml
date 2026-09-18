@@ -37,6 +37,20 @@
     halo, plasma); the mutator/injection palette per family (SS8 table, its own
     authoring pass); the Junkers' tipping-fee economy; the Throat.
 
+    FISH_BESTIARY_BUILD_1 wave 2 (2026-09-18): waterShallowTerrain/waterDeepTerrain/
+    waterMovingShallowTerrain/waterMovingChestDeepTerrain wired to the
+    RUT_WastelandBrine* terrains (RUT_WastelandBrineWater.xml, this folder) instead
+    of being left unset. Left unset, any water this def generates fell back to
+    vanilla TerrainDefOf.WaterDeep/WaterShallow (Verse/MapGenUtility.cs:182) —
+    ordinary freshwater, contradicting wave 1's "engine-dead" finding, which
+    analyzed the DONOR `Wasteland` BiomeDef (unused by the live map; MEASURED via
+    world/ASHKARR_WORLDMAP_tiles.csv, RUT_Wasteland covers all 1853 Wasteland tiles,
+    bare "Wasteland" covers zero) rather than this def. Wired here anyway, toxic
+    flavor and all, because the owner's mining ruling for the brine-battery
+    archetype (RUT_Tekk/RUT_Drazz/RUT_BrinePlate) stands on its own merits, not as
+    a workaround — see RUT_WastelandBrineDeposits.xml. oceanDeepTerrain/
+    oceanShallowTerrain left unset: the pools are "basins sealed from the seas"
+    (wasteland.md), never ocean-typed.
   -->
 
   <BiomeDef>
@@ -48,6 +62,10 @@
     <lakeBeachTerrain>Gravel</lakeBeachTerrain>
     <mudTerrain>MarshyTerrain</mudTerrain>
     <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <waterShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastelandBrineShallow</waterShallowTerrain>
+    <waterDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastelandBrineDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastelandBrineMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastelandBrineMovingChestDeep</waterMovingChestDeepTerrain>
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>
