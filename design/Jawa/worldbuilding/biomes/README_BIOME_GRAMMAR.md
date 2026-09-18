@@ -163,8 +163,9 @@ generated the deep desert and desert sheets and it should generate the rest.
 **Deep desert** = absence (distance from water). **Desert** = the shade economy, because the
 terrain is hilly enough to cast shadows and the sun is high enough to make them matter.
 **Arid shrubland** = where the shade economy *ends* — the terrain flattens again and the sun
-drops to 16% of overhead, so nothing has to hide any more. That is the proposed hinge, put to
-the owner 2026-09-05 and **not yet ruled**.
+drops to 16% of overhead, so nothing has to hide any more. **RULED 2026-09-18** (owner card,
+worldmap docs pass: "Ratify the hinge") — this IS the dryland-ladder hinge; the sheets were
+already written to it, so nothing repaints.
 
 ### Arid shrubland — done
 
