@@ -696,10 +696,10 @@
     "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/AftermathRuleRunner.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "906df874a6a71ae9e8856355da34eef15c8c303ac5556171ad0c1360644caf23",
-    "sha": "5f12f476e"
+    "cleanCount": 5,
+    "date": "2026-09-17",
+    "hash": "4fff0fec1e8794e037f05222a56aebbf8208e476129514fff0d72259f3ad2061",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Aftermath/Source/AftermathTriggerKind.cs": {
     "cleanCount": 3,
@@ -774,16 +774,16 @@
     "sha": "f3a684e1"
   },
   "src/RimMandrake/Aftermath/Source/QueuedAftermathMarker.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "a02af506bc65480069b355cca286ae4ce98810d32f40294772ed086e178a4b78",
-    "sha": "f3a684e1"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "ac09b3e5acc9dc8dd511874f3d2f649cd90c894005847aef2bf758c359e1b8a5",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Aftermath/Source/RM_Aftermath.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "52b756d66b290855e16d6c08dfe2e3b41fd7c7c0e4588c85bf1899329ec79104",
-    "sha": "ce01a5a8a"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "503b615fd0be5976d99957face69a2b26745f8fd15a564b0a415db1eec5e830b",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Aftermath/Source/RM_AftermathMod.cs": {
     "cleanCount": 1,
@@ -2736,10 +2736,10 @@
     "sha": "6879314fc"
   },
   "src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "fd908876188331de093fa76f601a90a38653fadeba26c499f7c3c9d4fef380c5",
-    "sha": "6879314fc"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "14bd6a316d345f184384b217218af4353246d5cb1daf869adecae10052c9de08",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Greentide/Defs/DesignationDefs/RM_Greentide_Designations.xml": {
     "cleanCount": 1,
@@ -2748,10 +2748,10 @@
     "sha": "6879314fc"
   },
   "src/RimMandrake/Greentide/Defs/HediffDefs/RM_Greentide_Hediffs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "e61c43ffa6405223ba54809f0a3fedd21116410c6c438d563be3e5d8b3da84a1",
-    "sha": "6879314fc"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "06c963436c2cc128bcef7b01b404a10465a2c63bfc418eaceae59ebaf493443c",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Greentide/Defs/JobDefs/RM_Greentide_JobDefs.xml": {
     "cleanCount": 1,
@@ -2808,10 +2808,10 @@
     "sha": "2c8762586"
   },
   "src/RimMandrake/Greentide/Source/RM_Greentide.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "d1331f33ef59a011367ed48e64c1b3a55651831a21ad16c01064839b8ded63e5",
-    "sha": "3b8e16ddf"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "d617da3a8c1b377b613000120ac6cc68dd0b298f08671895d025334936dad128",
+    "sha": "7e8587cea"
   },
   "src/RimMandrake/Greentide/Source/RM_GreentideMod.cs": {
     "cleanCount": 1,
@@ -12412,10 +12412,10 @@
     "sha": "e69e40f3"
   },
   "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "431e6f191cb791a9b249e01568999b4f42ce687644c58d2beefbee59074a3717",
-    "sha": "e69e40f3"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "bbfcf5b7d15f43687a47ab259ef966ee540c481e204634abec8e4ecde6b209ef",
+    "sha": "7e8587cea"
   },
   "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml": {
     "cleanCount": 3,
@@ -12436,10 +12436,10 @@
     "sha": "e69e40f3"
   },
   "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/RimMandrakePawnKinds.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "8d94530795eb2de5d2ca5ccd298101cdec0f70541064fd96883f6f9ccb58ef27",
-    "sha": "e69e40f3"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "190eefb4732886a2f99f80616225d4a02c62029ff3f2037b39a1cad976f8d262",
+    "sha": "7e8587cea"
   },
   "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/SW_RescuedKinds.xml": {
     "cleanCount": 1,
@@ -12460,10 +12460,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "dfe650f4331bf1b31397558e3b04741138def92417595a2a79e71f3d3a49608d",
-    "sha": "e69e40f3"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "de031ec179ea336482e8e046a57e2b2612d9014c2dae9021ba54a4f4b030d3c5",
+    "sha": "7e8587cea"
   },
   "src/RimStarWars/StarWarsRaces/LICENSE": {
     "cleanCount": 1,
