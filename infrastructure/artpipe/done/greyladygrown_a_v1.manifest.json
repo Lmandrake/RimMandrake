@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 109.39597642399895,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 109.39597642399895,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "greyladygrown_a_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T13-01-13-01a0b61b-d969-70a2-a7c3-30f7d212ad81.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 71.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T12-59-05-01a0b619-e343-7211-a5ac-9377a414f224.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 70.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "greyladygrown_a_v1",
+    "note": "Built-in imagegen used. Created an angular blue-lit Grey Lady fungus with prominent trailing harvest lace; resized to exact delivery dimensions. Retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\greyladygrown_a_v1\\greyladygrown_a_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/greyladygrown_a_v1/greyladygrown_a_v1.png\n    256x256  rgba  116,837 bytes  (108s)\n"
+}

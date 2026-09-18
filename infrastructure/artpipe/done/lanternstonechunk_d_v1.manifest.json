@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 102.72439804999158,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.72439804999158,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "lanternstonechunk_d_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T13-04-53-01a0b61f-35c1-7250-a0e3-77100b2f15fa.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T13-03-06-01a0b61d-93b5-7bb2-88ad-5a43a0a2b932.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 72.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "lanternstonechunk_d_v1",
+    "note": "Generated with built-in imagegen, copied into the workspace, resized to exactly 256x256, and verified as 32-bit ARGB with four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\lanternstonechunk_d_v1\\lanternstonechunk_d_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lanternstonechunk_d_v1/lanternstonechunk_d_v1.png\n    256x256  rgba  97,350 bytes  (101s)\n"
+}

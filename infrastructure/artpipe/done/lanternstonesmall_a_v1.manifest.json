@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 85.03994030899776,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.03994030899776,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "lanternstonesmall_a_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 74.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T13-12-30-01a0b626-2c08-7142-aa97-f7205e74bf6c.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 69.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T13-10-59-01a0b624-cab2-7132-8c7f-34338cbfbc79.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 76.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "lanternstonesmall_a_v1",
+    "note": "Built-in imagegen; normalized the supplied prompt for a compact angular blue crystal cluster. Resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\lanternstonesmall_a_v1\\lanternstonesmall_a_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lanternstonesmall_a_v1/lanternstonesmall_a_v1.png\n    256x256  rgba  53,557 bytes  (84s)\n"
+}
