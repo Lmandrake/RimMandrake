@@ -841,6 +841,30 @@ apex body (corpse in the rare table). Lands as an item with no C#.
    Scald line at uncommon 0.5 as written there, and does it build with this mod
    or with that commission's own item?
 
+### Rulings (owner, 2026-09-18)
+
+1. **Retire** the `swfish_` four on the Weeping Stones when the six RUT species land.
+2. **Keep the Cracked Lands BMT pair permanently** — not a placeholder.
+3. **Mod shape: per-biome mods.** Split the fish defs across each water's own
+   existing biome mod (Pyrelands-style) rather than one dedicated fish mod or
+   folding everything into `UtinniPatches`. Whoever builds this: place each
+   water's fish defs alongside that water's own biome content, not in a new
+   shared home.
+4. **Ship both optional hediffs in v1** (veen's coolant load, drazz's raw shock).
+5. **Keep the nicknames as the shipped names for v1** (*coolant eel*, *the
+   silver*, *the owner*, *the sailor* for the four owed defs) — no rename pass
+   owed.
+6. **Add `RUT_LungerFry` now**, ahead of the Lunger creature landing in the roster.
+7. **Scalefish catch items: build our own** (`RSW_MeeCatch`/`FaaCatch`/`LaaCatch`,
+   new item defs, own mockup art) — not the donor's, not a fallback pairing.
+   **The Greentide repair (`GREENTIDE_FISH_ITEMS_FIX_1`) rides this build**, not
+   its own item.
+8. **The bladderboil catch builds with this mod**, not the hydrocarbon
+   commission's own item.
+
+All eight rulings are final; no further owner input needed on this doc before
+build. See `FISH_BESTIARY_BUILD_1` for the build item this ratification files.
+
 ---
 
 ## 7. Provenance
