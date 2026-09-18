@@ -48,39 +48,37 @@ giving up, or by pinging him again for something already ruled.
 <!-- Anything left mid-flight, and the exact next action. An item in `doing` with no line here is a trap for the next seat. -->
 Touched this window (real progress, verified/committed/pushed, left `doing` on purpose):
 - `LIQUID_BOTTLE_LOOP_1` — bottle/bucket/barrel real art shipped and wired
-  (`cbe48fdf7`), tank building + fill/drain jobs built (`52b9c584e`). Next action:
-  deploy `FlowWorks`'s assembly (blocked on game restart, it's currently locked), then
-  a live quicktest of both the tank and the underlying fill/wash bottle chain — neither
-  has ever run live. Tank concept art is unwired to nothing else (it's the building's
-  own texture now, done).
+  (`cbe48fdf7`), tank building + fill/drain jobs built (`52b9c584e`). Not touched by
+  the 2026-09-18 window that followed this one. NEXT: deploy `FlowWorks`'s assembly at
+  a game-down window, then a live quicktest of both the tank and the fill/wash bottle
+  chain — neither has ever run live. (Note: FlowWorks' liquid framework was found this
+  same 2026-09-18 window to have never had working water terrain at all due to a
+  case-mismatched enum value — fixed in `cd8ab494e`, see `QUICKTEST_RIVER_WATER_MISSING_1`
+  — re-verify this item's own liquid mechanics still work once that fix is deployed.)
 - `AQUATIC_WATER_BREATHING_GENE_1` — design brief complete (`d47ab4874`), mechanism
-  chosen (one GeneDef, no new C#, one added clause in FlowWorks' `CanSwim`). Next
-  action: owner picks the species roster (see "What the owner should see"), then
-  FOUNDRY builds it — should be a small, fast pass once unblocked.
-- `MLIE_FAUNA_ABSORPTION_1` — Pass 12 done (`2cd0ebcb1`), 51 species + Fambaa remain in
-  the Wave C worklist. Pattern is solid and self-correcting (5 real bugs caught across
-  passes 9-12 by actually checking each species, not copying blind) — safe for the next
-  seat to just continue it 3-4 at a time. Fambaa still deliberately skipped
-  (ArtOverride-gated, flagged since Pass 7 — read why before touching it). Pass 12 also
-  found the documented "6-species art-override collision" caution was wrong — the real
-  number is 26 dedicated override mods; check each override's own `About.xml` for
-  covered facings before shipping new SWBestiary art, same as this pass did.
+  chosen (one GeneDef, no new C#, one added clause in FlowWorks' `CanSwim`). Not
+  touched by the 2026-09-18 window that followed this one. NEXT: owner picks the
+  species roster (see "What the owner should see" above), then FOUNDRY builds it.
+- `MLIE_FAUNA_ABSORPTION_1` — STALE, superseded by the 2026-09-18 window's own handoff:
+  now at Pass 19 (29/90 remaining, not 51), see `FOUNDRY_REBOOT_HANDOFF_202609181353`'s
+  own half-done entry for the current, precise state (Pass 20 was interrupted mid-flight,
+  real uncommitted art exists). NEXT: read that later handoff instead of this stale one.
 - `DIRTY_CODE_REVIEW_STANDING_LOOP_1` — several waves this window: Armoury (58 files, 2
   bugs), RotSporeKit/AftermathRites/RaidRedesigner/RimProperty/Droidworks(both tiers)
   (13 files, 4 bugs including a real `<li>`-discards-the-def MayRequire gap), FlowWorks
   (71 files, 5 bugs including a broken tar-superdeep passability and a pit double-
-  occupant UI gate that could never actually place a second prisoner). Never closes —
-  run `code_review_status.py list` fresh before picking the next target, scope may have
-  shifted under concurrent windows (another seat's "wave 5" landed on this same item
-  earlier in the session).
-- `TILE_STRUCTURE_DESIGNS_1` — whisper batch 2 landed (`e8aec8b25`): 16/22 promises,
-  5/22 whispers now covered. 17 whisper rows remain `MISSING-MECHANISM` (most need a
-  nameable anchor `TileMutatorDef` that doesn't exist yet, or content design not yet
-  written) — re-run `structure_roster_lint.py` fresh, don't trust this number cold.
-  Batch-of-3-5, offline-verified, live-proof-deferred discipline is well established;
-  follow the item's own history rather than reinventing it.
+  occupant UI gate that could never actually place a second prisoner). Continued heavily
+  in the 2026-09-18 window under the `DIRTY_CODE_REVIEW_LOOP_RESTART_N` chain (now past
+  RESTART_15, ~98.7% clean). NEXT: run `code_review_status.py list` fresh, then continue
+  from whatever `DIRTY_CODE_REVIEW_LOOP_RESTART_N` (highest N) names as its own next pick.
+- `TILE_STRUCTURE_DESIGNS_1` — STALE, superseded by the 2026-09-18 window's own handoff:
+  now 19/22 promises, 8/22 whispers (whisper side effectively done — remaining 14 rows
+  all explicitly rejected/duplicated with evidence). NEXT: see
+  `FOUNDRY_REBOOT_HANDOFF_202609181353`'s own half-done entry — rebuild The Kiln's
+  promise row now that its identity is ruled (crater, not furnace), then the item's
+  last real criterion (`GenStep_RimplacePlan` proven via a live quicktest) needs bridge.
 - `MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1` — filed this window, 1 of 3 already resolved
-  by another window. Next action: enable `mandrake.rut.injections` and
+  by another window. NEXT: enable `mandrake.rut.injections` and
   `mandrake.rut.utinnipatches` at the next restart, correct load-order per
   `rimworld-start-prep`, per the owner's explicit ruling recorded on the item.
 
