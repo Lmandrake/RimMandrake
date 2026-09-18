@@ -25,9 +25,14 @@ Asked directly: run the live quicktest now. Answered yes, then went AFK
 ("full auto, don't stop").
 
 ## Watch out
-⛔ Not yet startable: the game was DOWN then LOADING (owner broadcast,
-2026-09-11) as this item was unblocked, and the bridge is held by BENCH
-(`WORLDMAP_FINAL_REVIEW_1`, live and non-stale — do not force-take a peer's
-active bridge claim for this). Wait for the game to reach UP and the bridge
-to free before starting the live legs. Do not deploy a new mod into the Mods
-folder while the game is mid-load — RimWorld is reading that folder right now.
+- Do not deploy a new mod into the Mods folder while the game is mid-load —
+  RimWorld is reading that folder right now.
+- ⚠️ The mod is already deployed; RM_FE_Pyrelands rides UtinniPatches/Pyrelands
+  in the live 634 list. What has never happened is a clean FULL-LIST load with
+  it: the 2026-09-17 23:31Z attempt died pre-menu on unrelated whole-file def
+  discards (see BENCH note on this item) and RimWorld reset the live ModsConfig
+  to Core+DLCs — restored from `ModsConfig.FULL.LATEST.xml`, fixes at
+  `01eca070e`, relaunch 00:13Z 09-18. Verify the load survived before spending
+  bridge time.
+- Known cosmetic-or-worse config error to triage on arrival:
+  `RM_FE_Ground_Sand/Gravel/Soil: burnedDef is flammable`.
