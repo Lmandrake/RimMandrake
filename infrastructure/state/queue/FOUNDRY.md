@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T11:00:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:12:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1794,16 +1794,6 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
-
-## STALE_RENAME_GATE_SWEEP_1 Sweep the dead NAMING_SCHEME_EXECUTION_1 rename gate out of ~10 design drafts (item closed 2026-08-31 at 54a8e28d); also fix liquids_framework_design.md still naming the mod Fluidity after ruling 20 named it FlowWorks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Sweep the remainder. MEASURED list as of 2026-09-16 — re-grep, since it will have
-prose:    infrastructure/state/items/STALE_RENAME_GATE_SWEEP_1.md
 
 ## SALVAGECLAIM_WALK_STALE_1 design/validation_walks/RimMandrake/SalvageClaim.md names a subject that no longer exists (src/RimMandrake/SalvageClaim is gone, consolidated into RimProperty) - re-point or retire the walk, and check whether Property.md already covers it
 state:    proposed
