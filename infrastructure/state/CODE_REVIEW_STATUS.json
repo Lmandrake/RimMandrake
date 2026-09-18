@@ -4680,10 +4680,10 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/StructureInjections/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "b56a0691689f2a5c0145895622f0f1af1fc84fbc70b79451d6a4e413d151732c",
-    "sha": "629956d2"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "f63ecddce9e38647f5552ed022a29b8f5f49f50a505fff9e3b17e3a03af59d39",
+    "sha": "0f6a61a33"
   },
   "src/RimMandrake/StructureInjections/LICENSE": {
     "cleanCount": 1,
