@@ -34,6 +34,9 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
@@ -42,8 +45,12 @@
     <Compile Include="GenStep_ScatterCavePortal.cs" />
     <Compile Include="GenStep_ScatterMineshaftPortal.cs" />
     <Compile Include="GenStep_ScatterLanternstone.cs" />
+    <Compile Include="GenStep_LanternstoneRock.cs" />
+    <Compile Include="Patch_PocketMapGrowthRate.cs" />
     <Compile Include="GenStep_DeepFloraGate.cs" />
     <Compile Include="MapComponent_LanternDeepDarkness.cs" />
+    <Compile Include="MapComponent_DeepFloraRegrowth.cs" />
+    <Compile Include="DeepFloraPlanter.cs" />
     <Compile Include="LanternDeepsMod.cs" />
   </ItemGroup>
 
@@ -62,6 +69,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

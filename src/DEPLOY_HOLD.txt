@@ -377,4 +377,5 @@ UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml   # FOUNDRY: structurally 
 # classes in the rebuilt DLL, and a DLL cannot be written while the game runs.
 # Deploying the XML alone would red-error the next load. The WHOLE mod deploys
 # together at the next shutdown window; remove this hold in the same change.
-LanternDeeps/*   # BENCH 2026-09-18, CAVERNS_PARITY_BUILD_1 - deploy whole mod at shutdown window
+# ✅ LIFTED 2026-09-18 14:20 (BENCH) in the shutdown window it named: game DOWN,
+# DLL (rebuilt after the RUT_Deep* rename) + XML deployed together in one --apply.

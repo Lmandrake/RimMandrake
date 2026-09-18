@@ -3,21 +3,25 @@ using Verse;
 
 namespace RimMandrake.Utinni.LanternDeeps
 {
-	// CAVERNS_PARITY_BUILD_1 — the "cave flora" Mod Settings toggle, made real.
+	// CAVERNS_PARITY_BUILD_1 — the "cave flora" Mod Settings toggle, made real,
+	// and (same item, second pass) the Deep's own initial planting.
 	//
-	// The Deeps' flora is grown by the VANILLA Plants GenStep (GenStepDef
-	// `Plants`, MEASURED order 900) off BiomeDef.wildPlants. There is no vanilla
-	// hook to suppress that per-map and no field on the def that turns it off, so
-	// the toggle is implemented as a cull that runs immediately after: order 950,
-	// which is after Plants (900) and before Fog.
+	// Toggle ON (shipped default): PLANTS. The vanilla Plants GenStep (order 900)
+	// never reads RUT_LanternDeeps.wildPlants on a Deep — under a natural roof it
+	// draws only from the planet-wide cavePlant list (see DeepFloraPlanter's
+	// header for the measured source) — so at order 950 this step walks the map
+	// and seeds the biome's own flora at vanilla's desired density. Anything
+	// vanilla already put down (Glowstool and friends, which ARE cavePlants) is
+	// left in place and counts toward the cap.
 	//
-	// It removes ONLY plants whose def this mod owns. A Deep is a pocket map, so
-	// in practice that is everything growing there — but writing it as an
-	// owned-defs check rather than "destroy every Plant" means a future mod that
-	// legitimately seeds something else into a Deep is not quietly wiped by our
-	// settings toggle.
+	// Toggle OFF: culls. There is no vanilla hook to suppress Plants per map, so
+	// the off state removes plants whose def this mod owns — an owned-defs check
+	// rather than "destroy every Plant", so a future mod that legitimately seeds
+	// something else into a Deep is not quietly wiped by our settings toggle.
 	//
-	// Cost when the toggle is ON (the shipped default): one early return.
+	// Order 950 rather than a sibling step: it is the one place the toggle is
+	// already consulted at gen time, both branches are "what grows in a Deep",
+	// and RUT_LanternDeepGenerator.xml already lists it after Plants.
 	public class GenStep_DeepFloraGate : GenStep
 	{
 		public override int SeedPart => 1237834912;
@@ -64,6 +68,10 @@ namespace RimMandrake.Utinni.LanternDeeps
 		{
 			if (LanternDeepsSettings.deepFloraEnabled)
 			{
+				if (DeepFloraPlanter.IsDeep(map))
+				{
+					DeepFloraPlanter.PlantInitial(map);
+				}
 				return;
 			}
 

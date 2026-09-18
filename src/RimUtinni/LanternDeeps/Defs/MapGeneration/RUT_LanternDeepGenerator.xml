@@ -15,16 +15,31 @@
     <pocketMapProperties>
       <biome>RUT_LanternDeeps</biome>
       <temperature>17</temperature>
+      <!-- CAVERNS_PARITY_BUILD_1, MEASURED on the first live quicktest 2026-09-18:
+           without this the Deep generated as SOLID rock (4,288 of 4,356 cells).
+           TileMutatorWorker_UndergroundCave is what digs the tunnels (>=2000
+           cells); vanilla's Undercave generator carries the same line. -->
+      <tileMutators>
+        <li>UndergroundCave</li>
+      </tileMutators>
     </pocketMapProperties>
     <!-- LANTERN_DEEPS_INJECTION_1 spec item 6, the darkness mechanic: only Lantern
          Deep pocket maps get this component (CustomMapComponent subclasses are
          never auto-added, see the .cs header). -->
     <customMapComponents>
       <li>RimMandrake.Utinni.LanternDeeps.MapComponent_LanternDeepDarkness</li>
+      <!-- CAVERNS_PARITY_BUILD_1: regrows the biome's own wildPlants during play.
+           Vanilla's WildPlantSpawner never consults them under a natural roof
+           (only the planet-wide cavePlant set) — see the .cs header. -->
+      <li>RimMandrake.Utinni.LanternDeeps.MapComponent_DeepFloraRegrowth</li>
     </customMapComponents>
     <genSteps>
       <li>ElevationFertility</li>
       <li>MutatorPostElevationFertility</li>
+      <!-- CAVERNS_PARITY_BUILD_1: order 190, adds lanternstone to the rock noise
+           list before RocksFromGrid reads it — extraRockTypes is dead on a pocket
+           map (World.RockAllowedInBiome returns false for an invalid tile). -->
+      <li>RUT_LanternstoneRock</li>
       <li>Underground_RocksFromGrid</li>
       <li>Terrain</li>
       <li>MutatorPostTerrain</li>
