@@ -1,5 +1,13 @@
-<!-- status: live -->
+<!-- status: historical record -->
 # Before the owner generates the world — what is actually owed
+
+> 🔴 **THE CLICK HAPPENED — owner ruling 2026-09-18 (worldmap docs pass, card
+> answer "Yes — it happened").** `CANONICAL_ASHKARR_START_2026-09-12.rws` is the
+> product of the one-time world-creation click this file gated. **Everything below
+> is a record of what was owed BEFORE that click, not a live gate** — nothing may
+> cite this file to block work. What the ruling leaves genuinely open: whether
+> `LEADER_TITLES_ON_THE_IDEO_1` was applied before the save was made — that
+> verification is `WORLDGEN_CLICK_RECONCILE_1`, checked against the save itself.
 
 > ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
 > looking at the four-globe sheet: *"That world, upon examination, really isn't very bad at all…

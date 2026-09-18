@@ -1,6 +1,15 @@
 <!-- status: live -->
 # Rebuilding the keeper world, by hand
 
+> 🔴 **The one-time world-creation click is BEHIND US — owner ruling 2026-09-18
+> (worldmap docs pass): `CANONICAL_ASHKARR_START_2026-09-12.rws` is its product.**
+> This file stays live as the redraft PROCEDURE (a keeper you cannot redraft is a
+> keeper you cannot fix), but its recorded bars are from the original 2026-08-21
+> run and are HISTORY, not targets: "all 72 or none" and "72 of 72" describe that
+> run's roster, and **the live roster is canon now** (owner, same sitting) — any
+> future redraft re-derives the settlement count and the mod list from the live
+> world and `ModsConfig.FULL.LATEST.xml`, never from a number written here.
+
 > ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
 > looking at the four-globe sheet: *"That world, upon examination, really isn't very bad at all…
 > we're thinking of trying to adopt it."* ⇒ **Ash'karr as it stands IS the v1 planet**, and work
