@@ -9248,3 +9248,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"ANOOBA_DRAWSIZE_FIX_1","ts":"2026-09-18T15:03:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"ANOOBA_DRAWSIZE_FIX_1","ts":"2026-09-18T15:03:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"ANOOBA_DRAWSIZE_FIX_1","sha":"1f1b8ab19e378298d5a5d88eeb1bc50775583a0e","ts":"2026-09-18T15:03:45Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-18T14:44:39Z"}
