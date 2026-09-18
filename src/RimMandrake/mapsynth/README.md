@@ -11,6 +11,7 @@ Outputs land in `runs/`.
 |---|---|---|
 | canvas + rules | `ship_designs.py` | Topology canvas and coverage verifier. Holds the two constant sets — VANILLA (verified) and EXPANDED (Bigger Gravships) — grav-engine / extender radii, tile caps, colours and labels. **Every other script imports its constants.** |
 | generate | `build_designs.py` | Builds the candidate hull topologies, verifies each, and enforces the full required region set from `ship_deck_plan.md` (command, thrusters/power, fuel, water, shuttle bay, plus all six Factory wings). Prints FAIL on any design missing one. |
+| compare | `render_designs.py` | Renders the 8 EXPANDED-limit candidate hulls as one 2×4 comparison sheet (tile grid + engine/extender coverage halos + stats per panel) before the #15 down-select below. |
 | fit | `interior_fit.py` | **Pass 1** for the chosen #15 Falcon Halo hull: does each function pod physically hold its real VFE-Factory machine set at true footprints, plus hoppers, apron, Factory Booster and Heatsink banks? Area feasibility only. |
 | skeleton | `skeleton_15.py` | Lays the load-bearing skeleton on #15 — ring corridor, rear causeway, pod doors, thermal spine, power switches, heat vents, and the seven filtered belt-trunk classes. |
 | build sheet | `build_sheet_15.py` | **Pass 2** — re-packs each pod with a mandatory 1-tile working aisle around every machine, turning the fit-check into a buildable sheet. |
