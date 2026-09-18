@@ -9249,3 +9249,6 @@
 {"seat":"FOUNDRY","event":"start","id":"ANOOBA_DRAWSIZE_FIX_1","ts":"2026-09-18T15:03:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"ANOOBA_DRAWSIZE_FIX_1","sha":"1f1b8ab19e378298d5a5d88eeb1bc50775583a0e","ts":"2026-09-18T15:03:45Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-18T14:44:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:20Z"}
+{"seat":"FOUNDRY","event":"start","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:24Z"}
+{"seat":"FOUNDRY","event":"close","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","sha":"60e2d841b092276cb75161490a0b43fe4c032d90","ts":"2026-09-18T14:36:31Z"}
