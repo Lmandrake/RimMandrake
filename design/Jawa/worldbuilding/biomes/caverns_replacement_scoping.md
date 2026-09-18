@@ -170,9 +170,13 @@ workshop copy — a donor-file edit Steam can silently revert; not recommended.)
 1. **Crystal art: copy or restyle?** Copy the donor's crystal/flora textures into RUT
    (fast, ships this wave, look unchanged) vs regenerate to the sheet's blue-on-black
    palette (owns the look, adds an art pass + your review round).
-2. **Polluted Lands mutation system: drop or replace?** Drop = Wasteland/PoisonForest
-   lose mutapox flavor and 18 genes nothing else references (cheap, clean). Replace =
-   a separate M-sized gene-system port we then maintain forever.
+2. **Polluted Lands mutation system:** ✅ **RULED DROP** — owner, 2026-09-18 (ruling 6 of
+   this doc's six questions, on the `CAVERNS_PARITY_BUILD_1` file event), and already
+   executed 2026-09-09 in `BIOME_OWNERSHIP_WAVE_1`: `RUT_Wasteland`, `RUT_TheForge` and
+   `RUT_RustCathedral` strip `BMT_Disease_Mutapox` from their disease lists because the
+   Wasteland's disease register is radiological, not wildlife epidemiology. The 18
+   `BMT_MutaGenes` have zero live consumers in our defs. Mechanism, for the record:
+   `Transient/_polluted_lands_eval_2026-09-18.md`.
 3. **The Salvation's precept:** ✅ **RULED (replace) and BUILT 2026-09-18** — `.rid` now
    names `RUT_FungusEating_DontCare`, def in `UtinniPatches`. The re-ingest turned out to
    be a no-op: the canonical start save's baked Salvation carries vanilla

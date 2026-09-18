@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T20:05:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T20:33:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1745,3 +1745,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPCALM_AMBIENT_SOUND_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPCALM_AMBIENT_SOUND_1.md
+
+## POLLUTED_LANDS_FLORA_PORT_1 Polluted Lands cut step 2: port-or-cut its ~40 injected plants (21 BMT_ rows still live in BiomeFlora_Ashkarr with no RUT twin) + inert-check the 52 Waterline fish refs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/POLLUTED_LANDS_FLORA_PORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POLLUTED_LANDS_FLORA_PORT_1.md
