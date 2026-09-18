@@ -24,7 +24,7 @@ namespace RimMandrake.Greentide
     //
     // Buried caches (RM_MapComponent_MudSwallow) need no separate cross-biome
     // toggle: it already fires off the terrain extension alone, wherever
-    // RM_Churnmud exists, native map or opted-in map alike. The Greatbole
+    // RM_GreentideChurnmud exists, native map or opted-in map alike. The Greatbole
     // does not exist yet (About.xml: gated on ALPHA_MECHANICS_KIT_1 /
     // EXPLOSIVE_PLANT_GROWTH_1) — nothing to gate.
     // ════════════════════════════════════════════════════════════════════

@@ -16,7 +16,7 @@ namespace RimMandrake.EnvironmentalHazards
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
     //         <causewayTerrain>RUT_RootCauseway</causewayTerrain>
-    //         <basinTerrains><li>RM_Churnmud</li></basinTerrains>
+    //         <basinTerrains><li>RM_GreentideChurnmud</li></basinTerrains>
     //       </li>
     //     </modExtensions>
     //   </BiomeDef>

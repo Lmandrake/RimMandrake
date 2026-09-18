@@ -3,7 +3,9 @@
      own biome instance elsewhere in this repo — same fictional idea (a
      furiously humid, ground-hugging river jungle), rebuilt with zero
      campaign-specific content so it can generate on any player's own world.
-     mudTerrain points at RM_Churnmud
+     mudTerrain points at RM_GreentideChurnmud (renamed from RM_Churnmud,
+     code review 2026-09-17 — that name collided with mandrake.rm.flowworks's
+     own unrelated TerrainDef of the same name, see RM_Churnmud_Terrains.xml)
      itself, so ordinary mapgen already lays the hazard wherever vanilla would
      have laid plain Mud — the churnmud kit needs no separate map-gen step. -->
 <Defs>
@@ -38,7 +40,7 @@
 
     <lakeBeachTerrain>Riverbank</lakeBeachTerrain>
     <riverbankTerrain>Riverbank</riverbankTerrain>
-    <mudTerrain>RM_Churnmud</mudTerrain>
+    <mudTerrain>RM_GreentideChurnmud</mudTerrain>
 
     <diseases>
       <li>

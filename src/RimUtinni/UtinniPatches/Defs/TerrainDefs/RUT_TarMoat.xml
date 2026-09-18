@@ -14,7 +14,8 @@
   natively, no C#") — pathCost does double duty in the real engine as both
   the pathfinding-preference weight AND the realtime movement-speed
   divisor, so one field is the whole deterrent, deliberately well above
-  RM_Churnmud's own 34 (a "brutally slow" mire) since the moat's fiction is
+  RM_GreentideChurnmud's own 34 (a "brutally slow" mire, renamed from
+  RM_Churnmud in code review 2026-09-17) since the moat's fiction is
   stronger: raiders should visibly prefer routing around it. `Flammability
   1.0` — it is tar. `burnedDef RUT_TarSpent` satisfies TerrainDef's own
   ConfigErrors requirement (verified, Verse/TerrainDef.cs:542, "flammable
