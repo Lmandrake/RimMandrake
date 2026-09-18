@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidBottles_Base.xml         HAND-AUTHORED, never regenerated.
+  ============================================================================
+  LIQUID_BOTTLE_LOOP_1. The two liquid-agnostic ends of the bottle chain
+  (empty / dirty) plus the shared item base and the ThingCategoryDef a future
+  patch (the RSW cuisine mod, per the LiquidDef's own cuisineTags slot) can
+  target to reach every bottle at once. `RM_Bottle_&lt;Liquid&gt;.xml` — one
+  filled bottle per LiquidDef row that carries one — is GENERATED from
+  `generate_liquid_suite.py`'s LIQUID_DEF_ROWS table and lives beside this
+  file as RM_LiquidBottles.xml; edit that table, never this file, and never
+  that file either.
+
+  Chain (spec, design/RimMandrake/liquids_framework_design.md and the item's
+  own notes): RM_BottleEmpty -> fill job -> RM_Bottle&lt;Liquid&gt; -> use ->
+  RM_BottleDirty -> wash job -> RM_BottleEmpty. This pass ships every item in
+  that chain; the fill/use/dirty/wash JOBS (WorkGiver/JobDriver reading
+  RM_BottledLiquidExtension generically off any bottle) are OWED, not built —
+  see LIQUID_BOTTLE_LOOP_1's own notes for why (no bridge/live verify this
+  pass, and a job system landed untested is exactly the kind of "confident
+  wrong number" this project's instruments doctrine warns against).
+
+  PLACEHOLDER ART, flagged as such (same convention as RM_Ladder in
+  Canals/ThingDefs/FlowWorks_ThingDefs.xml): texPath borrows vanilla's own
+  Chemfuel jerrycan sprite so the mod loads with no missing-texture error.
+  The design's own intent (LiquidDef.color: "tint for generated art, flecks
+  and bottle fill") wants a single bottle silhouette tinted per-liquid at
+  runtime, which is real render-pipeline work, not authored here. Do not
+  treat this texPath as final.
+
+  Buckets and barrels (the "larger bottle, same chain" siblings the item's
+  spec also names) are NOT here — deliberately deferred, see
+  LIQUID_BOTTLE_LOOP_1's stopping note.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingCategoryDef>
+    <defName>RM_LiquidBottleItems</defName>
+    <label>liquid containers</label>
+    <parent>Manufactured</parent>
+  </ThingCategoryDef>
+
+  <!-- Shared stats for every bottle state (empty, filled, dirty). Abstract:
+       never spawned itself. -->
+  <ThingDef Name="RM_BottleItemBase" ParentName="ResourceBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <!-- PLACEHOLDER: vanilla's own Chemfuel jerrycan, see module comment. -->
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>1</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-2</Beauty>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <thingCategories>
+      <li>RM_LiquidBottleItems</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_BottleEmpty</defName>
+    <label>empty bottle</label>
+    <description>A scavenged glass or plastic bottle, empty and ready to fill. Nests inside itself for hauling, so a stack of these takes up almost no room.</description>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>0.5</MarketValue>
+      <Mass>0.15</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Liquid-agnostic on purpose — whatever was in it, once it's used the
+       residue is the same problem: a bottle that needs washing. Never
+       generated per-row; one def covers the whole roster. -->
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_BottleDirty</defName>
+    <label>dirty bottle</label>
+    <description>An emptied bottle, still carrying whatever residue its last contents left behind. Needs washing before it's fit to fill again.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <dirty>true</dirty>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
