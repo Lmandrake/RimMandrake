@@ -63,6 +63,20 @@
     <!-- SETTLEMENT_VERBS_WAVE_1, walkable-commerce pass. -->
     <Compile Include="WalkableCommerce\FloatMenuOptionProvider_BuyMerchandise.cs" />
     <Compile Include="WalkableCommerce\BuyMerchandiseUtility.cs" />
+    <!-- SETTLEMENT_VERBS_WAVE_1, crime-suite pass. FOUNDRY note 2026-09-18:
+         these two files existed on disk and were committed (d95d7ec55) but
+         were NEVER added here — EnableDefaultCompileItems is false above, so
+         dotnet build silently skipped them every time since. The commit's
+         "compiles clean, 0/0" was true of the file set the csproj actually
+         listed, which did not include Pickpocket; the shipped DLL never
+         contained FloatMenuOptionProvider_Pickpocket/PickpocketUtility until
+         this line was added (confirmed missing via a literal-string check on
+         the built DLL, then confirmed present after this fix + rebuild). -->
+    <Compile Include="Pickpocket\FloatMenuOptionProvider_Pickpocket.cs" />
+    <Compile Include="Pickpocket\PickpocketUtility.cs" />
+    <!-- SETTLEMENT_VERBS_WAVE_1, social-fabric pass. -->
+    <Compile Include="HirePlaceless\FloatMenuOptionProvider_HirePlaceless.cs" />
+    <Compile Include="HirePlaceless\HirePlacelessUtility.cs" />
     <!-- Absorbed from mandrake.rm.property (BUILDING_THEFT_HAULER_1). -->
     <Compile Include="TheftHauler\DebugActions_TheftHauler.cs" />
     <Compile Include="TheftHauler\FloatMenuOptionProvider_TheftHaulUninstall.cs" />

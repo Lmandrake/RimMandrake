@@ -6,9 +6,9 @@ namespace RimMandrake.Property
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for RimProperty.
     //
-    // Six independently-gateable mechanics, found by reading every .cs
-    // file in this mod before writing this (walkable commerce and
-    // pickpocket added by SETTLEMENT_VERBS_WAVE_1):
+    // Seven independently-gateable mechanics, found by reading every .cs
+    // file in this mod before writing this (walkable commerce, pickpocket,
+    // and hire-the-placeless added by SETTLEMENT_VERBS_WAVE_1):
     //   1. Perception/propagation (PropertyEngine.RollPerceptionAndPropagate)
     //      — witnesses seeing a theft and telling their faction.
     //   2. Animal theft (AnimalTheftUtility.FindStealTarget, the single
@@ -24,6 +24,9 @@ namespace RimMandrake.Property
     //   6. Pickpocket (FloatMenuOptionProvider_Pickpocket /
     //      PickpocketUtility) — the right-click "lift something from their
     //      inventory" order.
+    //   7. Hire the placeless (FloatMenuOptionProvider_HirePlaceless /
+    //      HirePlacelessUtility) — the right-click "hire this faction-less
+    //      pawn/droid" order.
     //
     // The claim engine itself (ClaimEngine/ClaimDecay/GameComponent_
     // PropertyLedger/PropertyEngine.Fire's WasAuthorized resolution) is left
@@ -72,6 +75,10 @@ namespace RimMandrake.Property
         public static bool pickpocketEnabled = true;
         public static float pickpocketMinItemValueSilver = PropertyTuning.PickpocketMinItemValueSilver;
 
+        // --- Hire the placeless (SETTLEMENT_VERBS_WAVE_1, social-fabric pass) --
+        public static bool hirePlacelessEnabled = true;
+        public static float hirePlacelessFeeSilver = PropertyTuning.HirePlacelessFeeSilver;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -91,6 +98,8 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref walkableCommerceMarkup, "walkableCommerceMarkup", PropertyTuning.WalkableCommerceMarkup);
             Scribe_Values.Look(ref pickpocketEnabled, "pickpocketEnabled", true);
             Scribe_Values.Look(ref pickpocketMinItemValueSilver, "pickpocketMinItemValueSilver", PropertyTuning.PickpocketMinItemValueSilver);
+            Scribe_Values.Look(ref hirePlacelessEnabled, "hirePlacelessEnabled", true);
+            Scribe_Values.Look(ref hirePlacelessFeeSilver, "hirePlacelessFeeSilver", PropertyTuning.HirePlacelessFeeSilver);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -168,6 +177,17 @@ namespace RimMandrake.Property
             {
                 list.Label("  Not worth the risk below: " + pickpocketMinItemValueSilver.ToString("0") + " silver");
                 pickpocketMinItemValueSilver = list.Slider(pickpocketMinItemValueSilver, 0f, 50f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Hire the placeless (pay a faction-less pawn or droid to work for you)", ref hirePlacelessEnabled,
+                "Lets a pawn right-click a faction-less wanderer or masterless droid nobody else claims "
+              + "and pay a flat hiring advance. Records the hire as a legal provenance record — no job, "
+              + "schedule or following behavior yet. Off: that order never appears.");
+            if (hirePlacelessEnabled)
+            {
+                list.Label("  Hiring advance: " + hirePlacelessFeeSilver.ToString("0") + " silver");
+                hirePlacelessFeeSilver = list.Slider(hirePlacelessFeeSilver, 0f, 100f);
             }
 
             list.End();

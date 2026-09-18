@@ -1,3 +1,175 @@
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — fourth verb family started: social fabric
+
+Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`
+item 9: **salvage-law gray zone (built, 2026-09-01) · walkable commerce
+(built, 2026-09-12) · crime suite (pickpocket built 2026-09-18, this pass
+fixed a build gap in it — see below; night burglary/fencing/smuggling still
+unbuilt) · social fabric (hiring the placeless built THIS pass; rumors as
+intel, sabacc, and bribes/bought-rounds-as-dampers still unbuilt).** **All
+four families now have at least one live, actually-compiled-in piece** —
+first time this item can say that. Each family still has real open scope
+(see the per-family notes below and the prior passes' own entries); this is
+not the item's closure, just the point where every family has crossed from
+zero to one.
+
+**Found and fixed first, before any new code** (a real defect, not a
+scope note): `RM_Property.csproj` sets `EnableDefaultCompileItems=false`
+and lists every source file explicitly — and the 2026-09-18 crime-suite
+commit (`d95d7ec55`) added `Pickpocket/FloatMenuOptionProvider_Pickpocket.cs`
+and `Pickpocket/PickpocketUtility.cs` to disk and to git, but never added
+them to the csproj's `<Compile>` list. Every `dotnet build` since then
+silently skipped both files and still reported "0 warnings, 0 errors" —
+truthfully, of the file set the csproj actually named, which never included
+Pickpocket. Caught by literal-string-checking the built DLL for
+`FloatMenuOptionProvider_Pickpocket`/`PickpocketUtility` before trusting the
+prior pass's own "compiles clean" claim (`MEASURE_ALLOW_SCAN=1 strings` per
+the measuring-large-artifacts skill's literal-existence-check carve-out,
+never a census) — neither string was present. **The shipped DLL never
+contained the pickpocket verb at all**, from `d95d7ec55` until this pass's
+fix, despite the item file and commit message both saying it was built.
+Added both files to the csproj this pass, rebuilt, and the *first ever real
+compile* of `PickpocketUtility.cs` turned up an actual bug the untested code
+had been carrying the whole time: `TransferToActor`'s
+`ThingOwner.TryTransferToContainer(...)` call returns the transferred
+**count** (`int`) in this RimWorld API version, not `bool`, so the bare
+`return source.TryTransferToContainer(...)` didn't compile (`CS0029`) —
+fixed to `> 0`. Re-verified via the same literal-string DLL check after the
+fix: `FloatMenuOptionProvider_Pickpocket`, `PickpocketUtility`,
+`FindStealableItem`, `TransferToActor` all now present in the rebuilt DLL.
+**Lesson for whoever reads this next**: "compiles clean, 0/0" is not proof a
+new file was even compiled when a project uses explicit `<Compile>` lists —
+check the csproj lists the file, or check the DLL for the type name, before
+trusting the claim. Pickpocket is genuinely untested beyond this compile fix
+(no live-quicktest ever ran against a DLL that actually contained it) —
+still owed, same as its own still-open live-quicktest note below.
+
+**Built this pass** (`mandrake.rm.property`, same mod as SalvageClaim/
+WalkableCommerce/Pickpocket — `src/RimMandrake/RimProperty/Source/
+HirePlaceless/`): a right-click `FloatMenuOptionProvider_HirePlaceless`
+order, the same shape as every other verb this item built (needs a selected
+acting pawn + a clicked target Pawn; no JobDriver, the transaction — a
+silver payment and a provenance record — runs instantly from the option's
+own delegate).
+
+**Checked first, per this pass's own brief**: does hiring map onto an
+already-implemented case? Yes, and this is the cleanest fit of the four
+verbs built so far — `WalkableCommerce`'s own doc comment (2026-09-12)
+explicitly flagged this exact gap when it scoped a live Pawn target OUT of
+its own pass: *"a live Pawn is hiring/indenture — social-fabric/crime-suite
+territory, out of this pass."* That points straight at `PropertyEngine.
+Fire`'s existing `TakingAct.Buy` case (`RecordTransfer(...,
+ClaimBasis.Purchased, 1f, ...)`, `WasAuthorized = true` unconditionally —
+"a completed sale is legitimate by definition"). `TakingEvent.Thing` is a
+plain `Verse.Thing` field and `Pawn` *is* a `Thing`, so firing `Buy` against
+a target Pawn needed no new field, no new `TakingAct` case, no new
+`ClaimBasis` — the fabric doesn't know or care that the "merchandise" is a
+person. This pass built only the gate and the fee.
+
+**The gate IS the verb, and it's the mirror image of BuyMerchandise's own
+gate**: `BuyMerchandise` requires a *resolved* prior claim (an unclaimed
+item has no seller). Hiring the **placeless** requires the *absence* of any
+resolved claim, virtual or recorded (`ClaimEngine.ResolveClaim(...)
+.HasValue` must be `false`) — verified by reading `ClaimEngine` before
+writing this, not assumed: `ResolveVirtualClaim`'s `FindPossessor` only
+fires for a Thing held in someone's equipment/apparel/inventory/carry
+tracker, which a spawned map Pawn never is of itself, and its Commons
+fallback reads `thing.Faction`, which is null for a "placeless" pawn by
+definition — so a faction-less, unpossessed, unclaimed Pawn genuinely
+resolves to no claimant at all, and the same check correctly blocks a
+second hire on someone another actor already hired (their still-resolving
+`Purchased` record resolves and the gate refuses). `HirePlacelessUtility.
+ComputeHireFeeSilver` reads a flat, Mod-Settings-tunable advance
+(`PropertySettings.hirePlacelessFeeSilver`, default 20 silver,
+`PropertyTuning.HirePlacelessFeeSilver`) — same "no second pricing model,
+flat and tunable only" discipline `WalkableCommerce`'s markup and
+`Pickpocket`'s value floor already used; no wage/contract/skill-scaling
+system exists to price against instead. Silver counting/removal reuses
+`SalvageClaimFeeUtility.CountSilverInInventory`/`RemoveSilverFromInventory`
+directly, same reuse chain `BuyMerchandiseUtility` already established.
+
+**Where it differs from the prior three verbs, deliberately**: no physical
+hand-off, no job, no schedule, no AI-following behavior — same "the point is
+the provenance RECORD, not a move" v1 simplification `WalkableCommerce` and
+`PaySalvageClaim` both already apply to their own targets. Gated off
+`targetPawn.Downed` specifically so this verb never competes with the
+claim-fee gizmo's own "powered-down droid" case (item point 3) for the same
+target — Downed routes to salvage-law, active routes to here. Gated off
+`targetPawn.HostileTo(actor)` (same reasoning Pickpocket's own gate uses) and
+off `targetPawn.IsPrisoner` (a prisoner already belongs somewhere; freeing
+and recruiting them is vanilla's own territory). Scoped to
+`RaceProps.Humanlike || RaceProps.IsMechanoid` targets only — an active,
+unclaimed droid is a legitimate "placeless" hire under this same gate, not
+just people.
+
+**Not built this pass, explicitly out of scope** — social fabric's other
+three sub-mechanics from spec item 9 (*"rumors as intel, sabacc, hiring the
+placeless, bribes and bought rounds as propagation dampers"*), same "pick
+ONE, flag the rest" discipline the crime-suite pass applied to its own
+sub-list:
+- **Rumors as intel** and **bribes/bought rounds as propagation dampers**
+  both need a genuinely new read or write surface on `FactionRecord` that
+  does not exist yet — `GetSuspicion`/`HasAnyPropagatedKnowledge` already
+  compute exactly what rumors would need to report (and currently have
+  *zero* callers anywhere in the codebase — confirmed by reading
+  `PerceptionUtility`'s own doc comment: "the consequence-reader layer is
+  unbuilt"), so rumors is real, buildable, well-scoped follow-up work, not
+  invention from nothing. Bribes need a NEW mutator on `FactionRecord`
+  (nothing today lets a verb reduce or remove a witness entry) — genuinely
+  new fabric work, not a float-menu wrapper. **Open design tension flagged
+  for the owner, not resolved here**: this item's own module-boundary table
+  says "Verbs ... must not know perception outcomes (hidden even from the
+  verb code's UI)" — rumors-as-intel's whole point is reporting a
+  perception-derived fact TO the player, which reads in real tension with
+  that boundary as written. Whoever builds rumors should either get an
+  explicit ruling on that tension or design the reveal as qualitative
+  flavor text (never the raw suspicion float) to stay inside the "no meter,
+  no indicator" spirit of spec item 6 while still answering "rumors as
+  intel."
+- **Sabacc** is a whole card-game minigame (deck, stakes, a UI loop) — not a
+  right-click order at all, and not attempted here.
+
+Mod Settings retrofitted (`PropertySettings.cs`): `hirePlacelessEnabled`
+(default on) and `hirePlacelessFeeSilver` slider (0-100 silver), same
+checkbox+slider pattern as every other gateable mechanic in this mod.
+Module doc-comment count updated from six to seven gateable mechanics.
+
+**Verified this pass**: `dotnet build RM_Property.csproj -c Release`
+compiles clean, 0 warnings, 0 errors (after the Pickpocket csproj fix and
+its `TryTransferToContainer` bug fix above), DLL rebuilt at
+`src/RimMandrake/RimProperty/Assemblies/RimMandrakeProperty.dll`. Re-verified
+via literal-string DLL check (not trusted on the build log alone, per this
+pass's own lesson): `FloatMenuOptionProvider_HirePlaceless`,
+`HirePlacelessUtility`, `ComputeHireFeeSilver`, `FloatMenuOptionProvider_
+Pickpocket`, `PickpocketUtility` all present. `deploy_custom_mods.py --mod
+RimProperty` (plan only) reports drift, as expected — **not deployed**: the
+game is up tonight and `mandrake.rm.property` is already an active, loaded
+mod, same posture as every prior pass on this item.
+`selftest_property_fabric.py` passes 20/20, unaffected (it tests
+`ClaimDecay`/`ClaimantRef`/`ClaimEngine`'s own decay math, none of which
+this pass touched). Full `run_selftests.py` sweep: 58/60 passed; the two
+failures (`selftest_art_checks.py`, `selftest_one_path_seam.py`) are
+pre-existing and unrelated (art-check tooling and a LocalLow path literal in
+`artpipe/build_flora_legibility_sheet.py`), matching every prior pass's own
+note on this item. No new XML/patches shipped (C#-only), so
+`validate_patch.py` has nothing to check. **Not live-quicktest-observed**
+(needs the bridge, contended tonight per the shared-worktree note) — same
+"left `doing`, not closed" posture every prior pass on this item took, and
+now doubly true for Pickpocket specifically since tonight is the first time
+a DLL containing it has existed at all.
+
+**Owner note (MODE=afk, filing rather than waiting)**: not closing this
+item despite all four families now having a first piece — re-read `##
+criteria` below and it was written for the *original* salvage-law-only
+filing ("a claim-fee interaction exists... the other three verb families
+are untouched and remain open work"), never revised when crime suite/
+walkable commerce/social fabric were folded in as the item grew. It states
+no "all four families done" closing bar at all, so there's nothing in the
+item's own criteria to satisfy toward closure — leaving `doing`. If the
+owner wants this item closed now that every family has crossed zero-to-one,
+that's a scope ruling only he can make, and the `## criteria` section
+below should be rewritten to say so explicitly before any future pass reads
+it as ambiguous the way this one did.
+
 ## 2026-09-18 (FOUNDRY, belt mode, subagent) — third verb family built: crime suite
 
 Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`

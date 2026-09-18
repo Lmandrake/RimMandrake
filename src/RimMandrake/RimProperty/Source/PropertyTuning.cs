@@ -88,5 +88,13 @@ namespace RimMandrake.Property
         // over at all (PickpocketUtility.FindStealableItem's floor). A few
         // silver's worth of junk isn't what "pickpocket" means.
         public const float PickpocketMinItemValueSilver = 5f;
+
+        // Hire the placeless (SETTLEMENT_VERBS_WAVE_1, social-fabric pass): a
+        // flat hiring-advance fee, same "flat and tunable only, no second
+        // pricing model" discipline WalkableCommerce's markup and
+        // Pickpocket's value floor already apply. No per-skill or per-
+        // labor-value scaling exists yet — that needs an actual wage/
+        // contract system this pass does not build.
+        public const float HirePlacelessFeeSilver = 20f;
     }
 }
