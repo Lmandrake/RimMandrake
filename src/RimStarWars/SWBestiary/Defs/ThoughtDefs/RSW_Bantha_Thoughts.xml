@@ -12,6 +12,10 @@
   Wave C addition #2: RSW_SoothingSong, the RecoveryThought RSW_SW_SootheSong's
   HediffDef (RSW_MlieWaveC_Abilities.xml, Beldon's ability) points at — same
   donor file (Thoughts_Memory_SpecialCuisine.xml), same mechanism.
+
+  Wave C addition #3 (Pass 12, 2026-09-18): RSW_AteHawkbatEgg, the
+  tasteThought RSW_Hawkbat's two eggs (RSW_MlieWaveC_Resources.xml) point
+  at — same donor file, same mechanism.
 -->
 <Defs>
   <ThoughtDef>
@@ -49,5 +53,19 @@
         <baseMoodEffect>12</baseMoodEffect>
       </li>
     </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteHawkbatEgg</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate hawkbat egg</label>
+        <description>That Hawkbat egg was astonishing. Truly a dish fit for an Emperor.</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
+    <replaceThoughts>
+      <li>AteRawFood</li>
+    </replaceThoughts>
   </ThoughtDef>
 </Defs>

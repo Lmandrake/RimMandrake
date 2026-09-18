@@ -15,46 +15,19 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 56,
+  "remaining_worklist_count": 51,
+  "stale_entries_removed_2026-09-18": [
+    {
+      "donor_defName": "Nuna",
+      "reason": "RSW_Nuna already ported+wired in Wave B (2026-09-09), confirmed present as src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml and wired into all 5 cast rows in design/Jawa/fauna/cast_assignment.csv (AridShrubland, BiomeCypreJungle, COMIGO_GreaterSwamp_Tropical, Desert, ZBiome_Grasslands). The bare donor 'Nuna' cast rows genuinely persist alongside RSW_Nuna by owner's own 'keep both' ruling (2026-09-02), not because porting is incomplete -- there is nothing left to port for this species. Flagged by Pass 11, verified and removed this pass."
+    }
+  ],
   "remaining_worklist": [
     {
       "donor_defName": "Fambaa",
       "biomes": [
         "BiomeCypreJungle",
         "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Gizka",
-      "biomes": [
-        "AridShrubland",
-        "BiomeCypreJungle",
-        "Desert",
-        "ExtremeDesert",
-        "ZBiome_Grasslands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Grank",
-      "biomes": [
-        "AB_MiasmicMangrove",
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "GreaterKraytDragon",
-      "biomes": [
-        "ExtremeDesert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Hawkbat",
-      "biomes": [
-        "BiomeCypreJungle"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -186,17 +159,6 @@
       "donor_defName": "Neebray",
       "biomes": [
         "PoisonForest"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Nuna",
-      "biomes": [
-        "AridShrubland",
-        "BiomeCypreJungle",
-        "COMIGO_GreaterSwamp_Tropical",
-        "Desert",
-        "ZBiome_Grasslands"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -573,6 +535,37 @@
         "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch12": [
+    {
+      "donor_defName": "Gizka",
+      "biomes": [
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "Desert",
+        "ExtremeDesert",
+        "ZBiome_Grasslands"
+      ]
+    },
+    {
+      "donor_defName": "Grank",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "AridShrubland"
+      ]
+    },
+    {
+      "donor_defName": "GreaterKraytDragon",
+      "biomes": [
+        "ExtremeDesert"
+      ]
+    },
+    {
+      "donor_defName": "Hawkbat",
+      "biomes": [
+        "BiomeCypreJungle"
+      ]
     }
   ]
 }

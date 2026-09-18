@@ -68,6 +68,27 @@
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
   flat-RSW_-prefixed. texPaths are UNCHANGED text.
 -->
+<!--
+  Pass 12 (Gizka/Grank/GreaterKraytDragon/Hawkbat, 2026-09-18): Gizka needs 2
+  new eggs (RSW_EggGizkaFertilized/UnFertilized, texPath
+  swresource/EggSpotted, newly extracted this pass) — its leatherDef/
+  specificMeatDef repoint to the already-ported RSW_Leather_Saurian/
+  RSW_Saurian_Meat (Wave B). Grank needs no new resource — repoints
+  specificMeatDef to the already-ported RSW_Reptomammal_Meat (Wave B);
+  leatherDef stays vanilla Core `Leather_Plain`; no egg comp (not an egg
+  layer). GreaterKraytDragon needs a new leather (RSW_Leather_KraytDragon,
+  texPath swresource/Leather_Scaled — already extracted, Wave B, reused
+  unchanged, no new art), a new meat (RSW_Krayt_Meat, texPath
+  swresource/Meat_Krayt, newly extracted), 2 new eggs
+  (RSW_EggGreaterKraytDragonFertilized/UnFertilized, texPath
+  swresource/EggSpiked, newly extracted), and its butcher-body-part trophy
+  (RSW_KraytPearl, texPath swresource/Trophies/KraytPearl, newly extracted).
+  Hawkbat needs 2 new eggs (RSW_EggHawkbatFertilized/UnFertilized, texPath
+  swresource/EggPod — already extracted, Wave B/C, reused unchanged) with a
+  new tasteThought (RSW_AteHawkbatEgg, added to RSW_Bantha_Thoughts.xml);
+  its leatherDef/specificMeatDef repoint to the already-ported
+  RSW_Leather_Reptavian/RSW_Reptavian_Meat (Wave B).
+-->
 <Defs>
 <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggDactillionFertilized</defName>
@@ -1193,5 +1214,187 @@
     <thingSetMakerTags>
       <li>AnimalPart</li>
     </thingSetMakerTags>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGizkaFertilized</defName>
+    <label>gizka egg (fert.)</label>
+    <description>Fertilized Gizka egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSpotted</texPath>
+      <color>(245,245,225)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Gizka</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGizkaUnFertilized</defName>
+    <label>gizka egg (unfert.)</label>
+    <description>Unfertilized Gizka egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSpotted</texPath>
+      <color>(245,245,225)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_KraytDragon</defName>
+    <label>krayt hide</label>
+    <description>Tanned, dried, krayt dragon scales. Exceptionally strong and commands a hefty price.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Scaled</texPath>
+      <color>(104,85,52)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20.0</MarketValue>
+      <StuffPower_Armor_Sharp>2.3</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>2.5</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(104,85,52)</color>
+      <commonality>0.015</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Krayt_Meat</defName>
+    <label>krayt meat</label>
+    <description>A piece of meat from a large reptiloid.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Krayt</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.5</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGreaterKraytDragonFertilized</defName>
+    <label>greater krayt dragon egg (fert.)</label>
+    <description>A fertilized greater krayt dragon egg. If all goes well, it should hatch into a baby greater krayt dragon. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(250,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>250.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_GreaterKraytDragon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGreaterKraytDragonUnFertilized</defName>
+    <label>greater krayt dragon egg (unfert.)</label>
+    <description>An unfertilized greater krayt dragon egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(250,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>250.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="ResourceBase">
+    <defName>RSW_KraytPearl</defName>
+    <label>krayt pearl</label>
+    <description>A krayt pearl from the stomach of a greater krayt dragon. This is a relic of a truly legendary hunt.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/KraytPearl</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>4000</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>4.0</Mass>
+      <Flammability>0.0</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+      <Beauty>400</Beauty>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggHawkbatFertilized</defName>
+    <label>hawkbat egg (fert.)</label>
+    <description>A fertilized hawkbat egg. If all goes well, it should hatch into a baby hawkbat. It can be eaten raw or cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+      <color>(125,150,100)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Hawkbat</hatcherPawn>
+      </li>
+    </comps>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteHawkbatEgg</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteHawkbatEgg</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggHawkbatUnFertilized</defName>
+    <label>hawkbat egg (unfert.)</label>
+    <description>An unfertilized hawkbat egg. It can be eaten raw or cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+      <color>(125,150,100)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteHawkbatEgg</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteHawkbatEgg</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
   </ThingDef>
 </Defs>

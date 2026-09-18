@@ -134,9 +134,13 @@ item's own criteria.
 - [x] A full non-scan-grade defName sweep run before Wave C is scoped — DONE
       2026-09-12: superseded the stale ~135 scan-grade guess with a measured
       count. See "2026-09-12 (FOUNDRY)" below.
-- [~] Wave C (remainder): 35 of 91 measured-live species absorbed so far
-      (most recently IridonianReek, Jakobeast, Jamel, Jimvu — Pass 11,
-      2026-09-18). 56 remain — full worklist in
+- [~] Wave C (remainder): 39 of 90 measured-live species absorbed so far
+      (most recently Gizka, Grank, GreaterKraytDragon, Hawkbat — Pass 12,
+      2026-09-18; before that IridonianReek, Jakobeast, Jamel, Jimvu — Pass
+      11). The 91-species sweep total is corrected to 90 this pass — `Nuna`
+      was a stale worklist entry (already ported+wired in Wave B, flagged by
+      Pass 11, verified and removed, see "2026-09-18 Pass 12" below). 51
+      remain, plus Fambaa — full worklist in
       `infrastructure/state/facts/mlie_wave_c_worklist.json`.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
@@ -1212,4 +1216,176 @@ above, not removed. The 5 ArtOverride-linked species confirmed live in
 Pass 10 still need their own ArtOverride-aware pass when their turn comes.
 
 **Remaining**: 56 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), plus Fambaa.
+
+## 2026-09-18 (FOUNDRY, belt mode) — Pass 12: stale worklist cleanup + 4 more species ported: Gizka, Grank, GreaterKraytDragon, Hawkbat (56 -> 51 remaining)
+
+**Stale `Nuna` entry, verified and removed.** Flagged by Pass 11, checked
+this pass before touching anything else: `RSW_Nuna` has existed since Wave B
+(2026-09-09) — confirmed present as
+`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml` and wired
+into all 5 of its cast rows in `design/Jawa/fauna/cast_assignment.csv`
+(AridShrubland, BiomeCypreJungle, COMIGO_GreaterSwamp_Tropical, Desert,
+ZBiome_Grasslands). The bare donor `Nuna` rows sitting alongside those 5
+persist by the owner's own "keep both" ruling (2026-09-02), not because
+porting is incomplete — there is nothing left to port for this species.
+Removed from `mlie_wave_c_worklist.json`'s `remaining_worklist`
+(56 -> 55 before this pass's 4 new ports), recorded under
+`stale_entries_removed_2026-09-18`. This also corrects the sweep's own
+total: the 2026-09-12 sweep's "91 species" always included this one stale
+entry, so the true Wave C universe is 90, not 91 (criteria checklist above
+updated: 39 of 90, not 35 of 91).
+
+**Ported this pass, next 4 off the front of the worklist (skipping Fambaa
+again, per this item's own standing caution — still not attempted)**: Gizka,
+Grank, GreaterKraytDragon, Hawkbat.
+
+🔴 **Real finding, checked BEFORE any extraction, not assumed**: all 4 of
+this pass's species turned out to have their own dedicated
+`mandrake.rsw.<name>artoverride` mod (`GizkaArtOverride`,
+`GrankArtOverride`, `GreaterKraytDragonArtOverride`, `HawkbatArtOverride`)
+— a full listing of every `*ArtOverride` folder in `src/RimStarWars/` found
+**26 such mods total**, far more than the 6-species "standing caution" list
+the 2026-09-12 Dragonsnake/Anooba pass named (`Mynock`, `Kreetle`, `Horax`,
+`Fambaa`, `Zakkeg`, `Ronto`) — that list was evidently incomplete, not a
+full census. Checked each of the 4 override mods' own `About.xml` for
+exactly which facings it covers (the pattern varies per the same precedent
+noted 2026-09-12):
+- `GizkaArtOverride` covers `Gizka_{east,north,south}` AND
+  `GizkaW_{east,north,south}` (the donor's 80%-chance recolor variant —
+  the override wires the same new art to both so the recolor doesn't
+  silently keep the old donor look). `Gizka_Dessicated` stays on donor art.
+- `GrankArtOverride` covers `Grank_{east,north,south}` only.
+  `Grank_Dessicated` stays on donor art.
+- `GreaterKraytDragonArtOverride` covers
+  `GreaterKraytDragon_{east,north,south}` only.
+  `GreaterKraytDragon_Dessicated` stays on donor art.
+- `HawkbatArtOverride` covers `Hawkbat_{east,north,south}` AND
+  `Hawkbat_j_{east,north,south}` (the female/juvenile facing, same
+  both-variants-covered pattern as Gizka's). The flying-animation frame set
+  and `Hawkbat_Dessicated` stay on donor art.
+
+SWBestiary's extraction was scoped to ONLY the facings each override does
+NOT cover, avoiding the exact same-path-collision regression the
+2026-09-12 pass caught for Dragonsnake/Anooba (SWBestiary loads after every
+override mod, so shipping the donor's own art at a covered path would
+silently revert the owner-approved redo). 27 PNGs extracted total via
+`extract_bundle.py` against the same AssetBundle every prior wave used:
+`Gizka_Dessicated` (1), `Grank_Dessicated` (1),
+`GreaterKraytDragon_Dessicated` (1), `Hawkbat_Dessicated` + all 24
+flying-animation frames (25) — all confirmed non-zero and PIL-openable.
+
+**Dependency graphs, checked per-creature against the donor's own XML, not
+assumed**:
+- `RSW_Gizka` — custom `Gizka` BodyDef, entirely vanilla-part composition,
+  defName-rename-only port. `leatherDef`/`specificMeatDef` repoint to the
+  already-ported `RSW_Leather_Saurian`/`RSW_Saurian_Meat` (Wave B). 2 new
+  eggs (`RSW_EggGizkaFertilized`/`UnFertilized`, texPath
+  `swresource/EggSpotted`, newly extracted).
+- `RSW_Grank` — body is donor-named `CorellianHound` (species defName
+  differs from its own body's defName, confirmed by reading the donor's
+  `<race><body>` pointer directly), entirely vanilla-part composition,
+  defName-rename-only port as `RSW_CorellianHound`. `specificMeatDef`
+  repoints to the already-ported `RSW_Reptomammal_Meat` (Wave B);
+  `leatherDef` stays vanilla Core `Leather_Plain`. No egg comp, no
+  `canCrossBreedWith`.
+- `RSW_GreaterKraytDragon` — custom body needs its tail repointed to the
+  already-ported Wave B `RSW_SW_Spikes`/`RSW_SWTailAttackTool`. New leather
+  (`RSW_Leather_KraytDragon`, texPath `swresource/Leather_Scaled` — already
+  extracted, Wave B, reused unchanged), new meat (`RSW_Krayt_Meat`, texPath
+  `swresource/Meat_Krayt`, newly extracted), 2 new eggs
+  (texPath `swresource/EggSpiked`, newly extracted), and its
+  butcher-body-part trophy (`RSW_KraytPearl`, newly extracted). Its
+  PawnKindDef `<abilities>` references `SW_Calamity` directly (not via
+  `specialTrainables` like every prior Wave C ability) — an
+  AbilityDef+HediffDef+TrainableDef trio, ported as `RSW_SW_Calamity`
+  (`RSW_MlieWaveC_Abilities.xml`); its icon (`Ability_AnimalCalamity`,
+  128x128) needed a genuine new extraction — this one is NOT an ArtOverride
+  false positive, `UI/Abilities/` is this mod's own namespace with no
+  sibling override mod, `validate_patch.py --live` caught it as a real pink
+  placeholder before the icon was extracted, fixed same pass.
+  `canCrossBreedWith` (`KellDragon`, `KraytDragon`) left pointing at the
+  donor's still-bare, still-unported defNames — same precedent as
+  RSW_FeralGrazer's canCrossBreedWith (2026-09-17), flagged in the def's
+  own header for whoever ports those two next.
+- `RSW_Hawkbat` — custom body needs its tail repointed to the already-ported
+  Wave B `RSW_SW_Club` and its 2 wings to `RSW_SW_LeftWing`/
+  `RSW_SW_RightWing`. `leatherDef`/`specificMeatDef` repoint to the
+  already-ported `RSW_Leather_Reptavian`/`RSW_Reptavian_Meat` (Wave B). 2
+  new eggs (texPath `swresource/EggPod` — already extracted, reused
+  unchanged) with a new tasteThought (`RSW_AteHawkbatEgg`, added to
+  `RSW_Bantha_Thoughts.xml`).
+
+🔴 **Real donor bug found and fixed, not silently carried over** (same
+category as Igitz's missing swimming texture, 2026-09-12): the donor's own
+`GreaterKraytDragon` PawnKindDef spells the hatchling lifeStage's
+`dessicatedBodyGraphicData` texPath as
+`swanimals/KGreaterKraytDragon/GreaterKraytDragon_Dessicated` — an extra
+leading `K` that exists nowhere else on this species (the other 2
+lifeStages correctly use `swanimals/GreaterKraytDragon/...`, and no
+`KGreaterKraytDragon*` texture exists anywhere in the AssetBundle per
+`extract_bundle.py`'s list mode). This is a donor typo the donor mod itself
+would render as a pink placeholder today. Fixed in `RSW_GreaterKraytDragon`
+by using the correct path throughout, not carried over verbatim. Worth
+noting: `src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml`
+already carries an UNRELATED, independent fix for this exact same donor
+typo targeting the bare donor `GreaterKraytDragon` PawnKindDef directly
+(confirmed by reading it this pass) — that patch stays correct and
+untouched, since it fixes the donor's own live def (still relevant while
+Mlie stays active), while our new `RSW_GreaterKraytDragon` simply never
+carries the bug in the first place.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** (9 rows total, matching the
+worklist's own biome lists exactly): `RSW_Grank` (AB_MiasmicMangrove 0.3,
+AridShrubland 0.2), `RSW_Gizka` (AridShrubland 0.4, BiomeCypreJungle 1.0,
+Desert 0.1, ExtremeDesert 0.01, ZBiome_Grasslands 0.3), `RSW_Hawkbat`
+(BiomeCypreJungle 0.18), `RSW_GreaterKraytDragon` (ExtremeDesert 0.001) —
+renamed in place from the bare donor entries, same pattern as every prior
+wave. Checked all 3 Mlie-touching patch files named in this item's own
+spec: `AnimalDessicatedTexPaths_Fix.xml` has the unrelated GreaterKraytDragon
+fix noted above (untouched, still correct); `AnimalBiomeDuplicates_Fix.xml`
+mentions `Gizka` only in historical comment prose (which species were
+untouched by an earlier dedup pass), no actual `PatchOperation` targets any
+of these 4 defNames; `BehemothArtUpres_StarWarsAnimalCollection.xml` has no
+references to any of the 4.
+
+**Validated**: `validate_patch.py --live` against the freshest available
+capture (`2026-09-18T02-17-44Z`, 632 mods; live `ModsConfig.xml` shows 633
+— correctly NOT re-harvested mid-pass, per "ModsConfig describes the NEXT
+load" doctrine) AND `--defs` against the full load set (RimWorld's own
+`Data` Core folder + `Mods` + the Steam Workshop content root — the first
+`--defs` attempt used only `Mods`+`Workshop` and wrongly flagged every
+vanilla-Core `ParentName` in the whole resources file as unresolvable;
+adding `Data` fixed it, worth remembering for the next pass). All 8
+directly authored/touched files (4 species, `RSW_MlieWaveC_Bodies.xml`,
+`RSW_MlieWaveC_Resources.xml`, `RSW_MlieWaveC_Abilities.xml`,
+`RSW_Bantha_Thoughts.xml`): **0 errors, 0 warnings**. Both
+`BiomeCast_Ashkarr.xml` copies checked separately: deployed copy 0
+errors/2 pre-existing unrelated warnings; design copy carries 548
+pre-existing errors from unrelated donor-mod dead references (Alpha
+Animals Expanded's `AEXP_*` defs and others — the same documented
+generator/deployment divergence this item has tracked since 2026-09-12),
+confirmed none reference Gizka/Grank/GreaterKraytDragon/Hawkbat by name.
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` (45 files
+written clean) and `--mod UtinniPatches --apply` (1 file,
+`Patches/BiomeCast_Ashkarr.xml`, written clean). **No live cold-load proof
+yet** — owed to the next natural restart, matching every prior wave's
+established pattern.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated: `Nuna`
+removed as a stale entry (`stale_entries_removed_2026-09-18`);
+Gizka/Grank/GreaterKraytDragon/Hawkbat removed from `remaining_worklist`
+and recorded under `ported_and_wired_this_pass_2026-09-18_batch12`; count
+56 -> 51.
+
+**Not done this pass**: Fambaa still unattempted (still needs its own
+careful ArtOverride-gated pass — now doubly true given how many more
+override-linked species turned up this pass than the old 6-species list
+suggested). The full 26-mod `*ArtOverride` listing found this pass is
+worth checking against the remaining 51-species worklist before the next
+batch, rather than discovering collisions one species at a time.
+
+**Remaining**: 51 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), plus Fambaa.

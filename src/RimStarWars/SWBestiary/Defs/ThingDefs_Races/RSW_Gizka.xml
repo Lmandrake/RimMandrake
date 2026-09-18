@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Gizka creature port (Pass 12).
+  Ported from mlie.starwarsanimalcollection's `Gizka` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Gizka` BodyDef is entirely vanilla-part
+  composition — ported as RSW_Gizka with a defName rename only, no new body
+  part needed (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Saurian/RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml). Its 2
+  eggs are newly ported (RSW_EggGizkaFertilized/UnFertilized, texPath
+  swresource/EggSpotted, newly extracted this pass).
+
+  No `canCrossBreedWith` in the donor.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `GizkaArtOverride` (mandrake.rsw.gizkaartoverride) exists and covers
+  `Gizka_{east,north,south}` AND `GizkaW_{east,north,south}` (the donor's
+  80%-chance recolor variant — the override's own About.xml explains it
+  wires the SAME new art to both Gizka_ and GizkaW_ so the recolor doesn't
+  silently keep the old donor look). Per the Dragonsnake/Anooba
+  same-path-collision trap (2026-09-12 finding — SWBestiary loads AFTER
+  every ArtOverride mod in the live list, so shipping the donor's own art at
+  the same relative path would silently revert the override), SWBestiary
+  ships ONLY `Gizka_Dessicated` (the one facing the override does not
+  touch, per its own About.xml) — the base/alternate facings are NOT
+  extracted here. `alternateGraphics`/`alternateGraphicChance` in the
+  PawnKindDef below are kept pointing at the donor's own `swanimals/Gizka/
+  GizkaW` texPath, unmodified (same relative path GizkaArtOverride uses,
+  same load-order-wins mechanism as every other rename in this item).
+
+  Art: 1 PNG extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) — Gizka_Dessicated,
+  confirmed non-zero and PIL-openable. Sits at Textures/swanimals/Gizka/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (not the donor's wildBiomes, which lists several biomes
+  Ash'karr does not have).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Gizka</defName>
+    <label>gizka</label>
+    <description>Whatever their native world, their extraordinary reproduction rate led to a fair amount of gizka on many worlds, even including uncharted planets such as Lehon, finding their way from the wreckage of crashed starships. It has been alternatively postulated that they came from that planet originally, spreading along with the Infinite Empire. Their exponential population growth led to them being considered pests on almost as many worlds as they inhabited, as they commonly ate electrical wiring. They were the source for the delicacy gizka steak.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGizkaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGizkaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>1</eggLayIntervalDays>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Gizka</body>
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.15</petness>
+      <roamMtbDays>3</roamMtbDays>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <lifeExpectancy>12</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Forage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.1</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.04</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.09</minAge>
+          <soundWounded>RSW_Pawn_Gizka_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Gizka_Death</soundDeath>
+          <soundCall>RSW_Pawn_Gizka_Call</soundCall>
+          <soundAngry>RSW_Pawn_Gizka_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>StandardAnimal</li>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Gizka</defName>
+    <label>gizka</label>
+    <race>RSW_Gizka</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>1.30</ecoSystemWeight>
+    <wildGroupSize>4~6</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(137,147,100)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(116,124,83)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(71,99,56)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(93,122,78)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(181,181,97)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <color>(193,168,69)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka</texPath>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka_Dessicated</texPath>
+          <drawSize>0.45</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka_Dessicated</texPath>
+          <drawSize>0.70</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka</texPath>
+          <drawSize>0.87</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gizka/Gizka_Dessicated</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
