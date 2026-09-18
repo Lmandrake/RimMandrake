@@ -329,3 +329,118 @@ require one of the two routes above. **Item stays in `doing`, not closed** —
 one of seven boxes moved from "not attempted" to "confirmed," and the
 remaining six now have a precise, actionable path instead of an open
 question.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — root-cause pass on the 2026-09-08 need-gating failure
+
+Task brief for this pass framed the root cause as still open ("not root-caused
+yet, two untested candidates"), but that framing was **stale** — this item's
+own 2026-09-09 and 2026-09-14 entries above already root-caused and confirmed
+it. This pass's job became: independently re-verify that analysis against live
+source rather than trust it secondhand, and act on the one piece the prior
+entries left as a recommendation rather than code. Bridge was checked first
+(`rimflow bridge who` → FREE) and the game was found RUNNING live (`./game` →
+RUNNING); per this pass's own brief, that means no restart, no deploy, no live
+retest — noted as owed below, not forced.
+
+**Root cause re-confirmed independently, both halves, with exact source now
+read (not just cited):**
+
+- **(b) XML — ruled out, confirmed correct as claimed.** Read
+  `src/RimStarWars/Droidworks/Defs/HediffDefs/HediffDefs_Droidworks.xml` lines
+  224-329 directly. All four `RSW_DW_FormatTier` stages are exactly as the item
+  describes: blank/mindless `disablesNeeds` = Mood+Joy+Beauty+Comfort+Outdoors;
+  programmable `disablesNeeds` = Joy+Beauty+Comfort+Outdoors (Mood absent from
+  the list, i.e. kept); sapient has no `disablesNeeds` block at all. Work tags
+  per tier also match the item's table exactly. The XML was never the bug.
+- **(a) the bridge tool's code path — ruled out as a misuse, confirmed as a
+  structural gap, down to the exact vanilla lines.** Read live via RimSage
+  (this session DOES have RimSage access, unlike the Mac-laptop case CLAUDE.md
+  warns about):
+  - `Hediff.Severity`'s setter (`Source/Verse/Hediff.cs:239-266`) calls
+    `pawn.health.Notify_HediffChanged(this)` on a stage-index change, but never
+    `Pawn_NeedsTracker.AddOrRemoveNeedsAsAppropriate()`.
+  - That rebuild is called from exactly two places in vanilla:
+    `HediffSet.AddDirect` (`Source/Verse/HediffSet.cs` ~line 368-372, checking
+    the stage active **at add time**) and `Hediff.PostRemoved`
+    (`Source/Verse/Hediff.cs:606-624`, checking the stage active **at removal
+    time**). Both gate on that one moment's `CurStage.disablesNeeds`/
+    `enablesNeeds`; neither fires again for a severity change in between.
+  - `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnTools.cs`
+    (`PawnHealth`, `action=='add'` branch, confirmed at line 930):
+    `if (severity >= 0f) h.Severity = severity;` runs strictly *after*
+    `AddHediff` already fired the rebuild once at `initialSeverity`. This one
+    line is the entire defect surface — it is a bare post-add severity poke
+    that can never re-trigger `AddOrRemoveNeedsAsAppropriate()`, confirming the
+    2026-09-09 entry's read to the exact line.
+  - `DroidFormatTierUtility.SetTier` (`Source/Droidworks/DroidFormatTier.cs:95-111`,
+    read again this pass) calls `pawn.needs?.AddOrRemoveNeedsAsAppropriate()`
+    explicitly right after setting severity — already correct, already shipped,
+    unchanged by this pass.
+
+**New, previously-unstated fact this pass found: the 2026-09-14 entry's
+"fastest, most correct" fix (a companion tool calling `SetTier` directly) was
+not actually buildable as described.** `JawaBench.BridgeTools.csproj` had no
+reference to the Droidworks mod assembly at all — bridgetools only referenced
+`RimBridgeServer.Sdk`, `RimMandrakeOracle`, `RimDefDump`, `Assembly-CSharp`,
+`UnityEngine.CoreModule` and `0Harmony`. Calling `DroidFormatTierUtility.SetTier`
+needed a new `Reference` entry, the same "call straight into the already-loaded
+mod" pattern `JawaBenchOracleTools.cs` already uses for `RimMandrakeOracle.dll`
+(Droidworks is an ordinary mod, already loaded by the mod loader before
+RimBridgeServer attaches its companions).
+
+**Fix applied — written, wired, and build-verified offline; NOT deployed:**
+
+- Added `DroidworksModDir` property + `Reference Include="Droidworks"` +
+  matching `Error Condition` check to
+  `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj`,
+  pointing at the live deployed
+  `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Droidworks\Assemblies\Droidworks.dll`
+  (confirmed present on disk this pass).
+- New file
+  `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDroidworksTools.cs`:
+  `jawa/droid_format_tier` (`action='get'|'set'`, `tier='blank'|'mindless'|
+  'programmable'|'sapient'`), calling `DroidFormatTierUtility.SetTier`/`TierOf`
+  directly and reading back `pawn.needs.AllNeeds` (the live Need list, not the
+  cached disabled-needs set) after the rebuild. Refuses on a non-droid pawn.
+  Rule-9-checked against the phantom-tool trap: `jawa/pawn_health` is mentioned
+  inside this tool's own `Description` string, but `build.py`'s tool-surface
+  scan was hardened past the loose-substring-match bug that trap describes
+  (`BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1`, 2026-09-06 — it now reads the actual
+  `CustomAttribute` metadata table, not a string-blob regex), confirmed by
+  reading `tool_surface()`'s current docstring in `build.py` this pass — so no
+  phantom risk.
+- **Offline build-verified, not deployed:** `dotnet build` (via the user-local
+  `C:\Users\Mandrake\.dotnet\dotnet.exe`, invoked through the WSL/Windows
+  interop path since this is a WSL shell) on
+  `JawaBench.BridgeTools.csproj` in Release → **0 warnings, 0 errors**, output
+  written only to the repo's own `bridgetools/artifacts/BridgeTools/JawaBench/`
+  (gitignored), never touching the game's Mods folder or the live process.
+
+**🔴 Deploy + live retest deliberately NOT done this pass.** `rimflow game` and
+`./game` both read the game as RUNNING for the whole pass, with an unrelated
+water-terrain regression under active investigation by another window per this
+pass's own brief. Deploying this companion DLL needs `taskkill.exe /F /IM
+RimWorldWin64.exe` first (the DLL is memory-mapped) — an involuntary restart of
+someone else's live session, which this pass's brief explicitly said not to
+force. **Owed to the next game-down window:**
+
+1. `taskkill.exe` + `build.py --gm --apply` (or without `--gm`, since this tool
+   carries no GM gate) + relaunch.
+2. Prove `jawa/droid_format_tier` live: spawn a droid, `action='set'
+   tier='mindless'`, read back `needs` → expect `['RSW_DW_Power']` only
+   (box 2); `tier='sapient'` → expect the full Humanlike need set including
+   Joy/Beauty/Comfort/Outdoors if this race has them, or confirm via a second
+   instrument if it does not carry them at baseline (the 2026-09-08 entry's
+   open question about whether Joy/Beauty/Comfort/Outdoors are on this race's
+   need list at all, independent of gating, is still unresolved and this tool
+   now makes it directly checkable for the first time).
+3. Boxes 3 (sapient mental breaks fire), 6 (recipe eligibility gating per
+   tier) and 7 (deformat goodwill+witness-thought) still need the recipe/bench
+   route or debug actions — `jawa/droid_format_tier` only covers boxes 2 and
+   re-confirms 1/5; it does not touch bills, eligibility gates, or
+   `RecipeWorker.ReportViolation`.
+
+**Item stays in `doing`.** Root cause: CONFIRMED (independently, this pass, to
+exact source lines on both the XML and C# sides). Fix: WRITTEN and
+BUILD-VERIFIED offline, not yet deployed or live-tested — that step is owed to
+whoever next has a game-down window, not forced onto a live, shared session.

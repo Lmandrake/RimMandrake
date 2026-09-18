@@ -100,6 +100,17 @@
          JawaBenchDefDumpTools.cs calls DefDumper.RunOnDemand directly instead of going
          through either bridge's debug-action surface. -->
     <RimDefDumpModDir Condition="'$(RimDefDumpModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimDefDump\1.6\Assemblies</RimDefDumpModDir>
+    <!-- mandrake.rsw.droidworks (mod folder "Droidworks"), same reasoning as
+         OracleModDir/RimDefDumpModDir: an ordinary RimWorld mod, already loaded by
+         the mod loader well before RimBridgeServer attaches its companions.
+         DROIDWORKS_FORMAT_TIERS_1 root-cause pass, 2026-09-18: jawa/pawn_health's
+         raw hediff add+severity-poke cannot trigger vanilla's
+         AddOrRemoveNeedsAsAppropriate needs-rebuild after the initial add, so it
+         cannot correctly test need gating by format tier. JawaBenchDroidworksTools.cs
+         calls DroidFormatTierUtility.SetTier directly instead - the already-shipped,
+         already-correct fix - the same "call straight into the already-loaded mod"
+         route JawaBenchOracleTools.cs uses for RimMandrakeOracle.dll above. -->
+    <DroidworksModDir Condition="'$(DroidworksModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Droidworks\Assemblies</DroidworksModDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -113,6 +124,10 @@
     </Reference>
     <Reference Include="RimDefDump">
       <HintPath>$(RimDefDumpModDir)\RimDefDump.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Droidworks">
+      <HintPath>$(DroidworksModDir)\Droidworks.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
@@ -143,6 +158,8 @@
            Text="0Harmony.dll not found at $(HarmonyDir). Is the Harmony mod subscribed? Pass /p:HarmonyDir=... " />
     <Error Condition="!Exists('$(RimDefDumpModDir)\RimDefDump.dll')"
            Text="RimDefDump.dll not found at $(RimDefDumpModDir). Is mandrake.rm.rimdefdump deployed? Pass /p:RimDefDumpModDir=... " />
+    <Error Condition="!Exists('$(DroidworksModDir)\Droidworks.dll')"
+           Text="Droidworks.dll not found at $(DroidworksModDir). Is mandrake.rsw.droidworks deployed? Pass /p:DroidworksModDir=... " />
   </Target>
 
 </Project>
