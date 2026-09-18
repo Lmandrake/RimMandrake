@@ -101,7 +101,8 @@ and nowhere else; never restate a model choice outside it.
   (*"this doesnt feel like a sheet I should be asked"*) and its data was wrong besides — a walk's
   subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
   regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
-  ruling (`feature:` key vs collapsing 34 walks into 10) is still OWED BY HIM. ✅ **The "modcheck status reads a stored field" bug is
+  ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
+  key** — implementation is `WALK_FEATURE_KEY_1`. ✅ **The "modcheck status reads a stored field" bug is
   FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
   first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
   STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
