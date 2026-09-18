@@ -17,10 +17,11 @@ namespace RimMandrake.Ninefold
     // the nine first-contact unveilings (`FirstContactCorpus.cs`) -- see
     // TryFirstContact below for the owner-ruling citation that authorized
     // shipping the corpus text now rather than holding it for a paper
-    // redline. Ishko and Oomo's chains remain unwired: they have no existing
-    // event hook this mod can bind to without new API research, a genuine
-    // mechanical gap, not a voice-text one. See
-    // infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
+    // redline. Ishko and Oomo's chains were the last two unwired -- both now
+    // have a grounded hook as of 2026-09-18 (Ishko: reuses the existing
+    // ranged-kill-at-a-remove proxy in Patch_KillManner.cs; Oomo: the new
+    // Patch_Lovin.cs, on HistoryEventDefOf.GotLovin) -- all nine are wired.
+    // See infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
     public class GameComponent_Ninefold : GameComponent
     {
         // Satiation: -100..100, signed, free-floating, moves ONLY by
@@ -241,7 +242,7 @@ namespace RimMandrake.Ninefold
             unveiled[(int)god] = true;
             nextFirstContactTick = Find.TickManager.TicksGame + OneDayTicks;
             if (!FirstContactCorpus.GetChain(god, out string title, out string text))
-                return; // Ishko/Oomo -- no corpus entry wired yet
+                return; // defensive only -- every god now has a corpus entry
             Find.LetterStack.ReceiveLetter(title, text, LetterDefOf.NeutralEvent);
         }
 
