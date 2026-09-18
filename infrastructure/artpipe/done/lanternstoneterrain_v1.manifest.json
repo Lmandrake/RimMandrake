@@ -1,0 +1,56 @@
+{
+  "attempt_elapsed_s": 112.66713226899446,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.66713226899446,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "lanternstoneterrain_v1",
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 79.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T13-16-12-01a0b629-9191-7701-8a5c-ec08a0d86000.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 78.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 74.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T13-12-46-01a0b626-6ca9-7330-8866-84e46b7383f3.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 77.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "#05070d",
+    "corners_transparent": false,
+    "has_alpha": false,
+    "height": 1024,
+    "id": "lanternstoneterrain_v1",
+    "note": "Generated with built-in imagegen; resized its 1254px output to the required opaque 1024x1024 PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\lanternstoneterrain_v1\\lanternstoneterrain_v1.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lanternstoneterrain_v1/lanternstoneterrain_v1.png\n    1024x1024  rgb  2,091,599 bytes  (111s)\n"
+}

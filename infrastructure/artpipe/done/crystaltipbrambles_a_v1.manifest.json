@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 135.00447073200485,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 135.00447073200485,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 128,
+  "id": "crystaltipbrambles_a_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T12-53-11-01a0b614-7ee8-7190-8ca2-42dc4323a015.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 67.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T12-51-38-01a0b613-1182-7fa1-a65b-4d2719f97fc3.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 66.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "crystaltipbrambles_a_v1",
+    "note": "Generated with built-in imagegen and resized to exact 128\u00d7128 RGBA; preserved genuine transparency with all four corners fully transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\crystaltipbrambles_a_v1\\crystaltipbrambles_a_v1.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/crystaltipbrambles_a_v1/crystaltipbrambles_a_v1.png\n    128x128  rgba  19,421 bytes  (134s)\n"
+}

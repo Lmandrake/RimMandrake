@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.88188336399617,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.88188336399617,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "lanternstonehuge_b_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T13-06-23-01a0b620-9338-7971-9f78-62766474dbe3.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789779110,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T13-03-47-01a0b61e-3332-7850-80d2-a91e14407094.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "lanternstonehuge_b_v1",
+    "note": "Generated with built-in imagegen and saved as a 512\u00d7512 transparent PNG; includes a huge blue faceted mass, geode cavities, fungal accretions, and cleaving blades.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\lanternstonehuge_b_v1\\lanternstonehuge_b_v1.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lanternstonehuge_b_v1/lanternstonehuge_b_v1.png\n    512x512  rgba  457,219 bytes  (97s)\n"
+}
