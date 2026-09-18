@@ -1,0 +1,18 @@
+# rimplace flat plan v2
+# template  iron_rain (sha 59028241ebb56de8)
+# min_rect  none declared   baked at 8x8
+FOOTPRINT	0	0	8	8
+CLEAR	-1	-1	10	10	soft
+CLEAR	0	0	8	8	all
+THING	Steel	4	0	0	-
+THING	Steel	6	0	0	-
+THING	Steel	1	1	0	-
+THING	ChunkSlagSteel	2	1	0	-
+THING	Steel	5	1	0	-
+THING	ChunkSlagSteel	2	2	0	-
+THING	ChunkSlagSteel	5	3	0	-
+THING	ChunkSlagSteel	5	4	0	-
+THING	ChunkSlagSteel	6	4	0	-
+THING	ChunkSlagSteel	0	6	0	-
+THING	ChunkSlagSteel	5	6	0	-
+THING	Steel	3	7	0	-
