@@ -370,3 +370,59 @@ note — reasonable for the owner to revise, not blocking. Left `doing`
 rather than closing solo — the owner's own look at the review save is the
 actual acceptance step CLAUDE.md's doctrine asks for; whoever next opens
 this item should confirm he's seen it before closing.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) - briefing was stale, re-verified, no new art needed
+
+Assigned this item on the premise "the G2 currently ships PLACEHOLDER art -
+it reuses Droid Depot's DUM texture." That premise was false as of
+2026-09-09/13, already recorded above in this same file - the real
+goose-necked/twin-lamp-eye/claw-hand/three-toed-feet/exposed-cabling body art
+was generated, wired (`DW/Primitive/G2` in `Races_Primitive.xml`), live-
+verified in two separate savegames, and deployed 5-9 days before this
+session started. This is CLAUDE.md's own "a doc can describe defects that
+were fixed before the doc was written" trap, applied to a task briefing
+rather than a design doc - re-verified against the live files rather than
+trusted:
+
+- Read `src/RimStarWars/Droidworks/Defs/Races_Primitive.xml` directly:
+  `RSW_DW_Race_Primitive_G2Unit`'s `graphicPaths/body/path` is
+  `DW/Primitive/G2`, not `OuterRim/Droid/DUM`. Header comment already reads
+  "REAL ART, FOUNDRY 2026-09-09" - no "NOT the real G2" text exists to
+  remove.
+- Read the actual PNGs (`Textures/DW/Primitive/G2_{south,east,north}.png`):
+  visually confirmed against all five brief elements - goose-neck (long
+  articulated neck), twin lamp-eye photoreceptors (two glowing amber/gold
+  lamps on the head), claw hands (three-fingered claws), three-toed feet,
+  exposed cabling (visible tubes/wires along neck and torso joints). Worn
+  brass/rust-orange painterly palette, matches this repo's art lawset.
+- `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Droidworks`:
+  "Droidworks ... in sync (560 files)" - the art is already live in
+  `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Droidworks`,
+  nothing to deploy.
+- No XML edit made - there was no placeholder texPath, no stale header
+  comment, and no `validate_patch.py` run against a change that doesn't
+  exist. Generating a second G2 body sprite on top of an already-shipped,
+  already-owner-reviewable one would be exactly the wasted/duplicate-art
+  motion this codebase's doctrine warns against, not diligence.
+
+Real remaining gap, unchanged from the 2026-09-13 entry above and NOT
+addressed this session: the pawn's rendered HEAD (face). Every Droidworks
+race, G2 included, uses the shared `RSW_DW_HeadType_Blank`
+(`graphicPath DW/blank`, a transparent stub) specifically so no droid shows
+a human face, yet the 2026-09-13 live test still saw a default human face on
+spawn. That entry already ruled this "a separate, unscoped task," not this
+item's own art deliverable (the design brief's "twin lamp-eye
+photoreceptors" are already painted into the body sprite's own neck/head,
+which a close-up screenshot confirmed). Checked `infrastructure/state/items/`
+and `infrastructure/state/queue/*.md` for an existing item covering it - none
+found (`DROIDWORKS_HEADS_BRAINS_SPIKES_1` covers per-family brain-trio heads
+as craftable items/identity-on-death, a different mechanic, not the
+AlienRace face-rendering gap). Not filed as a new item here either - that is
+a scoping call for whoever next reads this, not something to invent
+mid-task.
+
+No commit this session - no files were changed; re-verification only. Item
+stays `doing`. The owner's own visual sign-off on the already-shipped review
+saves (`Saves/REVIEW_DroidworksG2_2026-09-13.rws`,
+`DROIDWORKS_G2_REVIEW_2026-09-13.rws`) is still the only thing between this
+item and close.
