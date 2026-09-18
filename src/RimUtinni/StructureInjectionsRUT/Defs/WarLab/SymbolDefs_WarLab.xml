@@ -19,4 +19,9 @@
     <thing>RUT_WarLabContainmentCell</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>
   </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_WarLabReactorCore</defName>
+    <thing>RUT_WarLabReactorCore</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
 </Defs>
