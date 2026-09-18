@@ -26,7 +26,13 @@
   attack-tool groups to the ALREADY-PORTED Wave B BodyPartDefs/Groups
   (RSW_SW_LeftHorn/RSW_SW_RightHorn, RSW_SWHornAttackTool) and its tail
   group to RSW_SWTailAttackTool — no new body part needed. Its `Tusk` part
-  and `TuskAttackTool` group are vanilla Core, left bare. Borcatu's custom
+  is vanilla Core; its `TuskAttackTool` group is **Alpha Animals**
+  (`sarg.alphaanimals`, confirmed via the frozen official def dump 2026-09-17
+  — a prior pass's comment here and in RSW_Boma.xml wrongly called it
+  "vanilla Core", corrected this pass, no functional change since Alpha
+  Animals is part of the frozen `OFFICIAL-2026-08-29` target mod list
+  anyway), left bare exactly as the donor itself leaves it (no MayRequire
+  gate in the donor's own Bodies_Animal_StarWars.xml either). Borcatu's custom
   `Borcatu` BodyDef is, like Anooba, entirely vanilla-part composition (Tail,
   Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/Skull/Brain/
   Eye x2/Ear/Nose/AnimalJaw, 4x Leg/Paw) — defName rename only. CanCell's
@@ -1873,4 +1879,212 @@
         </li>
       </parts>
     </corePart>
-  </BodyDef></Defs>
+  </BodyDef>
+
+<!--
+  Pass 7 (Falumpaset/Fanback/FeralGrazer, 2026-09-17): Falumpaset uses the
+  vanilla Core `QuadrupedAnimalWithHoovesAndHump` body — no port needed.
+  FeralGrazer uses the vanilla Core `QuadrupedAnimalWithHoovesAndHorn` body
+  — no port needed. Fanback's custom `Fanback` BodyDef (crocodilian-amphibian
+  plan: dorsal sail Hump, tusked jaw, clawed paws x4) needed a defName
+  rename only — every referenced <def> (Tail, Hump, Spine, Stomach, Heart,
+  Lung x2, Kidney x2, Liver, Neck, Head, Skull, Brain, Eye x2, Nose,
+  AnimalJaw, Tusk x2, Leg x4, Paw x4) is vanilla Core, and its two groups
+  are `SWTailAttackTool` (already ported as RSW_SWTailAttackTool, Wave B —
+  repointed here) and `TuskAttackTool` (Alpha Animals, left bare, same
+  reasoning as Boma/Borcatu above).
+-->
+  <BodyDef>
+    <defName>RSW_Fanback</defName>
+    <label>tusked dorsal sailed amphibian</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>RSW_SWTailAttackTool</li>
+          </groups>
+        </li>
+        <li>
+          <def>Hump</def>
+          <customLabel>dorsal sail</customLabel>
+          <coverage>0.10</coverage>
+          <height>Top</height>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.3</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <customLabel>crocodilian head</customLabel>
+              <coverage>0.8</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <customLabel>reptilian nostrils</customLabel>
+                  <coverage>0.04</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>Tusk</def>
+                  <coverage>0.1</coverage>
+                  <customLabel>left tusk</customLabel>
+                  <groups>
+                    <li>TuskAttackTool</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>Tusk</def>
+                  <coverage>0.1</coverage>
+                  <customLabel>right tusk</customLabel>
+                  <groups>
+                    <li>TuskAttackTool</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front left clawed paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontLeftPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front right clawed paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontRightPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left clawed paw</customLabel>
+              <coverage>0.1</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear right clawed paw</customLabel>
+              <coverage>0.1</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+</Defs>

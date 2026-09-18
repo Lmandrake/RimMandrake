@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — FeralGrazer creature port.
+  Ported from mlie.starwarsanimalcollection's `FeralGrazer` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Body: the donor's `body` is the vanilla Core
+  `QuadrupedAnimalWithHoovesAndHorn` — no BodyDef port needed.
+
+  `leatherDef`/`specificMeatDef` both needed new resources this pass —
+  `RSW_Leather_Nerf`/`RSW_Nerf_Meat` (RSW_MlieWaveC_Resources.xml). The
+  donor's Leather_Nerf shares the exact same texPath as the already-ported
+  RSW_Leather_Tough (swresource/Leather_Tough) — reused, no new leather art
+  extracted. Meat_Nerf (swresource/Meat_Nerf) newly extracted this pass.
+
+  `canCrossBreedWith` (Grazer, FeralNerf, Nerf) is left pointing at the
+  donor's still-bare, still-unported defNames — first port to carry this
+  field. Since Mlie stays active and its own Grazer/FeralNerf/Nerf remain
+  installed unmodified, this is functionally correct (our RSW_FeralGrazer
+  can still cross-breed with the donor's own related species) and matches
+  the established precedent of leaving still-unported donor cross-references
+  bare (same as SW_Spur/SW_Spit abilities). Flagged for whoever ports
+  Grazer/FeralNerf/Nerf: rename these 3 entries to their RSW_ equivalents at
+  that point, same as Bantha's/Wampa's cast-wiring rename pattern.
+
+  Sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_FeralGrazer_*, 2026-09-02). texPaths are unchanged text —
+  extracted art sits at Textures/swanimals/FeralGrazer/ (extract_bundle.py
+  against the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: Desert (0.1) — per
+  cast_assignment.csv's current row for this species, repointed from the
+  bare "FeralGrazer" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+  No `*ArtOverride` mod exists for this species (checked before porting).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_FeralGrazer</defName>
+    <label>feral grazer</label>
+    <description>These slow-moving herbivorous mammalia were native to Alderaan. 'Feral' or 'wild' grazers were significantly leaner than the fatter and more well-fed domestic grazer; however both species were distantly related to Nerfs. Their horns, tough leathery hides and fat layers acted as an additional defense against predation.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-55</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.24</ArmorRating_Blunt>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>12</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Nerf</leatherDef>
+      <specificMeatDef>RSW_Nerf_Meat</specificMeatDef>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <roamMtbDays>2</roamMtbDays>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <lifeExpectancy>18</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <canCrossBreedWith>
+        <li>Grazer</li>
+        <li>FeralNerf</li>
+        <li>Nerf</li>
+      </canCrossBreedWith>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.8</BorealForest>
+        <Tundra>0.4</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.20</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.30</minAge>
+          <soundWounded>RSW_Pawn_FeralGrazer_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_FeralGrazer_Death</soundDeath>
+          <soundCall>RSW_Pawn_FeralGrazer_Call</soundCall>
+          <soundAngry>RSW_Pawn_FeralGrazer_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_FeralGrazer</defName>
+    <label>feral grazer</label>
+    <race>RSW_FeralGrazer</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>3~9</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>wild grazer calf</label>
+        <labelPlural>wild grazer calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer_Dessicated</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralGrazer/FeralGrazer_Dessicated</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

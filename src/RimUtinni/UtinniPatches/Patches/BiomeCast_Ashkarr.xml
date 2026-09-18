@@ -51,6 +51,8 @@
         <RSW_Bolotaur>0.1</RSW_Bolotaur> <!-- bolotaur - herd, import -->
         <RSW_Clodhopper>0.1</RSW_Clodhopper> <!-- clodhopper - ambush-small, keep -->
         <RSW_Iriaz>0.1</RSW_Iriaz> <!-- iriaz - herd-small, keep -->
+        <RSW_Falumpaset>0.2</RSW_Falumpaset> <!-- falumpaset - herd, import -->
+        <RSW_FeralGrazer>0.1</RSW_FeralGrazer> <!-- feral grazer - herd, import -->
       </value>
     </match>
   </Operation>
@@ -80,7 +82,6 @@
         <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
         <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
         <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
-        <Falumpaset>0.2</Falumpaset> <!-- falumpaset - herd, import -->
         <FrilledGorg>0.2</FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
         <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
         <Nerf>0.2</Nerf> <!-- nerf - herd, keep -->
@@ -88,7 +89,6 @@
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
-        <FeralGrazer>0.1</FeralGrazer> <!-- feral grazer - herd, import -->
         <Gizka>0.1</Gizka> <!-- gizka - ambush-small, keep -->
         <Krykna>0.1</Krykna> <!-- krykna - ambush-small, keep -->
         <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
@@ -345,6 +345,7 @@
         <RSW_Dalgo>0.18</RSW_Dalgo> <!-- dalgo - brake, keep -->
         <RSW_Dianoga>0.15</RSW_Dianoga> <!-- dianoga - lunger, adjust-keep -->
         <RSW_Dragonsnake>0.12</RSW_Dragonsnake> <!-- dragonsnake - lunger, adjust-keep -->
+        <RSW_Falumpaset>0.3</RSW_Falumpaset> <!-- falumpaset - brake, import -->
         <RSW_Beldon>0.008</RSW_Beldon> <!-- beldon - flier-giant, keep -->
       </value>
     </match>
@@ -363,7 +364,6 @@
         <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
-        <Falumpaset>0.3</Falumpaset> <!-- falumpaset - brake, import -->
         <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
         <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
         <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
@@ -891,6 +891,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
         <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import -->
+        <RSW_Fanback>0.5</RSW_Fanback> <!-- fanback - large-resident, adjust-keep -->
         <RSW_Boma>0.15</RSW_Boma> <!-- boma - large-margin, keep -->
         <RSW_Dactillion>0.15</RSW_Dactillion> <!-- dactillion - flier-mount, keep -->
         <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
@@ -905,7 +906,6 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
-        <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
         <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
       </value>
     </match>

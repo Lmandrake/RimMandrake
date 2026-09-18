@@ -167,7 +167,7 @@ BiomeCypreJungle,RSW_Nuna,nuna,RimMandrake: SW — Bestiary,brake,0.600000023841
 BiomeCypreJungle,VFEI2_Swarmling,swarmlings,Vanilla Factions Expanded - Insectoids 2,floor-vermin,0.20000000298023224,0.4,,,0.605,adjust-keep,the_greentide: §4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice),0
 BiomeCypreJungle,AA_Needlepost,needlepost,Alpha Animals,floor-vermin,0.7900000214576721,0.3,,,0.47,keep,the_greentide: §4 free-for-all; venom-armed herd (MEASURED special),0
 BiomeCypreJungle,RSW_Convor,convor,RimMandrake: SW — Bestiary,flier,0.4000000059604645,0.3,,,0.56,import,"the_greentide: §4 The Fliers; SW icon, swamp-forest native (register biomes MEASURED)",0
-BiomeCypreJungle,Falumpaset,falumpaset,Star Wars Animal Collection (Continued),brake,3,0.3,,,0.625,import,the_greentide: §4 The Brakes — bs 3.0 swamp herd (MEASURED); Naboo icon,0
+BiomeCypreJungle,RSW_Falumpaset,falumpaset,RimMandrake: SW — Bestiary,brake,3,0.3,,,0.625,import,the_greentide: §4 The Brakes — bs 3.0 swamp herd (MEASURED); Naboo icon — MLIE_FAUNA_ABSORPTION_1 Wave C port,0
 BiomeCypreJungle,Gelagrub,gelagrub,Star Wars Animal Collection (Continued),gnawer,2.4000000953674316,0.3,,,0.51,import,"the_greentide: §4 The Gnawers — herd grub indifferent to predation (Felucia, SW icon)",0
 BiomeCypreJungle,Kinrath,kinrath,Star Wars Animal Collection (Continued),canopy-ambush,1.2000000476837158,0.3,,,0.705,adjust-keep,the_greentide: §4 Swinger-predator; venomous (MEASURED); SW icon (KOTOR); comm 0.4→0.3 so the Webwork keeps spider primacy,0
 BiomeCypreJungle,Fambaa,fambaa,Star Wars Animal Collection (Continued),shatterer,6,0.25,,,0.717,import,"the_greentide: §4 The Shatterers — bs 6.0 herd megafauna (MEASURED), migrates in herds (MEASURED special); Naboo swamp icon",0
@@ -219,7 +219,7 @@ Desert,VFEI2_Fuelmite,fuelmite,Vanilla Factions Expanded - Insectoids 2,ship-ver
 Desert,Varactyl,varactyl,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.475,import,desert: bulk-move; fast herbivore legal (ban 3 bans predators only); spd 5.5 non-pred (MEASURED),0
 Desert,Zeer,zeer,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.475,import,desert: bulk-move from shrubland large band (ban 4 there); spd 3.0 herd herbivore (MEASURED),0
 Desert,AA_Needleroll,needleroll,Alpha Animals,grain,0.15000000596046448,0.2,,,0.429,keep,"desert: light-feeder, non-pursuit (MEASURED spd 2.5); dual home with ExtremeDesert",0
-Desert,Falumpaset,falumpaset,Star Wars Animal Collection (Continued),herd,3,0.2,,,0.625,import,"desert: SW pack herbivore, spd 4.3 (MEASURED); prep §11 flagged it homeless without a move",0
+Desert,RSW_Falumpaset,falumpaset,RimMandrake: SW — Bestiary,herd,3,0.2,,,0.625,import,"desert: SW pack herbivore, spd 4.3 (MEASURED); prep §11 flagged it homeless without a move — MLIE_FAUNA_ABSORPTION_1 Wave C port",0
 Desert,FrilledGorg,frilled gorg,Star Wars Animal Collection (Continued),ambush-small,0.4000000059604645,0.2,,,0.56,keep,"desert: SW ambush frog, spd 2.3 (MEASURED)",0
 Desert,Jakobeast,jakobeast,Star Wars Animal Collection (Continued),herd,2.5999999046325684,0.2,,,0.465,import,desert: bulk-move; herd herbivore spd 4.5 (MEASURED),0
 Desert,Nerf,nerf,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,keep,"desert: SW icon herd beast, spd 3.2 (MEASURED)",0
@@ -230,7 +230,7 @@ Desert,TeeMuss,tee muss,Star Wars Animal Collection (Continued),herd,2.099999904
 Desert,Worrt,worrt,Star Wars Animal Collection (Continued),ambush-small,0.6000000238418579,0.2,,,0.585,keep,"desert: Tatooine ambush frog, spd 2.5 (MEASURED) — positional icon",0
 Desert,RSW_Bolotaur,bolotaur,RimMandrake: SW — Bestiary,herd,3,0.1,,,0.475,import,desert: bulk-move; fast herbivore spd 5.5 non-pred (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Bolotaur port],0
 Desert,RSW_Clodhopper,clodhopper,RimMandrake: SW — Bestiary,ambush-small,0.5,0.1,,,0.572,keep,"desert: SW small, spd 2.0 (MEASURED) — positional",0
-Desert,FeralGrazer,feral grazer,Star Wars Animal Collection (Continued),herd,2,0.1,,,0.51,import,desert: bulk-move; slow grazer spd 2.0 (MEASURED),0
+Desert,RSW_FeralGrazer,feral grazer,RimMandrake: SW — Bestiary,herd,2,0.1,,,0.51,import,desert: bulk-move; slow grazer spd 2.0 (MEASURED) — MLIE_FAUNA_ABSORPTION_1 Wave C port,0
 Desert,Gizka,gizka,Star Wars Animal Collection (Continued),ambush-small,0.18000000715255737,0.1,,,0.555,keep,desert: icon (KOTOR); spd 3.0 (MEASURED),0
 Desert,RSW_Iriaz,iriaz,RimMandrake: SW — Bestiary,herd-small,0.699999988079071,0.1,,,0.417,keep,"desert: SW herd herbivore, spd 4.0 non-predator (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Iriaz port]",0
 Desert,Krykna,krykna,Star Wars Animal Collection (Continued),ambush-small,0.800000011920929,0.1,,,0.703,keep,desert: SW desert spider icon (Rebels); spd 2.5 positional (MEASURED),0
@@ -348,7 +348,7 @@ ZBiome_Badlands,RSW_Creature_Mantrap,mantrap,RimMandrake: SW — Bestiary,the-Pa
 ZBiome_Badlands,Woolamander,woolamander,Star Wars Animal Collection (Continued),flier-commuter,0.75,0.15,,,0.419,import,the_cracked_lands: §4 fliers + R17; imported from the Scarlands eviction; nests in Desert (ban 4); flier UNMEASURED,0
 ZBiome_Badlands,AA_SandSquid,sand squid,Alpha Animals,the-Sealed,2,0.1,,,0.683,adjust-keep,"the_cracked_lands: §10 Sealed: terrain-changer burrower, slow (spd 1 MEASURED) — a buried sleeper under the pans; comm raised 0.0025→0.1",0
 ZBiome_DesertOasis,Ollopom,ollopom,Star Wars Animal Collection (Continued),small-resident,0.6000000238418579,0.7,,,0.415,keep,weeping_stones: §10 obvious keep; herd special MEASURED — pool-crowd prey base; non-predator,0
-ZBiome_DesertOasis,Fanback,fanback,Star Wars Animal Collection (Continued),large-resident,2,0.5,,,0.65,adjust-keep,weeping_stones: §10 ⭐ 'the Fanback is a gift — a literal fan on its back; the comb convergence was waiting for us'; raised from 0.18 to archetype prominence,0
+ZBiome_DesertOasis,RSW_Fanback,fanback,RimMandrake: SW — Bestiary,large-resident,2,0.5,,,0.65,adjust-keep,weeping_stones: §10 ⭐ 'the Fanback is a gift — a literal fan on its back; the comb convergence was waiting for us'; raised from 0.18 to archetype prominence — MLIE_FAUNA_ABSORPTION_1 Wave C port,0
 ZBiome_DesertOasis,ColossusToad,colossus toad,Odyssey,medium-resident,0.800000011920929,0.4,,,0.52,keep,weeping_stones: §10 obvious keep; pool-margin amphibian body at reliable standing water (§4); slow (spd 3.2 MEASURED),0
 ZBiome_DesertOasis,RSW_Dewback,dewback,RimMandrake: SW — Bestiary,large-resident,3,0.4,,,0.625,import,"weeping_stones: RULED move from LavaField (owner 2026-09-06, sheet §10 + WEEPING_STONES_ROSTER_1) — the films' dew-drinking lizard; its ridged back IS the comb the biome converges on (§4/§5) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Dewback port]",0
 ZBiome_DesertOasis,RSW_Boma,boma,RimMandrake: SW — Bestiary,large-margin,2,0.15,,,0.7,keep,"weeping_stones: §10 obvious keep; predator held to the margin ring (§10: violence lives on the approaches, never at full water) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Boma port]",0
