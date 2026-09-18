@@ -113,3 +113,72 @@ them.
 BackstoryDef as a pawnKindDef and would have spawned nothing; replaced by a
 real casket symbol. `Mech_Centurion` cells removed from type ③ (a live
 hostile on arrival would break the thaw state).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent)
+
+**Correction to this item's own "Not deployed" claim — it was stale.**
+`deploy_custom_mods.py --mod StructureInjectionsRUT` (plan only) shows drift
+on 13 files, **none of them this item's** (`GenStepDefs_Batch7`,
+`GenStepDefs_Whisper_Batch2..4`, `Patches/AshfallBattery.xml`,
+`Patches/WhisperBatch2..4.xml`, five `Templates/*.txt` — other in-flight work
+in the same mod folder). Checked byte-for-byte, not assumed: every one of
+this item's own files — all 8 `QuestScriptDef`s
+(`Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml`, `diff` clean),
+`HistoryEventDefs_Vaults.xml`, `IncidentDefs_Vaults.xml`,
+`SitePartDefs_Vaults.xml`, `RUT_VaultHeart.xml`, and
+`Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll` — **is already on
+disk in the live Mods folder, byte-identical to the repo** (`md5sum` match on
+the DLL: `e338d888e547edcafab343aec9af7e14`). The DLL's mtime (2026-09-12
+01:35, one minute after `MapComponent_VaultSleepers.cs`'s own mtime) lines up
+with commit `d0e3b19ab` ("build the missing WAKE/LOOT signal sender") — this
+is the sender-bearing build, not a stale pre-sender copy. So the deploy this
+item asked for already happened, almost certainly swept in by a broader
+(unscoped) `--apply` run for one of the mod's sibling items (WarLab/DarkTower
+share this same folder) sometime after 2026-09-12. **No `--apply` run this
+pass** — nothing of this item's own was missing, and the 13 files that ARE
+drifting belong to other work I did not review; deploying them was out of my
+scope so I left them alone.
+
+**Why live verification did not happen — not a bridge-availability call, a
+structural one.** `rimflow bridge who`: FREE. `rimflow game`: RUNNING, bridge
+answers. But `mandrake.rut.injections` (this mod's packageId) is **not
+active** in the current live `ModsConfig.xml` (634 active mods, confirmed by
+parsing `<activeMods>`, not a `<li>` grep) — and it is not in
+`ModsConfig.FULL.LATEST.xml` either. Sibling item `VAULT_DUNGEON_BUILD_1`
+logged the identical finding today (its own "2026-09-18" section) and, for
+the same reason, deferred its own template-placement quicktests to a
+MINIMAL-list restart rather than touching the live 634-mod session. Firing
+`RUT_GiveQuest_VaultThaw_V6_Umbra`/`_V1_RustCathedral` needs this mod loaded,
+which the currently-running game process cannot do without a restart — defs
+parse once at startup, so there is no way to quicktest a mod that was never
+part of this session's load order without ending it. This pass was told not
+to trigger a restart, and the shared state tonight is explicitly fragile
+(water-regression fix held, `FULL_LIST_CANNOT_LOAD_GAME_1` open) even before
+that instruction — so both quicktests (§7/`verify`) are left undone, not
+attempted and hoped clean.
+
+**One piece of good news for whoever takes this next**: the setup is already
+built. `VAULT_DUNGEON_BUILD_1`'s 2026-09-18 pass fixed a real regression in
+`infrastructure/state/modlists/ModsConfig.MINIMAL.xml` — it had been naming
+the dead packageId `mandrake.rut.vaultdungeons` instead of
+`mandrake.rut.injections`, so every MINIMAL-list restart since 2026-09-09 was
+silently testing zero vault content. That file now correctly carries both
+`mandrake.rm.injections` and `mandrake.rut.injections`. So the very next
+MINIMAL-list restart (for any reason) already has this mod live; a FOUNDRY
+window that takes the bridge after such a restart can fire the two GiveQuest
+incidents directly — no further modlist work needed.
+
+**Open question for the owner (filed, not decided solo, MODE=afk):** this
+mod has apparently never been added to the owner's real mod list at all
+(absent from both the live 634 and `FULL.LATEST`) despite carrying WarLab,
+DarkTower and now Vault content that other items have already quicktested
+via the MINIMAL swap. Is that deliberate (holding the whole
+`StructureInjectionsRUT` package until some milestone) or an oversight? Not
+touched here either way — enabling a mod in the owner's real list is exactly
+the kind of live/ModsConfig decision this item and its sibling have both
+correctly left alone.
+
+**Status**: deploy is complete for this item's own files (confirmed, not
+re-run). `## criteria` remains entirely unchecked — no live signal fired, no
+letter seen, no casket opened under quest control — so this is **not**
+closeable this pass. Left `doing`.
