@@ -41,6 +41,7 @@ own scope split. `RUT_FungalMantisScythe`'s claw ingredient still names the dono
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Royalty</li>
     <li>sarg.alphabiomes</li>
     <li>biomesteam.biomescaverns</li>
   </loadAfter>
