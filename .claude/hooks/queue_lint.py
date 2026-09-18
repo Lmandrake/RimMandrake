@@ -488,7 +488,11 @@ def main():
             continue                      # not a file in this repo at all
         if p in tracked or os.path.basename(p).startswith("TRANSIENT_"):
             continue
-        if p.isupper() or p in ("README.md", "CLAUDE.md"):
+        # p always ends in ".md" here (checked above), and that extension is always
+        # lowercase, so `p.isupper()` was unreachable — ALL cased chars must be
+        # uppercase for isupper() to be True, and "md" never is. Strip the extension
+        # first so a new all-caps doc (CHARTER.md-style) is actually recognised.
+        if p[:-3].isupper() or p in ("README.md", "CLAUDE.md"):
             continue
         return deny(
             "Blocked: %s is a new markdown file at the repo root and is not named "
