@@ -4,10 +4,14 @@
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
     the mod DLL must target net472. Same shape as
     src/RimUtinni/RestrainingBolts/Source/RimMandrake.Utinni.RestrainingBolts.csproj,
-    copy that file's own header if this one goes stale. No Harmony reference:
-    GenStep_ScatterCavePortal is a plain GenStep_ScatterGroup subclass,
-    discovered by RimWorld's own GenStepDef the moment the XML names it in
-    genStep Class; no patch, no registration call needed.
+    copy that file's own header if this one goes stale. GenStep_ScatterCavePortal
+    itself is a plain GenStep_ScatterGroup subclass, discovered by RimWorld's own
+    GenStepDef the moment the XML names it in genStep Class — no patch or
+    registration call needed for it. Harmony IS referenced below, though:
+    CAVERNS_PARITY_BUILD_1 added Patch_PocketMapGrowthRate.cs's
+    LanternDeepsHarmony/Patch_MapPlantGrowthRateCalculator_BuildFor prefix (see
+    that file's own header) to stop pocket-map FinalizeInit crashing on grazable
+    flora with no valid parent tile.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\LanternDeeps\Source\RimMandrake.Utinni.LanternDeeps.csproj -c Release
