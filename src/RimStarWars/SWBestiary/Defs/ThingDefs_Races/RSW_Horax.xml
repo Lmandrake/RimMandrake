@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Horax creature port (Pass 13).
+  Ported from mlie.starwarsanimalcollection's `Horax` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Horax` BodyDef is entirely already-ported-group
+  composition — its Tail's `SW_Club` part and `SWTailAttackTool` group and
+  its 4 hooves' `SWLeftHoof`/`SWRightHoof` groups all already exist from
+  Wave B (RSW_MlieWaveB_BodyParts.xml, same groups Hawkbat's tail and every
+  hoofed species use) — defName rename only, ported as RSW_Horax
+  (RSW_MlieWaveC_Bodies.xml). Its Horn part's bare `HornAttackTool` group is
+  vanilla Core (distinct from the SW-prefixed `SWHornAttackTool`
+  IridonianReek/Boma use), confirmed by checking it is NOT among the ported
+  Wave B custom groups, left bare exactly as the donor leaves it.
+
+  New resources: `RSW_Leather_Horax` (texPath swresource/Leather_Heavy,
+  newly extracted) and 2 new eggs (RSW_EggHoraxFertilized/UnFertilized,
+  texPath swresource/EggDapple — already extracted, Wave B, reused
+  unchanged), plus its butcher-body-part trophy (`RSW_HoraxMaw`, texPath
+  swresource/Trophies/HoraxMaw, newly extracted, `ParentName="ResourceBase"`
+  matching the donor's own — not `ResourceVerbBase` like the Pass 12
+  trophies). `specificMeatDef` repoints to the already-ported
+  `RSW_Saurian_Meat` (Wave B, Hssiss). All in RSW_MlieWaveC_Resources.xml.
+
+  Ability: both the ThingDef's `<race><specialTrainables>` AND the
+  PawnKindDef's `<abilities>` reference `SW_Calamity` directly, same dual
+  wiring GreaterKraytDragon/Fambaa's copies used — repointed to the
+  ALREADY-PORTED `RSW_SW_Calamity` (RSW_MlieWaveC_Abilities.xml), no new
+  ability port needed.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `HoraxArtOverride` (mandrake.rsw.horaxartoverride) exists and covers the
+  `Horax_{south,east,north}` facings only (all 3 life stages share this one
+  texPath at different drawSize) — its own About.xml says the
+  dessicated-corpse texture stays on donor art. SWBestiary ships ONLY
+  `Horax_Dessicated` — the base facing is NOT extracted here.
+
+  Art: 1 PNG extracted this pass via extract_bundle.py against the same
+  AssetBundle every prior wave used — `Horax_Dessicated`, confirmed
+  non-zero and PIL-openable. Sits at Textures/swanimals/Horax/.
+
+  Sounds already absorbed in the 2026-09-02 sound wave (`RSW_Pawn_Horax_*`)
+  — confirmed present, wired, not re-done.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Horax</defName>
+    <label>horax</label>
+    <description>Horaxes were colossal, slow reptiles native to the planet Nelvaan. They were capable of growing to huge sizes thanks to the low gravity of their homeworld. Their powerfully muscled frames were covered in thick, knobby, blue skin which provided excellent defence. The mouth of the horax contained many sharp teeth, the most prominent being the four enormous saber-like fangs that protruded from its maw. At the end of the beasts' snouts was a pair of shovel-like horns used to uproot entire trees in search of small prey. Their sale and export to other worlds as juveniles as gladiatorial beasts often resulted in the specimens outgrowing their containment and escaping to form wild populations.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>4000</MarketValue>
+      <ComfyTemperatureMin>-17</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>24</FilthRate>
+      <ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.80</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.55</ArmorRating_Heat>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftHoof</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>18</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightHoof</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>18</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>32</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>spiked club-tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggHoraxUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggHoraxFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Horax</body>
+      <predator>true</predator>
+      <baseBodySize>15.0</baseBodySize>
+      <baseHealthScale>10.0</baseHealthScale>
+      <baseHungerRate>0.75</baseHungerRate>
+      <foodType>CarnivoreAnimal, DendrovoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <leatherDef>RSW_Leather_Horax</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>66</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.01</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Horax_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Horax_Death</soundDeath>
+          <soundCall>RSW_Pawn_Horax_Call</soundCall>
+          <soundAngry>RSW_Pawn_Horax_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Horax</defName>
+    <label>horax</label>
+    <race>RSW_Horax</race>
+    <combatPower>1000</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <drawSize>6.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>6.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Horax/Horax</texPath>
+          <drawSize>8.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Horax/Horax_Dessicated</texPath>
+          <drawSize>8.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HornAttackTool</bodyPartGroup>
+          <thing>RSW_HoraxMaw</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

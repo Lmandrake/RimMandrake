@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Kinrath creature port (Pass 13).
+  Ported from mlie.starwarsanimalcollection's `Kinrath` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Kinrath` BodyDef is entirely vanilla-part
+  composition (Shell/Stomach/InsectHeart/Pronotum/InsectHead/Brain/Eye x2/
+  InsectNostril/InsectMouth/InsectLeg x5) except its poisonous appendage's
+  `SWToxicAppendage` group, ALREADY PORTED in Wave B (RSW_MlieWaveB_
+  BodyParts.xml — the same group Hssiss's toxic part uses, Pass 10) —
+  defName rename only, ported as RSW_Kinrath (RSW_MlieWaveC_Bodies.xml).
+
+  New resource: the donor's `Leather_Insectine` (note the spelling: distinct
+  from the ALREADY-PORTED `RSW_Leather_Insectile`, Pass 3/CanCell — a
+  different texPath, `swresource/Leather_Chitin` vs `swresource/
+  Leather_Insectile`, genuinely two different donor resources), ported as
+  `RSW_Leather_Insectine`, texPath swresource/Leather_Chitin — already
+  extracted (Pass 3, CanCell's art), reused unchanged. 🔴 Real donor bug
+  found and fixed: the donor's own `Leather_Insectine` `stuffProps/color`
+  reads `(250,250,2000)`, a 4-digit blue channel inconsistent with the same
+  def's own `graphicData/color` of `(250,250,200)` — fixed to `(250,250,200)`
+  here. `specificMeatDef` is NOT set — Kinrath uses `<race><useMeatFrom>
+  Megaspider</useMeatFrom>` (vanilla Core), confirmed directly off the
+  donor's XML, so no meat resource is ported or needed. 2 new eggs
+  (RSW_EggKinrathFertilized/UnFertilized, texPath swresource/EggNodule,
+  newly extracted). All in RSW_MlieWaveC_Resources.xml.
+
+  🔑 Ability: Kinrath's own `SW_WebShot` is a FOUR-def group in the donor
+  (AbilityDef + HediffDef + TrainableDef + a BaseBullet-parented projectile
+  ThingDef), unlike every prior Wave C ability's trio — ported this pass as
+  RSW_SW_WebShot/RSW_SW_Webbed/RSW_SW_WebShotprojectile
+  (RSW_MlieWaveC_Abilities.xml). Wired both ways, matching the donor's own
+  dual reference: the ThingDef's `<race><specialTrainables>` AND the
+  PawnKindDef's `<abilities>`.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `KinrathArtOverride` (mandrake.rsw.kinrathartoverride) exists and covers
+  the `Kinrath_{south,east,north}` facings across ALL life stages (one
+  shared texPath at different drawSize) — its own About.xml says the
+  dessicated-corpse texture stays on donor art. SWBestiary ships ONLY
+  `Kinrath_Dessicated` — the base facing is NOT extracted here.
+
+  Art: 1 PNG extracted this pass via extract_bundle.py against the same
+  AssetBundle every prior wave used — `Kinrath_Dessicated`, confirmed
+  non-zero and PIL-openable. Sits at Textures/swanimals/Kinrath/. Plus the
+  WebShot ability's own icon (`Ability_AnimalWeb`) and projectile texture
+  (`WebShot`, `UI/Abilities/WebShot`), neither with a sibling `*ArtOverride`
+  mod, same as `Ability_AnimalCalamity` (Pass 12) — 2 more PNGs, also
+  confirmed non-zero and PIL-openable.
+
+  Sounds already absorbed in the 2026-09-02 sound wave (`RSW_Pawn_Kinrath_*`,
+  `RSW_Ability_WebShot`) — confirmed present, wired, not re-done.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Kinrath</defName>
+    <label>kinrath</label>
+    <description>Kinrath were a species of large, non-sentient arachnoids found on Dantooine, Kashyyyk, and several other planets. Kinrath had four legs and a leg-like, poisonous appendage coming out of their faces that they used to attack prey or other perceived enemies. All kinrath were blind but could sense heat which allowed them to navigate their way around and identify potential threats.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>500</MarketValue>
+      <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.27</ArmorRating_Sharp>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>poisonous stinger appendage</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggKinrathUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggKinrathFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Kinrath</body>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>10</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_WebShot</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.02</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Kinrath_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Kinrath_Death</soundDeath>
+          <soundCall>RSW_Pawn_Kinrath_Call</soundCall>
+          <soundAngry>RSW_Pawn_Kinrath_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Kinrath</defName>
+    <label>kinrath</label>
+    <race>RSW_Kinrath</race>
+    <combatPower>175</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_WebShot</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.6, 0.33)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kinrath/Kinrath_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

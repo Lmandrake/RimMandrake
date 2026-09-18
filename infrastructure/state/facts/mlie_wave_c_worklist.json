@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 51,
+  "remaining_worklist_count": 48,
   "stale_entries_removed_2026-09-18": [
     {
       "donor_defName": "Nuna",
@@ -23,28 +23,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Fambaa",
-      "biomes": [
-        "BiomeCypreJungle",
-        "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Horax",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Kinrath",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Klorslug",
       "biomes": [
@@ -563,6 +541,27 @@
     },
     {
       "donor_defName": "Hawkbat",
+      "biomes": [
+        "BiomeCypreJungle"
+      ]
+    }
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch13": [
+    {
+      "donor_defName": "Fambaa",
+      "biomes": [
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical"
+      ]
+    },
+    {
+      "donor_defName": "Horax",
+      "biomes": [
+        "Desert"
+      ]
+    },
+    {
+      "donor_defName": "Kinrath",
       "biomes": [
         "BiomeCypreJungle"
       ]

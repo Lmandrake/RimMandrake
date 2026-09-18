@@ -30,6 +30,25 @@
   SootheSong - a plain capacity-debuff hediff, ported verbatim. effecterDef
   (WarTrumpet), stateDef (Terror), and every comp class are Core/Odyssey
   vanilla - nothing here still points at the donor.
+
+  Pass 13 addition (Kinrath, 2026-09-18): `SW_WebShot`, a FOUR-def group in
+  the donor (unlike every prior Wave C ability's trio) — AbilityDef +
+  HediffDef (`SW_Webbed`) + TrainableDef sharing one defName, PLUS a
+  `BaseBullet`-parented projectile ThingDef (`SW_WebShotprojectile`) the
+  AbilityDef's `CompProperties_AbilityLaunchProjectile` references — renamed
+  RSW_SW_WebShot / RSW_SW_Webbed / RSW_SW_WebShotprojectile throughout.
+  soundCast repoints to the already-absorbed `RSW_Ability_WebShot` (589-sound
+  wave, 2026-09-02). `warmupStartSound` (`AcidSpray_Warmup`) is vanilla
+  Anomaly content, confirmed absent from the donor's own SoundDefs — left
+  bare. The HediffDef's RecoveryThought (`Webbed`) is donor content, ported
+  this same pass as `RSW_Webbed` (RSW_Bantha_Thoughts.xml, a plain -3 mood
+  debuff, not a taste thought like its siblings there). Icon
+  (`Ability_AnimalWeb`, 128x128) and the projectile's own texture (`WebShot`,
+  128x128, `UI/Abilities/WebShot`) both newly extracted this pass — neither
+  has a sibling `*ArtOverride` mod, same as `Ability_AnimalCalamity` (Pass
+  12). Wired directly off `RSW_Kinrath`'s PawnKindDef `<abilities>` AND its
+  ThingDef's `<race><specialTrainables>` (the donor's own Kinrath references
+  it both ways, same dual-wiring GreaterKraytDragon's `SW_Calamity` used).
 -->
 <Defs>
 <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
@@ -224,4 +243,103 @@
     <steps>2</steps>
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_Calamity</enablesAbility>
-  </TrainableDef></Defs>
+  </TrainableDef>
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_WebShot</defName>
+    <label>web shot</label>
+    <description>Use the creatures spinneret to launch a blob of hardened webbing, damaging and stunning a target.</description>
+    <iconPath>UI/Abilities/Ability_AnimalWeb</iconPath>
+    <cooldownTicksRange>2500</cooldownTicksRange>
+    <!-- 1 hours -->
+    <displayOrder>200</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <warmupStartSound>AcidSpray_Warmup</warmupStartSound>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>8.9</range>
+      <warmupTime>0.5</warmupTime>
+      <requireLineOfSight>true</requireLineOfSight>
+      <soundCast>RSW_Ability_WebShot</soundCast>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetLocations>false</canTargetLocations>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetEntities>true</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetMechs>true</canTargetMechs>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_WebShot</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>RSW_SW_Webbed</hediffDef>
+        <replaceExisting>true</replaceExisting>
+      </li>
+      <li Class="CompProperties_AbilityLaunchProjectile">
+        <projectileDef>RSW_SW_WebShotprojectile</projectileDef>
+      </li>
+    </comps>
+  </AbilityDef>
+<ThingDef ParentName="BaseBullet">
+    <defName>RSW_SW_WebShotprojectile</defName>
+    <label>shot web</label>
+    <graphicData>
+      <texPath>UI/Abilities/WebShot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Stun</damageDef>
+      <damageAmountBase>20</damageAmountBase>
+      <armorPenetrationBase>1</armorPenetrationBase>
+      <stoppingPower>1</stoppingPower>
+      <speed>55</speed>
+    </projectile>
+  </ThingDef>
+<HediffDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Webbed</defName>
+    <label>webbed</label>
+    <description>This person has been webbed by a creature.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>2500</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_RecoveryThought">
+        <thought>RSW_Webbed</thought>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Manipulation</capacity>
+            <postFactor>0.8</postFactor>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.7</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_WebShot</defName>
+    <label>web shot</label>
+    <description>Command the creature to shoot a blob of hardened silk webbing at a target.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_WebShot</enablesAbility>
+  </TrainableDef>
+</Defs>

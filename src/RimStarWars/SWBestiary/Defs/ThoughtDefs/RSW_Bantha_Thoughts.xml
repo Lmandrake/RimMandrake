@@ -16,6 +16,12 @@
   Wave C addition #3 (Pass 12, 2026-09-18): RSW_AteHawkbatEgg, the
   tasteThought RSW_Hawkbat's two eggs (RSW_MlieWaveC_Resources.xml) point
   at — same donor file, same mechanism.
+
+  Wave C addition #4 (Pass 13, 2026-09-18): RSW_Webbed, the RecoveryThought
+  RSW_SW_Webbed's HediffDef (RSW_MlieWaveC_Abilities.xml, Kinrath's
+  SW_WebShot ability) points at — same donor file, same mechanism, but a
+  plain -3 mood debuff (getting webbed is unpleasant), not a taste thought
+  like every other entry here.
 -->
 <Defs>
   <ThoughtDef>
@@ -67,5 +73,16 @@
     <replaceThoughts>
       <li>AteRawFood</li>
     </replaceThoughts>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_Webbed</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>webbed</label>
+        <description>Ah! It's sticky! What is it?</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
   </ThoughtDef>
 </Defs>

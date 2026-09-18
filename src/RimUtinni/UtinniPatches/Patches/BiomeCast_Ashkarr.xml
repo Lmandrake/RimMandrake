@@ -93,7 +93,7 @@
         <Krykna>0.1</Krykna> <!-- krykna - ambush-small, keep -->
         <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
         <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
-        <Horax>0.01</Horax> <!-- horax - megafauna, import -->
+        <RSW_Horax>0.01</RSW_Horax> <!-- horax - megafauna, import -->
       </value>
     </match>
   </Operation>
@@ -366,8 +366,8 @@
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
         <RSW_Gelagrub>0.3</RSW_Gelagrub> <!-- gelagrub - gnawer, import -->
-        <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
-        <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
+        <RSW_Kinrath>0.3</RSW_Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
+        <RSW_Fambaa>0.25</RSW_Fambaa> <!-- fambaa - shatterer, import -->
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
         <RSW_Hawkbat>0.18</RSW_Hawkbat> <!-- hawk-bat - flier-predator, keep -->
         <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
@@ -769,7 +769,7 @@
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
         <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
-        <Fambaa>0.02</Fambaa> <!-- fambaa - the-terribly-lost, import -->
+        <RSW_Fambaa>0.02</RSW_Fambaa> <!-- fambaa - the-terribly-lost, import -->
       </value>
     </match>
   </Operation>

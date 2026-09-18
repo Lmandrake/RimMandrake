@@ -134,13 +134,16 @@ item's own criteria.
 - [x] A full non-scan-grade defName sweep run before Wave C is scoped — DONE
       2026-09-12: superseded the stale ~135 scan-grade guess with a measured
       count. See "2026-09-12 (FOUNDRY)" below.
-- [~] Wave C (remainder): 39 of 90 measured-live species absorbed so far
-      (most recently Gizka, Grank, GreaterKraytDragon, Hawkbat — Pass 12,
-      2026-09-18; before that IridonianReek, Jakobeast, Jamel, Jimvu — Pass
-      11). The 91-species sweep total is corrected to 90 this pass — `Nuna`
-      was a stale worklist entry (already ported+wired in Wave B, flagged by
-      Pass 11, verified and removed, see "2026-09-18 Pass 12" below). 51
-      remain, plus Fambaa — full worklist in
+- [~] Wave C (remainder): 42 of 90 measured-live species absorbed so far
+      (most recently Fambaa, Horax, Kinrath — Pass 13, 2026-09-18; before
+      that Gizka, Grank, GreaterKraytDragon, Hawkbat — Pass 12). The
+      91-species sweep total is corrected to 90 — `Nuna` was a stale
+      worklist entry (already ported+wired in Wave B, flagged by Pass 11,
+      verified and removed, see "2026-09-18 Pass 12" below). Fambaa (the
+      standing ArtOverride-gated caution named in every pass since Pass 8)
+      was successfully ported this pass, same ArtOverride-aware method Pass
+      12 proved on Gizka/Grank/GreaterKraytDragon/Hawkbat — no species is
+      being deliberately skipped any more. 48 remain — full worklist in
       `infrastructure/state/facts/mlie_wave_c_worklist.json`.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
@@ -1389,3 +1392,169 @@ batch, rather than discovering collisions one species at a time.
 
 **Remaining**: 51 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), plus Fambaa.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 13: 3 more species ported: Fambaa, Horax, Kinrath (51 -> 48 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Fambaa,
+Horax, Kinrath — all 3 confirmed live at
+`/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/{Fambaa,
+Horax,Kinrath}ArtOverride`, so this pass tackled Fambaa head-on rather than
+skipping it again: Pass 12 already proved the ArtOverride-aware method
+(check each override's own About.xml for exactly which facings it covers,
+extract only what's NOT covered) works cleanly on 4 species in one pass, so
+there is no remaining reason to treat Fambaa's own long-standing "needs its
+own careful pass" flag (Pass 7 through Pass 12) as a blocker — it needed
+the same method, not a special one. Applied to all 3 species this pass.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+🔑 Fambaa's own `<race><body>` points at the donor's `Dewback` BodyDef — the
+SAME body the standalone Dewback species uses (already ported as
+RSW_Dewback, Wave B) — confirmed by reading Fambaa's ThingDef directly.
+Fambaa needs **no new BodyDef at all**, it repoints straight to the
+ALREADY-PORTED RSW_Dewback. Horax's custom `Horax` BodyDef is entirely
+already-ported-group composition: its Tail's `SW_Club` part/
+`SWTailAttackTool` group and its 4 hooves' `SWLeftHoof`/`SWRightHoof`
+groups all already exist from Wave B — defName rename only, ported as
+RSW_Horax (RSW_MlieWaveC_Bodies.xml); its Horn part's bare `HornAttackTool`
+group is vanilla Core, left bare. Kinrath's custom `Kinrath` BodyDef is
+entirely vanilla-part composition (Shell/Stomach/InsectHeart/Pronotum/
+InsectHead/Brain/Eye x2/InsectNostril/InsectMouth/InsectLeg x5) except its
+poisonous appendage's `SWToxicAppendage` group, ALREADY PORTED in Wave B
+(the same group Hssiss's toxic part uses, Pass 10) — defName rename only,
+ported as RSW_Kinrath.
+
+**Resources**: Fambaa needs a new leather (`RSW_Leather_Fambaa`, texPath
+swresource/Leather_Scaled — already extracted, Wave B, reused unchanged) —
+`specificMeatDef` repoints to the already-ported RSW_Gorg_Meat (Pass 9) —
+plus 2 new eggs (RSW_EggFambaaFertilized/UnFertilized, texPath
+swresource/EggSlime, newly extracted this pass). Horax needs a new leather
+(`RSW_Leather_Horax`, texPath swresource/Leather_Heavy, newly extracted) —
+`specificMeatDef` repoints to the already-ported RSW_Saurian_Meat (Wave B,
+Hssiss) — plus 2 new eggs (RSW_EggHoraxFertilized/UnFertilized, texPath
+swresource/EggDapple — already extracted, Wave B, reused unchanged) and its
+butcher-body-part trophy (`RSW_HoraxMaw`, texPath
+swresource/Trophies/HoraxMaw, newly extracted, `ParentName="ResourceBase"`
+kept matching the donor's own — not `ResourceVerbBase` like the Pass 12
+trophies, confirmed against the donor's own XML, not assumed). Kinrath
+needs a new leather — the donor's `Leather_Insectine` (note the spelling:
+distinct from the ALREADY-PORTED `RSW_Leather_Insectile`, Pass 3/CanCell —
+a genuinely different texPath, `swresource/Leather_Chitin` vs
+`swresource/Leather_Insectile`, not a dedup target), ported as
+`RSW_Leather_Insectine`, texPath swresource/Leather_Chitin — already
+extracted (Pass 3, reused unchanged). 🔴 **Real donor bug found and fixed,
+not carried over**: the donor's own `Leather_Insectine`'s `stuffProps/color`
+reads `(250,250,2000)` — a 4-digit blue channel, inconsistent with the same
+def's own `graphicData/color` of `(250,250,200)` and with every other
+resource in this file where the two colors always match exactly. Fixed to
+`(250,250,200)`. Kinrath's `specificMeatDef` is not set at all in the
+donor — it uses `<race><useMeatFrom>Megaspider</useMeatFrom>` (vanilla
+Core), confirmed directly off the donor's XML, so no meat resource is
+needed or ported. Kinrath needs 2 new eggs (RSW_EggKinrathFertilized/
+UnFertilized, texPath swresource/EggNodule, newly extracted). All resources
+in RSW_MlieWaveC_Resources.xml.
+
+🔑 **Ability, a real structural difference from every prior Wave C
+ability**: Fambaa's and Horax's donor abilities are both `SW_Calamity`,
+ALREADY PORTED (Pass 12, `RSW_SW_Calamity`) — both species' ThingDef
+`<race><specialTrainables>` AND PawnKindDef `<abilities>` repointed to it
+directly, same dual wiring GreaterKraytDragon used, no new ability port
+needed. Kinrath's own `SW_WebShot` is a **four-def group** in the donor
+(AbilityDef + HediffDef + TrainableDef + a `BaseBullet`-parented projectile
+ThingDef `SW_WebShotprojectile`) — every prior Wave C ability was a
+three-def trio. Ported this pass as RSW_SW_WebShot/RSW_SW_Webbed/
+RSW_SW_WebShotprojectile (RSW_MlieWaveC_Abilities.xml). soundCast repoints
+to the already-absorbed `RSW_Ability_WebShot` (589-sound wave, 2026-09-02).
+`warmupStartSound` (`AcidSpray_Warmup`) confirmed absent from the donor's
+own SoundDefs — vanilla Anomaly content, left bare. The HediffDef's
+RecoveryThought (`Webbed`) is donor content, ported as `RSW_Webbed`
+(RSW_Bantha_Thoughts.xml, a plain -3 mood debuff — the only negative-mood
+thought in that file, every sibling there is a positive taste/soothing
+thought). Wired both ways off RSW_Kinrath, matching the donor's own dual
+reference.
+
+**Art**, ArtOverride check done BEFORE any extraction, each override's own
+About.xml read for its exact covered facings (not assumed from the
+species-name pattern):
+- `FambaaArtOverride` covers `Fambaa_{south,east,north}` only — the
+  juvenile stage, swimming graphic, and dessicated-corpse texture all stay
+  on donor art per its own About.xml. Extracted 11 PNGs: `Fambaa_Dessicated`,
+  `Fambaa_Swimming_{south,east,north}`, `Fambaa_j_{south,east,north}`,
+  `Fambaa_j_Dessicated`, `Fambaa_j_Swimming_{south,east,north}`. The
+  donor's own `FambaaPack_*`/`Fambaa_jPack_*` variants (pack-saddle
+  recolors) are unreferenced by this species' own def and excluded, same
+  precedent as Falumpaset/Jamel's excluded "Pack" files.
+- `HoraxArtOverride` covers `Horax_{south,east,north}` only (all 3 life
+  stages share one texPath at different drawSize) — dessicated stays on
+  donor art. Extracted 1 PNG: `Horax_Dessicated`.
+- `KinrathArtOverride` covers `Kinrath_{south,east,north}` across ALL life
+  stages (one shared texPath) — dessicated stays on donor art. Extracted 1
+  PNG: `Kinrath_Dessicated`.
+- Plus the WebShot ability's own icon (`Ability_AnimalWeb`) and projectile
+  texture (`WebShot`, `UI/Abilities/WebShot`) — neither has a sibling
+  `*ArtOverride` mod, same as `Ability_AnimalCalamity` (Pass 12).
+
+Also extracted the leather/egg art shared with the new resources above:
+`Leather_Heavy_{a,b}` (Horax leather), `EggSlime_{a,b}` (Fambaa eggs),
+`EggNodule_{a,b}` (Kinrath eggs), and `HoraxMaw` (its butcher trophy).
+
+37 PNGs pulled from the bundle this pass in total; **22 actually placed**
+into the mod's `Textures/` tree (the rest were the ArtOverride-covered
+facings and the donor's unreferenced `Pack` variants, listed for
+completeness by `--list` but deliberately not extracted/shipped). Run via
+`python.exe` on native `C:\...` paths — a `cmd.exe /c` invocation with an
+inline quoted arg silently mis-split the bundle path this pass, worked
+around by writing a `.bat` file to
+`C:\Users\Mandrake\AppData\Local\Temp\` and invoking that instead, worth
+remembering for the next pass. All 22 placed files confirmed non-zero and
+PIL-openable via PIL before wiring in.
+
+Sounds for all 3 species were already absorbed in the 2026-09-02 sound wave
+(`RSW_Pawn_{Fambaa,Horax,Kinrath}_*`, `RSW_Ability_WebShot`) — confirmed
+present, wired, not re-done.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `BiomeCypreJungle`
+(`RSW_Kinrath` 0.3, `RSW_Fambaa` 0.25), `COMIGO_GreaterSwamp_Tropical`
+(`RSW_Fambaa` 0.02), `Desert` (`RSW_Horax` 0.01) — renamed in place from the
+bare donor entries in both `BiomeCast_Ashkarr.xml` copies and
+`cast_assignment.csv` (mod column repointed to `RimMandrake: SW —
+Bestiary`, reason field annotated), same pattern as every prior wave.
+Checked all 3 Mlie-touching patch files named in this item's own spec
+(`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — no
+references to Fambaa/Horax/Kinrath in any of them. Also checked for stray
+`canCrossBreedWith` references elsewhere in SWBestiary (none found).
+
+**Validated**: `validate_patch.py` against all 7 directly authored/touched
+files (3 species, `RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`RSW_MlieWaveC_Abilities.xml`, `RSW_Bantha_Thoughts.xml`), BOTH with
+`--live` (freshest available capture, `2026-09-18T02-17-44Z`, 632 mods —
+confirmed via its own `manifest.json`; live `ModsConfig.xml` now shows 634
+— correctly NOT re-harvested mid-pass, per "ModsConfig describes the next
+load" doctrine) AND `--defs` against the full load set (`Data` + `Mods` +
+the Steam Workshop content root). `--live`-only surfaced 8 expected errors
+(the 3 species' own base-facing texPath, not shipped here because their
+ArtOverride mods cover it) that vanished once `--defs` could see the
+already-deployed `{Fambaa,Horax,Kinrath}ArtOverride` mods in the live
+`Mods` folder — **0 errors, 0 warnings** with `--defs`. Both
+`BiomeCast_Ashkarr.xml` copies checked separately against `--live`: 0
+errors, 0 warnings each, no mention of any of the 3 species. All new
+defNames confirmed unique in-repo (the only 2-file hits are RSW_Horax and
+RSW_Kinrath's own ThingDef+BodyDef pairs sharing a defName across def
+types, same as every prior species).
+
+**Not done this pass**: no deploy — the bridge is currently HELD by another
+window (BENCH) for unrelated work, so this pass is offline-authoring only,
+matching several prior passes' own "no deploy this pass" precedent; no live
+cold-load proof. No species is being deliberately skipped in the worklist
+any more — the ArtOverride caution that named Fambaa (and, before it,
+Gizka/Grank/GreaterKraytDragon/Hawkbat) is retired now that the method has
+been proven twice.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 48 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`).
