@@ -1,81 +1,30 @@
 {
- "generatedAt": "2026-09-18T05:11:00Z",
+ "generatedAt": "2026-09-18T14:13:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 650055,
-  "sha256_12": "abfb04248bfb"
+  "bytes": 696521,
+  "sha256_12": "3f0f498635cd"
  },
- "head": "342362f69",
+ "head": "6cc0a59d6",
  "counts": {
-  "red": 39,
-  "blue": 730,
-  "green": 1842,
-  "grey": 317,
-  "unmeasured": 0,
-  "total": 2928
+  "red": 41,
+  "blue": 796,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 2158,
+  "total": 2995
  },
  "loc": {
-  "red": 17768,
-  "blue": 280864,
-  "green": 471366,
-  "grey": 229416,
-  "unmeasured": 0,
-  "total": 999414
+  "red": 18194,
+  "blue": 315617,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 676987,
+  "total": 1010798
  },
- "reviewEntries": 2942,
- "recidivists": [
-  {
-   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
-   "loc": 143799,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Utils/selftest_code_review_status.py",
-   "loc": 294,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml",
-   "loc": 2913,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
-   "loc": 486,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/PyrelandsMechanics/About/About.xml",
-   "loc": 41,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/Greentide/Source/RM_GreentideMod.cs",
-   "loc": 154,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs",
-   "loc": 99,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/Greentide/Source/RM_MapComponent_CrossBiomeChurnmud.cs",
-   "loc": 99,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/About/About.xml",
-   "loc": 97,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml",
-   "loc": 83,
-   "cycles": 1
-  }
- ],
+ "reviewEntries": 2943,
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 2928 files (1842 clean, 317 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }

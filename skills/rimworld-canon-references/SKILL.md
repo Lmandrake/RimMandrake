@@ -159,8 +159,9 @@ Entries cite defNames and repo paths, and both move. Three checks, all offline:
 
 - **The defName** — search `src/RimStarWars/` for the entry's `**defName**:`
   value. If it is gone, the entry is grading a def nobody ships, and a rename is
-  the likely cause (renames run under `NAMING_SCHEME_EXECUTION_1`; do not rename
-  ahead of it).
+  the likely cause — renames to the tier grammar (`design/NAMING_SCHEME_PLAN.md`)
+  are ordinary owed work, not gated on anything (`NAMING_SCHEME_EXECUTION_1`
+  closed 2026-08-31).
 - **The cited repo paths** — measured 2026-09-16, **0 of 137 entries cite a
   missing `src/…` or `design/…` path.** There is no background noise here, so one
   miss is a real, new break.

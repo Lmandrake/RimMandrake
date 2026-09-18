@@ -33,8 +33,8 @@
 
     RM_ prefix, unlike its Inhabited_* siblings: NEW defNames take the
     three-tier grammar in design/NAMING_SCHEME_PLAN.md (RimMandrake tier), and
-    the older names migrate under NAMING_SCHEME_EXECUTION_1 rather than being
-    renamed ahead of it.
+    the older Inhabited_* names are owed the same migration as ordinary build
+    work (NAMING_SCHEME_EXECUTION_1 closed 2026-08-31, no gate remains).
   -->
   <GenStepDef>
     <defName>RM_InhabitedStock</defName>

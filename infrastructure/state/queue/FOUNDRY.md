@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T11:00:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-18T13:59:42Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -55,7 +46,7 @@ summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
 ## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -163,7 +154,7 @@ summary:  SHIELDMODSLEVERAGE1 — particulate screen finished, predictive-failur
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
 
 ## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -325,7 +316,7 @@ summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1089,6 +1080,15 @@ kind:     investigation
 summary:  No design doc — this is an engine/tooling investigation, not a content build.
 prose:    infrastructure/state/items/QUICKTEST_RIVER_WATER_MISSING_1.md
 
+## DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 Droidworks races (G2 included) show a default human face despite RSW_DW_HeadType_Blank — AlienRace head-render gap, not a def error
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
+prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1122,16 +1122,6 @@ kind:     task
 blocked:  physical split executed (commit 2385af29); close-out is gated on unclaimed MOD_CONSOLIDATION_SPRINT_1 / COLD_LOAD_RUN_SHEET_3, can't progress solo
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
-
-## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  7/9 first-contact chains built+wired tonight (Rekko/TaBaa/MobUnloo/Ohm/Shkaar/Ozzik/Zizzik), build 0W/0E, on owner authority already on record 2026-09-01 ('build...corpus letters with PROVISIONAL voice text...not held on a paper redline') that the 09-07 block missed -- see item file for full discrepancy note. Still needs: live proof next restart, Ishko+Oomo (real research gap, not voice-text), full narrator-corpus dispatch beyond first contact, and independent code review (none of tonight's 6 files marked CLEAN).
-summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
-prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
 
 ## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
 state:    doing  (BLOCKED)
@@ -1182,16 +1172,6 @@ kind:     build
 blocked:  Verify agent hung/looped and was stopped by the owner mid-session; left the live ModsConfig.xml swapped to a throwaway 18-mod quicktest list. Recovered: restored the owner's real 603-mod list from the agent's own pre-swap scratchpad backup (verified against ModsConfig.FULL601.bench-backup.xml, only 4 legitimate mod-list deltas since 09-05). Bridge released. Live-observe verify for this item still owed to a fresh session.
 summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
-
-## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod list restored, bridge released. Live craft-proof still owed to a fresh session.
-summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    doing  (BLOCKED)
@@ -1292,16 +1272,6 @@ kind:     task
 blocked:  dormant design per owner card 14 (design now, do not build); nothing closes it but the owner's read of droid_oracle_voice_design.md
 summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
-
-## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session
-summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
-prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
@@ -1675,7 +1645,17 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
@@ -1794,16 +1774,6 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
-
-## STALE_RENAME_GATE_SWEEP_1 Sweep the dead NAMING_SCHEME_EXECUTION_1 rename gate out of ~10 design drafts (item closed 2026-08-31 at 54a8e28d); also fix liquids_framework_design.md still naming the mod Fluidity after ruling 20 named it FlowWorks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Sweep the remainder. MEASURED list as of 2026-09-16 — re-grep, since it will have
-prose:    infrastructure/state/items/STALE_RENAME_GATE_SWEEP_1.md
 
 ## SALVAGECLAIM_WALK_STALE_1 design/validation_walks/RimMandrake/SalvageClaim.md names a subject that no longer exists (src/RimMandrake/SalvageClaim is gone, consolidated into RimProperty) - re-point or retire the walk, and check whether Property.md already covers it
 state:    proposed

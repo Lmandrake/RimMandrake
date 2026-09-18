@@ -9181,3 +9181,43 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T10:57:29Z"}
 {"seat":"FOUNDRY","event":"needs","id":"QUICKTEST_RIVER_WATER_MISSING_1","to":"owner","reason":"Root cause found and fixed in repo; deploy + cold load is the owner's call, it ends his live session","ts":"2026-09-18T11:00:05Z"}
 {"seat":"FOUNDRY","event":"note","id":"QUICKTEST_RIVER_WATER_MISSING_1","text":"ROOT CAUSE FOUND cd8ab494e: FlowWorks' generated compat patch wrote lowercase viscosityClass 'water' onto 9 vanilla/Odyssey water TerrainDefs; RimWorld's case-sensitive Enum.Parse throws inside the modExtensions li and DISCARDS the whole def, so WaterShallow/WaterDeep/.../Marsh do not exist in game and every biome water*Terrain is null. NOT a bridge artifact - hits any normal landing. Repo fix pushed; deploy + cold load + prove_river_water.py still OWED and owner-gated.","ts":"2026-09-18T11:00:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STALE_RENAME_GATE_SWEEP_1","ts":"2026-09-18T14:12:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"STALE_RENAME_GATE_SWEEP_1","ts":"2026-09-18T14:12:54Z"}
+{"seat":"FOUNDRY","event":"close","id":"STALE_RENAME_GATE_SWEEP_1","sha":"6cc0a59d6875da58dca40db16b2754629125e255","ts":"2026-09-18T14:12:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VAULT_THAW_QUEST_FAMILY_1","ts":"2026-09-18T11:03:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"VAULT_THAW_QUEST_FAMILY_1","ts":"2026-09-18T11:03:11Z"}
+{"seat":"FOUNDRY","event":"note","id":"VAULT_THAW_QUEST_FAMILY_1","text":"Deploy already complete for this item's own files (found byte-identical in Mods folder incl. sender DLL, likely swept in by an earlier unscoped --apply for a sibling item sharing the mod folder) - no --apply run this pass, nothing of mine was missing. Live quicktests (V6_Umbra, V1_RustCathedral) NOT done: mandrake.rut.injections is absent from both the live 634-mod list and FULL.LATEST, so this session's running game cannot fire them without a restart, which this pass was told not to trigger. ModsConfig.MINIMAL.xml was fixed today (sibling VAULT_DUNGEON_BUILD_1 pass) to carry the right packageId, so the next MINIMAL-list restart already has this mod live for whoever takes the bridge. Filed an open question for the owner: this mod has never been in the real modlist at all - deliberate or oversight? Criteria unchecked, left doing.","ts":"2026-09-18T11:07:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SETTLEMENT_VERBS_WAVE_1","ts":"2026-09-18T11:08:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"SETTLEMENT_VERBS_WAVE_1","ts":"2026-09-18T11:08:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MASS_VALIDATION_LADDER_1","ts":"2026-09-18T11:32:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"MASS_VALIDATION_LADDER_1","ts":"2026-09-18T11:32:47Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MASS_VALIDATION_LADDER_1: live get_defs deep=true wiring proof via run_expectations.py --live (read-only)","ts":"2026-09-18T11:36:38Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T11:42:19Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-18T11:44:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-18T11:44:49Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"STICK_FOOD_INGEST_1","ts":"2026-09-18T11:53:54Z"}
+{"seat":"FOUNDRY","event":"note","id":"STICK_FOOD_INGEST_1","text":"Re-verified offline (deploy byte-current, validate_patch.py 0/0 against live load set, ModsConfig confirmed cuisine still inactive / both badoaks donors still active, packageIds match prior measurement). No live change: enabling the mod needs a restart RimWorld cannot hot-load, and the game is currently RUNNING with an unrelated water-terrain investigation live tonight, so declined to force one. Craft-proof and donor retirement both still owed, in that order. Left doing.","ts":"2026-09-18T11:58:26Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"COLONY_VISIBILITY_BUILD_1: re-confirm threat-point Prefix live after MOD_OPTIONS_RETROFIT_1 settings toggle","ts":"2026-09-18T12:02:09Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T12:08:36Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"NINEFOLD_ENGINE_M0_1","reason":"Ishko+Oomo event-hook research and independent code review of the 6 first-contact files are genuinely offline-actionable regardless of the overall item's other gates","ts":"2026-09-18T12:10:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_WIPE_SEVERITY_1","ts":"2026-09-18T12:19:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_WIPE_SEVERITY_1","ts":"2026-09-18T12:19:05Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_WIPE_SEVERITY_1 live verify","ts":"2026-09-18T12:19:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T12:57:23Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_WIPE_SEVERITY_1","text":"Live-verify pass: bed-gate fix (Patch_DroidBillGiverNoBed) CONFIRMED live, doctor picked up droid patient's DoBill job twice. ApplyOnPawn completion INCONCLUSIVE: bill repeatCount hit 0 but no trait/hediff change observed, under a window where Player.log hit Unity's message cap from an unrelated terrain-spam flood. Item left doing; retest on a quiet map/log owed. Full detail in the item file's 2026-09-18 section.","ts":"2026-09-18T12:59:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHIELD_MODS_LEVERAGE_1","ts":"2026-09-18T13:00:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHIELD_MODS_LEVERAGE_1","ts":"2026-09-18T13:00:10Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"DROIDWORKS_PRIMITIVE_TIER_1","reason":"G2 art generation is genuinely offline-actionable (art-only, matches this session's own scope split); live savegame verify stays owed","ts":"2026-09-18T13:14:55Z"}
+{"seat":"FOUNDRY","event":"file","id":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1","title":"Droidworks races (G2 included) show a default human face despite RSW_DW_HeadType_Blank — AlienRace head-render gap, not a def error","kind":"defect","target":"v1","needs":"offline","caused_by":"DROIDWORKS_PRIMITIVE_TIER_1","for":"FOUNDRY","ts":"2026-09-18T13:19:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1","ts":"2026-09-18T13:19:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1","ts":"2026-09-18T13:20:00Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 live spawn test","ts":"2026-09-18T13:27:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T13:37:48Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-18T13:38:04Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 minimal-list restart to test useFactionXenotypes fix","ts":"2026-09-18T13:41:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-18T13:50:03Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-18T13:50:14Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1","text":"Interrupted by owner mid-pass: the subagent had swapped ModsConfig.xml to a minimal test list, tested the useFactionXenotypes fix, and was mid-relaunch restoring the FULL list (its last logged action) when the owner needed the game shut down early. Task killed; RimWorld process is now NOT RUNNING. Whoever resumes: check ModsConfig.xml's current state before assuming it's the owner's real full list -- it may still reflect the minimal test list or be mid-swap. Fix itself (blast-radius XML change across Droidworks races) was committed before the restart was attempted -- check git log for the actual commit and whether it was live-verified before interruption.","ts":"2026-09-18T13:50:23Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"Pyrelands minimal-list plant density review (owner at bench)","ts":"2026-09-18T13:55:42Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-18T13:59:41Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-18T13:59:42Z"}
