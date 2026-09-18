@@ -5298,10 +5298,10 @@
     "sha": "69e7933af"
   },
   "src/RimMandrake/Utils/build_salvation_rid.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "a212502e0c9b94bfdff06b9005fe28446ad02fb5406994bb075d3b635e12f160",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "133cea8daf2e86da88c3ed10c102c1ac6af4fce4feb78c2b0abefe0062d7f0c7",
+    "sha": "cd7a57e06"
   },
   "src/RimMandrake/Utils/canon_consistency.py": {
     "cleanCount": 1,
@@ -6370,10 +6370,10 @@
     "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/structure_roster_lint.py": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "96ec7350dad6857892a73a89658e4c124056593be7a92c2a6159d81f2b73defa",
-    "sha": "9e5089f22"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "198903c80447a709391ec0a1963109f364b71f829d3da42e600d205d588f61f3",
+    "sha": "cd7a57e06"
   },
   "src/RimMandrake/Utils/system_click.py": {
     "cleanCount": 1,
@@ -14104,16 +14104,16 @@
     "sha": "7f2ff5541"
   },
   "src/RimUtinni/LanternDeeps/Source/LanternDeepsMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "ed5719dae94e63abe5c40e4dd41022547fec90c45de97065dd6fce88781f5452",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "8d7d5efdff4a1e3129d8db3286d9bb861012136153a13bf1cf1add8a3d7f8d7f",
+    "sha": "cd7a57e06"
   },
   "src/RimUtinni/LanternDeeps/Source/MapComponent_LanternDeepDarkness.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "1ed26fd658bbf9ed75566674c09c31f4603d08a9833fada36957355b789a0a37",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "8711da93903df943c370ece9a1b84e9636ed55e4ea6e89359ad5f114e3dc2c50",
+    "sha": "cd7a57e06"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
     "cleanCount": 2,
@@ -16048,10 +16048,10 @@
     "sha": "02648abb2"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/StructureInjectionsRUTSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "8eb448359f14d93473d1c4aca46c4398365098b6fcb0c8287cacac7d1f05d154",
-    "sha": "18e1ab1b6"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "4d19679a6dbee5bc9d08aca8c1a3b2790daabda6419e33559cf6e2b336ff5c6b",
+    "sha": "cd7a57e06"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/MapComponent_VaultSleepers.cs": {
     "cleanCount": 1,
@@ -16090,10 +16090,10 @@
     "sha": "fd3bafa39"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/gen_war_lab_layout.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "247d54dc3c0ce5e89d485b54e66c64c94b705bf7da13c22ca9c2be52f51ce0cb",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "efbdb7b58dc4030a5c678a09ad6cebc501cae0fa9bc6b021c0af2259e0354676",
+    "sha": "cd7a57e06"
   },
   "src/RimUtinni/StructureInjectionsRUT/Templates/broken_ring.txt": {
     "cleanCount": 1,
