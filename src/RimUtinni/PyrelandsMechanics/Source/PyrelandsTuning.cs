@@ -109,10 +109,12 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         internal const float FurnaceAuraRadius = 4.9f;
         internal const int FurnaceAuraIntervalTicks = 60;
 
-        /// <summary>The warmth hediff is re-stamped every aura interval and is
-        /// written to expire shortly after, so walking away from the herd loses
-        /// it within a few seconds rather than lingering.</summary>
-        internal const int FurnaceAuraHediffTicks = 180;
+        // The warmth hediff's own disappearsAfterTicks (180 — re-stamped every aura
+        // interval, so walking away from the herd loses it within a few seconds
+        // rather than lingering) is hardcoded directly on RUT_FurnaceWarmth's
+        // HediffCompProperties_Disappears in Defs/HediffDefs/RUT_PyrelandsHediffs.xml.
+        // A C# copy of that number here was never read by anything — removed rather
+        // than left as a second, driftable source of the same fact.
 
         /// <summary>A rest has to have been a real rest before the ground is hot
         /// enough to take. 1 in-game hour. [INVENTED]</summary>

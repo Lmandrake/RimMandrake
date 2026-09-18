@@ -30,8 +30,6 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
     /// </summary>
     public class CompProperties_FurnaceWarmthAura : CompProperties
     {
-        public float radius = PyrelandsTuning.FurnaceAuraRadius;
-
         public CompProperties_FurnaceWarmthAura()
         {
             compClass = typeof(CompFurnaceWarmthAura);

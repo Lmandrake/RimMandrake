@@ -29,8 +29,6 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// <summary>How many cells beyond the stolen fire the ember is carried.</summary>
         public int spreadDistance = PyrelandsTuning.FireHawkSpreadDistance;
 
-        public int cooldownTicks = PyrelandsTuning.FireHawkCooldownTicks;
-
         /// <summary>A twig, not a bomb.</summary>
         public float startFireSize = PyrelandsTuning.SmoulderFireSize;
 
