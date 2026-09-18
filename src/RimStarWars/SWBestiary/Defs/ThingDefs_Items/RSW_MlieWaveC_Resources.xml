@@ -2072,4 +2072,94 @@
       <MarketValue>1.0</MarketValue>
     </statBases>
   </ThingDef>
+  <!--
+    Orray/PekoPeko/Pikobis pass (Pass 19, 2026-09-18): Orray's `leatherDef`
+    (`Leather_Tough`) and `specificMeatDef` (`Reptomammal_Meat`) BOTH
+    ALREADY EXIST as `RSW_Leather_Tough`/`RSW_Reptomammal_Meat` — no new
+    resource needed. PekoPeko's and Pikobis's `leatherDef`
+    (`Leather_Reptavian`) and `specificMeatDef` (`Reptavian_Meat`) BOTH
+    ALREADY EXIST as `RSW_Leather_Reptavian`/`RSW_Reptavian_Meat` (Wave B) —
+    no new resource needed either. All 3 need new eggs though: PekoPeko's
+    own unfertilized egg (`EggReptavianUnfertilized`) is a genus-shared
+    donor def with no other current user — ported as
+    RSW_EggReptavianUnfertilized; its own fertilized egg
+    (`EggPekopekoFertilized`) ported as RSW_EggPekopekoFertilized,
+    `hatcherPawn` repointed to `RSW_PekoPeko`. Pikobis's own pair
+    (`EggPikobisUnFertilized`/`EggPikobisFertilized`) ported as
+    RSW_EggPikobisUnFertilized/RSW_EggPikobisFertilized, `hatcherPawn`
+    repointed to `RSW_Pikobis`. All 4 share the donor's own texPath
+    `swresource/EggReptavian` (2 PNGs, `EggReptavian_{a,b}`, newly
+    extracted this pass — genuinely new art, never touched by a prior
+    wave).
+  -->
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggReptavianUnfertilized</defName>
+    <label>reptavian egg (unfert.)</label>
+    <description>An unfertilized reptavian egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggReptavian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggPekopekoFertilized</defName>
+    <label>peko-peko egg (fert.)</label>
+    <description>A fertilized peko-peko egg. If all goes well, it should hatch into a baby peko-peko. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggReptavian</texPath>
+      <color>(25,100,250)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_PekoPeko</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggPikobisUnFertilized</defName>
+    <label>pikobis egg (unfert.)</label>
+    <description>An unfertilized pikobis egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggReptavian</texPath>
+      <color>(255,255,155)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggPikobisFertilized</defName>
+    <label>pikobis egg (fert.)</label>
+    <description>A fertilized pikobis egg. If all goes well, it should hatch into a baby pikobis. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggReptavian</texPath>
+      <color>(255,255,155)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Pikobis</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
 </Defs>

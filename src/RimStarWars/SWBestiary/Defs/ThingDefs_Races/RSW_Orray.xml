@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Orray creature port.
+  Ported from mlie.starwarsanimalcollection's `Orray` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom `Orray`
+  BodyDef is entirely vanilla-part composition (Body/Tail/Spine/Stomach/
+  Heart/Lung x2/Kidney x2/Liver/Hump/Neck/Head/Skull/Brain/Eye x2/Ear x2/
+  Nose, 2x Leg/Paw) — defName rename only, ported as RSW_Orray
+  (RSW_MlieWaveC_Bodies.xml). `leatherDef`/`specificMeatDef` repoint to the
+  already-ported RSW_Leather_Tough/RSW_Reptomammal_Meat (no new resource
+  needed). Its Odyssey specialTrainable (`SW_Spur`) repoints to the
+  already-ported RSW_SW_Spur (RSW_MlieWaveB_Abilities.xml, ported alongside
+  Kybuck, Pass 16). Adult lifeStage sounds repoint to the already-absorbed
+  sound wave (RSW_Pawn_Orray_*, 2026-09-02). No `canCrossBreedWith` (donor
+  sets none, and no already-ported species lists bare `Orray` either).
+
+  `OrrayArtOverride` (mandrake.rsw.orrayartoverride) covers the base
+  `Orray_{south,east,north}` facing across all life stages (one shared
+  texPath) — texPaths stay unchanged text, so the override binds
+  automatically. Only `Orray_Dessicated` was extracted this pass (1 PNG,
+  the donor's own `OrrayPack_*` pack-saddle variants excluded, unreferenced
+  by the def) via extract_bundle.py against the same AssetBundle every
+  prior wave used. Sits at Textures/swanimals/Orray/.
+
+  Wired into the live cast this same pass: ZBiome_Grasslands (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Orray" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Orray</defName>
+    <label>orray</label>
+    <description>Orrays were leathery-skinned reptilian quadrupeds native to the planet Geonosis. The orray had great strength and a quick gait; making it a popular pack animal when domesticated (especially on arid worlds). The orrays used their long snouts to root for insects in time of food scarcity.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>600</MarketValue>
+      <ComfyTemperatureMin>-6</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.24</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.06</ArmorRating_Heat>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.80</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps />
+    <race>
+      <body>RSW_Orray</body>
+      <predator>true</predator>
+      <packAnimal>true</packAnimal>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Tough</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <petness>0.01</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <lifeExpectancy>30</lifeExpectancy>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.06</Desert>
+        <ExtremeDesert>0.04</ExtremeDesert>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Orray_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Orray_Death</soundDeath>
+          <soundCall>RSW_Pawn_Orray_Call</soundCall>
+          <soundAngry>RSW_Pawn_Orray_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Orray</defName>
+    <label>orray</label>
+    <race>RSW_Orray</race>
+    <combatPower>200</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Orray/Orray</texPath>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Orray/Orray_Dessicated</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Orray/Orray</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Orray/Orray_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Orray/Orray</texPath>
+          <drawSize>2.75</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Orray/Orray_Dessicated</texPath>
+          <drawSize>2.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

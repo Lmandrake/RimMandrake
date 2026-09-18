@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — PekoPeko creature port.
+  Ported from mlie.starwarsanimalcollection's `PekoPeko` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Its own `body` points at donor `FlyingAvian` — confirmed absent from
+  Data/Core entirely (Mlie's own content, Bodies_Animal_StarWars.xml), so
+  ported this pass as RSW_FlyingAvian (RSW_MlieWaveC_Bodies.xml; see that
+  file's own header for the RSW_Convor stale-comment correction this same
+  port triggered). `leatherDef`/`specificMeatDef` repoint to the
+  already-ported RSW_Leather_Reptavian/RSW_Reptavian_Meat (Wave B) — no new
+  resource needed there. Its `CompProperties_EggLayer` needed 2 new eggs:
+  its own unfertilized egg (`EggReptavianUnfertilized`, a genus-shared
+  donor def with no other current user) ported as
+  RSW_EggReptavianUnfertilized, and its fertilized egg
+  (`EggPekopekoFertilized`) ported as RSW_EggPekopekoFertilized
+  (RSW_MlieWaveC_Resources.xml, `hatcherPawn` repointed to `RSW_PekoPeko`).
+  No `specialTrainables` set (donor leaves it bare). No `canCrossBreedWith`
+  either direction. Sounds: hatchling stage uses vanilla Core
+  `Pawn_Chick_Call` (left bare); adult sounds repoint to the
+  already-absorbed sound wave (RSW_Pawn_PekoPeko_*, 2026-09-02).
+
+  `PekoPekoArtOverride` (mandrake.rsw.pekopekoartoverride) covers the base
+  `PekoPeko_{m,f}_{south,east,north}` facing (shared across the hatchling
+  and adult life stages, one texPath per sex) — texPaths stay unchanged
+  text, so the override binds automatically. The flying-animation frames
+  (`flyingAnimationFramePathPrefix`/`...Female`, 4 frames x 3 facings x 2
+  sexes = 24) and `PekoPeko_Dessicated` are NOT covered by the override —
+  extracted this pass (25 PNGs total) via extract_bundle.py against the
+  same AssetBundle every prior wave used. Sits at Textures/swanimals/
+  PekoPeko/.
+
+  Wired into the live cast this same pass: BiomeCypreJungle (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "PekoPeko" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_PekoPeko</defName>
+    <label>Peko-peko</label>
+    <description>Peko-pekos were large colourful reptavians whose raucous squawks that carried over long distances. They were native to the Gungan swamps of the planet Naboo, but another breed was known to live on Nal Hutta. Their vibrant colours and vocal emulation made them popular as pets and they were exported to multiple worlds. Their skin contained a mild toxin which meant most predators ignored them (allowing for wild populations to establish themselves with ease).</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>300</MarketValue>
+      <ComfyTemperatureMin>-7</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.5</Wildness>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>30</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>left wing claws</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>wing claws</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>strong beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggReptavianUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggPekopekoFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggCountRange>2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_FlyingAvian</body>
+      <predator>true</predator>
+      <baseBodySize>2.5</baseBodySize>
+      <maxPreyBodySize>0.95</maxPreyBodySize>
+      <baseHungerRate>0.6</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <foodType>OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>30</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.4</leaveMapOnFleeChance>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.9</TropicalSwamp>
+        <TemperateSwamp>0.9</TemperateSwamp>
+        <TemperateForest>0.2</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.08</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_PekoPeko_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_PekoPeko_Death</soundDeath>
+          <soundCall>RSW_Pawn_PekoPeko_Call</soundCall>
+          <soundAngry>RSW_Pawn_PekoPeko_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_PekoPeko</defName>
+    <label>peko-peko</label>
+    <labelPlural>peko-pekoes</labelPlural>
+    <race>RSW_PekoPeko</race>
+    <combatPower>150</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/PekoPeko/PekoPeko_m_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFramePathPrefixFemale>swanimals/PekoPeko/PekoPeko_f_Flying_</flyingAnimationFramePathPrefixFemale>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>peko-peko hatchling</label>
+        <labelPlural>peko-peko hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PekoPeko/PekoPeko_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
