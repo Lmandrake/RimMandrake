@@ -7,21 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T03:49:11Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T04:02:44Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
 
-## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
 row:      unassigned
-needs:    owner
+needs:    bridge
 target:   v1
-kind:     design
-summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
-prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # IN PROGRESS
 
@@ -522,6 +522,15 @@ kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
+## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
+prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -728,6 +737,15 @@ target:   v1
 kind:     task
 summary:  Arc §3 "Mechanoid pass" (RULED, owner verbatim quoted there). Scope RULED
 prose:    infrastructure/state/items/CATHEDRAL_MECHANOID_PASS_VERBS_1.md
+
+## CATHEDRAL_EXPOSURE_COMPLETION_1 The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
+prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
 
 ## GM_BLACKBOARD_SHADOW_M4_1 Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
 state:    doing
@@ -1360,6 +1378,16 @@ blocked:  design draft, item's own criterion 1: stays a draft until the owner ru
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
+## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+blocked:  next step is owner/BENCH ruling on the §6 questions before a build item can be filed — FOUNDRY cannot progress this alone
+summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
+prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1622,17 +1650,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1641,16 +1659,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CATHEDRAL_EXPOSURE_COMPLETION_1 The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Arc §6.1 as amended by A3+A6 (owner verbatim in §6.1: the Cathedral fights
-prose:    infrastructure/state/items/CATHEDRAL_EXPOSURE_COMPLETION_1.md
 
 ## SLIME_STREAM_ROWS_1 R/G/W mucosal slime as distinct viscous stream/pool rows + yellow snot example row; purple dropped (owner 2026-09-13)
 state:    proposed
