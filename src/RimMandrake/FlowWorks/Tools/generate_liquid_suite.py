@@ -646,6 +646,14 @@ LIQUID_DEF_ROWS = {
         # consumer that refuses same-liquid-in/out is that consumer's own
         # ConfigError to add, not this registry's.
         "distillable": True,
+        # LIQUID_BOTTLE_LOOP_1: bottle defName derived from this row's own
+        # defName (RM_Liquid_X -> RM_Bottle_X, see build_bottle_thingdefs's
+        # own docstring for why that's computed, not retyped, everywhere
+        # else in this table). unitsPerBottle=1 matches the only other
+        # bottled row shipped so far (chemfuel: "one item IS one unit").
+        # No revertsTo/rotsTo here -- fresh water is the thing everything
+        # else reverts/distills TO, not a row with its own timer.
+        "bottled": {"bottle": "RM_Bottle_FreshWater", "unitsPerBottle": 1},
     },
     "saltwater": {
         "defName": "RM_Liquid_SaltWater",
@@ -656,6 +664,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "WaterOceanShallow", "deep": "WaterOceanDeep"},
         "thirstQuality": "Fouled",
         "distillable": True,
+        "bottled": {"bottle": "RM_Bottle_SaltWater", "unitsPerBottle": 1},
     },
     "boiling": {
         "defName": "RM_Liquid_BoilingWater",
@@ -666,6 +675,13 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
         "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
         "distillable": True,
+        # revertsTo/revertTicks (bottled boiling -> fresh once it cools) is
+        # the item's own named special behavior but is DEFERRED this pass,
+        # same reasoning as icy below: LiquidBottledForm.ConfigErrors
+        # requires revertTicks >= 1 the moment revertsTo is set, and nothing
+        # in this build consumes it yet -- see LIQUID_BOTTLE_LOOP_1's
+        # stopping note. Row data only, no invented timer duration.
+        "bottled": {"bottle": "RM_Bottle_BoilingWater", "unitsPerBottle": 1},
     },
     "icy": {
         "defName": "RM_Liquid_IcyWater",
@@ -678,6 +694,8 @@ LIQUID_DEF_ROWS = {
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
         "distillable": True,
+        # See "boiling" above -- revert-on-bottle deferred, no consumer yet.
+        "bottled": {"bottle": "RM_Bottle_IcyWater", "unitsPerBottle": 1},
     },
     "toxic": {
         "defName": "RM_Liquid_ToxicWater",
@@ -688,6 +706,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_WaterPoisonedShallow", "deep": "RM_WaterPoisonedDeep"},
         "thirstQuality": "Toxic",
         "distillable": True,
+        "bottled": {"bottle": "RM_Bottle_ToxicWater", "unitsPerBottle": 1},
     },
     "acid": {
         "defName": "RM_Liquid_AcidWater",
@@ -699,6 +718,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 3},
         "corrodesApparel": True,
         "terrainSuite": {"shallow": "RM_AcidShallow", "deep": "RM_AcidDeep"},
+        "bottled": {"bottle": "RM_Bottle_AcidWater", "unitsPerBottle": 1},
     },
     "tar": {
         "defName": "RM_Liquid_Tar",
@@ -708,6 +728,7 @@ LIQUID_DEF_ROWS = {
         "pH": 7,
         "terrainSuite": {"shallow": "RM_TarShallow", "deep": "RM_TarDeep"},
         "canalFluid": "RM_Fluid_Tar",
+        "bottled": {"bottle": "RM_Bottle_Tar", "unitsPerBottle": 1},
     },
     "brine": {
         "defName": "RM_Liquid_Brine",
@@ -723,6 +744,7 @@ LIQUID_DEF_ROWS = {
         "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
         "thirstQuality": "Fouled",
         "distillable": True,
+        "bottled": {"bottle": "RM_Bottle_Brine", "unitsPerBottle": 1},
     },
     "propane": {
         "defName": "RM_Liquid_Propane",
@@ -735,6 +757,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_PropaneShallow", "deep": "RM_PropaneDeep"},
         # No canalFluid: RM_Fluid_Propane does not exist yet, same gap as brine.
         "worldTag": "RM_Liquid_Propane",  # frozen world's propane lake under Umbra, LIQUID_BIOMES_MAP_1
+        "bottled": {"bottle": "RM_Bottle_Propane", "unitsPerBottle": 1},
     },
     "chemfuel": {
         "defName": "RM_Liquid_Chemfuel",
@@ -858,6 +881,93 @@ def build_liquiddef_registry(out_dir: Path):
     return out_path
 
 
+# --- LIQUID_BOTTLE_LOOP_1: the bottle-ThingDef emission this item's own
+# scope needed and the generator did not yet have (see the item's unblock
+# note -- this was never actually LIQUID_REGISTRY_CORE_1's gap, it was this
+# item's own). One `RM_Bottle_<X>` ThingDef per LIQUID_DEF_ROWS row that
+# carries a `bottled` slot naming a defName under this prefix; a row that
+# ADOPTS an existing vanilla/foreign item instead (chemfuel -> Chemfuel) is
+# skipped -- no new ThingDef to author, same as the row's own comment says.
+#
+# RM_BottleEmpty/RM_BottleDirty and the shared RM_BottleItemBase/
+# RM_LiquidBottleItems category are HAND-AUTHORED (Defs/LiquidTypes/ThingDefs/
+# RM_LiquidBottles_Base.xml) -- they are liquid-agnostic and never generated.
+# This function's ONLY job is the filled state, one per row.
+def build_bottle_thingdef_xml(bottle_defname, liquid_defname, liquid_label, description):
+    lines = ['  <ThingDef ParentName="RM_BottleItemBase">']
+    lines.append(f"    <defName>{bottle_defname}</defName>")
+    lines.append(f"    <label>bottled {liquid_label}</label>")
+    lines.append(f"    <description>A bottle holding {liquid_label}. {description}</description>")
+    lines.append("    <modExtensions>")
+    lines.append('      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">')
+    lines.append(f"        <liquid>{liquid_defname}</liquid>")
+    lines.append("      </li>")
+    lines.append("    </modExtensions>")
+    lines.append("  </ThingDef>")
+    return "\n".join(lines)
+
+
+def build_bottle_thingdefs(out_dir: Path):
+    """Emits RM_Bottle_<X> for every LIQUID_DEF_ROWS row whose `bottled` slot
+    names a defName under the RM_Bottle_ prefix -- i.e. every row this pass
+    generates a bottle for, as opposed to a row that adopts an existing item
+    (chemfuel) and needs none. See this function's own module comment."""
+    blocks = []
+    generated_for = []
+    adopted = []
+    for row in LIQUID_DEF_ROWS.values():
+        bottled = row.get("bottled")
+        if not bottled:
+            continue
+        bottle_defname = bottled["bottle"]
+        if not bottle_defname.startswith("RM_Bottle_"):
+            adopted.append((row["defName"], bottle_defname))
+            continue
+        blocks.append(build_bottle_thingdef_xml(
+            bottle_defname, row["defName"], row["label"], row["description"],
+        ))
+        generated_for.append(row["defName"])
+
+    adopted_note = (
+        "  Adopted, not generated: " + ", ".join(f"{d} -> {b}" for d, b in adopted) + "."
+        if adopted else "  Nothing adopted this pass."
+    )
+    xml = f"""<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidBottles.xml         GENERATED by generate_liquid_suite.py
+  ============================================================================
+  LIQUID_BOTTLE_LOOP_1. One filled-bottle ThingDef per LIQUID_DEF_ROWS row
+  that carries a `bottled` slot under the RM_Bottle_ prefix. Regenerates from
+  that table in src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py;
+  edit the table, never this file.
+
+  RM_BottleEmpty/RM_BottleDirty and RM_BottleItemBase are HAND-AUTHORED in
+  the sibling RM_LiquidBottles_Base.xml, not here — they are liquid-agnostic
+  and every row's bottle ParentName-inherits from RM_BottleItemBase.
+
+{adopted_note}
+
+  Deliberately NOT built this pass (LIQUID_BOTTLE_LOOP_1's own stopping
+  note): buckets, barrels, the fill/use/dirty/wash JobDriver/WorkGiver pair,
+  the dirty-stage Mod Settings toggle (would be a slider that moves nothing
+  before the mechanism it gates exists), and revertsTo/rotsTo row data
+  (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
+  requires a real revertTicks/rotTicks the moment either is set, and nothing
+  reads them yet).
+  ============================================================================
+-->
+<Defs>
+
+{(chr(10) * 2).join(blocks)}
+
+</Defs>
+"""
+    out_path = out_dir / "RM_LiquidBottles.xml"
+    out_path.write_text(xml, encoding="utf-8")
+    return out_path, generated_for
+
+
 def main():
     root = Path(__file__).resolve().parent.parent
     # Merged into FlowWorks 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1):
@@ -868,9 +978,11 @@ def main():
     terrain_dir = root / "Defs" / "LiquidTypes" / "TerrainDefs"
     patch_dir = root / "Patches" / "LiquidTypes"
     liquiddef_dir = root / "Defs" / "LiquidTypes" / "LiquidDefs"
+    thingdef_dir = root / "Defs" / "LiquidTypes" / "ThingDefs"
     terrain_dir.mkdir(parents=True, exist_ok=True)
     patch_dir.mkdir(parents=True, exist_ok=True)
     liquiddef_dir.mkdir(parents=True, exist_ok=True)
+    thingdef_dir.mkdir(parents=True, exist_ok=True)
 
     with open(DUMP_PATH, encoding="utf-8") as f:
         dump = json.load(f)
@@ -886,6 +998,10 @@ def main():
 
     liquiddef_path = build_liquiddef_registry(liquiddef_dir)
     print(f"WROTE {liquiddef_path}")
+
+    bottle_path, generated_for = build_bottle_thingdefs(thingdef_dir)
+    print(f"WROTE {bottle_path}")
+    print(f"  bottle ThingDefs generated for: {generated_for}")
 
 
 if __name__ == "__main__":

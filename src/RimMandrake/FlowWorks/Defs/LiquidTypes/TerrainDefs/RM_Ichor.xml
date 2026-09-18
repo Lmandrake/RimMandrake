@@ -36,7 +36,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>Thick</viscosityClass>
+        <viscosityClass>thick</viscosityClass>
         <pH>7</pH>
       </li>
     </modExtensions>
@@ -57,7 +57,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>Thick</viscosityClass>
+        <viscosityClass>thick</viscosityClass>
         <pH>7</pH>
       </li>
     </modExtensions>

@@ -30,6 +30,10 @@
       <deep>WaterDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_Water</canalFluid>
+    <bottled>
+      <bottle>RM_Bottle_FreshWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <thirstQuality>Potable</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -44,6 +48,10 @@
       <shallow>WaterOceanShallow</shallow>
       <deep>WaterOceanDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_SaltWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <thirstQuality>Fouled</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -58,6 +66,10 @@
       <shallow>RM_WaterBoilingShallow</shallow>
       <deep>RM_WaterBoilingDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_BoilingWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -81,6 +93,10 @@
       <shallow>RM_WaterFrigidShallow</shallow>
       <deep>RM_WaterFrigidDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_IcyWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -94,6 +110,10 @@
       <shallow>RM_WaterPoisonedShallow</shallow>
       <deep>RM_WaterPoisonedDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_ToxicWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <thirstQuality>Toxic</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -116,6 +136,10 @@
       <shallow>RM_AcidShallow</shallow>
       <deep>RM_AcidDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_AcidWater</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -129,6 +153,10 @@
       <deep>RM_TarDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_Tar</canalFluid>
+    <bottled>
+      <bottle>RM_Bottle_Tar</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -143,6 +171,10 @@
       <shallow>RM_WaterBrineShallow</shallow>
       <deep>RM_WaterBrineDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_Brine</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -159,6 +191,10 @@
       <shallow>RM_PropaneShallow</shallow>
       <deep>RM_PropaneDeep</deep>
     </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_Propane</bottle>
+      <unitsPerBottle>1</unitsPerBottle>
+    </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
