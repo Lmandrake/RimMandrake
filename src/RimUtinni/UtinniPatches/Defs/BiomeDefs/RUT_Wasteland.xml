@@ -116,7 +116,7 @@
       <AA_Eyeling MayRequire="sarg.alphaanimals">0.6</AA_Eyeling>  <!-- ikee - wretched-small, keep -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep -->
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.5</SW_Electrictick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
-      <Toxalope MayRequire="mlie.advancedbiomes">0.4</Toxalope>  <!-- toxalope - wretched-herd, import -->
+      <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal, not mlie.advancedbiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
       <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
       <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import -->
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
@@ -126,7 +126,7 @@
       <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
       <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
-      <VAEWaste_Megatardi MayRequire="vanillaexpanded.vaewaste">0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import -->
+      <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import; STAT_NORM_WAVE2_RETIRE_1 absorbed this def natively into UtinniPatches itself (Defs/Absorbed_VAEWasteMegatardi/), so it needs no MayRequire on the retired donor mod at all. The old gate on vanillaexpanded.vaewaste (not in the live mod list) was silently dropping this animal from the roster every load (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave) -->
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
     </wildAnimals>
     <coastalWildAnimals />
