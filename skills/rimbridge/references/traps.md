@@ -1065,3 +1065,40 @@ zoom range itself has a real ceiling that no parameter on this call can raise pa
 DIFFERENT failure from this one: default zoom shows an arbitrary small window with
 no refusal at all, while this refuses loudly and produces nothing — cross-check
 `success` on the response before trusting a screenshot exists, in both cases.
+
+## The debug menu's `Actions\Spawn Pawn...\<kindDef>` does not reliably spawn that kindDef — use `jawa/spawn_pawn`
+
+Measured 2026-09-18, FOUNDRY, live campaign map, BAREHANDED_MELEE_FALLBACK_1's 5
+undiagnosed kinds. Two separate calls to `execute_debug_action {"path":
+"Actions\Spawn Pawn...\RUT_Jawa_Deepwater_Leader", "x":.., "z":..}` each returned
+`success: true`, zero logs, and DID spawn a pawn at the named cell — but the
+resulting pawn's `kindDef` (confirmed independently via both `jawa/list_pawns` and
+`jawa/pawn_get`) was **`Colonist`**, not the requested kind, and one of the two had
+Shooting AND Melee both `disabled: true` (incapable of violence) while dressed for
+a faction it could never fight for.
+
+Root cause (read via RimSage, `Verse/PawnGenerator.cs` `GenerateOrRedressPawnInternal`):
+unless the generation request forces a fresh pawn, vanilla `PawnGenerator` first
+rolls a chance (`ChanceToRedressAnyWorldPawn`) to **reuse an existing WORLD PAWN**
+or the map has one to reuse. The debug menu's own request does not set
+`ForceGenerateNewPawn`, so it can grab any matching-race world pawn — including a
+long-retired civilian backstory pawn — and "redress" it into the new role via
+`RedressPawn`/`ChangeKind`. Whatever broke `ChangeKind`'s kindDef update in this
+path, the practical result is: **the debug menu is not a reliable source of "does
+this PawnKindDef generate correctly."**
+
+⇒ **Use `jawa/spawn_pawn {"kindDef":..., "faction":..., "x":.., "z":..}` instead.**
+Its response reports `kindActual` and `kindSubstituted` explicitly, and 30/30 test
+spawns across 5 kinds this way matched the requested kind with zero substitution —
+the debug menu route is the confound, not the game's real generation path used by
+raids/quests/`jawa/spawn_pawn` itself.
+
+⚠️ **Cleanup note:** these redressed/spawned test pawns are NOT colonists
+(`select_pawn` refuses them, §"IsColonist" trap above) and `jawa/destroy_batch`
+never touches pawns. Kill them with `rimworld/execute_debug_action
+{"path":"Actions\T: Damage To Death","pawnId":"Thing_<id>"}` (note the `Thing_`
+prefix even though `jawa/list_pawns`/`jawa/spawn_pawn` report the bare id) — but it
+NRE'd silently on 2 of 34 pawns in this session ("Object reference not set", no
+kill). Fall back to `jawa/damage {"thingId":<bare id>,"amount":large,"damageDef":
+"Bomb"}` looped until `dead:true` in the response — `amount` is a request, not a
+result (§ elsewhere in this file), so one call is not enough evidence of a kill.
