@@ -5,11 +5,12 @@ using Verse.AI;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
-    /// <summary>Carries one RM_BottleEmpty to a matching liquid edge and
-    /// swaps it for one RM_Bottle_&lt;Liquid&gt; there. Reads
-    /// RM_LiquidBottleUtility and LiquidDef.bottled generically -- no
-    /// per-liquid subclass, the whole point of RM_BottledLiquidExtension.
-    /// LIQUID_BOTTLE_LOOP_1.</summary>
+    /// <summary>Carries one empty container (bottle/bucket/barrel) to a
+    /// matching liquid edge and swaps it for the correctly-sized filled
+    /// sibling there. Reads RM_LiquidBottleUtility, LiquidDef.bottled and
+    /// the carried Thing's own RM_BottledLiquidExtension.size generically --
+    /// no per-liquid AND no per-size subclass, the whole point of
+    /// RM_BottledLiquidExtension. LIQUID_BOTTLE_LOOP_1.</summary>
     public class JobDriver_FillBottle : JobDriver
     {
         private const int FillTicks = 180;
@@ -42,8 +43,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 // failure WorkGiver_FillInCanal's own staleness discipline
                 // exists to avoid.
                 LiquidDef liquid;
-                if (!RM_LiquidBottleUtility.TryGetLiquidAt(Map, job.targetB.Cell, out liquid)
-                    || liquid.bottled?.bottle == null)
+                if (!RM_LiquidBottleUtility.TryGetLiquidAt(Map, job.targetB.Cell, out liquid))
                 {
                     return;
                 }
@@ -52,8 +52,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
+                RM_BottledLiquidExtension ext = carried.def.GetModExtension<RM_BottledLiquidExtension>();
+                RM_ContainerSize size = ext?.size ?? RM_ContainerSize.Bottle;
+                ThingDef filledDef = liquid.bottled?.FilledDefFor(size);
+                if (filledDef == null)
+                {
+                    // This liquid has no form at this container's size (e.g.
+                    // a barrel at a liquid whose row ships no barrel) --
+                    // leave the carried container alone rather than destroy
+                    // it for nothing.
+                    return;
+                }
                 carried.Destroy();
-                Thing filled = ThingMaker.MakeThing(liquid.bottled.bottle);
+                Thing filled = ThingMaker.MakeThing(filledDef);
                 filled.stackCount = 1;
                 GenPlace.TryPlaceThing(filled, pawn.Position, Map, ThingPlaceMode.Near);
             };

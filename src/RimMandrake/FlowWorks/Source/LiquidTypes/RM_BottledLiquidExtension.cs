@@ -3,6 +3,19 @@ using Verse;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
+    /// <summary>Bottle/bucket/barrel -- the three size tiers LIQUID_BOTTLE_LOOP_1's
+    /// third slice ships. Bottle stays the implicit default (existing XML that
+    /// never sets &lt;size&gt; keeps reading as Bottle, no back-fill needed).
+    /// The fill/wash WorkGiver/JobDriver pair and IngestionOutcomeDoer_BottleResidue
+    /// all read this to pick the correctly-sized sibling generically -- one
+    /// C# path for all three, no per-size subclass.</summary>
+    public enum RM_ContainerSize
+    {
+        Bottle,
+        Bucket,
+        Barrel,
+    }
+
     // LIQUID_BOTTLE_LOOP_1. The bottle-side identity tag: which LiquidDef a
     // given bottle/bucket/barrel ThingDef holds, and whether it is the dirty
     // (post-use, pre-wash) variant of that same item.
@@ -40,6 +53,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// liquid identity — so <c>dirty</c> and <c>liquid</c> are never both
         /// set together, per <see cref="ConfigErrors"/>.</summary>
         public bool dirty;
+
+        /// <summary>Bottle/Bucket/Barrel -- which size tier this container
+        /// ThingDef is. Defaults to Bottle so RM_BottleEmpty/RM_BottleDirty
+        /// and every already-shipped RM_Bottle_&lt;X&gt; def need no XML
+        /// change to keep working.</summary>
+        public RM_ContainerSize size = RM_ContainerSize.Bottle;
+
+        /// <summary>True on an unfilled, unused container of this size --
+        /// what the fill WorkGiver scans for, generically across all three
+        /// sizes.</summary>
+        public bool IsEmpty => liquid == null && !dirty;
 
         public override IEnumerable<string> ConfigErrors()
         {

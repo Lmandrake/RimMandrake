@@ -53,6 +53,15 @@ namespace RimMandrake.FlowWorks
 
 		public static ThingDef RM_BottleDirty;
 
+		// ── third slice: buckets and barrels, same chain ───────────────────
+		public static ThingDef RM_BucketEmpty;
+
+		public static ThingDef RM_BucketDirty;
+
+		public static ThingDef RM_BarrelEmpty;
+
+		public static ThingDef RM_BarrelDirty;
+
 		/// <summary>The one LiquidDef the wash job insists on -- "consumes
 		/// water" always means fresh water, never whatever the bottle was
 		/// last dirty with.</summary>

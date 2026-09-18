@@ -35,8 +35,19 @@
   treat this texPath as final.
 
   Buckets and barrels (the "larger bottle, same chain" siblings the item's
-  spec also names) are NOT here — deliberately deferred, see
-  LIQUID_BOTTLE_LOOP_1's stopping note.
+  spec also names): RM_BucketItemBase/RM_BucketEmpty/RM_BucketDirty and
+  RM_BarrelItemBase/RM_BarrelEmpty/RM_BarrelDirty ship below, third slice.
+  Each carries RM_BottledLiquidExtension.size so the SAME fill/wash
+  WorkGiver/JobDriver pair and IngestionOutcomeDoer_BottleResidue handle all
+  three sizes generically — no new C# class per size. Filled
+  RM_Bucket_&lt;Liquid&gt;/RM_Barrel_&lt;Liquid&gt; siblings are generated
+  the same way as RM_Bottle_&lt;Liquid&gt;, in RM_LiquidBottles.xml.
+  Barrels carry no &lt;ingestible&gt; block — they are the bulk TRADE good
+  (tradeable for free via ResourceBase, "zero patches" per the spec), not a
+  food item a pawn drinks from directly. "Fill/empty bills at a tank" (the
+  spec's other named barrel behavior) is DEFERRED — no tank building exists
+  yet anywhere in FlowWorks or WreckedMachines; barrels this pass fill from
+  a terrain edge via the same generalized chain bottles/buckets already use.
   ============================================================================
 -->
 <Defs>
@@ -97,6 +108,117 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
         <dirty>true</dirty>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Bucket family: 5-unit sibling, same chain. -->
+
+  <ThingDef Name="RM_BucketItemBase" ParentName="ResourceBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <!-- PLACEHOLDER, same convention as RM_BottleItemBase above. -->
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>55</MaxHitPoints>
+      <MarketValue>4</MarketValue>
+      <Mass>2.0</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-3</Beauty>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <thingCategories>
+      <li>RM_LiquidBottleItems</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_BucketEmpty</defName>
+    <label>empty bucket</label>
+    <description>A scavenged bucket, empty and ready to fill. Five bottles' worth in one haul.</description>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>2</MarketValue>
+      <Mass>0.8</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_BucketDirty</defName>
+    <label>dirty bucket</label>
+    <description>An emptied bucket, still carrying whatever residue its last contents left behind. Needs washing before it's fit to fill again.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <dirty>true</dirty>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Barrel family: ~25-unit bulk/trade sibling, "very scavenger" (owner-
+       ruled 2026-09-13). No ingestible block on ANY barrel, generated or
+       hand-authored — see this file's own module comment for why.
+       Tradeable for free via ResourceBase inheritance. -->
+
+  <ThingDef Name="RM_BarrelItemBase" ParentName="ResourceBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <!-- PLACEHOLDER, same convention as RM_BottleItemBase above. -->
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>15</MarketValue>
+      <Mass>8.0</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-4</Beauty>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <stackLimit>4</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <thingCategories>
+      <li>RM_LiquidBottleItems</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_BarrelEmpty</defName>
+    <label>empty barrel</label>
+    <description>A scavenged steel barrel, empty and ready to fill. Twenty-five bottles' worth, bulk enough to actually trade.</description>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>3.0</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_BarrelDirty</defName>
+    <label>dirty barrel</label>
+    <description>An emptied barrel, still carrying whatever residue its last contents left behind. Needs washing before it's fit to fill again.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <dirty>true</dirty>
+        <size>Barrel</size>
       </li>
     </modExtensions>
   </ThingDef>

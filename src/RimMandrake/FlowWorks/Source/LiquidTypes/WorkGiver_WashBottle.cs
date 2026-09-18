@@ -5,19 +5,20 @@ using Verse.AI;
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
     /// <summary>Mirror of <see cref="WorkGiver_FillBottle"/> for the other
-    /// end of the loop: any spawned, unforbidden RM_BottleDirty near fresh
-    /// water is a standing invitation to wash it. Gated on the master
-    /// bottle-loop toggle ONLY, never on the dirty-stage toggle -- a colony
-    /// that already holds dirty bottles from before the toggle was switched
-    /// off must still be able to wash them; the toggle only stops NEW dirty
-    /// bottles being minted (see IngestionOutcomeDoer_BottleResidue).
-    /// LIQUID_BOTTLE_LOOP_1.</summary>
+    /// end of the loop: any spawned, unforbidden dirty container
+    /// (bottle/bucket/barrel, read generically off
+    /// RM_BottledLiquidExtension.dirty) near fresh water is a standing
+    /// invitation to wash it. Gated on the master bottle-loop toggle ONLY,
+    /// never on the dirty-stage toggle -- a colony that already holds dirty
+    /// containers from before the toggle was switched off must still be
+    /// able to wash them; the toggle only stops NEW dirty containers being
+    /// minted (see IngestionOutcomeDoer_BottleResidue). LIQUID_BOTTLE_LOOP_1.</summary>
     public class WorkGiver_WashBottle : WorkGiver_Scanner
     {
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
 
         public override ThingRequest PotentialWorkThingRequest =>
-            ThingRequest.ForDef(RimMandrakeFlowWorks_DefOf.RM_BottleDirty);
+            ThingRequest.ForGroup(ThingRequestGroup.HaulableEver);
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -26,7 +27,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (t.def != RimMandrakeFlowWorks_DefOf.RM_BottleDirty
+            RM_BottledLiquidExtension ext = t.def.GetModExtension<RM_BottledLiquidExtension>();
+            if (ext == null
+                || !ext.dirty
                 || t.IsForbidden(pawn)
                 || !pawn.CanReserve(t, 1, -1, null, forced))
             {
@@ -38,6 +41,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
+            RM_BottledLiquidExtension ext = t.def.GetModExtension<RM_BottledLiquidExtension>();
+            if (ext == null || !ext.dirty)
+            {
+                return null;
+            }
             IntVec3 cell;
             if (!RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell))
             {
