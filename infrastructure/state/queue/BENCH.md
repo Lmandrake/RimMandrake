@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T09:26:35Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-18T11:00:06Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -223,7 +223,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -231,7 +231,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -241,7 +241,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
