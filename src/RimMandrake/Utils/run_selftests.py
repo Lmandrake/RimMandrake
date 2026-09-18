@@ -35,6 +35,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 PER_TEST_TIMEOUT_S = 240
+# The phrase a child prints when it could not run at all (a toolchain this
+# machine lacks, a game that is not up) rather than when something is wrong.
+# It is a convention the children already follow verbatim — grep it before
+# changing this string.
+UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
 SEQUENTIAL_ISOLATED = {"selftest_render.py"}
 SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/dashboards/hub")
 SELFTEST_GLOB = "selftest*.py"
@@ -77,7 +82,18 @@ def run_one(path: Path) -> tuple[Path, str, float, str]:
         elapsed = time.monotonic() - start
         if proc.returncode == 0:
             return path, "PASS", elapsed, ""
-        tail = (proc.stdout + proc.stderr).strip().splitlines()[-40:]
+        out = proc.stdout + proc.stderr
+        tail = out.strip().splitlines()[-40:]
+        # UNMEASURED is not FAILED. A child that could not run at all — no
+        # Windows-side dotnet.exe here, no live game — says so with the phrase
+        # below and exits non-zero, and printing that identically to a real
+        # failure is how a suite stops being read (11 red of 57 on macOS,
+        # 6 of them unrunnable). The `FAIL` guard is what keeps an unmeasured
+        # sub-check from masking a genuine failure in the same file:
+        # selftest_codebase_health.py PASSES while discussing UNMEASURED, so the
+        # verdict is read from the child's OUTPUT and exit code, never its source.
+        if UNMEASURED_PHRASE in out and "FAIL" not in out:
+            return path, "UNMEASURED", elapsed, "\n".join(tail)
         return path, "FAIL", elapsed, "\n".join(tail)
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
@@ -123,7 +139,8 @@ def main() -> int:
 
     results.sort(key=lambda r: str(r[0]))
     passed = [r for r in results if r[1] == "PASS"]
-    failed = [r for r in results if r[1] != "PASS"]
+    unmeasured = [r for r in results if r[1] == "UNMEASURED"]
+    failed = [r for r in results if r[1] not in ("PASS", "UNMEASURED")]
 
     for path, status, elapsed, detail in results:
         rel = path.relative_to(REPO_ROOT)
@@ -139,7 +156,11 @@ def main() -> int:
     # Denominator is what was DISCOVERED, not what came back — so a dropped result
     # shrinks the numerator and shows, instead of shrinking both and reading green.
     print(f"\n{len(passed)}/{len(tests)} passed  (wall {wall_elapsed:.1f}s, "
-          f"{args.workers} workers, {len(excluded)} skipped)")
+          f"{args.workers} workers, {len(excluded)} skipped, "
+          f"{len(unmeasured)} unmeasured, {len(failed)} failed)")
+    if unmeasured:
+        print(f"UNMEASURED ({len(unmeasured)}) — could not run here, NOT failures: "
+              + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in unmeasured))
 
     if len(results) != len(tests):
         print(f"DROPPED: discovered {len(tests)} runnable selftests but only "
