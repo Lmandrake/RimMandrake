@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T13:59:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:14:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -737,15 +737,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/buildplan.md §4, milestone M4 (verbatim):
 prose:    infrastructure/state/items/GM_BLACKBOARD_SHADOW_M4_1.md
-
-## ARTPIPE_FAILED_REQUEUE_1 ARTPIPE_FAILED_REQUEUE_1 clear the 46-job failed/ pile: drop 27 gemini-banned, requeue 16 codex transients, fix 3-job canvas-size bug
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  infrastructure/artpipe/failed/ held 46 job/manifest pairs at triage
-prose:    infrastructure/state/items/ARTPIPE_FAILED_REQUEUE_1.md
 
 ## MODCHECK_SUITE_CORRECTIONS_1 MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 2026-09-13)
 state:    doing
