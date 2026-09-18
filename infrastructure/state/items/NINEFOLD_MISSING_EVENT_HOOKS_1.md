@@ -1,3 +1,64 @@
+## 2026-09-17 (FOUNDRY, BELT-mode offline pass) — re-verified, no wiring gap left; still blocked on the same two live checks
+
+Bridge held by another seat and the owner actively testing live, so this pass
+was offline-only per instruction: no bridge, no deploy, no ModsConfig touch,
+no restart.
+
+**Re-verified against the live C# source, not the doc/item prose** (this
+project's own lesson: `getattr` on the wrong field silently reads as "0" —
+read the real hook, don't infer): all four Harmony patches this item's title
+names already exist and are correctly wired —
+`Patch_BattleResolved.cs` (`Pawn.Kill`, `dinfo.HasValue` → Sh'kaar),
+`Patch_TradeCompleted.cs` (`TradeDeal.TryExecute`/`actuallyTraded` →
+Mob'Unloo), `Patch_TransporterLaunched` + `Patch_GravshipLaunched` in
+`Patch_GravshipLaunched.cs` (`CompLaunchable.TryLaunch` for pods/shuttles AND,
+since commit `611304868` (2026-09-10, owner ruling — see
+`NINEFOLD_GRAVSHIP_HOOK_SCOPE_1`), `WorldComponent_GravshipController.
+InitiateTakeoff` for a real Odyssey gravship departure — both credit Ta'Baa
+via `Notify_Launched`), `Patch_DroidOnline.cs` (`Pawn.SetFaction` →
+Ohm). No fifth gap found; the item's own criteria line ("all 9 gods have at
+least one live satiation input") is a live-verification gap, not a
+missing-hook gap — the hooks are all source-complete.
+
+**Offline checks run this pass:**
+- `dotnet build Ninefold.csproj -c Release`: **0 warnings, 0 errors.**
+- `python.exe src/RimMandrake/bridgetools/build.py --gm` (plan-only, no
+  `--apply`): **0 warnings, 0 errors**, bundle still ships only
+  `JawaBench.BridgeTools.dll` — reconfirms the 2026-09-12 `jawa/trade_execute`
+  / `jawa/transporter_launch` companion tools still build clean five days
+  later; deploy plan correctly reports "differs — built from a DIFFERENT
+  COMMIT" (expected, not deployed) rather than silently claiming already-live.
+- `Ninefold.csproj` uses implicit `**/*.cs` globbing, not an explicit
+  `<Compile Include>` list (the fix for the 2026-09-05 silent-patch-drop bug,
+  `4f1b30744`) — the clean build is itself proof none of the four patch
+  classes silently dropped out of the assembly.
+- `RM_NinefoldMod.cs` calls `harmony.PatchAll(Assembly.GetExecutingAssembly())`
+  — no explicit per-patch registration to miss.
+
+**Net for tonight: 7/9 live-confirmed stands (Sh'kaar, Ohm joined 2026-09-12),
+0/9 gods have a source-level hook missing** — all nine (including the five
+that predate this item) are wired. **What's still genuinely owed, unchanged
+from 2026-09-12, and honestly still owed after this pass:**
+- Deploy the two companion tools (`jawa/trade_execute`,
+  `jawa/transporter_launch`) — needs the game down, not attempted (owner
+  testing live this session).
+- A bridge session driving both tools to trigger one real trade and one real
+  pod launch, reading Mob'Unloo's and Ta'Baa's satiation before/after — not
+  attempted (bridge held by another seat this session).
+- `CheckOrdinalContract()` clean-on-load and the four patches' own
+  `Def.ConfigErrors()`/Harmony-report-clean checks from the item's own
+  `## verify` section are both LIVE checks, still unrun this pass for the
+  same reason.
+
+Also found and flagged (not this item's own scope, adjacent): a related item,
+`NINEFOLD_GRAVSHIP_HOOK_SCOPE_1`, still reads `proposed`/"needs owner ruling"
+in the ledger even though the owner already ruled and it already shipped
+(commit `611304868`, 2026-09-10) — FOUNDRY cannot close an OWNER-kind item,
+left a `rimflow note` on it rather than guessing at a close.
+
+Left `doing`, `needs deploy` unchanged — this pass found nothing to build,
+only re-confirmed what's already built and named exactly what's still live-only.
+
 ## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — companion tools built for the last 2 gods, build clean, not deployed
 
 Built the `rimbridge-companion` gap this item's own prior note asked for:
