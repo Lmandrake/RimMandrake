@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — LongtailGorg creature port (Pass 16).
+  Ported from mlie.starwarsanimalcollection's `LongtailGorg` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  🔑 **Body needs no new BodyDef at all**: the donor's own `<race><body>`
+  points at `QuadrupedAnimalWithClawsTailAndJowl`, confirmed VANILLA CORE
+  (`Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml`, also used by
+  vanilla's own Squirrel-group races and Odyssey's own animal roster) —
+  left bare, unlike every other body in this species trio.
+
+  `leatherDef` (`Leather_Light`) is vanilla Core, left bare (same as Igitz/
+  RSW_FeralGrazer's own `Leather_Light` reuse). `specificMeatDef`
+  (`Gorg_Meat`) ALREADY EXISTS as `RSW_Gorg_Meat` (Pass 9) — the same meat
+  resource RSW_Gorg/RSW_FrilledGorg already share. Needs 2 new eggs
+  (RSW_EggLongtailGorgFertilized/UnFertilized, texPath swresource/EggPod —
+  ALREADY EXTRACTED, Pass 9, reused unchanged, no new art) — `hatcherPawn`
+  repointed to `RSW_LongtailGorg`. All in RSW_MlieWaveC_Resources.xml.
+
+  No ability: the donor's own `specialTrainables` is unset.
+
+  🔑 **`canCrossBreedWith` updated on BOTH sides, not just the newly-ported
+  file** — RSW_Gorg's own header comment (Pass 9) and RSW_FrilledGorg's own
+  header comment (Pass 8) both flagged exactly this moment: "LongtailGorg
+  stays bare, not yet ported." LongtailGorg is that species this pass, so
+  both files' bare `<li>LongtailGorg</li>` are now
+  `<li>RSW_LongtailGorg</li>`. The donor's own LongtailGorg lists `FrilledGorg`
+  and `Gorg` in its own `canCrossBreedWith` — ported here as
+  `RSW_FrilledGorg`/`RSW_Gorg` (both already-ported species, confirmed
+  directly off the donor's own XML).
+
+  Sounds: the donor's own `lifeStageAges` block reuses vanilla-adjacent
+  `Pawn_Gorg_*` names, NOT a custom LongtailGorg set — confirmed by reading
+  the donor's own `<race>` block directly. `RSW_Pawn_Gorg_*` ALREADY EXISTS
+  (ported alongside RSW_Gorg, Pass 9) — repointed directly, no new sound
+  port needed.
+
+  🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+  Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+  `AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+  reference LongtailGorg/Kybuck/LavaFlea by name.
+
+  Art: no `LongtailGorgArtOverride` mod exists (checked
+  `find src/RimStarWars -maxdepth 1 -iname "*ArtOverride*"` first). This
+  species carries the donor's own 4-variant `alternateGraphics` (A-D, same
+  pattern as KowakianMonkeyLizard's 5-variant A-E set, Pass 14) PLUS a
+  `swimmingGraphicData`/`swimmingTexPath` on every stage/variant (this
+  species is a `waterSeeker` with `canFishForFood` — genuinely new among
+  Wave C species). 38 PNGs extracted this pass via extract_bundle.py
+  against the same AssetBundle every prior wave used — base
+  `LongtailGorg_{south,east,north}` + `LongtailGorg_Swimming_
+  {south,east,north}` (6), juvenile `LongtailGorg_j_{south,east,north}` +
+  `LongtailGorg_j_Swimming_{south,east,north}` (6), 2 dessicated
+  (`LongtailGorg_Dessicated`/`LongtailGorg_j_Dessicated`), and all 4
+  alternate variants A-D each with their own non-swimming + swimming trio
+  (4 x 6 = 24) — no unreferenced "Pack" variants exist for this species (all
+  38 bundle matches for "longtailgorg" are referenced by the def). All
+  confirmed non-zero and PIL-openable. Sits at
+  Textures/swanimals/LongtailGorg/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AridShrubland, COMIGO_GreaterSwamp_Tropical, Desert).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_LongtailGorg</defName>
+    <label>longtail gorg</label>
+    <description>Longtail Gorgs, were small tailed amphibians that could be found on several planets. This subspecies was slightly larger than the usual and had a tail (hence the name) and could lay unfertilized eggs. Their spread can be attributed to this variety being a favoured snack among the Hutt species.</description>
+    <statBases>
+      <MoveSpeed>2.3</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <LeatherAmount>0</LeatherAmount>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggLongtailGorgUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggLongtailGorgFertilized</eggFertilizedDef>
+        <eggLayIntervalDays>2</eggLayIntervalDays>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseHungerRate>0.20</baseHungerRate>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.40</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <roamMtbDays>7</roamMtbDays>
+      <lifeExpectancy>8</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <canCrossBreedWith>
+        <li>RSW_FrilledGorg</li>
+        <li>RSW_Gorg</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>1.0</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.2</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.02</BorealForest>
+        <Tundra>0.02</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Gorg_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Gorg_Death</soundDeath>
+          <soundCall>RSW_Pawn_Gorg_Call</soundCall>
+          <soundAngry>RSW_Pawn_Gorg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_LongtailGorg</defName>
+    <label>longtail gorg</label>
+    <race>RSW_LongtailGorg</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/LongtailGorg/LongtailGorgA</texPath>
+        <swimmingTexPath>swanimals/LongtailGorg/LongtailGorgA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/LongtailGorg/LongtailGorgB</texPath>
+        <swimmingTexPath>swanimals/LongtailGorg/LongtailGorgB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/LongtailGorg/LongtailGorgC</texPath>
+        <swimmingTexPath>swanimals/LongtailGorg/LongtailGorgC_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/LongtailGorg/LongtailGorgD</texPath>
+        <swimmingTexPath>swanimals/LongtailGorg/LongtailGorgD_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>longtail gorgling</label>
+        <bodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_j</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_j_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LongtailGorg/LongtailGorg_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

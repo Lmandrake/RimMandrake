@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Kybuck creature port (Pass 16).
+  Ported from mlie.starwarsanimalcollection's `Kybuck` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Kybuck` BodyDef (Bodies_Animal_StarWars.xml) is
+  entirely vanilla-part composition (Body/Tail/Spine/Stomach/Heart/Lung/
+  Kidney/Liver/Neck/Head/Skull/Brain/Eye/Ear/Nose/AnimalJaw/Shoulder/Arm/
+  Humerus/Radius/Leg) except its 2 upper-hoof groups, which are
+  `SWLeftHoof`/`SWRightHoof` — ALREADY PORTED in Wave B as
+  `RSW_SWLeftHoof`/`RSW_SWRightHoof` (the same 2 groups Horax's own hooves
+  already use, Pass 13) — confirmed by reading the donor's own BodyDef
+  directly, not assumed. Ported as RSW_Kybuck (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef` (`Leather_ReptoFur`) and `specificMeatDef` (`Tough_Meat`) BOTH
+  ALREADY EXIST as `RSW_Leather_ReptoFur`/`RSW_Tough_Meat` — no new resource
+  needed. No eggs (live birth via `gestationPeriodDays`/`litterSizeCurve`).
+
+  Ability: the donor's own `specialTrainables` entry (`SW_Spur`,
+  Odyssey-gated) is donor content, ALREADY PORTED as `RSW_SW_Spur`
+  (RSW_MlieWaveB_Abilities.xml, the same ability the standalone Kybuck's own
+  donor block references — no PawnKindDef `<abilities>` wiring in the donor,
+  `specialTrainables` only) — repointed directly, no new ability port
+  needed.
+
+  Sounds: the donor's own `lifeStageAges` block uses vanilla Core
+  `Pawn_Elk_*` sounds, NOT a custom Kybuck sound set — confirmed by reading
+  the donor's own `<race>` block directly, not assumed — left bare, no
+  RSW_ port needed.
+
+  Art: no `KybuckArtOverride` mod exists (checked
+  `find src/RimStarWars -maxdepth 1 -iname "*ArtOverride*"` first). 4 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used — `Kybuck_south`, `Kybuck_east`, `Kybuck_north`,
+  `Kybuck_Dessicated` (single dessicated texture, no facing suffixes) — all
+  confirmed non-zero and PIL-openable. The donor's own `KybuckPack_*`
+  variants (pack-saddle recolors) are unreferenced by this species' own def
+  and excluded, same precedent as Falumpaset/Jamel/Fambaa's excluded "Pack"
+  files. Sits at Textures/swanimals/Kybuck/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AridShrubland).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Kybuck</defName>
+    <label>kybuck</label>
+    <description>Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common.</description>
+    <statBases>
+      <MoveSpeed>6.0</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <FilthRate>16</FilthRate>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftHoof</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightHoof</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Kybuck</body>
+      <baseBodySize>1.00</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_ReptoFur</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <packAnimal>true</packAnimal>
+      <herdAnimal>true</herdAnimal>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>25</lifeExpectancy>
+      <nuzzleMtbHours>36</nuzzleMtbHours>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.6</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateSwamp>0.04</TemperateSwamp>
+        <TemperateForest>1.0</TemperateForest>
+        <BorealForest>0.6</BorealForest>
+        <Tundra>0.4</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Elk_Wounded</soundWounded>
+          <soundDeath>Pawn_Elk_Death</soundDeath>
+          <soundCall>Pawn_Elk_Call</soundCall>
+          <soundAngry>Pawn_Elk_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Kybuck</defName>
+    <label>kybuck</label>
+    <race>RSW_Kybuck</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <labelMale>kybuck ram</labelMale>
+    <labelFemale>kybuck doe</labelFemale>
+    <lifeStages>
+      <li>
+        <label>kybuck foal</label>
+        <labelPlural>kybuck foals</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck</texPath>
+          <drawSize>1.3</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck_Dessicated</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck</texPath>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kybuck/Kybuck_Dessicated</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

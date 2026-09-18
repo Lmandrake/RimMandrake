@@ -69,7 +69,7 @@
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
         <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
-        <LongtailGorg>0.4</LongtailGorg> <!-- longtail gorg - ambush-small, keep -->
+        <RSW_LongtailGorg>0.4</RSW_LongtailGorg> <!-- longtail gorg - ambush-small, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <Ronto>0.4</Ronto> <!-- ronto - huge-herd, keep -->
         <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
@@ -193,14 +193,14 @@
       <value>
         <RSW_FrilledGorg>1.0</RSW_FrilledGorg> <!-- frilled gorg - small-runway, keep -->
         <RSW_Gorg>1.0</RSW_Gorg> <!-- gorg - small-runway, keep -->
-        <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
+        <RSW_LongtailGorg>1.0</RSW_LongtailGorg> <!-- longtail gorg - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - small-runway, keep -->
         <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
         <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
-        <Kybuck>0.6</Kybuck> <!-- kybuck - medium-runner, keep -->
+        <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
@@ -767,7 +767,7 @@
         <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
         <RSW_Gelagrub>0.4</RSW_Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
-        <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
+        <RSW_LongtailGorg>0.3</RSW_LongtailGorg> <!-- longtail gorg - wait-ambush, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
         <RSW_Fambaa>0.02</RSW_Fambaa> <!-- fambaa - the-terribly-lost, import -->
       </value>
@@ -1117,7 +1117,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
-        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <RSW_LavaFlea>0.25</RSW_LavaFlea> <!-- lava flea - ground-herd, import [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
       </value>
     </match>
   </Operation>
@@ -1171,7 +1171,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
-        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <RSW_LavaFlea>0.25</RSW_LavaFlea> <!-- lava flea - ground-herd, import [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
       </value>
     </match>
   </Operation>
@@ -1225,7 +1225,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
-        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <RSW_LavaFlea>0.25</RSW_LavaFlea> <!-- lava flea - ground-herd, import [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
       </value>
     </match>
   </Operation>

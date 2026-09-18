@@ -49,6 +49,18 @@
   12). Wired directly off `RSW_Kinrath`'s PawnKindDef `<abilities>` AND its
   ThingDef's `<race><specialTrainables>` (the donor's own Kinrath references
   it both ways, same dual-wiring GreaterKraytDragon's `SW_Calamity` used).
+
+  Pass 16 addition (LavaFlea, 2026-09-18): `SW_Leap`, a TWO-def pair (the
+  smallest yet — no HediffDef, since the ability is pure movement, not a
+  damage/debuff effect) — AbilityDef + TrainableDef sharing one defName,
+  renamed RSW_SW_Leap throughout. Uses vanilla `Verb_CastAbilityJump` and
+  vanilla `CastJump` jobDef, left bare. soundCast/soundLanding repoint to the
+  already-absorbed `RSW_Ability_Leap_Air`/`RSW_Ability_Leap_Land` (589-sound
+  wave, 2026-09-02). Icon (`Ability_AnimalLeap`, 256x256) newly extracted this
+  pass — no sibling `*ArtOverride` mod, same as every other bare ability icon
+  here. Wired off RSW_LavaFlea's ThingDef `<race><specialTrainables>` only
+  (the donor's own LavaFlea references it that way, not via PawnKindDef
+  `<abilities>`).
 -->
 <Defs>
 <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
@@ -341,5 +353,49 @@
     <steps>2</steps>
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_WebShot</enablesAbility>
+  </TrainableDef>
+<AbilityDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RSW_SW_Leap</defName>
+    <label>animal leap</label>
+    <description>Jump to a distant location using strong hind legs.</description>
+    <iconPath>UI/Abilities/Ability_AnimalLeap</iconPath>
+    <cooldownTicksRange>25000</cooldownTicksRange>
+    <!-- 1 hours -->
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <hostile>false</hostile>
+    <verbProperties>
+      <verbClass>Verb_CastAbilityJump</verbClass>
+      <label>leap</label>
+      <violent>false</violent>
+      <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+      <warmupTime>0.5</warmupTime>
+      <range>19.9</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <soundCast>RSW_Ability_Leap_Air</soundCast>
+      <soundLanding>RSW_Ability_Leap_Land</soundLanding>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_Leap</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+    <jobDef>CastJump</jobDef>
+  </AbilityDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RSW_SW_Leap</defName>
+    <label>animal leap</label>
+    <description>Command the creature to jump to a distant location using strong hind legs.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_Leap</enablesAbility>
   </TrainableDef>
 </Defs>

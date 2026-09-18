@@ -1856,4 +1856,105 @@
       <MarketValue>50.0</MarketValue>
     </statBases>
   </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_LavaFlea</defName>
+    <label>lava flea chitin</label>
+    <description>The shell of a Lava Flea. It is exceptionally resistant to high temperature, but only provide average protection.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Chitin</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,100,100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.4</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.4</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>50</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(225,150,200)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggLavaFleaFertilized</defName>
+    <label>lava flea egg (fert.)</label>
+    <description>A fertilized lava flea egg. If all goes well, it should hatch into a baby lava flea. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <color>(100,75,75)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>8</hatcherDaystoHatch>
+        <hatcherPawn>RSW_LavaFlea</hatcherPawn>
+      </li>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>0</minSafeTemperature>
+        <maxSafeTemperature>1000</maxSafeTemperature>
+        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggLavaFleaUnFertilized</defName>
+    <label>lava flea egg (unfert.)</label>
+    <description>An unfertilized lava flea egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <color>(100,75,75)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggLongtailGorgFertilized</defName>
+    <label>longtail gorg egg (fert.)</label>
+    <description>A fertilized longtail gorg egg. If all goes well, it should hatch into a baby longtail gorg. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(75,150,75)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_LongtailGorg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggLongtailGorgUnFertilized</defName>
+    <label>longtail gorg egg (unfert.)</label>
+    <description>An unfertilized longtail gorg egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(75,150,75)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

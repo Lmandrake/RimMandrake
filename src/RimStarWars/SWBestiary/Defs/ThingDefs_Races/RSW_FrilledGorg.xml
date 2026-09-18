@@ -16,8 +16,8 @@
 
   `canCrossBreedWith` (donor: Gorg, LongtailGorg) — both stayed bare at
   Pass 8 (neither was ported yet). Pass 9 repoints `Gorg` to the
-  now-ported RSW_Gorg; `LongtailGorg` stays bare, still not ported (remains
-  later in this item's Wave C worklist).
+  now-ported RSW_Gorg; `LongtailGorg` repointed to RSW_LongtailGorg once it
+  was ported (Pass 16, 2026-09-18).
 
   🔴 Real donor-bundle naming bug found and worked around this pass: the
   PawnKindDef's `alternateGraphics` texPath scheme expects
@@ -125,7 +125,7 @@
       <canFishForFood>true</canFishForFood>
       <canCrossBreedWith>
         <li>RSW_Gorg</li>
-        <li>LongtailGorg</li>
+        <li>RSW_LongtailGorg</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>1.0</AridShrubland>
