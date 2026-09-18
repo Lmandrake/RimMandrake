@@ -57,22 +57,22 @@ TIER_DIRS = {
 #        NOT safe to fill without inventing).
 PROMISES = [
     (1, "The Moisture Farm", "RSW", "moisture_farm", "done"),
-    (2, "The Sarlacc", "RSW", None, "gap-design"),  # adopt existing sw_Sarlacc/sw_SarlaccLair + "responder polish" — no template of ours exists; the existing mutator's pit geometry is a different mod's content we've never inspected for a ring-placement, so ring geometry is a real, unmade design choice
+    (2, "The Sarlacc", "RSW", None, "gap-design"),  # adopt existing sw_Sarlacc/sw_SarlaccLair + "responder polish" (ring the pit) — geometry now MEASURED (vendor/mod_sources/StarWarsAnimalCollection_src: SarlaccPit 9x6, sw_SarlaccPit's own GenStep_ScatterThings clearSpaceSize 10; TILE_STRUCTURE_DESIGNS_1 2026-09-18 batch), but the real blocker is an ENGINE gap, not a design one: GenStep_RimplacePlan only supports centerOnMap or a caller-fixed offsetX/offsetZ (RimMandrake/StructureInjections/GenStep_RimplacePlan.cs) — no way to place a plan adjacent to wherever a DIFFERENT, independently-scheduled GenStep_ScatterThings actually lands the pit. A map-center totem cluster would frequently sit nowhere near the real pit — worse than not building it
     (3, "The Krayt Graveyard", "RSW", "krayt_graveyard", "done"),
     (4, "The Podracer Wreck", "RSW", "podracer_wreck", "done"),
-    (5, "The Junkers' Field", "RUT", None, "skip-tool"),  # needs coastal_mesa-style mapsynth pass, not a rimplace template — batch 6 note
-    (6, "The Dead Crawler", "RSW", None, "gap-design"),  # "flagship... three interior decks" has no concrete layout anywhere
-    (7, "The Signal Mast", "RM", None, "gap-design"),  # "our comms-console room" — room layout never specified
+    (5, "The Junkers' Field", "RUT", None, "skip-tool"),  # needs coastal_mesa-style mapsynth pass, not a rimplace template — batch 6 note, re-confirmed 2026-09-18 (src/RimMandrake/mapsynth/authored/ is a full terrain-synthesis pipeline, a different tool from rimplace's per-tile Lua templates)
+    (6, "The Dead Crawler", "RSW", "dead_crawler", "done"),  # built 2026-09-18: three walled decks (Ship_CryptosleepCasket "sleeping hands" per deck), a wholly NEW TileMutatorDef (RSW_DeadCrawler, "any desert") — no adoption/anchor dependency, same shape as krayt_graveyard/podracer_wreck/hunting_lodge
+    (7, "The Signal Mast", "RM", "signal_mast", "done"),  # built 2026-09-18: comms-console room (CommsConsole + generator/battery/conduit bus, hunting_lodge's own verified power pattern) patched onto vanilla AncientUplink (confirmed real TileMutatorDef, extraGenSteps:[] in the live def dump — Add adds a whole new element)
     (8, "The Monument", "RUT", "monument", "done"),
     (9, "The Rakatan Trace", "RUT", "rakatan_trace", "done"),
     (10, "The Oasis Shrine", "RUT", "oasis_shrine", "done"),
-    (11, "The Kiln", "RUT", None, "skip-owner"),  # contested per sacred-sites (Ohm vs Sh'kaar) — batch 6 note
+    (11, "The Kiln", "RUT", None, "skip-owner"),  # contested per sacred-sites — batch 6 note; re-confirmed still contested 2026-09-18, and a doc mismatch found while re-confirming: this roster row's own text says "Ohm vs Sh'kaar argue it" while sacred_sites_pass_1.md §1a/§5 names it "the Kiln (Zizzik/Mob'Unloo contest)" — two design docs disagree on WHO contests it, itself a reason authoring content here would guess at a still-unsettled point
     (12, "The Hunting Lodge", "RSW", "hunting_lodge", "done"),
     (13, "The Toll Gap", "RUT", "toll_gap", "done"),
     (14, "The Dead Beacon", "RUT", "dead_beacon", "done"),
     (15, "The Bantha Graveyard", "RSW", "bantha_graveyard", "done"),
     (16, "The Glass Sea", "RUT", "glass_sea", "done"),
-    (17, "The Ashfall Battery", "RUT", None, "gap-design"),  # "our fuel-farm room" onto existing AncientLaunchSite — room layout never specified
+    (17, "The Ashfall Battery", "RUT", "ashfall_battery", "done"),  # built 2026-09-18: fuel-farm room (LargeChemfuelTank x2 + ChemfuelTank + loose Chemfuel spillage, no power needed) patched onto vanilla AncientLaunchSite (confirmed real TileMutatorDef via the live def dump — tile_augmentation_catalogue.md mistakenly calls it a LandmarkDef; unused_mutators_census.md's measured Part-1 list and the def dump itself agree it is a TileMutatorDef; extraGenSteps:[] — Add adds a whole new element)
     (18, "The Mynock Roost", "RSW", "mynock_roost", "done"),
     (19, "The Cistern", "RUT", "cistern", "done"),
     (20, "The Broken Ring", "RUT", "broken_ring", "done"),

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Signal Mast - structure_injection_roster.md PROMISE #7, this
+       mod's own FIRST roster content (see Patches/SignalMast.xml and the
+       About.xml note this pass corrected). -->
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_GenStep_SignalMast</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/signal_mast.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

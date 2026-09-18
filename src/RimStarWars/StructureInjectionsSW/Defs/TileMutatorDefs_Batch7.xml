@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ⚠️ Not placed on any Ash'karr tile - same deliberate deferral every
+       prior NEW promise mutator in this program has used (RSW_MoistureFarm/
+       RSW_KraytGraveyard/RSW_PodracerWreck/RSW_HuntingLodge/etc.): this
+       proves the engine end to end for one more roster row. Placement
+       stays the owner's hand. -->
+
+  <!-- The Dead Crawler - PROMISE #6, Rekko+Mob'Unloo. "any desert". -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_DeadCrawler</defName>
+    <label>dead crawler</label>
+    <description>A fallen sandcrawler hull, half-buried, three decks still sealed against the sand. Something in there is still asleep. A dungeon-lite full of sleeping hands.</description>
+    <biomeWhitelist>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RSW_GenStep_DeadCrawler</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
