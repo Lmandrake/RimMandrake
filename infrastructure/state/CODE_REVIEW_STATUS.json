@@ -17212,10 +17212,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "8f447c1bbc3774c5c152e589cf3f2ba4912e2e66b02ebb97a9799ce8f6255964",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "1d1967f04d6b60b6851e00b6d5df51b9599f00b166d4cdc87ba5e61bd6874e97",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml": {
     "cleanCount": 2,
@@ -17446,10 +17446,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_BeastBulge_DreadRegistration.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "9f26d02171c6749c94654c40f6e5339cd517fa6a180dc539b73e1fed6ec1f002",
-    "sha": "b3a646c3f"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "55f1d2df91fa274a881d77269741bd742da3d8e309f0b80754bc9ac769c81b4f",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ContagionRingScatter_Register.xml": {
     "cleanCount": 1,
@@ -17542,16 +17542,16 @@
     "sha": "59173f610"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "e18ef320d0c4cecd269ac2cd2b0c8fa4e2dde4186bd9bc0a20d7d7c874dc9c82",
-    "sha": "b62604fad"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "996ba802ba67b9e6b8048a30d8b10fa4fd07ee76b833ee50f8f2587a97aef15a",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "a48cd21d95c49daa349e5a7d1f5a2efb652f830cf0eb263746db9516f159c708",
-    "sha": "b62604fad"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "7e5a72f798f1eaa8536823ff26cfee12ae78a472fca6624717fa4835653294f6",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/RazorjackIdentity_Sytheclaw.xml": {
     "cleanCount": 1,
@@ -17566,10 +17566,10 @@
     "sha": "948cdbc9"
   },
   "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "8752876f2cdd692cd6e82f951ffb631c3897e35a950f091406c7b1870eb8251d",
-    "sha": "429d1760"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "d5200d76636b72cb7e1b8041f10842c96d8f9afaf4cf821183ed7b155c2016e6",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml": {
     "cleanCount": 1,
@@ -17608,10 +17608,10 @@
     "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "0b8ef2098b2d01f3553b8321b4b029422faf760c1618751343fc931de9b1add4",
-    "sha": "f3754dac7"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "05433fb056ae3ab8876a634ee77df031b2fa60f3976b72d9b5a190b77d43c000",
+    "sha": "48b321e95"
   },
   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
     "cleanCount": 2,
