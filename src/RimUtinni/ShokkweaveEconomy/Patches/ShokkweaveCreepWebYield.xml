@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveCreepWebYield.xml     ShokkweaveEconomy - new file, SHOKKWEAVE_SOLE_SOURCE_1
+  ============================================================================
+  The border creep-web route (owner card 4, 2026-09-11: "border creep-web
+  YIELDS, with teeth" - "(2) but it has a small chance of SPAWNING an
+  emergent Shokk to get you"). This item's queue line names it as the 4th
+  harvest route; WEBWORK_KIT_BUILD_1 built and closed the scatter mechanism
+  (RM_MapComponent_FrontCreep, live-verified 2026-09-12) but deliberately
+  shipped RUT_Webwork_Anchor/_Web/_Gutter with NO killedLeavings and NO
+  yield comp, leaving the attachment to this item by name (see that file's
+  own "Sole-source guard" comment). This patch is that attachment - HALF of
+  it; see the note at the bottom on what is still genuinely missing.
+
+  killedLeavings, same mechanism already LIVE-VERIFIED this campaign for
+  RUT_Webwork_Nest (60 Hyperweave on kill) and RUT_Webwork_SilkKnot
+  (Mineable.TrySpawnYield, 4/vein): a Building's HP-to-0 destruction fires
+  Destroy(DestroyMode.KillFinalize), which drops killedLeavings. Combat
+  (the only destruction route these three Things have today - no
+  deconstruct/harvest job exists for a natural, non-player-built Building)
+  therefore already satisfies the ruling's "cutting creep-web ... yields
+  Shokkweave" half.
+
+  Counts ❓INVENTED, deliberately small: these are the per-node/per-
+  line-segment pieces of a scattered network (WEBWORK_KIT_BUILD_1's own
+  live test scattered 10 Anchor + 10 Web + 14 Gutter along one map edge in
+  a single advance band), not a singular lair like the Nest - matching the
+  spec's own "~2-5 per line-segment" range for the web-cutting route.
+  Gutter (dense woven channel, highest MaxHitPoints of the three) gets the
+  top of that range; Web (broad sheet, thinnest/most flammable) the bottom.
+
+  🔴 NOT done here, and NOT safe to bolt on casually - the ruling's other
+  half ("a small chance of spawning an emergent Shokk"):
+  RSW_CompProperties_EmergentSpawnOnDestroy (src/RimStarWars/Shokk/Source/
+  RSW_CompEmergentSpawnOnDestroy.cs, built by SHOKK_RSW_MOD_1, MayRequire
+  mandrake.rsw.shokk) exists and is exactly the mechanism the ruling wants -
+  but its PostDestroy explicitly gates on `mode == DestroyMode.Vanish` and
+  says so in its own comment: "never fires on Kill/Refund/etc." Combat
+  destruction of these three Things (the ONLY destruction route they have)
+  uses DestroyMode.KillFinalize, same as the Nest/SilkKnot above - so
+  attaching that comp here would ship a comp that can never fire, a
+  landmine that reads as "done" and isn't. The emergent-spawn half
+  genuinely needs a dedicated harvest job (a WorkGiver/JobDriver/Designator
+  that walks a colonist up, grants the yield, and calls
+  Destroy(DestroyMode.Vanish) - the "cut" the ruling's own language implies,
+  as distinct from combat-killing the node) that does not exist anywhere in
+  this codebase yet. Flagging precisely rather than guessing at the job's
+  shape or shipping a non-functional comp attachment.
+
+  Wrapped in PatchOperationFindMod on the UtinniPatches mod's own display
+  name: these three ThingDefs are owned by that mod (mandrake.rut.patches),
+  a standing Utinni-tier co-dependency but still a SEPARATE mod from a
+  patch xpath's point of view - unwrapped, a minimal/target quicktest list
+  that happens to omit it would log a red config error every launch
+  (validate_patch.py flagged exactly this on the unwrapped draft).
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni Patches (Jawa campaign)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RUT_Webwork_Anchor"]</xpath>
+      <value>
+        <killedLeavings>
+          <Hyperweave>3</Hyperweave>
+        </killedLeavings>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni Patches (Jawa campaign)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RUT_Webwork_Web"]</xpath>
+      <value>
+        <killedLeavings>
+          <Hyperweave>2</Hyperweave>
+        </killedLeavings>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni Patches (Jawa campaign)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RUT_Webwork_Gutter"]</xpath>
+      <value>
+        <killedLeavings>
+          <Hyperweave>5</Hyperweave>
+        </killedLeavings>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -30,9 +30,13 @@
     open drops a much larger shokkweave payout.
 
   Out of scope here (see the item and spec): live trader-generation proof and
-  the quest-reward roll pass (both need a quicktest map), and the border
-  creep-web route — RM_MapComponent_FrontCreep now exists (WEBWORK_KIT_BUILD_1)
-  but this economy mod does not yet consume it for that route.</description>
+  the quest-reward roll pass (both need a quicktest map). Border creep-web:
+  RUT_Webwork_Anchor/_Web/_Gutter (WEBWORK_KIT_BUILD_1) now carry a small
+  killedLeavings shokkweave yield attached here (ShokkweaveCreepWebYield.xml)
+  — the "yields" half of the ruling. The "spawns an emergent Shokk" half is
+  NOT done: SHOKK_RSW_MOD_1's spawn-hook comp only fires on
+  DestroyMode.Vanish, which combat-killing these Things never produces; a
+  dedicated harvest job is still owed (see that patch file's own note).</description>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
@@ -45,5 +49,6 @@
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Mlie.StarWarsAnimalCollection</li>
+    <li>mandrake.rut.patches</li>
   </loadAfter>
 </ModMetaData>
