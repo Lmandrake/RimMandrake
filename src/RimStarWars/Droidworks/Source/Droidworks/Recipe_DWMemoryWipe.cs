@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -123,42 +124,123 @@ namespace RimMandrake.StarWars.Droidworks
         public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer,
                                          List<Thing> ingredients, Bill bill)
         {
-            // E2: FIRST, before anything counts traits. Strips every accreted
-            // idiosyncrasy and puts CompDWServiceRecord's clock back to zero, so
-            // RandomizeTraits below sees only the droid's ordinary traits and
-            // re-rolls exactly that many - a droid that shipped with 2 traits and
-            // grew 3 idiosyncrasies comes out with 2, not 5.
-            DroidServiceRecordUtility.NotifyWiped(pawn);
-
-            RandomizeTraits(pawn);
-            ClearRelationsAndSocialMemories(pawn);
-            ResetServiceRecord(pawn);
-
-            // B10: the 7-day relearning debuff. Added after the trait work so
-            // nothing above can strip it. Wiping a droid that is STILL wiped
-            // restarts the seven days at full severity rather than doing nothing
-            // - a second wipe is not a way to shorten the first.
-            if (pawn.health != null)
+            // 2026-09-18 offline pass (DROIDWORKS_WIPE_SEVERITY_1): a live-verify
+            // attempt this session watched the bill's repeatCount reach 0
+            // (Bill_Medical.Notify_IterationCompleted, read from source via
+            // RimSage, unconditionally deletes the bill after its `if
+            // (CompletableEver)` block) while the pawn's traits came back
+            // byte-identical - no route by which ApplyOnPawn could run to
+            // completion and leave 4 traits exactly unchanged. Read
+            // Bill_Medical.CompletableEver from source to rule out an engine
+            // gate specific to a targetsBodyPart-false, no-unique-ingredient
+            // Recipe_Surgery: there is none - RSW_DW_MemoryWipe's own shape
+            // (targetsBodyPart false, uniqueRequiredIngredients null) makes
+            // CompletableEver unconditionally true, so ApplyOnPawn WOULD have
+            // been invoked. That live pass's own log window had hit Unity's
+            // hard message cap from an unrelated flood, so a thrown exception
+            // here could have been silently dropped rather than absent.
+            //
+            // Each step below is now independently try/caught and logged with
+            // this mod's own tag, so a step that throws in a future live pass
+            // leaves a line in Player.log even under heavy unrelated spam,
+            // rather than the whole method aborting silently mid-way - exactly
+            // what that pass's own "owed" note asked for, without needing a
+            // debugger attached to a running game.
+            try
             {
-                Hediff wiped = pawn.health.hediffSet
-                    .GetFirstHediffOfDef(DroidworksDefOf.RSW_DW_RecentlyWiped);
-                if (wiped != null) wiped.Severity = 1f;
-                else pawn.health.AddHediff(DroidworksDefOf.RSW_DW_RecentlyWiped);
+                // E2: FIRST, before anything counts traits. Strips every accreted
+                // idiosyncrasy and puts CompDWServiceRecord's clock back to zero,
+                // so RandomizeTraits below sees only the droid's ordinary traits
+                // and re-rolls exactly that many - a droid that shipped with 2
+                // traits and grew 3 idiosyncrasies comes out with 2, not 5.
+                DroidServiceRecordUtility.NotifyWiped(pawn);
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "NotifyWiped (E2 idiosyncrasy clear / clock reset)", ex);
             }
 
-            // B10: the permanent quirk. Accretes - a droid wiped three times can
-            // carry three quirks, and no recipe in this mod ever takes one back.
-            // MOD_OPTIONS_RETROFIT_1: off = a wipe costs nothing permanent. Quirks
-            // a droid already carries are untouched (nothing in this mod removes
-            // one), so this only ever stops NEW quirks arriving.
-            if (RSW_DroidworksSettings.wipeQuirks && Rand.Chance(RSW_DroidworksSettings.wipeQuirkChance))
+            try
             {
-                DroidworksHardwareQuirks.TryGainRandomQuirk(pawn);
+                RandomizeTraits(pawn);
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "RandomizeTraits", ex);
             }
 
-            pawn.SetFaction(Faction.OfPlayer, billDoer);
+            try
+            {
+                ClearRelationsAndSocialMemories(pawn);
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "ClearRelationsAndSocialMemories", ex);
+            }
+
+            try
+            {
+                ResetServiceRecord(pawn);
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "ResetServiceRecord", ex);
+            }
+
+            try
+            {
+                // B10: the 7-day relearning debuff. Added after the trait work so
+                // nothing above can strip it. Wiping a droid that is STILL wiped
+                // restarts the seven days at full severity rather than doing
+                // nothing - a second wipe is not a way to shorten the first.
+                if (pawn.health != null)
+                {
+                    Hediff wiped = pawn.health.hediffSet
+                        .GetFirstHediffOfDef(DroidworksDefOf.RSW_DW_RecentlyWiped);
+                    if (wiped != null) wiped.Severity = 1f;
+                    else pawn.health.AddHediff(DroidworksDefOf.RSW_DW_RecentlyWiped);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "RSW_DW_RecentlyWiped hediff add/re-pin", ex);
+            }
+
+            try
+            {
+                // B10: the permanent quirk. Accretes - a droid wiped three times
+                // can carry three quirks, and no recipe in this mod ever takes
+                // one back. MOD_OPTIONS_RETROFIT_1: off = a wipe costs nothing
+                // permanent. Quirks a droid already carries are untouched
+                // (nothing in this mod removes one), so this only ever stops NEW
+                // quirks arriving.
+                if (RSW_DroidworksSettings.wipeQuirks && Rand.Chance(RSW_DroidworksSettings.wipeQuirkChance))
+                {
+                    DroidworksHardwareQuirks.TryGainRandomQuirk(pawn);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "TryGainRandomQuirk", ex);
+            }
+
+            try
+            {
+                pawn.SetFaction(Faction.OfPlayer, billDoer);
+            }
+            catch (Exception ex)
+            {
+                LogWipeStepFailure(pawn, "SetFaction", ex);
+            }
 
             // Deliberately NOT touching pawn.skills - v0 scope, embodied software.
+        }
+
+        private static void LogWipeStepFailure(Pawn pawn, string step, Exception ex)
+        {
+            Log.Error("[RimMandrake.StarWars.Droidworks] RSW_DW_MemoryWipe.ApplyOnPawn step '"
+                + step + "' threw on " + pawn?.ToString() + " - that part of the wipe did not apply, "
+                + "the rest of the recipe continues. " + ex);
         }
 
         private static void RandomizeTraits(Pawn pawn)
