@@ -1223,6 +1223,76 @@ def test_repair_leaves_genuinely_ambiguous_state_alone():
            not any(jid == "ambiguous" for jid, _ in moved) and active_path.is_file())
 
 
+def test_repair_discards_byte_identical_duplicate_id_collision():
+    """Finding, live 2026-09-17: an id re-filed by hand straight into
+    pending/ (bypassing fill_queue.py's cross-directory duplicate-id check)
+    reused an id that ALREADY had a terminal manifest+job file in failed/
+    from an earlier, separate attempt. reconcile() saw "a manifest exists
+    for this id" and handed it to repair() as already-decided; repair()'s
+    `dest.exists()` guard then refused to move it, since the OLD attempt's
+    job file already occupied that name — leaving the active/ copy stuck
+    forever, recovered by neither function. When the two copies are
+    byte-identical (this queue's real 3-job incident), repair() must now
+    discard the redundant active/ copy outright rather than leave it stuck."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "dupcollision"
+        # The ORIGINAL attempt: claimed, failed, terminally filed.
+        first = make_job(q.pending, job_id, q.reference)
+        original_bytes = first.read_bytes()
+        active_path = artpiped.claim_next(q.pending, q.active)
+        common.atomic_write_json(q.failed / f"{job_id}.manifest.json",
+                                 {"id": job_id, "status": "failed"})
+        os.replace(active_path, q.failed / f"{job_id}.json")
+        ok("fixture: original attempt terminally filed to failed/",
+           (q.failed / f"{job_id}.json").is_file())
+
+        # The SECOND filing: hand-copied back into pending/ under the exact
+        # same id (never through fill_queue.py, never bumped to _r2) —
+        # byte-identical to what's already sitting in failed/ — then
+        # claimed and orphaned (crashed with no worker ever finishing it).
+        (q.pending / f"{job_id}.json").write_bytes(original_bytes)
+        second_active = artpiped.claim_next(q.pending, q.active)
+        ok("fixture: second filing claimed into active/", second_active is not None)
+
+        moved = artpiped.repair(q.active, q.done, q.failed)
+        ok("repair: discarded the duplicate, reported it",
+           any(jid == job_id for jid, _ in moved), moved)
+        ok("repair: active/'s duplicate copy is gone", not second_active.is_file())
+        ok("repair: failed/'s original attempt is untouched",
+           (q.failed / f"{job_id}.json").read_bytes() == original_bytes)
+
+
+def test_repair_leaves_differing_duplicate_id_collision_for_a_human():
+    """Same collision shape as above, but the second filing under the reused
+    id carries DIFFERENT content (a real second attempt, not a redundant
+    copy) — clobbering failed/'s existing file would destroy it, so this
+    must be left alone, exactly like the both-manifests-exist case."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "dupcollision2"
+        make_job(q.pending, job_id, q.reference)
+        first_active = artpiped.claim_next(q.pending, q.active)
+        common.atomic_write_json(q.failed / f"{job_id}.manifest.json",
+                                 {"id": job_id, "status": "failed"})
+        os.replace(first_active, q.failed / f"{job_id}.json")
+        original_bytes = (q.failed / f"{job_id}.json").read_bytes()
+
+        # A genuinely different second attempt under the same id — e.g. a
+        # re-prompted retry that reused the id instead of bumping to _r2.
+        make_job(q.pending, job_id, q.reference, prompt="a completely different prompt")
+        second_active = artpiped.claim_next(q.pending, q.active)
+        ok("fixture: second filing differs from the first",
+           second_active.read_bytes() != original_bytes)
+
+        moved = artpiped.repair(q.active, q.done, q.failed)
+        ok("repair: differing content is left for a human, not discarded",
+           not any(jid == job_id for jid, _ in moved), moved)
+        ok("repair: active/'s differing copy is untouched", second_active.is_file())
+        ok("repair: failed/'s original attempt is untouched",
+           (q.failed / f"{job_id}.json").read_bytes() == original_bytes)
+
+
 def test_repair_standalone_flag_works_without_reconcile_only():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
@@ -2729,6 +2799,8 @@ def main() -> int:
         test_detector_wall_clock_uses_rolling_median_not_naive_last_three,
         test_repair_completes_manifest_written_but_not_moved_crash,
         test_repair_leaves_genuinely_ambiguous_state_alone,
+        test_repair_discards_byte_identical_duplicate_id_collision,
+        test_repair_leaves_differing_duplicate_id_collision_for_a_human,
         test_repair_standalone_flag_works_without_reconcile_only,
         test_gemini_channel_routes_and_records_cost,
         test_gemini_default_budget_is_zero_and_refuses_the_channel,

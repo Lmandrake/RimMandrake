@@ -48,6 +48,7 @@ from __future__ import annotations
 
 import argparse
 import fcntl
+import filecmp
 import json
 import os
 import queue
@@ -953,6 +954,28 @@ def repair(active_dir: Path, done_dir: Path, failed_dir: Path) -> list[tuple[str
     the move is not a guess. If manifests exist on BOTH sides (should never
     happen — a job is filed to exactly one target directory — but if it
     does, that IS genuinely ambiguous) this leaves it alone for a human.
+
+    A THIRD crash state, found live 2026-09-17 (three jobs stuck in active/
+    since 2026-09-14 with no worker ever running): `dest` can ALREADY be
+    occupied by a job file from an EARLIER, separate attempt under this
+    exact id — an id re-filed by hand straight into pending/, bypassing
+    fill_queue.py's cross-directory duplicate-id check (see this queue's
+    README: "if a file here looks hand-edited, treat it as suspect"), rather
+    than the `_r2`-suffix convention every other retry in this queue uses.
+    reconcile() sees a manifest matching this id SOMEWHERE and treats the
+    active/ copy as "already decided" on that basis alone — true of the OLD
+    attempt, not necessarily this one — so it hands the job to repair()
+    without ever checking whether repair() can actually place it. Left as a
+    bare `continue`, such a job is stuck forever: neither function will ever
+    move or clear it again. Two sub-cases, told apart the only honest way —
+    by comparing bytes, not trusting either side's manifest:
+      - active/'s copy is byte-IDENTICAL to `dest`: it carries no
+        information `dest` doesn't already have — a redundant duplicate
+        filing of an attempt already terminally recorded. Safe to discard
+        outright.
+      - anything else: a real second attempt actually ran under the reused
+        id and produced different content — clobbering `dest` would destroy
+        it. Left alone for a human, same as the both-manifests-exist case.
     """
     repaired = []
     for p in _job_files(active_dir):
@@ -969,6 +992,30 @@ def repair(active_dir: Path, done_dir: Path, failed_dir: Path) -> list[tuple[str
             continue  # no manifest anywhere — that's reconcile()'s job, not repair's
         dest = target_dir / p.name
         if dest.exists():
+            # See the docstring's "THIRD crash state" — a duplicate id
+            # collision, not the ordinary manifest-written-but-not-moved
+            # case this function exists for.
+            try:
+                same = filecmp.cmp(p, dest, shallow=False)
+            except OSError:
+                continue
+            if not same:
+                continue  # a real, different second attempt — leave for a human
+            try:
+                p.unlink()
+            except FileNotFoundError:
+                continue
+            repaired.append((job_id, f"active/'s copy was byte-identical to the "
+                                      f"job file already sitting in {target_dir.name}/ "
+                                      f"from an earlier attempt under the same id — "
+                                      f"discarded as a redundant duplicate, never "
+                                      f"clobbering {target_dir.name}/"))
+            stray = active_dir / f"{job_id}.worker_last_message.json"
+            if stray.is_file():
+                try:
+                    stray.unlink()
+                except OSError:
+                    pass
             continue
         try:
             os.rename(p, dest)
