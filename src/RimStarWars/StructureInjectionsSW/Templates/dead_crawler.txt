@@ -1,0 +1,478 @@
+# rimplace flat plan v2
+# template  dead_crawler (sha c9152dbb32cb72a0)
+# min_rect  25x9   baked at 25x9
+FOOTPRINT	0	0	25	9
+CLEAR	-1	-1	27	11	soft
+CLEAR	0	0	25	9	all
+TERRAIN	1	1	StrawMatting
+TERRAIN	1	2	StrawMatting
+TERRAIN	1	3	StrawMatting
+TERRAIN	1	4	StrawMatting
+TERRAIN	1	5	StrawMatting
+TERRAIN	1	6	StrawMatting
+TERRAIN	1	7	StrawMatting
+TERRAIN	2	1	StrawMatting
+TERRAIN	2	2	StrawMatting
+TERRAIN	2	3	StrawMatting
+TERRAIN	2	4	StrawMatting
+TERRAIN	2	5	StrawMatting
+TERRAIN	2	6	StrawMatting
+TERRAIN	2	7	StrawMatting
+TERRAIN	3	1	StrawMatting
+TERRAIN	3	2	StrawMatting
+TERRAIN	3	3	StrawMatting
+TERRAIN	3	4	StrawMatting
+TERRAIN	3	5	StrawMatting
+TERRAIN	3	6	StrawMatting
+TERRAIN	3	7	StrawMatting
+TERRAIN	4	1	StrawMatting
+TERRAIN	4	2	StrawMatting
+TERRAIN	4	3	StrawMatting
+TERRAIN	4	4	StrawMatting
+TERRAIN	4	5	StrawMatting
+TERRAIN	4	6	StrawMatting
+TERRAIN	4	7	StrawMatting
+TERRAIN	5	1	StrawMatting
+TERRAIN	5	2	StrawMatting
+TERRAIN	5	3	StrawMatting
+TERRAIN	5	4	StrawMatting
+TERRAIN	5	5	StrawMatting
+TERRAIN	5	6	StrawMatting
+TERRAIN	5	7	StrawMatting
+TERRAIN	6	1	StrawMatting
+TERRAIN	6	2	StrawMatting
+TERRAIN	6	3	StrawMatting
+TERRAIN	6	4	StrawMatting
+TERRAIN	6	5	StrawMatting
+TERRAIN	6	6	StrawMatting
+TERRAIN	6	7	StrawMatting
+TERRAIN	7	1	StrawMatting
+TERRAIN	7	2	StrawMatting
+TERRAIN	7	3	StrawMatting
+TERRAIN	7	4	StrawMatting
+TERRAIN	7	5	StrawMatting
+TERRAIN	7	6	StrawMatting
+TERRAIN	7	7	StrawMatting
+TERRAIN	9	1	StrawMatting
+TERRAIN	9	2	StrawMatting
+TERRAIN	9	3	StrawMatting
+TERRAIN	9	4	StrawMatting
+TERRAIN	9	5	StrawMatting
+TERRAIN	9	6	StrawMatting
+TERRAIN	9	7	StrawMatting
+TERRAIN	10	1	StrawMatting
+TERRAIN	10	2	StrawMatting
+TERRAIN	10	3	StrawMatting
+TERRAIN	10	4	StrawMatting
+TERRAIN	10	5	StrawMatting
+TERRAIN	10	6	StrawMatting
+TERRAIN	10	7	StrawMatting
+TERRAIN	11	1	StrawMatting
+TERRAIN	11	2	StrawMatting
+TERRAIN	11	3	StrawMatting
+TERRAIN	11	4	StrawMatting
+TERRAIN	11	5	StrawMatting
+TERRAIN	11	6	StrawMatting
+TERRAIN	11	7	StrawMatting
+TERRAIN	12	1	StrawMatting
+TERRAIN	12	2	StrawMatting
+TERRAIN	12	3	StrawMatting
+TERRAIN	12	4	StrawMatting
+TERRAIN	12	5	StrawMatting
+TERRAIN	12	6	StrawMatting
+TERRAIN	12	7	StrawMatting
+TERRAIN	13	1	StrawMatting
+TERRAIN	13	2	StrawMatting
+TERRAIN	13	3	StrawMatting
+TERRAIN	13	4	StrawMatting
+TERRAIN	13	5	StrawMatting
+TERRAIN	13	6	StrawMatting
+TERRAIN	13	7	StrawMatting
+TERRAIN	14	1	StrawMatting
+TERRAIN	14	2	StrawMatting
+TERRAIN	14	3	StrawMatting
+TERRAIN	14	4	StrawMatting
+TERRAIN	14	5	StrawMatting
+TERRAIN	14	6	StrawMatting
+TERRAIN	14	7	StrawMatting
+TERRAIN	15	1	StrawMatting
+TERRAIN	15	2	StrawMatting
+TERRAIN	15	3	StrawMatting
+TERRAIN	15	4	StrawMatting
+TERRAIN	15	5	StrawMatting
+TERRAIN	15	6	StrawMatting
+TERRAIN	15	7	StrawMatting
+TERRAIN	17	1	StrawMatting
+TERRAIN	17	2	StrawMatting
+TERRAIN	17	3	StrawMatting
+TERRAIN	17	4	StrawMatting
+TERRAIN	17	5	StrawMatting
+TERRAIN	17	6	StrawMatting
+TERRAIN	17	7	StrawMatting
+TERRAIN	18	1	StrawMatting
+TERRAIN	18	2	StrawMatting
+TERRAIN	18	3	StrawMatting
+TERRAIN	18	4	StrawMatting
+TERRAIN	18	5	StrawMatting
+TERRAIN	18	6	StrawMatting
+TERRAIN	18	7	StrawMatting
+TERRAIN	19	1	StrawMatting
+TERRAIN	19	2	StrawMatting
+TERRAIN	19	3	StrawMatting
+TERRAIN	19	4	StrawMatting
+TERRAIN	19	5	StrawMatting
+TERRAIN	19	6	StrawMatting
+TERRAIN	19	7	StrawMatting
+TERRAIN	20	1	StrawMatting
+TERRAIN	20	2	StrawMatting
+TERRAIN	20	3	StrawMatting
+TERRAIN	20	4	StrawMatting
+TERRAIN	20	5	StrawMatting
+TERRAIN	20	6	StrawMatting
+TERRAIN	20	7	StrawMatting
+TERRAIN	21	1	StrawMatting
+TERRAIN	21	2	StrawMatting
+TERRAIN	21	3	StrawMatting
+TERRAIN	21	4	StrawMatting
+TERRAIN	21	5	StrawMatting
+TERRAIN	21	6	StrawMatting
+TERRAIN	21	7	StrawMatting
+TERRAIN	22	1	StrawMatting
+TERRAIN	22	2	StrawMatting
+TERRAIN	22	3	StrawMatting
+TERRAIN	22	4	StrawMatting
+TERRAIN	22	5	StrawMatting
+TERRAIN	22	6	StrawMatting
+TERRAIN	22	7	StrawMatting
+TERRAIN	23	1	StrawMatting
+TERRAIN	23	2	StrawMatting
+TERRAIN	23	3	StrawMatting
+TERRAIN	23	4	StrawMatting
+TERRAIN	23	5	StrawMatting
+TERRAIN	23	6	StrawMatting
+TERRAIN	23	7	StrawMatting
+THING	Wall	0	0	0	Steel
+THING	Wall	1	0	0	Steel
+THING	Wall	2	0	0	Steel
+THING	Wall	3	0	0	Steel
+THING	Wall	5	0	0	Steel
+THING	Wall	6	0	0	Steel
+THING	Wall	7	0	0	Steel
+THING	Wall	8	0	0	Steel
+THING	Wall	0	1	0	Steel
+THING	Wall	8	1	0	Steel
+THING	Wall	0	2	0	Steel
+THING	Wall	8	2	0	Steel
+THING	Wall	0	3	0	Steel
+THING	Wall	8	3	0	Steel
+THING	Wall	0	4	0	Steel
+THING	Wall	0	5	0	Steel
+THING	Wall	8	5	0	Steel
+THING	Wall	0	6	0	Steel
+THING	Wall	8	6	0	Steel
+THING	Wall	0	7	0	Steel
+THING	Wall	8	7	0	Steel
+THING	Wall	0	8	0	Steel
+THING	Wall	1	8	0	Steel
+THING	Wall	2	8	0	Steel
+THING	Wall	3	8	0	Steel
+THING	Wall	4	8	0	Steel
+THING	Wall	5	8	0	Steel
+THING	Wall	6	8	0	Steel
+THING	Wall	7	8	0	Steel
+THING	Wall	8	8	0	Steel
+THING	AncientBlastDoor	4	0	0	WoodLog
+THING	Ship_CryptosleepCasket	1	6	0	-
+THING	PowerConduit	1	1	0	-
+THING	ChunkSlagSteel	4	2	0	-
+THING	Filth_RubbleBuilding	5	2	0	-
+THING	Filth_RubbleBuilding	7	6	0	-
+THING	Wall	9	0	0	Steel
+THING	Wall	10	0	0	Steel
+THING	Wall	11	0	0	Steel
+THING	Wall	12	0	0	Steel
+THING	Wall	13	0	0	Steel
+THING	Wall	14	0	0	Steel
+THING	Wall	15	0	0	Steel
+THING	Wall	16	0	0	Steel
+THING	Wall	16	1	0	Steel
+THING	Wall	16	2	0	Steel
+THING	Wall	16	3	0	Steel
+THING	Wall	16	5	0	Steel
+THING	Wall	16	6	0	Steel
+THING	Wall	16	7	0	Steel
+THING	Wall	9	8	0	Steel
+THING	Wall	10	8	0	Steel
+THING	Wall	11	8	0	Steel
+THING	Wall	12	8	0	Steel
+THING	Wall	13	8	0	Steel
+THING	Wall	14	8	0	Steel
+THING	Wall	15	8	0	Steel
+THING	Wall	16	8	0	Steel
+THING	AncientBlastDoor	8	4	0	WoodLog
+THING	Ship_CryptosleepCasket	9	6	0	-
+THING	PowerConduit	9	1	0	-
+THING	ChunkSlagSteel	10	2	0	-
+THING	Filth_RubbleBuilding	9	3	0	-
+THING	ChunkSlagSteel	10	3	0	-
+THING	ChunkSlagSteel	11	4	0	-
+THING	Filth_RubbleBuilding	9	5	0	-
+THING	ChunkSlagSteel	10	5	0	-
+THING	Filth_RubbleBuilding	12	7	0	-
+THING	Filth_RubbleBuilding	13	7	0	-
+THING	Wall	17	0	0	Steel
+THING	Wall	18	0	0	Steel
+THING	Wall	19	0	0	Steel
+THING	Wall	20	0	0	Steel
+THING	Wall	21	0	0	Steel
+THING	Wall	22	0	0	Steel
+THING	Wall	23	0	0	Steel
+THING	Wall	24	0	0	Steel
+THING	Wall	24	1	0	Steel
+THING	Wall	24	2	0	Steel
+THING	Wall	24	3	0	Steel
+THING	Wall	24	4	0	Steel
+THING	Wall	24	5	0	Steel
+THING	Wall	24	6	0	Steel
+THING	Wall	24	7	0	Steel
+THING	Wall	17	8	0	Steel
+THING	Wall	18	8	0	Steel
+THING	Wall	19	8	0	Steel
+THING	Wall	20	8	0	Steel
+THING	Wall	21	8	0	Steel
+THING	Wall	22	8	0	Steel
+THING	Wall	23	8	0	Steel
+THING	Wall	24	8	0	Steel
+THING	AncientBlastDoor	16	4	0	WoodLog
+THING	Ship_CryptosleepCasket	17	6	0	-
+THING	PowerConduit	17	1	0	-
+THING	AncientLamp	23	1	0	-
+THING	ChunkSlagSteel	18	2	0	-
+THING	Filth_RubbleBuilding	21	4	0	-
+THING	Filth_RubbleBuilding	18	6	0	-
+THING	ChunkSlagSteel	21	6	0	-
+ROOF	0	0	RoofConstructed
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	0	8	RoofConstructed
+ROOF	1	0	RoofConstructed
+ROOF	1	1	RoofConstructed
+ROOF	1	2	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	2	0	RoofConstructed
+ROOF	2	1	RoofConstructed
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	3	0	RoofConstructed
+ROOF	3	1	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	4	0	RoofConstructed
+ROOF	4	1	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	5	0	RoofConstructed
+ROOF	5	1	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	6	0	RoofConstructed
+ROOF	6	1	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	7	0	RoofConstructed
+ROOF	7	1	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	8	0	RoofConstructed
+ROOF	8	1	RoofConstructed
+ROOF	8	2	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed
+ROOF	8	6	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	9	0	RoofConstructed
+ROOF	9	1	RoofConstructed
+ROOF	9	2	RoofConstructed
+ROOF	9	3	RoofConstructed
+ROOF	9	4	RoofConstructed
+ROOF	9	5	RoofConstructed
+ROOF	9	6	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	10	0	RoofConstructed
+ROOF	10	1	RoofConstructed
+ROOF	10	2	RoofConstructed
+ROOF	10	3	RoofConstructed
+ROOF	10	4	RoofConstructed
+ROOF	10	5	RoofConstructed
+ROOF	10	6	RoofConstructed
+ROOF	10	7	RoofConstructed
+ROOF	10	8	RoofConstructed
+ROOF	11	0	RoofConstructed
+ROOF	11	1	RoofConstructed
+ROOF	11	2	RoofConstructed
+ROOF	11	3	RoofConstructed
+ROOF	11	4	RoofConstructed
+ROOF	11	5	RoofConstructed
+ROOF	11	6	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	12	0	RoofConstructed
+ROOF	12	1	RoofConstructed
+ROOF	12	2	RoofConstructed
+ROOF	12	3	RoofConstructed
+ROOF	12	4	RoofConstructed
+ROOF	12	5	RoofConstructed
+ROOF	12	6	RoofConstructed
+ROOF	12	7	RoofConstructed
+ROOF	12	8	RoofConstructed
+ROOF	13	0	RoofConstructed
+ROOF	13	1	RoofConstructed
+ROOF	13	2	RoofConstructed
+ROOF	13	3	RoofConstructed
+ROOF	13	4	RoofConstructed
+ROOF	13	5	RoofConstructed
+ROOF	13	6	RoofConstructed
+ROOF	13	7	RoofConstructed
+ROOF	13	8	RoofConstructed
+ROOF	14	0	RoofConstructed
+ROOF	14	1	RoofConstructed
+ROOF	14	2	RoofConstructed
+ROOF	14	3	RoofConstructed
+ROOF	14	4	RoofConstructed
+ROOF	14	5	RoofConstructed
+ROOF	14	6	RoofConstructed
+ROOF	14	7	RoofConstructed
+ROOF	14	8	RoofConstructed
+ROOF	15	0	RoofConstructed
+ROOF	15	1	RoofConstructed
+ROOF	15	2	RoofConstructed
+ROOF	15	3	RoofConstructed
+ROOF	15	4	RoofConstructed
+ROOF	15	5	RoofConstructed
+ROOF	15	6	RoofConstructed
+ROOF	15	7	RoofConstructed
+ROOF	15	8	RoofConstructed
+ROOF	16	0	RoofConstructed
+ROOF	16	1	RoofConstructed
+ROOF	16	2	RoofConstructed
+ROOF	16	3	RoofConstructed
+ROOF	16	4	RoofConstructed
+ROOF	16	5	RoofConstructed
+ROOF	16	6	RoofConstructed
+ROOF	16	7	RoofConstructed
+ROOF	16	8	RoofConstructed
+ROOF	17	0	RoofConstructed
+ROOF	17	1	RoofConstructed
+ROOF	17	2	RoofConstructed
+ROOF	17	3	RoofConstructed
+ROOF	17	4	RoofConstructed
+ROOF	17	5	RoofConstructed
+ROOF	17	6	RoofConstructed
+ROOF	17	7	RoofConstructed
+ROOF	17	8	RoofConstructed
+ROOF	18	0	RoofConstructed
+ROOF	18	1	RoofConstructed
+ROOF	18	2	RoofConstructed
+ROOF	18	3	RoofConstructed
+ROOF	18	4	RoofConstructed
+ROOF	18	5	RoofConstructed
+ROOF	18	6	RoofConstructed
+ROOF	18	7	RoofConstructed
+ROOF	18	8	RoofConstructed
+ROOF	19	0	RoofConstructed
+ROOF	19	1	RoofConstructed
+ROOF	19	2	RoofConstructed
+ROOF	19	3	RoofConstructed
+ROOF	19	4	RoofConstructed
+ROOF	19	5	RoofConstructed
+ROOF	19	6	RoofConstructed
+ROOF	19	7	RoofConstructed
+ROOF	19	8	RoofConstructed
+ROOF	20	0	RoofConstructed
+ROOF	20	1	RoofConstructed
+ROOF	20	2	RoofConstructed
+ROOF	20	3	RoofConstructed
+ROOF	20	4	RoofConstructed
+ROOF	20	5	RoofConstructed
+ROOF	20	6	RoofConstructed
+ROOF	20	7	RoofConstructed
+ROOF	20	8	RoofConstructed
+ROOF	21	0	RoofConstructed
+ROOF	21	1	RoofConstructed
+ROOF	21	2	RoofConstructed
+ROOF	21	3	RoofConstructed
+ROOF	21	4	RoofConstructed
+ROOF	21	5	RoofConstructed
+ROOF	21	6	RoofConstructed
+ROOF	21	7	RoofConstructed
+ROOF	21	8	RoofConstructed
+ROOF	22	0	RoofConstructed
+ROOF	22	1	RoofConstructed
+ROOF	22	2	RoofConstructed
+ROOF	22	3	RoofConstructed
+ROOF	22	4	RoofConstructed
+ROOF	22	5	RoofConstructed
+ROOF	22	6	RoofConstructed
+ROOF	22	7	RoofConstructed
+ROOF	22	8	RoofConstructed
+ROOF	23	0	RoofConstructed
+ROOF	23	1	RoofConstructed
+ROOF	23	2	RoofConstructed
+ROOF	23	3	RoofConstructed
+ROOF	23	4	RoofConstructed
+ROOF	23	5	RoofConstructed
+ROOF	23	6	RoofConstructed
+ROOF	23	7	RoofConstructed
+ROOF	23	8	RoofConstructed
+ROOF	24	0	RoofConstructed
+ROOF	24	1	RoofConstructed
+ROOF	24	2	RoofConstructed
+ROOF	24	3	RoofConstructed
+ROOF	24	4	RoofConstructed
+ROOF	24	5	RoofConstructed
+ROOF	24	6	RoofConstructed
+ROOF	24	7	RoofConstructed
+ROOF	24	8	RoofConstructed

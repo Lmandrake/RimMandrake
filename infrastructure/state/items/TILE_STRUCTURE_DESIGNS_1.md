@@ -1094,3 +1094,197 @@ live mapgen-ordering proof (owed since 2026-08-31) is still open; every
 remaining whisper gap now has a reason on record rather than a bare "not
 done yet."
 
+## 2026-09-18 promise batch 1 (FOUNDRY, belt mode, subagent) — 3 of 6 promise gaps closed
+
+Re-derived state first, per standing lesson (queue items decay): re-ran
+`structure_roster_lint.py` before touching anything — confirmed still exactly
+16/22 promises, 6 declared gaps, 8/22 whispers, 0 lint failures, unchanged
+since whisper batch 4. Read the whole item history and both roster docs in
+full before picking rows, per the dispatch's own instruction to re-verify the
+6 promise gaps rather than assume the prior "gap-design"/"skip-tool"/
+"skip-owner" labels still hold blind.
+
+**Re-verified all 6 declared promise gaps against fresh evidence** (a
+current def dump capture, `2026-09-18T05-05-13Z`, was reachable this pass at
+`/mnt/c/Users/.../RimWorld by Ludeon Studios/DefDump/captures/` - the same
+Windows-side path the laptop cannot normally reach, but this session could).
+3 were genuinely re-confirmed still blocked; 3 were NOT actually blocked and
+are now built:
+
+- **#5 The Junkers' Field** - re-confirmed `skip-tool`: needs a
+  `coastal_mesa`-style mapsynth authored terrain pass
+  (`src/RimMandrake/mapsynth/authored/author_coastal_mesa.py` - a real,
+  full terrain-synthesis pipeline, confirmed to exist), a wholly different
+  tool from rimplace's per-tile Lua templates. Out of scope for this batch,
+  same as batch 6's own original call.
+- **#11 The Kiln** - re-confirmed `skip-owner`: still contested per
+  sacred-sites, batch 6's own reasoning stands. **Found and flagged a doc
+  mismatch while re-confirming**: `structure_injection_roster.md` row 11's
+  own text says "Ohm vs Sh'kaar argue it," while `sacred_sites_pass_1.md`
+  §1a/§5 names it "the Kiln (Zizzik/Mob'Unloo contest)" - two design docs
+  disagree on WHO is contesting the Kiln. Not resolved here (an owner
+  question, and resolving it wrong would mean authoring content against the
+  wrong pair of gods) - recorded in the lint script's own comment so the
+  next session does not need to re-discover it.
+- **#2 The Sarlacc** - re-investigated, NOT closed, but the reason moved.
+  The 2026-09-09 session declared this a design gap because "the existing
+  mutator's pit geometry ... has never been inspected here." That geometry
+  IS now measured: `vendor/mod_sources/StarWarsAnimalCollection_src/1.6/
+  Defs/ThingDefs_Buildings/SW_Buildings_Natural.xml` (a vendored copy of
+  the owning mod's own source, read directly) gives `SarlaccPit` as 9x6,
+  placed by `sw_SarlaccPit`'s own `GenStep_ScatterThings`
+  (`countPer10kCellsRange 1~1`, `clearSpaceSize 10`) at TileMutatorDef
+  `sw_SarlaccLair`'s `order 950`. So the geometry blocker is gone - but a
+  DEEPER, previously-unnamed blocker replaces it: `GenStep_RimplacePlan.cs`
+  (this program's own engine, read directly) supports exactly two placement
+  modes, `centerOnMap` (default) or a caller-supplied fixed
+  `offsetX`/`offsetZ` - there is no mode that places a plan adjacent to
+  wherever a DIFFERENT, independently-scheduled `GenStep_ScatterThings` call
+  actually lands its thing at mapgen time (the two gensteps do not share
+  coordinates). "Ring the pit" needs exactly that handoff. Placing a totem
+  cluster at map-center instead (the only mode the engine has) would
+  frequently sit nowhere near the real pit - a wrong-looking result is
+  worse than an honestly-declared gap, so nothing was built. This is now a
+  confirmed ENGINE gap, not a "someone should measure this" gap - recorded
+  as such in the lint script so a future session does not re-open the
+  geometry question and instead can go straight to whether
+  `GenStep_RimplacePlan` should grow a third placement mode.
+
+**3 built** (all offline-verified: `rimplace lint`/`verify`/`export`,
+`validate_patch.py`, `rimplace selftest` - no bridge time used this pass,
+`rimflow bridge who` confirmed held live by BENCH for an unrelated
+rot-wave/restart cycle, not stale):
+
+- **#6 The Dead Crawler** (RSW, Rekko+Mob'Unloo, "any desert") - a wholly
+  NEW `TileMutatorDef` (`RSW_DeadCrawler`, `biomeWhitelist`
+  Desert/ExtremeDesert), same "NEW flagship rimplace" shape as
+  krayt_graveyard/podracer_wreck/hunting_lodge - no adoption of anyone
+  else's def, so this row carried none of #2's engine-gap problem.
+  `design/Jawa/templates/dead_crawler.lua`: three walled "decks" (RimWorld
+  has no Z-axis, so three side-by-side rooms is the concrete build), one or
+  two `Ship_CryptosleepCasket` (Core, 1x2 - "sleeping hands" made literal,
+  a defName already `verify`-proven in the sibling `crashed_ship.lua`
+  template) per deck, `AncientBlastDoor` throughout, unpowered
+  `PowerConduit`/`AncientLamp` dressing (deliberately dead - no
+  generator/battery, "a fallen hull reads as dead"). **Caught and fixed a
+  real bug before shipping**: the first cut scattered `ChunkSlagSteel`/
+  `Filth_RubbleBuilding` using `not ctx:occupied(x,z)`, which only tracks a
+  thing's ANCHOR cell (confirmed by reading `core.py`'s own `occupied()`) -
+  harmless for the 1x1 scatter defs themselves, but capable of stacking
+  scatter onto the SECOND cell of a casket's 1x2 footprint since that cell
+  never registers as occupied. Switched to `ctx:can_place` (footprint-aware)
+  before it ever produced a live collision; `lint` was already clean at the
+  time (RNG never rolled the bad case in the seeds tried), so this was
+  caught by reading `imperial_waystation.lua`'s own prior note about the
+  same class of bug, not by a lint failure. `lint`: 0 ERROR across 8 seeds
+  at 25x9 and 32x12 (only the same cosmetic `door-centred` WARN
+  `hunting_lodge.lua` already carries, uncorrelated with this fix). `verify`:
+  11/11 defNames found (`Ship_CryptosleepCasket`, `AncientBlastDoor`, `Wall`,
+  `Steel`, `PowerConduit`, `AncientLamp`, `ChunkSlagSteel`,
+  `Filth_RubbleBuilding` among them).
+- **#7 The Signal Mast** (RM tier, Ohm, "reskin AncientUplink") - patched
+  onto vanilla `AncientUplink` (Odyssey,
+  `RimWorld.TileMutatorWorker_AncientUplink`, confirmed a real
+  `TileMutatorDef` via `unused_mutators_full_list.csv` line 45 and the live
+  def dump directly; `extraGenSteps: []` in that dump, confirmed by direct
+  read - the Add targets the def node itself and adds a whole
+  `<extraGenSteps>` element, same shape as Dunes/DryLake/Hollow/Caves, not
+  the "append one more `<li>`" shape). `design/Jawa/templates/
+  signal_mast.lua`: an 11x8 comms room, `CommsConsole` (Core, 3x2,
+  `CompPowerTrader`) against the wall closest to an exterior
+  generator+battery+conduit bus - the exact verified power pattern
+  `hunting_lodge.lua`'s cold room already proved (nursery.lua's own
+  pattern), CommsConsole standing in as the CONNECTOR in place of a cooler.
+  **This is the first roster content this mod (`mandrake.rm.injections`)
+  has ever shipped** - its own About.xml said "This mod ships no content of
+  its own... no SW or Ash'karr specific defs," which was accurate until
+  this pass and is now corrected in place (not deleted-and-reworded: the
+  engine-vs-content-pack architecture description is untouched, only the
+  now-false absolute claim is fixed) to note the Signal Mast as the one
+  campaign-agnostic exception, since a reskin of a base-game mutator with no
+  Star Wars/Ash'karr content belongs at the RM tier by the naming scheme's
+  own tier logic, not invented as a new content-pack mod. `lint`: 0 ERROR at
+  19x10 and 24x14 (one cosmetic `door-centred` WARN, same class as above).
+  `verify`: 11/11 defNames found.
+- **#17 The Ashfall Battery** (RUT, Ta'Baa) - patched onto vanilla
+  `AncientLaunchSite` (Odyssey,
+  `RimWorld.TileMutatorWorker_AncientStructure` - the same def
+  `sacred_sites_pass_1.md` §1a names as its own "worked example").
+  **Resolved a doc disagreement against the def dump rather than either
+  doc**: `tile_augmentation_catalogue.md`'s own table lists
+  `AncientLaunchSite` as a `LandmarkDef`; `unused_mutators_census.md`'s
+  measured Part-1 in-use list (sourced from the same kind of offline def
+  dump, per that doc's own 2026-09-07 correction) lists it as a
+  `TileMutatorDef`; the live dump itself settles it -
+  `defType: "TileMutatorDef"` on the def record, `extraGenSteps: []`.
+  `design/Jawa/templates/ashfall_battery.lua`: a 10x8 fuel-farm room, two
+  `LargeChemfuelTank` (Odyssey, 3x3) plus one `ChemfuelTank` (Odyssey, 2x2)
+  - neither carries a power comp, so no generator/battery apron needed,
+  simpler than Signal Mast - plus loose `Chemfuel` (Core, 1x1 stackable
+  resource) spillage scattered where the tanks left room. **Caught and
+  fixed a real bug before shipping**: the first cut's Chemfuel scatter used
+  `not ctx:occupied(x,z)`, the same anchor-cell-only bug #6 hit - this one
+  DID fire live: `rimplace lint` reported `ERROR footprint-collision
+  Chemfuel: footprint overlaps ChemfuelTank (2x2 at 4,4) at (5,5)` on the
+  very first run. Fixed with `ctx:can_place`, re-linted clean (0 findings,
+  no WARN even) across 6 seeds at 10x8.  `verify`: 8/8 defNames found.
+
+**Wiring**: `TileMutatorDefs_Batch7.xml` + `GenStepDefs_Batch7.xml` (new, RSW
+tier) for Dead Crawler; `GenStepDefs_Batch1.xml` + `Patches/SignalMast.xml`
+(new, RM tier - this mod's first `Defs/`/`Patches/` content) for Signal Mast;
+`GenStepDefs_Batch7.xml` + `Patches/AshfallBattery.xml` (new, RUT tier) for
+Ashfall Battery. All three plans exported to their mod's own `Templates/`
+folder at their own `min_rect` size (10x8 / 19x10 / 25x9 - the tightest
+legal fit, same convention `imperial_waystation.lua` already used).
+`validate_patch.py` run per-tier against the live 635-mod `ModsConfig.xml`
+(`RimStarWars/StructureInjectionsSW`: 27 files, 0 errors, 0 warnings;
+`RimMandrake/StructureInjections`: 2 files, 0 errors, 0 warnings;
+`RimUtinni/StructureInjectionsRUT`: 40 files, 0 errors, 5 warnings, all 5
+pre-existing and unrelated to this pass, same as whisper batch 4's own
+finding). `--defs` xpath-level live matching was not reachable this pass
+(the tool wants a mods-folder tree under `--defs`, not a def-dump JSON
+capture, and pointing it at the capture directory correctly refused rather
+than reporting a false verdict) - the two Patch files' target defNames
+(`AncientUplink`, `AncientLaunchSite`) and their `extraGenSteps: []` state
+were instead confirmed directly from the live def dump JSON, which is
+stronger evidence than an xpath hit-count would have been. `measure build`
+was run once this pass to refresh `defs.sqlite` against the current capture
+(`2026-09-18T05-05-13Z`, 78214 defs, 0 absent/shadowed/ambiguous/orphan/
+failed) so `rimplace verify` could run for real instead of reporting
+UNMEASURED. `rimplace selftest`: 62/62, unaffected.
+
+**NOT deployed, NOT added to ModsConfig this pass** - same discipline as
+every prior batch; none of `mandrake.rm.injections`/`mandrake.rsw.
+injections`/`mandrake.rut.injections` changed their ModsConfig presence.
+No bridge time used - `rimflow bridge who` showed it live-held by BENCH for
+an unrelated rot-wave/restart cycle (idle 9 min, well inside the 45-minute
+staleness window), so criterion 1 below stays owed rather than taken by
+force for a "briefly" that would collide with a live restart cycle.
+
+**Coverage after this pass: 19/22 promises (up from 16/22), 3 declared
+gaps (down from 6), 8/22 whispers (unchanged), 0 coverage-law violations.**
+Re-read this item's own `## criteria` section literally before considering
+closing it, per the dispatch's own instruction, and it does NOT close:
+
+- Criterion 1 ("`GenStep_RimplacePlan` deployed and proven on at least one
+  existing template ... via a live quicktest") has been open since
+  2026-08-31 and is UNCHANGED by this pass - no bridge time was spent, and
+  the item's own history shows this specific proof has never once been
+  attempted across 4 promise batches and 4 whisper batches. This alone
+  blocks closure regardless of promise/whisper coverage.
+- Criterion 2 ("at least one new roster row shipped ... following the
+  roster's coverage lint") has been satisfied many times over (19 promise
+  rows, 8 whisper rows) - not the blocker.
+- Criterion 3 ("remaining rows explicitly left open, not silently declared
+  done") - honored: 3 promise gaps and 14 whisper gaps remain, every one
+  with a reasoned, re-verified entry in this file or the lint script, none
+  silently dropped.
+
+Left `doing` - 3 promise gaps remain (1 owner ruling needed for #11, 1
+different-tool scoping pass needed for #5, 1 confirmed engine limitation for
+#2 that needs a `GenStep_RimplacePlan` capability, not a content pass), 14
+whisper rows remain `MISSING-MECHANISM`, and the live mapgen-ordering proof
+(owed since 2026-08-31) is still open and was not attempted this pass
+because the bridge was genuinely held for other live work, not because it
+was skipped.
+

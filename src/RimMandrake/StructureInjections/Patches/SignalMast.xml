@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  SignalMast.xml   StructureInjections (mandrake.rm.injections)   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires PROMISE #7 The Signal Mast onto vanilla `AncientUplink`
+  (Ludeon.RimWorld.Odyssey, workerClass RimWorld.TileMutatorWorker_
+  AncientUplink - confirmed real via unused_mutators_full_list.csv line 45,
+  a TileMutatorDef, not the LandmarkDef some other design docs mistakenly
+  call it).
+
+  `AncientUplink` carries `extraGenSteps: []` in the live def dump
+  (2026-09-18T05-05-13Z capture, defs/TileMutatorDef.json) - confirmed by
+  direct read, not guessed - so this Add targets the TileMutatorDef node
+  itself and adds a WHOLE `<extraGenSteps>` element, same shape as
+  Dunes/DryLake/Hollow/Caves (WhisperBatch1-4.xml's own precedent), not the
+  "append one more <li>" shape used where the target already carries one
+  (RUT_Monument, RUT_BrokenRing, sw_SarlaccLair).
+
+  Same safety convention as every prior whisper/promise patch in this
+  program: the PatchOperationAdd is wrapped in a PatchOperationConditional
+  whose xpath is IDENTICAL to the inner operation's target, so an
+  absent/renamed def makes the whole <li> a silent no-op (CLAUDE.md: "a
+  patch that matches nothing logs nothing" - intended here, not a bug).
+  ============================================================================
+-->
+<Patch>
+
+  <!-- PROMISE #7 The Signal Mast -> AncientUplink (Ludeon.RimWorld.Odyssey). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="AncientUplink"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="AncientUplink"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RM_GenStep_SignalMast</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

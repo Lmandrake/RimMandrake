@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Ashfall Battery - structure_injection_roster.md PROMISE #17. -->
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_AshfallBattery</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/ashfall_battery.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

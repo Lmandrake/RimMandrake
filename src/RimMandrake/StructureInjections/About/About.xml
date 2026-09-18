@@ -10,7 +10,7 @@
 
 rimplace (src/RimMandrake/Utils/rimplace/) authors and lints a structure offline, then compiles it to a flat runtime plan a GenStepDef can carry. GenStep_RimplacePlan reads that plan at mapgen and places its foundation, terrain, things (transmitters before connectors, so power binds), and roof in the same order the live bridge path already proved necessary. A TileMutatorDef or LandmarkDef that carries the GenStepDef in its extraGenSteps list is a promise; the plan it replays is the responder.
 
-This mod ships no content of its own - no SW or Ash'karr specific defs. Content packs (RimStarWars, RimUtinni) reference this engine's GenStepDef and supply their own compiled plans.</description>
+Content packs (RimStarWars, RimUtinni) reference this engine's GenStepDef and supply their own compiled plans for tier-specific rows. As of TILE_STRUCTURE_DESIGNS_1's 2026-09-18 promise batch, this mod also carries the one roster row with no Star Wars/Ash'karr-specific content of its own - PROMISE #7 The Signal Mast, a reskin of vanilla `AncientUplink` - since a campaign-agnostic reskin belongs at the RM tier rather than in a tier-specific pack.</description>
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
