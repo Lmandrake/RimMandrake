@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T00:26:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T00:33:30Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -791,6 +791,15 @@ target:   v1
 kind:     task
 summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
 prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
+
+## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  A new WreckedMachines module in the existing wreck-tier grammar
+prose:    infrastructure/state/items/WRECKED_DISTILLATION_MODULE_1.md
 
 ## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
 state:    doing  (BLOCKED)
@@ -1635,16 +1644,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Conversion chain: crude (solar still, drip filter — slow, free, always
 prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
-
-## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  A new WreckedMachines module in the existing wreck-tier grammar
-prose:    infrastructure/state/items/WRECKED_DISTILLATION_MODULE_1.md
 
 ## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
 state:    proposed
