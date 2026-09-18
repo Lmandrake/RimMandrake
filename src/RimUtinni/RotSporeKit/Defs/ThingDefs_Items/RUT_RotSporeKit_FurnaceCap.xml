@@ -12,7 +12,8 @@
     machine). The full live-prep comp pair (CompTemperatureRuinable +
     CompLifespan) belongs to the teas and symbionts of
     ROT_LIVE_PREPARATIONS_1, not here — a cap survives a cellar, it just
-    doesn't survive a season.
+    doesn't survive being left out much past three weeks (daysToRotStart 20,
+    a hair over one 15-day quadrum).
 
     ART OWED: texPath is a PLACEHOLDER reusing RotSporeKit's mortal-morel
     item art.
