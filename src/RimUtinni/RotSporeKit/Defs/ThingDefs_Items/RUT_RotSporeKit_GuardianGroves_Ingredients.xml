@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ROT_GUARDIAN_GROVES_1. The three RUT_LiveIngredient_* harvested from
+    src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_GuardianGroves.xml's
+    guarded mushrooms — plain ThingDefs ONLY this pass, per the build brief:
+    NO CompTemperatureRuinable, NO CompLifespan. ROT_LIVE_PREPARATIONS_1
+    (ticket 5, M4) owns decorating these three defNames with both comps
+    ("even the ingredients die if delayed/refrigerated") and whatever
+    RecipeDefs turn them into the three teas. Handoff is these three exact
+    defNames — do not rename them.
+
+    No ingestible block on purpose: these are brewing ingredients, not food
+    a colonist should eat raw off the shelf (same posture RUT_ChitinPlating
+    already takes in RUT_RotSporeKit_Resources.xml). Low stackLimit and low
+    MarketValue-per-unit but nonzero, matching card 1/M6's "keep yields low,
+    darned hard to obtain" ruling — the plant's own harvestYield (3) is the
+    real scarcity lever, this is just "don't let it stack into a warehouse".
+
+    Placeholder texPaths only, reused from already-shipped RotSporeKit item
+    art. Owed to the art pipeline: bespoke sprites for all three.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LiveIngredient_AgelessCap</defName>
+    <label>ageless cap flesh</label>
+    <description>Freshly cut flesh from an ageless cap, still faintly warm. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LiveIngredient_RegenerantVeil</defName>
+    <label>regenerant veil tissue</label>
+    <description>A cut strip of living veil tissue, still faintly pulsing. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LiveIngredient_EuphoricCrown</defName>
+    <label>euphoric crown cap</label>
+    <description>A whole cap cut from a euphoric crown, still faintly luminous. It has to reach a brewing vessel fast, or it's worthless.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/ThrumbungusShroom/ThrumbungusShroom</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>3</Beauty>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+</Defs>

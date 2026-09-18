@@ -73,6 +73,10 @@
     <Compile Include="RM_CompWoundLink.cs" />
     <Compile Include="CompProperties_KinMending.cs" />
     <Compile Include="RM_HediffComp_KinMending.cs" />
+    <Compile Include="RM_AlarmResponderExtension.cs" />
+    <Compile Include="RM_CompProperties_PlantAlarm.cs" />
+    <Compile Include="RM_CompPlantAlarm.cs" />
+    <Compile Include="RUT_Plant_FalseFruit.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -63,6 +63,19 @@ namespace RimMandrake.CreatureBehaviors
     //      never speeds up a tagged pawn's own natural healing. The dial
     //      scales only the extra heal amount (never the kin-count threshold
     //      or radius, which stay whatever the race's own extension says).
+    //  14. guardianAlarmEnabled — RM_CompPlantAlarm / RUT_Plant_FalseFruit
+    //      (ROT_GUARDIAN_GROVES_1, RimUtinni RotSporeKit). Off: a guardian
+    //      plant's network alarm never wakes nearby tagged fauna and
+    //      harvesting the false-fruit lure never grips the harvester's
+    //      ankle — the Rot's tea sources become plain, undefended
+    //      harvestables. Card 6 RULED 2026-09-17: this is deliberately
+    //      framed as a CONFESSION in its own label, not a neutral
+    //      accessibility switch — turning the grove's guardians off is the
+    //      player's own conscience talking, not just an easier game. The
+    //      spore-gas guardian pattern (RUT_AgelessCap) is a separate,
+    //      pre-existing switch — RM_EnvironmentalHazardsSettings'
+    //      "Gas emitters"/"Gas damage and transmuting" toggles, which
+    //      already cover it kit-wide.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -84,6 +97,7 @@ namespace RimMandrake.CreatureBehaviors
         public static float woundLinkShareMultiplier = 1f;
         public static bool kinMendingEnabled = true;
         public static float kinMendingBoostMultiplier = 1f;
+        public static bool guardianAlarmEnabled = true;
 
         public override void ExposeData()
         {
@@ -106,6 +120,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref woundLinkShareMultiplier, "woundLinkShareMultiplier", 1f);
             Scribe_Values.Look(ref kinMendingEnabled, "kinMendingEnabled", true);
             Scribe_Values.Look(ref kinMendingBoostMultiplier, "kinMendingBoostMultiplier", 1f);
+            Scribe_Values.Look(ref guardianAlarmEnabled, "guardianAlarmEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -169,6 +184,16 @@ namespace RimMandrake.CreatureBehaviors
               + "are nearby.");
             list.Label("Kin-mending boost: " + kinMendingBoostMultiplier.ToString("0.00") + "x");
             kinMendingBoostMultiplier = list.Slider(kinMendingBoostMultiplier, 0f, 2f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Guardian defenses (unchecking this is you deciding the grove's "
+              + "own law doesn't apply to you)",
+                ref guardianAlarmEnabled,
+                "Unchecked: you have chosen to strip the Rot's tea sources of what protects them, "
+              + "for your own convenience. The network alarm stops waking nearby guardians and a "
+              + "false-fruit lure stops gripping the hand that picks it — the grove simply lets "
+              + "you take what it would otherwise defend. Not a neutral accessibility setting: "
+              + "it is your own conscience being asked, every time you open this menu.");
 
             list.End();
         }
