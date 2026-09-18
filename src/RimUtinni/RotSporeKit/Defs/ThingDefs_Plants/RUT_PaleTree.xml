@@ -136,6 +136,10 @@
         <glowColor>(110,116,125,0)</glowColor>
       </li>
       <li Class="CompProperties_SpawnSubplant">
+        <!-- compClass is REQUIRED here: CompProperties_SpawnSubplant does not set it
+             in its ctor, so omitting it instantiates bare Verse.ThingComp and the
+             InitializeComps catch silently kills EVERY comp on the tree. -->
+        <compClass>CompSpawnSubplant</compClass>
         <subplant>RUT_PaleMoss</subplant>
         <spawnSound>AnimaTreeProgress</spawnSound>
       </li>
