@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WhisperBatch4.xml   StructureInjectionsRUT   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires WHISPER #19 The Mirage Twin (Sh'kaar) onto Alpha Biomes' own
+  `AB_MagmaVents` TileMutatorDef. Same safety convention as every prior
+  whisper patch: the PatchOperationAdd is wrapped in a PatchOperationConditional
+  whose xpath is IDENTICAL to the inner operation's target, so a missing/
+  renamed mutator (Alpha Biomes absent from the active mod list) makes the
+  whole <li> a silent no-op (CLAUDE.md: "a patch that matches nothing logs
+  nothing" - intended here, not a bug).
+
+  `AB_MagmaVents` carries no <extraGenSteps> element in its own source
+  (confirmed by direct read of the Alpha Biomes workshop copy's
+  TileMutators_Natural.xml - it carries only a VEF.Maps.TileMutatorExtension
+  prefab-spawner modExtension), so this Add targets the TileMutatorDef node
+  itself, same shape as Cavern/DryLake/Hollow/Caves/Dunes.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- WHISPER #19 The Mirage Twin (Sh'kaar) -> AB_MagmaVents (Alpha Biomes,
+       biome-whitelisted onto AB_PyroclasticConflagration - the same
+       volcanic-province biome sacred_sites_pass_1.md SS1b names as part of
+       Sh'kaar's cluster). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="AB_MagmaVents"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="AB_MagmaVents"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperMagmaVents</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

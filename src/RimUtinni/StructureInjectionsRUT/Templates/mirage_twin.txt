@@ -1,0 +1,7 @@
+# rimplace flat plan v2
+# template  mirage_twin (sha dffcdd33eebbb9b3)
+# min_rect  4x4   baked at 8x8
+FOOTPRINT	0	0	8	8
+CLEAR	-1	-1	10	10	soft
+CLEAR	0	0	8	8	all
+THING	SculptureSmall	0	7	0	-

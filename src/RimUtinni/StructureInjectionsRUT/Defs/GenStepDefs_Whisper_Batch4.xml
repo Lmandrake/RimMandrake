@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TILE_STRUCTURE_DESIGNS_1 whisper subsystem, batch 4 - one more row
+       (#19 The Mirage Twin, Sh'kaar). Same GenStep_RandomSelector mechanism
+       every prior whisper batch used: no new C# for the roll itself, one
+       option this pass (same declared "fires every time this mutator
+       generates, not RARE" limitation every single-option whisper selector
+       in this program carries so far).
+
+       Anchor `AB_MagmaVents` (Alpha Biomes, `sarg.alphabiomes`) - confirmed
+       real by direct read of the mod's own on-disk source (the currently
+       LOADED mod set is the 30-mod minimal regime, confirmed via the live
+       ModsConfig.xml's own <activeMods> count, so RimSage's index could not
+       answer for an Alpha Biomes defName this pass; the workshop copy's
+       XML was read directly instead, same discipline every prior batch used
+       when the live/indexed set couldn't answer). -->
+
+  <GenStepDef MayRequire="sarg.alphabiomes">
+    <defName>RUT_GenStep_WhisperMagmaVents</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/mirage_twin.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+</Defs>

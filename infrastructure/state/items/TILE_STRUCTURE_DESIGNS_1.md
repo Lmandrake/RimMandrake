@@ -937,3 +937,160 @@ already-shipped promise content. Nothing invented to pad the count. Left
 whisper rows still have no mechanism, and the live mapgen-ordering proof
 (owed since 2026-08-31) is still open.
 
+## 2026-09-18 whisper batch 4 (FOUNDRY, belt mode, subagent) — 1 more row wired
+
+Re-derived state first, per standing lesson (queue items decay): re-ran
+`structure_roster_lint.py` before touching anything — confirmed still exactly
+16/22 promises, 7/22 whispers, 0 lint failures, unchanged since batch 3.
+Re-read the whole item history, `structure_injection_roster.md` in full, and
+`sacred_sites_pass_1.md` in full before picking rows.
+
+**Went through every remaining `MISSING-MECHANISM` whisper row NOT already
+explicitly rejected** (excluding the 11 rows this item's own history already
+gave a reasoned rejection: #1, #3, #4, #7, #9, #10, #11, #14, #15, #16, #21 —
+the last of those, #21 The Sleeper's Knock, was rejected in the batch-2
+section above but never counted in that section's own "3 candidates" tally,
+worth flagging for whoever reconciles the running numbers next). That left
+exactly **4 untouched rows**: #6, #8, #13, #19.
+
+- **#6 The Passing Herd** (Oomo, herd routes) — searched for a "herd
+  route"-class `TileMutatorDef`/`LandmarkDef`: none exists ("herd routes" is
+  not a biome/mutator/landmark category anywhere in `sacred_sites_pass_1.md`
+  §1a/§1b). RimSage `search_defs("migrat")`/`("herd")` instead found the
+  roster's own content ALREADY built into vanilla: **`HerdMigration` is a
+  real, shipped Core `IncidentDef`** (`allowedBiomes` includes
+  `Desert`/`ExtremeDesert`, `workerClass IncidentWorker_HerdMigration`,
+  confirmed via `mcp__rimsage__get_def_details`). So the roster's own
+  content — "a migration crosses mid-stay" — is not a gap to fill, it is a
+  real vanilla mechanic already running on these biomes today. But this
+  item's whisper mechanism is a `TileMutatorDef.extraGenSteps` hook fired
+  ONCE at mapgen — it has no attachment point onto an `IncidentDef`'s own
+  commonality/weight curve (a Storyteller-driven runtime roll, not a mapgen
+  step). Building a "whisper" here would mean either inventing a redundant
+  second migration mechanic or reaching into `IncidentDef` tuning, a
+  different C# surface this item's architecture was never built to reach.
+  Left `MISSING-MECHANISM`, honestly — same discipline as every prior
+  "wrong mechanism class" rejection (arc-band/audio-timer rows).
+- **#8 The Debtor's Cache** (Mob'Unloo, roads) — confirmed by direct read:
+  `design/Jawa/templates/cache.lua`'s own header names it explicitly —
+  *"Roster whispers #8 'The Debtor's Cache' and #1 'Something Buried' are the
+  ones that cite this shape by name; both ride this one template rather than
+  getting their own"* — built under the sibling item
+  `INHABITED_AUGMENTATION_BUILD_1` (`structure_procedural_spec.md` §8.14).
+  `dead_caravan.lua`, `trading_post.lua` and `road_warehouse.lua` all also
+  reference "the Debtor's Cache addition" by name. This is the SAME
+  duplicate-content class already used to reject #1/#16 in batch 2 (building
+  a competing whisper-roll mechanism here would duplicate, not fill, an
+  already-shipped gap) — formalizing it as its own numbered rejection this
+  pass since batch 2 only surfaced it as a side note under #1/#16's entry.
+  Also: "roads" is infrastructure, not a `TileMutatorDef`/`LandmarkDef`
+  (§1c's own stated limit — Mob'Unloo's geography is functional, not an
+  object with an `extraGenSteps` hook), so even setting the duplication
+  aside there is no anchor to patch onto. Left `MISSING-MECHANISM`.
+- **#13 The Egg Sands** (Oomo, warm dunes) — confirmed by direct read:
+  `design/Jawa/templates/beast_lair.lua`'s own header names it — *"Roster
+  whisper #13 The Egg Sands, #22 The Sarlacc Sign"* — built under the same
+  sibling item (`structure_procedural_spec.md` §8.11), cross-referenced again
+  in `tile_augmentation_matrix.md` GB18 ("the Egg Sands ↩W13 inverted for the
+  cold"). Unlike #22 (already independently confirmed collision-free in
+  batch 2 — `beast_lair.lua` uses its own `RSW_BeastLair` mutator, never
+  touches `sw_SarlaccLair`'s `extraGenSteps`, so this item's own Sarlacc Sign
+  whisper and the sibling item's sarlacc-flavor beast-lair option coexist),
+  #13 has no such independent anchor of its own to ride without duplicating
+  the sibling's egg-clutch content outright. Same duplicate-content
+  rejection class as #8/#1/#16. Left `MISSING-MECHANISM`.
+- **#19 The Mirage Twin** (Sh'kaar) — **BUILT**. Batch 3's own note records
+  probing `Volcano`/`LavaField`/`Scarlands`/`AB_TarPits`/
+  `AB_PyroclasticConflagration` as candidate Sh'kaar-volcanic-province
+  anchors, all 0 matches, "wrong guesses, not confirmed absent." This pass
+  chased it one round further: `mcp__rimsage__search_defs` came back empty
+  for every `AB_`-prefixed def tried, because **the currently LOADED mod set
+  is the 30-mod minimal regime** (confirmed: the live `ModsConfig.xml` has
+  exactly 30 `<li>` entries right now — Alpha Biomes is not among them, so
+  RimSage's own index cannot answer for it). Fell back to reading Alpha
+  Biomes' own on-disk source directly (workshop item `1841354677`, confirmed
+  `<name>Alpha Biomes</name>`, packageId `sarg.alphabiomes`) — same
+  discipline every prior batch used when the live/indexed set couldn't
+  answer. Direct read of `TileMutators_Natural.xml` there shows
+  `AB_TarPits` and `AB_PyroclasticConflagration` are actually **BiomeDefs**
+  (referenced only inside OTHER mutators' `<biomeWhitelist>` lists) — batch
+  3's guesses were the wrong def TYPE, not just the wrong name, same
+  `BiomeDef`-vs-`TileMutatorDef` architecture gap already confirmed for
+  #1/#11/#16. The real `TileMutatorDef` sitting on that biome is
+  **`AB_MagmaVents`** (`biomeWhitelist: AB_PyroclasticConflagration`, no
+  `<extraGenSteps>` of its own — only a `VEF.Maps.TileMutatorExtension`
+  prefab-spawner `modExtension` — so the patch Adds a whole new element,
+  same shape as Cavern/DryLake/Hollow/Caves/Dunes). `AB_PyroclasticConflagration`
+  is explicitly named in `sacred_sites_pass_1.md` §1b as part of Sh'kaar's
+  own volcanic-province cluster, so this is a real, confirmed, on-tier
+  anchor, not a guess. **Built**: `design/Jawa/templates/mirage_twin.lua` —
+  one `SculptureSmall` illusion-marker sited on a randomly chosen footprint
+  edge (N/E/S/W), standing in for "a structure visible at map edge" (no
+  "mirage"/"scam-prop" ThingDef exists in the stack; `trap_renaissance_
+  spec.md`'s own "VFEPD fake pit/gibbet props" line names a different,
+  not-yet-built defense-prop track under a different item, not a defName
+  this pass could borrow). **Scope declared**: the roster's "resolves to
+  nothing up close" half is NOT built — RimWorld has no distance-based LOD
+  or proximity-despawn mechanism for a placed Thing (checked: no such Verse
+  system exists), so that half is narrative/letter-text framing only, not a
+  buildable mapgen mechanic. `lint`: 0 findings at 4x4/6x6/8x8/20x20;
+  refusal confirmed firing at 3x3 (`CANVAS TOO SMALL`, matching every prior
+  template's minimum-footprint convention). Render-checked at seeds 1-5: all
+  four edges (N/E/S/W) reachable.
+
+**Lint table updated** (not rewritten): `structure_roster_lint.py`'s
+`WHISPERS` row #19 flipped from `("no-mechanism")` to `("mirage_twin",
+"AB_MagmaVents", "done")` — no new checking logic needed, the existing
+`check_whisper` mechanism already covers this shape.
+
+**Wiring**: `Defs/GenStepDefs_Whisper_Batch4.xml` (new, `mandrake.rut.
+injections`, `GenStepDef MayRequire="sarg.alphabiomes"` — same convention
+every prior batch used: gate the def to the mod that owns the target
+mutator's own source, per `GenStepDefs_Whisper_Batch1.xml`'s own precedent
+of `MayRequire="Ludeon.RimWorld.Odyssey"` for Odyssey-sourced anchors) +
+`Patches/WhisperBatch4.xml` (new) for Mirage Twin, plus `Templates/
+mirage_twin.txt` (rimplace `export`, baked at 8x8). `validate_patch.py`
+against the whole `Defs/`+`Patches/` of `mandrake.rut.injections`, using the
+most recent FULL-list snapshot (`infrastructure/state/modlists/
+ModsConfig_before_envhazards_activate_2026-09-18.xml`, 632 active mods,
+`sarg.alphabiomes` present, `mandrake.rut.injections` absent exactly as every
+prior batch found it) since the LIVE `ModsConfig.xml` is currently the
+30-mod minimal regime and would falsely read Alpha Biomes as absent: **38
+files, 0 errors, 5 warnings** — all 5 pre-existing (`WarLab` texPath/class
+warnings, unrelated to this pass) plus 2 pre-existing info notes on
+`WhisperBatch2.xml`/`WhisperBatch3.xml`'s own `mandrake.rut.injections`-gated
+second operations (expected, that mod is inactive). `WhisperBatch4.xml`
+itself: **1 match confirmed** — `Alpha Biomes: TileMutators_Natural.xml(1)`
+— 0 errors, 0 warnings on the new file. `rimplace selftest`: 62/62,
+unaffected. `structure_roster_lint.py`: 0 lint failures, whispers 8/22 (up
+from 7/22).
+
+**NOT deployed, NOT added to ModsConfig this pass** — same discipline as
+every prior batch; `mandrake.rut.injections` remains absent from the live
+`ModsConfig.xml`, unrelated to and unchanged by this pass. No bridge time
+used — the live game is currently on the 30-mod minimal regime for BENCH's
+own restart cycle, untouched by this pass; every check above is offline
+(rimplace + validate_patch.py against on-disk source and a saved full-list
+snapshot, matching the dispatch's own "no blind live placement, no bridge
+this pass" instruction).
+
+**Coverage after this pass: 16/22 promises (unchanged), 8/22 whispers (up
+from 7/22), 0 coverage-law violations.** 14 whisper rows remain
+`MISSING-MECHANISM` — and, counted directly against the lint's own list
+rather than asserted, **all 14 now carry an explicit, reasoned rejection
+somewhere in this item's history**: #1/#11/#15/#16/#21 (batch 2), #3/#4/#7/
+#9/#10/#14 (batch 3), #6/#8/#13 (this pass) — 5+6+3 = 14, an exact match to
+the lint's own `MISSING-MECHANISM` count, not a coincidence worth
+over-trusting without re-deriving next time someone touches this table. Of
+this pass's 3: #6 is a wrong-mechanism-class rejection (a real vanilla
+`IncidentDef`, `HerdMigration`, already exists, but this item's
+`TileMutatorDef`-anchored mapgen hook has no attachment point onto incident
+commonality); #8 and #13 are already-shipped-elsewhere duplicates
+(`cache.lua`/`beast_lair.lua` under the sibling item
+`INHABITED_AUGMENTATION_BUILD_1` — building a competing mechanism here would
+duplicate, not fill, the gap). Nothing invented to pad the count. Left
+`doing` — 6 promise gaps still need an owner ruling or a design pass, and the
+live mapgen-ordering proof (owed since 2026-08-31) is still open; every
+remaining whisper gap now has a reason on record rather than a bare "not
+done yet."
+
