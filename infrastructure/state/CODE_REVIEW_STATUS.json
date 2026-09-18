@@ -17511,6 +17511,12 @@
     "hash": "a48cd21d95c49daa349e5a7d1f5a2efb652f830cf0eb263746db9516f159c708",
     "sha": "b62604fad"
   },
+  "src/RimUtinni/UtinniPatches/Patches/RazorjackIdentity_Sytheclaw.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7346f9bb6a15aa3ab901fcd15955d99a503fb722da895eec412e247be0a4a636",
+    "sha": "c81215592"
+  },
   "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
