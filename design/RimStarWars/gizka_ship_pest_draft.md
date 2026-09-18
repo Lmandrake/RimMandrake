@@ -41,13 +41,12 @@ forward here._
 **No new creature def is needed.** Places a new def IS genuinely needed are
 flagged inline with ⚑ and collected in §7.
 
-Parallel-content flag (not this item's fix): SWBestiary carries duplicate
-`RSW_Pawn_Gizka_{Angry,Call,Death,Wounded}` SoundDefs
-(`SoundDefs_SWBestiary.xml:2536-2626`) that predate the donor's activation;
-the donor now ships its own `Pawn_Gizka_*` set and the ThingDef references
-the donor's. The RSW_ set is currently unreferenced by any creature —
-reconcile it (dedup or repoint) as ordinary cleanup under this item's build;
-no naming gate applies (`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31).
+SWBestiary carries its own `RSW_Pawn_Gizka_{Angry,Call,Death,Wounded}`
+SoundDefs (`SoundDefs_SWBestiary.xml:2536-2626`). ⛔ **They are NOT orphans and
+must not be deduped** — MEASURED 2026-09-17: SWBestiary's ported `RSW_Gizka`
+ThingDef references all four (`RSW_Gizka.xml:147-150`). The donor's own
+`Pawn_Gizka_*` set serves the donor's `Gizka`. Two creatures, two sound sets,
+both referenced; there is no duplication to reconcile.
 
 UNKNOWN (owed before build, from the recon): whether the AssetBundle gizka
 sprite renders live (quicktest). If it does not, that becomes an art task —
@@ -71,7 +70,7 @@ warm, non-warning letter:
 
 | trigger | hook point (mechanism sketch) | flavor |
 |---|---|---|
-| Gravship lands / hold first walked | Odyssey gravship arrival event (exact hook to be verified against Odyssey source at build — SPECULATIVE until read) | "Something has been living in the hold." |
+| Gravship lands | Harmony postfix on `RimWorld.Scenario.PostGravshipLanded(Map)` — CONFIRMED by source read AND live on a real landing (`GIZKA_HOLD_HOOK_SPIKE_1`). There is no "hold" concept in the engine and no first-entry event; the landing IS the moment. | "Something has been living in the hold." |
 | Wreck / crashed-ship salvage | completion of deconstruct/claim on ship-chunk & wreck buildings | "It hopped out of the wreckage." |
 | Purchased cargo delivered | trade completed with orbital/caravan trader above a goods threshold | "Crate three was not empty." |
 | Quest flavor (optional, later) | a quest reward line item — gizka as the "free gift" nobody asked for | the classic scam, inbound |
@@ -229,3 +228,47 @@ exists).
   reversing the deferred-by-default) — a gizka can arrive as a quest-reward
   "free gift"; one quest-system touch, ships with the feature when the
   hold-hook gate opens.
+
+- **RULED 2026-09-17 — the creature breeds crazily EVERYWHERE, not just the
+  event lineage.** Owner, verbatim: *"Build it now as you say. But also ensure
+  that the gizka creature itself does have that crazy reproduction rate
+  everywhere in the world."*
+
+  The tribble-grade breeding is a property of the CREATURE — wild, bought,
+  traded, farmed, however it got there — and not something the stowaway event
+  confers. The event is **one delivery vector among several**, not the source
+  of the trait.
+
+  🔑 What this does NOT change: the anti-exponential law (§4) stands exactly as
+  written. The exponential belongs to the pest; every player containment exit
+  stays priced; every player income line stays flat and linear. Card 2's
+  MarketValue flattening is what keeps a crazily-breeding creature from
+  becoming the ladder — it is now load-bearing, not decoration.
+
+  🔴 Correction the build MEASURED, which §0 and §6 get wrong by omission:
+  **gizka is an EGG LAYER, so gestation and litter size are inert on it.**
+  `RaceProperties.gestationPeriodDays` (-1) and `litterSizeCurve` (null) are
+  both unset on the donor and are never read for this creature —
+  `PawnUtility.Mated()` routes an egg-layer female to `CompEggLayer.Fertilize`
+  and never to `Hediff_Pregnant`. Setting them would change nothing. The chain
+  that actually governs gizka population is
+  mate → fertilize → lay → hatch → mature, and every link of it was shortened:
+  `eggLayIntervalDays` 1 → 0.4, `eggCountRange` 1~2 → 3~5,
+  `eggFertilizationCountMax` 1 → 4, `mateMtbHours` 12 (engine default, absent
+  from the def) → 4, `EggGizkaFertilized.hatcherDaystoHatch` 4 → 1.5,
+  `lifeStageAges` AnimalJuvenile 0.04 → 0.02 and AnimalAdult 0.09 → 0.045.
+  MarketValue 100 → 15 rides the same patch file.
+
+  🔴 And a second gizka exists that this draft predates: MLIE_FAUNA_ABSORPTION_1
+  Pass 12 (2026-09-17) ported the donor into SWBestiary as **`RSW_Gizka`** with
+  its own `RSW_EggGizka*` items, a defName rename carrying every donor number
+  unchanged. Both are live at once. All the numbers above are applied to BOTH,
+  because patching only the donor would silently undo the ruling on the day
+  Star Wars Animal Collection is retired. Anyone editing the breeding numbers
+  later must edit both blocks of
+  `src/RimStarWars/GizkaStowaway/Patches/RSW_GizkaDonorPatches.xml`.
+
+  A Mod Settings slider ("Global gizka breeding rate") scales that shipped
+  baseline at runtime and applies even with the stowaway events switched off —
+  the creature's trait is not gated behind the event's master toggle, which is
+  the ruling's whole point.

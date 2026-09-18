@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GIZKA_TRIBBLE_ADAPTATION_1 — the bait's crafting cost, which IS its price
+  (draft §3). Meat plus chemical residue, at a drug lab or a crafting spot,
+  on the Crafting skill. Deliberately cheap per batch and deliberately slow
+  per unit of problem: 25 bait is a nuisance solved, not a swarm solved.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RSW_MakeGizkaBait</defName>
+    <label>make gizka bait</label>
+    <description>Soak meat scraps in chemical residue and press them into pellets.</description>
+    <jobString>Making gizka bait.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>DrugLab</li>
+      <li>CraftingSpot</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <thingDefs>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_GizkaBait>25</RSW_GizkaBait>
+    </products>
+  </RecipeDef>
+
+</Defs>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GIZKA_TRIBBLE_ADAPTATION_1 — the poison-bait exit (draft §3).
+
+  "Consumed via the animal's own greedy diet": this is not a trap, a turret or
+  a designation. It is food, put down where they already forage, and they eat
+  it because a gizka eats anything. Nothing new is needed to make it work —
+  vanilla animal food-seeking does the whole job.
+
+  Its price, per §3: crafting cost and time, corpses to haul afterward, and
+  it is INDISCRIMINATE — foodType AnimalProduct is in the gizka's diet, but
+  it is in a lot of other animals' diets too, including the player's own
+  livestock and pets. Putting bait down in a barn is the player's mistake to
+  make. That indiscriminacy is the price; do not "fix" it with a species
+  check.
+
+  Structure and every field name copied from vanilla `Kibble`
+  (ParentName OrganicProductBase), which is the closest shipping analogue:
+  a haulable animal food with socialPropernessMatters true — required,
+  because ConfigErrors rejects a haulable ingestible with preferability above
+  DesperateOnlyForHumanlikes that lacks it.
+
+  Art: PLACEHOLDER — reuses vanilla's kibble texture. Owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_GizkaBait</defName>
+    <label>gizka bait</label>
+    <description>Meat scraps soaked in chemical residue and pressed into pellets. A gizka will eat it happily and then, over about half a day, stop.\n\nIt does not know the difference between this and food, and neither does anything else on the map with a similar appetite. Put it where you want the problem solved, not where you keep the animals you like.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <altitudeLayer>Item</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <alwaysHaulable>true</alwaysHaulable>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <pathCost>14</pathCost>
+    <stackLimit>75</stackLimit>
+    <tickerType>Rare</tickerType>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <!-- PLACEHOLDER art: vanilla kibble sprite, tinted. Owed. -->
+      <texPath>Things/Item/Resource/Kibble</texPath>
+      <color>(0.72, 0.78, 0.35)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+      <Mass>0.015</Mass>
+      <MarketValue>2.5</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <!-- AnimalProduct is one of the three flags in the donor gizka's own
+           race foodType (OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct),
+           so a gizka will treat this as food without any special casing. -->
+      <foodType>AnimalProduct</foodType>
+      <preferability>RawBad</preferability>
+      <optimalityOffsetHumanlikes>-200</optimalityOffsetHumanlikes>
+      <optimalityOffsetFeedingAnimals>60</optimalityOffsetFeedingAnimals>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RSW_GizkaBaitPoison</hediffDef>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+  </ThingDef>
+
+</Defs>
