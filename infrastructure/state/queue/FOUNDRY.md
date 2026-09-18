@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T21:44:59Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-18T22:17:39Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -44,15 +44,6 @@ target:   v1
 kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
-
-## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
-prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
 
 ## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
 state:    doing  (BLOCKED)
@@ -1774,3 +1765,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_FLORA_GENERATOR_REPAIR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_FLORA_GENERATOR_REPAIR_1.md
+
+## DEEP_DULCIS_DEDUP_1 LanternDeeps: drop RUT_DeepRawDulcis, harvest yields RotSporeKit's RUT_RawDulcis (owner ruled 2026-09-18: RotSporeKit owns it); add mandrake.rut.rotsporekit dependency/loadAfter to LanternDeeps About.xml; deploy; ships in the next load
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEP_DULCIS_DEDUP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEP_DULCIS_DEDUP_1.md
+
+## CAVERNS_LOADAFTER_STRIP_1 Biomes! Caverns left ModsConfig 2026-09-18 (Core stays until POLLUTED_LANDS_FLORA_PORT_1): strip the now-inert loadAfter BiomesTeam.BiomesCaverns lines from 12 of our About.xml (rm.patches, rsw.armoury, rut.doctrine, rut.patches, rut.pawnflavor, rut.rotsporekit, rut.lanterndeeps, 5 rut.*artoverride) and decide whether the 5 Caverns-creature art-override mods are dead now (do their creatures live in SWBestiary's BiomesTeamPort?) - retire them if so
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CAVERNS_LOADAFTER_STRIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CAVERNS_LOADAFTER_STRIP_1.md
