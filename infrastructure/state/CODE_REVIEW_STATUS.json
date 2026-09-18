@@ -5465,10 +5465,10 @@
     "sha": "0631624b"
   },
   "src/RimMandrake/Utils/expectations_manifest.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "dd14f36f6ee347088d841fc1524d4797533154d7e683f747578ca9cedd1dea29",
-    "sha": "fb248793"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "9f0dd3b44383d2c733d7a4a81580d48b17e8678fc141baf67a8aceb6f82e0580",
+    "sha": "dde76600a"
   },
   "src/RimMandrake/Utils/export_structure.py": {
     "cleanCount": 1,
