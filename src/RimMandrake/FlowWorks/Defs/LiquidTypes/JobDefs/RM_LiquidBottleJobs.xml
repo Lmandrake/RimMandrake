@@ -10,14 +10,14 @@
   <JobDef>
     <defName>RM_FillBottleJob</defName>
     <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_FillBottle</driverClass>
-    <reportString>filling a bottle.</reportString>
+    <reportString>filling a container.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
   <JobDef>
     <defName>RM_WashBottleJob</defName>
     <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_WashBottle</driverClass>
-    <reportString>washing a bottle.</reportString>
+    <reportString>washing a container.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 

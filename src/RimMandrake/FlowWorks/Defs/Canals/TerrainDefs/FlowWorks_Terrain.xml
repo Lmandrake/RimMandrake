@@ -360,12 +360,15 @@
   </TerrainDef>
 
   <!-- A FLOODED SUPERDEEP cell. Same reasoning as RM_Fill_Water_Superdeep:
-       the temp layer wins in TerrainAt, so this stays Impassable until
-       program 2 ships fall-in capture and ladders. -->
+       the temp layer wins in TerrainAt and a flooded superdeep cell must
+       keep reading as superdeep — but PASSABLE, matching RM_Channel_Superdeep
+       and RM_Fill_Water_Superdeep. Ruling 26 ("SUPERDEEP captures as if dry")
+       requires dry and flooded superdeep to share passability, or the fill
+       would silently become the barrier the ruling says it is not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Superdeep</defName>
     <label>flooded excavation, tar</label>
-    <description>A superdeep excavation holding tar. Nothing paths into it until ladders exist.</description>
+    <description>A superdeep excavation holding tar. Whatever falls in is held there, and the tar then goes to work on it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -374,7 +377,7 @@
     <takeSplashes>false</takeSplashes>
     <color>(28,24,20)</color>
     <pathCost>300</pathCost>
-    <passability>Impassable</passability>
+    <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
     <tags>
       <li>Water</li>
