@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T04:02:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T04:11:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -882,6 +882,15 @@ kind:     task
 summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
 prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
+## FLORA_LEGIBILITY_BAR_1 Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
+prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -1689,16 +1698,6 @@ kind:     task
 thin:     no ## criteria
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
-
-## FLORA_LEGIBILITY_BAR_1 Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
-prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 
 ## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
 state:    proposed
