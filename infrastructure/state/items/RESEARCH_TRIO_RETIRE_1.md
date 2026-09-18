@@ -191,6 +191,105 @@ above) and will show the 17-row hole (or its absence) precisely.
   colliding fields; `--inventory`/manifest run shows the collision gone and the
   17 rows still present, untouched.
 
+## 🔴 EXECUTED 2026-09-18 (FOUNDRY) — Route 1, per owner ruling 2026-09-18T20:05:28Z
+("port all 17, then cut", superseding the same-day 19:18 "port the 4 ruled"
+card). Commits `59944939f` / `7d94e1219`.
+
+**Ported, native, same defNames on purpose** (Absorbed_KotorCore precedent —
+zero repointing needed anywhere; PORT TRAP note honored by construction: the
+donors were retired from `ModsConfig.xml` in the same change these files
+deployed, no window where both defName sources were live):
+`src/RimUtinni/ResearchRetag/Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml`
+— all 17 named defNames, **plus `GravEngineBuild`, an 18th** found this pass:
+a real `als.gravtech` `ResearchProjectDef`, live prereq of both `AdvShipParts`
+and `GravForge`, that both the original 17-defName census in this item AND
+`research_manifest_draft.csv` missed entirely (no manifest row exists for it).
+Left unported it would have silently broken the exact prereq chain this item
+exists to protect — ported on the same reasoning as its siblings, not an
+owner-decision call.
+
+Cost/tab values verified **line-by-line against what
+`RUT_ResearchRetag.xml`/`RUT_ResearchTabAssign.xml` actually apply live today**
+(not assumed from the manifest — the manifest is a draft recommendation, not
+proof of applied state). Two rows (`AdvShipParts`, `GravBionics`) have a
+manifest-recommended prereq that is NOT actually live anywhere (checked: no
+patch in this repo or in `vanillaexpanded.gravship` applies it) — ported with
+their LIVE/donor-raw prereqs instead, so this port is a pure retirement with
+zero tree-shape change; re-anchoring those two, if wanted, is a separate call.
+
+**GravForge's building ported too** (the flagship "supporting def" example
+the ruling named):
+`src/RimUtinni/ResearchRetag/Defs/ThingDefs_Buildings/RUT_Ported_GravForge.xml`
+— the `GravForge` `ThingDef`, its 6 recipes, and the 3 items its recipes/
+killedLeavings uniquely need (`Gravitonium`, `ChunkSlagPlasteel_GT`,
+`UnfinishedGravcore`), plus 5 textures. `Gravcore`/`GravlitePanel`/
+`UnfinishedComponent` were NOT ported — confirmed vanilla (Odyssey DLC / Core),
+not donor content.
+
+**NOT ported this pass, explicitly scoped out** (named in both files' header
+comments — not silently dropped, not silently invented): `GravWeapon`'s 4
+personal weapons (`GravCannon_GT`/`GravBlaster_GT`/`GravgunRifle_GT`/
+`GravHammer_GT` + `Apparel_GravPack_GT`/`Apparel_GravBelts_GT`),
+`GravBionics`' implants (`GravBionic_GT.xml`), the 7 `AdvShip_*` ship-part
+buildings, and `als.gravtech.bc`'s 9 big-cannon buildings
+(`GravBlasterArtillery`/`GravliteDefenseTurret`/`GravRailArtillery`/
+`GravResearch`/`Heatsink`/`Maintenance`/`OxygenNet`/`Power`/
+`TheSingularityCannon`, all `_GTbc` suffixed). Those 6 research nodes
+(`GravWeapon`/`GravTuning`/`GravBionics`/`AdvShipParts`/`BlackHole_GT`/
+`GTbc_BigCannons`) are correctly costed/tabbed/prereq'd and researchable
+today, but currently unlock no content of their own — full production-chain
+porting is an order of magnitude bigger than this retirement (new item
+economy, balance, new art with no rights-checked source) and deserves its own
+scoped item with owner visibility, not scope-creep buried in a retirement
+task. `GravWeapon`/`GravBionics`' Rust Cathedral boon-gate MECHANISM
+(`TECHPRINT_FACTION_GATING_1`, still undecided) is unchanged — both ported
+mechanically ungated, matching current live behaviour exactly.
+
+**Donors retired**: `petetimessix.researchreinvented.steppingstones`,
+`als.gravtech`, `als.gravtech.bc` removed from `ModsConfig.xml` (live,
+backed up to
+`ModsConfig.PRESWAP.20260918_204447_pre_research_trio_retirement.xml`,
+gitignored churn) and `ModsConfig.FULL.LATEST.xml` (636 → 632 active). Also
+retired `halituisamaricanous.gravtechbigcannons` — a hard `modDependencies`
+dependent of `als.gravtech.bc` with zero own content per
+`stat_normalization_audit_2026-09-09.md` §2D, a real finding from this item's
+own original dependency sweep that was never acted on; leaving it active
+would have broken its hard dependency at the next load. All 4 recorded in
+`infrastructure/state/facts/retired_mods.json`.
+
+`RRElectricityBasicsSelfPrereq_Fix.xml` deleted — dead the moment
+`RR_ElectricityBasics` ships with no `prerequisites` element at all (the
+ported def does), which removes the `QUICKTEST_POSTSETUP_CRASH_1` self-loop
+at the source instead of patching around it. Stale `forceLoadAfter`/
+`loadAfter` entries for the 3 donors cleaned from `MandrakePatches`/
+`ResearchRetag` `About.xml`. Left Armoury's `loadAfter` alone —
+`Turrets_Renames.xml`/`Turrets_DamageDoctrine.xml` still carry live
+`PatchOperationFindMod("GravTech"/"GravTech - Big cannons")` guards that
+become harmless no-ops, same pattern as every other retired-donor compat
+guard already in this repo.
+
+**Deployed**: `deploy_custom_mods.py --apply` (ResearchRetag: 8 files;
+MandrakePatches `--prune`: 2 files, deletes the deployed copy of the fix file
+too). `validate_patch.py --defs` (Data+Mods+Workshop, 632/632 mods found on
+disk): 0 errors, 5 advisory warnings on the 2 new files (vanilla asset-bundle
+texPaths copied verbatim from the donor — `Things/Mote/Black`, 3×
+`LensFlares/*`, `Things/Item/Chunk/ChunkSlag` — the tool's own documentation
+names this exact class as expected, not a defect).
+
+**Recost/collision reconciliation: NOT completable offline.**
+`research_manifest_validate.py --inventory` correctly REFUSES right now
+(dump modCount 635 vs. 632 live active mods — exactly the 3-mod delta this
+retirement just created). That is the tool working as designed, not a bug.
+OWED, after the next natural restart: re-run `--inventory` and confirm (a)
+zero orphan/dead-prereq FAILs on the 18 ported defNames, (b) the original
+escalation's "112 collision rows" figure is gone now that steppingstones' own
+patch pass no longer runs, (c) a fresh def dump crossref/harvest shows zero
+references to the 3+1 retired packageIds, (d) the 18 ported defNames appear
+correctly in the dump with the right cost/tab/prereqs. Left `doing`, not
+closed — the retirement itself is real and verified structurally
+(`validate_patch.py`, deploy sync, `ModsConfig.xml` edit all confirmed), but
+full closure per this item's own `## verify` criteria needs that live-game
+re-check.
+
 ## done
-Not started — escalated, per this item's own "escalate if the 112 rows can't
-be resolved without inventing a research-tree placement decision" clause.
+Not fully — see the EXECUTED section above for what's done vs. owed.
