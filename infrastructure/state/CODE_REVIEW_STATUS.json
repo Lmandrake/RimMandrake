@@ -972,10 +972,10 @@
     "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "4d73d92b35135968fbe87a99d26e8781464562324880ebd245990abe2671ac2c",
-    "sha": "20ce46f24"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "abe5d4d77b19567f757cea33cbe60d7cc45d97c16854acc3e8ebb38beb01cfee",
+    "sha": "1b8dabec8"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_VerminPopulation.cs": {
     "cleanCount": 1,
@@ -5818,10 +5818,10 @@
     "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/modset_builder.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "4d1c7062bc79a7803392f241d3612778321574b27eb00bc26970f13aa16a664f",
-    "sha": "66fbc9bbc"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "688e169f33a3b39ef33394564a00d318e5e545e2ad34724811e37063f4301c86",
+    "sha": "1b8dabec8"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 4,
