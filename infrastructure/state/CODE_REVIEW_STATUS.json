@@ -222,10 +222,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/mods/biome_flora.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "1d2243ce4d1d788d65d4e8113d699aff30c8892b545ac3af76c63a5d59f6e5dd",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "69d3d09eeab4832700031796d664cddbdd08ea295c89193ef3fb259a51bbe596",
+    "sha": "2247c176e"
   },
   "design/Jawa/mods/gen_fish_types.py": {
     "cleanCount": 1,
