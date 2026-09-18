@@ -658,7 +658,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -718,7 +718,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -778,7 +778,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -838,7 +838,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -898,7 +898,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -958,7 +958,7 @@
               <value>
                 <li>
                   <label>the implant's displeasure</label>
-                  <description>There's an archotech piece grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
+                  <description>There's a piece of Rakatan work grafted into me, and lately it feels like it's unhappy with something I've done. I can't tell what, and that's the worst part.</description>
                 </li>
               </value>
             </match>
@@ -112114,34 +112114,34 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]</xpath>
+          <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]/label</xpath>
                   <value>
                     <label>too much, too intense</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]</xpath>
                   <value>
                     <label>too much, too intense</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]/description</xpath>
                   <value>
                     <description>That was a lot more than I wanted. Left me wishing I'd said no.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualNegative"]/stages/li[2]</xpath>
                   <value>
                     <description>That was a lot more than I wanted. Left me wishing I'd said no.</description>
                   </value>
@@ -112174,34 +112174,34 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]</xpath>
+          <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]/label</xpath>
                   <value>
                     <label>more than expected</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]</xpath>
                   <value>
                     <label>more than expected</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]/description</xpath>
                   <value>
                     <description>More intense than I'm used to, but it worked out fine. Surprised myself there.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="LovinAsexualPositive"]/stages/li[2]</xpath>
                   <value>
                     <description>More intense than I'm used to, but it worked out fine. Surprised myself there.</description>
                   </value>
