@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_WARM_MAT_1 — the Rot kit's M3 "grown furnace" loop, the sheet's
+    lean-in: a cultivable mushroom that is palpably a heater.
+
+      RUT_FurnaceCap (sowable plant)  ->  RUT_LivingFurnaceCap (item)
+                                      ->  RUT_GrownFurnace (building, no fuel,
+                                          no power, dies at ~15 days)
+
+    Ban 4 compliant by construction: the furnace is a live preparation you
+    cultivate, not a stockpilable machine — CompLifespan on the building is
+    what enforces that, not discipline.
+
+    ART OWED: texPath here is a PLACEHOLDER pointing at RotSporeKit's own
+    crimson cap art (RUT_CrimsonCap uses the same folder). No new art was
+    authored for this ticket by instruction.
+  -->
+
+  <ThingDef ParentName="RUT_CaveBushBase">
+    <defName>RUT_FurnaceCap</defName>
+    <label>furnace cap</label>
+    <description>A squat, thick-walled mushroom that runs its metabolism hot enough to steam in cold air. Cut one open and the flesh is body-warm right through. Harvested whole and kept alive, its caps will heat a room for a couple of weeks before the tissue finally gives out.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.15</Nutrition>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-45</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-45</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilityMin>0.9</fertilityMin>
+      <growDays>9</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>320</harvestWork>
+      <harvestYield>6</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.1</harvestAfterGrowth>
+      <harvestedThingDef>RUT_LivingFurnaceCap</harvestedThingDef>
+      <sowMinSkill>6</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+        <li>RUT_Fungiponics</li>
+      </sowTags>
+      <sowResearchPrerequisites>
+        <li>RUT_AdvancedFungi</li>
+      </sowResearchPrerequisites>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <purpose>Misc</purpose>
+      <pollution>Any</pollution>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+</Defs>

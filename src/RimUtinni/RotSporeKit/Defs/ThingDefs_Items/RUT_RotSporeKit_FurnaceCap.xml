@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_WARM_MAT_1 — M3's grown-furnace loop, item half. Harvested from
+    RUT_FurnaceCap (Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml) and
+    spent building RUT_GrownFurnace
+    (Defs/ThingDefs_Buildings/RUT_RotSporeKit_GrownFurnace.xml).
+
+    It rots: this is living tissue, and a warehouse of them is not the
+    intended play (ban 4's spirit — the furnace is a preparation, not a
+    machine). The full live-prep comp pair (CompTemperatureRuinable +
+    CompLifespan) belongs to the teas and symbionts of
+    ROT_LIVE_PREPARATIONS_1, not here — a cap survives a cellar, it just
+    doesn't survive a season.
+
+    ART OWED: texPath is a PLACEHOLDER reusing RotSporeKit's mortal-morel
+    item art.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LivingFurnaceCap</defName>
+    <label>living furnace cap</label>
+    <description>A furnace cap taken whole and still alive, warm to hold and slightly damp. Packed into a frame it will keep burning its own tissue for heat until there is nothing left of it.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Crops/MortalMorel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <allowedArchonexusCount>50</allowedArchonexusCount>
+  </ThingDef>
+
+</Defs>
