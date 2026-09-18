@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T17:27:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T17:29:35Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -981,6 +981,15 @@ kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
+## GIZKA_NEWGAME_NRE_FIX_1 Fix gizkastowaway's new Game() reading-policy NRE so it can be re-activated
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     investigate
+summary:  (no items/GIZKA_NEWGAME_NRE_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIZKA_NEWGAME_NRE_FIX_1.md
+
 ## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
 state:    doing
 row:      unassigned
@@ -1714,16 +1723,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_ART_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
-
-## GIZKA_NEWGAME_NRE_FIX_1 Fix gizkastowaway's new Game() reading-policy NRE so it can be re-activated
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     investigate
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GIZKA_NEWGAME_NRE_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GIZKA_NEWGAME_NRE_FIX_1.md
 
 ## VALIDATE_PATCH_FULL_TREE_SWEEP_1 First-ever full validate_patch.py sweep of UtinniPatches+SWBestiary surfaces 37 errors/2193 warnings across 408 files, never triaged
 state:    proposed
