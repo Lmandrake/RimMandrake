@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:06:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T01:13:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -159,16 +159,6 @@ kind:     task
 blocked:  Runs AFTER the art/normalization wave (owner's framing); wave 8 live now. Item un-thinned with spec/verify/criteria 2026-09-12.
 summary:  the ask
 prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
-
-## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  game just cycled DOWN->LOADING (owner broadcast) and bridge held by BENCH (WORLDMAP_FINAL_REVIEW_1, non-stale) -- wait for game UP + bridge free, do not deploy a new mod while the game is mid-load
-summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
-prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
 ## PLAYER_START_SITE_1 The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (Zeddo's Yard on the Fall Line vs Gorga's shadow by the Cathedral); owner picks, then build + pin scenario start (2026-09-08)
 state:    proposed  (BLOCKED)
