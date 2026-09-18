@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUT_Ported_ResearchTrio.xml - RESEARCH_TRIO_RETIRE_1 (owner card 2026-09-18,
+     "port all 17, then cut" - supersedes an earlier same-day "port the 4 ruled"
+     card). These 18 ResearchProjectDefs are the ONLY place these defNames now
+     exist, replacing petetimessix.researchreinvented.steppingstones (10 rows)
+     and als.gravtech + als.gravtech.bc (7 + 1 = 8 rows: 7 named by the escalation
+     plus GravEngineBuild, a genuine gap in both the original escalation's
+     17-defName table and research_manifest_draft.csv - it has no manifest row
+     at all, yet is a real als.gravtech ResearchProjectDef and a live prereq of
+     both AdvShipParts and GravForge below. Left unported it would have silently
+     broken the same prereq chain this whole item exists to protect, so it is
+     ported here as an 18th row on the same reasoning as its siblings).
+
+     SAME DEFNAMES ON PURPOSE - the Absorbed_KotorCore/Absorbed_AdditionalMods
+     precedent (WEAPONS_DONOR_RETIREMENT_1): every external cross-reference
+     (our own RUT_ResearchRetag.xml / RUT_ResearchTabAssign.xml, any other
+     active mod's researchPrerequisites) keeps resolving with ZERO repointing,
+     because RimPatch applies against the merged Defs database regardless of
+     which mod authored the base def. This IS the PORT TRAP the owner's ruling
+     named: these files must stay held (DEPLOY_HOLD.txt) until the three donor
+     packageIds are OUT of ModsConfig.xml, then deployed in the same change -
+     deploying same-defName content while the donor is still active produces a
+     silent duplicate-defName collision (RimWorld keeps only the first loaded).
+
+     VALUES: cost/tab per infrastructure/output/research_manifest_draft.csv
+     (2026-09-04, RESEARCH_RECOST_PREREQ_JOIN_1) wherever the manifest's number
+     is what src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml and
+     RUT_ResearchTabAssign.xml ACTUALLY apply live today (verified line-by-line
+     against both patch files before writing this file) - baseCost 5200 flat
+     for the 8-row GravTech/BigCannons cluster, tab per RUT_ResearchTabAssign's
+     existing per-defName entries. Everything else (techLevel, requiredResearch
+     Building/Facilities, tags, techprint/heldByFactionCategoryTags, generalRules,
+     discoveredLetter text) copied from the donors' own shipped XML (workshop
+     2868389782 v1.6/Defs/ResearchProjectDefs_{Basic,Electricity}.xml;
+     workshop 3545374124 1.6/Defs/Research_GT.xml; workshop 3628174105
+     1.6/Defs/Research_GTbc.xml), read directly off disk this session, never
+     from memory.
+
+     PREREQS: two rows (AdvShipParts, GravBionics) have a manifest-recommended
+     prereq that DIFFERS from what is actually live - checked, no patch in this
+     repo or in vanillaexpanded.gravship (the only other mod with any plausible
+     reason to touch them) applies the manifest's proposal. Ported here with the
+     LIVE prereqs (AdvShipParts: ShipComputerCore+GravEngineBuild, donor raw;
+     GravBionics: GravTuning+Bionics, donor raw) rather than the manifest's
+     unapplied GravTuning-only / GravForge-only recommendation, so this port is
+     a pure retirement (zero tree-shape change) and does not silently execute a
+     reshaping decision nobody has actually ruled on. Re-tabling those two
+     rows' prereqs, if wanted, is a separate call for the owner.
+
+     The 5 Jawa Scavenging rows (RR_BasicApparel/BasicCraftingFacilities/
+     BasicFoodPrep/IncendiaryWeapons) carry VFET_* prereqs, not steppingstones'
+     own RR_Organization/RR_Fire/RR_BasicFurniture/RR_BasicRangedWeapons - that
+     remap is fully live today via the donor's OWN submod-compat patch
+     (ModSpecific/v1.6/VFE_Tribals/Patches/Patches_ResearchProjectDefs_RR_to_VFET.xml,
+     a custom RR.PatchOperationResearchPrereg class inside the donor's own
+     assembly, firing because OskarPotocki.VFE.Tribals is active). That patch
+     dies with the donor, so its resolved output is baked directly into these
+     native defs instead of re-implemented as a patch - equivalent end state,
+     no assembly dependency.
+
+     RR_ElectricityBasics ships with NO prerequisites element, on purpose - the
+     QUICKTEST_POSTSETUP_CRASH_1 self-loop
+     (src/RimMandrake/MandrakePatches/Patches/RRElectricityBasicsSelfPrereq_Fix.xml)
+     can only exist if this def carries a prerequisites list a later patch can
+     corrupt; omitting it here removes the bug at the source, and per this
+     item's own execution spec that now-redundant fix file is deleted in the
+     same change (nothing MayRequires the donor's packageId now that the donor
+     is gone; it would only ever have been a no-op FindMod).
+
+     GravWeapon and GravBionics: owner rulings 2026-09-01/09-04 name both as
+     Rust Cathedral boon-gated (RustCathedralDroids), NOT plain purchasable
+     techprints - but the actual gating MECHANISM (bespoke grant vs.
+     heldByFactionCategoryTags vs. something else) is explicitly undecided,
+     tracked separately as TECHPRINT_FACTION_GATING_1. Both rows are ported
+     here MECHANICALLY IDENTICAL to their current live state (ungated, no
+     techprint fields - matching the donor's own shipped XML, which also
+     carries none for either row) so this port changes nothing about how they
+     unlock today; only a comment flags the deferred ruling for whoever builds
+     TECHPRINT_FACTION_GATING_1.
+-->
+<Defs>
+
+  <!-- ================= Jawa Scavenging (steppingstones, 5 rows w/ VFET prereqs) ================= -->
+
+  <ResearchProjectDef>
+    <defName>RR_LateralThinking</defName>
+    <label>lateral thinking</label>
+    <description>Consideration and allowances for a more lateral approach.\n(This is a prerequisite to any orphan research tech, including modded ones.)</description>
+    <baseCost>1</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <researchViewX>-2.00</researchViewX>
+    <researchViewY>5.50</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_Organization</defName>
+    <label>organization</label>
+    <description>Fundamentals of organization.</description>
+    <baseCost>1</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>TribalStart</li>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>-2.00</researchViewX>
+    <researchViewY>3.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_BasicApparel</defName>
+    <label>simple apparel</label>
+    <description>Crafting of simple apparel.</description>
+    <baseCost>25</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>TribalStart</li>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>2.50</researchViewY>
+    <prerequisites>
+      <li>VFET_Tribalwear</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->simple apparel</li>
+        <li>subject->clothing</li>
+        <li>subject_story->learned to craft simple garments from furs on a feral world</li>
+        <li>subject_story->was responsible for disposal of tribal raiders clothes on a remote rimworld</li>
+        <li>subject_story->woke up naked inside a drop pod after what was supposed to be a minor surgery</li>
+        <li>subject_gerund->crafting simple clothes</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_BasicCraftingFacilities</defName>
+    <label>crafting facilities</label>
+    <description>Basic crafting facilities.</description>
+    <baseCost>50</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>TribalStart</li>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>4.00</researchViewY>
+    <prerequisites>
+      <li>VFET_Furniture</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->crafting facilities</li>
+        <li>subject_story->catalogued the abstract properties shared by workbenches, laboratories, and factories alike</li>
+        <li>subject_story->whittled small toys from wood for their tribe's children</li>
+        <li>subject_story->led a tribe of warriors to victory, wielding only fire-sharpened spears</li>
+        <li>subject_gerund->building crafting facilities</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_BasicFoodPrep</defName>
+    <label>food preparation</label>
+    <description>Preparation of food.</description>
+    <baseCost>25</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>TribalStart</li>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>2.00</researchViewY>
+    <prerequisites>
+      <li>VFET_Fire</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->food preparation</li>
+        <li>subject_story->once spent an entire year vomiting because of an incompetent cook</li>
+        <li>subject_story->collected simple, uncomplicated recipes for a cookbook</li>
+        <li>subject_story->learned to create variety from limited ingredients in college</li>
+        <li>subject_gerund->preparing food</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_IncendiaryWeapons</defName>
+    <label>incendiary weapons</label>
+    <description>Crafting of incendiary weaponry.</description>
+    <baseCost>200</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>TribalStart</li>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>3.50</researchViewY>
+    <prerequisites>
+      <li>VFET_Fire</li>
+      <li>VFET_Bow</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->incendiary weapons</li>
+        <li>subject->flaming weapons</li>
+        <li>subject_story->threw burning bundles of sticks</li>
+        <li>subject_story->set a forest on fire</li>
+        <li>subject_story->operated a furnace for ten years</li>
+        <li>subject_gerund->crafting incendiary weapons</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <!-- ================= The Workshop / The Strange Schools (steppingstones, electricity family) ================= -->
+
+  <ResearchProjectDef>
+    <defName>RR_ElectricityBasics</defName>
+    <label>electricity</label>
+    <description>Harness the power of electricity.</description>
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Workshop</tab>
+    <tags>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>3.00</researchViewY>
+    <!-- prerequisites deliberately omitted - see file header (QUICKTEST_POSTSETUP_CRASH_1) -->
+    <discoveredLetterTitle>About: Electricity</discoveredLetterTitle>
+    <discoveredLetterText>Your colony has harnessed the power which outsiders call "electricity". It has the potential to transform every aspect of your people's way of life.\n\nYou have now unlocked the Power tab in the Architect menu from which you may build electric generators, power conduits, and other mechanisms to control this new force. The Power tab also displays the electric grid which connects electric generators and appliances.</discoveredLetterText>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->electricity</li>
+        <li>subject_story->was struck by lighting and became determined to harness it</li>
+        <li>subject_story->created the first lightbulb on a medieval world</li>
+        <li>subject_story->was executed on a feudal world for the blasphemy of creating light</li>
+        <li>subject_gerund->harnessing electricity</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_HeatingElements</defName>
+    <label>heating elements</label>
+    <description>Learn how to effectively use the power of electricity to generate heat.</description>
+    <baseCost>300</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Scavenging</tab>
+    <tags>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>1.00</researchViewY>
+    <prerequisites>
+      <li>RR_ElectricityBasics</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->heaters</li>
+        <li>subject->heating elements</li>
+        <li>subject_story->nearly died of frostbite during the winter</li>
+        <li>subject_story->got burned while replacing an old lightbulb</li>
+        <li>subject_story->decided a safer method of heating was needed after causing a forest fire</li>
+        <li>subject_gerund->building heaters</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_PowerGenerators</defName>
+    <label>dynamos</label>
+    <description>Build electricity generators based on the simple principle of converting motive power into electrical power.</description>
+    <baseCost>300</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Workshop</tab>
+    <tags>
+      <li>ClassicStart</li>
+    </tags>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>1.50</researchViewY>
+    <prerequisites>
+      <li>RR_ElectricityBasics</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->dynamos</li>
+        <li>subject->generators</li>
+        <li>subject_story->noticed that motors generated power when spun by hand</li>
+        <li>subject_story->experimented with arrangements of coils and magnets</li>
+        <li>subject_story->understood the relation between magnetism and electricity</li>
+        <li>subject_gerund->generating electricity</li>
+        <li>subject_gerund->building generators</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RR_EMP</defName>
+    <label>EMP weapons</label>
+    <description>Build weaponry that exploits electromagnetic pulses to stun mechanical enemies.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_StrangeSchools</tab>
+    <researchViewX>10.00</researchViewX>
+    <researchViewY>4.50</researchViewY>
+    <prerequisites>
+      <li>Machining</li>
+    </prerequisites>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->EMPs</li>
+        <li>subject->elecromagnetic pulses</li>
+        <li>subject_story->accidentally caused a city block-wide blackout</li>
+        <li>subject_story->experimented with arrangements of coils and magnets</li>
+        <li>subject_story->raided mechanoid hives through clever use of stun grenades</li>
+        <li>subject_gerund->generating electrical pulses</li>
+        <li>subject_gerund->producing pulses</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+  <!-- ================= The Utinni / The Reach / The Strange Schools (als.gravtech + als.gravtech.bc) ================= -->
+
+  <ResearchProjectDef>
+    <defName>GravEngineBuild</defName>
+    <label>grav engine technologies</label>
+    <description>Allows build grav engine and opens the way to improvement of gravship systems.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>AdvancedGravtech</li>
+      <li>ShipBasics</li>
+    </prerequisites>
+    <researchViewX>20.00</researchViewX>
+    <researchViewY>3.70</researchViewY>
+    <techprintCount>1</techprintCount>
+    <techprintCommonality>2</techprintCommonality>
+    <techprintMarketValue>3000</techprintMarketValue>
+    <heldByFactionCategoryTags>
+      <li>Empire</li>
+      <li>TradersGuild</li>
+    </heldByFactionCategoryTags>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>GravForge</defName>
+    <label>grav forge</label>
+    <description>Allows build Grav Forge, ultratech machine for production of Gravcores and other Gravship components.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>AdvancedGravtech</li>
+      <li>AdvancedFabrication</li>
+    </prerequisites>
+    <researchViewX>20.00</researchViewX>
+    <researchViewY>4.50</researchViewY>
+    <techprintCount>1</techprintCount>
+    <techprintCommonality>2</techprintCommonality>
+    <techprintMarketValue>2000</techprintMarketValue>
+    <heldByFactionCategoryTags>
+      <li>Empire</li>
+      <li>TradersGuild</li>
+    </heldByFactionCategoryTags>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>GravTuning</defName>
+    <label>precise grav tuning</label>
+    <description>Opens up the possibility to create empty AI cores and special prosthetics from Gravcores.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>GravForge</li>
+    </prerequisites>
+    <researchViewX>20.00</researchViewX>
+    <researchViewY>5.50</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>AdvShipParts</defName>
+    <label>advanced ship parts</label>
+    <description>Allows build Cerebrex computer core.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>ShipComputerCore</li>
+      <li>GravEngineBuild</li>
+    </prerequisites>
+    <researchViewX>22.00</researchViewX>
+    <researchViewY>3.70</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>GravBionics</defName>
+    <label>grav bionics</label>
+    <description>Build advanced bionics from Gravcores. Each implant has its own powerful features.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Reach</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>GravTuning</li>
+      <li>Bionics</li>
+    </prerequisites>
+    <researchViewX>22.00</researchViewX>
+    <researchViewY>5.50</researchViewY>
+    <!-- faction-gate (Rust Cathedral boon) MECHANISM undecided, TECHPRINT_FACTION_GATING_1;
+         ungated here on purpose, matching current live behaviour. -->
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>BlackHole_GT</defName>
+    <label>taming a Black Hole</label>
+    <description>Discover the secrets of creating and using black holes.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>GravTuning</li>
+      <li>ShipReactor</li>
+    </prerequisites>
+    <researchViewX>22.00</researchViewX>
+    <researchViewY>4.60</researchViewY>
+    <techprintCount>3</techprintCount>
+    <techprintCommonality>2</techprintCommonality>
+    <techprintMarketValue>3000</techprintMarketValue>
+    <heldByFactionCategoryTags>
+      <li>Empire</li>
+      <li>TradersGuild</li>
+    </heldByFactionCategoryTags>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>GravWeapon</defName>
+    <label>grav weapon</label>
+    <description>Create weapons with Gravcores.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_StrangeSchools</tab>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <prerequisites>
+      <li>GravForge</li>
+      <li>ChargedShot</li>
+    </prerequisites>
+    <researchViewX>20.00</researchViewX>
+    <researchViewY>5</researchViewY>
+    <!-- faction-gate (Rust Cathedral boon) MECHANISM undecided, TECHPRINT_FACTION_GATING_1;
+         ungated here on purpose, matching current live behaviour. -->
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>GTbc_BigCannons</defName>
+    <label>big cannons</label>
+    <description>Opens up possibility of building heavy gravship cannons that use gravcores.</description>
+    <baseCost>5200</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Tree_Utinni</tab>
+    <prerequisites>
+      <li>GravWeapon</li>
+    </prerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>4.90</researchViewY>
+    <techprintCount>1</techprintCount>
+    <techprintCommonality>2</techprintCommonality>
+    <techprintMarketValue>3000</techprintMarketValue>
+    <heldByFactionCategoryTags>
+      <li>Empire</li>
+      <li>TradersGuild</li>
+    </heldByFactionCategoryTags>
+    <modExtensions>
+      <li Class="VanillaGravshipExpanded.GravtechResearchExtension" />
+    </modExtensions>
+  </ResearchProjectDef>
+
+</Defs>
