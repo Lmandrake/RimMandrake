@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Grank creature port (Pass 12).
+  Ported from mlie.starwarsanimalcollection's `Grank` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's `<race><body>` for Grank points at `CorellianHound`
+  (species defName differs from its body's own defName, confirmed by
+  reading the donor's ThingDef directly, not assumed) — entirely
+  vanilla-part composition, ported as RSW_CorellianHound with a defName
+  rename only, no new body part needed (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef` stays vanilla Core `Leather_Plain` — no port needed.
+  `specificMeatDef` repoints to the already-ported RSW_Reptomammal_Meat
+  (RSW_MlieWaveB_Resources.xml). No egg comp (not an egg layer). No
+  `canCrossBreedWith` in the donor.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `GrankArtOverride` (mandrake.rsw.grankartoverride) exists and covers
+  `Grank_{east,north,south}` (the primary look, all 3 life stages — the
+  override's own About.xml says the dessicated-corpse texture stays on
+  donor art). Per the Dragonsnake/Anooba same-path-collision trap
+  (2026-09-12 finding), SWBestiary ships ONLY `Grank_Dessicated` — the base
+  facing is NOT extracted here.
+
+  Art: 1 PNG extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) — Grank_Dessicated,
+  confirmed non-zero and PIL-openable. Sits at Textures/swanimals/Grank/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Grank</defName>
+    <label>Grank</label>
+    <description>The Grank (or 'saw-toothed grank') were a medium-sized carnivore believed to have originated on the planet Naboo. They were a species of predatory scavengers with sharp teeth and powerful jaws. Despite their fearsome gnarled appearance they were very affectionate when domesticated. This made them popular pets and lead to them establishing wild populations on multiple worlds as a result.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_CorellianHound</body>
+      <baseBodySize>0.85</baseBodySize>
+      <predator>true</predator>
+      <maxPreyBodySize>2.3</maxPreyBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <petness>0.1</petness>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <trainability>Advanced</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>12</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.2</AridShrubland>
+        <Desert>0.1</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.1</BorealForest>
+        <Tundra>0.1</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Grank_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Grank_Death</soundDeath>
+          <soundCall>RSW_Pawn_Grank_Call</soundCall>
+          <soundAngry>RSW_Pawn_Grank_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Grank</defName>
+    <label>grank</label>
+    <race>RSW_Grank</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>grank pup</label>
+        <labelPlural>grank pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Grank/Grank</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Grank/Grank_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Grank/Grank</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Grank/Grank_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Grank/Grank</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Grank/Grank_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -18,6 +18,18 @@
   CompProperties_AbilityAnimalRoar/_AbilityEffecterOnCaster/
   _AbilityFleckOnTarget/_AbilityGiveHediff/_AbilityRequiresTrainable comp
   classes are Core/Odyssey vanilla — nothing here still points at the donor.
+
+  Pass 12 addition (GreaterKraytDragon, 2026-09-18): `SW_Calamity`, another
+  AbilityDef + HediffDef + TrainableDef trio sharing one defName in the
+  donor (same file), renamed RSW_SW_Calamity throughout. Referenced
+  directly off RSW_GreaterKraytDragon's PawnKindDef `<abilities>` (not just
+  `specialTrainables`, unlike every other Wave C ability so far) - kept the
+  same wiring. soundCast repoints to RSW_Ability_Calamity (already absorbed
+  in the 589-sound wave, 2026-09-02). The HediffDef (`SW_BeastRoar` in the
+  donor, renamed RSW_SW_BeastRoar) has no RecoveryThought, unlike
+  SootheSong - a plain capacity-debuff hediff, ported verbatim. effecterDef
+  (WarTrumpet), stateDef (Terror), and every comp class are Core/Odyssey
+  vanilla - nothing here still points at the donor.
 -->
 <Defs>
 <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
@@ -105,4 +117,111 @@
     <steps>2</steps>
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_SootheSong</enablesAbility>
+  </TrainableDef>
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Calamity</defName>
+    <label>calamity</label>
+    <description>Release a powerful roar which has a chance to cause hostile humans and animals to tremble in fear, reducing their movement speed and manipulation; usually resulting in calamity on the battlefield.</description>
+    <iconPath>UI/Abilities/Ability_AnimalCalamity</iconPath>
+    <cooldownTicksRange>7500</cooldownTicksRange>
+    <!-- 3 hours -->
+    <stunTargetWhileCasting>True</stunTargetWhileCasting>
+    <targetRequired>false</targetRequired>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_EffectRadius>23.9</Ability_EffectRadius>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>23.9</range>
+      <warmupTime>0.5</warmupTime>
+      <requireLineOfSight>false</requireLineOfSight>
+      <soundCast>RSW_Ability_Calamity</soundCast>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetEntities>False</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityEffect">
+        <compClass>CompAbilityEffect_OnlyTargetHostiles</compClass>
+      </li>
+      <li Class="CompProperties_AbilityGiveMentalState">
+        <compClass>CompAbilityEffect_GiveMentalState</compClass>
+        <stateDef>Terror</stateDef>
+      </li>
+      <li Class="CompProperties_AbilityAnimalRoar">
+        <chanceFromHearingCurve>
+          <points>
+            <li>(0.0, 0.0)</li>
+            <li>(0.8, 1.0)</li>
+          </points>
+        </chanceFromHearingCurve>
+      </li>
+      <li Class="CompProperties_AbilityEffecterOnCaster">
+        <effecterDef>WarTrumpet</effecterDef>
+        <maintainTicks>20</maintainTicks>
+        <!-- Long enough for the "2nd wave" to spawn -->
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>RSW_SW_BeastRoar</hediffDef>
+        <durationSecondsOverride>20~30</durationSecondsOverride>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_Calamity</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+<HediffDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_BeastRoar</defName>
+    <label>terrifying roar</label>
+    <hediffClass>HediffWithComps</hediffClass>
+    <description>This creature has been shaken by the powerful roar of a colossal creature.</description>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <postFactor>0.9</postFactor>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <postFactor>0.8</postFactor>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.7</postFactor>
+          </li>
+          <li>
+            <capacity>Hearing</capacity>
+            <postFactor>0.25</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Calamity</defName>
+    <label>calamity</label>
+    <description>Command the creature to emit a beastly roar to create calamity and fear in nearby enemies.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_Calamity</enablesAbility>
   </TrainableDef></Defs>

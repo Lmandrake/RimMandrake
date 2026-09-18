@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — GreaterKraytDragon creature port (Pass 12).
+  Ported from mlie.starwarsanimalcollection's `GreaterKraytDragon` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `GreaterKraytDragon` BodyDef needs its tail part
+  repointed to the ALREADY-PORTED Wave B `RSW_SW_Spikes` BodyPartDef and
+  `RSW_SWTailAttackTool` BodyPartGroupDef — every other part vanilla Core.
+  Ported as RSW_GreaterKraytDragon (RSW_MlieWaveC_Bodies.xml).
+
+  New resources: `RSW_Leather_KraytDragon` (texPath swresource/Leather_Scaled
+  — already extracted, Wave B, reused unchanged), `RSW_Krayt_Meat` (texPath
+  swresource/Meat_Krayt, newly extracted), 2 new eggs
+  (RSW_EggGreaterKraytDragonFertilized/UnFertilized, texPath
+  swresource/EggSpiked, newly extracted), and its butcher-body-part trophy
+  (RSW_KraytPearl, texPath swresource/Trophies/KraytPearl, newly extracted).
+  All in RSW_MlieWaveC_Resources.xml.
+
+  Ability: PawnKindDef `<abilities>` references `SW_Calamity` directly (not
+  via `specialTrainables` like every other Wave C ability) — an
+  AbilityDef+HediffDef+TrainableDef trio, ported as RSW_SW_Calamity
+  (RSW_MlieWaveC_Abilities.xml). soundCast repoints to the already-absorbed
+  RSW_Ability_Calamity (589-sound wave, 2026-09-02).
+
+  🔴 **Real donor bug found and fixed, not silently carried over** (same
+  category as Igitz's missing swimming texture, 2026-09-12): the donor's own
+  PawnKindDef spells the first (hatchling) lifeStage's
+  `dessicatedBodyGraphicData` texPath as
+  `swanimals/KGreaterKraytDragon/GreaterKraytDragon_Dessicated` — an extra
+  leading `K` on the folder segment that exists nowhere else (the other 2
+  lifeStages, and every other texPath on this species, correctly use
+  `swanimals/GreaterKraytDragon/...`). Confirmed via extract_bundle.py's
+  list mode: no `KGreaterKraytDragon*` texture exists anywhere in the
+  AssetBundle, only `GreaterKraytDragon_Dessicated`. This is a donor typo —
+  the donor mod itself would render the hatchling's dessicated corpse as a
+  pink placeholder today. Fixed here by repointing to the correct
+  `swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated` path (the same
+  one the other 2 lifeStages already use), not carried over verbatim.
+
+  `canCrossBreedWith` (`KellDragon`, `KraytDragon`) is left pointing at the
+  donor's still-bare, still-unported defNames — correct while Mlie stays
+  active and those species remain installed unmodified, same pattern as
+  RSW_FeralGrazer's canCrossBreedWith (2026-09-17). Flagged here for whoever
+  ports KellDragon/KraytDragon next: rename these entries to their RSW_
+  equivalents at that point.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `GreaterKraytDragonArtOverride` (mandrake.rsw.greaterkraytdragonartoverride)
+  exists and covers `GreaterKraytDragon_{east,north,south}` (the primary
+  look, all 3 life stages — the override's own About.xml says the
+  dessicated-corpse texture stays on donor art). Per the Dragonsnake/Anooba
+  same-path-collision trap (2026-09-12 finding), SWBestiary ships ONLY
+  `GreaterKraytDragon_Dessicated` — the base facing is NOT extracted here.
+
+  Art: 1 PNG extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713) —
+  GreaterKraytDragon_Dessicated, confirmed non-zero and PIL-openable. Sits
+  at Textures/swanimals/GreaterKraytDragon/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_GreaterKraytDragon</defName>
+    <label>greater krayt dragon</label>
+    <description>The greater krayt dragon was the largest species of krayt dragon, and the apex predator of the planet Tatooine. Using its ten strong legs, it literally swam through the shifting sands. This larger subspecies is both rarer and yet it was still hunted (some say foolishly as most hunts end in disaster) for the precious pearls found in their bodies and as a right of passage for certain Tusken tribes.</description>
+    <statBases>
+      <MoveSpeed>6.0</MoveSpeed>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>7000</MarketValue>
+      <ArmorRating_Blunt>1.5</ArmorRating_Blunt>
+      <ArmorRating_Sharp>2.0</ArmorRating_Sharp>
+      <ArmorRating_Heat>3.0</ArmorRating_Heat>
+      <PainShockThreshold>0.95</PainShockThreshold>
+      <Flammability>0.0</Flammability>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>front left leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>35</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>front right leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>35</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>Tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>35</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGreaterKraytDragonUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGreaterKraytDragonFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_GreaterKraytDragon</body>
+      <predator>true</predator>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseBodySize>15.0</baseBodySize>
+      <baseHealthScale>20.0</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>1000</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <leatherDef>RSW_Leather_KraytDragon</leatherDef>
+      <specificMeatDef>RSW_Krayt_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>KellDragon</li>
+        <li>KraytDragon</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <TemperateForest>0.0</TemperateForest>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <IceSheet>0.0</IceSheet>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <Desert>0.001</Desert>
+        <ExtremeDesert>0.001</ExtremeDesert>
+      </wildBiomes>
+      <nuzzleMtbHours>360</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.75</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.5</minAge>
+          <soundWounded>RSW_Pawn_GreaterKraytDragon_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_GreaterKraytDragon_Death</soundDeath>
+          <soundCall>RSW_Pawn_GreaterKraytDragon_Call</soundCall>
+          <soundAngry>RSW_Pawn_GreaterKraytDragon_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_GreaterKraytDragon</defName>
+    <label>greater krayt dragon</label>
+    <race>RSW_GreaterKraytDragon</race>
+    <combatPower>2000</combatPower>
+    <ecoSystemWeight>0.001</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Sand</key>
+        <value>2.0</value>
+      </li>
+      <li>
+        <key>SoftSand</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>greater krayt hatchling</label>
+        <labelPlural>greater krayt hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon</texPath>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon</texPath>
+          <drawSize>10.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated</texPath>
+          <drawSize>10.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>RSW_KraytPearl</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
