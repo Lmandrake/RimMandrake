@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:36:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:39:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -908,15 +908,6 @@ target:   v1
 kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
-
-## QUICKGRASS_GROWTH_STAGES_1 Quickgrass green-gold art plus three growth-stage graphics
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/QUICKGRASS_GROWTH_STAGES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUICKGRASS_GROWTH_STAGES_1.md
 
 ## PYRELANDS_FIRE_CADENCE_1 Pyrelands fires arrive every few days as the biome clock
 state:    doing
@@ -1915,3 +1906,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
+
+## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
