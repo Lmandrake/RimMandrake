@@ -67,6 +67,39 @@
   Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
   flat-RSW_-prefixed. texPaths are UNCHANGED text.
+
+  Pass 13 (Fambaa/Horax/Kinrath, 2026-09-18): Fambaa needs a new leather
+  (`RSW_Leather_Fambaa`, texPath swresource/Leather_Scaled — already
+  extracted, Wave B, reused unchanged) — its specificMeatDef repoints to the
+  already-ported RSW_Gorg_Meat (Pass 9) — plus 2 new eggs
+  (RSW_EggFambaaFertilized/UnFertilized, texPath swresource/EggSlime, newly
+  extracted this pass; `hatcherPawn` repointed to `RSW_Fambaa`). Horax needs
+  a new leather (`RSW_Leather_Horax`, texPath swresource/Leather_Heavy,
+  newly extracted this pass) — its specificMeatDef repoints to the
+  already-ported RSW_Saurian_Meat (Wave B, Hssiss) — plus 2 new eggs
+  (RSW_EggHoraxFertilized/UnFertilized, texPath swresource/EggDapple —
+  already extracted, Wave B, reused unchanged; `hatcherPawn` repointed to
+  `RSW_Horax`) and its butcher-body-part trophy (`RSW_HoraxMaw`, texPath
+  swresource/Trophies/HoraxMaw, newly extracted this pass, `ParentName`
+  kept as the donor's own `ResourceBase`, not `ResourceVerbBase` like the
+  Pass 12 trophies — confirmed against the donor's own XML, not assumed).
+  Kinrath needs a new leather — the donor's `Leather_Insectine` (note the
+  spelling: distinct from the ALREADY-PORTED `RSW_Leather_Insectile`,
+  Pass 3/CanCell — different texPath, `swresource/Leather_Chitin` vs
+  `swresource/Leather_Insectile`, genuinely two different donor resources,
+  not a dedup target), ported as `RSW_Leather_Insectine`, texPath
+  swresource/Leather_Chitin — already extracted (Pass 3, CanCell shares the
+  same art under a different resource defName), reused unchanged. 🔴 Real
+  donor bug found and fixed, not carried over: the donor's own
+  `Leather_Insectine`'s `stuffProps/color` reads `(250,250,2000)` — a
+  4-digit blue channel, inconsistent with the same def's own `graphicData/
+  color` of `(250,250,200)` and with every other resource in this file
+  where the two colors always match exactly. Fixed to `(250,250,200)` here.
+  Kinrath's `specificMeatDef` is not set at all in the donor — it uses
+  `<race><useMeatFrom>Megaspider</useMeatFrom>` (vanilla Core), so no meat
+  resource is needed or ported. Kinrath needs 2 new eggs
+  (RSW_EggKinrathFertilized/UnFertilized, texPath swresource/EggNodule,
+  newly extracted this pass; `hatcherPawn` repointed to `RSW_Kinrath`).
 -->
 <!--
   Pass 12 (Gizka/Grank/GreaterKraytDragon/Hawkbat, 2026-09-18): Gizka needs 2
@@ -1396,5 +1429,209 @@
       <specialThoughtAsIngredient>RSW_AteHawkbatEgg</specialThoughtAsIngredient>
       <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
     </ingestible>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Fambaa</defName>
+    <label>fambaa hide</label>
+    <description>The pelt of an Fambaa. Harvested from a large, hardy animal. This thick skin protects very well.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Scaled</texPath>
+      <color>(50,75,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.6</StuffPower_Armor_Blunt>
+    </statBases>
+    <stuffProps>
+      <color>(50,75,50)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggFambaaFertilized</defName>
+    <label>fambaa egg (fert.)</label>
+    <description>A fertilized fambaa egg. If all goes well, it should hatch into a baby fambaa. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSlime</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>60.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Fambaa</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggFambaaUnFertilized</defName>
+    <label>fambaa egg (unfert.)</label>
+    <description>An unfertilized fambaa egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSlime</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,250,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>60.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Horax</defName>
+    <label>horax hide</label>
+    <description>Tanned, dried, Horax hide. Strong, durable and pricey.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Heavy</texPath>
+      <color>(0,76,156)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+      <StuffPower_Armor_Sharp>2.2</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>2.4</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(0,76,156)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggHoraxFertilized</defName>
+    <label>horax egg (fert.)</label>
+    <description>A fertilized horax egg. If all goes well, it should hatch into a baby horax. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggDapple</texPath>
+      <color>(0,75,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Horax</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggHoraxUnFertilized</defName>
+    <label>horax egg (unfert.)</label>
+    <description>An unfertilized frilled horax egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggDapple</texPath>
+      <color>(0,75,150)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="ResourceBase">
+    <defName>RSW_HoraxMaw</defName>
+    <label>horax maw</label>
+    <description>The upper maw and horn of a mighty Horax. It holds great significance in Nelvaanian culture as its presence tells of a successful Horax hunt.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/HoraxMaw</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2000</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>4.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Insectine</defName>
+    <label>insectine chitin</label>
+    <description>The shell of a insectine. It provides decent protection and insulates well against the cold.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Chitin</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(250,250,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.6</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>50</StuffPower_Insulation_Cold>
+    </statBases>
+    <stuffProps>
+      <color>(250,250,200)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKinrathFertilized</defName>
+    <label>kinrath egg (fert.)</label>
+    <description>A fertilized kinrath egg. If all goes well, it should hatch into a baby kinrath. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggNodule</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,150,100)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Kinrath</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKinrathUnFertilized</defName>
+    <label>kinrath egg (unfert.)</label>
+    <description>An unfertilized kinrath egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggNodule</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,150,100)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
   </ThingDef>
 </Defs>

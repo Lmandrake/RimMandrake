@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Fambaa creature port (Pass 13).
+  Ported from mlie.starwarsanimalcollection's `Fambaa` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  🔑 Body: Fambaa's own `<race><body>` points at the donor's `Dewback`
+  BodyDef — the SAME body plan the standalone Dewback species uses (already
+  ported as RSW_Dewback, Wave B) — confirmed by reading Fambaa's ThingDef
+  directly, not assumed from the name. Fambaa needs NO new BodyDef at all,
+  it repoints straight to the ALREADY-PORTED RSW_Dewback.
+
+  New resources: `RSW_Leather_Fambaa` (texPath swresource/Leather_Scaled —
+  already extracted, Wave B, reused unchanged) and 2 new eggs
+  (RSW_EggFambaaFertilized/UnFertilized, texPath swresource/EggSlime, newly
+  extracted). `specificMeatDef` repoints to the already-ported
+  `RSW_Gorg_Meat` (Pass 9). All in RSW_MlieWaveC_Resources.xml.
+
+  Ability: both the ThingDef's `<race><specialTrainables>` AND the
+  PawnKindDef's `<abilities>` reference `SW_Calamity` directly, same dual
+  wiring GreaterKraytDragon's copy used (Pass 12) — repointed to the
+  ALREADY-PORTED `RSW_SW_Calamity` (RSW_MlieWaveC_Abilities.xml), no new
+  ability port needed.
+
+  `modExtensions` (PathfindingFramework amphibious movement, MayRequire
+  "pathfinding.framework") copied verbatim — same pattern already used by
+  RSW_Dianoga/RSW_Falumpaset/RSW_Dragonsnake/RSW_Igitz/RSW_Nuna in this mod;
+  the game is whole without that mod, Fambaa just loses the amphibious
+  movement bonus.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `FambaaArtOverride` (mandrake.rsw.fambaaartoverride) exists and covers the
+  adult `Fambaa_{south,east,north}` facings only — its own About.xml says
+  the juvenile stage, the swimming graphic, and the dessicated-corpse
+  texture all stay on donor art. SWBestiary ships ONLY the facings NOT
+  covered: `Fambaa_Dessicated`, `Fambaa_Swimming_{south,east,north}`,
+  `Fambaa_j_{south,east,north}`, `Fambaa_j_Dessicated`,
+  `Fambaa_j_Swimming_{south,east,north}` — the adult base facing is NOT
+  extracted here. The donor's own `FambaaPack_*`/`Fambaa_jPack_*` variants
+  (pack-saddle recolors) are unreferenced by this species' own def and
+  excluded, same precedent as Falumpaset/Jamel's excluded "Pack" files.
+
+  Art: 11 PNGs extracted this pass via extract_bundle.py against the same
+  AssetBundle every prior wave used (workshop folder 3497316713,
+  Mlie_StarWarsAnimalCollection), all confirmed non-zero and PIL-openable.
+  Sits at Textures/swanimals/Fambaa/.
+
+  Sounds already absorbed in the 2026-09-02 sound wave (`RSW_Pawn_Fambaa_*`)
+  — confirmed present, wired, not re-done.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Fambaa</defName>
+    <label>fambaa</label>
+    <description>Fambaas were large herbivorous amphibians most often found in swamps. Fambaas were technically amphibians but had the scaly hide of reptiles. The creatures size and usefulness when domesticated meant they were exported to many worlds as beasts of burden.</description>
+    <statBases>
+      <MoveSpeed>4.7</MoveSpeed>
+      <MarketValue>1000</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.60</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggFambaaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggFambaaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>3~5</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Dewback</body>
+      <baseBodySize>6</baseBodySize>
+      <baseHungerRate>1.75</baseHungerRate>
+      <baseHealthScale>8.0</baseHealthScale>
+      <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
+      <petness>0.10</petness>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <trainability>Advanced</trainability>
+      <leatherDef>RSW_Leather_Fambaa</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <lifeExpectancy>40</lifeExpectancy>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+      </specialTrainables>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Fambaa_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Fambaa_Death</soundDeath>
+          <soundCall>RSW_Pawn_Fambaa_Call</soundCall>
+          <soundAngry>RSW_Pawn_Fambaa_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Fambaa</defName>
+    <label>fambaa</label>
+    <race>RSW_Fambaa</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>fambaa eft</label>
+        <labelPlural>fambaa efts</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_j</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_j_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.7, 0.6, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <drawSize>8.0</drawSize>
+          <shadowData>
+            <volume>(1, 0.8, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fambaa/Fambaa_Dessicated</texPath>
+          <drawSize>8.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
