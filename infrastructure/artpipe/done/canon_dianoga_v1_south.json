@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-18T07:25:20Z",
+  "drawsize": 3.8,
+  "facing": "south",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_dianoga_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dianoga -- a large sentient omnivorous cephalopod native to the swampy planet Vodran, most famous as the trash-compactor monster from A New Hope. A single dark reddish eyestalk (a small stalked eye) sits atop a bulbous head/body mass. Below it, a large circular mouth ringed with sharp teeth sits at the center where the limbs converge. Several long, thin, tapering tentacles radiate and hang downward from the body -- NOT four legs and a tail, no legged mammal/reptile silhouette at all. Deep maroon/purple-brown base coloring with a wrinkled, ridged skin texture. Single creature, centered, standing/braced pose with tentacles gathered beneath it, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

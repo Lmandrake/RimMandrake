@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 71.4086066930031,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 71.4086066930031,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "canon_eopie_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T00-27-14-01a0b369-8e11-79c3-b5e8-5084aa0a5167.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T00-25-25-01a0b367-e39f-7662-8f00-6a635ca86505.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 55.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "canon_eopie_v1_north",
+    "note": "Generated with built-in imagegen and saved as a 512\u00d7512 transparent PNG; north-facing rear view with no face or eyes visible.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_eopie_v1_north\\canon_eopie_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_eopie_v1_north/canon_eopie_v1_north.png\n    512x512  rgba  139,448 bytes  (69s)\n"
+}

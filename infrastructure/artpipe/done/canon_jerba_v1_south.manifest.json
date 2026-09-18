@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 91.79838370699872,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.79838370699872,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "canon_jerba_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T00-31-23-01a0b36d-5b35-7e51-8a2d-2559a2661454.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 58.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T00-29-56-01a0b36c-05fa-7803-93f0-321611388605.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 57.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "canon_jerba_v1_south",
+    "note": "Generated with built-in imagegen and downscaled to exactly 256\u00d7256. One retry was needed after a PowerShell bitmap-constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_jerba_v1_south\\canon_jerba_v1_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_jerba_v1_south/canon_jerba_v1_south.png\n    256x256  rgba  57,831 bytes  (91s)\n"
+}
