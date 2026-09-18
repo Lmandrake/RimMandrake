@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T02:59:03Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T03:11:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -220,16 +220,6 @@ blocked:  Re-scoped to the four-depth legibility question only. Spec half delive
 summary:  One question is left, and nothing else owns it: how do four depths read on
 prose:    infrastructure/state/items/PIT_TRAP_VISUAL_REDESIGN_1.md
 
-## PYRELANDS_ANIMALS_GENSTEP_1 GenStep_Animals NREs on Pyrelands mapgen (BiomeDef.CommonalityOfAnimal ArgumentNullException via Alpha Animals commonality postfix) — wild fauna genstep dies, maps generate with zero natural wildlife
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-blocked:  Matches an already-fixed, not-yet-live-confirmed bug (GR_Mantistanis dangling ref, GIDDYUP_NULLKEY_CRASH_1/90d58be79). Piggyback on GIDDYUP_NULLKEY_COLD_READING_1's cold-load reading rather than a separate live test; re-open only if the crash still fires after that reading confirms the fix live. (on GIDDYUP_NULLKEY_COLD_READING_1)
-summary:  (no items/PYRELANDS_ANIMALS_GENSTEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_ANIMALS_GENSTEP_1.md
-
 ## PYRELANDS_GRASS_SATURATION_1 Pyrelands ground cover: grass everywhere, ash where burned, no bare dirt
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -243,16 +233,6 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## PYRELANDS_FAUNA_WIRING_1 Wire ruled fauna roster into RM_FE_Pyrelands wildAnimals (AA/GR via MayRequire, RUT natives; displace core-only placeholder; 3-facing texPaths for RUT natives when sets exist)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is UP
-summary:  PYRELANDSFAUNAWIRING1 — wire ruled fauna roster into RMFEPyrelands
-prose:    infrastructure/state/items/PYRELANDS_FAUNA_WIRING_1.md
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -531,3 +511,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-17, verbatim, ruling the FireEcology shim dead: "The shim
 prose:    infrastructure/state/items/DESERT_TRIBES_FIRE_HARVEST_1.md
+
+## ENVHAZARDS_NEVER_ACTIVATED_1 mandrake.rm.environmentalhazards has NEVER been in any mod list — every MayRequire-gated mechanic riding it has silently not existed in any load
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decide
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ENVHAZARDS_NEVER_ACTIVATED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ENVHAZARDS_NEVER_ACTIVATED_1.md
