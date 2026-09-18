@@ -1,5 +1,147 @@
 # SHOKKWEAVE_SOLE_SOURCE_1 — Shokkweave economy (rename, trader strip, harvest routes)
 
+## 2026-09-18 (FOUNDRY, belt mode, subagent, fifth pass) — trader-stock proof completed by source (all 11 kinds), one gap reassessed as stale-blocker/still-open, half of the other gap found uncommitted and shipped
+
+**Bridge check**: `rimflow bridge who` → held by BENCH (`rot wave: deploy +
+restart cycle + live quicktest battery`, idle ~2 min at check time — genuinely
+live, not stale). Did not take it. The prior pass's `wakeUpIfAnyTargetClose`
+fix therefore stays exactly as it was left: deployed, unverified live (needs a
+fresh restart to re-parse defs). **Still owed, needs bridge.**
+
+**Gap 1 (11-trader-kind zero-stock proof) — no bridge tool built (unchanged),
+but now backed by a COMPLETE source-verified mechanism proof across all 11
+named kinds, not just the 5 previously reasoned about.** Pulled the freshest
+live def dump (`captures/2026-09-18T05-05-13Z`, fingerprint-matched
+packageId-for-packageId against the currently-loaded `ModsConfig.xml` at the
+time BENCH's rot wave started — 634/634 match) and grepped
+`defs/TraderKindDef.json` for `Hyperweave`: exactly **11** trader kinds hit,
+confirming the item's own long-standing "11" figure directly for the first
+time (previously only asserted, never re-derived from data this pass cycle).
+
+- **5 `StockGenerator_SingleDef`** (`AM_AncientLogisticsSystem`,
+  `guy762_BaseTraderKind_Czerka`, `guy762_TraderKind_Czerka`,
+  `guy762_BaseTraderKind_HuttGalleon`, `guy762_TraderKind_HuttGalleon`).
+  RimSage-read `StockGeneratorUtility.TryMakeForStockSingle` and
+  `TradeabilityUtility.TraderCanSell()`: `TraderCanSell()` returns
+  `tradeability == Tradeability.Buyable` (or `All`) — `Sellable` (Hyperweave's
+  current value, live-confirmed) returns **false**. `TryMakeForStockSingle`
+  hard-gates on this and returns `null` before ever making a Thing — so these
+  5 kinds mechanically CANNOT ever add Shokkweave to stock, confirming the
+  2026-09-11 pass's conclusion by source, not just by the expected config
+  errors. **New finding, not previously documented**: that same gated branch
+  also calls `Log.Error("Tried to make non-trader-sellable thing for trader
+  stock: Hyperweave")` — not just the known one-time load `ConfigErrors()`
+  line, but a **runtime** error logged every single time one of these 5
+  traders regenerates stock (every visit/restock, not just once at load).
+  Zero gameplay effect (stock is correctly always zero either way) but real,
+  ongoing log spam. **Flagged, not fixed this pass**: a clean fix means
+  removing the dead `<li>` outright via `PatchOperationRemove`, but the
+  Czerka/HuttGalleon pairs' identical values across Base/non-Base defnames
+  mean the `<li>` almost certainly lives on the *Base* def and is inherited
+  (this item's own codebase has a standing lesson that `Remove` on an
+  inheriting def's own XML matches nothing) — targeting it correctly needs
+  reading the donor mod's actual XML to find which def truly owns it, not
+  guessed from the post-merge JSON dump alone. Out of scope this pass.
+- **6 `StockGenerator_Tag`** (`Base_Empire_Standard`, `Base_Outlander_Standard`,
+  `Caravan_Outlander_Exotic`, `Orbital_Exotic` — all "Better Traders"; plus
+  `DV_Base_Keshig_Standard`, `DV_Caravan_Keshig_Exotic` — "Det's Xenotypes -
+  Keshig"). These were NEVER discussed in any prior pass — a genuinely new
+  check. RimSage-read `StockGenerator_Tag.HandlesThingDef`:
+  `return thingDef.tradeTags.Contains(tradeTag)` — Hyperweave's `tradeTags`
+  is live-confirmed `[]` (empty, from the 2026-09-11 rename patch), so this
+  returns **false** unconditionally, and `GenerateThings`' selection
+  `.Where(HandlesThingDef(d) && ...)` never reaches these defs at all. Each
+  of these 6 kinds also carries a `customCountRanges` override entry naming
+  Hyperweave (200-400 / 100-400 / 80-240 / 100-400 / 50-200 / 40-120) — these
+  are confirmed **dead configuration**: `RandomCountOf`'s count-range lookup
+  is only ever consulted for a def that already survived the `Where` filter,
+  which Hyperweave never does. No log spam on this branch (clean silent
+  exclusion, unlike the 5 above).
+- The 2 HuttGalleon kinds also carry a `StockGenerator_Category` (Textiles)
+  that independently lists Hyperweave in its own `excludedThingDefs` — a
+  donor-mod precaution, unrelated to and unaffected by our rename.
+
+**Net**: all 11 named trader kinds are now proven, by direct RimSage source
+read (never guessed) against the actual live-loaded stockGenerator
+configuration of each, to be structurally incapable of ever stocking
+Shokkweave. This is the strongest evidence gathered on this sub-item to
+date — but it is still not the spec's own originally-envisioned empirical
+N≥20-roll bridge test, because no bridge tool to force a specific
+`TraderKindDef`'s stock generation exists yet (unchanged from every prior
+pass). `needs owner`: whether this source-level proof is accepted as
+sufficient, or the `rimbridge-companion` tool-build is still wanted.
+
+**Gap 2 (border creep-web route) — its stated BLOCKER is stale; the real
+remaining gap is different from how the last pass described it, and half of
+it was already sitting unbuilt+uncommitted in this shared tree.**
+`WEBWORK_KIT_BUILD_1` and `SHOKK_RSW_MOD_1` (the two items the 4th pass
+named as this gap's blockers) are **both closed** (`rimflow show` — closed at
+`421ee05d…` and `19fbedbfb` respectively) — so "blocks on FrontCreep needing
+wiring which in turn needs SHOKK_RSW_MOD_1" is stale as a blocking reason;
+both prerequisites now exist.
+
+Found `src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveCreepWebYield.xml`
+sitting **untracked** in this shared worktree (`git status`: `??`), with a
+matching uncommitted edit to `About/About.xml` — unclaimed by any pass note
+in this file, evidently work from an earlier or concurrent session that
+never got committed. Read it in full, independently re-derived its reasoning
+from source before trusting it (per this campaign's own "read the mechanism,
+don't trust the comment" doctrine), and it holds up:
+
+- **The "yields Shokkweave" half is genuinely done and correct.** RimSage-read
+  `GenLeaving.DoLeavingsFor`: `killedLeavings` returns immediately and does
+  nothing under `DestroyMode.Vanish`/`QuestLogic` — it only ever fires under
+  `KillFinalize` (and a few resource-refund modes). Combat-destroying
+  `RUT_Webwork_Anchor`/`_Web`/`_Gutter` (their only destroy route today; no
+  harvest job exists) uses `KillFinalize`, exactly matching the
+  already-live-verified `RUT_Webwork_Nest`/`_SilkKnot` pattern. The patch
+  adds `killedLeavings` (Anchor 3 / Web 2 / Gutter 5 Shokkweave, ❓INVENTED,
+  matching the spec's "~2-5 per line-segment" range) to all three. Ran
+  `validate_patch.py` against the fresh live dump + the actual `--defs`
+  install roots: **0 errors**, all 3 xpaths match exactly 1 target each in
+  `RUT_WebworkStructures.xml`.
+- **The "spawns an emergent Shokk" half is genuinely NOT satisfiable by a
+  patch, confirmed independently via source (not just trusting the file's
+  own comment)**: `RSW_CompEmergentSpawnOnDestroy.PostDestroy`
+  (`src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs`) requires
+  `mode == DestroyMode.Vanish` and explicitly returns on anything else —
+  attaching that comp to these three Things (whose only destroy route is
+  combat `KillFinalize`) would ship a comp that can structurally never fire.
+  A genuine dedicated colonist harvest job (a `WorkGiver`/`JobDriver`/
+  `DesignationDef` trio that walks a colonist to the structure, manually
+  spawns the yield, and calls `Destroy(DestroyMode.Vanish)` instead of
+  relying on `killedLeavings`) is required for the spawn-chance half, and
+  does not exist anywhere in this codebase. **Correcting the record**:
+  `WEBWORK_KIT_BUILD_1`'s closing note called this "this item's own patch to
+  attach" — that undersold it; the yield half is a patch, the spawn half is
+  new C# (a new colonist work type), not a patch. Not attempted this pass:
+  it is a genuinely new gameplay mechanism with no live way to verify it this
+  pass (bridge held by BENCH), and this campaign's own doctrine is explicit
+  about silent ThinkTree/WorkGiver wiring failures — shipping one unverified
+  is a landmine, not progress.
+
+**Committed this pass**: the pre-existing `ShokkweaveCreepWebYield.xml` +
+`About.xml` edit (re-verified, not blindly trusted), plus this note.
+`needs owner`: whether the new colonist harvest-job build (spawn mechanism
+half) is wanted now that nothing external blocks it, or waits.
+
+**Butchery route: still never live-exercised, re-confirmed correct by
+source a second time.** RimSage-read `Pawn.ButcherProducts` →
+`Thing.ButcherProducts`: reads `def.butcherProducts` directly, vanilla-
+standard, no trap (unlike the tradeability field this item already caught
+once). `ShokkweaveButcherYield.xml` re-validated against the fresh live dump:
+0 errors, its `PatchOperationFindMod`-gated xpath resolves correctly against
+the current (minimal, 30-mod) load set exactly as expected. Never actually
+butchered a Wyyyschokk corpse and read the output — lower risk than the
+wake-up bug (plain vanilla field, not custom comp logic) but still open
+under this item's own live-proof standard. Not attempted this pass (bridge
+unavailable).
+
+**Status**: leaving `doing`, `needs owner` — real gaps remain (bridge
+reconfirmation of the wake-up fix; the trader-stock companion-tool decision;
+the emergent-Shokk harvest-job build decision; butchery live proof), none of
+them closeable offline this pass.
+
 ## 2026-09-12 (FOUNDRY, fourth pass) — web-cutting + nest raid LIVE-VERIFIED; one real bug found and fixed; item stays OPEN on two unrelated pre-existing gaps
 
 `QUICKTEST_POSTSETUP_CRASH_1`'s fix made the whole session's map-crash problem
