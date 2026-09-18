@@ -68,6 +68,11 @@
     <Compile Include="CompProperties_AquaticAmbusher.cs" />
     <Compile Include="RM_CompAquaticAmbusher.cs" />
     <Compile Include="RM_JobDriver_LungeAttack.cs" />
+    <Compile Include="RM_WoundLinkExtension.cs" />
+    <Compile Include="CompProperties_WoundLink.cs" />
+    <Compile Include="RM_CompWoundLink.cs" />
+    <Compile Include="CompProperties_KinMending.cs" />
+    <Compile Include="RM_HediffComp_KinMending.cs" />
   </ItemGroup>
 
   <ItemGroup>
