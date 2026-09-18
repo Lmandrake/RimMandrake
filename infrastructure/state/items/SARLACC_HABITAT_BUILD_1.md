@@ -9,8 +9,9 @@ first; this file only routes).
 ## spec (routes, not repeats)
 - RSW-tier mod: `mandrake.rsw.sarlacc`-family packageId, namespace
   `RimMandrake.StarWars.Sarlacc`, RSW_ defNames; Mod Settings per
-  MOD_OPTIONS_RETROFIT_1. Legacy `sw_` landmark defs stay until
-  NAMING_SCHEME_EXECUTION_1.
+  MOD_OPTIONS_RETROFIT_1. Legacy `sw_` landmark defs are owed their migration
+  as ordinary build work (`NAMING_SCHEME_EXECUTION_1` closed 2026-08-31, no
+  gate remains).
 - Stage I swimmer modeled on Anomaly's Devourer (owner's direction):
   swallow/digest kit re-themed as the press; verify the Devourer C# seams
   live before copying the pattern (never the numbers).

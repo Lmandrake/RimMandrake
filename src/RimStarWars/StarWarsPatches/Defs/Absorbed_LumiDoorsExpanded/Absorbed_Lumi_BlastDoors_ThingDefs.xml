@@ -11,8 +11,10 @@
      covers them.
 
      defNames of the 3 concrete ThingDefs preserved verbatim (buildings are
-     save-referenced by defName; do not rename ahead of
-     NAMING_SCHEME_EXECUTION_1 - see naming_rename_map.csv discipline). The
+     save-referenced by defName, so a built instance would dangle - this is a
+     save-compatibility blocker, not a naming-scheme gate; NAMING_SCHEME_EXECUTION_1
+     closed 2026-08-31 and gates nothing here - see naming_rename_map.csv
+     discipline). The
      2 abstract bases are Abstract="True" and never appear in save data, so
      they carry RSW_ names instead of Lumi's "Heron"/"SWHeron" naming.
 
