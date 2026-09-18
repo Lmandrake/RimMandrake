@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Gelagrub creature port (Pass 9).
+  Ported from mlie.starwarsanimalcollection's `Gelagrub` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Gelagrub` BodyDef needed a defName rename plus
+  repointing its 12 proleg parts (`SW_LeftFlipper`/`SW_RightFlipper`) to the
+  already-ported Wave B `RSW_SW_LeftFlipper`/`RSW_SW_RightFlipper`
+  BodyPartDefs — every other part (Shell, Stomach, InsectHeart, Pronotum,
+  InsectHead, Brain, Eye x2, InsectMouth) is vanilla Core, confirmed
+  directly against Core's BodyParts_Animal.xml. Ported as RSW_Gelagrub in
+  RSW_MlieWaveC_Bodies.xml.
+
+  `leatherDef` repoints to the already-ported RSW_Leather_Insectile
+  (RSW_MlieWaveC_Resources.xml, Pass 3, CanCell). `useMeatFrom` stays
+  vanilla Core `Megaspider` — no new resource. `milkDef` (CompProperties_
+  Milkable) stays vanilla Core `Neutroamine` — no new resource. Its 2 eggs
+  are newly ported (RSW_EggGelagrubFertilized/UnFertilized, texPath
+  swresource/EggSpore — already extracted, Pass 2/Beldon, reused unchanged,
+  no new art).
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713 — the vendor/mod_sources copy
+  remains stale/truncated, per every prior pass's note) — 4 PNGs
+  (Gelagrub_north/south/east + Gelagrub_Dessicated), all confirmed
+  non-zero and PIL-openable. Excluded as unreferenced by any def (same
+  precedent as every prior pass's "Pack" exclusions): GelagrubPack_north/
+  south/east — not referenced by the donor's own ThingDef/PawnKindDef.
+  texPaths otherwise unchanged text — art sits at Textures/swanimals/
+  Gelagrub/.
+
+  No `*ArtOverride` mod exists for this species (checked the full
+  ~26-mod override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `BiomeCypreJungle` (0.3),
+  `COMIGO_GreaterSwamp_Tropical` (0.4) — per cast_assignment.csv's current
+  rows for this species (cross-checked against the worklist's own biome
+  claim and found correct — no staleness this pass), repointed from the
+  bare "Gelagrub" entries in cast_assignment.csv / both BiomeCast_Ashkarr.xml
+  copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Gelagrub</defName>
+    <label>gelagrub</label>
+    <description>Gelagrubs, also known as 'Felucian ground beetles', were large insectine creatures native to Felucia. This variety (with some genetic tweaking) found themselves popular for export to many Rimworlds because they remained in their useful grub-like state for their entire lives whilst also swapping out their normal phosphorescence for neutroamine production.</description>
+    <statBases>
+      <MoveSpeed>3.7</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>16</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGelagrubUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGelagrubFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>8</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Neutroamine</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>10</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Gelagrub</body>
+      <baseBodySize>2.4</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <packAnimal>true</packAnimal>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Forage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+          <soundWounded>Pawn_Gelagrub_Wounded</soundWounded>
+          <soundDeath>Pawn_Gelagrub_Death</soundDeath>
+          <soundCall>Pawn_Gelagrub_Call</soundCall>
+          <soundAngry>Pawn_Gelagrub_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Gelagrub</defName>
+    <label>gelagrub</label>
+    <race>RSW_Gelagrub</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>3~9</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>gelagrub larva</label>
+        <labelPlural>gelagrub larvae</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gelagrub/Gelagrub_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

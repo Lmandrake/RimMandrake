@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Gorg creature port (Pass 9).
+  Ported from mlie.starwarsanimalcollection's `Gorg` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Gorg` BodyDef is, like RSW_Anooba/RSW_Borcatu/
+  RSW_Cannok/RSW_Clodhopper/RSW_Eopie, entirely vanilla-part composition
+  (Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/Skull/Brain/
+  Eye x4/Nose/AnimalJaw, 4x Leg/Paw) — ported as RSW_Gorg with a defName
+  rename only, no new body part needed (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef` stays vanilla Core `Leather_Light` — no port needed.
+  `specificMeatDef` repoints to the already-ported RSW_Gorg_Meat
+  (RSW_MlieWaveC_Resources.xml, Pass 7, Fanback — the same donor `Gorg_Meat`
+  this species itself is named for). Its 2 eggs are newly ported
+  (RSW_EggGorgFertilized/UnFertilized, texPath swresource/EggPod — already
+  extracted, Pass 8/FrilledGorg, reused unchanged, no new art).
+
+  `canCrossBreedWith` (donor: FrilledGorg, LongtailGorg) — FrilledGorg
+  repoints to the already-ported RSW_FrilledGorg (Pass 8); LongtailGorg
+  stays bare, not yet ported (remains later in this item's Wave C
+  worklist).
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 44 PNGs (base + A-E
+  recolor variants, each with north/south/east + Swimming_north/south/east;
+  juvenile Gorg_j variants with the same set; Dessicated), all confirmed
+  non-zero and PIL-openable. texPaths otherwise unchanged text — art sits
+  at Textures/swanimals/Gorg/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `AridShrubland` (0.3), `Desert`
+  (0.4) — per cast_assignment.csv's current rows for this species
+  (cross-checked against the worklist's own biome claim and found correct —
+  no staleness this pass), repointed from the bare "Gorg" entries in
+  cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Gorg</defName>
+    <label>gorg</label>
+    <description>Gorgs, known as 'chubas' in Huttese, were small precocious amphibians that could be found on several planets. They were popularly favored as food by many humanoid species. Thus they became popular livestock on sparse worlds due to their high temperature tolerance, minimal food consumption and fast breeding.</description>
+    <statBases>
+      <MoveSpeed>2.9</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGorgUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGorgFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>2</eggLayIntervalDays>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Gorg</body>
+      <baseHungerRate>0.10</baseHungerRate>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>None</trainability>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <roamMtbDays>7</roamMtbDays>
+      <lifeExpectancy>4</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <canCrossBreedWith>
+        <li>RSW_FrilledGorg</li>
+        <li>LongtailGorg</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>1.0</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.2</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.15</minAge>
+          <soundWounded>Pawn_Gorg_Wounded</soundWounded>
+          <soundDeath>Pawn_Gorg_Death</soundDeath>
+          <soundCall>Pawn_Gorg_Call</soundCall>
+          <soundAngry>Pawn_Gorg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Gorg</defName>
+    <label>gorg</label>
+    <race>RSW_Gorg</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>0.70</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Gorg/GorgA</texPath>
+        <swimmingTexPath>swanimals/Gorg/GorgA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgB</texPath>
+        <swimmingTexPath>swanimals/Gorg/GorgB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgC</texPath>
+        <swimmingTexPath>swanimals/Gorg/GorgC_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgD</texPath>
+        <swimmingTexPath>swanimals/Gorg/GorgD_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgE</texPath>
+        <swimmingTexPath>swanimals/Gorg/GorgE_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <label>gorgling</label>
+        <bodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg_j</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Gorg/Gorg_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg_j_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Gorg/Gorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Gorg/Gorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gorg/Gorg_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

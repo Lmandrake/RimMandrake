@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Gornt creature port (Pass 9).
+  Ported from mlie.starwarsanimalcollection's `Gornt` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Gornt` BodyDef uses vanilla Core's `Horn`/
+  `HornAttackTool` (BodyParts_Animal.xml / BodyPartGroups.xml, confirmed
+  present — unrelated to the donor's own custom `RSW_SW_LeftHorn`/
+  `RSW_SWHornAttackTool` that RSW_Boma already reuses) plus an otherwise
+  entirely vanilla-part composition (Spine, Stomach, Heart, Lung x2,
+  Kidney x2, Liver, Neck/Head/Skull/Brain/Eye x2/Ear x2/Nose/AnimalJaw, 4x
+  Leg/Paw) — ported as RSW_Gornt with a defName rename only, no new body
+  part needed (RSW_MlieWaveC_Bodies.xml).
+
+  Gornt needs a new leather (RSW_Leather_Reptomammal, texPath
+  swresource/Leather_Reptomammal, newly extracted this pass) and a new meat
+  (RSW_Gornt_Meat, texPath swresource/Meat_Gornt, newly extracted this
+  pass) — neither donor resource was already ported by any prior pass. No
+  egg comp — Gornt reproduces via `gestationPeriodDays`/`litterSizeCurve`,
+  not `CompProperties_EggLayer`.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 4 PNGs (Gornt_north/
+  south/east + Gornt_Dessicated — the Dessicated frame is unusually
+  1024x1024 vs the base set's 256x256, extracted and shipped as-is, same
+  internal path the donor itself uses), all confirmed non-zero and
+  PIL-openable. texPaths otherwise unchanged text — art sits at
+  Textures/swanimals/Gornt/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `ZBiome_Badlands` (0.3) — per
+  cast_assignment.csv's current row for this species (cross-checked
+  against the worklist's own biome claim and found correct — no staleness
+  this pass), repointed from the bare "Gornt" entry in cast_assignment.csv
+  / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Gornt</defName>
+    <label>gornt</label>
+    <description>The gornt was a domesticated, omnivorous creature native on the world of Hethar. A naturally bred gornt would grow to a meter or more long and was supported by four limbs, two small front legs and two large hind legs. Their head had a single horn and their mouths were surrounded by tendrils which they used to eat almost anything. It was introduced to many worlds as their meat was found to be sweet, juicy, and highly nutritious.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <MarketValue>400</MarketValue>
+      <ComfyTemperatureMin>-13</ComfyTemperatureMin>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>9.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Gornt</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.85</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.40</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <roamMtbDays>7</roamMtbDays>
+      <trainability>None</trainability>
+      <leatherDef>RSW_Leather_Reptomammal</leatherDef>
+      <specificMeatDef>RSW_Gornt_Meat</specificMeatDef>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>5.0</gestationPeriodDays>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>Pawn_Gornt_Wounded</soundWounded>
+          <soundDeath>Pawn_Gornt_Death</soundDeath>
+          <soundCall>Pawn_Gornt_Call</soundCall>
+          <soundAngry>Pawn_Gornt_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Gornt</defName>
+    <label>gornt</label>
+    <race>RSW_Gornt</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>gorntling</label>
+        <labelPlural>gorntlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Gornt/Gornt_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

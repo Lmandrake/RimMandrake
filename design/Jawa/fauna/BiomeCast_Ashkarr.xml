@@ -65,7 +65,7 @@
         <Kreetle>0.8</Kreetle> <!-- kreetle - ambush-small, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
-        <Gorg>0.4</Gorg> <!-- gorg - ambush-small, keep -->
+        <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
         <Gutkurr>0.4</Gutkurr> <!-- gutkurr - burst-predator, adjust-keep -->
         <Jamel>0.4</Jamel> <!-- Jamel - herd, keep -->
         <LongtailGorg>0.4</LongtailGorg> <!-- longtail gorg - ambush-small, keep -->
@@ -191,7 +191,7 @@
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
         <RSW_FrilledGorg>1.0</RSW_FrilledGorg> <!-- frilled gorg - small-runway, keep -->
-        <Gorg>1.0</Gorg> <!-- gorg - small-runway, keep -->
+        <RSW_Gorg>1.0</RSW_Gorg> <!-- gorg - small-runway, keep -->
         <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
         <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
@@ -364,7 +364,7 @@
         <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
-        <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
+        <RSW_Gelagrub>0.3</RSW_Gelagrub> <!-- gelagrub - gnawer, import -->
         <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
         <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
@@ -447,7 +447,7 @@
         <Kreetle>0.2</Kreetle> <!-- kreetle - grain-scale, keep -->
         <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
         <KraytDragon>0.15</KraytDragon> <!-- krayt dragon - giant, keep -->
-        <GraniteSlug>0.1</GraniteSlug> <!-- granite slug - grain-scale, keep -->
+        <RSW_GraniteSlug>0.1</RSW_GraniteSlug> <!-- granite slug - grain-scale, keep -->
         <Scurrier>0.1</Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
         <Gizka>0.01</Gizka> <!-- gizka - grain-scale, keep -->
         <GreaterKraytDragon>0.001</GreaterKraytDragon> <!-- greater krayt dragon - giant, keep -->
@@ -603,7 +603,7 @@
       <value>
         <Neebray>0.8</Neebray> <!-- neebray - small-flier, keep -->
         <Mynock>0.2</Mynock> <!-- mynock - small, import -->
-        <GraniteSlug>0.15</GraniteSlug> <!-- granite slug - grain, import -->
+        <RSW_GraniteSlug>0.15</RSW_GraniteSlug> <!-- granite slug - grain, import -->
       </value>
     </match>
   </Operation>
@@ -765,7 +765,7 @@
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
         <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
-        <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
+        <RSW_Gelagrub>0.4</RSW_Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
         <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
@@ -856,7 +856,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
-        <Gornt>0.3</Gornt> <!-- gornt - the-Patient, keep -->
+        <RSW_Gornt>0.3</RSW_Gornt> <!-- gornt - the-Patient, keep -->
         <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
       </value>
     </match>
