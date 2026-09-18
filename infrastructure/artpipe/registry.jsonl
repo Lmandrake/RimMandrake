@@ -1808,3 +1808,9 @@
 {"by": "artpiped", "event": "validated", "job_id": "pyrelands_iriaz_v1_north_r2", "target": "pyrelands_iriaz_v1_north", "ts": 1789364436.4094977, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 176.31264607602498, "event": "generated", "job_id": "pyrelands_nuna_v1_north_r2", "target": "pyrelands_nuna_v1_north", "ts": 1789364614.056051}
 {"by": "artpiped", "event": "validated", "job_id": "pyrelands_nuna_v1_north_r2", "target": "pyrelands_nuna_v1_north", "ts": 1789364614.067055, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_PIPELINE_DAEMON_1", "target": "codexcal_mantrap", "ts": 1789740809.6307633}
+{"by": "fill_queue", "event": "queued", "iteration": 4, "job_id": "codexcal_mantrap_r4", "notes": "", "target": "codexcal_mantrap", "ts": 1789740809.652586}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "nysyllin", "ts": 1789740809.6805735}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "nysyllin_v1_r2", "notes": "", "target": "nysyllin", "ts": 1789740809.7012014}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_FLORA_WAVE1_QUEUE_1", "target": "twistingthornweed", "ts": 1789740809.7338889}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "twistingthornweed_v1_r2", "notes": "", "target": "twistingthornweed", "ts": 1789740809.7523375}
