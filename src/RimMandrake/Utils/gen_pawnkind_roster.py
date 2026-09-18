@@ -100,7 +100,7 @@ EXTRAS = """\
        kind. All five Homestead kinds are in them; the ranger carries the joint-highest
        weight. If it still never appears, the weight is wrong, not the def. -->
   <PawnKindDef>
-    <defName>Jawa_Homestead_DesertRanger</defName>
+    <defName>RUT_Jawa_Homestead_DesertRanger</defName>
     <label>dune ranger</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>
@@ -183,19 +183,24 @@ RACES = {
 }
 
 # faction -> (FactionDef defName, xenotype-driven?)
+# NAMING_SCHEME_EXECUTION_1 (closed 2026-08-31, 54a8e28d): every RimUtinni-tier
+# FactionDef here now ships RUT_-prefixed (MEASURED against the live FactionDef
+# files 2026-09-18: JawaHuttCartel.xml etc. all carry `RUT_Jawa_*`). Vanilla/Outer
+# Rim factions (Empire, OutlanderCivil, TribeCivil, Pirate) are untouched - they
+# are not ours to rename.
 FACTIONS = {
     "Empire":     "Empire",
-    "Hutt":       "Jawa_HuttCartel",
+    "Hutt":       "RUT_Jawa_HuttCartel",
     "Homestead":  "OutlanderCivil",
     "DeepDesert": "TribeCivil",
-    "Droid":      "Jawa_FreeDroidEnclaves",
-    "Wildsteam":  "Jawa_WildsteamClan",
-    "Deepwater":  "Jawa_DeepwaterCompact",
-    "Geonosian":  "Jawa_GeonosianFoundryHive",
-    "Helix":      "Jawa_AscendantHelix",
+    "Droid":      "RUT_Jawa_FreeDroidEnclaves",
+    "Wildsteam":  "RUT_Jawa_WildsteamClan",
+    "Deepwater":  "RUT_Jawa_DeepwaterCompact",
+    "Geonosian":  "RUT_Jawa_GeonosianFoundryHive",
+    "Helix":      "RUT_Jawa_AscendantHelix",
     "Blackstar":  "Pirate",
-    "TradeMoot":  "Jawa_IndigenousTribes",
-    "Junkers":    "Jawa_Junkers",
+    "TradeMoot":  "RUT_Jawa_IndigenousTribes",
+    "Junkers":    "RUT_Jawa_Junkers",
 }
 
 # 🔴 weaponMoney IS A CEILING, AND A CEILING BELOW THE CHEAPEST WEAPON IN THE POOL ARMS
@@ -2566,8 +2571,6 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <li>RSW_JawaIon_Damage</li>
-      <li>KotORRanged_weak</li>
       <!-- BAREHANDED_MELEE_FALLBACK_1: NeolithicMeleeBasic pulls in the scrap
            metal-pipe cluster (Melee_MetalPipe et al) - a scavenged pipe or
            torch, matching this faction's B2 salvage idiom without borrowing
@@ -2575,6 +2578,8 @@ KIT = {
            the Deep Desert Tribes' own gaderffii stick). Cheapest carrier ~1
            against this kind's 450 floor - always arms with wide headroom. -->
       <li>NeolithicMeleeBasic</li>
+      <li>RSW_JawaIon_Damage</li>
+      <li>KotORRanged_weak</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
       <apparelRequired>
@@ -2945,11 +2950,19 @@ def emit():
         # race at all, which is a louder failure than the one being guarded against. The
         # matching guard on the faction's group makers is in JawaFreeDroidEnclaves.xml and
         # the two must move together.
+        # NAMING_SCHEME_EXECUTION_1: `name` stays the OLD unprefixed key because
+        # KIT/KIT_PRE below are keyed on it (curated 2026-08-20..23, before the
+        # rename). Only the emitted <defName> carries the RUT_ prefix - MEASURED
+        # 2026-09-18 against the committed XML, whose defNames are all
+        # `RUT_Jawa_<fac>_<role>`. A bare `git diff --stat` after running this
+        # generator must come back empty; it did not until this fix (the
+        # generator was silently reverting every kind's shipped RUT_ name).
         name = "Jawa_%s_%s" % (fac, role)
+        out_name = "RUT_" + name
         if name in KIT_PRE:
             L.append(KIT_PRE[name].rstrip("\n"))
         L += ["  <PawnKindDef%s>" % ('' if pkg is None else ' MayRequire="%s"' % pkg),
-              "    <defName>%s</defName>" % name,
+              "    <defName>%s</defName>" % out_name,
               "    <label>%s</label>" % label,
               "    <race>%s</race>" % race,
               "    <defaultFactionDef>%s</defaultFactionDef>" % FACTIONS[fac],
