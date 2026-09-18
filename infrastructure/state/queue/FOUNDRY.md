@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T17:29:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T17:33:40Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -512,6 +512,15 @@ target:   v1
 kind:     design
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
+## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
+prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
@@ -1323,12 +1332,12 @@ summary:  Owner-said: "Keep one big reskin boom creature for the assailant dunge
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
 ## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  15 of 18 ranged-only kinds already fixed with faction-voice melee tags (validator clean, 2026-09-11). Remaining 5 undiagnosed kinds need a live per-pawn trait join via bridge spawn batches (no bridge access this seat); 3 Geonosian kinds separately need an owner ruling on melee-tag voice (only in-voice candidate priced 20950 vs 400-1200 budgets) -- unchanged since last check, re-verified state before blocking (on COLD_LOAD_RUN_SHEET_4)
+blocked:  3 Geonosian ranged-only kinds fixed (NeolithicMeleeDecent, 0/23 ranged-only, validated clean). Remaining 5 undiagnosed kinds are unchanged since 2026-09-11: fully affordable 100%-melee gac=1 pools, needs live bridge spawn-batch diagnosis this seat cannot run (BELT/no-bridge)
 summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
 prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
 
