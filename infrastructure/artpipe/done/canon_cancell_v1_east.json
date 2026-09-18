@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T07:04:34Z",
+  "drawsize": 1.25,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_cancell_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Can-cell -- a large flying insect species found across many worlds including Kashyyyk and Teth, over 3 meters long, considered good luck by Wookiees. An elongated, segmented, dragonfly-like insectoid body in red/maroon tones, dark blue-black jointed legs, large bright green compound eyes, yellow-tipped antennae/mandible fringe, and two pairs of long, thin, translucent wings extending from the body. Single creature, centered, hovering/gliding pose with wings spread, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

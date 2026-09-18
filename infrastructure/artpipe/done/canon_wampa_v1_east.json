@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T07:04:34Z",
+  "drawsize": 2.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_wampa_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Wampa -- a carnivorous, semi-sentient, white-furred ice predator native to Hoth, one of its apex predators. Bipedal, upright, ape/yeti-like posture (never a quadrupedal on-all-fours stance), long shaggy white fur coat, dark bald-looking bare skin confined to around the eyes and muzzle only, visible sharp claws on the hands, bared fangs, and a pair of small cranial horns on the head. Single creature, centered, standing upright with arms raised in a menacing predatory pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}

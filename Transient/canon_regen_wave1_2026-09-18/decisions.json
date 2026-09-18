@@ -1,0 +1,31 @@
+{
+  "decidedCount": 0,
+  "posture": "none",
+  "decisions": {
+    "acklay": {
+      "decision": "",
+      "note": "",
+      "prefill": ""
+    },
+    "beldon": {
+      "decision": "",
+      "note": "",
+      "prefill": ""
+    },
+    "borcatu": {
+      "decision": "",
+      "note": "",
+      "prefill": ""
+    },
+    "cancell": {
+      "decision": "",
+      "note": "",
+      "prefill": ""
+    },
+    "wampa": {
+      "decision": "",
+      "note": "",
+      "prefill": ""
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.73637900200265,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.73637900200265,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "canon_beldon_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T00-06-07-01a0b356-387c-7e83-bdd2-38eff01b6b34.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 51.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789733086,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T00-04-37-01a0b354-d8c2-7dd0-8f89-c6950abfa114.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 50.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "canon_beldon_v1_east",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\canon_beldon_v1_east\\canon_beldon_v1_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/canon_beldon_v1_east/canon_beldon_v1_east.png\n    256x256  rgba  80,638 bytes  (98s)\n"
+}
