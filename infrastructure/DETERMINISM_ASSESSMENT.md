@@ -760,10 +760,40 @@ replaces, on today's evidence alone, is a bench sitting plus a full agent run pl
   `bridgetools/selftest_tool_metadata.py` adopting the UNMEASURED phrase so its
   Windows-toolchain absence stops counting as a failure.
 
-The walk-findings decision sheet the owner asked for is built:
-`Transient/walk_decisions_sheet.html`, rulings in
-`design/validation_walks/WALK_DECISIONS.json`, regenerate with
-`python3 src/RimMandrake/Utils/make_walk_sheet.py`.
+### 🔴 The walk findings do NOT need a decision sheet — and the "orphan walks" are not rot
+
+A 43-row decision sheet was built for these findings on 2026-09-18 and **deleted the same
+day**, on the owner's instinct (*"this doesnt feel like a sheet I should be asked"*) which
+re-measurement confirmed. What the findings actually are, MEASURED with a subject parser
+that reads the walk's own `subject:` line:
+
+| | walks |
+|---|---|
+| subject fully live — the defect is a stale identifier inside a STEP | **25** |
+| subject folder ships but its line carries no packageId | 6 |
+| declares NOT BUILT (AtmosphericBase, deliberate) | 1 |
+| absorbed, with an absorber proven on disk | 1 |
+| **genuinely orphaned** | **0** |
+
+So there is nothing here for him to adjudicate row by row: 31 of 33 are mechanical fixes
+decidable from disk. ⛔ Do not rebuild that sheet.
+
+🔑 **`ORPHAN_WALK` and `SUBJECT_COLLISION` are the same phenomenon, and neither is decay.**
+`doctor` derives a walk's mod from the walk's **basename** (`mod_name_from_walk`), not from
+its `subject:` line, so it asserts one-walk-per-mod. **34 of 78 walks are per-feature walks
+sharing a live mod's subject** — roughly a third of the corpus, deliberate, and each a real
+document someone wrote. The 24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are that convention
+being rejected by an assertion that does not model it. The open question is therefore a
+design one — adopt the convention with a `feature:` key, or collapse 34 walks into 10 — and
+it is the owner's, still unruled.
+
+⚠️ One trap paid for here: a walk's subject `packageId` is **backticked in 28 walks, bare in
+34, absent in 16**. The sheet generator's backtick-only regex read `None` for 50 of 78 and
+misfiled VaultDungeons as "absorbed" when its subject line was already correct — which is
+what made the sheet's content untrustworthy, separately from its being the wrong format.
+`doctor`'s own `_SUBJECT_PKGID_RE` gets this right (optional backticks); the bug was only in
+the throwaway generator. Anything new that parses a subject line must tolerate all three
+shapes.
 
 ---
 
