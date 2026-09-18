@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T05:24:18Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-18T06:27:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -891,6 +882,15 @@ kind:     task
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 
+## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
+prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
+
 ## GREENTIDE_MECHANICS_2 The Greentide C# kit build: wet-bulb condition+gear, dry-air blower, steam devils (Scald damage already shipped by FORGE), Roil/Breaklight weather, three-feller tree fall, Lunger ambush, grazing suppression hook, root causeways, Greatbole mineable-living-tree class — spec greentide_kit_spec.md, churnmud+silence-cue+seek-shade already shipped by GREENTIDE_STANDALONE_MOD_1
 state:    doing
 row:      unassigned
@@ -954,6 +954,24 @@ kind:     task
 summary:  Owner card, 2026-09-14, verbatim: "Absolutely no boomalopes." Reverses the
 prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
 
+## PYRELANDS_FACING_REGRESSION_1 Creature facing inverted on both axes despite FACING_COMPLETE closed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  Owner report (2026-09-14): "when they go north, they're looking south. and
+prose:    infrastructure/state/items/PYRELANDS_FACING_REGRESSION_1.md
+
+## ANOOBA_DRAWSIZE_FIX_1 Anooba renders far oversized on Pyrelands map
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  Subject: the PawnKindDef that actually spawns in Pyrelands — the DONOR
+prose:    infrastructure/state/items/ANOOBA_DRAWSIZE_FIX_1.md
+
 ## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
 state:    doing
 row:      unassigned
@@ -980,6 +998,15 @@ target:   v1
 kind:     task
 summary:  (no items/XENOTYPE_NONCOSMETIC_FIXES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/XENOTYPE_NONCOSMETIC_FIXES_1.md
+
+## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
 ## CANYON_FLOOD_ERASES_CANALS_1 A canyon flood permanently erases a dug canal - RM_MapComponent_CanyonFlood.StartFlood writes SetTerrain over every flood cell and RecedeFlood converts it to SoilRich, so a canal in a flooded canyon is destroyed not wetted, and its guard only protects changes made mid-flood not the initial write
 state:    doing
@@ -1659,7 +1686,17 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # NOT THIS TARGET
 
@@ -1708,106 +1745,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
 prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
-
-## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. The fang — RSWWyyyschokkFang (RimStarWars tier): butcher/hunt
-prose:    infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md
-
-## RAZORJACK_IDENTITY_RESTYLE_1 Razorjack restyle: grass-camo art, our-modspace description, new SW name
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RAZORJACK_IDENTITY_RESTYLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RAZORJACK_IDENTITY_RESTYLE_1.md
-
-## PYRELANDS_FACING_REGRESSION_1 Creature facing inverted on both axes despite FACING_COMPLETE closed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_FACING_REGRESSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FACING_REGRESSION_1.md
-
-## NUNA_ART_REGEN_1 Nuna art regeneration
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NUNA_ART_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NUNA_ART_REGEN_1.md
-
-## ANOOBA_DRAWSIZE_FIX_1 Anooba renders far oversized on Pyrelands map
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ANOOBA_DRAWSIZE_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ANOOBA_DRAWSIZE_FIX_1.md
-
-## IRIAZ_ART_REGEN_1 Iriaz art regeneration
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/IRIAZ_ART_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/IRIAZ_ART_REGEN_1.md
-
-## SCORCHFRUIT_ART_REGEN_1 ScorchFruit art: half-buried in ash, cracking open, no stalk
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCORCHFRUIT_ART_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCORCHFRUIT_ART_REGEN_1.md
-
-## MANTISTANIS_CAMO_REGEN_1 Mantistanis eco-camouflage regen all facings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MANTISTANIS_CAMO_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MANTISTANIS_CAMO_REGEN_1.md
-
-## BARBSLINGER_REDESIGN_1 Barbslinger redesigned: domed scorpion form with bifurcated double tail
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BARBSLINGER_REDESIGN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BARBSLINGER_REDESIGN_1.md
-
-## VALIDATION_SCRIPT_BACKFILL_1 Write validation.py for the 59 mods that have a walk and no script - state assertions now, shows= added per mod as each checklist is validated, so this does not wait on the owner
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
 ## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
 state:    proposed
