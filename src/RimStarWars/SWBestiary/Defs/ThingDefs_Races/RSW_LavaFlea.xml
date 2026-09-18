@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — LavaFlea creature port (Pass 16).
+  Ported from mlie.starwarsanimalcollection's `LavaFlea` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `LavaFlea` BodyDef (Bodies_Animal_StarWars.xml) is
+  entirely vanilla-part composition (Shell/Elytra/Stomach/InsectHeart/
+  Pronotum/InsectHead/Brain/Eye x2/Trunk/InsectMouth/InsectLeg x6) — no
+  SW-prefixed part or group anywhere, confirmed by reading the donor's own
+  BodyDef directly — defName rename only, ported as RSW_LavaFlea
+  (RSW_MlieWaveC_Bodies.xml).
+
+  🔑 **Resource, a genuinely new pattern**: LavaFlea's `leatherDef` AND its
+  `CompProperties_Shearable`'s `woolDef` BOTH point at the SAME donor def,
+  `Leather_LavaFlea` (texPath swresource/Leather_Chitin, the same texture
+  path already used by RSW_Leather_Insectine/RSW_Leather_Insectine — reused
+  unchanged, no new art) — confirmed directly off the donor's own `<comps>`
+  and `<race>` blocks, not assumed. Ported once as `RSW_Leather_LavaFlea`
+  and wired to both `leatherDef` and `woolDef`, matching the donor's own
+  single-resource double-use. `specificMeatDef` (`Silica_Meat`) ALREADY
+  EXISTS as `RSW_Silica_Meat` — no new meat needed. Needs 2 new eggs
+  (RSW_EggLavaFleaFertilized/UnFertilized, texPath swresource/EggBeetle,
+  newly extracted this pass — a genuinely new texPath, not reused from any
+  prior species) — `hatcherPawn` repointed to `RSW_LavaFlea`. All in
+  RSW_MlieWaveC_Resources.xml.
+
+  🔑 **Ability, the smallest yet**: the donor's own `specialTrainables` entry
+  (`SW_Leap`, Biotech-gated, NOT Odyssey — the donor's own MayRequire attribute
+  confirmed directly off its `<race>` block) is a TWO-def pair in the donor
+  (AbilityDef + TrainableDef only, no HediffDef — the ability is pure
+  movement via vanilla `Verb_CastAbilityJump`/`CastJump`, not a damage or
+  debuff effect) — ported this pass as RSW_SW_Leap
+  (RSW_MlieWaveC_Abilities.xml). soundCast/soundLanding repoint to the
+  already-absorbed `RSW_Ability_Leap_Air`/`RSW_Ability_Leap_Land` (589-sound
+  wave, 2026-09-02). Wired off RSW_LavaFlea's ThingDef
+  `<race><specialTrainables>` only — the donor's own LavaFlea references it
+  that way, not via PawnKindDef `<abilities>`.
+
+  `bloodDef` (`Filth_BloodInsect`) is vanilla Core, left bare.
+
+  Sounds for LavaFlea were already absorbed in the 2026-09-02 sound wave
+  (`RSW_Pawn_LavaFlea_*`) — confirmed present, wired, not re-done.
+
+  🔴 **Checked, unrelated, untouched**: `Armour_Leather.xml`
+  (src/RimStarWars/Armoury/Patches, a separate mod's generator) has 3
+  `PatchOperation`s targeting the bare donor `Leather_LavaFlea`'s
+  `stuffProps` — out of this item's fauna-geometry scope, same precedent as
+  BeastNorm_Law3.xml (Pass 15), left untouched.
+
+  Art: no `LavaFleaArtOverride` mod exists (checked
+  `find src/RimStarWars -maxdepth 1 -iname "*ArtOverride*"` first). 8 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used — `LavaFlea_{south,east,north}` (adult, shared
+  texPath at drawSize 3.0/4.0), `LavaFlea_j_{south,east,north}` (larval
+  "crystalline worm" juvenile), `LavaFlea_Dessicated`,
+  `LavaFlea_j_Dessicated` — all confirmed non-zero and PIL-openable. The
+  donor's own `LavaFleaPack_*`/`LavaFlea_jPack_*` variants (pack-saddle
+  recolors) are unreferenced by this species' own def and excluded, same
+  precedent as Kybuck (this same pass) and every prior Pack-variant species.
+  Sits at Textures/swanimals/LavaFlea/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AB_PyroclasticConflagration, LavaField, Volcano).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_LavaFlea</defName>
+    <label>lava flea</label>
+    <description>Lava fleas were large arthropods native to the planet Mustafar. As larval crystalline worms, lava fleas were able to feed on rocks. The lava flea would then continue digesting rocks and other nutrients, shedding its protective shell with time. Lava fleas were also very suitable mounts and exported as such to worlds with inhospital climates to other creatures.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.27</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.99</ArmorRating_Heat>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>trunked maw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggLavaFleaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggLavaFleaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_Leather_LavaFlea</woolDef>
+        <shearIntervalDays>15</shearIntervalDays>
+        <woolAmount>120</woolAmount>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_LavaFlea</body>
+      <baseBodySize>2.4</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_LavaFlea</leatherDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Biotech">RSW_SW_Leap</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.8</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_LavaFlea_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_LavaFlea_Death</soundDeath>
+          <soundCall>RSW_Pawn_LavaFlea_Call</soundCall>
+          <soundAngry>RSW_Pawn_LavaFlea_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_LavaFlea</defName>
+    <label>lava flea</label>
+    <race>RSW_LavaFlea</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <abilities MayRequire="Ludeon.RimWorld.Odyssey">
+      <li MayRequire="Ludeon.RimWorld.Biotech">RSW_SW_Leap</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>larval crystalline worm</label>
+        <labelPlural>larval crystalline worms</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea_j</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea_j_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/LavaFlea/LavaFlea_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

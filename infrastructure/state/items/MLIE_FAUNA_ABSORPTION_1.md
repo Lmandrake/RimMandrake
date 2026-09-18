@@ -1851,3 +1851,175 @@ worklist together).
 
 **Remaining**: 42 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 16: 3 more species ported: Kybuck, LavaFlea, LongtailGorg (42 -> 39 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Kybuck,
+LavaFlea, LongtailGorg — checked `find src/RimStarWars -maxdepth 1
+-iname "*ArtOverride*"` first, no dedicated override exists for any of the
+3, so all 3 shipped straight through with no facing carve-out needed.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+Kybuck's own `Kybuck` BodyDef is vanilla-part composition
+(Body/Tail/Spine/Stomach/Heart/Lung/Kidney/Liver/Neck/Head/Skull/Brain/Eye/
+Ear/Nose/AnimalJaw/Shoulder/Arm/Humerus/Radius/Leg) except its 2 upper-hoof
+groups, `SWLeftHoof`/`SWRightHoof`, ALREADY PORTED in Wave B
+(`RSW_SWLeftHoof`/`RSW_SWRightHoof`, the same 2 groups Horax's own hooves
+already use, Pass 13) — defName rename only, ported as RSW_Kybuck.
+LavaFlea's own `LavaFlea` BodyDef (Shell/Elytra/Stomach/InsectHeart/
+Pronotum/InsectHead/Brain/Eye x2/Trunk/InsectMouth/InsectLeg x6) is entirely
+vanilla-part composition, no SW-prefixed part or group anywhere — defName
+rename only, ported as RSW_LavaFlea. 🔑 **LongtailGorg needs no new BodyDef
+at all**: its own `<race><body>` points at `QuadrupedAnimalWithClawsTailAndJowl`,
+confirmed VANILLA CORE (`Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml`)
+— left bare, the first species this wave whose body needed nothing ported.
+Kybuck/LavaFlea BodyDefs added to RSW_MlieWaveC_Bodies.xml.
+
+**Resources**: Kybuck's `leatherDef` (`Leather_ReptoFur`) and
+`specificMeatDef` (`Tough_Meat`) BOTH ALREADY EXIST as
+`RSW_Leather_ReptoFur`/`RSW_Tough_Meat` — no new resource needed. 🔑
+**LavaFlea, a genuinely new pattern**: its `leatherDef` AND its
+`CompProperties_Shearable`'s `woolDef` BOTH point at the SAME donor def,
+`Leather_LavaFlea` (texPath swresource/Leather_Chitin, reused unchanged) —
+ported once as `RSW_Leather_LavaFlea` and wired to both fields, matching
+the donor's own single-resource double-use; `specificMeatDef`
+(`Silica_Meat`) ALREADY EXISTS as `RSW_Silica_Meat`; needs 2 new eggs
+(RSW_EggLavaFleaFertilized/UnFertilized, texPath swresource/EggBeetle,
+newly extracted this pass — a genuinely new texPath). LongtailGorg's
+`leatherDef` (`Leather_Light`) is vanilla Core, left bare (same as Igitz/
+RSW_FeralGrazer's own reuse); `specificMeatDef` (`Gorg_Meat`) ALREADY
+EXISTS as `RSW_Gorg_Meat` (Pass 9); needs 2 new eggs
+(RSW_EggLongtailGorgFertilized/UnFertilized, texPath swresource/EggPod —
+ALREADY EXTRACTED, Pass 9, reused unchanged). All in
+RSW_MlieWaveC_Resources.xml.
+
+🔑 **Ability, the smallest yet**: Kybuck's own `specialTrainables` entry
+(`SW_Spur`, Odyssey-gated) is donor content, ALREADY PORTED as
+`RSW_SW_Spur` (RSW_MlieWaveB_Abilities.xml) — repointed directly, no new
+port needed. LavaFlea's own `specialTrainables` entry (`SW_Leap`,
+Biotech-gated) is a TWO-def pair in the donor — AbilityDef + TrainableDef
+only, no HediffDef, since the ability is pure movement via vanilla
+`Verb_CastAbilityJump`/`CastJump`, not a damage or debuff effect — ported
+this pass as RSW_SW_Leap (RSW_MlieWaveC_Abilities.xml). soundCast/
+soundLanding repoint to the already-absorbed `RSW_Ability_Leap_Air`/
+`RSW_Ability_Leap_Land` (589-sound wave, 2026-09-02). LongtailGorg has no
+ability (donor's own `specialTrainables` unset).
+
+🔑 **`canCrossBreedWith` updated on BOTH sides, not just the newly-ported
+file** — RSW_Gorg's own header comment (Pass 9) and RSW_FrilledGorg's own
+header comment (Pass 8) both flagged exactly this moment: "LongtailGorg
+stays bare, not yet ported." LongtailGorg is that species this pass, so
+both files' bare `<li>LongtailGorg</li>` are now
+`<li>RSW_LongtailGorg</li>`. The donor's own LongtailGorg lists
+`FrilledGorg`/`Gorg` in its own `canCrossBreedWith` — ported here as
+`RSW_FrilledGorg`/`RSW_Gorg` (both already-ported species).
+
+Sounds: Kybuck's own `lifeStageAges` block uses vanilla Core `Pawn_Elk_*`
+sounds, not a custom set — confirmed directly off the donor's own `<race>`
+block, left bare. LavaFlea's own sounds (`RSW_Pawn_LavaFlea_*`) were
+already absorbed in the 2026-09-02 sound wave. LongtailGorg's own
+`lifeStageAges` block reuses `Pawn_Gorg_*` names, NOT a custom LongtailGorg
+set — `RSW_Pawn_Gorg_*` ALREADY EXISTS (ported alongside RSW_Gorg, Pass 9)
+— repointed directly, no new sound port needed.
+
+🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+reference Kybuck/LavaFlea/LongtailGorg by name. `Armour_Leather.xml`
+(a separate mod's generator, src/RimStarWars/Armoury/Patches) has 3
+`PatchOperation`s targeting the bare donor `Leather_LavaFlea`'s
+`stuffProps`, and `BeastNorm_Law3.xml` (a separate item's generator) has
+several xpath operations targeting bare donor `Kybuck`/`LavaFlea` — both
+out of this item's fauna-geometry scope, same precedent as Pass 15, left
+untouched. The 18 pre-existing `PatchOperationConditional`/
+`PatchOperationRemove` entries in both `BiomeCast_Ashkarr.xml` copies that
+strip the bare donor ThingDefs' own `race/wildBiomes/<biome>` entries for
+Kybuck/LavaFlea/LongtailGorg (a biome-duplicate-suppression mechanism,
+unrelated to cast wiring) correctly stay targeting the bare donor names —
+they suppress the DONOR's own wildBiomes weight, not our port's, so they
+are out of scope regardless of porting status.
+
+Art: no ArtOverride mod exists for any of the 3 (checked first). 50 PNGs
+extracted this pass via extract_bundle.py against the same AssetBundle
+every prior wave used (workshop folder 3497316713) — Kybuck 4
+(`Kybuck_{south,east,north}`, single `Kybuck_Dessicated` with no facing
+suffixes; the donor's own `KybuckPack_*` pack-saddle variants excluded,
+unreferenced by the def), LavaFlea 8 (`LavaFlea_{south,east,north}` adult,
+`LavaFlea_j_{south,east,north}` larval juvenile, 2 dessicated; the donor's
+own `LavaFleaPack_*`/`LavaFlea_jPack_*` variants excluded), LongtailGorg 38
+(base + `Swimming` trio x2 life stages, 2 dessicated, plus all 4
+`alternateGraphics` variants A-D each with their own non-swimming +
+swimming trio — this species is a `waterSeeker`/`canFishForFood` with a
+`swimmingGraphicData` on every stage, genuinely new among Wave C species;
+no unreferenced "Pack" variants exist for this species, all 38 bundle
+matches are referenced by the def) — plus `EggBeetle_{a,b}` (2, LavaFlea's
+new egg resource) and `Ability_AnimalLeap` (1, SW_Leap's icon). All 53
+confirmed non-zero (256x256) and PIL-openable via PIL before wiring in. Run
+via `python.exe` on the native `C:\...` bundle path, extracted flat (no
+`--keep-paths`, to preserve true def-casing) to a Windows temp dir and
+copied into the repo tree over `/mnt/c`.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `RSW_Kybuck`
+(AridShrubland 0.6), `RSW_LavaFlea` (AB_PyroclasticConflagration 0.25,
+LavaField 0.25, Volcano 0.25), `RSW_LongtailGorg` (AridShrubland 1.0,
+COMIGO_GreaterSwamp_Tropical 0.3, Desert 0.4) — renamed in place from the
+bare donor entries in both `BiomeCast_Ashkarr.xml` copies and
+`cast_assignment.csv` (mod column repointed to `RimMandrake: SW —
+Bestiary`, reason field annotated). Edits were made by exact line-number
+text replacement (`sed` targeting the exact pre-verified line numbers for
+the XML copies, direct string replacement for the CSV), never round-tripped
+through Python's `csv` module, and `git diff --stat` confirmed exactly 7
+changed lines in each of the 3 files before staging.
+
+🔴 **Lost work to a concurrent peer rebase mid-pass, caught and redone**:
+partway through this pass, a peer window's `git pull --rebase --autostash`
+cycled through this shared worktree (`.git/rebase-merge` observed live,
+`BENCH.md`/`FOUNDRY.md` mid-conflict) and silently reverted every TRACKED
+file this pass had edited so far (worklist json, both BiomeCast_Ashkarr.xml
+copies, cast_assignment.csv, RSW_MlieWaveC_Bodies/Resources/Abilities.xml,
+RSW_Gorg.xml, RSW_FrilledGorg.xml) back to their pre-pass committed
+content — the 3 new untracked species files and extracted Textures/ were
+unaffected (untracked content survives a stash cycle). Caught by a stale
+`--defs` error batch reporting `RSW_SWanimals_RawMeatBase` unresolvable for
+defs that had resolved cleanly every prior pass, cross-checked against
+`git diff --stat` on the just-edited files showing 0 changes. Per this
+item's own standing git-safety guidance: waited for `.git/rebase-merge` to
+clear rather than intervening, confirmed via `git log`/`git status`, then
+redid every lost edit identically and re-ran both validation passes clean
+before committing.
+
+**Validated**: `validate_patch.py` against all 8 directly authored/touched
+files (3 species, `RSW_Gorg.xml`, `RSW_FrilledGorg.xml`,
+`RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`RSW_MlieWaveC_Abilities.xml`), BOTH with `--live` (freshest available
+capture, `2026-09-18T05-05-13Z`, 634 mods per its own manifest — live
+`ModsConfig.xml` reads 30 active, the minimal list from a peer's concurrent
+work, correctly NOT re-harvested mid-pass, per "ModsConfig describes the
+next load" doctrine) AND `--defs` against the full load set (`Data` +
+`Mods` + the Steam Workshop content root, with `--mods-config
+infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` since the LIVE
+ModsConfig.xml was the minimal 30-mod list at validation time and a first
+`--defs` attempt against it wrongly flagged every `RSW_SWanimals_
+RawMeatBase`-parented meat ThingDef in the whole load set as unresolvable
+— worth remembering for the next pass whenever the live list is minimal).
+**0 errors, 0 warnings** both ways, across all 8 files plus both
+`BiomeCast_Ashkarr.xml` copies (checked separately against `--live`). All
+new defNames confirmed unique in-repo (the only 2-file hits are each
+species' own ThingDef+BodyDef pair sharing a defName across def types).
+
+**Not done this pass**: no deploy — the bridge read FREE at the start of
+this pass but this item's own standing instruction is offline-authoring
+only regardless; no live cold-load proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Kybuck/LavaFlea/LongtailGorg removed from `remaining_worklist`, count 42 ->
+39, recorded under `ported_and_wired_this_pass_2026-09-18_batch16`.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 39 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`).

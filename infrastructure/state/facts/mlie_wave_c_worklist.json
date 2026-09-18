@@ -15,7 +15,12 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 42,
+  "remaining_worklist_count": 39,
+  "ported_and_wired_this_pass_2026-09-18_batch16": [
+    "RSW_Kybuck",
+    "RSW_LavaFlea",
+    "RSW_LongtailGorg"
+  ],
   "stale_entries_removed_2026-09-18": [
     {
       "donor_defName": "Nuna",
@@ -23,31 +28,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Kybuck",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "LavaFlea",
-      "biomes": [
-        "AB_PyroclasticConflagration",
-        "LavaField",
-        "Volcano"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "LongtailGorg",
-      "biomes": [
-        "AridShrubland",
-        "COMIGO_GreaterSwamp_Tropical",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Lothcat",
       "biomes": [

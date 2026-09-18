@@ -20,8 +20,7 @@
 
   `canCrossBreedWith` (donor: FrilledGorg, LongtailGorg) — FrilledGorg
   repoints to the already-ported RSW_FrilledGorg (Pass 8); LongtailGorg
-  stays bare, not yet ported (remains later in this item's Wave C
-  worklist).
+  repointed to RSW_LongtailGorg once it was ported (Pass 16, 2026-09-18).
 
   Art: extracted this pass via extract_bundle.py against the live Steam
   workshop bundle (workshop folder 3497316713) — 44 PNGs (base + A-E
@@ -120,7 +119,7 @@
       <canFishForFood>true</canFishForFood>
       <canCrossBreedWith>
         <li>RSW_FrilledGorg</li>
-        <li>LongtailGorg</li>
+        <li>RSW_LongtailGorg</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>1.0</AridShrubland>
