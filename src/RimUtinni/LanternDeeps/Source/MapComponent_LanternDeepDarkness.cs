@@ -25,7 +25,7 @@ namespace RimMandrake.Utinni.LanternDeeps
 	// Mechanism: periodically samples ground glow at every colonist's position.
 	// Sustained bright light accumulates "exposure"; darkness lets it decay.
 	// Once exposure crosses a threshold, a predator already resident in
-	// BMT_CrystalCaverns (BMT_CaveSpider) is drawn toward the brightest
+	// RUT_LanternDeeps (RSW_BloodropMoth) is drawn toward the brightest
 	// colonist and goes manhunter -- no new creature invented; the
 	// crystal-studded roster stays evicted per HARD BAN #3, and the rest of
 	// the non-crystal cast is still "the sitting"'s call, not this build's.
@@ -39,6 +39,16 @@ namespace RimMandrake.Utinni.LanternDeeps
 		private const float ExposureDecayPerCheck = 1.5f;
 		private const int MinTicksBetweenAmbushes = 15000; // half an in-game day
 		private static readonly IntRange AmbushGroupSize = new IntRange(1, 2);
+
+		// CAVERNS_PARITY_BUILD_1: the predators that actually live in
+		// RUT_LanternDeeps.wildAnimals, in order of preference. Bloodrop moth is
+		// the donor biome's own predator, ported as RSW_BloodropMoth; shatterjaw
+		// is the fallback if SWBestiary ever drops the moth line.
+		private static readonly string[] DeepPredatorKindNames =
+		{
+			"RSW_BloodropMoth",
+			"RSW_ShatterjawBeetle",
+		};
 
 		private float lightExposure;
 		private int lastAmbushTick = -999999;
@@ -116,10 +126,24 @@ namespace RimMandrake.Utinni.LanternDeeps
 
 		private static void DrawSomethingToTheLight(Pawn targetPawn)
 		{
-			PawnKindDef predatorKind = DefDatabase<PawnKindDef>.GetNamedSilentFail("BMT_CaveSpider");
+			// CAVERNS_PARITY_BUILD_1: was BMT_CaveSpider, a donor PawnKindDef that
+			// is ALSO one of the seven stragglers RULED CUT 2026-09-11 -- so it was
+			// going to become a permanent silent no-op twice over. Now the ambush
+			// draws a resident of our own biome's wildAnimals list, which are the
+			// RSW_* ports already shipped in SWBestiary. First match wins; a null
+			// return is still a no-op and never a crash.
+			PawnKindDef predatorKind = null;
+			foreach (string kindName in DeepPredatorKindNames)
+			{
+				predatorKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(kindName);
+				if (predatorKind != null)
+				{
+					break;
+				}
+			}
 			if (predatorKind == null)
 			{
-				return; // Biomes! Caverns absent or the defName changed -- no-op, never crash
+				return; // SWBestiary absent or the defNames changed -- no-op, never crash
 			}
 
 			Map map = targetPawn.Map;
