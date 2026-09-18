@@ -3690,10 +3690,10 @@
     "sha": "80f5da8f"
   },
   "src/RimMandrake/Oracle/Source/DebugActions_Oracle.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "1199cf03c4a3d475de6eefdf6ebb6c808da30955330b8c8e0fdac9677e44b5a5",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "ae5bd3a53f1ba5614f53f6ad02282716072375f3f42e5a7754990123d308a00c",
+    "sha": "c830d86bb"
   },
   "src/RimMandrake/Oracle/Source/Oracle.csproj": {
     "cleanCount": 1,
@@ -3708,10 +3708,10 @@
     "sha": "0afdb147c"
   },
   "src/RimMandrake/Oracle/Source/OracleGameComponent.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "900c27b72b1588aff68df68af9cf09f73db4d2a1cfbd51b259c2db96ea984454",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "32cdc3175d246ae05a079e09d80e3a0cb10c785025741f6c166a4b3a46e2bdc6",
+    "sha": "c830d86bb"
   },
   "src/RimMandrake/Oracle/Source/OracleRegisterBlocks.cs": {
     "cleanCount": 2,
@@ -3726,10 +3726,16 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/Oracle/Source/OracleValidator.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "f0828c1bb5001e1cdc40e594b29552ce5eaebd4a17b431f341e07a0d4a7ea0f9",
+    "sha": "c830d86bb"
+  },
+  "src/RimMandrake/Oracle/validation.py": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "f5eaf566417ccc57632c29c772907cc6697e5734fd992ab01db21fedbdea3ba6",
-    "sha": "43f96b1b"
+    "date": "2026-09-17",
+    "hash": "6cbd3e6f1c7b28b01ca47c13a9693c43e498e3275facf0940583536ba0f96c8f",
+    "sha": "c830d86bb"
   },
   "src/RimMandrake/PlanetPresetPrime/About/About.xml": {
     "cleanCount": 2,
