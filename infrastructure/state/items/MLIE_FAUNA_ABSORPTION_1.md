@@ -2374,3 +2374,192 @@ worklist together).
 **Remaining**: 33 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), front-blocked on Mynock pending an owner
 naming decision.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 19: 3 more species ported: Orray, PekoPeko, Pikobis (32 -> 29 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Orray,
+PekoPeko, Pikobis (Mynock stays declined-permanently per the owner's ruling
+recorded in `declined_species` — not at the front any more, nothing to do
+about it this pass). Per this pass's own standing instruction, grepped
+`src/RimStarWars/` for `RSW_Orray`/`RSW_PekoPeko`/`RSW_Pikobis` BEFORE
+writing anything — no collision found for any of the 3, so all shipped
+straight through with no owner escalation needed this time.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+Orray's own custom `Orray` BodyDef is, like Anooba/Borcatu/Massiff, entirely
+vanilla-part composition (Body/Tail/Spine/Stomach/Heart/Lung x2/Kidney x2/
+Liver/Hump/Neck/Head/Skull/Brain/Eye x2/Ear x2/Nose, 2x Leg/Paw) — defName
+rename only. Pikobis's own custom `Pikobis` BodyDef needs its 2 clawed-paw
+parts' `SWClaws` group repointed to the ALREADY-PORTED `RSW_SWClaws` (Wave
+B, the same group Gutkurr/Kwi already reuse) — every other part (Humerus/
+Shoulder/Radius included) confirmed vanilla Core
+(`Data/Core/Defs/Bodies/BodyParts_Humanoid.xml`), not donor content. Ported
+as RSW_Orray/RSW_Pikobis (RSW_MlieWaveC_Bodies.xml).
+
+🔑 **PekoPeko's own `body` exposed a real error sitting in this file since
+Wave C's Cannok/Clodhopper/Convor pass**: it points at donor `FlyingAvian`
+(`Bodies_Animal_StarWars.xml`), which a direct grep of the whole `Data`
+tree confirms is absent from vanilla Core entirely — yet that pass's own
+header comment called it "vanilla Core, no port needed" and RSW_Convor has
+been shipping with a bare `<body>FlyingAvian</body>` reference ever since
+(silently working only because the donor mod stayed active in every load
+this whole time). Ported this pass as RSW_FlyingAvian: its `SW_LeftWing`/
+`SW_RightWing` parts repoint to the ALREADY-PORTED Wave B
+`RSW_SW_LeftWing`/`RSW_SW_RightWing`, its tail-tip `SW_Club` part repoints
+to the ALREADY-PORTED `RSW_SW_Club`, and its `SWTailAttackTool` group
+repoints to the ALREADY-PORTED `RSW_SWTailAttackTool` (all 4 already sitting
+unused in RSW_MlieWaveB_BodyParts.xml). `Beak`/`Feet`/`HeadAttackTool`
+groups are vanilla, left bare. Per this item's "inaccurate material is
+corrected in place, every inbound reference fixed in the same change"
+doctrine: the stale header comment in RSW_MlieWaveC_Bodies.xml was
+corrected, and **RSW_Convor.xml's own `<body>` was repointed from bare
+`FlyingAvian` to `RSW_FlyingAvian`** in this same pass (its own header
+comment corrected too) — no functional change to Convor since the donor mod
+was active throughout, but it stops riding a bare donor defName.
+
+**Resources**: Orray's `leatherDef`/`specificMeatDef`
+(`Leather_Tough`/`Reptomammal_Meat`) BOTH ALREADY EXIST as
+`RSW_Leather_Tough`/`RSW_Reptomammal_Meat` — no new resource needed.
+PekoPeko's and Pikobis's `leatherDef`/`specificMeatDef`
+(`Leather_Reptavian`/`Reptavian_Meat`) BOTH ALREADY EXIST as
+`RSW_Leather_Reptavian`/`RSW_Reptavian_Meat` (Wave B) — no new resource
+needed either. All 3 need new eggs: PekoPeko's own unfertilized egg
+(`EggReptavianUnfertilized`, a genus-shared donor def with no other current
+user) ported as RSW_EggReptavianUnfertilized; its fertilized egg
+(`EggPekopekoFertilized`) ported as RSW_EggPekopekoFertilized (`hatcherPawn`
+repointed to `RSW_PekoPeko`). Pikobis's own pair
+(`EggPikobisUnFertilized`/`EggPikobisFertilized`) ported as
+RSW_EggPikobisUnFertilized/RSW_EggPikobisFertilized (`hatcherPawn`
+repointed to `RSW_Pikobis`). All 4 share the donor's own texPath
+`swresource/EggReptavian` (2 PNGs, `EggReptavian_{a,b}`, newly extracted
+this pass). All in RSW_MlieWaveC_Resources.xml.
+
+Orray's own Odyssey specialTrainable (`SW_Spur`) repoints to the
+already-ported `RSW_SW_Spur` (ported alongside Kybuck, Pass 16) — no new
+ability needed. PekoPeko and Pikobis set no `specialTrainables` at all
+(donor leaves both bare). Pikobis's own `modExtensions` block gated
+`MayRequire="pathfinding.framework"`
+(`PathfindingFramework.MovementExtension`, `PF_Movement_Amphibious`) kept
+verbatim, same established pattern as Igitz/Dianoga/Falumpaset/Fambaa/
+Dragonsnake/Nuna/Mott/Ollopom.
+
+No `canCrossBreedWith` on any of the 3 (none set it in their own donor
+block), and grepping every already-ported `RSW_*.xml` in SWBestiary for
+stray `<li>Orray</li>`/`<li>PekoPeko</li>`/`<li>Pikobis</li>` found none.
+
+Sounds: all 3 species' custom sound sets (`Pawn_Orray_*`, `Pawn_PekoPeko_*`,
+`Pawn_Pikobis_*`) were already absorbed in the 2026-09-02 sound wave —
+confirmed present in `SoundDefs_SWBestiary.xml`, wired, not re-done.
+PekoPeko's own hatchling lifeStage sound stays vanilla Core
+`Pawn_Chick_Call` (left bare, same pattern Convor's own hatchling stage
+already uses).
+
+🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) contain
+an actual `PatchOperation` targeting Orray/PekoPeko/Pikobis by defName —
+only 3 unrelated comment-line mentions of "Orray" in
+`AnimalBiomeDuplicates_Fix.xml`'s own header prose, confirmed by grepping
+for `defName="Orray"`/`>Orray<` etc. directly (0 hits). The pre-existing
+`PatchOperationConditional` entries in the design copy of
+`BiomeCast_Ashkarr.xml` that suppress the bare donor ThingDefs' own
+`race/wildBiomes/<biome>` entries for Orray/PekoPeko/Pikobis (AridShrubland/
+Desert/ExtremeDesert) are the same biome-duplicate-suppression mechanism
+documented every prior pass — they suppress the DONOR's own wildBiomes
+weight, not our port's, so they stay targeting the bare donor names
+regardless of porting status.
+
+**Art**, ArtOverride check done BEFORE any extraction:
+- `OrrayArtOverride` (mandrake.rsw.orrayartoverride) covers the base
+  `Orray_{south,east,north}` facing (shared across all 3 life stages, one
+  texPath) — only `Orray_Dessicated` extracted this pass (1 PNG, the
+  donor's own `OrrayPack_*` pack-saddle variants excluded, unreferenced by
+  the def).
+- `PekoPekoArtOverride` (mandrake.rsw.pekopekoartoverride) covers the base
+  `PekoPeko_{m,f}_{south,east,north}` facing — the 24-frame flying
+  animation set (4 frames x 3 facings x 2 sexes) and `PekoPeko_Dessicated`
+  are NOT covered, extracted this pass (25 PNGs).
+- No ArtOverride mod exists for Pikobis — all 7 extracted
+  (`Pikobis_{south,east,north}` base, `Pikobis_Swimming_{south,east,north}`
+  — a `waterSeeker`/`canFishForFood` species with a `swimmingGraphicData`
+  on every stage, same pattern LongtailGorg/Mott established —
+  `Pikobis_Dessicated`).
+
+Plus `EggReptavian_{a,b}` (2, the 3 new eggs' shared new resource). 35 PNGs
+shipped this pass in total (1 Orray + 25 PekoPeko + 7 Pikobis + 2
+EggReptavian), all confirmed non-zero (256x256 RGBA) and PIL-openable via
+PIL before wiring in. Run via `python.exe` on the native `C:\...` bundle
+path, extracted flat (without keep-paths mode) to a Windows temp dir and
+copied into the repo tree over `/mnt/c`. Sit at Textures/swanimals/{Orray,
+PekoPeko,Pikobis}/ and Textures/swresource/EggReptavian/.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `RSW_Pikobis`
+(AridShrubland 0.1), `RSW_PekoPeko` (BiomeCypreJungle 0.2), `RSW_Orray`
+(ZBiome_Grasslands 0.25) — renamed in place from the bare donor entries,
+staying inside the SAME `MayRequire="...,mlie.starwarsanimalcollection"`
+Operation block each already sat in (same precedent as every prior pass —
+not moved to a new mandrake.rsw.swbestiary-gated block), in both
+`BiomeCast_Ashkarr.xml` copies and `cast_assignment.csv` (mod column
+repointed to `RimMandrake: SW — Bestiary`, reason field annotated). Edits
+were made by exact pre-verified text replacement (`sed` targeting exact
+line text for the XML copies, direct string replacement for the CSV),
+never round-tripped through Python's `csv` module, and `git diff --stat`
+confirmed exactly the intended lines changed in each of the 3 files before
+staging.
+
+🔴 **Lost work to a concurrent peer rebase mid-pass, caught and redone**:
+partway through this pass, after all tracked-file edits (worklist json,
+both `BiomeCast_Ashkarr.xml` copies, `cast_assignment.csv`,
+`RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`RSW_Convor.xml`) were already made, a system notification reported the
+worklist json and `RSW_Convor.xml` "changed on disk" showing their
+pre-pass content — a peer window's `git pull --rebase --autostash` had
+cycled through this shared worktree and reverted every one of those 6
+tracked files back to their last-committed content (no `.git/rebase-merge`
+was present by the time this was noticed — the rebase had already
+completed and cleared). The 3 new untracked species files
+(RSW_Orray/PekoPeko/Pikobis.xml) and all extracted Textures/ were
+unaffected throughout (untracked content survives a stash cycle), matching
+the exact Pass 16/18 precedent. Confirmed via `git diff --stat` showing 0
+changes on all 6 files, then redid every edit identically from the
+preserved text and re-verified `git diff --stat` showed the expected diff
+size on each file before validating or committing.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+def files (3 species, `RSW_Convor.xml`, `RSW_MlieWaveC_Bodies.xml`,
+`RSW_MlieWaveC_Resources.xml`), BOTH with `--live` (freshest available
+capture, `2026-09-18T06-46-06Z`, 635 mods per its own manifest — matching
+the live `ModsConfig.xml`'s own 635 active count exactly, so no
+`--mods-config` override was needed this pass) AND `--defs` against the
+full load set (`Data` + `Mods` + the Steam Workshop content root, 635
+active mods / 635 found on disk / 8,854 def files). `--live`-only surfaced
+9 expected errors (RSW_Orray's and RSW_PekoPeko's own base-facing texPaths,
+not shipped here because `OrrayArtOverride`/`PekoPekoArtOverride` cover
+them — same expected `--live`-vs-`--defs` gap every prior ArtOverride pass
+documented) that vanished once `--defs` could see both already-deployed
+override mods in the live `Mods` folder — **0 errors, 0 warnings** with
+`--defs`. Both `BiomeCast_Ashkarr.xml` copies checked separately against
+`--live`: 0 errors, 0 warnings each. All new defNames confirmed unique
+in-repo (RSW_Orray/RSW_Pikobis: 2 files each, own ThingDef+PawnKindDef pair
+plus the new BodyDef, same as every prior species with a ported body;
+RSW_PekoPeko: 1 file, since it reuses the newly-ported RSW_FlyingAvian
+rather than needing its own BodyDef; RSW_FlyingAvian: 1 file).
+
+**Not done this pass**: no deploy, no bridge — this item's own standing
+instruction is offline-authoring only regardless of bridge state; no live
+cold-load proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Orray/PekoPeko/Pikobis removed from `remaining_worklist`, count 32 -> 29,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch19`. Mynock
+stays permanently declined per the owner's own ruling (`declined_species`),
+untouched this pass.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 29 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), front now Pufferpig/Qormot/Ronto.

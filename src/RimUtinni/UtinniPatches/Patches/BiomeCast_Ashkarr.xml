@@ -213,7 +213,7 @@
         <Qormot>0.2</Qormot> <!-- qormot - medium-interface, keep -->
         <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
-        <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
+        <RSW_Pikobis>0.1</RSW_Pikobis> <!-- pikobis - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
         <RSW_FeralNerf>0.04</RSW_FeralNerf> <!-- feral nerf - medium-runner, keep -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
@@ -368,7 +368,7 @@
         <RSW_Gelagrub>0.3</RSW_Gelagrub> <!-- gelagrub - gnawer, import -->
         <RSW_Kinrath>0.3</RSW_Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
         <RSW_Fambaa>0.25</RSW_Fambaa> <!-- fambaa - shatterer, import -->
-        <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
+        <RSW_PekoPeko>0.2</RSW_PekoPeko> <!-- Peko-peko - flier, import [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
         <RSW_Hawkbat>0.18</RSW_Hawkbat> <!-- hawk-bat - flier-predator, keep -->
         <RSW_Lylek>0.05</RSW_Lylek> <!-- lylek - apex, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
       </value>
@@ -1055,7 +1055,7 @@
         <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
         <RSW_Gizka>0.3</RSW_Gizka> <!-- gizka - grain, adjust-keep -->
-        <Orray>0.25</Orray> <!-- orray - medium, import -->
+        <RSW_Orray>0.25</RSW_Orray> <!-- orray - medium, import [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
       </value>
     </match>
   </Operation>

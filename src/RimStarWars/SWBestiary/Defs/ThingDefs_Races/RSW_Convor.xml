@@ -3,8 +3,13 @@
   MLIE_FAUNA_ABSORPTION_1 Wave C — Convor creature port.
   Ported from mlie.starwarsanimalcollection's `Convor` ThingDef/PawnKindDef
   pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
-  RSW_ tier prefix. Geometry/stats/comps copied verbatim. No custom body:
-  `body` stays the vanilla Core `FlyingAvian` — no BodyDef port needed.
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. `body` originally
+  stayed the bare donor `FlyingAvian` under a comment here that wrongly
+  called it "vanilla Core" — FlyingAvian is Mlie's own content
+  (Bodies_Animal_StarWars.xml, absent from Data/Core entirely), never ported
+  until 2026-09-18 (Pass 19, for PekoPeko's sake) — `body` repointed to the
+  now-ported `RSW_FlyingAvian` (RSW_MlieWaveC_Bodies.xml) in that same pass;
+  no functional change since the donor mod was active throughout.
   `leatherDef`/`specificMeatDef` repoint to the already-ported
   RSW_Leather_Mammavian/RSW_Mammavian_Meat (RSW_MlieWaveB_Resources.xml).
   Its `CompProperties_EggLayer` needed 2 new eggs,
@@ -97,7 +102,7 @@
       </li>
     </comps>
     <race>
-      <body>FlyingAvian</body>
+      <body>RSW_FlyingAvian</body>
       <predator>true</predator>
       <herdAnimal>true</herdAnimal>
       <baseBodySize>0.4</baseBodySize>

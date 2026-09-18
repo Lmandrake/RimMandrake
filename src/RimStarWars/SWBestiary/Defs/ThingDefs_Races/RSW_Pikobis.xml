@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Pikobis creature port.
+  Ported from mlie.starwarsanimalcollection's `Pikobis` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Pikobis` BodyDef needs its 2 clawed-paw parts' `SWClaws` group
+  repointed to the ALREADY-PORTED `RSW_SWClaws` (Wave B, the same group
+  Gutkurr/Kwi already reuse) — every other part is vanilla Core (Humerus/
+  Shoulder/Radius confirmed present in
+  Data/Core/Defs/Bodies/BodyParts_Humanoid.xml, not donor content) — ported
+  as RSW_Pikobis (RSW_MlieWaveC_Bodies.xml). `leatherDef`/`specificMeatDef`
+  (`Leather_Reptavian`/`Reptavian_Meat`) BOTH ALREADY EXIST as
+  `RSW_Leather_Reptavian`/`RSW_Reptavian_Meat` (Wave B, the same pair
+  PekoPeko above reuses) — no new resource needed there. Its
+  `CompProperties_EggLayer` needed 2 new eggs
+  (RSW_EggPikobisUnFertilized/Fertilized, RSW_MlieWaveC_Resources.xml,
+  texPath swresource/EggReptavian — newly extracted this pass alongside
+  PekoPeko's own eggs, `hatcherPawn` repointed to `RSW_Pikobis`). Its own
+  `modExtensions` block gated `MayRequire="pathfinding.framework"`
+  (`PathfindingFramework.MovementExtension`, `PF_Movement_Amphibious`) kept
+  verbatim, same established pattern as Igitz/Dianoga/Falumpaset/Fambaa/
+  Dragonsnake/Nuna/Mott/Ollopom. No `specialTrainables` set (donor leaves it
+  bare — `trainability` is `None`). No `canCrossBreedWith` either direction.
+  Sounds: adult lifeStage sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_Pikobis_*, 2026-09-02).
+
+  No ArtOverride mod exists for Pikobis (checked first, unlike Orray/
+  PekoPeko above). All 7 PNGs extracted this pass via extract_bundle.py
+  against the same AssetBundle every prior wave used
+  (`Pikobis_{south,east,north}` base facing, `Pikobis_Swimming_{south,east,
+  north}` — this species is a `waterSeeker`/`canFishForFood` with a
+  `swimmingGraphicData` on every stage, same pattern LongtailGorg/Mott
+  established — plus `Pikobis_Dessicated`). Sits at Textures/swanimals/
+  Pikobis/.
+
+  Wired into the live cast this same pass: AridShrubland (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Pikobis" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Pikobis</defName>
+    <label>pikobis</label>
+    <description>Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto slippery prey which it usually swallowed in one gulp. Due to their small size they were often able to hide as stowaways aboard large cargo ships, surviving by scavenging and escaping to multiple planets.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-12</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <FilthRate>6</FilthRate>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWClaws</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggPikobisUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggPikobisFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~6</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Pikobis</body>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>0.6</maxPreyBodySize>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>12</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateSwamp>0.05</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.06</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.12</minAge>
+          <soundWounded>RSW_Pawn_Pikobis_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Pikobis_Death</soundDeath>
+          <soundCall>RSW_Pawn_Pikobis_Call</soundCall>
+          <soundAngry>RSW_Pawn_Pikobis_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Pikobis</defName>
+    <label>pikobis</label>
+    <race>RSW_Pikobis</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>5~6</wildGroupSize>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>pikobis chick</label>
+        <labelPlural>pikobis chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis</texPath>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.50</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pikobis/Pikobis_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
