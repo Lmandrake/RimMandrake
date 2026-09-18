@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-18T14:37:00Z",
+ "generatedAt": "2026-09-18T16:13:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 696544,
-  "sha256_12": "8a547511754f"
+  "bytes": 696594,
+  "sha256_12": "9d24ed386982"
  },
- "head": "38ab02b75",
+ "head": "f2727e7c4",
  "counts": {
-  "red": 39,
-  "blue": 797,
+  "red": 34,
+  "blue": 794,
   "green": 0,
   "grey": 0,
-  "unmeasured": 2159,
+  "unmeasured": 2167,
   "total": 2995
  },
  "loc": {
-  "red": 17837,
-  "blue": 313192,
+  "red": 16964,
+  "blue": 312078,
   "green": 0,
   "grey": 0,
-  "unmeasured": 679892,
-  "total": 1010921
+  "unmeasured": 681883,
+  "total": 1010925
  },
  "reviewEntries": 2943,
  "recidivists": [],

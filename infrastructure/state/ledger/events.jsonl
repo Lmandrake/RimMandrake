@@ -9252,3 +9252,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:20Z"}
 {"seat":"FOUNDRY","event":"start","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","ts":"2026-09-18T14:35:24Z"}
 {"seat":"FOUNDRY","event":"close","id":"ENVHAZARDS_DLL_REBUILD_OWED_1","sha":"60e2d841b092276cb75161490a0b43fe4c032d90","ts":"2026-09-18T14:36:31Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-18T16:13:35Z"}
+{"seat":"BENCH","event":"file","id":"BRIDGE_MAPGEN_STALE_FINALIZE_1","title":"world_tile_map_generate leaves the map rendering stale until map_commit finalize","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-18T16:13:52Z"}
+{"seat":"BENCH","event":"note","id":"BRIDGE_MAPGEN_STALE_FINALIZE_1","text":"Refiled on wake 2026-09-18: the 16:08 handoff recorded this as filed but the ledger had no record. Defect: jawa/world_tile_map_generate returns with RegionAndRoomUpdater disabled and draw meshes never invalidated, so destroyed plants and converted terrain keep rendering as alive — any visual verdict on a bridge-generated map without a prior map_commit {redraw:true, full:true} is suspect. Fix: make world_tile_map_generate run map_commit's finalize (enable updater, RebuildAllRegionsAndRooms, RegenerateEverythingNow) before returning.","ts":"2026-09-18T16:13:54Z"}

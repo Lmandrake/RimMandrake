@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:36:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:13:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1859,3 +1859,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
+
+## BRIDGE_MAPGEN_STALE_FINALIZE_1 world_tile_map_generate leaves the map rendering stale until map_commit finalize
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
