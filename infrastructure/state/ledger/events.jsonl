@@ -9261,3 +9261,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"GL_EMIT_FLOATRANGE_GENERIC_DROP_1","ts":"2026-09-18T16:38:20Z"}
 {"seat":"FOUNDRY","event":"start","id":"GL_EMIT_FLOATRANGE_GENERIC_DROP_1","ts":"2026-09-18T16:38:24Z"}
 {"seat":"FOUNDRY","event":"close","id":"GL_EMIT_FLOATRANGE_GENERIC_DROP_1","sha":"3bf2e7078c95bf2e96f8a487763066eb0d3a0081","ts":"2026-09-18T16:38:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","ts":"2026-09-18T16:50:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","ts":"2026-09-18T16:50:48Z"}
+{"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1","sha":"384fc2982","ts":"2026-09-18T16:51:19Z"}
