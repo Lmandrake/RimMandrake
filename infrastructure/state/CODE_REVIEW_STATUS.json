@@ -10462,10 +10462,10 @@
     "sha": "d0c985e6a"
   },
   "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "457ee481a902b1275534a9940b6a50f1a8bedbd40d4a7aea316adb6978ade962",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "47038637e296d7d3322fa19bfd697ea045a34ceac2c67d56d6736e6fc621de25",
+    "sha": "1517fac5f"
   },
   "src/RimStarWars/Droidworks/Source/gen_droidworks_modules.py": {
     "cleanCount": 1,
