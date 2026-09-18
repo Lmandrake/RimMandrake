@@ -10,10 +10,16 @@
     Wars-esque name generated." Name picked by owner card the same day:
     SYTHECLAW.
 
-    defName stays AA_Razorjack until NAMING_SCHEME_EXECUTION_1 — this patch
-    moves only the player-facing identity (labels + description) into our
-    modspace. The art restyle (yellow-gold grass camo above, red underside)
-    rides the same item through artpipe, no reference=.
+    defName stays AA_Razorjack permanently — that ThingDef/PawnKindDef is
+    still owned and shipped by the donor mod (sarg.alphaanimals), not
+    absorbed into our own src/ tree, so it is not "ours" to rename under
+    the three-tier scheme (NAMING_SCHEME_PLAN.md §1: the scheme governs our
+    own shipping identity; a donor def only gets a new defName via a full
+    vendored-absorption, like Armoury's, with a documented old->new map —
+    not applicable here). This patch moves only the player-facing identity
+    (labels + description) into our modspace. The art restyle (yellow-gold
+    grass camo above, red underside) rides the same item through artpipe,
+    no reference=.
   -->
 
   <Operation Class="PatchOperationFindMod">
