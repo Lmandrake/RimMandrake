@@ -842,6 +842,179 @@ a future pass). S1/S2/S5/S6 untouched. Item stays in `doing`.
 
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs` (new)
+
+## S2 build pass — 2026-09-18
+
+Closes the one real gap this item's own history left silently open across
+every S2 mention: `RM_LotteryTableDef`/`RM_CompWorkedLottery` have compiled
+since the 2026-09-13 spike pass with **no WorkGiver, no JobDriver, and no
+content Def ever pointing at them** — a hook built but never connected to
+its consumer, the exact class of gap this session's own brief named for
+Miasma/Fever Wood and asked to be checked for here too. No bridge, no game,
+no quicktest this pass, per this item's own established no-bridge scope.
+
+**Checked first, per this item's own established discipline**: grepped
+`src/` for `RUT_DigShaft`/`RUT_DigStratum`/`RM_LotteryTableDef`/
+`RM_CompWorkedLottery`/`TryDisarmPendingTrap` — the two C# files and their
+own compiling classes were the only hits; zero content XML anywhere
+referenced either class. S1/S3/S4/S6/S5 do not have this gap (S1's
+`RM_CompFloodIgniter` already carries its own `CompGetGizmosExtra` ignition
+gizmo, confirmed by reading the file; S3/S4's classes are correctly
+NOT-yet-wired pending the real tar-beast/mouse ThingDefs, a different,
+already-documented and legitimately-blocked category).
+
+**New C# (both generic, `RM_`, cribbed from a real vanilla precedent, not
+invented):** `RM_WorkGiver_WorkLottery` (`WorkGiver_Scanner` subclass) +
+`RM_JobDriver_WorkLottery` — shape read in full from
+`RimWorld/WorkGiver_DeepDrill.cs` and `RimWorld/JobDriver_OperateDeepDrill.cs`
+via RimSage this pass (both confirmed real, live 1.6 decompile), minus the
+`CompPowerTrader`/`Uninstall`-designation checks DeepDrill needs and this
+manual-labor dig does not (spec S2: "stake a dig, put work into it" — a
+colonist digging by hand, not a powered machine). Generic on any Thing
+carrying `RM_CompWorkedLottery` (`ThingRequestGroup.BuildingArtificial`
+scan, not hardcoded to one ThingDef) — a future S6b pump/derrick building
+reuses this same WorkGiver for free, per the spec's own "same comp,
+different yield table" instruction. `AddWork()` is fed
+`pawn.GetStatValue(StatDefOf.MiningSpeed) * delta` (confirmed real vanilla
+stat, `RimWorld/JobDriver_Mine.cs`/`RimWorld/StatDefOf.cs:169` — hand-mining's
+own stat, not `DeepDrillingSpeed`, since this is a manual dig) plus
+`SkillDefOf.Mining` XP, matching `JobDriver_OperateDeepDrill`'s own
+0.065f-per-tick learn rate verbatim. `HasJobOnThing` refuses a Thing whose
+comp is `TrapArmed` (a ticking trap is not a work site — the fuse resolves
+on its own `CompTick` regardless of any job) and the JobDriver's own work
+toil carries the same `FailOn(TrapArmed)` so a pawn already working gets
+pulled off the instant a portion arms one, rather than standing over it —
+the one piece of "you learn not to dig past the click you were warned
+about" this pass can enforce without owner card 2's own disarm-interaction
+UI (see below, still owed).
+
+**🔴 Owner card 2's own disarm interaction has NO vanilla precedent to
+crib, checked this pass, not assumed**: `Building_TrapExplosive` (searched
+and read in full via RimSage) is a `Building_Trap` subclass —
+`Spring()`-on-step, exactly vanilla's own IED-trap shape, with no
+countdown/disarm state at all; a `grep`-equivalent source search for
+"Defuse" across the whole decompile returns zero JobDriver/WorkGiver hits.
+The spec's own "crib `Building_TrapExplosive`... for the armed-thing
+variant that surfaces intact for card 2's disarm question" does not hold up
+against the live 1.6 source — there is no existing disarm mechanism
+anywhere in vanilla to crib, so this interaction (a Gizmo + JobDef +
+JobDriver calling the already-built `TryDisarmPendingTrap`) is genuinely
+new UI/content design, not a wiring gap — same "content/UI work for the
+full build" category the spike pass's own header already used, now with a
+confirmed reason rather than an assumed one. **Left owed, not built this
+pass**: building it means inventing the skill-threshold number (the spec's
+own "high skill gate" names no figure) and a full Gizmo/Job/JobDriver
+triad from nothing, which this task's own steer ("closing real gaps
+first... before considering any new large piece") argues against picking
+up in the same pass as the WorkGiver fix above.
+
+**New content XML — the first real consumers of both classes:**
+
+- `RUT_DigStratumTable.xml` (new `LotteryTableDefs/` folder) — the first
+  real `RM_LotteryTableDef` instance. 4 strata (index 0-3); deeper digs
+  clamp to stratum 3's own table forever
+  (`Math.Min(stratumDepth, strata.Count-1)` in `RM_CompWorkedLottery.cs`,
+  confirmed by reading it again this pass) while still crossing
+  `beastWakeStratumThreshold` (4, the comp's own default) on every
+  completed portion past it — no 5th stratum needed. **Ban #1 satisfied as
+  the authored inequality** (linter-checked at def-load by
+  `RM_LotteryTableDef.ConfigErrors`, itself unchanged this pass): every
+  stratum's trap-row weight exceeds its era-remains-row weight, no row
+  flagged `isWholeBodyEraRemains`. 🔴 **Row `thingDef`s are a deliberate
+  placeholder, not final loot content**: grepped `src/` for
+  "Casing"/"GM-tier"/any era-remains-flavored defName — none exist yet (the
+  spec's own "XML-only ledger" gives that content to the items/roster
+  passes). Rows point at real, already-shipped, thematically-neutral
+  vanilla salvage (`ChunkSlagSteel`, `ShipChunk`, `ChunkMechanoidSlag`,
+  all confirmed via `mcp__rimsage__search_defs`) so this table proves the
+  wiring — the ban linter firing, a real stratum roll, a trap arming and
+  detonating — without inventing the flavor text that pass owns. Re-point
+  when that pass ships real finds.
+- `RUT_DigShaft.xml` — the buildable dig-shaft `ThingDef`
+  (`ParentName="BuildingBase"`, whole-def `MayRequire`, same posture as this
+  item's own `RUT_MoatFusePost.xml`), comps `CompProperties_Forbiddable` +
+  `CompProperties_WorkedLottery` pointed at `RUT_DigStratumTable`. No
+  `CompPowerTrader` (manual labor, per above). Texture reuses vanilla
+  `DeepDrill`'s own real texPath as a placeholder (same "reuse vanilla art,
+  no hold needed" posture this item's own S1/S5/S6/S4 passes already used)
+  — a bespoke replacement is an art-pass concern, not held since it
+  resolves (WARN-class ambiguous-vanilla-texPath, not an ERROR). No terrain-
+  tar placement restriction and no `researchPrerequisites`: both
+  INVENTED-BUILD simplifications, flagged not silently decided, same as
+  every other placement/gating choice this item has made throughout.
+- `RM_JobDefs_WorkLottery.xml` (`RM_WorkLottery` JobDef) and
+  `RM_WorkGiverDefs_WorkLottery.xml` (`RM_WorkLottery` WorkGiverDef,
+  `workType Mining`, shape cribbed from vanilla's own "Drill" WorkGiverDef
+  and this repo's own `RM_DigOutBuriedWorkGiver`,
+  `Greentide/Defs/WorkGiverDefs/RM_Greentide_WorkGivers.xml`, read before
+  writing this).
+- `RM_EnvironmentalHazardsJobDefOf` (in `RM_CompStationEater.cs`, the
+  existing `[DefOf]` class already backing `RM_EatStructure`/
+  `RM_GnawTreeBase`) gained one field, `RM_WorkLottery` — reused rather than
+  duplicated, per this mod's own existing convention.
+
+**Build.**
+```
+"C:\Users\Mandrake\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj -c Release
+```
+→ 0 warnings, 0 errors (2 new `.cs` files + 2 new `<Compile>` entries; no
+concurrent-edit collision this pass — `git status --porcelain` on the
+shared `.csproj` and `src/DEPLOY_HOLD.txt` was checked first, per this
+session's own git-safety brief; `DEPLOY_HOLD.txt` showed an unrelated
+peer's uncommitted `LanternDeeps` work and was left untouched entirely —
+this pass needed no `DEPLOY_HOLD` entry of its own, by design (vanilla art
+reuse only), so no collision to navigate).
+
+**Validate.** `validate_patch.py` (minimal 10-mod list active this session,
+1,577 def files scanned — no full-modlist run available while BENCH holds
+the bridge for its own live cycle): 4 files, **0 errors, 1 expected WARN**
+(`RUT_DigShaft.xml`'s own ambiguous-vanilla-`DeepDrill`-texPath, same class
+already accepted throughout this item) plus one expected info line
+(`CompProperties_WorkedLottery` — "no def in the load set uses that class,"
+real and public, first content consumer).
+
+**Self-review.** Both new `.cs` files and all 4 new/touched XML files read
+in full, cross-checked against the live 1.6 decompile for every engine
+claim above (`WorkGiver_Scanner`, `WorkGiver_DeepDrill`,
+`JobDriver_OperateDeepDrill`, `StatDefOf.MiningSpeed`, `Building_Trap`/
+`Building_TrapExplosive`, `IntRange` XML `~` syntax) — no defects found; all
+7 touched/new files (2 `.cs`, 1 edited `.cs`, 4 XML — `RM_CompStationEater.cs`
+included, one field added) marked `CLEAN` in `CODE_REVIEW_STATUS.json`.
+`RM_EnvironmentalHazards.csproj` left unmarked (shared/multi-author, same
+posture every prior pass in this item has used).
+
+**Owed, not done, explicitly**: owner card 2's disarm Gizmo/JobDef/
+JobDriver triad (flagged above, genuinely new design work, not a wiring
+gap); the real "barreled tar"/items-pass loot content that should replace
+`RUT_DigStratumTable`'s placeholder rows; any live/quicktest proof that a
+colonist actually walks up and digs, that a trap actually arms/detonates on
+a real map, or that `RUT_DigShaft` is placeable on the tar terrain grades
+(all explicitly out of this item's no-bridge scope). **Confirmed still and
+deliberately NOT done, per this item's own repeated framing, not
+overlooked**: wiring the S4 placeholder mouse onto any live GenStep/
+`wildAnimals` list (would permanently spawn a throwaway stub the roster
+pass must replace — S4's own header already reasoned this out, re-checked
+this pass and left as-is); `RM_CompStationEater`'s JobGiver onto any
+ThinkTree (needs the real tar-beast ThingDef, roster pass); the real
+sump-mouse/tar-beast `PawnKindDef`s; `RUT_BeastBulge`'s/`RUT_Filth_
+MouseTrack`'s own art (`DEPLOY_HOLD`'d); the live glow-multiplier
+calibration (S6, no-bridge scope). **With this pass, all 6 mechanics (S1-S6)
+have a build pass AND their own C# reaches a real, def-authored consumer**
+— the item is not closed: every "owed" line accumulated across S1/S2/S3/S4/
+S5/S6 above still stands, plus this pass's own new disarm-UI line. Item
+stays in `doing`.
+
+## files (S2 build pass, 2026-09-18)
+
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_WorkLottery.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_WorkLottery.cs` (new)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs` (edited: +1 DefOf field)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (edited: 2 new `<Compile>` entries, shared/multi-author)
+- `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
+- `src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_WorkLottery.xml` (new)
+- `src/RimMandrake/EnvironmentalHazards/Defs/WorkGiverDefs/RM_WorkGiverDefs_WorkLottery.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/LotteryTableDefs/RUT_DigStratumTable.xml` (new)
+- `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_DigShaft.xml` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (edited: 2 new `<Compile>` entries, shared/multi-author this pass)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
 - `src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_StationEater.xml` (new)
