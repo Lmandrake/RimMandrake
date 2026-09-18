@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_DigShaft.xml                       UtinniPatches · authored 2026-09-18
+  ============================================================================
+  SUMP_MECHANICS_1 S2 build pass. The first real XML consumer of
+  RM_CompWorkedLottery/RM_LotteryTableDef (spiked and compiling since
+  2026-09-13, never wired to any content Def until this pass) and of this
+  same pass's own RM_WorkGiver_WorkLottery/RM_JobDriver_WorkLottery/
+  RM_WorkLottery JobDef/WorkGiverDef — closes the "hook built, never called"
+  gap this item's own history left open across every prior S2 mention.
+
+  Manual-labor dig (spec S2: "stake a dig, put work into it"), not a powered
+  machine — no CompPowerTrader, unlike vanilla DeepDrill. workPerPortion/
+  trapFuseTicks/trapExplosionRadius left at CompProperties_WorkedLottery's
+  own INVENTED defaults (10000 work, 900-tick/15s fuse, 3.9-cell radius —
+  the spec's own figures, already set at the C# level).
+
+  No terrain-tar placement restriction: DeepDrill's own placement (crib
+  precedent) carries none either (deep-resource detection, not terrain, is
+  DeepDrill's own gate), and this comp doesn't scan for anything spatial —
+  a live/quicktest check of whether `terrainAffordanceNeeded Light` is
+  legal on the tar grades (RM_TarShallow/RM_TarDeep, LIQUID_TYPES_MOD_1) is
+  owed, out of this pass's no-bridge scope, INVENTED-BUILD placement rule
+  same posture as every other pass in this item.
+
+  No researchPrerequisites: gating this behind a ResearchProjectDef is
+  content-authoring, not an engine question this pass needed to resolve —
+  left always-buildable, flagged not silently decided.
+
+  Texture reuses vanilla DeepDrill's own real texPath as a placeholder (same
+  "reuse vanilla art, no hold needed" posture this item's own S1/S5/S6/S4
+  passes already used for RUT_TarBlaze/RUT_WickStem/RUT_Placeholder_
+  SumpMouse) — a dig shaft and a deep drill read as the same silhouette
+  class; art pass owns a bespoke replacement.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_DigShaft</defName>
+    <label>tar dig shaft</label>
+    <description>A braced shaft staked into the tar, worked by hand. The black keeps deep time down there — bones of unnamed ages, sunken machines, sealed casings, or a click you'd rather not have heard. Dig deeper at your own pace; the tar never runs out of things to sell back.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0.3</Flammability>
+      <Beauty>-15</Beauty>
+      <Mass>20</Mass>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WorkedLottery">
+        <table>RUT_DigStratumTable</table>
+      </li>
+    </comps>
+    <designationCategory>Production</designationCategory>
+    <designationHotKey>Misc13</designationHotKey>
+    <constructEffect>ConstructMetal</constructEffect>
+  </ThingDef>
+
+</Defs>

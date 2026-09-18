@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SUMP_MECHANICS_1 S2 build pass. Generic WorkGiverDef for
+     RM_WorkGiver_WorkLottery — reachable by any ThingDef carrying
+     RM_CompProperties_WorkedLottery, not Sump-specific. workType/
+     requiredCapacities/priorityInType shape cribbed from vanilla's own
+     "Drill" WorkGiverDef (Defs/Core/WorkGiverDefs/WorkGivers.xml, read via
+     RimSage) and this repo's own RM_DigOutBuriedWorkGiver
+     (Greentide/Defs/WorkGiverDefs/RM_Greentide_WorkGivers.xml). -->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_WorkLottery</defName>
+    <label>dig lottery shaft</label>
+    <giverClass>RimMandrake.EnvironmentalHazards.RM_WorkGiver_WorkLottery</giverClass>
+    <workType>Mining</workType>
+    <priorityInType>50</priorityInType>
+    <verb>dig</verb>
+    <gerund>digging</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>

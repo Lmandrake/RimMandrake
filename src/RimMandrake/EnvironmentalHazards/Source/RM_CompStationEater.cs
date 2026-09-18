@@ -242,6 +242,9 @@ namespace RimMandrake.EnvironmentalHazards
         // GREENTIDE_MECHANICS_2 M6, feller 3 — see RM_JobGiver_GnawTreeBase.cs.
         public static JobDef RM_GnawTreeBase;
 
+        // SUMP_MECHANICS_1 S2 build pass — see RM_WorkGiver_WorkLottery.cs.
+        public static JobDef RM_WorkLottery;
+
         static RM_EnvironmentalHazardsJobDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_EnvironmentalHazardsJobDefOf));

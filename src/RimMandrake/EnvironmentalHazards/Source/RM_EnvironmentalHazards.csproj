@@ -160,6 +160,8 @@
     <Compile Include="RM_HediffComp_HealPermanentWounds.cs" />
     <Compile Include="RM_HediffComp_SunlightScald.cs" />
     <Compile Include="RM_Patch_LivePrepViability.cs" />
+    <Compile Include="RM_WorkGiver_WorkLottery.cs" />
+    <Compile Include="RM_JobDriver_WorkLottery.cs" />
   </ItemGroup>
 
   <ItemGroup>
