@@ -632,3 +632,143 @@ needed to it.
 
 **Git**: see the commit this section ships with.
 
+## 2026-09-18 live verification (FOUNDRY, belt mode, subagent)
+
+**The live bridge fishing quicktest five waves have deferred, finally run.**
+Bridge was FREE, taken for this pass, released at the end. Ran against the
+**live, already-loaded 634-mod campaign session** (tile 17007, ticksGame
+130976) rather than a modlist swap — a `fish` tier was added to
+`src/RimMandrake/Utils/modset_builder.py` (14 mods: RimBridge + Odyssey +
+`mandrake.rut.patches` + `mandrake.rsw.swbestiary` + their real dependency
+closure) for any future session that wants a faster loop, but was not needed
+this pass since the campaign was already up. Method per water: confirm a
+world tile of the right biome via `jawa/world_tile_get`
+(`world/ASHKARR_WORLDMAP_tiles.csv`'s own `river_flow` column does **not**
+reliably predict a live `riverCount` — several CSV-flagged "river" tiles
+read `riverCount: 0` live; query `jawa/world_tile_get` directly, never the
+CSV, for this), generate a scratch map at it (`jawa/world_tile_map_generate`
+— exceeds the 30 s client timeout on every call this session and answers
+late, matching the documented `start_debug_game_ready` behaviour; poll
+`rimworld/get_game_info`'s `mapCount` rather than retrying), switch onto it
+with `jawa/set_current_map` (the `Actions\Change Map` debug action did
+**not** switch maps despite reporting success — use `set_current_map` with
+the new `mapId`, not the debug action), then read terrain
+(`jawa/get_terrain_batch`, full-map coverage in ≤25-row bands to stay under
+its 70,000-cell cap) and attempt a real `Zone_Fishing` placement
+(`rimworld/apply_architect_designator`,
+`architect-designator:zone:highlight-designator-zoneadd-fishing`) over the
+water found. No quicktest map was saved; the game was left on the real
+colony map (`mapId 3`) unpaused-state-unchanged at the end, matching
+`rimworld-debug-testing` doctrine — nothing was built worth keeping, so
+nothing was saved.
+
+### Scald — FAIL, live-confirmed, mechanically understood, NOT fixed here
+
+Generated a map at tile 86 (biome=`RUT_TheScald`, one of the 312 live Scald
+tiles). **Every sampled cell across the whole 325×325 map — 8 points,
+corners, edges, centre — is `RUT_ScaldWaterOceanDeep`**, confirmed via
+`rimworld/get_cell_info`. Root cause, read directly off the def: `RUT_TheScald.xml`'s
+`terrainsByFertility` (added by `UNDERWATER_BIOME_SUPPORT_1` for GravTide
+diving support, 2026-09-07 — **before** this item existed) has exactly ONE
+entry, `RUT_ScaldWaterOceanDeep` spanning `min -999`/`max 999`, i.e. the
+entire possible fertility range. `MapGenUtility.TerrainFrom()` is the
+function GravTide's own header comment already named as reading this field —
+it, not `waterDeepTerrain`/`waterShallowTerrain`, decides the terrain for a
+whole-tile `isWaterBiome` map, and it always resolves to the one entry here.
+So:
+- `waterDeepTerrain`/`waterShallowTerrain` etc (the Lake-family terrains
+  wave 1 measured as Freshwater and wired `fishTypes`'
+  `freshwater_Common`/`freshwater_Uncommon` buckets against) are **never
+  placed anywhere on a live Scald map** — wave 1's "MEASURED, resolving the
+  doc's own UNMEASURED flag" read the DEF's inherited fields correctly but
+  asked the wrong question; the def in isolation is not what
+  `MapGenUtility` actually paints.
+- `RUT_ScaldWaterOceanDeep` itself carries `<waterBodyType>Saltwater</waterBodyType>`
+  (`RUT_ScaldWater.xml`, read directly) — confirmed live-generated, not
+  theoretical.
+- `rimworld/apply_architect_designator` on the Fishing-zone designator
+  rejected **all 100/100** cells of a test rect with the engine's own literal
+  reason: `"Must be placed over shallow water containing fish."` The whole
+  map is 100% DEEP water — no shallow cells exist anywhere, so a Fishing
+  zone cannot be placed **at all**, independent of the freshwater/saltwater
+  bucket question.
+
+**This is not actually a `fishTypes` bucket bug.** `RUT_ScaldMargin.xml` (the
+"S3 bathing ring" TerrainDef this same mod's `SCALD_MECHANICS_1` item already
+authored) is `ParentName="WaterShallowBase"` with no `waterBodyType`
+override — Freshwater, matching the `freshwater_*` buckets `FISH_BESTIARY_
+BUILD_1` wired. That terrain is the **intended** fishing spot: a hand-painted
+isolated cove at the Scald's edge. But `SCALD_MECHANICS_1`'s own header
+already states this painting step is **not done** ("map/world-authoring via
+the bridge on the frozen planet... not done this pass, no bridge access in
+this task"), and this pass confirms it independently: there is currently
+**no `RUT_ScaldMargin` terrain anywhere on the live planet**. So Scald
+fishing is dead right now for a reason **this item cannot fix alone** — it
+needs `SCALD_MECHANICS_1`'s own owed map-authoring step (siting an isolated
+cove, which its own header flags as a real design decision, not a default) to
+land first. Not fixed here; flagged precisely rather than guessed at.
+`FISH_BESTIARY_BUILD_1`'s own `fishTypes` wiring on `RUT_TheScald` needs no
+change once that cove exists.
+
+### Wasteland, Cracked Lands, Weeping Stones, Greentide — UNABLE TO VERIFY, new blocker found
+
+Attempted a live map + `Zone_Fishing` placement (Greentide) and a live map +
+`jawa/list_things` scan for `RUT_BrineDeposit_*` (Wasteland mining) the same
+way. **Every attempt found zero water terrain of any kind anywhere on the
+generated map**, despite `jawa/world_tile_get` confirming `riverCount > 0` or
+a lake-type `TileMutatorDef` (`ToxicLake`) on the chosen tile. This is a NEW
+finding, filed separately as `QUICKTEST_RIVER_WATER_MISSING_1` (full evidence
+there) rather than guessed at here, because it is bigger than this item and
+not caused by this item's own work:
+
+- Tested across **6 tiles, 5 biomes**, including a deliberately non-`RUT_`
+  control (`RM_FE_Pyrelands`, riverCount 4 — also zero water) and
+  `RUT_RustCathedral` (riverCount 2 — also zero water, despite that biome's
+  own fishing wiring being independently re-confirmed correct in wave 5).
+  Both controls rule out "this is a defect in this item's own XML."
+- The read method is proven sound on the same session: the Scald test above
+  (§ previous section) DID correctly read real water terrain
+  (`RUT_ScaldWaterOceanDeep`) with the identical tools. So this is a genuine
+  absence, not an instrument blind spot.
+- `references/traps.md` records the SAME tool (`world_tile_map_generate`)
+  correctly producing real river water on 2026-09-13 (`ZBiome_Grasslands`,
+  `riverCount: 2`) — something has changed since then, or something is
+  specific to tonight's session/mod state. Not root-caused here.
+- Consequence for Wasteland specifically: `jawa/list_things` on the generated
+  map found **0 of 9992 things scanned** matching
+  `RUT_BrineDeposit_Tekk`/`_Drazz`/`_BrinePlate` — consistent with the same
+  root cause, since the wave 2 GenSteps scatter onto a terrain TAG
+  (`RUT_WastelandBrineShallow`) that only exists on terrain that never
+  generated.
+
+**This does not mean Cracked Lands/Weeping Stones/Greentide/Wasteland's own
+wiring is wrong** — three of the four were already independently
+re-confirmed wired onto their correct LIVE BiomeDefs in wave 3, and nothing
+this pass found contradicts that. It means this session's tooling could not
+produce a map with any water on it to test against, for any biome, Ash'karr
+or not. **Genuinely unresolved, not silently assumed either way.**
+
+### Item status: left `doing`, not closed
+
+Re-reading `## criteria` literally: *"every catch table resolves to a real
+item on a live fishing pass."* Scald: live-confirmed FALSE (mechanism dead,
+cause understood, fix owed to a different item). The other four: not
+established true OR false this pass — blocked by
+`QUICKTEST_RIVER_WATER_MISSING_1`. Twilight remains correctly HELD by design
+(unchanged). **No water is confirmed reaching a player's net on any of the
+five in-scope waters this session** — this is the single most load-bearing
+finding of the whole item to date, and closing the item now would misstate
+that. Left `doing`; the two blockers (`SCALD_MECHANICS_1`'s owed cove
+painting, `QUICKTEST_RIVER_WATER_MISSING_1`'s root cause) are each filed
+where a future session can pick them up without re-deriving this pass's
+work.
+
+**Fixed this pass**: nothing in `FISH_BESTIARY_BUILD_1`'s own defs — both
+findings trace to OTHER items' owed work (`SCALD_MECHANICS_1`) or a newly
+discovered, broader tooling/engine question
+(`QUICKTEST_RIVER_WATER_MISSING_1`), not to a `fishTypes`/item-def defect
+this item could fix by editing its own XML. Added: the `fish` tier in
+`modset_builder.py` (tooling, for a future faster loop).
+
+**Git**: see the commit this section ships with.
+

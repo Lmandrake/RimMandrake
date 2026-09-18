@@ -130,6 +130,14 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.oracle"],
         "dlc": False,
     },
+    "fish": {
+        "why": "Prove FISH_BESTIARY_BUILD_1's live fishing wiring (Scald, "
+               "Wasteland brine mining, Cracked Lands, Weeping Stones, "
+               "Greentide) with Odyssey's water/fishing mechanics present "
+               "and nothing else on the map that could explain a failure.",
+        "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rsw.swbestiary"],
+        "dlc": True,
+    },
 }
 
 
