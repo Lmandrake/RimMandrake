@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T16:28:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:38:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -422,15 +422,6 @@ target:   v1
 kind:     task
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
-prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
 ## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
 state:    doing  (BLOCKED)
@@ -1228,16 +1219,6 @@ kind:     task
 blocked:  wired RUT_WarLabReactorCore (CompIgniteCraterOnDestroy) + deployed; live ignition/save-load/world_commit quicktest owed
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  item text names BENCH as the owner (active gl_emit.py dev); no calibrating landform exists yet to fix against
-summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
-prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
 ## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
 state:    doing  (BLOCKED)
