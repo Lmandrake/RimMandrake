@@ -959,3 +959,135 @@ run. Fambaa still unattempted (still first in the worklist, still needs its
 own careful pass per Pass 7/8's notes on its ArtOverride gating).
 
 **Remaining**: 64 of the Wave C worklist, plus Fambaa.
+
+## 2026-09-18 (FOUNDRY, belt mode) — Pass 10: 4 more species ported: Gutkurr, Hrumph, Hssiss, Igitz (64 -> 60 remaining)
+
+Same pipeline, front of `mlie_wave_c_worklist.json`'s `remaining_worklist`,
+skipping Fambaa (still flagged, needs its own careful ArtOverride-gated
+pass) and 5 ArtOverride-linked species now confirmed live
+(`Gizka`/`Grank`/`GreaterKraytDragon`/`Hawkbat`/`Horax`, each has its own
+`mandrake.rsw.<name>artoverride` mod per the full `find src/RimStarWars
+-maxdepth 1 -iname "*ArtOverride*"` listing — 26 present) in favor of the
+next 4 ordinary species with none.
+
+**Bodies**: Gutkurr/Hssiss/Igitz needed defName-rename-only custom BodyDefs
+(RSW_MlieWaveC_Bodies.xml), repointing their shared attack-tool groups to
+the ALREADY-PORTED Wave B `RSW_SWClaws` (Gutkurr), `RSW_SWTailAttackTool`/
+`RSW_SWToxicAppendage` (Hssiss) — Hssiss's 2 tusk parts keep the bare
+`TuskAttackTool` group (Alpha Animals, per the Boma/Pass 9 correction, not
+Mlie content). Hrumph stays vanilla Core `QuadrupedAnimalWithHooves`, no
+BodyDef port needed.
+
+**Resources**: Gutkurr needs none — repoints to the already-ported
+RSW_Leather_Insectile/RSW_Insectile_Meat (Pass 3) — only its 2 eggs are new
+(RSW_EggGutkurrFertilized/UnFertilized, texPath swresource/EggInsectile,
+already extracted, reused unchanged). Hrumph needs no new resource at all
+— repoints to RSW_Leather_Reptomammal (Pass 9)/RSW_Pachydermoid_Meat (Pass
+1); no egg comp (live birth). Hssiss needs a new leather
+(RSW_Leather_Dark, texPath swresource/Leather_Tough — same art
+RSW_Leather_Tough already uses, no new PNG) — its meat repoints to
+RSW_Saurian_Meat (Wave B) — plus 2 new eggs (RSW_EggHssissFertilized/
+UnFertilized, texPath swresource/EggScaled, newly extracted). Igitz needs
+no new leather (vanilla Core `Leather_Light`) — its meat repoints to
+RSW_Gorg_Meat (Pass 7/9) — plus 2 new eggs (RSW_EggIgitzFertilized/
+UnFertilized, texPath swresource/EggAmphispawn, newly extracted).
+
+🔴 **Real donor-bundle asset gap found and worked around**: Igitz's own
+PawnKindDef references `swanimals/Igitz/Igitz_j_Swimming` for the juvenile
+swimming graphic, but NO such texture exists anywhere in the AssetBundle
+(confirmed via `extract_bundle.py`'s list mode — 11 total Igitz matches,
+none named `Igitz_j_Swimming*`). `validate_patch.py` caught this as a real
+error (pink placeholder) before it shipped. This is a donor bug, not an
+extraction miss — the donor mod itself renders this the same way today.
+Worked around by repointing the juvenile `swimmingGraphicData` to the
+already-extracted adult `Igitz_Swimming` texPath (same pattern every other
+life stage in this donor already uses — sharing one texPath across stages
+at different `drawSize`). One casing fix: the bundle's own internal name
+for `Igitz_j_south` is lowercase, unlike every sibling frame — renamed to
+match.
+
+🔴 **Real bug found and fixed in 5 PRIOR species, not just this pass's
+4**: `RSW_Gorg.xml`, `RSW_Gornt.xml`, `RSW_GraniteSlug.xml`,
+`RSW_Gelagrub.xml` (all Pass 9, the recovered-agent pass) and
+`RSW_FrilledGorg.xml` (Pass 8) all shipped with their adult life stage's
+`soundWounded`/`soundDeath`/`soundCall`/`soundAngry` pointing at the bare
+DONOR sound defNames (e.g. `Pawn_Gorg_Wounded`) instead of our own
+already-absorbed `RSW_Pawn_<Species>_*` sounds — silently correct today
+only because Mlie's own SoundDefs stay active, but wrong for donor
+retirement (exactly this item's own eventual bar). Confirmed the
+established, dominant pattern used by every OTHER species in this item
+(RSW_Bantha, RSW_Dewback, RSW_Wampa, RSW_Boma, RSW_Dianoga, RSW_Eopie,
+RSW_Anooba, RSW_Mudhorn, RSW_FeralNerf — all `RSW_Pawn_*`) before fixing
+all 5 files to match. FrilledGorg's fix correctly points at `RSW_Pawn_
+Gorg_*` (not `RSW_Pawn_FrilledGorg_*`) — confirmed against the donor's own
+XML that FrilledGorg's ThingDef deliberately reuses Gorg's sound clips
+(not its own), same as the already-documented Sarlacc-ambient-reuse
+precedent.
+
+**Cast wiring, real cross-check against `cast_assignment.csv` before
+wiring** (not the donor's own multi-biome `wildBiomes`, which several
+prior passes correctly note is NOT the same as the live cast — donor
+wildBiomes lists many biomes at low weight, but the actual live design has
+exactly ONE row per species): `Desert` (`RSW_Gutkurr` 0.4, `RSW_Hrumph`
+0.3), `AridShrubland` (`RSW_Igitz` 0.7), `BiomeCypreJungle` (`RSW_Hssiss`
+0.18) — repointed from the bare donor entries in both
+`BiomeCast_Ashkarr.xml` copies and `cast_assignment.csv`.
+
+⚠️ **Known gap, flagged not fixed, matching the Wave A wiring-gap
+precedent (2026-09-09)**: `cast_assignment.csv`'s reason field for Gutkurr
+notes "owner card 2026-09-09: slowed 4.5→4.4" — that MoveSpeed tuning is
+applied by a SEPARATE generated file,
+`BiomeFaunaStatAdjustments_Generated.xml` (source:
+`design/Jawa/worldbuilding/biomes/rosters/desert.json`'s
+`stat_adjustments`), which still targets the bare donor `Gutkurr` defName.
+Now that the wild population spawns as `RSW_Gutkurr`, that adjustment no
+longer applies to it — `RSW_Gutkurr` ships with the donor's unadjusted
+base `MoveSpeed>4.5`. NOT hand-patched here (both the stat-adjustment file
+and its roster-JSON source are GENERATED, owned by a different process —
+`gen_stat_adjustments.py`, BIOME_FAUNA_ASSIGNMENT_SITTING_1 authority);
+regenerating is owed to whoever next runs that generator or the owner's
+own biome-sheet sitting.
+
+Checked all 3 Mlie-touching patch files named in this item's own spec: no
+references to Gutkurr/Hrumph/Hssiss/Igitz in any of them.
+
+Art: 52 PNGs extracted via `extract_bundle.py` against the live Steam
+workshop bundle (workshop folder 3497316713) — Gutkurr 4, Hrumph 8, Hssiss
+25 (3 alternateGraphics recolor variants + Swimming, no CutoutComplex
+masks needed — this species swaps whole texPaths rather than tinting a
+shared base), Igitz 11, plus 2 new egg textures (EggScaled, EggAmphispawn,
+4 PNGs) — all confirmed non-zero and PIL-openable. `*ArtOverride` check
+done against the full current ~26-mod folder listing: none of the 4
+collide.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files, BOTH with `--live` (fresh capture `2026-09-18T02-17-44Z`, 632 mods
+— confirmed against live `ModsConfig.xml`'s 632 active mods before
+trusting it) AND with `--defs` pointing at the real RimWorld Data/Mods/
+Workshop roots for full ParentName/Class resolution (not done in most
+prior sub-passes) — **0 errors, 0 warnings** both ways. Also re-validated
+the 5 fixed prior-species files plus the touched `BiomeCast_Ashkarr.xml` —
+0 errors, 1 pre-existing unrelated warning (the documented Comigo xpath
+ambiguity). All new defNames confirmed unique in-repo (the only 2-file
+hits are each species' own ThingDef+BodyDef pair sharing a defName across
+def types, same as every prior species).
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` (226 files
+written clean) and `--mod UtinniPatches --apply` (7 files, including the
+patched `BiomeCast_Ashkarr.xml`, written clean — the other new/changed
+files in that batch belong to a different concurrent agent's work, not
+this pass). **No live cold-load proof yet** — owed to the next natural
+restart, matching every prior wave's established pattern.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated: Gutkurr/
+Hrumph/Hssiss/Igitz removed from `remaining_worklist`, count 64 -> 60,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch10`.
+
+**Not done this pass**: the `BiomeFaunaStatAdjustments_Generated.xml`/
+roster-JSON gap flagged above (Gutkurr's MoveSpeed tuning). Fambaa still
+unattempted. The 5 ArtOverride-linked species confirmed live this pass
+(Gizka/Grank/GreaterKraytDragon/Hawkbat/Horax) still need their own
+ArtOverride-aware pass when their turn comes.
+
+**Remaining**: 60 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), plus Fambaa.

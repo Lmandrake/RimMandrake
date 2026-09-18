@@ -153,10 +153,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.25</minAge>
-          <soundWounded>Pawn_Gelagrub_Wounded</soundWounded>
-          <soundDeath>Pawn_Gelagrub_Death</soundDeath>
-          <soundCall>Pawn_Gelagrub_Call</soundCall>
-          <soundAngry>Pawn_Gelagrub_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Gelagrub_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Gelagrub_Death</soundDeath>
+          <soundCall>RSW_Pawn_Gelagrub_Call</soundCall>
+          <soundAngry>RSW_Pawn_Gelagrub_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>

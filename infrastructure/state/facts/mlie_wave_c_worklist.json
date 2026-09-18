@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 64,
+  "remaining_worklist_count": 60,
   "remaining_worklist": [
     {
       "donor_defName": "Fambaa",
@@ -52,13 +52,6 @@
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
     {
-      "donor_defName": "Gutkurr",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
       "donor_defName": "Hawkbat",
       "biomes": [
         "BiomeCypreJungle"
@@ -69,27 +62,6 @@
       "donor_defName": "Horax",
       "biomes": [
         "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Hrumph",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Hssiss",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Igitz",
-      "biomes": [
-        "AridShrubland"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -567,6 +539,36 @@
       "biomes": [
         "ExtremeDesert",
         "PoisonForest"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch10": [
+    {
+      "donor_defName": "Gutkurr",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Hrumph",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Hssiss",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Igitz",
+      "biomes": [
+        "AridShrubland"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     }

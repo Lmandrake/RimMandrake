@@ -918,4 +918,163 @@
       <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
+<!--
+  Pass 10 (Gutkurr/Hrumph/Hssiss/Igitz, 2026-09-18): Gutkurr needs no new
+  leather/meat — repoints to the already-ported RSW_Leather_Insectile/
+  RSW_Insectile_Meat (Pass 3, CanCell) — only its 2 eggs are newly ported
+  (RSW_EggGutkurrFertilized/UnFertilized, texPath swresource/EggInsectile —
+  already extracted, Pass 3, reused unchanged, no new art). Hrumph needs no
+  new resource at all — leatherDef/specificMeatDef repoint to the
+  already-ported RSW_Leather_Reptomammal/RSW_Pachydermoid_Meat (Pass 9/Pass
+  1); no egg comp (live birth via litterSizeCurve). Hssiss needs a new
+  leather (RSW_Leather_Dark, texPath swresource/Leather_Tough — same art
+  RSW_Leather_Tough already uses, donor's own texPath choice, no new PNG)
+  — its specificMeatDef repoints to the already-ported RSW_Saurian_Meat
+  (Wave B) — plus its 2 eggs are newly ported (RSW_EggHssissFertilized/
+  UnFertilized, texPath swresource/EggScaled, newly extracted this pass).
+  Igitz needs no new leather — repoints to vanilla Core `Leather_Light` —
+  and its specificMeatDef repoints to the already-ported RSW_Gorg_Meat
+  (Pass 7/Pass 9); its 2 eggs are newly ported (RSW_EggIgitzFertilized/
+  UnFertilized, texPath swresource/EggAmphispawn, newly extracted this
+  pass).
+-->
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Dark</defName>
+    <label>dark hide</label>
+    <description>The pelt of an creature typically associated with the "darkside". This tough skin protects very well and is believed to increase ones "connection to the force".</description>
+    <graphicData>
+      <texPath>swresource/Leather_Tough</texPath>
+      <color>(50,50,75)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.8</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.8</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>35</StuffPower_Insulation_Heat>
+      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
+    </statBases>
+    <equippedStatOffsets>
+      <PsychicSensitivityOffset>0.20</PsychicSensitivityOffset>
+      <PsychicEntropyRecoveryRate MayRequire="Ludeon.RimWorld.Royalty">0.1</PsychicEntropyRecoveryRate>
+      <SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.5</SlaveSuppressionOffset>
+    </equippedStatOffsets>
+    <stuffProps>
+      <color>(50,50,75)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGutkurrFertilized</defName>
+    <label>gutkurr egg (fert.)</label>
+    <description>A fertilized gutkurr egg. If all goes well, it should hatch into a baby gutkurr. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,125,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Gutkurr</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGutkurrUnFertilized</defName>
+    <label>gutkurr egg (unfert.)</label>
+    <description>A fertilized gutkurr egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,125,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggHssissFertilized</defName>
+    <label>hssiss egg (fert.)</label>
+    <description>A fertilized hssiss egg. If all goes well, it should hatch into a baby hssiss. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,125,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Hssiss</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggHssissUnFertilized</defName>
+    <label>hssiss egg (unfert.)</label>
+    <description>An unfertilized hssiss egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,125,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggIgitzFertilized</defName>
+    <label>igitz egg (fert.)</label>
+    <description>A fertilized igitz egg. If all goes well, it should hatch into a baby igitz. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggAmphispawn</texPath>
+      <color>(0,150,150)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Igitz</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggIgitzUnFertilized</defName>
+    <label>igitz egg (unfert.)</label>
+    <description>An unfertilized igitz egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggAmphispawn</texPath>
+      <color>(0,150,150)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

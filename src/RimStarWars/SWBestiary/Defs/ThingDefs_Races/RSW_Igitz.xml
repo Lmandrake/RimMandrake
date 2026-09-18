@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Igitz creature port (Pass 10).
+  Ported from mlie.starwarsanimalcollection's `Igitz` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Igitz` BodyDef is, like RSW_Anooba/RSW_Borcatu/
+  RSW_Cannok/RSW_Clodhopper/RSW_Eopie/RSW_Gorg, entirely vanilla-part
+  composition (2x Tail, Spine, Stomach, Heart, Lung x2, Kidney x2, Liver,
+  Neck/Head/Skull/Brain/Eye x2/Ear x2/Nose/AnimalJaw, 4x Leg/Paw) — ported
+  as RSW_Igitz with a defName rename only, no new body part needed
+  (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef` stays vanilla Core `Leather_Light` — no port needed (same as
+  RSW_Dianoga/RSW_Gorg). `specificMeatDef` repoints to the already-ported
+  RSW_Gorg_Meat (RSW_MlieWaveC_Resources.xml, Pass 7/Pass 9 — the donor's
+  own `Gorg_Meat` this species' meat points at too). Its 2 eggs are newly
+  ported (RSW_EggIgitzFertilized/UnFertilized, texPath
+  swresource/EggAmphispawn, newly extracted this pass).
+
+  This species also carries a `modExtensions` block gated
+  `MayRequire="pathfinding.framework"` (amphibious movement) — kept
+  verbatim, unchanged text, same donor-authored gate.
+
+  No `canCrossBreedWith` in the donor.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 11 PNGs (base + Dessicated
+  + Swimming, juvenile Igitz_j variants with Dessicated), all confirmed
+  non-zero and PIL-openable. One casing fix: the bundle's own internal name
+  for the juvenile south-facing frame is lowercase (`igitz_j_south`) unlike
+  every sibling frame — renamed to `Igitz_j_south.png` to match the def's
+  own texPath casing (the same case-sensitivity trap `validate_patch.py`
+  has caught before, e.g. FrilledGorg's Pass 8). Art sits at
+  Textures/swanimals/Igitz/.
+
+  🔴 **Real donor-bundle asset gap found and worked around**: the donor's
+  own PawnKindDef references `swanimals/Igitz/Igitz_j_Swimming` for the
+  juvenile life stage's swimming graphic, but NO such texture exists
+  anywhere in the AssetBundle — confirmed via extract_bundle.py's list mode
+  (11 total Igitz matches, none named `Igitz_j_Swimming*`). `validate_patch.py`
+  (live-dump mode) caught this as a real error (pink placeholder). This is a donor
+  bug, not an extraction miss — the donor mod itself would render this the
+  same way today. Worked around by repointing the juvenile
+  `swimmingGraphicData` to the already-extracted adult `Igitz_Swimming`
+  texPath instead (same pattern every other life stage here already uses —
+  sharing one texPath across stages at different `drawSize`), rather than
+  leaving the juvenile stage broken or omitting `swimmingGraphicData`
+  entirely.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `AridShrubland` only (0.7,
+  status `keep`) — the donor's own `wildBiomes` lists TropicalSwamp/
+  TemperateForest/TropicalRainforest/TemperateSwamp/ColdBog at nonzero
+  weight (kept verbatim below, unmodified, per every prior pass's
+  convention), but `cast_assignment.csv`'s own ground truth has exactly one
+  live row for this species. Repointed from the bare "Igitz" entry in
+  cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Igitz</defName>
+    <label>igitz</label>
+    <description>Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.30</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.0</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>fish teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4.8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggIgitzUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggIgitzFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Igitz</body>
+      <predator>true</predator>
+      <baseBodySize>0.32</baseBodySize>
+      <baseHungerRate>0.10</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <petness>0.5</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1.7)</li>
+          <li>(4, 0.7)</li>
+          <li>(5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <ColdBog>0.01</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Igitz_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Igitz_Death</soundDeath>
+          <soundCall>RSW_Pawn_Igitz_Call</soundCall>
+          <soundAngry>RSW_Pawn_Igitz_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Igitz</defName>
+    <label>igitz</label>
+    <labelPlural>igitz</labelPlural>
+    <race>RSW_Igitz</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>igiwog</label>
+        <labelPlural>igiwogs</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz_j</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.20, 0.3, 0.20)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Igitz/Igitz_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
