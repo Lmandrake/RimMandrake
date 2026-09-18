@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T03:11:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T03:16:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1960,3 +1960,13 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md
+
+## MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1 Live 632-mod ModsConfig.xml has several deployed custom mods INACTIVE -- reconcile before the next restart/play session
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md
