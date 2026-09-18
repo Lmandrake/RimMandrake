@@ -150,3 +150,108 @@ Evidence: `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
 against the expectations manifest.** The ladder loses nothing; a 22-second restart was
 always most of what hot-reload was saving. `expectations_manifest.py` and its runner
 are unaffected — only the step that produced the live state changed.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — tally against all 5 criteria
+
+MODE=afk this session; did not touch the owner-gated criterion. Bridge was FREE
+and the game answering (`rimflow bridge who`/`rimflow game` checked first); took
+it once for a short, read-only proof, released immediately after.
+
+**1. "A batch of builds validates through L2 in one bridge sitting, zero
+restarts." — STILL OPEN.** Did not attempt the L2 behavior gauntlet (spawn
+everything new, step ticks, screenshot) — out of caution given the fragile
+shared session (active water-terrain regression investigation, heavy
+concurrent activity) and because the more urgent gap turned out to be one tier
+down (see below). Did land a real **L1** batch proof: 13 checks across 4
+defTypes (`ThingDef`/`PawnKindDef`/`HediffDef`), 3 bridge calls, one sitting,
+zero restarts — `python.exe src/RimMandrake/Utils/run_expectations.py
+--manifest infrastructure/state/expectations/FORSAKEN_CRAGS_PREDATORS_BUILD_1.expectations.json --live`.
+L2 itself remains unattempted; a future session should judge session
+fragility fresh before trying it.
+
+**2. "`jawa/get_defs` reads nested fields after its upgrade." — DONE, and
+exercised for real for the first time.** The upgrade has been deployed since
+2026-09-04 and ad-hoc live-proved 2026-09-13, but **`run_expectations.py`'s
+own `_live_defs` had never actually been run against the real bridge before
+today** — only against `--fixture` stand-ins. Running it live for the first
+time immediately found a real bug: `_live_defs` read `resp["rows"]`, but the
+live `jawa/get_defs` response key is `"defs"` — every prior scalar-only
+`--live` run had therefore silently returned zero rows (all MISSING-DEF)
+instead of failing loud. Fixed (`run_expectations.py`), confirmed live.
+Also wired `--live` mode to actually pass `deep=True` and a real `fields=`
+list to the bridge (it previously hardcoded `allow_deep=False` and never
+asked for deep fields at all, even though the C# upgrade has been live for
+two weeks) — this is now the runner's only mode; there is no more
+SKIPPED-PENDING-UPGRADE path.
+Separately found, **fixed offline, built clean (0 warnings/errors), NOT
+deployed**: `DeepSerializeValue` in
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`
+had no case for `System.Type` fields — every `hediffClass`/`compClass` (a
+`Type`, not a `Def`) deep-serialized to an empty `{}` instead of an honest
+value or an honest failure, because `Type`/`RuntimeType` expose `Name`/
+`FullName` as properties, not public instance fields, so the generic
+reflect-its-own-fields fallback found nothing. Confirmed live against the
+running game before the fix (`HediffDef::RSW_ColdDrain#hediffClass` read back
+`{}`), fixed to return the bare `Type.Name` (matching how XML/manifests
+already write class names unqualified), rebuilt clean via `build.py --gm`
+(plan-only — game is up, DLL is memory-mapped, did not force a deploy).
+**Deploy owed at the next game-down window** (`build.py --gm --apply`); the
+live manifest run after this fix will need a restart to actually prove
+`hediffClass`/`compClass` come back correct — currently the one remaining
+live FAIL (12/13 PASS, 1 FAIL, confirmed this session; the FAIL is exactly
+this known, already-fixed-but-undeployed defect, not a mystery).
+
+**3. "One manifest format, one runner; no bespoke V&V scripts per item." —
+DONE, and the machinery got materially more correct.** Live-proving criterion
+2 above surfaced that `FORSAKEN_CRAGS_PREDATORS_BUILD_1`'s own manifest — the
+one existing retrofit, closed as done 2026-09-13 — was **itself wrong against
+real live shape in 3 of its 13 checks**, all authored against a hand-built
+fixture that never matched what `deep=true` actually returns:
+- `statBases.Wildness` assumed `statBases` is a dict keyed by stat name; live
+  `deep=true` returns it as an ordered `List<StatModifier>`
+  (`[{"stat":"Wildness","value":1.0}, ...]`), same shape vanilla always used.
+- `tools[2].extraMeleeDamages[...]` assumed index 2 was the cold-drain-grip
+  tool (true of the ThingDef's OWN 3-item XML block) — the POST-INHERITANCE
+  resolved list actually has 7 entries (a parent race def's claw/teeth/head
+  tools come first), so the real cold-drain-grip tool is index 6, not 2.
+- `comps[1].fleeSearchRadius` had the same inherited-list-position problem;
+  the real `CompProperties_LightAversion` entry is index 17 of 19.
+
+Rather than hardcode new (equally fragile) positions, extended the path DSL:
+`expectations_manifest.py` now supports `[key=value]` bracket lookups
+alongside bare `[N]` indices — `statBases[stat=Wildness].value`,
+`tools[label=cold-drain grip].extraMeleeDamages[0].def`,
+`comps[fleeExpiryTicks=600].fleeSearchRadius` — which find a list item by a
+field's value instead of a position, so a future inherited-list reorder
+cannot silently break the check again. `_walk_segment`/`_PATH_TOKEN`/
+`_INDEX` updated; `_coerce_bracket_value` added (int/float/bool/string).
+Manifest and its offline fixture both corrected to the new paths. Runner
+(`_top_field`) updated to derive the right `fields=` name for a keyed path
+too. `selftest_expectations_manifest.py` grew from 20 to **27/27** (7 new
+cases: keyed match, keyed no-match raises, keyed-against-non-list raises,
+`_top_field` for all 4 path shapes). `--fixture` run: **13/13 PASS**. `--live`
+run against the real game: **12/13 PASS**, the 1 FAIL being the
+already-diagnosed-and-fixed-offline `hediffClass` Type-serialize bug from
+criterion 2, not a new mystery.
+
+**4. `hot_reload_defs` full-list trial — VOID, untouched, not resurrected**
+(per its own retraction above and the owner's 2026-09-03 ruling).
+
+**5. First review environment staged and reviewed by the owner — NOT
+attempted, correctly out of scope this session.** MODE=afk; this is
+explicitly his own eyes per the ladder doc's L4 definition, not FOUNDRY's to
+stage-and-self-grade. Genuinely still open.
+
+**Net**: criteria 2 and 3 are DONE and now stand on a real live proof instead
+of an assumed-good retrofit; criterion 1 has a real L1 (not L2) batch proof
+and remains open at the L2 tier; criterion 4 stays VOID; criterion 5 remains
+open, owner-gated. Left `doing` — not all 5 are satisfied, `rimflow close` not
+called.
+
+Files touched: `src/RimMandrake/Utils/run_expectations.py`,
+`src/RimMandrake/Utils/expectations_manifest.py`,
+`src/RimMandrake/Utils/selftest_expectations_manifest.py`,
+`src/RimMandrake/Utils/testdata/FORSAKEN_CRAGS_PREDATORS_BUILD_1_fixture.json`,
+`infrastructure/state/expectations/FORSAKEN_CRAGS_PREDATORS_BUILD_1.expectations.json`,
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`
+(compiled clean, deploy owed at next game-down window).

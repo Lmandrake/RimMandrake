@@ -4,14 +4,14 @@
   "checks": [
     {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "label", "expected": "cindermare"},
     {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "race.trainability", "expected": "None"},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "statBases.Wildness", "expected": 1.0},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[2].extraMeleeDamages[0].def", "expected": "RSW_ColdDrainDamage"},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[2].extraMeleeDamages[0].amount", "expected": 6},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "statBases[stat=Wildness].value", "expected": 1.0},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[label=cold-drain grip].extraMeleeDamages[0].def", "expected": "RSW_ColdDrainDamage"},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[label=cold-drain grip].extraMeleeDamages[0].amount", "expected": 6.0},
 
     {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "label", "expected": "skarnix"},
     {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "race.trainability", "expected": "None"},
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "statBases.Wildness", "expected": 1.0},
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "comps[1].fleeSearchRadius", "expected": 10},
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "statBases[stat=Wildness].value", "expected": 1.0},
+    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "comps[fleeExpiryTicks=600].fleeSearchRadius", "expected": 10},
 
     {"defType": "PawnKindDef", "defName": "RSW_Cindermare", "path": "combatPower", "expected": 140},
     {"defType": "PawnKindDef", "defName": "RSW_Skarnix", "path": "combatPower", "expected": 65},

@@ -58,6 +58,36 @@ def test_walk_path():
         expect("walk_path missing key raises", True)
 
 
+def test_walk_path_keyed_bracket():
+    """`[stat=Wildness]` finds a list item by key/value instead of a bare
+    index - added 2026-09-18 after a live proof found jawa/get_defs
+    deep=true serializes StatModifier lists positionally, not as a dict."""
+    obj = {"statBases": [{"stat": "Mass", "value": 1.0}, {"stat": "Wildness", "value": 0.8}]}
+    expect("walk_path keyed bracket match",
+           em.walk_path(obj, "statBases[stat=Wildness].value") == 0.8)
+    try:
+        em.walk_path(obj, "statBases[stat=Nope].value")
+        expect("walk_path keyed bracket no-match raises", False)
+    except KeyError:
+        expect("walk_path keyed bracket no-match raises", True)
+    try:
+        em.walk_path({"statBases": {"not": "a list"}}, "statBases[stat=Wildness].value")
+        expect("walk_path keyed bracket against non-list raises", False)
+    except KeyError:
+        expect("walk_path keyed bracket against non-list raises", True)
+
+
+def test_top_field():
+    """run_expectations._top_field picks the get_defs `fields=` name for any
+    path shape - the one thing _live_defs needs right to ask the bridge for
+    the right top-level field at all."""
+    expect("_top_field scalar", re_._top_field("wildness") == "wildness")
+    expect("_top_field deep dot", re_._top_field("race.wildness") == "race")
+    expect("_top_field deep bracket", re_._top_field("stages[0].label") == "stages")
+    expect("_top_field keyed bracket",
+           re_._top_field("statBases[stat=Wildness].value") == "statBases")
+
+
 def test_classify_path():
     expect("classify scalar", em.classify_path("wildness") == "scalar")
     expect("classify deep (dot)", em.classify_path("race.wildness") == "deep")
@@ -155,6 +185,8 @@ def test_fixture_loader_rejects_bad_keys():
 
 def main():
     test_walk_path()
+    test_walk_path_keyed_bracket()
+    test_top_field()
     test_classify_path()
     test_manifest_parse_rejects_malformed()
     test_evaluate_against_real_fixtures()

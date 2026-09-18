@@ -17,19 +17,22 @@ TWO MODES
 
 --live                  Calls the real bridge (`RimBridge` from
                         rimbridge_client.py) via `jawa/get_defs`, grouped by
-                        defType for one batch call per type. SCALAR checks run
-                        for real. DEEP checks are reported
-                        SKIPPED-PENDING-UPGRADE (get_defs is scalar-only until
-                        MASS_VALIDATION_LADDER_1's deep-serialize criterion
-                        lands) - never silently attempted, never silently
-                        dropped.
+                        defType for one batch call per type, `deep=true` on
+                        every call. The deep-serialize upgrade shipped
+                        2026-09-04 and was live-proved 2026-09-13
+                        (MASS_VALIDATION_LADDER_1) - both SCALAR and DEEP
+                        checks run for real; there is no more
+                        SKIPPED-PENDING-UPGRADE path in --live mode. `fields`
+                        per call is the union of every scalar path plus every
+                        deep check's top-level field name for that defType.
 
 USAGE
     python3 run_expectations.py --manifest infrastructure/state/expectations/FOO_1.expectations.json --fixture testdata/foo_fixture.json
     python3 run_expectations.py --glob "infrastructure/state/expectations/*.expectations.json" --live
     python.exe run_expectations.py --glob "..." --live   # --live needs Windows python (WSL has no bridge route)
 
-Exit 0 = every check PASS or (in --live mode, honestly) SKIPPED-PENDING-UPGRADE.
+Exit 0 = every check PASS (both modes now resolve SCALAR and DEEP checks for
+real; SKIPPED-PENDING-UPGRADE can no longer occur in either mode).
 Exit 1 = at least one FAIL, MISSING-DEF, or PATH-ERROR. A manifest that fails
 to parse is ALSO exit 1 - never silently excluded from the run.
 """
@@ -58,16 +61,28 @@ def _load_fixture(path: str) -> dict:
     return out
 
 
+def _top_field(path: str) -> str:
+    """'wildness' -> 'wildness'; 'stages[0].label' -> 'stages'. get_defs'
+    `fields` arg names top-level def fields only - a deep check's dotted/
+    bracketed path is walked locally (expectations_manifest.walk_path)
+    against whatever DeepSerializeValue handed back for that top field."""
+    return path.split(".", 1)[0].split("[", 1)[0]
+
+
 def _live_defs(manifest: em.Manifest) -> dict:
-    """One jawa/get_defs batch call per defType named in the manifest's
-    SCALAR checks only - deep checks never touch the bridge (see module
-    docstring: get_defs is scalar-only until the upgrade lands)."""
+    """One jawa/get_defs batch call per defType named in ANY check (scalar
+    or deep), `deep=true` on every call. The deep-serialize upgrade
+    (MASS_VALIDATION_LADDER_1) is deployed and live-proved as of 2026-09-13
+    - deep=true is byte-identical to deep=false for plain scalar fields, so
+    there is no reason left to make two calls or to special-case scalar
+    checks."""
     from rimbridge_client import RimBridge, resolve_endpoint  # local import: only needed live
 
     by_type: dict[str, set[str]] = {}
+    fields_by_type: dict[str, set[str]] = {}
     for c in manifest.checks:
-        if not c.is_deep:
-            by_type.setdefault(c.defType, set()).add(c.defName)
+        by_type.setdefault(c.defType, set()).add(c.defName)
+        fields_by_type.setdefault(c.defType, set()).add(_top_field(c.path))
 
     out: dict = {}
     if not by_type:
@@ -76,11 +91,17 @@ def _live_defs(manifest: em.Manifest) -> dict:
     with RimBridge(host=host, port=port, token=token) as bridge:
         for defType, names in by_type.items():
             # jawa/get_defs takes `defs` as ';'-separated 'DefType/defName' pairs
-            # and returns {"rows": [{"defName":..., "found":..., "fields": {...}}, ...]}
-            # - NOT a {defType, defNames} request / bare {defName: fields} response.
+            # and returns {"defs": [{"defName":..., "found":..., "fields": {...}}, ...]}
+            # - NOT a bare {defName: fields} response, and NOT under a "rows" key
+            # either (a prior version of this comment said "rows" - checked against
+            # a live call 2026-09-18 and corrected; this path had never actually
+            # been exercised live before, only against --fixture data, so the wrong
+            # key silently returned zero rows every time instead of failing loud).
             defs_arg = ";".join("%s/%s" % (defType, n) for n in sorted(names))
-            resp = bridge.call("jawa/get_defs", {"defs": defs_arg})
-            rows = resp.get("rows", []) if isinstance(resp, dict) else []
+            fields_arg = ",".join(sorted(fields_by_type[defType]))
+            resp = bridge.call("jawa/get_defs",
+                                {"defs": defs_arg, "fields": fields_arg, "deep": True})
+            rows = resp.get("defs", []) if isinstance(resp, dict) else []
             for row in rows:
                 if row.get("found") and row.get("defName") in names:
                     out[(defType, row["defName"])] = row.get("fields", {})
@@ -137,7 +158,7 @@ def main(argv=None):
         allow_deep = True  # a fixture CAN carry deep data - it's a stand-in for post-upgrade live
     else:
         source = _live_defs
-        allow_deep = False  # honest: live get_defs cannot serve deep checks yet
+        allow_deep = True  # get_defs deep=true is deployed and live-proved (2026-09-13)
 
     total = 0
     total_fail = 0

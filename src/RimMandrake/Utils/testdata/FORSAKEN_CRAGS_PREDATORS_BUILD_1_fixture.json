@@ -6,11 +6,11 @@
       "predator": true,
       "petness": 0
     },
-    "statBases": {
-      "Wildness": 1.0,
-      "Mass": 110,
-      "MoveSpeed": 4.6
-    },
+    "statBases": [
+      {"stat": "Wildness", "value": 1.0},
+      {"stat": "Mass", "value": 110},
+      {"stat": "MoveSpeed", "value": 4.6}
+    ],
     "tools": [
       {"label": "left claw"},
       {"label": "right claw"},
@@ -29,11 +29,11 @@
       "predator": true,
       "petness": 0
     },
-    "statBases": {
-      "Wildness": 1.0,
-      "Mass": 28,
-      "MoveSpeed": 5.4
-    },
+    "statBases": [
+      {"stat": "Wildness", "value": 1.0},
+      {"stat": "Mass", "value": 28},
+      {"stat": "MoveSpeed", "value": 5.4}
+    ],
     "comps": [
       {"compClass": "CompAttachBase"},
       {"fleeSearchRadius": 10, "fleeExpiryTicks": 600}

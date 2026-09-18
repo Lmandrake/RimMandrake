@@ -4929,6 +4929,19 @@ namespace JawaBench.BridgeTools
         {
             if (v == null) return null;
             if (v is Def d) return d.defName;
+            // 🔴 MASS_VALIDATION_LADDER_1 live proof, 2026-09-18: `System.Type`
+            // fields (hediffClass, compClass — every CompProperties/Hediff
+            // carries one) fell through to the generic reflect-its-own-fields
+            // path below. Type/RuntimeType expose Name/FullName as PROPERTIES,
+            // not public instance FIELDS, so that path's GetFields() found
+            // nothing and returned an empty `{}` — which reads as real, present,
+            // empty data, not as a skipped or unreadable field. Confirmed live:
+            // HediffDef.hediffClass and CompProperties.compClass both came back
+            // `{}` against the running game before this fix.
+            // Bare Name, not FullName: every XML/manifest author already writes
+            // `<hediffClass>Hediff_Injury</hediffClass>` unqualified, matching
+            // how `Def` already collapses to a bare defName above.
+            if (v is Type ty) return ty.Name;
             var t = v.GetType();
             if (t.IsPrimitive || v is string || t.IsEnum || v is decimal)
                 return t.IsEnum ? v.ToString() : v;
