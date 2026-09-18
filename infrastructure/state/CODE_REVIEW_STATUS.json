@@ -2730,10 +2730,10 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/Greentide/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "d465a8ca6172f0675810e45588036e60277646a6299ce740049d06dac5a9ffd6",
-    "sha": "6879314fc"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "8ab64aa4399fc2ff3a40bf77f0e5fb30e0f8baaa1d22ff63338c3b090d7acd91",
+    "sha": "1e03702b3"
   },
   "src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml": {
     "cleanCount": 2,
@@ -2760,10 +2760,10 @@
     "sha": "6879314fc"
   },
   "src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "d8840d0f9e8d845c59bdea27445d101fa279bb5bab6aea7fac39444506cf1368",
-    "sha": "6879314fc"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "f7e766b43f484f14295fbf3e78594a14bf003424a27999d02a39bdaf0a9a1927",
+    "sha": "1e03702b3"
   },
   "src/RimMandrake/Greentide/Defs/ThingDefs/RM_Greentide_Items.xml": {
     "cleanCount": 1,
@@ -2814,10 +2814,10 @@
     "sha": "7e8587cea"
   },
   "src/RimMandrake/Greentide/Source/RM_GreentideMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "7e246bedf0aa3db3043f91d9e07d90f0a6d53f0975fee64fa53e5c8c38ced8cc",
-    "sha": "311d90fc5"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "364d88a9f1c3ba4555e45e53c7bb8031c79ba76ee256c70bb27024e5d66f4a8c",
+    "sha": "1e03702b3"
   },
   "src/RimMandrake/Greentide/Source/RM_JobDriver_DigOutBuried.cs": {
     "cleanCount": 2,
@@ -2832,10 +2832,10 @@
     "sha": "2c8762586"
   },
   "src/RimMandrake/Greentide/Source/RM_MapComponent_CrossBiomeChurnmud.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "3ce25d28af69210a6099d62c78c76764cde8648c91d8c63c76a786d0601d3472",
-    "sha": "311d90fc5"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "da14db6e5580d3c06c9618881fea5ff6a2bbefecf08916f43c6e30f3a61f1665",
+    "sha": "1e03702b3"
   },
   "src/RimMandrake/Greentide/Source/RM_MapComponent_MudSwallow.cs": {
     "cleanCount": 1,
