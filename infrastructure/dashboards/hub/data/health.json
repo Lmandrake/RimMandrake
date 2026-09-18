@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-09-17T21:23:00Z",
+ "generatedAt": "2026-09-17T23:39:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 629311,
-  "sha256_12": "8bf7650eeb8e"
+  "bytes": 636940,
+  "sha256_12": "3aeb26b0a3f3"
  },
- "head": "080e6f87f",
+ "head": "2de4bd27d",
  "counts": {
   "red": 37,
-  "blue": 679,
-  "green": 1650,
-  "grey": 404,
+  "blue": 689,
+  "green": 1672,
+  "grey": 413,
   "unmeasured": 0,
-  "total": 2770
+  "total": 2811
  },
  "loc": {
-  "red": 17599,
-  "blue": 256563,
-  "green": 431477,
-  "grey": 259580,
+  "red": 17605,
+  "blue": 261769,
+  "green": 429124,
+  "grey": 265940,
   "unmeasured": 0,
-  "total": 965219
+  "total": 974438
  },
- "reviewEntries": 2567,
+ "reviewEntries": 2510,
  "recidivists": [
   {
    "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml",
@@ -50,6 +50,11 @@
    "cycles": 3
   },
   {
+   "path": "src/RimMandrake/rimflow/model.py",
+   "loc": 1455,
+   "cycles": 3
+  },
+  {
    "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml",
    "loc": 843,
    "cycles": 3
@@ -68,14 +73,9 @@
    "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml",
    "loc": 334,
    "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWClothes.xml",
-   "loc": 1918,
-   "cycles": 2
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 2770 files (1650 clean, 404 dirty, 0 unmeasured)."
+ "headline": "OK: measured 2811 files (1672 clean, 413 dirty, 0 unmeasured)."
 }
