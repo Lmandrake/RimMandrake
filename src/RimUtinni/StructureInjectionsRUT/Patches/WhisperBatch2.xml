@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WhisperBatch2.xml   StructureInjectionsRUT   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires WHISPER #2 The Listening Dark (Ishko, nightside) onto its two named
+  anchors - structure_injection_roster.md's own line: "(Hollow/Caves
+  mutators)". Same safety convention as Patches/WhisperBatch1.xml: every
+  PatchOperationAdd is wrapped in a PatchOperationConditional whose xpath is
+  IDENTICAL to the inner operation's target, so a missing/renamed mutator
+  makes the whole <li> a silent no-op (CLAUDE.md: "a patch that matches
+  nothing logs nothing" - intended here, not a bug).
+
+  Confirmed via a validate_patch.py PatchOperationConditional probe against
+  the live 632-active-mod set: Hollow (Odyssey, TileMutators_Natural.xml)
+  and Caves (Core, MapGeneration/TileMutators.xml) both real, 1 match each.
+  Neither carries an <extraGenSteps> element in vanilla (checked directly in
+  both source files), so both Adds target the TileMutatorDef node itself,
+  same as Cavern/DryLake in WhisperBatch1.xml - not sw_SarlaccLair's shape
+  (WhisperSarlaccSign.xml, RimStarWars tier), which already has one.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- WHISPER #2 The Listening Dark (Ishko) -> Hollow (vanilla Odyssey). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="Hollow"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="Hollow"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperHollow</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- WHISPER #2 The Listening Dark (Ishko) -> Caves (vanilla Core). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="Caves"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="Caves"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperCaves</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
