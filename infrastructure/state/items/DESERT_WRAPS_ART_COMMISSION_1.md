@@ -56,9 +56,11 @@ were never opened. All 6 candidates are original generated art.
 - Head 2 "Elongated Ridged Skull" — domed elongated crown with brow ridges;
   a genuinely different "devolved" direction, not a minor tweak of Head 1.
 
-**Awaits the owner's pick.** Do not build the full body-type × direction
-matrix or wire any ThingDef/HeadTypeDef until he picks — see CLAUDE.md's
-mockups-first doctrine.
+**The pick LANDED 2026-09-10** (ledger 05:57:04Z / 05:59:13Z): *"ALL FOUR
+wrap styles ship... 'stunning, we need all of them'"* and BOTH head shapes
+ship — 4 wraps + 2 option heads, full body-type × direction matrix
+**buildable now**. This line said "do not build, awaits the pick" for 8 days
+after the pick; unblocked at the 2026-09-18 decay sweep.
 
 ## Verify
 Candidates sheet reviewed by owner; picked styles produce the full
