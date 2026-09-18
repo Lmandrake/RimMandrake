@@ -138,8 +138,21 @@ def parse_manifest(raw: dict, source_path: str | None = None) -> Manifest:
             raise ManifestError("checks[%d] missing required field 'expected'" % i)
         path = c["path"]
         for seg in path.split("."):
-            base = _INDEX.sub("", seg)
-            if not _PATH_TOKEN.match(seg) and not base:
+            # ⚠️ Was `if not _PATH_TOKEN.match(seg) and not base:` where `base`
+            # was `seg` with bracket groups stripped out. That only rejects a
+            # segment that is PURE bracket syntax with no leading identifier
+            # ("[0]") -- anything else that fails the full match (an embedded
+            # space, an unbalanced bracket, trailing text after a bracket
+            # group like "a[0]b") left `base` non-empty and sailed through
+            # unvalidated. _walk_segment then silently re-derives a DIFFERENT
+            # key from the same malformed segment (stripping brackets rather
+            # than rejecting them), which could in principle key onto the
+            # wrong field instead of failing loudly -- the exact "reports
+            # success, checked nothing" shape this ladder exists to catch.
+            # Found in review, 2026-09-18: every path in the shipped
+            # manifests already matches _PATH_TOKEN fully, so tightening this
+            # to a plain match changes nothing for real data.
+            if not _PATH_TOKEN.match(seg):
                 raise ManifestError("checks[%d] path segment %r is malformed" % (i, seg))
         checks.append(Check(
             defType=c["defType"], defName=c["defName"], path=path,
