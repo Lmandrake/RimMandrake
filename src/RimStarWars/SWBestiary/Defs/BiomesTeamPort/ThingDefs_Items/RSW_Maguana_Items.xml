@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+CAVERNS_PARITY_BUILD_1 ruling 5 - the item-side reference closure of RSW_Maguana
+(../ThingDefs_Races/RSW_Maguana.xml). Same absorption pattern as
+RSW_BiomesTeamPort_Items.xml.
+
+RSW_Caverns_EggFertExtreme - verbatim port of the donor's abstract
+BMT_Caverns_EggFertExtreme (biomesteam.biomescaverns, 1.6/Defs/Items/BMT_FertEggs.xml).
+It is kept as an abstract rather than flattened onto vanilla EggFertBase because the
+ONLY thing it changes is maxSafeTemperature 50 -> 999, and that is exactly the field
+that keeps a maguana egg alive in a 350 degC home range. Overriding comps on the
+child would APPEND a second CompProperties_TemperatureRuinable instead of replacing
+the parent's, so the abstract is the parity-correct route.
+
+RSW_Leather_Magma - verbatim port of BMT_Leather_Magma (biomesteam.biomescore,
+1.6/Defs/ThingDefs/BMT_ThingDefs_Textiles.xml). Only change: the donor's custom stat
+BC_StuffPower_FlammabilityOffset is renamed to this port's already-absorbed
+RSW_BC_StuffPower_FlammabilityOffset (Support/RSW_BiomesTeamPort_Support.xml).
+Nothing else in this bestiary used it yet.
+
+RSW_EggMaguana{Fertilized,Unfertilized} - verbatim ports of the donor's egg pair.
+Neither donor def names a texPath, so both inherit the vanilla EggBase art
+(Things/Item/Resource/AnimalProductRaw/EggBirdSmall) exactly as they do in the donor;
+the donor's own <color>/<drawSize> are carried through unchanged.
+Meat and corpse are engine-generated from the ThingDef (the donor sets no
+useMeatFrom and no custom corpse def), so no meat/leather/corpse def is duplicated
+beyond the leather above.
+-->
+<Defs>
+  <ThingDef Abstract="True" Name="RSW_Caverns_EggFertExtreme" ParentName="EggBase">
+    <tickerType>Normal</tickerType>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+    </ingestible>
+    <thingCategories>
+      <li>EggsFertilized</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>0</minSafeTemperature>
+        <maxSafeTemperature>999</maxSafeTemperature>
+        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Magma</defName>
+    <label>flame-proof leather</label>
+    <description>The tanned skin of a fireproof creature. It feels hardy and tough but doesn't protect against cold well.</description>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Flammability>0.0</Flammability>
+      <StuffPower_Armor_Sharp>0.75</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.15</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>2</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>5</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>50</StuffPower_Insulation_Heat>
+      <RSW_BC_StuffPower_FlammabilityOffset>-0.8</RSW_BC_StuffPower_FlammabilityOffset>
+    </statBases>
+    <graphicData>
+      <color>(128,128,128)</color>
+    </graphicData>
+    <stuffProps>
+      <color>(128,128,128)</color>
+      <commonality>0.020</commonality>
+      <statFactors>
+        <Flammability>0.0</Flammability>
+        <MaxHitPoints>0.6</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_Caverns_EggFertExtreme">
+    <defName>RSW_EggMaguanaFertilized</defName>
+    <label>maguana egg (fert.)</label>
+    <description>A fertilized maguana egg. If all goes well, it should hatch into a baby maguana. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <color>(160,70,29)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>40</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Maguana</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggMaguanaUnfertilized</defName>
+    <label>magmuana egg (unfert.)</label>
+    <description>An unfertilized maguana egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <color>(150,60,19)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+</Defs>
