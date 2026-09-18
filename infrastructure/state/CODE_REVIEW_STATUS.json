@@ -1740,10 +1740,10 @@
     "sha": "52c8c982c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_MapComponent_TheTenant.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "3cc9c9f1c7334665f3cf5b98a3553d9dfd0a02791b376873d76902581671920f",
-    "sha": "c1ae25eaa"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "e190969c29ff5c8d58358f0173e952f2689a196c6ec23912a3a8b0d1a292420c",
+    "sha": "57e97535a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,
@@ -10390,10 +10390,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWMemoryWipe.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "971c8d6250be26fcc023fd3fd29337c8710ba78baa0fbd8f0b26c63ecf632cdd",
-    "sha": "d0c985e6a"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "9addb6287a461c923d9d310b61bd167e8b87188ddeb59d1677a6eeb23ccdd469",
+    "sha": "57e97535a"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallDroidPart.cs": {
     "cleanCount": 1,
