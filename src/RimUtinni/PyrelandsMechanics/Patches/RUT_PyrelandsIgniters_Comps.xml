@@ -47,7 +47,6 @@
               <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FireHawkSpread">
                 <scanRadius>18</scanRadius>
                 <spreadDistance>6</spreadDistance>
-                <cooldownTicks>15000</cooldownTicks>
                 <startFireSize>0.1</startFireSize>
               </li>
             </comps>
@@ -88,9 +87,7 @@
                 <heatPerSecond>18</heatPerSecond>
                 <heatPushMaxTemperature>24</heatPushMaxTemperature>
               </li>
-              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceWarmthAura">
-                <radius>4.9</radius>
-              </li>
+              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceWarmthAura" />
               <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceBedIgnition" />
               <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceThermalCharge" />
             </comps>
