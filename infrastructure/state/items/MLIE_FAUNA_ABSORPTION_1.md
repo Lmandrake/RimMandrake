@@ -1703,3 +1703,151 @@ worklist together).
 
 **Remaining**: 45 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 15: 3 more species ported: Kreetle, Krykna, Kwi (45 -> 42 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Kreetle,
+Krykna, Kwi — checked `find src/RimStarWars -maxdepth 1
+-iname "*ArtOverride*"` first: only `KreetleArtOverride` exists among the
+3, no override for Krykna or Kwi.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+Kreetle's and Krykna's own BodyDefs (Bodies_Animal_StarWars.xml) are
+entirely vanilla-part composition — Shell/Elytra x3/Stomach/InsectHeart/
+Pronotum/InsectHead/Brain/Eye x2/InsectNostril/InsectMouth/InsectLeg x6 for
+Kreetle; Shell/Stomach/InsectHeart/Pronotum/InsectHead/Brain/Eye x6/Beak/
+InsectLeg x6 for Krykna — no SW-prefixed part or group on either, defName
+rename only. Kwi's own custom `Kwi` BodyDef needs only its tail's
+`SWTailAttackTool` group and its 2 clawed forearms' `SWClaws` group, BOTH
+ALREADY PORTED in Wave B (`RSW_SWTailAttackTool`/`RSW_SWClaws`, the same
+groups every prior SWClaws/SWTailAttackTool species already use) — every
+other part (Body/Spine/Stomach/Heart/Lung/Kidney/Liver/Neck/Head/Skull/
+Brain/Eye/Ear/Nose/AnimalJaw/Shoulder/Arm/Humerus/Radius/Leg/Paw) is vanilla
+Core. Ported as RSW_Kreetle/RSW_Krykna/RSW_Kwi (RSW_MlieWaveC_Bodies.xml).
+
+**Resources**: Kreetle needs no new resource at all — `leatherDef` repoints
+to the already-ported `RSW_Leather_Insectine` (Pass 13, texPath
+swresource/Leather_Chitin), `useMeatFrom` stays vanilla Core `Megaspider`,
+and it has no egg comp (live birth via `gestationPeriodDays`/
+`litterSizeCurve`, confirmed directly off the donor's own `<race>` block,
+not assumed). Krykna needs 2 new eggs (RSW_EggKryknaFertilized/
+UnFertilized, texPath swresource/EggNodule — ALREADY EXTRACTED, Pass 13
+(Kinrath), reused unchanged, no new art) — `leatherDef` repoints to the same
+already-ported RSW_Leather_Insectine, `useMeatFrom` stays vanilla Core
+Megaspider. Kwi needs 2 new eggs (RSW_EggKwiFertilized/UnFertilized,
+texPath swresource/EggSaurian — ALREADY EXTRACTED, reused unchanged) —
+`leatherDef`/`specificMeatDef` repoint to the already-ported
+`RSW_Leather_Saurian`/`RSW_Saurian_Meat` (Wave B), the same resources Gizka
+(Pass 12) already reuses. All in RSW_MlieWaveC_Resources.xml.
+
+No new abilities this pass. 🔑 Kwi's own `SW_Spur` (Odyssey-gated
+`specialTrainables`/`<abilities>` entry) is donor content, not vanilla
+Odyssey content, per the established Dalgo/Corinathoth/Eopie precedent —
+left unprefixed here too, safe only because Mlie stays active and supplies
+it (RSW_SW_Spur already exists in RSW_MlieWaveB_Abilities.xml but is not
+yet consistently wired — the same open cleanup item Eopie's header flagged,
+not resolved this pass either). Kreetle's and Krykna's only comps are
+vanilla `CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant` (plus
+Krykna's `CompProperties_EggLayer`, ordinary) — no `specialTrainables` set
+in either donor.
+
+**canCrossBreedWith**: none of the 3 species set it themselves (confirmed
+by reading each donor block directly — the donor's `canCrossBreedWith`
+occurrences elsewhere in the file don't touch this range). Grepped every
+already-ported `RSW_*.xml` in SWBestiary for stray `<li>Kreetle</li>`/
+`<li>Krykna</li>`/`<li>Kwi</li>` references from earlier species — none
+found.
+
+**Art**, ArtOverride check done BEFORE any extraction:
+- `KreetleArtOverride` (mandrake.rsw.kreetleartoverride) covers the adult
+  `Kreetle_{south,east,north}` facings only — its own About.xml says the
+  juvenile "maggot" stage and the dessicated-corpse texture stay on donor
+  art. Extracted 5 PNGs: `Kreetle_j_{south,east,north}`,
+  `Kreetle_j_Dessicated`, `Kreetle_Dessicated`. The adult base facing
+  (`Kreetle_{south,east,north}`) was NOT extracted here.
+- Krykna and Kwi have no dedicated override mod — both ship straight
+  through. Extracted 4 PNGs each: `Krykna_{south,east,north,Dessicated}`,
+  `Kwi_{south,east,north,Dessicated}`.
+
+13 PNGs pulled from the bundle this pass in total via `extract_bundle.py`
+against the same AssetBundle every prior wave used (workshop folder
+3497316713, `AssetBundles/Mlie_StarWarsAnimalCollection`), run via
+`python.exe` on the native `C:\...` bundle path, extracting to a Windows
+temp dir and copying the needed subset into the repo over `/mnt/c`. All 13
+placed files confirmed non-zero (256x256 RGBA) and PIL-openable before
+wiring in. Sit at Textures/swanimals/{Kreetle,Krykna,Kwi}/.
+
+Sounds for all 3 species were already absorbed in the 2026-09-02 sound wave
+(`RSW_Pawn_{Kreetle,Krykna,Kwi}_*`) — confirmed present, wired, not
+re-done.
+
+🔴 **Checked, unrelated, untouched** (2 real hits this pass, both against
+bare donor defNames that stay live per the "keep both" ruling, neither
+requiring a change to our RSW_ ports):
+- `AnimalBiomeDuplicates_Fix.xml` (one of this item's 3 named
+  Mlie-touching patch files) has operation 30, "Krykna x IceSheet",
+  targeting the bare donor `ThingDef[defName="Krykna"]`'s own
+  `wildBiomes/IceSheet` duplicate — a Star Wars Animal Collection
+  (Continued)-vs-base donor collision, unrelated to this port.
+  `AnimalDessicatedTexPaths_Fix.xml` and
+  `BehemothArtUpres_StarWarsAnimalCollection.xml` have no references to any
+  of the 3 species.
+- `src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml`
+  (generated by `Transient/gen_beastnorm_patch.py` from
+  `beast_norm_manifest.csv`, the separate BEAST_DANGER_NORMALIZATION_1
+  item) has several xpath operations targeting the bare donor
+  `ThingDef[defName="Kwi"]` (tool power/cooldown, manhunter chances) — that
+  generator's own manifest is out of this item's scope, left untouched.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `RSW_Kreetle`
+(AB_FeraliskInfestedJungle 0.2, AB_MiasmicMangrove 1.0, AridShrubland 0.8,
+Desert 0.8, ExtremeDesert 0.2), `RSW_Krykna` (Desert 0.1), `RSW_Kwi`
+(Desert 0.3) — renamed in place from the bare donor entries (same
+`MayRequire="mlie.starwarsanimalcollection"` block each already sat in,
+matching the established "rename in place" precedent rather than
+regenerating via `gen_cast_patch.py`, same as every prior wave) in both
+`BiomeCast_Ashkarr.xml` copies and `cast_assignment.csv` (mod column
+repointed to `RimMandrake: SW — Bestiary`, reason field annotated). Edits
+were made surgically line-by-line (verified each target line's exact
+pre-edit text before replacing, and confirmed the resulting diffs touched
+only the intended 7 lines per file) rather than round-tripped through
+Python's `csv` module, which on a first attempt silently rewrote every
+line's ending in `cast_assignment.csv` (default `\r\n` vs the file's own
+`\n`) — caught by `git diff --stat` showing 370 changed lines for what
+should have been 7, reverted before it was staged.
+
+**Validated**: `validate_patch.py` against all 5 directly authored/touched
+files (3 species, `RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`),
+BOTH with `--live` (freshest available capture,
+`2026-09-18T05-05-13Z`, 634 mods — confirmed via its own `manifest.json`
+matching the live `ModsConfig.xml`'s own active count of 634 exactly) AND
+`--defs` against the full load set (`Data` + `Mods` + the Steam Workshop
+content root). `--live`-only surfaced 2 expected errors (RSW_Kreetle's own
+base-facing texPath, not shipped here because `KreetleArtOverride` covers
+it — same expected `--live`-vs-`--defs` gap every prior ArtOverride pass
+documented) that vanished once `--defs` could see the already-deployed
+`KreetleArtOverride` mod in the live `Mods` folder — **0 errors, 0
+warnings** with `--defs`. Both `BiomeCast_Ashkarr.xml` copies checked
+separately against `--live`: 0 errors, 0 warnings each. All new defNames
+confirmed unique in-repo (the only 2-file hits are each species' own
+ThingDef+BodyDef pair sharing a defName across def types, same as every
+prior species).
+
+**Not done this pass**: no deploy — this pass stayed offline-authoring only
+per this item's standing instruction not to run `deploy_custom_mods.py
+--apply` or touch the bridge (the bridge itself read FREE by the time this
+pass finished, held by FOUNDRY for an unrelated quicktest at the start); no
+live cold-load proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Kreetle/Krykna/Kwi removed from `remaining_worklist`, count 45 -> 42,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch15`.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 42 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`).

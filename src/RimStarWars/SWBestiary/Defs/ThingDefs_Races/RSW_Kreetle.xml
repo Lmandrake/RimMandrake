@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Kreetle creature port (Pass 15).
+  Ported from mlie.starwarsanimalcollection's `Kreetle` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Kreetle` BodyDef (Bodies_Animal_StarWars.xml) is
+  entirely vanilla-part composition — Shell/Elytra x3/Stomach/InsectHeart/
+  Pronotum/InsectHead/Brain/Eye x2/InsectNostril/InsectMouth/InsectLeg x6,
+  confirmed by reading the donor's own BodyDef directly, no SW-prefixed part
+  or group anywhere — defName rename only, ported as RSW_Kreetle
+  (RSW_MlieWaveC_Bodies.xml).
+
+  `leatherDef` repoints to the already-ported `RSW_Leather_Insectine`
+  (Pass 13, texPath swresource/Leather_Chitin) — the same resource Krykna
+  this same pass and Kinrath (Pass 13) already use. `useMeatFrom` stays
+  vanilla Core `Megaspider` (no specificMeatDef in the donor). No eggs — the
+  donor gives live birth via `gestationPeriodDays`/`litterSizeCurve`, not
+  `CompProperties_EggLayer`. No new resource needed.
+
+  No ability: the donor's own `specialTrainables` are unset; only comps are
+  `CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant`, vanilla Core.
+
+  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
+  `KreetleArtOverride` (mandrake.rsw.kreetleartoverride) exists and covers
+  the adult `Kreetle_{south,east,north}` facings only — its own About.xml
+  says the juvenile "maggot" stage and the dessicated-corpse texture stay on
+  donor art. SWBestiary ships ONLY `Kreetle_j_{south,east,north}`,
+  `Kreetle_j_Dessicated`, and `Kreetle_Dessicated` — the adult base facing is
+  NOT extracted here.
+
+  Art: 5 PNGs extracted this pass via extract_bundle.py against the same
+  AssetBundle every prior wave used — `Kreetle_j_south`, `Kreetle_j_east`,
+  `Kreetle_j_north`, `Kreetle_j_Dessicated`, `Kreetle_Dessicated`, all
+  confirmed non-zero and PIL-openable. Sits at Textures/swanimals/Kreetle/.
+
+  Sounds already absorbed in the 2026-09-02 sound wave
+  (`RSW_Pawn_Kreetle_*`) — confirmed present, wired, not re-done.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AB_FeraliskInfestedJungle, AB_MiasmicMangrove,
+  AridShrubland, Desert, ExtremeDesert).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Kreetle</defName>
+    <label>kreetle</label>
+    <description>Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of maggot-like larvae. Kreetles thrived on dead creatures, garbage and vegetable remains (including waste). They were found on many worlds having stowed away in supplies and once escaping establishing themselves in the wild.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <MarketValue>10</MarketValue>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Kreetle</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.10</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <lifeExpectancy>10</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(2.0, 0)</li>
+          <li>(3.0, 1)</li>
+          <li>(4.0, 1.7)</li>
+          <li>(5.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.8</Desert>
+        <ExtremeDesert>0.2</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>RSW_Pawn_Kreetle_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Kreetle_Death</soundDeath>
+          <soundCall>RSW_Pawn_Kreetle_Call</soundCall>
+          <soundAngry>RSW_Pawn_Kreetle_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Kreetle</defName>
+    <label>kreetle</label>
+    <race>RSW_Kreetle</race>
+    <combatPower>20</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>kreetle maggot</label>
+        <labelPlural>kreetle maggots</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle_j</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle_j_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.3, 0.2)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
