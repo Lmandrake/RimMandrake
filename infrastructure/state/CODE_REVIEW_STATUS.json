@@ -3318,10 +3318,10 @@
     "sha": "eb1f92993"
   },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "1f90de5f1dfa1ea0ca3cc45f7ec81742608acd402824bbb2ff5f6f27bfc0783a",
-    "sha": "bd35a33b5"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "1aa3a8192722cf3584fb6f5a26d3f40a8a2af1810d295be2eb4db83a1e41ebfc",
+    "sha": "4e2a7912d"
   },
   "src/RimMandrake/MandrakePatches/LICENSE": {
     "cleanCount": 1,
@@ -8614,10 +8614,10 @@
     "sha": "0fc737f9d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonPistol.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "3692e87e953f0872a1b2b2ec2b8e3742ca36c59e9d6f741ef353cf9cb39f7088",
-    "sha": "85401ce7"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "afa4af88e0abfa48ff488aa5920ce41056bd240341677684854b799fb1489466",
+    "sha": "4e2a7912d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonRifle.xml": {
     "cleanCount": 3,
@@ -11926,10 +11926,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThoughtDefs/RSW_Bantha_Thoughts.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "963cdfb76eabab5a4b38639c7a2d4b58fe8a95e2ce246cd27ac251f10fd65ed7",
-    "sha": "1c0a5dcdb"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "68469e23f2d5ec5ca97edfc79a417408bcef50a11e452228c81c8e3b377d6e45",
+    "sha": "4e2a7912d"
   },
   "src/RimStarWars/SWBestiary/LICENSE": {
     "cleanCount": 1,
@@ -12370,10 +12370,10 @@
     "sha": "98863702"
   },
   "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "b961930d9c89b801b29cef78307be458c339fda976b44a8ac49119325b780d6d",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "e89d9580e45b8f626db6304034107f15f95f3e88e5f20dcef994679ef0354f2a",
+    "sha": "4e2a7912d"
   },
   "src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/build_frameasync_east.py": {
     "cleanCount": 1,
@@ -14896,10 +14896,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "2c1341d6ebda4386c3cc9305e425e3cdc5b17e656f4243716fb5905843bd1851",
-    "sha": "2e3336f4"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "4b6e8c653558e20d665c427454651aca21d59a0a4f1be7e0b7b8672337d3e25c",
+    "sha": "4e2a7912d"
   },
   "src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml": {
     "cleanCount": 1,
@@ -15724,10 +15724,10 @@
     "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShokkweaveEconomy/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "38cda478f582f6d1374bd79203c1aa93ce5b701ae12c18d753e953b370c064ac",
-    "sha": "b0d3ba6fc"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "75c956d23d4588271443097810854aa2ca7fcc2fe51076320bb70e67e37f182c",
+    "sha": "4e2a7912d"
   },
   "src/RimUtinni/ShokkweaveEconomy/Defs/MapGeneration/ShokkweaveHarvestScatter.xml": {
     "cleanCount": 1,
