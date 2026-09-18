@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T16:38:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:48:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1681,16 +1681,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
-
-## WRECKEDMACHINES_MOD_SETTINGS_1 WreckedMachines ships NO Mod Settings at all (no ModSettings/DoSettingsWindowContents anywhere in the mod, MEASURED 2026-09-16) - violates MOD_OPTIONS_RETROFIT_1's every-mod-ships-settings ruling and blocks a GREEN independently of its north star
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WRECKEDMACHINES_MOD_SETTINGS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WRECKEDMACHINES_MOD_SETTINGS_1.md
 
 ## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
 state:    proposed
