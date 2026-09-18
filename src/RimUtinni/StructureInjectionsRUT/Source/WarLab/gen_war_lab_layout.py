@@ -34,6 +34,16 @@ criteria list. the_propane_lakes.md SS8 calls the lab guardians "the last
 watch" - continuously on duty, not woken by the player. This generator
 follows the ITEM'S OWN current spec over the sibling's stale aside.
 
+2026-09-18 PASS: places RUT_WarLabReactorCore (built+deployed 2026-09-12 for
+WAR_LAB_CRATER_HOOK_1, the "dropped reactor core" ignition source, but never
+wired into any layout - that item's own note explicitly hands the staging to
+"whoever finishes the war lab's own local-map ending", i.e. this item). Added
+as RUT_Symbol_WarLabReactorCore, one cell north of RUT_WarLabArchive at the
+core's dead centre. It is fixed in place (non-claimable/non-deconstructible
+per its own ThingDef), so this wires "destroy it in the lab" as the ignition
+route, not "haul it to the lake and drop it" - the def's own header comment
+already flags that as an open question this pass does not resolve.
+
 THE CONTENT PALETTE, resolved this pass (previously "still open, do not
 invent, confirm at build time" per the item's own build-spec note):
   - AA_Slurrypede: PawnKindDef defName confirmed IDENTICAL to its ThingDef
@@ -98,8 +108,18 @@ THING_SYMBOLS = [
      "The live/trapped-specimen prop (see that ThingDef's own header - "
      "deliberately not claimable, not a props-with-pawn casket). Our own "
      "ThingDef -> needs this wrapper."),
+    ("RUT_Symbol_WarLabReactorCore", "RUT_WarLabReactorCore",
+     "WAR_LAB_CRATER_HOOK_1's ignition source (see that ThingDef's own "
+     "header - CompIgniteCraterOnDestroy fires WarLabCraterMutation.Ignite() "
+     "when this Thing is destroyed by any means). That item's own note "
+     "hands staging this into a layout to whoever finishes the war lab's "
+     "local-map ending - this pass does it. Our own ThingDef -> needs this "
+     "wrapper."),
 ]
-FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_WarLabArchive", "RUT_Symbol_WarLabContainmentCell"}
+FACTIONLESS_THING_SYMBOLS = {
+    "RUT_Symbol_WarLabArchive", "RUT_Symbol_WarLabContainmentCell",
+    "RUT_Symbol_WarLabReactorCore",
+}
 
 SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
     <defName>{defName}</defName>
@@ -149,9 +169,11 @@ def gen_symboldefs():
 #                                   Mech_Centurion/turrets) - the fight
 #   d 20        core wall           Wall_Plasteel, door on the SOUTH face
 #   d >=21      core                Concrete: RUT_WarLabArchive at centre,
-#                                   RUT_WarLabContainmentCell x4 around it,
-#                                   two Turret_MiniTurret hugging the core
-#                                   wall ("the last watch")
+#                                   RUT_WarLabReactorCore one cell north of it
+#                                   (WAR_LAB_CRATER_HOOK_1's ignition source,
+#                                   staged here 2026-09-18), RUT_WarLabContainmentCell
+#                                   x4 around it, two Turret_MiniTurret hugging
+#                                   the core wall ("the last watch")
 #
 # N=61 matches VAULT_DUNGEON_BUILD_1 type-1's own footprint scale
 # (dungeons_arc_spec.md's ruled floor is 325x325 map, this structure sits
@@ -247,6 +269,13 @@ def build():
     # Core: archive at dead centre, containment cells ringing it, two
     # turrets hugging the inside of the core wall (off the S door face).
     layout[MID][MID] = "RUT_Symbol_WarLabArchive"
+
+    # Reactor core (WAR_LAB_CRATER_HOOK_1's ignition source): one cell north
+    # of the archive, the core's other narrative anchor.
+    reactor_r, reactor_c = MID - 1, MID
+    if layout[reactor_r][reactor_c] == "." and dist(reactor_r, reactor_c, n) >= CORE_START_D:
+        layout[reactor_r][reactor_c] = "RUT_Symbol_WarLabReactorCore"
+
     half = CORE_SIZE // 2
     containment_spots = [
         (MID - half + 2, MID - 2), (MID - half + 2, MID + 2),
@@ -327,9 +356,10 @@ def main():
     with open(os.path.join(OUT_DIR, "SymbolDefs_WarLab.xml"), "w") as f:
         f.write(gen_symboldefs())
 
+    reactor_placed = any("RUT_Symbol_WarLabReactorCore" in row for row in layout)
     print("wrote StructureLayoutDefs_WarLab.xml (1 template, %dx%d, core %dx%d) "
-          "+ SymbolDefs_WarLab.xml (%d new symbols)"
-          % (N, N, CORE_SIZE, CORE_SIZE, len(PAWN_SYMBOLS) + len(THING_SYMBOLS)))
+          "+ SymbolDefs_WarLab.xml (%d new symbols) - reactor core placed: %s"
+          % (N, N, CORE_SIZE, CORE_SIZE, len(PAWN_SYMBOLS) + len(THING_SYMBOLS), reactor_placed))
 
 
 if __name__ == "__main__":
