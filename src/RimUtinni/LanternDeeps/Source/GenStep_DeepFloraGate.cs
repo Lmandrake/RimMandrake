@@ -29,12 +29,12 @@ namespace RimMandrake.Utinni.LanternDeeps
 			"RUT_Fungusfern",
 			"RUT_CrystaltipBrambles",
 			"RUT_YumBulbs",
-			"RUT_DulcisPlant",
+			"RUT_DeepDulcisPlant",
 			"RUT_Crystalcap",
-			"RUT_GreyLady",
-			"RUT_Arpeau",
+			"RUT_DeepGreyLady",
+			"RUT_DeepArpeau",
 			"RUT_LuminousSpout",
-			"RUT_Nuitae",
+			"RUT_DeepNuitae",
 			"RUT_Lanternstone_Sowable",
 		};
 

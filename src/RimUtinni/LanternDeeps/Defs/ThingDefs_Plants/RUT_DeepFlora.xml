@@ -18,7 +18,7 @@
   2. **Harvest products are vanilla where the donor's were its own.** The donor's
      BMT_MushroomLog becomes WoodLog and BMT_MycelialBlocks is dropped (mycelium
      becomes pure ground cover, purpose Misc). Grey Lady already harvested vanilla
-     Cloth and still does; dulcis harvests our own RUT_RawDulcis.
+     Cloth and still does; dulcis harvests our own RUT_DeepRawDulcis.
 
   3. **No research or fungiponics gates.** sowResearchPrerequisites
      BMT_ResearchMushrooms and the BMT_Fungiponics sowTag are donor defs. Sowing
@@ -202,7 +202,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BushBase">
-    <defName>RUT_DulcisPlant</defName>
+    <defName>RUT_DeepDulcisPlant</defName>
     <label>dulcis</label>
     <description>An oddly sweet mushroom grown by cave dwellers in place of berries. It survives a wide range of temperatures.</description>
     <graphicData>
@@ -231,7 +231,7 @@
       <harvestYield>12</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.1</harvestAfterGrowth>
-      <harvestedThingDef>RUT_RawDulcis</harvestedThingDef>
+      <harvestedThingDef>RUT_DeepRawDulcis</harvestedThingDef>
       <sowMinSkill>4</sowMinSkill>
       <sowTags>
         <li>Ground</li>
@@ -283,7 +283,7 @@
   <!-- ===================== other harvestable ===================== -->
 
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_GreyLady</defName>
+    <defName>RUT_DeepGreyLady</defName>
     <label>Grey Lady</label>
     <description>A grey fungus that grows cloth-like lace from its cap. The Deeps' one source of fabric.</description>
     <statBases>
@@ -323,7 +323,7 @@
   <!-- ===================== hydrophytes ===================== -->
 
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_Arpeau</defName>
+    <defName>RUT_DeepArpeau</defName>
     <label>arpeau</label>
     <description>An aquatic fungus tall enough to be logged. Fast-growing, but it does not yield much usable material.</description>
     <graphicData>
@@ -440,7 +440,7 @@
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_Nuitae</defName>
+    <defName>RUT_DeepNuitae</defName>
     <label>nuitae</label>
     <description>Its cap's exterior is almost black; its underside glows brightly. It grows in water, or in ground wet enough to pass for it.</description>
     <statBases>

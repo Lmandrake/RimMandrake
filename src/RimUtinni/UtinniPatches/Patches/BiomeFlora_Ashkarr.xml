@@ -199,29 +199,29 @@
           <AB_GlowingAgarilux>1</AB_GlowingAgarilux> <!-- glowing agarilux -->
           <AB_LilacBeacon>0.5</AB_LilacBeacon> <!-- lilac beacon -->
           <AB_WitchesOyster>0.5</AB_WitchesOyster> <!-- witches' oyster -->
-          <BMT_Dewshrooms>0.5</BMT_Dewshrooms> <!-- dewshrooms -->
-          <BMT_FruitingBodies>0.5</BMT_FruitingBodies> <!-- mold fruiting bodies -->
-          <BMT_Nuitae>0.5</BMT_Nuitae> <!-- nuitae -->
-          <BMT_Wrinklecap>0.5</BMT_Wrinklecap> <!-- wrinklecap -->
-          <BMT_Arpeau>0.4</BMT_Arpeau> <!-- arpeau - tree -->
-          <BMT_Nogtyl>0.4</BMT_Nogtyl> <!-- nogtyl - tree -->
+          <RUT_Dewshrooms>0.5</RUT_Dewshrooms> <!-- dewshrooms -->
+          <RUT_FruitingBodies>0.5</RUT_FruitingBodies> <!-- mold fruiting bodies -->
+          <RUT_Nuitae>0.5</RUT_Nuitae> <!-- nuitae -->
+          <RUT_Wrinklecap>0.5</RUT_Wrinklecap> <!-- wrinklecap -->
+          <RUT_Arpeau>0.4</RUT_Arpeau> <!-- arpeau - tree -->
+          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- nogtyl - tree -->
           <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- recurved stropharia -->
-          <BMT_FlakespireFungus>0.3</BMT_FlakespireFungus> <!-- flakespire fungus - tree -->
-          <BMT_Pusmelon>0.3</BMT_Pusmelon> <!-- pusmelon -->
-          <BMT_RustPuff>0.3</BMT_RustPuff> <!-- rustpuff -->
-          <BMT_Sagecrust>0.3</BMT_Sagecrust> <!-- sagecrust -->
+          <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus> <!-- flakespire fungus - tree -->
+          <RUT_Pusmelon>0.3</RUT_Pusmelon> <!-- pusmelon -->
+          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
+          <RUT_Sagecrust>0.3</RUT_Sagecrust> <!-- sagecrust -->
           <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- arbuscular mycorrhiza -->
           <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- slimy pholiota -->
-          <BMT_BleedingTooth>0.2</BMT_BleedingTooth> <!-- bleeding tooth -->
-          <BMT_Brightbells>0.2</BMT_Brightbells> <!-- brightbells -->
-          <BMT_CrimsonCap>0.2</BMT_CrimsonCap> <!-- crimson cap -->
-          <BMT_GreyLady>0.2</BMT_GreyLady> <!-- Grey Lady -->
-          <BMT_Shinecap>0.2</BMT_Shinecap> <!-- shine cap - tree -->
-          <BMT_VioletWimple>0.2</BMT_VioletWimple> <!-- violet wimple -->
-          <BMT_MortalMorelPlant>0.15</BMT_MortalMorelPlant> <!-- mortal morel -->
+          <RUT_BleedingTooth>0.2</RUT_BleedingTooth> <!-- bleeding tooth -->
+          <RUT_Brightbell>0.2</RUT_Brightbell> <!-- brightbells -->
+          <RUT_CrimsonCap>0.2</RUT_CrimsonCap> <!-- crimson cap -->
+          <RUT_GreyLady>0.2</RUT_GreyLady> <!-- Grey Lady -->
+          <RUT_Shinecap>0.2</RUT_Shinecap> <!-- shine cap - tree -->
+          <RUT_VioletWimple>0.2</RUT_VioletWimple> <!-- violet wimple -->
+          <RUT_MortalMorelPlant>0.15</RUT_MortalMorelPlant> <!-- mortal morel -->
           <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- agaricus domecap -->
           <AB_DribblingCap>0.1</AB_DribblingCap> <!-- dribbling cap -->
-          <BMT_Skulltop>0.1</BMT_Skulltop> <!-- skulltop - tree -->
+          <RUT_Skulltop>0.1</RUT_Skulltop> <!-- skulltop - tree -->
           <Boomshroom>0.05</Boomshroom> <!-- boomshroom -->
           <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- Agarilux Prime -->
         </wildPlants>
@@ -254,7 +254,7 @@
         <wildPlants>
           <Plant_Reeds>1.0</Plant_Reeds> <!-- sarnreed -->
           <AB_GreenRockFern>0.4</AB_GreenRockFern> <!-- green rock fern -->
-          <BMT_Dewshrooms>0.4</BMT_Dewshrooms> <!-- dewshrooms -->
+          <RUT_Dewshrooms>0.4</RUT_Dewshrooms> <!-- dewshrooms -->
           <Plant_Ambrosia>0.12</Plant_Ambrosia> <!-- ambrosia bush -->
         </wildPlants>
       </value>
@@ -288,7 +288,7 @@
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
           <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
+          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
           <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
@@ -312,7 +312,7 @@
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
           <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
+          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
           <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
@@ -336,7 +336,7 @@
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
           <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
+          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
           <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->

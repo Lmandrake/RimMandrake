@@ -65,7 +65,7 @@
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - ambush-small, keep -->
-        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
         <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
@@ -91,7 +91,7 @@
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
         <RSW_Gizka>0.1</RSW_Gizka> <!-- gizka - ambush-small, keep -->
         <RSW_Krykna>0.1</RSW_Krykna> <!-- krykna - ambush-small, keep -->
-        <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
+        <RSW_Runyip>0.1</RSW_Runyip> <!-- runyip - herd, import -->
         <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
         <RSW_Horax>0.01</RSW_Horax> <!-- horax - megafauna, import -->
       </value>
@@ -197,12 +197,12 @@
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - small-runway, keep -->
         <RSW_Lothcat>0.8</RSW_Lothcat> <!-- loth-cat - small-runway, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <RSW_Ronto>0.8</RSW_Ronto> <!-- ronto - huge-grazer, keep -->
-        <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
+        <RSW_Scurrier>0.8</RSW_Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
         <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Massiff>0.6</RSW_Massiff> <!-- massiff - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
-        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
         <RSW_Pufferpig>0.5</RSW_Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <RSW_Gizka>0.4</RSW_Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
@@ -283,7 +283,7 @@
       <value>
         <RSW_Kreetle>1.0</RSW_Kreetle> <!-- kreetle - arthropod-floor, keep -->
         <Yobshrimp>0.8</Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
-        <Runyip>0.5</Runyip> <!-- runyip - muck-forager, adjust-keep -->
+        <RSW_Runyip>0.5</RSW_Runyip> <!-- runyip - muck-forager, adjust-keep -->
         <Shiro>0.4</Shiro> <!-- shiro - arthropod-floor, keep -->
         <RSW_Grank>0.3</RSW_Grank> <!-- Grank - channel-predator, import -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - flier, keep -->
@@ -441,14 +441,14 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
       <value>
-        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - grain-scale, keep -->
         <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
         <RSW_KraytDragon>0.15</RSW_KraytDragon> <!-- krayt dragon - giant, keep -->
         <RSW_GraniteSlug>0.1</RSW_GraniteSlug> <!-- granite slug - grain-scale, keep -->
-        <Scurrier>0.1</Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
+        <RSW_Scurrier>0.1</RSW_Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
         <RSW_Gizka>0.01</RSW_Gizka> <!-- gizka - grain-scale, keep -->
         <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon> <!-- greater krayt dragon - giant, keep -->
       </value>
@@ -658,21 +658,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - ingest-strange, keep -->
-        <BMT_GlowBat>0.4</BMT_GlowBat> <!-- bioluminescent bat - ingest-strange, import -->
-        <BMT_Pillbug>0.4</BMT_Pillbug> <!-- pillbug - ingest-strange, import -->
-        <BMT_GiantSlug>0.3</BMT_GiantSlug> <!-- giant slug - ingest-strange, import -->
-        <BMT_GiantSnail>0.2</BMT_GiantSnail> <!-- giant snail - ingest-strange, import -->
-        <BMT_CaveSpider>0.05</BMT_CaveSpider> <!-- cave spider - guardian, import -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
     <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -822,16 +807,6 @@
       <value>
         <wildAnimals>
         </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <BMT_ChemSnail>0.3</BMT_ChemSnail> <!-- chem snail - the-Patient, keep -->
       </value>
     </match>
   </Operation>
