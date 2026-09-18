@@ -20,6 +20,13 @@ namespace RimMandrake.CreatureBehaviors
 	/// that logic here. Deliberately scoped to soundsAmbient only, never
 	/// EndAllInMap — this is a hush of the biome's ambience, not the map's
 	/// weather or machinery sound.
+	///
+	/// FEVER_WOOD_MECHANICS_1 F2 reuses this class from
+	/// RimMandrake.EnvironmentalHazards via TriggerHush rather than the
+	/// PredatorHunt path above — a mirror-break event has no carrying pawn
+	/// to key off. mandrake.rm.environmentalhazards depends on
+	/// mandrake.rm.creaturebehaviors (About.xml) the same way
+	/// mandrake.rm.shipvermin already does for its own cross-reference.
 	/// </summary>
 	public class RM_MapComponent_SilenceCue : MapComponent
 	{
@@ -49,6 +56,37 @@ namespace RimMandrake.CreatureBehaviors
 				return;
 			}
 			ScanForTrigger();
+		}
+
+		/// <summary>
+		/// FEVER_WOOD_MECHANICS_1 F2 external trigger. A sibling mod (a
+		/// biome kit that reuses this cue for its own "everything goes
+		/// silent to watch" beat, per the_fever_wood.md §9) hushes the map
+		/// from an event with no PredatorHunt pawn involved — this is that
+		/// public entry point, closing the gap the F2 spike's own header
+		/// named ("no public API for 'hush now' from an unrelated event").
+		/// Same mod-option gate as the predator-triggered path, so turning
+		/// the cue off in Mod Settings silences both callers. If already
+		/// hushed, extends the window to the later of the two ends rather
+		/// than restarting it (an overlapping trigger should not shorten an
+		/// existing hush).
+		/// </summary>
+		public void TriggerHush(int durationTicks)
+		{
+			if (!RM_CreatureBehaviorsSettings.silenceCueEnabled)
+			{
+				return; // mod option: silence cue disabled
+			}
+			if (hushed)
+			{
+				int candidateEnd = Find.TickManager.TicksGame + durationTicks;
+				if (candidateEnd > hushEndTick)
+				{
+					hushEndTick = candidateEnd;
+				}
+				return;
+			}
+			Hush(durationTicks);
 		}
 
 		private void ScanForTrigger()

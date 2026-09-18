@@ -181,6 +181,16 @@
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- FEVER_WOOD_MECHANICS_1 F2: RUT_IncidentWorker_MirrorBreak reuses
+         RM_MapComponent_SilenceCue.TriggerHush. Same recipe as
+         RM_ShipVermin.csproj's own reference to this DLL — real at runtime
+         as long as mandrake.rm.creaturebehaviors is active and loadAfter
+         (asserted in About.xml). Build CreatureBehaviors FIRST:
+           "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release -->
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

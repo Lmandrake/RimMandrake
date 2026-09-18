@@ -41,5 +41,21 @@ content def in any mod opts in through XML alone.
      either adds N of a HediffDef to random body parts, or destroys every body part
      matching a BodyPartDef with a configured damage type.
 
-Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+Live proof is OWED: this mod has not yet been loaded in a running game.
+
+FEVER_WOOD_MECHANICS_1 F2 (2026-09-18): RUT_IncidentWorker_MirrorBreak calls
+RimMandrake.CreatureBehaviors.RM_MapComponent_SilenceCue.TriggerHush for the
+mirror-break "everything goes silent to watch" beat (the_fever_wood.md §9),
+reusing the Greentide kit's own silence-cue class rather than a second
+implementation. This makes mandrake.rm.creaturebehaviors a real dependency
+of this mod, same shape mandrake.rm.shipvermin already ships.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
 </ModMetaData>
