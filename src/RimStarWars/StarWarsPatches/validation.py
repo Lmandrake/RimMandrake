@@ -90,8 +90,24 @@ Still not proven / likely first-live-run corrections:
      or something else entirely (an unhandled `PawnGenerator` exception) --
      not measured; `gamorrean_pawnkinds_spawn_armed` below checks the
      actual result shape defensively rather than assuming one outcome.
+
+TWO MORE ABSORBED WALK DOCS, added VALIDATION_SCRIPT_BACKFILL_1: `design/
+validation_walks/RimStarWars/{BlastDoorFrameAsyncFix,CereanManeFix}.md` are
+not separate mods -- both carry their own `subject: src/RimStarWars/
+StarWarsPatches` + `absorbed:` line (Sprint wave A, commit 7e6eda0bd) -- and
+their checklists had NO coverage anywhere, including in the two chains
+above (which test the PORTED DEFS from a different absorption,
+BLASTDOOR_LUMI_PORT_1, not these two loose-texture fixes). Both fixes'
+donor mods (`Lumi.doorsexpanded`, `Neronix17.OuterRim.GalacticDiversity`)
+are absent from the minimal test list, so only the shipped-file checks
+below are provable here (no load-order, no rendered-facing -- same
+limitation as MandrakePatches' five absorbed fixes, same wave). One real
+stale-doc number found and fixed in BlastDoorFrameAsyncFix.md itself: it
+claimed the donor's/this mod's canvas is 933x933; PIL measurement against
+all 6 shipped files this pass says 936x936, corrected in that file.
 """
 from modcheck import Suite, ExpectationFailed
+import os as _os
 
 suite = Suite("StarWarsPatches")
 suite.toggles = []   # no ModSettings anywhere in this mod -- confirmed, no Source/*.cs at all.
@@ -105,6 +121,23 @@ BLAST_DOORS = ["PH_DoorThickBlastBDoor", "PH_DoorBlastCDoor", "PH_DoorBlastDDoor
 GAMORREAN_GUARD = "RSW_Jawa_Gamorrean_Guard"
 GAMORREAN_ENFORCER = "RSW_Jawa_Gamorrean_Enforcer"
 GAMORREAN_XENOTYPE = "RSW_Jawa_Xeno_Gamorrean"
+
+_MOD_DIR = _os.path.dirname(_os.path.abspath(__file__))
+
+
+def _check_png(path, expect_wh=None):
+    """Pure repo file check, no bridge call -- PIL against a file on disk.
+    Returns an error string, or None if the file passes."""
+    if not _os.path.isfile(path):
+        return "%s does not exist" % path
+    from PIL import Image
+    im = Image.open(path).convert("RGBA")
+    if expect_wh is not None and im.size != expect_wh:
+        return "%s is %r, expected %r" % (path, im.size, expect_wh)
+    lo, hi = im.getchannel("A").getextrema()
+    if hi == 0:
+        return "%s has a uniformly-zero alpha channel (blank/invisible)" % path
+    return None
 
 
 @suite.chain("absorbed_blast_doors_spawn_cleanly")
@@ -189,3 +222,45 @@ def gamorrean_pawnkinds_spawn_armed(t):
                     "(weapon_tag_audit.py, 2026-08-19) this pawnkind's own "
                     "comments say Jawa_GamorreanAxe was added to fix." % enforcer)
         t.screenshot()
+
+
+@suite.chain("blastdoorframeasyncfix_textures")
+def blastdoorframeasyncfix_textures(t):
+    """Absorbed walk doc: BlastDoorFrameAsyncFix.md (Doors Expanded Star
+    Wars edition, third-party donor absent from minimal). 6 shipped PNGs
+    (3 doors x east + eastm), all measured this pass at 936x936 with
+    non-zero alpha -- corrects the walk doc's own stale 933x933 claim (see
+    module docstring). No donor-parity or built-door-in-game check here."""
+    blast_dir = _os.path.join(_MOD_DIR, "Textures", "Things", "Building",
+                              "Door", "Blast")
+    files = [
+        "SWDoorBlastDoor_FrameAsync_east.png",
+        "SWDoorBlastDoor_FrameAsync_eastm.png",
+        "SWDoorBlastBDoor_FrameAsync_east.png",
+        "SWDoorBlastBDoor_FrameAsync_eastm.png",
+        "SWDoorBlastDDoor_FrameAsync_east.png",
+        "SWDoorBlastDDoor_FrameAsync_eastm.png",
+    ]
+    with t.component("six_frameasync_east_pngs_present_936_nonblank",
+                     beyond_toggle=True):
+        errs = [e for f in files
+                for e in [_check_png(_os.path.join(blast_dir, f), (936, 936))]
+                if e]
+        if errs:
+            raise ExpectationFailed("; ".join(errs))
+
+
+@suite.chain("cereanmanefix_texture")
+def cereanmanefix_texture(t):
+    """Absorbed walk doc: CereanManeFix.md (Outer Rim - Galactic Diversity,
+    third-party donor absent from minimal). One shipped PNG, measured this
+    pass: CereanMane_south.png, 512x512, non-zero alpha -- matches the walk
+    doc's own claimed canvas exactly. No donor-parity or rendered-hair
+    check here (needs the donor's AssetBundle and a live Cerean pawn)."""
+    path = _os.path.join(_MOD_DIR, "Textures", "OuterRim", "Hairs", "Cerean",
+                         "CereanMane_south.png")
+    with t.component("cerean_mane_south_present_512_nonblank",
+                     beyond_toggle=True):
+        err = _check_png(path, (512, 512))
+        if err:
+            raise ExpectationFailed(err)
