@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T06:42:04Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-18T06:52:47Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -512,15 +512,6 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
-prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
@@ -1658,7 +1649,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1666,7 +1657,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is LOADING
+waiting:  needs `bridge`, game is UP
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
@@ -1907,3 +1898,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_ART_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
+
+## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
+prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
+
+## FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1 RM_BottledLiquidExtension type not found: RM_LiquidBottles_Base.xml discards + drives ~82 defs / 420 crossrefs on the full load
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1.md
