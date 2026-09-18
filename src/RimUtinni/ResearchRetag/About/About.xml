@@ -24,10 +24,24 @@ RUT_Antiquities ships its own tab separately, untouched here. Labels ruled by
 the owner 2026-09-04: "Jawa Scavenging"/"The Utinni" rename Scavenger/THE
 SHIP; The Waking Mind ships unfolded, not merged into The Unbolting.
 
-RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.</description>
+RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.
+
+RESEARCH_TRIO_RETIRE_1 (owner card 2026-09-18): this mod now OWNS 18 native
+ResearchProjectDefs (Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml) that
+used to belong to petetimessix.researchreinvented.steppingstones and
+als.gravtech/als.gravtech.bc, all three retired the same day
+(infrastructure/state/facts/retired_mods.json). Same defNames as the donors on
+purpose - every existing cross-reference (RUT_ResearchRetag.xml,
+RUT_ResearchTabAssign.xml, every OTHER mod's researchPrerequisites) keeps
+resolving with zero repointing. GravForge's own building, its 6 recipes and 3
+supporting items are ported too (Defs/ThingDefs_Buildings/
+RUT_Ported_GravForge.xml) - the flagship example the ruling named; the rest of
+the two donors' downstream content (GravWeapon's personal weapons, GravBionics'
+implants, the 7 AdvShip_* ship parts, als.gravtech.bc's 9 big-cannon buildings)
+was NOT ported this pass and those research nodes currently unlock nothing of
+their own - a scoped, named follow-on, not silently invented or silently
+dropped.</description>
   <forceLoadAfter>
-    <li>als.gravtech</li>
-    <li>als.gravtech.bc</li>
     <li>aoba.fortress.industrial</li>
     <li>biomesteam.biomescaverns</li>
     <li>cain.mineshaft</li>
@@ -57,7 +71,6 @@ RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names th
     <li>oskarpotocki.vfe.insectoid2</li>
     <li>oskarpotocki.vfe.pirates</li>
     <li>oskarpotocki.vfe.tribals</li>
-    <li>petetimessix.researchreinvented.steppingstones</li>
     <li>propickelz.tinkerbench</li>
     <li>regrowth.botr.core</li>
     <li>sarg.alphamechs</li>

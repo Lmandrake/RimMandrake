@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUT_Ported_GravForge.xml - RESEARCH_TRIO_RETIRE_1. The one "supporting def"
+     the owner's ruling named explicitly ("plus whatever supporting defs they
+     reference, e.g. GravForge's building"). als.gravtech's Grav Forge is the
+     hub of the whole GravForge/GravTuning/GravBionics/GravWeapon/AdvShipParts/
+     BlackHole_GT/GTbc_BigCannons research cluster - without it, GravForge (the
+     research) unlocks nothing to build. Ported here, same defName/recipe
+     defNames, from workshop 3545374124 1.6/Defs/ThingDefs_Buildings/GravForge_GT.xml,
+     read directly off disk this session (never from memory).
+
+     Also ports the three GravForge-exclusive items its own recipes and
+     killedLeavings reference (checked against the live def dump and vanilla
+     Data/ before deciding each needed a port):
+       - Gravitonium        (ThingDefs_Items/Gravitonium_GT.xml)   - GravForge's
+         own recipe product, techLevel Ultra armor/insulation stuff.
+       - ChunkSlagPlasteel_GT (ThingDefs_Misc/ChunkSlag_GT.xml)    - the
+         building's killedLeavings chunk; <smeltable> lets vanilla's own
+         Smelter mechanic recover Plasteel from it with no extra recipe.
+       - UnfinishedGravcore  (ThingDefs_Items/Unfinished_GT.xml)   - the
+         Make_GravcoreGF recipe's unfinishedThingDef.
+     Gravcore and GravlitePanel (referenced throughout) are NOT ported - both
+     are vanilla Odyssey DLC items (Data/Odyssey/Defs/ThingDefs_Items/
+     Items_Resource_Misc.xml), confirmed absent from every als.gravtech file.
+     UnfinishedComponent is vanilla Core, same reasoning.
+
+     NOT PORTED, explicitly out of scope this pass (see this item's ledger
+     note / RESEARCH_TRIO_RETIRE_1.md for the full list): GravWeapon's four
+     personal weapons (GravCannon_GT/GravBlaster_GT/GravgunRifle_GT/
+     GravHammer_GT + Apparel_GravPack_GT/Apparel_GravBelts_GT), GravBionics'
+     implants (GravBionic_GT.xml), GravTuning's AI-core copy recipe target
+     (kept below since it lives on GravForge itself), AdvShip_* ship parts
+     (7 buildings), and als.gravtech.bc's whole "big cannons" building family
+     (9 buildings). Those research nodes exist and are correctly costed/
+     tabbed/prereq'd after this port, but currently unlock no new content of
+     their own - a real, scoped, named follow-on (not invented or guessed at
+     here).
+
+     Textures copied verbatim from the same donor:
+       Textures/Building/GravForge/GravForge_{east,north,south}.png
+       Textures/Item/Gravitonium.png
+       Textures/Unfinished/UnfinishedGravcore.png
+     (west is engine-mirrored from east, same as the donor shipped it -
+     drawRotated is false and only 3 rotations were ever provided).
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>GravForge</defName>
+    <label>grav forge</label>
+    <description>A high-tech forge designed to assemble Gravcores by compressing Gravlite panels using powerful gravitational waves.\n\nWhen built next to the Grav engine, the work speed is increased by 140%.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <drawRotated>false</drawRotated>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Building/GravForge/GravForge</texPath>
+      <drawSize>(3.1,2.4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <WorkToBuild>60000</WorkToBuild>
+      <WorkTableWorkSpeedFactor>1.6</WorkTableWorkSpeedFactor>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <heatPerTickWhileWorking>-0.2</heatPerTickWhileWorking>
+      <workTableRoomRole>Workshop</workTableRoomRole>
+      <workTableNotInRoomRoleFactor>0.8</workTableNotInRoomRoleFactor>
+    </building>
+    <size>(3,2)</size>
+    <fillPercent>1</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>20</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2540</uiOrder>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <researchPrerequisites>
+      <li>GravForge</li>
+    </researchPrerequisites>
+    <costList>
+      <Gravcore>2</Gravcore>
+      <GravlitePanel>150</GravlitePanel>
+      <Plasteel>200</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+    </costList>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <minifiedDef />
+    <thingCategories Inherit="false" />
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5</glowRadius>
+        <glowColor>(40,50,60,70)</glowColor>
+      </li>
+      <li Class="CompProperties_GravshipFacility">
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>3</maxSimultaneous>
+        <maxDistance>3.9</maxDistance>
+      </li>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>ToolCabinet</li>
+          <li>GravEngine</li>
+        </linkableFacilities>
+      </li>
+    </comps>
+    <surfaceType>Item</surfaceType>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+    <killedLeavings>
+      <ChunkSlagPlasteel_GT>3</ChunkSlagPlasteel_GT>
+      <GravlitePanel>30</GravlitePanel>
+    </killedLeavings>
+    <recipes>
+      <li>Make_PlasteelGF</li>
+      <li>Make_ComponentIndustrialGF</li>
+      <li>Make_ComponentSpacerGF</li>
+      <li>Make_GravlitePanelGF</li>
+      <li>Make_GravcoreGF</li>
+      <li>Copy_AIPersonaCoreGF</li>
+    </recipes>
+  </ThingDef>
+
+  <!-- recipes, verbatim from the donor -->
+  <RecipeDef>
+    <defName>Make_PlasteelGF</defName>
+    <label>make plasteel</label>
+    <description>Make a plasteel.</description>
+    <jobString>Compressing plasteel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>9000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Silver</li>
+          </thingDefs>
+        </filter>
+        <count>3.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+        <li>Chemfuel</li>
+        <li>Silver</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Plasteel>35</Plasteel>
+    </products>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>5</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Make_ComponentIndustrialGF</defName>
+    <label>make component x5</label>
+    <description>Make a component.</description>
+    <jobString>Making component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>18000</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </products>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>10</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Make_ComponentSpacerGF</defName>
+    <label>make advanced component x5</label>
+    <description>Make an advanced component.</description>
+    <jobString>Making advanced component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>39000</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>GravlitePanel</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Plasteel</li>
+        <li>ComponentIndustrial</li>
+        <li>GravlitePanel</li>
+        <li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>5</ComponentSpacer>
+    </products>
+    <researchPrerequisite>AdvancedFabrication</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>10</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>15</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Make_GravlitePanelGF</defName>
+    <label>make gravlite panel x10</label>
+    <description>Make a Gravlite panel.</description>
+    <jobString>Making Gravlite panel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>6000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>BlocksVacstone</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Plasteel</li>
+        <li>BlocksVacstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <GravlitePanel>10</GravlitePanel>
+    </products>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>20</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Make_GravcoreGF</defName>
+    <label>make gravcore</label>
+    <description>Make a Gravcore.</description>
+    <jobString>Making Gravcore.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>48000</workAmount>
+    <unfinishedThingDef>UnfinishedGravcore</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>GravlitePanel</li>
+          </thingDefs>
+        </filter>
+        <count>200</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gravitonium</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>GravlitePanel</li>
+        <li>ComponentSpacer</li>
+        <li>Gravitonium</li>
+        <li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Gravcore>1</Gravcore>
+    </products>
+    <skillRequirements>
+      <Crafting>15</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>
+      <li>GravForge</li>
+    </researchPrerequisite>
+    <displayPriority>25</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Copy_AIPersonaCoreGF</defName>
+    <label>copy AI persona core</label>
+    <description>Replicate an AI Persona Core.</description>
+    <jobString>Making copy an AI Persona Core.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>GravForgePulse</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>7200</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AIPersonaCore</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>EmptyAICore</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AIPersonaCore</li>
+        <li>EmptyAICore</li>
+        <li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AIPersonaCore>2</AIPersonaCore>
+    </products>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+      <Intellectual>14</Intellectual>
+    </skillRequirements>
+    <workSkill>Intellectual</workSkill>
+    <researchPrerequisite>
+      <li>GravTuning</li>
+    </researchPrerequisite>
+    <displayPriority>440</displayPriority>
+  </RecipeDef>
+
+  <!-- effects -->
+  <EffecterDef>
+    <defName>GravForgePulse</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>GravForgeBluePulse</fleckDef>
+        <ticksBetweenMotes>180</ticksBetweenMotes>
+        <spawnLocType>BetweenPositions</spawnLocType>
+        <useTargetAInitialRotation>true</useTargetAInitialRotation>
+        <positionOffset>(0, 0, 0)</positionOffset>
+        <scale>2~3</scale>
+      </li>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>GravwellForge</fleckDef>
+        <ticksBetweenMotes>180</ticksBetweenMotes>
+        <spawnLocType>BetweenPositions</spawnLocType>
+        <positionOffset>(0, 0, 0)</positionOffset>
+        <scale>0.1~0.2</scale>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <FleckDef>
+    <defName>GravwellForge</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
+    <fadeInTime>0.02</fadeInTime>
+    <fadeOutTime>0.4</fadeOutTime>
+    <solidTime>0.20</solidTime>
+    <growthRate>10</growthRate>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>MoteGlowDistortBackground</shaderType>
+      <texPath>Things/Mote/Black</texPath>
+      <shaderParameters>
+        <_distortionIntensity>0.1</_distortionIntensity>
+        <_brightnessMultiplier>1.15</_brightnessMultiplier>
+        <_DistortionTex>/UI/Gravwell</_DistortionTex>
+      </shaderParameters>
+      <drawSize>0.3</drawSize>
+    </graphicData>
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_RandomGraphic">
+    <defName>GravForgeBluePulse</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.1</fadeInTime>
+    <solidTime>0.1</solidTime>
+    <fadeOutTime>0.6</fadeOutTime>
+    <randomGraphics>
+      <li>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/LensFlares/LensFlareA</texPath>
+        <shaderType>MoteGlow</shaderType>
+        <color>(0, 0.3, 1, 0.4)</color>
+        <drawSize>2</drawSize>
+      </li>
+      <li>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/LensFlares/LensFlareB</texPath>
+        <shaderType>MoteGlow</shaderType>
+        <color>(0, 0.3, 1, 0.4)</color>
+        <drawSize>2</drawSize>
+      </li>
+      <li>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/LensFlares/LensFlareC</texPath>
+        <shaderType>MoteGlow</shaderType>
+        <color>(0, 0.3, 1, 0.4)</color>
+        <drawSize>2</drawSize>
+      </li>
+    </randomGraphics>
+  </FleckDef>
+
+  <!-- supporting items -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>Gravitonium</defName>
+    <label>gravitonium</label>
+    <description>An incredibly durable alloy of uranium, plasteel and gravlite, obtained by compression under large pressure on a grav forge.</description>
+    <graphicData>
+      <texPath>Item/Gravitonium</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <recipeMaker>
+      <skillRequirements>
+        <Crafting>10</Crafting>
+      </skillRequirements>
+      <recipeUsers Inherit="False">
+        <li>GravForge</li>
+      </recipeUsers>
+      <productCount>30</productCount>
+      <researchPrerequisites>
+        <li>GravForge</li>
+      </researchPrerequisites>
+      <workAmount>10200</workAmount>
+      <effectWorking>GravForgePulse</effectWorking>
+      <displayPriority>8</displayPriority>
+    </recipeMaker>
+    <costList>
+      <Uranium>15</Uranium>
+      <Plasteel>30</Plasteel>
+      <GravlitePanel>10</GravlitePanel>
+    </costList>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <Mass>1.5</Mass>
+      <Flammability>0.0</Flammability>
+      <StuffPower_Armor_Sharp>1.25</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.90</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.55</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>30</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1.1</SharpDamageMultiplier>
+      <BluntDamageMultiplier>2.1</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <deepCommonality>0.4</deepCommonality>
+    <deepCountPerPortion>5</deepCountPerPortion>
+    <deepLumpSizeRange>1~1</deepLumpSizeRange>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>true</smeltable>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <appearance>Metal</appearance>
+      <commonality>0.05</commonality>
+      <color>(175,185,180)</color>
+      <constructEffect>ConstructMetal</constructEffect>
+      <isAirtight>true</isAirtight>
+      <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Metal</soundImpactMelee>
+      <statFactors>
+        <MaxHitPoints>4.5</MaxHitPoints>
+        <WorkToMake>3.2</WorkToMake>
+        <WorkToBuild>3.2</WorkToBuild>
+        <Beauty>1.7</Beauty>
+        <Flammability>0.0</Flammability>
+        <DoorOpenSpeed>0.60</DoorOpenSpeed>
+        <MeleeWeapon_CooldownMultiplier>1.60</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+    </stuffProps>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <techLevel>Ultra</techLevel>
+  </ThingDef>
+
+  <ThingDef Name="ChunkSlagPlasteel" ParentName="ChunkBase">
+    <defName>ChunkSlagPlasteel_GT</defName>
+    <label>plasteel slag chunk</label>
+    <description>A chunk of plasteel slag. While it's useless in its current form, it can be smelted to recover plasteel.</description>
+    <graphicData>
+      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(190,280,280)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Mass>5</Mass>
+    </statBases>
+    <soundDrop>ChunkSlag_Drop</soundDrop>
+    <thingCategories>
+      <li>Chunks</li>
+    </thingCategories>
+    <smeltable>true</smeltable>
+    <smeltProducts>
+      <Plasteel>15</Plasteel>
+    </smeltProducts>
+  </ThingDef>
+
+  <ThingDef ParentName="UnfinishedBase">
+    <defName>UnfinishedGravcore</defName>
+    <label>unfinished gravcore</label>
+    <description>An unfinished gravcore.</description>
+    <statBases>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Unfinished/UnfinishedGravcore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stuffCategories Inherit="false" />
+  </ThingDef>
+
+</Defs>
