@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T09:26:35Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-18T11:00:06Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # IN PROGRESS
 
@@ -1071,6 +1080,15 @@ kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
+## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     investigation
+summary:  No design doc — this is an engine/tooling investigation, not a content build.
+prose:    infrastructure/state/items/QUICKTEST_RIVER_WATER_MISSING_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1657,17 +1675,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is LOADING
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1936,3 +1944,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Surfaced as a side finding during FISHBESTIARYBUILD1 wave 3 (2026-09-18):
 prose:    infrastructure/state/items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md
+
+## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  None yet — this is an open design question, not a scoped build. Candidate
+prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
