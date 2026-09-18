@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_DigStratumTable.xml                UtinniPatches · authored 2026-09-18
+  ============================================================================
+  SUMP_MECHANICS_1 S2 build pass. The first real RM_LotteryTableDef instance
+  — RM_LotteryTableDef/RM_CompWorkedLottery have compiled since the
+  2026-09-13 spike pass with no content Def ever pointing at them.
+
+  4 strata (index 0-3): RollPortion clamps to the last authored stratum for
+  any depth past this (Math.Min(stratumDepth, strata.Count-1) in
+  RM_CompWorkedLottery.cs), so deeper digs keep rolling stratum 3's table
+  while still crossing beastWakeStratumThreshold (4, CompProperties_
+  WorkedLottery's own default) and signalling S3's tar beast — no 5th
+  stratum needed to satisfy the spec's "past a threshold, each portion rolls
+  a beast-wake signal."
+
+  Ban #1 (sump_kit_spec.md hard-ban table, enforced at def-load by
+  RM_LotteryTableDef.ConfigErrors): every stratum's authored trap weight
+  exceeds its era-remains weight, and no row is flagged
+  isWholeBodyEraRemains. The runtime trapWeightMultiplierPerStratum (1.3,
+  RUT_DigShaft's own comp props) only ever widens that margin at depth, so
+  satisfying the inequality on these authored weights is sufficient.
+
+  🔴 Row thingDefs are a DELIBERATE PLACEHOLDER, not final loot content: the
+  spec's own "XML-only ledger" gives lore-specific finds (bones of
+  un-bestiaried ages, sealed §GM-tier casings, barreled tar) to the items/
+  roster passes, which have not shipped ThingDefs for them yet (checked:
+  grepped src/ for "Casing"/"GM-tier"/era-remains-flavored defNames — none
+  exist). Rows below use only real, already-shipped, thematically-neutral
+  vanilla salvage ThingDefs (chunks) so this table proves the wiring — the
+  ban-inequality linter firing, the WorkGiver/JobDriver reaching a real
+  stratum roll, a trap row actually arming and detonating — without
+  inventing the flavor content that pass owns. Re-point thingDefs to real
+  Sump-specific finds when that pass ships them.
+  ============================================================================
+-->
+<Defs>
+
+  <RimMandrake.EnvironmentalHazards.RM_LotteryTableDef>
+    <defName>RUT_DigStratumTable</defName>
+    <strata>
+      <li>
+        <rows>
+          <li><rowLabel>junk</rowLabel><weight>14</weight><thingDef>ChunkSlagSteel</thingDef><countRange>1~2</countRange></li>
+          <li><rowLabel>partial remains</rowLabel><weight>3</weight><isEraRemains>true</isEraRemains><thingDef>ChunkMechanoidSlag</thingDef><countRange>1~1</countRange></li>
+          <li><rowLabel>trap</rowLabel><weight>5</weight><isTrap>true</isTrap></li>
+        </rows>
+      </li>
+      <li>
+        <rows>
+          <li><rowLabel>junk</rowLabel><weight>12</weight><thingDef>ChunkSlagSteel</thingDef><countRange>1~2</countRange></li>
+          <li><rowLabel>sunken machine</rowLabel><weight>4</weight><isEraRemains>true</isEraRemains><thingDef>ShipChunk</thingDef><countRange>1~1</countRange></li>
+          <li><rowLabel>trap</rowLabel><weight>7</weight><isTrap>true</isTrap></li>
+        </rows>
+      </li>
+      <li>
+        <rows>
+          <li><rowLabel>junk</rowLabel><weight>10</weight><thingDef>ChunkSlagSteel</thingDef><countRange>1~3</countRange></li>
+          <li><rowLabel>sealed casing</rowLabel><weight>5</weight><isEraRemains>true</isEraRemains><thingDef>ChunkMechanoidSlag</thingDef><countRange>1~2</countRange></li>
+          <li><rowLabel>trap</rowLabel><weight>9</weight><isTrap>true</isTrap></li>
+        </rows>
+      </li>
+      <li>
+        <rows>
+          <li><rowLabel>junk</rowLabel><weight>8</weight><thingDef>ChunkSlagSteel</thingDef><countRange>1~3</countRange></li>
+          <li><rowLabel>sunken machine</rowLabel><weight>6</weight><isEraRemains>true</isEraRemains><thingDef>ShipChunk</thingDef><countRange>1~2</countRange></li>
+          <li><rowLabel>trap</rowLabel><weight>12</weight><isTrap>true</isTrap></li>
+        </rows>
+      </li>
+    </strata>
+  </RimMandrake.EnvironmentalHazards.RM_LotteryTableDef>
+
+</Defs>
