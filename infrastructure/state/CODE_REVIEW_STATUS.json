@@ -2400,22 +2400,34 @@
     "sha": "616570761"
   },
   "src/RimMandrake/GravshipLanding/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "5b5c8e60956a47825c73a66fc05823693a1d70a17a6eb32bfbcbf7a7ea6b4905",
-    "sha": "bda42ac64"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/GravshipLanding/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/GravshipLanding/Source/GravshipLandingMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "08197bcc55b71c10cbe814ff639d942730f2dca84c784608b3f292eca547734e",
-    "sha": "47ae589d5"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/GravshipLanding/Source/Patch_GenStep_GravshipMarker.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "be1203320b7109578db15e0fd4c6980f369a44e3c1402cf598d69a22c701d879",
-    "sha": "47ae589d5"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/GravshipLanding/Source/RM_GravshipLanding.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "374865163ae19026b7712855fe2c825106bc7b295aee1374af5dc62b88b293cf",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/Greentide/About/About.xml": {
     "cleanCount": 1,
@@ -2922,22 +2934,34 @@
     "sha": "47ae589d5"
   },
   "src/RimMandrake/LoadTracer/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "4ce6515fc27f701ed8202bbca55ad580151045e6ce9bfad29727305e24d06833",
-    "sha": "629956d2"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/LoadTracer/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "92e56d4f"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/LoadTracer/Source/LoadTracer.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "35854ba1edd4eb2059dac51033c0cefda15be584ad4e7d977cb9727ff33e2af1",
-    "sha": "c6ede2aa"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/LoadTracer/Source/LoadTracer.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "02442a347c1e56eec2c1aeb452dbc4b385e27e86c199695ee344d6e079a917d8",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/LoadTracer/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e2d74b62feb6d3ecb68d64388a359326e07cf77ebe7852d17286625d15f4ca71",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/LoreStages/About/About.xml": {
     "cleanCount": 1,
@@ -3696,52 +3720,64 @@
     "sha": "aa2e63220"
   },
   "src/RimMandrake/PlanetPresetPrime/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "4f7c0d35eb6b070729211b7cfa1a8fa9d9bef7a5c4a8a043586bc1954c7397d7",
-    "sha": "629956d2"
-  },
-  "src/RimMandrake/PlanetPresetPrime/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "92e56d4f"
-  },
-  "src/RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "946ee86bd511cf97eaace672185924b90933ccee86098883086dada999aea388",
-    "sha": "b294390b"
-  },
-  "src/RimMandrake/ProximityHatch/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "d3a993239de184ed1ffca3445ed7bc22309ec64a9916a29bdb4d89ae56c86e2a",
-    "sha": "8be234dd"
-  },
-  "src/RimMandrake/ProximityHatch/Source/CompProperties_ProximityHatch.cs": {
     "cleanCount": 2,
     "date": "2026-09-17",
+    "hash": "4f7c0d35eb6b070729211b7cfa1a8fa9d9bef7a5c4a8a043586bc1954c7397d7",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/PlanetPresetPrime/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "946ee86bd511cf97eaace672185924b90933ccee86098883086dada999aea388",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6e4761f42ec58941187f9e16ac7d149a61f8fc6172dd25783223e65334610cdd",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/PlanetPresetPrime/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "37510f15aef6c7438de978854c18be0481e935285754a7fcf1ee1f1c707ccc87",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/ProximityHatch/About/About.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "d3a993239de184ed1ffca3445ed7bc22309ec64a9916a29bdb4d89ae56c86e2a",
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/ProximityHatch/Source/CompProperties_ProximityHatch.cs": {
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "b71b8268e88ed5c8f58e515e239f3987b10bed4aebd6b22ab19c73ec53cbb742",
-    "sha": "a136c3b7e"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ProximityHatch/Source/CompProximityHatch.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "cd5a4a604e846c65217d9b62d8e12e14f142a83c0b36b96b36ca0e6a82e3763f",
-    "sha": "5f12f476e"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ProximityHatch/Source/RM_ProximityHatchMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "5c984187486f6813638e4f3f1ecb64f5d919993335c35354dd460913b969c045",
-    "sha": "311d90fc5"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ProximityHatch/Source/RimMandrake_ProximityHatch.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "d230983bd367998488a22a19459c92e4cf523eead3f946aaf40ea4f0cfa16586",
-    "sha": "ce01a5a8a"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "a2469fe8e2a1dbd12915f85671d2e1019503355f16ecb6c526725646dd6f8f24",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/Pyrelands/About/About.xml": {
     "cleanCount": 1,
@@ -4128,34 +4164,46 @@
     "sha": "b1655903"
   },
   "src/RimMandrake/RimDefDump/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "9fe293e6150b35a485fc451d2a456bac6e3d2ddb56dae7153f8b065e6a4daf22",
-    "sha": "629956d2"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RimDefDump/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "92e56d4f"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/RimDefDump/README.md": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "44d9dbe7ed2fef8d660b9eb6308ffeb6b25884d246a8e0a664a4e1df5450435d",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RimDefDump/Source/DefDumper.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "c87c5e20e3a39e1ca809ff899b0bea542d246b04d72c79871c6a21bc6d364c9c",
-    "sha": "42c76948"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RimDefDump/Source/DefReflector.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "46c39ee8b6de5f3ccddbfca86679d3253914d44742ac7dc162a648aad9c2f6ed",
-    "sha": "dc7d9d40"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RimDefDump/Source/JsonWriter.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "9599ec736082b9b0e2ae360ca7839fca07499603b253bf865bf5ff9628d0702e",
-    "sha": "43f96b1b"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/RimDefDump/Source/RimDefDump.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bfc63d7c429140b626879f118885f84d7ad658623e31c620679f205a4b3fad8f",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RimProperty/About/About.xml": {
     "cleanCount": 1,
@@ -4440,34 +4488,40 @@
     "sha": "616570761"
   },
   "src/RimMandrake/RustChrome/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "5dff27c1592bec937d6e42605a444056688c0891dd158d13863027a7f57bba6a",
-    "sha": "52dee04f"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RustChrome/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "7d23de24"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RustChrome/Source/RustChrome.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "2679abfe0210fc829cc3eb22650f4745f757503ecf301749734eb02847fa5478",
-    "sha": "2467e0a2d"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RustChrome/Source/RustChromeColors.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "29e89aa10afd32eae19ad5aac6fa7d8053becaf692ae8e9cc0b44849f0652415",
-    "sha": "2467e0a2d"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/RustChrome/Source/RustChromeMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "838a0f3085fa86b0ca13dd95b1bbdc83b36026866c5e75029b644d5cd68ad5d6",
-    "sha": "f69955e42"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/RustChrome/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "01ffdc73394bed963749904d4aa9e89527a40fd7a6c1698cedac849972b02de2",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/SacredGraffiti/About/About.xml": {
     "cleanCount": 1,
@@ -4518,76 +4572,82 @@
     "sha": "250be7a3"
   },
   "src/RimMandrake/ShipVermin/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "a255d1af2517256b40f621e73da9192b46af6fb845f0c492c259cf545208ea9c",
-    "sha": "96156db67"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Patches/RSW_Mynock_ShipVermin.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "b7465ac5874fd10be6b914e308c1855178fb44b661fadab160031aee5bf97e41",
-    "sha": "31e9db1cd"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/Debug/RM_ShipVerminDebugActions.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "32ea27e04147fc8eb7c90386a8a9a519e39eed35ca97ddc3e5c810ad6ec7a049",
-    "sha": "f69955e42"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/RM_Alert_ShipVermin.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
+    "cleanCount": 4,
+    "date": "2026-09-17",
     "hash": "69118ff24bdde8d72cb0e8b1f926167ca715164c8916314b48e6295ffbb67a97",
-    "sha": "96156db67"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/RM_CompProperties_VerminNest.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "048d1199f8816f3901c349849d37e1c8358cbdefcd61a6cfef0528017f5c71d3",
-    "sha": "96156db67"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "d0e1a5037d5d9642ccc3cee900b6b4de1e6830ce653c6ad5a23af60ee3737c6e",
-    "sha": "daaf1cd31"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
+    "cleanCount": 3,
+    "date": "2026-09-17",
     "hash": "087658590ea5882673d99574485756a323b76e9eb98324ec41a9da1d2cd13337",
-    "sha": "daaf1cd31"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/ShipVermin/Source/RM_ShipVerminMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "fc4c0045a623bbbce5f8b6316d6f0f15603da406a9fb89ee3d153f1834d43e26",
-    "sha": "96156db67"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/StrandedQuest/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "07b72459955adf93ef63bfe50eaa1dbd6496353089f6e9baa7fe4aab92e68471",
-    "sha": "629956d2"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/StrandedQuest/Defs/HistoryEventDefs/HistoryEvents_Stranded.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "d35aa14bdefb6142e73ac3e5295758e0bda66168bbb9453f15e442203fbe1149",
-    "sha": "71cceeb1"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/StrandedQuest/Defs/QuestScriptDefs/Quest_Stranded.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "16796cda379caa1d572c1b19726e6e16a965c62be2d55bb0e8c43e40b104f08c",
-    "sha": "629956d2"
+    "sha": "57d78d214"
   },
   "src/RimMandrake/StrandedQuest/LICENSE": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "92e56d4f"
+    "sha": "57d78d214"
+  },
+  "src/RimMandrake/StrandedQuest/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ad6c9b2ae2994e815be436af8001cae40ff47264fd02d6b2ae8e7d558fecc599",
+    "sha": "57d78d214"
   },
   "src/RimMandrake/StructureInjections/About/About.xml": {
     "cleanCount": 1,
