@@ -34,12 +34,26 @@ TIER_PID = {"RimMandrake": "rm", "RimStarWars": "rsw", "RimUtinni": "rut"}
 PID_RX = re.compile(r"^mandrake\.(rm|rsw|rut)\.[a-z0-9]+$")
 LEAK_RX = re.compile(r'JawaBench|"jawa/')
 XML_COMMENT_RX = re.compile(r"<!--.*?-->", re.S)
+CS_COMMENT_RX = re.compile(r"//[^\n]*|/\*.*?\*/", re.S)
 
 
 def _stripped(path: Path) -> str:
     """XML text with comments removed, so a defName or leak string that only
     appears inside a `<!-- -->` is not counted as shipping."""
     return XML_COMMENT_RX.sub("", path.read_text(encoding="utf-8", errors="replace"))
+
+
+def _shipping_text(path: Path) -> str:
+    """Text with comments removed, for the leak check. Without this a `//` or
+    `/* */` remark merely EXPLAINING why code is exempt from JawaBench (dev
+    tooling, exempt per CLAUDE.md) — "the JawaBench bridge tool (a debug
+    instrument)" — reads as if JawaBench itself shipped. Same principle
+    `_stripped()` already applies to XML defNames, extended to `.cs`'s own
+    comment syntax; verified live 2026-09-18 against all 3 current `leak`
+    hits (RM_MapComponent_MudSwallow.cs, DroidworksHardwareQuirks.cs,
+    WarLabCraterMutation.cs) — every one is a comment, none is shipped code."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return XML_COMMENT_RX.sub("", text) if path.suffix == ".xml" else CS_COMMENT_RX.sub("", text)
 
 
 def load_map():
@@ -114,7 +128,7 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
     for x in list(mod.rglob("*.xml")) + [c for c in mod.rglob("*.cs") if "obj" not in c.parts]:
         if x.name == "About.xml":
             continue
-        if LEAK_RX.search(x.read_text(encoding="utf-8", errors="replace")):
+        if LEAK_RX.search(_shipping_text(x)):
             v.append(("leak", f"references exempt tooling: {x.relative_to(mod)}"))
             break
     return v

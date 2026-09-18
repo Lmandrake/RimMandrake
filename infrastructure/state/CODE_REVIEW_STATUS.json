@@ -1602,10 +1602,10 @@
     "sha": "f4d5c1714"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_RootCausewayBiomeExtension.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-14",
-    "hash": "cf62f9eaa6bca2133e5eaec44ce9ba49d7a50f7e3158e883883e3de4e3956a03",
-    "sha": "1741b389a"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "de55881a482f23ea4afb15472dc568622acbba81195dc5c02f2a2618287fcf5c",
+    "sha": "534c14f53"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_ScattererValidator_Biome.cs": {
     "cleanCount": 1,
@@ -3474,10 +3474,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/MovingDunes/Source/RimMandrake_MovingDunes.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "a8e8837d959693928b410eb5752112101737e63ca6cfa1dfbcd77a3ef230aa04",
-    "sha": "ce01a5a8a"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "915edf5f6656bb2ad59268bbdf63519b69dbf8ac21e6037829ddf3ee5810bab7",
+    "sha": "534c14f53"
   },
   "src/RimMandrake/MovingDunes/Source/SectionLayer_DuneSand.cs": {
     "cleanCount": 1,
@@ -5794,10 +5794,10 @@
     "sha": "66fbc9bbc"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "31111216d4f1a7846cc9a633f1f0ae375170ee41f3daf416d8ac2fe07cd72b3b",
-    "sha": "d79860270"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "886bc291f81085b5771c657002a211b7576377a5dc1e94a30710e73303fed6b0",
+    "sha": "534c14f53"
   },
   "src/RimMandrake/Utils/nemotron_ceiling.py": {
     "cleanCount": 2,
@@ -7288,10 +7288,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/rimflow/model.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "36563bc5135e7be9440cdaeac11d2f4c2a7c8826c3df5ba2a74baac397537736",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "767b87f6f92f617c8e3cade7606389d5dfe0ef4bf6027f29fa5fa4b382b63473",
+    "sha": "534c14f53"
   },
   "src/RimMandrake/rimflow/priority.py": {
     "cleanCount": 1,
@@ -11266,10 +11266,10 @@
     "sha": "ea334c83"
   },
   "src/RimStarWars/NunaArtOverride/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "8396d0fe0fa037912521437a3a0f1a55ba066cb3e75fb37c3077a4cdae73451f",
-    "sha": "9aaf55cec"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "d1e8456133c2836c511639a4c38b24410ad68809260104a511e371fe0b4c1987",
+    "sha": "534c14f53"
   },
   "src/RimStarWars/NunaArtOverride/LICENSE": {
     "cleanCount": 1,
@@ -13942,10 +13942,10 @@
     "sha": "d1c393c02"
   },
   "src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs/RUT_KyberDonationSmuggle.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "b66f284a4dc856e4b889ea261712a5792ba2a3c38dcb39030b5960053cf59825",
-    "sha": "d1c393c02"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "c9ceeac68ad26183d9728b9052713cece4f9a2ec127ea052ba6520de6d9e778b",
+    "sha": "534c14f53"
   },
   "src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs/RUT_KyberHomesteadVisit.xml": {
     "cleanCount": 1,
@@ -14602,10 +14602,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "81859c9a838bd5d60382170fef7280671edaa850d297979cfcc3c2424663be78",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "df4b2380a306f84ca04dbe8aeef531ccf244fb971779fb083d563ee8c88d46dc",
+    "sha": "21d7a2cec"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml": {
     "cleanCount": 3,
@@ -15136,10 +15136,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_PaleTree.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "1ece7b1d124ce99a53deadd019113e1b33f2ba019276a40e770013dcd9056039",
-    "sha": "211b2f0c8"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "1674a13af4b919220336b4f91ed929971652dbae48f6b05998accfae7b7e45b4",
+    "sha": "534c14f53"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
     "cleanCount": 1,
