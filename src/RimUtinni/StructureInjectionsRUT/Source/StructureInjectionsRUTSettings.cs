@@ -14,11 +14,13 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     public class StructureInjectionsRUTSettings : ModSettings
     {
         public static bool warLabCraterEnabled = true;
+        public static bool ashfallCommandCodesEnabled = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref warLabCraterEnabled, "warLabCraterEnabled", true);
+            Scribe_Values.Look(ref ashfallCommandCodesEnabled, "ashfallCommandCodesEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -30,6 +32,11 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
                 "Destroying the war lab's reactor core permanently turns every propane-lake "
               + "tile on the planet into wasteland. Off: destroying the core does nothing "
               + "extra to the worldmap.");
+
+            list.CheckboxLabeled("Rakatan command codes unlock the war lab", ref ashfallCommandCodesEnabled,
+                "Redeeming the Rakatan command codes from the Ashfall Research Base sets the "
+              + "flag whichever war-lab gate check consults to open its shielding. Off: "
+              + "redeeming the codes does nothing (the item is still consumed).");
 
             list.End();
         }

@@ -42,6 +42,9 @@
     <Compile Include="WarLab\GameComponent_WarLabCrater.cs" />
     <Compile Include="WarLab\CompIgniteCraterOnDestroy.cs" />
     <Compile Include="VaultDungeons\MapComponent_VaultSleepers.cs" />
+    <Compile Include="Ashfall\GameComponent_AshfallCommandCodes.cs" />
+    <Compile Include="Ashfall\AshfallCommandCodesFlag.cs" />
+    <Compile Include="Ashfall\CompRedeemRakatanCommandCodes.cs" />
     <Compile Include="StructureInjectionsRUTSettings.cs" />
   </ItemGroup>
 
