@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  SAND_SWIMMERS_MOD_1 — biome wiring: puts the sand-swimmer fish family
-  (RimStarWars: SWBestiary — RSW_DuneCrawler / RSW_SandStalker / RSW_GlassPearl /
-  RSW_RareSandCatches) into `ZBiome_Badlands` (the Cracked Lands, More Vanilla
-  Biomes) as its `fishTypes`, replacing the vanilla Fish_Guppy/Fish_Tilapia/
-  RareFishingCatches_Hot that ship on that def today.
+  🔴 FISH_BESTIARY_BUILD_1 wave 3 (2026-09-18): the BiomeDef-patching half of
+  this file (everything below that used to target `ZBiome_Badlands`'s own
+  fishTypes/maxFishPopulation) is REMOVED — it was dead on the live map. The
+  donor `ZBiome_Badlands` is not the biome Ash'karr's Cracked Lands actually
+  uses; `RUT_CrackedLands` (BIOME_OWNERSHIP_WAVE_1, a standalone BiomeDef
+  with no ParentName) is, and nothing ever patched IT. MEASURED via
+  `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12): RUT_CrackedLands covers
+  970 tiles, ZBiome_Badlands covers zero. The fishTypes/maxFishPopulation
+  values that used to live here are now wired DIRECTLY onto
+  `Defs/BiomeDefs/RUT_CrackedLands.xml` (see its own header for the full
+  finding, which also covers RUT_WeepingStones — same bug, same fix, same
+  wave). Only the OTHER operation in this file survives: the §2B.rare
+  addition to `RSW_RareSandCatches`, a different mod's ThingSetMakerDef,
+  entirely unaffected by this bug (it patches a ThingSetMakerDef by
+  defName, not a BiomeDef whose identity turned out to be wrong).
+
+  Below this note is the ORIGINAL header, kept for provenance of the numbers
+  now living in RUT_CrackedLands.xml — SAND_SWIMMERS_MOD_1's original
+  framing: biome wiring that put the sand-swimmer fish family (RimStarWars:
+  SWBestiary — RSW_DuneCrawler / RSW_SandStalker / RSW_GlassPearl /
+  RSW_RareSandCatches) into `ZBiome_Badlands` (the Cracked Lands, More
+  Vanilla Biomes) as its `fishTypes`, replacing the vanilla
+  Fish_Guppy/Fish_Tilapia/RareFishingCatches_Hot that ship on that def.
 
   TARGETED, VERIFIED, NOT GUESSED: `ZBiome_Badlands` is not in the offline def dump
   or rimsage's vanilla-source index (it's a third-party BiomeDef, sarg/zylle content),
@@ -59,65 +77,6 @@
   mods" ruling asks for.
 -->
 <Patch>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>More Vanilla Biomes</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-
-        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/freshwater_Common</xpath>
-          <value>
-            <freshwater_Common>
-              <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
-              <RUT_Tubbik>1</RUT_Tubbik>
-              <RUT_Zhurr>0.6</RUT_Zhurr>
-            </freshwater_Common>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/freshwater_Uncommon</xpath>
-          <value>
-            <!-- FISH_TYPES_PATCH_BUILD_1 (2026-09-10): the merged Cracked Lands ruling
-                 (_fish_assignment_proposal.md §2/§5.1, owner-ratified) fills what was
-                 deliberately left empty here — the canyon slot-water's own predator
-                 pair, donors from Biomes! Caverns (BMT_, packageId
-                 biomesteam.biomescaverns; already a live donor on this def's sibling
-                 RUT_Greentide wildAnimals, e.g. BMT_Diggerpede). Common catch
-                 everywhere in the biome stays RSW_DuneCrawler (above); this bucket now
-                 pulls the deeper canyon line. The census's VCEF_Spiderfish/
-                 VCEF_ShadowFry secondaries are dropped per the ruling — three species
-                 is enough for one biome. -->
-            <freshwater_Uncommon>
-              <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
-              <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
-              <RUT_Hurrok>0.8</RUT_Hurrok>
-              <RUT_Vhessa>0.4</RUT_Vhessa>
-            </freshwater_Uncommon>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/rareCatchesSetMaker</xpath>
-          <value>
-            <rareCatchesSetMaker MayRequire="mandrake.rsw.swbestiary">RSW_RareSandCatches</rareCatchesSetMaker>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/maxFishPopulation</xpath>
-          <value>
-            <maxFishPopulation>90</maxFishPopulation>
-          </value>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
 
   <!-- FISH_BESTIARY_BUILD_1 wave 2 — §2B.rare addition: "the wall let go all
        at once." RSW_RareSandCatches is SWBestiary's own def (RimStarWars

@@ -230,6 +230,40 @@
       <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
     </wildPlants>
     <wildPlantRegrowDays>18</wildPlantRegrowDays>
+
+    <!-- FISH_BESTIARY_BUILD_1 wave 3 (2026-09-18): fishTypes/maxFishPopulation
+         wired DIRECTLY onto this def — same dead-mechanism correction as
+         RUT_WeepingStones.xml/RUT_CrackedLands.xml (see RUT_WeepingStones.xml
+         for the full finding). `BiomeFishTypes_Greentide.xml`
+         (GREENTIDE_FISH_ITEMS_FIX_1, 2026-09-10) patched the donor
+         `BiomeCypreJungle`'s fishTypes and its own header argued THAT def was
+         live, citing `design/Jawa/worldbuilding/data/river_graph_2026-09-07.csv`
+         (191 hits for BiomeCypreJungle, 0 for RUT_Greentide) — correct as of
+         2026-09-07, but that CSV predates BIOME_OWNERSHIP_WAVE_1 (2026-09-09),
+         which replaced the donor with this standalone def. MEASURED against
+         the current full census, `world/ASHKARR_WORLDMAP_tiles.csv`
+         (2026-09-12, the same file wave 2 already trusted for RUT_Wasteland):
+         RUT_Greentide covers 235 tiles (matching THIS file's own "MEASURED
+         live on V26" figure above) and BiomeCypreJungle covers zero. The
+         freshwater_Common/Uncommon values below are copied verbatim from the
+         now-dead `BiomeFishTypes_Greentide.xml` (deleted this wave) — no
+         roster change, only the correct def now carries it.
+         rareCatchesSetMaker is deliberately left unset: `RUT_RareGreentideCatches`
+         is not yet built (§2C's own remaining scope, deferred to a future
+         wave alongside the water's other 7 species). maxFishPopulation 720
+         carries the donor's own measured default forward (per the
+         "donor default stands" convention RUT_WeepingStones.xml also uses),
+         since this field was NEVER set on this def before (default 0). -->
+    <maxFishPopulation>720</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RSW_MeeCatch MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeCatch>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <RSW_FaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaCatch>
+        <RSW_LaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaCatch>
+      </freshwater_Uncommon>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>

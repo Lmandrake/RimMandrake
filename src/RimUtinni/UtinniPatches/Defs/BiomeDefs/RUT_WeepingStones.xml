@@ -141,6 +141,44 @@
       <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
     </wildPlants>
     <wildPlantRegrowDays>17</wildPlantRegrowDays>
+
+    <!-- FISH_BESTIARY_BUILD_1 wave 3 (2026-09-18): fishTypes/maxFishPopulation
+         wired DIRECTLY onto this def, not via a patch on the donor
+         `ZBiome_DesertOasis`. 🔴 MEASURED, correcting a dead mechanism the
+         previous wave shipped: `BiomeFishTypes_Ashkarr.xml` patched
+         `ZBiome_DesertOasis`'s fishTypes with the `swfish_` four, but this
+         def (`RUT_WeepingStones`, BIOME_OWNERSHIP_WAVE_1, 2026-09-09) is a
+         standalone BiomeDef with no ParentName — it never inherited the
+         donor's fishTypes, and no patch ever targeted it. Cross-checked two
+         ways: (1) `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12, the same
+         full tile census RUT_Wasteland.xml's own wave-2 header already
+         trusted for its 1853-tile claim) shows RUT_WeepingStones on all 223
+         tiles — matching this file's own MEASURED SS0 figure above — and
+         ZBiome_DesertOasis on zero; (2) the donor's live XML
+         (workshop/294100/1931453053/1.6/Defs/BiomeDefs/ZBiome_DesertOasis.xml)
+         confirms maxFishPopulation 660 there, while `BiomeDef.maxFishPopulation`
+         defaults to 0 and `fishTypes` to null (Verse source, direct read) — so
+         with no ParentName and no patch, this def's fish mechanism was
+         entirely inert. `BiomeFishTypes_Ashkarr.xml` is deleted this wave
+         (dead file, function superseded by the block below) — this is also
+         the swfish_ retirement (owner ruling 1): the four were never
+         actually fishable on the live map, and now nothing patches them in.
+         maxFishPopulation 660 carries the donor's own default forward per
+         the design doc's own "donor default stands" instruction (§2A). -->
+    <maxFishPopulation>660</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RUT_Ikkal>1.2</RUT_Ikkal>
+        <RUT_Tarrik>1</RUT_Tarrik>
+        <RUT_Duul>0.8</RUT_Duul>
+      </freshwater_Common>
+      <freshwater_Uncommon>
+        <RUT_Ullo>1</RUT_Ullo>
+        <RUT_Ozhu>0.8</RUT_Ozhu>
+        <RUT_Vobbal>0.5</RUT_Vobbal>
+      </freshwater_Uncommon>
+      <rareCatchesSetMaker>RUT_RareOasisCatches</rareCatchesSetMaker>
+    </fishTypes>
   </BiomeDef>
 
 </Defs>

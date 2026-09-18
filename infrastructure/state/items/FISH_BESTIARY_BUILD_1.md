@@ -282,3 +282,129 @@ sprite-duplicate-detection threshold issue) — confirmed by reading their
 own output, not assumed. No live bridge quicktest this wave (see Thread A).
 
 **Git**: see the commit this section ships with.
+
+## 2026-09-18 wave 3 (FOUNDRY, belt mode, subagent)
+
+**🔴 Systemic finding, before any new content: the fishTypes wiring for THREE
+of the six built/deferred waters was dead on the live map**, not just
+Weeping Stones. Same bug, same root cause, found while doing the assigned
+Weeping Stones work and then swept across the rest of what's shipped so far.
+
+Root cause: `BIOME_OWNERSHIP_WAVE_1` (2026-09-09) replaced the donor
+BiomeDefs `ZBiome_DesertOasis`/`ZBiome_Badlands`/`BiomeCypreJungle` with
+standalone, no-`ParentName` `RUT_WeepingStones`/`RUT_CrackedLands`/
+`RUT_Greentide` defs — real replacements, not patches, so the new defs never
+inherit anything from the donors they replace. `BiomeDef.maxFishPopulation`
+defaults to `0f` and `fishTypes` defaults to `null` (`Verse/BiomeDef.cs`,
+direct read) with no `ConfigError` on either, so an un-set biome silently
+ships with fishing completely inert — no red text, no load error, nothing
+to notice short of checking the field. Three separate patch files (wave 1's
+`BiomeFishTypes_Ashkarr.xml`, wave 2's `SandFishing_CrackedLands.xml`, and a
+pre-existing `BiomeFishTypes_Greentide.xml` from `GREENTIDE_FISH_ITEMS_FIX_1`)
+all patched the DONOR def's fishTypes instead, which `validate_patch.py`
+reports as a clean, fully-resolved xpath hit every time — the donor defs
+are still real, loaded XML, just not what's on the map.
+
+MEASURED, not asserted: `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12, the
+full per-tile census — the same file wave 2's own header already trusted
+for `RUT_Wasteland`'s 1853-tile claim, read via `csv.DictReader`, never
+grepped). Biome column tallies: `RUT_WeepingStones` 223 tiles /
+`ZBiome_DesertOasis` 0; `RUT_CrackedLands` 970 / `ZBiome_Badlands` 0;
+`RUT_Greentide` 235 / `BiomeCypreJungle` 0 — each RUT figure matches that
+def's OWN header's independently-measured tile count (223/970-ish/235),
+cross-confirming the CSV is current. `GREENTIDE_FISH_ITEMS_FIX_1`'s header
+had argued the opposite (`BiomeCypreJungle` live, `RUT_Greentide`
+"unused/aspirational") citing `design/Jawa/worldbuilding/data/
+river_graph_2026-09-07.csv` — a real measurement, but from **before**
+`BIOME_OWNERSHIP_WAVE_1` (Sep 7 vs Sep 9) and a river-tile-only sample, not
+a full census; it was correct when written and stale now. `RUT_TheScald`
+and `RUT_RustCathedral` do NOT have this bug — both wire fishTypes directly
+onto their own def (already the right pattern; Scald's is verified live-tile
+matching, Cathedral's xpath already targets `RUT_RustCathedral` by name).
+
+**Fixed, all three, this wave** (mechanical: move the exact same bucket
+contents from the dead donor-patch onto the correct live def; no roster
+changes, no renumbering):
+- `RUT_WeepingStones.xml` — `fishTypes`/`maxFishPopulation` added in-file
+  (see Thread below for the 6 new species this unlocks). Donor's own
+  `maxFishPopulation` (660, MEASURED off the live donor XML) carried
+  forward per the doc's "donor default stands" instruction.
+  `BiomeFishTypes_Ashkarr.xml` deleted (dead, fully superseded) — this
+  doubles as the `swfish_` retirement (owner ruling 1): the four were never
+  actually fishable on the live map to begin with, so retiring them is
+  simply not re-wiring them anywhere, which is what deleting the dead patch
+  achieves. Swept repo-wide for `swfish_Burra/Daggert/Nyork/See` first
+  (`grep -rn`, not assumed): the only other hits are historical/design docs,
+  a generator script (`gen_fish_types.py`, already superseded by hand-
+  authored patches per wave 1's own note, untouched), and an unrelated
+  `restructured_model_v4.json`/`def_sizes.json` observation snapshot — no
+  other live wiring anywhere.
+- `RUT_CrackedLands.xml` — same fix, values copied verbatim from
+  `SandFishing_CrackedLands.xml`'s now-dead `ZBiome_Badlands` operation
+  (`maxFishPopulation` 90, both freshwater buckets, `RSW_RareSandCatches`).
+  That file's dead `PatchOperationFindMod` block is removed; its OTHER
+  operation (the `RUT_Vhessa` addition to `RSW_RareSandCatches`, a
+  ThingSetMakerDef patch unaffected by this bug) is untouched and still
+  fires (`validate_patch.py`: 1 match, confirmed).
+- `RUT_Greentide.xml` — same fix, values copied verbatim from the now-dead
+  `BiomeFishTypes_Greentide.xml` (`RSW_MeeCatch`/`FaaCatch`/`LaaCatch`,
+  `maxFishPopulation` 720 off the donor's own measured default — never
+  previously set on this def). `rareCatchesSetMaker` deliberately left
+  unset (`RUT_RareGreentideCatches` isn't built yet — remaining scope, see
+  below). `BiomeFishTypes_Greentide.xml` deleted.
+
+This closes the "every catch table resolves to a real item on a live
+fishing pass" bar for Weeping Stones, Cracked Lands AND Greentide's
+already-shipped roster — previously true for none of the three on the live
+map, regardless of how clean the item defs or the patch xpaths looked.
+
+**Thread — the Weeping Stones' own 6 new species + rare table (the
+assigned pick), built and wired.**
+
+`RUT_Ikkal` (floater, common 1.2), `RUT_Tarrik` (crustacean, common 1),
+`RUT_Duul` (cucumber, common 0.8), `RUT_Ullo` (jellyfish, uncommon 1),
+`RUT_Ozhu` (eel, uncommon 0.8, no statBases override per the eel-register-
+verbatim convention), `RUT_Vobbal` (octopus, uncommon 0.5) —
+`RUT_WeepingStonesFish_Items.xml`, Defs/ThingDefs_Items/. Full spec/stats
+per §2A's own register table (§0). `RUT_SeepStone` (the §2A.rare headline
+prize, ResourceBase/ExoticMisc, MarketValue 30/Beauty 3, the oasis sibling
+of `RSW_GlassPearl`) alongside them. `RUT_RareOasisCatches`
+(Defs/ThingSetMakerDefs/) ships BOTH of the doc's rare options (weight 4
+SeepStone x1-2, weight 1 "vobbal tower" Silver 8-20) — no corpses, per the
+pool's own hard ban on hunting-story flavor (§6/§10, weeping_stones.md).
+Per-biome mod home: UtinniPatches, same as Cracked Lands/Scald (no
+dedicated Ash'karr mod exists for this water beyond it). 7 distinct
+placeholder texPaths used, all physically present in this mod's own
+Textures/ folder, none fish-shaped, none shared within this table.
+
+**Verify**: `validate_patch.py`, static then `--defs` against all three
+real content roots — **6 files touched/new this wave (2 new: item file,
+ThingSetMakerDef file; 3 biome-def edits) + 1 patch file trimmed, 634/634
+active mods found on disk, 8,850 def files, 0 errors, 0 warnings**; every
+`ParentName` (`FishBase`/`ResourceBase`/`RareFishingCatchesBase`) resolved,
+every texPath resolved (case-checked), the surviving `SandFishing_
+CrackedLands.xml` operation still hits `RSW_RareSandCatches` exactly once.
+Full-repo `run_selftests.py`: 58/60 (same 2 pre-existing failures as wave 2,
+confirmed unrelated by reading their own output — `selftest_art_checks.py`,
+`selftest_one_path_seam.py`).
+
+**No live bridge quicktest this wave**: `rimflow bridge who` showed BENCH
+holding it (idle 42 min, inside the 45-min stale window) for its own rot-
+wave restart/quicktest cycle — not taken, per "one bridge driver at a
+time." A live fishing pass on Weeping Stones, Cracked Lands and Greentide
+(now that all three are actually wired) is owed to whoever next holds the
+bridge — this is more load-bearing than usual since this wave's whole
+point was fixing a mechanism that looked fine on paper and wasn't.
+
+**Deferred to wave 4+, remaining scope**: Greentide's remaining 7 species
+(`zeev`/`uvva`/`karrun`/`dubbol`/`lozh`/`saava`/`tuun`) + `RUT_LungerFry` +
+`RUT_RareGreentideCatches`; Twilight's remaining 7 species
+(`pallu`/`tikkarr`/`nuudal`/`kellu`/`murrol`/`hollu`/`oobo`) +
+`RUT_RareTwilightCatches`. Capacity this wave went to the dead-wiring fix
+(affecting 3 waters, including 2 already "done") rather than new species;
+**wave 4's pick is Greentide's remaining roster** — it already has a live,
+correctly-wired `fishTypes` skeleton after this wave (unlike Twilight,
+still correctly HELD with no biome-side binding), so its 7 species + fry +
+rare table are the more useful next unit of work, not a fresh unknown.
+
+**Git**: see the commit this section ships with.
