@@ -32,7 +32,17 @@ A manifest is one JSON file:
     }
 
 `path` is dotted-with-brackets: `a.b[0].c` walks dict key "a", dict key "b",
-list index 0, dict key "c". A path with no "." and no "[" is a SCALAR check
+list index 0, dict key "c". A bracket may also hold `key=value` instead of a
+bare index - `statBases[stat=Wildness].value` finds the first list item whose
+`stat` field equals `Wildness` and reads its `value`. This exists because
+`jawa/get_defs deep=true` serializes a `List<StatModifier>` (and similar
+`{key, value}`-shaped lists) as a LIST OF OBJECTS in def order, not a dict
+keyed by name - a positional index (`statBases[8]`) breaks the moment the def
+gains or loses an earlier stat; `[stat=Wildness]` does not (found live 2026-
+09-18 retrofitting FORSAKEN_CRAGS_PREDATORS_BUILD_1's manifest, which had been
+authored against a hand-built fixture, not a real live read). `value` is
+coerced int, then float, then bool (`true`/`false`), then left as a string.
+A path with no "." and no "[" is a SCALAR check
 (the field itself is a top-level def field) - these already work against the
 LIVE `jawa/get_defs`, which is scalar-only today. A path with "." or "[" is a
 DEEP check - it needs the deep-serialize upgrade to `jawa/get_defs`
@@ -58,8 +68,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-_PATH_TOKEN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)((?:\[\d+\])*)$")
-_INDEX = re.compile(r"\[(\d+)\]")
+_PATH_TOKEN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\[\]]+\])*)$")
+_INDEX = re.compile(r"\[([^\[\]]+)\]")
 
 
 class ManifestError(ValueError):
@@ -139,8 +149,21 @@ def parse_manifest(raw: dict, source_path: str | None = None) -> Manifest:
                      source_path=source_path)
 
 
+def _coerce_bracket_value(v: str) -> Any:
+    """'Wildness' -> 'Wildness'; '3' -> 3; '1.5' -> 1.5; 'true'/'false' -> bool."""
+    if v in ("true", "false"):
+        return v == "true"
+    try:
+        return int(v)
+    except ValueError:
+        pass
+    try:
+        return float(v)
+    except ValueError:
+        return v
+
+
 def _walk_segment(obj: Any, seg: str) -> Any:
-    m = _INDEX.search(seg)
     key = _INDEX.sub("", seg)
     if key:
         if not isinstance(obj, dict):
@@ -148,12 +171,25 @@ def _walk_segment(obj: Any, seg: str) -> Any:
         if key not in obj:
             raise KeyError("key %r not present (have: %s)" % (key, sorted(obj.keys())[:20]))
         obj = obj[key]
-    for idx in (int(x) for x in _INDEX.findall(seg)):
-        if not isinstance(obj, list):
-            raise KeyError("expected a list to index [%d], got %s" % (idx, type(obj).__name__))
-        if idx >= len(obj):
-            raise KeyError("index [%d] out of range (len=%d)" % (idx, len(obj)))
-        obj = obj[idx]
+    for token in _INDEX.findall(seg):
+        if "=" in token:
+            k, _, v = token.partition("=")
+            target = _coerce_bracket_value(v)
+            if not isinstance(obj, list):
+                raise KeyError("expected a list to filter [%s], got %s" % (token, type(obj).__name__))
+            matches = [item for item in obj if isinstance(item, dict) and item.get(k) == target]
+            if not matches:
+                seen = sorted({repr(item.get(k)) for item in obj if isinstance(item, dict)})[:20]
+                raise KeyError("no item with %r == %r in list of %d (values seen: %s)" %
+                                (k, target, len(obj), seen))
+            obj = matches[0]
+        else:
+            idx = int(token)
+            if not isinstance(obj, list):
+                raise KeyError("expected a list to index [%d], got %s" % (idx, type(obj).__name__))
+            if idx >= len(obj):
+                raise KeyError("index [%d] out of range (len=%d)" % (idx, len(obj)))
+            obj = obj[idx]
     return obj
 
 
