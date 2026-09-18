@@ -53,6 +53,8 @@
     <Compile Include="CompProperties_ShieldParticulateScreen.cs" />
     <Compile Include="CompShieldParticulateScreen.cs" />
     <Compile Include="ShieldLandingAdvisory.cs" />
+    <Compile Include="ShieldHazardUtility.cs" />
+    <Compile Include="ShieldHazardExposureTracker.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="ShipShieldsSettings.cs" />
   </ItemGroup>

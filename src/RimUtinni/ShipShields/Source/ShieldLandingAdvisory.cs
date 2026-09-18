@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -9,9 +8,13 @@ namespace RimMandrake.Utinni.ShipShields
     // "The ship will know what's visibly dangerous and will advise course of
     // action, but no more than that." This is the diegetic-warning half of
     // that ruling: a single non-blocking letter on landing, never a refusal
-    // and never a damage tick (the design doc's escalating-damage half is a
-    // separate, larger mechanism -- it needs a per-tick hazard-application
-    // system nothing in this build touches yet; not started, see item file).
+    // and never a damage tick. The design doc's escalating-damage half
+    // (ShieldHazardExposureTracker) and the lava-landing immediate-burst
+    // carve-out (ShieldHazardExposureTracker.OnGravshipLanded) are separate,
+    // additive systems built 2026-09-18 -- see the item file. Hazard
+    // detection and the module-ready-and-powered check now live in
+    // ShieldHazardUtility (moved, not duplicated, 2026-09-18) so this letter
+    // and that tracker read identical signals.
     //
     // v1 slice: evaluates only the two hazards THIS build's shields cover
     // (thermal, particulate) against real vanilla signals, never a guessed
@@ -21,11 +24,6 @@ namespace RimMandrake.Utinni.ShipShields
     // (GIZKA_HOLD_HOOK_SPIKE_1).
     public static class ShieldLandingAdvisory
     {
-        // Roughly the vanilla Heatstroke-adjacent register; LavaFlow/HeatWave
-        // are checked directly too, so this only carries tiles neither
-        // condition is flagging as a backstop.
-        private const float ExtremeHeatThreshold = 58f;
-
         public static void Evaluate(Map map)
         {
             if (map == null || !ShipShieldsSettings.landingAdvisoryEnabled)
@@ -33,31 +31,17 @@ namespace RimMandrake.Utinni.ShipShields
                 return;
             }
 
-            ThingDef generatorDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_ShieldGenerator");
-            List<Thing> generators = generatorDef != null
-                ? map.listerThings.ThingsOfDef(generatorDef)
-                : new List<Thing>();
-
-            bool heatHazard = map.mapTemperature.OutdoorTemp >= ExtremeHeatThreshold
-                || map.gameConditionManager.ConditionIsActive(GameConditionDefOf.HeatWave)
-                || (ModsConfig.OdysseyActive && GameConditionDefOf.LavaFlow != null
-                    && map.gameConditionManager.ConditionIsActive(GameConditionDefOf.LavaFlow));
-
-            // sandRate is a real WeatherDef field (vanilla's own Sandstorm
-            // sets it to 1.6) -- checking the field rather than any specific
-            // defName also catches a modded dust/sand weather without
-            // guessing its name.
-            bool particulateHazard = map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout)
-                || map.weatherManager.curWeather.sandRate > 0f;
+            bool heatHazard = ShieldHazardUtility.HasHeatHazard(map);
+            bool particulateHazard = ShieldHazardUtility.HasParticulateHazard(map);
 
             List<string> warnings = new List<string>();
-            if (heatHazard && !generators.Any(g => IsModeReadyAndPowered(g, ShieldFieldMode.Thermal)))
+            if (heatHazard && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Thermal))
             {
                 warnings.Add("Extreme heat detected outside the hull. No thermal veil is configured "
                     + "and powered -- exposed systems will accumulate thermal stress.");
             }
 
-            if (particulateHazard && !generators.Any(g => IsModeReadyAndPowered(g, ShieldFieldMode.Particulate)))
+            if (particulateHazard && !ShieldHazardUtility.IsHazardShielded(map, ShieldFieldMode.Particulate))
             {
                 warnings.Add("Airborne particulate or contamination detected. No particulate screen "
                     + "is configured and powered -- expect fouling and untreated exposure.");
@@ -77,19 +61,6 @@ namespace RimMandrake.Utinni.ShipShields
                 text,
                 LetterDefOf.NeutralEvent,
                 new TargetInfo(map.Center, map));
-        }
-
-        private static bool IsModeReadyAndPowered(Thing generator, ShieldFieldMode mode)
-        {
-            ThingWithComps thing = generator as ThingWithComps;
-            CompShieldModuleSwitch moduleSwitch = thing?.GetComp<CompShieldModuleSwitch>();
-            if (moduleSwitch == null || moduleSwitch.CurrentMode != mode || !moduleSwitch.IsUnlocked(mode))
-            {
-                return false;
-            }
-
-            CompPowerTrader power = thing.GetComp<CompPowerTrader>();
-            return power == null || power.PowerOn;
         }
     }
 }

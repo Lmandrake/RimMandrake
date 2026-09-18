@@ -19,8 +19,15 @@ namespace RimMandrake.Utinni.ShipShields
     //      press through any shield, crew included" canon rule).
     //   8. ShieldLandingAdvisory's one-time diegetic warning letter on
     //      gravship landing (shd:no-hard-landing-gate).
-    // Each gets its own toggle; the collapse explosion also gets a damage
-    // multiplier over its def-configured amount.
+    //   9. ShieldHazardExposureTracker's per-map escalating hull damage for
+    //      staying unshielded in a hazard (shd:no-hard-landing-gate's other
+    //      half), plus its own escalated-warning letter.
+    //   10. ShieldHazardExposureTracker's immediate lava-landing damage
+    //      burst -- the ruling's named "worst case," unconditional on
+    //      shield state.
+    // Each gets its own toggle; the collapse explosion, the escalating hull
+    // damage and the lava burst also get a damage multiplier over their
+    // def/const-configured amount.
     public class ShipShieldsSettings : ModSettings
     {
         public static bool collapseExplosionEnabled = true;
@@ -32,6 +39,9 @@ namespace RimMandrake.Utinni.ShipShields
         public static bool thermalVeilEnabled = true;
         public static bool bubbleSlowPassThroughEnabled = true;
         public static bool landingAdvisoryEnabled = true;
+        public static bool landingHazardExposureEnabled = true;
+        public static bool lavaLandingBurstEnabled = true;
+        public static float lavaLandingBurstDamageMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -45,6 +55,9 @@ namespace RimMandrake.Utinni.ShipShields
             Scribe_Values.Look(ref thermalVeilEnabled, "thermalVeilEnabled", true);
             Scribe_Values.Look(ref bubbleSlowPassThroughEnabled, "bubbleSlowPassThroughEnabled", true);
             Scribe_Values.Look(ref landingAdvisoryEnabled, "landingAdvisoryEnabled", true);
+            Scribe_Values.Look(ref landingHazardExposureEnabled, "landingHazardExposureEnabled", true);
+            Scribe_Values.Look(ref lavaLandingBurstEnabled, "lavaLandingBurstEnabled", true);
+            Scribe_Values.Look(ref lavaLandingBurstDamageMultiplier, "lavaLandingBurstDamageMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -81,6 +94,15 @@ namespace RimMandrake.Utinni.ShipShields
             list.CheckboxLabeled("Landing hazard advisory", ref landingAdvisoryEnabled,
                 "On landing the gravship, warn (once, non-blocking) if a hazard is present that no "
               + "installed shield is currently configured and powered for.");
+            list.CheckboxLabeled("Escalating unshielded hull damage", ref landingHazardExposureEnabled,
+                "The longer the ship sits in a hazard with no matching shield configured and powered, "
+              + "the more its own structures take periodic damage -- accelerating after a long stretch. "
+              + "Never a hard block, matching the advisory letter above.");
+            list.CheckboxLabeled("Lava-landing damage burst", ref lavaLandingBurstEnabled,
+                "Landing on active lava (the design's named worst case) causes one immediate, severe "
+              + "damage burst -- no shield configuration prevents this specific one.");
+            list.Label("Lava-landing burst damage: " + lavaLandingBurstDamageMultiplier.ToString("0.00") + "x");
+            lavaLandingBurstDamageMultiplier = list.Slider(lavaLandingBurstDamageMultiplier, 0.25f, 3f);
 
             list.End();
         }
