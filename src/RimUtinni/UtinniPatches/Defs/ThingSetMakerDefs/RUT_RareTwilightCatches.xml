@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 5 — the Twilight Deep's rare-catch pool
+  (fish_bestiary_commission_2026-09-10.md §2D.rare), parented on vanilla's
+  own `RareFishingCatchesBase` the same way RUT_RareOasisCatches/
+  RUT_RareScaldCatches/RUT_RareGreentideCatches are — but, like the rest of
+  the Twilight table, this def is NOT yet plugged into any BiomeDef: it lands
+  now (the doc's own "the eight defs land now" instruction covers the whole
+  table, including the rare option) but its wiring rides the same
+  `Patches/BiomeFishTypes_TwilightDeep.xml` held under `DEPLOY_HOLD.txt` — see
+  that file and `RUT_TwilightFish_Niim.xml`'s header for the hold's reason.
+
+  All three of the doc's options ship: (weight 4) RUT_LampBlack x1-2, the
+  kellu-ink dye-and-chart resource (sibling item, RUT_TwilightFish_Niim.xml);
+  (weight 2) RUT_Niim x8-12, "a net that hit the shoal"; (weight 1)
+  Corpse_RSW_ColoClawFish (5-10 days rotted per the doc's own line — flavor
+  only, no rot-progress override; same restraint this build already took on
+  RUT_LungerFry's forward reference), "something in the dark between columns
+  had already finished with it" — the one true predator, reserved for this
+  water by the fish proposal §1 row 5, MayRequire mandrake.rsw.swbestiary
+  since RSW_ColoClawFish is a different mod's race def (SWBestiary,
+  src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/
+  SeaBeasts_Colo.xml). `Corpse_RSW_ColoClawFish` is the engine's own implied
+  corpse defName (ThingDefGenerator_Corpses: "Corpse_" + race defName — the
+  same convention vanilla's own Recipes_Cremation.xml uses for
+  Corpse_Human/Corpse_Muffalo), not a def this mod authors.
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RUT_RareTwilightCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_LampBlack</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~2</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>2</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_Niim</li>
+                </thingDefs>
+              </filter>
+              <countRange>8~12</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li MayRequire="mandrake.rsw.swbestiary">Corpse_RSW_ColoClawFish</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

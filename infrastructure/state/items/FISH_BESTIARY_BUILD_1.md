@@ -502,3 +502,133 @@ ahead of that resolution, same posture this wave took with `RUT_LungerFry`
 ahead of the Lunger creature.
 
 **Git**: see the commit this section ships with.
+
+## 2026-09-18 wave 5 (FOUNDRY, belt mode, subagent)
+
+**Part 1 — the Twilight hold, investigated (not just re-cited).** Read
+§2D in full, then re-checked the two live artifacts the doc's own hold
+depends on:
+
+- `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml` (read in
+  full) is still exactly one BiomeDef — no surface/deep split exists on
+  disk. `world/ASHKARR_WORLDMAP_tiles.csv` (`csv.DictReader`, not grepped):
+  `RUT_TwilightSea` 607 live tiles, confirming it (not some donor) is the
+  real target.
+- The doc's other named escape hatch — "the diving-mods map layer" — is
+  MEASURED closed, not just undecided. GravTide (`gravtide.mod`, confirmed
+  ACTIVE in `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`)
+  dives onto its own pocket seabed maps
+  (`Defs/BiomeDefs/Biomes_Seabed.xml`, read off the live Workshop copy,
+  `steamapps/workshop/content/294100/3779600989`): `GravTide_SeabedBase` and
+  every child (shelf/slope/abyssal) carry `maxFishPopulation 0` and that
+  file's own comment states why — "the sea floor map has no open water on
+  it — the water is the ceiling, not part of the map." Fauna there is
+  `wildAnimals`, never `fishTypes`. **A dive under GravTide's existing
+  mechanism cannot host any of Twilight's net-fishing at all** — not merely
+  unwired, structurally the wrong kind of map (no water on it).
+
+**Conclusion: the hold is genuinely still real, not stale** — if anything
+it is now more concretely blocked than the doc anticipated, since one of
+its two named routes turns out not to exist as hoped. Resolving it for real
+needs a new BiomeDef or map-generation layer for the under-roof water plus
+a way to reach it — biome/mechanism authoring, a structural decision, not a
+fish-item build. Filed separately so it doesn't block the rest of this item:
+`TWILIGHT_DEEP_WATER_LAYER_1` (`needs: owner`, AFK this session — not
+guessed at).
+
+**Part 2 — built anyway, per the doc's own instruction that "the eight defs
+land now."** Only the `fishTypes` binding stays held; the content does not
+have to wait on the ruling above, and does not need touching again once it
+lands.
+
+- **The remaining 7 species** (`RUT_Pallu` floater, `RUT_Tikkarr`
+  crustacean, `RUT_Nuudal` cucumber 0.6, `RUT_Kellu` squid, `RUT_Murrol` eel
+  — no `statBases` override, eel-register-verbatim convention, `RUT_Hollu`
+  jellyfish + `FoodPoisonChanceFixedHuman` 0.05, `RUT_Oobo` octopus 0.4) —
+  appended to the existing `RUT_TwilightFish_Niim.xml` (one items file per
+  water, same convention `RUT_WastelandBrine_Items.xml` already
+  established across its own waves 1→2). Stats per §0's own register
+  envelope table. 8 distinct placeholder texPaths across the whole Twilight
+  table now (niim's own `BloddleA` plus 7 new, non-fish, none shared) —
+  checked against niim's existing texPath, not just the new 7 against each
+  other.
+- **`RUT_LampBlack`** (§2D.rare's dye/chart resource, kellu ink) — same
+  file, `ResourceBase`/`ExoticMisc` shape as `RUT_SeepStone`/`RUT_BrinePlate`,
+  MarketValue 24 per the doc's own "~24."
+- **`RUT_RareTwilightCatches`** (`Defs/ThingSetMakerDefs/`, new,
+  `ParentName="RareFishingCatchesBase"`) — all three of the doc's options:
+  (weight 4) `RUT_LampBlack` x1-2; (weight 2) `RUT_Niim` x8-12, "a net that
+  hit the shoal"; (weight 1) `Corpse_RSW_ColoClawFish` x1, `MayRequire
+  mandrake.rsw.swbestiary` — the engine's own implied corpse defName
+  (`ThingDefGenerator_Corpses`: `"Corpse_" + raceDefName`, the same
+  convention vanilla's own `Recipes_Cremation.xml` uses for
+  `Corpse_Human`/`Corpse_Muffalo`, confirmed by reading that file directly
+  off `RimWorld/Data/Core`), not a def this mod authors. `RSW_ColoClawFish`
+  itself is a real live race def
+  (`src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml`).
+- **The wiring patch itself, written and correct, but HELD**:
+  `Patches/BiomeFishTypes_TwilightDeep.xml` — exactly the file the doc's own
+  build sketch names (§5.2). `validate_patch.py --defs`: 1 match, 0 errors —
+  it resolves the right xpath against the right live def right now; only
+  the deploy hold stops it reaching the game. Added to `src/DEPLOY_HOLD.txt`
+  (`UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml`) with the
+  measured reason above, per this doc's own §5.2 instruction ("under
+  DEPLOY_HOLD.txt"). `deploy_custom_mods.py --mod UtinniPatches` confirms it
+  reports `H ... (repo-only; not deployed)`, same shape as this mod's other
+  held files.
+
+**Part 3 — QA pass on already-shipped waters** (capacity freed by the hold
+above, per this wave's brief): re-checked for wave 3's exact bug class (a
+patch cleanly resolving its own xpath while targeting a BiomeDef absent
+from the live map). The Scald was named explicitly:
+`RUT_TheScald.xml` wires `fishTypes`/`maxFishPopulation` directly onto
+itself (not a donor patch) and the CSV confirms it live — **312 tiles**,
+`TheScald` (bare) 0. Cross-checked `RUT_RustCathedral` the same way — wired
+directly onto itself (`RUT_RustCathedral_Fishing.xml`'s own
+`not(fishTypes)`-guarded xpath targets `RUT_RustCathedral` by name), **236
+live tiles**, `AB_MechanoidIntrusion` (the doc's own donor name) 0. Also
+re-confirmed `RUT_Wasteland` (1853 tiles, `Wasteland` 0 — wave 2's own fix,
+still holding) and `RUT_Greentide`/`RUT_WeepingStones`/`RUT_CrackedLands`
+(wave 3's fix) all still wire onto their live defs with no lingering
+donor-targeted `fishTypes` patch anywhere in `src/` (swept
+`Patches/*.xml` repo-wide for `fishTypes`/`rareCatchesSetMaker`/
+`maxFishPopulation`; the only other hits are `FishTypesStrip_NoFishBiomes.xml`,
+an unrelated no-fish-biome stripping pass, not this bug). **No new instance
+of the bug found** — all 7 waters this item has touched now wire onto a
+live def except Twilight, which is HELD by design, not by accident.
+
+**Item criteria, checked**: all 32 species + 4 owed defs now exist
+(niim/pallu/tikkarr/nuudal/kellu/murrol/hollu/oobo complete the count).
+"Wired into the correct per-biome mod" and "every catch table resolves to a
+real item on a live pass" are NOT both true yet — Twilight's table is
+authored but not live (deliberately), and **no wave of this item has ever
+run a live bridge fishing quicktest** (waves 1-4 all deferred it, citing
+the bridge being held elsewhere). Both are real open bars. **Leaving this
+item `doing`, not closing it** — per this wave's own brief, a live
+quicktest and Twilight's structural resolution are both still owed, and
+inventing either would be guessing.
+
+**Verify**: `validate_patch.py` static then `--defs` against all three real
+content roots (Steam Workshop `294100`, `RimWorld/Mods`, `RimWorld/Data`) —
+**3 files touched/new this wave (1 items file edit, 2 new: ThingSetMakerDef,
+patch), 634/634 active mods found on disk, 8,850 def files, 0 errors, 1
+warning** (the held patch's own `PatchOperationAdd` not wrapped in
+Conditional/FindMod — advisory, and moot while the file is deploy-held;
+every other water's own-mod biome edit in this item carries the same shape
+unwrapped). `ParentName` (`FishBase`/`ResourceBase`/`RareFishingCatchesBase`)
+resolved clean; the patch's one xpath hit exactly once against
+`RUT_TwilightSea.xml`.
+
+**No live bridge quicktest this wave** (same reason every prior wave gives —
+see the criteria note above; this is now the item's single most load-bearing
+owed piece, not a footnote).
+
+**Still owed, explicitly**: a live fishing-pass quicktest across every
+water this item has wired (Weeping Stones, Cracked Lands, Greentide, Scald,
+Rust Cathedral, Wasteland-mining) — never run in this item's five waves; and
+`TWILIGHT_DEEP_WATER_LAYER_1`'s owner ruling, after which
+`BiomeFishTypes_TwilightDeep.xml`'s hold can lift with no other change
+needed to it.
+
+**Git**: see the commit this section ships with.
+
