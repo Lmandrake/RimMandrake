@@ -1317,9 +1317,22 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked_reason = item.blocked_on = None
     elif verb == "drop":
         to("dropped")
+        # ⚠️ SAME FIX AS `close`, same reason. Leaving `blocked`/`blocked_reason` set
+        # on a dropped item rendered "state: dropped (BLOCKED)" with a STALE reason
+        # forever — every reader gates display on the flag, so a human reading a
+        # dropped item's blocked reason would read it as still-live and unresolved.
+        # Measured live 2026-09-18: 6 dropped/superseded items carried this (B55,
+        # REFMATCH_THRESHOLDS_CALIBRATE_1, FINAL_WORLD_PREP_1,
+        # WORLD_MUTATOR_LANDMARK_IMPORTERS_1, SARLACC_NATIVE_HABITAT_1,
+        # UTINNI_SHELL_DEFNAME_BUG_1). Dropping or superseding resolves the block the
+        # same way closing does.
+        item.blocked = False
+        item.blocked_reason = item.blocked_on = None
     elif verb == "supersede":
         to("superseded")
         item.superseded_by = ev["by"]
+        item.blocked = False
+        item.blocked_reason = item.blocked_on = None
     elif verb == "note":
         pass
 
