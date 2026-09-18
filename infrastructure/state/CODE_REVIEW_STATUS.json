@@ -15598,10 +15598,10 @@
     "sha": "d28bf3edf"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "a6190ccf60810d9e3a7e354f2f120614fc2da57dd83cc0dc60fba2cc71b4a8c6",
-    "sha": "291b653cf"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "6caf1a1850d1f07a87b0f36c37f0a871c8251a51e9c752300170888e4b3f5071",
+    "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShipShields/Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml": {
     "cleanCount": 1,
@@ -15610,10 +15610,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "699da61c511b87cf191e403abfd6cfd0cadd2cf6a5b29b469988c2e998680961",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "fa7290e4d50424bd6f20884cdb86f8295e683e85251e63834840d9c4498f1e05",
+    "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShipShields/Defs/ThingDefs_Items/RUT_ShieldModules.xml": {
     "cleanCount": 1,
@@ -15670,10 +15670,10 @@
     "sha": "fdbba895e"
   },
   "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "e09947e03c11e5c37e081c5436847d700c494eeb1c60322132ee9f27c275ea6b",
-    "sha": "291b653cf"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "47dbc28d70f968a60f858c78957ed88b77ff34ee34c62025840320fdfcf9f8e2",
+    "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShipShields/Source/ShieldFieldMode.cs": {
     "cleanCount": 1,
@@ -15682,10 +15682,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Source/ShieldLandingAdvisory.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "fc75e456dd9eaa530df9a34a3c851e3eddb57bae95f761265bcb706742de73e9",
-    "sha": "291b653cf"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "c2bd940d9786ebc60304542f58c0a0765d3bc534dba85e8866c487ee67d91705",
+    "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShipShields/Source/ShieldModuleMapping.cs": {
     "cleanCount": 1,
@@ -15694,10 +15694,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Source/ShipShieldsSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "869441ebaa5f651a8f7c863501528f1d1f00e660fcce7b62dff8bec817ac41fb",
-    "sha": "291b653cf"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "30b57f3f7c5e4b82ad699d50d0ce7076a9b006f5369e9fff67525761362994ca",
+    "sha": "e5ba0316d"
   },
   "src/RimUtinni/ShokkweaveEconomy/About/About.xml": {
     "cleanCount": 2,
