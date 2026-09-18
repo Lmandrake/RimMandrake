@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T00:48:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T01:01:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -784,7 +784,7 @@ summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level 
 prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
 
 ## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -1531,16 +1531,6 @@ kind:     task
 blocked:  Armoury half fully resolved offline (kaitorisenkou.ModularWeapons2 + guy762.MM.KotORCore, recorded in src/RimStarWars/Armoury/validation.py's docstring, verified still present). WreckedMachines/VFEFactory half cannot go further offline: the VE-sibling coupling is a runtime Harmony DefGenerator scan, not a static About.xml dependency, so naming the missing VE sibling(s) needs a live min16+candidates quicktest bisection through the bridge -- no bridge available this session (FOUNDRY afk-queue guardrail). (on COLD_LOAD_RUN_SHEET_4)
 summary:  Two mature mods could not join the min16 modcheck environment (2026-09-13
 prose:    infrastructure/state/items/MODCHECK_DONOR_ENVIRONMENTS_1.md
-
-## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-blocked:  Own spec's Watch-out: 'Depends on LIQUID_REGISTRY_CORE_1 (bottles are generator-emitted from rows).' Verified LIQUID_REGISTRY_CORE_1 is still doing (this session, 30880dca5): the LiquidDef C# skeleton exists but the v1 roster rows and generate_liquid_suite.py's row->bottle-ThingDef emission are not built yet, so RM_Bottle<Liquid> defs this item's chain requires do not exist. Also needs a live quicktest to verify (fill/dirty/wash loop, revert timers) which this pass cannot run (no bridge/restart). Left doing; re-check once LIQUID_REGISTRY_CORE_1 ships rows. (on LIQUID_REGISTRY_CORE_1)
-summary:  Bottle chain: RMBottleEmpty → fill job (terrain edge or tank) →
-prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 
 ## LIQUID_THIRST_CHAIN_1 Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in frozen dump); graceful no-DBH degrade
 state:    doing  (BLOCKED)
