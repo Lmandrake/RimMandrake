@@ -9225,3 +9225,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","ts":"2026-09-18T14:27:12Z"}
 {"seat":"FOUNDRY","event":"start","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","ts":"2026-09-18T14:27:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"MAYREQUIRE_OPERATION_INERT_SWEEP_1","sha":"d1c62223c","ts":"2026-09-18T14:28:00Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SALVAGECLAIM_WALK_STALE_1","ts":"2026-09-18T14:35:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"SALVAGECLAIM_WALK_STALE_1","ts":"2026-09-18T14:35:15Z"}
+{"seat":"FOUNDRY","event":"close","id":"SALVAGECLAIM_WALK_STALE_1","sha":"471ca3d844e87b249a1df9d09ff7802c048b75ce","ts":"2026-09-18T14:35:26Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:28:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:35:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1765,16 +1765,6 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
-
-## SALVAGECLAIM_WALK_STALE_1 design/validation_walks/RimMandrake/SalvageClaim.md names a subject that no longer exists (src/RimMandrake/SalvageClaim is gone, consolidated into RimProperty) - re-point or retire the walk, and check whether Property.md already covers it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SALVAGECLAIM_WALK_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SALVAGECLAIM_WALK_STALE_1.md
 
 ## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
 state:    proposed
