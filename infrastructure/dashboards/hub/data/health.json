@@ -1,81 +1,81 @@
 {
- "generatedAt": "2026-09-17T23:39:00Z",
+ "generatedAt": "2026-09-18T05:11:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 636940,
-  "sha256_12": "3aeb26b0a3f3"
+  "bytes": 650055,
+  "sha256_12": "abfb04248bfb"
  },
- "head": "2de4bd27d",
+ "head": "342362f69",
  "counts": {
-  "red": 37,
-  "blue": 689,
-  "green": 1672,
-  "grey": 413,
+  "red": 39,
+  "blue": 730,
+  "green": 1842,
+  "grey": 317,
   "unmeasured": 0,
-  "total": 2811
+  "total": 2928
  },
  "loc": {
-  "red": 17605,
-  "blue": 261769,
-  "green": 429124,
-  "grey": 265940,
+  "red": 17768,
+  "blue": 280864,
+  "green": 471366,
+  "grey": 229416,
   "unmeasured": 0,
-  "total": 974438
+  "total": 999414
  },
- "reviewEntries": 2510,
+ "reviewEntries": 2942,
  "recidivists": [
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml",
-   "loc": 1176,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterRifle.xml",
-   "loc": 659,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml",
-   "loc": 467,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimMandrake/Aftermath/Source/AftermathRuleRunner.cs",
-   "loc": 404,
-   "cycles": 4
-  },
   {
    "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
    "loc": 143799,
    "cycles": 3
   },
   {
-   "path": "src/RimMandrake/rimflow/model.py",
-   "loc": 1455,
+   "path": "src/RimMandrake/Utils/selftest_code_review_status.py",
+   "loc": 294,
    "cycles": 3
   },
   {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml",
-   "loc": 843,
-   "cycles": 3
+   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml",
+   "loc": 2913,
+   "cycles": 2
   },
   {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Sith.xml",
-   "loc": 642,
-   "cycles": 3
+   "path": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+   "loc": 486,
+   "cycles": 2
   },
   {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroblade.xml",
-   "loc": 641,
-   "cycles": 3
+   "path": "src/RimUtinni/PyrelandsMechanics/About/About.xml",
+   "loc": 41,
+   "cycles": 2
   },
   {
-   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml",
-   "loc": 334,
-   "cycles": 3
+   "path": "src/RimMandrake/Greentide/Source/RM_GreentideMod.cs",
+   "loc": 154,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs",
+   "loc": 99,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/Greentide/Source/RM_MapComponent_CrossBiomeChurnmud.cs",
+   "loc": 99,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/About/About.xml",
+   "loc": 97,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml",
+   "loc": 83,
+   "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 2811 files (1672 clean, 413 dirty, 0 unmeasured)."
+ "headline": "OK: measured 2928 files (1842 clean, 317 dirty, 0 unmeasured)."
 }
