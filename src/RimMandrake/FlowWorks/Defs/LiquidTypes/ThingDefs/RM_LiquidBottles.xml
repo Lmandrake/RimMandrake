@@ -14,13 +14,20 @@
 
   Adopted, not generated: RM_Liquid_Chemfuel -> Chemfuel.
 
-  Deliberately NOT built this pass (LIQUID_BOTTLE_LOOP_1's own stopping
-  note): buckets, barrels, the fill/use/dirty/wash JobDriver/WorkGiver pair,
-  the dirty-stage Mod Settings toggle (would be a slider that moves nothing
-  before the mechanism it gates exists), and revertsTo/rotsTo row data
-  (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
-  requires a real revertTicks/rotTicks the moment either is set, and nothing
-  reads them yet).
+  The fill/use/dirty/wash JobDriver/WorkGiver pair is built
+  (Source/LiquidTypes/{RM_LiquidBottleUtility,WorkGiver_FillBottle,
+  JobDriver_FillBottle,WorkGiver_WashBottle,JobDriver_WashBottle,
+  IngestionOutcomeDoer_BottleResidue}.cs) and the dirty-stage Mod Settings
+  toggle ships (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled,
+  default ON). Only a row with `thirstQuality` set gets an `<ingestible>`
+  block at all — see build_bottle_thingdef_xml's own comment.
+
+  Still deliberately NOT built (LIQUID_BOTTLE_LOOP_1's own stopping note):
+  buckets, barrels, filling from a TANK (the universal cargo tank design §6/
+  §9 names does not exist yet — fill/wash this pass reads terrain only),
+  and revertsTo/rotsTo row data (boiling/icy revert-on-bottle, blood-rot —
+  LiquidBottledForm.ConfigErrors requires a real revertTicks/rotTicks the
+  moment either is set, and nothing reads them yet).
   ============================================================================
 -->
 <Defs>
@@ -34,6 +41,16 @@
         <liquid>RM_Liquid_FreshWater</liquid>
       </li>
     </modExtensions>
+    <statBases>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
@@ -45,6 +62,16 @@
         <liquid>RM_Liquid_SaltWater</liquid>
       </li>
     </modExtensions>
+    <statBases>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
@@ -78,6 +105,16 @@
         <liquid>RM_Liquid_ToxicWater</liquid>
       </li>
     </modExtensions>
+    <statBases>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
@@ -111,6 +148,16 @@
         <liquid>RM_Liquid_Brine</liquid>
       </li>
     </modExtensions>
+    <statBases>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">

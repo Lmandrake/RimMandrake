@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_BOTTLE_LOOP_1. Hand-authored, never generated — one JobDef per
+  half of the fill/wash loop. targetA is the bottle Thing carried, targetB
+  the liquid-edge cell it is carried to; see JobDriver_FillBottle.cs and
+  JobDriver_WashBottle.cs (Source/LiquidTypes/) for the toils themselves.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_FillBottleJob</defName>
+    <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_FillBottle</driverClass>
+    <reportString>filling a bottle.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_WashBottleJob</defName>
+    <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_WashBottle</driverClass>
+    <reportString>washing a bottle.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>

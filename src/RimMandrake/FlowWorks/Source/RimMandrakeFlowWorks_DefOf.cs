@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using RimMandrake.FlowWorks.LiquidTypes;
 
 namespace RimMandrake.FlowWorks
 {
@@ -42,6 +43,20 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
 		public static ThingDef RM_Ladder;
+
+		// ── LIQUID_BOTTLE_LOOP_1: fill/use/dirty/wash ──────────────────────
+		public static JobDef RM_FillBottleJob;
+
+		public static JobDef RM_WashBottleJob;
+
+		public static ThingDef RM_BottleEmpty;
+
+		public static ThingDef RM_BottleDirty;
+
+		/// <summary>The one LiquidDef the wash job insists on -- "consumes
+		/// water" always means fresh water, never whatever the bottle was
+		/// last dirty with.</summary>
+		public static LiquidDef RM_Liquid_FreshWater;
 
 		static RimMandrakeFlowWorks_DefOf()
 		{

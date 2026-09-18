@@ -125,6 +125,27 @@ namespace RimMandrake.FlowWorks
         public static bool ladderRequiredToExitEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
 
+        // ══════════════════════════════════════════════════════════════════
+        // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
+        //
+        // ⚠️ ITS OWN CONTIGUOUS SECTION, same discipline as Phases 4/5 above.
+        //
+        // Both default ON -- that is the shipped campaign behaviour (design
+        // "Dirty-bottle stage is a Mod Settings toggle; default ON in the
+        // campaign"). Off degrades gracefully at two different joints:
+        //  23. bottleLoopEnabled       — the whole fill/wash WorkGiver pair.
+        //      Off: RM_BottleEmpty/RM_BottleDirty just sit there like any
+        //      other item; a colonist can still hand-carry and drink a
+        //      filled bottle, only the automatic fill/wash labour stops.
+        //  24. bottleDirtyStageEnabled — whether "use" leaves a dirty bottle
+        //      to wash at all. Off: drinking a filled bottle returns a clean
+        //      empty bottle directly and RM_BottleDirty is never minted —
+        //      any dirty bottle a save already holds from before the switch
+        //      is still washable, since WorkGiver_WashBottle does not gate
+        //      on this toggle.
+        public static bool bottleLoopEnabled = true;
+        public static bool bottleDirtyStageEnabled = true;
+
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
@@ -159,6 +180,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
+            // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
+            Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
+            Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -171,7 +195,7 @@ namespace RimMandrake.FlowWorks
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 3800f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4200f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -361,6 +385,29 @@ namespace RimMandrake.FlowWorks
               + "shoot into the hole unless it is right at the lip, and whoever is down there can "
               + "still shoot anyone who comes to the edge. It is a restriction only — nothing here "
               + "changes accuracy, cover or sight. Off: depth never affects shooting at all.");
+
+            // ══════════════════════════════════════════════════════════════
+            // LIQUID_BOTTLE_LOOP_1 SECTION — kept whole and kept last.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Bottles: fill, use, wash");
+            Text.Font = GameFont.Small;
+            list.Label("An empty bottle filled at a matching liquid's shore becomes a filled bottle; "
+                     + "drinking or otherwise using one leaves a bottle behind to deal with. Bottles are "
+                     + "loot, not free.");
+
+            list.CheckboxLabeled("Bottle fill/wash labour", ref bottleLoopEnabled,
+                "Colonists automatically carry an empty bottle to a matching liquid's edge to fill it, "
+              + "and a dirty bottle to fresh water to wash it — no order needed, the same way an empty "
+              + "fuel tank is a standing invitation to refuel. Off: bottles still fill and empty by hand "
+              + "if you carry and drink them yourself, but nothing does the fetching for you.");
+
+            list.CheckboxLabeled("Using a bottle leaves it dirty", ref bottleDirtyStageEnabled,
+                "Drinking a filled bottle leaves a dirty bottle that needs washing before it can be "
+              + "filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
+              + "bottle directly and no dirty bottles are minted; any a save already holds are still "
+              + "washable.");
 
             list.End();
             Widgets.EndScrollView();

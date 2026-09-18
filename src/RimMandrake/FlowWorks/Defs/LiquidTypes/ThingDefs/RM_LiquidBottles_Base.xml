@@ -14,12 +14,17 @@
 
   Chain (spec, design/RimMandrake/liquids_framework_design.md and the item's
   own notes): RM_BottleEmpty -> fill job -> RM_Bottle&lt;Liquid&gt; -> use ->
-  RM_BottleDirty -> wash job -> RM_BottleEmpty. This pass ships every item in
-  that chain; the fill/use/dirty/wash JOBS (WorkGiver/JobDriver reading
-  RM_BottledLiquidExtension generically off any bottle) are OWED, not built —
-  see LIQUID_BOTTLE_LOOP_1's own notes for why (no bridge/live verify this
-  pass, and a job system landed untested is exactly the kind of "confident
-  wrong number" this project's instruments doctrine warns against).
+  RM_BottleDirty -> wash job -> RM_BottleEmpty. Every item in that chain
+  ships, including the fill/wash WorkGiver/JobDriver pair
+  (Source/LiquidTypes/WorkGiver_FillBottle.cs, JobDriver_FillBottle.cs,
+  WorkGiver_WashBottle.cs, JobDriver_WashBottle.cs) and the "use" half
+  (Source/LiquidTypes/IngestionOutcomeDoer_BottleResidue.cs, wired onto
+  every bottled row with a thirstQuality) — reading RM_BottledLiquidExtension
+  and RM_LiquidBottleUtility generically, never a per-liquid branch. Filling
+  from a TANK (the design's other named source) is NOT built: the universal
+  cargo tank does not exist yet, so this pass reads terrain only. A live
+  quicktest of the loop (fill/drink/dirty/wash observed in-game) is OWED —
+  see LIQUID_BOTTLE_LOOP_1's own notes for why this pass could not run one.
 
   PLACEHOLDER ART, flagged as such (same convention as RM_Ladder in
   Canals/ThingDefs/FlowWorks_ThingDefs.xml): texPath borrows vanilla's own
