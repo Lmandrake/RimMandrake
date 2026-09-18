@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_AshfallSpecimenCell - the sample-galleries band's props
+  (ashfall_research_base.md §4: "middle sample galleries — the Unfinished in
+  cells, goo cultures, the failed decants that make Ossik Bram's argument for
+  him").
+
+  DELIBERATE CHOICE, flagged rather than invented past (same discipline as
+  RUT_WarLabContainmentCell's own header for the identical problem at the
+  war lab): "the Unfinished" has NO PawnKindDef anywhere in this repo -
+  the_contagion.md's own text lists "the C# spawner (random stats,
+  short-lived)" as still OWED, not built. Spawning a live pawn in this cell
+  is therefore not possible without inventing a creature neither this item
+  nor the_contagion.md has authored - exactly the content-palette invention
+  this project's discipline forbids. A sealed, non-openable props-only cell
+  satisfies the dungeon-sketch's "in cells" framing without guessing a
+  creature. Whoever later builds the_contagion.md's Unfinished spawner
+  should consider wiring a props-with-pawn version of this cell rather than
+  duplicating it.
+
+  Not claimable, not deconstructible: nobody on the crew is opening a Helix
+  containment vessel either.
+
+  Art: reuses Things/Building/Ship/ShipCryptosleepCasket at native (1,2)
+  drawSize with a (1,1) footprint, the same size-vs-drawSize split
+  RUT_WarLabContainmentCell/RUT_VaultHeart/RUT_DarkTowerControlConsole all
+  use - no new art authored this pass.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AshfallSpecimenCell</defName>
+    <label>specimen cell</label>
+    <description>A sealed tank of nutrient goo, cloudy with something that hasn't finished becoming anything yet: three good legs and a stump, one wing, a jaw on a thing with nothing to eat. It will not live long. It will not need to.\n\nThe label on the tank is a catalogue number, not a name. Nobody here was going to need one.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipCryptosleepCasket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+    </building>
+  </ThingDef>
+</Defs>

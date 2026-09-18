@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_RakatanCommandCodes - ASHFALL_RESEARCH_BASE_1's whole reason to exist:
+  the physical MacGuffin that opens ANCIENT_WAR_LAB_1's shielding.
+
+  Ruled verbatim (ashfall_research_base.md §6, plot sitting 2026-09-12,
+  restated in full at the_propane_lakes.md §8's amendment): "The command
+  codes CANNOT be granted by the cathedral. They are on an isolated system
+  within the command center (dark spire) and were never ceeded to the
+  cathedral" => "the Rakatan command codes are the only way into the ancient
+  war lab... once it's revealed by the melting event." This is a TWO-KEY
+  dungeon: the crater event (WAR_LAB_CRATER_HOOK_1) opens the GROUND; this
+  item opens the DOOR.
+
+  Modeled on vanilla AIPersonaCore/TechprofSubpersonaCore (Core,
+  Items_Exotic.xml) - ResourceBase + ThingWithComps, a stack-1 haulable data
+  core, not a building: it must physically travel from the Spire (Ashfall
+  Range, dayside) to the war lab (propane lake, antipodal night side), which
+  a claimable-building precedent (RUT_WarLabArchive/RUT_SpireCommandConsole)
+  cannot do.
+
+  tradeability=None (not Sellable): this is a plot key, not loot - a crew
+  that pawns it off mid-campaign should not be able to un-softlock itself by
+  buying a replacement, and there is only ever one.
+
+  CompRedeemRakatanCommandCodes (Source/Ashfall/CompRedeemRakatanCommandCodes.cs)
+  is the "quest-item/quest-flag mechanism" ASHFALL_RESEARCH_BASE_1.md's own
+  filing note asks for: a gizmo that calls AshfallCommandCodesFlag.Seize()
+  (GameComponent_AshfallCommandCodes, permanent/idempotent, same discipline
+  as WarLabCraterMutation/GameComponent_WarLabCrater) and consumes the item -
+  the in-fiction reading is "keying the codes into a lock", ready for
+  whichever item finishes the war lab's own door to gate on
+  AshfallCommandCodesFlag.HasBeenSeized instead of re-deriving this from
+  scratch.
+
+  NOT RESOLVED THIS PASS (flagged, not guessed): whether redeeming should be
+  restricted to only the war lab's own map/site. That restriction needs the
+  war lab's own map/site identity, which belongs to whichever item wires the
+  actual door check (ANCIENT_WAR_LAB_1/WAR_LAB_CRATER_HOOK_1's own scope, see
+  ASHFALL_RESEARCH_BASE_1.md's "Watch out"). This pass's gizmo is usable
+  anywhere, which is deliberately over-permissive rather than under-built: a
+  flag that CAN be set from the wrong place is a design cleanup later; a flag
+  that CANNOT be set at all is a dead mechanism now. Also unresolved:
+  whether simple possession (not redemption) should be enough for the door
+  check instead of the flag - either reading is defensible and left to that
+  item to decide.
+
+  Art: reuses Things/Item/Special/SubpersonaCoreTechprof (Core,
+  Items_Exotic.xml) - a small AI-core-like data device art already ships
+  with the game; no new art authored this pass.
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_RakatanCommandCodes</defName>
+    <label>Rakatan command codes</label>
+    <description>A data-core seized from an isolated system deep in the Spire — Rakatan military cryptography, never ceded to any cathedral, never meant to leave this room. Whatever it unlocks, it was built to unlock only once.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Special/SubpersonaCoreTechprof</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MarketValue>1</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>1.5</Mass>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <tradeability>None</tradeability>
+    <techLevel>Archotech</techLevel>
+    <comps>
+      <li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_RedeemRakatanCommandCodes" />
+    </comps>
+  </ThingDef>
+</Defs>
