@@ -13,15 +13,14 @@
   RSW_Leather_Tough (swresource/Leather_Tough) — reused, no new leather art
   extracted. Meat_Nerf (swresource/Meat_Nerf) newly extracted this pass.
 
-  `canCrossBreedWith` (Grazer, FeralNerf, Nerf) is left pointing at the
-  donor's still-bare, still-unported defNames — first port to carry this
-  field. Since Mlie stays active and its own Grazer/FeralNerf/Nerf remain
-  installed unmodified, this is functionally correct (our RSW_FeralGrazer
-  can still cross-breed with the donor's own related species) and matches
-  the established precedent of leaving still-unported donor cross-references
-  bare (same as SW_Spur/SW_Spit abilities). Flagged for whoever ports
-  Grazer/FeralNerf/Nerf: rename these 3 entries to their RSW_ equivalents at
-  that point, same as Bantha's/Wampa's cast-wiring rename pattern.
+  `canCrossBreedWith` (Grazer, FeralNerf, Nerf) originally left pointing at
+  the donor's still-bare, still-unported defNames — first port to carry
+  this field. **Updated Pass 8 (2026-09-17)**: FeralNerf and Nerf are now
+  ported (RSW_FeralNerf.xml/RSW_Nerf.xml) — renamed to RSW_FeralNerf/
+  RSW_Nerf below. `Grazer` stays bare: it is not in this item's Wave C
+  worklist (its donor ThingDef exists but has no row in
+  cast_assignment.csv, out of scope), and Mlie stays active so the
+  cross-reference remains functionally correct.
 
   Sounds repoint to the already-absorbed sound wave
   (RSW_Pawn_FeralGrazer_*, 2026-09-02). texPaths are unchanged text —
@@ -104,8 +103,8 @@
       <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
       <canCrossBreedWith>
         <li>Grazer</li>
-        <li>FeralNerf</li>
-        <li>Nerf</li>
+        <li>RSW_FeralNerf</li>
+        <li>RSW_Nerf</li>
       </canCrossBreedWith>
       <litterSizeCurve>
         <points>

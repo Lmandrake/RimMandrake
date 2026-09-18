@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — FeralNerf creature port (Pass 8).
+  Ported from mlie.starwarsanimalcollection's `FeralNerf` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Body: the donor's `body` is the vanilla Core
+  `QuadrupedAnimalWithHoovesAndHorn` (already used by RSW_FeralGrazer,
+  Pass 7) — no BodyDef port needed.
+
+  `leatherDef`/`specificMeatDef` both repoint to the already-ported
+  RSW_Leather_Nerf/RSW_Nerf_Meat (RSW_MlieWaveC_Resources.xml, Pass 7) — no
+  new leather/meat resource needed this pass.
+
+  `canCrossBreedWith` (donor: Nerf, Grazer, FeralGrazer) — `Nerf` renamed to
+  `RSW_Nerf` (ported this same pass, below) and `FeralGrazer` renamed to
+  `RSW_FeralGrazer` (already ported, Pass 7). `Grazer` stays bare — it is
+  NOT in this item's Wave C worklist (its donor ThingDef exists but has no
+  row in cast_assignment.csv, so it is out of this item's scope) and Mlie
+  stays active, so the cross-reference remains functionally correct.
+
+  `specialTrainables` (Odyssey `SW_Spit`) is left bare, MayRequire-gated —
+  the ability itself (AbilityDef/HediffDef/TrainableDef trio) is not yet
+  absorbed by this item (same precedent as every other still-unported
+  Mlie ability, e.g. RSW_SW_Spur's sibling SW_Rampage before its own port).
+
+  Sounds repoint to the already-absorbed sound wave (RSW_Pawn_FeralNerf_*,
+  2026-09-02). texPaths are unchanged text — extracted art sits at
+  Textures/swanimals/FeralNerf/ (extract_bundle.py against the live Steam
+  workshop copy of the bundle — the repo's own vendor/mod_sources copy is
+  STALE/truncated, 4.6MB vs the live 33.5MB bundle, and fails to parse;
+  flagged for whoever next reaches for vendor/mod_sources on this donor).
+
+  Wired into the live cast this same pass: AridShrubland (0.04) — per
+  cast_assignment.csv's current row for this species (matches the stale
+  worklist's own biome claim for FeralNerf, cross-checked and correct this
+  time), repointed from the bare "FeralNerf" entry in cast_assignment.csv /
+  both BiomeCast_Ashkarr.xml copies. No `*ArtOverride` mod exists for this
+  species (checked the full `src/RimStarWars/*ArtOverride` folder listing
+  before porting, not just the 6 species named in Pass 6's note — that list
+  turned out to be incomplete; ~26 override mods exist in total).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_FeralNerf</defName>
+    <label>feral nerf</label>
+    <description>Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to harsh environments, several defined sub-species existed and were often referred to as 'feral' or 'wild' variants of the same animal.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <MarketValue>300</MarketValue>
+      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_WoolNerf</woolDef>
+        <shearIntervalDays>30</shearIntervalDays>
+        <woolAmount>40</woolAmount>
+      </li>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>10</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Nerf</leatherDef>
+      <specificMeatDef>RSW_Nerf_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <roamMtbDays>1.6</roamMtbDays>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>45</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>RSW_Nerf</li>
+        <li>RSW_FeralGrazer</li>
+        <li>Grazer</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <TropicalSwamp>0.03</TropicalSwamp>
+        <TemperateSwamp>0.03</TemperateSwamp>
+        <TemperateForest>0.15</TemperateForest>
+        <BorealForest>0.15</BorealForest>
+        <Tundra>0.08</Tundra>
+        <ColdBog>0.03</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1.5, 1)</li>
+          <li>(2.5, 1.7)</li>
+          <li>(3.5, 0.7)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_FeralNerf_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_FeralNerf_Death</soundDeath>
+          <soundCall>RSW_Pawn_FeralNerf_Call</soundCall>
+          <soundAngry>RSW_Pawn_FeralNerf_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_FeralNerf</defName>
+    <label>feral nerf</label>
+    <labelPlural>feral nerfs</labelPlural>
+    <race>RSW_FeralNerf</race>
+    <combatPower>110</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>3~9</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>wild nerfling</label>
+        <labelPlural>wild nerflings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

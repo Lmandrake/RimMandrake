@@ -569,6 +569,31 @@
   extracted) — its leatherDef `Leather_Lizard` stays vanilla Core (same as
   Iriaz's) — plus its 2 eggs (RSW_EggFanbackFertilized/UnFertilized, texPath
   swresource/EggSpeckled, already extracted, Pass 4/Clodhopper).
+
+  🔴 Real bug found and fixed this pass (Pass 8): Pass 7's `RSW_Nerf_Meat`/
+  `RSW_Gorg_Meat` below were authored with `ParentName="SWanimals_RawMeatBase"`
+  (the donor's OWN bare abstract name, no RSW_ prefix) instead of our own
+  ported `RSW_SWanimals_RawMeatBase` (defined in RSW_Bantha_Items.xml, used
+  by every other meat ThingDef in this file). Both resolved silently and
+  `validate_patch.py` reported clean because the donor's `mlie.
+  starwarsanimalcollection` mod is still active and its own bare
+  `SWanimals_RawMeatBase` abstract is still in scope — but it is the WRONG
+  parent for a def meant to survive donor retirement. Corrected to
+  `RSW_SWanimals_RawMeatBase` below, per "inaccurate material is deleted,
+  not superseded-in-place".
+
+  Pass 8 (FeralNerf/Nerf/FrilledGorg, 2026-09-17): FeralNerf/Nerf both
+  repoint leatherDef/specificMeatDef to the already-ported RSW_Leather_Nerf/
+  RSW_Nerf_Meat (Pass 7). Nerf additionally needs a new wool
+  (RSW_WoolNerf — donor's `WoolNerf`, texPath swresource/Leather_Wool/
+  Leather_Wool, the SAME art already extracted for RSW_WoolCoarse, no new
+  art) and a new trophy (RSW_NerfHorn, donor's `NerfHorn`, texPath
+  swresource/Trophies/NerfHorn, newly extracted, same ResourceVerbBase
+  shape as RSW_BanthaHorn). FrilledGorg needs no new leather/meat —
+  repoints to vanilla Core `Leather_Lizard` and the already-ported
+  RSW_Gorg_Meat (Pass 7, Fanback) — only its 2 eggs are newly ported
+  (RSW_EggFrilledGorgFertilized/UnFertilized, texPath swresource/EggPod,
+  newly extracted this pass).
 -->
 <ThingDef ParentName="LeatherBase">
     <defName>RSW_Leather_Nerf</defName>
@@ -593,7 +618,7 @@
       </statFactors>
     </stuffProps>
   </ThingDef>
-<ThingDef ParentName="SWanimals_RawMeatBase">
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
     <defName>RSW_Nerf_Meat</defName>
     <label>nerf meat</label>
     <description>A piece of meat from a nerf.</description>
@@ -605,7 +630,7 @@
       <MarketValue>1.0</MarketValue>
     </statBases>
   </ThingDef>
-<ThingDef ParentName="SWanimals_RawMeatBase">
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
     <defName>RSW_Gorg_Meat</defName>
     <label>gorg meat</label>
     <description>A piece of meat from an amphibian.</description>
@@ -652,6 +677,114 @@
     <statBases>
       <Nutrition>0.5</Nutrition>
       <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="WoolBase">
+    <defName>RSW_WoolNerf</defName>
+    <label>nerf wool</label>
+    <description>Soft, light and provides very good insulation. Wool clothes can keep the body warm even in extreme conditions.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
+      <color>(150,150,150)</color>
+    </graphicData>
+    <statBases>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>2.0</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>38</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>8</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(150,150,150)</color>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="ResourceVerbBase">
+    <defName>RSW_NerfHorn</defName>
+    <label>nerf horn</label>
+    <description>A horn from a Nerf, can be used as a weapon or sold for profit.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/NerfHorn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <equippedAngleOffset>-20</equippedAngleOffset>
+    <statBases>
+      <MarketValue>30</MarketValue>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Mass>1.5</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>point</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+      <li>
+        <label>base</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>AnimalPart</li>
+    </thingSetMakerTags>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggFrilledGorgFertilized</defName>
+    <label>frilled gorg egg (fert.)</label>
+    <description>A fertilized frilled gorg egg. If all goes well, it should hatch into a baby frilled gorg. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(100,75,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_FrilledGorg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggFrilledGorgUnFertilized</defName>
+    <label>frilled gorg egg (unfert.)</label>
+    <description>An unfertilized frilled gorg egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(100,75,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
 </Defs>

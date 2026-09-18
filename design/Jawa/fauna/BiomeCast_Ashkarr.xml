@@ -82,9 +82,9 @@
         <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
         <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
         <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
-        <FrilledGorg>0.2</FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
+        <RSW_FrilledGorg>0.2</RSW_FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
         <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
-        <Nerf>0.2</Nerf> <!-- nerf - herd, keep -->
+        <RSW_Nerf>0.2</RSW_Nerf> <!-- nerf - herd, keep -->
         <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
@@ -190,7 +190,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
-        <FrilledGorg>1.0</FrilledGorg> <!-- frilled gorg - small-runway, keep -->
+        <RSW_FrilledGorg>1.0</RSW_FrilledGorg> <!-- frilled gorg - small-runway, keep -->
         <Gorg>1.0</Gorg> <!-- gorg - small-runway, keep -->
         <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
@@ -215,7 +215,7 @@
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
-        <FeralNerf>0.04</FeralNerf> <!-- feral nerf - medium-runner, keep -->
+        <RSW_FeralNerf>0.04</RSW_FeralNerf> <!-- feral nerf - medium-runner, keep -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
         <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
       </value>

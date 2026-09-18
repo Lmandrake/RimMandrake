@@ -97,7 +97,7 @@ AB_RockyCrags,AA_Darkbeast,darkbeast,Alpha Animals,medium,1.5,0.005,,,0.488,keep
 AB_TarPits,AA_TarGuzzler,tar guzzler,Alpha Animals,tar-eater,2,0.5,,,0.45,adjust-keep,the_sump: §4/§0: eats-what-no-normal-animal-eats special (MEASURED) — the tar's own grazer; slow (spd 2 MEASURED); comm trimmed 0.75→0.5 for sparse-but-strange,0
 AB_TarPits,AA_Bumbledrone,bumbledrone,Alpha Animals,under-layer,0.7900000214576721,0.35,,,0.42,keep,"the_sump: §0/§4: the subterranean bumbledrone hives KEPT (BENCH call, roster verdict = keep) — warm heat-huddled colonies beneath the insulating tar, aggressive at entrance mounds; chitin/honey-wax economy (§7); ubiquity-25 TRIM satisfied: this is the named home (prep §9)",0
 AB_TarPits,AA_BumbledroneHierophant,bumbledrone hierophant,Alpha Animals,under-layer,0.7900000214576721,0.2,,,0.42,keep,the_sump: rides the hive verdict (§0),0
-AridShrubland,FrilledGorg,frilled gorg,Star Wars Animal Collection (Continued),small-runway,0.4000000059604645,1.0,,,0.56,keep,arid_shrubland: bs 0.4 (MEASURED); runway nation,0
+AridShrubland,RSW_FrilledGorg,frilled gorg,Star Wars Animal Collection (Continued),small-runway,0.4000000059604645,1.0,,,0.56,keep,arid_shrubland: bs 0.4 (MEASURED); runway nation,0
 AridShrubland,Gorg,gorg,Star Wars Animal Collection (Continued),small-runway,0.30000001192092896,1.0,,,0.558,keep,arid_shrubland: small band pass: bs 0.3 (MEASURED); runway-nation resident (prep §3.2),0
 AridShrubland,RSW_Iriaz,iriaz,RimMandrake: SW — Bestiary,small-herd,0.699999988079071,1.0,,,0.417,keep,arid_shrubland: bs 0.7 (MEASURED) herd herbivore — top small resident [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Iriaz port],0
 AridShrubland,LongtailGorg,longtail gorg,Star Wars Animal Collection (Continued),medium-interface,0.6000000238418579,1.0,,,0.565,keep,arid_shrubland: bs 0.6 (MEASURED); prep §3.2,0
@@ -147,7 +147,7 @@ AridShrubland,Skalder,skalder,Star Wars Animal Collection (Continued),huge-graze
 AridShrubland,RSW_Vulptex,vulptex,RimMandrake: SW — Bestiary,small-runway,0.550000011920929,0.08,,,0.584,keep,arid_shrubland: SW icon (Crait); bs 0.55 (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Vulptex port],0
 AridShrubland,RSW_DW_OuterRim_FX7Droid,fx-7 medical droid,"Droidworks (repointed off retired Outer Rim - Droid Depot, DROID_RETIRE_DEPOT_ASIMOV_1)",feral-droid,0.75,0.05,,,0.319,import,fall_line: medical droid gone feral,0
 AridShrubland,RSW_DW_OuterRim_MuckrakerDroid,Muckraker Crab Droid,"Droidworks (repointed off retired Outer Rim - Droid Depot, DROID_RETIRE_DEPOT_ASIMOV_1)",feral-droid,1.2000000476837158,0.05,,,0.33,import,fall_line: salvage body,0
-AridShrubland,FeralNerf,feral nerf,Star Wars Animal Collection (Continued),medium-runner,1,0.04,,,0.425,keep,arid_shrubland: bs 1.0 non-predator (MEASURED),0
+AridShrubland,RSW_FeralNerf,feral nerf,Star Wars Animal Collection (Continued),medium-runner,1,0.04,,,0.425,keep,arid_shrubland: bs 1.0 non-predator (MEASURED),0
 AridShrubland,RSW_Porg,porg,RimMandrake: SW — Bestiary,small-runway,0.18000000715255737,0.04,,,0.555,keep,arid_shrubland: SW icon; bs 0.18 (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Porg port],0
 AridShrubland,AA_Wildpod,wildpod,Alpha Animals,huge-sessile,4,0.025,,,0.8,keep,"arid_shrubland: bs 4.0 slow venm pod (MEASURED spd 3.0) — indifferent, plant-like giant",0
 AridShrubland,RSW_DW_OuterRim_DestroyerDroid,Destroyer Droid,"Droidworks (repointed off retired Outer Rim - Droid Depot, DROID_RETIRE_DEPOT_ASIMOV_1)",feral-droid,1,0.02,,,0.325,import,fall_line: rare dangerous fall; still flee-prone by ruling (§8b),0
@@ -220,9 +220,9 @@ Desert,Varactyl,varactyl,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.
 Desert,Zeer,zeer,Star Wars Animal Collection (Continued),herd,3,0.3,,,0.475,import,desert: bulk-move from shrubland large band (ban 4 there); spd 3.0 herd herbivore (MEASURED),0
 Desert,AA_Needleroll,needleroll,Alpha Animals,grain,0.15000000596046448,0.2,,,0.429,keep,"desert: light-feeder, non-pursuit (MEASURED spd 2.5); dual home with ExtremeDesert",0
 Desert,RSW_Falumpaset,falumpaset,RimMandrake: SW — Bestiary,herd,3,0.2,,,0.625,import,"desert: SW pack herbivore, spd 4.3 (MEASURED); prep §11 flagged it homeless without a move — MLIE_FAUNA_ABSORPTION_1 Wave C port",0
-Desert,FrilledGorg,frilled gorg,Star Wars Animal Collection (Continued),ambush-small,0.4000000059604645,0.2,,,0.56,keep,"desert: SW ambush frog, spd 2.3 (MEASURED)",0
+Desert,RSW_FrilledGorg,frilled gorg,Star Wars Animal Collection (Continued),ambush-small,0.4000000059604645,0.2,,,0.56,keep,"desert: SW ambush frog, spd 2.3 (MEASURED)",0
 Desert,Jakobeast,jakobeast,Star Wars Animal Collection (Continued),herd,2.5999999046325684,0.2,,,0.465,import,desert: bulk-move; herd herbivore spd 4.5 (MEASURED),0
-Desert,Nerf,nerf,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,keep,"desert: SW icon herd beast, spd 3.2 (MEASURED)",0
+Desert,RSW_Nerf,nerf,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,keep,"desert: SW icon herd beast, spd 3.2 (MEASURED)",0
 Desert,Nuna,nuna,Star Wars Animal Collection (Continued),herd-small,0.6000000238418579,0.2,,,0.415,keep,"desert: SW herbivore bird, spd 3.0 (MEASURED)",0
 Desert,RSW_Nuna,nuna,RimMandrake: SW — Bestiary,herd-small,0.6000000238418579,0.2,,,0.415,keep,"MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 - Nuna defName collision with vanilla Core resolved by porting under RSW_Nuna and keeping BOTH (this row) alongside vanilla Nuna, same commonality",0
 Desert,Shaak,shaak,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,import,desert: bulk-move; slow herd grazer spd 2.4 (MEASURED),0

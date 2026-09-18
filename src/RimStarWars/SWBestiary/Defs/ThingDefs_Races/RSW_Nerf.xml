@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Nerf creature port (Pass 8).
+  Ported from mlie.starwarsanimalcollection's `Nerf` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Body: the donor's
+  `body` is the vanilla Core `QuadrupedAnimalWithHoovesAndHorn` (already
+  used by RSW_FeralGrazer/RSW_FeralNerf) — no BodyDef port needed.
+
+  `leatherDef`/`specificMeatDef` both repoint to the already-ported
+  RSW_Leather_Nerf/RSW_Nerf_Meat (RSW_MlieWaveC_Resources.xml, Pass 7).
+  New resources this pass: `RSW_WoolNerf` (donor `WoolNerf`, CompProperties_
+  Shearable — texPath swresource/Leather_Wool/Leather_Wool, the SAME art
+  already extracted for RSW_WoolCoarse/RSW_WoolBantha, no new art) and
+  `RSW_NerfHorn` (donor `NerfHorn`, the elder-stage `butcherBodyPart`
+  trophy — texPath swresource/Trophies/NerfHorn, newly extracted, same
+  ResourceVerbBase shape as RSW_BanthaHorn).
+
+  `canCrossBreedWith` (donor: FeralNerf, FeralGrazer, Grazer) — `FeralNerf`
+  renamed to `RSW_FeralNerf` (ported this same pass, above) and
+  `FeralGrazer` renamed to `RSW_FeralGrazer` (already ported, Pass 7).
+  `Grazer` stays bare (out of this item's Wave C worklist — see
+  RSW_FeralNerf.xml's header for the reasoning).
+
+  `specialTrainables`/`abilities` (Odyssey `SW_Spit`) left bare,
+  MayRequire-gated — same precedent as RSW_FeralNerf, not yet absorbed.
+
+  `alternateGraphicChance`/`alternateGraphics` (7 flat recolors) is a
+  CutoutComplex mask-tinting setup, distinct from FrilledGorg's
+  alternate-texPath scheme — the `_northm`/`_eastm`/`_southm` mask PNGs
+  next to each of Nerf_j/Nerf_m/Nerf_f were extracted and shipped alongside
+  the base textures so the tinting actually renders (their absence would
+  not error, just silently fail to recolor).
+
+  Sounds repoint to the already-absorbed sound wave (RSW_Pawn_FeralNerf_*
+  — the donor's own Nerf.xml reuses FeralNerf's sound defNames verbatim,
+  copied unchanged here). texPaths are unchanged text — extracted art sits
+  at Textures/swanimals/Nerf/ (extract_bundle.py against the live Steam
+  workshop copy of the bundle, per the stale-vendor-copy note in
+  RSW_FeralNerf.xml).
+
+  Excluded from extraction as unreferenced by this def (same precedent as
+  Falumpaset's excluded "Pack" variants, Pass 7): NerfPack/NerfWPack/
+  Nerf_jPack/Nerf_mPack/Nerf_fPack and the separate NerfW/NerfW_m set — none
+  of these texPaths appear anywhere in the donor's Nerf ThingDef/PawnKindDef.
+
+  Wired into the live cast this same pass: Desert (0.2) — per
+  cast_assignment.csv's current row for this species, repointed from the
+  bare "Nerf" entry in cast_assignment.csv / both BiomeCast_Ashkarr.xml
+  copies. No `*ArtOverride` mod exists for this species (checked the full
+  override-folder listing, not just Pass 6's flagged 6).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Nerf</defName>
+    <label>nerf</label>
+    <description>Nerfs were a species of furry, non-sentient animals raised for their milk, meat, and hide. They could be found on a variety of planets across the galaxy, from Alderaan to Lothal. Despite their usefulness, nerfs were often regarded as disgusting because of their strong body odor.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <MarketValue>400</MarketValue>
+      <FilthRate>24</FilthRate>
+      <Wildness>0.05</Wildness>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_WoolNerf</woolDef>
+        <shearIntervalDays>26</shearIntervalDays>
+        <woolAmount>80</woolAmount>
+      </li>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>1</milkIntervalDays>
+        <milkAmount>15</milkAmount>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8.8</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseHungerRate>0.85</baseHungerRate>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <packAnimal>true</packAnimal>
+      <roamMtbDays>7</roamMtbDays>
+      <lifeExpectancy>55</lifeExpectancy>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>RSW_Leather_Nerf</leatherDef>
+      <specificMeatDef>RSW_Nerf_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>RSW_FeralNerf</li>
+        <li>RSW_FeralGrazer</li>
+        <li>Grazer</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.03</AridShrubland>
+        <TemperateForest>0.03</TemperateForest>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <IceSheet>0.01</IceSheet>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.03</Tundra>
+        <Desert>0.03</Desert>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+          <soundWounded>RSW_Pawn_FeralNerf_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_FeralNerf_Death</soundDeath>
+          <soundCall>RSW_Pawn_FeralNerf_Call</soundCall>
+          <soundAngry>RSW_Pawn_FeralNerf_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>StandardAnimal</li>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Nerf</defName>
+    <label>nerf</label>
+    <race>RSW_Nerf</race>
+    <combatPower>55</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>3~5</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+    </abilities>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <color>(69,39,32)</color>
+      </li>
+      <li>
+        <color>(137,128,103)</color>
+      </li>
+      <li>
+        <color>(91,83,61)</color>
+      </li>
+      <li>
+        <color>(114,108,91)</color>
+      </li>
+      <li>
+        <color>(66,61,48)</color>
+      </li>
+      <li>
+        <color>(109,73,46)</color>
+      </li>
+      <li>
+        <color>(88,83,79)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <label>nerf calf</label>
+        <labelPlural>nerf calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_j</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(110, 92, 69)</color>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_m</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(110, 92, 69)</color>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Nerf/Nerf_f</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(110, 92, 69)</color>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_m</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(110, 92, 69)</color>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Nerf/Nerf_f</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(110, 92, 69)</color>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nerf/Nerf_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HornAttackTool</bodyPartGroup>
+          <thing>
+            <thingDef>RSW_NerfHorn</thingDef>
+          </thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

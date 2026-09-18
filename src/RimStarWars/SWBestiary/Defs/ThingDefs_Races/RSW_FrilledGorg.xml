@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — FrilledGorg creature port (Pass 8).
+  Ported from mlie.starwarsanimalcollection's `FrilledGorg` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Body: the donor's `body` is the vanilla Core
+  `QuadrupedAnimalWithClawsTailAndJowl` (Bodies_Animal_Quadruped.xml, same
+  body already confirmed vanilla for RSW_Bolotaur) — no BodyDef port needed.
+
+  `leatherDef` stays vanilla Core `Leather_Lizard` (same as RSW_Fanback's,
+  Pass 7) — no port needed. `specificMeatDef` repoints to the already-ported
+  RSW_Gorg_Meat (RSW_MlieWaveC_Resources.xml, Pass 7, Fanback). Only its 2
+  eggs are newly ported (RSW_EggFrilledGorgFertilized/UnFertilized, texPath
+  swresource/EggPod, newly extracted this pass).
+
+  `canCrossBreedWith` (donor: Gorg, LongtailGorg) — both stay bare, neither
+  is ported yet (both remain later in this item's Wave C worklist).
+
+  🔴 Real donor-bundle naming bug found and worked around this pass: the
+  PawnKindDef's `alternateGraphics` texPath scheme expects
+  `swanimals/FrilledGorg/FrilledGorgA_east` (matching FrilledGorgA_north/
+  _south, which DO exist), but the AssetBundle has no texture at that
+  internal path — the actual east-facing asset for recolor A is stored
+  under the misspelled name `FrilledGorgAA_east` (doubled A), confirmed via
+  `extract_bundle.py` (list mode, filtered to "FrilledGorg") (256x256, same style/size
+  as every other frame in the set). Extracted and shipped as
+  `FrilledGorgA_east.png` at the correct texPath — the donor's own asset,
+  renamed to the path its own def expects. Not something to "fix upstream"
+  (Mlie is being retired); flagged here in case a later full defName sweep
+  turns up more of this pattern elsewhere in the bundle.
+
+  texPaths are otherwise unchanged text — extracted art sits at
+  Textures/swanimals/FrilledGorg/ (extract_bundle.py against the live Steam
+  workshop copy of the bundle, per the stale-vendor-copy note in
+  RSW_FeralNerf.xml).
+
+  Wired into the live cast this same pass: AridShrubland (1.0), Desert
+  (0.2) — per cast_assignment.csv's current rows for this species (matches
+  the worklist's own biome claim, cross-checked and correct), repointed
+  from the bare "FrilledGorg" entries in cast_assignment.csv / both
+  BiomeCast_Ashkarr.xml copies. No `*ArtOverride` mod exists for this
+  species (checked the full override-folder listing, not just Pass 6's
+  flagged 6 — that list turned out to be incomplete, ~26 override mods
+  actually exist under src/RimStarWars/).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_FrilledGorg</defName>
+    <label>frilled gorg</label>
+    <description>Frilled Gorgs, were small frilled amphibians that could be found on several planets. This subspecies was notable for the frills along it's back and tail (hence the name) and for being slightly more aggressive in nature. Their spread to others worlds is often the consequence of culinary import of either eggs or escaped live specimens.</description>
+    <statBases>
+      <MoveSpeed>2.3</MoveSpeed>
+      <MarketValue>70</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggFrilledGorgUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggFrilledGorgFertilized</eggFertilizedDef>
+        <eggLayIntervalDays>2</eggLayIntervalDays>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.40</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <roamMtbDays>7</roamMtbDays>
+      <lifeExpectancy>6</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <canCrossBreedWith>
+        <li>Gorg</li>
+        <li>LongtailGorg</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>1.0</AridShrubland>
+        <Desert>0.2</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.02</BorealForest>
+        <Tundra>0.02</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Gorg_Wounded</soundWounded>
+          <soundDeath>Pawn_Gorg_Death</soundDeath>
+          <soundCall>Pawn_Gorg_Call</soundCall>
+          <soundAngry>Pawn_Gorg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_FrilledGorg</defName>
+    <label>frilled gorg</label>
+    <race>RSW_FrilledGorg</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/FrilledGorg/FrilledGorgA</texPath>
+        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/FrilledGorg/FrilledGorgB</texPath>
+        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/FrilledGorg/FrilledGorgC</texPath>
+        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgC_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>frilled gorgling</label>
+        <bodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_j</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_j_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrilledGorg/FrilledGorg_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
