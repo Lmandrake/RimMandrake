@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T20:33:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T20:50:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1755,3 +1755,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/POLLUTED_LANDS_FLORA_PORT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/POLLUTED_LANDS_FLORA_PORT_1.md
+
+## BIOME_FLORA_GENERATOR_REPAIR_1 biome_flora.py cannot regenerate BiomeFlora_Ashkarr.xml: FAMILIES still keys on pre-rename biome defNames (AB_MycoticJungle, ZBiome_Badlands, Wasteland...) so check() fails 80x at baseline and --write refuses
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_FLORA_GENERATOR_REPAIR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_FLORA_GENERATOR_REPAIR_1.md
