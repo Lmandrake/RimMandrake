@@ -1374,10 +1374,10 @@
     "sha": "fab58c094"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
-    "cleanCount": 9,
-    "date": "2026-09-17",
-    "hash": "0e6d32e7f892f1891928c00f2d8997693426acf358e2f096bb61f489cef943d8",
-    "sha": "fab58c094"
+    "cleanCount": 10,
+    "date": "2026-09-18",
+    "hash": "d44b4f2d4adf64d4a8196e7dc8ac4e03de930aa6188bb0f103f2cfa9cd379abe",
+    "sha": "2bd3af70f"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_FellableTreeExtension.cs": {
     "cleanCount": 1,
@@ -2154,10 +2154,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidDef.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "104637559539cd72b693c168f7750918ac18bd03f392a28a9876a311401d0c17",
-    "sha": "d0b0d6b7b"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "c04b6c233d4d20a078e3d8016b3b64c2d24f886aae6c2127b42e396b24e1e93c",
+    "sha": "2bd3af70f"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidIgnition.cs": {
     "cleanCount": 1,
@@ -2178,10 +2178,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "5d1dbff11aaa644dd413093f1a9abb7d1713afcf6267dbc332e1cce5431cd79f",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "072a60145aad9010dc5aede45155c4b8939e3eb45053974e556e40a32046abba",
+    "sha": "2bd3af70f"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/WorkGiver_FillBottle.cs": {
     "cleanCount": 1,
@@ -2400,10 +2400,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "e5280f4e2b99b07a25feed9a8b16df580928fb77710b5d2ad8c7c400e11330dd",
-    "sha": "d0b0d6b7b"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "024f90a913e6632c0d1109a0caa11be35ffe59e31ad951ae3f0d317b07ebfbe8",
+    "sha": "2bd3af70f"
   },
   "src/RimMandrake/FlowWorks/validation.py": {
     "cleanCount": 1,
