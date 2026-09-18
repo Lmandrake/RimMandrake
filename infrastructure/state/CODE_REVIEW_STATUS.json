@@ -10575,11 +10575,53 @@
     "hash": "c3ecfa24e621d698b0e1e50536e47afb6abcbf65a8e532181410b3b7e38e2a64",
     "sha": "38ce6b1fa"
   },
-  "src/RimStarWars/GizkaArtOverride/LICENSE": {
+  "src/RimStarWars/GizkaArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "6e0a6f343804336b61dca185b4677f17be168d5da8846abf100847f96809ec01",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9d0c44d2acda8f478c9e41deee9cd52813726fb0e782dfd5a424f2bf7919d8b6",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/GrankArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -10641,11 +10683,53 @@
     "hash": "0ae6f02d7cd50beb9125731c496de0c0f88be26aa3014b824a414a64ae8c6c20",
     "sha": "38ce6b1fa"
   },
-  "src/RimStarWars/HawkbatArtOverride/LICENSE": {
+  "src/RimStarWars/HawkbatArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "09ef119daf3d446dc14a19edbb8d09bd6001b5b7c4c7d718187d37b6fd7e49ec",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "32577df702bb3bdf7e279f22d42bd251656f801f4385d401962ff1b90353d7a9",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "32577df702bb3bdf7e279f22d42bd251656f801f4385d401962ff1b90353d7a9",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/HoraxArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -11277,6 +11361,54 @@
     "hash": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
     "sha": "ea334c83"
   },
+  "src/RimStarWars/NunaArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8396d0fe0fa037912521437a3a0f1a55ba066cb3e75fb37c3077a4cdae73451f",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d",
+    "sha": "9aaf55cec"
+  },
   "src/RimStarWars/OllopomArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
@@ -11307,17 +11439,83 @@
     "hash": "26fb93e093d994b37dde1b300a58fccf94d4eb226cb9a686612d0acb02afb0eb",
     "sha": "38ce6b1fa"
   },
-  "src/RimStarWars/OrrayArtOverride/LICENSE": {
+  "src/RimStarWars/OrrayArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "d415b50d9c1835deab36687021da6d9542947ef648fef363816959ddd67bb043",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/OrrayArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/OrrayArtOverride/Textures/swanimals/Orray/Orray_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/OrrayArtOverride/Textures/swanimals/Orray/Orray_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/OrrayArtOverride/Textures/swanimals/Orray/Orray_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "cf76274a823aac293985b41e5b1769feb47ab04697ea3e977c3153ec32fc1d3f",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d0a51669d4b2e0aa28fcdb296789e309fdaa4a2749de1fa1663f388dd1bc10ce",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/PekoPekoArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_f_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6855698c904ac3ab43db08f881b3e34282f3cc0518249fafe8e9975df9cd65a9",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_f_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0d3777504e2ca79c1dfc58fe578f2929606a0d6324f1bf822290607628b002b3",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_f_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5b581ad7604066eb48c61c0f9d0b89312f5ba6e7587e60d5119adcdc6c48f521",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6855698c904ac3ab43db08f881b3e34282f3cc0518249fafe8e9975df9cd65a9",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0d3777504e2ca79c1dfc58fe578f2929606a0d6324f1bf822290607628b002b3",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5b581ad7604066eb48c61c0f9d0b89312f5ba6e7587e60d5119adcdc6c48f521",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/RontoArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -11973,11 +12171,35 @@
     "hash": "e14867408aca2afaef9d30d4e8b82638a3bd0e9e2d71c20fe8c10f8c2ec06e20",
     "sha": "c4858101e"
   },
-  "src/RimStarWars/ShiroArtOverride/LICENSE": {
+  "src/RimStarWars/ShiroArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "43c669fd41ad0df2c62ae635b2daf604a570b6b62c2367ddcff6312d1ff01219",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ShiroArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ShiroArtOverride/Textures/swanimals/Shiro/Shiro_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "08e7783b9032b1996b83b15928217bda1352750d9829dd72ccb6aaa10b81ba65",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ShiroArtOverride/Textures/swanimals/Shiro/Shiro_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9bd1be3ab3a2e3e1a1117b51c7c7c9b2a0a2f56ee501f5a71057fbf6ef48f4bd",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ShiroArtOverride/Textures/swanimals/Shiro/Shiro_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "3c8b996f6d1a65e8ebba6ef44f247ccf9d249bcbe91638f3536270f1bc63e90b",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/Shokk/About/About.xml": {
     "cleanCount": 1,
@@ -12507,23 +12729,95 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
   },
-  "src/RimStarWars/VornskyrArtOverride/LICENSE": {
+  "src/RimStarWars/VornskyrArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "3d1b912a5ae8101889f55cad40c5ab4978da35a5da5447dcd205169e968ec2d7",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/VornskyrArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/VornskyrArtOverride/Textures/swanimals/Vornskyr/Vornskyr_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4987d4160186fa1734d47dfc222f06396f5b5013f191c7b319eeffa43bf5e005",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/VornskyrArtOverride/Textures/swanimals/Vornskyr/Vornskyr_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4fa636bae7e9bdc68f8fcda9ee223b59574601d56c84c4191f6a4bd3f0ca3669",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/VornskyrArtOverride/Textures/swanimals/Vornskyr/Vornskyr_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "06b9551f9a25de7ee79d371d4557345c5a46969293042d6ddb9d22dd7543635c",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WhisperbirdArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f03e9e91d1c1ab8ab515440684b1667f9d6f35deb99c8d865f084338c66f8bd4",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/WhisperbirdArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/Whisperbird_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/Whisperbird_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/Whisperbird_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WyyyschokkArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "62b8c07dc080559df1bb3a50848796aeb44e5c8f6ff59f520ca48f1e96d3d36b",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/WyyyschokkArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WyyyschokkArtOverride/Textures/swanimals/Wyyyschokk/Wyyyschokk_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d2be7b5eae43d2c6ae4d67fbcfc4ce968255a1fc2b5e010571bec2ada7f2e4d1",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WyyyschokkArtOverride/Textures/swanimals/Wyyyschokk/Wyyyschokk_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2d809eea653406484dc23449bbca9c15d2a3a31aaa6a70eed1d6f46d455f46a7",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/WyyyschokkArtOverride/Textures/swanimals/Wyyyschokk/Wyyyschokk_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "67fe70e024dbe15404ca43e1087d8c18f1a3735070b26c4364b124b831793861",
+    "sha": "9aaf55cec"
   },
   "src/RimStarWars/ZakkegArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -12555,11 +12849,35 @@
     "hash": "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b",
     "sha": "38ce6b1fa"
   },
-  "src/RimStarWars/ZeerArtOverride/LICENSE": {
+  "src/RimStarWars/ZeerArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "b7f2b13589b52119c7c9cb81abad8a60b1ceeaf595398771cbebb822d2c17dab",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ZeerArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ff3962d86f0b3b971609b579b5841d425f682d6aa0e60279a81dd0418e2e9f8d",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
+    "sha": "9aaf55cec"
+  },
+  "src/RimStarWars/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d",
+    "sha": "9aaf55cec"
   },
   "src/RimUtinni/AaroxisDendoriaArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -13029,29 +13347,125 @@
     "hash": "3eea5e59ed62336eb1e9cde9c481b9a1369914a1bb21e3ba39b6bdad3c701dd7",
     "sha": "38ce6b1fa"
   },
-  "src/RimUtinni/BovineBeetleArtOverride/LICENSE": {
+  "src/RimUtinni/BovineBeetleArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "a0962dc768960fb7e5c1e9a90f5e42dd2c619194371984ce1eca55fc520db372",
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BovineBeetleArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BovineBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7",
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BumbledroneArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ea4729ea7d85f706ada674fcbd90e5cf2822eb2787b6b493077bcf13974b0aae",
+    "sha": "9aaf55cec"
   },
   "src/RimUtinni/BumbledroneArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "9aaf55cec"
+  },
+  "src/RimUtinni/BumbledroneArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "adcb61067eea99421b347f37b3b7cc57e05018e82574299d93a80876eaf6c113",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "756f32ce0ce5b1a26fbe53439d94134049456784ebed2ae3b44bbe63ed10ade8",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1f4c62ce666f8bfa674b2439049a045af539139981f8f84a8b3e6bde822413b4",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneHierophantArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5dd35de40814dad34fe505cc1d86412e3a1ccf6757066f6b731821144ab2d397",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/BumbledroneHierophantArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneHierophantArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9ee5f4ae35384c798dcd1269c5a3c6829fef326eb7da99cfddb329f19540772e",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneHierophantArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f627a5477363c896f499810cd785a29e69f7ff2e44aa42f6b08b30cc1d2ea120",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/BumbledroneHierophantArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "34971dec296318313dd5c3305ddef994c8aa28896e1b1925685d908f0446e5c7",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/CrestedDragonArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "182d68a7fc3ca761c542b5d2b985d38ee97879ca100d25f5aff11e7bbc1a4e4a",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/CrestedDragonArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2596e413f59fb0ce672475161f2d50b6ae5dac86177721cb0e21b4c0de02fcf2",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5893fffe56954bcdb4126ae98077d051e2b89be03b0f49d43c0e043f3c0f2b18",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/CrestedDragonArtOverride/Textures/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7e4a9d3357aa96747ec1093b9310ed05d9f234b1f5bb6e859b9f8eace9d63289",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
     "cleanCount": 5,
@@ -13239,11 +13653,35 @@
     "hash": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7",
     "sha": "38ce6b1fa"
   },
-  "src/RimUtinni/FoundryBeetleArtOverride/LICENSE": {
+  "src/RimUtinni/FoundryBeetleArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "e9118c5ccfab7f3d80a72eff1f8cb5e01526506cbe6313f40026f3fb550ceeb9",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FoundryBeetleArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "35b66a2ad4d6ba7e67b086be048302b9981e506d038c159d590f2b68ea63a288",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d5c46d60da621c47d296691a68d6c860eaa5544bd8948d838f31d395e9f2150c",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FoundryBeetleArtOverride/Textures/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7a2d190015ccfccb423fc130e1e06215572ece40a4dd9acc48ffc2bdf38224b7",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/FrostmiteArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -13275,11 +13713,35 @@
     "hash": "36c6224e50618f54c61ff46c3e077e75edbcc2d35e97986f72dc7fbf29c43450",
     "sha": "38ce6b1fa"
   },
-  "src/RimUtinni/FungalMantisArtOverride/LICENSE": {
+  "src/RimUtinni/FungalMantisArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "9d7facd9bc11224e9b2666601aa2f1387423e323adc569970e303109798f5366",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FungalMantisArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "5d8f29856374508693ec9b3cacb6a4b0b179887fb03b7976db3e8187e8a288a7",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d11601e0410a503964a473c8deaf7af6604ecc3db8631105bac5e1c8bb50238b",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/FungalMantisArtOverride/Textures/BMT_Caverns/Things/Animal/FungalMantis/FungalMantis_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "87563ec7d2c0f20c018d1a0f98c4e4ef9e337bebb15a12f6f9a863703bb5ea61",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/FungalSoilTrade/About/About.xml": {
     "cleanCount": 1,
@@ -13347,11 +13809,35 @@
     "hash": "4c02754e1367e55bc38b73fa56c69ace311cc43e5cc182df4c0ac5c8a9abe8d2",
     "sha": "5f3ba0678"
   },
-  "src/RimUtinni/GreenGooArtOverride/LICENSE": {
+  "src/RimUtinni/GreenGooArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "6dbe3550153bbf5eda9be1bd9d1ad87320e49f6b7ad953561eeca9ed93b0d559",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/GreenGooArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d7022f82b5c85245d1ce81955b1f92f57ff93f182e739327e0c042221975e08a",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f339533597a5df756876848be749a0a5f0cbe9540c5d8bf8f245cf759fd666c7",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "59bbc9f2c93bf0d7f5684e1586926270ac269d36490b9356db7239a2054963a4",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/GritheArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -13443,11 +13929,35 @@
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
   },
-  "src/RimUtinni/JamelArtOverride/LICENSE": {
+  "src/RimUtinni/JamelArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "9844aefe402b4840890906952012fe2a9cb4875b07c4498ba038c8edeefdbe24",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/JamelArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a0e576417866b99fd313d9c04c7d964d7c9aedcff1b994272cf9c5aa0fc4bc91",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6e69283222a063c5f84ee2cd24f59778e4c02e04da37885cb1e7d075be0bf581",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/JamelArtOverride/Textures/swanimals/Jamel/Jamel_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "cd21af6751294b44af38af9c54cdf6bde4d9b02aeec5bb8b2504ee754bb33d05",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/KroffaArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -13845,11 +14355,35 @@
     "hash": "2f09edfba2acbe24551c6150a40d469ef9127bd44c1a9bade929e19dd5c62d6b",
     "sha": "fa90b445"
   },
-  "src/RimUtinni/MycoidColossusArtOverride/LICENSE": {
+  "src/RimUtinni/MycoidColossusArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "ba94a5fa058f8c322eef8f5676a5f89976813945fb780124f2aa4dc4fa37a0bc",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/MycoidColossusArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "63a9ef6e34a2acacfd2cab63cc0be70ab410e1cc66c7fc5f2c49b5991fe409a5",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6b62d57d51bbd7b5f120b6d1206ed895eb0cb1ab98a297ba62e9edf38b6f1222",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "733761bba07c214a4d22ff32788cfe0228584b7b3873af9372d598faf8175892",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
     "cleanCount": 2,
@@ -14169,11 +14703,35 @@
     "hash": "40a9971ae24e16e1e553bc562e36429bde3580f250a426e0fbd5d6f7cf32bccd",
     "sha": "d966fa898"
   },
-  "src/RimUtinni/RaptorShrimpArtOverride/LICENSE": {
+  "src/RimUtinni/RaptorShrimpArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "2ac14daa3adda0c2c8f3340741ebc99a981887a8fa43ce681b37edc207eb6918",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RaptorShrimpArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RaptorShrimpArtOverride/Textures/Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "7c2185c3ac25a5fd3dfb5b2bde3abc28231df07b3b04119998ce7f99ced1826f",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RaptorShrimpArtOverride/Textures/Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "99a9dfeaa248cb694f7191f458550fd0fef8d805946788371ff7db3f3697c8cd",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RaptorShrimpArtOverride/Textures/Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8ab3cadbf2712a734d28bea2eea1957a28f6e18b1dfa1270942c6fac7f5d82d7",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/RazorjackArtOverride/About/About.xml": {
     "cleanCount": 1,
@@ -14283,11 +14841,35 @@
     "hash": "73bcd2800c243451d785eca5feb92747dada10f38bf77c989d3a3b6f1bc11c4e",
     "sha": "fd3bafa39"
   },
-  "src/RimUtinni/RimclawArtOverride/LICENSE": {
+  "src/RimUtinni/RimclawArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "d3d662048bdddd3e4bf5a33de8877084053c7451f054d6411ebacd64ca0cc2b9",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RimclawArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RimclawArtOverride/Textures/Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "621d90f4beecac09509289b072f30eaccf4d941ddfc27120a81e1b85e4488eeb",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RimclawArtOverride/Textures/Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ab47f5fef9166f6ab8baa85e4d0f8f9cf454393bfd67aa3b11497545d2ae000c",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/RimclawArtOverride/Textures/Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "156395370bf9ff627cdf19cd7ab9a908480ac86c719f360425d77c679ddb8c0b",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/Rites/About/About.xml": {
     "cleanCount": 2,
@@ -14739,17 +15321,65 @@
     "hash": "9ece338325196542efdf5ae5c8c8591293954185aad3187c4a030f859f8b9f41",
     "sha": "18e1ab1b6"
   },
-  "src/RimUtinni/ScreecherArtOverride/LICENSE": {
+  "src/RimUtinni/ScreecherArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "34fa72cb1f32feb4ca76e57d8cbe629e2f7e24332c20e86a6d29cfb51dc1d5aa",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ScreecherArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ScreecherArtOverride/Textures/BMT_PollutedLands/Things/Animal/Screecher/Screecher_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ShadowChargerArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "d512a24c67b297b5f7ad010333f1f007a9f71cbf24d910c2ac653b1134071dab",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/ShadowChargerArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ShadowChargerArtOverride/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8060d814c60bd84bf466ffe663e9b0a6c41cbd7bbee7d795154b3a03d902741f",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ShadowChargerArtOverride/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "b78671e72d0ae8579816434254bf1ffb5fa9f39d797d07867b34efa10feef73a",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ShadowChargerArtOverride/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "ac677955e9ac75121025f3ce5ffac1b94e2b2ae70e93446461434dc370d2dfba",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
@@ -15339,29 +15969,125 @@
     "hash": "b91dee8c79f7f8dcec2404972e72a9199ed65c25a8a4bbdc30288a4b98cdbcfa",
     "sha": "e67f2cc0"
   },
-  "src/RimUtinni/TarGuzzlerArtOverride/LICENSE": {
+  "src/RimUtinni/TarGuzzlerArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "5ee8e5384932177372c28a3c39555e584f164ce520cce24f27935d3b21067997",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TarGuzzlerArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TarGuzzlerArtOverride/Textures/Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "98bc360b1d755a04b7d649b80002df7294725392509dcfc938b8aa8ef6dda6d2",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TarGuzzlerArtOverride/Textures/Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "8ef61304089100ce5c1a128344e3b38cccf6b0b3f0541e64ca92950d4b0d6fd5",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TarGuzzlerArtOverride/Textures/Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "c67d90df408602177303f8afdce8482a9509c00581af98b3fda666ecc35ef30f",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TerramorphArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e1769e08919da17bacf4573cad073ed4a338ce669c4febcf0b5861dfe654a7e9",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/TerramorphArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TerramorphArtOverride/Textures/Things/Pawn/Animal/AA_Terramorph/AA_Terramorph_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a8029a9ce07555a23763e77ae459b4231159f17e06366daae3cc6c7f058ff6d5",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TerramorphArtOverride/Textures/Things/Pawn/Animal/AA_Terramorph/AA_Terramorph_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f1742eb2e0e8f96c136ada507158f56031b1e03ee8b37cc58cafaff41321f4c9",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/TerramorphArtOverride/Textures/Things/Pawn/Animal/AA_Terramorph/AA_Terramorph_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "6aee693e718ebf85bb2091bc2fabe4771bb2163386a9ad11baf75667bd19f847",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThermadonArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "2baad4c08a015523438f154ca7e521d45f3a1fd5d7f42544de2b2b882a5d5dd3",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/ThermadonArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThermadonArtOverride/Textures/Things/Pawn/Animal/AA_Thermadon/AA_Thermadon_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "e67a3d0db2e73840997f294dcb7f05e006b0de8d5cd7558a20c80aab6464570a",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThermadonArtOverride/Textures/Things/Pawn/Animal/AA_Thermadon/AA_Thermadon_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "13f2a08977c6808403ca02e1c96c53562ecd2ba642d23b6844778d8f3fc3ed38",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThermadonArtOverride/Textures/Things/Pawn/Animal/AA_Thermadon/AA_Thermadon_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "4ee0be68e9c5b514fdaf7f0208f3d65177258a6536bccbfd8de5056ce72878e5",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThunderoxArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9d3953ca7ee144d8acc4d018c2241e6b046fb35004356645aa0fd76e53fde13f",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/ThunderoxArtOverride/LICENSE": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThunderoxArtOverride/Textures/Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "f9966e320a152a8555aa82e782fed3d4ef2f097ced25b6ddb83842308efd23a2",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThunderoxArtOverride/Textures/Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "261342bf54b73414ebd55be40d1cf6119af0d32499d7698bb880a48507f3576c",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/ThunderoxArtOverride/Textures/Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "a3a6d2bfe1473294b8d5fa63b7fb70816482336b78f0efa717a6105362707d28",
+    "sha": "7d6efe921"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
     "cleanCount": 5,
@@ -16737,10 +17463,34 @@
     "hash": "b57597465f751a859c09999687879934a9b5f6d2743c31a333abca435ecd3168",
     "sha": "d8a0b9b7d"
   },
-  "src/RimUtinni/WildpodArtOverride/LICENSE": {
+  "src/RimUtinni/WildpodArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-17",
+    "hash": "a1d5f989537b7e6d3c642d39a506947b92ec277c91a11e1b166c7baba4c062e6",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/WildpodArtOverride/LICENSE": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
-    "sha": "38ce6b1fa"
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/WildpodArtOverride/Textures/Things/Pawn/Animal/AA_Wildpod/AA_Wildpod_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "77efac86d35edcbf90eb71f4eb929b426367b7e98e6b912f0a0a89268d6ddbb4",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/WildpodArtOverride/Textures/Things/Pawn/Animal/AA_Wildpod/AA_Wildpod_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "0a9255469f40284fdee664b64d3bca3d9e38e10f24b0c7ea2961c1800fd627ad",
+    "sha": "7d6efe921"
+  },
+  "src/RimUtinni/WildpodArtOverride/Textures/Things/Pawn/Animal/AA_Wildpod/AA_Wildpod_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "858e5aefcd48e559a80bccb155a53fe1be03c7d8f86b4fbc44340254f358dd9c",
+    "sha": "7d6efe921"
   }
 }
