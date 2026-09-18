@@ -87,13 +87,17 @@ and nowhere else; never restate a model choice outside it.
   so `glob(...)[0]` in filesystem order decides whether a head appears to carry baked colour —
   it inverted 4 of 7 decisions in one pass, and the tell was male vs female Cathar reading 253
   vs 0 on structurally identical files. **Measure `_south.png` alone** (2026-09-17).
-- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 17 mod
-  `validation.py` files**, so all 44 bars across the four VALIDATED mods are bound-and-uncovered
-  and every `modcheck run` returns REFUSED before the game is consulted. MEASURED twice
-  independently 2026-09-17. ⛔ **Do not trust `modcheck status`** — it prints `FluidCanals GREEN`
-  for a mod that does not exist and `FlowWorks NEVER RUN` for the one that does, because the
-  summary reads a stored field while the detail re-derives. Authoring more bars adds refusals,
-  not coverage; `NORTH_STAR_PIT_PILOT_1` is the falsification test and has never run.
+- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 54 mod
+  `validation.py` files** (RE-MEASURED 2026-09-17), so every VALIDATED mod's must-show bars are
+  bound-and-uncovered and a `modcheck run` against one returns REFUSED before the game is
+  consulted. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
+  falsification test and has never run. ✅ **The "modcheck status reads a stored field" bug is
+  FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
+  first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
+  STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
+  every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
+  (`b110a7a2d`, `rename-key`/`forget-key`). Don't re-open this as a live defect without
+  re-measuring; the stored field only ever appears now as a `[stored: ...]` drift annotation.
 - **A doc can describe defects that were fixed before the doc was written.**
   `liquids_framework_design.md` (2026-09-13) blocked all engine work on three flood
   defects fixed 2026-09-02 and closed at `747b0025`, and an open item was still telling

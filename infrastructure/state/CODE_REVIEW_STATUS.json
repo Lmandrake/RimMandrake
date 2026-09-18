@@ -5735,46 +5735,46 @@
     "sha": "d1c393c02"
   },
   "src/RimMandrake/Utils/modcheck/cli.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "89a3c3d60594f55a7af4ac19faf472df710a8775c9e391b2d032737b1e2555a9",
-    "sha": "534c8feba"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "570f0fc5648eff24d3781d996d9e8b0231751bf050612c57b89b5aedd9ab36b1",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/floor.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "8a3fd4e7860ed1da87fbaa641e8d23e50754b2ce211169a40b24353774d417da",
-    "sha": "534c8feba"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "896c31b6e88f19703c795359f0544917e491640088611f0cee131d3be4995ab7",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/report.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "b054ced3f9aa565a717cb1e6ee97587154040a9a80606794eeffc6ac53acd1b5",
-    "sha": "534c8feba"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "828914fcb949b319825e116031e4e3114a3e6ed88030fba61acc49e27620d006",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/runner.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "062f522e758341f2f8fc15171b2d1eac2d5587a897288d516d4c993a7128d1c3",
-    "sha": "d1c393c02"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "417e6453c9638b2f889f4062e2da6fa10d5e8ebe03309c119e30535831bb78f0",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/selftest.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "97c94b1c40c9160f32323e7aa49026e06ad18e9c888020037bc802710c6da5a3",
-    "sha": "d1c393c02"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "4b132a86419333fe73f8612c5440815593087b8316829af6915233d5fb386d7d",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/status.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "91c830eb04beed8ac3de5617740b726b499704b09e50fcba971e6ab51422abb5",
-    "sha": "534c8feba"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "3df7dd9bd96577c77936f757fd132dec84ed3efca62f30c4d0a30e2a715c3107",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/suite.py": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "e504ac64ac897fc0dfbbdba4a7ef0951c9dee007611c7324e3e1622204785338",
-    "sha": "d1c393c02"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "84dd3d7cdac5eab39012288597e9e55616e8ed60c818e27ca7cd5926b23cfc21",
+    "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
