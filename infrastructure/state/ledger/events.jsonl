@@ -9293,3 +9293,6 @@
 {"seat":"BENCH","event":"claim","id":"WORLDMAP_DOCS_PASS_1","ts":"2026-09-18T17:19:33Z"}
 {"seat":"BENCH","event":"start","id":"WORLDMAP_DOCS_PASS_1","ts":"2026-09-18T17:19:34Z"}
 {"seat":"BENCH","event":"note","id":"WORLDMAP_DOCS_PASS_1","text":"Sitting opened 2026-09-18 on owner's card answer ('Yes - do the pass now'). File 1 the_one_map.md RULED ('Rewrite to match reality'): the map is the live authored world shipped as the canonical start save; dated CSV bundles are derived exports; ashkarr_paint.py is historical and not re-run; dead filenames and 'edit the recipe, re-run' language removed. Doctrine sections untouched. Remaining agenda from the prep sweep: ASHKARR_WORLD_DEFINITION, REGIONS_THAT_LIE, WORLD_REDRAFT, PRE_WORLDGEN_GATE, FACTION_SPEC, SCENARIO_SPEC, biome grammar.","ts":"2026-09-18T17:19:35Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NURSERY_JUVENILES_CRASH_1","ts":"2026-09-18T17:27:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"NURSERY_JUVENILES_CRASH_1","ts":"2026-09-18T17:27:16Z"}
+{"seat":"FOUNDRY","event":"close","id":"NURSERY_JUVENILES_CRASH_1","sha":"05974eeb4","ts":"2026-09-18T17:27:38Z"}
