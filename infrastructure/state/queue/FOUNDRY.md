@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T02:32:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T02:33:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,15 +143,6 @@ target:   v1
 kind:     task
 summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
-
-## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
-prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
 
 ## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
 state:    doing
