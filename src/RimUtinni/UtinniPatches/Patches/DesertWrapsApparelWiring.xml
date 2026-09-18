@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+<!--
+    DesertWrapsApparelWiring.xml                                UtinniPatches
+    ============================================================================
+    Tribe wiring half of DESERT_WRAPS_ART_COMMISSION_1 (placement plan: wraps
+    apparel -> Armoury, head-type -> StarWarsRaces, tribe wiring -> here).
+
+    Adds the RUT_DesertWrap tag (carried by all four new apparel defs in
+    src/RimStarWars/Armoury/Defs/ThingDefs/RSW_DesertWraps.xml) to the
+    apparelTags pool of the four RUT_Jawa_DeepDesert_* pawnkinds — the
+    Tusken-flavoured tribe branch that is the natural home for a desert-wrap
+    garment. ADD only, per this file's sibling ApparelTags_DeadTagRepair.xml
+    convention: existing tags (ORTusken, SaV_apparel_tusken) are untouched, so
+    this only WIDENS the pool the kind can roll from.
+
+    🔴 HEAD SHAPE NOT WIRED HERE ON PURPOSE. Owner ruling 2026-09-10: both new
+    devolved-nomad head shapes ship as unwired StarWarsRaces options only —
+    "don't change our aliens xenotypes yet." No xenotype gene-list edit, no
+    forced head assignment. That stays a separate, later decision; this patch
+    is apparel-only.
+    ============================================================================
+-->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnKindDef[defName="RUT_Jawa_DeepDesert_Grunt"]/apparelTags</xpath>
+    <value>
+      <li>RUT_DesertWrap</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnKindDef[defName="RUT_Jawa_DeepDesert_Heavy"]/apparelTags</xpath>
+    <value>
+      <li>RUT_DesertWrap</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnKindDef[defName="RUT_Jawa_DeepDesert_Specialist"]/apparelTags</xpath>
+    <value>
+      <li>RUT_DesertWrap</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnKindDef[defName="RUT_Jawa_DeepDesert_Leader"]/apparelTags</xpath>
+    <value>
+      <li>RUT_DesertWrap</li>
+    </value>
+  </Operation>
+
+</Patch>
