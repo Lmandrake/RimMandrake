@@ -53,8 +53,12 @@
   VERIFY AFTER THE NEXT LOAD
   ===========================
     * Architect > Factories: NO "automated smelter" (the donor's). Our own
-      three RM_WM_AutomatedSmelter_* tiers are unaffected — they carry their
-      own designationCategory (WreckedMachines) or none, per their own def.
+      three RM_WM_AutomatedSmelter_* tiers are unaffected — this patch only
+      strips <designationCategory> from VFEFactory_AutomatedSmelter by
+      defName, and our tiers carry the SAME category
+      (VFEFactory_Factories, per Buildings_WreckedMachines_
+      AutomatedSmelter.xml) on their own separate ThingDefs, so the category
+      itself stays populated and visible.
     * Architect > Production: vanilla's "electric smelter" is present and
       unchanged.
     * grep Player.log for "Could not resolve cross-reference" — no new hits
