@@ -9946,28 +9946,28 @@
     "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "c1251ef71a7ed0a94d319e7f70982d04e0742e488e9db7f38f72e72e17aa75b2",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "b6050b97777c6f9f818cccdb51fb99eac5335bb639ee0bfec7e39cb67b49fcaf",
+    "sha": "dd0d313eb"
   },
   "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "69257f209af7b1c853d1c76e114b50a3ef51b3ad038a89d3c1a0f0feb239c66b",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "eb0c1ab18f95a442b8b97dca01e761690d89f0218a4eebb9db11c8433d2e432e",
+    "sha": "dd0d313eb"
   },
   "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "c757cde2c4bd6c9125f20c70678496137044b874914e3ad2f79c9fdff35227a4",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "78c9339e7c60d35b74ebdf789d6a8bf45c61d2364c0bc95f55b42baf7c2e250a",
+    "sha": "dd0d313eb"
   },
   "src/RimStarWars/Droidworks/Defs/PawnKinds_Primitive.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "3e53a8e9c39b6600a7a8be80c2f3cfce60918afcab2bca0c8bee449f113167d4",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "4df849eb870a3b03d5eec76092069337265e5ccd5608b3318c73a96340326b02",
+    "sha": "dd0d313eb"
   },
   "src/RimStarWars/Droidworks/Defs/Races_Base.xml": {
     "cleanCount": 2,
@@ -16426,10 +16426,10 @@
     "sha": "e2fec3c99"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "fcdc84c4d312179837509945571027357b12e98ccac60e0efe60a2c204f5db00",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "a89db5af73058f30932cbf1cc52e2b0fcaff611af2fc1f66774bad506218f68d",
+    "sha": "dd0d313eb"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml": {
     "cleanCount": 2,
@@ -16456,10 +16456,10 @@
     "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "a2d06b9e1891058e9b1fa4ab2321436be6818e43d9a93a7b1d1acb58b1921bf4",
-    "sha": "ac17db00a"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "c7e3702c34d786655e24c97edfdeac12e0fc3ee5d33fb9f2b8eef8fc90affa7c",
+    "sha": "dd0d313eb"
   },
   "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml": {
     "cleanCount": 2,
