@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T02:30:02Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-18T02:32:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1969,53 +1969,3 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md
-
-## ROT_SHEEN_WEATHER_1 The Sheen: RUT_ weather reskin defs + permanent exposure condition + SporeFlesh ladder (fixes the live ban-3 'Rain' violation)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_SHEEN_WEATHER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_SHEEN_WEATHER_1.md
-
-## ROT_WARM_MAT_1 Metabolic warmth: RM_MapComponent_WarmGround mat-floored room heating + RUT_GrownFurnace plant/building loop + RUT_Gene_Furnaceblood (fallback strength)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_WARM_MAT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_WARM_MAT_1.md
-
-## ROT_LIVE_PREPARATIONS_1 Live preparations: brewing vessel + three teas + three symbiont pairs, all dying-if-stored (CompTemperatureRuinable + CompLifespan on every item)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_LIVE_PREPARATIONS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_LIVE_PREPARATIONS_1.md
-
-## ROT_GUARDIAN_GROVES_1 Guardian groves: three tea-source mushrooms that defend themselves (RC1 spore gas, mycelial alarm, grasping-mat lure)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_GUARDIAN_GROVES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_GUARDIAN_GROVES_1.md
-
-## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
