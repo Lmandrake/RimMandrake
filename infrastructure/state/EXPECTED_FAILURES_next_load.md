@@ -1,90 +1,43 @@
-# Expected-failure signatures — batch restart, 2026-09-10 (FOUNDRY)
+# Expected failures + decision strings — rot-wave tier load, 2026-09-18 (BENCH)
 
-Written BEFORE launch per load-round §2/§3. Owner approved restart now
-(question card, "Restart batch" → "Go ahead and restart now"). Two real
-code changes ride this load; everything else already loaded clean on the
-prior restart (MODLIST_RESTORE_AND_BATCH_DEPLOY_1, 2026-09-09/10).
+Two loads planned this cycle. Written BEFORE launch, per load-round §2/§3.
 
-## What's riding this load
+## Load A — tier list (minimal 13 + 4 rot mods), quicktest battery
 
-1. **`RimMandrake.Utinni.UtinniPatches.dll`** (`mandrake.rut.patches`, already
-   active, deployed this session) — new type `AmbientShrineGuardians.cs`
-   (subclass-swap via `PatchOperationAttributeSet` on `Rules_Interior.xml`'s
-   `ancientTemple` rule's resolver list, no Harmony). Fails as: an error
-   naming `RimMandrake.Utinni.UtinniPatches.AmbientShrineGuardians` /
-   `SymbolResolver_Interior_AncientTemple`, or a `PatchOperationAttributeSet`
-   miss on `Data/Core/Defs/RuleDefs/Rules_Interior.xml` (validate_patch.py
-   already confirmed 1/1 match against the live 576-mod set offline).
-2. **`mandrake.rut.scavengerevents`** — first-ever load (mod entry already in
-   ModsConfig, never loaded before tonight). Fails as: errors naming
-   `RimMandrake.Utinni.ScavengerEvents`, `MO_SurvivalPod`/`ShipBreak`/
-   `PodCrash`/`Insects`/`Migration`/`Thanksgiving`/`Stroke` IncidentWorkers,
-   or a discarded def in that mod's own Defs/.
-3. **Cherry Picker live config** (`Mod_3521312241_Mod_CherryPicker.xml`,
-   Config-only, not a repo file) — 141 genuine-reversal keys re-added per the
-   owner's ruling on `CHERRYPICKER_SHIP_BASELINE_STALE_1` (see that item: the
-   diagnosis doc's own prose said "139" but its enumerated defName lists
-   total 141 genuine / 37 self-pruned RBM_/tug.Minotaur — going with the
-   enumerated count, independently re-verified that tug.Minotaur is inactive
-   and the other three source mods are active). Not a load-failure risk (it's
-   a spawn-filter list, not a def), verified separately via
-   `cherrypicker.py --source live` after this load, not by a Player.log
-   signature.
+Assemblies riding (2 new this load; signatures distinguishable by namespace):
 
-## Also riding, from tonight's code-review fan-out (4 parallel waves, isolated worktrees)
+| assembly | expected-failure signature (Player.log) |
+|---|---|
+| RimMandrake.EnvironmentalHazards.dll | `Could not find class RimMandrake.EnvironmentalHazards.` or `TypeLoadException` naming `RimMandrake.EnvironmentalHazards` |
+| RimMandrake.CreatureBehaviors.dll | `Could not find class RimMandrake.CreatureBehaviors.` or Harmony patch error naming `CreatureBehaviors` (TradeDeal.TryExecute seam) |
 
-4. **`Droidworks.dll`** (`mandrake.rsw.droidworks`, already active) — deployed a
-   pending Harmony prefix fix (commit `492520c2`, "suppresses sibling-relation-gen
-   crash for droids") that was committed but never deployed. Fails as: a
-   `HarmonyException` naming `Droidworks`, or the original sibling-relation-gen
-   crash recurring (meaning the prefix didn't take).
-5. **`RUT_Scarlands.xml`** (UtinniPatches, redeployed) — restored a missing
-   `ParentName` that left `extraGenSteps` empty (craters/ruins/junk-cluster
-   mapgen never fired). Fails as: a def-inheritance error naming `RUT_Scarlands`,
-   or (silently) Scarlands maps generating with no extra genstep content —
-   only visible by actually looking at a Scarlands map, not a log line.
-6. **`JawaBench.BridgeTools.dll`** (companion, rebuilt+redeployed) — fixed
-   `jawa/world_landmark_rename` to match on `PlanetTile` equality (surface vs.
-   orbit layer) instead of raw `tileId`. Fails as: `selftest_tool_metadata.py`
-   tool-count mismatch (already re-run clean, 317/317) or a bridge tool-list
-   discovery error naming `JawaBenchLandmarkNameTool`.
+Expected-PRESENT strings / probes (absence = failure, not success):
 
-## Second deploy pass, same session (game briefly cycled to write locked assemblies)
+- Player.log: `Adding mandrake.rm.environmentalhazards` and `Adding mandrake.rut.rotsporekit`
+- `jawa/get_defs RUT_SheenExposureLock` returns a def (MayRequire now satisfied — ENVHAZARDS_NEVER_ACTIVATED_1 probe)
+- `jawa/get_defs RUT_SporeCloud` shows conditionClass `RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather`
+- `jawa/get_defs RUT_PaleTree` shows a TWO-entry requiredSubplantCountPerPsylinkLevel (card 4)
+- Guardian defs resolve: RUT_AgelessCap / RUT_RegenerantVeil / RUT_EuphoricCrown / RUT_FalseFruit — and the previously-known `RM_BaseGasDamaging` parent error is GONE (EH active)
+- Live-prep defs resolve: RUT_BrewingVessel, teas, symbiont pairs
+- `^Config error in` sweep: baseline is the standing minimal-list count; any line naming a RUT_/RM_ rot def is a finding
 
-7. **`RimMandrake.Utinni.ScavengerEvents.dll`** — Thanksgiving.cs fix (was
-   `FirstFactionOfDef(PlayerColony)`, now `Faction.OfPlayer`). Latent bug,
-   harmless on this campaign's actual player faction — no new failure
-   signature expected, this is a correctness fix not a behavior change here.
-8. **`RimMandrakeNinefold.dll`** — new `Patch_GravshipLaunched` Harmony
-   target retargeted to `WorldComponent_GravshipController.InitiateTakeoff`.
-   Fails as a `HarmonyException` naming `Ninefold`/`InitiateTakeoff`, or (if
-   the patch silently doesn't apply) no crash at all but Ta'Baa never
-   receives a gravship-launch delta — only provable via `jawa/gravship_launch`.
-9. **`RimMandrakeAftermath.dll`** (mod enabled for the first time tonight,
-   `mandrake.rm.aftermath`) — new `PollPrisoners`/`OnPrisonerHeldTooLong`
-   rule. Fails as errors naming `RimMandrake.Aftermath`/`AftermathRuleRunner`,
-   or a `ConfigError` naming `RM_AftermathRuleDefs` (`minHeldDays` field).
-10. **`StructureInjectionsSW`** — new `RSW_GenStep_RoadWarehouse`/
-    `RSW_RoadWarehouse` TileMutatorDef. Fails as errors naming
-    `RoadWarehouse`, or a `PatchOperation`/xpath miss if it collides with an
-    existing TileMutatorDef.
-11. **ModsConfig re-enables**: `mandrake.rut.droidrepairjobs` (577→ back in),
-    `mandrake.rsw.mynockartoverride` (Mynock art, done since 2026-09-09, never
-    loaded before), `mandrake.rm.aftermath` (new). All three already
-    confirmed deployed/in-sync before being re-added.
+LIES: a def absent from get_defs on the TIER list can be a missing dependency
+that the FULL list carries — cross-check the def's MayRequire before filing.
+A no-op patch logs nothing; zero hits proves nothing without the present-strings above.
 
-## Everything else already proven on the prior restart, not re-tested here
-Oracle, FluidCanals, MovingDunes, Wave-1 retirement (13 mods), JawaBench GM
-pair — all confirmed clean on the 2026-09-09/10 restart per
-`MODLIST_RESTORE_AND_BATCH_DEPLOY_1`. ManyWaters stays excluded (its own
-`thingClass` blocker, unfixed).
+## Load B — FULL list restore (after battery)
 
-## 2026-09-17 05:xx — DROID_REPAIR_FOR_PROFIT_EVENTS_1 minimal+droidrepairjobs load
-- mod list: MINIMAL (25) + mandrake.rut.droidrepairjobs inserted after mandrake.rsw.droidworks = 26 active
-- EXPECT: "mandrake.rut.droidrepairjobs" present in Player.log's active-mod dump
-- EXPECT: 0 "Could not resolve cross-reference" lines naming RUT_DroidJob/DroidRepairJob
-- EXPECT: 0 "^Config error in" lines naming RUT_DroidRepairJob/RUT_DroidJobFault
-- LIVE TEST (item's own run-sheet): jawa/fire_quest RUT_DroidRepairJob -> description non-blank, fee
-  numbers SCALED (not the 320/512/128 XML fallbacks) -> droid carries RUT_DroidJobFault -> fit an
-  Excellent RSW_DW_Part_Leg via RSW_DW_InstallLegActuator near RSW_DW_RepairBench -> at pickup expect
-  WorkFine branch, silver drop pod, +8 goodwill
+Third assembly, solo-attributable here because it only acts on Pyrelands defs:
+
+| assembly | expected-failure signature |
+|---|---|
+| FireEcologyHook.dll (density enforcer) | enforcer line ABSENT from Player.log, or exception naming `FireEcologyHook` |
+
+Expected-present:
+- FireEcologyHook enforcer log line (it logs when it catches the rewriter)
+- `jawa/get_defs` Pyrelands plantDensity reads 3.0 live (not 1.0)
+- gizkastowaway + environmentalhazards both in the `Adding` roster
+- Fresh-map Pyrelands vegetation screenshot for the owner
+
+LIES: density 3.0 read from XML on disk is not the live value — only the
+get_defs read-back counts (the rewriter is a startup def-mutator).
