@@ -128,6 +128,12 @@ namespace RimMandrake.EnvironmentalHazards
     //      stops moving, damaging and felling trees — rather than vanishing
     //      out from under a pawn; it simply never dissipates or resumes
     //      until this is back on.
+    //  25. sporeCloudEnabled — RUT_IncidentWorker_SporeCloud
+    //      (ROT_SPORECLOUD_PORT_1, RimUtinni RotSporeKit). Off: the incident
+    //      never fires (CanFireNowSub refuses outright); a spore cloud
+    //      already settled over a map runs to its own scheduled end rather
+    //      than snapping off under a pawn's feet, same posture as
+    //      breaklightEnabled.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -155,6 +161,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool treeFallEnabled = true;
         public static bool breaklightEnabled = true;
         public static bool steamDevilEnabled = true;
+        public static bool sporeCloudEnabled = true;
 
         public override void ExposeData()
         {
@@ -183,6 +190,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref treeFallEnabled, "treeFallEnabled", true);
             Scribe_Values.Look(ref breaklightEnabled, "breaklightEnabled", true);
             Scribe_Values.Look(ref steamDevilEnabled, "steamDevilEnabled", true);
+            Scribe_Values.Look(ref sporeCloudEnabled, "sporeCloudEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -259,6 +267,9 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Steam devils", ref steamDevilEnabled,
                 "The wandering scald-damage vortex event stops occurring; one already wandering the "
               + "map freezes in place (stops moving, damaging and felling trees) instead of vanishing.");
+            list.CheckboxLabeled("Spore cloud event", ref sporeCloudEnabled,
+                "The fungal spore cloud event stops occurring. One already settled over a map runs "
+              + "to its own scheduled end instead of snapping off immediately.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
