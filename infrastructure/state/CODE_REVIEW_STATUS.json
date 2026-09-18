@@ -3804,10 +3804,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "4a3300a258362eeded637aedbef165cd283c59682aa4cfecd73b93d1453eae0f",
-    "sha": "50f52d6e"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "895af0112a17ce754f55a1309a354c637b88966024d82723ef81e2b30bd0894d",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 1,
@@ -3834,28 +3834,28 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Fulgurite/Fulgurite.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "da3bd52f19d7ce7059ecd6ed7f89e4b8cd3722c7b5fd7ebfa343522ce44e30ac",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "2bf1b29bac950098cb6927eb8865f73cfb905f1e2d2bf54dc62ef5338004ebec",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "13135fafb6e93fd9fe8a82676d685f2a717482bb557c00cd9e48c7f1891a0546",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "6fd4a120491e7bf290a3785b99c05cf475a656f7039f012b700d56064fda35b0",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "dc2ae296cf1915dbeacc0db859a82105fbcd4ff25fc4ed65d7bceaebd5c0c77f",
-    "sha": "661843c1a"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "8b55dfaae11fba7ffa4344c5b6ace5bdd6e01f5576450a662a2b363d42db5794",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "92448c19627024fec623fc1067fc6b9d29d33d622beda30cfc61409d12e3764d",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "711bc5a34d67802aa6716702b4d5c7a5e8c9a02479e3fc6e756e4407d5668464",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml": {
     "cleanCount": 1,
@@ -3888,22 +3888,22 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "f543da67d0f9148244d15ec4a2c077fb8a6d3561e863b603121c31d7daf7884e",
-    "sha": "2467e0a2d"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "2e50f935f3be4bc024df514ac3c178ae4ef28fdf27f100ec7a2708f08da14ba9",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "a71a47b8ab1c6742614c192e41d602523403f90b50bc3177ccb7964d4ff93e72",
-    "sha": "2467e0a2d"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "e577d8584e36dea3799c6d91500cd5e5f73fc9865ee4980a0e112bbfbc60528b",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "e9c0c3365d19e78c44cdf7d59273a914c0b6a3a77556c659ad4c7b677bdf0089",
-    "sha": "f69955e42"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "66e29226d9822d601ab8cfc0ccfbfba8801fab83ce62fd9224287a9e0b5fa0ba",
+    "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_FE_Pyrelands.png": {
     "cleanCount": 1,
