@@ -12,18 +12,19 @@ namespace RimMandrake.EnvironmentalHazards
     // real abstract ThingComp base (RimWorld/CompUseEffect.cs) with a
     // virtual DoEffect(Pawn usedBy) — the assumed base-class route in the
     // spec was correct, no correction needed here. The overlay-draw seam
-    // the spec also flagged (MapComponentUpdate/MapComponentOnGUI,
-    // Verse/MapComponent.cs:12,20) is real too, both virtual; actually
-    // drawing the warning ring is deferred to the full build (screen-space
-    // cell drawing is presentation work, not an engine-fact question).
+    // the spec also flagged is real too, WIRED this pass in
+    // RUT_MapComponent_TheTenant.MapComponentDraw — see that class's own
+    // header for the MapComponentDraw-vs-MapComponentOnGUI correction.
     //
-    // SPIKE SCOPE: this proves the use-effect fires and writes a flagged-
-    // until-tick window that F1's agitation store can carry (reusing
-    // RaiseAgitation's amount/duration as the "flagged" signal rather than
-    // adding a second parallel per-cell array — the mirror list IS a
-    // snapshot of agitation, so it does not need its own storage). NOT
-    // done here: the trader-kind XML stocking RUT_MirrorList, and the
-    // actual overlay draw call.
+    // This proves the use-effect fires and writes a flagged-until-tick
+    // window that F1's agitation store can carry (reusing RaiseAgitation's
+    // amount/duration as the "flagged" signal rather than adding a second
+    // parallel per-cell array — the mirror list IS a snapshot of
+    // agitation, so it does not need its own storage). Still NOT done: the
+    // trader-kind XML stocking RUT_MirrorList — deliberately deferred, see
+    // RUT_FeverWood_MirrorList.xml's own header (Sporefall does not yet
+    // exist as an authored settlement/TraderKindDef; inventing one here
+    // would guess the exact shape the standing rule forbids).
     public class RM_CompUseEffect_RevealHazards : CompUseEffect
     {
         private const int IntelValidityTicks = 60000 * 15; // INVENTED, kit spec: 15 days

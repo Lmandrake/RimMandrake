@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -33,9 +34,28 @@ namespace RimMandrake.EnvironmentalHazards
     // spike tracks agitation per cell and offers a radius-local raise/read,
     // which is sufficient for the mechanism but not yet a pool-identity
     // list); the splash fleck/sound content; the "terribly lost" ambient
-    // spawner (F2, separate small IncidentWorker, content not code); the
-    // overlay draw call itself (MapComponentOnGUI, Verse/MapComponent.cs:20
-    // — confirmed real, not yet wired to actual screen-space cell drawing).
+    // spawner (F2, separate small IncidentWorker, content not code).
+    //
+    // F3 overlay draw - WIRED this pass, with a correction to the kit
+    // spec's own citation: the spec named MapComponentOnGUI
+    // (Verse/MapComponent.cs:20) as the draw hook, but that is the
+    // screen-space IMGUI event (RimWorld/MapInterface.cs:39,
+    // MapComponentUtility.MapComponentOnGUI) - wrong pass for a
+    // GenDraw.DrawFieldEdges world-space cell overlay. The real hook is
+    // MapComponentDraw (Verse/MapComponent.cs:24), called once per frame
+    // for Find.CurrentMap only via RimWorld/MapInterface.cs:131
+    // (MapComponentUtility.MapComponentOnDraw) - the same pass vanilla's
+    // own Designator ghost/zone-highlight code draws through. Reuses this
+    // component's own agitation grid as the "flagged" signal (no second
+    // array - the F3 spike's own committed design, see RM_CompUseEffect_
+    // RevealHazards's header): any cell whose agitation has not expired
+    // draws a warning ring, whether it was raised by a strike, a mirror-
+    // break event, or a mirror-list read. A strike is therefore
+    // self-evidencing for its own 3-day window even without ever buying
+    // the list - consistent with F2's "the proof arrives as theatre"
+    // framing (the_fever_wood.md section 4/8); the list's real value is the
+    // longer 15-day refresh (RM_CompUseEffect_RevealHazards's
+    // IntelValidityTicks), not exclusive visibility.
     public class RUT_MapComponent_TheTenant : MapComponent
     {
         private const int ExposureCheckIntervalTicks = 250;
@@ -43,8 +63,17 @@ namespace RimMandrake.EnvironmentalHazards
         private const float MtbUnitTicks = 2500f; // 1 "exposure hour" = 2500 ticks (INVENTED tuning unit)
         private const float DrownRescueWindowTicks = 2500; // INVENTED: ~1 in-game hour to be rescued
 
+        // INVENTED: a plain warning amber, translucent so it reads as a
+        // ring over terrain rather than a solid fill (GenDraw.DrawFieldEdges
+        // takes any Color; no existing "hazard ring" palette entry in this
+        // kit to match against).
+        private static readonly Color WarningRingColor = new Color(1f, 0.65f, 0.1f, 0.9f);
+
         private float[] agitation;
         private int[] agitationExpiryTick;
+
+        // Reused every draw frame to avoid per-frame List<IntVec3> churn.
+        private readonly List<IntVec3> flaggedCellsBuffer = new List<IntVec3>();
 
         // Rescue-window state for downed (colonist/tamed) pawns pulled
         // under — card 2, ruling B. Cleared if CarriedBy becomes non-null
@@ -111,6 +140,33 @@ namespace RimMandrake.EnvironmentalHazards
                 int idx = map.cellIndices.CellToIndex(c);
                 agitation[idx] = amount;
                 agitationExpiryTick[idx] = expiry;
+            }
+        }
+
+        /// <summary>F3's overlay: a warning ring over every cell whose
+        /// agitation has not yet expired. Called once per frame for
+        /// Find.CurrentMap only (RimWorld/MapInterface.cs:131), so this
+        /// never runs for a background map.</summary>
+        public override void MapComponentDraw()
+        {
+            base.MapComponentDraw();
+            if (agitation == null)
+            {
+                return; // EnsureGrid() has never run on this map yet - nothing to flag
+            }
+
+            flaggedCellsBuffer.Clear();
+            int now = Find.TickManager.TicksGame;
+            for (int i = 0; i < agitation.Length; i++)
+            {
+                if (agitation[i] > 0f && agitationExpiryTick[i] > now)
+                {
+                    flaggedCellsBuffer.Add(map.cellIndices.IndexToCell(i));
+                }
+            }
+            if (flaggedCellsBuffer.Count > 0)
+            {
+                GenDraw.DrawFieldEdges(flaggedCellsBuffer, WarningRingColor);
             }
         }
 
