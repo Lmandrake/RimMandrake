@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T16:38:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:48:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -272,16 +272,6 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-12: "The others are not for right now. Many of them I actively
 prose:    infrastructure/state/items/MODLIST_DEFERRED_CARDS_1.md
-
-## PYRELANDS_CREATURE_RERENDER_1 One dayside biome fully re-rendered: ALL Pyrelands creatures under the full 2026-09-13 lawset, deployed, owner walks it in game — model: opus
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Roster derivation (measure, never remember): the biome's creature list
-prose:    infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md
 
 ## BACTA_REVIVAL_MECHANIC_1 Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
 state:    proposed
