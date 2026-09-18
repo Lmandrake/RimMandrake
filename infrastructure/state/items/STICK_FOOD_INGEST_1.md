@@ -1,5 +1,69 @@
 # STICK_FOOD_INGEST_1 — measured ingest scope (BENCH, 2026-09-02)
 
+## 2026-09-18 (FOUNDRY, belt mode, subagent)
+
+Re-verified everything offline, confirmed the block reason from 2026-09-07
+still holds, and made **no live change** this pass — the game (`rimflow
+game`) reads RUNNING with an unrelated water-terrain investigation live
+elsewhere tonight, and a new mod's assemblies/defs cannot be hot-loaded into
+a running session (`rimworld-start-prep` §3: RimWorld only writes
+`ModsConfig.xml` on an in-game menu change; loading a NEW mod's content
+needs a real restart either way). Forcing that restart on a shared,
+currently-running session for this alone was judged not worth the ~15 min
+cold-load cost without the owner present to confirm — noted as still owed,
+not attempted.
+
+**Deploy check**: `diff -rq` between
+`src/RimStarWars/Cuisine/{About,Assemblies,Defs,Textures}` and the deployed
+copy at `.../RimWorld/Mods/Cuisine/` — byte-identical, all four subtrees.
+`git status --short src/RimStarWars/Cuisine/` — clean, nothing uncommitted.
+No `.cs` file under `Source/` is newer than the shipped
+`RimStarWarsCuisine.dll` — the deployed build is current. Re-ran
+`validate_patch.py` against the full live load set (`--defs` pointed at
+`Mods`, `Data`, and the Workshop content root; 634/634 active mods resolved
+on disk): **0 errors, 0 warnings**, same clean result as 2026-09-05 — only
+advisory `info` lines noting `CompProperties_NameGen`'s class isn't found in
+the *active* load set, which is expected and correct since the mod itself
+isn't active (see next paragraph), not a defect in the mod.
+
+**Not enabled, confirmed again**: parsed the live
+`Config/ModsConfig.xml` (`ET.parse(...).find('activeMods')`, never a grep,
+per this file's own trap) — 634 active mods, `mandrake.rsw.cuisine` is
+**not** among them. Both donor mods ARE active: `badoaks.meatonastick`
+(packageId on disk: `badoaks.MeatOnAStick`, workshop `3435027361`) and
+`badoaks.meatonastick.expansion` (`badoaks.MeatOnAStick.expansion`, workshop
+`3577333297`) — matches this item's own 2026-09-05 measurement exactly, no
+drift since.
+
+**Live craft-proof**: NOT run. Impossible without the mod being active, and
+enabling it requires the restart this pass declined to force on a shared,
+currently-running session mid-investigation elsewhere. Still owed to the
+next session that can spend a cold load on it (or the owner's own restart).
+
+**Donor retirement**: NOT done, and correctly so — retiring
+`badoaks.meatonastick`/`badoaks.meatonastick.expansion` means editing the
+live `ModsConfig.xml` (a live mod-list change, verify-first territory per
+the task brief), and doing that *before* our own replacement has ever been
+live-tested would be backwards: if the untested replacement turns out
+broken after the donors are gone, the "stuff on a stick" line disappears
+entirely with nothing proven in its place. This item's own 2026-09-02 note
+already scoped retirement as a step that comes *after* craft-proof, not
+alongside it — that ordering still holds. `design/Jawa/mods/required_mods.md:1109`
+only carries a one-line census entry for the base BadOaks mod ("CLEAN
+ADOPT"), not a runtime dependency — nothing else in the repo was found
+depending on either donor mod's defNames.
+
+**Net**: no new criterion satisfied this pass; all three remain unchecked.
+Left `doing` — not reblocked, since the blocker text from 2026-09-07 already
+covers the situation precisely and nothing changed to require restating it
+as a fresh block. What's left, in order: (1) a session with room for a real
+restart adds `mandrake.rsw.cuisine` to the live mod list and does the
+craft-proof — spawn ingredients, run the `RSW_*OnAStick` recipes at a
+Campfire/CraftingSpot, confirm art+stats on the resulting item and that
+eating one leaves an `RSW_CookedSkewer`; (2) only once that's clean, retire
+both BadOaks donor packageIds from `ModsConfig.xml` and re-verify with a
+clean load.
+
 ## 2026-09-05 (FOUNDRY) — in-house sprite regeneration complete, all 9 icons
 
 All 9 `Graphic_StackCount` icons generated fresh (Codex `image_gen` + local
