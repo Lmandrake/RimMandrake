@@ -29,11 +29,11 @@
     <!-- Carried in by MOD_CONSOLIDATION_PATCHES_FOLD_1 (2026-09-08): each is
          the fix-target donor of a fix mod folded into this Patches/ tree.
          A fold that loses its donor's loadAfter silently no-ops. -->
-    <li>vanillaexpanded.gravship</li>                       <!-- Patches/GravshipAstronautFix textures - fix target -->
-    <li>vanillaracesexpanded.phytokin</li>                  <!-- Patches/PhytokinBarkHeadFix textures - fix target -->
-    <li>PeteTimesSix.ResearchReinvented</li>                <!-- Patches/ResearchKitEastFix textures - fix target -->
-    <li>aw.researchreinvented.retextured</li>               <!-- Patches/ResearchKitEastFix textures - fix target's own retexture add-on -->
-    <li>vanillaracesexpanded.saurid</li>                    <!-- Patches/SauridFrillFix textures - fix target -->
-    <li>VanillaExpanded.VAEAccessories</li>                 <!-- Patches/ToolBeltFix textures - fix target -->
+    <li>vanillaexpanded.gravship</li>                       <!-- Source/GravshipAstronautFix textures - fix target -->
+    <li>vanillaracesexpanded.phytokin</li>                  <!-- Source/PhytokinBarkHeadFix textures - fix target -->
+    <li>PeteTimesSix.ResearchReinvented</li>                <!-- Source/ResearchKitEastFix textures - fix target -->
+    <li>aw.researchreinvented.retextured</li>               <!-- Source/ResearchKitEastFix textures - fix target's own retexture add-on -->
+    <li>vanillaracesexpanded.saurid</li>                    <!-- Source/SauridFrillFix textures - fix target -->
+    <li>VanillaExpanded.VAEAccessories</li>                 <!-- Source/ToolBeltFix textures - fix target -->
     </loadAfter>
 </ModMetaData>
