@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T00:33:30Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-18T00:34:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -795,7 +795,7 @@ prose:    infrastructure/state/items/LIQUID_BOTTLE_LOOP_1.md
 ## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    owner
 target:   v1
 kind:     task
 summary:  A new WreckedMachines module in the existing wreck-tier grammar
@@ -1595,7 +1595,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    ready
@@ -1603,7 +1603,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is LOADING
+waiting:  needs `bridge`, game is UP
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
