@@ -111,6 +111,59 @@ unless/until he says he wants BetterTrees gone entirely. That would be a
 mod-list change (touches the live game's next load) and is exactly the kind
 of call this pass was told not to make unilaterally overnight.
 
+## Owed #1 RESOLVED 2026-09-18 — art landed, all 14 candidates, canvas grew to 10 cells
+
+Closed via `ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1`. The owner ruled directly in
+conversation (not the blocked art-pick call FOUNDRY correctly declined to make
+solo on 2026-09-09): *"I absolutely love ALL of them. Please accept them all as
+alternative art that it rotates between"* and *"Make that sweetline tree ten
+cells wide"* (his words; *"Though they might need to be unified in terms of
+resolution..."* — confirmed he knew they needed conforming).
+
+- All 14 recovered PNGs in `_artsrc/sweetline_orphans_2026-09-06/` landed as
+  `RUT_SweetlineTreeA.png`..`RUT_SweetlineTreeN.png` (bare-letter suffix, no
+  underscore — `Graphic_Random`/`Graphic_Collection` groups by the filename
+  substring before the first underscore, confirmed from the engine source, so
+  an underscore would have split them into separate defName-keyed groups
+  instead of one 14-way rotation).
+- 7 of 14 needed chroma-key removal (green background, `chroma_key.py`); the
+  other 7 already carried native alpha and were left untouched, per the
+  README's own recommendation.
+- Canvas grew from 768x768 (6.0 cells) to **1280x1280 (10.0 cells)**, same
+  literal `128 px/cell x cells` formula, no power-of-two rounding (matches the
+  6.0-cell precedent, and these are conforms of already-rendered art, not
+  fresh generations subject to the ~1280px generator ceiling).
+- **Scale normalization**: each source had wildly different padding around
+  its tree (naive canvas resize would have made "14 different individual
+  trees" read as "14 different overall SCALES" instead). Fix: cropped each to
+  its own visible-canopy bounding box (alpha >= 32, `conform_sprite.py`'s
+  `BBOX_FLOOR`), then fit (aspect preserved, `--no-register`) into one shared
+  target frame — a synthetic 1280x1280 reference whose "subject" rectangle is
+  38,26 to 1241,1253 (~94% width / ~96% height, small ground-level margin).
+  That target frame was chosen by measuring four vanilla tree sprites
+  (`Plant_TreeOak`/`TreePine`/`TreeTeak`/`TreeCecropia`) via
+  `validate_sprite.py --describe`: vanilla trees fill 90-100% of both
+  dimensions of a square canvas, not just width. Contact-sheeted and looked at
+  all 14 (`_contact_sheet.png`, transparent checkerboard) — consistent scale
+  across the set, no fragments, no chroma spill.
+- `visualSizeRange` `5.0~6.5` -> `7.7~10.0` (same min:max spread ratio,
+  5.0/6.5 = 7.7/10.0). `shadowData` left UNCHANGED — checked vanilla Core
+  (`Plants_Bases.xml`): `Plant_TreePine` has a *larger* visualSizeRange than
+  plain `TreeBase` (3.0 vs 2.0 max) but a *smaller* shadow volume, so the
+  shadow ellipsoid tracks the trunk footprint, not the canopy's visual size,
+  and there is no scaling relationship to carry forward. Scaling it by 10/6.5
+  anyway would have been exactly the "ceiling fields break when doubled" trap.
+- Validated: all 14 `validate_sprite.py --describe` clean (canvas 1280x1280,
+  real alpha, corners `[0,0,0,0]`, distinct sha256 — no accidental duplicates).
+  `validate_patch.py` run against the def change (static XML well-formed;
+  live-mod-set xpath checks need both `--mods-config` and every active mod's
+  folder under `--defs`, see command in the FOUNDRY closing note).
+
+**Still owed, NOT done this pass (BELT/no-bridge task, deliberately):**
+Owed #2 below (live spawn verify + BetterTrees-immunity log check) is
+unchanged and still open — nothing here touched the bridge, ModsConfig.xml,
+or a game restart.
+
 ## Owed (live check + follow-on, for whoever next holds the bridge)
 
 1. 🔴 **Art generation is BLOCKED, not done.** Attempted 6 times tonight

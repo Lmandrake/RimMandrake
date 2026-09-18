@@ -14,14 +14,39 @@
     day/night or season cycle (arid_shrubland.md §6 rule 3), so the fall-colour
     shader parameters DeciduousTreeBase carries do not apply.
 
-    Scale: plant.visualSizeRange caps at 6.5 — a canopy 6.5 tiles wide at full
-    growth, well above vanilla's biggest common tree (Plant_TreePine, 3.0~6.0
-    under the BetterTrees Djeeshka template referenced below) and matching the
-    "huge, ancient" ruling without inventing a multi-tile footprint. A true
+    Scale: plant.visualSizeRange caps at 10.0 — owner's ruling on
+    ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 ("Make that sweetline tree ten cells
+    wide"), a canopy 10 tiles wide at full growth, up from the earlier 6.5 cap
+    (same 5.0:6.5 min:max spread ratio carried forward: 7.7~10.0). Still well
+    above vanilla's biggest common tree (Plant_TreePine, 3.0~6.0 under the
+    BetterTrees Djeeshka template referenced below) and matching the "huge,
+    ancient" ruling without inventing a multi-tile footprint. A true
     monumental multi-cell object (giants rubbing against it, named road anchor,
     hand-placed one-per-sweetline rather than random wildPlants scatter) is
     still Owed — see items/TREE_GRAPHICS_OWNERSHIP_1.md — this def only closes
     the ART/SCALE-OWNERSHIP half of the ticket.
+
+    shadowData is UNCHANGED from the 6.5-cap version, deliberately, not
+    overlooked: checked vanilla Core (Plants_Bases.xml TreeBase 1.5~2.0 ->
+    volume 0.2/0.35/0.13; Plant_TreePine 1.5~3.0, a 50% larger visualSizeRange
+    -> volume 0.15/0.3/0.15, SMALLER than TreeBase's) — the shadow ellipsoid
+    tracks the trunk's ground footprint, not the canopy's visual size, and
+    vanilla shows no scaling relationship between the two at all. Scaling it
+    by the same 10/6.5 factor as the canopy would be exactly the "ceiling
+    fields break when doubled" trap (CLAUDE.md).
+
+    Fourteen art variants land with this change (all candidates recovered in
+    _artsrc/sweetline_orphans_2026-09-06/, owner: "I absolutely love ALL of
+    them. Please accept them all as alternative art that it rotates between")
+    — RUT_SweetlineTreeA.png..N.png, 1280x1280 (10 cells x 128 px/cell, same
+    literal formula the README used for the old 768x768/6.0-cell canvas).
+    Graphic_Random groups them by the filename prefix before any underscore,
+    so bare letter suffixes (no "_" before the letter) is load-bearing, not
+    style. Each tree was cropped to its own visible-canopy bounding box then
+    fit (aspect preserved) into the SAME target frame on the shared canvas —
+    normalizing away the source renders' wildly different padding so the
+    variety reads as fourteen different ancient trees, not fourteen different
+    scales of the same tree.
 
     Flammability 0.1 (down from TreeBase's 0.8): arid_shrubland.md §6 rule 9,
     "No flammable living flora" — a hard ban, not a judgment call.
@@ -50,7 +75,7 @@
       <BeautyOutdoors>10</BeautyOutdoors>
     </statBases>
     <plant>
-      <visualSizeRange>5.0~6.5</visualSizeRange>
+      <visualSizeRange>7.7~10.0</visualSizeRange>
       <growDays>240</growDays>
       <harvestWork>4200</harvestWork>
       <harvestYield>160</harvestYield>
