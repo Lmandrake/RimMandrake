@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_BOTTLE_LOOP_1. Hand-authored, never generated. Both WorkGivers are
+  opportunistic — no Designation, no player order — mirroring vanilla's
+  own automatic WorkGivers (Refuel, FillFermentingBarrel): a spawned,
+  unforbidden RM_BottleEmpty/RM_BottleDirty is itself the standing
+  invitation. Hauling work type: this is loot management, the same skill
+  and the same colonists who already carry bottles around.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_FillBottleWorkGiver</defName>
+    <label>fill bottles</label>
+    <giverClass>RimMandrake.FlowWorks.LiquidTypes.WorkGiver_FillBottle</giverClass>
+    <workType>Hauling</workType>
+    <verb>fill</verb>
+    <gerund>filling a bottle</gerund>
+    <priorityInType>50</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_WashBottleWorkGiver</defName>
+    <label>wash bottles</label>
+    <giverClass>RimMandrake.FlowWorks.LiquidTypes.WorkGiver_WashBottle</giverClass>
+    <workType>Hauling</workType>
+    <verb>wash</verb>
+    <gerund>washing a bottle</gerund>
+    <priorityInType>49</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

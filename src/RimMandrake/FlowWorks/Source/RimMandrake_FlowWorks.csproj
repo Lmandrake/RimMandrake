@@ -129,6 +129,13 @@
     <!-- LIQUID_REGISTRY_CORE_1: the top-level LiquidDef registry skeleton. -->
     <Compile Include="LiquidTypes\LiquidDef.cs" />
     <Compile Include="LiquidTypes\RM_BottledLiquidExtension.cs" />
+    <!-- LIQUID_BOTTLE_LOOP_1: the fill/use/dirty/wash JobDriver/WorkGiver pair. -->
+    <Compile Include="LiquidTypes\RM_LiquidBottleUtility.cs" />
+    <Compile Include="LiquidTypes\WorkGiver_FillBottle.cs" />
+    <Compile Include="LiquidTypes\JobDriver_FillBottle.cs" />
+    <Compile Include="LiquidTypes\WorkGiver_WashBottle.cs" />
+    <Compile Include="LiquidTypes\JobDriver_WashBottle.cs" />
+    <Compile Include="LiquidTypes\IngestionOutcomeDoer_BottleResidue.cs" />
   </ItemGroup>
 
   <ItemGroup>

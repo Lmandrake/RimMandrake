@@ -893,7 +893,7 @@ def build_liquiddef_registry(out_dir: Path):
 # RM_LiquidBottleItems category are HAND-AUTHORED (Defs/LiquidTypes/ThingDefs/
 # RM_LiquidBottles_Base.xml) -- they are liquid-agnostic and never generated.
 # This function's ONLY job is the filled state, one per row.
-def build_bottle_thingdef_xml(bottle_defname, liquid_defname, liquid_label, description):
+def build_bottle_thingdef_xml(bottle_defname, liquid_defname, liquid_label, description, thirst_quality=None):
     lines = ['  <ThingDef ParentName="RM_BottleItemBase">']
     lines.append(f"    <defName>{bottle_defname}</defName>")
     lines.append(f"    <label>bottled {liquid_label}</label>")
@@ -903,6 +903,27 @@ def build_bottle_thingdef_xml(bottle_defname, liquid_defname, liquid_label, desc
     lines.append(f"        <liquid>{liquid_defname}</liquid>")
     lines.append("      </li>")
     lines.append("    </modExtensions>")
+    # LIQUID_BOTTLE_LOOP_1: only a row the registry already marked drinkable
+    # (thirstQuality set -- fresh/salt/toxic/brine water) becomes ingestible
+    # at all. That is an existing, non-invented signal: boiling water would
+    # scald, icy water gives frostbite, and acid/tar/propane are hazards or
+    # fuel, never a drink -- none of those five rows carry thirstQuality, so
+    # none of them get this block. IngestionOutcomeDoer_BottleResidue
+    # (Source/LiquidTypes/) reads RM_BottledLiquidExtension generically and
+    # leaves a dirty/empty bottle behind per the Mod Settings toggle; DBH
+    # registration (LIQUID_THIRST_CHAIN_1) layers its own hydration/thirst
+    # effect on the SAME ingestion without touching this block.
+    if thirst_quality:
+        lines.append("    <statBases>")
+        lines.append("      <Nutrition>0.05</Nutrition>")
+        lines.append("    </statBases>")
+        lines.append("    <ingestible>")
+        lines.append("      <foodType>Fluid</foodType>")
+        lines.append("      <preferability>DesperateOnlyForHumanlikes</preferability>")
+        lines.append("      <outcomeDoers>")
+        lines.append('        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />')
+        lines.append("      </outcomeDoers>")
+        lines.append("    </ingestible>")
     lines.append("  </ThingDef>")
     return "\n".join(lines)
 
@@ -925,6 +946,7 @@ def build_bottle_thingdefs(out_dir: Path):
             continue
         blocks.append(build_bottle_thingdef_xml(
             bottle_defname, row["defName"], row["label"], row["description"],
+            thirst_quality=row.get("thirstQuality"),
         ))
         generated_for.append(row["defName"])
 
@@ -948,13 +970,20 @@ def build_bottle_thingdefs(out_dir: Path):
 
 {adopted_note}
 
-  Deliberately NOT built this pass (LIQUID_BOTTLE_LOOP_1's own stopping
-  note): buckets, barrels, the fill/use/dirty/wash JobDriver/WorkGiver pair,
-  the dirty-stage Mod Settings toggle (would be a slider that moves nothing
-  before the mechanism it gates exists), and revertsTo/rotsTo row data
-  (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
-  requires a real revertTicks/rotTicks the moment either is set, and nothing
-  reads them yet).
+  The fill/use/dirty/wash JobDriver/WorkGiver pair is built
+  (Source/LiquidTypes/{{RM_LiquidBottleUtility,WorkGiver_FillBottle,
+  JobDriver_FillBottle,WorkGiver_WashBottle,JobDriver_WashBottle,
+  IngestionOutcomeDoer_BottleResidue}}.cs) and the dirty-stage Mod Settings
+  toggle ships (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled,
+  default ON). Only a row with `thirstQuality` set gets an `<ingestible>`
+  block at all — see build_bottle_thingdef_xml's own comment.
+
+  Still deliberately NOT built (LIQUID_BOTTLE_LOOP_1's own stopping note):
+  buckets, barrels, filling from a TANK (the universal cargo tank design §6/
+  §9 names does not exist yet — fill/wash this pass reads terrain only),
+  and revertsTo/rotsTo row data (boiling/icy revert-on-bottle, blood-rot —
+  LiquidBottledForm.ConfigErrors requires a real revertTicks/rotTicks the
+  moment either is set, and nothing reads them yet).
   ============================================================================
 -->
 <Defs>
