@@ -39,6 +39,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public bool flammable;
         public float igniteTemp = 100f;
 
+        /// <summary>True for a water-family row a Distillation-class consumer
+        /// (WRECKED_DISTILLATION_MODULE_1) may take as input and reduce to
+        /// clean/fresh water -- salt/fouled/toxic/brine water, not tar, oil,
+        /// chemfuel or slime. A property flag, not a form slot: it does not
+        /// count toward <see cref="ConfigErrors"/>'s hasForm check, the same
+        /// way <see cref="corrodesApparel"/> and <see cref="flammable"/>
+        /// don't. Additive -- default false leaves every already-shipped row
+        /// unaffected until a generator table opts it in by data.</summary>
+        public bool distillable;
+
         /// <summary>Tint for generated art, flecks and bottle fill.</summary>
         public Color color = Color.white;
 
