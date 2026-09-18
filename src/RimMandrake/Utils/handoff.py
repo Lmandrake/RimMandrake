@@ -328,6 +328,13 @@ def _bullets(body):
             cur = l
         elif cur is not None and l.strip():
             cur += " " + l.strip()
+        elif not l.strip():
+            # A blank line ends the bullet: trailing prose is not part of it,
+            # so a paragraph after the list cannot lend its (filed:)/NEXT:
+            # marker to the last bullet (caught by Lodestar's port, 2026-09-18).
+            if cur is not None:
+                out.append(cur)
+            cur = None
     if cur is not None:
         out.append(cur)
     return out
