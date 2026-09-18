@@ -2179,3 +2179,198 @@ worklist together).
 
 **Remaining**: 36 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 18: 3 more species ported: Mott, Neebray, Ollopom (36 -> 33 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Mott, Mynock,
+Neebray — checked `find src/RimStarWars -maxdepth 1 -iname "*ArtOverride*"`
+first: `MynockArtOverride` and `OllopomArtOverride` exist, no override for
+Mott or Neebray.
+
+🔴 **Mynock dropped mid-pass on a genuine defName collision, not a
+mechanical one**: renaming the donor's own `Mynock` to `RSW_Mynock` (this
+item's normal 1:1 convention) would silently collide with an
+ALREADY-LIVE, unrelated, owner-authored `RSW_Mynock` ThingDef
+(`src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/
+RSW_Mynock.xml`, SHIP_VERMIN_MOD_1, owner ruling 2026-09-11 — its own file
+header explains it is a deliberate original ship-vermin species, explicitly
+NOT a donor reskin, and explicitly disclaims reusing the donor's texture
+bytes). Two distinct ThingDefs on one defName is a load-order coin-flip,
+not a rendering nuance — caught only because `grep -rl
+"<defName>RSW_Mynock</defName>" src` returned a second, unrelated file
+after the donor port's own def was already written. This is a naming
+decision for the owner (rename the donor port, retire the ShipVermin one,
+or leave the donor Mynock permanently unported), not something this pass
+can resolve alone, so Mynock was skipped and left in
+`remaining_worklist` with a `blocked_2026-09-18` note; **Ollopom**
+substituted in as this pass's third species (next unblocked entry in the
+queue). All of Mynock's in-progress def/art/cast work was fully reverted
+before this pass's commit — nothing donor-Mynock-shaped ships this pass.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+Mott's own `<race><body>` points at `QuadrupedAnimalWithPaws`, confirmed
+VANILLA CORE (Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml) — left
+bare, same "no BodyDef needed" pattern LongtailGorg/Lothcat established
+(Pass 16/17). Neebray's own custom `Neebray` BodyDef needs its 2 wing parts
+repointed to the ALREADY-PORTED Wave B `RSW_SW_LeftWing`/`RSW_SW_RightWing`
+(the same pair CanCell/Dactillion/Hawkbat already reuse) — every other part
+(Body/Tail x2/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/
+Brain/Eye x2/Beak) is vanilla Core. Ollopom's own custom `Ollopom` BodyDef
+is, like Anooba/Borcatu, entirely vanilla-part composition (Body/Tail/
+Spine/Stomach/Heart/Lung x2/Kidney x2/Hump/Liver/Neck/Head/Skull/Brain/
+Eye x2/Ear x2/Nose/AnimalJaw, 6x Leg/Paw for its hexapod stance) — no
+SW-prefixed part or group anywhere, defName rename only. Ported as
+RSW_Neebray/RSW_Ollopom (RSW_MlieWaveC_Bodies.xml).
+
+**Resources**: 🔑 Mott's `specificMeatDef` (`Tender_Meat`) had never been
+ported despite several already-ported species reusing OTHER meats from the
+same donor file — ported this pass as `RSW_Tender_Meat`, texPath
+swresource/Meat_Tender (newly extracted, 3 PNGs). Its own `ingestible`
+block points at a donor-authored tasteThought (`AteTenderMeat`,
+Thoughts_Memory_SpecialCuisine.xml, NOT vanilla) — ported as
+`RSW_AteTenderMeat` (RSW_Bantha_Thoughts.xml, Wave C addition #5), same
+mechanism as RSW_AteHawkbatEgg/RSW_AteMudhornEgg. `leatherDef`
+(`Leather_Light`) is vanilla Core, left bare. Neebray's `leatherDef`
+(`Leather_Light`) is vanilla Core, left bare; `specificMeatDef`
+(`Silica_Meat`) ALREADY EXISTS as `RSW_Silica_Meat` (Pass 2, Beldon) — no
+new resource needed. Ollopom's `leatherDef` (`Leather_Light`) is vanilla
+Core, left bare; `specificMeatDef` (`Rodentia_Meat`) had never been
+ported — ported this pass as `RSW_Rodentia_Meat`, texPath
+swresource/Meat_Rodentia (newly extracted, 3 PNGs), no `ingestible` block
+in the donor so no new tasteThought needed. None of the 3 lay eggs (live
+birth via `gestationPeriodDays`/`litterSizeCurve`, confirmed directly off
+each donor's own `<race>` block). All in RSW_MlieWaveC_Resources.xml.
+
+No new abilities: Mott and Neebray set no `specialTrainables` at all.
+Ollopom's own `specialTrainables` entry (`Forage`, Odyssey-gated) is a
+vanilla TrainableDef, not donor content — left bare, same "vanilla
+trainable" pattern as Lothcat/Massiff (Pass 17).
+
+🔑 Mott and Ollopom both carry the donor's own `modExtensions` block gated
+`MayRequire="pathfinding.framework"` (`PathfindingFramework.MovementExtension`,
+`PF_Movement_Amphibious`) — kept verbatim on both, same established pattern
+as Igitz/Dianoga/Falumpaset/Fambaa/Dragonsnake/Nuna.
+
+No `canCrossBreedWith` on any of the 3 (none set it in their own donor
+block). Grepped every already-ported `RSW_*.xml` in SWBestiary for stray
+`<li>Mott</li>`/`<li>Neebray</li>`/`<li>Ollopom</li>` — none found.
+
+**Art**, ArtOverride check done BEFORE any extraction:
+- No override exists for Mott or Neebray — both ship straight through.
+  Extracted 13 PNGs for Mott (`Mott_m_{south,east,north}` adult male,
+  `Mott_f_{south,east,north}` adult female,
+  `Mott_m_Swimming_{south,east,north}`/`Mott_f_Swimming_{south,east,north}`
+  — a `waterSeeker` with per-sex `swimmingGraphicData`, same pattern
+  LongtailGorg established — single `Mott_Dessicated` with no facing
+  suffix or male/female split) and 16 PNGs for Neebray (`Neebray_{south,
+  east,north}` base facing, all 12 `Neebray_Flying_{1,2,3,4}_{south,east,
+  north}` frames, single `Neebray_Dessicated`).
+- `MynockArtOverride` was checked (covers `Mynock_{south,east,north}`
+  only) but is moot — Mynock was dropped this pass, nothing extracted for
+  it, and its 13 already-extracted PNGs (12 flying frames + dessicated)
+  were deleted before committing.
+- `OllopomArtOverride` (mandrake.rsw.ollopomartoverride) covers
+  `Ollopom_{south,east,north}` across ALL life stages (one shared
+  texPath) — the swimming-graphic variant and dessicated-corpse texture
+  stay on donor art. Extracted 4 PNGs:
+  `Ollopom_Swimming_{south,east,north}`, `Ollopom_Dessicated`. The base
+  facing was NOT extracted here.
+
+Plus `Meat_Tender_{a,b,c}` (Mott's new meat) and `Meat_Rodentia_{a,b,c}`
+(Ollopom's new meat), 6 PNGs. 39 PNGs shipped this pass in total (13 Mott +
+16 Neebray + 4 Ollopom + 3 Meat_Tender + 3 Meat_Rodentia), all confirmed
+non-zero (256x256 RGBA) and PIL-openable via PIL before wiring in. Run via
+`python.exe` on the native `C:\...` bundle path, extracted flat (without
+keep-paths mode) to a Windows temp dir and copied into the repo tree over
+`/mnt/c`. Sit at Textures/swanimals/{Mott,Neebray,Ollopom}/ and
+Textures/swresource/{Meat_Tender,Meat_Rodentia}/.
+
+Sounds: Mott's and Neebray's own custom `Pawn_{Mott,Neebray}_*` sets were
+already absorbed in the 2026-09-02 sound wave — confirmed present, wired,
+not re-done. Ollopom's own `lifeStageAges` block uses vanilla Core
+`Pawn_Rodent_*` sounds (confirmed present in
+Data/Core/Defs/SoundDefs/Pawn_Animal_Misc_Vox.xml), NOT a custom set — left
+bare, no sound port needed.
+
+🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+reference Mott/Neebray/Ollopom by name. `AnimalBiomeDuplicates_Fix.xml`
+does have 2 operations targeting the bare donor `Mynock`/`Neebray`'s own
+`wildBiomes/IceSheet` duplicate — a Star Wars Animal Collection
+(Continued)-vs-base donor collision unrelated to this port, left
+untouched per the standing "targets the bare donor name, not our RSW_
+port" precedent (same as every prior pass). The pre-existing
+`PatchOperationConditional`/`PatchOperationRemove` entries in both
+`BiomeCast_Ashkarr.xml` copies that strip the bare donor ThingDefs' own
+`race/wildBiomes/<biome>` entries for Mott/Mynock/Neebray/Ollopom are the
+same biome-duplicate-suppression mechanism documented every prior pass —
+they suppress the DONOR's own wildBiomes weight, not our port's, so they
+stay targeting the bare donor names regardless of porting status.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `RSW_Mott`
+(BiomeCypreJungle 0.4), `RSW_Neebray` (PoisonForest 0.8), `RSW_Ollopom`
+(ZBiome_DesertOasis 0.7) — renamed in place from the bare donor entries
+(same `MayRequire="mlie.starwarsanimalcollection"` block each already sat
+in) in both `BiomeCast_Ashkarr.xml` copies and `cast_assignment.csv` (mod
+column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
+Edits were made by exact pre-verified text replacement (never
+round-tripped through Python's `csv` module for the CSV), and `git diff
+--stat` confirmed exactly the intended lines changed in each of the 3
+files before staging.
+
+🔴 **Lost work to a concurrent peer rebase mid-pass, caught and redone**:
+partway through this pass (after the initial 7-line Mott/Mynock/Neebray
+cast-wiring edit but before the Mynock revert could land), a peer window's
+`git pull --rebase --autostash` cycled through this shared worktree
+(`.git/rebase-merge` observed live) and stashed every TRACKED file this
+pass had edited so far back to their pre-pass committed content — a
+system notification surfaced the reverted `mlie_wave_c_worklist.json` and
+`RSW_Bantha_Thoughts.xml` content mid-cycle. Per this item's own standing
+git-safety guidance (Pass 16's precedent): waited for `.git/rebase-merge`
+to clear rather than intervening. The autostash then popped my edits back
+automatically once the rebase finished — including the NOT-yet-reverted
+Mynock cast rows, which had to be reverted a second time from the
+post-pop state. The 3 new untracked species files and extracted
+Textures/ were unaffected throughout (untracked content survives a stash
+cycle). Re-verified every edit's `git diff --stat` against the intended
+line count before committing this time.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files (3 species, `RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`RSW_Bantha_Thoughts.xml`), BOTH with `--live` (freshest available
+capture, `2026-09-18T05-05-13Z`, 634 mods per its own manifest — live
+`ModsConfig.xml` reads 635 active, close enough to the dump's 634 that no
+`--mods-config` override was needed this pass, unlike Pass 16/17) AND
+`--defs` against the full load set (`Data` + `Mods` + the Steam Workshop
+content root). `--live`-only surfaced 3 expected errors (RSW_Ollopom's own
+base-facing texPath, not shipped here because `OllopomArtOverride` covers
+it — same expected `--live`-vs-`--defs` gap every prior ArtOverride pass
+documented) that vanished once `--defs` could see the already-deployed
+`OllopomArtOverride` mod in the live `Mods` folder — **0 errors, 0
+warnings** with `--defs`. Both `BiomeCast_Ashkarr.xml` copies checked
+separately against `--live`: 0 errors, 0 warnings each. All new defNames
+confirmed unique in-repo (the only 2-file hits are each species' own
+ThingDef+BodyDef pair sharing a defName across def types, same as every
+prior species) — `RSW_Mynock` specifically re-checked and confirmed to
+resolve to exactly one file (the pre-existing ShipVermin def), never two.
+
+**Not done this pass**: no deploy, no bridge — this item's own standing
+instruction is offline-authoring only regardless of bridge state; no live
+cold-load proof.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Mott/Neebray/Ollopom removed from `remaining_worklist`, count 36 -> 33,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch18`. Mynock
+stays IN `remaining_worklist` (front of queue) with a `blocked_2026-09-18`
+note, and a `skipped_this_pass_2026-09-18_batch18` entry records why.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 33 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), front-blocked on Mynock pending an owner
+naming decision.

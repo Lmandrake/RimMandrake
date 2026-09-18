@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Neebray creature port (Pass 18).
+  Ported from mlie.starwarsanimalcollection's `Neebray` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's own custom `Neebray` BodyDef needs its 2 wing parts
+  repointed to the ALREADY-PORTED Wave B `RSW_SW_LeftWing`/`RSW_SW_RightWing`
+  BodyPartDefs (the same pair Mynock, this same pass, and CanCell/
+  Dactillion/Hawkbat already reuse) — every other part (Body/Tail x2/Spine/
+  Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/Brain/Eye x2/Beak)
+  is vanilla Core. Ported as RSW_Neebray (RSW_MlieWaveC_Bodies.xml).
+
+  Resources: `leatherDef` (`Leather_Light`) is vanilla Core, left bare.
+  `specificMeatDef` (`Silica_Meat`) ALREADY EXISTS as `RSW_Silica_Meat`
+  (Pass 2, Beldon; reused by Mynock this same pass) — no new resource
+  needed. No egg comp (live birth via `gestationPeriodDays`/
+  `litterSizeCurve`, confirmed directly off the donor's own `<race>`
+  block). No abilities (donor sets no `specialTrainables`).
+
+  No `canCrossBreedWith` in the donor. Grepped every already-ported
+  `RSW_*.xml` in SWBestiary for a stray `<li>Neebray</li>` — none found.
+
+  Art: no ArtOverride mod exists for Neebray (checked first). 16 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used (workshop folder 3497316713) — `Neebray_{south,
+  east,north}` base facing, all 12 `Neebray_Flying_{1,2,3,4}_{south,east,
+  north}` frames, single `Neebray_Dessicated`. All 16 confirmed non-zero
+  (256x256 RGBA) and PIL-openable before wiring in. Run via `python.exe`
+  on the native `C:\...` bundle path, extracted flat (without keep-paths mode) to
+  a Windows temp dir and copied into the repo tree over `/mnt/c`. Sits at
+  Textures/swanimals/Neebray/.
+
+  Sounds (`RSW_Pawn_Neebray_*`) were already absorbed in the 2026-09-02
+  sound wave — confirmed present, wired, not re-done.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Neebray</defName>
+    <label>neebray</label>
+    <description>Neebray were flying, limbless creatures which varied greatly in size and habitat. They could be found on many worlds, such as Rugosa, Rishi moon, and Tatooine. There are several species of neebray, varying in size and appearance but all were tolerant to the vacuum of space.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>10</MarketValue>
+      <ComfyTemperatureMin>-270</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <FilthRate>1</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <HypoxiaResistance MayRequire="kentington.saveourship2">1</HypoxiaResistance>
+      <DecompressionResistance MayRequire="kentington.saveourship2">1</DecompressionResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <Wildness>0.60</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Neebray</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <roamMtbDays>1.5</roamMtbDays>
+      <trainability>None</trainability>
+      <petness>0.1</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <lifeExpectancy>8</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1.7)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.1</AridShrubland>
+        <Desert>0.1</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.1</TropicalSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <TemperateSwamp>0.1</TemperateSwamp>
+        <BorealForest>0.1</BorealForest>
+        <Tundra>0.1</Tundra>
+        <ColdBog>0.1</ColdBog>
+        <IceSheet>0.01</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>RSW_Pawn_Neebray_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Neebray_Death</soundDeath>
+          <soundCall>RSW_Pawn_Neebray_Call</soundCall>
+          <soundAngry>RSW_Pawn_Neebray_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Neebray</defName>
+    <label>neebray</label>
+    <labelPlural>neebray</labelPlural>
+    <race>RSW_Neebray</race>
+    <combatPower>15</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Neebray/Neebray_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>4</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray</texPath>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray_Dessicated</texPath>
+          <drawSize>0.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Neebray/Neebray_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

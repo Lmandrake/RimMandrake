@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 36,
+  "remaining_worklist_count": 33,
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
     "RSW_LavaFlea",
@@ -26,6 +26,17 @@
     "RSW_Lylek",
     "RSW_Massiff"
   ],
+  "ported_and_wired_this_pass_2026-09-18_batch18": [
+    "RSW_Mott",
+    "RSW_Neebray",
+    "RSW_Ollopom"
+  ],
+  "skipped_this_pass_2026-09-18_batch18": [
+    {
+      "donor_defName": "Mynock",
+      "reason": "genuine defName collision, not mechanical: renaming the donor's own Mynock to RSW_Mynock (this item's normal 1:1 convention) would collide with an ALREADY-LIVE, unrelated, owner-authored RSW_Mynock ThingDef (src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml, SHIP_VERMIN_MOD_1, owner ruling 2026-09-11 -- a deliberate original ship-vermin species, explicitly NOT a donor reskin). Left in remaining_worklist for a future pass to resolve with the owner (rename the donor port under a disambiguated name, retire the ShipVermin one, or leave the donor Mynock permanently unported)."
+    }
+  ],
   "stale_entries_removed_2026-09-18": [
     {
       "donor_defName": "Nuna",
@@ -33,13 +44,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Mott",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Mynock",
       "biomes": [
@@ -49,21 +53,8 @@
         "PoisonForest",
         "Scarlands"
       ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Neebray",
-      "biomes": [
-        "PoisonForest"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Ollopom",
-      "biomes": [
-        "ZBiome_DesertOasis"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true,
+      "blocked_2026-09-18": "defName collision with the already-live, owner-authored src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml -- see skipped_this_pass_2026-09-18_batch18. Needs an owner decision before porting."
     },
     {
       "donor_defName": "Orray",

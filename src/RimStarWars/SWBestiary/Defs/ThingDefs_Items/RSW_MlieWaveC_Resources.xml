@@ -2023,4 +2023,53 @@
       <MarketValue>140.0</MarketValue>
     </statBases>
   </ThingDef>
+  <!--
+    Mott/Mynock/Neebray pass (Pass 18, 2026-09-18): Mott's `specificMeatDef`
+    (`Tender_Meat`) had never been ported despite several already-ported
+    species reusing OTHER meats from the same donor file — ported here as
+    RSW_Tender_Meat, texPath swresource/Meat_Tender (newly extracted this
+    pass, 3 PNGs). Its own `ingestible` block points at a donor-authored
+    tasteThought (`AteTenderMeat`, Thoughts_Memory_SpecialCuisine.xml, NOT
+    vanilla) — ported as RSW_AteTenderMeat (RSW_Bantha_Thoughts.xml), same
+    mechanism as RSW_AteHawkbatEgg/RSW_AteMudhornEgg. Neebray's
+    `specificMeatDef` (`Silica_Meat`) ALREADY EXISTS as `RSW_Silica_Meat` —
+    no new resource needed. Mynock was dropped from this pass entirely (see
+    RSW_MlieWaveC_Bodies.xml's header comment) — its own `Silica_Meat` reuse
+    is unaffected either way and needs no action here.
+
+    Ollopom (substituted in for Mynock this pass) needs a new meat
+    (`Rodentia_Meat`, texPath swresource/Meat_Rodentia, newly extracted this
+    pass) — ported as RSW_Rodentia_Meat. No `ingestible` block in the
+    donor's own def, so no new tasteThought needed. No egg comp (live
+    birth via gestationPeriodDays/litterSizeCurve).
+  -->
+  <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Tender_Meat</defName>
+    <label>tender meat</label>
+    <description>A piece of tender, fatty meat from a generally sedentary creature.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Tender</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.5</MarketValue>
+    </statBases>
+    <ingestible>
+      <tasteThought>RSW_AteTenderMeat</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteTenderMeat</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+  <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Rodentia_Meat</defName>
+    <label>rodentia meat</label>
+    <description>A piece of meat from a rodent.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Rodentia</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>
