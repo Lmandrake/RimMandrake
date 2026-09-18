@@ -37,7 +37,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>water</viscosityClass>
+        <viscosityClass>Water</viscosityClass>
         <pH>11</pH>
         <damageOnContact>
           <damageDef>Frostbite</damageDef>
@@ -68,7 +68,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>water</viscosityClass>
+        <viscosityClass>Water</viscosityClass>
         <pH>11</pH>
         <damageOnContact>
           <damageDef>Frostbite</damageDef>

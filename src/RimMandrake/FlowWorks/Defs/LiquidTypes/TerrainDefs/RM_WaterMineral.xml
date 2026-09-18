@@ -38,7 +38,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>water</viscosityClass>
+        <viscosityClass>Water</viscosityClass>
         <pH>9.5</pH>
       </li>
     </modExtensions>
@@ -60,7 +60,7 @@
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-        <viscosityClass>water</viscosityClass>
+        <viscosityClass>Water</viscosityClass>
         <pH>9.5</pH>
       </li>
     </modExtensions>

@@ -448,7 +448,7 @@ def build_terrain_xml(defname, label, description, leaf_fields,
                     lines.append(f"          <{ik}>{iv}</{ik}>")
                 lines.append(f"        </{fk}>")
             else:
-                xv = "true" if fv is True else "false" if fv is False else fv
+                xv = _enum_xv(fk, fv)
                 lines.append(f"        <{fk}>{xv}</{fk}>")
         lines.append("      </li>")
         lines.append("    </modExtensions>")
@@ -513,7 +513,7 @@ def _compat_operations(extension, targets):
         for fk, fv in extension.items():
             if isinstance(fv, dict):
                 continue  # keep the compat default simple; skip nested damage blocks
-            xv = "true" if fv is True else "false" if fv is False else fv
+            xv = _enum_xv(fk, fv)
             field_xml.append(f"            <{fk}>{xv}</{fk}>")
         ops.append(f"""
     <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="{target}"] -->
@@ -791,6 +791,34 @@ def _xv(v):
     return v
 
 
+# RimWorld parses an enum field with a CASE-SENSITIVE Enum.Parse
+# (Verse.ParseHelper.FromString). A mis-cased value throws while the
+# modExtensions <li> is being read, and DirectXmlToObjectNew then discards
+# THE WHOLE TARGET DEF rather than degrading. That is how
+# <viscosityClass>water</viscosityClass> deleted WaterShallow, WaterDeep,
+# WaterMovingShallow, WaterMovingChestDeep, WaterOceanShallow,
+# WaterOceanDeep, ToxicWaterShallow, ToxicWaterDeep and Marsh from the live
+# game - every river, lake and coast then generated its channel and painted
+# it with a null terrain, so no map had water at all
+# (QUICKTEST_RIVER_WATER_MISSING_1, measured 2026-09-18).
+# Normalise here, and refuse an unknown member rather than emitting XML that
+# will silently eat a def.
+_VISCOSITY_MEMBERS = ("Thin", "Water", "Thick", "Heavy")  # Source/LiquidTypes/RM_LiquidProperties.cs
+
+
+def _enum_xv(field, value):
+    """Case-correct a known enum field; raise on a value the enum lacks."""
+    if field != "viscosityClass":
+        return _xv(value)
+    for member in _VISCOSITY_MEMBERS:
+        if str(value).lower() == member.lower():
+            return member
+    raise ValueError(
+        "viscosityClass %r is not a LiquidViscosityClass member %r - emitting it "
+        "would make RimWorld discard the entire target def." % (value, _VISCOSITY_MEMBERS)
+    )
+
+
 def _damage_spec_xml(indent, tag, spec):
     if not spec:
         return []
@@ -808,7 +836,7 @@ def build_liquiddef_xml(row):
     lines.append(f"    <label>{row['label']}</label>")
     lines.append(f"    <description>{row['description']}</description>")
     if "viscosityClass" in row:
-        lines.append(f"    <viscosityClass>{row['viscosityClass']}</viscosityClass>")
+        lines.append(f"    <viscosityClass>{_enum_xv('viscosityClass', row['viscosityClass'])}</viscosityClass>")
     if "pH" in row:
         lines.append(f"    <pH>{row['pH']}</pH>")
     lines += _damage_spec_xml("    ", "damageOnContact", row.get("damageOnContact"))
