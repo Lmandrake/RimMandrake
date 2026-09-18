@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:35:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:36:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1895,3 +1895,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  None yet — this is an open design question, not a scoped build. Candidate
 prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
+
+## PYRELANDS_FLORA_LEAK_1 Alpha Biomes flora spawns on Pyrelands past the grass-only eviction
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_FLORA_LEAK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FLORA_LEAK_1.md
+
+## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
