@@ -14,8 +14,14 @@ full regeneration, heavy black outline required. The dessicated-corpse
 texture (Iriaz_Dessicated) stays on donor art. LABEL/ART ONLY - no defName
 touched, no Defs, no Patches, loose Textures/ only, same relative path the
 donor uses across all 3 life stages, so this mod's later load order wins the
-same-path resolution.</description>
+same-path resolution.
+
+mandrake.rsw.swbestiary's own RSW_Iriaz (the ported, kept species) bundles
+its OWN copy of donor-vintage art at this exact same relative texPath, so it
+is also a same-path collision target, not just the Mlie donor -- hence the
+loadAfter below.</description>
   <loadAfter>
     <li>Mlie.StarWarsAnimalCollection</li>
+    <li>mandrake.rsw.swbestiary</li>
   </loadAfter>
 </ModMetaData>
