@@ -3,9 +3,12 @@ extraction.json — the "unify every droid onto one framework" pass of
 DROIDWORKS_DEF_GENERATOR_1.
 
 Emits src/RimStarWars/Droidworks/Defs/Races_<Family>.xml (one HAR
-AlienRace.ThingDef_AlienRace per source race, ParentName="DW_Race_Base" —
-that base and the shared RSW_DW_HeadType_Blank head live in the hand-authored
-Defs/Races_Base.xml, not regenerated here) and
+AlienRace.ThingDef_AlienRace per source race, ParentName pointed at its
+DW_Family_<Name> chassis-family abstract — DW_Race_Base -> DW_Family_<Name> ->
+concrete race, per DROIDWORKS_FAMILY_LAYER_1; DW_Race_Base itself and the
+shared RSW_DW_HeadType_Blank head live in the hand-authored Defs/Races_Base.xml,
+not regenerated here; the DW_Family_<Name> abstracts ARE regenerated, into
+Defs/Races_Families.xml) and
 src/RimStarWars/Droidworks/Defs/PawnKinds_<Family>.xml (one PawnKindDef per source
 kind, race repointed at the matching DW_Race_<orig>).
 
@@ -104,17 +107,13 @@ BLANK_HEAD_RE = re.compile(r"^\d+blank$", re.IGNORECASE)
 RGBA_RE = re.compile(r"RGBA\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)\s*weight(\d+)")
 RGB_TUPLE_RE = re.compile(r"\((\d+),\s*(\d+),\s*(\d+)\)")
 
-# chassis bucket -> (powerFallPerDay, energyDensity, chassisClass int default)
 # int codes per Source/Droidworks/DroidworksModExtension.cs:
 #   0 labour  1 protocol  2 astromech  3 battle  4 heavy  5 probe  6 power
-CHASSIS_TUNING = {
-    "battle":            (1.0, 0, 3),
-    "heavy":             (1.0, 2, 4),
-    "gonk-power":        (0.33, 3, 6),
-    "astromech-labour":  (0.33, 0, 0),   # int refined per-race, see ASTROMECH_SHAPED
-    "protocol":          (0.033, 0, 1),
-    "probe":             (1.0, 1, 5),
-}
+# (the actual (powerFallPerDay, energyDensity, chassisClass) tuning table is
+# FAMILY_TUNING, below — DROIDWORKS_FAMILY_LAYER_1 superseded the original
+# 6-bucket table that used to live here; it is gone, not merely renamed, per
+# "inaccurate/stale material is deleted, not superseded-in-place")
+#
 # within the astromech-labour bucket: dome/utility-cart shaped droids get the
 # "astromech" int (2); everything else in that bucket gets "labour" (0).
 # Tuning numbers are identical either way — this only affects the int code.
@@ -128,7 +127,8 @@ ASTROMECH_SHAPED = {
 # OWNER RULING 2026-08-29 (ledger DROIDWORKS_FAMILY_LAYER_1): insert 7
 # chassis-family abstracts between DW_Race_Base and the 57 concrete races —
 # DW_Race_Base -> DW_Family_{Labour,Protocol,Astromech,Battle,Heavy,Probe,
-# Power} -> concrete races. The 6 CHASSIS_TUNING buckets above become 7
+# Power} -> concrete races. The 6 CHASSIS_PLAN buckets (battle, heavy,
+# gonk-power, astromech-labour, protocol, probe) become 7
 # families by splitting "astromech-labour" exactly along ASTROMECH_SHAPED
 # (already computed above, for the chassisClass int) — the ruling's own
 # family list order (Labour, Protocol, Astromech, Battle, Heavy, Probe,
