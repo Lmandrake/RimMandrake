@@ -8,10 +8,13 @@ namespace RimMandrake.StarWars.FireEcology
     //
     // MEASURED the same night: Pyrelands.xml declared plantDensity 1.55 /
     // wildPlantRegrowDays 9, yet the RUNNING game read plantDensity 1.0 and
-    // wildPlantRegrowDays 5.806452 (= 9 / 1.55) — some mod rewrites the def at
-    // startup, capping density at 1.0 and folding the ratio into regrow speed
-    // (culprit not yet identified; every previous density nudge was silently
-    // eaten this way, which is why 1.15 -> 1.55 read "still too bare").
+    // wildPlantRegrowDays 5.806452 (= 9 / 1.55). Culprit BISECTED 2026-09-18
+    // on minimal-list add-one-mod loads: Map Designer (zylle.mapdesigner) —
+    // its startup pass caps BiomeDef.plantDensity at 1.0 and folds the ratio
+    // into wildPlantRegrowDays (with density 16 it wrote 1.0 / 0.5625 = 9/16;
+    // GeologicalLandforms core and BiomeTransitions both cleared). This
+    // enforcer runs after it and wins; every previous density nudge was
+    // silently eaten, which is why 1.15 -> 1.55 read "still too bare".
     //
     // So the XML is not authority enough here. This enforcer re-asserts OUR
     // numbers after every other mod has run: once when startup long events

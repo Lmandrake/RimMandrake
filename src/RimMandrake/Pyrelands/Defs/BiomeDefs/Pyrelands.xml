@@ -97,9 +97,10 @@
          so density 3 held only ~58% of plantable ground ("Way too sparse").
          16 saturates gravel (0.28 fert, needs >=13) and light ash (0.25, needs 16),
          holding ~96% of plantable cells — the approved painted look; rock, water
-         and deep ash stay bare. A startup rewriter on the full list still eats
-         values above 1.0; RM_PyrelandsDensityEnforcer.cs re-asserts this number
-         after all mods load. Keep both in step. -->
+         and deep ash stay bare. Map Designer (zylle.mapdesigner, bisected
+         2026-09-18) rewrites this at startup — caps it at 1.0 and folds the
+         ratio into wildPlantRegrowDays; RM_PyrelandsDensityEnforcer.cs
+         re-asserts this number after all mods load. Keep both in step. -->
     <plantDensity>16</plantDensity>
     <!-- Owner ruling 2026-09-17, live walk: "massive more plants... choked with
          grass. Barely any bare ground." Density raised 0.85 -> 1.15 and local
