@@ -20,15 +20,20 @@ status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all
    ArgumentNullException through RimWorld.BiomeDef.CommonalityOfAnimal and no
    "Could not resolve cross-reference: No Verse.PawnKindDef named ... to give to
    RimWorld.BiomeAnimalRecord"
-2. [B] generate a fresh RM_FE_Pyrelands map, save it; per-map plant census of the
-   save (iterparse `<thing>` defs per `<maps>/<li>`) → every plant def present is
-   on the biome's own roster; foreign plant defs number ZERO. (Instrument and
-   2026-09-17 baseline: Transient/pyre-census method — measured 78% foreign
-   plants, 45 alien defs led by GRim*/TreePalma/Areebian*/AB_* before the fix.)
+2. [B] generate a fresh RM_FE_Pyrelands map ON A TILE WHOSE NEIGHBOURS ARE ALSO
+   RM_FE_Pyrelands (⚠️ Odyssey blends NEIGHBOUR biomes into a map's edge zones,
+   so a lone re-tiled scratch tile censuses as contaminated when it is not —
+   measured 2026-09-17: 78% foreign plants, 45 alien defs led by
+   GRim*/TreePalma/Areebian*, regionally zoned, on a tile ringed by GRiNDTerra
+   biomes; the campaign's 222-tile regions have interior tiles). Save it;
+   per-map plant census of the save (iterparse `<thing>` defs, keyed by the
+   record's own `<map>` field) → every plant def present is on the biome's own
+   roster; foreign plant defs number ZERO.
 3. [B] same save, pawn-kind census of wild (factionless) pawns → every kind is in
    the live wildAnimals list of RM_FE_Pyrelands (jawa/get_def read-back at run
-   time, not a doc); foreign wild kinds number ZERO. (2026-09-17 baseline:
-   RSW_Bantha ×7, GRimCobra ×2, Squirrel ×2, Turkey ×1 present wrongly.)
+   time, not a doc); foreign wild kinds number ZERO. Same interior-tile rule as
+   step 2. (2026-09-17 lone-tile baseline: RSW_Bantha ×7, GRimCobra ×2,
+   Squirrel ×2, Turkey ×1 present.)
 4. [D] def read-back: RM_FE_Pyrelands wildAnimals resolves every key to a live
    PawnKindDef (no null keys); entries for kinds from optional mods carry
    MayRequire on the keyed element (never on a patch Operation — inert).
