@@ -635,6 +635,26 @@ def cmd_reopen(paths, reason):
     return 0
 
 
+def orphaned(rel):
+    """The entry names no reviewable file: deleted, moved away, or left behind
+    by a case-only rename. One predicate for prune's scan, prune's under-lock
+    re-test AND list's tally — the scan and the re-test briefly disagreed and
+    prune --apply printed "dropped" for a case-rename phantom while removing
+    nothing (review 2026-09-09)."""
+    return (proven_gone(rel)
+            or not exact_case_isfile(rel))  # drvfs: a case-renamed spelling
+                                            # "exists" but is a phantom
+
+
+def orphan_reason(rel):
+    ap = os.path.join(ROOT, rel)
+    if os.path.isdir(ap):
+        return "path is now a directory"
+    if os.path.isfile(ap):
+        return "case-renamed phantom — the bytes exist under another spelling"
+    return "no longer exists on disk"
+
+
 def cmd_prune(apply):
     """Drop entries whose path no longer exists on disk AT ALL - a file that was
     deleted or `git mv`'d to a new path with no entry ever written for the new
@@ -650,22 +670,7 @@ def cmd_prune(apply):
     rename fix belongs at the NEW path via mark-clean, not here) - it does not
     try to guess where content moved to.
     """
-    def _orphaned(rel):
-        # One predicate for the scan AND the under-lock re-test — the two
-        # briefly disagreed and prune --apply printed "dropped" for a
-        # case-rename phantom while removing nothing (review 2026-09-09).
-        return (proven_gone(rel)
-                or not exact_case_isfile(rel))  # drvfs: a case-renamed
-                                                # spelling "exists" but is
-                                                # a phantom
-
-    def _why(rel):
-        ap = os.path.join(ROOT, rel)
-        if os.path.isdir(ap):
-            return "path is now a directory"
-        if os.path.isfile(ap):
-            return "case-renamed phantom — the bytes exist under another spelling"
-        return "no longer exists on disk"
+    _orphaned, _why = orphaned, orphan_reason
 
     data = load()
     orphans = [rel for rel in data if _orphaned(rel)]
@@ -733,15 +738,27 @@ def find_untracked(data):
 
 def cmd_list(show_untracked=False):
     data = load()
+    tally = {"CLEAN": 0, "DIRTY": 0, "ORPHANED": 0}
     if not data:
         print("(empty — nothing has ever been marked clean)")
     else:
         for rel in sorted(data):
             entry = data[rel]
             state, detail = clean_state(rel, entry)
-            # The real reason, not a hardcoded one: "no recorded hash", "file
-            # no longer exists" and "content changed" need different remedies.
-            label = state if state == "CLEAN" else f"DIRTY ({detail})"
+            # An entry naming no reviewable file is NOT dirty code: there is
+            # nothing to review, and its remedy is `prune`, not reviewer time.
+            # Folded together, 97 orphans made a 130-file backlog read as 227
+            # (DETERMINISM_ASSESSMENT.md C7) — so they are counted apart, and
+            # `orphaned()` is the same predicate prune drops on.
+            if state == "CLEAN":
+                label, bucket = state, "CLEAN"
+            elif orphaned(rel):
+                label, bucket = f"ORPHANED ({detail})", "ORPHANED"
+            else:
+                # The real reason, not a hardcoded one: "no recorded hash" and
+                # "content changed" need different remedies.
+                label, bucket = f"DIRTY ({detail})", "DIRTY"
+            tally[bucket] += 1
             cc = entry.get("cleanCount", 1)
             streak = f"  [x{cc}]" if cc > 1 else ""
             print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
@@ -760,6 +777,12 @@ def cmd_list(show_untracked=False):
                   "because no entry has ever been written for them:")
             for rel in untracked:
                 print(f"  {rel}")
+        if untracked:
+            tally["NEVER ENTERED"] = len(untracked)
+    print("\nTALLY  " + "  ".join(f"{k} {v}" for k, v in tally.items()))
+    print("  review debt is DIRTY + NEVER ENTERED. ORPHANED is not reviewable at "
+          "all — its remedy is `prune`, and counting it as debt overstates the "
+          "backlog (97 of 227 on 2026-09-17).")
     return 0
 
 

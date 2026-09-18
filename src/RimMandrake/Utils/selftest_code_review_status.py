@@ -43,6 +43,8 @@ hash):
  11. git()'s timeout path returns a failed CompletedProcess rather than
      raising — a hung/contended git call must degrade, never hang the caller.
 """
+import contextlib
+import io
 import os
 import shutil
 import subprocess
@@ -201,6 +203,30 @@ os.remove(os.path.join(TMP, "gone.xml"))
 rc = run("prune")  # no --apply: report only
 eq(rc, 0, "prune (dry run) exits 0")
 eq("gone.xml" in CRS.load(), True, "prune without --apply does not remove anything")
+
+# ---- 9b. `list` counts an unreviewable path apart from real review debt ----
+# 97 such orphans made a 130-file backlog read as 227 (DETERMINISM_ASSESSMENT
+# C7), so anyone planning review capacity off the DIRTY number was planning
+# against a figure 75% too big in its most alarming component.
+_buf = io.StringIO()
+with contextlib.redirect_stdout(_buf):
+    run("list")
+_out = _buf.getvalue()
+_gone_line = [l for l in _out.splitlines() if "gone.xml" in l]
+eq(len(_gone_line), 1, "list prints one line for the deleted path's entry")
+eq(_gone_line[0].startswith("ORPHANED"), True,
+   "a deleted path is ORPHANED, not DIRTY — there is nothing there to review")
+_tally = [l for l in _out.splitlines() if l.startswith("TALLY")]
+eq(len(_tally), 1, "list prints exactly one TALLY line")
+# Asserted against the labels the same run printed, not against fixture-specific
+# numbers: the tally is only trustworthy if it cannot disagree with the report
+# above it, and an orphan must never be counted as review debt.
+_labelled = {b: len([l for l in _out.splitlines() if l.startswith(b)])
+             for b in ("CLEAN", "DIRTY", "ORPHANED")}
+for _b, _n in _labelled.items():
+    eq(f"{_b} {_n}" in _tally[0], True,
+       f"the TALLY's {_b} count agrees with the {_n} line(s) it labelled {_b}")
+eq(_labelled["ORPHANED"] >= 1, True, "the deleted path is counted among the ORPHANED")
 
 rc = run("prune", "--apply")
 eq(rc, 0, "prune --apply exits 0")
