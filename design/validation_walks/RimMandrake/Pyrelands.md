@@ -58,3 +58,22 @@ distributions."*
 - [ ] `pyre_animal_distribution_correct` — the wild animals on a Pyrelands map
       are the biome's wildAnimals roster; no foreign kinds wander in through
       other mods' biome-blind spawn patches.
+
+**The fire ecology**
+- [ ] `pyre_ground_ash_ladder` — the ground reads as the scorchable family with
+      real ash states after burns (trace through deep), not stock desert ground.
+- [ ] `pyre_grass_chokes_ground` — ember/quick grass carpets unburned soil
+      densely; no bare-dirt expanses where grass should carry the ground.
+- [ ] `pyre_embergrass_regrows` — a burned patch re-greens within days; the
+      burn-and-regrow cycle is readable in ordinary play, not just in defs.
+- [ ] `pyre_scorchfruit_produces` — scorch-fruit plants bear a harvestable
+      yield a colonist can actually pick and eat.
+- [ ] `pyre_scorchfruit_spoils_fast` — that yield visibly spoils within days
+      (faster still on the plant) — eat-or-lose pressure, no walking a
+      stockpile out of the biome.
+- [ ] `pyre_ashfall_darkens_drifts` — ash fall dims the map and lays visible
+      loose-ash drifts that accumulate while it lasts.
+- [ ] `pyre_cinderfall_distinct` — cinderfall reads as its own weather at a
+      glance, not ash fall renamed.
+- [ ] `pyre_blackrain_reads` — black rain reads as black rain, visually its own
+      event among the biome's weathers.
