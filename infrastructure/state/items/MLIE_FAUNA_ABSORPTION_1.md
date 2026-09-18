@@ -797,3 +797,121 @@ Commit: `de99b5f8a`.
 
 **Remaining**: 71 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), plus Fambaa.
+
+## 2026-09-17 (FOUNDRY, belt mode) — Pass 8: 3 more species ported: FeralNerf, Nerf, FrilledGorg (71 -> 68 remaining)
+
+Both bodies stay vanilla Core — `QuadrupedAnimalWithHoovesAndHorn` for
+FeralNerf/Nerf (already used by `RSW_FeralGrazer`, Pass 7) and
+`QuadrupedAnimalWithClawsTailAndJowl` for FrilledGorg (already confirmed
+vanilla for `RSW_Bolotaur`) — no BodyDef ports needed.
+
+**Cross-reference resolved, closing a loop Pass 7 flagged**: `RSW_
+FeralGrazer`'s `canCrossBreedWith` (`Grazer`, `FeralNerf`, `Nerf`) had
+`FeralNerf`/`Nerf` left bare pending their own ports. Both are ported this
+pass, so `RSW_FeralGrazer.xml` and the two new defs now all cross-reference
+each other correctly (`RSW_FeralNerf`/`RSW_Nerf`). `Grazer` stays bare in
+all three defs — its donor ThingDef exists but has no row in
+`cast_assignment.csv`, so it's out of this item's Wave C worklist scope
+entirely (not merely "not yet ported").
+
+**Resources**: `RSW_WoolNerf` (donor `WoolNerf`, reuses the SAME
+already-extracted art as `RSW_WoolCoarse` — `swresource/Leather_Wool/
+Leather_Wool`, no new PNG), `RSW_NerfHorn` (donor `NerfHorn`, Nerf's elder-
+stage `butcherBodyPart` trophy, new art, same `ResourceVerbBase` shape as
+`RSW_BanthaHorn`), `RSW_EggFrilledGorgFertilized`/`UnFertilized` (new art,
+texPath `swresource/EggPod`). FeralNerf/Nerf both repoint leatherDef/
+specificMeatDef to the already-ported `RSW_Leather_Nerf`/`RSW_Nerf_Meat`
+(Pass 7); FrilledGorg's leatherDef stays vanilla Core `Leather_Lizard`
+(same as Fanback's) and its specificMeatDef repoints to the already-ported
+`RSW_Gorg_Meat` (Pass 7, Fanback).
+
+🔴 **Real bug found and fixed, not just flagged**: Pass 7's `RSW_Nerf_Meat`/
+`RSW_Gorg_Meat` (`RSW_MlieWaveC_Resources.xml`) were authored with
+`ParentName="SWanimals_RawMeatBase"` — the DONOR's own bare abstract, no
+RSW_ prefix — instead of our own ported `RSW_SWanimals_RawMeatBase`
+(defined in `RSW_Bantha_Items.xml`, the parent every other meat ThingDef
+in that file correctly uses). Both resolved silently and `validate_patch.py`
+reported clean, because `mlie.starwarsanimalcollection` stays active and
+its own bare abstract is still in scope — but it's the wrong parent for
+anything meant to survive donor retirement. Fixed in both this pass, per
+"inaccurate material is deleted, not superseded-in-place".
+
+🔴 **Donor-bundle asset-naming bug found and worked around**: FrilledGorg's
+`alternateGraphics` recolor-A east-facing texture is misnamed
+`FrilledGorgAA_east` (doubled A) inside the AssetBundle instead of the
+`FrilledGorgA_east` its own PawnKindDef expects (matching the existing
+`FrilledGorgA_north`/`_south`). Confirmed via `extract_bundle.py` list mode
+— 256x256, same style/size as every other frame in the set, clearly the
+intended asset. Extracted and shipped as `FrilledGorgA_east.png` at the
+texPath the def actually expects — the donor's own asset, correctly
+placed. Not something to fix upstream (Mlie is being retired); flagged in
+the def's own header in case a full defName sweep turns up more of this
+pattern elsewhere in the bundle.
+
+**Infra note for whoever next reaches for the donor's raw art**:
+`vendor/mod_sources/StarWarsAnimalCollection_src`'s AssetBundle is
+STALE/TRUNCATED — 4.6MB on disk vs the live Steam workshop copy's 33.5MB —
+and fails to parse in UnityPy (`Decompression failed: corrupt input`).
+Used the live workshop bundle instead (workshop folder `3497316713` under
+Steam's `steamapps/workshop/content/294100/`), same one every prior pass
+implicitly used. The donor's own Defs XML on disk under `vendor/
+mod_sources` is fine (flat XML, not a bundle) — only the AssetBundle copy
+there is bad.
+
+**Art-override check widened**: verified against the FULL
+`src/RimStarWars/*ArtOverride` folder listing (~26 mods present), not just
+the 6 species Pass 6's note named. That note's list was incomplete —
+`Gizka`, `Grank`, `GreaterKraytDragon`, `Hawkbat`, `Kinrath`, `Ollopom`,
+`Orray`, `PekoPeko`, `Shiro`, `Vornskyr`, `Whisperbird`, `Wyyyschokk`,
+`Zeer` also have their own override mods and all remain in the Wave C
+worklist. None of this pass's 3 species collide. Flagged for every future
+pass: check the full folder listing each time (`find src/RimStarWars
+-maxdepth 1 -iname "*ArtOverride*"`), never a remembered short list.
+
+Art: 59 PNGs extracted via `extract_bundle.py` against the live bundle
+(FeralNerf 4, Nerf 20 including 9 CutoutComplex recolor masks — the
+`_northm`/`_eastm`/`_southm` files paired with Nerf_j/Nerf_m/Nerf_f, needed
+for the PawnKindDef's 7-color `alternateGraphics` tinting to actually
+render, not just to avoid an error — FrilledGorg 32 including the renamed
+`FrilledGorgAA_east` fix, EggPod 2, NerfHorn 1), all confirmed non-zero and
+PIL-openable before wiring in. Excluded as unreferenced by any def (same
+precedent as Falumpaset's excluded "Pack" variants, Pass 7): NerfPack/
+NerfWPack/Nerf_jPack/Nerf_mPack/Nerf_fPack and the separate NerfW/NerfW_m
+set — none of these texPaths appear in the donor's Nerf ThingDef/
+PawnKindDef.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`**: `AridShrubland` (`RSW_FeralNerf`
+0.04, `RSW_FrilledGorg` 1.0), `Desert` (`RSW_Nerf` 0.2, `RSW_FrilledGorg`
+0.2) — renamed in place from the bare donor entries, same pattern as every
+prior wave. Both species' worklist biome claims cross-checked against
+`cast_assignment.csv` and found CORRECT this pass — no repeat of Pass 7's
+Fanback staleness. Checked all 3 Mlie-touching patch files named in this
+item's own spec (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — no
+references to FeralNerf/Nerf/FrilledGorg/NerfHorn in any of them.
+
+**Validated**: `validate_patch.py` against the newest available capture
+(`2026-09-18T00-29-58Z`, 633 mods) — 0 errors, 0 warnings on all 5
+authored/touched def files (`RSW_FeralNerf.xml`, `RSW_Nerf.xml`,
+`RSW_FrilledGorg.xml`, `RSW_FeralGrazer.xml`, `RSW_MlieWaveC_Resources.xml`).
+Both `BiomeCast_Ashkarr.xml` copies checked separately: 0 new mentions of
+the 3 species in any error or warning; the deployed copy's 1 pre-existing
+warning matches the documented baseline.
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated (commit
+`32e8d6ca9`): FeralNerf/Nerf/FrilledGorg removed from `remaining_worklist`,
+count 71 -> 68, recorded under a new
+`ported_and_wired_this_pass_2026-09-17_batch8` key.
+
+**Not done this pass**: no deploy (offline authoring only, scoped to 3
+species to keep the batch reviewable, same as every prior sub-pass) —
+deploy + cold-load proof still owed to the next natural restart. Fambaa's
+ArtOverride-gated port still not attempted — still first in the worklist,
+needs its own careful pass reading `FambaaArtOverride/About/About.xml` for
+its exact covered facings before touching it.
+
+Commit: `7e302ad7a` (defs/art/cast wiring), `32e8d6ca9` (worklist).
+
+**Remaining**: 68 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`), plus Fambaa.
