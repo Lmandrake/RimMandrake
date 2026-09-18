@@ -192,10 +192,14 @@ and compat folders for 14 other mods plus all five DLCs.
 `BMT_FungalForest` **425 tiles** = **1,003 of 21,872 tiles (4.6 % of the frozen world)**,
 and one settlement sits on `BMT_FungalForest`.
 
-🔴 **Blocker: the shipped ideoligion references it.** `src/Jawa/ideoligion/The Salvation.rid`
-— the campaign's saved religion — contains the precept **`BMT_FungusEating_DontCare`**.
-A `.rid` holding a dead defName cannot be repaired by removing the mod; it is exactly the
-`Could not load reference to` class of failure.
+✅ **The ideoligion reference is CLEARED** (CAVERNS_PARITY_BUILD_1 ruling 4, 2026-09-18).
+`src/Jawa/ideoligion/The Salvation.rid` now names **`RUT_FungusEating_DontCare`** — our own
+twin, shipped by `mandrake.rut.patches` at
+`src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_FungusEating.xml`, field-for-field equal
+to the donor's per the live dump. The ISSUE (`FungusEating`) is vanilla Ideology and needed
+no twin. Still owed before the donor may be cut: deploy the def, load the game, re-take the
+dump, and re-run `validate_save_artifact.py` on the `.rid`; and the baked `Ideo` inside the
+canonical save carries the old defName until it is swapped there too.
 
 **Flora coupling.** `BiomeFlora_Ashkarr.xml` uses **92 of Caverns' 99 plant defs** (the
 file's 131 `BMT_` entries are 92 Caverns + 39 Polluted Lands), carrying
@@ -336,8 +340,8 @@ Jurassic makes it **122 MB** and 4 mods.
 **Biomes! Caverns** — retiring it would delete:
 - **`BMT_CrystalCaverns` (578 tiles) and `BMT_FungalForest` (425 tiles) — 1,003 tiles,
   4.6 % of the frozen planet**, plus a settlement on the Fungal Forest.
-- **The precept `BMT_FungusEating_DontCare` inside the shipped ideoligion**
-  `src/Jawa/ideoligion/The Salvation.rid`. A `.rid` cannot be repaired by removing a mod.
+- ~~The precept `BMT_FungusEating_DontCare` inside the shipped ideoligion~~ — **no longer a
+  cost.** The `.rid` names our own `RUT_FungusEating_DontCare` since 2026-09-18.
 - **92 of its 99 plant defs** in the authored flora — 62 of the 69 in Fungal Forest, 20 of 42 in
   Crystal Caverns, **17 of 44 in `Wasteland` (1,699 tiles)**, 13 of 35 in `PoisonForest`.
 - 4 Geological Landforms landform definitions, 13 terrains, 3 GenSteps, 13 incidents
@@ -362,7 +366,7 @@ Jurassic makes it **122 MB** and 4 mods.
 | blocker | affects | fix |
 |---|---|---|
 | 🔴 `src/RimStarWars/SeasWaterline/About/About.xml` declares a **hard `<modDependencies>`** on `biomesteam.biomespollutedlands` **and** `mlie.beastsoftherim` | Beasts of the Rim (retiring), Polluted Lands (keeping) | Edit our own About.xml before retiring Beasts of the Rim; re-home the `Megasquid` lane in `Waterline_Lane1.xml` |
-| 🔴 `The Salvation.rid` holds the precept `BMT_FungusEating_DontCare` | Biomes! Caverns | Not fixable by removal — this alone forecloses retiring Caverns |
+| ✅ ~~`The Salvation.rid` holds the precept `BMT_FungusEating_DontCare`~~ | Biomes! Caverns | **CLEARED 2026-09-18** — swapped to our own `RUT_FungusEating_DontCare` (`mandrake.rut.patches`). Owed: deploy + game load + re-take dump + re-validate; and the same swap inside the baked `Ideo` of the canonical save |
 | 🔴 1,003 planet tiles on `BMT_CrystalCaverns`/`BMT_FungalForest` and 191 on `BiomeCypreJungle` | Caverns, GRiNDTerra | Not fixable — the world is frozen and hand-authored |
 | ⚠️ `Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml` targets `BMT_CrystalsGenerator` **un-gated** | Biomes! Caverns | Moot while Caverns is kept; wrap in `PatchOperationFindMod` if that ever changes |
 

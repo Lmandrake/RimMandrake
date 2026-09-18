@@ -105,6 +105,16 @@ PRECEPT_SWAPS: list[tuple[str, str, str]] = [
     # MODERATE. "walk, burrow, pry, carry, flee, endure" (:335). Mood-only, so
     # it does not violate the no-work-multiplier pillar.
     ("dumb labor", "VME_DumbLabor_Indifferent", "VME_DumbLabor_Exalted"),
+    # DONOR-FREEDOM, not doctrine. CAVERNS_PARITY_BUILD_1 ruling 4, 2026-09-18.
+    # BMT_FungusEating_DontCare is owned by Biomes! Caverns
+    # (biomesteam.biomescaverns), a donor on the cut path; a .rid holding a
+    # defName no installed mod defines fails at Scribe load and no mod change
+    # repairs it. RUT_FungusEating_DontCare is our own twin, field-for-field
+    # equal per the live dump, shipped by mandrake.rut.patches at
+    # src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_FungusEating.xml. The
+    # ISSUE (FungusEating) is vanilla Ideology and needed no twin. The doctrine
+    # is unchanged — this is the same neutral position under our own name.
+    ("fungus", "BMT_FungusEating_DontCare", "RUT_FungusEating_DontCare"),
 ]
 
 # Precepts ADDED on issues the ideo held no position on at all. This is where

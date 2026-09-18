@@ -125,7 +125,7 @@ makes one and a half.** Creature survival was never why three of them were insta
 | Beasts of the Rim | ✅ retire after ONE edit | **our own** `SeasWaterline/About.xml` hard-depends on it; re-home its Megasquid lane |
 | Megafauna | ✅ retire, cleanup only | dead groups in `MegafaunaYield.xml` + 4 patches + a loadAfter; every reference is conditional so nothing breaks if cleanup slips |
 | GRiNDTerra Biomes | 🔴 **KEEP** | ships **15 biomes, 123 terrains, 117 plants**, and its DLL holds 15 `BiomeWorker_*` subclasses (one per biome, wired by bare `<workerClass>`) — there is no XML-only version of it |
-| Biomes! Caverns | 🔴 **KEEP, decisively** | **1,003 planet tiles** sit on its biomes, and `The Salvation.rid` — our shipped ideoligion — holds its precept `BMT_FungusEating_DontCare`. Not fixable by removal. |
+| Biomes! Caverns | 🔴 **KEEP, decisively** | **1,003 planet tiles** sit on its biomes — the world is frozen and hand-authored, so that alone holds. (The ideoligion no longer does: `The Salvation.rid` names our own `RUT_FungusEating_DontCare` since 2026-09-18.) |
 | Biomes! Polluted Lands | **KEEP** | 40 plants, 18 genes, a faction, and our own SeasWaterline fish |
 | Jurassic (Dinosaurs Only) | ⏳ retire after absorbing 5 | Segnosaurus + 4; no world content at stake |
 
