@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T03:33:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T03:38:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,3 +521,13 @@ kind:     decide
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ENVHAZARDS_NEVER_ACTIVATED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ENVHAZARDS_NEVER_ACTIVATED_1.md
+
+## PYRELANDS_DENSITY_TRIPLE_1 Pyrelands plantDensity tripled to 3.0 with a C# enforcer — DLL deploy + live verification owed at next shutdown/load
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_DENSITY_TRIPLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_DENSITY_TRIPLE_1.md
