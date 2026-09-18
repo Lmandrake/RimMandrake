@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 11 — Jimvu creature port.
+  Ported from mlie.starwarsanimalcollection's `Jimvu` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: `race/body` points at the donor's own `Jimvu` BodyDef —
+  defName-rename-only port (RSW_Jimvu, RSW_MlieWaveC_Bodies.xml), a
+  6-legged (hexapod) plan built entirely from vanilla Core parts (Tail,
+  Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/Skull/Brain/
+  Eye x2/Ear x2/Nose/AnimalJaw, 6x Leg/Paw) — same as the already-confirmed
+  Anooba/Borcatu precedent, no custom BodyPartDef needed.
+
+  `leatherDef` stays vanilla Core `Leather_Plain`. `specificMeatDef`
+  repoints to the already-ported `RSW_Reptomammal_Meat`
+  (RSW_MlieWaveB_Resources.xml, same as Iriaz) — **no new resource needed
+  at all this species**.
+
+  Sounds repoint to the already-absorbed sound wave (`RSW_Pawn_Jimvu_*`,
+  2026-09-02). texPaths are unchanged text — extracted art sits at
+  Textures/swanimals/Jimvu/ (extract_bundle.py against the same live Steam
+  workshop bundle every prior wave used). No `*ArtOverride` mod exists for
+  Jimvu (checked against the full current ~26-mod `*ArtOverride` folder
+  listing before porting).
+
+  Wired into the live cast this same pass: Desert (0.3), per
+  cast_assignment.csv's current row, repointed from the bare "Jimvu" entry
+  in cast_assignment.csv / BiomeCast_Ashkarr.xml (both the design and
+  deployed copies).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Jimvu</defName>
+    <label>jimvu</label>
+    <description>The jimvu were native to the grasslands of the planet Naboo. The jimvu was an agile, six-legged, ungulate-like reptile whose best defense was its swiftness. Their main predators were the veermok and narglatch. They were exported as a prey species on various worlds where typically large predators where hunted for sport.</description>
+    <statBases>
+      <MoveSpeed>6.0</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.35</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Jimvu</body>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.50</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <herdAnimal>true</herdAnimal>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <roamMtbDays>4</roamMtbDays>
+      <manhunterOnDamageChance>0.30</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.6</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.01</TropicalSwamp>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(1.0, 0)</li>
+          <li>(2.0, 1)</li>
+          <li>(3.0, 0.5)</li>
+          <li>(4.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>30</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Jimvu_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Jimvu_Death</soundDeath>
+          <soundCall>RSW_Pawn_Jimvu_Call</soundCall>
+          <soundAngry>RSW_Pawn_Jimvu_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Jimvu</defName>
+    <label>jimvu</label>
+    <race>RSW_Jimvu</race>
+    <labelMale>jimvu buck</labelMale>
+    <labelFemale>jimvu doe</labelFemale>
+    <combatPower>75</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>jimvu faun</label>
+        <labelPlural>jimvu fauns</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jimvu/Jimvu_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

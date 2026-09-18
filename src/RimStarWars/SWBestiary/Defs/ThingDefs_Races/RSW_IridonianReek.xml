@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 11 — IridonianReek creature port.
+  Ported from mlie.starwarsanimalcollection's `IridonianReek` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: `race/body` points at the donor's `Reek` BodyDef — a shared body
+  PLAN, not the separate (and unported, absent from the live cast per the
+  2026-09-09 sweep) `Reek` species — ported here as `RSW_Reek`
+  (RSW_MlieWaveC_Bodies.xml), repointing its 3 horn parts to the
+  ALREADY-PORTED Wave B `RSW_SW_LeftHorn`/`RSW_SW_RightHorn`/
+  `RSW_SW_FrontHorn` and `RSW_SWHornAttackTool` group.
+
+  `leatherDef` repoints to the already-ported `RSW_Leather_Tough`
+  (RSW_MlieWaveC_Resources.xml, Pass 3/Borcatu). `specificMeatDef` repoints
+  to the already-ported `RSW_Tough_Meat` (RSW_MlieWaveB_Resources.xml) — same
+  donor `Tough_Meat` resource, both share the donor's `swresource/Meat_Tough`
+  art. No new resource needed this species.
+
+  `canCrossBreedWith` (`Reek`, `IthorianReek`) left pointing at the donor's
+  still-bare, still-unported defNames — correct while Mlie stays active and
+  neither is in this item's own worklist (Reek dropped from the live cast;
+  IthorianReek was never cast-referenced at all). Flagged per the
+  FeralGrazer/Pass 7 precedent for whoever next touches either name.
+
+  Sounds repoint to the already-absorbed sound wave: the adult stage uses
+  `RSW_Pawn_Reek_*` (NOT `RSW_Pawn_IridonianReek_*` — confirmed against the
+  donor's own XML that IridonianReek deliberately reuses plain Reek's sound
+  clips, same as the already-documented Sarlacc-ambient/FrilledGorg-reuses-
+  Gorg precedent), the baby stage uses `RSW_Pawn_ReekBaby_*`.
+
+  Art: the donor's own PawnKindDef reuses plain Reek's calf and dessicated
+  textures (`swanimals/Reek/Reek_j*`, `swanimals/Reek/Reek_Dessicated`) for
+  every life stage EXCEPT the adult's living graphic, which uses its own
+  `swanimals/IridonianReek/IridonianReek` — extracted verbatim via
+  extract_bundle.py against the same live Steam workshop bundle (folder
+  3497316713) every prior wave used; texPaths are unchanged text. No
+  `*ArtOverride` mod exists for IridonianReek or Reek (checked against the
+  full current ~26-mod `*ArtOverride` folder listing before porting, per the
+  Dragonsnake/Anooba art-collision trap).
+
+  Wired into the live cast this same pass: Desert (0.3), per
+  cast_assignment.csv's current row, repointed from the bare "IridonianReek"
+  entry in cast_assignment.csv / BiomeCast_Ashkarr.xml (both the design and
+  deployed copies).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_IridonianReek</defName>
+    <label>iridonian reek</label>
+    <description>Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The Iridonian Reek was bred as a 'war mount' by the Iridonian Zabraks. Instead of giving them a meat diet, the Iridonian reeks were given a natural diet consisting of plant matter to keep them fierce and strong with natural vigor, which also turned a reek's skin gray. Adapted to Iridonia, their skin could resist sharp and blunt weapon attacks during battle. The Iridonian reek's horns were much sharper and longer than those of other reeks.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.14</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.14</ArmorRating_Sharp>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <MarketValue>1750</MarketValue>
+      <Wildness>0.90</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>front left hoof</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front right hoof</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Reek</body>
+      <herdAnimal>true</herdAnimal>
+      <baseHungerRate>1.5</baseHungerRate>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>4.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>45</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <leatherDef>RSW_Leather_Tough</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>Reek</li>
+        <li>IthorianReek</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.2</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundCall>RSW_Pawn_ReekBaby_Call</soundCall>
+          <soundAngry>RSW_Pawn_ReekBaby_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_ReekBaby_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_ReekBaby_Death</soundDeath>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundCall>RSW_Pawn_Reek_Call</soundCall>
+          <soundAngry>RSW_Pawn_Reek_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Reek_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Reek_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_IridonianReek</defName>
+    <label>iridonian reek</label>
+    <race>RSW_IridonianReek</race>
+    <combatPower>425</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>2~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>reek calf</label>
+        <labelPlural>reek calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Reek/Reek_j</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Reek/Reek_j_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/IridonianReek/IridonianReek</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Reek/Reek_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/IridonianReek/IridonianReek</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Reek/Reek_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

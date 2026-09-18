@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 11 — Jakobeast creature port.
+  Ported from mlie.starwarsanimalcollection's `Jakobeast` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: `race/body` points at the donor's own `Jakobeast` BodyDef —
+  defName-rename-only port (RSW_Jakobeast, RSW_MlieWaveC_Bodies.xml). Its
+  Horn part's bare `HornAttackTool` group is vanilla Core (distinct from the
+  SW-prefixed `SWHornAttackTool` IridonianReek/Boma use); its 2 Tusk parts'
+  `TuskAttackTool` group is Alpha Animals (`sarg.alphaanimals`, confirmed via
+  the frozen def dump per the Boma/Pass 9 correction) — both left bare
+  exactly as the donor leaves them, no MayRequire gate either way.
+
+  `leatherDef` needed a new port: `RSW_Leather_Bright`
+  (RSW_MlieWaveC_Resources.xml) — reuses ALREADY-extracted art
+  (`swresource/Leather_Fur`, present on disk from an earlier wave's port of
+  a different resource sharing the same donor texture). `specificMeatDef`
+  needed a new port too: `RSW_Felinoid_Meat` (new art, `Meat_Felinoid_a/b/c`,
+  extracted this pass). Its adult life stage also carries a
+  `butcherBodyPart` trophy — `RSW_JakobeastHorn` (new port, new art,
+  `swresource/Trophies/JakobeastHorn`), `bodyPartGroup="HornAttackTool"`
+  matching the bare vanilla group its own Horn tool uses.
+
+  Sounds repoint to the already-absorbed sound wave (`RSW_Pawn_Jakobeast_*`,
+  2026-09-02). No `*ArtOverride` mod exists for Jakobeast (checked against
+  the full current ~26-mod `*ArtOverride` folder listing before porting).
+
+  Wired into the live cast this same pass: Desert (0.2), per
+  cast_assignment.csv's current row, repointed from the bare "Jakobeast"
+  entry in cast_assignment.csv / BiomeCast_Ashkarr.xml (both the design and
+  deployed copies).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Jakobeast</defName>
+    <label>jakobeast</label>
+    <description>Jakobeasts were polar herd animals found in the tundras of icy planets in the Outer Rim. Jakobeasts were domesticated primarily for their meat, milk, and fur. While excellent livestock, they were ill-suited to serve as mounts, guards, or attack animals. . Jakobeasts were introduced by colonists that sought herd animals capable of defending themselves. As a result of the settlers' efforts, the creatures spread to hundreds of worlds, occasionally surviving long after the settlers themselves had vanished into history. Wild jakobeasts were hunted for their horns, which supposedly possess mysterious properties.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-80</ComfyTemperatureMin>
+      <ComfyTemperatureMax>35</ComfyTemperatureMax>
+      <MarketValue>800</MarketValue>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>1</milkIntervalDays>
+        <milkAmount>15</milkAmount>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>left tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Jakobeast</body>
+      <baseHungerRate>0.9</baseHungerRate>
+      <baseBodySize>2.6</baseBodySize>
+      <baseHealthScale>6.0</baseHealthScale>
+      <herdAnimal>true</herdAnimal>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>75</lifeExpectancy>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>RSW_Leather_Bright</leatherDef>
+      <specificMeatDef>RSW_Felinoid_Meat</specificMeatDef>
+      <nuzzleMtbHours>60</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_ForcePush</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.8</BorealForest>
+        <Tundra>0.8</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.04</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Jakobeast_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Jakobeast_Death</soundDeath>
+          <soundCall>RSW_Pawn_Jakobeast_Call</soundCall>
+          <soundAngry>RSW_Pawn_Jakobeast_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Jakobeast</defName>
+    <label>jakobeast</label>
+    <race>RSW_Jakobeast</race>
+    <combatPower>375</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>3~9</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_ForcePush</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>jakobeast calf</label>
+        <labelPlural>jakobeast calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast_j</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Jakobeast/Jakobeast_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HornAttackTool</bodyPartGroup>
+          <thing>RSW_JakobeastHorn</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

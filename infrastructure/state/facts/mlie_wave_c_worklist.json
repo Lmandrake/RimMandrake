@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 60,
+  "remaining_worklist_count": 56,
   "remaining_worklist": [
     {
       "donor_defName": "Fambaa",
@@ -60,35 +60,6 @@
     },
     {
       "donor_defName": "Horax",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "IridonianReek",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Jakobeast",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Jamel",
-      "biomes": [
-        "Desert",
-        "ZBiome_DesertOasis"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Jimvu",
       "biomes": [
         "Desert"
       ],
@@ -569,6 +540,37 @@
       "donor_defName": "Igitz",
       "biomes": [
         "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch11": [
+    {
+      "donor_defName": "IridonianReek",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jakobeast",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jamel",
+      "biomes": [
+        "Desert",
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jimvu",
+      "biomes": [
+        "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     }

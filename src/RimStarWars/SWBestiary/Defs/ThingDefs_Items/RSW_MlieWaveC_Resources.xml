@@ -1077,4 +1077,121 @@
       <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
+
+  <!--
+    Pass 11 (2026-09-18): resources for IridonianReek/Jakobeast (Jamel/Jimvu
+    need none — both repoint to already-ported resources, see the def files
+    themselves). RSW_Leather_Bright's graphicData texPath (swresource/
+    Leather_Fur) is ALREADY on disk (Leather_Fur_a/b.png), extracted by an
+    earlier wave for a different resource that reused the same donor art —
+    confirmed present before reusing, no new PNG needed. RSW_Felinoid_Meat's
+    art (Meat_Felinoid_a/b/c.png) is newly extracted this pass. RSW_JakobeastHorn
+    is Jakobeast's own butcher-trophy resource (adult life stage
+    butcherBodyPart, bodyPartGroup=HornAttackTool — the bare vanilla group
+    Jakobeast's own Horn part uses, not the SW-prefixed one) — same
+    ParentName="ResourceVerbBase" pattern as RSW_BanthaHorn/RSW_MudhornSkull/
+    RSW_NerfHorn.
+  -->
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Bright</defName>
+    <label>bright fur</label>
+    <description>The pelt of an creature typically associated with the "lightside". This beautiful fur protects very well and is believed to increase ones "connection to the force".</description>
+    <graphicData>
+      <texPath>swresource/Leather_Fur</texPath>
+      <color>(250,250,225)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.8</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.8</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
+      <StuffPower_Insulation_Cold>35</StuffPower_Insulation_Cold>
+    </statBases>
+    <equippedStatOffsets>
+      <PsychicSensitivityOffset>0.20</PsychicSensitivityOffset>
+      <PsychicEntropyRecoveryRate MayRequire="Ludeon.RimWorld.Royalty">0.1</PsychicEntropyRecoveryRate>
+    </equippedStatOffsets>
+    <stuffProps>
+      <color>(250,250,225)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+        <Beauty>2.0</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Felinoid_Meat</defName>
+    <label>felinoid meat</label>
+    <description>A piece of meat from a felinoid.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Felinoid</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="ResourceVerbBase">
+    <defName>RSW_JakobeastHorn</defName>
+    <label>jakobeast horn</label>
+    <description>A horn from a Jakobeast. While somewhat unwieldy as a melee weapon, it is beautiful and sells for a decent price due to it's "mysterious properties".</description>
+    <graphicData>
+      <texPath>swresource/Trophies/JakobeastHorn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <equippedAngleOffset>20</equippedAngleOffset>
+    <equippedStatOffsets>
+      <PsychicSensitivityOffset MayRequire="Ludeon.RimWorld.Royalty">0.2</PsychicSensitivityOffset>
+      <PsychicEntropyRecoveryRate MayRequire="Ludeon.RimWorld.Royalty">0.2</PsychicEntropyRecoveryRate>
+    </equippedStatOffsets>
+    <statBases>
+      <MarketValue>750</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>2.0</Mass>
+      <Flammability>0.9</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>50.0</Beauty>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <weaponClasses>
+      <li>Melee</li>
+      <li>MeleePiercer</li>
+    </weaponClasses>
+    <tools>
+      <li>
+        <label>point</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+      <li>
+        <label>base</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>AnimalPart</li>
+    </thingSetMakerTags>
+  </ThingDef>
 </Defs>
