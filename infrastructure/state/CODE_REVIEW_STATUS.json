@@ -4398,22 +4398,22 @@
     "sha": "dad4e548"
   },
   "src/RimMandrake/RimProperty/Source/PropertySettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "8b842d126a38d3bf8b88e9f10a65f67b80171fb880f7850c981d2f7d3ec6a73b",
-    "sha": "311d90fc5"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "de7eb7a7cc2d3162f2b676e0045920a23b95379b20bdf9f768f221e9416b345f",
+    "sha": "9104d3024"
   },
   "src/RimMandrake/RimProperty/Source/PropertyTuning.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "e43e896a3b1089c1782dd9342b98a3ff9c50fbbf6bb6d92f9977cbb2ab924f60",
-    "sha": "ee8057a78"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "e7e74d7e513c8a44648673c7d7389a70420d3b562f3af931184152a11e7ad2a4",
+    "sha": "9104d3024"
   },
   "src/RimMandrake/RimProperty/Source/RM_Property.csproj": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "4c33e0aef833458048cbd91692d8019dfb3d3f9d327b8e2023c8b88ddf6513d4",
-    "sha": "ee8057a78"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "8b1015f3f10bffc07f11922ba738d14dc261ef9be3f9f209ad55929c9ae24df2",
+    "sha": "9104d3024"
   },
   "src/RimMandrake/RimProperty/Source/RecognizabilityUtility.cs": {
     "cleanCount": 1,
