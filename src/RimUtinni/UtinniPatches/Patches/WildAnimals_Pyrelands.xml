@@ -194,7 +194,16 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
-        <GR_Mantistanis>0.05</GR_Mantistanis>
+        <!-- MayRequire on the keyed element is load-bearing and honored at
+             def parse (same shape RUT_TheForge's AA_Aerofleet already uses).
+             GR_Mantistanis is NOT in VGE's base defs: VGE's loadFolders.xml
+             ships it from 1.6/Mods/Megafauna only IfModActive Spino.Megafauna
+             — absent from the live list, so without this gate the record
+             dangles (null PawnKindDef key) and kills GiddyUp's startup cache
+             AND GenStep_Animals on every Pyrelands map (MEASURED 2026-09-18,
+             the PYRELANDS_ANIMALS_GENSTEP_1 crash). FindMod(VGE) alone is NOT
+             sufficient for any GR_ kind that lives under Mods/Megafauna. -->
+        <GR_Mantistanis MayRequire="Spino.Megafauna">0.05</GR_Mantistanis>
         <GR_Boomsnake>0.5</GR_Boomsnake>
       </value>
     </match>
