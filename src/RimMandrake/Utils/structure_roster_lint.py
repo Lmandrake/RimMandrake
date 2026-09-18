@@ -66,7 +66,7 @@ PROMISES = [
     (8, "The Monument", "RUT", "monument", "done"),
     (9, "The Rakatan Trace", "RUT", "rakatan_trace", "done"),
     (10, "The Oasis Shrine", "RUT", "oasis_shrine", "done"),
-    (11, "The Kiln", "RUT", None, "todo"),  # RULED 2026-09-18 (owner): it is the sacred_sites_pass_1.md crater (5 dead-flat Wasteland tiles, Zizzik primary/Mob'Unloo secondary), not the roster's old "geothermal works, Ohm vs Sh'kaar, free power" text — that framing was wrong and structure_injection_roster.md #11 is corrected. No power mechanism needed: build as scorched-crater dressing (dead terrain, blast debris, no live structures) on the Wasteland biome-class read, not a TileMutatorDef-anchored template
+    (11, "The Kiln", "RUT", "kiln", "done"),  # built 2026-09-18: wholly NEW TileMutatorDef (RUT_Kiln, biomeWhitelist Wasteland, MayRequire Mlie.AdvancedBiomes "Advanced Biomes (Continued)" — Wasteland is NOT in RimSage's own index, confirmed real the harder way via a validate_patch.py PatchOperationConditional probe against the live 636-mod set: 1 hit, Biomes_Wasteland.xml), same "no adoption/anchor dependency" shape as RSW_DeadCrawler. kiln.lua: Gravel dead-flat ground, one centered CraterLarge (Core, 5x5, "a small pit formed by a powerful impact or explosion"), ChunkSlagSteel/Filth_RubbleBuilding/Filth_Ash blast debris densest near the crater. No power mechanism, no walls — "hazard/atmosphere only" per the owner's own ruling text
     (12, "The Hunting Lodge", "RSW", "hunting_lodge", "done"),
     (13, "The Toll Gap", "RUT", "toll_gap", "done"),
     (14, "The Dead Beacon", "RUT", "dead_beacon", "done"),

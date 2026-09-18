@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Kiln - structure_injection_roster.md PROMISE #11, RULED
+       2026-09-18 (owner, commit 70d98e9fa): a blast crater on the
+       Wasteland biome-class read (Advanced Biomes (Continued), packageId
+       Mlie.AdvancedBiomes), not the roster's earlier "geothermal works,
+       Ohm vs Sh'kaar, free power" framing - that text was wrong and is
+       dropped. Zizzik primary / Mob'Unloo secondary. No power mechanism;
+       hazard/atmosphere only.
+
+       ⚠️ Not placed on any Ash'karr tile - same deliberate deferral every
+       prior NEW promise mutator in this program has used: this proves the
+       engine end to end for one more roster row. Placement stays the
+       owner's hand. -->
+
+  <TileMutatorDef MayRequire="Mlie.AdvancedBiomes">
+    <defName>RUT_Kiln</defName>
+    <label>the kiln</label>
+    <description>Five tiles of dead flat ground inside otherwise ordinary sand, where a cargo manifest cleared by the people whose job was to clear it detonated an entire settlement. Nothing grows here. Work its margin, never its heart.</description>
+    <biomeWhitelist>
+      <li>Wasteland</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_Kiln</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

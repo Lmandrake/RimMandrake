@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Kiln - structure_injection_roster.md PROMISE #11. -->
+  <GenStepDef MayRequire="Mlie.AdvancedBiomes">
+    <defName>RUT_GenStep_Kiln</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/kiln.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>
