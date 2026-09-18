@@ -21,21 +21,22 @@ namespace RimMandrake.EnvironmentalHazards
     // RimWorld/KidnapAIUtility.cs's TryFindGoodKidnapVictim, filters
     // `pawn.RaceProps.Humanlike` at its own validator (line ~20) — it
     // cannot be reused for an animal target as written. Finding a
-    // thornbug to haul needs its own predicate (crib RimWorld/
-    // StealAIUtility.cs's targeting shape, generalized from stealable
-    // Things to downed tamed/wild animals in range), which is Lord/
-    // JobGiver work for the ants' LordJob, not this JobDriver — noted here
-    // so nobody assumes TryFindGoodKidnapVictim is the reusable piece.
+    // thornbug to haul now uses RM_HaulVictimAIUtility.TryFindGoodHaulVictim
+    // (WIRED this pass) — the same predicate shape generalized off a
+    // caller-supplied species filter instead of a hardcoded Humanlike
+    // check; this is Lord/JobGiver work for the ants' LordJob, not this
+    // JobDriver.
     //
     // SPIKE SCOPE: this proves the driver itself compiles and reuses the
     // confirmed FailOn/toil shape. NOT done here: the ants' hidden
-    // FactionDef XML, the LordJob/LordToil wiring that assigns this job
+    // FactionDef XML (blocked on the roster pass — Ants/Feralisks have no
+    // PawnKindDef yet, so a FactionDef's pawnGroupMakers would have to
+    // guess a defName), the LordJob/LordToil wiring that assigns this job
     // (crib RimWorld/LordToil_KidnapCover.cs's shape, generalized off
-    // DutyDefOf.Kidnap to a Fever Wood-specific duty), the new thornbug
-    // victim-finder predicate above, the "unclamp stun" that downs a
-    // thornbug non-lethally before this job can target it (a separate
-    // ant attack-job, INVENTED per the spec, not built here), and the
-    // raid-back QuestScriptDef (spec: "may trail by one build").
+    // DutyDefOf.Kidnap to a Fever Wood-specific duty), the "unclamp stun"
+    // that downs a thornbug non-lethally before this job can target it (a
+    // separate ant attack-job, INVENTED per the spec, not built here), and
+    // the raid-back QuestScriptDef (spec: "may trail by one build").
     public class RUT_HaulPawnAndExit : JobDriver_TakeAndExitMap
     {
         protected Pawn Takee => (Pawn)base.Item;
