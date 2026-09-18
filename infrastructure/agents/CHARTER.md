@@ -48,7 +48,12 @@ An item is one line — `THREE_UPPER_SNAKE_WORDS_# · lane · the ask` — plus 
 prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. The
 ledger (`events.jsonl`, written only by `rimflow`) is the truth; `queue/*.md` are
 rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
-carrying `Closes: <ID>`, push. **Stale default:** one grep/probe — if it doesn't
+carrying `Closes: <ID>`, push. Closing another seat's item is refused by default —
+🔴 **owner's ruling, 2026-09-18: when a seat finds an item genuinely DONE, ANY seat
+may close it**, citing this ruling verbatim via `--owner-said` (the tool's existing
+escape hatch, no code change needed, no per-instance ask required). "Done" means
+proven, not assumed — the same bar `close` always required. **Stale default:** one
+grep/probe — if it doesn't
 prove the item live, `rimflow drop <ID> --reason "stale-drop: <the probe>"`; real
 work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. v2 ideas
 go straight to `design/V2_DREAMS.md`, any window, no permission.
