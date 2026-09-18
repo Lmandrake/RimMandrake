@@ -8,6 +8,12 @@
     animal/biome, out of scope); replaced with our own RUT_ChitinPlating stuff
     resource plus the cave-spider-head trophy this same raid ingests, keeping the
     "made from what you killed" flavor intact.
+
+    ROT_SHEEN_WEATHER_1: RUT_SheenProtection 0.75 added to statBases - the
+    ticket's own named carrier ("the ported chitin helmet is the first
+    carrier") for the Sheen exposure clock's 4x gear slowdown (owner card 5).
+    A sealed helmet over open chitin plating is the obvious first piece to
+    carry it; the rest of a full Sheen-proof kit is un-owed content.
   -->
 
   <ThingDef ParentName="HatMakeableBase">
@@ -36,6 +42,7 @@
       <StuffEffectMultiplierInsulation_Cold>1.0</StuffEffectMultiplierInsulation_Cold>
       <StuffEffectMultiplierInsulation_Heat>0.5</StuffEffectMultiplierInsulation_Heat>
       <EquipDelay>5</EquipDelay>
+      <RUT_SheenProtection>0.75</RUT_SheenProtection>
     </statBases>
     <thingCategories Inherit="False">
       <li>ArmorHeadgear</li>

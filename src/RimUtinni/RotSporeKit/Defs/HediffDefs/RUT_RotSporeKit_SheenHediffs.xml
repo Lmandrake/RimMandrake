@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_RotSporeKit_SheenHediffs.xml        RotSporeKit - ROT_SHEEN_WEATHER_1 build pass
+
+  rot_kit_spec.md M1 ("The Sheen"), ticket 2, owner card 5 (RULED
+  2026-09-17): "gear only slows the exposure clock (4x), never full
+  immunity... the symbiont remains the only true immunity."
+
+  RUT_SheenCoating: the exposure ladder. Bootstrapped onto every eligible
+  pawn at near-zero severity by RUT_SheenExposureLock's carrierHediff
+  (GameConditionDefs/RUT_SheenExposureLock.xml, EnvironmentalWeatherExtension
+  - same shape RUT_MiasmaWeatherLock already ships), then its own comp
+  (HediffCompProperties_SheenExposure, RimMandrake.EnvironmentalHazards) does
+  the real per-day severity math:
+    - accrues only while the map's current weather is one of
+      RUT_SheenFall/RUT_SheenStorm/RUT_SheenMist AND the pawn is unroofed;
+    - the applied rate is severityPerDayExposed * max(minDriveFactor,
+      1 - apparel-summed RUT_SheenProtection) - the chitin spider helmet's
+      0.75 gives exactly a 4x slowdown (1 - 0.75 = 0.25), and minDriveFactor
+      0.05 is a structural floor enforcing card 5's "never full immunity
+      from gear" even if a future item stacked protection toward 1.0;
+    - zeroed entirely (not just slowed) while the pawn carries
+      RUT_SheenSymbiosis - card 5's "only true immunity".
+
+  severityPerDayExposed 0.667 reaches this hediff's own top stage
+  (minSeverity 1.0) in 1.5 in-game days unprotected - the spec's own
+  INVENTED anchor ("~1.5 in-game days of continuous exposure"). At the
+  helmet's 4x slowdown that becomes ~6 days, matching the ticket's proof
+  step. severityPerDayUnexposed -0.3 is this pass's own INVENTED decay rate
+  (the spec names no figure), close to RUT_MiasmaExposure's -0.2 precedent
+  but a little faster since the Sheen's own sheet frames it as ambient
+  rather than a lingering toxin.
+
+  Top-stage hediffGivers -> RUT_SporeFlesh with a short mtbDays (0.25 days,
+  this pass's own INVENTED-BUILD tuning) rather than a guaranteed instant
+  seed: HediffGiver_Random is the vanilla mechanism (RUT_HediffSkulltopSpores
+  already uses it in this same mod for an identical "top stage seeds a
+  disease" shape) and the ticket names this as one of two acceptable
+  build-time picks. A guaranteed give would need custom C#, unneeded here.
+
+  RUT_SheenSymbiosis: defined here (ticket 2's own scope: "def ships here,
+  granted by ticket 5") but inert grant-wise this pass - nothing yet applies
+  it. ROT_LIVE_PREPARATIONS_1's Sheenblood symbiont pair is the eventual
+  grantor. isBad false / no comps: it is a pure marker other mechanisms read
+  (RUT_SheenCoating's immunityHediff here; the sunlight-scald half of the
+  Sheenblood bargain is ticket 5's own build).
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_SheenCoating</defName>
+    <label>Sheen coating</label>
+    <description>A film of the Rot's own reproductive Sheen, built up from standing unprotected in Sheen-fall. Cosmetic at first — a faint gloss on skin and gear — but left to climb it seeds mycelia deep enough to become spore flesh.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.85, 0.85, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_SheenExposure">
+        <onlyDuringWeathers>
+          <li>RUT_SheenFall</li>
+          <li>RUT_SheenStorm</li>
+          <li>RUT_SheenMist</li>
+        </onlyDuringWeathers>
+        <severityPerDayExposed>0.667</severityPerDayExposed>
+        <severityPerDayUnexposed>-0.3</severityPerDayUnexposed>
+        <protectionStat>RUT_SheenProtection</protectionStat>
+        <minDriveFactor>0.05</minDriveFactor>
+        <immunityHediff>RUT_SheenSymbiosis</immunityHediff>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>sheened</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <label>sheened</label>
+        <minSeverity>0.05</minSeverity>
+        <becomeVisible>true</becomeVisible>
+      </li>
+      <li>
+        <label>saturated</label>
+        <minSeverity>1.0</minSeverity>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>RUT_SporeFlesh</hediff>
+            <mtbDays>0.25</mtbDays>
+          </li>
+        </hediffGivers>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RUT_SheenSymbiosis</defName>
+    <label>Sheen symbiosis</label>
+    <description>The Rot's mycelial network has folded this body fully into itself. Sheen-fall that would coat and eventually infect an outsider passes through a symbiont unnoticed — the only true immunity the Rot recognizes. Granted by drinking the Sheenblood tea.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.85, 0.75, 1.0)</defaultLabelColor>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <label>symbiotic</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
