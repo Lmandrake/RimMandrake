@@ -9233,3 +9233,18 @@
 {"seat":"OWNER","event":"file","id":"QUICKGRASS_VISUAL_SCALE_2X_1","title":"Double quickgrass on-screen size - scale only, no new art","kind":"task","target":"v1","needs":"deploy","spec":"Owner order at the 2026-09-18 live review, after judging the sprout/half/tall line-up (screenshot pyre_stages_soil_20260918v.png): the green grass (RM_FE_Plant_Quickgrass) reads too small at map zoom. Scale the existing sprites, no new art: Quickgrass.xml plant.visualSizeRange 0.4~0.7 -> 0.8~1.4. Check the growth-stage extension art (RM_FE_QuickgrassStages sprout/half via Plant_GrowthStaged) inherits the same scale path so all three stages double together; verify live on a minimal-list quicktest at the three growth values before closing.","for":"FOUNDRY","ownerSaid":"File a ticket to make the green Pyrelands grass twice as big. No new art, just scale it up","ts":"2026-09-18T14:38:37Z"}
 {"seat":"BENCH","event":"note","id":"QUICKGRASS_GROWTH_STAGES_1","text":"Live verification complete at the 2026-09-18 owner review (minimal list, Pyrelands map tile 5433): armed line 'growth-stage art: armed for 1 plant def(s)' in Transient/Player.log.pyre_review_session_20260918; sprout/half/tall staged at growth 0.15/0.5/0.95, three visually distinct stages on screen (pyre_stages_soil_20260918v.png); owner verbatim: 'I like the growth maturation artwork otherwise'. Size follow-up: QUICKGRASS_VISUAL_SCALE_2X_1.","ts":"2026-09-18T14:39:42Z"}
 {"seat":"OWNER","event":"close","id":"QUICKGRASS_GROWTH_STAGES_1","sha":"1688d9a2a","ownerSaid":"I like the growth maturation artwork otherwise","override":"OWNER may not `close` QUICKGRASS_GROWTH_STAGES_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-18T14:39:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MODCHECK_STATUS_ORPHANED_BY_RENAME_1","ts":"2026-09-18T15:03:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"MODCHECK_STATUS_ORPHANED_BY_RENAME_1","ts":"2026-09-18T15:03:02Z"}
+{"seat":"FOUNDRY","event":"close","id":"MODCHECK_STATUS_ORPHANED_BY_RENAME_1","sha":"b110a7a2d3fd5c21bed87024bf37d6401f194cde","ts":"2026-09-18T15:03:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","ts":"2026-09-18T15:03:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","ts":"2026-09-18T15:03:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","sha":"611304868522158c6c2d77bdd22725b5515f95bd","ts":"2026-09-18T15:03:15Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CANYON_FLOOD_ERASES_CANALS_1","ts":"2026-09-18T15:03:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"CANYON_FLOOD_ERASES_CANALS_1","ts":"2026-09-18T15:03:23Z"}
+{"seat":"FOUNDRY","event":"close","id":"CANYON_FLOOD_ERASES_CANALS_1","sha":"e14c9cfedbe375883fdb8ce80112bfca3d4d74c1","ts":"2026-09-18T15:03:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_FISH_ITEMS_FIX_1","ts":"2026-09-18T15:03:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_FISH_ITEMS_FIX_1","ts":"2026-09-18T15:03:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_FISH_ITEMS_FIX_1","sha":"0da141b42a410cb48823350a68d66343c630d822","ts":"2026-09-18T15:03:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ANOOBA_DRAWSIZE_FIX_1","ts":"2026-09-18T15:03:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"ANOOBA_DRAWSIZE_FIX_1","ts":"2026-09-18T15:03:43Z"}
+{"seat":"FOUNDRY","event":"close","id":"ANOOBA_DRAWSIZE_FIX_1","sha":"1f1b8ab19e378298d5a5d88eeb1bc50775583a0e","ts":"2026-09-18T15:03:45Z"}
