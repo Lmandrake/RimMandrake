@@ -331,3 +331,93 @@ bed fix) and confirm the operation is now picked up and completes:
 this pass had no bridge access by design (another window mid marathon);
 closing without observing a completed wipe live would repeat the exact
 failure mode this file has flagged twice already.
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — live verify
+
+Bridge was FREE (`rimflow bridge who`); taken for this pass, released at the
+end. `mandrake.rsw.droidworks`'s `Assemblies/Droidworks.dll` is **deployed
+and current**: md5-identical between the repo copy and
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Droidworks\Assemblies\Droidworks.dll`,
+both timestamped 2026-09-12 02:34 (the deploy note above did land, by
+whoever next had a free process). `mandrake.rsw.droidworks` is **active**
+in the live 634-mod `ModsConfig.xml`. Ran against `Map_3` of the live
+9-map campaign save (paused throughout; game was NOT restarted) — there
+was no minimal-list quicktest available without a restart, which this
+brief forbade.
+
+**PASS — the bed-gate fix (`Patch_DroidBillGiverNoBed`) is confirmed live,
+independent of code review.** Spawned a fresh droid patient
+(`RSW_DW_KotORDroidColonist_ADMkI`, "Barin") and a fresh player-faction
+worker ("Ruben", Crafting bumped to 15, Doctor+Crafting work priorities
+set active) via `jawa/spawn_pawn`, added `RSW_DW_MemoryWipe` via
+`jawa/bill_add` on the droid's own `BillStack`. **Ruben's job went to
+`DoBill` against the droid twice, independently, without me forcing it**
+— this was categorically impossible before the fix (`Pawn.
+CurrentlyUsableForBills()` always failed on `!InBed()` for a race that
+can never be put in a bed). This is the one thing the three prior FOUNDRY
+passes on this item could never get past, and it now works.
+
+**INCONCLUSIVE — full `ApplyOnPawn` completion, not confirmed clean.**
+The bill's `repeatCount` went from 1 to 0 (`jawa/bill_list`, `shouldDoNow`
+flipped to `false`) suggesting *something* ran to completion, but the
+droid's traits after were byte-identical to its pre-wipe baseline (same
+four traits, same degrees — `RandomizeTraits` rerolling would need to
+coincidentally reproduce the exact same non-forced trait set, which is
+not credible) and no `RSW_DW_RecentlyWiped` hediff or `RSW_DW_Quirk_*`
+trait appeared. I cannot tell, from this pass, whether that means
+`ApplyOnPawn` silently threw partway through (e.g. inside
+`ResetServiceRecord`'s reflection, or the `AddHediff` call) or whether the
+`repeatCount` I read was stale/misattributed. Two confounds make this
+pass's negative evidence weak rather than a confirmed defect:
+
+1. **The live Player.log hit Unity's hard message cap** ("Reached max
+   messages limit. Stopping logging to avoid spam.") during this exact
+   window, from an unrelated flood of `Tried to set terrain at (...) to
+   null.` lines — almost certainly the separate water-terrain regression
+   this session's brief flagged as under investigation elsewhere. Any
+   exception `ApplyOnPawn` might have thrown could have been silently
+   dropped rather than absent.
+2. **Getting the doctor to actually run `DoBill` fought AI scheduling the
+   whole pass**, not the recipe: the droid (undrafted) wandered and reset
+   the interaction repeatedly; Ruben (a freshly-spawned pawn with
+   `DBHThirst` at 1.5% and Mood at 24%) kept losing the job to
+   `RM_PaintGraffitiJob`/idle wander; `jawa/ordered_job` and
+   `jawa/prioritized_work` both failed to force a `DoBill` job directly
+   (job accepted, `curJob` back to `Wait`/`None` within the wait window —
+   consistent with `DoBill`'s driver needing `Job.bill` set by the real
+   `WorkGiver_DoBill.JobOnThing`, which neither generic-job tool
+   constructs). Topping off Ruben's needs and drafting/redrafting the
+   droid got natural AI to pick up `DoBill` twice, but I cannot rule out
+   that one of those same interruption sources (or a third, unidentified
+   one) also cut the recipe's own execution short in a way that still let
+   the bill counter tick down.
+
+**Untested this pass, in order of what's owed:**
+- Service-record zeroing — `jawa/pawn_get` has no `records` field at all
+  (confirmed by reading its full key list live); the only route left is
+  `save_game` + parsing the `.rws`'s `Pawn_RecordsTracker` DefMap, not
+  attempted this pass.
+- Stumble mechanism (`HediffComp_DWWipeStumble`'s 250-tick roll) and
+  severity decay over ticks — never reached, because no wipe was ever
+  confirmed to leave the hediff in place to tick against.
+- Second-wipe quirk accretion — never reached for the same reason.
+
+**Cleanup done**: both test pawns removed via `rimworld/execute_debug_action`
+`Actions\T: Destroy` (needs the `Thing_<id>` prefix, unlike the `jawa/`
+tools used to create and inspect them — confirmed live: the bare id fails
+resolution, `Thing_`-prefixed succeeds). Bridge released.
+`rimflow bridge who` free after this pass.
+
+**Verdict: item stays `doing`. NOT closed.** The bed-gate fix is real and
+independently confirmed — genuine forward progress — but this item's own
+verify bar ("wiped droid stumbles for 7 days, keeps the quirk after") is
+still unmet, and the one attempt that got furthest ended in an
+unexplained gap between "the bill counted itself done" and "nothing
+observable changed on the pawn," under log conditions too noisy to
+distinguish a real defect from a swallowed exception. **Owed, in order**:
+retest on a quiet map/log window (a clean quicktest after the next
+restart would remove both AI-scheduling and log-noise confounds at once);
+if the trait/hediff gap reproduces there, treat it as a real
+`ApplyOnPawn` defect and read the method under a debugger/log-flood-free
+run rather than guessing further; then the stumble/decay/accretion checks
+this file has owed since 2026-09-08.
