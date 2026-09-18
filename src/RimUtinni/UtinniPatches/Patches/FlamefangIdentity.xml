@@ -13,9 +13,13 @@
 
     Structure copied from RazorjackIdentity_Sytheclaw.xml (same pattern: a
     PatchOperationFindMod on the donor mod wrapping a PatchOperationSequence
-    of label/description Replaces): defName stays GR_Boomsnake until
-    NAMING_SCHEME_EXECUTION_1 — this patch moves only the player-facing
-    identity (labels + description) into our own modspace. No art restyle
+    of label/description Replaces): defName stays GR_Boomsnake because it is
+    the DONOR mod's (Vanilla Genetics Expanded) own defName — this patch
+    matches the donor's live def by that name and cannot rename it without
+    absorbing the def outright, which is out of scope here; this is not a
+    naming-scheme gate (NAMING_SCHEME_EXECUTION_1 closed 2026-08-31, no gate
+    remains) — this patch moves only the player-facing identity (labels +
+    description) into our own modspace. No art restyle
     here (out of scope per this item's own note 6 — the existing
     BoomsnakeArtOverride wiring from 2026-09-14 stays as-is). Venom mechanism
     is a separate patch, Patches/FlamefangVenom.xml.

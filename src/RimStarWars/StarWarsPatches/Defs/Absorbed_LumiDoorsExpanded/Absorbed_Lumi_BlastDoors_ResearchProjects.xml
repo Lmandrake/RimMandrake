@@ -10,8 +10,11 @@
      are out of scope.
 
      defNames preserved verbatim - completed research is save-referenced by
-     defName, so these must not change ahead of NAMING_SCHEME_EXECUTION_1
-     even though the tab now only has these 2 entries under this mod. -->
+     defName, so these must not change (an existing save's completed-research
+     record would dangle) even though the tab now only has these 2 entries
+     under this mod. This is a save-compatibility blocker, not a naming-scheme
+     gate — NAMING_SCHEME_EXECUTION_1 closed 2026-08-31 and gates nothing
+     here. -->
 <Defs>
 
   <ResearchTabDef>

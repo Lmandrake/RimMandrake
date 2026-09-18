@@ -66,7 +66,7 @@
         {"def": "RSW_Faa", "note": "scalefish, midstream predator of the smaller", "commonality": 0.3},
         {"def": "RSW_Laa", "note": "scalefish, midstream", "commonality": 0.3}
       ],
-      "provenance_note": "RSW_Faa and RSW_Laa are shipping-name-tier (RimStarWars) migrations of this same dump's swfish_Faa and swfish_Laa donor rows (Star Wars Animal Collection) — confirms the swfish_ set is this campaign's working donor pool for water fauna, consistent with the swfish_ candidates picked for weeping_stones above; RSW_Mee has no swfish_ row in this dump under that exact name and may be a further alias/rename not yet resolved in the live register — flag for whoever owns NAMING_SCHEME_EXECUTION_1.",
+      "provenance_note": "RSW_Faa and RSW_Laa are shipping-name-tier (RimStarWars) migrations of this same dump's swfish_Faa and swfish_Laa donor rows (Star Wars Animal Collection) — confirms the swfish_ set is this campaign's working donor pool for water fauna, consistent with the swfish_ candidates picked for weeping_stones above; RSW_Mee has no swfish_ row in this dump under that exact name and may be a further alias/rename not yet resolved in the live register — flag for whoever picks up the naming-tier migration pass (NAMING_SCHEME_EXECUTION_1 closed 2026-08-31; the migration itself is ordinary owed work, not gated).",
       "open_flag": "roster's own confidence block already marks the water-spawn channel UNMEASURED ('RSW scalefish spawn on in-biome river cells' — not proven; verify at generation') — this pass does not change that."
     },
     "the_twilight_sea": {

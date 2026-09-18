@@ -184,9 +184,10 @@ paperwork.
   them. A stock feature with no archetype to stock is unreachable by
   construction, so one ships here; the full six-to-eight archetype table is not
   this item's to author. `RM_` prefix per `design/NAMING_SCHEME_PLAN.md` (new
-  defNames take the tier grammar; the `Inhabited_*` siblings migrate under
-  NAMING_SCHEME_EXECUTION_1, not ahead of it), and the same for the new
-  `RM_InhabitedStock` GenStepDef.
+  defNames take the tier grammar; the `Inhabited_*` siblings are owed the
+  same migration as ordinary build work — `NAMING_SCHEME_EXECUTION_1` closed
+  2026-08-31, no gate remains), and the same for the new `RM_InhabitedStock`
+  GenStepDef.
 
 ### Changed
 

@@ -126,8 +126,9 @@
              blanking the whole description - the exact trap
              RUT_FungalSoilTradeRequest.xml's own header already documents.
              Binds to the donor defName per crystal_mods_inventory.md SS4 (kyber
-             absorption owed separately); migrates under NAMING_SCHEME_EXECUTION_1
-             when that lands. -->
+             absorption owed separately); migrates to the tier grammar as ordinary
+             owed work whenever that absorption lands (NAMING_SCHEME_EXECUTION_1
+             closed 2026-08-31, no gate remains). -->
         <li Class="QuestNode_Set">
           <name>requestedThing</name>
           <value>Force_KyberCrystal</value>
