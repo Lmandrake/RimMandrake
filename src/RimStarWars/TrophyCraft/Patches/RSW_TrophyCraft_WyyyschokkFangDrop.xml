@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TrophyCraft_WyyyschokkFangDrop       mandrake.rsw.trophycraft
+
+  WYYYSCHOKK_FANG_PENDANT_1. The Wyyyschokk ThingDef/PawnKindDef pair live in
+  the third-party `mlie.starwarsanimalcollection` mod, not in this repo —
+  same species-ownership finding `RimMandrake: SW — Shokk`'s About.xml
+  already recorded (BeastNorm_Law3.xml, MegafaunaYield.xml and
+  RSW_Shokk_Wyyyschokk.xml all patch it the same way, never declare it).
+  This patch follows the identical PatchOperationConditional shape as
+  RSW_Shokk_Wyyyschokk.xml: a patch that matches nothing logs nothing, so
+  this loads fine with or without the donor mod present — it just never
+  drops fangs without it.
+
+  🔴 butcherProducts is DICTIONARY-KEYED despite being a C# List<ThingDefCountClass> —
+  ThingDefCountClass has a custom LoadDataFromXmlCustom that reads the entry
+  TAG as the thingDef name and its TEXT as the count (vanilla:
+  `<Steel>30</Steel>` inside Races_Mechanoid.xml). An `<li>` child here throws
+  inside that loader and RimWorld discards the WHOLE DEF silently
+  (rimworld-custom-loader-li-trap). validate_patch.py, run with the live def
+  dump, caught this exact defect on the first pass; fixed before commit.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Wyyyschokk"]/butcherProducts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Wyyyschokk"]/butcherProducts</xpath>
+      <value>
+        <RSW_WyyyschokkFang>3</RSW_WyyyschokkFang>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Wyyyschokk"]</xpath>
+      <value>
+        <butcherProducts>
+          <RSW_WyyyschokkFang>3</RSW_WyyyschokkFang>
+        </butcherProducts>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

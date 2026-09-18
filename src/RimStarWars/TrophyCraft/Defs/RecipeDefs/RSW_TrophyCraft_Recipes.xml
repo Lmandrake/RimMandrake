@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TrophyCraft_Recipes                  mandrake.rsw.trophycraft
+
+  WYYYSCHOKK_FANG_PENDANT_1. Standalone RecipeDef (not an embedded
+  recipeMaker) because the pendant is built from FIXED ingredients — fangs
+  plus cloth-as-cord — never from a stuffCategories/costStuffCount material
+  choice the way vanilla's ApparelMakeableBase items are. Pattern: Core's own
+  Make_Patchleather (fixed ingredients -> fixed product, standalone
+  RecipeDef, HandTailoringBench+ElectricTailoringBench recipeUsers).
+
+  Tribal tech level, low work, no researchPrerequisite: HandTailoringBench
+  already needs none of its own, so this recipe is craftable from the start
+  of any game the mod is active in.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RSW_Make_FangPendant</defName>
+    <label>craft fang pendant</label>
+    <description>Cord wyyyschokk fangs into a tribal pendant.</description>
+    <jobString>Crafting fang pendant.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workAmount>400</workAmount>
+    <recipeUsers>
+      <li>HandTailoringBench</li>
+      <li>ElectricTailoringBench</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_WyyyschokkFang</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>Textiles</li>
+          </categories>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_WyyyschokkFang</li>
+      </thingDefs>
+      <categories>
+        <li>Textiles</li>
+      </categories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_Apparel_FangPendant>1</RSW_Apparel_FangPendant>
+    </products>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>50</displayPriority>
+  </RecipeDef>
+
+</Defs>

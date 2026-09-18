@@ -29,6 +29,7 @@
     <li>mandrake.rm.weathersuite</li>                           <!-- GeothermalDensityField.cs: WeatherGeometryUtility.ArcFromSubstellar -->
     <li>mandrake.rut.weathersuite</li>                          <!-- the actual Ash'karr PlanetGeometryDef instance -->
     <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
+    <li>mandrake.rsw.trophycraft</li>                           <!-- RSW_TrophyCraft_ObserverBraveFang: WyyyschokkFangPendantFactions.xml -->
     <li>Neronix17.OuterRim.Core</li>
     <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
     <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->

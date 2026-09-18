@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Trophy Craft</name>
+  <packageId>mandrake.rsw.trophycraft</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>WYYYSCHOKK_FANG_PENDANT_1 (owner's direct spec, 2026-09-13,
+verbatim): "add this awesome concept to the game for the Wildsteam/Blackstar/
+Deep Tribe factions, as they all have a concept of respected hunting:
+Wyyyschokk fangs on a tribal pendant showing the bravery of the person. These
+should have social consequences for being worn by implying the person is
+quite brave (with those factions), and be a trade good elsewhere on planet
+regardless."
+
+Ships the mechanism, owns no campaign data:
+
+  1. `RSW_WyyyschokkFang` (ThingDef, ResourceBase) — a stackable trophy
+     resource, small marketValue on its own. A patch
+     (`RSW_TrophyCraft_WyyyschokkFangDrop.xml`) attaches it as a
+     butcherProducts entry on the third-party `Wyyyschokk` ThingDef
+     (`mlie.starwarsanimalcollection`, Star Wars Animal Collection —
+     confirmed by the same species-ownership search `RimMandrake: SW —
+     Shokk`'s About.xml already recorded: there is no RUT_/RSW_-owned
+     Wyyyschokk def anywhere in this repo, only PatchOperations against the
+     donor's). A patch that matches nothing logs nothing, so this mod loads
+     fine with or without that donor installed — it simply never drops fangs
+     without it.
+  2. `RSW_Apparel_FangPendant` (ThingDef, apparel) — crafted at a hand tailor
+     bench from fangs + cloth (the "textile cord"), low work, no research
+     prerequisite (tribal tech level). Worn on a brand-new
+     `RSW_Neck` ApparelLayerDef, bodyPartGroup `Neck` only:
+     🔴 **VERIFIED, not guessed** — the live def dump (232 ThingDefs
+     covering `Neck`, captured against the ~630-mod list) shows 153 of them
+     share the vanilla `Middle` layer while covering `Neck` (shirts, vests,
+     robes), so a Neck-only accessory on `Middle` would silently block
+     wearing a robe, a vest or most tribal wraps at the same time — exactly
+     the silent collision this item's own doctrine warns about. Reusing a
+     third-party layer (`Jewelry`'s or `Romance On The Rim`'s `Accessories`)
+     would trade that collision for a soft dependency on a mod that can be
+     removed out from under it. Owning a brand-new layer used by nothing
+     else is the only zero-collision, zero-dependency answer, so that is
+     what ships: the pendant can always be worn with anything else in the
+     630-mod list.
+  3. `RSW_TrophyCraft_ObserverBraveFang` (ThoughtDef, social, worker
+     `RSW_ThoughtWorker_ObserverFactionApparel`) — a plain, Harmony-free
+     `ThoughtWorker` (spec option (a); the ideoligion precept route is
+     explicitly rejected — precept budget is FactionDef-fixed, so a named
+     precept would be design register, not mechanism). It reads its target
+     apparel defName and its list of "regards this as brave" faction
+     defNames from a `RSW_FactionApparelThoughtExtension` `DefModExtension`
+     on the ThoughtDef. **This mod ships that extension EMPTY** — RimStarWars
+     tier does not know the Utinni campaign's factions. `RimUtinni Patches`
+     (`mandrake.rut.patches`) wires in the real three via
+     `WyyyschokkFangPendantFactions.xml`, keeping campaign data in the RUT
+     tier where it belongs. +opinion magnitude is a Mod Settings slider,
+     default ON.
+  4. Trade: `RSW_Apparel_FangPendant` carries `tradeTags: ExoticMisc` (the
+     same tag `Jewelry_Necklace` uses to sell everywhere) and a real
+     `MarketValue`, so any settlement or trader buys it — no faction check
+     gates the sale. The Bazaar's worldTag weighting could later make
+     hunting-tribe settlements pay MORE for it; that seam is noted, nothing
+     Bazaar-side is built here.
+
+**Live quicktest owed** beyond this build's offline `validate_patch.py` pass:
+butcher a Wyyyschokk, craft the pendant, spawn a Wildsteam/Pirate/TribeCivil
+observer and an unlisted one, confirm the opinion delta appears only for the
+listed factions, confirm the pendant sells to a vanilla trader. See
+`infrastructure/state/items/WYYYSCHOKK_FANG_PENDANT_1.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
