@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T08:30:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T08:33:23Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -244,9 +244,9 @@ summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
-needs:    game-up
+needs:    bridge
 target:   v1
 kind:     bug
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
@@ -1234,16 +1234,6 @@ kind:     task
 blocked:  round-4 chooser OPTIONS already produced (1664012fd, Fable design pass) and waiting on owner ruling; also gated behind owner keep/cut on today's fresh MAPGEN_GL_SHEET_1 v3 and MAPGEN_PAINTER_V1_1 v4 sheets. Nothing for FOUNDRY to build until a ruling lands.
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
-
-## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-blocked:  Stale block reason superseded: owner ruled 2026-09-11 (retarget to Building_GravEngine's real takeoff path), and the retarget was built same day (fb54a3f2, WorldComponent_GravshipController.InitiateTakeoff, CutsceneInProgress flag as commit marker; kept pods/shuttles patch renamed Patch_TransporterLaunched). Build 0W/0E, selftests 45/47 (2 pre-existing unrelated). Source-complete, nothing left offline -- NOT deployed (assembly change needs game-down window) and live PROVE/EXPECT (jawa/gravship_launch before/after) still owed. Correcting the stored block text so it stops reading as an unresolved scope question. (on COLD_LOAD_RUN_SHEET_4)
-summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
-prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
 ## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
 state:    ready  (BLOCKED)
