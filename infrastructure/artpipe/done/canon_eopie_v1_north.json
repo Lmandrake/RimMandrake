@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-18T07:25:20Z",
+  "drawsize": 2.25,
+  "facing": "north",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "canon_eopie_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Eopie -- a quadruped mammalian herbivore native to the desert planet Tatooine, domesticated as a pack and transport animal. Pale skin tone -- cream, dusty tan, or pinkish-grey, never brown. Long, low-slung, camel-like barrel body carried on four THIN legs ending in small clawed/hoofed toes -- a low camel silhouette, not stilt-like or ungainly legs. An elongated trunk-like snout, closer to a tapir or small elephant's trunk than a simple long muzzle. One large dark eye set well back on the head. Smooth-to-leathery hide with no visible fur or hair. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CANON_CREATURE_REGEN_1",
+  "style_notes": ""
+}
