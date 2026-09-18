@@ -145,14 +145,26 @@ def defs_resolve_as_documented(t):
                 "both read back true: %r" % r)
         pmp = _get_field(t, "MapGeneratorDef", "RUT_LanternDeepGenerator",
                          "pocketMapProperties")
-        for needle in ("BMT_CrystalCaverns", "17"):
+        # CAVERNS_PARITY_BUILD_1: the pocket map is donor-free. These two needles
+        # were BMT_CrystalCaverns and BMT_CrystalsGenerator; asserting the RUT
+        # names is what proves the retirement actually took, so this check is the
+        # regression guard against a revert to the donor defs.
+        for needle in ("RUT_LanternDeeps", "17"):
             if needle not in str(pmp):
                 raise ExpectationFailed(
                     "pocketMapProperties missing expected %r: %r" % (needle, pmp))
-        gs = _get_field(t, "MapGeneratorDef", "RUT_LanternDeepGenerator", "genSteps")
-        if "BMT_CrystalsGenerator" not in str(gs):
+        if "BMT_" in str(pmp):
             raise ExpectationFailed(
-                "RUT_LanternDeepGenerator.genSteps missing BMT_CrystalsGenerator: %r" % gs)
+                "pocketMapProperties still names a Biomes! Caverns def: %r" % pmp)
+        gs = _get_field(t, "MapGeneratorDef", "RUT_LanternDeepGenerator", "genSteps")
+        if "RUT_LanternstoneFormations" not in str(gs):
+            raise ExpectationFailed(
+                "RUT_LanternDeepGenerator.genSteps missing "
+                "RUT_LanternstoneFormations: %r" % gs)
+        if "BMT_" in str(gs):
+            raise ExpectationFailed(
+                "RUT_LanternDeepGenerator.genSteps still names a Biomes! "
+                "Caverns GenStepDef: %r" % gs)
 
     with t.component("scatter_genstepdef_and_global_patch", beyond_toggle=True):
         r = t.bridge_call("jawa/get_defs",

@@ -24,6 +24,25 @@ namespace RimMandrake.Utinni.LanternDeeps
         public static bool darknessMechanicEnabled = true;
         public static float darknessThresholdMultiplier = 1f;
 
+        // CAVERNS_PARITY_BUILD_1 — the two features the mod now OWNS rather than
+        // borrows from Biomes! Caverns, each gated per the standing rule
+        // (every mod ships real Mod Settings; defaults = shipped behavior;
+        // all-off degrades gracefully).
+        //
+        // Both are WORLDGEN-AFFECTING in the same sense the entrance scatters
+        // are: they are read while a Deep's pocket map is being generated, so a
+        // change applies to the NEXT Deep entered, never to one already made.
+        // The Deeps remain persistent maps (sheet hard ban 5) either way.
+        //
+        // All-off behaviour: a Deep with formations off and flora off is still a
+        // complete, enterable, mineable cavern — gravel, lanternstone shelves,
+        // lanternstone walls in extraRockTypes, the darkness mechanic, and both
+        // the pyrinth and kyber scatters. It loses its crystal field and its
+        // fungal pasture, not its floor.
+        public static bool lanternstoneFormationsEnabled = true;
+        public static float lanternstoneDensityMultiplier = 1f;
+        public static bool deepFloraEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -33,6 +52,9 @@ namespace RimMandrake.Utinni.LanternDeeps
             Scribe_Values.Look(ref mineshaftChanceMultiplier, "mineshaftChanceMultiplier", 1f);
             Scribe_Values.Look(ref darknessMechanicEnabled, "darknessMechanicEnabled", true);
             Scribe_Values.Look(ref darknessThresholdMultiplier, "darknessThresholdMultiplier", 1f);
+            Scribe_Values.Look(ref lanternstoneFormationsEnabled, "lanternstoneFormationsEnabled", true);
+            Scribe_Values.Look(ref lanternstoneDensityMultiplier, "lanternstoneDensityMultiplier", 1f);
+            Scribe_Values.Look(ref deepFloraEnabled, "deepFloraEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -75,6 +97,23 @@ namespace RimMandrake.Utinni.LanternDeeps
                     + "x the base sensitivity (higher = more light tolerated before something notices)");
                 darknessThresholdMultiplier = list.Slider(darknessThresholdMultiplier, 0.25f, 4f);
             }
+
+            list.Gap();
+            list.Label("Inside a Lantern Deep (affects newly generated Deeps only)");
+            list.CheckboxLabeled("Lanternstone formations grow in the Deeps", ref lanternstoneFormationsEnabled,
+                "Off: a newly entered Deep has bare gravel and lanternstone shelves but no standing crystal "
+              + "formations to mine, light the place, or go off when shot. The cavern is still complete and "
+              + "still has its lanternstone walls.");
+            if (lanternstoneFormationsEnabled)
+            {
+                list.Label("Lanternstone density: " + lanternstoneDensityMultiplier.ToString("0.00")
+                    + "x the base rate (shipped default: 15-30 clusters per 10,000 cells)");
+                lanternstoneDensityMultiplier = list.Slider(lanternstoneDensityMultiplier, 0f, 3f);
+            }
+
+            list.CheckboxLabeled("Cave flora grows in the Deeps", ref deepFloraEnabled,
+                "Off: a newly entered Deep has no mycelium carpet, no mushroom trees and no glow-fungi — "
+              + "no forageable food and no cloth or wood from below. Bare rock and crystal.");
 
             list.End();
         }

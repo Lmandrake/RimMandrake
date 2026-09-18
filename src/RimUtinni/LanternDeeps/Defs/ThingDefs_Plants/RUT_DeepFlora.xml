@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — the eleven Deep flora, replacing the borrowed
+  BMT_* wildPlants list of BMT_CrystalCaverns one for one
+  (caverns_replacement_scoping.md §2, "flora" row).
+
+  🔑 Three deliberate departures from the donor XML, all forced by the retirement
+  and all recorded here so nobody "fixes" them back:
+
+  1. **Vanilla parents, vanilla thingClass.** The donor hangs these off
+     BMT_CavePlantBase / BMT_CaveBushBase / BMT_CaveTreeBase and gives two of them
+     thingClass BMT.BiomesPlant. Both the parents and that Type die with the donor,
+     and a ThingDef whose ParentName or thingClass cannot resolve is discarded, so
+     these hang off vanilla PlantBase / BushBase / TreeBase with thingClass Plant.
+     BMT.BiomesPlant adds the donor's own pollution/temperature handling; the
+     temperature fields it read are set directly on the defs below instead.
+
+  2. **Harvest products are vanilla where the donor's were its own.** The donor's
+     BMT_MushroomLog becomes WoodLog and BMT_MycelialBlocks is dropped (mycelium
+     becomes pure ground cover, purpose Misc). Grey Lady already harvested vanilla
+     Cloth and still does; dulcis harvests our own RUT_RawDulcis.
+
+  3. **No research or fungiponics gates.** sowResearchPrerequisites
+     BMT_ResearchMushrooms and the BMT_Fungiponics sowTag are donor defs. Sowing
+     these is gated by skill only until we ship a fungiponics line of our own;
+     that is an owed item, not a defect.
+
+  UNMEASURED: the donor's Biomes_PlantControl modExtension on luminous spout
+  (terrainTags Water/Fresh/Shallow/Boggy/Marshy) is a BiomesCore Type. Replaced
+  with vanilla wildTerrainTags, which is the nearest vanilla mechanism; whether
+  the two place hydrophytes identically has not been measured in game.
+-->
+<Defs>
+
+  <!-- ===================== ground cover ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_DeepMycelium</defName>
+    <label>mycelium</label>
+    <description>Extremely wide-spread mycelium of many different species, carpeting the floors of the Deeps. Herbivores eat it where it grows.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Mycelium</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.2~0.4</visualSizeRange>
+      <topWindExposure>0.0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Gleamtip</defName>
+    <label>gleamtip</label>
+    <description>A mushroom with a long narrow glowing cap. Cave dwellers use them the way other people use flowers.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Gleamtip</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2.0,2.0)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.2~0.4</visualSizeRange>
+      <topWindExposure>0.0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== mid sized ===================== -->
+
+  <ThingDef ParentName="BushBase">
+    <defName>RUT_Fungusfern</defName>
+    <label>fungusfern</label>
+    <description>A symbiosis between two species of mushroom and a fern, unique to the crystal voids.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Fungusfern</texPath>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <topWindExposure>0</topWindExposure>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <growDays>3</growDays>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_CrystaltipBrambles</defName>
+    <label>crystaltip brambles</label>
+    <description>Tangled, thorny, crystalline shoots covered with leaves. They grow in clusters and slow down anyone moving over them.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Nutrition>0.50</Nutrition>
+    </statBases>
+    <pathCost>14</pathCost>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/CrystaltipBrambles</texPath>
+      <drawSize>1.7</drawSize>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible />
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>3</growDays>
+      <harvestWork>60</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.85</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_YumBulbs</defName>
+    <label>yum bulbs</label>
+    <description>With brightly glowing tips, this fungus attracts animals to eat it and unwittingly carry its durable spores through the dark.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/YumBulbs</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>45</MaxHitPoints>
+      <Beauty>12</Beauty>
+      <BeautyOutdoors>14</BeautyOutdoors>
+      <Nutrition>1.0</Nutrition>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0.5</growMinGlow>
+      <growOptimalGlow>0.5</growOptimalGlow>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <interferesWithRoof>false</interferesWithRoof>
+      <purpose>Beauty</purpose>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(252,187,113,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BushBase">
+    <defName>RUT_DulcisPlant</defName>
+    <label>dulcis</label>
+    <description>An oddly sweet mushroom grown by cave dwellers in place of berries. It survives a wide range of temperatures.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Dulcis/DulcisGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <neverMultiSelect>false</neverMultiSelect>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-45</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-45</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <fertilityMin>0.70</fertilityMin>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <growDays>7</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>200</harvestWork>
+      <harvestYield>12</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.1</harvestAfterGrowth>
+      <harvestedThingDef>RUT_RawDulcis</harvestedThingDef>
+      <sowMinSkill>4</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <immatureGraphicPath>RUT_LanternDeeps/Things/Plant/Dulcis/DulcisImmature</immatureGraphicPath>
+      <leaflessGraphicPath>RUT_LanternDeeps/Things/Plant/Dulcis/DulcisHarvested</leaflessGraphicPath>
+      <visualSizeRange>0.5~1.3</visualSizeRange>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <pollution>Any</pollution>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== trees ===================== -->
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_Crystalcap</defName>
+    <label>crystalcap</label>
+    <description>A strong crystal-capped mushroom tree. Slow-growing, but this woody fungus is very tough and very attractive, and it does not much care what it grows in.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Crystalcap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>6</Beauty>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>1000</wildClusterWeight>
+      <growDays>30</growDays>
+      <topWindExposure>0</topWindExposure>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>1000</harvestWork>
+      <harvestYield>40</harvestYield>
+      <wildOrder>3</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== other harvestable ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_GreyLady</defName>
+    <label>Grey Lady</label>
+    <description>A grey fungus that grows cloth-like lace from its cap. The Deeps' one source of fabric.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>14</pathCost>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilityMin>0.70</fertilityMin>
+      <wildClusterRadius>3</wildClusterRadius>
+      <growDays>8</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <immatureGraphicPath>RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyImmature</immatureGraphicPath>
+      <harvestYield>16</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <visualSizeRange>0.4~1.0</visualSizeRange>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ===================== hydrophytes ===================== -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Arpeau</defName>
+    <label>arpeau</label>
+    <description>An aquatic fungus tall enough to be logged. Fast-growing, but it does not yield much usable material.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Arpeau</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.13)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <sowWork>4000</sowWork>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <wildClusterRadius>20</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <growDays>5</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>800</harvestWork>
+      <harvestYield>20</harvestYield>
+      <wildOrder>1</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.40</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <treeCategory>Full</treeCategory>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(78, 226, 229, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_LuminousSpout</defName>
+    <label>luminous spout</label>
+    <description>Aquatic fungus that grows in the shape of an upside-down cone. It visibly glows in the dark.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/LuminousSpout</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>0.30</Nutrition>
+    </statBases>
+    <plant>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.3~0.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>Mud</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.9</glowRadius>
+        <glowColor>(78, 226, 229, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Nuitae</defName>
+    <label>nuitae</label>
+    <description>Its cap's exterior is almost black; its underside glows brightly. It grows in water, or in ground wet enough to pass for it.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>0.60</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Plant/Nuitae</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <pollution>Any</pollution>
+      <growDays>3</growDays>
+      <harvestWork>80</harvestWork>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+    </plant>
+  </ThingDef>
+
+</Defs>

@@ -371,3 +371,10 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml   # BENCH: no art ye
 # => LIFT when the under-roof water gets its own def/layer — see
 #    FISH_BESTIARY_BUILD_1 wave 5 section for the open question filed on it.
 UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml   # FOUNDRY: structurally HELD, needs a new under-roof water layer, 2026-09-18
+
+# --- LanternDeeps: donor-free parity build waits for the shutdown window ---
+# CAVERNS_PARITY_BUILD_1 (BENCH, 2026-09-18): the new defs reference GenStep
+# classes in the rebuilt DLL, and a DLL cannot be written while the game runs.
+# Deploying the XML alone would red-error the next load. The WHOLE mod deploys
+# together at the next shutdown window; remove this hold in the same change.
+LanternDeeps/*   # BENCH 2026-09-18, CAVERNS_PARITY_BUILD_1 - deploy whole mod at shutdown window

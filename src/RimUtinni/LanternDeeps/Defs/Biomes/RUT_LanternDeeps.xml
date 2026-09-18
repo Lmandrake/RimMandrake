@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — our own cave biome for the Lantern Deeps pocket map,
+  replacing the borrowed BMT_CrystalCaverns (caverns_replacement_scoping.md §2).
+
+  This def is reached ONLY through RUT_LanternDeepGenerator.pocketMapProperties.
+  It carries no worldgen route at all: no GeologicalLandforms BiomeWorkerConfig,
+  no worldTileGraphicAtlas, no worldTileOverrides. That is deliberate and it is
+  the sheet's hard ban 1 made structural (the_lantern_deeps.md §6.1: "no worldmap
+  biome") — there is nothing here for worldgen to score, so no seed can place it.
+
+  🔴 Donor modExtensions are NOT carried across. BiomesCore.DefModExtensions.*
+  (BiomesMap isCavern/cavernShapes, DisableIncidentsExtension) and
+  GeologicalLandforms.* are donor-owned Types; a def naming a Type no loaded
+  assembly defines is DISCARDED WHOLE by the loader. Cavern shape comes from
+  RUT_LanternDeepGenerator's own isUnderground/forceCaves instead, which is what
+  actually drives a pocket map.
+
+  Terrain: vanilla map-gen resolves the base floor through terrainsByFertility
+  and only through it (GenStep_Terrain); terrainPatchMakers then overlay the
+  lanternstone shelves, soil and shallow water. Same shape and same thresholds as
+  the donor, so map feel is unchanged.
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RUT_LanternDeeps</defName>
+    <label>lantern deeps</label>
+    <description>Voids grown by slow, cold crystallisation under the thickest crust on the planet. Enclosed, warm by comparison to the surface above, and humming. The only ambient light is lanternstone — the blue native crystal that carries light — and the glow-fungi pastured beneath it. Nothing reaches this place without excellent technology, which is why the caverns are full of it.</description>
+
+    <animalDensity>2.5</animalDensity>
+    <plantDensity>2</plantDensity>
+    <wildPlantsAreCavePlants>true</wildPlantsAreCavePlants>
+    <settlementSelectionWeight>0</settlementSelectionWeight>
+    <movementDifficulty>0.5</movementDifficulty>
+    <forageability>0.5</forageability>
+    <foragedFood>RUT_RawDulcis</foragedFood>
+    <wildPlantRegrowDays>5</wildPlantRegrowDays>
+    <disableShadows>true</disableShadows>
+    <disableSkyLighting>false</disableSkyLighting>
+    <noAmbientWind>true</noAmbientWind>
+    <constantOutdoorTemperature>17</constantOutdoorTemperature>
+    <texture>World/Biomes/IceSheet</texture>
+
+    <diseaseMtbDays>60</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>Gravel</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.1</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RUT_LanternstoneFloor</terrain>
+            <min>0.4</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+      <li>
+        <perlinFrequency>0.035</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>Soil</terrain>
+            <min>0.63</min>
+            <max>0.83</max>
+          </li>
+          <li>
+            <terrain>WaterShallow</terrain>
+            <min>0.83</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+
+    <baseWeatherCommonalities>
+      <RUT_DeepCalm>100</RUT_DeepCalm>
+    </baseWeatherCommonalities>
+
+    <wildPlants>
+      <!-- ground cover -->
+      <RUT_DeepMycelium>5.0</RUT_DeepMycelium>
+      <RUT_Gleamtip>1.0</RUT_Gleamtip>
+
+      <!-- mid sized -->
+      <RUT_Fungusfern>0.5</RUT_Fungusfern>
+      <RUT_CrystaltipBrambles>0.3</RUT_CrystaltipBrambles>
+      <RUT_YumBulbs>0.3</RUT_YumBulbs>
+      <RUT_DulcisPlant>0.02</RUT_DulcisPlant>
+
+      <!-- trees -->
+      <RUT_Crystalcap>0.5</RUT_Crystalcap>
+
+      <!-- other harvestable -->
+      <RUT_GreyLady>0.02</RUT_GreyLady>
+
+      <!-- hydrophytes -->
+      <RUT_Arpeau>0.05</RUT_Arpeau>
+      <RUT_LuminousSpout>0.2</RUT_LuminousSpout>
+      <RUT_Nuitae>0.4</RUT_Nuitae>
+
+      <!-- special: the sowable lanternstone line -->
+      <RUT_Lanternstone_Sowable>0.1</RUT_Lanternstone_Sowable>
+    </wildPlants>
+
+    <!--
+      The donor's 28 wildAnimals minus the six crystal-studded residents the
+      sheet's hard ban 3 evicts (crystalope, crystalback beetle, crystal crab,
+      crystal fairy mole, mimic mantis, crystal beetle larvae) and minus the
+      three RULED CUT 2026-09-11 (chem snail, cave spider, glow bat).
+      Everything left points at the RSW_* ports already shipped in SWBestiary.
+      MEASURED 2026-09-18: RSW_Shimmershell*, RSW_Xyrion and RSW_Woollybat do
+      NOT exist in src — those three donor residents are dropped, not repointed.
+    -->
+    <wildAnimals>
+      <RSW_AaroxisDendoria>0.05</RSW_AaroxisDendoria>
+      <RSW_AaroxisDendoriaLarvae>0.05</RSW_AaroxisDendoriaLarvae>
+      <RSW_BovineBeetle>0.1</RSW_BovineBeetle>
+      <RSW_BovineBeetleLarvae>0.05</RSW_BovineBeetleLarvae>
+      <RSW_Gembug>0.1</RSW_Gembug>
+      <RSW_GlowSlug>0.2</RSW_GlowSlug>
+      <RSW_Megapleura>0.1</RSW_Megapleura>
+      <RSW_ShatterjawBeetle>0.1</RSW_ShatterjawBeetle>
+      <RSW_FacetMothLarvae>0.05</RSW_FacetMothLarvae>
+      <RSW_FacetMoth>0.05</RSW_FacetMoth>
+      <RSW_PodWorm>0.0001</RSW_PodWorm>
+      <RSW_MossBeetle>0.1</RSW_MossBeetle>
+      <RSW_MossBeetleLarvae>0.1</RSW_MossBeetleLarvae>
+      <RSW_RoyalRhino>0.025</RSW_RoyalRhino>
+      <RSW_BloodropLarvae>0.05</RSW_BloodropLarvae>
+      <RSW_BloodropMoth>0.25</RSW_BloodropMoth>
+    </wildAnimals>
+
+    <allowedPackAnimals>
+      <li>Muffalo</li>
+      <li>Alpaca</li>
+      <li>RSW_RoyalRhino</li>
+      <li>RSW_BovineBeetle</li>
+      <li>RSW_ShatterjawBeetle</li>
+    </allowedPackAnimals>
+
+    <extraRockTypes>
+      <li>RUT_LanternstoneWall</li>
+    </extraRockTypes>
+
+    <pollutionWildAnimals/>
+  </BiomeDef>
+
+</Defs>

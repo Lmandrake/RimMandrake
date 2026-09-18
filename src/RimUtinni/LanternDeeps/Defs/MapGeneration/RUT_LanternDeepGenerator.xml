@@ -8,8 +8,12 @@
     <forceCaves>true</forceCaves>
     <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
     <disableCallAid>true</disableCallAid>
+    <!-- CAVERNS_PARITY_BUILD_1: was BMT_CrystalCaverns, borrowed from Biomes!
+         Caverns. Now our own RUT_LanternDeeps (Defs/Biomes/RUT_LanternDeeps.xml),
+         which carries no worldgen route at all — the sheet's hard ban 1 made
+         structural rather than patched. -->
     <pocketMapProperties>
-      <biome>BMT_CrystalCaverns</biome>
+      <biome>RUT_LanternDeeps</biome>
       <temperature>17</temperature>
     </pocketMapProperties>
     <!-- LANTERN_DEEPS_INJECTION_1 spec item 6, the darkness mechanic: only Lantern
@@ -25,7 +29,10 @@
       <li>Terrain</li>
       <li>MutatorPostTerrain</li>
       <li>RockChunks</li>
-      <li>BMT_CrystalsGenerator</li>
+      <!-- CAVERNS_PARITY_BUILD_1: was BMT_CrystalsGenerator (order 320, donor
+           C# class). RUT_LanternstoneFormations keeps order 320 so the pyrinth
+           (330) and kyber (335) scatters still run after it. -->
+      <li>RUT_LanternstoneFormations</li>
       <!-- CRYSTAL_INGEST_EXECUTION_1: Deeps-only mineable scatters, gated by list
            membership (this MapGeneratorDef only ever produces a Lantern Deep pocket
            map) rather than a biome check === see each GenStepDef's own header. -->
@@ -33,6 +40,9 @@
       <li>RUT_LanternDeepKyberScatter</li>
       <li>PlaceCaveExit</li>
       <li>Plants</li>
+      <!-- CAVERNS_PARITY_BUILD_1: order 950, runs right after Plants(900); a
+           no-op unless the owner turns cave flora off in Mod Settings. -->
+      <li>RUT_LanternDeepFloraGate</li>
       <li>MutatorFinal</li>
       <li>Fog</li>
     </genSteps>

@@ -6,14 +6,11 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Ships the persistent underground "Lantern Deeps" cave-map dungeon layer (LANTERN_DEEPS_INJECTION_1, design/Jawa/worldbuilding/biomes/the_lantern_deeps.md): a natural-emergence entrance building that appears on qualifying nightside/cold-biome maps and, when entered, generates a permanent pocket map using Biomes! Caverns' BMT_CrystalCaverns biome def. This mod depends on Biomes! Caverns for the biome def itself - it does not ship any cave biome, crystal formations, or cavern-shape logic of its own. Also ships RUT_LanternDeepEmergence (the natural-emergence entrance ThingDef) and the GenStep that scatters it onto qualifying host maps.</description>
+  <description>Ships the persistent underground "Lantern Deeps" cave-map dungeon layer (LANTERN_DEEPS_INJECTION_1, design/Jawa/worldbuilding/biomes/the_lantern_deeps.md): two entrance buildings - a natural lanternstone emergence and a ruined mineshaft - that appear on qualifying nightside/cold-biome maps and, when entered, generate a permanent pocket map.
 
-  <modDependencies>
-    <li>
-      <packageId>BiomesTeam.BiomesCaverns</packageId>
-      <displayName>Biomes! Caverns</displayName>
-    </li>
-  </modDependencies>
+As of CAVERNS_PARITY_BUILD_1 the pocket map is entirely OURS: the RUT_LanternDeeps biome, the RUT_DeepCalm weather, the lanternstone floor and walls, the four lanternstone formation sizes with their own scatter GenStep, the sowable lanternstone line and eleven cave plants all ship here. Nothing is borrowed from Biomes! Caverns any more. Resident fauna points at the RSW_* ports in RimStarWars: Bestiary, which is a soft dependency - a Deep with Bestiary absent is empty of animals but otherwise whole.
+
+Also ships the darkness mechanic (carried light draws what lives down there) and a full Mod Settings screen: per-entrance toggles and rates, the darkness mechanic and its sensitivity, lanternstone formation density, and cave flora on/off.</description>
 
   <loadAfter>
     <li>BiomesTeam.BiomesCaverns</li>
