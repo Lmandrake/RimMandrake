@@ -931,8 +931,9 @@ alliance, not grievance.
   desert, and the substellar plateau beside the Rust Cathedral.
 - **The Free Droid Enclaves need a presence on the plateau too.** ⚠️ The three-worlds table
   puts the droid factions *"in low volcanic mountains with poisonous springs"* — that is not
-  cancelled, but it is no longer their only home. Unresolved: whether the volcanic
-  enclaves and the plateau enclaves are one faction or a split.
+  cancelled, but it is no longer their only home. **RULED 2026-09-18** (owner card, worldmap
+  docs pass): **one faction, two site clusters** — the plateau seats are siting, not a new
+  FactionDef; no new ideo, and the shipped world already carries it this way.
 - `canRequestTraders false` still stands for the PLAYER. Their trade is with the droids.
 - The five specced pawn groups (drone swarm, foundry assault, deep-desert siege train,
   Jedi-hunt detachment, elite recovery unit) are still unbuilt — only 2 exist.
