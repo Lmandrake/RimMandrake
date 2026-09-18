@@ -144,6 +144,7 @@
     <Compile Include="RM_WanderingVortexExtension.cs" />
     <Compile Include="RM_WanderingVortex.cs" />
     <Compile Include="RUT_IncidentWorker_SteamDevil.cs" />
+    <Compile Include="RUT_IncidentWorker_SporeCloud.cs" />
   </ItemGroup>
 
   <ItemGroup>

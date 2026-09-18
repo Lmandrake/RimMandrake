@@ -23,11 +23,10 @@ Decoupled from the donor where its own custom classes were involved: flora use v
 tuning extensions dropped, and `RUT_Skulltop`'s spore defense uses AlphaBiomes' own
 already-relied-upon `CompProperties_GasProducer` (field names verified against
 `vendor/mod_sources/AlphaBiomes_src`, same mechanism as `AB_AgariluxPrime`) instead of
-guessing at BiomesCore's own spore comp. One exception kept donor-dependent on purpose:
-`RUT_SporeCloud`'s `conditionClass` still points at
-`BiomesCaverns.GameCondition_SporeCloud` (`MayRequire="biomesteam.biomescaverns"`) — a
-full C# port is owed, tracked on `FUNGALFOREST_RAID_MERGE_1`, and this only matters once
-BiomesCaverns actually retires.
+guessing at BiomesCore's own spore comp. `RUT_SporeCloud`'s `conditionClass` was the one
+donor-dependent exception (`FUNGALFOREST_RAID_MERGE_1`'s owed item); it now runs on our
+own `RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather`
+(`ROT_SPORECLOUD_PORT_1`), so the mod has no remaining BiomesCaverns runtime dependency.
 
 Fauna (thrumbungus the creature, fungal mantis, cave spider, etc.) is explicitly NOT
 ingested here — that admission rides `BIOME_FAUNA_ASSIGNMENT_SITTING_1` per the item's
