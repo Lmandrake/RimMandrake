@@ -146,6 +146,23 @@ namespace RimMandrake.FlowWorks
         public static bool bottleLoopEnabled = true;
         public static bool bottleDirtyStageEnabled = true;
 
+        // ══════════════════════════════════════════════════════════════════
+        // LIQUID_BOTTLE_LOOP_1 — THE TANK (fill/empty at Building_LiquidTank).
+        //
+        // ⚠️ ITS OWN CONTIGUOUS SECTION, same discipline as the blocks above.
+        //
+        //  25. tankLoopEnabled        — the pour-in/draw-out WorkGiver pair.
+        //      Off: a built tank still holds whatever it already has (no
+        //      save-compat loss), a colonist can still hand-carry a
+        //      container to it and use the gizmo-free interaction is simply
+        //      absent -- only the automatic fetch labour stops, same as
+        //      bottleLoopEnabled above.
+        //  26. tankCapacityMultiplier — scales the 300-unit base stock every
+        //      RM_LiquidTank ships with. 1x is the shipped size; this is the
+        //      "tuning where a number is the experience" dial for it.
+        public static bool tankLoopEnabled = true;
+        public static float tankCapacityMultiplier = 1f;
+
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
@@ -183,6 +200,9 @@ namespace RimMandrake.FlowWorks
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
+            // ── LIQUID_BOTTLE_LOOP_1 tank (see the block above; contiguous) ─
+            Scribe_Values.Look(ref tankLoopEnabled, "tankLoopEnabled", true);
+            Scribe_Values.Look(ref tankCapacityMultiplier, "tankCapacityMultiplier", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -195,7 +215,7 @@ namespace RimMandrake.FlowWorks
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4200f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -410,6 +430,30 @@ namespace RimMandrake.FlowWorks
               + "be filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
               + "container directly and no dirty ones are minted; any a save already holds are still "
               + "washable. Barrels are the bulk trade good and are never drunk from directly.");
+
+            // ══════════════════════════════════════════════════════════════
+            // LIQUID_BOTTLE_LOOP_1 TANK SECTION — kept whole and kept last.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("The liquid tank");
+            Text.Font = GameFont.Small;
+            list.Label("A patched-together scavenger tank: a big fixed store of ONE liquid at a "
+                     + "time, filled by pouring a container in and drained by filling a container "
+                     + "from it. The same fetch-labour pattern as the fill/wash loop above.");
+
+            list.CheckboxLabeled("Tank pour/draw labour", ref tankLoopEnabled,
+                "Colonists automatically carry a filled container to a tank that can take its "
+              + "contents, and an empty container to a tank holding enough to fill it — no order "
+              + "needed. Off: a tank already built keeps whatever it holds and can still be worked "
+              + "by hand-carrying, but nothing fetches for you.");
+
+            list.Gap();
+            list.Label("Tank capacity: " + Mathf.RoundToInt(300f * tankCapacityMultiplier) + " units");
+            tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
+            list.Label("Every RM_LiquidTank ships holding this many units at 1x. Raise it for a "
+                     + "colony that wants to stockpile; lower it to keep a tank a modest buffer "
+                     + "rather than a warehouse.");
 
             list.End();
             Widgets.EndScrollView();

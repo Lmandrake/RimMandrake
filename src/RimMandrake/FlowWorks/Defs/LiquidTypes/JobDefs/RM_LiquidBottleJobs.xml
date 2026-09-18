@@ -21,4 +21,21 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- LIQUID_BOTTLE_LOOP_1's tank half. targetA is the container carried,
+       targetB the Building_LiquidTank it is carried to. -->
+
+  <JobDef>
+    <defName>RM_EmptyIntoTankJob</defName>
+    <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_EmptyBottleIntoTank</driverClass>
+    <reportString>emptying a container into a tank.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_FillFromTankJob</defName>
+    <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_FillBottleFromTank</driverClass>
+    <reportString>filling a container from a tank.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
 </Defs>

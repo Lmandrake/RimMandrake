@@ -136,6 +136,13 @@
     <Compile Include="LiquidTypes\WorkGiver_WashBottle.cs" />
     <Compile Include="LiquidTypes\JobDriver_WashBottle.cs" />
     <Compile Include="LiquidTypes\IngestionOutcomeDoer_BottleResidue.cs" />
+    <!-- LIQUID_BOTTLE_LOOP_1: the tank half, fill/empty at Building_LiquidTank. -->
+    <Compile Include="LiquidTypes\Building_LiquidTank.cs" />
+    <Compile Include="LiquidTypes\RM_LiquidTankUtility.cs" />
+    <Compile Include="LiquidTypes\WorkGiver_EmptyBottleIntoTank.cs" />
+    <Compile Include="LiquidTypes\JobDriver_EmptyBottleIntoTank.cs" />
+    <Compile Include="LiquidTypes\WorkGiver_FillBottleFromTank.cs" />
+    <Compile Include="LiquidTypes\JobDriver_FillBottleFromTank.cs" />
   </ItemGroup>
 
   <ItemGroup>

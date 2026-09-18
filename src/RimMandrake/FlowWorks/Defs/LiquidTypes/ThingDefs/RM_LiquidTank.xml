@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidTank.xml
+  ============================================================================
+  LIQUID_BOTTLE_LOOP_1, the tank half (design §4/§9: "fill/empty bills at a
+  tank"). A real player-buildable Building carrying a single stored LiquidDef
+  and a unit count (Building_LiquidTank, Source/LiquidTypes/), filled and
+  drained by the SAME fill/wash chain bottles/buckets/barrels already use:
+  see WorkGiver_EmptyBottleIntoTank/JobDriver_EmptyBottleIntoTank (pour in)
+  and WorkGiver_FillBottleFromTank/JobDriver_FillBottleFromTank (draw out).
+
+  Deliberately the v1 slice the item's own notes name: "a real ThingDef
+  (building... big fixed liquid store)", NOT the universal cargo tank the
+  design's §4/§6/§9 describe for the full liquid-logistics epic (minifiable,
+  holds ANY liquid at once via per-net adapters, pump/hose/tanker interop).
+  This tank holds exactly one liquid at a time, is fixed (not minifiable),
+  and has no pipe/pump interop; that epic stays unbuilt.
+
+  Art: src/RimMandrake/FlowWorks/art_source/UniversalCargoTank/ concept
+  (2026-09-18), conformed via conform_sprite.py onto a 256x256 canvas
+  (drawSize 2.0 x 128 px/cell, matching the 2x2 footprint) rather than
+  regenerated from scratch. Reference for canvas + subject proportion was a
+  synthetic centred bbox, not an existing building; there is no prior real
+  texture of this thing to match a pose against; the reference only sets
+  canvas size and roughly-centred placement, per conform_sprite.py's own
+  contract (it registers by mask overlap, not by matching content).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LiquidTank</defName>
+    <label>liquid tank</label>
+    <description>A patched-together scavenger tank -- mismatched steel panels hammered into one hull, with a scavenged valve cluster bolted on wherever there was room. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/RM_LiquidTank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coverEffectiveness>0.6</coverEffectiveness>
+    <pathCost>50</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>3200</WorkToBuild>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>60</Mass>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+  </ThingDef>
+
+</Defs>

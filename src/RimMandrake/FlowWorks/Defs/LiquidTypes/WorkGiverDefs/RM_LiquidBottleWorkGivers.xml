@@ -45,4 +45,39 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- LIQUID_BOTTLE_LOOP_1's tank half — "bills at a tank" per the design,
+       built here as the same opportunistic WorkGiver/JobDriver shape as the
+       terrain fill/wash pair above rather than a RecipeDef/IBillGiver, so
+       the whole loop stays one architecture. -->
+
+  <WorkGiverDef>
+    <defName>RM_EmptyIntoTankWorkGiver</defName>
+    <label>empty containers into tank</label>
+    <giverClass>RimMandrake.FlowWorks.LiquidTypes.WorkGiver_EmptyBottleIntoTank</giverClass>
+    <workType>Hauling</workType>
+    <verb>empty</verb>
+    <gerund>emptying a container into a tank</gerund>
+    <priorityInType>48</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_FillFromTankWorkGiver</defName>
+    <label>fill containers from tank</label>
+    <giverClass>RimMandrake.FlowWorks.LiquidTypes.WorkGiver_FillBottleFromTank</giverClass>
+    <workType>Hauling</workType>
+    <verb>fill</verb>
+    <gerund>filling a container from a tank</gerund>
+    <priorityInType>47</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

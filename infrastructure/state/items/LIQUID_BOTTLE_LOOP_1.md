@@ -32,3 +32,57 @@ no dirty bottles anywhere, loop still whole.
   item's bottles must be drinkable-agnostic and work with DBH absent.
 - The DBH bottle-inheritance bug ManyWaters hit (`ParentName="DBH_WaterBottle"`
   broken, worked around via `ResourceBasedMom`) — reuse that workaround.
+
+## Tank pass, 2026-09-18
+
+Built the tank the design's own "fill at terrain edge OR tank" names.
+`RM_LiquidTank` (`Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml`) is a real
+player-buildable `Building` — `Building_LiquidTank`
+(`Source/LiquidTypes/Building_LiquidTank.cs`) holds ONE `LiquidDef` and a unit
+count, 300 units base capacity (Mod Settings `tankCapacityMultiplier`, 0.2x-5x).
+Filled by pouring a container in
+(`WorkGiver_EmptyBottleIntoTank`/`JobDriver_EmptyBottleIntoTank`), drained by
+filling an empty one from its stock
+(`WorkGiver_FillBottleFromTank`/`JobDriver_FillBottleFromTank`) — the same
+opportunistic WorkGiver/JobDriver shape as the terrain fill/wash pair, not a
+RecipeDef/IBillGiver, so the whole loop stays one architecture.
+`RM_LiquidTankUtility` finds the nearest reachable tank generically off
+`LiquidDef.UnitsFor(size)`/`FilledDefFor(size)`, exactly like
+`RM_LiquidBottleUtility` does for terrain — no per-liquid, no per-size branch.
+Wired into the SAME registry every bottle already reads (`LiquidDef.bottled`),
+not a parallel stock model. Mod Settings: `tankLoopEnabled` (master switch,
+default on) + `tankCapacityMultiplier`, own contiguous section, defaults =
+shipped behaviour.
+
+Art: `src/RimMandrake/FlowWorks/art_source/UniversalCargoTank/` concept
+conformed via `conform_sprite.py` onto a 256x256 canvas (drawSize 2.0 x 128
+px/cell) rather than regenerated — a synthetic centred-bbox reference, since
+no prior real texture of this building exists to match a pose against.
+Validated clean (`validate_sprite.py`, 1 benign WARN on faint edge alpha).
+
+Deliberately the v1 slice the item's own notes name: ONE fixed (not
+minifiable), single-liquid-at-a-time tank. NOT built, and staying that way for
+a future item: the universal cargo tank the full liquid-logistics epic
+describes (design §4/§6/§9 — minifiable, ANY liquid via per-net adapters,
+pump/hose/tanker-raid interop, VE PipeSystem adoption). Stale "no tank exists"
+notes in `RM_LiquidBottles_Base.xml`/`LiquidDef.cs`/`RM_LiquidBottleUtility.cs`
+corrected to point at what actually ships now.
+
+Build: `dotnet build` on `RimMandrake_FlowWorks.csproj`, 0 warnings/0 errors.
+`validate_patch.py` clean against both `--live` (2026-09-18T02-17-44Z capture,
+632 mods) and `--defs` (Data+Workshop+Mods, `ModsConfig.FULL.LATEST.xml`) —
+22 files, 0 errors, 0 warnings; only pre-existing informational notes about
+custom `Class=` attributes the validator cannot resolve from XML (every
+existing bottle def carries the same note; not new).
+
+Deployed: `deploy_custom_mods.py --mod FlowWorks --apply` — 27 files written
+(this also caught up the earlier-tonight bottle/bucket/barrel commits, which
+had never been deployed either). `Assemblies/RimMandrakeFlowWorks.dll` is the
+ONE file still undeployed — locked by the running game (bridge held by BENCH
+throughout this pass) — owed on the next restart/shutdown window.
+
+**OWED, explicitly**: a live quicktest of the tank loop (pour a filled
+container in, drain an empty one out, watch the inspect string move) — bridge
+was held and idle 0 min the entire pass, so this stayed offline per the
+item's own "stay offline in doubt" discipline. Same quicktest debt the
+fill/wash half already carried.

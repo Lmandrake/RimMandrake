@@ -99,6 +99,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// wires a pipe net only fires when that mod's defs exist.</summary>
         public string pipeResource;
 
+        /// <summary>Units this liquid moves per container of a given size --
+        /// a null-safe forward onto <see cref="bottled"/> so the tank half
+        /// (LIQUID_BOTTLE_LOOP_1) can read it straight off a LiquidDef
+        /// without a null check at every call site. 0 when this row ships no
+        /// bottled form at all.</summary>
+        public int UnitsFor(RM_ContainerSize size)
+        {
+            return bottled?.UnitsFor(size) ?? 0;
+        }
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string error in base.ConfigErrors())
@@ -195,9 +205,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// (generate_liquid_suite.py) -- a barrel is the bulk TRADE good
         /// (tradeable for free via ResourceBase, zero patches), not
         /// something a pawn drinks from directly. "Fill/empty bills at a
-        /// tank" -- the spec's other named barrel behavior -- stays
-        /// deferred: no tank building exists yet in FlowWorks or
-        /// WreckedMachines (see LIQUID_BOTTLE_LOOP_1's own notes).</summary>
+        /// tank" -- the spec's other named barrel behavior -- now ships too:
+        /// Building_LiquidTank plus RM_LiquidTankUtility's fill/drain
+        /// WorkGiver pair (see LIQUID_BOTTLE_LOOP_1's own notes).</summary>
         public ThingDef barrel;
         public int unitsPerBarrel = 25;
 
@@ -225,6 +235,24 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     return barrel;
                 default:
                     return bottle;
+            }
+        }
+
+        /// <summary>Units this liquid moves per container of a given size --
+        /// what LIQUID_BOTTLE_LOOP_1's tank half (fill/empty at
+        /// Building_LiquidTank) reads to convert a bottle/bucket/barrel into
+        /// a tank stock delta, the same generic-across-sizes idiom
+        /// <see cref="FilledDefFor"/> already uses.</summary>
+        public int UnitsFor(RM_ContainerSize size)
+        {
+            switch (size)
+            {
+                case RM_ContainerSize.Bucket:
+                    return unitsPerBucket;
+                case RM_ContainerSize.Barrel:
+                    return unitsPerBarrel;
+                default:
+                    return unitsPerBottle;
             }
         }
 
