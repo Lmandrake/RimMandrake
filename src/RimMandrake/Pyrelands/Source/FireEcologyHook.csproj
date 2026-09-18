@@ -48,6 +48,7 @@
     <Compile Include="FireEcologyHook.cs" />
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
+    <Compile Include="RM_PyrelandsDensityEnforcer.cs" />
   </ItemGroup>
 
   <ItemGroup>
