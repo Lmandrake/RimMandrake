@@ -1121,6 +1121,12 @@
     "hash": "24833767bf463677142664b54394925d5c741435b1c819248e8b32b7d0d6a972",
     "sha": "212775b67"
   },
+  "src/RimMandrake/EnvironmentalHazards/Defs/JobDefs/RM_JobDefs_WorkLottery.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "360486fe84943aadfb6db85b9785d0d24dbf95253c064b87b6ecdf91e4679333",
+    "sha": "71afa1c0d"
+  },
   "src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1138,6 +1144,12 @@
     "date": "2026-09-14",
     "hash": "12ade765d6e602644233dd3fdb3ed2188c4b4632780857ca290defdd73d73a46",
     "sha": "c76fc40a0"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Defs/WorkGiverDefs/RM_WorkGiverDefs_WorkLottery.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "6e55703f00e8d332af3761297493cefb713d82173b88e1eae99d6df7869bd6fa",
+    "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml": {
     "cleanCount": 2,
@@ -1320,10 +1332,10 @@
     "sha": "1ae30640a"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-14",
-    "hash": "0415851b89ab7f67a68c3c3adf1faacc56dd77e67b3bcb3088aa63478d9d874b",
-    "sha": "0dedc6cfa"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "665f9722e4edbc3af2c193cf21cbfe0f5284b8965d05982640e875faa7078da0",
+    "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs": {
     "cleanCount": 1,
@@ -1492,6 +1504,12 @@
     "date": "2026-09-14",
     "hash": "5963ad8eb6b6cbaa0fd07f53163ee41c14f7db6cbf235704eb515b486a0945fc",
     "sha": "0dedc6cfa"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_WorkLottery.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "4795507993c5dced3a693b4fbf6e5ee703e2bfee701a7c3902f4abcbc60f31e2",
+    "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_DreadAvoidWander.cs": {
     "cleanCount": 1,
@@ -1672,6 +1690,12 @@
     "date": "2026-09-14",
     "hash": "b2d163c1468678bfa1152dc0015ad84d6ca37d6f029e51c52a115e530d8de640",
     "sha": "6f7f5ff61"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_WorkLottery.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "e5e539af5daea2a23c2ec468f7c3a902f964391669ad4141764c5822b46497d1",
+    "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_HaulPawnAndExit.cs": {
     "cleanCount": 1,
@@ -16641,6 +16665,12 @@
     "hash": "1744193085f8390f8d62b5cec256f5898041f819c282122f17961961eee792e7",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/UtinniPatches/Defs/LotteryTableDefs/RUT_DigStratumTable.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "67d8862573ac7c4fa0de4c87986279911734fb14f26f639e03948f7f6a7a0ad5",
+    "sha": "71afa1c0d"
+  },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaGroundHulk.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -16814,6 +16844,12 @@
     "date": "2026-09-14",
     "hash": "11e967a166985ac443f7979b2ea644b214f79a84123ce288c001d7f5be02de7c",
     "sha": "212775b67"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_DigShaft.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "ad44c489168aecf84564b620de15c8452e700779fcefaf446294f333eeed93e4",
+    "sha": "71afa1c0d"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FeverTrunkCore.xml": {
     "cleanCount": 1,
