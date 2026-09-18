@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T19:47:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-18T20:02:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Spec: design/Jawa/worldbuilding/biomes/weepingstones.md (architecture ruling at
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -323,6 +314,15 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Spec: design/Jawa/worldbuilding/biomes/weepingstones.md (architecture ruling at
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    doing
@@ -1744,3 +1744,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
+
+## DEEPCALM_AMBIENT_SOUND_1 Lantern Deeps ambient sound: RUT_DeepCalm ships silent - author/source an owned cave-hum SoundDef (the sheet's 'hum rising to a Chorus'), donor .ogg does not come with us
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPCALM_AMBIENT_SOUND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPCALM_AMBIENT_SOUND_1.md
