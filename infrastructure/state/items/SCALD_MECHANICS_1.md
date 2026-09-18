@@ -615,6 +615,90 @@ a sibling item's own rulings, this is the kit's last unblocked v1
 mechanic — said plainly, per this pass's own brief.** Item stays in
 `doing`; not closed by this pass.
 
+## Continuation pass — 2026-09-18 (FOUNDRY, offline)
+
+Re-established real state before touching anything: `rimflow show` plus
+`git log --all -i --grep=SCALD` cross-checked against the item file itself —
+**ledger and file already agree**, unlike the FORGE_MECHANICS_1 case this
+task's own brief warned about. S1/S2/S4/S5/S6 all landed 2026-09-13/14 per
+the sections above; nothing was un-noted work sitting uncredited.
+
+**Closed this pass: S1's own "clear spell" gap**, the one explicit honest gap
+left in S1 (`RUT_ScaldSteamLock.xml`'s own header, quoted above). Re-read
+`GameCondition_EnvironmentalWeather.ForcedWeather()` — still unconditional,
+confirmed unchanged since 2026-09-13 (`git log` on that file: no commits at
+all). But `FORGE_MECHANICS_1`'s F1 pass (`0e38767e7`, 2026-09-13, same day)
+shipped a second, more general class this item's own spike pass predates:
+`RM_GameCondition_WeatherPulse` + `WeatherPulseExtension` — "force
+`baseWeather`, MTB-roll a temporary switch to `burstWeather`", already a
+live third-party consumer (`RUT_ForgePulse.xml`, `RUT_TheForge`). That shape
+is exactly a "clear spell" mechanism pointed the other direction: Forge
+points the temporary state at something WORSE (`RUT_BoilingRain` + damage);
+Scald points it at vanilla `Clear` (confirmed real,
+`Core/Defs/WeatherDefs/Weathers.xml`) with no damage def set at all.
+`RUT_ScaldSteamLock.xml` reworked in place to use it — **zero new C#, no
+shared-class edit, no risk to Miasma/Forge/Sump's own consumers of
+`EnvironmentalWeatherExtension`** (untouched). `burstMtbHours 96` / minutes
+`720~1440` **INVENTED** — mean 4 in-game days between a 12-24 hour still day.
+`flashWindowHoursAfterBurstStart` set to the class's required-nonzero
+minimum (1) and confirmed inert for this consumer (`RUT_TheScald` carries no
+`RM_MapComponent_FlashCycle`, so that lookup no-ops — read
+`RM_GameCondition_WeatherPulse.StartBurst` in full to confirm before
+assuming). `scald_kit_spec.md`'s own S1 row updated in place to match.
+
+**Validated**: `validate_patch.py` against the live 10-active-mod dev set
+(`--defs` Data + Mods) — **0 errors, 0 warnings** on `RUT_ScaldSteamLock.xml`,
+the one expected "no def in the load set uses that class" info line for
+`WeatherPulseExtension` (same boilerplate every prior pass's first consumer
+of a class has logged). No C# touched, so no `dotnet build` needed this
+pass — `RM_GameCondition_WeatherPulse`/`WeatherPulseExtension` are already
+compiled and shipping (Forge's own live consumer proves it).
+
+**Re-checked S3, not touched, still genuinely blocked** — this time on TWO
+things, not one: (a) `FISH_BESTIARY_COMMISSION_1` is superseded by
+`FISH_BESTIARY_BUILD_1`, ruled 2026-09-18 and currently `doing` (own claim by
+FOUNDRY same day); its own notes report the Scald fish table's own live
+fishing test **FAILED** — "Scald: live-confirmed FALSE (mechanism dead,
+cause understood, fix owed to a different item)" — and (b) that same item
+names the fix owed as **this item's own "cove painting"**: `RUT_ScaldMargin`
+must be sited on the actual Scald map as a geometrically isolated cove cut
+off from open boil water by land (`RUT_ScaldMargin.xml`'s own header,
+S3 section above) — that placement is world/map-authoring via the bridge,
+never done, and this task was explicitly told not to take the bridge. So S3
+stays blocked on a sibling item's own build PLUS bridge access neither this
+pass nor the current session has. Not re-derived past what those two items'
+own files already say.
+
+**Re-checked the remaining "owed, not done" list from prior passes — none
+newly unblocked**: no item-water `ThingDef` exists yet anywhere in the repo
+(`RUT_SteamCatch.xml`'s `outputDef` stays intentionally unset, confirmed by
+a fresh grep, not assumed stale); the three wreck sprites and the
+vent/steam-catch textures remain un-generated (`src/DEPLOY_HOLD.txt`'s Scald
+entries unchanged — left alone per this task's own git-safety brief, no new
+hold entries needed); the real bubble-sailor `PawnKindDef`/`ThinkTreeDef`/
+`DutyDef` (roster-pass work) and `RUT_ScaldVent`'s actual map placement
+(bridge/world-authoring) are untouched, both explicitly out of any offline
+FOUNDRY pass's reach. S6's loot `ThingSetMaker` stays deferred to the items
+pass by the spec's own words (unchanged).
+
+**Collision avoided**: `src/RimMandrake/EnvironmentalHazards/Source/
+RM_EnvironmentalHazards.csproj`, its rebuilt `.dll`, and `RM_CompStationEater.cs`
+were found mid-edit by a concurrent session (untracked `RM_JobDriver_
+WorkLottery.cs`/`RM_WorkGiver_WorkLottery.cs` plus new JobDef/WorkGiverDef/
+LotteryTableDef XML — unrelated "work lottery" content, not this item's).
+None of those files were touched or committed by this pass — this pass's own
+fix needed no `.csproj` change (both classes it reuses were already compiled
+and already referenced) and touched only already-clean, untracked-by-anyone
+files (`RUT_ScaldSteamLock.xml`, `scald_kit_spec.md`, this item file),
+verified clean via `git status --porcelain` before every write.
+
+**Verdict**: kit is now S1/S2/S4/S5/S6 fully landed with S1's own last
+in-scope gap closed; S3 (margin fishing content) is the sole remaining
+mechanic, genuinely blocked on `FISH_BESTIARY_BUILD_1`'s own build plus a
+bridge-only map-authoring step neither is available this pass. Item stays
+`doing` — not closed, since S3 is real, specced, unbuilt content, not a
+stale note.
+
 ## criteria
 
 - Every mechanic traces to a sheet section; no lore invented outside

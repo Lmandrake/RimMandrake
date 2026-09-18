@@ -74,15 +74,25 @@ light diffused, sound the endless exhale. The boil never stops.
   `RM_WeatherOverlay_GroundFog` class with white/steam textures *(class
   verified, greentide)* — share the class, ship new art. Ambient: the boil's
   breath (`soundsAmbient`).
-- **The lock**: ruled `RM_GameCondition_EnvironmentalWeather`
-  (`ALPHA_MECHANICS_KIT_1`) as a permanent `biomeMapConditions` entry *(both
-  hooks verified, greentide)* — forced `RUT_ScaldSteam` with configured clear
-  spells (§9's "still day" that shows the wrecks). No damage fields — the
-  steam is clean; the WATER burns. ⚠️ The shipped BiomeDef already carries
-  `baseWeatherCommonalities` to silence the zero-commonality log line — keep
-  them consistent with the lock (commonalities become the fallback set).
+- **The lock**: **BUILT, 2026-09-18** — `RUT_ScaldSteamLock.xml` now uses
+  `RM_GameCondition_WeatherPulse` + `WeatherPulseExtension` (the class
+  `FORGE_MECHANICS_1` F1 already shipped/compiled), NOT
+  `RM_GameCondition_EnvironmentalWeather` as this row originally said: that
+  class's `ForcedWeather()` returns its forced weather unconditionally, no
+  periodic-lapse hook, and adding one would touch shared behaviour every
+  other kit consuming it depends on. `WeatherPulse` is symmetric by
+  construction (force `baseWeather`, MTB-roll a temporary switch to
+  `burstWeather`) — pointed at vanilla `Clear` instead of a worse weather,
+  with `scaldDamageDef` unset, it IS the "configured clear spells" (§9's
+  "still day" that shows the wrecks), zero new C#. Permanent
+  `biomeMapConditions` entry, forced `RUT_ScaldSteam` between still days. No
+  damage fields — the steam is clean; the WATER burns. ⚠️ The shipped
+  BiomeDef already carries `baseWeatherCommonalities` to silence the
+  zero-commonality log line — keep them consistent with the lock
+  (commonalities become the fallback set).
 
-**Effort**: **S** (one WeatherDef + art; lock is ruled kit). **v1: ships.**
+**Effort**: **S** (one WeatherDef + art; lock is ruled kit, clear-spell gap
+now closed by reuse). **v1: ships.**
 
 ## S2. The steam-catch (§7 ⭐ "the tap of the world")
 
