@@ -176,6 +176,17 @@
       <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
+    <!--
+      ROT_DECAY_HARVEST_1 ("the gut digests"). Generic RM_-tier extension
+      (defined in mandrake.rm.environmentalhazards, harmless on any biome that
+      doesn't carry it) — see RM_AcceleratedRotExtension.cs for the field
+      docs. No fields here: the item/corpse rate multipliers are a single Mod
+      Settings dial, not per-biome (RM_EnvironmentalHazardsSettings.
+      acceleratedRotItemMultiplier / acceleratedRotCorpseMultiplier).
+    -->
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

@@ -134,6 +134,18 @@ namespace RimMandrake.EnvironmentalHazards
     //      already settled over a map runs to its own scheduled end rather
     //      than snapping off under a pawn's feet, same posture as
     //      breaklightEnabled.
+    //  26. acceleratedRotEnabled — RM_MapComponent_AcceleratedRot
+    //      (ROT_DECAY_HARVEST_1). Off: a biome carrying
+    //      RM_AcceleratedRotExtension stops accelerating rot and thinning
+    //      outdoor filth entirely; everything rots at vanilla's own rate.
+    //  27. acceleratedRotItemMultiplier / acceleratedRotCorpseMultiplier —
+    //      the SAME mechanism's rate dials, separated because a corpse and a
+    //      dropped item read very differently at the same multiplier. Both
+    //      only ever ADD to vanilla's own rot tick, never replace it.
+    //  28. livingProduceHeatEnabled — RM_MapComponent_LivingProduce
+    //      (ROT_DECAY_HARVEST_1). Off: a def carrying
+    //      RM_LivingProduceExtension stops pushing any heat into its room;
+    //      it still rots, ferments, or does whatever else it already did.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -162,6 +174,10 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool breaklightEnabled = true;
         public static bool steamDevilEnabled = true;
         public static bool sporeCloudEnabled = true;
+        public static bool acceleratedRotEnabled = true;
+        public static float acceleratedRotItemMultiplier = 12f;
+        public static float acceleratedRotCorpseMultiplier = 20f;
+        public static bool livingProduceHeatEnabled = true;
 
         public override void ExposeData()
         {
@@ -191,6 +207,10 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref breaklightEnabled, "breaklightEnabled", true);
             Scribe_Values.Look(ref steamDevilEnabled, "steamDevilEnabled", true);
             Scribe_Values.Look(ref sporeCloudEnabled, "sporeCloudEnabled", true);
+            Scribe_Values.Look(ref acceleratedRotEnabled, "acceleratedRotEnabled", true);
+            Scribe_Values.Look(ref acceleratedRotItemMultiplier, "acceleratedRotItemMultiplier", 12f);
+            Scribe_Values.Look(ref acceleratedRotCorpseMultiplier, "acceleratedRotCorpseMultiplier", 20f);
+            Scribe_Values.Look(ref livingProduceHeatEnabled, "livingProduceHeatEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -270,12 +290,23 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Spore cloud event", ref sporeCloudEnabled,
                 "The fungal spore cloud event stops occurring. One already settled over a map runs "
               + "to its own scheduled end instead of snapping off immediately.");
+            list.CheckboxLabeled("Accelerated rot and outdoor filth thinning", ref acceleratedRotEnabled,
+                "A biome built to rot exposed things faster and slowly thin outdoor filth stops doing "
+              + "either; everything rots at vanilla's own rate again.");
+            list.CheckboxLabeled("Living produce room heat", ref livingProduceHeatEnabled,
+                "A stockpiled crop or food built to radiate warmth stops pushing any heat into its "
+              + "room; it still rots, ferments, or does whatever else it already did.");
             list.GapLine();
 
             list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
             list.Label("Scales every damage/severity number the mechanisms above deal. Never "
                      + "changes how often, how far, or how likely a hazard fires.");
             hazardDamageMultiplier = list.Slider(hazardDamageMultiplier, 0.25f, 3f);
+
+            list.Label("Accelerated rot, dropped items: " + acceleratedRotItemMultiplier.ToString("0.0") + "x vanilla's rate");
+            acceleratedRotItemMultiplier = list.Slider(acceleratedRotItemMultiplier, 1f, 40f);
+            list.Label("Accelerated rot, corpses: " + acceleratedRotCorpseMultiplier.ToString("0.0") + "x vanilla's rate");
+            acceleratedRotCorpseMultiplier = list.Slider(acceleratedRotCorpseMultiplier, 1f, 40f);
 
             list.End();
         }
