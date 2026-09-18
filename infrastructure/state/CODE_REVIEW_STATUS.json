@@ -5016,28 +5016,28 @@
     "sha": "aa2e63220"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 6,
-    "date": "2026-09-12",
-    "hash": "0f2e8644f19f27aece91060e7a9b76e7a5bdac7f4fa89dec4d66f28ae9370f92",
-    "sha": "c8e2d629a"
+    "cleanCount": 7,
+    "date": "2026-09-17",
+    "hash": "fc70b23070073648cb79a72f7691e417e9a38819bc07afde4dfa988e99e84c09",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "421e2aef9f7b81c4cb8d9b9c3a775dc3d1afca5105109f27d854a469588d9bee",
-    "sha": "9e5089f22"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "0ad92ff353b7aaed2ab9476abd67f73c0c6d05c876d5086acf0059c1e508e2f2",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "cb314d327ea35b308a26591fc62c78628a90ce9d3338b23a653ae87719965809",
-    "sha": "7dabaa86"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "e342d27f39b8a8ba2d106b5a4b3197c3eb62223db6512e144318612bbb08f153",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/artpipe/fill_queue.py": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "2746be810e7ffbcd47b72adca668173423d64ec7eb606140199df03ff5b28755",
-    "sha": "6b81019d0"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "a8dad63c5e6a81933502d81bd78df1b038128bfb581bb66da60b9fa5f1348524",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/artpipe/make_verdict_sheet.py": {
     "cleanCount": 1,
@@ -5058,10 +5058,10 @@
     "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "724aa19b54fa6960f4d631f4396279eb6861a4f55dae405f8c0902fe4584536f",
-    "sha": "c8e2d629a"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "fdbc3e2223a8269825bcaec7cf6ade850085ff3d1fd06a038194bd8e66c77205",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
@@ -5369,10 +5369,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/code_review_status.py": {
-    "cleanCount": 6,
-    "date": "2026-09-09",
-    "hash": "2689d69a3167f11ad2557950b514bf710505f3d30c5be77c76dda170e62b36e3",
-    "sha": "a3b2ffc2"
+    "cleanCount": 8,
+    "date": "2026-09-17",
+    "hash": "8c60ef2ae1a8d8d60bada51df03f5fb34cb70d00d64a28a2678f1f18116e71b6",
+    "sha": "74e9d4953"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
     "cleanCount": 6,
@@ -16324,10 +16324,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 5,
+    "cleanCount": 6,
     "date": "2026-09-17",
-    "hash": "584fb00e9117917da5f9942fb227ccf80a3935ad6a7f15069279accb5b49df13",
-    "sha": "ac17db00a"
+    "hash": "6842daf8f1b77a99334cdd055adcf7f80f82a9939fa607ead25ba91baa145266",
+    "sha": "fa8ec9d9a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
@@ -16798,10 +16798,10 @@
     "sha": "e7810e12f"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_TarMoat.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "732a183f08d633d8a86a7d0f35790de99fc05f86a2aca34ce4ee60642323985e",
-    "sha": "670da445d"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "20900ef4e58ef0d8dc50b56c624bbb994d6e34992ce87a1d02e4e5a2c1edd3a2",
+    "sha": "fa8ec9d9a"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml": {
     "cleanCount": 1,
