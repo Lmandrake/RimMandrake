@@ -20,9 +20,16 @@
   WorkGiver_WashBottle.cs, JobDriver_WashBottle.cs) and the "use" half
   (Source/LiquidTypes/IngestionOutcomeDoer_BottleResidue.cs, wired onto
   every bottled row with a thirstQuality) — reading RM_BottledLiquidExtension
-  and RM_LiquidBottleUtility generically, never a per-liquid branch. Filling
-  from a TANK (the design's other named source) is NOT built: the universal
-  cargo tank does not exist yet, so this pass reads terrain only. A live
+  and RM_LiquidBottleUtility generically, never a per-liquid branch.
+
+  Filling from a TANK (the design's other named source) now also ships:
+  Building_LiquidTank plus WorkGiver_EmptyBottleIntoTank/JobDriver_EmptyBottleIntoTank
+  (pour in) and WorkGiver_FillBottleFromTank/JobDriver_FillBottleFromTank (draw out),
+  reading RM_LiquidTankUtility rather than RM_LiquidBottleUtility (which stays
+  terrain-only, per its own class doc). RM_LiquidTank.xml is the v1 slice named
+  in the item's own notes — a single fixed, single-liquid tank — not the
+  minifiable, any-liquid, pump/hose-interop universal cargo tank design §4/§6/§9
+  describe for the full liquid-logistics epic; that stays unbuilt. A live
   quicktest of the loop (fill/drink/dirty/wash observed in-game) is OWED —
   see LIQUID_BOTTLE_LOOP_1's own notes for why this pass could not run one.
 
@@ -49,9 +56,9 @@
   Barrels carry no &lt;ingestible&gt; block — they are the bulk TRADE good
   (tradeable for free via ResourceBase, "zero patches" per the spec), not a
   food item a pawn drinks from directly. "Fill/empty bills at a tank" (the
-  spec's other named barrel behavior) is DEFERRED — no tank building exists
-  yet anywhere in FlowWorks or WreckedMachines; barrels this pass fill from
-  a terrain edge via the same generalized chain bottles/buckets already use.
+  spec's other named barrel behavior) now ships too — RM_LiquidTank.xml,
+  same as bottles/buckets, via RM_LiquidTankUtility rather than a per-size
+  branch — alongside the pre-existing terrain-edge fill/wash route.
   ============================================================================
 -->
 <Defs>

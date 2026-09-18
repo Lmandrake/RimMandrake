@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RM_LiquidTankEmpty>Empty</RM_LiquidTankEmpty>
+  <RM_LiquidTankHolding>Holding: {0} ({1} / {2} units)</RM_LiquidTankHolding>
+
+</LanguageData>

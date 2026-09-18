@@ -13,12 +13,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// reverse direction (bottle -> liquid); this is terrain -> liquid.
     ///
     /// Deliberately terrain-only. The design's "fill at terrain edge OR
-    /// tank" names a second source this class does not reach: the universal
-    /// cargo tank (design §6/§9) is unbuilt, and a live canal's depth/fill
-    /// grid (<see cref="RM_MapComponent_Excavation"/>, keyed to a FluidDef,
-    /// not a LiquidDef) is a different liquid representation this bottle
-    /// loop does not read from this pass -- see LIQUID_BOTTLE_LOOP_1's own
-    /// notes for why that stays deferred rather than half-built.
+    /// tank" names a second source this class does not reach: that is
+    /// <see cref="RM_LiquidTankUtility"/> and <see cref="Building_LiquidTank"/>
+    /// now, a separate utility rather than a branch added here, so the
+    /// terrain-edge search stays exactly what its name says. The universal
+    /// cargo tank the full liquid-logistics epic describes (design §6/§9 --
+    /// minifiable, any liquid, pump/hose interop) is still unbuilt; only the
+    /// item's own v1 slice (one fixed, one-liquid tank) exists. A live canal's
+    /// depth/fill grid (<see cref="RM_MapComponent_Excavation"/>, keyed to a
+    /// FluidDef, not a LiquidDef) is a different liquid representation this
+    /// bottle loop does not read from this pass -- see LIQUID_BOTTLE_LOOP_1's
+    /// own notes for why that stays deferred rather than half-built.
     /// </summary>
     public static class RM_LiquidBottleUtility
     {

@@ -29,7 +29,9 @@ time it is used, depth-derived movement cost, a three-tier fill ladder on
 vanilla's own edge-aware water ramps, and `FluidDef`s describing what a
 source carries — water and tar for canals, plus the wider LiquidDef
 registry (below) covering ten liquid types with their own terrain suites
-and bottled forms.
+and bottled forms. Bottles, buckets and barrels fill and wash at a
+matching liquid's shore, and a buildable liquid tank holds a bulk stock of
+one liquid at a time, filled and drained by the same containers.
 
 A SUPERDEEP excavation is the trapping level and the only one: anything that
 walks into one falls in and is held there whether the hole is dry or brimming,

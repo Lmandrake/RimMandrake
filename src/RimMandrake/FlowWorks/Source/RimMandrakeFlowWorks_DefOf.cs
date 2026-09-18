@@ -67,6 +67,13 @@ namespace RimMandrake.FlowWorks
 		/// last dirty with.</summary>
 		public static LiquidDef RM_Liquid_FreshWater;
 
+		// ── LIQUID_BOTTLE_LOOP_1: the tank half (fill/empty at a tank) ─────
+		public static ThingDef RM_LiquidTank;
+
+		public static JobDef RM_EmptyIntoTankJob;
+
+		public static JobDef RM_FillFromTankJob;
+
 		static RimMandrakeFlowWorks_DefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RimMandrakeFlowWorks_DefOf));
