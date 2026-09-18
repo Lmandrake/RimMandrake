@@ -53,6 +53,16 @@ namespace RimMandrake.CreatureBehaviors
     //      already carries when this is toggled off is removed on the next
     //      check, so nothing stays invisible forever; the pawn hunts
     //      exactly like a normal vanilla predator from then on.
+    //  12. woundLinkEnabled / woundLinkShareMultiplier — RM_CompWoundLink
+    //      (ROT_HEALTH_SHARING_1). Off: a fresh wound on a tagged pawn never
+    //      mirrors onto same-tag kin, and the victim keeps 100% of it — the
+    //      dial scales only the SHARED fraction (never the severity gate or
+    //      radius, which stay whatever the race's own extension says).
+    //  13. kinMendingEnabled / kinMendingBoostMultiplier —
+    //      RM_HediffComp_KinMending (ROT_HEALTH_SHARING_1). Off: kin nearby
+    //      never speeds up a tagged pawn's own natural healing. The dial
+    //      scales only the extra heal amount (never the kin-count threshold
+    //      or radius, which stay whatever the race's own extension says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -70,6 +80,10 @@ namespace RimMandrake.CreatureBehaviors
         public static bool frontCreepEnabled = true;
         public static float frontCreepRateMultiplier = 1f;
         public static bool aquaticAmbushEnabled = true;
+        public static bool woundLinkEnabled = true;
+        public static float woundLinkShareMultiplier = 1f;
+        public static bool kinMendingEnabled = true;
+        public static float kinMendingBoostMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -88,6 +102,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
             Scribe_Values.Look(ref frontCreepRateMultiplier, "frontCreepRateMultiplier", 1f);
             Scribe_Values.Look(ref aquaticAmbushEnabled, "aquaticAmbushEnabled", true);
+            Scribe_Values.Look(ref woundLinkEnabled, "woundLinkEnabled", true);
+            Scribe_Values.Look(ref woundLinkShareMultiplier, "woundLinkShareMultiplier", 1f);
+            Scribe_Values.Look(ref kinMendingEnabled, "kinMendingEnabled", true);
+            Scribe_Values.Look(ref kinMendingBoostMultiplier, "kinMendingBoostMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -139,6 +157,18 @@ namespace RimMandrake.CreatureBehaviors
                 "A tagged animal stops going invisible while submerged in deep water and stops "
               + "lunging at targets that come into range; any lingering invisibility clears "
               + "immediately, and the animal hunts like a normal predator from then on.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Wound sharing", ref woundLinkEnabled,
+                "A serious fresh wound on a tagged animal stops partly mirroring onto same-tag "
+              + "kin nearby; the original victim keeps the full wound instead.");
+            list.Label("Wound-sharing amount: " + woundLinkShareMultiplier.ToString("0.00") + "x");
+            woundLinkShareMultiplier = list.Slider(woundLinkShareMultiplier, 0f, 2f);
+            list.CheckboxLabeled("Kin mending", ref kinMendingEnabled,
+                "A tagged animal stops healing its own wounds faster just because same-tag kin "
+              + "are nearby.");
+            list.Label("Kin-mending boost: " + kinMendingBoostMultiplier.ToString("0.00") + "x");
+            kinMendingBoostMultiplier = list.Slider(kinMendingBoostMultiplier, 0f, 2f);
 
             list.End();
         }
