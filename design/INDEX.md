@@ -717,7 +717,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `MenuShell.md` | MenuShell — validation walk | — |
 | `PawnFlavor.md` | PawnFlavor — validation walk | — |
 | `PlantGrowth.md` | PlantGrowth — validation walk | — |
-| `PyrelandsFireEcology.md` | PyrelandsFireEcology — validation walk | — |
 | `ResearchRetag.md` | ResearchRetag — validation walk | — |
 | `RestrainingBolts.md` | RestrainingBolts — validation walk | — |
 | `Rites.md` | Rites — validation walk | — |
