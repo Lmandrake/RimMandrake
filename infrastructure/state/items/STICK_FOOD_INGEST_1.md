@@ -1,5 +1,46 @@
 # STICK_FOOD_INGEST_1 — measured ingest scope (BENCH, 2026-09-02)
 
+## 2026-09-18 (FOUNDRY, subagent, second pass) — re-verified, no drift, scoped offline-only
+
+Re-ran the same offline checks as the earlier pass today, independently, and
+found no drift: deploy still byte-current (`diff -rq` across all four
+subtrees — About/Assemblies/Defs/Textures — between
+`src/RimStarWars/Cuisine` and the deployed `Mods/Cuisine` copy: empty on
+every subtree). `validate_patch.py --defs` against the live `Mods` + `Data`
++ Workshop `294100` roots (632/632 active mods resolved): 0 errors, 0
+warnings on all 3 Cuisine def files — same advisory-only
+`CompProperties_NameGen` info lines as every prior pass (expected: the mod
+is inactive, so its own C# class isn't in the load set the checker sees).
+`ModsConfig.xml` parsed with `ElementTree` (never grepped): 632 active,
+`mandrake.rsw.cuisine` still not active, both `badoaks.meatonastick` and
+`badoaks.meatonastick.expansion` still active — matches every prior
+measurement back to 2026-09-05.
+
+**Dangling-reference check widened**: searched the whole repo (not just
+`required_mods.md`) for `badoaks`, bare `MeatOnAStick`, and `chrisb` —
+nothing live references either donor mod's defNames or packageId outside
+`src/RimStarWars/Cuisine` itself (already fully renamed away from donor
+names) and the ModsConfig history snapshots/backups (which naturally carry
+whatever was active at capture time). So the "no cast/thought references
+left dangling" criterion is already structurally satisfied; what remains on
+it is the same live-game check the craft-proof criterion already owes, not
+separate work.
+
+Also found: `design/validation_walks/RimStarWars/Cuisine.md` already exists
+and covers exactly the craft-proof this item still owes (load-time Config
+Error check, `get_defs`/`get_def` stat checks, `spawn_thing`/`list_things`
+checks, and a human-pass step for the NameGen label + mood thought) — no new
+validation tooling needed, just a live session to run it.
+
+This pass stayed **offline-only by explicit task scope** (no bridge taken),
+even though the bridge reads FREE and the game reads RUNNING (not
+restarted) as of this pass — did not judge whether to force a restart,
+since that decision was scoped out of this pass. The 2026-09-02 /
+2026-09-05 / 2026-09-18 ordering still holds and was not overridden:
+craft-proof before retirement, because retiring an active, working donor
+before its untested replacement is proven live would delete the "stuff on a
+stick" line entirely if the replacement turns out broken. Left `doing`.
+
 ## 2026-09-18 (FOUNDRY, belt mode, subagent)
 
 Re-verified everything offline, confirmed the block reason from 2026-09-07
