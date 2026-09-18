@@ -263,7 +263,9 @@ verified, both pure XML on every live-prep item:
     `RM_IngestionOutcomeDoer_AgeReversal` (vanilla age reversal lives in the
     biosculpter's cycle worker, not in any ingestible outcome ❓ verify at
     build; the doer subtracts N days of biological age, capped at adult).
-    **INVENTED**: 1 year per cup, diminishing on repeat within a season.
+    **RULED (card 1, 2026-09-17)**: 5 years on the first cup; a pawn benefits
+    only once per year (`RUT_AgeReversalSated` hediff, 1-year duration, blocks
+    repeat cups); very hard to obtain — keep ingredient yields scarce.
   - *Bioregeneration*: XML if `HediffComp_HealPermanentWounds` (the
     luciferium healer ❓ verify class name at build) can ride a temporary
     hediff; the tea grants `RUT_Bioregenerating`, ~5 days, healing one
@@ -421,11 +423,11 @@ ajar.
 - `RUT_PaleTree` ThingDef cloning `Plant_TreeAnima`'s comp stack:
   `CompPsylinkable` — and the restriction mechanism is a verified def field:
   **`requiredSubplantCountPerPsylinkLevel` is a `List<int>`** *(verified,
-  `Source/RimWorld/CompProperties_Psylinkable.cs`)*, so a ONE-entry list caps
-  the tree at psylink level 1 forever — only level-1 psycasts (the gentle
-  vanilla set) are ever castable from this source. Ban 6 (no psycast economy,
-  no VPE) is enforced by the cap, not a whitelist; a per-power whitelist
-  would need C# and is explicitly NOT built (owner card).
+  `Source/RimWorld/CompProperties_Psylinkable.cs`)*, and **the owner ruled cap
+  2 (card 4, 2026-09-17)**: a TWO-entry list caps the tree at psylink level 2
+  forever — a real minor kit of level-1/2 psycasts, nothing higher. Ban 6 (no
+  psycast economy, no VPE) is enforced by the cap, not a whitelist; a
+  per-power whitelist would need C# and is explicitly NOT built (owner card).
 - `CompSpawnSubplant` with a `RUT_PaleMoss` subplant (glow-moss — biological
   light, the biome's law); meditation focus stays `Natural` ❓ or a cloned
   focus def if Wildsteam flavor wants its own — cosmetic call at build.
@@ -517,48 +519,53 @@ carded otherwise).
 "that's stupid") · cultivable blastpod (wild-only stands) · any gene-reactor
 mechanic here (ban 5, reserved for the Slime) · water rain in any form.
 
-## owner cards
+## owner cards — ALL SIX RULED, owner at the bench 2026-09-17
 
-House pattern: every genuinely-open call, simple language, the trade stated.
-Everything not carded ships as specced above.
+Nothing here is open. Each ruling below is the authority over any older draft
+number elsewhere in this file or in a ticket spec.
 
-1. **How strong is a tea?** Age-reversal per cup: a full year (a pilgrimage
-   industry — colonies will move here for it) or ~a season (flavor, not an
-   economy). Trade: strong pulls the whole campaign's traffic through the
-   Rot; weak risks nobody ever brewing. Spec drafts 1 year, diminishing on
-   repeat.
-2. **Does the gut eat your yard?** M2's accelerated rot: exempt anything
-   under a roof, or exempt only walled+roofed rooms (a lean-to won't save
-   your meat)? Trade: roof-only is forgiving and readable; walled-room is
-   harsher and makes the biome's law bite colonists, not just corpses.
-   (Greentide precedent: the owner chose no-exemption there — "the biome
-   makes you engineer.") Spec drafts walled+roofed exempt.
-3. **Is the warm mat free heating forever?** A mat-floored room heats itself
-   with no upkeep. Alternative: the indoor mat starves without Sheen and dies
-   in ~30 days, so living rooms need a Sheen vent (cool mechanic, more C#).
-   Trade: free-forever trivializes nightside cold in the campaign's biggest
-   biome; starving-mat adds the right dread but costs a system. Spec drafts
-   free-forever for v1 with the starving mat carded as v2.
-4. **Pale tree: psylink level 1 or 2?** One entry in the verified list = cap
-   1 (three-ish gentle powers, truly a door ajar); two entries = cap 2 (a
-   real minor kit). Whitelisting specific powers costs C# and is otherwise
-   declined. Spec drafts cap 1.
-5. **Sheen immunity: symbiont-only, or gear too?** The sheet says the
-   symbiont is how you JOIN the biome; the spec still drafts gear that only
-   SLOWS the clock (4×). Should perfect gear protection exist (a sealed
-   suit = full immunity without the bargain)? Trade: gear-immunity gives
-   tech players an out but cheapens the symbiont's whole point. Spec drafts
-   no full-gear immunity.
-6. **Guardian-off toggle.** The settings law wants per-mechanic off switches;
-   ban 8 says no undefended prizes. The spec ships the toggle with a
-   confession in its label. Confirm that trade or strike the toggle.
+1. **Tea potency — RULED, stronger than the draft but hard-gated.** 5 biological
+   years off on the first cup, but a pawn can benefit **only once per year**, and
+   the tea is **darned hard to obtain even with pilgrimage** (guardians + the
+   live-prep death clock + scarce ingredients are the gate; keep yields low).
+   Reason: a pilgrimage industry, rate-limited so it never becomes routine.
+   Engine: the doer subtracts 5 years (capped at adult) and applies a
+   `RUT_AgeReversalSated` hediff lasting 1 in-game year; a sated pawn gets
+   nothing from another cup. Supersedes the "1 year, diminishing within a
+   season" draft in M4 and in the ROT_LIVE_PREPARATIONS_1 filing spec.
+2. **Rot scope — RULED as drafted.** Only walled+roofed rooms are exempt from
+   accelerated rot; a lean-to won't save your meat. Reason: the biome's law
+   bites colonists, not just corpses (his Greentide precedent: "the biome makes
+   you engineer"). ROT_DECAY_HARVEST_1's built predicate already does this — no
+   code change.
+3. **Warm mat — RULED as drafted, free forever, and that's final for v1 AND the
+   design.** His words: it doesn't make enough heat to trivialize the deep dark;
+   it's likely the only way to tolerate the night side at all without spending
+   all your power on heating. "Very Star Wars." The starving-mat variant stays a
+   v2 card only if he raises it — do not build toward it.
+4. **Pale tree — RULED cap 2, reversing the draft.** Two entries in
+   `requiredSubplantCountPerPsylinkLevel`: a real minor kit, not just a door
+   ajar. Power whitelisting stays declined. Supersedes "one-entry list / cap 1"
+   in M8 and the ROT_PALE_TREE_1 filing spec. This was the only ticket gate —
+   ROT_PALE_TREE_1 is now UNGATED.
+5. **Sheen gear — RULED as drafted.** Gear only slows the exposure clock (4×),
+   never full immunity. His reason: incidental exposure every time you go in and
+   out — you just can't totally sterilize everything. The symbiont remains the
+   only true immunity.
+6. **Guardian toggle — RULED, toggle ships with the confession label — and the
+   ruling grew a mechanic.** The confession is framed as the pawn's **new
+   conscience**: a pawn carrying the Rot symbiont takes a **mood debuff when the
+   colony sells the Rot's treasures** (teas, live ingredients, the grove's
+   prizes) — "selling a part of yourself." Engine: a trade hook that, on selling
+   items tagged as Rot treasures, gives a memory ThoughtDef to colony pawns with
+   the symbiont hediff. Lands in ROT_LIVE_PREPARATIONS_1 (the symbiont owner).
 
 ## FOUNDRY ticket breakdown
 
 Filing notes for BENCH: all `--for FOUNDRY`, all target v1. Dependency order
 as numbered — 1 is independent and cheapest; 2–4 independent of each other;
-5 wants 6's ingredients but can stub them; 7 independent; 8 gated on card 4
-only. Every ticket: (a) Mod Settings toggle per the table above is an
+5 wants 6's ingredients but can stub them; 7 independent; 8 UNGATED (card 4
+ruled 2026-09-17, cap 2). Every ticket: (a) Mod Settings toggle per the table above is an
 acceptance criterion; (b) any cross-mod gating uses `PatchOperationFindMod`
 or MayRequire on the injected `<li>` itself — **never MayRequire on a patch
 `<Operation>` (INERT, measured 2026-09-17, killed a cold load)**; (c) offline
@@ -573,22 +580,22 @@ build + `validate_patch.py`, then a quicktest/minimal-list live check per
    --spec: New `RUT_SheenFall`/`RUT_SheenStorm`/`RUT_SheenMist` WeatherDefs in RotSporeKit cloning Rain/RainyThunderstorm/FoggyRain with sheened labels/descriptions (keep rainRate so fire-dousing survives); repoint `RUT_TheRot.xml` `baseWeatherCommonalities` (UtinniPatches, same commonality numbers). New `RUT_SheenExposureLock` GameConditionDef (RC4 class, `canBePermanent`, listed in the BiomeDef's `biomeMapConditions` — copy `RUT_MiasmaWeatherLock.xml`'s shape) applying `RUT_SheenCoating` HediffDef severity to unroofed pawns during Sheen weathers, gain ×(1−`RUT_SheenProtection` StatDef, carried by the ported chitin helmet), zeroed by `RUT_SheenSymbiosis` hediff (def ships here, granted by ticket 5), top stage seeds the existing `RUT_SporeFlesh`. Proof: quicktest — unprotected pawn outdoors in Sheen-fall reaches SporeFlesh in ~1.5 days; helmeted pawn ~4× slower; roofed pawn clean. Settings: exposure toggle (reskin stays).
 3. **`ROT_DECAY_HARVEST_1`** — M — needs: deploy
    --title "The gut digests: RM_MapComponent_AcceleratedRot (exposed rottables/corpses/filth) + RM_MapComponent_LivingProduce freezer-heat"
-   --spec: Two extension-driven map components in `src/RimMandrake/EnvironmentalHazards/Source/`: (1) `RM_MapComponent_AcceleratedRot` — 250-tick interval, adds RotProgress (public property, verified) to spawned CompRottable things outside walled+roofed rooms, ×12 items / ×20 corpses (sliders), slow outdoor filth thinning; biome opts in via `RM_AcceleratedRotExtension` on RUT_TheRot (UtinniPatches patch). (2) `RM_MapComponent_LivingProduce` — rare-interval per-room PushHeat summed from stacks of defs carrying `RM_LivingProduceExtension` (patch onto RotSporeKit food/crop defs; heatPerUnit so ~200 units ≈ one campfire). Proof: quicktest — raw meat dropped outdoors gone within 1 in-game day, meat in a walled+roofed room rots at vanilla rate, a stocked 5×5 freezer with one cooler climbs above 0 °C. Settings: separate toggles for rot and produce-heat. Note card 2 may adjust the exposure predicate — build the predicate as one swappable method.
+   --spec: Two extension-driven map components in `src/RimMandrake/EnvironmentalHazards/Source/`: (1) `RM_MapComponent_AcceleratedRot` — 250-tick interval, adds RotProgress (public property, verified) to spawned CompRottable things outside walled+roofed rooms, ×12 items / ×20 corpses (sliders), slow outdoor filth thinning; biome opts in via `RM_AcceleratedRotExtension` on RUT_TheRot (UtinniPatches patch). (2) `RM_MapComponent_LivingProduce` — rare-interval per-room PushHeat summed from stacks of defs carrying `RM_LivingProduceExtension` (patch onto RotSporeKit food/crop defs; heatPerUnit so ~200 units ≈ one campfire). Proof: quicktest — raw meat dropped outdoors gone within 1 in-game day, meat in a walled+roofed room rots at vanilla rate, a stocked 5×5 freezer with one cooler climbs above 0 °C. Settings: separate toggles for rot and produce-heat. Card 2 RULED 2026-09-17: walled+roofed exemption confirmed — the built predicate stands.
 4. **`ROT_WARM_MAT_1`** — M — needs: deploy
    --title "Metabolic warmth: RM_MapComponent_WarmGround mat-floored room heating + RUT_GrownFurnace plant/building loop + RUT_Gene_Furnaceblood (fallback strength)"
    --spec: (1) `RM_MapComponent_WarmGround` (EnvironmentalHazards): enclosed+roofed rooms with ≥60% floor of terrains listed in `RM_WarmGroundExtension` (AB_MycoticGrass, AB_MycoticSoilRich, RotSporeKit mycelial terrains) get PushHeat toward +18 °C over outdoor, cap 21 °C. (2) RotSporeKit content: `RUT_FurnaceCap` sowable plant → `RUT_LivingFurnaceCap` item → `RUT_GrownFurnace` building with vanilla CompHeatPusher (campfire-class heat) + CompLifespan ~15 days, no fuel/power. (3) `RUT_Gene_Furnaceblood` GeneDef, v1 = ComfyTemperatureMin −20 °C statOffset (calibrate flavor text against IgniFurnace/IgniWarm hediffs per genepack_mods_plunder.md); ship in Rot genepack loot only (ban 5: locally-beneficial). Proof: quicktest — mat-floored room reads warm with no heater, stone-floored twin reads cold; furnace heats then expires ~day 15. Settings: warm-mat toggle + warmth slider.
 5. **`ROT_LIVE_PREPARATIONS_1`** — L — needs: deploy
    --title "Live preparations: brewing vessel + three teas + three symbiont pairs, all dying-if-stored (CompTemperatureRuinable + CompLifespan on every item)"
-   --spec: RotSporeKit content + one small C# doer. Every live-prep ThingDef carries CompTemperatureRuinable (minSafeTemperature +8 °C — a fridge ruins it) and CompLifespan (~2.5 days) — ban 4 enforced by engine; add a selftest/linter check that every def tagged RUT_LivePrep has both comps. `RUT_BrewingVessel` building + RecipeDefs from `RUT_LiveIngredient_*` (stub the ingredients as trader/harvest items if ROT_GUARDIAN_GROVES_1 hasn't landed). Teas: bioregeneration (temporary hediff carrying the luciferium healer comp — verify class name HediffComp_HealPermanentWounds at build), pleasure brew (chemical joy + thought, pure XML), age-reversal (`RM_IngestionOutcomeDoer_AgeReversal`, −1 biological year capped at adult, diminishing within a season — card 1 may retune). Symbionts (ingestible → permanent hediff pairs, exact ratified bargains): Quickflesh (naturalHealingFactor up / hungerRateFactor 2.2), Nightwake (RestFallRateFactor ×0 / lowered break threshold + occasional mentalStateGivers), Sheenblood (grants RUT_SheenSymbiosis from ticket 2 / sunlight-scald — reuse RM_Hediff_SunScald if it fits, else clone small). Plus symbiont #4 mycoid slimification-resistance hediff (inert marker; the Slime kit reads it) and the toxic-injection item (inert payload, ditto). Proof: quicktest — a tea in a freezer shows Ruined; one expires uneaten at ~2.5 days; each symbiont shows both sides of its bargain on a test pawn. Settings: viability strict/lenient.
+   --spec: RotSporeKit content + one small C# doer. Every live-prep ThingDef carries CompTemperatureRuinable (minSafeTemperature +8 °C — a fridge ruins it) and CompLifespan (~2.5 days) — ban 4 enforced by engine; add a selftest/linter check that every def tagged RUT_LivePrep has both comps. `RUT_BrewingVessel` building + RecipeDefs from `RUT_LiveIngredient_*` (stub the ingredients as trader/harvest items if ROT_GUARDIAN_GROVES_1 hasn't landed). Teas: bioregeneration (temporary hediff carrying the luciferium healer comp — verify class name HediffComp_HealPermanentWounds at build), pleasure brew (chemical joy + thought, pure XML), age-reversal (`RM_IngestionOutcomeDoer_AgeReversal`, −5 biological years capped at adult, once per pawn per year via a 1-year `RUT_AgeReversalSated` hediff — card 1 RULED 2026-09-17). Symbionts (ingestible → permanent hediff pairs, exact ratified bargains): Quickflesh (naturalHealingFactor up / hungerRateFactor 2.2), Nightwake (RestFallRateFactor ×0 / lowered break threshold + occasional mentalStateGivers), Sheenblood (grants RUT_SheenSymbiosis from ticket 2 / sunlight-scald — reuse RM_Hediff_SunScald if it fits, else clone small). Plus symbiont #4 mycoid slimification-resistance hediff (inert marker; the Slime kit reads it) and the toxic-injection item (inert payload, ditto). Proof: quicktest — a tea in a freezer shows Ruined; one expires uneaten at ~2.5 days; each symbiont shows both sides of its bargain on a test pawn. Settings: viability strict/lenient.
 6. **`ROT_GUARDIAN_GROVES_1`** — M — needs: deploy — after or parallel with 5
    --title "Guardian groves: three tea-source mushrooms that defend themselves (RC1 spore gas, mycelial alarm, grasping-mat lure)"
-   --spec: RotSporeKit plants at Prime-like wildPlants rarity (0.01–0.05, UtinniPatches): `RUT_AgelessCap` with RC1 CompActiveGasEmitter + Gas_Damaging (`RUT_ChokingSpores` GasDef on the ported RUT_ToxicSpores DamageDef); `RUT_RegenerantVeil` with a wake-the-network alarm (reuse RM_CompBeastWakeRelay if its trigger fits plant parents, else a small comp: harm → manhunter on tagged fauna in radius); `RUT_EuphoricCrown` ringed by `RUT_FalseFruit` mimics whose harvest applies `RUT_MatGrip` (short immobilize hediff) + the alarm (find the harvest seam — Plant.PlantCollected candidate). Each yields its `RUT_LiveIngredient_*` (comps per ticket 5). AB_AgariluxPrime stays donor-owned, untouched. Proof: quicktest — harvesting each defended plant unprotected visibly hurts/traps/summons; ingredients feed ticket 5's recipes. Settings: guardian toggle (label confesses it breaks ban 8, per card 6).
+   --spec: RotSporeKit plants at Prime-like wildPlants rarity (0.01–0.05, UtinniPatches): `RUT_AgelessCap` with RC1 CompActiveGasEmitter + Gas_Damaging (`RUT_ChokingSpores` GasDef on the ported RUT_ToxicSpores DamageDef); `RUT_RegenerantVeil` with a wake-the-network alarm (reuse RM_CompBeastWakeRelay if its trigger fits plant parents, else a small comp: harm → manhunter on tagged fauna in radius); `RUT_EuphoricCrown` ringed by `RUT_FalseFruit` mimics whose harvest applies `RUT_MatGrip` (short immobilize hediff) + the alarm (find the harvest seam — Plant.PlantCollected candidate). Each yields its `RUT_LiveIngredient_*` (comps per ticket 5). AB_AgariluxPrime stays donor-owned, untouched. Proof: quicktest — harvesting each defended plant unprotected visibly hurts/traps/summons; ingredients feed ticket 5's recipes. Settings: guardian toggle, confession label per card 6 RULED 2026-09-17 — framed as the pawn's new conscience; the companion sell-treasures mood debuff lands in ticket 5.
 7. **`ROT_HEALTH_SHARING_1`** — L — needs: deploy
    --title "Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included"
    --spec: In `mandrake.rm.creaturebehaviors` (`src/RimMandrake/CreatureBehaviors/Source/`): (1) `RM_CompWoundLink` + `RM_WoundLinkExtension` (tag, radius 12, share 60%, gate ≥8 severity) — on post-damage notification (pick the seam from a source read; post-application only, armor math untouched), move injury fraction to same-tag pawns in radius as fresh injuries on equivalent parts (brain/destroyed parts excluded), reduce victim accordingly; wild and tamed alike. (2) `RM_HediffComp_KinMending` — passive hediff comp, +50% natural-healing severity adjustment while ≥2 same-tag kin in radius. No Rot defs edited: attach nothing — the fauna sitting (`BIOME_FAUNA_ASSIGNMENT_SITTING_1`) assigns variants by XML later. Proof: dev quicktest with two spawned tagged pawns (spawn several — one pawn's result is RNG, `spawn-many-for-bridge-tests`): shoot one, verify injury appears on the other and victim's total drops; aura variant heals measurably faster beside kin. Settings toggle in the creaturebehaviors settings screen.
-8. **`ROT_PALE_TREE_1`** — S — needs: deploy — gated on owner card 4
+8. **`ROT_PALE_TREE_1`** — S — needs: deploy — UNGATED (card 4 ruled: cap 2)
    --title "The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants"
-   --spec: RotSporeKit: `RUT_PaleTree` ThingDef cloning Plant_TreeAnima's comp stack with CompPsylinkable's `requiredSubplantCountPerPsylinkLevel` a single-entry list (cap = level 1; card 4 may say 2) and `CompSpawnSubplant` spawning `RUT_PaleMoss` (glowing, biological light); Wildsteam-flavored label/description (lore text only — no Jawa/faction identifiers in defNames); rare wildPlants entry on RUT_TheRot (UtinniPatches). Royalty-dependent: gate injected `<li>` entries with MayRequire on the li or PatchOperationFindMod — never on a patch Operation. Proof: quicktest with Royalty active — pawn meditates, link progresses, psylink caps at the ruled level and no level-2+ psycast is learnable from it. Settings: spawn toggle.
+   --spec: RotSporeKit: `RUT_PaleTree` ThingDef cloning Plant_TreeAnima's comp stack with CompPsylinkable's `requiredSubplantCountPerPsylinkLevel` a TWO-entry list (cap = level 2 — card 4 RULED 2026-09-17) and `CompSpawnSubplant` spawning `RUT_PaleMoss` (glowing, biological light); Wildsteam-flavored label/description (lore text only — no Jawa/faction identifiers in defNames); rare wildPlants entry on RUT_TheRot (UtinniPatches). Royalty-dependent: gate injected `<li>` entries with MayRequire on the li or PatchOperationFindMod — never on a patch Operation. Proof: quicktest with Royalty active — pawn meditates, link progresses, psylink caps at the ruled level and no level-2+ psycast is learnable from it. Settings: spawn toggle.
 
 **Not tickets, on purpose**: fauna attachment (the sitting's), BMT_ wildAnimals
 deletions (`BMT_FAUNA_ABSORPTION_1`'s), soil trade (`FUNGAL_SOIL_TRADE_1`),
