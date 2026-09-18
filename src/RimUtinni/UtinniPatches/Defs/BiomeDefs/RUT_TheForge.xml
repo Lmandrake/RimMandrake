@@ -46,6 +46,10 @@
     whole '-lisk' clade (Cherry Picker cut); both defNames stop resolving
     once that cut takes effect, and an unresolved cross-ref in wildAnimals
     is a known crash (BIOME_CAST_REFS_BREAK_MAPGEN_1).
+    2026-09-18: the maguana is BACK as RSW_Maguana - ported into our own
+    bestiary (CAVERNS_PARITY_BUILD_1 r5, owner: "the Forge keeps its
+    creature"), so the resolution hazard above no longer applies to it;
+    the donor's BMT_Maguana stays Cherry-Picked and must not be re-wired.
 
     plantDensity/animalDensity kept close to the Pyroclastic donor's own values
     (0.4/1.2): ban 3 ("No furred, chilled, or lush-register fauna — heat-adapted and
@@ -140,6 +144,7 @@
       <LavaFlea MayRequire="mlie.starwarsanimalcollection">0.25</LavaFlea>  <!-- lava flea - ground-herd, import -->
       <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow, keep -->
       <Beldon MayRequire="mlie.starwarsanimalcollection">0.08</Beldon>  <!-- beldon - sky-herd, keep -->
+      <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>  <!-- maguana - ground-slow, ported out of Caverns (CAVERNS_PARITY_BUILD_1 r5, owner: the Forge keeps its creature); donor commonality -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

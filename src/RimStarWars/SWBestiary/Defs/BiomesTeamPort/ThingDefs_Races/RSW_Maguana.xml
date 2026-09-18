@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+CAVERNS_PARITY_BUILD_1 ruling 5 (owner, 2026-09-18): port BMT_Maguana out of
+biomesteam.biomescaverns so retiring Biomes! Caverns costs the campaign nothing.
+Follows the same absorption pattern as RSW_BiomesTeamPort_Races.xml (BMT_ -> RSW_
+rename through the whole reference closure, texPaths repathed to
+swanimals/BiomesTeam/<original path>, texture files copied verbatim).
+
+Ported verbatim from 1.6/Defs/Animals/BMT_Maguana.xml except:
+  - modExtensions: the PathfindingFramework.MovementExtension entry
+    (PF_Movement_Magmatic) is DROPPED. Same rule as the rest of this port -
+    pathfinding.framework is not on this mod list, and the MayRequire'd
+    movementDef lives in the donor's own framework content. The creature keeps
+    stats/body/art, not the donor-framework-only traversal behaviour.
+  - leatherDef BMT_Leather_Magma (biomesteam.biomescore) -> RSW_Leather_Magma,
+    ported alongside in ../ThingDefs_Items/RSW_Maguana_Items.xml.
+  - egg defs BMT_EggMaguana{Fertilized,Unfertilized} -> RSW_Egg... , same file.
+
+Unchanged and resolvable without any donor: body QuadrupedAnimalWithClawsTailAndJowl,
+foodType VegetarianRoughAnimal, lifeStage defs AnimalBaby/AnimalJuvenile/AnimalAdult,
+the Pawn_Iguana_* vocal set and the Pawn_Melee_SmallScratch_* set (all vanilla Core).
+Not wired into any biome by this file - see the item for the wiring/dedup step.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Maguana</defName>
+    <label>maguana</label>
+    <description>The patterning on the skin of this relative of the surface iguana resembles both cooled and hot magma, seemingly to blend in with the volatile environment within the cavern systems. They are naturally immune to fire due to the special composition of their flesh.</description>
+    <statBases>
+      <MoveSpeed>0.6</MoveSpeed>
+      <MarketValue>980</MarketValue>
+      <!-- Ash'karr retune + megafauna yield baked in from the campaign's
+           BMT_Maguana patches (AnimalTolerances_Ashkarr.xml, MegafaunaYield.xml)
+           at port time - we own this def, so the values live here, not in a patch.
+           Donor values were 37.7778/352.222, no MeatAmount/BoneAmount override. -->
+      <ComfyTemperatureMin>19.1</ComfyTemperatureMin>
+      <ComfyTemperatureMax>352.2</ComfyTemperatureMax>
+      <MeatAmount>294</MeatAmount>
+      <BoneAmount>105</BoneAmount>
+      <Flammability>0.0</Flammability>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_EggMaguanaFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_EggMaguanaUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5.5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <damageMultipliers>
+      <li>
+        <damageDef>Burn</damageDef>
+        <multiplier>0.0</multiplier>
+      </li>
+      <li>
+        <damageDef>Flame</damageDef>
+        <multiplier>0.0</multiplier>
+      </li>
+    </damageMultipliers>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>false</predator>
+      <maxPreyBodySize>2.3</maxPreyBodySize>
+      <baseBodySize>2.1</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Magma</leatherDef>
+      <trainability>Intermediate</trainability>
+      <packAnimal>false</packAnimal>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.3</manhunterOnDamageChance>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <modExtensions>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Maguana</defName>
+    <label>maguana</label>
+    <race>RSW_Maguana</race>
+    <combatPower>75</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana</texPath>
+          <drawSize>1.05</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Dessicated_Maguana</texPath>
+          <color>(100,60,70)</color>
+          <drawSize>2.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana</texPath>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Dessicated_Maguana</texPath>
+          <color>(100,60,70)</color>
+          <drawSize>2.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Dessicated_Maguana</texPath>
+          <color>(100,60,70)</color>
+          <drawSize>2.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
