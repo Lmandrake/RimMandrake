@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ROT_WARM_MAT_1 — M3's grown furnace, building half. All-XML on two
+    VERIFIED vanilla comps (read this pass from the 1.6 source index):
+
+      CompProperties_HeatPusher  Source/Verse/CompProperties_HeatPusher.cs —
+        heatPerSecond, heatPushMaxTemperature. CompHeatPusher pushes
+        heatPerSecond every 60 ticks on a Normal ticker, or
+        heatPerSecond * 4.1666665 once per rare tick on a Rare one
+        (Source/Verse/CompHeatPusher.cs). This building is Rare: same heat,
+        a quarter of the ticks.
+      CompProperties_Lifespan    Source/Verse/CompLifespan.cs — lifespanTicks,
+        expireEffect, plantDefToSpawn. CompTickRare adds 250 per rare tick, so
+        the day count below is honest on a Rare ticker.
+
+    HEAT CALIBRATION. Vanilla Campfire is the anchor the ticket names:
+    heatPerSecond 21, heatPushMaxTemperature 28 (MEASURED this pass via
+    RimSage against the live Campfire def). This runs at the same 21 — it is
+    campfire-class heat, as ruled — but caps at 26 °C rather than 28, because
+    unlike a campfire it burns no fuel and asks nothing of a hauler once
+    built. Its whole cost is up front (a harvest) and at the end (it dies), so
+    it does not also get to be the hottest thing in the room.
+
+    LIFESPAN. 15 days = 15 * 60000 = 900000 ticks (the spec's INVENTED
+    number, ruled as drafted). No fuel, no power, no upkeep: owner card 3 —
+    free heating forever is the MAT; the furnace is the thing you replant.
+
+    ART OWED: texPath and uiIconPath are PLACEHOLDERS reusing RotSporeKit's
+    glow-goo torch art.
+  -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_GrownFurnace</defName>
+    <label>grown furnace</label>
+    <description>A frame packed with living furnace caps, kept moist and dark so the tissue keeps working. It needs no fuel and no power — it is metabolizing itself, and the heat is the exhaust. In about two weeks the caps exhaust their reserves, collapse, and the frame is refilled with a fresh harvest.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Building/GlowGooTorch</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.2</drawSize>
+      <damageData>
+        <rect>(0.2,0,0.6,0.1)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>RotSporeKit/Things/Building/GlowGooTorch/GlowGooTorch</uiIconPath>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.25</fillPercent>
+    <tickerType>Rare</tickerType>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <WorkToBuild>300</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Beauty>0</Beauty>
+      <SellPriceFactor>0.6</SellPriceFactor>
+    </statBases>
+    <costList>
+      <RUT_LivingFurnaceCap>25</RUT_LivingFurnaceCap>
+    </costList>
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <heatPerSecond>21</heatPerSecond>
+        <heatPushMaxTemperature>26</heatPushMaxTemperature>
+      </li>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>900000</lifespanTicks>
+      </li>
+    </comps>
+    <designationCategory>Temperature</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <placeWorkers>
+      <li>PlaceWorker_Heater</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>RUT_AdvancedFungi</li>
+    </researchPrerequisites>
+    <constructEffect>ConstructDirt</constructEffect>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+  </ThingDef>
+
+</Defs>
