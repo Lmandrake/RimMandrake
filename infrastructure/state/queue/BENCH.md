@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T17:38:24Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T19:25:40Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -125,6 +125,15 @@ target:   v1
 kind:     task
 summary:  (no items/WORLDMAP_DOCS_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORLDMAP_DOCS_PASS_1.md
+
+## CAVERNS_PARITY_BUILD_1 Donor-free crystal Deeps: M-tier parity build on the Lantern Deeps route - START NOW (owner timing ruling)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/CAVERNS_PARITY_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

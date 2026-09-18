@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T17:38:24Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T19:25:40Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # IN PROGRESS
 
@@ -73,7 +82,7 @@ summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
 prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    game-up
 target:   v1
@@ -206,15 +215,6 @@ target:   v1
 kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
-
-## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
-prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
 
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing  (BLOCKED)
@@ -396,15 +396,6 @@ kind:     task
 summary:  SCALDMECHANICS1 — the Scald C kit
 prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
-## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
-prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -433,7 +424,7 @@ summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -513,15 +504,6 @@ kind:     design
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
-## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
-prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
-
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -532,7 +514,7 @@ summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 ## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1071,16 +1053,6 @@ blocked:  faction-held class needs the owner to name which factions are tech-ali
 summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
 prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-blocked:  validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13 errors, all pre-existing KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 findings, no new fallout. Sole remaining criterion (guy762.mm.kotorcore retirement) still gated on parked DROID_SYSTEM_BUILD_1 — DROID_KOTORDROIDS_PORT_WAVE1_1's Site 1 (Droidworks Need_Power port) still open. Not forcing through solo per prior session's own note.
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
-
 ## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1231,16 +1203,6 @@ blocked:  Re-verified 2026-09-17 offline: build 0W/0E both mods, selftest 18/18 
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
-## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  candidate sheet delivered (commit 620bc909); awaiting owner's style pick per mockups-first doctrine, do not build until then
-summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
-prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
-
 ## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1331,16 +1293,6 @@ blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/g
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
-## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  3 Geonosian ranged-only kinds fixed (NeolithicMeleeDecent, 0/23 ranged-only, validated clean). Remaining 5 undiagnosed kinds are unchanged since 2026-09-11: fully affordable 100%-melee gac=1 pools, needs live bridge spawn-batch diagnosis this seat cannot run (BELT/no-bridge)
-summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
-prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
-
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1350,16 +1302,6 @@ kind:     build
 blocked:  Retirement gates now 2 of 3: (1) BiomeCast_Ashkarr.xml regenerate needs deploy+dump-refresh cycle; (3) RotSporeKit GameCondition_SporeCloud has no data-only substitute. Gate (2) RULED 2026-09-11: the 7 stragglers are CUT - delete their biome entries, not ported (see item file). Retirement itself RULED to stand once gates clear.
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
-
-## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  steppingstones/gravtech own 17 ResearchProjectDefs nothing else defines (RUT_ResearchRetag only patches tab/tier onto them); several carry dated owner rulings (GravWeapon/GravForge/GravBionics, 2026-09-01/09-04) a bare retire would silently reverse; als.gravtech.bc + a 4th mod (gravtechbigcannons) hard-depend on it too. 3 routes laid out in items/RESEARCH_TRIO_RETIRE_1.md: port the 17 rows first, accept the content loss, or counter-patch and keep the mods (Wave-4-MV-Textures style). Owner AFK, not FOUNDRY's to pick.
-summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
-prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    ready  (BLOCKED)
@@ -1533,17 +1475,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1802,3 +1734,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WALK_FEATURE_KEY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WALK_FEATURE_KEY_1.md
+
+## WORLDGEN_CLICK_RECONCILE_1 Verify the 2026-09-12 canonical start save against what the gate docs said was owed at click time
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLDGEN_CLICK_RECONCILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLDGEN_CLICK_RECONCILE_1.md
+
+## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
