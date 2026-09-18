@@ -640,6 +640,12 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "WaterShallow", "deep": "WaterDeep"},
         "canalFluid": "RM_Fluid_Water",
         "thirstQuality": "Potable",
+        # Fresh water is the DISTILLATE, not an input -- WRECKED_DISTILLATION_MODULE_1's
+        # module OUTPUTS this row. It is still "water family", so it stays
+        # true here too per the orchestrator's explicit six-row list; a
+        # consumer that refuses same-liquid-in/out is that consumer's own
+        # ConfigError to add, not this registry's.
+        "distillable": True,
     },
     "saltwater": {
         "defName": "RM_Liquid_SaltWater",
@@ -649,6 +655,7 @@ LIQUID_DEF_ROWS = {
         "pH": 8,  # [INVENTED] real seawater runs ~8.1; mildly basic, below the pH>10 corrosion band
         "terrainSuite": {"shallow": "WaterOceanShallow", "deep": "WaterOceanDeep"},
         "thirstQuality": "Fouled",
+        "distillable": True,
     },
     "boiling": {
         "defName": "RM_Liquid_BoilingWater",
@@ -658,6 +665,7 @@ LIQUID_DEF_ROWS = {
         "pH": 7,
         "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
         "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
+        "distillable": True,
     },
     "icy": {
         "defName": "RM_Liquid_IcyWater",
@@ -669,6 +677,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "Frostbite", "amount": 3},
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
+        "distillable": True,
     },
     "toxic": {
         "defName": "RM_Liquid_ToxicWater",
@@ -678,6 +687,7 @@ LIQUID_DEF_ROWS = {
         "pH": 7,
         "terrainSuite": {"shallow": "RM_WaterPoisonedShallow", "deep": "RM_WaterPoisonedDeep"},
         "thirstQuality": "Toxic",
+        "distillable": True,
     },
     "acid": {
         "defName": "RM_Liquid_AcidWater",
@@ -712,6 +722,7 @@ LIQUID_DEF_ROWS = {
         # brine canal's own temporary fill terrains.
         "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
         "thirstQuality": "Fouled",
+        "distillable": True,
     },
     "propane": {
         "defName": "RM_Liquid_Propane",
@@ -776,6 +787,8 @@ def build_liquiddef_xml(row):
         lines.append(f"    <flammable>{_xv(row['flammable'])}</flammable>")
     if "igniteTemp" in row:
         lines.append(f"    <igniteTemp>{row['igniteTemp']}</igniteTemp>")
+    if row.get("distillable"):
+        lines.append("    <distillable>true</distillable>")
 
     suite = row.get("terrainSuite")
     if suite:

@@ -24,6 +24,7 @@
     <description>Water, unmodified — the baseline every other row is measured against.</description>
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>WaterShallow</shallow>
       <deep>WaterDeep</deep>
@@ -38,6 +39,7 @@
     <description>The open sea — undrinkable raw, and the product most conversions start from.</description>
     <viscosityClass>Water</viscosityClass>
     <pH>8</pH>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>WaterOceanShallow</shallow>
       <deep>WaterOceanDeep</deep>
@@ -51,6 +53,7 @@
     <description>Kept liquid by heat rather than depth. Steam stands off the surface even in still air.</description>
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>RM_WaterBoilingShallow</shallow>
       <deep>RM_WaterBoilingDeep</deep>
@@ -73,6 +76,7 @@
       <amount>3</amount>
     </damageOnImmersion>
     <corrodesApparel>false</corrodesApparel>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>RM_WaterFrigidShallow</shallow>
       <deep>RM_WaterFrigidDeep</deep>
@@ -85,6 +89,7 @@
     <description>Water carrying more than it should. Nothing in it is inert.</description>
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>RM_WaterPoisonedShallow</shallow>
       <deep>RM_WaterPoisonedDeep</deep>
@@ -133,6 +138,7 @@
     <viscosityClass>Thick</viscosityClass>
     <pH>8</pH>
     <corrodesApparel>false</corrodesApparel>
+    <distillable>true</distillable>
     <terrainSuite>
       <shallow>RM_WaterBrineShallow</shallow>
       <deep>RM_WaterBrineDeep</deep>
