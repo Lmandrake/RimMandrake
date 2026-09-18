@@ -26,13 +26,17 @@
   quicktest of the loop (fill/drink/dirty/wash observed in-game) is OWED —
   see LIQUID_BOTTLE_LOOP_1's own notes for why this pass could not run one.
 
-  PLACEHOLDER ART, flagged as such (same convention as RM_Ladder in
-  Canals/ThingDefs/FlowWorks_ThingDefs.xml): texPath borrows vanilla's own
-  Chemfuel jerrycan sprite so the mod loads with no missing-texture error.
-  The design's own intent (LiquidDef.color: "tint for generated art, flecks
-  and bottle fill") wants a single bottle silhouette tinted per-liquid at
-  runtime, which is real render-pipeline work, not authored here. Do not
-  treat this texPath as final.
+  REAL ART, LIQUID_BOTTLE_LOOP_1 art pass (2026-09-18), generated against the
+  owner's own brief (rimflow note, 386d51170: "Same thing for the barrels and
+  buckets. Patched together out of patchwork metal hammered together.
+  Matching sets. Occasional dents and dings.") — one scavenged-patchwork
+  silhouette per size (bottle/bucket/barrel), sharing one palette family so
+  the three read as a matching set, shipped at
+  Textures/Things/Item/Resource/FlowWorks/RM_{Bottle,Bucket,Barrel}.png.
+  Still true, unchanged by this pass: every liquid shares its size's ONE
+  silhouette — the design's own intent (LiquidDef.color: "tint for generated
+  art, flecks and bottle fill") wants that silhouette tinted per-liquid at
+  runtime, which is real render-pipeline work, not authored here.
 
   Buckets and barrels (the "larger bottle, same chain" siblings the item's
   spec also names): RM_BucketItemBase/RM_BucketEmpty/RM_BucketDirty and
@@ -64,8 +68,12 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- PLACEHOLDER: vanilla's own Chemfuel jerrycan, see module comment. -->
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, owner brief 386d51170
+           ("patched together out of patchwork metal hammered together...
+           matching sets... occasional dents and dings"). One silhouette
+           shared by every liquid until the per-liquid tint pipeline is
+           built (see module comment); not a placeholder. -->
+      <texPath>Things/Item/Resource/FlowWorks/RM_Bottle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.75</drawSize>
     </graphicData>
@@ -118,8 +126,9 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- PLACEHOLDER, same convention as RM_BottleItemBase above. -->
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, same brief and matching-set
+           convention as RM_BottleItemBase above. -->
+      <texPath>Things/Item/Resource/FlowWorks/RM_Bucket</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.0</drawSize>
     </graphicData>
@@ -175,8 +184,9 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- PLACEHOLDER, same convention as RM_BottleItemBase above. -->
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, same brief and matching-set
+           convention as RM_BottleItemBase above. -->
+      <texPath>Things/Item/Resource/FlowWorks/RM_Barrel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.4</drawSize>
     </graphicData>
