@@ -36,28 +36,28 @@
       "packageId": "petetimessix.researchreinvented.steppingstones",
       "modNames": ["Research Reinvented: Stepping Stones"],
       "retiredOn": "2026-09-18",
-      "commit": "PENDING",
+      "commit": "59944939f",
       "why": "RESEARCH_TRIO_RETIRE_1, owner ruling 2026-09-18 (port all 17, then cut); its 10 owned ResearchProjectDefs (RR_ElectricityBasics, RR_HeatingElements, RR_PowerGenerators, RR_EMP, RR_BasicApparel, RR_BasicCraftingFacilities, RR_BasicFoodPrep, RR_IncendiaryWeapons, RR_LateralThinking, RR_Organization) ported native to mandrake.rut.researchretag (RUT_Ported_ResearchTrio.xml) with identical defNames before this retirement"
     },
     {
       "packageId": "als.gravtech",
       "modNames": ["GravTech"],
       "retiredOn": "2026-09-18",
-      "commit": "PENDING",
+      "commit": "59944939f",
       "why": "RESEARCH_TRIO_RETIRE_1, owner ruling 2026-09-18 (port all 17, then cut); its 6 named ResearchProjectDefs (GravForge, GravWeapon, GravTuning, AdvShipParts, BlackHole_GT, GravBionics) plus GravEngineBuild (a 7th, missed by the original 17-defName census and research_manifest_draft.csv but a live prereq of AdvShipParts/GravForge) ported native to mandrake.rut.researchretag with identical defNames. GravForge's own building + its 6 recipes + Gravitonium/ChunkSlagPlasteel_GT/UnfinishedGravcore also ported (RUT_Ported_GravForge.xml) - the flagship 'supporting def' example the ruling named. GravWeapon's 4 personal weapons, GravBionics' implants, and the 7 AdvShip_* ship-part buildings were NOT ported (out of scope this pass, named in the item note) - those research nodes now unlock nothing of their own"
     },
     {
       "packageId": "als.gravtech.bc",
       "modNames": ["GravTech - Big cannons"],
       "retiredOn": "2026-09-18",
-      "commit": "PENDING",
+      "commit": "59944939f",
       "why": "RESEARCH_TRIO_RETIRE_1, owner ruling 2026-09-18 (port all 17, then cut); its 1 owned ResearchProjectDef (GTbc_BigCannons) ported native to mandrake.rut.researchretag with identical defName. Its 9 big-cannon buildings were NOT ported (out of scope this pass) - GTbc_BigCannons now unlocks nothing of its own. halituisamaricanous.gravtechbigcannons (a hard-dependent pure retexture of this mod, zero own content per stat_normalization_audit_2026-09-09.md 2D) retired alongside it in the same change, else its modDependencies would break at load"
     },
     {
       "packageId": "halituisamaricanous.gravtechbigcannons",
       "modNames": ["GravTech - Big cannons Retextured"],
       "retiredOn": "2026-09-18",
-      "commit": "PENDING",
+      "commit": "59944939f",
       "why": "RESEARCH_TRIO_RETIRE_1 fallout: hard modDependencies on als.gravtech.bc (see that entry), cosmetic-only retexture with no content of its own, retired in the same change as its dependency rather than left with a broken hard dependency"
     }
   ]
