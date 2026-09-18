@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:42:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T01:45:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2019,3 +2019,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
+
+## FIREECOLOGY_SHIM_RETIREMENT_1 Retire PyrelandsFireEcology: all 4 patches target ZBiome_Grasslands, orphaned by PYRELANDS_WORLD_SWITCH_1 (222 tiles now RM_FE_Pyrelands)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FIREECOLOGY_SHIM_RETIREMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FIREECOLOGY_SHIM_RETIREMENT_1.md
