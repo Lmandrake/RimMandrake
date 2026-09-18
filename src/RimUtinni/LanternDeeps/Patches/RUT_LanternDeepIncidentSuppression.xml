@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- CAVERNS_PARITY_BUILD_1 + owner ruling 2026-09-18 ("Suppress, like the
+     donor"): the donor biome carried BiomesCore's DisableIncidentsExtension
+     blocking these sky/weather incidents underground. That extension died
+     with the donor coupling; this is the vanilla-field equivalent -
+     IncidentDef.disallowedBiomes, enforced by IncidentWorker.CanFireNow
+     (MEASURED: Source/RimWorld/IncidentWorker.cs:70-73 via RimSage). The
+     incident list is the donor's own (BMT_CrystalCaverns.xml:91-103),
+     verbatim. None of the nine vanilla defs carries allowedBiomes (checked
+     2026-09-18), so the both-lists config error cannot fire; conditional
+     blocks keep this composable if another mod adds the list first. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="Aurora"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Aurora"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Aurora"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="ColdSnap"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="ColdSnap"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="ColdSnap"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="Eclipse"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Eclipse"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Eclipse"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="Flashstorm"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Flashstorm"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="Flashstorm"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="HeatWave"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="HeatWave"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="HeatWave"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="MeteoriteImpact"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="MeteoriteImpact"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="MeteoriteImpact"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="ToxicFallout"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="ToxicFallout"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="ToxicFallout"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="VolcanicWinter"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="VolcanicWinter"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="VolcanicWinter"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/IncidentDef[defName="SolarFlare"]/disallowedBiomes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="SolarFlare"]/disallowedBiomes</xpath>
+      <value><li>RUT_LanternDeeps</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/IncidentDef[defName="SolarFlare"]</xpath>
+      <value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Alpha Animals</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations><li Class="PatchOperationConditional"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]/disallowedBiomes</xpath><match Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]/disallowedBiomes</xpath><value><li>RUT_LanternDeeps</li></value></match><nomatch Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]</xpath><value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value></nomatch></li><li Class="PatchOperationConditional"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]/disallowedBiomes</xpath><match Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]/disallowedBiomes</xpath><value><li>RUT_LanternDeeps</li></value></match><nomatch Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]</xpath><value><disallowedBiomes><li>RUT_LanternDeeps</li></disallowedBiomes></value></nomatch></li></operations>
+    </match>
+  </Operation>
+
+</Patch>
