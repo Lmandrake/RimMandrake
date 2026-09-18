@@ -59,3 +59,53 @@ from the active list is a deliberate content decision — if OuterRim droid
 weapons are being retired project-wide, the right fix might be deleting these
 4 operations outright (`inaccurate material is deleted, not superseded`
 doctrine) rather than guarding them for a donor that's never coming back.
+
+## 2026-09-18 close — FOUNDRY (offline, BELT)
+
+Checked `src/RimMandrake/Utils/weapon_tag_audit.py` per the Watch-out above:
+**it has zero donor/packageId/FindMod/MayRequire plumbing** (grep for those
+four terms returns nothing). Teaching it per-defName donor tracking is a real
+feature, not a guard, and would need to run against a pre-patch dump (the only
+dump reachable right now already has this patch applied, and the file's own
+header refuses a regenerate against that — would silently drop 145 of 154
+ops). Given that, applied the guard as a hand-edit, same shape as
+`MAYREQUIRE_OPERATION_INERT_SWEEP_1` (`d1c62223c`): each of the 4
+`PatchOperationConditional` blocks for `OuterRim_DroidWeapon_{BlasterCannon,
+TwinWristBlaster,WristBlaster,WristBlasterIon}` now sits inside a
+`PatchOperationFindMod` whose `<mods>` list carries the donor's About.xml
+`<name>` (read from the deployed Workshop copy,
+`.../workshop/content/294100/3096501398/About/About.xml`): **`Outer Rim -
+Droid Depot`** (packageId `Neronix17.OuterRim.DroidDepot`, confirmed against
+that About.xml and against `neronix17.outerrim.droiddepot` in modlist
+snapshots). FindMod's `<mods>` matches by display name
+(`ModLister.HasActiveModWithName`), not packageId — MayRequire is the
+packageId-keyed one.
+
+Verified with `validate_patch.py --defs <Data> <Workshop> <Mods>`:
+- Current live ModsConfig (DroidDepot inactive): **0 errors**, and the 4
+  guarded ops report the same "test xpath matches 0 nodes — the guard will be
+  a no-op with these mods active. Expected if the target mod is not
+  installed" INFO the checker gives every other donor-gated operation in this
+  file — no longer flagged as unguarded.
+- A snapshot with DroidDepot active
+  (`infrastructure/state/modlists/ModsConfig_before_depot_asimov_retry_2026-09-10.xml`):
+  **0 errors**, and all 4 ops resolve exactly 1 match each against the real
+  `Droid_Weapon_*.xml` files in DroidDepot — confirms the guard does not
+  swallow the real case.
+- `validate_patch.py --live <newest DefDump capture>` still reports these 4
+  defNames as errors ("does not exist in the LIVE game") — read the checker's
+  source (`check_live()`): that identity check runs unconditionally on every
+  xpath's defName, with no FindMod/Conditional-ancestor awareness at all, so
+  it cannot help but flag a donor-only def while that donor is inactive in the
+  dump it's checking against. This is a checker blind spot, not a live defect:
+  in the real engine `PatchOperationFindMod.Apply` skips its `<match>` entirely
+  when none of `<mods>` is active, so the inner Conditional never evaluates and
+  never logs. Confirmed structurally (0 real matches, correctly flagged INFO
+  not ERROR) rather than by re-running the game.
+
+Not done: the live-log confirm the item's `## verify` section defers to the
+next UP window (fresh `Player.log`, harvest_log.py clean on "Outer Rim new-mod
+errors"), and teaching `weapon_tag_audit.py` real per-defName donor tracking
+(the item's `## criteria` line "fix lands through the generator" — deferred as
+a separate, larger item since the plumbing doesn't exist and this BELT window
+has no live game to safely capture a pre-patch dump against).

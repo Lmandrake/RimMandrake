@@ -843,52 +843,86 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
+  <!--
+      🔴 OUTERRIM_DROIDDEPOT_PATCH_GUARD_1, 2026-09-18: the 4 OuterRim_DroidWeapon_*
+      defNames below exist only in Neronix17.OuterRim.DroidDepot ("Outer Rim - Droid
+      Depot"), a sub-mod NOT in the current ModsConfig.xml. With it absent, BOTH the
+      match and nomatch branch fail (there's no ThingDef node at all to add
+      weaponTags to), logging "Failed to find a node" + "Patch operation ... failed"
+      — 8 config errors/load. MayRequire ON AN <Operation> IS INERT (measured against
+      1.6 source in MAYREQUIRE_OPERATION_INERT_SWEEP_1, d1c62223c/38ab02b75 —
+      ModContentPack.LoadPatches never reads that attribute), so the real gate is
+      PatchOperationFindMod wrapping the whole Conditional, keyed on the mod's
+      About.xml <name> (FindMod's <mods> list matches ModLister.HasActiveModWithName
+      by display name, not packageId). If DroidDepot is ever reactivated these four
+      still fire and tag correctly — the FindMod only skips them while it's absent.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Droid Depot</li>
+    </mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags</xpath>
-      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags</xpath>
+        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]</xpath>
+        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+      </nomatch>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]</xpath>
-      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Droid Depot</li>
+    </mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags</xpath>
+        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]</xpath>
+        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+      </nomatch>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Droid Depot</li>
+    </mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags</xpath>
+        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]</xpath>
+        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+      </nomatch>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Droid Depot</li>
+    </mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags</xpath>
+        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]</xpath>
+        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+      </nomatch>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
