@@ -5543,10 +5543,10 @@
     "sha": "4de5c0cf"
   },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "aebb58b202069bdf987047c31e9af3026e1fcfcf5c648162a4ded2fc8cd01e14",
-    "sha": "3505dc594"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "761ff1cca624d105ec7548aae2a1b6ebc8b7154c939c0ad2836608a01340f9fc",
+    "sha": "063e390c3"
   },
   "src/RimMandrake/Utils/gen_plant_register.py": {
     "cleanCount": 1,
