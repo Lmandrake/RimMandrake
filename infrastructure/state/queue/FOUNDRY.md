@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T01:06:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-18T01:13:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
 state:    ready
@@ -1604,17 +1613,7 @@ prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1943,3 +1942,83 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md
+
+## ROT_SPORECLOUD_PORT_1 Port RUT_SporeCloud off the donor's compiled GameCondition to RC4's GameCondition_EnvironmentalWeather (unblocks BMT_FAUNA_ABSORPTION_1 gate 3)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_SPORECLOUD_PORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_SPORECLOUD_PORT_1.md
+
+## ROT_SHEEN_WEATHER_1 The Sheen: RUT_ weather reskin defs + permanent exposure condition + SporeFlesh ladder (fixes the live ban-3 'Rain' violation)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_SHEEN_WEATHER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_SHEEN_WEATHER_1.md
+
+## ROT_DECAY_HARVEST_1 The gut digests: RM_MapComponent_AcceleratedRot (exposed rottables/corpses/filth) + RM_MapComponent_LivingProduce freezer-heat
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_DECAY_HARVEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_DECAY_HARVEST_1.md
+
+## ROT_WARM_MAT_1 Metabolic warmth: RM_MapComponent_WarmGround mat-floored room heating + RUT_GrownFurnace plant/building loop + RUT_Gene_Furnaceblood (fallback strength)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_WARM_MAT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_WARM_MAT_1.md
+
+## ROT_LIVE_PREPARATIONS_1 Live preparations: brewing vessel + three teas + three symbiont pairs, all dying-if-stored (CompTemperatureRuinable + CompLifespan on every item)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_LIVE_PREPARATIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_LIVE_PREPARATIONS_1.md
+
+## ROT_GUARDIAN_GROVES_1 Guardian groves: three tea-source mushrooms that defend themselves (RC1 spore gas, mycelial alarm, grasping-mat lure)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_GUARDIAN_GROVES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_GUARDIAN_GROVES_1.md
+
+## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
+
+## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
