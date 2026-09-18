@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TrophyCraft_ApparelLayerDefs         mandrake.rsw.trophycraft
+
+  WYYYSCHOKK_FANG_PENDANT_1. A brand-new, mod-owned apparel layer for
+  RSW_Apparel_FangPendant alone.
+
+  VERIFIED against the live def dump (~630-mod list, defs.sqlite,
+  2026-09-17): 232 ThingDefs carry `Neck` in apparel.bodyPartGroups; of those,
+  153 share it with the vanilla `Middle` layer (shirts/vests/robes covering
+  Torso+Neck+Shoulders). A Neck-only pendant on `Middle` would collide with
+  all 153 and silently block wearing a robe or vest at the same time — the
+  exact silent collision this item's own doctrine warns about. Two
+  third-party mods (`Jewelry`, `Romance On The Rim`) already define their own
+  `Accessories` layer for the same reason rather than reusing `Middle`; we
+  do the same instead of soft-depending on either of theirs.
+-->
+<Defs>
+
+  <ApparelLayerDef>
+    <defName>RSW_Neck</defName>
+    <label>neck trophy</label>
+    <!-- Between Middle (100) and Shell (200): a worn trophy is meant to be
+         seen over a shirt and under a coat. No wornGraphicPath is set on
+         RSW_Apparel_FangPendant (matching Jewelry_Necklace's own precedent),
+         so this only governs icon/inspect ordering, not a body render. -->
+    <drawOrder>150</drawOrder>
+  </ApparelLayerDef>
+
+</Defs>

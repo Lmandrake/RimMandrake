@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WyyyschokkFangPendantFactions.xml        Jawa_Patches · authored 2026-09-17
+
+  WYYYSCHOKK_FANG_PENDANT_1. RimStarWars: Trophy Craft
+  (mandrake.rsw.trophycraft) ships the mechanism
+  (RSW_TrophyCraft_ObserverBraveFang, a ThoughtWorker keyed off a
+  DefModExtension's factionDefNames list) with that list EMPTY — it does not
+  know the Utinni campaign's factions. This patch is the wiring: campaign
+  data belongs in RimUtinni, never RimStarWars.
+
+  Three defNames, verified against live sources, not guessed:
+    - Wildsteam Clan  -> RUT_Jawa_WildsteamClan
+      (src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaWildsteamClan.xml,
+      an authored RUT_ def — <defName>RUT_Jawa_WildsteamClan</defName>.)
+    - Blackstar Company -> Pirate
+      (BlackstarCompany.xml patches vanilla `Pirate` in place — a reskin,
+      never a new def; faction_roster_v2.md:409 confirms
+      "Blackstar Company | vanilla `Pirate`".)
+    - Deep Tribe -> TribeCivil
+      (DeepDesertTribes.xml patches vanilla `TribeCivil` in place, relabelled
+      "Deep Desert Tribes" — a reskin, never a new def.)
+
+  Wrapped in PatchOperationConditional (test on the exact node being
+  written) rather than a bare MayRequire'd Add: MayRequire alone guards only
+  "is the mod present", not "does the xpath still resolve" if
+  RSW_TrophyCraft_ObserverBraveFang or its modExtension is ever renamed. A
+  patch that matches nothing logs nothing either way, so this degrades
+  silently rather than red on any future rename.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.trophycraft">
+    <xpath>/Defs/ThoughtDef[defName="RSW_TrophyCraft_ObserverBraveFang"]/modExtensions/li/factionDefNames</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThoughtDef[defName="RSW_TrophyCraft_ObserverBraveFang"]/modExtensions/li/factionDefNames</xpath>
+      <value>
+        <li>RUT_Jawa_WildsteamClan</li>
+        <li>Pirate</li>
+        <li>TribeCivil</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
