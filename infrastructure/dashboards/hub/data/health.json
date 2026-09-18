@@ -1,81 +1,30 @@
 {
- "generatedAt": "2026-09-18T17:11:00Z",
+ "generatedAt": "2026-09-18T17:34:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 669062,
-  "sha256_12": "75327b87fa3d"
+  "bytes": 697265,
+  "sha256_12": "6462cf198edc"
  },
- "head": "1fe5e9e0a",
+ "head": "6a9886d86",
  "counts": {
-  "red": 29,
-  "blue": 804,
-  "green": 1797,
-  "grey": 371,
-  "unmeasured": 0,
-  "total": 3001
+  "red": 27,
+  "blue": 802,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 2168,
+  "total": 2997
  },
  "loc": {
-  "red": 12066,
-  "blue": 320357,
-  "green": 591319,
-  "grey": 90616,
-  "unmeasured": 0,
-  "total": 1014358
+  "red": 11292,
+  "blue": 318031,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 682082,
+  "total": 1011405
  },
  "reviewEntries": 2943,
- "recidivists": [
-  {
-   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
-   "loc": 122,
-   "cycles": 5
-  },
-  {
-   "path": "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs",
-   "loc": 126,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml",
-   "loc": 1062,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
-   "loc": 486,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml",
-   "loc": 411,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml",
-   "loc": 372,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/Inhabited/Defs/PlaceDefs/Places_Inhabited.xml",
-   "loc": 139,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
-   "loc": 134,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/RimProperty/Source/PropertyTuning.cs",
-   "loc": 100,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/ShipShields/About/About.xml",
-   "loc": 81,
-   "cycles": 2
-  }
- ],
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 3001 files (1797 clean, 371 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }
