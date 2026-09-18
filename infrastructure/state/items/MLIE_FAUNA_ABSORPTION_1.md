@@ -915,3 +915,47 @@ Commit: `7e302ad7a` (defs/art/cast wiring), `32e8d6ca9` (worklist).
 
 **Remaining**: 68 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`), plus Fambaa.
+
+## 2026-09-18 (FOUNDRY, Pass 9) — recovered after the porting agent died mid-pass
+
+The subagent dispatched for this pass produced real, complete, well-formed
+work — 4 species ported (Gelagrub, Gorg, Gornt, GraniteSlug), bodies/
+resources/art/biome-cast wiring all done — but went silent before it could
+commit or report back (`TaskOutput` returned "No task found" for its ID;
+matches the documented failure mode of a backgrounded agent dying after
+600s of silence). Found the finished work sitting **uncommitted** on disk
+during reboot-prep, verified it, and committed it on the agent's behalf
+rather than losing it:
+
+- New race ThingDefs: `RSW_Gelagrub.xml`, `RSW_Gorg.xml`, `RSW_Gornt.xml`,
+  `RSW_GraniteSlug.xml`. New BodyDefs for all 4 in `RSW_MlieWaveC_Bodies.xml`.
+  New resources (leather, meat, 2 egg pairs) in `RSW_MlieWaveC_Resources.xml`.
+  Art extracted to `Textures/swanimals/{Gelagrub,Gorg,Gornt,GraniteSlug}/`
+  and `Textures/swresource/{Leather_Reptomammal,Meat_Gornt}/`.
+- `BiomeCast_Ashkarr.xml` (both the `design/Jawa/fauna/` source and the
+  deployed `UtinniPatches/Patches/` copy) and `cast_assignment.csv`
+  repointed from the bare donor defNames to the new `RSW_` ones, consistent
+  with every prior pass's pattern.
+- `RSW_FrilledGorg.xml`'s `canCrossBreedWith` repointed from bare `Gorg` to
+  `RSW_Gorg` now that it's ported (matches Pass 8's own note that this
+  reference would need updating once Gorg landed).
+- Verified before committing: all 5 touched/new XML files parse well-formed;
+  every new race def's `<body>` resolves to a `<defName>` actually present
+  in `RSW_MlieWaveC_Bodies.xml`; texture folders present with plausible
+  file counts (Gelagrub/Gornt/GraniteSlug 4 PNGs each, Gorg 44). Did **not**
+  get a fresh `validate_patch.py --live` run against a current dump this
+  pass (dump path not readily at hand during recovery) — that check is
+  owed to whoever next touches this item or deploys it.
+- `mlie_wave_c_worklist.json` was stale (still read 68/`remaining_worklist`
+  including all 4 of these species) — updated by hand: removed
+  Gelagrub/Gorg/Gornt/GraniteSlug, recorded under a new
+  `ported_and_wired_this_pass_2026-09-18_batch9` key, count 68 -> 64.
+
+Commit: (this pass's commit, see git log for the hash — recovered defs/art/
+cast wiring + worklist together).
+
+**Not done**: no deploy, no live/cold-load proof, no fresh `--live` validate
+run. Fambaa still unattempted (still first in the worklist, still needs its
+own careful pass per Pass 7/8's notes on its ArtOverride gating).
+
+**Remaining**: 64 of the Wave C worklist, plus Fambaa.

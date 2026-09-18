@@ -15,18 +15,10 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 68,
+  "remaining_worklist_count": 64,
   "remaining_worklist": [
     {
       "donor_defName": "Fambaa",
-      "biomes": [
-        "BiomeCypreJungle",
-        "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Gelagrub",
       "biomes": [
         "BiomeCypreJungle",
         "COMIGO_GreaterSwamp_Tropical"
@@ -41,29 +33,6 @@
         "Desert",
         "ExtremeDesert",
         "ZBiome_Grasslands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Gorg",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Gornt",
-      "biomes": [
-        "ZBiome_Badlands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "GraniteSlug",
-      "biomes": [
-        "ExtremeDesert",
-        "PoisonForest"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -568,5 +537,38 @@
     "FeralNerf",
     "Nerf",
     "FrilledGorg"
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch9": [
+    {
+      "donor_defName": "Gelagrub",
+      "biomes": [
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gorg",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gornt",
+      "biomes": [
+        "ZBiome_Badlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "GraniteSlug",
+      "biomes": [
+        "ExtremeDesert",
+        "PoisonForest"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
   ]
 }

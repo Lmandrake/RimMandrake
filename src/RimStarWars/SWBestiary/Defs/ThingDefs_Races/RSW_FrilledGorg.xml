@@ -14,8 +14,10 @@
   eggs are newly ported (RSW_EggFrilledGorgFertilized/UnFertilized, texPath
   swresource/EggPod, newly extracted this pass).
 
-  `canCrossBreedWith` (donor: Gorg, LongtailGorg) — both stay bare, neither
-  is ported yet (both remain later in this item's Wave C worklist).
+  `canCrossBreedWith` (donor: Gorg, LongtailGorg) — both stayed bare at
+  Pass 8 (neither was ported yet). Pass 9 repoints `Gorg` to the
+  now-ported RSW_Gorg; `LongtailGorg` stays bare, still not ported (remains
+  later in this item's Wave C worklist).
 
   🔴 Real donor-bundle naming bug found and worked around this pass: the
   PawnKindDef's `alternateGraphics` texPath scheme expects
@@ -122,7 +124,7 @@
       <waterCellCost>1</waterCellCost>
       <canFishForFood>true</canFishForFood>
       <canCrossBreedWith>
-        <li>Gorg</li>
+        <li>RSW_Gorg</li>
         <li>LongtailGorg</li>
       </canCrossBreedWith>
       <wildBiomes>

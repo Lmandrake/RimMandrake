@@ -787,4 +787,135 @@
       <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
+
+<!--
+  Pass 9 (Gelagrub/Gorg/Gornt/GraniteSlug, 2026-09-17): Gelagrub needs no
+  new leather — repoints leatherDef to the already-ported
+  RSW_Leather_Insectile (Pass 3) — and `useMeatFrom` stays vanilla Core
+  `Megaspider`; `milkDef` stays vanilla Core `Neutroamine`. Only its 2 eggs
+  are newly ported (RSW_EggGelagrubFertilized/UnFertilized, texPath
+  swresource/EggSpore — already extracted, Beldon, no new art). Gorg needs
+  no new leather/meat — `leatherDef` stays vanilla Core `Leather_Light` and
+  `specificMeatDef` repoints to the already-ported RSW_Gorg_Meat (Pass 7,
+  Fanback) — only its 2 eggs are newly ported (RSW_EggGorgFertilized/
+  UnFertilized, texPath swresource/EggPod — already extracted, Pass 8/
+  FrilledGorg, no new art). Gornt needs a new leather (RSW_Leather_Reptomammal,
+  texPath swresource/Leather_Reptomammal, newly extracted this pass) and a
+  new meat (RSW_Gornt_Meat, texPath swresource/Meat_Gornt, newly extracted
+  this pass); no egg comp (Gornt reproduces via gestation, not
+  CompProperties_EggLayer). GraniteSlug needs no new resource at all —
+  `specificMeatDef` repoints to the already-ported RSW_Silica_Meat (Pass 2,
+  Beldon); no leatherDef (LeatherAmount 0, comps empty — no egg comp
+  either, reproduces via gestation).
+-->
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Reptomammal</defName>
+    <label>reptomammal hide</label>
+    <description>Tanned, dried, skin. It is tough and insulative.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Reptomammal</texPath>
+      <color>(134,69,69)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+      <StuffPower_Armor_Sharp>1.1</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>20</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(134,69,69)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>1.4</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Gornt_Meat</defName>
+    <label>gornt meat</label>
+    <description>A piece of meat from a gornt. It is reputed to taste exceptional and commands a price that matches the fact.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Gornt</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGelagrubFertilized</defName>
+    <label>gelagrub egg (fert.)</label>
+    <description>A fertilized gelagrub egg. If all goes well, it should hatch into a baby gelagrub. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpore</texPath>
+      <color>(0,225,250)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Gelagrub</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGelagrubUnFertilized</defName>
+    <label>gelagrub egg (unfert.)</label>
+    <description>An unfertilized gelagrub egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpore</texPath>
+      <color>(0,225,250)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>30.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGorgFertilized</defName>
+    <label>gorg egg (fert.)</label>
+    <description>A fertilized gorg egg. If all goes well, it should hatch into a baby gorg. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(100,100,175)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Gorg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGorgUnFertilized</defName>
+    <label>gorg egg (unfert.)</label>
+    <description>An unfertilized gorg egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggPod</texPath>
+      <color>(100,100,175)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — GraniteSlug creature port (Pass 9).
+  Ported from mlie.starwarsanimalcollection's `GraniteSlug` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `GraniteSlug` BodyDef needed a defName rename
+  plus repointing its 2 "foot" parts (`SW_DorsalTentacle`) to the
+  already-ported Wave B `RSW_SW_DorsalTentacle` (the same part
+  RSW_Beldon/RSW_Dianoga already reuse) — every other part (Shell, Stomach,
+  Lung, InsectHeart, Pronotum, InsectHead, Brain, Eye x4, InsectMouth x2)
+  is vanilla Core. Ported as RSW_GraniteSlug in RSW_MlieWaveC_Bodies.xml.
+
+  GraniteSlug needs no new resource at all — `specificMeatDef` repoints to
+  the already-ported RSW_Silica_Meat (RSW_MlieWaveC_Resources.xml, Pass 2,
+  Beldon — the same donor `Silica_Meat` this species itself would have
+  needed). No `leatherDef` (donor's own `LeatherAmount` stat is 0, `comps`
+  is empty). No egg comp — GraniteSlug reproduces via
+  `gestationPeriodDays`/`litterSizeCurve`, not `CompProperties_EggLayer`.
+
+  Art: extracted this pass via extract_bundle.py against the live Steam
+  workshop bundle (workshop folder 3497316713) — 4 PNGs (GraniteSlug_north/
+  south/east + GraniteSlug_Dessicated), all confirmed non-zero and
+  PIL-openable. texPaths otherwise unchanged text — art sits at
+  Textures/swanimals/GraniteSlug/.
+
+  No `*ArtOverride` mod exists for this species (checked the full ~26-mod
+  override-folder listing, not a remembered short list).
+
+  Wired into the live cast this same pass: `ExtremeDesert` (0.1),
+  `PoisonForest` (0.15) — per cast_assignment.csv's current rows for this
+  species (cross-checked against the worklist's own biome claim and found
+  correct — no staleness this pass), repointed from the bare "GraniteSlug"
+  entries in cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_GraniteSlug</defName>
+    <label>granite slug</label>
+    <description>The granite slug was a silica parasite native to the planet Coruscant. This small terrestrial mollusk has corrosive acidic green-gray slime blood. Its body consisted of four eyestalks, two retractable mouths, one foot, lung filaments, and suction pseudopods. One of their natural predators is the hawk-bat.</description>
+    <statBases>
+      <ToxicResistance>1</ToxicResistance>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>10</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-270</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <HypoxiaResistance MayRequire="kentington.saveourship2">1</HypoxiaResistance>
+      <DecompressionResistance MayRequire="kentington.saveourship2">1</DecompressionResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps />
+    <race>
+      <body>RSW_GraniteSlug</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <bloodDef MayRequire="Ludeon.RimWorld.Biotech">Filth_SpentAcid</bloodDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <roamMtbDays>1.5</roamMtbDays>
+      <trainability>None</trainability>
+      <gestationPeriodDays>3</gestationPeriodDays>
+      <lifeExpectancy>8</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1.7)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.1</AridShrubland>
+        <Desert>0.1</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.1</TropicalSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <TemperateSwamp>0.1</TemperateSwamp>
+        <BorealForest>0.1</BorealForest>
+        <Tundra>0.1</Tundra>
+        <ColdBog>0.1</ColdBog>
+        <IceSheet>0.01</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>Pawn_GraniteSlug_Wounded</soundWounded>
+          <soundDeath>Pawn_GraniteSlug_Death</soundDeath>
+          <soundCall>Pawn_GraniteSlug_Call</soundCall>
+          <soundAngry>Pawn_GraniteSlug_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_GraniteSlug</defName>
+    <label>granite slug</label>
+    <race>RSW_GraniteSlug</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug</texPath>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug_Dessicated</texPath>
+          <drawSize>0.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/GraniteSlug/GraniteSlug_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
