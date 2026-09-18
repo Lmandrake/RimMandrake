@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T14:13:29Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "codexcal_mantrap_r4",
+  "priority": 100,
+  "prompt": "RimWorld creature-plant sprite, side view facing east, painterly vanilla-RimWorld style matching the reference: a towering mantrap plant-beast, gaping toothed maw, really frightening, menacing bulk filling the canvas. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Mantrap/AA_Mantrap_east.png",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "style_notes": "owner direction: 'really frightening looking'. Footprint kept in-canvas for validator; the 'twice as large' grow-intent rides the validator-allowance fix, not this calibration. RETRY r4 per ARTPIPE_FAILED_REQUEUE_1: codexcal_mantrap/_r2/_r3 all failed codex_worker_error_no_output (no stderr captured) -- target AA_Mantrap has no successful render anywhere in done/ (unlike the sibling codexcal_lockjaw_a/b targets, which the parallel lockjaw_improve_* wave already delivered). Identical prompt/canvas/reference to the prior 3 attempts, matching the observed pattern that this codex tool fault is nondeterministic per-attempt, not systemic (e.g. aa_terramorph_v1_north_r2 succeeded on an byte-identical retry after an identical failure)."
+}
