@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Lothcat creature port (Pass 17).
+  Ported from mlie.starwarsanimalcollection's `Lothcat` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  🔑 **Body needs no new BodyDef at all**: the donor's own `<race><body>`
+  points at `QuadrupedAnimalWithPawsAndTail`, confirmed VANILLA CORE
+  (`Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml`) — left bare, same
+  precedent as LongtailGorg (Pass 16).
+
+  **Resources**: `leatherDef` (`Leather_Felinoid`) had never been ported —
+  only its sibling `Felinoid_Meat` existed (`RSW_Felinoid_Meat`, ported
+  alongside Jakobeast, Pass 11, which shares this same donor meat defName
+  but a DIFFERENT leather, `Leather_Bright`, confirmed by reading both
+  species' own donor blocks directly, not assumed). Ported this pass as
+  `RSW_Leather_Felinoid` (RSW_MlieWaveC_Resources.xml), texPath
+  swresource/Leather_ShortFur — ALREADY EXTRACTED (reused unchanged, no new
+  art). `specificMeatDef` (`Felinoid_Meat`) repoints directly to the
+  ALREADY-PORTED `RSW_Felinoid_Meat` — no new meat needed. No eggs (live
+  birth via `gestationPeriodDays`).
+
+  No ability: the donor's own `specialTrainables` entry (`Comfort`,
+  Odyssey-gated) is a VANILLA TrainableDef, not donor content — left bare,
+  no port needed.
+
+  No `canCrossBreedWith` (donor's own block doesn't set it). Grepped every
+  already-ported `RSW_*.xml` in SWBestiary for stray `<li>Lothcat</li>` —
+  none found.
+
+  Sounds: the donor's own `lifeStageAges` block uses vanilla Core
+  `Pawn_Cat_*` sounds, NOT a custom Lothcat set — confirmed by reading the
+  donor's own `<race>` block directly — left bare, no RSW_ port needed.
+
+  🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+  Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+  `AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+  reference Lothcat by name.
+
+  Art: no `LothcatArtOverride` mod exists (checked `find src/RimStarWars
+  -maxdepth 1 -iname "*ArtOverride*"` first). 7 PNGs extracted this pass via
+  extract_bundle.py against the same AssetBundle every prior wave used —
+  `Lothcat_m_{south,east,north}` (adult male), `Lothcat_f_{south,east,north}`
+  (adult female), single `Lothcat_Dessicated` (no facing suffixes, no
+  male/female split for the corpse texture, matching the donor's own PawnKindDef
+  `femaleDessicatedBodyGraphicData` which repoints at the SAME dessicated
+  texPath as the male one) — all confirmed non-zero (256x256 RGBA) and
+  PIL-openable before wiring in. Sits at Textures/swanimals/Lothcat/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AridShrubland).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Lothcat</defName>
+    <label>loth-cat</label>
+    <description>Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as pets.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <Wildness>0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <baseBodySize>0.35</baseBodySize>
+      <maxPreyBodySize>0.3</maxPreyBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>0.45</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Felinoid</leatherDef>
+      <specificMeatDef>RSW_Felinoid_Meat</specificMeatDef>
+      <petness>1</petness>
+      <trainability>None</trainability>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <lifeExpectancy>10</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.04</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.02</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Cat_Injured</soundWounded>
+          <soundDeath>Pawn_Cat_Death</soundDeath>
+          <soundCall>Pawn_Cat_Call</soundCall>
+          <soundAngry>Pawn_Cat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Lothcat</defName>
+    <label>loth-cat</label>
+    <race>RSW_Lothcat</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>loth-cat kitten</label>
+        <labelPlural>loth-cat kittens</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_m</texPath>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_f</texPath>
+          <drawSize>0.6</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>0.6</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_m</texPath>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_f</texPath>
+          <drawSize>0.8</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>0.8</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_m</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_f</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Lothcat/Lothcat_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

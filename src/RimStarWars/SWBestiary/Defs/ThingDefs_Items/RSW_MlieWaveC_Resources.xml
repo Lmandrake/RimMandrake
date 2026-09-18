@@ -1957,4 +1957,70 @@
       <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Felinoid</defName>
+    <label>felinoid fur</label>
+    <description>Tanned, dried, felinoid fur. Soft and beautiful.</description>
+    <graphicData>
+      <texPath>swresource/Leather_ShortFur</texPath>
+      <color>(236,142,70)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.2</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>20</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(236,142,70)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>2.5</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggLylekFertilized</defName>
+    <label>lylek egg (fert.)</label>
+    <description>A fertilized lylek egg. If all goes well, it should hatch into a baby lylek. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSlick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,255,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Lylek</hatcherPawn>
+      </li>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>-270</minSafeTemperature>
+        <maxSafeTemperature>300</maxSafeTemperature>
+        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggLylekUnFertilized</defName>
+    <label>lylek egg (unfert.)</label>
+    <description>An unfertilized lylek egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSlick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,255,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

@@ -4,8 +4,9 @@
   Beldon's ThingDef points <race><renderTree MayRequire="Ludeon.RimWorld.Anomaly">
   at it (RSW_Beldon.xml). Ported verbatim from
   mlie.starwarsanimalcollection's PawnRenderTreeDefs/PawnRenderTreeDefs_SW.xml
-  (only the `Beldon` tree — `Lylek`'s tree in the same donor file belongs to
-  a different, not-yet-ported species and is left alone). defName renamed to
+  (only the `Beldon` tree — `Lylek`'s own tree in the same donor file is
+  ported separately below, as `RSW_Lylek`, MLIE_FAUNA_ABSORPTION_1 Pass 17).
+  defName renamed to
   RSW_Beldon; linkedBodyPartsGroup references repointed to the already-ported
   (Wave B) RSW_SW_FirstTentacleBeldon/RSW_SW_SecondTentacleBeldon/
   RSW_SW_ThirdTentacleBeldon groups, matching RSW_MlieWaveC_Bodies.xml's
@@ -113,6 +114,128 @@
                 <dataWest>
                   <offset>(-0.75, 0, -0.75)</offset>
                   <rotationOffset>270</rotationOffset>
+                </dataWest>
+              </drawData>
+            </li>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>20</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+  <!--
+    MLIE_FAUNA_ABSORPTION_1 Pass 17 — Lylek's own PawnRenderTreeDef, needed
+    because Lylek's ThingDef points <race><renderTree
+    MayRequire="Ludeon.RimWorld.Anomaly"> at it (RSW_Lylek.xml). Ported
+    verbatim from mlie.starwarsanimalcollection's own PawnRenderTreeDefs_SW.xml
+    `Lylek` tree — the one this file's own Beldon header comment flagged as
+    "belongs to a different, not-yet-ported species". defName renamed to
+    RSW_Lylek; linkedBodyPartsGroup references repointed to the already-ported
+    (Wave B) RSW_SW_FirstTentacleLylek/RSW_SW_SecondTentacleLylek groups,
+    matching RSW_MlieWaveC_Bodies.xml's RSW_Lylek BodyDef. texPath is
+    unchanged text on both nodes — the donor's own data literally points both
+    TentacleA and TentacleB at the same `LylekTentacleA` texture (not a typo
+    introduced here, confirmed by reading the donor XML directly); only that
+    one texture was extracted, the donor's own unreferenced TentacleB/C/D/E
+    variants excluded, same "unreferenced-by-the-def" precedent as every
+    prior wave's "Pack" exclusions. `PawnRenderNodeProperties_Spastic` is a
+    vanilla RimWorld Anomaly node-property class (Mlie ships 0 C#) — nothing
+    here still points at donor code.
+  -->
+  <PawnRenderTreeDef>
+    <defName>RSW_Lylek</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li>
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <useRottenColor>true</useRottenColor>
+          <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+          <children>
+            <li Class="PawnRenderNodeProperties_Spastic">
+              <debugLabel>TentacleA</debugLabel>
+              <linkedBodyPartsGroup>RSW_SW_FirstTentacleLylek</linkedBodyPartsGroup>
+              <texPath>swanimals/Lylek/Tentacles/LylekTentacleA</texPath>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <rotateFacing>false</rotateFacing>
+              <rotationRange>-5~5</rotationRange>
+              <durationTicksRange>10~35</durationTicksRange>
+              <nextSpasmTicksRange>10~50</nextSpasmTicksRange>
+              <drawSize>2.0</drawSize>
+              <baseLayer>10</baseLayer>
+              <useRottenColor>true</useRottenColor>
+              <drawData>
+                <dataNorth>
+                  <offset>(0.50, 0, 0.35)</offset>
+                  <rotationOffset>-10</rotationOffset>
+                  <layer>-10</layer>
+                  <flip>true</flip>
+                </dataNorth>
+                <dataEast>
+                  <offset>(0.30, 0, 0.05)</offset>
+                </dataEast>
+                <dataSouth>
+                  <offset>(-0.75, 0, -0.05)</offset>
+                  <rotationOffset>55</rotationOffset>
+                  <flip>true</flip>
+                </dataSouth>
+                <dataWest>
+                  <offset>(-0.20, 0, 0.20)</offset>
+                  <layer>-5</layer>
+                  <flip>true</flip>
+                </dataWest>
+              </drawData>
+            </li>
+            <li Class="PawnRenderNodeProperties_Spastic">
+              <debugLabel>TentacleB</debugLabel>
+              <linkedBodyPartsGroup>RSW_SW_SecondTentacleLylek</linkedBodyPartsGroup>
+              <texPath>swanimals/Lylek/Tentacles/LylekTentacleA</texPath>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <rotateFacing>false</rotateFacing>
+              <rotationRange>-5~5</rotationRange>
+              <durationTicksRange>10~35</durationTicksRange>
+              <nextSpasmTicksRange>10~50</nextSpasmTicksRange>
+              <drawSize>2.0</drawSize>
+              <baseLayer>10</baseLayer>
+              <useRottenColor>true</useRottenColor>
+              <drawData>
+                <dataNorth>
+                  <offset>(-0.50, 0, 0.35)</offset>
+                  <rotationOffset>-10</rotationOffset>
+                  <layer>-10</layer>
+                </dataNorth>
+                <dataEast>
+                  <offset>(0.30, 0, 0.05)</offset>
+                  <layer>-5</layer>
+                </dataEast>
+                <dataSouth>
+                  <offset>(0.70, 0, 0.05)</offset>
+                  <rotationOffset>45</rotationOffset>
+                </dataSouth>
+                <dataWest>
+                  <offset>(-0.35, 0, 0.05)</offset>
+                  <flip>true</flip>
                 </dataWest>
               </drawData>
             </li>
