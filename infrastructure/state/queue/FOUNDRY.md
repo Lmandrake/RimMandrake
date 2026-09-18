@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:44:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:28:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -566,15 +566,6 @@ target:   v1
 kind:     bug
 summary:  Nursery juveniles (SeaBeastsNurseryJuveniles.xml, MIASMANURSERYKINDS1)
 prose:    infrastructure/state/items/NURSERY_JUVENILES_CRASH_1.md
-
-## OUTERRIM_DROIDDEPOT_PATCH_GUARD_1 WeaponTags_Renormalise.xml logs 8 config errors when OuterRim DroidDepot isn't active
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
-prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
 
 ## WORLDMAP_AUDIT_LIVE_CHECKS_1 Four worldmap audit checks needing the live game — batch into next game-up window
 state:    doing
@@ -1407,16 +1398,6 @@ kind:     task
 blocked:  steppingstones/gravtech own 17 ResearchProjectDefs nothing else defines (RUT_ResearchRetag only patches tab/tier onto them); several carry dated owner rulings (GravWeapon/GravForge/GravBionics, 2026-09-01/09-04) a bare retire would silently reverse; als.gravtech.bc + a 4th mod (gravtechbigcannons) hard-depend on it too. 3 routes laid out in items/RESEARCH_TRIO_RETIRE_1.md: port the 17 rows first, accept the content loss, or counter-patch and keep the mods (Wave-4-MV-Textures style). Owner AFK, not FOUNDRY's to pick.
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
-
-## OUTERRIM_DROIDDEPOT_PATCH_GUARD_1 WeaponTags_Renormalise.xml logs 8 config errors when OuterRim DroidDepot isn't active
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  generator fix needs a Jawa_Patches-disabled dump recapture (a dedicated live cycle) to regenerate safely without hitting the documented post-patch-dump shrink trap; low severity (8 harmless log lines), not worth forcing now -- also open: owner call on whether DroidDepot staying inactive is permanent policy
-summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
-prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    ready  (BLOCKED)
