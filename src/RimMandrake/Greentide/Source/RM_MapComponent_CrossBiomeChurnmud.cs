@@ -10,13 +10,13 @@ namespace RimMandrake.Greentide
 	/// sinking mud/churnmud, etc.) in OTHER biomes without inserting the whole
 	/// biome." Greatbole does not exist yet (About.xml). Buried caches need no
 	/// gate here — RM_MapComponent_MudSwallow already fires off the terrain
-	/// extension alone, wherever RM_Churnmud exists. This component is what
-	/// gets RM_Churnmud terrain itself onto a map whose biome is NOT Greentide.
+	/// extension alone, wherever RM_GreentideChurnmud exists. This component is what
+	/// gets RM_GreentideChurnmud terrain itself onto a map whose biome is NOT Greentide.
 	///
 	/// Mirrors RM_Greentide_Biome.xml's own trick
-	/// (&lt;mudTerrain&gt;RM_Churnmud&lt;/mudTerrain&gt;, see that file's comment):
+	/// (&lt;mudTerrain&gt;RM_GreentideChurnmud&lt;/mudTerrain&gt;, see that file's comment):
 	/// vanilla map generation already paints ordinary TerrainDefOf.Mud in every
-	/// biome wherever ground is wet enough. Repainting that Mud to RM_Churnmud
+	/// biome wherever ground is wet enough. Repainting that Mud to RM_GreentideChurnmud
 	/// once, right after generation, reproduces the same hazard anywhere the
 	/// player opts in via Mod Settings — no custom genstep, no engine patch.
 	///
@@ -62,7 +62,7 @@ namespace RimMandrake.Greentide
 				return;
 			}
 
-			TerrainDef churnmud = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_Churnmud");
+			TerrainDef churnmud = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_GreentideChurnmud");
 			if (churnmud == null)
 			{
 				return; // silent-fail precedent (SlimeDefs, RM_DefOf callers) — never a hard error over a missing def
@@ -91,7 +91,7 @@ namespace RimMandrake.Greentide
 			if (converted > 0)
 			{
 				Log.Message("[Greentide] cross-biome opt-in converted " + converted
-					+ " Mud cell(s) to RM_Churnmud on a " + biome.defName
+					+ " Mud cell(s) to RM_GreentideChurnmud on a " + biome.defName
 					+ " map (coverage " + coverage.ToString("0.00") + ").");
 			}
 		}

@@ -30,7 +30,7 @@ RM tier: nothing here knows what campaign or planet uses it.
 Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
 (the source design kit's "Owner rulings" section):
 
-  1. Churnmud (M8, NO EXEMPTION ruling): RM_Churnmud is a natural high-pathCost
+  1. Churnmud (M8, NO EXEMPTION ruling): RM_GreentideChurnmud is a natural high-pathCost
      mire terrain. RM_MapComponent_TerrainMire escalates an RM_Mired hediff
      (slowed, then stuck) on anyone standing on it; RM_MapComponent_MudSwallow
      buries loose items left there long enough — a RM_DigOutBuried designation

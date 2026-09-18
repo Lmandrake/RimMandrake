@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- GREENTIDE_STANDALONE_MOD_1 (M8). RM_Churnmud carries RM_MireExtension —
-     that single modExtension IS the whole mire+swallow hazard (read by
-     RM_MapComponent_TerrainMire / RM_MapComponent_MudSwallow). RM_ChurnmudSealed
-     is an ordinary buildable floor, costed in RM_ToxinSealant, that replaces it;
-     carrying NO RM_MireExtension is what makes a sealed cell safe — no separate
-     "is this cell sealed" bookkeeping anywhere. -->
+<!-- GREENTIDE_STANDALONE_MOD_1 (M8). RM_GreentideChurnmud carries
+     RM_MireExtension — that single modExtension IS the whole mire+swallow
+     hazard (read by RM_MapComponent_TerrainMire / RM_MapComponent_MudSwallow).
+     RM_ChurnmudSealed is an ordinary buildable floor, costed in
+     RM_ToxinSealant, that replaces it; carrying NO RM_MireExtension is what
+     makes a sealed cell safe — no separate "is this cell sealed" bookkeeping
+     anywhere.
+
+     🔴 Renamed from RM_Churnmud (code review, 2026-09-17): that defName
+     collided with mandrake.rm.flowworks's own, unrelated TerrainDef of the
+     same name (src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/
+     RM_Churnmud.xml, a plain MarshBase-derived liquid-viscosity mud grade,
+     pathCost 60) — both mods active in the live campaign, both defining
+     TerrainDef RM_Churnmud with different content. Whichever mod's def
+     loader ran last silently won; the other's cells (this mire hazard, or
+     that mod's viscosity mud) would render but carry the wrong terrain
+     entirely. FlowWorks was left untouched (LIQUID_BOTTLE_LOOP_1 is still
+     `doing`); every Greentide-side consumer was renamed in the same
+     commit. -->
 <Defs>
 
   <TerrainDef Name="RM_ChurnmudBase" Abstract="true">
@@ -18,7 +31,7 @@
   </TerrainDef>
 
   <TerrainDef ParentName="RM_ChurnmudBase">
-    <defName>RM_Churnmud</defName>
+    <defName>RM_GreentideChurnmud</defName>
     <label>churnmud</label>
     <description>Deep, torn mud, kept liquid by whatever churns beneath it. Brutally slow going, and it does not give back what it swallows on its own.</description>
     <texturePath>Terrain/Surfaces/Mud</texturePath>

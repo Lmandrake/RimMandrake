@@ -139,9 +139,12 @@
         <edgeMargin>12</edgeMargin>
       </li>
       <!-- M9: root causeways. basinTerrains names GREENTIDE_STANDALONE_MOD_1's
-           own already-shipped churnmud basin (RM_Churnmud,
-           src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml)
-           — the real basin terrain, not guessed. RUT_GreatboleCore's own
+           own already-shipped churnmud basin (RM_GreentideChurnmud, renamed
+           from RM_Churnmud in code review 2026-09-17 to resolve a defName
+           collision with mandrake.rm.flowworks's own unrelated TerrainDef of
+           the same name — src/RimMandrake/Greentide/Defs/TerrainDefs/
+           RM_Churnmud_Terrains.xml) — the real basin terrain, not guessed.
+           RUT_GreatboleCore's own
            RM_CompLivingBoleMarker registers each bole's center with
            RM_MapComponent_LivingRegrowth before this GenStep runs (see each
            GenStepDef's order value in Defs/MapGeneration/), so this map's
@@ -150,7 +153,7 @@
       <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
         <causewayTerrain>RUT_RootCauseway</causewayTerrain>
         <basinTerrains>
-          <li MayRequire="mandrake.rm.greentide">RM_Churnmud</li>
+          <li MayRequire="mandrake.rm.greentide">RM_GreentideChurnmud</li>
         </basinTerrains>
         <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
         <laneWidthRange>1~2</laneWidthRange>
