@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Krykna creature port (Pass 15).
+  Ported from mlie.starwarsanimalcollection's `Krykna` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  Body: the donor's custom `Krykna` BodyDef (Bodies_Animal_StarWars.xml) is
+  entirely vanilla-part composition — Shell/Stomach/InsectHeart/Pronotum/
+  InsectHead/Brain/Eye x6/Beak/InsectLeg x6, confirmed by reading the
+  donor's own BodyDef directly, no SW-prefixed part or group anywhere —
+  defName rename only, ported as RSW_Krykna (RSW_MlieWaveC_Bodies.xml).
+
+  New resource: 2 new eggs (RSW_EggKryknaFertilized/UnFertilized, texPath
+  swresource/EggNodule — ALREADY EXTRACTED, Pass 13 (Kinrath), reused
+  unchanged, no new art). `leatherDef` repoints to the already-ported
+  `RSW_Leather_Insectine` (Pass 13, texPath swresource/Leather_Chitin) —
+  the same resource Kreetle this same pass and Kinrath already use.
+  `useMeatFrom` stays vanilla Core `Megaspider` (no specificMeatDef in the
+  donor). All in RSW_MlieWaveC_Resources.xml.
+
+  No ability: only comps are `CompProperties_EggLayer` (above),
+  `CompProperties_CanBeDormant`/`CompProperties_WakeUpDormant`, all vanilla
+  Core; `specialTrainables` unset in the donor.
+
+  Art: `find src/RimStarWars -maxdepth 1 -iname "*KryknaArtOverride*"` found
+  no dedicated override mod for this species, so it ships straight through
+  with no facing carve-out needed. 4 PNGs extracted this pass via
+  extract_bundle.py against the same AssetBundle every prior wave used —
+  `Krykna_south`, `Krykna_east`, `Krykna_north`, `Krykna_Dessicated`, all
+  confirmed non-zero and PIL-openable. Sits at Textures/swanimals/Krykna/.
+
+  Sounds already absorbed in the 2026-09-02 sound wave
+  (`RSW_Pawn_Krykna_*`) — confirmed present, wired, not re-done.
+
+  🔴 **Checked, untouched**: `AnimalBiomeDuplicates_Fix.xml` (one of this
+  item's 3 named Mlie-touching patch files) has a real hit on this species —
+  operation 30, "Krykna x IceSheet" — but it targets the bare donor
+  `ThingDef[defName="Krykna"]`'s own `wildBiomes/IceSheet` duplicate (a
+  Star Wars Animal Collection (Continued)-vs-base donor collision, unrelated
+  to this port), which stays live and correct since the donor def is kept
+  alongside RSW_Krykna per the standing "keep both" ruling. No change
+  needed here.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (Desert).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Krykna</defName>
+    <label>krykna</label>
+    <description>Krykna were predatory, non-sentient, spider-like creatures native to the planet Atollon. They were resistant to heat based damage and were highly tempramental, making them extremely difficult to tame.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-270</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>200</MarketValue>
+      <ArmorRating_Heat>0.50</ArmorRating_Heat>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggKryknaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggKryknaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>3~6</eggCountRange>
+      </li>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Krykna</body>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseBodySize>0.8</baseBodySize>
+      <baseHealthScale>1.7</baseHealthScale>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>20</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.01</TropicalRainforest>
+        <TropicalSwamp>0.01</TropicalSwamp>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.1</BorealForest>
+        <Tundra>0.1</Tundra>
+        <ColdBog>0.1</ColdBog>
+        <IceSheet>0.1</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Krykna_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Krykna_Death</soundDeath>
+          <soundCall>RSW_Pawn_Krykna_Call</soundCall>
+          <soundAngry>RSW_Pawn_Krykna_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Krykna</defName>
+    <label>krykna</label>
+    <race>RSW_Krykna</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.5, 0.37)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Krykna/Krykna_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

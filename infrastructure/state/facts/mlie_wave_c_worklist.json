@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 45,
+  "remaining_worklist_count": 42,
   "stale_entries_removed_2026-09-18": [
     {
       "donor_defName": "Nuna",
@@ -23,31 +23,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Kreetle",
-      "biomes": [
-        "AB_FeraliskInfestedJungle",
-        "AB_MiasmicMangrove",
-        "AridShrubland",
-        "Desert",
-        "ExtremeDesert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Krykna",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Kwi",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Kybuck",
       "biomes": [
@@ -565,6 +540,33 @@
       "donor_defName": "KraytDragon",
       "biomes": [
         "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch15": [
+    {
+      "donor_defName": "Kreetle",
+      "biomes": [
+        "AB_FeraliskInfestedJungle",
+        "AB_MiasmicMangrove",
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Krykna",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Kwi",
+      "biomes": [
+        "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     }

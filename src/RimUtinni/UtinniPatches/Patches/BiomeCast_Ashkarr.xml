@@ -64,7 +64,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <Kreetle>0.8</Kreetle> <!-- kreetle - ambush-small, keep -->
+        <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - ambush-small, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
@@ -76,7 +76,7 @@
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
         <RSW_IridonianReek>0.3</RSW_IridonianReek> <!-- iridonian reek - herd, import -->
         <RSW_Jimvu>0.3</RSW_Jimvu> <!-- jimvu - herd, import -->
-        <Kwi>0.3</Kwi> <!-- Kwi - herd, import -->
+        <RSW_Kwi>0.3</RSW_Kwi> <!-- Kwi - herd, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <Skalder>0.3</Skalder> <!-- skalder - huge-herd, import -->
         <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
@@ -90,7 +90,7 @@
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
         <RSW_Gizka>0.1</RSW_Gizka> <!-- gizka - ambush-small, keep -->
-        <Krykna>0.1</Krykna> <!-- krykna - ambush-small, keep -->
+        <RSW_Krykna>0.1</RSW_Krykna> <!-- krykna - ambush-small, keep -->
         <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
         <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
         <RSW_Horax>0.01</RSW_Horax> <!-- horax - megafauna, import -->
@@ -194,7 +194,7 @@
         <RSW_FrilledGorg>1.0</RSW_FrilledGorg> <!-- frilled gorg - small-runway, keep -->
         <RSW_Gorg>1.0</RSW_Gorg> <!-- gorg - small-runway, keep -->
         <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
-        <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
+        <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - small-runway, keep -->
         <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
         <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
@@ -281,7 +281,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <Kreetle>1.0</Kreetle> <!-- kreetle - arthropod-floor, keep -->
+        <RSW_Kreetle>1.0</RSW_Kreetle> <!-- kreetle - arthropod-floor, keep -->
         <Yobshrimp>0.8</Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
         <Runyip>0.5</Runyip> <!-- runyip - muck-forager, adjust-keep -->
         <Shiro>0.4</Shiro> <!-- shiro - arthropod-floor, keep -->
@@ -444,7 +444,7 @@
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
-        <Kreetle>0.2</Kreetle> <!-- kreetle - grain-scale, keep -->
+        <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - grain-scale, keep -->
         <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
         <RSW_KraytDragon>0.15</RSW_KraytDragon> <!-- krayt dragon - giant, keep -->
         <RSW_GraniteSlug>0.1</RSW_GraniteSlug> <!-- granite slug - grain-scale, keep -->
@@ -1269,7 +1269,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
         <Wyyyschokk>0.4</Wyyyschokk> <!-- wyyyschokk - owner, import -->
-        <Kreetle>0.2</Kreetle> <!-- kreetle - trace-prey, adjust-keep -->
+        <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - trace-prey, adjust-keep -->
         <Shyrack>0.2</Shyrack> <!-- shyrack - trace-flier, keep -->
       </value>
     </match>
