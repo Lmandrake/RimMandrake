@@ -113,7 +113,7 @@ WHISPERS = [
     (16, "The Prospector's Bones", None, None, "no-mechanism"),
     (17, "Iron Rain", "iron_rain", "RUT_BrokenRing", "done"),
     (18, "The Choir Wind", "choir_wind", "RUT_Monument", "done"),
-    (19, "The Mirage Twin", None, None, "no-mechanism"),
+    (19, "The Mirage Twin", "mirage_twin", "AB_MagmaVents", "done"),
     (20, "The Rootstock", "rootstock", "DryLake", "done"),
     (21, "The Sleeper's Knock", None, None, "no-mechanism"),
     (22, "The Sarlacc Sign", "sarlacc_sign", "sw_SarlaccLair", "done"),
