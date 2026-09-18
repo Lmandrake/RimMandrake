@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Pufferpig creature port.
+  Ported from mlie.starwarsanimalcollection's `Pufferpig` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its own `<race><body>`
+  points at `QuadrupedAnimalWithHoovesAndTusks`, confirmed VANILLA CORE
+  (Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml) — left bare, no BodyDef
+  ported. `leatherDef` (`Leather_Light`) is vanilla Core, left bare;
+  `specificMeatDef` (`Tender_Meat`) ALREADY EXISTS as `RSW_Tender_Meat`
+  (Pass 18, Mott) — no new resource needed. Its Royalty-gated
+  specialTrainable/ability (`SW_GoldForage`) ported this pass as
+  `RSW_SW_GoldForage` (AbilityDef + TrainableDef pair,
+  RSW_MlieWaveC_Abilities.xml) — the donor's own gating quirk (PawnKindDef
+  `<abilities>` wrapper says `MayRequire="Ludeon.RimWorld.Odyssey"` while the
+  inner `<li>` says `MayRequire="Ludeon.RimWorld.Royalty"`) preserved
+  verbatim, not corrected. Adult lifeStage sounds
+  (`Pawn_Wildboar_Wounded`/`Pawn_Gullipud_Death`/`Pawn_Wildboar_Call`/
+  `Pawn_Wildboar_Angry`) are ALL vanilla Core, confirmed directly off the
+  donor's own `<race>` block — NOT a Mlie custom sound set, left bare (no
+  sound port needed at all for this species). No `canCrossBreedWith` (donor
+  sets none, and no already-ported species lists bare `Pufferpig` either).
+
+  No `*ArtOverride` mod exists for Pufferpig (checked first). 5 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used: `Pufferpig_{south,east,north}` (base facing, shared
+  across all 3 life stages, one texPath), `Pufferpig_Dessicated`, and
+  `Pufferpig_i_east` (the donor's own `corpseGraphicData` texPath,
+  `swanimals/Pufferpig/Pufferpig_i` — RimWorld's Graphic_Multi convention
+  expects `_south`/`_east`/`_north` variants, but the donor's OWN bundle
+  ships only the `_east` frame; a pre-existing donor asset gap, not
+  introduced by this port — carried through verbatim, same "genuine donor
+  deviation, documented not fixed" precedent as Lylek's duplicated tentacle
+  texPath, Qormot's unused `_m` life-stage variants, and Ronto's unused
+  `RontoPack_*` saddle variants). Sits at Textures/swanimals/Pufferpig/.
+
+  Wired into the live cast this same pass: AridShrubland 0.5 (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Pufferpig" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Pufferpig</defName>
+    <label>Pufferpig</label>
+    <description>Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal being exported to numerous planets. The true value of a Puffer pig was it's ability to sniff out certain precious metals.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>1000</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <FilthRate>6</FilthRate>
+      <Wildness>0.10</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndTusks</body>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal, AnimalProduct</foodType>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Tender_Meat</specificMeatDef>
+      <roamMtbDays>7</roamMtbDays>
+      <nuzzleMtbHours>30</nuzzleMtbHours>
+      <lifeExpectancy>16</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Royalty">RSW_SW_GoldForage</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1.7)</li>
+          <li>(2, 1)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Wildboar_Wounded</soundWounded>
+          <soundDeath>Pawn_Gullipud_Death</soundDeath>
+          <soundCall>Pawn_Wildboar_Call</soundCall>
+          <soundAngry>Pawn_Wildboar_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Pufferpig</defName>
+    <label>puffer pig</label>
+    <race>RSW_Pufferpig</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <abilities MayRequire="Ludeon.RimWorld.Odyssey">
+      <li MayRequire="Ludeon.RimWorld.Royalty">RSW_SW_GoldForage</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>puffer piglet</label>
+        <bodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_i</texPath>
+          <drawSize>0.5</drawSize>
+        </corpseGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_i</texPath>
+          <drawSize>0.75</drawSize>
+        </corpseGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Pufferpig/Pufferpig_i</texPath>
+          <drawSize>1.5</drawSize>
+        </corpseGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

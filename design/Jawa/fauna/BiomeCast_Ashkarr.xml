@@ -70,7 +70,7 @@
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
         <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
         <RSW_LongtailGorg>0.4</RSW_LongtailGorg> <!-- longtail gorg - ambush-small, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
-        <Ronto>0.4</Ronto> <!-- ronto - huge-herd, keep -->
+        <RSW_Ronto>0.4</RSW_Ronto> <!-- ronto - huge-herd, keep -->
         <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
@@ -196,21 +196,21 @@
         <RSW_LongtailGorg>1.0</RSW_LongtailGorg> <!-- longtail gorg - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - small-runway, keep -->
         <RSW_Lothcat>0.8</RSW_Lothcat> <!-- loth-cat - small-runway, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
-        <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
+        <RSW_Ronto>0.8</RSW_Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
         <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Massiff>0.6</RSW_Massiff> <!-- massiff - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
-        <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
+        <RSW_Pufferpig>0.5</RSW_Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <RSW_Gizka>0.4</RSW_Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
         <Worrt>0.4</Worrt> <!-- worrt - small-runway, keep -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Grank>0.2</RSW_Grank> <!-- Grank - medium-interface, keep -->
-        <Qormot>0.2</Qormot> <!-- qormot - medium-interface, keep -->
+        <RSW_Qormot>0.2</RSW_Qormot> <!-- qormot - medium-interface, keep -->
         <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <RSW_Pikobis>0.1</RSW_Pikobis> <!-- pikobis - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->

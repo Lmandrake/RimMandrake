@@ -398,4 +398,59 @@
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_Leap</enablesAbility>
   </TrainableDef>
+<!--
+  Pass 20 — RSW_SW_GoldForage (Pufferpig's own ability), ported verbatim
+  from the donor's SW_GoldForage AbilityDef/TrainableDef pair, defName
+  rename only. Donor's own MayRequire gating quirk preserved: the
+  AbilityDef/TrainableDef pair itself is Royalty-gated, matching the inner
+  <li> gating on RSW_Pufferpig's own specialTrainables/abilities blocks
+  (the PawnKindDef's own outer <abilities> wrapper additionally gates
+  Odyssey, also preserved verbatim, not corrected — donor's own quirk).
+-->
+<AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RSW_SW_GoldForage</defName>
+    <label>gold forage</label>
+    <description>This creature has a unique ability to sniff out small quanities of precious gold that have usually been left behind by deep drilling.</description>
+    <iconPath>UI/Abilities/Ability_AnimalGoldForage</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <!-- 24 hours -->
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>2.9</range>
+      <soundCast>Pawn_Wildboar_Call</soundCast>
+      <targetParams>
+        <canTargetHumans>False</canTargetHumans>
+        <canTargetMechs>False</canTargetMechs>
+        <canTargetEntities>False</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetAnimals>False</canTargetAnimals>
+        <canTargetLocations>True</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilitySpawn">
+        <thingDef>Gold</thingDef>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_GoldForage</trainableDef>
+        <aiCanCastWithoutTrainable>false</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RSW_SW_GoldForage</defName>
+    <label>gold forage</label>
+    <description>Command the creature to sniff out a small quanity of gold hidden near the surface.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_GoldForage</enablesAbility>
+  </TrainableDef>
 </Defs>

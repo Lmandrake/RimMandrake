@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 29,
+  "remaining_worklist_count": 26,
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
     "RSW_LavaFlea",
@@ -44,28 +44,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Pufferpig",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Qormot",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Ronto",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Runyip",
       "biomes": [
@@ -512,5 +490,32 @@
       "blocked_2026-09-18": "defName collision with the already-live, owner-authored src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml -- see skipped_this_pass_2026-09-18_batch18. Needs an owner decision before porting.",
       "declined_permanently_2026-09-18": "Owner ruling: leave the donor Mynock unported. RSW_Mynock stays the owner-authored ship-vermin species (SHIP_VERMIN_MOD_1, 2026-09-11); the donor bare Mynock rides mlie.starwarsanimalcollection permanently, never absorbed."
     }
-  ]
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch20": {
+    "species": [
+      {
+        "donor_defName": "Pufferpig",
+        "biomes": [
+          "AridShrubland"
+        ],
+        "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+      },
+      {
+        "donor_defName": "Qormot",
+        "biomes": [
+          "AridShrubland"
+        ],
+        "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+      },
+      {
+        "donor_defName": "Ronto",
+        "biomes": [
+          "AridShrubland",
+          "Desert"
+        ],
+        "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+      }
+    ],
+    "note": "Pufferpig, Qormot, Ronto ported and wired (defs pre-existed uncommitted on disk from an interrupted earlier pass; this pass finished the support defs -- RSW_Qormot BodyDef, RSW_Leather_Ronto/RSW_Ronto_Meat resources, RSW_SW_GoldForage AbilityDef/TrainableDef pair -- plus cast wiring in both BiomeCast_Ashkarr.xml copies and cast_assignment.csv, worklist update, and validation."
+  }
 }
