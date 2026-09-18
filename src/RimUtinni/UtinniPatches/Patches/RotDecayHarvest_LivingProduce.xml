@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- ROT_DECAY_HARVEST_1 ("the gut digests"). RM_MapComponent_LivingProduce
+       (mandrake.rm.environmentalhazards) reads RM_LivingProduceExtension off
+       any ThingDef; this patch is what tells it which two RotSporeKit defs
+       are "living produce" — the two fungal food crops that carry
+       CompProperties_Rottable and are the kit's actual grow targets
+       (RUT_Glimmerslime, harvested from RUT_Shinecap; RUT_RawDulcis, "the
+       fungiponics default grow target", harvested from RUT_DulcisPlant).
+       Both live in src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/
+       RUT_RotSporeKit_Flora.xml.
+
+       Gated twice, same reasoning ManyWaters_RiverSteam_Ashkarr.xml already
+       gives in this same directory:
+       - PatchOperationFindMod on RotSporeKit, because a `Class=` naming a
+         type no loaded assembly has DISCARDS THE WHOLE ThingDef, silently.
+         If RotSporeKit is cut, this must be a no-op, not two missing items.
+       - PatchOperationConditional on each def's own <modExtensions>, because
+         a SECOND <modExtensions> element on one def is not a merge — the
+         loader reads one and the other's contents are silently gone.
+         Checked against the live RUT_RotSporeKit_Flora.xml, 2026-09-18:
+         neither def has one, so the nomatch branch is the live one for both.
+
+       heatPerUnit is left at RM_LivingProduceExtension's own default (3.5,
+       CALIBRATED against vanilla's Campfire — see that file's header) rather
+       than overridden here: both are ordinary stackable food, no reason yet
+       to make one "richer" than the other. -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni: Rot Spore Kit</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Glimmerslime"]/modExtensions</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Glimmerslime"]/modExtensions</xpath>
+            <value>
+              <li Class="RimMandrake.EnvironmentalHazards.RM_LivingProduceExtension" />
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Glimmerslime"]</xpath>
+            <value>
+              <modExtensions>
+                <li Class="RimMandrake.EnvironmentalHazards.RM_LivingProduceExtension" />
+              </modExtensions>
+            </value>
+          </nomatch>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_RawDulcis"]/modExtensions</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RawDulcis"]/modExtensions</xpath>
+            <value>
+              <li Class="RimMandrake.EnvironmentalHazards.RM_LivingProduceExtension" />
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RawDulcis"]</xpath>
+            <value>
+              <modExtensions>
+                <li Class="RimMandrake.EnvironmentalHazards.RM_LivingProduceExtension" />
+              </modExtensions>
+            </value>
+          </nomatch>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
