@@ -15,11 +15,16 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 39,
+  "remaining_worklist_count": 36,
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
     "RSW_LavaFlea",
     "RSW_LongtailGorg"
+  ],
+  "ported_and_wired_this_pass_2026-09-18_batch17": [
+    "RSW_Lothcat",
+    "RSW_Lylek",
+    "RSW_Massiff"
   ],
   "stale_entries_removed_2026-09-18": [
     {
@@ -28,27 +33,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Lothcat",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Lylek",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Massiff",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Mott",
       "biomes": [

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Massiff creature port (Pass 17).
+  Ported from mlie.starwarsanimalcollection's `Massiff` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  **Body, checked against the donor's own XML, not assumed**: the donor's
+  custom `Massiff` BodyDef (Bodies_Animal_StarWars.xml) is entirely
+  vanilla-part composition — Body/Tail/Spine/Stomach/Heart/Lung x2/Kidney
+  x2/Liver/Hump/Neck/Head/Skull/Brain/Eye x2/Ear x2/Nose/AnimalJaw/Leg x4/
+  Paw x4 — no SW-prefixed part or group anywhere, same "unique composition,
+  all-vanilla parts" pattern as Kreetle/Krykna (Pass 15). Ported as
+  RSW_Massiff (RSW_MlieWaveC_Bodies.xml) — defName rename only.
+
+  **Resources**: `leatherDef` (`Leather_Saurian`) and `specificMeatDef`
+  (`Saurian_Meat`) BOTH ALREADY EXIST as `RSW_Leather_Saurian`/
+  `RSW_Saurian_Meat` (Pass 12, the same 2 resources Gizka/Kwi already
+  reuse) — no new resource needed. No eggs (live birth via
+  `gestationPeriodDays`/`litterSizeCurve`, confirmed directly off the
+  donor's own `<race>` block).
+
+  No ability: the donor's own `specialTrainables` entry (`AttackTarget`,
+  Odyssey-gated) is a VANILLA TrainableDef, not donor content — left bare,
+  no port needed.
+
+  No `canCrossBreedWith` (donor's own block doesn't set it). Grepped every
+  already-ported `RSW_*.xml` in SWBestiary for stray `<li>Massiff</li>` —
+  none found.
+
+  Sounds: the donor's own custom `Pawn_Massiff_*` set was already absorbed
+  in the 2026-09-02 sound wave (`RSW_Pawn_Massiff_*`) — confirmed present,
+  wired, not re-done.
+
+  🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+  Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+  `AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+  reference Massiff by name.
+
+  Art: no `MassiffArtOverride` mod exists (checked `find src/RimStarWars
+  -maxdepth 1 -iname "*ArtOverride*"` first). 4 PNGs extracted this pass via
+  extract_bundle.py against the same AssetBundle every prior wave used —
+  `Massiff_{south,east,north}`, single `Massiff_Dessicated` (no facing
+  suffixes) — all confirmed non-zero (256x256 RGBA) and PIL-openable before
+  wiring in. Sits at Textures/swanimals/Massiff/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (AridShrubland).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Massiff</defName>
+    <label>massiff</label>
+    <description>Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs. Canine in appearance with an armored hide, the beasts could be domesticated and used for sentry and guard tasks and were often exported to other worlds for this purpose.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>400</MarketValue>
+      <ComfyTemperatureMin>-13</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>16</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Massiff</body>
+      <predator>true</predator>
+      <baseBodySize>0.85</baseBodySize>
+      <maxPreyBodySize>2.3</maxPreyBodySize>
+      <baseHealthScale>1.00</baseHealthScale>
+      <baseHungerRate>0.10</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <trainability>Advanced</trainability>
+      <herdAnimal>true</herdAnimal>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.6</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.08</ExtremeDesert>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1.7)</li>
+          <li>(2, 0.7)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Massiff_Wounded</soundWounded>
+          <soundDeath>Pawn_Massiff_Death</soundDeath>
+          <soundCall>Pawn_Massiff_Call</soundCall>
+          <soundAngry>Pawn_Massiff_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Massiff</defName>
+    <label>massiff</label>
+    <race>RSW_Massiff</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>massiff pup</label>
+        <labelPlural>massiff pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff</texPath>
+          <drawSize>0.5</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Massiff/Massiff_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

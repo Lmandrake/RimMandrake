@@ -2023,3 +2023,159 @@ worklist together).
 
 **Remaining**: 39 of the Wave C worklist (measured,
 `mlie_wave_c_worklist.json`).
+
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — Pass 17: 3 more species ported: Lothcat, Lylek, Massiff (39 -> 36 remaining)
+
+Front of `mlie_wave_c_worklist.json`'s `remaining_worklist` is Lothcat,
+Lylek, Massiff — checked `find src/RimStarWars -maxdepth 1 -iname
+"*ArtOverride*"` first, no dedicated override exists for any of the 3, so
+all 3 shipped straight through with no facing carve-out needed.
+
+**Bodies, checked per-creature against the donor's own XML, not assumed**:
+Lothcat's own `<race><body>` points at `QuadrupedAnimalWithPawsAndTail`,
+confirmed VANILLA CORE — left bare, same "no BodyDef needed" pattern
+LongtailGorg established (Pass 16). Massiff's own `Massiff` BodyDef
+(Bodies_Animal_StarWars.xml) is entirely vanilla-part composition
+(Body/Tail/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Hump/Neck/Head/Skull/
+Brain/Eye x2/Ear x2/Nose/AnimalJaw/Leg x4/Paw x4) — no SW-prefixed part or
+group anywhere, same "unique composition, all-vanilla parts" pattern as
+Kreetle/Krykna (Pass 15) — defName rename only. 🔑 **Lylek's own `Lylek`
+BodyDef consumes 5 Wave-B-ported parts/groups that had sat unused since
+that wave**: its 2 tentacle tools repoint to `RSW_SW_LeftTentacle`/
+`RSW_SW_RightTentacle` (BodyPartDefs) and `RSW_SWTentacleAttackTool`/
+`RSW_SW_FirstTentacleLylek`/`RSW_SW_SecondTentacleLylek`
+(BodyPartGroupDefs) — all 5 ALREADY PORTED in Wave B but never consumed by
+any species until now (confirmed by grepping every already-ported
+`RSW_*.xml` for `FirstTentacleLylek`/`SecondTentacleLylek` — no hits). Its
+toxic stinger appendage reuses the ALREADY-PORTED `RSW_SWToxicAppendage`
+(same group Klorslug/Kinrath/Hssiss already use). Ported as RSW_Lylek/
+RSW_Massiff (RSW_MlieWaveC_Bodies.xml).
+
+**Resources**: 🔑 **Lothcat's `leatherDef` (`Leather_Felinoid`) had never
+been ported** — only its sibling `Felinoid_Meat` existed as
+`RSW_Felinoid_Meat` (ported alongside Jakobeast, Pass 11, which shares this
+same donor meat defName but a DIFFERENT leather, `Leather_Bright`,
+confirmed by reading both species' own donor blocks directly, not
+assumed). Ported this pass as `RSW_Leather_Felinoid`, texPath
+swresource/Leather_ShortFur — ALREADY EXTRACTED (reused unchanged, no new
+art). Lothcat's `specificMeatDef` repoints directly to the ALREADY-PORTED
+`RSW_Felinoid_Meat`. Massiff's `leatherDef` (`Leather_Saurian`) and
+`specificMeatDef` (`Saurian_Meat`) BOTH ALREADY EXIST as
+`RSW_Leather_Saurian`/`RSW_Saurian_Meat` (Pass 12, the same 2 resources
+Gizka/Kwi already reuse) — no new resource needed. Lylek's `leatherDef`
+(`Leather_Insectine`) ALREADY EXISTS as `RSW_Leather_Insectine` (Pass 13);
+`specificMeatDef` (`Silica_Meat`) ALREADY EXISTS as `RSW_Silica_Meat`
+(reused by LavaFlea, Pass 16) — needs 2 new eggs
+(RSW_EggLylekFertilized/UnFertilized, texPath swresource/EggSlick — ALREADY
+EXTRACTED, Pass 14, reused unchanged; `hatcherPawn` repointed to
+`RSW_Lylek`; the fert egg's own `CompProperties_TemperatureRuinable` block
+carried over unchanged, same pattern LavaFlea's own fert egg already
+ported). Neither Lothcat nor Massiff lay eggs (live birth via
+`gestationPeriodDays`/`litterSizeCurve`, confirmed directly off each
+donor's own `<race>` block). All in RSW_MlieWaveC_Resources.xml.
+
+No new abilities: Lothcat's own `specialTrainables` entry (`Comfort`,
+Odyssey-gated) and Massiff's own entry (`AttackTarget`, Odyssey-gated) are
+BOTH vanilla TrainableDefs, not donor content — left bare. Lylek's own
+`<race>` block sets no `specialTrainables` at all (only
+`manhunterOnTameFailChance`/`manhunterOnDamageChance`, ordinary stats).
+
+No `canCrossBreedWith` on any of the 3 (none set it in their own donor
+block). Grepped every already-ported `RSW_*.xml` in SWBestiary for stray
+`<li>Lothcat</li>`/`<li>Lylek</li>`/`<li>Massiff</li>` — none found.
+
+🔑 **`renderTree`, a genuinely new pattern for this item**: Lylek's own
+`<race><renderTree MayRequire="Ludeon.RimWorld.Anomaly">` points at its own
+animated-tentacle `Lylek` PawnRenderTreeDef in the donor's own
+`PawnRenderTreeDefs_SW.xml` — the SAME donor file whose `Beldon` tree was
+already ported in Wave C, and whose own header comment on
+`RSW_MlieWaveC_RenderTree.xml` explicitly flagged Lylek's tree as
+"belongs to a different, not-yet-ported species". Ported this pass as
+`RSW_Lylek` in that same file (the stale note corrected in the same edit,
+now pointing at this pass). `linkedBodyPartsGroup` repointed to
+`RSW_SW_FirstTentacleLylek`/`RSW_SW_SecondTentacleLylek`.
+`PawnRenderNodeProperties_Spastic` is a vanilla RimWorld Anomaly
+node-property class (Mlie ships 0 C#) — nothing here still points at donor
+code. The donor's own render tree data literally points BOTH its TentacleA
+and TentacleB nodes at the same `LylekTentacleA` texPath (not a typo
+introduced here, confirmed by reading the donor XML directly) — carried
+over unchanged; the donor's own unreferenced `LylekTentacleB/C/D/E`
+variants were excluded, same "unreferenced-by-the-def" precedent as every
+prior wave's "Pack" exclusions.
+
+Sounds: Lylek's own custom `Pawn_Lylek_*`/`Pawn_LylekBaby_*` sets and
+Massiff's own `Pawn_Massiff_*` set were already absorbed in the 2026-09-02
+sound wave (`RSW_Pawn_Lylek_*`/`RSW_Pawn_LylekBaby_*`/`RSW_Pawn_Massiff_*`)
+— confirmed present, wired, not re-done. Lothcat's own `lifeStageAges`
+block uses vanilla Core `Pawn_Cat_*` sounds, NOT a custom set — confirmed
+directly off the donor's own `<race>` block — left bare.
+
+🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+reference Lothcat/Lylek/Massiff by name.
+
+Art: no ArtOverride mod exists for any of the 3 (checked first). 16 PNGs
+extracted this pass via extract_bundle.py against the same AssetBundle
+every prior wave used (workshop folder 3497316713) — Lothcat 7
+(`Lothcat_m_{south,east,north}` adult male, `Lothcat_f_{south,east,north}`
+adult female, single `Lothcat_Dessicated` with no facing suffixes and no
+male/female split, matching the donor's own PawnKindDef
+`femaleDessicatedBodyGraphicData` which repoints at the SAME dessicated
+texPath as the male one), Lylek 5 (`Lylek_{south,east,north}`,
+`Lylek_Dessicated`, plus `LylekTentacleA` for the renderTree — the donor's
+own unreferenced TentacleB/C/D/E variants excluded), Massiff 4
+(`Massiff_{south,east,north}`, single `Massiff_Dessicated`) — all 16
+confirmed non-zero (256x256 RGBA) and PIL-openable via PIL before wiring
+in. Run via `python.exe` on the native `C:\...` bundle path, extracted
+flat (no `--keep-paths`) to a Windows temp dir and copied into the repo
+tree over `/mnt/c`. Sits at Textures/swanimals/{Lothcat,Lylek,Massiff}/ and
+Textures/swanimals/Lylek/Tentacles/.
+
+**Wired into the live cast, both `BiomeCast_Ashkarr.xml` copies (design +
+deployed) and `cast_assignment.csv`** — cross-checked against
+`cast_assignment.csv` as ground truth, which matched the worklist json's
+own biome fields exactly this pass (no staleness found): `RSW_Lothcat`
+(AridShrubland 0.8), `RSW_Massiff` (AridShrubland 0.6), `RSW_Lylek`
+(BiomeCypreJungle 0.05) — renamed in place from the bare donor entries in
+both `BiomeCast_Ashkarr.xml` copies and `cast_assignment.csv` (mod column
+repointed to `RimMandrake: SW — Bestiary`, reason field annotated). Edits
+were made by exact pre-verified text replacement (never round-tripped
+through Python's `csv` module for the CSV), and `git diff --stat` confirmed
+exactly the intended lines changed in each of the 3 files before staging.
+
+**Validated**: `validate_patch.py` against all 6 directly authored/touched
+files (3 species, `RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`RSW_MlieWaveC_RenderTree.xml`), BOTH with `--live` (freshest available
+capture, `2026-09-18T05-05-13Z`, 634 mods per its own manifest — live
+`ModsConfig.xml` reads 30 active, the minimal list left over from a peer's
+concurrent work, correctly NOT re-harvested mid-pass, per "ModsConfig
+describes the next load" doctrine) AND `--defs` against the full load set
+(`Data` + `Mods` + the Steam Workshop content root, with `--mods-config
+infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` since the LIVE
+ModsConfig.xml was the minimal 30-mod list at validation time, same
+workaround Pass 16 needed). **0 errors, 0 warnings** both ways, across all
+6 files plus both `BiomeCast_Ashkarr.xml` copies (checked separately
+against `--live`). All new defNames confirmed unique in-repo (RSW_Lothcat:
+1 file, its own ThingDef+PawnKindDef pair; RSW_Massiff: 2 files, ThingDef+
+BodyDef pair; RSW_Lylek: 3 files, ThingDef+BodyDef+PawnRenderTreeDef, all
+sharing a defName across def types, same as every prior species with a
+renderTree).
+
+**Not done this pass**: no deploy — this item's own standing instruction is
+offline-authoring only regardless of bridge state; no live cold-load
+proof. Checked `.git/rebase-merge`/`.git/rebase-apply` before and after
+every git operation this pass — neither existed at any point, and
+`git diff --stat` against the full edit list confirmed every touched file
+actually carried a diff before committing (the Pass 16 concurrent-rebase
+hazard did not recur this pass).
+
+`infrastructure/state/facts/mlie_wave_c_worklist.json` updated:
+Lothcat/Lylek/Massiff removed from `remaining_worklist`, count 39 -> 36,
+recorded under `ported_and_wired_this_pass_2026-09-18_batch17`.
+
+Commit: see git log for this pass's hash (defs/art/cast wiring + item +
+worklist together).
+
+**Remaining**: 36 of the Wave C worklist (measured,
+`mlie_wave_c_worklist.json`).

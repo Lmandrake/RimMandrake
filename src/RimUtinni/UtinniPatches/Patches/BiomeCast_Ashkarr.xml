@@ -195,13 +195,13 @@
         <RSW_Gorg>1.0</RSW_Gorg> <!-- gorg - small-runway, keep -->
         <RSW_LongtailGorg>1.0</RSW_LongtailGorg> <!-- longtail gorg - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - small-runway, keep -->
-        <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
+        <RSW_Lothcat>0.8</RSW_Lothcat> <!-- loth-cat - small-runway, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
         <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
-        <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
+        <RSW_Massiff>0.6</RSW_Massiff> <!-- massiff - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <RSW_Gizka>0.4</RSW_Gizka> <!-- gizka - small-runway, keep -->
@@ -370,7 +370,7 @@
         <RSW_Fambaa>0.25</RSW_Fambaa> <!-- fambaa - shatterer, import -->
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
         <RSW_Hawkbat>0.18</RSW_Hawkbat> <!-- hawk-bat - flier-predator, keep -->
-        <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
+        <RSW_Lylek>0.05</RSW_Lylek> <!-- lylek - apex, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
       </value>
     </match>
   </Operation>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Lylek creature port (Pass 17).
+  Ported from mlie.starwarsanimalcollection's `Lylek` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+
+  **Body**: the donor's custom `Lylek` BodyDef (Bodies_Animal_StarWars.xml)
+  repoints its 2 tentacle tools to the ALREADY-PORTED Wave B
+  `RSW_SW_LeftTentacle`/`RSW_SW_RightTentacle` (BodyPartDefs) and
+  `RSW_SWTentacleAttackTool`/`RSW_SW_FirstTentacleLylek`/
+  `RSW_SW_SecondTentacleLylek` (BodyPartGroupDefs) — all 5 were ported in
+  Wave B but never consumed by any species until now (confirmed: no other
+  ported RSW_*.xml references `FirstTentacleLylek`/`SecondTentacleLylek`).
+  Its toxic stinger appendage reuses the ALREADY-PORTED `RSW_SWToxicAppendage`
+  (same group Klorslug/Kinrath/Hssiss already use). Every other part
+  (Shell/Stomach/InsectHeart/Pronotum/InsectHead/Brain/Eye x2/Ear x2/
+  InsectNostril/AnimalJaw/InsectLeg x6) is vanilla Core. Ported as RSW_Lylek
+  (RSW_MlieWaveC_Bodies.xml).
+
+  **Resources**: `leatherDef` (`Leather_Insectine`) ALREADY EXISTS as
+  `RSW_Leather_Insectine` (Pass 13). `specificMeatDef` (`Silica_Meat`)
+  ALREADY EXISTS as `RSW_Silica_Meat` (reused by LavaFlea, Pass 16). Needs 2
+  new eggs (RSW_EggLylekFertilized/UnFertilized, texPath swresource/EggSlick
+  — ALREADY EXTRACTED, Pass 14 (Klorslug), reused unchanged, no new art) —
+  `hatcherPawn` repointed to `RSW_Lylek`; the fertilized egg's own
+  `CompProperties_TemperatureRuinable` block is carried over unchanged
+  (donor sets it on this species, same pattern LavaFlea's own fert egg
+  already ported, Pass 16). All in RSW_MlieWaveC_Resources.xml.
+
+  No ability: the donor's own `<race>` block sets no `specialTrainables`
+  (only `manhunterOnTameFailChance`/`manhunterOnDamageChance`, ordinary
+  stats, confirmed by reading the donor block directly).
+
+  No `canCrossBreedWith` (donor's own block doesn't set it). Grepped every
+  already-ported `RSW_*.xml` in SWBestiary for stray `<li>Lylek</li>` —
+  none found.
+
+  🔑 **`renderTree`, a genuinely new pattern for this species**: the
+  donor's own `<race><renderTree MayRequire="Ludeon.RimWorld.Anomaly">`
+  points at its own `Lylek` PawnRenderTreeDef (animated tentacle-spasm
+  nodes), the SAME donor file (`PawnRenderTreeDefs_SW.xml`) whose `Beldon`
+  tree was already ported in Wave C — that file's own header comment
+  flagged Lylek's tree as "belongs to a different, not-yet-ported species".
+  Ported this pass as `RSW_Lylek` in RSW_MlieWaveC_RenderTree.xml (that
+  file's own stale note corrected in the same edit). `linkedBodyPartsGroup`
+  repointed to `RSW_SW_FirstTentacleLylek`/`RSW_SW_SecondTentacleLylek`.
+  `PawnRenderNodeProperties_Spastic` is a vanilla RimWorld Anomaly class
+  (Mlie ships 0 C#).
+
+  Sounds: the donor's own custom `Pawn_Lylek_*`/`Pawn_LylekBaby_*` sets were
+  already absorbed in the 2026-09-02 sound wave (`RSW_Pawn_Lylek_*`/
+  `RSW_Pawn_LylekBaby_*`) — confirmed present, wired, not re-done.
+
+  🔴 **Checked, unrelated, untouched**: none of this item's 3 named
+  Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+  `AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`)
+  reference Lylek by name.
+
+  Art: no `LylekArtOverride` mod exists (checked `find src/RimStarWars
+  -maxdepth 1 -iname "*ArtOverride*"` first). 5 PNGs extracted this pass via
+  extract_bundle.py against the same AssetBundle every prior wave used —
+  `Lylek_{south,east,north}`, `Lylek_Dessicated`, plus `LylekTentacleA` (the
+  renderTree's own texture) — the donor's own `LylekTentacleB/C/D/E`
+  variants are unreferenced by the def (the renderTree literally points
+  both TentacleA and TentacleB nodes at the same `LylekTentacleA` texPath,
+  confirmed by reading the donor XML directly, not a typo introduced here)
+  and were excluded, same "unreferenced-by-the-def" precedent as every
+  prior wave's "Pack" exclusions. All 5 confirmed non-zero (256x256 RGBA)
+  and PIL-openable before wiring in. Sits at Textures/swanimals/Lylek/ and
+  Textures/swanimals/Lylek/Tentacles/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's own
+  ground truth (BiomeCypreJungle).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Lylek</defName>
+    <label>lylek</label>
+    <description>The lylek was the most dangerous predator indigenous to the planet of Ryloth. It's strange biology made it one of the few creatures able to survive in the harsh heat of the Bright Lands. These dangerous creatures were popular exotic pets with certain criminal organisations and subsequently were transported to various worlds.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <ComfyTemperatureMin>-75</ComfyTemperatureMin>
+      <ComfyTemperatureMax>300</ComfyTemperatureMax>
+      <MarketValue>2750</MarketValue>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.99</ArmorRating_Heat>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>right tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>poison stinger</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+        <chanceFactor>0.8</chanceFactor>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggLylekUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggLylekFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Lylek</body>
+      <predator>true</predator>
+      <baseBodySize>5.0</baseBodySize>
+      <maxPreyBodySize>5.0</maxPreyBodySize>
+      <baseHungerRate>0.5</baseHungerRate>
+      <baseHealthScale>5.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <lifeExpectancy>98</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <renderTree MayRequire="Ludeon.RimWorld.Anomaly">RSW_Lylek</renderTree>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.8</ExtremeDesert>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_LylekBaby_Wounded</soundWounded>
+          <soundDeath>Pawn_LylekBaby_Death</soundDeath>
+          <soundCall>Pawn_LylekBaby_Call</soundCall>
+          <soundAngry>Pawn_LylekBaby_Angry</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>Pawn_Lylek_Wounded</soundWounded>
+          <soundDeath>Pawn_Lylek_Death</soundDeath>
+          <soundCall>Pawn_Lylek_Call</soundCall>
+          <soundAngry>Pawn_Lylek_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Lylek</defName>
+    <label>lylek</label>
+    <race>RSW_Lylek</race>
+    <combatPower>600</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.6)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Lylek/Lylek_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
