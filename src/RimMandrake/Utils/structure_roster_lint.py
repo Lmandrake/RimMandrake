@@ -66,7 +66,7 @@ PROMISES = [
     (8, "The Monument", "RUT", "monument", "done"),
     (9, "The Rakatan Trace", "RUT", "rakatan_trace", "done"),
     (10, "The Oasis Shrine", "RUT", "oasis_shrine", "done"),
-    (11, "The Kiln", "RUT", None, "skip-owner"),  # contested per sacred-sites — batch 6 note; re-confirmed still contested 2026-09-18, and a doc mismatch found while re-confirming: this roster row's own text says "Ohm vs Sh'kaar argue it" while sacred_sites_pass_1.md §1a/§5 names it "the Kiln (Zizzik/Mob'Unloo contest)" — two design docs disagree on WHO contests it, itself a reason authoring content here would guess at a still-unsettled point
+    (11, "The Kiln", "RUT", None, "todo"),  # RULED 2026-09-18 (owner): it is the sacred_sites_pass_1.md crater (5 dead-flat Wasteland tiles, Zizzik primary/Mob'Unloo secondary), not the roster's old "geothermal works, Ohm vs Sh'kaar, free power" text — that framing was wrong and structure_injection_roster.md #11 is corrected. No power mechanism needed: build as scorched-crater dressing (dead terrain, blast debris, no live structures) on the Wasteland biome-class read, not a TileMutatorDef-anchored template
     (12, "The Hunting Lodge", "RSW", "hunting_lodge", "done"),
     (13, "The Toll Gap", "RUT", "toll_gap", "done"),
     (14, "The Dead Beacon", "RUT", "dead_beacon", "done"),

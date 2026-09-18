@@ -92,9 +92,14 @@ Format: **Name** · gating · from orbit · injection · voice · stakes.
 10. **The Oasis Shrine** (RUT) · `Oasis` mutator tiles · palm+stone icon ·
     NEW small: spring-side shrine, offering bowls · Oomo · fertility boon
     ground; desecration is remembered.
-11. **The Kiln** (RUT, contested per sacred-sites) · geothermal · furnace
-    icon · NEW: geothermal works, half-alive · Ohm vs Sh'kaar argue it ·
-    free power that feeds the escalation meter.
+11. **The Kiln** (RUT) · `Wasteland` blast crater, 5 dead-flat tiles inside
+    878 tiles of ordinary sand (`sacred_sites_pass_1.md` §1a — RULED
+    2026-09-18: it's the crater, not a live furnace) · crater icon · NEW:
+    scorched dead ground, no power output, four homesteads farm its edge
+    and never its heart · Zizzik primary / Mob'Unloo secondary (a
+    catastrophic accident on ground the Cartel is still paying reputation
+    debt for) · hazard/atmosphere only — the earlier "geothermal works,
+    Ohm vs Sh'kaar, free power" framing here was wrong and is dropped.
 12. **The Hunting Lodge** (RSW) · shrub/grass bands · lodge icon · NEW
     rimplace: trophy hall, kennels, cold room · Ishko · taming gear and
     trophies; something still uses the kennels.
