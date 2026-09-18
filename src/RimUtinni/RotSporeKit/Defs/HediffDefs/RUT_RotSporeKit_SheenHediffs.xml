@@ -54,7 +54,7 @@
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.85, 0.85, 1.0)</defaultLabelColor>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_SheenExposure">
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_SheenExposure" MayRequire="mandrake.rm.environmentalhazards">
         <onlyDuringWeathers>
           <li>RUT_SheenFall</li>
           <li>RUT_SheenStorm</li>

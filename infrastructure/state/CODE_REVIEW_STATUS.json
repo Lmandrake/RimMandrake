@@ -3755,6 +3755,12 @@
     "hash": "978e731f554e438e408c8b7c74b846f232a30f5a1b2b4a7b80363ecc55bdafb4",
     "sha": "b1655903"
   },
+  "src/RimMandrake/RaidRedesigner/validation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "87015c8a33305e6d6c720a550cf9bcad181e56e5d0af808ae1adcdae880276a3",
+    "sha": "1659c1793"
+  },
   "src/RimMandrake/RimDefDump/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -14608,10 +14614,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/GameConditionDefs/RUT_RotSporeKit_SporeCloud.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "83f0f4aa1a6ea9d34636aea7cf7aa12444ba34bcb52a38b56ebe1488a755b69d",
+    "sha": "211b2f0c8"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/GeneDefs/RUT_RotSporeKit_Furnaceblood.xml": {
     "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "12cdc5f2e949e9874c83585f8fd76ebfad8c14369213ff9afbf9976ce1812b15",
-    "sha": "bb73b6bd"
+    "date": "2026-09-17",
+    "hash": "dbb50db40784be5e8c25f6980d12e6aaa2df6ec6056382031a6f13576868372c",
+    "sha": "211b2f0c8"
   },
   "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_Hediffs.xml": {
     "cleanCount": 1,
@@ -14637,6 +14649,12 @@
     "hash": "3b706618f2775dc05e4501f7c014ce1b4a825c73d92455e5e5f27d94c57fc794",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RotSporeKit/Defs/StatDefs/RUT_SheenProtection.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "05ba7f1c25b985f2616113ba8143c4529bfee329444a661bd910518eb9676eeb",
+    "sha": "785100e16"
+  },
   "src/RimUtinni/RotSporeKit/Defs/StuffCategoryDefs/RUT_RotSporeKit_StuffCategories.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -14650,10 +14668,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Apparel/RUT_RotSporeKit_ChitinSpiderHelmet.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "a7a94f1cb48a59551d2a410f9556ade603ccfb9d01d13818e1cb7a5337dbdd92",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "169b4251ecc491e2ae094f85fefc2686637c9ba8555b365c0fe10cb11a3fce5c",
+    "sha": "785100e16"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Buildings/RUT_RotSporeKit_Buildings.xml": {
     "cleanCount": 1,
@@ -14661,17 +14679,35 @@
     "hash": "e73c5c7d7db4bcc8875629c86b7ace73344f9e4f0bf263c922102bb89caf1701",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Buildings/RUT_RotSporeKit_GrownFurnace.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "c2dcd8f8fd4bf6b7b3df4df29b3e1b97f0122007a04fe3ce4345d97942f6dd54",
+    "sha": "785100e16"
+  },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "8b7ffd05d3297ec03051ad2b0cdd97458c01dc0e0e9f0229cb60aa93ac2af977",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_PaleTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "1ece7b1d124ce99a53deadd019113e1b33f2ba019276a40e770013dcd9056039",
+    "sha": "211b2f0c8"
+  },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "cf9a8730b0798d80db8dadb40f91322600473d353391258562607fd334b62d37",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "9cae346377d4f1c7f995c2c863c231a211575437ab36ba8119407b8c0e7126a1",
+    "sha": "785100e16"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
     "cleanCount": 3,
@@ -14684,6 +14720,12 @@
     "date": "2026-09-09",
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/WeatherDefs/RUT_RotSporeKit_SheenWeathers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-17",
+    "hash": "75b62f06fb80b37bf62e88a6f7f0a6335ef76191a26bf90cdb76e9c037149b4d",
+    "sha": "211b2f0c8"
   },
   "src/RimUtinni/RustCathedralHum/About/About.xml": {
     "cleanCount": 1,

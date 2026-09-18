@@ -30,7 +30,7 @@ guessed:
     real payload/telegraph/letter/god-tie data but their triggerKind is not
     yet evaluated by the runner -- documented status in the file's own
     comment, not a defect this suite treats as a bug.
-  - 5 RM_AlliancePairDef entries in RM_AlliancePairDefs.xml. Only the
+  - 6 RM_AlliancePairDef entries in RM_AlliancePairDefs.xml. Only the
     Geonosian Foundry Hive / Free Droid Enclaves pair (both directions) is
     reachable by the engine's current (rule-2, BattleRecord-close) path; the
     three "Blackstar-hire" pairs (HuttCartel/Pirate, Empire/Pirate,
@@ -54,7 +54,7 @@ live entirely in `mandrake.rm.aftermath`, whose OWN validation.py (not yet
 written as of this pass; check before assuming it exists) is the right place
 to prove a rule actually fires a raid. This suite's job is narrower and
 matches the walk doc's own final line ("[S] none -- pure data defs, nothing
-to look at visually"): prove the eight rule defs and five pair defs parse,
+to look at visually"): prove the eight rule defs and six pair defs parse,
 resolve as their correct C# types, and carry the exact field values authored
 in the XML -- the one thing this mod alone is responsible for.
 
@@ -96,7 +96,7 @@ ALL_RULE_NAMES = [
     "RM_AftermathRule_TheReckoning",
 ]
 
-# All 5 alliance-pair defNames, verbatim from RM_AlliancePairDefs.xml.
+# All 6 alliance-pair defNames, verbatim from RM_AlliancePairDefs.xml.
 ALL_PAIR_NAMES = [
     "RM_AlliancePair_GeonosianHive_FreeDroidEnclaves",
     "RM_AlliancePair_FreeDroidEnclaves_GeonosianHive",
@@ -236,10 +236,10 @@ def rule_defs_field_values(t):
 
 @suite.chain("pair_defs_exact_count_and_resolve")
 def pair_defs_exact_count_and_resolve(t):
-    """All 5 RM_AlliancePairDefs resolve, none missing."""
+    """All 6 RM_AlliancePairDefs resolve, none missing."""
     t.clear_area(size=8)
 
-    with t.component("all_five_pair_defs_resolve", beyond_toggle=True):
+    with t.component("all_six_pair_defs_resolve", beyond_toggle=True):
         r = _get_defs(t, PAIR_TYPE, ALL_PAIR_NAMES, "a,b")
         if _live(t):
             rows = (r or {}).get("defs") or []
