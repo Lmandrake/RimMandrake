@@ -777,3 +777,163 @@ the count. Left `doing` — 6 promise gaps still need an owner ruling or a
 design pass, most whisper rows still have no mechanism, and the live
 mapgen-ordering proof (owed since 2026-08-31) is still open.
 
+## 2026-09-18 whisper batch 3 (FOUNDRY, belt mode, subagent) — 2 more rows wired
+
+Re-derived state first, per standing lesson (queue items decay): re-ran
+`structure_roster_lint.py` before touching anything — confirmed still
+exactly 16/22 promises, 5/22 whispers, 0 lint failures, unchanged since
+2026-09-17. Re-read the whole item history, `structure_injection_roster.md`
+in full, and `sacred_sites_pass_1.md` §1a/§1b/§4 in full before picking
+rows, per the dispatch's own method.
+
+**Went through every remaining `MISSING-MECHANISM` whisper row looking for
+a nameable, CONFIRMED anchor** — never guessed a defName; every candidate
+below was either read directly out of a live Data/Odyssey/Core source file
+or confirmed via a `validate_patch.py` `PatchOperationConditional` probe
+against the real, active 634-mod set (`--defs` Data+Mods+Workshop, live
+`ModsConfig.xml`):
+
+- **#5 Soft Ground** (Ta'Baa/Ishko, dunes) — the roster's own gating names
+  the anchor directly: "dunes." Probed several dune-shaped defName guesses
+  (`Dunes`, `AB_SandDunes`) rather than assuming either — `Dunes` came back
+  **1 match** (`Data/Odyssey/Defs/TileMutators/TileMutators_Natural.xml`),
+  confirmed by direct read: `biomeWhitelist: ExtremeDesert`, no
+  `<extraGenSteps>` element of its own (only `preventGenSteps`). **This is
+  the first whisper row this program has anchored on a vanilla BASE-GAME
+  mutator** (every prior anchor was Odyssey-modded content, our own
+  promise mutator, or a specific named mod's def) — the Add targets the
+  TileMutatorDef node itself, same shape as Cavern/DryLake/Hollow/Caves.
+  **Built**: `design/Jawa/templates/soft_ground.lua` — scattered
+  `SculptureSmall` "warning cairn" markers across the whole footprint (6%
+  density, floor of 1), the same substitute-prop discipline every prior
+  whisper batch used (no "cairn"/"sink cell" ThingDef exists). **Scope
+  declared, and it is a real engine gap, not just an authoring one**: the
+  roster's own line is "natural sink-cells that behave as unrated pit
+  covers... free kill-zone" — there is no pit mechanism in the engine to
+  wire this to at all. `PIT_SUPERDEEP_COLLAPSE_1` is RULED (a pit is a
+  SUPERDEEP cell, spikes only) but explicitly "nothing built" per that
+  item's own record, so the active hazard cannot be built until that item
+  ships engine-side, not merely until someone gets to it. `lint`: 0
+  findings.
+- **#17 Iron Rain** (Zizzik/Sh'kaar, ring-adjacent) — anchor
+  `RUT_BrokenRing` (our own PROMISE #20 "The Broken Ring" mutator,
+  `TileMutatorDefs_Batch5.xml`), confirmed by direct read of the repo's own
+  file, same "ride our own promise's mutator" shape WHISPER #18 The Choir
+  Wind already used for `RUT_Monument` — not live-probed via
+  `validate_patch.py` because `mandrake.rut.injections` remains absent
+  from the live `ModsConfig.xml` (declared since 2026-09-09; a probe of
+  our own not-yet-enabled mod's own def would correctly report 0 matches,
+  the same non-issue Choir Wind's own note already accepted). **Built**:
+  `design/Jawa/templates/iron_rain.lua` — scattered `ChunkSlagSteel` (8%
+  density) and loose `Steel` piles (5% density) across the footprint,
+  guaranteed non-empty on the smallest legal size; both defNames confirmed
+  real by direct read of `Data/Core/Defs/ThingDefs_Buildings/
+  Buildings_Ancient_Indoors.xml` and `Buildings_Exotic.xml`. **Scope
+  declared**: the roster's own line is "periodic small debris falls all
+  stay" — this places the STATIC aftermath (debris that already fell and
+  stayed, "free steel" made literal) only; the ongoing periodic-fall
+  behavior is a GameCondition/repeating-incident this pass does not build,
+  same class of gap as Rootstock's rain-trigger and Choir Wind's mood
+  mechanic. `lint`: 0 findings.
+
+**5 candidates investigated and explicitly rejected, not silently
+skipped**:
+- **#10 The Hollow Below** (vault-adjacent) — anchor would be
+  `RUT_RakatanTrace` (PROMISE #9's own mutator, same "ride our own
+  promise" shape used above), and no collision was found against
+  `VAULT_DUNGEON_BUILD_1` (checked directly: that item builds six
+  hand-placed KCSG `StructureLayoutDef` sites at fixed tile IDs, a wholly
+  different mechanism from a mapgen-rolled whisper — no shared file, no
+  shared defName). The real conflict is internal to this item instead:
+  `rakatan_trace.lua` (PROMISE #9's own responder, already shipped) reads
+  in full as "a sealed door and forecourt only... nothing opens yet" — it
+  is already, explicitly, the sealed-door object. WHISPER #10's own line
+  ("a cavern under the map with a sealed door... the knock comes on the
+  third night") would place a SECOND sealed door on the exact same anchor
+  mutator, duplicating rather than adding to the promise's own content.
+  Left `MISSING-MECHANISM` rather than force a redundant second door;
+  worth a line for whoever next touches this row — the fix is probably a
+  design change to the promise's own forecourt (make the existing door
+  the hollow's door), not a new object.
+- **#4 The Wrong Spark** (Zizzik, broken places) and **#3 Old Reasons**
+  (Rekko→Ishko, junker reads) — both rows' whisper-table lines name no
+  specific mutator, only a god-country. Checked Zizzik's and Rekko's
+  territory in `sacred_sites_pass_1.md` §1b/§1a directly: Zizzik's is
+  `Wasteland` (a biome-class read, same architecture gap already confirmed
+  for Ohm's `AB_MechanoidIntrusion` in batch 2 — no `TileMutatorDef`
+  equivalent exists on a `BiomeDef`) plus the same `AB_MechanoidIntrusion`
+  halo already rejected; Rekko's is `Ruins`/`AbandonedColonyOutlander`/
+  `AbandonedColonyTribal`, all three explicitly **LandmarkDefs** per §1a's
+  own table, same architecture limit already confirmed for #1/#16 in
+  batch 2. Neither has an `extraGenSteps` hook to patch. Left
+  `MISSING-MECHANISM`, honestly, same discipline as every prior "no
+  nameable anchor" rejection.
+- **#7 The Sun's Anvil** (Sh'kaar, arc<74), **#9 The Glimmer Field**
+  (terminator), **#14 The Feud** (any wild band) — all three are arc-band
+  or "any wild band" conditions, the exact class §0b's own architecture
+  note already names as having "nowhere to attach unless the roster names
+  an actual mutator." None of the three roster lines names one. Probed one
+  candidate anyway rather than assuming the gap from prose alone
+  (`AB_MycoticJungle`, the terminator's own defining biome per
+  `sacred_sites_pass_1.md` §4 — a plausible #9 anchor): **0 matches**, and
+  its own tile-count framing in that doc ("1,874 of 1,939 tiles at arc >
+  82") reads as biome coverage, not mutator coverage, consistent with it
+  being a `BiomeDef` like `AB_MechanoidIntrusion`. Also probed `Volcano`,
+  `LavaField`, `Scarlands`, `AB_TarPits`, `AB_PyroclasticConflagration` as
+  candidate Sh'kaar-territory anchors for a possible #19 Mirage Twin fit —
+  all 0 matches (wrong guesses, not confirmed absent — the real Alpha
+  Biomes/Geological-Landforms defNames were not chased further past one
+  round of probing, since none of these rows' own roster lines names a
+  specific mutator either). Left all `MISSING-MECHANISM`.
+
+**Lint script updated** (not rewritten): `structure_roster_lint.py`'s
+`WHISPERS` table rows #5 and #17 flipped from `"no-mechanism"` to
+`"done"` with their slug/mutator filled in — no new checking logic needed,
+the existing `check_whisper` mechanism (template + selector GenStepDef +
+patch-onto-named-mutator, all three files independently re-verified
+present on disk) already covers this shape. 🔴 **Caught and fixed a
+same-session collision**: the first edit to this file was silently
+overwritten on disk between the edit and the next lint run — the
+system's own stale-file notice caught it, the file was re-read, and the
+edit was reapplied and reconfirmed present before proceeding, per the
+shared-worktree lesson (four seats, one checkout). `git diff --stat`
+confirmed the final change is exactly 2 lines, nothing else touched.
+
+**Wiring**: `Defs/GenStepDefs_Whisper_Batch3.xml` + `Patches/
+WhisperBatch3.xml` (new, `mandrake.rut.injections`) for both rows, plus
+`Templates/soft_ground.txt` and `Templates/iron_rain.txt` (rimplace
+`export`, both baked at 8x8 — refuses below 4x4). `validate_patch.py`
+against the whole `Defs/`+`Patches/` of `mandrake.rut.injections`, live
+634-mod set: **0 errors, 0 warnings** on both new files (the two new
+`PatchOperationConditional` probes each report 1 match — `Dunes` in
+Odyssey's own `TileMutators_Natural.xml`, `RUT_BrokenRing` in our own
+`TileMutatorDefs_Batch5.xml`). `rimplace lint` clean (0 findings) at 6x6,
+8x8 and 20x20 for both templates; refusal confirmed firing at 3x3 for
+both (`generator-refusal` + `empty-plan`, matching every prior template's
+minimum-footprint convention). `rimplace verify`: **UNMEASURED** — the
+local `defs.sqlite` capture is stale relative to today's capture
+directory, the same gap every prior batch in this item has hit and worked
+around the same way; defNames were instead confirmed via direct reads of
+the live Data/Core/Odyssey source and the `validate_patch.py` probes
+above, not asserted from memory. `rimplace selftest`: 62/62, unaffected —
+this pass touched no engine/sandbox logic, only new content plus two
+lint-table rows.
+
+**NOT deployed, NOT added to ModsConfig this pass** — same discipline as
+every prior batch; `mandrake.rut.injections` remains absent from the live
+`ModsConfig.xml` exactly as found 2026-09-09, unrelated to and unchanged
+by this pass. No bridge time used this pass — every check above is
+offline (rimplace + validate_patch.py against on-disk source), matching
+the dispatch's own "no blind live placement" instruction.
+
+**Coverage after this pass: 16/22 promises (unchanged), 7/22 whispers (up
+from 5/22), 0 coverage-law violations.** 15 whisper rows remain
+`MISSING-MECHANISM`, honestly — most still have no `TileMutatorDef` anchor
+at all (a `BiomeDef`/`LandmarkDef` architecture gap confirmed for 5 more
+rows this pass) or are pure incident/timer mechanics with no physical
+vocabulary to place; one (#10) has a real anchor but would duplicate
+already-shipped promise content. Nothing invented to pad the count. Left
+`doing` — 6 promise gaps still need an owner ruling or a design pass, most
+whisper rows still have no mechanism, and the live mapgen-ordering proof
+(owed since 2026-08-31) is still open.
+

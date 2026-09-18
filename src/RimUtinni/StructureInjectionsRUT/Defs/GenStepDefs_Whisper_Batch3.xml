@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TILE_STRUCTURE_DESIGNS_1 whisper subsystem, batch 3 - two more rows
+       (#5 Soft Ground, Ta'Baa/Ishko dunes; #17 Iron Rain, Zizzik/Sh'kaar
+       ring-adjacent), same GenStep_RandomSelector mechanism every prior
+       whisper batch used: no new C# for the roll itself, one option each
+       this pass (same declared "fires every time this mutator generates,
+       not RARE" limitation every single-option whisper selector in this
+       program carries so far).
+
+       #5's anchor is `Dunes` - the FIRST whisper row this program has
+       anchored on a vanilla BASE-GAME (non-Odyssey, non-modded) mutator;
+       confirmed real via a validate_patch.py PatchOperationConditional
+       probe against the live 634-active-mod set (1 match,
+       Data/Odyssey/Defs/TileMutators/TileMutators_Natural.xml - the file
+       ships under the Odyssey Data folder but the def itself carries no
+       MayRequire, so this GenStepDef needs none either).
+
+       #17's anchor is `RUT_BrokenRing`, our own PROMISE #20 mutator
+       (TileMutatorDefs_Batch5.xml) - same "ride our own promise's
+       mutator" shape WHISPER #18 The Choir Wind already used for
+       RUT_Monument. -->
+
+  <GenStepDef>
+    <defName>RUT_GenStep_WhisperDunes</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/soft_ground.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_WhisperBrokenRing</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/iron_rain.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+</Defs>

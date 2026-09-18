@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WhisperBatch3.xml   StructureInjectionsRUT   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires WHISPER #5 Soft Ground (Ta'Baa/Ishko, dunes) onto vanilla `Dunes`
+  and WHISPER #17 Iron Rain (Zizzik/Sh'kaar, ring-adjacent) onto our own
+  `RUT_BrokenRing` (PROMISE #20's mutator). Same safety convention as every
+  prior whisper patch: every PatchOperationAdd is wrapped in a
+  PatchOperationConditional whose xpath is IDENTICAL to the inner
+  operation's target, so a missing/renamed mutator makes the whole <li> a
+  silent no-op (CLAUDE.md: "a patch that matches nothing logs nothing" -
+  intended here, not a bug).
+
+  `Dunes` carries no <extraGenSteps> element in vanilla (confirmed by
+  direct read of Data/Odyssey/Defs/TileMutators/TileMutators_Natural.xml -
+  it has preventGenSteps but not extraGenSteps), so that Add targets the
+  TileMutatorDef node itself, same shape as Cavern/DryLake/Hollow/Caves.
+
+  `RUT_BrokenRing` ALREADY carries
+  <extraGenSteps><li>RUT_GenStep_BrokenRing</li></extraGenSteps> (its own
+  PROMISE #20 responder, confirmed by direct read of
+  TileMutatorDefs_Batch5.xml), so that Add appends into the EXISTING list,
+  same shape WHISPER #18 The Choir Wind's RUT_Monument patch already used.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- WHISPER #5 Soft Ground (Ta'Baa/Ishko) -> Dunes (vanilla Odyssey Data). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="Dunes"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="Dunes"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperDunes</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- WHISPER #17 Iron Rain (Zizzik/Sh'kaar) -> RUT_BrokenRing (our own
+       PROMISE #20 mutator, TileMutatorDefs_Batch5.xml). Rolls only where
+       that promise has already been placed by the owner's pen - same
+       live-placement debt every RUT_Monument/RUT_BrokenRing content
+       already carries. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="RUT_BrokenRing"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="RUT_BrokenRing"]/extraGenSteps</xpath>
+      <value>
+        <li>RUT_GenStep_WhisperBrokenRing</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
