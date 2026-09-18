@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T16:53:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T16:31:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -422,15 +422,6 @@ target:   v1
 kind:     task
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
 
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
 state:    doing  (BLOCKED)
@@ -1219,16 +1210,6 @@ kind:     task
 blocked:  wired RUT_WarLabReactorCore (CompIgniteCraterOnDestroy) + deployed; live ignition/save-load/world_commit quicktest owed
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-blocked:  Not a fresh find: the 14 candidate PNGs and empty-folder status are already documented in _artsrc/sweetline_orphans_2026-09-06/README.md and TREE_GRAPHICS_OWNERSHIP_1.md Owed#1, which explicitly rules picking among them is an owner art call (CONTACT_SHEET.png ready for review), not something FOUNDRY settles by picking the newest/best-looking file. Left folder empty and source PNGs untouched; wiring deferred to that item. (on TREE_GRAPHICS_OWNERSHIP_1)
-summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
 
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
 state:    doing  (BLOCKED)
