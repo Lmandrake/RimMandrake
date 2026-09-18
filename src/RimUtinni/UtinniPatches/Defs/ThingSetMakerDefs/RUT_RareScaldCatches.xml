@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 — the Scald's rare-catch pool
+  (fish_bestiary_commission_2026-09-10.md §2E.rare), parented on vanilla's
+  own `RareFishingCatchesBase` the same way RSW_RareSandCatches is, so it
+  plugs straight into BiomeDef.fishTypes.rareCatchesSetMaker.
+
+  Only ONE of the doc's two options ships this wave: RUT_Karrash x2 (weight
+  3). The second option — "a scrap of welcome-blanket... uses whatever
+  pigment product def the mats' own roster entry ships" — is deliberately
+  OMITTED, not invented: `design/Jawa/worldbuilding/biomes/rosters/
+  the_scald.json` `new_defs` lists the welcome-blanket pigment product as a
+  planned, not-yet-built def ("pigment product def with it" — the mat itself
+  isn't built either). The doc's own §2E.rare instruction is explicit: "if
+  none exists at build time this option is omitted, not invented." A
+  single-option ThingSetMaker_RandomOption is valid (always resolves to that
+  option) and this table can gain the pigment option later with no reshuffle.
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RUT_RareScaldCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>3</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RUT_Karrash</li>
+                </thingDefs>
+              </filter>
+              <countRange>2~2</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 — the Twilight shoal, one of the four owed
+  defs (fish_bestiary_commission_2026-09-10.md §2D/§4.4). "the silver" is the
+  shipped nickname for eesh (the Scald), NOT this def — niim's own nickname
+  is also "the silver" per the doc (two waters, two silvers, deliberate
+  parallel, both ruled as shipped names under owner ruling 5).
+
+  🔴 HELD, same as the design doc's own instruction — this def LANDS this
+  wave but is NOT wired into any BiomeDef.fishTypes. `RUT_TwilightSea` is one
+  BiomeDef shared by the ruled no-fish SURFACE and the fishable UNDER-ROOF
+  deep water (§2D, `_def_bindings` row 25); binding niim's table there today
+  would make the surface fishable too, which is wrong. The other 7 Twilight
+  species (pallu/tikkarr/nuudal/kellu/murrol/hollu/oobo) and
+  RUT_RareTwilightCatches are deferred to wave 2 along with this same HELD
+  status — building niim alone changes nothing about the hold.
+
+  Placeholder art: per the commission's own §0 exception, niim is the ONE
+  entry allowed to look like a fish (the Naboo scalefish precedent) — but
+  the PLACEHOLDER still follows the general "no fish silhouette in
+  placeholder art" convention (the general rule names no exception for
+  niim specifically), so this reuses a non-fish sprite already in this
+  mod's own Textures/ until real art lands.
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Niim</defName>
+    <label>niim</label>
+    <description>The silver of the Twilight — the shoal fish, the ordinary fish, the fish that behaves like a fish, and the only one on the planet that does. Blue-white, hand-long, a dot-line of cold light along the flank, it schools in the light columns under the roof in crowds that make the column flash when they turn. The Compact's whole under-roof economy is a net dropped into a niim column. Hunted by the kellu in the dark between columns and by one fast ordinary thing nobody has a good name for. Tastes like fish. That is the point of it.</description>
+    <graphicData>
+      <texPath>swplants/Bloddle/BloddleA</texPath>
+    </graphicData>
+  </ThingDef>
+
+</Defs>

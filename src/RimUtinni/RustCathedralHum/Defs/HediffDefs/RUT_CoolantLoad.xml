@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 (2026-09-18) — the coolant eel's optional
+  "coolant load" hediff, owed by fish_bestiary_commission_2026-09-10.md §4.2
+  and owner ruling 4 ("ship both optional hediffs in v1"). RUT_CoolantEel
+  itself already exists (RUST_CATHEDRAL_MECHANICS_1, built before the fish
+  commission ran) and already ships under the nickname "coolant eel" as its
+  actual label — which already satisfies owner ruling 5 (nicknames are the
+  shipped names) with no rename needed. Only the hediff was missing; added
+  here as a small, additive, C#-free change riding the existing def, not a
+  rebuild of the eel.
+
+  Toxic-buildup-like, decaying, per the doc's own "severity 0.08/serving,
+  decays" line. Register law (RUT_CoolantEel.xml's own header, §P/ban 1/ban
+  2) carries over: the description says only what a Jawa with the eel in
+  hand can feel, nothing about what is watched or why.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_CoolantLoad</defName>
+    <label>coolant load</label>
+    <description>A cold, heavy residue building in small doses — the eel's own chemistry, working through you slowly. It clears on its own if nothing tops it up.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <minSeverity>0.0</minSeverity>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <painFactor>1.1</painFactor>
+        <statOffsets>
+          <MoveSpeed>-0.1</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.4</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

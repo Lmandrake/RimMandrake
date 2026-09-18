@@ -23,6 +23,13 @@
     Placeholder art: texPath points at vanilla's dogfish sprite, the same
     "reuse a vanilla asset until the art pipe runs" convention §1/§2/§3 used.
     A real eel sprite is a one-line swap.
+
+    FISH_BESTIARY_BUILD_1, wave 1 (2026-09-18): added the optional "coolant
+    load" hediff owed by fish_bestiary_commission_2026-09-10.md §4.2 and
+    owner ruling 4 (RUT_CoolantLoad.xml, this mod's own HediffDefs/) — the
+    only change; the def itself, its label/nickname and its fishing-mechanic
+    wiring (RUT_RustCathedral_Fishing.xml, RUT_NegativeFishingOutcomes.xml,
+    RM_CathedralFishing.cs) are untouched.
   -->
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
@@ -35,6 +42,14 @@
     <statBases>
       <MarketValue>18</MarketValue>
     </statBases>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_CoolantLoad</hediffDef>
+          <severity>0.08</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
 </Defs>

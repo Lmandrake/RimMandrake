@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 — RUT_Drazz's optional raw-shock hediff
+  (fish_bestiary_commission_2026-09-10.md §4.3, owner ruling 4: "ship both
+  optional hediffs in v1"). "Raw, it is a lesson": a short, fast-decaying
+  jolt from the animal's own defensive discharge, on raw ingestion only (a
+  cooked meal made from RUT_Drazz is a different ThingDef with no
+  outcomeDoers, so cooking discharging it falls out for free — no separate
+  recipe needed).
+
+  Vanilla-shaped, no C#: HediffWithComps + HediffCompProperties_SeverityPerDay
+  set to decay the whole thing in well under a day (severity 1.0, -6/day ->
+  gone in ~4 hours), same disappearing-effect shape vanilla's own drug
+  stimulants use (see e.g. Absorbed_KotorCore's stimulant hediffs).
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_BrineShock</defName>
+    <label>brine shock</label>
+    <description>A jolt from a drazz eaten raw — the charge it kept for its own defense, working on you instead. It passes.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <painFactor>1.2</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-6</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_BESTIARY_BUILD_1, wave 1 — the Wasteland's brine-battery archetype
+  (fish_bestiary_commission_2026-09-10.md §2G/§4.3), plus its plate-scraper
+  tekk and the RUT_BrinePlate rare-catch resource. drazz is one of the four
+  owed defs (§4.3, "the owner" — nickname is the shipped name, ruling 5).
+
+  🔴 FINDING, wave 1 (supersedes the design doc's "⚑ UNMEASURED" flag on the
+  Wasteland pool terrain's waterBodyType): the donor `Wasteland` BiomeDef
+  (Mlie.AdvancedBiomes, workshop 3541022508, Biomes_Wasteland.xml, read
+  directly off disk) wires BOTH its fresh (waterDeepTerrain/
+  waterShallowTerrain) and salt (oceanDeepTerrain/oceanShallowTerrain) water
+  fields to Odyssey's ToxicWater* terrain family — and EVERY ToxicWater*
+  terrain (deep, shallow, ocean, moving; Defs/Odyssey/TerrainDefs/
+  Terrain_Water.xml, `ToxicWaterDeepBase`/`ToxicWaterShallowBase`/
+  `ToxicWaterChestDeepBase`) sets `waterBodyType Other`, never Freshwater or
+  Saltwater. Read `Verse.WaterBody.SetFishTypes()` directly (RimSage
+  read_csharp_symbol): its switch statement has cases ONLY for
+  `WaterBodyType.Freshwater` and `WaterBodyType.Saltwater` — `Other` falls
+  through and does nothing, so `commonFish`/`uncommonFish` never populate,
+  `HasFish` is permanently false, and fishing can never produce a catch on
+  this biome's water AT ALL, regardless of what `fishTypes` names. This is
+  independent of (and additional to) the donor's own `maxFishPopulation 0`.
+
+  CONSEQUENCE: this file still builds RUT_Tekk/RUT_Drazz/RUT_BrinePlate as
+  real ThingDefs (they carry standalone value — resources, a rare-catch
+  prize, the raw-shock hediff) but this build does NOT wire a `fishTypes`
+  or `rareCatchesSetMaker` patch onto the `Wasteland` BiomeDef: that wiring
+  would be dead on arrival, unreachable by any player action, which is worse
+  than the CLAUDE.md-documented "patch matches nothing" trap — it would
+  apply cleanly and still never fire. The brine-battery archetype needs a
+  DIFFERENT delivery mechanism than rod-fishing (mining the pool floor, a
+  GenStep scatter, a caravan/quest reward) — a real open question for
+  whoever picks up wave 2, not decided here.
+
+  Placeholder art: non-fish sprites already in this mod's own Textures/.
+-->
+<Defs>
+
+  <!-- tekk — crustacean, common. "plate-scraper." -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Tekk</defName>
+    <label>tekk</label>
+    <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the drazz lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a drazz that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak. The Junkers do not bother.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RUT_Drazz — the Wasteland brine-battery, one of the four owed defs
+       (§4.3). Optional raw-shock hediff shipped per owner ruling 4 ("ship
+       both optional hediffs in v1"): RUT_BrineShock, RAW ingestion only —
+       a cooked meal made from RUT_Drazz is a different ThingDef with no
+       outcomeDoers, so "cooking discharges it" falls out for free. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Drazz</defName>
+    <label>drazz</label>
+    <description>The owner. A forearm-long, plated, sea-cucumber-shaped thing whose body is a stack of living electrode wafers, salt-white and mineral-dark by turns, lying on the bed of a hypersaline pool and running on the ion gradient between the brine and the metal beneath it. It discharges as defense. The pool you want to mine has one, and it is a capacitor, and it does not want you there. Landed — carefully, on a dry line, by people who have done it before — it goes on discharging for an hour. Cooked, it is meat. Raw, it is a lesson.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>9</MarketValue>
+      <Mass>0.8</Mass>
+      <MaxHitPoints>100</MaxHitPoints>
+      <FoodPoisonChanceFixedHuman>0.03</FoodPoisonChanceFixedHuman>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RUT_BrineShock</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <stackLimit>10</stackLimit>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- RUT_BrinePlate — §2G.rare's prize item, "a drazz's spent electrode
+       plate." Built as a standalone resource this wave even though the rare-
+       catch table it was designed for cannot fire (see header) — it still
+       has value as a tradeable/craftable resource once a delivery mechanism
+       exists. Recipe hook (2 plates -> 1 ComponentIndustrial) is the doc's
+       own OPTIONAL line and is NOT built this wave. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_BrinePlate</defName>
+    <label>brine plate</label>
+    <description>A stacked mineral wafer, salt-white and dark by turns, pried off a drazz that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>28</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
