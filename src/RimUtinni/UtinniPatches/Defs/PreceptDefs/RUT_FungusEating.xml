@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_FungusEating.xml       UtinniPatches — CAVERNS_PARITY_BUILD_1 ruling 4
+
+  A donor-free twin of the neutral position on vanilla Ideology's FungusEating
+  issue. The Salvation (src/Jawa/ideoligion/The Salvation.rid) held
+  BMT_FungusEating_DontCare, owned by Biomes! Caverns
+  (biomesteam.biomescaverns) — a donor scheduled for the cut. A .rid holding a
+  defName no installed mod defines fails to load: Scribe reports
+  "Could not load reference to ..." and no mod change repairs it, because the
+  dead name is inside the file. So the clan's own doctrine cannot depend on a
+  donor def.
+
+  The ISSUE needs no twin: FungusEating is vanilla Ideology
+  (ludeon.rimworld.ideology), measured from the live def dump
+  2026-09-18T17-31-09Z. Only the "don't care" POSITION was donor-owned —
+  Ideology itself ships only Preferred and Despised.
+
+  Field-for-field equal to the donor as the dump reports it: issue
+  FungusEating, impact Low, displayOrderInIssue 5, no comps (a neutral
+  position is defined by the absence of thought comps, not by any of its
+  own), selectionWeight 1 and defaultSelectionWeight 0 left at their
+  defaults. The label and description are ours.
+
+  MayRequire guards the DLC the issue comes from; with Ideology off the def is
+  skipped rather than loading against a missing issue.
+-->
+<Defs>
+
+  <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RUT_FungusEating_DontCare</defName>
+    <issue>FungusEating</issue>
+    <label>don't care</label>
+    <description>Fungus is food like any other. It feeds no reverence and earns no disgust.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>5</displayOrderInIssue>
+  </PreceptDef>
+
+</Defs>

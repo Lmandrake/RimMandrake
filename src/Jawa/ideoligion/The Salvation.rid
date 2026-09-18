@@ -2189,7 +2189,7 @@
 			</li>
 			<li>
 				<name>fungus</name>
-				<def>BMT_FungusEating_DontCare</def>
+				<def>RUT_FungusEating_DontCare</def>
 				<ID>6326</ID>
 				<randomSeed>-60162822</randomSeed>
 				<usesDefiniteArticle>True</usesDefiniteArticle>

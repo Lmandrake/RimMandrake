@@ -53,9 +53,12 @@ the RotSporeKit ingest, `RUT_TheRot.xml`). 89 files under `src/` still reference
 somewhere (includes Polluted Lands fish and guarded compat patches).
 
 **Other live couplings, MEASURED this pass:**
-- 🔴 **The shipped ideoligion**: `src/Jawa/ideoligion/The Salvation.rid` contains the
-  Caverns precept `BMT_FungusEating_DontCare` (grep hit = 1). A `.rid` holding a dead
-  defName is the unfixable `Could not load reference to` class.
+- ✅ **The shipped ideoligion — CLEARED 2026-09-18** (ruling 4). `src/Jawa/ideoligion/The
+  Salvation.rid` names `RUT_FungusEating_DontCare`, our own twin in
+  `src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_FungusEating.xml`. `FungusEating` is a
+  vanilla Ideology issue, so only the position was donor-owned. Owed before the cut: deploy
+  + game load + re-take the dump + re-run `validate_save_artifact.py`; and the same swap
+  inside the baked `Ideo` of the canonical save, which still holds the donor defName.
 - **SeasWaterline (folded into SWBestiary)**: `loadAfter` only, no hard dependency any
   more (`SWBestiary/About/About.xml:50`); `Waterline_Lane1.xml` holds 52 `BMT_` fish
   references in `PatchOperationConditional` blocks — they go silently inert on a cut
@@ -170,9 +173,10 @@ workshop copy — a donor-file edit Steam can silently revert; not recommended.)
 2. **Polluted Lands mutation system: drop or replace?** Drop = Wasteland/PoisonForest
    lose mutapox flavor and 18 genes nothing else references (cheap, clean). Replace =
    a separate M-sized gene-system port we then maintain forever.
-3. **The Salvation's precept:** replace `BMT_FungusEating_DontCare` with a RUT
-   equivalent (keeps the doctrine, costs a small def + `.rid` edit + re-ingest) or drop
-   the precept from the religion (one sitting cheaper, doctrine loses a line).
+3. **The Salvation's precept:** ✅ **RULED (replace) and BUILT 2026-09-18** — `.rid` now
+   names `RUT_FungusEating_DontCare`, def in `UtinniPatches`. The re-ingest turned out to
+   be a no-op: the canonical start save's baked Salvation carries vanilla
+   `FungusEating_Despised`, never the donor precept (MEASURED by parsing the save).
 4. **Collapse/cave-in:** build the sheet's ruled collapse hazard into the donor-free
    Deeps now (adds C# to this wave, M→L risk) or defer it to the crystal-life program?
 5. **Timing:** run the M-tier Caverns parity build now — the crash surface on every
