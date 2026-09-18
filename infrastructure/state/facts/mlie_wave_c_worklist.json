@@ -15,35 +15,13 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 74,
+  "remaining_worklist_count": 71,
   "remaining_worklist": [
-    {
-      "donor_defName": "Falumpaset",
-      "biomes": [
-        "BiomeCypreJungle",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Fambaa",
       "biomes": [
         "BiomeCypreJungle",
         "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Fanback",
-      "biomes": [
-        "ZBiome_DesertOasis"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "FeralGrazer",
-      "biomes": [
-        "Desert"
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     },
@@ -602,5 +580,10 @@
     "RSW_Dianoga",
     "RSW_Dragonsnake",
     "RSW_Eopie"
+  ],
+  "ported_and_wired_this_pass_2026-09-17_batch7": [
+    "Falumpaset",
+    "Fanback",
+    "FeralGrazer"
   ]
 }

@@ -9,7 +9,11 @@
   BodyPartDefs/Groups (RSW_SW_LeftHorn/RSW_SW_RightHorn, RSW_SWHornAttackTool,
   RSW_SWTailAttackTool, RSW_MlieWaveB_BodyParts.xml) — no new body part
   needed, ported here as RSW_Boma (RSW_MlieWaveC_Bodies.xml). Its `Tusk`
-  part and `TuskAttackTool` group are vanilla Core, left bare.
+  part is vanilla Core; its `TuskAttackTool` group is Alpha Animals
+  (`sarg.alphaanimals`, confirmed 2026-09-17 — corrects an earlier "vanilla
+  Core" mislabel here and in `RSW_MlieWaveC_Bodies.xml`; no functional
+  change, left bare exactly as the donor itself does, and Alpha Animals is
+  part of the frozen `OFFICIAL-2026-08-29` target mod list).
   `leatherDef`/`specificMeatDef` repoint to the already-ported
   RSW_Leather_Saurian/RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml, same
   Kashyyyk-family resources Bolotaur uses) — only its 2 eggs are newly

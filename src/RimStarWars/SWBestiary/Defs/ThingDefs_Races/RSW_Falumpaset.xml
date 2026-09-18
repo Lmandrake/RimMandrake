@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Falumpaset creature port.
+  Ported from mlie.starwarsanimalcollection's `Falumpaset` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Body: the donor's `body` is the vanilla Core
+  `QuadrupedAnimalWithHoovesAndHump` — no BodyDef port needed.
+
+  `leatherDef` repoints to the already-ported RSW_Leather_Tough
+  (RSW_MlieWaveC_Resources.xml, Pass 3/Borcatu) — same donor Leather_Tough
+  resource. `specificMeatDef` stays vanilla Core `Cameloid_Meat` (same as
+  Eopie's) — no new resource needed at all this species. Its
+  `PathfindingFramework.MovementExtension` modExtension (MayRequire=
+  "pathfinding.framework", amphibious movement) is kept verbatim and gated,
+  same precedent as Nuna/Dianoga/Dragonsnake — the game is whole without
+  that framework, Falumpaset just loses the swamp-movement bonus. Its
+  Odyssey `SW_Spur` specialTrainable/ability is donor content
+  (SW_Abilities.xml, confirmed NOT vanilla Odyssey — same as Dalgo/
+  Corinathoth/Eopie precedent) — left unprefixed, safe only because Mlie
+  stays active. Sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_Falumpaset_*, 2026-09-02). texPaths are unchanged text —
+  extracted art sits at Textures/swanimals/Falumpaset/ (extract_bundle.py
+  against the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: BiomeCypreJungle (0.3),
+  Desert (0.2) — per cast_assignment.csv's current rows for this species,
+  repointed from the bare "Falumpaset" entries in cast_assignment.csv /
+  BiomeCast_Ashkarr.xml. No `*ArtOverride` mod exists for this species
+  (checked before porting, per the Dragonsnake/Anooba art-collision trap
+  noted 2026-09-12).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Falumpaset</defName>
+    <label>falumpaset</label>
+    <description>The falumpaset were a large mammalalian creature native to the planet Naboo. Their distinctive bellowing calls could be heard for kilometers around and their intelligence made them likely to form strong bonds with their handlers. Easily domesticated as beasts of burden (or sometimes war mounts), falumpasets could be found all over the galaxy.</description>
+    <statBases>
+      <MoveSpeed>4.3</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>18</FilthRate>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>10</milkAmount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>2.6</baseHealthScale>
+      <baseHungerRate>1.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Tough</leatherDef>
+      <specificMeatDef>Cameloid_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <petness>0.40</petness>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>48</nuzzleMtbHours>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>50</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spur</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.08</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.08</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Falumpaset_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Falumpaset_Death</soundDeath>
+          <soundCall>RSW_Pawn_Falumpaset_Call</soundCall>
+          <soundAngry>RSW_Pawn_Falumpaset_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Falumpaset</defName>
+    <label>falumpaset</label>
+    <race>RSW_Falumpaset</race>
+    <combatPower>200</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>3~8</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spur</li>
+    </abilities>
+    <alternateGraphicChance>0.80</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Falumpaset/FalumpasetA</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Falumpaset/FalumpasetB</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Falumpaset/FalumpasetC</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Falumpaset/FalumpasetD</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Falumpaset/FalumpasetE</texPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <label>falumpaset calf</label>
+        <labelPlural>falumpaset calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Falumpaset/Falumpaset_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

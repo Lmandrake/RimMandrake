@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Fanback creature port.
+  Ported from mlie.starwarsanimalcollection's `Fanback` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body: the
+  donor's `Fanback` BodyDef (Bodies_Animal_StarWars.xml) needed a defName
+  rename only — ported here as RSW_Fanback (RSW_MlieWaveC_Bodies.xml, Pass
+  7), repointing its tail group to the already-ported RSW_SWTailAttackTool
+  (Wave B). Its head's `TuskAttackTool` group is Alpha Animals
+  (`sarg.alphaanimals`, confirmed via the frozen official def dump
+  2026-09-17), left bare exactly as the donor itself does — no MayRequire
+  gate in the donor either, and Alpha Animals is part of the frozen
+  `OFFICIAL-2026-08-29` target mod list, same reasoning as Boma/Borcatu.
+  Every other referenced <def> (Tail, Hump, Spine, Stomach, Heart, Lung x2,
+  Kidney x2, Liver, Neck, Head, Skull, Brain, Eye x2, Nose, AnimalJaw, Tusk
+  x2, Leg x4, Paw x4) is vanilla Core.
+
+  `leatherDef` stays vanilla Core `Leather_Lizard` (same as Iriaz's) — no
+  new resource needed. `specificMeatDef` needed a new resource this pass
+  (`RSW_Gorg_Meat`, texPath swresource/Meat_Gorg, newly extracted —
+  RSW_MlieWaveC_Resources.xml). Its `CompProperties_EggLayer` needed 2 new
+  eggs (`RSW_EggFanbackFertilized`/`UnFertilized`, texPath
+  swresource/EggSpeckled — already extracted, Pass 4/Clodhopper, reused
+  unchanged). Sounds repoint to the already-absorbed sound wave
+  (RSW_Pawn_Fanback_*, 2026-09-02). texPaths are unchanged text — extracted
+  art sits at Textures/swanimals/Fanback/ (extract_bundle.py against the
+  same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: ZBiome_DesertOasis (0.5) — per
+  cast_assignment.csv's current row for this species (its ONLY biome; the
+  stale `mlie_wave_c_worklist.json` facts file listed
+  BiomeCypreJungle/COMIGO_GreaterSwamp_Tropical for Fanback, which do NOT
+  match the live cast_assignment.csv or BiomeCast_Ashkarr.xml — the CSV was
+  used as ground truth here, per "dumps and harvests decay" doctrine; the
+  facts file is now stale on this one row and should be corrected or
+  regenerated, not trusted, by whoever next reads it). No `*ArtOverride`
+  mod exists for this species (checked before porting).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Fanback</defName>
+    <label>fanback</label>
+    <description>The fanback was a cold-blooded predatory amphibian from the swamps of Naboo. Each fanback had a big dorsal spine along with a sensitive snout which allowed them to hunt for fish and other small free swimming prey with ease. They lay a high number of eggs and were known to protect these nest sites by hunting any creature bold enough to attempt to eat or threaten their clutch. It's for this reason that these eggs having been sold (or collected as trophies) has resulted in populations of these animals on other worlds.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>6</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggFanbackUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggFanbackFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>12</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>6~12</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Fanback</body>
+      <predator>true</predator>
+      <baseBodySize>2.0</baseBodySize>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.50</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeExpectancy>70</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>RSW_Pawn_Fanback_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Fanback_Death</soundDeath>
+          <soundCall>RSW_Pawn_Fanback_Call</soundCall>
+          <soundAngry>RSW_Pawn_Fanback_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Fanback</defName>
+    <label>fanback</label>
+    <race>RSW_Fanback</race>
+    <combatPower>400</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Fanback/Fanback_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
