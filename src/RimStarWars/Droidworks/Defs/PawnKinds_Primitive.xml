@@ -38,6 +38,14 @@
     <race>RSW_DW_Race_Primitive_G2Unit</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <!-- DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 (2026-09-18): xenotypeSet
+         alone does not force Baseliner - see gen_droidworks_defs.py's
+         render_kind() for the full mechanism (AddOrAdjust discards Baseliner
+         entries, so the assigning faction's own xenotypeSet wins the roll,
+         and a gene's forcedHeadTypes then clobbers AlienRace's blank head).
+         useFactionXenotypes=false is the actual fix; xenotypeSet is kept as
+         belt-and-suspenders documentation of intent. -->
+    <useFactionXenotypes>false</useFactionXenotypes>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -70,6 +78,9 @@
     <race>RSW_DW_Race_Primitive_Junker</race>
     <combatPower>20</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <!-- DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 (2026-09-18): see the G2
+         kind above - useFactionXenotypes=false is the actual fix. -->
+    <useFactionXenotypes>false</useFactionXenotypes>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>

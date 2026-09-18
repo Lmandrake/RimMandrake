@@ -790,6 +790,35 @@ def render_kind(kd):
     # the <li>-in-a-custom-loader trap (rimworld-custom-loader-li-trap) and
     # would silently discard the whole PawnKindDef, not just misparse this
     # field.
+    #
+    # DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1 (2026-09-18): the xenotypeSet
+    # above was NEVER enough on its own. PawnGenerator.XenotypesAvailableFor
+    # (Verse/PawnGenerator.cs) builds its weighted xenotype table from BOTH
+    # the assigning faction's own xenotypeSet (if
+    # PawnKindDef.useFactionXenotypes, default true) AND this kind's
+    # xenotypeSet, and its AddOrAdjust() helper explicitly SKIPS any entry
+    # whose xenotype == Baseliner (Baseliner is always "whatever weight is
+    # left over", never an addable chance) -- so a kind-level
+    # `<Baseliner>1</Baseliner>` contributes literally nothing to the table.
+    # Whatever species xenotypeSet the assigning faction carries (e.g. a
+    # Hutt Cartel roster's Rodian/Kubaz/Hutt flavour, or any other mod's
+    # factionlessGenerationWeight table for a faction-less spawn) wins the
+    # roll instead, and if that xenotype's genes carry `forcedHeadTypes`
+    # (Pawn_GeneTracker.Notify_GenesChanged), the forced head is assigned by
+    # a call that AlienRace's own Harmony patches never wrap in a
+    # race-headTypes intersect (HeadTypeFilter only wraps
+    # DefDatabase<HeadTypeDef>.AllDefs enumerations, never a gene's own
+    # explicit forcedHeadTypes list) -- clobbering RSW_DW_HeadType_Blank
+    # with a real human (or worse, a completely alien) face AFTER AlienRace
+    # already assigned the correct blank head. useFactionXenotypes=false
+    # removes the faction's table from the roll entirely, leaving this
+    # kind's own (Baseliner-only, i.e. empty-contribution) table, whose 100%
+    # leftover bucket is Baseliner -- so no gene, so no forcedHeadTypes, so
+    # nothing left to override AlienRace's headTypes restriction. Verified
+    # live: RSW_DW_OuterRim_BattleDroid spawned with xenotype AG_Efreet
+    # (forcedHeadTypes-driven horned/winged face) despite this exact
+    # xenotypeSet block already being in place.
+    p.append("    <useFactionXenotypes>false</useFactionXenotypes>")
     p.append("    <xenotypeSet>")
     p.append("      <xenotypeChances>")
     p.append("        <Baseliner>1</Baseliner>")
