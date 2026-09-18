@@ -3522,16 +3522,16 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Ninefold/Source/FirstContactCorpus.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e7d93e7ab341027b752fad493a787b57f08022531707e6ef20fa7081f528270d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "190e9d5ab1ad999bb349b1b718cb523beadc72420c8d490f1e91fba9591389a7",
+    "sha": "e2aa0b7a8"
   },
   "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "a5b80c19311b307fbc6f685e8a7e88a4854bce0f88b6756c45db2592db2a45fb",
-    "sha": "3b8e16ddf"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "240209f68dcdd50491449f7e9f052a10c6add5e4c13559318fcca3779c421188",
+    "sha": "e2aa0b7a8"
   },
   "src/RimMandrake/Ninefold/Source/God.cs": {
     "cleanCount": 2,
@@ -3612,10 +3612,16 @@
     "sha": "50f52d6e"
   },
   "src/RimMandrake/Ninefold/Source/Patch_KillManner.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "b579d3a7afc83a011e3e10aa70543436892873831073cbfc64dbfa42874b14e3",
+    "sha": "e2aa0b7a8"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_Lovin.cs": {
     "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "01dcc88844f4d201ab77a836e664d10b867683730729eee5e3cb4596219e2d53",
-    "sha": "b87a3622"
+    "date": "2026-09-18",
+    "hash": "2bd1e16e32e2c6b6179814eb00264ce2e4b6a8d562e05a0f1cec6c89affa66e3",
+    "sha": "e2aa0b7a8"
   },
   "src/RimMandrake/Ninefold/Source/Patch_Marriage.cs": {
     "cleanCount": 1,
