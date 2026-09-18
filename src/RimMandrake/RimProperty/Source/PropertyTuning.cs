@@ -82,5 +82,11 @@ namespace RimMandrake.Property
         // found it for free." Haggling (spec item 9) would move this per-
         // transaction; not built this pass — flat and tunable only.
         public const float WalkableCommerceMarkup = 1.15f;
+
+        // Pickpocket (SETTLEMENT_VERBS_WAVE_1, crime-suite pass): below this
+        // MarketValue*stackCount, an item isn't worth offering the order
+        // over at all (PickpocketUtility.FindStealableItem's floor). A few
+        // silver's worth of junk isn't what "pickpocket" means.
+        public const float PickpocketMinItemValueSilver = 5f;
     }
 }
