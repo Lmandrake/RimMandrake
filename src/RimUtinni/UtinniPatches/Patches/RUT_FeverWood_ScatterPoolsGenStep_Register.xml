@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_FeverWood_ScatterPoolsGenStep_Register.xml   UtinniPatches - FEVER_WOOD_MECHANICS_1 F1 build pass
+
+  Registers RUT_GenStep_ScatterPools onto Base_Player, same target/shape as
+  RUT_Greentide_RootCausewaysGenStep_Register.xml (read directly before
+  writing this).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rm.environmentalhazards">RUT_GenStep_ScatterPools</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
