@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GIZKA_TRIBBLE_ADAPTATION_1 — patches against the DONOR gizka.
+
+  The creature belongs to Star Wars Animal Collection (Continued)
+  (`Mlie.StarWarsAnimalCollection`, WS 3497316713). We never edit that mod;
+  everything here is an xpath patch from our own mod, wrapped in
+  PatchOperationFindMod so the whole file no-ops cleanly when the donor is
+  absent.
+
+  TWO separate owner rulings live in this file, and they pull in opposite
+  directions on purpose:
+
+  1. Card 2 (sitting 2026-09-12) — "~15 silver". The donor ships
+     MarketValue 100. A swarm of hundred-silver animals is a money printer,
+     which is exactly the ladder the anti-exponential law forbids. Flattened
+     to 15: the KotOR scam stays funny, never income.
+
+  2. Owner, 2026-09-17, verbatim: "But also ensure that the gizka creature
+     itself does have that crazy reproduction rate everywhere in the world."
+     The tribble-grade breeding is a property of the CREATURE, wherever one
+     exists — wild, bought, traded, farmed — not something the stowaway event
+     confers. So the donor's own reproduction numbers are patched here, and
+     the event is only one delivery vector among several.
+
+  Which numbers are the real reproduction knobs: gizka is an EGG LAYER
+  (CompProperties_EggLayer on the donor def), so it never runs the live-birth
+  path at all. `RaceProperties.gestationPeriodDays` (-1 default) and
+  `RaceProperties.litterSizeCurve` (null default) are both unset on the donor
+  and are INERT for this creature — PawnUtility.Mated() routes an egg-layer
+  female to CompEggLayer.Fertilize(male) and never to Hediff_Pregnant. Setting
+  them would change nothing and would read as a fact that was never true.
+  The chain that actually governs gizka population growth is:
+
+      mate (mateMtbHours) -> fertilize (eggFertilizationCountMax clutches)
+      -> lay (eggLayIntervalDays x eggCountRange)
+      -> hatch (EggGizkaFertilized hatcherDaystoHatch)
+      -> mature (lifeStageAges minAge)  -> mate again
+
+  Every link in that chain is shortened below. Values are MEASURED from the
+  donor's own XML (1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml and
+  1.6/Defs/ThingDefs_Items/Items_Resource_swanimal_Items.xml), before -> after:
+
+      MarketValue                 100    -> 15      (Card 2, not breeding)
+      eggLayIntervalDays          1      -> 0.4
+      eggCountRange               1~2    -> 3~5
+      eggFertilizationCountMax    1      -> 4
+      mateMtbHours                (12, engine default; absent from the donor)
+                                         -> 4
+      hatcherDaystoHatch          4      -> 1.5     (EggGizkaFertilized)
+      lifeStageAges AnimalJuvenile minAge 0.04 (~14.6 d) -> 0.02 (~7.3 d)
+      lifeStageAges AnimalAdult    minAge 0.09 (~32.9 d) -> 0.045 (~16.4 d)
+
+  (minAge is in YEARS of a 60-day RimWorld year, so 0.09 yr = 5.4 days only
+  at the 60-day figure quoted in the draft; the engine's year is 3,600,000
+  ticks = 60 days, so 0.09 yr = 5.4 days and 0.045 yr = 2.7 days. Either way
+  the halving is the change, not the absolute.)
+
+  Mod Settings can multiply these further at runtime (RSW_GizkaSettings
+  "Global gizka breeding rate" rewrites the live def fields from this patched
+  baseline on startup and on every settings change) — this file is the
+  shipped default, not a ceiling or a floor.
+
+  NOT patched, deliberately: `roamMtbDays` (wild gizka still wander off, which
+  is the only thing keeping a wild population from becoming a map-wide carpet),
+  `wildBiomes` (the biome cast is SWBestiary's business, not ours), and the
+  unfertilized egg's MarketValue 6 (a trickle, and the anti-exponential law
+  only cares that it stays flat).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Card 2: the scam pays pocket change. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/statBases/MarketValue</xpath>
+          <value>
+            <MarketValue>15</MarketValue>
+          </value>
+        </li>
+
+        <!-- Owner 2026-09-17: crazy reproduction, everywhere. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggLayIntervalDays</xpath>
+          <value>
+            <eggLayIntervalDays>0.4</eggLayIntervalDays>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggCountRange</xpath>
+          <value>
+            <eggCountRange>3~5</eggCountRange>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggFertilizationCountMax</xpath>
+          <value>
+            <eggFertilizationCountMax>4</eggFertilizationCountMax>
+          </value>
+        </li>
+
+        <!-- mateMtbHours is absent from the donor def, so this is an Add, not
+             a Replace: RaceProperties defaults it to 12. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/race</xpath>
+          <value>
+            <mateMtbHours>4</mateMtbHours>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/race/lifeStageAges/li[def="AnimalJuvenile"]/minAge</xpath>
+          <value>
+            <minAge>0.02</minAge>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Gizka"]/race/lifeStageAges/li[def="AnimalAdult"]/minAge</xpath>
+          <value>
+            <minAge>0.045</minAge>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="EggGizkaFertilized"]/comps/li[@Class="CompProperties_Hatcher"]/hatcherDaystoHatch</xpath>
+          <value>
+            <hatcherDaystoHatch>1.5</hatcherDaystoHatch>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!--
+    THE SECOND GIZKA. MEASURED 2026-09-17, and it is not in the draft.
+
+    MLIE_FAUNA_ABSORPTION_1 Pass 12 (commit 2cd0ebcb1, tonight) ported the
+    donor's gizka into SWBestiary as `RSW_Gizka` + `RSW_EggGizkaFertilized` /
+    `RSW_EggGizkaUnFertilized` — a defName rename only, every reproduction
+    number carried across unchanged (MarketValue 100, eggLayIntervalDays 1,
+    eggCountRange 1~2, eggFertilizationCountMax 1, hatcherDaystoHatch 4,
+    AnimalJuvenile 0.04 / AnimalAdult 0.09). Both creatures are live at once
+    today, and the absorption program exists so the donor can eventually be
+    retired.
+
+    The owner's ruling is about the CREATURE, not about one mod's copy of it.
+    Patching only the donor would mean the crazy reproduction rate silently
+    disappears on the day Star Wars Animal Collection is unsubscribed — the
+    exact class of stale-by-construction change this repo keeps getting
+    bitten by. So the same numbers are applied to the ported pair, by the
+    same arithmetic.
+
+    Keyed on the def's own presence (PatchOperationConditional) rather than on
+    a mod NAME: PatchOperationFindMod matches ModLister.HasActiveModWithName,
+    so a one-character drift in "RimMandrake: SW — Bestiary" would make this
+    block stop applying without logging anything at all. A def-presence test
+    cannot drift. It also returns true when it finds nothing, which is the
+    graceful no-op wanted here and is deliberate, not an oversight.
+
+    NOTE for whoever retires the donor: delete the FIRST operation block, not
+    this one. Nothing else in this file needs to change.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Gizka"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/statBases/MarketValue</xpath>
+          <value>
+            <MarketValue>15</MarketValue>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggLayIntervalDays</xpath>
+          <value>
+            <eggLayIntervalDays>0.4</eggLayIntervalDays>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggCountRange</xpath>
+          <value>
+            <eggCountRange>3~5</eggCountRange>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggFertilizationCountMax</xpath>
+          <value>
+            <eggFertilizationCountMax>4</eggFertilizationCountMax>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/race</xpath>
+          <value>
+            <mateMtbHours>4</mateMtbHours>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/race/lifeStageAges/li[def="AnimalJuvenile"]/minAge</xpath>
+          <value>
+            <minAge>0.02</minAge>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Gizka"]/race/lifeStageAges/li[def="AnimalAdult"]/minAge</xpath>
+          <value>
+            <minAge>0.045</minAge>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_EggGizkaFertilized"]/comps/li[@Class="CompProperties_Hatcher"]/hatcherDaystoHatch</xpath>
+          <value>
+            <hatcherDaystoHatch>1.5</hatcherDaystoHatch>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

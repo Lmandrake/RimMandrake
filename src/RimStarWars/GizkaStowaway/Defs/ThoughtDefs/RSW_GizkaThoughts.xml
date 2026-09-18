@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GIZKA_TRIBBLE_ADAPTATION_1 — Card 3, RULED 2026-09-12: "cull guilt: IN."
+
+  Vanilla already charges for killing a BONDED animal and for witnessing a
+  slaughter, but most of a gizka swarm is neither bonded nor watched — the
+  swarm is exactly the case vanilla's pricing misses, and an unpriced cull
+  makes the knife strictly better than every other exit. This is the small
+  extra charge that keeps the humane exits competitive: a mood memory, given
+  by our own code to any colonist who could SEE a gizka die, stacking so a
+  mass cull costs more than a single killing.
+
+  It is deliberately small per head and deliberately stackable. One dead
+  gizka is a shrug; forty in an afternoon is a bad week.
+
+  Not a social thought (no "you killed my friend" relationship damage) —
+  Thought_Memory, mood only. The bonded case is already vanilla's.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RSW_GizkaWatchedCull</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>3</durationDays>
+    <stackLimit>8</stackLimit>
+    <stackedEffectMultiplier>0.85</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>watched the gizka cull</label>
+        <description>They were not doing anything. They were just there, and then they were not.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Gizka Stowaway</name>
+  <packageId>mandrake.rsw.gizkastowaway</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>GIZKA_TRIBBLE_ADAPTATION_1 — the KotOR ship-pest, built as a found-aboard EVENT, never a storyteller threat roll.
+
+The creature itself is NOT ours: `Gizka` (ThingDef/PawnKindDef/BodyDef, art, sounds, name generators, egg items) ships in Star Wars Animal Collection (Continued), `mlie.starwarsanimalcollection`. This mod adds only what that mod does not have: the discovery event, the escalation, the exits and their prices.
+
+Discovery rides four things the PLAYER did, each individually toggleable: a gravship landing (Harmony postfix on `RimWorld.Scenario.PostGravshipLanded` — the confirmed hook, GIZKA_HOLD_HOOK_SPIKE_1), deconstructing wreck/ship-chunk salvage, a completed trade, and a quest ending in success (the "free gift" gag). Exactly one gizka arrives, tame, with a warm letter.
+
+It then breeds. Only event-lineage gizka carry `RSW_GizkaFecundity`, a per-pawn hediff whose comp replicates asexually while the animal is FED and WARM — comfort is the fuse, and cold or hunger stalls it. Offspring inherit the hediff. Four stages (Cute / Underfoot / Infestation / Plague), each announcing itself in a letter BEFORE its cost lands, and the Infestation stage starts gizka-chewed breakdowns on powered buildings that share a room with them.
+
+Five priced exits, all riding vanilla: cull (vanilla slaughter/bond mood plus `RSW_GizkaWatchedCull`), sell onward (the Jawa scam — the donor's MarketValue 100 is patched to 15 so the scam stays funny and never becomes income), poison bait (`RSW_GizkaBait`, a craftable the animals eat), cold (vent the room below the breeding gate), or lean in and farm them (deliberately mediocre).
+
+The anti-exponential law: the exponential belongs to the pest. Replication is capped and the interval stretches as the cap nears; every player income line is flat and linear.
+
+Separately, on the owner's 2026-09-17 ruling, this mod patches the DONOR gizka's own reproduction numbers so the creature breeds crazily everywhere in the world — wild, bought or traded, not just event lineage. See Patches/RSW_GizkaDonorPatches.xml.
+
+Every feature is gated in Mod Settings (MOD_OPTIONS_RETROFIT_1); all-off leaves the donor creature as ordinary fauna and this mod inert. Nothing here touches worldgen.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mlie.starwarsanimalcollection</li>
+    <li>mandrake.rsw.swbestiary</li>
+  </loadAfter>
+</ModMetaData>

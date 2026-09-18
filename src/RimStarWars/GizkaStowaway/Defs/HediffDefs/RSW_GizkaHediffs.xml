@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GIZKA_TRIBBLE_ADAPTATION_1 — the two hediffs the feature needs.
+
+  RSW_GizkaFecundity is the per-pawn carrier of the shipboard breeding.
+  Draft §2 gives the reason it is a hediff and not a comp on the donor def:
+  comps are per-DEF, so a comp would make every gizka in the world an
+  event-lineage pest, including the ones the player deliberately bred (which
+  is the ladder the anti-exponential law forbids) — and the donor's own
+  CompProperties_EggLayer needs a mated pair, so a single found stowaway
+  would be inert. A hediff is per-PAWN, is inherited explicitly by our own
+  code when a gizka replicates, and leaves player-bred stock alone.
+
+  The comp's numbers here are the SHIPPED DEFAULT. Mod Settings multiplies
+  the interval at runtime (Card 1: "tunable, slow default") — a season-long
+  slow burn, not a week.
+
+  RSW_GizkaBaitPoison is the poison-bait exit's payload.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_GizkaFecundity</defName>
+    <label>shipboard fecundity</label>
+    <description>This gizka descends from a ship's stowaway. Something in that lineage — crowding, radiation, or simply the ones that bred fastest being the ones that survived the hold — has it replicating on its own, without a mate, as long as it is fed and warm.\n\nCold or hunger stalls it. Nothing else does.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 0.45)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <comps>
+      <li Class="RimMandrake.StarWars.GizkaStowaway.HediffCompProperties_GizkaFecundity">
+        <!-- Base days between replications while fed AND warm. Mod Settings
+             multiplies this; the slider's own default is 1.0, so a fresh
+             install breeds on this number. -->
+        <baseReplicateIntervalDays>4.0</baseReplicateIntervalDays>
+        <!-- The interval stretches toward this multiple as the map population
+             approaches the cap. Geometric onset, flat ceiling — §4. -->
+        <intervalStretchAtCap>8.0</intervalStretchAtCap>
+        <!-- Minimum ambient temperature for breeding, degrees C. The donor's
+             ComfyTemperatureMin is 0; this sits ABOVE that on purpose so that
+             venting a room is a real exit and an ordinary cold snap is not an
+             accidental one. -->
+        <minBreedingTemperature>12</minBreedingTemperature>
+        <!-- Food need above which the animal counts as FED. -->
+        <minFoodLevel>0.35</minFoodLevel>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_GizkaBaitPoison</defName>
+    <label>gizka bait poisoning</label>
+    <description>This animal ate treated bait. The dose is sized for something that weighs a fifth of a muffalo's leg; anything larger will be sick rather than dead, which is its own kind of problem.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.85, 0.35)</defaultLabelColor>
+    <lethalSeverity>1.0</lethalSeverity>
+    <initialSeverity>0.15</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>2.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>sickened</label>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
