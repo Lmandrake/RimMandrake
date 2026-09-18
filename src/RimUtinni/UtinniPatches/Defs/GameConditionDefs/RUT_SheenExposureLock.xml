@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SheenExposureLock.xml            UtinniPatches - ROT_SHEEN_WEATHER_1 build pass
+
+  rot_kit_spec.md M1 ("The Sheen"), ticket 2: "reuse RC4 as a permanent
+  condition (RUT_SheenExposureLock, attached via the BiomeDef's own
+  <biomeMapConditions>, exactly the shipped RUT_MiasmaWeatherLock.xml shape -
+  pure XML, no weather forcing, no damage fields)." Shape copied directly
+  from that file (GameConditionDefs/RUT_MiasmaWeatherLock.xml).
+
+  No forcedWeather: unlike Miasma (which forces one permanent haze), the Rot
+  keeps a natural weather ROTATION between Clear/DryThunderstorm and the
+  three reskinned Sheen weathers (RUT_TheRot.xml's own
+  baseWeatherCommonalities) - the exposure clock is meant to pause between
+  Sheen-falls, not run every tick.
+
+  No damageDef/hediffToApply set, same as Miasma's own "no damage fields":
+  this condition's only job is to bootstrap RUT_SheenCoating onto every
+  eligible pawn on the map (carrierHediff/carrierHediffSeverity,
+  EnsureCarrierHediff in GameCondition_EnvironmentalWeather.cs - NOT gated
+  by onlyUnroofed, so a roofed pawn also carries the hediff and its own comp
+  can decay it via severityPerDayUnexposed). RUT_SheenCoating's own comp
+  (HediffCompProperties_SheenExposure, RimMandrake.EnvironmentalHazards -
+  RUT_RotSporeKit_SheenHediffs.xml) does the actual weather-gated,
+  gear-slowed, symbiont-immune severity math - the "verify
+  EnvironmentalWeatherExtension can gate on current weather" question the
+  ticket raised is answered by putting that gate on the HEDIFF's own comp
+  (RM_HediffComp_EnvironmentalExposure already supports onlyDuringWeather;
+  this pass widens it to a weather LIST additively, same file, no behaviour
+  change for RUT_MiasmaExposure's existing single-weather config) rather
+  than on this shared GameCondition class, which stays untouched.
+
+  damageIntervalTicks 2500 (~1 in-game hour) matches RUT_MiasmaWeatherLock's
+  own bootstrap cadence exactly - carried over, not re-invented.
+
+  MayRequire is load-bearing: conditionClass/modExtension Class live in
+  mandrake.rm.environmentalhazards; carrierHediff (RUT_SheenCoating) is a
+  RotSporeKit def, mandrake.rut.rotsporekit.
+-->
+<Defs>
+
+  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rut.rotsporekit">
+    <defName>RUT_SheenExposureLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the Sheen's breath</label>
+    <description>The Rot's own reproductive cycle never truly pauses here — even between Sheen-falls, its spores hang thin in the air, ready to seed anyone who lingers unroofed too long.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <carrierHediff>RUT_SheenCoating</carrierHediff>
+        <carrierHediffSeverity>0.0001</carrierHediffSeverity>
+        <damageIntervalTicks>2500</damageIntervalTicks>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

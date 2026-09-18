@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -67,6 +68,31 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             return true;
+        }
+
+        // ROT_SHEEN_WEATHER_1. Shared with RM_GameCondition_WetBulb's own
+        // SumApparelProtection (that class predates this shared home and
+        // keeps its private copy rather than being touched by this pass) —
+        // an "Apparel"-category StatDef has no vanilla auto-aggregation onto
+        // a pawn stat (ArmorUtility is the only vanilla reader, and it reads
+        // per-apparel-item, not per-pawn), so any consumer summing one across
+        // a worn outfit must do it itself. Not clamped here — callers decide
+        // their own clamp/floor (e.g. a "gear never fully immunizes" floor).
+        public static float SumApparelStat(Pawn pawn, StatDef stat)
+        {
+            if (stat == null || pawn?.apparel == null)
+            {
+                return 0f;
+            }
+
+            List<Apparel> worn = pawn.apparel.WornApparel;
+            float total = 0f;
+            for (int i = 0; i < worn.Count; i++)
+            {
+                total += worn[i].GetStatValue(stat);
+            }
+
+            return total;
         }
     }
 }
