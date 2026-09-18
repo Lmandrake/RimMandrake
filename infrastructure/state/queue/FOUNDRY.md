@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T14:14:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T14:28:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1825,16 +1825,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BARBSLINGER_SCORPION_REDESIGN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
-
-## MAYREQUIRE_OPERATION_INERT_SWEEP_1 MayRequire on a patch Operation is inert — sweep all uses; Class= injections are whole-file killers
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MAYREQUIRE_OPERATION_INERT_SWEEP_1.md
 
 ## MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1 Live 632-mod ModsConfig.xml has several deployed custom mods INACTIVE -- reconcile before the next restart/play session
 state:    proposed
