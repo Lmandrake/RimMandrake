@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T19:25:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T19:29:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -20,7 +20,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+summary:  Spec: design/Jawa/worldbuilding/biomes/weepingstones.md (architecture ruling at
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 # IN PROGRESS
@@ -1664,16 +1664,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_ART_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
-
-## VALIDATE_PATCH_FULL_TREE_SWEEP_1 First-ever full validate_patch.py sweep of UtinniPatches+SWBestiary surfaces 37 errors/2193 warnings across 408 files, never triaged
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Surfaced as a side finding during FISHBESTIARYBUILD1 wave 3 (2026-09-18):
-prose:    infrastructure/state/items/VALIDATE_PATCH_FULL_TREE_SWEEP_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
