@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-18T06:52:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-18T07:12:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -873,6 +873,15 @@ kind:     task
 summary:  1. A flora-specific grading sheet: our flora backlog (129 files exempted at
 prose:    infrastructure/state/items/FLORA_LEGIBILITY_BAR_1.md
 
+## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
+prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
+
 ## WYYYSCHOKK_FANG_PENDANT_1 Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
 state:    doing
 row:      unassigned
@@ -1052,6 +1061,15 @@ target:   v1
 kind:     build
 summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
+
+## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
+prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1699,16 +1717,6 @@ thin:     no ## criteria
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
 
-## CANON_CREATURE_REGEN_1 Regenerate every SW-canon creature from library guidance (gated on CANON_REFERENCE_LIBRARY_1 + pilot sheet grades); wyyyschokk blue-grey/yellow-cross is the exemplar
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Every SW-canon creature in the stack (the library's roster), re-rendered:
-prose:    infrastructure/state/items/CANON_CREATURE_REGEN_1.md
-
 ## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
 state:    proposed
 row:      unassigned
@@ -1898,16 +1906,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROT_ART_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
-
-## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
-prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 
 ## FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1 RM_BottledLiquidExtension type not found: RM_LiquidBottles_Base.xml discards + drives ~82 defs / 420 crossrefs on the full load
 state:    proposed
