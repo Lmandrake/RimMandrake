@@ -1104,10 +1104,10 @@
     "sha": "58720b3c2"
   },
   "src/RimMandrake/EnvironmentalHazards/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "ce3e508b178733d92d82c5ae2538fc32e011fdb158c8400425cfeffb4d2bcd40",
-    "sha": "2eee1995f"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "3a11af4e4d9db0f6e3fdebc376ae953f9be7652cd8c8a06f144038c2e3384b87",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/RM_ScaldArmor.xml": {
     "cleanCount": 1,
@@ -1152,10 +1152,10 @@
     "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "9aa78609151f6d8704d31446c4c4270bb830bb70790c740ef31070dff1faac58",
-    "sha": "fab58c094"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "556774e91dc84c8828e39575a48751c26c54edf08c286ec93bb3c1081ab26181",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/ArmLatentHazardExtension.cs": {
     "cleanCount": 2,
@@ -1350,10 +1350,10 @@
     "sha": "670da445d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "aeead9e5ab3e7ef84b3e638da13cb0bac50d0b6b5ff9d9f1f53778975d9dff3f",
-    "sha": "d3aa7fb5d"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "577a3179711c095bb15349eb266e3492494b95df6c271fe9898624fe91cb169e",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs": {
     "cleanCount": 1,
@@ -1368,10 +1368,10 @@
     "sha": "c1ae25eaa"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "da05b06322bbe230697c8fc650a5eb891aced7b1c1b60342ed008a6a465ee496",
-    "sha": "fab58c094"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "5a6f7b9f1bb559f859df5541142473392475f6bfa255eddf576cb6d3f47653e8",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs": {
     "cleanCount": 10,
@@ -1698,10 +1698,10 @@
     "sha": "71afa1c0d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_HaulPawnAndExit.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "85ee48c087956e17b3e7d06f9e8124d3c2630d3b19029138737e1ca897ec2ea4",
-    "sha": "d3aa7fb5d"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "6791ab5ef7c7347fd8d39589936acc8b83a49db63b1f53f3be41136d43c4290d",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_Breaklight.cs": {
     "cleanCount": 1,
@@ -1716,10 +1716,10 @@
     "sha": "b62604fad"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_MirrorBreak.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "e4095202a5b5f0745f81b11d9ba54ab9ebaa4dc501d6f61c845b5efb94be511e",
-    "sha": "d3aa7fb5d"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "bc4a5d9b77a89d84e0535c0f8681ee6a108450d322c170ddaab0ad939e264156",
+    "sha": "aeb8d6f40"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs": {
     "cleanCount": 1,
