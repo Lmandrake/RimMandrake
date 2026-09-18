@@ -9221,3 +9221,4 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"Pyrelands minimal-list plant density review (owner at bench)","ts":"2026-09-18T13:55:42Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-18T13:59:41Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-18T13:59:42Z"}
+{"seat":"FOUNDRY","event":"close","id":"ARTPIPE_FAILED_REQUEUE_1","sha":"a6c7e0d6d20c152c911a6bf426cac1e5bf310143","ts":"2026-09-18T14:14:57Z"}
