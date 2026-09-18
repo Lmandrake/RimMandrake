@@ -70,6 +70,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             bool doesAnything = damageOnContact != null
                 || damageOnImmersion != null
                 || corrodesApparel
+                || flammable
                 || pH < 4f
                 || pH > 10f;
             if (!doesAnything)

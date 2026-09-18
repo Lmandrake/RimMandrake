@@ -101,17 +101,26 @@ namespace RimMandrake.FlowWorks.Pits
                 action = delegate { covered = !covered; DirtyMapMesh(); },
             };
 
+            // Gate on remaining CAPACITY, not on "is anyone held at all" - the
+            // latter permanently hid both gizmos on RM_PitCell_Double (2
+            // MaxOccupants) the instant the first prisoner was placed, since
+            // HeldPawn (innerContainer[0]) never goes back to null while
+            // occupant #1 stays put. A double cell could never be filled past
+            // one captive through this UI.
             if (AssignedPrisoner == null)
             {
-                yield return new Command_Action
+                if (innerContainer.Count < MaxOccupants)
                 {
-                    defaultLabel = "RMPits_AssignPrisoner".Translate(),
-                    defaultDesc = "RMPits_AssignPrisonerDesc".Translate(),
-                    icon = TexCommand.ForbidOff,
-                    action = OpenAssignMenu,
-                };
+                    yield return new Command_Action
+                    {
+                        defaultLabel = "RMPits_AssignPrisoner".Translate(),
+                        defaultDesc = "RMPits_AssignPrisonerDesc".Translate(),
+                        icon = TexCommand.ForbidOff,
+                        action = OpenAssignMenu,
+                    };
+                }
             }
-            else if (HeldPawn == null && AssignedPrisoner.Spawned)
+            else if (innerContainer.Count < MaxOccupants && AssignedPrisoner.Spawned)
             {
                 yield return new Command_Action
                 {
@@ -171,6 +180,11 @@ namespace RimMandrake.FlowWorks.Pits
             if (p.Spawned) p.DeSpawn(DestroyMode.Vanish);
             innerContainer.TryAddOrTransfer(p);
             HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PinnedInPit, 0.1f);
+
+            // Clear so a second prisoner can be assigned (see GetGizmos) -
+            // otherwise AssignedPrisoner stayed pointed at the now-held pawn
+            // forever and the Assign gizmo never reappeared for RM_PitCell_Double.
+            AssignedPrisoner = null;
         }
 
         internal void FeedHeldPawn()

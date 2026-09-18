@@ -26,8 +26,10 @@ what has been excavated.
 Shipped: the depth/fill grid and its pulse engine
 (`RM_MapComponent_Excavation`), a dig designator that deepens a cell each
 time it is used, depth-derived movement cost, a three-tier fill ladder on
-vanilla's own edge-aware water ramps, and a `FluidDef` describing what a
-source carries. Water is the one liquid this pass, proving genericity.
+vanilla's own edge-aware water ramps, and `FluidDef`s describing what a
+source carries — water and tar for canals, plus the wider LiquidDef
+registry (below) covering ten liquid types with their own terrain suites
+and bottled forms.
 
 A SUPERDEEP excavation is the trapping level and the only one: anything that
 walks into one falls in and is held there whether the hole is dry or brimming,
