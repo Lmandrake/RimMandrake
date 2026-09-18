@@ -14314,10 +14314,10 @@
     "sha": "ea0108daa"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "bf9ecdea5e28455cafac8975b696715e5eb44692898c9f4c126d94c437ad6581",
-    "sha": "607d64946"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "b10b55998b05bc8343f8da0028c73cb3bcf0c47b28a8f2470a38f54eba51f609",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml": {
     "cleanCount": 2,
@@ -14332,10 +14332,10 @@
     "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-14",
-    "hash": "9552ed51573a01d1062cb622d08382adab41b5a18643d9268924d2406d1b2683",
-    "sha": "1741b389a"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "79cbb814781a58b09e55e745dec705d82b92250349fe5a3e4c234371ac114ee9",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 1,
@@ -14344,10 +14344,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-14",
-    "hash": "1a5a1f082c6e62e84a665a484834b13b759526de6fe2d9cfe7281c5d7f207361",
-    "sha": "6f7f5ff61"
+    "cleanCount": 5,
+    "date": "2026-09-17",
+    "hash": "584fb00e9117917da5f9942fb227ccf80a3935ad6a7f15069279accb5b49df13",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
@@ -14356,10 +14356,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-14",
-    "hash": "909607c0aff39ff98db84f6eb4b25c52063f527522bbfd0808f508a1efe3fcda",
-    "sha": "c76fc40a0"
+    "cleanCount": 6,
+    "date": "2026-09-17",
+    "hash": "d154c0e04eb669abf3079113b64db6acf95b5e50c3ea03597c14796ae9070d28",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 2,
@@ -14368,10 +14368,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "7c4aebc692d9146a2b9104449ad4650b8d55f4872907d35d0266c0883d5cf9a4",
-    "sha": "e2fec3c99"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "360b82ccafd8a4356f1fb27b276c7aee00f10651e94da1b68eccbabf94a888ee",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml": {
     "cleanCount": 2,
@@ -14434,22 +14434,22 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "eb98072b74dfb4cfc221e5b6bd7253b8b77f425e9350de238602edfc7f644361",
-    "sha": "e2fec3c99"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "2c19e8e79b33a1d9acecf5d19e533cc18e52e393f44bc717ef4b8c00cc7c440f",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-12",
-    "hash": "dceaf9c308c9825b36088ae823f0f728fe970f234e968ea89f73867fc25cebef",
-    "sha": "f3754dac7"
+    "cleanCount": 4,
+    "date": "2026-09-17",
+    "hash": "1c20d504f55c6d463ac5a47ea9d6815ebb04f2e89a7ce78579cf1058e049d310",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "3df21908cb255945d5c49d36e8d4f08e13935cd7baea821ba1fde94debaeff5e",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "a2d06b9e1891058e9b1fa4ab2321436be6818e43d9a93a7b1d1acb58b1921bf4",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml": {
     "cleanCount": 2,
@@ -14956,10 +14956,10 @@
     "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_Plant_Wick.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "5c3610de6b1aa0b637755e238a1dd072416122f81bc7cc65c8f92a7fb914147d",
-    "sha": "779a079ab"
+    "cleanCount": 2,
+    "date": "2026-09-17",
+    "hash": "d5884d53d65e4814a8ae27f07064ee808f3d24cc933f9e185d340e0715d5203c",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml": {
     "cleanCount": 1,
@@ -14974,10 +14974,10 @@
     "sha": "b3a646c3f"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "aa5e96934f525ef95303aac6077dd51afe5e8feab808adab12e7cca198bcc077",
-    "sha": "774ed90f1"
+    "cleanCount": 3,
+    "date": "2026-09-17",
+    "hash": "50ae6626cc453817e2ec248bc9d33fa00adb3963bdae7a386a3760d242024850",
+    "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
     "cleanCount": 1,
