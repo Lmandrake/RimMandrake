@@ -1911,6 +1911,15 @@ KIT = {
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
       <li>KotORRanged_sonic</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: SaV_geonosianmelee (the literal Geonosian
+           electrostaff) prices at 20950 against this kind's 400 floor - never
+           reachable, and the tag's only other members are another culture's
+           signature weapon (Deep Desert's gaderffii). NeolithicMeleeDecent's
+           hive-harvested carriers (hornet stinger, mantis claw, cave spider
+           head) match the same insect-hive identity ORChitinArmour/InsectJelly
+           already establish here. Cheapest carrier 100 against this kind's
+           400 floor - always arms. -->
+      <li>NeolithicMeleeDecent</li>
     </weaponTags>
       <apparelTags>
       <li>ORChitinArmour</li>
@@ -1956,6 +1965,10 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_sonic</li>
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same hive-harvested melee tag the other
+           two Geonosian kinds now carry - BMT_BunkerClaw sits exactly at this
+           kind's 800 floor, so it always arms. -->
+      <li>NeolithicMeleeDecent</li>
     </weaponTags>
       <apparelTags>
       <li>ORChitinArmour</li>
@@ -2001,6 +2014,10 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_sonic</li>
       <li>KotORRanged_rare</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same hive-harvested melee tag the other
+           two Geonosian kinds now carry. Cheapest carrier 100 against this
+           kind's 1000 floor - always arms. -->
+      <li>NeolithicMeleeDecent</li>
     </weaponTags>
       <apparelTags>
       <li>ORChitinArmour</li>
