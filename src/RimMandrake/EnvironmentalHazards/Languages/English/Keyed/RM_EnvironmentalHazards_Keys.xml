@@ -21,4 +21,13 @@
   <RM_TreeFallCreak>A crack echoes from {0} — it's coming down.</RM_TreeFallCreak>
   <RM_TreeFallCracking>Cracking, about to fall</RM_TreeFallCracking>
 
+  <!-- MIASMA_MECHANICS_1 M5 build pass. RM_HediffComp_ForgeOnSurvival's
+       letter for a survived-disease boon (fever-forged tables, miasma_kit_
+       spec.md). Referenced via .Translate() since the M5 pass itself; this
+       is that owed Languages/ entry, flagged in three separate build-pass
+       notes ("does not block anything" — a fallback to the raw key — but
+       real rot until closed). -->
+  <RM_MiasmaBoonLetterLabel>Fever-forged</RM_MiasmaBoonLetterLabel>
+  <RM_MiasmaBoonLetterText>[PAWN_nameDef] has survived the fever, and it has left [PAWN_objective] changed — for the better.</RM_MiasmaBoonLetterText>
+
 </LanguageData>

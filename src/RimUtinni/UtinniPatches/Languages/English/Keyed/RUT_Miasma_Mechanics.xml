@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Miasma_Mechanics.xml               UtinniPatches · MIASMA_MECHANICS_1
+
+  Translate keys for the Miasma kit's RUT_-prefixed content: RM_CompCrecheMarker's
+  own inspect string (warden crèche marker, despoiled-memory mechanic, M6 build
+  pass) and CompProperties_PeriodicInspiration's default letter keys for
+  "Mother-dreamed" (M5 build pass, RM_HediffComp_PeriodicInspiration.cs). Both
+  were referenced via .Translate() since their own build passes with no Keyed
+  file backing them yet — flagged as owed in three separate build-pass notes
+  ("does not block anything," a fallback to the raw key, but real rot until
+  closed).
+-->
+<LanguageData>
+
+  <RUT_CrecheMarkerIntact>Warden crèche — undisturbed</RUT_CrecheMarkerIntact>
+  <RUT_CrecheMarkerDespoiled>Warden crèche — despoiled</RUT_CrecheMarkerDespoiled>
+
+  <RUT_MotherDreamedLetterLabel>Fever-dream</RUT_MotherDreamedLetterLabel>
+  <RUT_MotherDreamedLetterText>[PAWN_nameDef] has fallen into a day-long fever-dream, harmless but vivid.</RUT_MotherDreamedLetterText>
+
+</LanguageData>
