@@ -1,5 +1,13 @@
 # PYRELANDS_CREATURE_RERENDER_1 — one dayside biome, every creature re-rendered, walkable in game
 
+**CLOSED 2026-09-18 on owner acceptance** (*"antelope and close, this is
+acceptance"*) — the walks were the acceptance. Everything below is a
+historical record; the "remaining work" tally (2026-09-14) was completed
+through the artpipe daemon afterwards (MEASURED 2026-09-18: Barbslinger v4,
+FireWasp v3, Boomsnake, Gizka, Mantistanis v5, Nuna female, Anooba/Orray
+rear norths all in `infrastructure/artpipe/done/`, queue empty). Do not
+re-run any of it from this file.
+
 Filed by BENCH, 2026-09-13, owner's direct spec: *"regenerate all the contents
 for a single biome. Please pick one of the dayside biomes that's currently in
 the game (we've regenerated it to our own owned biome fully) and re-render ALL
@@ -118,7 +126,7 @@ is wired into the biome. The walk shows vanilla animals until wiring lands.
 
 ## Open owner questions (parked while AFK)
 
-1. **Iriaz identity conflict**: `design/RimStarWars/canon_references/iriaz/description.md` exists (four-legged Dantooine antelope, olive-teal + orange spots, one horn, ruling field EMPTY) and contradicts the two-legged Dathomir identity used by both regen waves. No Iriaz art regenerated until ruled.
+1. ~~**Iriaz identity conflict**~~ ⛔ DEAD — the "two-legged Dathomir" identity matches nothing in the repo (investigated on IRIAZ_ART_REGEN_1, 2026-09-17); v2 art was drawn from the antelope canon entry, owner locked it 2026-09-17 and ruled **antelope** 2026-09-18. Ruling lives in `design/RimStarWars/canon_references/iriaz/description.md` `## ruling`.
 2. **AA_GreenGoo north**: faceless amorphous slime — its _north reads frontal but there is no rear cue possible. Does the facing law apply to it? (Owner praised this art; untouched.)
 3. Anooba + Orray painterly norths are FACE-VISIBLE; corrected rear-view derivations queue on the Codex reset.
 
@@ -132,4 +140,4 @@ Mantistanis E+N (south missing) · Boomsnake E (N/S missing) · Gizka + GizkaW e
 
 **Not started:** Barbslinger, FireWasp, Quickgrass/Leafless/ScorchFruit/Fulgurite flora, Anooba+Orray rear-view norths, Iriaz (owner identity ruling owed).
 
-**DECISION OWED (owner):** Codex imagegen weekly cap exhausted (plan_type plus, resets Sep 19 ~13:01 PDT). Remaining work waits ~5 days on the Codex-only ruling, or the owner re-rules the channel. The 18 reverted Gemini renders remain in git history if ever wanted.
+~~**DECISION OWED (owner):** Codex imagegen weekly cap exhausted…~~ ⛔ DEAD — the remaining renders landed via the artpipe daemon before the item closed 2026-09-18; no channel ruling was ever needed.

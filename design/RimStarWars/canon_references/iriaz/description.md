@@ -69,4 +69,11 @@ none known
 - `wookieepedia_cutmodel.jpg` — in-engine screenshot of the unused KOTOR 3D model standing in a grassy canyon, confirms the same coloring and long-necked antelope body plan from a different angle
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Antelope — canon identity stands.** Owner, 2026-09-18: *"antelope and close,
+this is acceptance"* (on PYRELANDS_CREATURE_RERENDER_1's acceptance). The
+four-legged Dantooine grassland quadruped described above IS the identity;
+the shipped painterly v2 set was drawn from this entry and the owner locked
+that specific art 2026-09-17 (*"Lock in that Iriaz."* — one horn, the second
+protrusion confirmed as an ear). A "two-legged Dathomir" alternative was
+flagged once (2026-09-14) and investigated on IRIAZ_ART_REGEN_1: it matches
+nothing in this repo and is dead — do not re-render against it.
