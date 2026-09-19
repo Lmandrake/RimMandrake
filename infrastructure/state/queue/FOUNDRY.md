@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:12:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:17:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -954,15 +954,6 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
-## MLIE_GENERATED_BIOME_COLLISIONS_1 AnimalBiomeDuplicates_Generated.xml still carries bare-donor duplicate-animal collisions for GraniteSlug x ExtremeDesert, Cannok/Sketto x AridShrubland, Falumpaset x Desert - post-Mlie-port, needs regen against current RSW_ cast
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/MLIE_GENERATED_BIOME_COLLISIONS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MLIE_GENERATED_BIOME_COLLISIONS_1.md
-
 ## SWBESTIARY_DEPLOY_STALE_1 deployed/Mods/SWBestiary is stale - 26 files behind src/, missing RSW_Scurrier/RSW_WarWyrm/RSW_Urusai and likely other recently-ported Mlie species entirely
 state:    doing
 row:      unassigned
@@ -980,6 +971,15 @@ target:   v1
 kind:     build
 summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
+
+## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  The Systech Static Blaster lost its distinctive electric projectile
+prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1646,16 +1646,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
-
-## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  The Systech Static Blaster lost its distinctive electric projectile
-prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
 
 ## DRILL_IMPASSABLE_FILLPERCENT_1 RM_LiquidDrill logs a config error: impassable but shootable over
 state:    proposed
