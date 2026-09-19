@@ -1045,10 +1045,10 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">   <!-- EMBERSCYTHE_MANTIS_REAUTHOR_1: GR_Mantistanis re-authored as our own RUT_Emberscythe (src/RimUtinni/RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml), shipped with RotSporeKit — no existence guard on RUT_Emberscythe itself needed, this is our own def, not an absent donor's; still gated on the mod that defines ZBiome_Grasslands so this never logs against a mod list without it. -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">   <!-- EMBERSCYTHE_MANTIS_REAUTHOR_1: GR_Mantistanis re-authored as our own RUT_Emberscythe (src/RimUtinni/RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml), shipped with RotSporeKit — our own def, so no existence guard on it is needed. TARGET CORRECTED 2026-09-19 on the owner's ruling ("YES for Pyrelands and no elsewhere"): it inherited the donor's ZBiome_Grasslands slot, and the frozen world carries ZERO ZBiome_Grasslands tiles against 222 RM_FE_Pyrelands (MEASURED f7e2bd21c over all 21872 surface tiles), so the emberscythe could never spawn. Same dead-def class as the river-steam/subsurface-liquid wiring fixed there; this operation was missed by that sweep. Gated on the mod that defines RM_FE_Pyrelands. -->
+    <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
         <RUT_Emberscythe>0.05</RUT_Emberscythe> <!-- emberscythe mantis - large-predator, our own -->
       </value>
