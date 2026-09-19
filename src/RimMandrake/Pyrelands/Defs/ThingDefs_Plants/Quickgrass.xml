@@ -70,7 +70,7 @@
       <leaflessGraphicPath>Things/Plant/RM_FE_Quickgrass_Leafless</leaflessGraphicPath>
       <harvestWork>40</harvestWork>
       <maxMeshCount>9</maxMeshCount>
-      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <visualSizeRange>0.8~1.4</visualSizeRange>
       <topWindExposure>0.4</topWindExposure>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>18</wildClusterWeight>
