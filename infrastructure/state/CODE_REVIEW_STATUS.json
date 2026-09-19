@@ -16276,10 +16276,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-12",
-    "hash": "83256f26d04751b89a80c35b25d15da7da6563b6167a8775ed46c37eb2b786be",
-    "sha": "f3754dac7"
+    "cleanCount": 6,
+    "date": "2026-09-18",
+    "hash": "580afba33f2a21c30952b648c79fa2f9ce894a1097c5f50a75a7f5a21f39ae3f",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
@@ -16414,16 +16414,16 @@
     "sha": "779a079ab"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "dad47cd3fc2e98f06f580d5cdaccdba52d2ea7cdfc1b766de0f9640d36d60e86",
-    "sha": "d3ffec03"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "20308932dc80ab187d313ec76f9cb746e9e4b9cad3147859cfdbda8671ea2fc5",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "6c99e87a7e311b598e43b7fe8699667ddde6996c68e40cb0a17ba706dec608c4",
-    "sha": "e2fec3c99"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "c92a5d8396e6d4bec9d944a6f58135c1fab4e5fe2f7b02f4c6f829435580373a",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
     "cleanCount": 3,
@@ -16558,10 +16558,10 @@
     "sha": "6f7f5ff61"
   },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScaldSteamLock.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "9f39787e5d575e1180594e8c56ebd764b9376ddc58db671c057fed1a6844bdf5",
-    "sha": "f4d5c1714"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "f4ca3a003c0bc87dc42cfa0ce6a882861f1dcb0281a811898315d8ff1c7f0db7",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_ScariaOnsetArming.xml": {
     "cleanCount": 1,
@@ -16762,10 +16762,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "047b9f0d7658ae37f13dc4209e705f1e65b5777d0948790dd9d92888851b4639",
-    "sha": "e2fec3c99"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "83c9b1e3754902b50a0957836d79a2211c785f475630bbd5aa7860deb9e39834",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/RUT_Placeholder_SumpMouse.xml": {
     "cleanCount": 1,
@@ -17458,10 +17458,10 @@
     "sha": "b62604fad"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ForgePulse_BiomeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "ea470e4513ddf728eb8fe6a2dfa676b27c6abd16a64fb21c19c1537c821e3409",
-    "sha": "0e38767e7"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "03ae97697ed5f526767994fd2365bd6d1022cd9805bdc19cb159eafc0f7ec6dd",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml": {
     "cleanCount": 1,
@@ -17470,10 +17470,10 @@
     "sha": "378f67436"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "8b863438b363b53b96a763e99e680f13bce922aa5f293b68e880ee9ce089b8e6",
-    "sha": "6f7f5ff61"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "bacde7cc3583238da56c5a43bb07335a9ca7796093818d1e208a0b2494e7ebd3",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_Miasma_ForgeOnSurvival.xml": {
     "cleanCount": 1,
@@ -17488,10 +17488,10 @@
     "sha": "b1a2aa399"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "51dbef796d3b963ed1a97d1a8242eae2b59d12579f0d0c3e6cc8fb4b99ac0a49",
-    "sha": "6f7f5ff61"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "722e007cc56652ee7ec323ecbbb20f3bf3358cebee8bfa732ab9899371cde827",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSailScatterer_Register.xml": {
     "cleanCount": 1,
@@ -17500,10 +17500,10 @@
     "sha": "a90656d07"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldSteamLock_BiomeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "9188a42c80fff4c0f116e61149007daa9f5e8a7f304fbacb7262fbf10c2cb81a",
-    "sha": "f4d5c1714"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "834920241b4f77a053a8320212b3663f0aac3887783ac566f8adcae8cca2bb54",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_ScaldWreckScatter_Register.xml": {
     "cleanCount": 1,
@@ -17512,10 +17512,10 @@
     "sha": "e7810e12f"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_SumpDuskLock_BiomeWiring.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "c59be6b987550c2e0989928f3acab780f0d3d2084d6762f016674e085dbe2f79",
-    "sha": "779a079ab"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "477d8125d51337950c7acaa64c6eb4b11db863d352ec4240bcb8187e05e67d42",
+    "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Patches/RUT_SumpTarBeastGenStep_Register.xml": {
     "cleanCount": 1,
