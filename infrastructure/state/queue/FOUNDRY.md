@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T10:59:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T12:24:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1008,15 +1008,6 @@ kind:     build
 summary:  CUTFALLOUTGENERATEDDATA1 — Load C fallout from the Caverns + Polluted Lands cuts
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
 
-## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
-state:    doing
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     defect
-summary:  BIOMECONFIGERRORSNRE1
-prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
-
 ## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
 state:    doing
 row:      unassigned
@@ -1657,13 +1648,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
-
-## FULL_LOAD_ALPHAGENES_NRE_1 Full 620-mod list crashes at DefGenerator.GenerateImpliedDefs_PreResolve (AlphaGenes NRE), auto-resets to Core-only
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FULL_LOAD_ALPHAGENES_NRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FULL_LOAD_ALPHAGENES_NRE_1.md
