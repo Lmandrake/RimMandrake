@@ -816,10 +816,10 @@
     "sha": "5ed4b469"
   },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "967794574c338487b1d6387da63aaef8c4bf07a8bb16edb0860bb0343e898f60",
-    "sha": "99a9e5cbc"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "9cffb5b033bac20f8353316d3a81d5393bed8f03bcb2a6accfa386f3c8bfdc45",
+    "sha": "fc438d857"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/JobDefs/RM_JobDefs.xml": {
     "cleanCount": 3,
@@ -887,6 +887,18 @@
     "hash": "b0bcdca296fc9d7e0a39e3f2f76705f96576c284f5eee598a84bf49dfcaed4b7",
     "sha": "009b887ef"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShardArmor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "6aa01d652095f34a92afa6dd67226d84c3824d19d0c37682eca45e25a5325184",
+    "sha": "fc438d857"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_TameSootheAura.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "7cfd1aa1b5746830386f85a002d2c5b43c1d4374837a76a6702494034affc81e",
+    "sha": "fc438d857"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -898,6 +910,18 @@
     "date": "2026-09-12",
     "hash": "d7de2164c1064b2bd58aee90afcdf980792c8c759071e3310206a69331baa387",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompShardArmor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "7bff460da5a9ea87d3c0c0e12da9a2acb70ff14f9d55a0f6f48e9586c8082cde",
+    "sha": "fc438d857"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompTameSootheAura.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "aa890eea0d8183a4d7f157cb2728858ec3f878c69d89c11bb87143e41d5a47db",
+    "sha": "fc438d857"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompVerminBreeder.cs": {
     "cleanCount": 2,
@@ -3966,10 +3990,10 @@
     "sha": "c0b15fdbc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "8b55dfaae11fba7ffa4344c5b6ace5bdd6e01f5576450a662a2b363d42db5794",
-    "sha": "7fc491ebc"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "f931549229b5a9f542a6897d17df2d35578b8d04bc2402167f203fa6e3cc92cd",
+    "sha": "fc438d857"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
     "cleanCount": 2,
@@ -4014,16 +4038,22 @@
     "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "e577d8584e36dea3799c6d91500cd5e5f73fc9865ee4980a0e112bbfbc60528b",
-    "sha": "7fc491ebc"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "8a3a26f8e13b1bc3b3760cb9718bc65e60d7ab58921c735c503adb7e49e4b261",
+    "sha": "fc438d857"
   },
   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "66e29226d9822d601ab8cfc0ccfbfba8801fab83ce62fd9224287a9e0b5fa0ba",
-    "sha": "7fc491ebc"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "abaff192f5c777dd1b7c6f6212ec329d458ab51683028b681bde8abfdadf7f23",
+    "sha": "fc438d857"
+  },
+  "src/RimMandrake/Pyrelands/Source/WildPlantAllowlist.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "eb137a9cbb43e972228eb5e06ad93ca5b5056d63adc50f785b4a1d58dfd2cd01",
+    "sha": "fc438d857"
   },
   "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_FE_Pyrelands.png": {
     "cleanCount": 1,
