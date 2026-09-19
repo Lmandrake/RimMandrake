@@ -532,7 +532,7 @@ namespace JawaBench.BridgeTools
                 "'Settle' in the UI. Refuses if the tile already carries a Settlement rather " +
                 "than silently overwriting it.",
             ResultDescription =
-                "success, tile, faction, settlementId, name, limitReached (informational - " +
+                "success, tile, layerId, faction, settlementId, name, limitReached (informational - " +
                 "Prefs.MaxNumberOfPlayerSettlements is a UI cap AddNewHome itself does not " +
                 "enforce, so this can be true and the call still succeeds).")]
         public static async Task<object> ColonyFound(
@@ -541,7 +541,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "World tile id.")] int tile = -1,
             [ToolParameter(Description = "FactionDef defName, or 'Player'/'PlayerColony' for the player faction.")] string faction = "Player",
             [ToolParameter(Description = "Rename the settlement after creation. Empty keeps the generated name.")] string name = null,
-            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false)
+            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false,
+            [ToolParameter(Description = "Planet layer id (0 = surface). BRIDGETOOLS_TILE_LAYER_DROPPED_1: 'tile' used to always resolve against the root surface layer no matter which layer it actually belonged to - a silent wrong-layer write on a multi-layer (e.g. Odyssey space travel) world.")] int layerId = 0)
         {
             if (tile < 0) return Fail("Give 'tile', a valid world tile id.");
 
@@ -550,7 +551,11 @@ namespace JawaBench.BridgeTools
                 cancellationToken.ThrowIfCancellationRequested();
                 var grid = Find.WorldGrid;
                 if (grid == null) return Fail("No WorldGrid. This needs a world loaded.");
-                if (tile >= grid.TilesCount) return Fail("Tile " + tile + " out of range (0.." + (grid.TilesCount - 1) + ").");
+                if (!grid.PlanetLayers.TryGetValue(layerId, out var layer))
+                    return Fail("No planet layer " + layerId + ". Known layers: " +
+                                string.Join(", ", grid.PlanetLayers.Keys.OrderBy(k => k)) + ".");
+                if (tile < 0 || tile >= layer.TilesCount)
+                    return Fail("Tile " + tile + " out of range for layer " + layerId + " (0.." + (layer.TilesCount - 1) + ").");
 
                 Faction fac;
                 if (string.Equals(faction, "Player", StringComparison.OrdinalIgnoreCase)
@@ -567,7 +572,7 @@ namespace JawaBench.BridgeTools
                 }
                 if (fac == null) return Fail("No player faction exists yet (Faction.OfPlayer is null).");
 
-                var pt = new PlanetTile(tile, grid.Surface);
+                var pt = new PlanetTile(tile, layerId);
                 var already = Find.WorldObjects.ObjectsAt(pt).OfType<Settlement>().FirstOrDefault();
                 if (already != null)
                     return Fail("Tile " + tile + " already has a Settlement ('" + already.Name + "', faction " +
@@ -577,7 +582,7 @@ namespace JawaBench.BridgeTools
                 bool limitReached = fac == Faction.OfPlayer && SettleUtility.PlayerSettlementsCountLimitReached;
 
                 if (dryRun)
-                    return new { success = true, dryRun = true, tile, faction = fac.def.defName, limitReached, ticksGame = TicksGameSafe() };
+                    return new { success = true, dryRun = true, tile, layerId, faction = fac.def.defName, limitReached, ticksGame = TicksGameSafe() };
 
                 Settlement s;
                 try { s = SettleUtility.AddNewHome(pt, fac); }
@@ -588,6 +593,7 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     tile,
+                    layerId,
                     faction = fac.def.defName,
                     settlementId = s.ID,
                     name = s.Name,
@@ -607,17 +613,18 @@ namespace JawaBench.BridgeTools
                 "jawa/settlement_attack afterwards for an attack). The whole caravan domain was " +
                 "absent from this bridge before this tool.",
             ResultDescription =
-                "success, caravanId, name, faction, pawnCount, tile (start), destTile, pathed " +
-                "(StartPath's own bool - false means CanReach failed), refused[] for any pawn " +
-                "token that did not resolve.")]
+                "success, caravanId, name, faction, pawnCount, tile (start), layerId, destTile, " +
+                "pathed (StartPath's own bool - false means CanReach failed), refused[] for any " +
+                "pawn token that did not resolve.")]
         public static async Task<object> CaravanCreate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Comma-separated pawn ids/names/thingIds to put in the caravan.")] string pawns,
             [ToolParameter(Description = "FactionDef defName for the caravan. Empty uses the first resolved pawn's own faction.")] string faction = null,
-            [ToolParameter(Description = "Starting world tile. -1 uses the first pawn's current map tile.")] int startTile = -1,
-            [ToolParameter(Description = "Destination world tile to path toward immediately. -1 creates the caravan without moving it.")] int destTile = -1,
-            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false)
+            [ToolParameter(Description = "Starting world tile. -1 uses the first pawn's current map tile (and that map's OWN layer, ignoring 'layerId').")] int startTile = -1,
+            [ToolParameter(Description = "Destination world tile to path toward immediately. -1 creates the caravan without moving it. Resolved on 'layerId' - caravans do not cross layers.")] int destTile = -1,
+            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false,
+            [ToolParameter(Description = "Planet layer id (0 = surface) for an EXPLICIT 'startTile'/'destTile'. BRIDGETOOLS_TILE_LAYER_DROPPED_1: these used to always resolve against the root surface layer no matter which layer the tile actually belonged to. Ignored for startTile when it is auto-detected from the pawn's map (that map's own layer is used instead - a caravan starts where its pawns actually stand).")] int layerId = 0)
         {
             if (string.IsNullOrWhiteSpace(pawns)) return Fail("Give 'pawns' - comma-separated ids/names.");
 
@@ -626,6 +633,9 @@ namespace JawaBench.BridgeTools
                 cancellationToken.ThrowIfCancellationRequested();
                 var grid = Find.WorldGrid;
                 if (grid == null) return Fail("No WorldGrid. This needs a world loaded.");
+                if (!grid.PlanetLayers.TryGetValue(layerId, out var layer))
+                    return Fail("No planet layer " + layerId + ". Known layers: " +
+                                string.Join(", ", grid.PlanetLayers.Keys.OrderBy(k => k)) + ".");
 
                 var found = new List<Pawn>();
                 var refused = new List<object>();
@@ -650,15 +660,26 @@ namespace JawaBench.BridgeTools
                 else fac = found[0].Faction ?? Faction.OfPlayer;
                 if (fac == null) return Fail("Could not resolve a faction for the caravan - give 'faction' explicitly.");
 
-                int stTileId = startTile;
-                if (stTileId < 0)
+                PlanetTile startPt;
+                int startLayerId;
+                if (startTile < 0)
                 {
                     var m = found[0].Map;
                     if (m == null) return Fail(found[0].LabelShortCap + " is not on a spawned map and no 'startTile' was given. Give startTile explicitly.");
-                    stTileId = m.Tile;
+                    // Map.Tile is ALREADY a PlanetTile (Map itself can live on a
+                    // non-surface layer) - use it whole. Forcing it through the
+                    // caller's 'layerId' here would be BRIDGETOOLS_TILE_LAYER_DROPPED_1
+                    // all over again: a caravan starts where its pawns actually stand.
+                    startPt = m.Tile;
+                    startLayerId = startPt.Layer.LayerID;
                 }
-                if (stTileId < 0 || stTileId >= grid.TilesCount) return Fail("Resolved start tile " + stTileId + " is out of range.");
-                var startPt = new PlanetTile(stTileId, grid.Surface);
+                else
+                {
+                    if (startTile >= layer.TilesCount)
+                        return Fail("Resolved start tile " + startTile + " is out of range for layer " + layerId + ".");
+                    startPt = new PlanetTile(startTile, layerId);
+                    startLayerId = layerId;
+                }
 
                 if (dryRun)
                     return new
@@ -668,7 +689,8 @@ namespace JawaBench.BridgeTools
                         pawnCount = found.Count,
                         pawns = found.Select(p => p.LabelShort).ToList(),
                         faction = fac.def.defName,
-                        startTile = stTileId,
+                        startTile = startPt.tileId,
+                        startLayerId,
                         destTile = destTile >= 0 ? (int?)destTile : null,
                         refused
                     };
@@ -680,10 +702,10 @@ namespace JawaBench.BridgeTools
                 bool pathed = false; string pathNote = null;
                 if (destTile >= 0)
                 {
-                    if (destTile >= grid.TilesCount) pathNote = "destTile " + destTile + " out of range; caravan created but not sent.";
+                    if (destTile >= layer.TilesCount) pathNote = "destTile " + destTile + " out of range for layer " + layerId + "; caravan created but not sent.";
                     else
                     {
-                        var destPt = new PlanetTile(destTile, grid.Surface);
+                        var destPt = new PlanetTile(destTile, layerId);
                         try { pathed = car.pather.StartPath(destPt, null); }
                         catch (Exception e) { pathNote = "StartPath threw: " + e.GetType().Name + ": " + e.Message; }
                         if (!pathed && pathNote == null)
@@ -699,6 +721,7 @@ namespace JawaBench.BridgeTools
                     faction = fac.def.defName,
                     pawnCount = car.PawnsListForReading.Count,
                     tile = car.Tile.tileId,
+                    layerId = car.Tile.Layer.LayerID,
                     destTile = destTile >= 0 ? (int?)destTile : null,
                     pathed,
                     pathNote,
