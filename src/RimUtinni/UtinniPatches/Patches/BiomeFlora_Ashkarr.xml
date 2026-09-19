@@ -12,9 +12,24 @@
 
   <!-- ============ A. dayside desert, badlands and the river jungles ============ -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Umbra"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Umbra"]/wildPlants</xpath>
+      <value>
+        <wildPlants>
+          <AB_CrystalHorn>1.0</AB_CrystalHorn> <!-- crystal horn -->
+          <AB_CrystalFlower>0.8</AB_CrystalFlower> <!-- crystal flower -->
+          <AB_FrostLeaf>0.6</AB_FrostLeaf> <!-- frost leaf -->
+          <AB_RimeNodules>0.4</AB_RimeNodules> <!-- rime nodules -->
+        </wildPlants>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_Desert"]/wildPlants</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="RUT_Desert"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_HardyGrass>0.6</AB_HardyGrass> <!-- hardy grass -->
@@ -28,24 +43,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_CrystalHorn>1.0</AB_CrystalHorn> <!-- crystal horn -->
-          <AB_CrystalFlower>0.8</AB_CrystalFlower> <!-- crystal flower -->
-          <AB_FrostLeaf>0.6</AB_FrostLeaf> <!-- frost leaf -->
-          <AB_RimeNodules>0.4</AB_RimeNodules> <!-- rime nodules -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_HardyGrass>1.0</AB_HardyGrass> <!-- hardy grass -->
@@ -60,19 +60,19 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <BMT_Plant_TreeTwistingThornwood>0.6</BMT_Plant_TreeTwistingThornwood> <!-- twisting thornwood - tree -->
-          <AB_CrystalFlower>0.5</AB_CrystalFlower> <!-- crystal flower -->
           <BMT_Plant_TreeMartyr>0.5</BMT_Plant_TreeMartyr> <!-- martyr tree - tree -->
-          <AB_BloodBouquet>0.4</AB_BloodBouquet> <!-- blood bouquet -->
+          <AB_CrystalFlower>0.5</AB_CrystalFlower> <!-- crystal flower -->
           <AB_CrystalHorn>0.4</AB_CrystalHorn> <!-- crystal horn -->
+          <AB_BloodBouquet>0.4</AB_BloodBouquet> <!-- blood bouquet -->
           <AB_RavenNettle>0.4</AB_RavenNettle> <!-- raven nettle -->
-          <AB_GiantAgariTox>0.3</AB_GiantAgariTox> <!-- agaritox - tree -->
           <AB_RedBugloss>0.3</AB_RedBugloss> <!-- red bugloss -->
+          <AB_GiantAgariTox>0.3</AB_GiantAgariTox> <!-- agaritox - tree -->
           <AB_KeeningCordax>0.2</AB_KeeningCordax> <!-- keening cordax - tree -->
         </wildPlants>
       </value>
@@ -80,22 +80,22 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_JungleTree>3.0</AB_JungleTree> <!-- deep jungle tree - tree -->
           <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
           <Plant_JoganTree_Wild>1.2</Plant_JoganTree_Wild> <!-- wild jogan tree - tree -->
-          <BMT_GiantLeaf>1.0</BMT_GiantLeaf> <!-- giant leaf -->
           <Plant_MujaFruit_Wild>1.0</Plant_MujaFruit_Wild> <!-- wild muja fruit bush -->
+          <BMT_GiantLeaf>1.0</BMT_GiantLeaf> <!-- giant leaf -->
           <Plant_HubbaGourd_Wild>0.8</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
-          <AB_SugarFamewort>0.6</AB_SugarFamewort> <!-- sugar famewort -->
           <Plant_FelucianGlowspore_Wild>0.6</Plant_FelucianGlowspore_Wild> <!-- wild felucian glowspore - tree -->
+          <AB_SugarFamewort>0.6</AB_SugarFamewort> <!-- sugar famewort -->
+          <Plant_TookeTrap_Wild>0.5</Plant_TookeTrap_Wild> <!-- wild tooke-trap plant -->
           <Plant_Bubblespore_Wild>0.5</Plant_Bubblespore_Wild> <!-- wild bubble spore plant -->
           <Plant_Chakroot_Wild>0.5</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
-          <Plant_TookeTrap_Wild>0.5</Plant_TookeTrap_Wild> <!-- wild tooke-trap plant -->
         </wildPlants>
       </value>
     </match>
@@ -107,28 +107,26 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildPlants</xpath>
       <value>
         <wildPlants>
-          <Plant_YellowGrass>2.4</Plant_YellowGrass> <!-- ochreskal -->
-          <Plant_YellowTallGrass>2.0</Plant_YellowTallGrass> <!-- tall ochreskal -->
-          <AB_HardyGrass>0.4</AB_HardyGrass> <!-- hardy grass -->
+          <RM_FE_Plant_Quickgrass>4.0</RM_FE_Plant_Quickgrass> <!-- quickgrass -->
         </wildPlants>
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Contagion"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Contagion"]/wildPlants</xpath>
       <value>
         <wildPlants>
-          <AB_AlienGrass>1.0</AB_AlienGrass> <!-- ocular grass -->
           <AB_AlienTree>1.0</AB_AlienTree> <!-- ocular tree - tree -->
+          <AB_AlienGrass>1.0</AB_AlienGrass> <!-- ocular grass -->
           <AB_EyeGrass>0.6</AB_EyeGrass> <!-- flowering ocular grass -->
           <AB_RedLeaves>0.6</AB_RedLeaves> <!-- ocular plant -->
-          <AB_HalfAlienTree>0.5</AB_HalfAlienTree> <!-- half transformed ocular tree - tree -->
           <AB_RedPlantsTall>0.5</AB_RedPlantsTall> <!-- ocular plant -->
-          <AB_GlobularPlant>0.4</AB_GlobularPlant> <!-- globular aberration -->
+          <AB_HalfAlienTree>0.5</AB_HalfAlienTree> <!-- half transformed ocular tree - tree -->
           <AB_TentacularPlant>0.4</AB_TentacularPlant> <!-- tentacular aberration -->
+          <AB_GlobularPlant>0.4</AB_GlobularPlant> <!-- globular aberration -->
           <AB_BloodBouquet>0.3</AB_BloodBouquet> <!-- blood bouquet -->
           <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted> <!-- mutated ocular tree - tree -->
         </wildPlants>
@@ -137,9 +135,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Webwork"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Webwork"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_JungleTree>1.1</AB_JungleTree> <!-- deep jungle tree - tree -->
@@ -155,9 +153,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_FeverWood"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_FeverWood"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
@@ -174,9 +172,9 @@
 
   <!-- ============ B. the mycoid and fire massif ============ -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_ExtremeDesert"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_ExtremeDesert"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <Plant_Bloddle>0.05</Plant_Bloddle> <!-- bloddle plant -->
@@ -187,9 +185,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_TheRot"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_TheRot"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_Bryolux>10</AB_Bryolux> <!-- bryolux -->
@@ -199,29 +197,29 @@
           <AB_GlowingAgarilux>1</AB_GlowingAgarilux> <!-- glowing agarilux -->
           <AB_LilacBeacon>0.5</AB_LilacBeacon> <!-- lilac beacon -->
           <AB_WitchesOyster>0.5</AB_WitchesOyster> <!-- witches' oyster -->
-          <RUT_Dewshrooms>0.5</RUT_Dewshrooms> <!-- dewshrooms -->
-          <RUT_FruitingBodies>0.5</RUT_FruitingBodies> <!-- mold fruiting bodies -->
-          <RUT_Nuitae>0.5</RUT_Nuitae> <!-- nuitae -->
-          <RUT_Wrinklecap>0.5</RUT_Wrinklecap> <!-- wrinklecap -->
-          <RUT_Arpeau>0.4</RUT_Arpeau> <!-- arpeau - tree -->
-          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- nogtyl - tree -->
+          <BMT_Dewshrooms>0.5</BMT_Dewshrooms> <!-- dewshrooms -->
+          <BMT_FruitingBodies>0.5</BMT_FruitingBodies> <!-- mold fruiting bodies -->
+          <BMT_Nuitae>0.5</BMT_Nuitae> <!-- nuitae -->
+          <BMT_Wrinklecap>0.5</BMT_Wrinklecap> <!-- wrinklecap -->
+          <BMT_Arpeau>0.4</BMT_Arpeau> <!-- arpeau - tree -->
+          <BMT_Nogtyl>0.4</BMT_Nogtyl> <!-- nogtyl - tree -->
           <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- recurved stropharia -->
-          <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus> <!-- flakespire fungus - tree -->
-          <RUT_Pusmelon>0.3</RUT_Pusmelon> <!-- pusmelon -->
-          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
-          <RUT_Sagecrust>0.3</RUT_Sagecrust> <!-- sagecrust -->
+          <BMT_FlakespireFungus>0.3</BMT_FlakespireFungus> <!-- flakespire fungus - tree -->
+          <BMT_Pusmelon>0.3</BMT_Pusmelon> <!-- pusmelon -->
+          <BMT_RustPuff>0.3</BMT_RustPuff> <!-- rustpuff -->
+          <BMT_Sagecrust>0.3</BMT_Sagecrust> <!-- sagecrust -->
           <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- arbuscular mycorrhiza -->
           <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- slimy pholiota -->
-          <RUT_BleedingTooth>0.2</RUT_BleedingTooth> <!-- bleeding tooth -->
-          <RUT_Brightbell>0.2</RUT_Brightbell> <!-- brightbells -->
-          <RUT_CrimsonCap>0.2</RUT_CrimsonCap> <!-- crimson cap -->
-          <RUT_GreyLady>0.2</RUT_GreyLady> <!-- Grey Lady -->
-          <RUT_Shinecap>0.2</RUT_Shinecap> <!-- shine cap - tree -->
-          <RUT_VioletWimple>0.2</RUT_VioletWimple> <!-- violet wimple -->
-          <RUT_MortalMorelPlant>0.15</RUT_MortalMorelPlant> <!-- mortal morel -->
+          <BMT_BleedingTooth>0.2</BMT_BleedingTooth> <!-- bleeding tooth -->
+          <BMT_Brightbells>0.2</BMT_Brightbells> <!-- brightbells -->
+          <BMT_CrimsonCap>0.2</BMT_CrimsonCap> <!-- crimson cap -->
+          <BMT_GreyLady>0.2</BMT_GreyLady> <!-- Grey Lady -->
+          <BMT_Shinecap>0.2</BMT_Shinecap> <!-- shine cap - tree -->
+          <BMT_VioletWimple>0.2</BMT_VioletWimple> <!-- violet wimple -->
+          <BMT_MortalMorelPlant>0.15</BMT_MortalMorelPlant> <!-- mortal morel -->
           <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- agaricus domecap -->
           <AB_DribblingCap>0.1</AB_DribblingCap> <!-- dribbling cap -->
-          <RUT_Skulltop>0.1</RUT_Skulltop> <!-- skulltop - tree -->
+          <BMT_Skulltop>0.1</BMT_Skulltop> <!-- skulltop - tree -->
           <Boomshroom>0.05</Boomshroom> <!-- boomshroom -->
           <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- Agarilux Prime -->
         </wildPlants>
@@ -230,9 +228,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_ForsakenCrags"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_ForsakenCrags"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_GlowingGrass>1.0</AB_GlowingGrass> <!-- grass -->
@@ -247,14 +245,14 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <Plant_Reeds>1.0</Plant_Reeds> <!-- sarnreed -->
           <AB_GreenRockFern>0.4</AB_GreenRockFern> <!-- green rock fern -->
-          <RUT_Dewshrooms>0.4</RUT_Dewshrooms> <!-- dewshrooms -->
+          <BMT_Dewshrooms>0.4</BMT_Dewshrooms> <!-- dewshrooms -->
           <Plant_Ambrosia>0.12</Plant_Ambrosia> <!-- ambrosia bush -->
         </wildPlants>
       </value>
@@ -262,9 +260,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_TallSlimyGrass>1.0</AB_TallSlimyGrass> <!-- tall slimy grass -->
@@ -279,64 +277,16 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
           <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
-          <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
-          <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
-          <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
-          <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass> <!-- primordial tall grass -->
-          <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
-          <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
-          <AB_FirevineTree>0.2</AB_FirevineTree> <!-- firevine tree - tree -->
-          <BMT_HeatsinkFungus>0.2</BMT_HeatsinkFungus> <!-- heatsink fungus - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
-          <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
-          <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
-          <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
-          <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
-          <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
-          <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
-          <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass> <!-- primordial tall grass -->
-          <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
-          <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
-          <AB_FirevineTree>0.2</AB_FirevineTree> <!-- firevine tree - tree -->
-          <BMT_HeatsinkFungus>0.2</BMT_HeatsinkFungus> <!-- heatsink fungus - tree -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
-          <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
-          <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
-          <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- sagecrust -->
+          <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
           <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
@@ -352,9 +302,9 @@
 
   <!-- ============ C. contamination ============ -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass> <!-- toxigrass -->
@@ -388,9 +338,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Miasma"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Miasma"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_MangroveTree>25</AB_MangroveTree> <!-- mangrove tree - tree -->
@@ -406,9 +356,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Scarlands"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Scarlands"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <BMT_Plant_ScorchedStars>0.25</BMT_Plant_ScorchedStars> <!-- scorched stars -->
@@ -419,9 +369,9 @@
 
   <!-- ============ D. the shrub belt ============ -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_AridShrubland"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_AridShrubland"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <Plant_ShrubLow>0.9</Plant_ShrubLow> <!-- low grell -->
@@ -441,9 +391,9 @@
 
   <!-- ============ E. the tar ============ -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildPlants</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Sump"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildPlants</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Sump"]/wildPlants</xpath>
       <value>
         <wildPlants>
           <AB_TarPuddle>0.6</AB_TarPuddle> <!-- tar puddle -->
@@ -463,25 +413,26 @@
 
        RUT_PropaneLake  (the_propane_lakes.json)
          A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's
-         four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore,
-         2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake,
-         where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting
-         surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature
-         and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows
-         already make: every fauna row here binds AB_PropaneLakes only.
+         four flora rows are the LAND crystal flora of RUT_Umbra (renamed from AB_PropaneLakes;
+         the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water
+         tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no
+         photosynthetic or crystal-accreting surface exists. The lake's life is the ruled
+         propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never
+         wildPlants. Same split the fauna rows already make: every fauna row here binds RUT_Umbra
+         only.
   -->
 
   <!-- ============ plantDensity - the named exception list ============ -->
-  <!-- Wasteland: 0.0099 -> 0.12.
+  <!-- RUT_Wasteland: 0.0099 -> 0.12.
        1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - toxigrass,
        gutter plantain, twisted dandelion, scorched stars - that exists to say THIS GROUND IS
        POISONED. At 0.0099 it says nothing. Poisoned ground reads more strongly with sick plants on
        it than with nothing. 12x up, still visibly barren.
   -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/plantDensity</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/plantDensity</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/plantDensity</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/plantDensity</xpath>
       <value><plantDensity>0.12</plantDensity></value>
     </match>
   </Operation>

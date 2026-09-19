@@ -2,12 +2,12 @@
   "authored": "2026-09-09",
   "confidence": [
     {
-      "claim": "tiles split: 2531 AB_PropaneLakes (land) + 57 RUT_PropaneLake (water, arc 170-179)",
+      "claim": "tiles split: 2531 RUT_Umbra (land, renamed from AB_PropaneLakes) + 57 RUT_PropaneLake (water, arc 170-179)",
       "status": "MEASURED",
       "why": "binding table + sheet §0 amendment (paint done on V24)"
     },
     {
-      "claim": "RUT_PropaneLake wildAnimals stays EMPTY: every fauna row above binds AB_PropaneLakes (land) only — the sheet distinguishes the lake (its residents are the unauthored sea exotics)",
+      "claim": "RUT_PropaneLake wildAnimals stays EMPTY: every fauna row above binds RUT_Umbra (land, renamed from AB_PropaneLakes) only — the sheet distinguishes the lake (its residents are the unauthored sea exotics)",
       "status": "ruled here",
       "why": "one file per task instruction; the split is this line, so the generator must not copy the land cast onto the water def"
     },
@@ -27,13 +27,13 @@
       "why": "'the fast life burns to move' is register prose, not a def-checkable ban; the sheet names the Frostmite a keep by name, which outranks the inference"
     },
     {
-      "claim": "eviction list covers every register resident of AB_PropaneLakes not kept",
+      "claim": "eviction list covers every register resident of RUT_Umbra (renamed from AB_PropaneLakes) not kept",
       "status": "MEASURED",
       "why": "38 resident rows enumerated from creature_register_rows.json this pass; 4 kept, 34 resident evictions dispositioned, plus Blizzarisk ClutchMother added from outside the resident list for R20 coverage (35 eviction rows total)"
     }
   ],
   "defNames": [
-    "AB_PropaneLakes",
+    "RUT_Umbra",
     "RUT_PropaneLake"
   ],
   "evictions": [
@@ -301,7 +301,7 @@
   "flora_def_exclusions": [
     {
       "def": "RUT_PropaneLake",
-      "reason": "A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows already make: every fauna row here binds AB_PropaneLakes only.",
+      "reason": "A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's four flora rows are the LAND crystal flora of RUT_Umbra (renamed from AB_PropaneLakes; the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows already make: every fauna row here binds RUT_Umbra only.",
       "scope": "flora only — this key deliberately does NOT touch the fauna cast, which already excludes RUT_PropaneLake by rostering the land def alone"
     }
   ],
