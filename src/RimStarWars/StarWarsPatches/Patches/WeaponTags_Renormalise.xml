@@ -49,6 +49,17 @@
     guy762_brifle_rohlan and guy762_brifle_sith. Their sole owner, guy762.KotORWeapons,
     is not in the live ModsConfig.xml; see the comment beside their removed operations
     further down for what was checked before deleting them.
+
+    🔴 2026-09-19, CUT_FALLOUT_GENERATED_DATA_1: 10 more, same shape — BMT_BlastSpore,
+    BMT_BunkerClaw, BMT_CaveSpiderHead, BMT_CrystalMantisClaw, BMT_FungalMantisClaw,
+    BMT_PustuleHornetStinger, BMT_ResourceBlueCrystal, BMT_RoyalRhinoHorn,
+    BMT_ThrumbungusShroom and BMT_Toxwood. Biomes! Caverns (9 of the 10 — the animal
+    trophy items) and Biomes! Polluted Lands (BMT_Toxwood, the tree-yield resource) are
+    both retired (CAVERNS_PARITY_BUILD_1); their ThingDefs no longer exist at all, so
+    both the match AND nomatch branch fail — logged as 10 patch failures. Deleted
+    outright, not FindMod-guarded: unlike OUTERRIM_DROIDDEPOT_PATCH_GUARD_1's sub-mod,
+    these two mods are permanently cut, not "currently absent" — same call as the
+    2026-08-31/2026-09-06 removals just above.
 -->
 
   <Operation Class="PatchOperationConditional">
@@ -156,126 +167,6 @@
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]</xpath>
       <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]/weaponTags</xpath>
-      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]</xpath>
-      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]/weaponTags</xpath>
-      <value><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]</xpath>
-      <value><weaponTags><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
 
