@@ -1,47 +1,58 @@
 ## spec
 
-The approved Pyrelands render wave (`9e7e773a0`, 2026-09-17, "Wire approved
-Pyrelands creature render wave into art-override mods") replaced Orray's three
-facings and broke facing-height coherence badly.
+The approved Pyrelands render wave (`9e7e773a0`, 2026-09-17) replaced Orray's
+three facings and took `art_checks.py`'s `facing_height_consistency` from
+unflagged to **2.488**, the second-worst row in the Pyrelands corpus — which
+also broke the selftest, since Orray was pinned in `HEIGHT_MUST_PASS` as a
+known-good control for the 1.35 threshold.
 
-**MEASURED 2026-09-18** with `art_checks.py` (`facing_height_consistency`,
-instrument: max/min of visible-alpha bbox HEIGHT over the facing set, alpha>16;
-height only, never area):
+The instrument said the silhouettes disagree on height; it could not say which
+facing was wrong. That was the owner's call and he made it.
 
-| | ratio | verdict |
-|---|---|---|
-| pre-wave blob `9e7e773a0^` | below 1.35, **no finding** | known-good |
-| on disk now | **2.488** (south is 2.49x taller than east) | high |
+## ruling
 
-Context for how bad 2.488 is: it is the **second-worst row in the whole
-Pyrelands corpus** (only `AA_Razorjack` at 3.143 is worse), and worse than
-every row the owner named out loud as broken — Anooba, which he described as
-"North is HUGE compared to east", measures 1.458/1.560.
+Owner, 2026-09-18, having looked at a contact sheet of the current art beside
+the pre-wave art himself, verbatim:
 
-Orray was one of only four creatures pinned in `art_checks.py`'s
-`HEIGHT_MUST_PASS` as a known-good control for the 1.35 threshold. So this
-regression did not merely add a finding: it broke the selftest, which is how it
-was found (`SELFTEST_FAILURE_TRIAGE_1`).
+> "New Orray art is vastly better than old. North and east are good. South
+> needs regen it is 'fat' somehow. Older art is horrible. Discard."
+
+So: the armoured-crocodilian design stands, north and east ship untouched, the
+pre-wave feathered long-neck art is discarded permanently, and only the south
+facing was regenerated.
+
+## what shipped
+
+`src/RimStarWars/OrrayArtOverride/Textures/swanimals/Orray/Orray_south.png`,
+regenerated 2026-09-18 on the gemini channel (`gemini-3-pro-image`) with the
+approved `Orray_east` and `Orray_north` passed as reference images, so the new
+facing is the same individual animal. The codex channel was unavailable at the
+time — `usage_limit_exceeded` — which is why the job filed as
+`orray_v3_south` sits in `infrastructure/artpipe/failed/`.
+
+The defect was mass, not height: the old south drew a barrel-chested,
+hippo-wide torso whose head-on silhouette measured **421x510** against a side
+profile showing a slim low reptile. The new south measures **210x486 at
+(151,13)** — within 31 px of the approved north's **179x489 at (167,13)**, so
+the three facings now agree on how heavy the animal is and where it sits on
+the canvas. It is also composed to the same recession as north (near end of
+the body toward the bottom of the frame, far end toward the top) rather than
+the old south's front-elevation framing.
+
+Before/after, labelled, all four facings at craft size and true 96 px sprite
+size: `Transient/orray_south_regen_2026-09-19.png` (shelf life ~14 days).
 
 ## verify
 
-Orray's three facings agree on visible height within the 1.35 threshold, and
-`Orray` is returned to `HEIGHT_MUST_PASS` in
-`src/RimMandrake/Utils/art_checks.py` with `HEIGHT_REGRESSION` emptied of it.
-
-⛔ **Do not close this by loosening `FACING_HEIGHT_MAX_RATIO`.** The threshold is
-calibrated against seven owner- or measurement-confirmed breaks; raising it past
-2.488 would unflag most of them.
-
-## open
-
-- **Needs the owner**, `needs: owner`. Two routes and the choice is his, not
-  ours: regenerate Orray's south (or east) so the facings agree, or rule the new
-  art acceptable as-is — in which case `Orray` moves from `HEIGHT_REGRESSION`
-  to `HEIGHT_MUST_FLAG` with his words recorded, and the pin becomes a permanent
-  documented exception like `FurnaceBeast`.
-- Pinned meanwhile at `HEIGHT_REGRESSION = {"Orray": 2.488}` in `art_checks.py`,
-  so the selftest fails loudly if the number moves in EITHER direction rather
-  than the regression going quiet.
-- Not yet looked at by eye. The instrument says the silhouettes disagree on
-  height; it does not say which facing is the wrong one.
+- `art_checks.py --selftest` passes (84 files, 17 directories).
+- `facing_height_consistency` on Orray reads **2.385**, still over the 1.35
+  threshold — and correctly so: the residual ratio is north (a near-full-length
+  rear view, 489 px) against east (a low side profile, 205 px), i.e. camera-angle
+  variety in the two facings the owner approved by eye. Orray therefore moved
+  from `HEIGHT_REGRESSION` (now empty) to `HEIGHT_MUST_FLAG` in
+  `src/RimMandrake/Utils/art_checks.py`, with his words recorded there.
+  ⛔ `FACING_HEIGHT_MAX_RATIO` was not touched, and must not be: it is calibrated
+  against seven confirmed breaks.
+- Deployed to the live Mods folder (`deploy_custom_mods.py --apply`, VERIFIED in
+  sync). Art presence in game is unproven until the next load; the observable is
+  an Orray walking south that reads as slim as its side profile, not as a hippo.
