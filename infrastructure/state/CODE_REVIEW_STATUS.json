@@ -3318,10 +3318,10 @@
     "sha": "eb1f92993"
   },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-18",
-    "hash": "1aa3a8192722cf3584fb6f5a26d3f40a8a2af1810d295be2eb4db83a1e41ebfc",
-    "sha": "4e2a7912d"
+    "hash": "e92cdf6d9cf244c5d36533d91f4e127dd869ad866fd709b1b29cce03ba97345f",
+    "sha": "e97fc76e4"
   },
   "src/RimMandrake/MandrakePatches/LICENSE": {
     "cleanCount": 1,
@@ -7432,10 +7432,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimStarWars/Armoury/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "de7fd9258e6ca1bec1412b85c2415427f5e185ec40bd4845fe4f8bf62c3b33e5",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "14c9ded39371bdb69f20bb057719d963ebc2430cbefe2bebda2c9eeff6eb445d",
+    "sha": "e97fc76e4"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/AdaptiveStorageFramework/Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml": {
     "cleanCount": 4,
@@ -13408,10 +13408,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-10",
-    "hash": "beda616b8a402fa057153881f2deedacdd5b02944e2fb5a643b5f0a629000da3",
-    "sha": "4b81823b"
+    "cleanCount": 6,
+    "date": "2026-09-18",
+    "hash": "0aab7f3d5a34fec6d6ffabb31c8893ecdd418dba8d8bc1b2e2a3ca0c72eff6a0",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/Doctrine/LICENSE": {
     "cleanCount": 1,
@@ -13690,10 +13690,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/FungalSoilTrade/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "033ae29e7ee125210bb94a8aa6ce954c760712c88275ea0cf004c62257e3e2d8",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "87a42d8fb0c0ee243de3a048d10dc0d3fec7e60f93173c3b53625958423059d7",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/FungalSoilTrade/Defs/MapGeneration/RUT_FungalSoilScatter.xml": {
     "cleanCount": 1,
@@ -13996,10 +13996,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "a0dcfdcbae77e2b23258aa544d20be6bde845df5ecd7a197dd01033f1c5dfe12",
-    "sha": "4360e99c3"
+    "hash": "f873fda5d62a5450f7fe1a4c2df5cf320d245fc4584eb3eccaac9201e2e824fd",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepEmergence_Scatter.xml": {
     "cleanCount": 1,
@@ -14116,10 +14116,10 @@
     "sha": "cd7a57e06"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "a1a864e66d7324c704142443731e80356eb3132558dfa07512e4c3f98fcdc7b0",
-    "sha": "177be573d"
+    "hash": "170bc217ab9d2eb832826307be41dbd031d9062a227a336aca02c9ca988de2f5",
+    "sha": "b3c315579"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
@@ -14560,10 +14560,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "bd8344cf17f37439b0c81b53ef6d22a30eafa41d789c55fc839835988c8518b2",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "a0ef0cdb083904c4aae5999f20cf8ca024aedd42315e30063dbd356c2dcb1a86",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/PawnFlavor/Defs/Backstories_Deepwater.xml": {
     "cleanCount": 1,
@@ -14896,10 +14896,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "4b6e8c653558e20d665c427454651aca21d59a0a4f1be7e0b7b8672337d3e25c",
-    "sha": "4e2a7912d"
+    "hash": "9f1622bd6a79eb1f2a5e726dbfc223332c5ca72c629bf9dad0653430cff034a5",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml": {
     "cleanCount": 1,
@@ -15058,10 +15058,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "05146f0b877428aee6ee90790e226f2a1b8eb9cee0d5a79122aca53603a1a713",
-    "sha": "562ae2718"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "ec87d948264e0640d37fce9fbc1dc46ccfa20fef5d50ac36a8d688a31a43db3a",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/RotSporeKit/Defs/DamageDefs/RUT_RotSporeKit_DamageDefs.xml": {
     "cleanCount": 1,
@@ -16276,10 +16276,10 @@
     "sha": "7d6efe921"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 6,
+    "cleanCount": 7,
     "date": "2026-09-18",
-    "hash": "580afba33f2a21c30952b648c79fa2f9ce894a1097c5f50a75a7f5a21f39ae3f",
-    "sha": "4e41e0f74"
+    "hash": "b131e29513bf5f3b4b357aee1919993c7074842aaafbca2226a3b36ddad0e073",
+    "sha": "e97fc76e4"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
@@ -16342,10 +16342,10 @@
     "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "79cbb814781a58b09e55e745dec705d82b92250349fe5a3e4c234371ac114ee9",
-    "sha": "ac17db00a"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "de3755056f12f0b812ffa1b0ec6771b34ece272bcec7cd22c712ac76206aa18f",
+    "sha": "b3c315579"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 1,
@@ -16354,10 +16354,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 6,
-    "date": "2026-09-17",
-    "hash": "6842daf8f1b77a99334cdd055adcf7f80f82a9939fa607ead25ba91baa145266",
-    "sha": "fa8ec9d9a"
+    "cleanCount": 7,
+    "date": "2026-09-18",
+    "hash": "4592797dfc62666bafe5de37dab6c0eb502310dffb3f9622a212fdaa3588e840",
+    "sha": "b3c315579"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
@@ -16444,10 +16444,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "2c19e8e79b33a1d9acecf5d19e533cc18e52e393f44bc717ef4b8c00cc7c440f",
-    "sha": "ac17db00a"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "617ea09b4a57b3cb5b8922df054f3d87bbfc9002819f8d6e40196bba38e64b85",
+    "sha": "b3c315579"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml": {
     "cleanCount": 4,
