@@ -69,7 +69,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>What one cell of footprint is worth in fill-units. The 5:1
 		/// budget read backwards, and the number recession compares against.</summary>
-		public float PerCellVolume => cells.Count > 0 ? capacity / cells.Count : 0f;
+		public float PerCellVolume => RM_StockMath.PerCellVolume(capacity, cells.Count);
 
 		public void ExposeData()
 		{

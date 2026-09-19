@@ -66,6 +66,9 @@
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />
+    <!-- The §5 stock arithmetic, Verse-free on purpose so Source/SelfTest/
+         can compile the PRODUCTION file in directly. See its header. -->
+    <Compile Include="RM_StockMath.cs" />
     <Compile Include="RM_LiquidBody.cs" />
     <Compile Include="RM_LiquidStock.cs" />
     <Compile Include="Designator_DigCanal.cs" />

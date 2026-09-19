@@ -627,14 +627,18 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Recession's write: dry one cell of a NATURAL body. The
 		/// original terrain is recorded first, without exception — a receding
-		/// pond must not permanently launder the map (§5).</summary>
-		public void DryNaturalCell(IntVec3 c, FluidDef fluid)
+		/// pond must not permanently launder the map (§5).
+		///
+		/// Returns TRUE only when the cell was actually dried. The caller relies
+		/// on that: a cell reported as receded but left as natural liquid is
+		/// still a valid recession candidate next pass, and recording it anyway
+		/// duplicates it without bound.</summary>
+		public bool DryNaturalCell(IntVec3 c, FluidDef fluid)
 		{
 			if (!c.InBounds(map))
 			{
-				return;
+				return false;
 			}
-			RecordOriginalTerrain(c);
 			TerrainDef dry = fluid != null ? fluid.recededTerrain : null;
 			if (dry == null)
 			{
@@ -642,9 +646,16 @@ namespace RimMandrake.FlowWorks
 				// alone rather than inventing one. The stock still ran down and
 				// the body still stops supplying; only the visible recession is
 				// missing, and a missing visual beats a wrong terrain write.
-				return;
+				//
+				// Nothing is recorded either — RecordOriginalTerrain below is
+				// deliberately AFTER this guard, because a record with no
+				// matching write leaves a restore entry for a cell that never
+				// changed.
+				return false;
 			}
+			RecordOriginalTerrain(c);
 			map.terrainGrid.SetTerrain(c, dry);
+			return true;
 		}
 
 		// ── map-edge sinks (ruling 9) ─────────────────────────────────────
