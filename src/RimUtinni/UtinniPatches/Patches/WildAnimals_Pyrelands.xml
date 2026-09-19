@@ -84,8 +84,9 @@
     RUT_FireWasp       0.40  small-predator     — was AA_FireWasp    (Alpha Animals)
     RUT_Flamefang      0.50  venom-ambush       — was GR_Boomsnake   (Vanilla Genetics Expanded)
 
-  OURS, re-authored off a dead donor defName (EMBERSCYTHE_MANTIS_REAUTHOR_1 —
-  src/RimUtinni/RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml):
+  OURS, re-authored off a dead donor defName (EMBERSCYTHE_MANTIS_REAUTHOR_1,
+  rehomed into this mod by EMBERSCYTHE_PYRELANDS_REHOME_1 2026-09-19 —
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Emberscythe.xml):
     RUT_Emberscythe    0.05  large-predator     — was GR_Mantistanis (Vanilla Genetics Expanded)
 
   Star Wars Animal Collection (Continued) (mod name string "Star Wars Animal
@@ -189,7 +190,8 @@
          RUT_FireWasp    0.4   was AA_FireWasp    (Alpha Animals)
          RUT_Flamefang   0.5   was GR_Boomsnake   (Vanilla Genetics Expanded)
        All five are UtinniPatches' own defs (Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml,
-       RUT_PyrelandsPortedFauna.xml, RotSporeKit/.../RUT_Emberscythe.xml), so the gate is
+       RUT_PyrelandsPortedFauna.xml, RUT_Emberscythe.xml — the last rehomed off
+       RotSporeKit by EMBERSCYTHE_PYRELANDS_REHOME_1, 2026-09-19), so the gate is
        the BIOME's mod and nothing else — the two donor FindMod blocks that used to sit
        here are gone, and with them the last reason this file could lose a creature to a
        donor mod being unsubscribed. Casting HERE, with the rest of the Pyrelands cast,
