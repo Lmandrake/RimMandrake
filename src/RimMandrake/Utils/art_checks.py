@@ -612,12 +612,21 @@ BOUNDARY_MUST_FLAG_HIGH = [
     # in both the current file and the pre-`bd9a1b8ee` blob. This is the anchor
     # that does not move, so the check stays covered even if the other is fixed.
     ("GizkaW_south.png", "right margin 0 px, unchanged since 2026-09-14"),
-    # 🔴 NEW, and a regression from the same 2026-09-17 wave that FIXED Zeer's
-    # facing-height break: the regen scales every Zeer facing to ~0.98 of canvas,
-    # which bought the 1.024 height ratio at the cost of clipping the top edge.
-    # The pre-wave blob raised no boundary finding at all.
-    # Item: ZEER_EAST_TOP_CLIP_1.
-    ("Zeer_east.png", "top margin 0 px, introduced by the 2026-09-17 regen"),
+]
+
+# The other side of the same check, and it is the side that decays silently: three
+# facings were REPAIRED 2026-09-18 (ZEER_EAST_TOP_CLIP_1) by insetting or shifting
+# the body inside its existing canvas, never by rescaling the facing set — the
+# 2026-09-17 wave's ~0.98-of-canvas scaling is exactly what clipped them, and
+# Zeer's hard-won 1.024 height ratio had to survive the fix (it reads 1.035 now).
+# A regen that re-clips any of these is a regression, so pin them: a "must flag"
+# list alone cannot tell a fix from a file that stopped being measured.
+BOUNDARY_MUST_NOT_FLAG_HIGH = [
+    ("Zeer_east.png", "inset 512->490 and re-centred; top margin 11 px"),
+    ("Iriaz_south.png", "inset 256->249 and re-centred; top margin 3 px"),
+    ("GR_Mantistanis_south.png", "shifted down 21 px into its own bottom slack; "
+                                 "top margin 21 px, height untouched so the pinned "
+                                 "2.095 facing-height ratio is undisturbed"),
 ]
 
 # 🔑 duplicate_facings is now proven SYNTHETICALLY, and that is the point.
@@ -724,6 +733,21 @@ def selftest() -> int:
                    and name in f.subject for f in findings):
             fails.append("boundaries_respected did NOT raise a HIGH finding on "
                          "%s — %s" % (name, why))
+    # A "must not flag" pin passes for two different reasons — the file is clean, or
+    # the file is gone — so name the roster rather than inferring it from findings.
+    # `Nuna_f_east.png` sat in the must-flag list describing art that had already
+    # been replaced; without this the same silence would hide a deleted repair.
+    roster = {f.name for f in collect([REVIEW_ART], originals=True)}
+    for name, why in BOUNDARY_MUST_FLAG_HIGH + BOUNDARY_MUST_NOT_FLAG_HIGH:
+        if name not in roster:
+            fails.append("boundaries_respected pin names %s, which is not in the "
+                         "corpus at all — the pin describes art that has moved or "
+                         "been deleted (%s)" % (name, why))
+    for name, why in BOUNDARY_MUST_NOT_FLAG_HIGH:
+        if any(f.check == "boundaries_respected" and f.severity == "high"
+               and name in f.subject for f in findings):
+            fails.append("boundaries_respected raised a HIGH finding on %s, which "
+                         "was repaired and must stay repaired — %s" % (name, why))
 
     for line in fails:
         print("FAIL  " + line)
@@ -741,7 +765,9 @@ def selftest() -> int:
     print("PASS  duplicate_facings fires on byte-identical copies and does NOT "
           "fire on a one-pixel difference (synthetic fixture, corpus-independent)")
     print("PASS  outline_coherence, and boundaries_respected on %d pinned clipped "
-          "facings" % len(BOUNDARY_MUST_FLAG_HIGH))
+          "facings + %d pinned repaired facings, all %d present in the corpus"
+          % (len(BOUNDARY_MUST_FLAG_HIGH), len(BOUNDARY_MUST_NOT_FLAG_HIGH),
+             len(BOUNDARY_MUST_FLAG_HIGH) + len(BOUNDARY_MUST_NOT_FLAG_HIGH)))
     return 0
 
 
