@@ -125,7 +125,7 @@
       <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - the-sower, keep -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - the-drinker, adjust-keep -->
       <AA_Drainer MayRequire="sarg.alphaanimals">0.15</AA_Drainer>  <!-- drainer - the-thieves, adjust-keep -->
-      <AA_Razorjack MayRequire="sarg.alphaanimals">0.15</AA_Razorjack>  <!-- razorjack - the-pickers, adjust-keep -->
+      <RUT_Sytheclaw>0.15</RUT_Sytheclaw>  <!-- sytheclaw - the-pickers, adjust-keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - the-undertaker, adjust-keep -->
       <AA_RoughPlatedMonitor MayRequire="sarg.alphaanimals">0.1</AA_RoughPlatedMonitor>  <!-- rough-plated monitor - the-basker, keep -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.1</AA_Swarmling>  <!-- swarmling - the-pickers, adjust-keep -->

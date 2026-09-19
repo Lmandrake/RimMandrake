@@ -2,9 +2,10 @@
 <!--
   RUT_FlamefangBite.xml                 UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
 
-  ToolCapacityDef + ManeuverDef pair routing GR_Boomsnake's bite tool to
-  RUT_FlamefangVenomBite (DamageDefs/) instead of GeneticRim's own
-  GR_VeryToxicBite. Shape copied from GR_VeryToxicBite's own trio in Vanilla
+  ToolCapacityDef + ManeuverDef pair routing RUT_Flamefang's bite tool to
+  RUT_FlamefangVenomBite (DamageDefs/). Named directly by that ThingDef in
+  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml since PYRELANDS_DONOR_PORT_4
+  (2026-09-19). Shape copied from GR_VeryToxicBite's own trio in Vanilla
   Genetics Expanded (Defs/ToolCapacityDefs/ToolCapacity.xml +
   Defs/Maneuvers/Maneuvers.xml, both RimSage/grep-verified this pass) and
   from vanilla Cobra's ToxicBite trio — same required fields, same shape.

@@ -206,7 +206,7 @@
       <Fambaa MayRequire="mlie.starwarsanimalcollection">0.25</Fambaa>  <!-- fambaa - shatterer, import -->
       <PekoPeko MayRequire="mlie.starwarsanimalcollection">0.2</PekoPeko>  <!-- Peko-peko - flier, import -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - margin-predator, keep -->
-      <AA_Razorjack MayRequire="sarg.alphaanimals">0.2</AA_Razorjack>  <!-- razorjack - floor-predator, keep -->
+      <RUT_Sytheclaw>0.2</RUT_Sytheclaw>  <!-- sytheclaw - floor-predator, keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
       <Dalgo MayRequire="mlie.starwarsanimalcollection">0.18</Dalgo>  <!-- dalgo - brake, keep -->
       <Hawkbat MayRequire="mlie.starwarsanimalcollection">0.18</Hawkbat>  <!-- hawk-bat - flier-predator, keep -->
       <Hssiss MayRequire="mlie.starwarsanimalcollection">0.18</Hssiss>  <!-- hssiss - lunger-junior, keep -->

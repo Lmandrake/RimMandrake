@@ -19,45 +19,55 @@
   PYRELANDS_FIRE_WEB_COMMISSION_1 igniter builds, and the round-2 move-mapping
   import of Dalgo) — NOT re-derived or rescaled here. That JSON
   is the actual ruling; this file only wires it into the def the game reads.
-  The 14-animal sum is 4.21 (GR_Boomsnake/Flamefang restored 2026-09-16, see
-  FLAMEFANG_SNAKE_REBIRTH_1 note below) — not the placeholder's ~5.8, a
-  deliberate consequence of using the owner's real per-species numbers rather
-  than matching the placeholder's total.
+  The 14-animal sum is 4.21 — not the placeholder's ~5.8, a deliberate
+  consequence of using the owner's real per-species numbers rather than matching
+  the placeholder's total.
+
+  ⚠️ The JSON records the owner's RULINGS, and several of its rows still name the
+  donor defName that carried the ruled creature at the time he ruled. Every one
+  of those has since been re-authored as our own def at the SAME commonality; the
+  operations below are the current mapping and are the authority on WHICH def is
+  cast. The weights are still the JSON's, unchanged.
 
   🔴 2026-09-14 (BOOMALOPE_CUT_EVERYWHERE_1): vanilla Boomalope, originally
   wired here 2026-09-13 under the 2026-09-09 KEEP-reskinned card, is cut —
   owner ruling "Absolutely no boomalopes," reversing that card. Removed from
   the unconditional block and the roster below; counts corrected to 14/4.21.
 
-  🔴 2026-09-16 (FLAMEFANG_SNAKE_REBIRTH_1): GR_Boomsnake is BACK, reborn as
-  "Flamefang" — owner sheet note, verbatim: "rename this to Flamefang and make
-  it venomous," which postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1
-  (2026-09-14, which had un-wired it here after finding no ruling had ever
-  restored it post-BOOM_FAMILY_CUT_1). The Cherry Picker ThingDef cut is
-  reversed (see cherrypicker/CherryPicker.SHIP.xml and the ratified
-  deployed/config/v1_freeze copy); label/description are renamed into our own
-  modspace by RUT_FlamefangIdentity.xml, and its bite is venomous per
-  RUT_FlamefangVenom.xml. Re-added to the Vanilla Genetics Expanded block and
-  the roster below; counts corrected to 14/4.21. It is a distinct
-  venom-ambush niche, not the fire-follower niche — that stays AA_Razorjack's
-  (Sytheclaw) per the 2026-09-14 recast.
+  🔴 2026-09-16 (FLAMEFANG_SNAKE_REBIRTH_1): the venom-ambusher is the flamefang
+  — owner sheet note, verbatim: "rename this to Flamefang and make it venomous,"
+  which postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1 (2026-09-14, which had
+  un-wired the creature after finding no ruling had ever restored it
+  post-BOOM_FAMILY_CUT_1). It is a distinct venom-ambush niche, not the
+  fire-follower niche — that is the sytheclaw's, per the 2026-09-14 recast.
+
+  🔴 2026-09-19 (PYRELANDS_DONOR_PORT_4): every creature this file casts is now
+  one of OUR defs. The four that still rode a donor defName — GR_Boomsnake,
+  AA_Razorjack, AA_Barbslinger, AA_FireWasp — were re-authored as RUT_Flamefang,
+  RUT_Sytheclaw, RUT_Barbslinger and RUT_FireWasp in
+  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml, carrying their own labels
+  and descriptions, so the two identity patches (FlamefangIdentity.xml,
+  RazorjackIdentity_Sytheclaw.xml), the venom-rewiring patch (FlamefangVenom.xml)
+  and the four ArtOverride mods are all deleted — git is the provenance. The
+  Cherry Picker ThingDef cut on GR_Boomsnake is now irrelevant rather than
+  reversed: nothing casts that def any more.
 
   🔑 STRUCTURE: one PatchOperationConditional-guarded PatchOperationReplace
   swaps the WHOLE node for the two commissioned igniters (both always
-  loaded — this mod's own defs) — no PatchOperationFindMod needed for
-  either. Three more PatchOperationFindMod blocks then splice each donor mod's animals
-  in via PatchOperationAdd on the now-existing node, shorthand-dictionary form
-  throughout — the whole biome's own wildAnimals list already uses that form
-  (`<Hare>1.2</Hare>` etc.), and it is the ONLY form
+  loaded — this mod's own defs). Two more PatchOperationConditional blocks then
+  splice the rest in via PatchOperationAdd on the now-existing node,
+  shorthand-dictionary form throughout — the whole biome's own wildAnimals list
+  already uses that form (`<Hare>1.2</Hare>` etc.), and it is the ONLY form
   BiomeAnimalRecord.LoadDataFromXmlCustom reads (same mechanism as
   WeatherCommonalityRecord — see this mod's AshStorms_Pyrelands.xml for the
-  measured citation). A mod that is not loaded means its PatchOperationFindMod
-  block simply never fires — no error, no silent wrong-parse.
+  measured citation). There is no PatchOperationFindMod left in this file: every
+  def cast here is ours, so the only gate that makes sense is the one on the
+  BIOME's own mod.
 
-  ⚠️ A patch that matches nothing logs nothing (PatchOperationFindMod returns
-  true on no match of its ops) — validated with
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional returns
+  true on no match) — validated with
   skills/rimworld-modding/scripts/validate_patch.py against the live def dump
-  and the full 590-mod set; see the file-level record for the verdict.
+  and the full active mod set; see the file-level record for the verdict.
 
   ============================================================================
   ROSTER AND VERIFICATION
@@ -67,35 +77,16 @@
     RUT_FireHawk       0.15  igniter-flier      — RUT_PyrelandsFauna.xml (this mod)
     RUT_FurnaceBeast   0.08  igniter-megafauna  — RUT_PyrelandsFauna.xml (this mod)
 
-  Alpha Animals (mod name string "Alpha Animals", packageId sarg.alphaanimals
-  — confirmed active in ModsConfig.xml). All three defNames verified directly
-  against the mod's own shipped XML, Steam Workshop content id 1541721856,
-  1.6/Defs/ThingDefs_Races/:
-    AA_Razorjack       0.20  fire-follower      — Races_Razorjack.xml:5,157
-    AA_Barbslinger     0.15  ash-grazer         — Races_BarbSlinger.xml:5,135
-    AA_FireWasp        0.40  small-predator     — Races_FireWasp.xml:4,124
+  OURS, re-authored off a donor defName (PYRELANDS_DONOR_PORT_4, 2026-09-19 —
+  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml, always loaded with this mod):
+    RUT_Sytheclaw      0.20  fire-follower      — was AA_Razorjack   (Alpha Animals)
+    RUT_Barbslinger    0.15  ash-grazer         — was AA_Barbslinger (Alpha Animals)
+    RUT_FireWasp       0.40  small-predator     — was AA_FireWasp    (Alpha Animals)
+    RUT_Flamefang      0.50  venom-ambush       — was GR_Boomsnake   (Vanilla Genetics Expanded)
 
-  Vanilla Genetics Expanded (mod name string "Vanilla Genetics Expanded",
-  packageId VanillaExpanded.VGeneticsE / vanillaexpanded.vgeneticse in
-  ModsConfig.xml — confirmed active). Both defNames verified directly against
-  the mod's own shipped XML, Steam Workshop content id 2801160906 (About.xml:
-  <packageId>VanillaExpanded.VGeneticsE</packageId>, <name>Vanilla Genetics
-  Expanded</name>):
-    GR_Mantistanis     0.05  large-predator
-        — 1.6/Mods/Megafauna/Defs/ThingDefs_Races/Races_Animal_Megafaunahybrids.xml:570
-          (ThingDef) and :716 (PawnKindDef).
-    NOTE: this download's top-level folder is internally named "Megafauna"
-    for the hybrid-animal half of the mod's content — that is this mod's own
-    packaging choice, not a sign these defNames belong to the separate,
-    RETIRED "Megafauna" workshop mod (AnimalBiomeDuplicates_Fix.xml's header,
-    2026-09-05 retirements). Checked: the retired Megafauna mod is not present
-    in the active ModsConfig.xml list; Vanilla Genetics Expanded is.
-    GR_Boomsnake       0.50  venom-ambush ("Flamefang", RUT_FlamefangIdentity.xml
-        renames label/description; RUT_FlamefangVenom.xml makes its bite
-        venomous) — restored 2026-09-16 per FLAMEFANG_SNAKE_REBIRTH_1, see
-        header note above. defName unchanged — it is the donor mod's own
-        defName, not a naming-scheme migration (see
-        RUT_FlamefangIdentity.xml's header).
+  OURS, re-authored off a dead donor defName (EMBERSCYTHE_MANTIS_REAUTHOR_1 —
+  src/RimUtinni/RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml):
+    RUT_Emberscythe    0.05  large-predator     — was GR_Mantistanis (Vanilla Genetics Expanded)
 
   Star Wars Animal Collection (Continued) (mod name string "Star Wars Animal
   Collection (Continued)", packageId mlie.starwarsanimalcollection — confirmed
@@ -130,20 +121,12 @@
     Gizka               1.00  grain (ECOSYSTEM_PYRAMID_LAW_1: the most-seen animal)
 
   ============================================================================
-  LEFT OUT: vanilla Boomalope only (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14 —
-  see above). GR_Boomsnake was left out here 2026-09-14 through 2026-09-16
-  (BOOMSNAKE_CUT_CONFLICT_1) and is now back, reborn as Flamefang
-  (FLAMEFANG_SNAKE_REBIRTH_1, 2026-09-16 — see header note above). Every
-  other name in the item's checklist resolved to a real defName in a real,
-  active mod — RUT_FireHawk, RUT_FurnaceBeast, AA_Razorjack, AA_Barbslinger,
-  AA_FireWasp, GR_Mantistanis, Anooba, Iriaz, Nuna, Orray, Zeer, Dalgo. One
-  more name not in the item's own checklist but present in
-  the_pyrelands.json's ruled "fauna" array — Gizka — is wired too, because
-  the item's brief was to wire "the ruled fauna roster" and the JSON is that
-  roster; leaving it out would silently under-wire a roster the owner already
-  ruled complete. GR_Mantistanis looked riskiest at first (its defining XML
-  sits inside a workshop download whose internal folder is named
-  "Megafauna") but resolved cleanly: see the Megafauna-folder note above.
+  LEFT OUT: vanilla Boomalope only (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14).
+  Every other name in the item's checklist and in the_pyrelands.json's ruled
+  "fauna" array is cast above, as one of our own defs. Gizka is wired although
+  it is not in the item's own checklist, because the item's brief was to wire
+  "the ruled fauna roster" and the JSON is that roster; leaving it out would
+  silently under-wire a roster the owner already ruled complete.
   ============================================================================
 -->
 <Patch>
@@ -165,50 +148,6 @@
           <RUT_FireHawk>0.15</RUT_FireHawk>
           <RUT_FurnaceBeast>0.08</RUT_FurnaceBeast>
         </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Alpha Animals: fire-follower predator, ash-grazer, and the small
-       fire-armed native. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Animals</li>
-    </mods>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <AA_Razorjack>0.2</AA_Razorjack>
-        <AA_Barbslinger>0.15</AA_Barbslinger>
-        <AA_FireWasp>0.4</AA_FireWasp>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Vanilla Genetics Expanded: fire-follower predator hybrid, plus
-       GR_Boomsnake — restored 2026-09-16 as "Flamefang" (venom-ambusher),
-       FLAMEFANG_SNAKE_REBIRTH_1, superseding the 2026-09-14
-       BOOMSNAKE_CUT_CONFLICT_1 removal. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Vanilla Genetics Expanded</li>
-    </mods>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <!-- MayRequire on the keyed element is load-bearing and honored at
-             def parse (same shape RUT_TheForge's AA_Aerofleet already uses).
-             GR_Mantistanis is NOT in VGE's base defs: VGE's loadFolders.xml
-             ships it from 1.6/Mods/Megafauna only IfModActive Spino.Megafauna
-             — absent from the live list, so without this gate the record
-             dangles (null PawnKindDef key) and kills GiddyUp's startup cache
-             AND GenStep_Animals on every Pyrelands map (MEASURED 2026-09-18,
-             the PYRELANDS_ANIMALS_GENSTEP_1 crash). FindMod(VGE) alone is NOT
-             sufficient for any GR_ kind that lives under Mods/Megafauna. -->
-        <!-- GR_Mantistanis removed 2026-09-19: re-authored as our own RUT_Emberscythe,
-             cast below. Its Spino.Megafauna gate and the dangling-key crash risk it
-             documented (PYRELANDS_ANIMALS_GENSTEP_1) go with it. -->
-        <GR_Boomsnake>0.5</GR_Boomsnake>
       </value>
     </match>
   </Operation>
@@ -239,16 +178,32 @@
     </match>
   </Operation>
 
-  <!-- RUT_Emberscythe, our re-author of the donor GR_Mantistanis, at the weight that
-       donor held (0.05). EMBERSCYTHE_MANTIS_REAUTHOR_1; owner 2026-09-19: "YES for
-       Pyrelands and no elsewhere." Casting it HERE, with the rest of the Pyrelands
-       cast, rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
+  <!-- OUR OWN Pyrelands fauna, each at the exact weight the donor it replaced held.
+       RUT_Emberscythe re-authors GR_Mantistanis (0.05) — EMBERSCYTHE_MANTIS_REAUTHOR_1;
+       owner 2026-09-19: "YES for Pyrelands and no elsewhere." The other four are
+       PYRELANDS_DONOR_PORT_4, owner 2026-09-19, verbatim: "The flamefang should be
+       added to the biome and any donors cut, period. Let's be done with these
+       lingering traces," then "port all four":
+         RUT_Sytheclaw   0.2   was AA_Razorjack   (Alpha Animals)
+         RUT_Barbslinger 0.15  was AA_Barbslinger (Alpha Animals)
+         RUT_FireWasp    0.4   was AA_FireWasp    (Alpha Animals)
+         RUT_Flamefang   0.5   was GR_Boomsnake   (Vanilla Genetics Expanded)
+       All five are UtinniPatches' own defs (Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml,
+       RUT_PyrelandsPortedFauna.xml, RotSporeKit/.../RUT_Emberscythe.xml), so the gate is
+       the BIOME's mod and nothing else — the two donor FindMod blocks that used to sit
+       here are gone, and with them the last reason this file could lose a creature to a
+       donor mod being unsubscribed. Casting HERE, with the rest of the Pyrelands cast,
+       rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
   <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">
     <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
         <RUT_Emberscythe>0.05</RUT_Emberscythe>
+        <RUT_Sytheclaw>0.2</RUT_Sytheclaw>
+        <RUT_Barbslinger>0.15</RUT_Barbslinger>
+        <RUT_FireWasp>0.4</RUT_FireWasp>
+        <RUT_Flamefang>0.5</RUT_Flamefang>
       </value>
     </match>
   </Operation>

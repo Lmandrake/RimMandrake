@@ -11,10 +11,11 @@
   hediffSolid/impactSoundType/workerClass etc. from it unchanged; only the
   label and the venom injection are new.
 
-  Routed onto GR_Boomsnake's bite tool by Patches/FlamefangVenom.xml via the
-  matching ToolCapacityDefs/RUT_FlamefangBite.xml + Maneuvers/
-  RUT_FlamefangBite.xml pair (mirrors GeneticRim's own GR_VeryToxicBite
-  capacity/maneuver/damage trio, which this replaces on the tool).
+  Reached from RUT_Flamefang's own bite tool
+  (Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml) through the matching
+  ToolCapacityDefs/RUT_FlamefangBite.xml capacity + maneuver pair (mirrors
+  GeneticRim's own GR_VeryToxicBite capacity/maneuver/damage trio, which the
+  donor def this creature was ported off used).
 -->
 <Defs>
 

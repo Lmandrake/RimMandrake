@@ -4,19 +4,20 @@
 
   Owner sheet note, 2026-09-16, verbatim: "rename this to Flamefang and make
   it venomous" — postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1's eviction
-  of GR_Boomsnake. This is the injected hediff half of the venom mechanism;
+  of the creature. This is the injected hediff half of the venom mechanism;
   the delivery half (the DamageDef that injects it on a bite, and the tool
-  capacity/maneuver pair that routes GR_Boomsnake's bite through that
-  DamageDef) is RUT_FlamefangVenomBite (DamageDefs/) and RUT_FlamefangBite
-  (ToolCapacityDefs/ + Maneuvers/), wired onto the ThingDef by
-  Patches/FlamefangVenom.xml.
+  capacity/maneuver pair that routes the bite through that DamageDef) is
+  RUT_FlamefangVenomBite (DamageDefs/) and RUT_FlamefangBite (ToolCapacityDefs/
+  + Maneuvers/), named directly by RUT_Flamefang's bite tool in
+  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml — no patch is involved
+  since PYRELANDS_DONOR_PORT_4 (2026-09-19) made the creature our own def.
 
   Mechanism modeled on vanilla's own venom pattern (RimSage-verified this
   pass): Cobra's bite tool has capacity ToxicBite -> ManeuverDef ToxicBite ->
   DamageDef ToxicBite, whose <additionalHediffs> block injects HediffDef
   ToxicBuildup scaled by <severityPerDamageDealt> per hit
-  (Defs/Core/DamageDefs/Damages_MeleeWeapon.xml). GR_Boomsnake's own donor
-  tool already used the same pattern one level further specialized
+  (Defs/Core/DamageDefs/Damages_MeleeWeapon.xml). The donor def this creature
+  was ported off used the same pattern one level further specialized
   (GeneticRim's GR_VeryToxicBite -> ToxicBuildup, 0.005/dmg) — this hediff is
   a NEW, flavor-distinct venom (not a reskin of ToxicBuildup) so Flamefang's
   bite reads as ITS OWN thing: a fire-following serpent's venom that burns
