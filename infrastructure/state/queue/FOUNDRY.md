@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T17:26:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-19T17:36:43Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1025,6 +1025,15 @@ target:   v1
 kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
+
+## PYRELANDS_DONOR_PORT_4 Four Pyrelands creatures ported off donor defNames onto our own RUT_ defs
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+summary:  PYRELANDSDONORPORT4
+prose:    infrastructure/state/items/PYRELANDS_DONOR_PORT_4.md
 
 # BLOCKED — something is WRONG and someone must act
 
