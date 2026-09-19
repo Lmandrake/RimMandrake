@@ -8,6 +8,11 @@ namespace RimMandrake.CreatureBehaviors
     // ROT_HEALTH_SHARING_1. "A passive hediff comp giving +50% natural-healing
     // severity adjustment while >=2 same-tag kin are within radius."
     //
+    // Owner ruling 2026-09-18: "Make the healing ability be proportional to
+    // body size per day." The boost is no longer a flat severity/day
+    // constant — see CompProperties_KinMending.healPerDayPerBodySize and
+    // ApplyMendingBoost below for the formula.
+    //
     // Periodic-aura shape cribbed from this assembly's own
     // RM_HediffComp_LocalGrowthAura (CompPostTickInterval + a staggered
     // ticksUntilCycle counter) — same idiom, substituting an injury-severity
@@ -103,7 +108,10 @@ namespace RimMandrake.CreatureBehaviors
         {
             float mult = Mathf.Max(0f, RM_CreatureBehaviorsSettings.kinMendingBoostMultiplier);
             float cycleFraction = Props.tickIntervalTicks / 60000f; // GenDate.TicksPerDay
-            float healAmount = Props.extraSeverityHealedPerDay * cycleFraction * mult;
+            // Owner ruling 2026-09-18 (ROT_HEALTH_SHARING_1): heal scales
+            // with the carrier's body size, not a flat constant.
+            // heal/day = healPerDayPerBodySize * pawn.BodySize * settings multiplier.
+            float healAmount = Props.healPerDayPerBodySize * pawn.BodySize * cycleFraction * mult;
             if (healAmount <= 0f)
             {
                 return;
