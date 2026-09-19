@@ -84,9 +84,32 @@ and clearing them has never been ruled.
    cut"*, which places it in the Pyrelands in our own prose. That is evidence, not
    a ruling — do not cast either on it.
 
-## also worth his eye
+## corrected 2026-09-19 — an earlier claim in this item was FALSE
 
-`RM_FE_Pyrelands`'s own `<wildAnimals>` is thirteen vanilla Earth animals — hare,
-rat, gazelle, ostrich, emu, dromedary, muffalo, iguana, elephant, rhinoceros,
-cougar, fennec fox, warg — and no Star Wars fauna at all, which sits oddly against
-the standing "terrestrial, not wanted" call on creature art.
+⛔ This item previously said `RM_FE_Pyrelands` carries "thirteen vanilla Earth
+animals and no Star Wars fauna at all." **That was wrong and is deleted**, not
+superseded: it was read from the biome DEF file without reading the patch.
+`Patches/WildAnimals_Pyrelands.xml` opens with a `PatchOperationReplace` that WIPES
+`<wildAnimals>` before anything is added, so not one of those 13 survives to runtime.
+
+MEASURED from the live def dump of the running 621-mod game
+(`DefDump/captures/2026-09-19T12-48-16Z`, `BiomeDef.json`), the Pyrelands cast is
+exactly 13 records and contains **no vanilla Earth animal**:
+
+`RUT_FireHawk` 0.15 · `RUT_FurnaceBeast` 0.08 · `AA_Razorjack` 0.2 ·
+`AA_Barbslinger` 0.15 · `AA_FireWasp` 0.4 · `GR_Boomsnake` **0** ·
+`Anooba` 0.35 · `Iriaz` 0.5 · `Nuna` 0.5 · `Orray` 0.25 · `Zeer` 0.6 ·
+`Dalgo` 0.18 · `Gizka` 1.0
+
+🔑 **The owner has seen these creatures in a live Pyrelands wearing OUR art, and
+that is not a contradiction.** Our `RSW_` ports use the SAME relative texPaths as
+the donor defs (`swanimals/Iriaz/Iriaz`, `swanimals/Nuna/Nuna_f`, `swanimals/Zeer/Zeer`,
+`swanimals/Dalgo/Dalgo`), and `mandrake.rsw.iriazartoverride` is a loose-`Textures/`
+mod that `loadAfter`s both the donor and SWBestiary — so the override art wins the
+same-path resolution no matter which def spawns. **Therefore the donor→RSW_ swap at
+`62195aaf1` changes no art whatsoever.** What it changes is which def spawns: our
+port's own stats, body and leather, and no dependency on the donor mod.
+
+⚠️ `GR_Mantistanis` was never live either way — its `MayRequire="Spino.Megafauna"`
+gate excluded it, and that mod is not in the list. Removing it changed nothing at
+runtime; it only removed a dangling-key hazard.
