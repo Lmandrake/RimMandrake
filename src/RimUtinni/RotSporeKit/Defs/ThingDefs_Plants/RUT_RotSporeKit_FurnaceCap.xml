@@ -20,8 +20,8 @@
 
   <ThingDef ParentName="RUT_CaveBushBase">
     <defName>RUT_FurnaceCap</defName>
-    <label>furnace cap</label>
-    <description>A squat, thick-walled mushroom that runs its metabolism hot enough to steam in cold air. Cut one open and the flesh is body-warm right through. Harvested whole and kept alive, its caps will heat a room for a couple of weeks before the tissue finally gives out.</description>
+    <label>thurrom hearth</label>
+    <description>A squat, thick-walled mushroom that runs its metabolism so hot it steams in the cold air of the forest. Cut one open and the flesh is body-warm right through; harvested whole and kept alive, its caps will heat a room for a couple of weeks before the tissue finally gives out.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -59,7 +59,7 @@
       <wildOrder>2</wildOrder>
       <neverBlightable>false</neverBlightable>
       <maxMeshCount>4</maxMeshCount>
-      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <visualSizeRange>1.0~2</visualSizeRange>
       <purpose>Misc</purpose>
       <pollution>Any</pollution>
       <interferesWithRoof>false</interferesWithRoof>

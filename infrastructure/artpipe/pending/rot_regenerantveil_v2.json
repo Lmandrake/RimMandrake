@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_regenerantveil_v2",
+  "priority": 40,
+  "prompt": "One and a third cells: a flat, translucent sheet of pale tissue draped over the ground and a low hummock, milk-white with faint lilac veins pulsing through it and a soft inner glow along the veins, the edges lifting slightly. No cap, no stalk \u2014 it is a veil, not a mushroom. Currently the grey lady placeholder; must be its own art, flat and sheet-like where the sylla lace is a hanging skirt. Owner's note: \", rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

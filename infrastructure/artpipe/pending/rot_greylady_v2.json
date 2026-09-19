@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_greylady_v2",
+  "priority": 40,
+  "prompt": "One cell: a tall grey-white cap with a long, hanging skirt of fine net-like lace draped from the cap rim to the ground, translucent with a visible mesh pattern, the stalk seen dimly through it. Palette ash-grey and bone-white with a faint lilac cast, no glow. The hanging lace is the identity. Distinct from the mirrash veil (which is a flat translucent sheet on the ground, not a skirt) and from the Lantern Deeps' prenna lace (blue-lit). Owner's note: \", rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

@@ -75,8 +75,8 @@
   <!-- ============== RUT_AgelessCap (age-reversal source; guardian: spore gas) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_AgelessCap</defName>
-    <label>ageless cap</label>
-    <description>A pale, swollen mushroom rumored to hold back the years of anyone who tastes it right. It does not defend itself out of malice — disturbing its mycelium is simply what makes it vent.</description>
+    <label>orlath cap</label>
+    <description>A pale, swollen cap said to give back years to anyone who drinks it brewed right — and it must be brewed here, alive, or not at all. It bears no malice; disturbing its mycelium is simply what makes it vent a choking cloud, and the cloud does not care why you came.</description>
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
@@ -124,8 +124,8 @@
   <!-- ============== RUT_RegenerantVeil (bioregeneration source; guardian: network alarm) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_RegenerantVeil</defName>
-    <label>regenerant veil</label>
-    <description>A translucent, slow-pulsing veil of fungal tissue, threaded straight into the grove's own mycelial network. Wound it and the whole network answers.</description>
+    <label>mirrash veil</label>
+    <description>A translucent, slow-pulsing veil of fungal tissue laid over the ground, threaded straight into the grove's own mycelial network, from which the pale forest's healing tea is brewed alive. Wound it and the whole network answers.</description>
     <statBases>
       <MaxHitPoints>140</MaxHitPoints>
       <Beauty>15</Beauty>
@@ -161,8 +161,8 @@
   <!-- ============== RUT_EuphoricCrown (pleasure-brew source; undefended — its guardian is RUT_FalseFruit below) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_EuphoricCrown</defName>
-    <label>euphoric crown</label>
-    <description>A broad, faintly luminous cap that brews into the Rot's own pleasure tea. It keeps no defense of its own — it doesn't need one, ringed the way it is.</description>
+    <label>lussa crown</label>
+    <description>A broad, faintly luminous crown of a cap that brews into the pale forest's own pleasure tea — brewed here, alive, the day it is cut, or not at all. It keeps no defence of its own; ringed the way it is, it has never needed one.</description>
     <statBases>
       <MaxHitPoints>120</MaxHitPoints>
       <Beauty>22</Beauty>
@@ -193,8 +193,8 @@
   <!-- ============== RUT_FalseFruit (the mimic-lure ring around RUT_EuphoricCrown) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_FalseFruit</defName>
-    <label>false fruit</label>
-    <description>Grown at the edge of a euphoric crown's own root mat, and shaped to match it. It looks exactly like the good stuff. It isn't — reach for it and find out.</description>
+    <label>pekk fruit</label>
+    <description>Grown at the edge of a lussa crown's root mat and shaped to match it: a small pale fruiting body that looks exactly like the good stuff. It is not — touch one and the whole grove knows you are there, and what lives in the grove comes to see.</description>
     <thingClass>RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit</thingClass>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>

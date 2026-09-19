@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_palemoss_v2",
+  "priority": 40,
+  "prompt": "Owner's direction: 'make look really like moss'. Under half a cell, nine meshes per cell: a low, dense, cushiony moss texture with visible tiny fronds and a velvety surface, pale white-green (glowColor 200,230,205) with a very soft glow at the tips, no caps, no stalks, no mushroom shapes at all. Must read unmistakably as MOSS from above and tile seamlessly. Distinct from the hessuk moss (blue, stringy, sticky). Currently vanilla Grass_Anima; must not look like grass. Owner's note: \"make look really like moss, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

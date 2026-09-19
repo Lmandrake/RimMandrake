@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 2048,
+    "width": 2048
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_arpeau_v2",
+  "priority": 40,
+  "prompt": "Ten cells wide and very tall: a cluster of three or four thick, straight, tapering trunks rising from one submerged base, with small conical caps at the tips and a cold glow-blue-green light bleeding from vertical seams in the trunks. Base wreathed in milk-white ripples (it stands in not-water). Palette bone-white trunks, glow-blue-green seams, a lilac tint at the cap tips. Distinct from the brommok timber (which is a single broad marsh trunk with no glow) and the bollusk trunk (buttressed, plate-capped). Owner's note: \"10 wide, , rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

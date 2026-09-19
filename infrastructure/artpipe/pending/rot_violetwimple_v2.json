@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_violetwimple_v2",
+  "priority": 40,
+  "prompt": "Two cells wide, four meshes per cell: a deep violet cap folded down and inward around a pale stalk so the silhouette is a hood or cowl, with a pale rim showing the gill-line, glossy. The most saturated VIOLET in the set (the lussa crown is pale and lit; the tolluk cap is lilac and open). No glow. Currently also the euphoric crown placeholder; after this pass the two must differ. Owner's note: \"2 cells, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

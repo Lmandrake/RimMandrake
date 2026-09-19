@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_mortalmorelplant_v2",
+  "priority": 40,
+  "prompt": "Under one cell (0.8): a single upright, elongated cap pitted all over with a honeycomb of deep pores, pale grey-white with lilac shadows in the pits, on a short milk-white stalk. Fragile-looking \u2014 thin edges, a crumb or two fallen at the base. No glow. Tiles four to a cell. Distinct from the tavvik crust (flat, leafy) and rukka cap (wrinkled, not pitted). Owner's note: \"0.8, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}
