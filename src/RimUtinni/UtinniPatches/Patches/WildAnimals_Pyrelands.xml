@@ -205,28 +205,50 @@
              AND GenStep_Animals on every Pyrelands map (MEASURED 2026-09-18,
              the PYRELANDS_ANIMALS_GENSTEP_1 crash). FindMod(VGE) alone is NOT
              sufficient for any GR_ kind that lives under Mods/Megafauna. -->
-        <GR_Mantistanis MayRequire="Spino.Megafauna">0.05</GR_Mantistanis>
+        <!-- GR_Mantistanis removed 2026-09-19: re-authored as our own RUT_Emberscythe,
+             cast below. Its Spino.Megafauna gate and the dangling-key crash risk it
+             documented (PYRELANDS_ANIMALS_GENSTEP_1) go with it. -->
         <GR_Boomsnake>0.5</GR_Boomsnake>
       </value>
     </match>
   </Operation>
 
-  <!-- Star Wars Animal Collection (Continued): the SW-canon herd, Anooba as
-       a second flame-edge hunter, and Gizka as the quick grain-forager. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
-    </mods>
+  <!-- The SW-canon herd, Anooba as a second flame-edge hunter, and Gizka as the
+       quick grain-forager — all SEVEN as OUR OWN defs.
+       Owner's ruling 2026-09-19, verbatim: "They should be using OUR creatures, not
+       the donor references. The donor references, if any, should never be used
+       again." This block previously cast the donor's bare <Anooba>/<Iriaz>/<Nuna>/
+       <Orray>/<Zeer>/<Dalgo>/<Gizka> behind a FindMod on the donor mod. All seven
+       exist as RSW_ ports in SWBestiary (MEASURED 2026-09-19), so the donor keys are
+       gone and the gate moved with them: a FindMod on the DONOR would have dropped
+       OUR creatures out of the Pyrelands if that mod were ever removed.
+       Weights are the ones authored for this biome and are unchanged. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
-        <Anooba>0.35</Anooba>
-        <Iriaz>0.5</Iriaz>
-        <Nuna>0.5</Nuna>
-        <Orray>0.25</Orray>
-        <Zeer>0.6</Zeer>
-        <Dalgo>0.18</Dalgo>
-        <Gizka>1.0</Gizka>
+        <RSW_Anooba>0.35</RSW_Anooba>
+        <RSW_Iriaz>0.5</RSW_Iriaz>
+        <RSW_Nuna>0.5</RSW_Nuna>
+        <RSW_Orray>0.25</RSW_Orray>
+        <RSW_Zeer>0.6</RSW_Zeer>
+        <RSW_Dalgo>0.18</RSW_Dalgo>
+        <RSW_Gizka>1.0</RSW_Gizka>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RUT_Emberscythe, our re-author of the donor GR_Mantistanis, at the weight that
+       donor held (0.05). EMBERSCYTHE_MANTIS_REAUTHOR_1; owner 2026-09-19: "YES for
+       Pyrelands and no elsewhere." Casting it HERE, with the rest of the Pyrelands
+       cast, rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">
+    <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
+      <value>
+        <RUT_Emberscythe>0.05</RUT_Emberscythe>
       </value>
     </match>
   </Operation>

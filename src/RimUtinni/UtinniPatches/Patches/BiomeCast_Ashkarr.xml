@@ -1015,29 +1015,6 @@
          - the replaced block also WIPED its target's <wildAnimals> before adding. That wipe
            is NOT carried across: RM_FE_Pyrelands ships 13 animals of its own and clearing
            them was never ruled. This operation only ADDS. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands,mandrake.rsw.swbestiary">
-    <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <RSW_Zeer>0.6</RSW_Zeer> <!-- zeer - large-herd -->
-        <RSW_Nuna>0.5</RSW_Nuna> <!-- nuna - small -->
-        <RSW_Gizka>0.3</RSW_Gizka> <!-- gizka - grain; also spawns natively elsewhere, per the ruling -->
-        <RSW_Orray>0.25</RSW_Orray> <!-- orray - medium -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">   <!-- EMBERSCYTHE_MANTIS_REAUTHOR_1: GR_Mantistanis re-authored as our own RUT_Emberscythe (src/RimUtinni/RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml), shipped with RotSporeKit — our own def, so no existence guard on it is needed. TARGET CORRECTED 2026-09-19 on the owner's ruling ("YES for Pyrelands and no elsewhere"): it inherited the donor's ZBiome_Grasslands slot, and the frozen world carries ZERO ZBiome_Grasslands tiles against 222 RM_FE_Pyrelands (MEASURED f7e2bd21c over all 21872 surface tiles), so the emberscythe could never spawn. Same dead-def class as the river-steam/subsurface-liquid wiring fixed there; this operation was missed by that sweep. Gated on the mod that defines RM_FE_Pyrelands. -->
-    <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <RUT_Emberscythe>0.05</RUT_Emberscythe> <!-- emberscythe mantis - large-predator, our own -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
     <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -1300,5 +1277,13 @@
       </value>
     </match>
   </Operation>
+
+  <!-- NO PYRELANDS CAST LIVES IN THIS FILE. 2026-09-19: four operations here cast
+       zeer/nuna/gizka/orray/iriaz/anooba/firewasp into ZBiome_Grasslands, which carries
+       ZERO tiles on the frozen world, so none of them ever spawned from here. They were
+       deleted, and the Pyrelands cast they were standing in for already existed — in
+       Patches/WildAnimals_Pyrelands.xml, using the DONOR defs. That file is now the one
+       and only home of the Pyrelands wildAnimals cast, and it uses our RSW_ ports.
+       Do not re-add a RM_FE_Pyrelands operation here; you would duplicate it. -->
 
 </Patch>
