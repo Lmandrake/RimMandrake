@@ -169,7 +169,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/VioletWimple</texPath>
+      <texPath>RotSporeKit/Things/Plant/EuphoricCrown</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <ingestible>
