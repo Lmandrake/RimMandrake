@@ -1,4 +1,14 @@
-# KCSG pawn symbols silently fall back to vanilla Colonist
+# A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
+
+> 🔴 **Corrected the same day it was filed.** This was first written as a KCSG
+> defect because KCSG layouts were where it was seen. It is not. On the
+> 2026-09-19 620-mod cold load it reproduced through the plain vanilla debug
+> action `Actions\Spawn Pawn...\RSW_Jawa`, with no KCSG involved at all: six
+> spawns, four generated as `RSW_Jawa` and **two came back as vanilla
+> `Colonist`/`Baseliner`**, on the requested cells, in the right faction, with
+> no error logged. So the substitution lives in `PawnGenerator`, and it affects
+> every route that asks for one of our PawnKindDefs — raids, quests and
+> faction rosters as much as dungeon layouts. Widen any fix accordingly.
 
 ## what was measured
 FOUNDRY bridge wave 2, 2026-09-19, live 622-mod session, throwaway 250x250
