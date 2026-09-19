@@ -1,30 +1,66 @@
 {
- "generatedAt": "2026-09-19T18:59:00Z",
+ "generatedAt": "2026-09-19T19:16:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 730807,
-  "sha256_12": "c5f2068e829a"
+  "bytes": 697646,
+  "sha256_12": "2668a85d888f"
  },
- "head": "558808979",
+ "head": "de5435a4d",
  "counts": {
   "red": 31,
-  "blue": 851,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 2257,
-  "total": 3139
+  "blue": 852,
+  "green": 1827,
+  "grey": 430,
+  "unmeasured": 0,
+  "total": 3140
  },
  "loc": {
   "red": 13093,
-  "blue": 346328,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 681337,
-  "total": 1040758
+  "blue": 348639,
+  "green": 576252,
+  "grey": 105121,
+  "unmeasured": 0,
+  "total": 1043105
  },
  "reviewEntries": 3003,
- "recidivists": [],
+ "recidivists": [
+  {
+   "path": "src/RimMandrake/rimflow/cli.py",
+   "loc": 2348,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/rimflow/selftest_model.py",
+   "loc": 1214,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
+   "loc": 378,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 69,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 52,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml",
+   "loc": 38,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/MycoidColossusArtOverride/About/About.xml",
+   "loc": 32,
+   "cycles": 1
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "measurementOk": true,
+ "headline": "OK: measured 3140 files (1827 clean, 430 dirty, 0 unmeasured)."
 }
