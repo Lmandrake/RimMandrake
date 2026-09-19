@@ -339,6 +339,18 @@ UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: no art 
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml        # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: no art yet, 2026-09-13
 
+# FOUNDRY_LIVE_RESIDUE_TRIAGE, 2026-09-19: RUT_VentForge_RecipeWiring.xml and
+# RUT_VentKiln_RecipeWiring.xml were missed from the sibling-hold pattern above
+# (same shape as RUT_BeastBulge_DreadRegistration.xml/RUT_ScaldWreckScatter_Register.xml
+# a few holds up) -- their PatchOperationFindMod gate checks environmentalhazards
+# being active, which it is, so each deployed alone and added <li>RUT_VentForge</li> /
+# <li>RUT_VentKiln</li> to every weapon/apparel ThingDef's recipeUsers list while the
+# building defs themselves stayed held for art. MEASURED live 2026-09-19: 109 + 38 = 147
+# of that load's 185 total cross-reference failures were these two dangling defNames.
+# => LIFT together with their respective ThingDef above when its art lands.
+UtinniPatches/Patches/RUT_VentForge_RecipeWiring.xml            # BENCH: held with RUT_VentForge.xml, 2026-09-19 (FOUNDRY, retroactive)
+UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml             # BENCH: held with RUT_VentKiln.xml, 2026-09-19 (FOUNDRY, retroactive)
+
 # --- FORGE_MECHANICS_1 F4: tower entrance + salvage cache marker, no art yet --
 # 2026-09-14, FORGE_MECHANICS_1 F4 build pass. RUT_FoundryTowerEntrance.xml
 # (the tower door, MapPortal) and RUT_FoundrySalvageCache.xml (the salvage

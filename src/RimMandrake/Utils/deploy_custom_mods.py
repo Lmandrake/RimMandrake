@@ -231,7 +231,12 @@ def compare(src, dst):
     changed = sorted(r for r in (s & d)
                      if not filecmp.cmp(os.path.join(src, r),
                                         os.path.join(dst, r), shallow=False))
-    same = len(s & d) - len(changed)
+    # A list, not a count: DEPLOY_HOLD_SAME_BUCKET_BLIND_1 — a file that was
+    # deployed byte-identical BEFORE it was added to DEPLOY_HOLD.txt never
+    # shows up in new/changed/gone again, so a hold added after the fact was
+    # silently invisible (not reported, not removed) forever. The caller
+    # still needs len(same) for the "in sync (N files)" count.
+    same = sorted((s & d) - set(changed))
     return new, changed, gone, same
 
 
@@ -384,7 +389,12 @@ def main():
         # before it landed; the write path was filtered and the delete path was
         # not, so the hold protected against writing only.
         gone, held_gone = split_held(holds, name, gone)
-        held = held_new + held_changed + held_gone
+        # `same` too (DEPLOY_HOLD_SAME_BUCKET_BLIND_1): a file already deployed
+        # byte-identical to the repo copy, deployed BEFORE a hold on it was
+        # written, otherwise never appears in any of the three drift lists —
+        # the plan reads "in sync" forever with no sign it is held at all.
+        same, held_same = split_held(holds, name, same)
+        held = held_new + held_changed + held_gone + held_same
 
         flags = []
         if not os.path.isdir(dst):
@@ -425,7 +435,7 @@ def main():
 
         if not (new or changed or gone):
             print("    in sync (%d files%s)\n"
-                  % (same, ", %d held" % len(held) if held else ""))
+                  % (len(same), ", %d held" % len(held) if held else ""))
             continue
 
         drift = True
