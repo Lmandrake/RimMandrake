@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:53:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T02:57:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -899,15 +899,6 @@ target:   v1
 kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
-
-## CANAL_FILL_IN_DISPLACEMENT_1 Fill-in designator that displaces a canal cell's liquid back into connected channel and source, crediting whatever has room and destroying only the overflow - the single sanctioned place liquid leaves the world, and it must be disclosed not silent
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/CANAL_FILL_IN_DISPLACEMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANAL_FILL_IN_DISPLACEMENT_1.md
 
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
