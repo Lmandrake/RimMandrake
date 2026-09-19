@@ -6,4 +6,12 @@
   <RMFlow_SuperdeepNoLadder>No ladder: whoever is down there is not climbing out.</RMFlow_SuperdeepNoLadder>
   <RMFlow_LadderNeedsExcavation>Must be placed in an excavated cell.</RMFlow_LadderNeedsExcavation>
 
+  <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->
+  <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
+  <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>
+  <RM_SubsurfaceYieldReport>Subsurface: {0}, {1} fill-units remaining.</RM_SubsurfaceYieldReport>
+  <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
+  <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
+  <RM_DrillLiquidMismatch>This map's channels already carry {0}; this drill's liquid cannot join them.</RM_DrillLiquidMismatch>
+
 </LanguageData>

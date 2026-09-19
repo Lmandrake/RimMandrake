@@ -148,6 +148,16 @@
     <Compile Include="LiquidTypes\JobDriver_FillBottleFromTank.cs" />
   </ItemGroup>
 
+  <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route: drill/tap
+       buildings that raise a liquid from a map's subsurface. Namespace
+       RimMandrake.FlowWorks.Drilling. -->
+  <ItemGroup>
+    <Compile Include="Drilling\RM_SubsurfaceLiquidBiomeExtension.cs" />
+    <Compile Include="Drilling\RM_MapComponent_SubsurfaceLiquid.cs" />
+    <Compile Include="Drilling\RM_LiquidDrillExtension.cs" />
+    <Compile Include="Drilling\Building_LiquidDrill.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>

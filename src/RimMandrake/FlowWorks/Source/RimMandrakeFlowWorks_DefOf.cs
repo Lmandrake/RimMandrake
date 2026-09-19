@@ -74,6 +74,11 @@ namespace RimMandrake.FlowWorks
 
 		public static JobDef RM_FillFromTankJob;
 
+		// ── MANY_WATERS_DRILL_BUILDINGS_1: the fourth acquisition route ────
+		public static ThingDef RM_LiquidDrill;
+
+		public static ThingDef RM_LiquidTap;
+
 		static RimMandrakeFlowWorks_DefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RimMandrakeFlowWorks_DefOf));
