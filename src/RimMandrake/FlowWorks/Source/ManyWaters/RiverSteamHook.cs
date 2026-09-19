@@ -12,8 +12,9 @@ namespace RimMandrake.FlowWorks.ManyWaters
     // block on a BiomeDef. A biome that does not carry this extension gets
     // no river steam at all; this assembly names no biome of its own.
     //
-    // The campaign's own wiring (the Pyrelands, ZBiome_Grasslands) lives in
-    // the RimUtinni tier — src/RimUtinni/UtinniPatches/Patches/
+    // The campaign's own wiring (the Pyrelands — RM_FE_Pyrelands, which is the
+    // biome the frozen world actually carries, 222 tiles; measured 2026-09-19)
+    // lives in the RimUtinni tier — src/RimUtinni/UtinniPatches/Patches/
     // ManyWaters_RiverSteam_Ashkarr.xml — not here, because ManyWaters is a
     // RimMandrake-tier engine and must run on any game, any biome.
     //
