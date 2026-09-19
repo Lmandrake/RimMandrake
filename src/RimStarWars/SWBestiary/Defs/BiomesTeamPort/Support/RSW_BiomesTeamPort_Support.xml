@@ -155,6 +155,15 @@ copied verbatim from the donor mods' own Textures trees.
         <inverseStatScaling>true</inverseStatScaling>
         <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
       </li>
+      <!-- DEEPS_FAUNA_MECHANICS_1 — feeds RM_CompFluidSacs (CreatureBehaviors)
+           on whichever attacker's bite this DamageDef rides; a no-op for any
+           attacker without that comp (only RSW_BloodropMoth/Drinker has it
+           this pass). -->
+      <li>
+        <hediff>RM_Drained</hediff>
+        <severityPerDamageDealt>0.1</severityPerDamageDealt>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
     </additionalHediffs>
     <applyAdditionalHediffsIfHuntingForFood>true</applyAdditionalHediffsIfHuntingForFood>
   </DamageDef>

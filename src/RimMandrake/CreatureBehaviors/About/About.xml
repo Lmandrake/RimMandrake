@@ -65,6 +65,24 @@ Ships:
      mandrake.rut.rustcathedralroaches (RUT_ScarRoach, RUT_CathedralRoach) —
      see that mod's own About for the full roach build.
 
+  8. DEEPS_FAUNA_MECHANICS_1 (owner filing, 2026-09-19, off the Lantern
+     Deeps fauna verdicts) — three more generic, content-blind mechanisms
+     for the Deeps' renamed fauna (SWBestiary's Grabber/Soulchime/Drinker):
+     RM_HediffDef_Grapple + RM_Hediff_Grappled (a pincer hold that crushes
+     the victim a little more each round via the hediff's own climbing
+     severity, until it's freed or the hold's lethalSeverity kills it —
+     delivered by a DamageDef's vanilla additionalHediffs, no custom
+     Verb); RM_CompFluidSacs + RM_Hediff_Drained (a bite that feeds its
+     drinker's hunger, or poisons it instead if the victim's own
+     RaceProps.FleshType is on the comp's poison list); and
+     RM_CompProximityPsychicStun + RM_CompShardArmor + RM_CompTameSootheAura
+     (a wild carrier stuns anyone too close and rings this mod's own
+     RM_CompPlantAlarm; a tamed one exempts its own faction from the stun
+     and soothes them instead; shard armor grows passively and capped — see
+     that comp's own header for the fuller, still-owed foraging version).
+     Live-quicktest proof (per spawn-many-for-bridge-tests) is explicitly
+     owed, not done this pass — see that item's own status log.
+
 Live-loaded 2026-09-11: standalone (no consumer active) tripped a crash in
 RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
 became a reflection "leaf" with no concrete subclass loaded — fixed by

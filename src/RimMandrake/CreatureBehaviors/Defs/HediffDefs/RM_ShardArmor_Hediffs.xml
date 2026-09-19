@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ShardArmor_Hediffs.xml              CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Owner's own words (Soulchime): "builds armor out of crystal shards it
+  collects along the ground." Grown by RM_CompShardArmor (see that class's
+  own header for the SIMPLIFIED scope this pass actually builds — passive
+  capped growth, not a real ground-foraging job loop). Plain HediffWithComps:
+  no custom Hediff/HediffDef subclass needed, the armor bonus is ordinary
+  vanilla <stages><statOffsets>, gated by minSeverity so it reads as armor
+  visibly thickening as severity (== "shards collected") climbs toward 1.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_ShardArmor</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>shard armor</label>
+    <labelNoun>a coat of shard armor</labelNoun>
+    <description>Crystal shards gathered off the ground and pressed into a growing plate of natural armor.</description>
+    <defaultLabelColor>(0.5, 0.75, 0.9)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>a few shards</label>
+        <statOffsets>
+          <ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+        </statOffsets>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>a growing shell</label>
+        <statOffsets>
+          <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+        </statOffsets>
+      </li>
+      <li>
+        <minSeverity>0.8</minSeverity>
+        <label>a full crystal carapace</label>
+        <statOffsets>
+          <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.22</ArmorRating_Blunt>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

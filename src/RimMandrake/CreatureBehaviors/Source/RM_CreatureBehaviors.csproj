@@ -77,6 +77,17 @@
     <Compile Include="RM_CompProperties_PlantAlarm.cs" />
     <Compile Include="RM_CompPlantAlarm.cs" />
     <Compile Include="RUT_Plant_FalseFruit.cs" />
+    <Compile Include="RM_HediffDef_Grapple.cs" />
+    <Compile Include="RM_Hediff_Grappled.cs" />
+    <Compile Include="RM_CompProperties_FluidSacs.cs" />
+    <Compile Include="RM_CompFluidSacs.cs" />
+    <Compile Include="RM_Hediff_Drained.cs" />
+    <Compile Include="RM_CompProperties_ProximityPsychicStun.cs" />
+    <Compile Include="RM_CompProximityPsychicStun.cs" />
+    <Compile Include="RM_CompProperties_ShardArmor.cs" />
+    <Compile Include="RM_CompShardArmor.cs" />
+    <Compile Include="RM_CompProperties_TameSootheAura.cs" />
+    <Compile Include="RM_CompTameSootheAura.cs" />
   </ItemGroup>
 
   <ItemGroup>

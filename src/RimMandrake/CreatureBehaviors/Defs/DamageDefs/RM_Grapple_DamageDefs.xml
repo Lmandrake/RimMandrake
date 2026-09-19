@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Grapple_DamageDefs.xml              CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Delivery half of the "Hold someone with its pincer and slowly crush them
+  each round" mechanic — see HediffDefs/RM_Grapple_Hediffs.xml for the full
+  citation of the vanilla additionalHediffs pattern this copies (same shape
+  as UtinniPatches' RUT_FlamefangVenomBite). No Name-attributed vanilla
+  "Crush" DamageDef exists to ParentName off (RimSage-verified this pass:
+  Ludeon's own Crush DamageDef carries no Name attribute, unlike Bite), so
+  this stands alone with the same fields Crush itself uses
+  (workerClass/hediff/hediffSkin/hediffSolid/armorCategory/impactSoundType)
+  rather than inheriting from an unrelated Name="Bite" base.
+
+  Routed onto a race's pincer tool by ToolCapacityDefs/RM_Grapple_ToolCapacity.xml.
+-->
+<Defs>
+
+  <DamageDef>
+    <defName>RM_PincerCrush</defName>
+    <label>pincer crush</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been crushed to death.</deathMessage>
+    <hediff>Crush</hediff>
+    <hediffSkin>Cut</hediffSkin>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Blunt</impactSoundType>
+    <armorCategory>Blunt</armorCategory>
+    <overkillPctToDestroyPart>0.4~1.0</overkillPctToDestroyPart>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_Grappled</hediff>
+        <severityFixed>0.05</severityFixed>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+
+</Defs>

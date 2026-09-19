@@ -2935,6 +2935,22 @@ copied verbatim from the donor mods' own Textures trees.
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
         <eggCountRange>5~10</eggCountRange>
       </li>
+      <!-- DEEPS_FAUNA_MECHANICS_1 — owner: "sacks that it uses to store
+           drained body fluids. Strangely, if it drains any day-side races
+           with normal warm iron blood, it becomes poisoned and rapidly
+           dies." Fed by RM_Hediff_Drained, wired onto the shared
+           RSW_BloodSuck DamageDef's own additionalHediffs (Support/
+           RSW_BiomesTeamPort_Support.xml) alongside its existing BloodLoss
+           entry — see RM_CompFluidSacs's own header. FleshTypeDefOf.Normal
+           (humans and virtually every vanilla mammal/bird) is the generic,
+           already-available stand-in for "day-side races with normal warm
+           iron blood"; this creature's own Insectoid blood is safe. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_FluidSacs">
+        <poisonousFleshTypes>
+          <li>Normal</li>
+        </poisonousFleshTypes>
+        <poisonHediff>RM_FluidSacPoison</poisonHediff>
+      </li>
     </comps>
     <tools>
       <li>
@@ -8081,8 +8097,36 @@ copied verbatim from the donor mods' own Textures trees.
         </li>
       </lifeStageAges>
     </race>
+    <!-- DEEPS_FAUNA_MECHANICS_1 — owner: "builds armor out of crystal
+         shards it collects along the ground. Emits a powerful psychic
+         stun on anyone that gets too close and alarms it. Taming one
+         produces a soothing effect on those around it." Three generic
+         CreatureBehaviors comps, no species-specific C#:
+           - RM_CompProperties_ProximityPsychicStun: the stun (wild-only —
+             a tamed Soulchime's own faction is exempt, see that class).
+           - RM_CompProperties_PlantAlarm: "alarms it" reuses the Rot's
+             existing network-alarm comp (ROT_GUARDIAN_GROVES_1) — no tag
+             set, so it alarms any RM_AlarmResponderExtension-carrying
+             fauna in range regardless of tag; harmless no-op if nothing
+             nearby carries that extension yet.
+           - RM_CompProperties_ShardArmor: SIMPLIFIED shard-armor growth
+             (passive/capped — see that class's header for the fuller,
+             still-owed version).
+           - RM_CompProperties_TameSootheAura: the tamed soothing effect. -->
     <comps>
-			</comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ProximityPsychicStun">
+        <stunHediff>PsychicShock</stunHediff>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm">
+        <radius>12</radius>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShardArmor">
+        <armorHediff>RM_ShardArmor</armorHediff>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_TameSootheAura">
+        <sootheThought>RM_TameSootheThought</sootheThought>
+      </li>
+    </comps>
     <tools>
       <li>
         <label>proboscis</label>
@@ -8223,8 +8267,6 @@ copied verbatim from the donor mods' own Textures trees.
         <chanceFactor>0.1</chanceFactor>
       </li>
     </tools>
-    <modExtensions>
-			</modExtensions>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_FoundryBeetleLarvae</defName>
@@ -9629,12 +9671,32 @@ copied verbatim from the donor mods' own Textures trees.
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
         <chanceFactor>0.1</chanceFactor>
       </li>
+      <!-- DEEPS_FAUNA_MECHANICS_1 — the "great pincer-ending arm" the
+           label/description already promised. RM_PincerGrapple routes
+           through RM_PincerCrush (CreatureBehaviors), whose
+           additionalHediffs starts an RM_Grappled hold on a landed hit. -->
+      <li>
+        <label>pincer</label>
+        <capacities>
+          <li>RM_PincerGrapple</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
     </tools>
     <race>
       <hasGenders>true</hasGenders>
       <fleshType>Insectoid</fleshType>
       <bloodDef>Filth_BloodInsect</bloodDef>
-      <body>BeetleLike</body>
+      <!-- DEEPS_FAUNA_MECHANICS_1: BeetleLike has no claw/pincer body part
+           group at all — switched to vanilla's own BeetleLikeWithClaw
+           (same trio of parts plus a HeadClaw group), already the body
+           plan three sibling absorbed creatures in this same file use
+           (RSW_Absorbed_Baseopsis/Holcorobeus/Protosolpuga/Termitotron),
+           so the pincer tool above has somewhere real to attach. -->
+      <body>BeetleLikeWithClaw</body>
       <baseBodySize>4</baseBodySize>
       <baseHungerRate>0.20</baseHungerRate>
       <baseHealthScale>1.6</baseHealthScale>
