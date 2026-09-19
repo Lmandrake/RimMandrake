@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T08:53:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T08:53:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -969,7 +969,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/PYRELANDS_FLORA_LEAK_1.md yet — write one when you have something to say)
+summary:  PYRELANDSFLORALEAK1
 prose:    infrastructure/state/items/PYRELANDS_FLORA_LEAK_1.md
 
 ## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
@@ -1655,5 +1655,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md yet — write one when you have something to say)
+summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
