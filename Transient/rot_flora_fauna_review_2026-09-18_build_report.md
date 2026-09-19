@@ -4,6 +4,42 @@
 `check_sheet.py`: **0 FAIL, 1 WARN, 33 ok, exit 0** (WARN is "55 rows missing from the
 decisions file" — expected, nobody has reviewed it yet).
 
+## Cell size + to-scale panels (owner ask, latest pass)
+
+**All 40 flora rows print `graphicData.drawSize`; all 10 fauna rows print the adult
+life stage's `bodyGraphicData.drawSize` + bodySize.** MEASURED: drawSize is **1.0 ×
+1.0 (vanilla default) on every single one of the 40 flora defs** — resolved every
+ParentName chain (through RotSporeKit's own `PlantBases/` abstracts and AlphaBiomes'
+`AB_CavePlantBase`) and confirmed by grepping the whole flora file set for the
+literal string `drawSize`: it occurs exactly once, on `RUT_MedicineFungal` (an
+ingredient item, not a plant). So the "ankle-high to building-sized" spread the
+descriptions promise is NOT in drawSize at all — it's `<plant><visualSizeRange>`,
+which scales the same 1×1 quad up at growth. Each row prints both: the literal
+drawSize (as asked) and, where the def sets a visualSizeRange (28 of 40 — 12 of 13
+AlphaBiomes donor rows set none), the resulting mature quad size
+(drawSize × visualSizeRange.max) that the panel is actually drawn at.
+
+**All 45 Group A/B rows that already had a thumbnail now show a TO-SCALE panel**
+instead of a plain thumbnail: the sprite at its measured cell size beside a real
+RimWorld colonist (`design/Jawa/worldbuilding/review/assets/human_anchor_south.png`,
+1.5 cells tall — already on disk, no re-extraction needed), on a 1-cell grid,
+capped at 240px wide per the owner's instruction here. Method copied (not imported)
+from `src/RimMandrake/Utils/gen_plant_register.py`'s `_scale_panel`/`_human_figure`
+(plants, including its mesh sub-grid for `maxMeshCount` > 1 — 13 of 40 flora rows
+tile 4-25 copies) and `gen_creature_register.py`'s `_scale_panel` (fauna) — copied
+rather than imported because both reference modules pull in `cherrypicker` /
+`game_paths` / `rimworld_loadset` (live def-dump and Windows-path machinery) this
+generator's own hand-curated ROWS tables don't need. `PX_PER_CELL` (64) and
+`HUMAN_CELLS` (1.5) match those scripts exactly; only the panel cap differs (240px
+here vs. 1200-1500px on those dedicated art-review pages).
+
+**Nothing skipped**: all 45 rows with a source image got a scale panel — 35 plant
+panels, 10 creature panels (the 5 Group C rows, which have no drawSize/cells
+concept, kept a plain thumbnail). The 5 flora rows with no source image at all
+(RUT_FalseFruit, RUT_AgelessCap, RUT_RegenerantVeil, RUT_EuphoricCrown,
+RUT_FurnaceCap — see below) still print their cell-size text; there's just no panel
+to build without a sprite.
+
 **Thumbnails: 50 of 55 (up from 28).** Two coordinator corrections in sequence:
 (1) Alpha Biomes and Alpha Animals ARE locally reachable, at the Workshop ids
 supplied (`1841354677`, `1541721856`), plus three `*ArtOverride` mods in the game's
@@ -79,12 +115,30 @@ checked `wired` via literal md5 match against every PNG under `src/**/Textures/`
 
 ## Rules invented
 Listed in full in `CONFIG.invented` inside the sheet itself (required by the skill,
-never omitted) — same 7 items summarized above: the `<plant>`-block scoping rule for
-Group A, the 9-vs-15 fauna discrepancy, the AA_/AB_ donor-unreachable calls, the
-Group C exclusion scoping, and the md5-based `wired` definition.
+never omitted) — 11 items: the `<plant>`-block scoping rule for Group A, the
+9-vs-15 fauna discrepancy, the AA_/AB_ donor-reachability correction, the 4
+vanilla-reuse AlphaBiomes rows, the Group C exclusion scoping, the md5-based
+`wired` definition, the uniform-1.0-drawSize finding, the visualSizeRange fallback
+rule, the copied-not-imported scale-panel method + 240px cap, and the
+adult-life-stage fauna drawSize source.
 
 ## Outputs
 - `src/RimUtinni/RotSporeKit/build_review_sheet.py`
 - `Transient/rot_flora_fauna_review_2026-09-18.html`
-- `Transient/rot_flora_fauna_review_2026-09-18.decisions.json` (posture: blacklist, default keep)
-- `Transient/rot_review_thumbs_2026-09-18/` (28 PNGs, 160px max)
+- `Transient/rot_flora_fauna_review_2026-09-18.decisions.json` (posture: blacklist, default keep — UNTOUCHED this pass, byte-identical before/after by md5)
+- `Transient/rot_review_thumbs_2026-09-18/` (50 PNGs — 35 plant scale panels, 10 creature scale panels, 5 plain Group C thumbnails, all ≤240px)
+
+## Correction: visualSizeRange, not drawSize, drives mature size (owner, latest pass)
+Panels already used `visualSizeRange.max` where a def set one (first pass's
+`mature_cells_flora`) — that part was right. The bug: the first pass only checked
+each def's OWN tag + its RotSporeKit/AlphaBiomes custom abstract, and fell back to
+raw drawSize=1.0 for 13 rows that set none there. FIXED: resolved through vanilla
+RimWorld's own Plant bases too (MEASURED from `Data/Core/Defs/ThingDefs_Plants/
+Plants_Bases.xml`: PlantBaseNonEdible 0.3~1.00, PlantBase inherits it, TreeBase
+1.5~2.0) — every one of the 40 flora rows now resolves a real visualSizeRange, none
+fall back to a guess. This changed one actual panel size (RUT_FlakespireFungus:
+1.0→2.0 cells, confirmed 209×144px vs. its old smaller render) and re-labeled 12
+more (AlphaBiomes donor rows + RUT_BleedingTooth) as "vanilla default, inherited"
+rather than "not set". Headline row text now leads with mature size — "mature size
+X cells (grows min→max)" — with drawSize demoted to a secondary, explicitly-labeled
+constant. `check_sheet.py` exit 0 again; `decisions.json` still byte-identical.

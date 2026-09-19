@@ -200,7 +200,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "sheetId": "rot_flora_fauna_review_2026-09-18",
   "title": "The Rot \u2014 flora, fauna & new-art review",
   "subtitle": "55 rows \u2014 40 flora, 10 fauna, 5 new-art (other waves)",
-  "briefHtml": "<p><b>Posture: BLACKLIST.</b> Every row defaults to <b>keep</b> (flora/fauna) or its own pre-filled call (new-art). Nothing is removed or wired unless you mark it otherwise \u2014 disagreeing is the whole point of this page.</p><p><b>Group A \u2014 Rot flora:</b> every wildPlants entry in <code>RUT_TheRot.xml</code> (base + two patch files that append entries without editing that file directly), plus every non-abstract RotSporeKit plant ThingDef that isn't wild-spawned at all (fungiponics crop, pale-tree companion, the not-yet-wild-spawned furnace cap). <b>40</b> rows. <code>cut</code> removes the species from the Rot (its wildPlants entry, or the ThingDef itself for the 3 non-wild rows); <code>regen</code> files an artpipe job.</p><p><b>Group B \u2014 Rot fauna:</b> the build brief said 15 wildAnimals entries; <b>MEASURED 9</b> in the live <code>RUT_TheRot.xml</code> \u2014 see the build report for where the other 6 (all BMT_ cavern donor kinds) come from and why they are NOT shown here as if they were live. Plus RUT_Emberscythe (ships in this kit but is Pyrelands, not Rot). Kin-mechanics columns are the draft in <code>Transient/rot_fauna_assignment_draft_20260918.md</code>; the mend column reads <b>\u201cmend \u221d bodySize\u201d</b> for every tagged row per tonight's ruling (no longer a flat severity/day number). <code>cut</code> removes the species from wildAnimals.</p><p><b>Group C \u2014 new art landed (other waves):</b> artpipe jobs that finished after 2026-09-18 00:00 PDT and are NOT already covered by another dedicated sheet built today \u2014 39 canon_* creature-fidelity renders already have their own sheet (<code>Transient/canon_regen_wave1_2026-09-18/</code>) and 45 Lantern Deeps texture slots already have theirs (<code>Transient/deeps_art_review_2026-09-18.html</code>); both are excluded here to avoid a second, disagreeing review surface over the same renders \u2014 see the build report. <b>5</b> rows remain: one totally unrelated biome's plant (twisting thornweed) and four Lantern Deeps puffer stages that finished AFTER that sibling sheet was already built (so it still shows them as pending). <code>approve</code> wires the PNG into its mod's Textures/; <code>reject</code> sends it back for a regen.</p><p>Start with donor art where new art is unavailable \u2014 owner's instruction. The 22 Guardian-Groves/Furnace-Cap/Pale-Tree new-art jobs FAILED tonight on a codex quota limit and are still queued to re-run; until then those rows keep their shared-placeholder or vanilla texPath.</p>",
+  "briefHtml": "<p><b>Posture: BLACKLIST.</b> Every row defaults to <b>keep</b> (flora/fauna) or its own pre-filled call (new-art). Nothing is removed or wired unless you mark it otherwise \u2014 disagreeing is the whole point of this page.</p><p><b>Group A \u2014 Rot flora:</b> every wildPlants entry in <code>RUT_TheRot.xml</code> (base + two patch files that append entries without editing that file directly), plus every non-abstract RotSporeKit plant ThingDef that isn't wild-spawned at all (fungiponics crop, pale-tree companion, the not-yet-wild-spawned furnace cap). <b>40</b> rows. <code>cut</code> removes the species from the Rot (its wildPlants entry, or the ThingDef itself for the 3 non-wild rows); <code>regen</code> files an artpipe job.</p><p><b>Group B \u2014 Rot fauna:</b> the build brief said 15 wildAnimals entries; <b>MEASURED 9</b> in the live <code>RUT_TheRot.xml</code> \u2014 see the build report for where the other 6 (all BMT_ cavern donor kinds) come from and why they are NOT shown here as if they were live. Plus RUT_Emberscythe (ships in this kit but is Pyrelands, not Rot). Kin-mechanics columns are the draft in <code>Transient/rot_fauna_assignment_draft_20260918.md</code>; the mend column reads <b>\u201cmend \u221d bodySize\u201d</b> for every tagged row per tonight's ruling (no longer a flat severity/day number). <code>cut</code> removes the species from wildAnimals.</p><p><b>Group C \u2014 new art landed (other waves):</b> artpipe jobs that finished after 2026-09-18 00:00 PDT and are NOT already covered by another dedicated sheet built today \u2014 39 canon_* creature-fidelity renders already have their own sheet (<code>Transient/canon_regen_wave1_2026-09-18/</code>) and 45 Lantern Deeps texture slots already have theirs (<code>Transient/deeps_art_review_2026-09-18.html</code>); both are excluded here to avoid a second, disagreeing review surface over the same renders \u2014 see the build report. <b>5</b> rows remain: one totally unrelated biome's plant (twisting thornweed) and four Lantern Deeps puffer stages that finished AFTER that sibling sheet was already built (so it still shows them as pending). <code>approve</code> wires the PNG into its mod's Textures/; <code>reject</code> sends it back for a regen.</p><p>Start with donor art where new art is unavailable \u2014 owner's instruction. The 22 Guardian-Groves/Furnace-Cap/Pale-Tree new-art jobs FAILED tonight on a codex quota limit and are still queued to re-run; until then those rows keep their shared-placeholder or vanilla texPath.</p><p><b>Scale panels (owner ask):</b> every Group A/B thumbnail with a source image is now a TO-SCALE panel \u2014 the sprite at its true in-game cell size beside a real colonist (human_anchor_south.png, 1.5 cells tall), on a 1-cell grid, capped at 240px wide. A plant's in-game size is <code>plant.visualSizeRange</code> (its max at maturity), NOT <code>graphicData.drawSize</code> \u2014 drawSize measures 1.0 \u00d7 1.0 on every one of the 40 flora rows and drives nothing, so each row leads with <b>mature size {max} cells (grows {min}\u2192{max})</b> and demotes drawSize to a secondary note. visualSizeRange is resolved through the full inheritance chain including vanilla RimWorld's own Plant bases (PlantBase/TreeBase default to 0.3~1.0 / 1.5~2.0 when nothing else overrides) \u2014 every one of the 40 rows resolves a real range, none are a guess. Fauna rows print the adult life stage's drawSize plus bodySize (fauna drawSize genuinely does vary per race, unlike flora's). See CONFIG.invented for the full sourcing.</p>",
   "criterion": "Sorted by commonality within each group (flora/fauna) \u2014 ranks how often the player meets it, not its worth. Group C is unordered (five rows).",
   "invented": [
     "Group A scope reading: 'plant ThingDef' means a def carrying a <plant> block, not every ThingDef in the ThingDefs_Plants folder \u2014 excludes co-located harvested items/resources/projectiles (RUT_Glimmerslime, RUT_MedicineFungal, RUT_MoonlessSilk, RUT_RawDulcis, RUT_BlastSpore, RUT_Proj_BlastSporeSac, RUT_ChokingSpores).",
@@ -209,7 +209,11 @@ body.grid .row.sel-tint{border-color:currentColor}
     "4 of 13 AlphaBiomes plant rows (AB_Bryolux, AB_Glowstool, AB_Agarilux, AB_GlowingAgarilux) have no art file in the AlphaBiomes Workshop mod itself, and that is CORRECT, not a gap: their texPaths (Things/Plant/Bryolux, Glowstool, Agarilux) are vanilla Core cave-plant textures the donor mod deliberately reuses rather than shipping its own \u2014 Core has stocked Bryolux/Agarilux/Glowstool art since 1.4. Resolved the same way as RUT_PaleTree/PaleMoss/Emberscythe: UnityPy against the base resources.assets, bare letter-suffix Graphic_Random names with no prefix (BryoluxA, AgariluxA, GlowstoolA), first alphabetically. Art status on these 4 rows is 'vanilla', not 'donor'.",
     "RUT_PaleTree/RUT_PaleMoss (vanilla TreeAnima/Grass_Anima) and RUT_Emberscythe (vanilla Megascarab recolor) were extracted via UnityPy under Windows python.exe: TreeAnima and Grass_Anima are Graphic_Random families with no underscore (bare letter suffix, e.g. TreeAnimaA / Grass_AnimaA \u2014 picked the first alphabetically per the reading-rimworld-graphics skill), Megascarab resolves directly to 'Megascarab_south' in the base resources.assets. TreeAnima/Grass_Anima come from the Royalty DLC's own bundle (Data/Royalty/AssetBundles/resources_royalty), not the base game's resources.assets \u2014 Core ships no AssetBundles of its own, Royalty does.",
     "Group C scope: excluded 39 canon_* creature-fidelity manifests (already served by Transient/canon_regen_wave1_2026-09-18/, its own sheet) and 45 Lantern Deeps texture-slot manifests (already served by Transient/deeps_art_review_2026-09-18.html) to avoid a duplicate, disagreeing review surface over renders someone is already reviewing today. The 4 dulcis* jobs are also excluded from Group C because their target (RUT_DulcisPlant) is a Group A row in THIS sheet.",
-    "'wired' in Group C is a literal md5 byte-match between the artpipe _artsrc PNG and every PNG under src/**/Textures/ \u2014 none of the 5 remaining rows matched, so all five read 'not wired'."
+    "'wired' in Group C is a literal md5 byte-match between the artpipe _artsrc PNG and every PNG under src/**/Textures/ \u2014 none of the 5 remaining rows matched, so all five read 'not wired'.",
+    "A plant's in-game size is <plant><visualSizeRange> (its MAX at maturity), NOT graphicData.drawSize \u2014 owner correction, 2026-09-18. drawSize IS measured 1.0 \u00d7 1.0 on every one of the 40 Group A flora defs (confirmed by grep: the literal string 'drawSize' occurs exactly once in the whole flora file set, on RUT_MedicineFungal, an item not a plant) \u2014 but that's wallpaper, not the size signal, and the headline text now leads with mature size (visualSizeRange.max) with drawSize demoted to a secondary note.",
+    "visualSizeRange is now resolved through the FULL inheritance chain, including vanilla RimWorld's own Plant bases, not just each def's own tag and its RotSporeKit/AlphaBiomes custom abstract. MEASURED from the game's own Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml: PlantBaseNonEdible sets 0.3~1.00 (PlantBase inherits it unchanged), TreeBase sets 1.5~2.0. Resolving through that fixed one real number \u2014 RUT_FlakespireFungus (RUT_CaveTreeBase -> TreeBase) is 1.5~2.0, not the first pass's fallback of a bare 1.0 \u2014 and correctly re-labels the other 12 rows that inherit PlantBase's 0.3~1.0 (11 AlphaBiomes donor rows + RUT_BleedingTooth) as 'vanilla default, inherited', not 'not set'. Every one of the 40 flora rows now resolves a REAL visualSizeRange; none are an un-sourced guess.",
+    "Scale panels reuse the exact method in gen_plant_register.py's _scale_panel/_human_figure (plants, including its mesh-tiling sub-grid for maxMeshCount > 1) and gen_creature_register.py's _scale_panel (fauna) \u2014 copied rather than imported, because both modules pull in cherrypicker / game_paths / rimworld_loadset (live def-dump and Windows-path machinery) this generator's own hand-curated ROWS tables don't use. The human figure is the SAME real colonist sprite those scripts use (design/Jawa/worldbuilding/review/assets/human_anchor_south.png, already on disk \u2014 no re-extraction needed). PX_PER_CELL (64) and HUMAN_CELLS (1.5) match those scripts exactly; the 240px panel cap is THIS sheet's own (the reference scripts build much larger dedicated inspection images, 1200-1500px, for a page whose only job is art review \u2014 this is a row thumbnail on a mixed sheet, so 240px per the owner's instruction here).",
+    "Fauna cell size is the ADULT (last) life stage's bodyGraphicData.drawSize, MEASURED per race from its own PawnKindDef life-stage list (RSW_/AA_ from their own source files, RUT_Emberscythe from this repo) \u2014 not a fitted or inferred figure."
   ],
   "posture": {
     "mode": "blacklist",
@@ -274,690 +278,940 @@ body.grid .row.sel-tint{border-color:currentColor}
     "id": "A_AB_Bryolux",
     "label": "bryolux [AB_Bryolux]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 10 \u2014 VANILLA. A blue moss typically found in deep, dark caves. It is sticky, with tangled fibers, which slows anyone walking over\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself (confirmed by search) because it doesn't need one \u2014 vanilla Core ships this exact texPath (Graphic_Random BryoluxA/B/C in the base resources.assets); extracted BryoluxA, first alphabetically.]",
+    "effect": "wildPlants commonality 10 \u2014 VANILLA. mature size 0.95 cells (grows 0.82\u21920.95); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A blue moss typically found in deep, dark caves. It is sticky, with tangled fibers, which slows anyone walking over\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself (confirmed by search) because it doesn't need one \u2014 vanilla Core ships this exact texPath (Graphic_Random BryoluxA/B/C in the base resources.assets); extracted BryoluxA, first alphabetically.]",
     "thumb": "rot_review_thumbs_2026-09-18/AB_Bryolux.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plant/Bryolux",
       "artStatus": "vanilla",
-      "commonality": 10
+      "commonality": 10,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.95,
+      "mesh": 4
     }
   },
   {
     "id": "A_AB_Glowstool",
     "label": "glowstool [AB_Glowstool]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 3 \u2014 VANILLA. A small brown mushroom typically found in caves. It smells like an old, dirty rag pulled from the stomach of\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself because it doesn't need one \u2014 vanilla Core ships this texPath (GlowstoolA/B in resources.assets); extracted GlowstoolA.]",
+    "effect": "wildPlants commonality 3 \u2014 VANILLA. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A small brown mushroom typically found in caves. It smells like an old, dirty rag pulled from the stomach of\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself because it doesn't need one \u2014 vanilla Core ships this texPath (GlowstoolA/B in resources.assets); extracted GlowstoolA.]",
     "thumb": "rot_review_thumbs_2026-09-18/AB_Glowstool.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plant/Glowstool",
       "artStatus": "vanilla",
-      "commonality": 3
+      "commonality": 3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_Agarilux",
     "label": "agarilux [AB_Agarilux]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 2 \u2014 VANILLA. An enormous purple mushroom. Its size and glowing protrusions make this fungus beautiful to look at. This agarilux variant has\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself (only Giant/Prime variants ship their own) because it doesn't need one \u2014 vanilla Core ships this texPath (AgariluxA/B in resources.assets); extracted AgariluxA.]",
+    "effect": "wildPlants commonality 2 \u2014 VANILLA. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). An enormous purple mushroom. Its size and glowing protrusions make this fungus beautiful to look at. This agarilux variant has\u2026 [texPath has no art file in the AlphaBiomes Workshop mod itself (only Giant/Prime variants ship their own) because it doesn't need one \u2014 vanilla Core ships this texPath (AgariluxA/B in resources.assets); extracted AgariluxA.]",
     "thumb": "rot_review_thumbs_2026-09-18/AB_Agarilux.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plant/Agarilux",
       "artStatus": "vanilla",
-      "commonality": 2
+      "commonality": 2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_GiantAgarilux",
     "label": "giant agarilux [AB_GiantAgarilux]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 2 \u2014 DONOR. A colossal purple mushroom. Its size and glowing protrusions make this fungus beautiful to look at. Its stalk has been\u2026",
+    "effect": "wildPlants commonality 2 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A colossal purple mushroom. Its size and glowing protrusions make this fungus beautiful to look at. Its stalk has been\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_GiantAgarilux.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_GiantAgarilux",
       "artStatus": "donor",
-      "commonality": 2
+      "commonality": 2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_GlowingAgarilux",
     "label": "glowing agarilux [AB_GlowingAgarilux]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 1 \u2014 VANILLA. An enormous purple mushroom, glowing in darkness with a faint purple luminiscence. Its size and glowing protrusions make this fungus\u2026 [shares the same bare 'Agarilux' texPath as AB_Agarilux \u2014 vanilla Core art (AgariluxA), same file as that row.]",
+    "effect": "wildPlants commonality 1 \u2014 VANILLA. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). An enormous purple mushroom, glowing in darkness with a faint purple luminiscence. Its size and glowing protrusions make this fungus\u2026 [shares the same bare 'Agarilux' texPath as AB_Agarilux \u2014 vanilla Core art (AgariluxA), same file as that row.]",
     "thumb": "rot_review_thumbs_2026-09-18/AB_GlowingAgarilux.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plant/Agarilux",
       "artStatus": "vanilla",
-      "commonality": 1
+      "commonality": 1,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_LilacBeacon",
     "label": "lilac beacon [AB_LilacBeacon]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 DONOR. The lilac beacon is a tall mushroom with a bright purple cap. It is much more nutritive than other fungi,\u2026",
+    "effect": "wildPlants commonality 0.5 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). The lilac beacon is a tall mushroom with a bright purple cap. It is much more nutritive than other fungi,\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_LilacBeacon.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_LilacBeacon",
       "artStatus": "donor",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_WitchesOyster",
     "label": "witches' oyster [AB_WitchesOyster]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 DONOR. A small, ramified fungal colony with a pungent aroma. A witches' oyster produces caps that take quite a long time\u2026",
+    "effect": "wildPlants commonality 0.5 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A small, ramified fungal colony with a pungent aroma. A witches' oyster produces caps that take quite a long time\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_WitchesOyster.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_WitchesOyster",
       "artStatus": "donor",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Dewshrooms",
     "label": "dewshrooms [RUT_Dewshrooms]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 OWNED. Dewshrooms light up to attract small prey, which becomes trapped in their sticky gills.\u2026",
+    "effect": "wildPlants commonality 0.5 \u2014 OWNED. mature size 0.50 cells (grows 0.30\u21920.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 9 meshes/cell (Graphic_Random tiling). Dewshrooms light up to attract small prey, which becomes trapped in their sticky gills.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Dewshrooms.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Seadew",
       "artStatus": "owned",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.5,
+      "mesh": 9
     }
   },
   {
     "id": "A_RUT_FruitingBodies",
     "label": "mold fruiting bodies [RUT_FruitingBodies]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 OWNED. The fruiting bodies of a mold that grows in caverns.\u2026 [texPath also reused as a placeholder by RUT_FalseFruit (Guardian Groves, art queued)]",
+    "effect": "wildPlants commonality 0.5 \u2014 OWNED. mature size 0.50 cells (grows 0.30\u21920.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 9 meshes/cell (Graphic_Random tiling). The fruiting bodies of a mold that grows in caverns.\u2026 [texPath also reused as a placeholder by RUT_FalseFruit (Guardian Groves, art queued)]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_FruitingBodies.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/FruitingBodies",
       "artStatus": "owned",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.5,
+      "mesh": 9
     }
   },
   {
     "id": "A_RUT_Nuitae",
     "label": "nuitae [RUT_Nuitae]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 OWNED. While its cap's exterior is largely dark in color, its underside glows brightly. It grows most often in water or\u2026",
+    "effect": "wildPlants commonality 0.5 \u2014 OWNED. mature size 0.60 cells (grows 0.40\u21920.60); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). While its cap's exterior is largely dark in color, its underside glows brightly. It grows most often in water or\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Nuitae.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Nuitae",
       "artStatus": "owned",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.6,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Wrinklecap",
     "label": "wrinklecap [RUT_Wrinklecap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.5 \u2014 OWNED. A subterranean fungus that grows in damp environments. It is often eaten by fungivores.\u2026",
+    "effect": "wildPlants commonality 0.5 \u2014 OWNED. mature size 0.85 cells (grows 0.70\u21920.85); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A subterranean fungus that grows in damp environments. It is often eaten by fungivores.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Wrinklecap.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Wrinklecap",
       "artStatus": "owned",
-      "commonality": 0.5
+      "commonality": 0.5,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.85,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_Arpeau",
     "label": "arpeau [RUT_Arpeau]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.4 \u2014 OWNED. Fast-growing, but doesn't yield much usable material. Aquatic fungus.\u2026",
+    "effect": "wildPlants commonality 0.4 \u2014 OWNED. mature size 2.50 cells (grows 1.50\u21922.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). Fast-growing, but doesn't yield much usable material. Aquatic fungus.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Arpeau.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Arpeau",
       "artStatus": "owned",
-      "commonality": 0.4
+      "commonality": 0.4,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 2.5,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Nogtyl",
     "label": "nogtyl [RUT_Nogtyl]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.4 \u2014 OWNED. A strong wood-like mushroom. Fast-growing, but doesn't yield much usable material. It can only be grown by people on marshy\u2026",
+    "effect": "wildPlants commonality 0.4 \u2014 OWNED. mature size 2.50 cells (grows 1.50\u21922.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A strong wood-like mushroom. Fast-growing, but doesn't yield much usable material. It can only be grown by people on marshy\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Nogtyl.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Nogtyl",
       "artStatus": "owned",
-      "commonality": 0.4
+      "commonality": 0.4,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 2.5,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_RecurvedStropharia",
     "label": "recurved stropharia [AB_RecurvedStropharia]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.3 \u2014 DONOR. A big greyish mushroom. Its size and glowing protrusions make this fungus beautiful to look at. Its stalk has been\u2026",
+    "effect": "wildPlants commonality 0.3 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A big greyish mushroom. Its size and glowing protrusions make this fungus beautiful to look at. Its stalk has been\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_RecurvedStropharia.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_RecurvedStropharia",
       "artStatus": "donor",
-      "commonality": 0.3
+      "commonality": 0.3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_FlakespireFungus",
     "label": "flakespire fungus [RUT_FlakespireFungus]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.3 \u2014 OWNED. A strong purple mushroom tree. Slow-growing, but this woody fungus is very strong and attractive.\u2026",
+    "effect": "wildPlants commonality 0.3 \u2014 OWNED. mature size 2.00 cells (grows 1.50\u21922.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A strong purple mushroom tree. Slow-growing, but this woody fungus is very strong and attractive.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_FlakespireFungus.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/FlakespireFungus",
       "artStatus": "owned",
-      "commonality": 0.3
+      "commonality": 0.3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 2.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Pusmelon",
     "label": "pusmelon [RUT_Pusmelon]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.3 \u2014 OWNED. A green, gourd-like fungus that produces sacs of foul-smelling liquid.\u2026",
+    "effect": "wildPlants commonality 0.3 \u2014 OWNED. mature size 0.70 cells (grows 0.30\u21920.70); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A green, gourd-like fungus that produces sacs of foul-smelling liquid.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Pusmelon.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Pusmelon",
       "artStatus": "owned",
-      "commonality": 0.3
+      "commonality": 0.3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.7,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_RustPuff",
     "label": "rustpuff [RUT_RustPuff]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.3 \u2014 OWNED. A large puffball mushroom with flaky, rust-colored spores.\u2026",
+    "effect": "wildPlants commonality 0.3 \u2014 OWNED. mature size 0.60 cells (grows 0.25\u21920.60); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A large puffball mushroom with flaky, rust-colored spores.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_RustPuff.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/RustPuff",
       "artStatus": "owned",
-      "commonality": 0.3
+      "commonality": 0.3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.6,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_Sagecrust",
     "label": "sagecrust [RUT_Sagecrust]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.3 \u2014 OWNED. A tough, leafy lichen that can survive with minimal light.\u2026",
+    "effect": "wildPlants commonality 0.3 \u2014 OWNED. mature size 0.50 cells (grows 0.20\u21920.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 9 meshes/cell (Graphic_Random tiling). A tough, leafy lichen that can survive with minimal light.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Sagecrust.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Sagecrust",
       "artStatus": "owned",
-      "commonality": 0.3
+      "commonality": 0.3,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.5,
+      "mesh": 9
     }
   },
   {
     "id": "A_AB_ArbuscularMycorrhiza",
     "label": "arbuscular mycorrhiza [AB_ArbuscularMycorrhiza]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 DONOR. A mycorrhiza is a symbiotic association between a fungus and a plant. This particular organism is highly advanced, and the\u2026",
+    "effect": "wildPlants commonality 0.2 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A mycorrhiza is a symbiotic association between a fungus and a plant. This particular organism is highly advanced, and the\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_ArbuscularMycorrhiza.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_ArbuscularMycorrhiza",
       "artStatus": "donor",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_SlimyPholiota",
     "label": "slimy pholiota [AB_SlimyPholiota]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 DONOR. A blueish-pink mushroom, secreting a slimy substance that attracts insects. This substance paralyzes the insects, and eventually kills them, being\u2026 [folder also holds a duplicate 'AB_SlimyPholiotaA copy.png' \u2014 skipped, used the real AB_SlimyPholiotaA.png]",
+    "effect": "wildPlants commonality 0.2 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A blueish-pink mushroom, secreting a slimy substance that attracts insects. This substance paralyzes the insects, and eventually kills them, being\u2026 [folder also holds a duplicate 'AB_SlimyPholiotaA copy.png' \u2014 skipped, used the real AB_SlimyPholiotaA.png]",
     "thumb": "rot_review_thumbs_2026-09-18/AB_SlimyPholiota.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_SlimyPholiota",
       "artStatus": "donor",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_BleedingTooth",
     "label": "bleeding tooth [RUT_BleedingTooth]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. A huge mushroom that secretes a red, blood-like fluid.\u2026",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A huge mushroom that secretes a red, blood-like fluid.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_BleedingTooth.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/BleedingTooth",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Brightbell",
     "label": "shinebell [RUT_Brightbell]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. A small pretty mushroom that glows in the dark.\u2026 [the_rot.md names it \"shinebell\" (label), defName Brightbell \u2014 a fixed donor typo (BMT_Brightbells never existed), not a guess]",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 0.70 cells (grows 0.30\u21920.70); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A small pretty mushroom that glows in the dark.\u2026 [the_rot.md names it \"shinebell\" (label), defName Brightbell \u2014 a fixed donor typo (BMT_Brightbells never existed), not a guess]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Brightbell.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Brightbell",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.7,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_CrimsonCap",
     "label": "crimson cap [RUT_CrimsonCap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. A large crimson-capped mushroom. It is pretty enough to be used for decor but not much else.\u2026 [texPath also reused as a placeholder by RUT_FurnaceCap and RUT_AgelessCap (both art queued)]",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 1.00 cells (grows 0.80\u21921.00); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A large crimson-capped mushroom. It is pretty enough to be used for decor but not much else.\u2026 [texPath also reused as a placeholder by RUT_FurnaceCap and RUT_AgelessCap (both art queued)]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_CrimsonCap.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/CrimsonCap",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_GreyLady",
     "label": "Grey Lady [RUT_GreyLady]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. A grey fungus that grows cloth-like lace from its cap.\u2026 [texPath also reused as a placeholder by RUT_RegenerantVeil (Guardian Groves, art queued)]",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 1.00 cells (grows 0.40\u21921.00); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A grey fungus that grows cloth-like lace from its cap.\u2026 [texPath also reused as a placeholder by RUT_RegenerantVeil (Guardian Groves, art queued)]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_GreyLady.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Shinecap",
     "label": "shine cap [RUT_Shinecap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. This large mushroom lives in symbiosis with a surprisingly tasty slime mold called Glimmerslime.\u2026",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 2.50 cells (grows 1.50\u21922.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). This large mushroom lives in symbiosis with a surprisingly tasty slime mold called Glimmerslime.\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Shinecap.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 2.5,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_VioletWimple",
     "label": "violet wimple [RUT_VioletWimple]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.2 \u2014 OWNED. A big violet-capped mushroom. While not very productive, it does produce edible fungus.\u2026 [texPath also reused as a placeholder by RUT_EuphoricCrown (Guardian Groves, art queued)]",
+    "effect": "wildPlants commonality 0.2 \u2014 OWNED. mature size 0.70 cells (grows 0.30\u21920.70); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A big violet-capped mushroom. While not very productive, it does produce edible fungus.\u2026 [texPath also reused as a placeholder by RUT_EuphoricCrown (Guardian Groves, art queued)]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_VioletWimple.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/VioletWimple",
       "artStatus": "owned",
-      "commonality": 0.2
+      "commonality": 0.2,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.7,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_MortalMorelPlant",
     "label": "mortal morel [RUT_MortalMorelPlant]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.15 \u2014 OWNED. A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of\u2026 [texPath folder says MortalMorel, on-disk files are CavernalMorel_* \u2014 pre-existing naming oddity, not fixed here]",
+    "effect": "wildPlants commonality 0.15 \u2014 OWNED. mature size 1.00 cells (grows 0.60\u21921.00); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of\u2026 [texPath folder says MortalMorel, on-disk files are CavernalMorel_* \u2014 pre-existing naming oddity, not fixed here]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_MortalMorelPlant.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/MortalMorel",
       "artStatus": "owned",
-      "commonality": 0.15
+      "commonality": 0.15,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 4
     }
   },
   {
     "id": "A_AB_AgaricusDomeCap",
     "label": "agaricus domecap [AB_AgaricusDomeCap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.1 \u2014 DONOR. Everything about this fungus screams \"I'm toxic, stay away from me\". Of course this doesn't stop some enterprising individuals from\u2026",
+    "effect": "wildPlants commonality 0.1 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). Everything about this fungus screams \"I'm toxic, stay away from me\". Of course this doesn't stop some enterprising individuals from\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_AgaricusDomeCap.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_AgaricusDomeCap",
       "artStatus": "donor",
-      "commonality": 0.1
+      "commonality": 0.1,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_DribblingCap",
     "label": "dribbling cap [AB_DribblingCap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.1 \u2014 DONOR. A huge pink mushroom, constantly dribbling a pungent, resin-like substance. This substance is a potent neurotoxin that could potentially be\u2026",
+    "effect": "wildPlants commonality 0.1 \u2014 DONOR. mature size 1.00 cells (grows 0.30\u21921.00) [vanilla Plant-base default, not authored on this def]; drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A huge pink mushroom, constantly dribbling a pungent, resin-like substance. This substance is a potent neurotoxin that could potentially be\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_DribblingCap.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_DribblingCap",
       "artStatus": "donor",
-      "commonality": 0.1
+      "commonality": 0.1,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_Skulltop",
     "label": "skulltop [RUT_Skulltop]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.1 \u2014 OWNED. An extremely deadly mushroom that steadily releases polluting toxic spores into the air. These spores rapidly produce toxic buildup in\u2026 [the biome's lesser defender (AlphaBiomes gas-producer comp)]",
+    "effect": "wildPlants commonality 0.1 \u2014 OWNED. mature size 0.70 cells (grows 0.30\u21920.70); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). An extremely deadly mushroom that steadily releases polluting toxic spores into the air. These spores rapidly produce toxic buildup in\u2026 [the biome's lesser defender (AlphaBiomes gas-producer comp)]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Skulltop.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
       "artStatus": "owned",
-      "commonality": 0.1
+      "commonality": 0.1,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.7,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_BlastpodShroom",
     "label": "blastpod shroom [RUT_BlastpodShroom]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.05 \u2014 OWNED. A wild fungus prized for its dangerously volatile pods, which can be refined into chemfuel. It cannot be cultivated \u2014\u2026 [wild-only per owner ruling 2026-09-06, no sow tags]",
+    "effect": "wildPlants commonality 0.05 \u2014 OWNED. mature size 0.90 cells (grows 0.70\u21920.90); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A wild fungus prized for its dangerously volatile pods, which can be refined into chemfuel. It cannot be cultivated \u2014\u2026 [wild-only per owner ruling 2026-09-06, no sow tags]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_BlastpodShroom.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
       "artStatus": "owned",
-      "commonality": 0.05
+      "commonality": 0.05,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.9,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_FalseFruit",
     "label": "false fruit [RUT_FalseFruit]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.05 \u2014 SHARED-PLACEHOLDER. Grown at the edge of a euphoric crown's own root mat, and shaped to match it. It looks exactly like\u2026 [added by RotGuardianGroves_WildSpawn.xml, the lure ring; texPath shared with RUT_FruitingBodies \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "wildPlants commonality 0.05 \u2014 SHARED-PLACEHOLDER. mature size 0.60 cells (grows 0.40\u21920.60); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). Grown at the edge of a euphoric crown's own root mat, and shaped to match it. It looks exactly like\u2026 [added by RotGuardianGroves_WildSpawn.xml, the lure ring; texPath shared with RUT_FruitingBodies \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": null,
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/FruitingBodies",
       "artStatus": "shared-placeholder",
-      "commonality": 0.05
+      "commonality": 0.05,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.6,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_AgelessCap",
     "label": "ageless cap [RUT_AgelessCap]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.03 \u2014 SHARED-PLACEHOLDER. A pale, swollen mushroom rumored to hold back the years of anyone who tastes it right. It does not defend\u2026 [added by RotGuardianGroves_WildSpawn.xml; texPath shared with RUT_CrimsonCap and RUT_FurnaceCap \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "wildPlants commonality 0.03 \u2014 SHARED-PLACEHOLDER. mature size 1.60 cells (grows 1.30\u21921.60); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A pale, swollen mushroom rumored to hold back the years of anyone who tastes it right. It does not defend\u2026 [added by RotGuardianGroves_WildSpawn.xml; texPath shared with RUT_CrimsonCap and RUT_FurnaceCap \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": null,
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/CrimsonCap",
       "artStatus": "shared-placeholder",
-      "commonality": 0.03
+      "commonality": 0.03,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.6,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_RegenerantVeil",
     "label": "regenerant veil [RUT_RegenerantVeil]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.03 \u2014 SHARED-PLACEHOLDER. A translucent, slow-pulsing veil of fungal tissue, threaded straight into the grove's own mycelial network. Wound it and the\u2026 [added by RotGuardianGroves_WildSpawn.xml; the alarm plant for ROT_GUARDIAN_GROVES_1 (currently 0 fauna responders \u2014 see Group B); texPath shared with RUT_GreyLady \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "wildPlants commonality 0.03 \u2014 SHARED-PLACEHOLDER. mature size 1.30 cells (grows 1.00\u21921.30); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A translucent, slow-pulsing veil of fungal tissue, threaded straight into the grove's own mycelial network. Wound it and the\u2026 [added by RotGuardianGroves_WildSpawn.xml; the alarm plant for ROT_GUARDIAN_GROVES_1 (currently 0 fauna responders \u2014 see Group B); texPath shared with RUT_GreyLady \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": null,
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
       "artStatus": "shared-placeholder",
-      "commonality": 0.03
+      "commonality": 0.03,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.3,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_EuphoricCrown",
     "label": "euphoric crown [RUT_EuphoricCrown]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.02 \u2014 SHARED-PLACEHOLDER. A broad, faintly luminous cap that brews into the Rot's own pleasure tea. It keeps no defense of its own\u2026 [added by RotGuardianGroves_WildSpawn.xml; texPath shared with RUT_VioletWimple \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "wildPlants commonality 0.02 \u2014 SHARED-PLACEHOLDER. mature size 1.50 cells (grows 1.20\u21921.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A broad, faintly luminous cap that brews into the Rot's own pleasure tea. It keeps no defense of its own\u2026 [added by RotGuardianGroves_WildSpawn.xml; texPath shared with RUT_VioletWimple \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": null,
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/VioletWimple",
       "artStatus": "shared-placeholder",
-      "commonality": 0.02
+      "commonality": 0.02,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.5,
+      "mesh": 1
     }
   },
   {
     "id": "A_AB_AgariluxPrime",
     "label": "Agarilux Prime [AB_AgariluxPrime]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.01 \u2014 DONOR. An unbelievably large exemplar of Agarilux. This myconic colony has adapted perfectly to its environment, releasing large clouds of extremely\u2026",
+    "effect": "wildPlants commonality 0.01 \u2014 DONOR. mature size 8.00 cells (grows 7.95\u21928.00); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). An unbelievably large exemplar of Agarilux. This myconic colony has adapted perfectly to its environment, releasing large clouds of extremely\u2026",
     "thumb": "rot_review_thumbs_2026-09-18/AB_AgariluxPrime.png",
     "prefill": "keep",
     "meta": {
       "source": "AlphaBiomes (sarg.alphabiomes)",
       "texPath": "Things/Plants/AB_AgariluxPrime",
       "artStatus": "donor",
-      "commonality": 0.01
+      "commonality": 0.01,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 8.0,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_PaleTree",
     "label": "pale tree [RUT_PaleTree]",
     "group": "A) Rot flora",
-    "effect": "wildPlants commonality 0.01 \u2014 VANILLA. A bone-white tree that hums faintly at dusk, sacred to the wandering Wildsteam creed. Meditating in its shade for long\u2026 [added by RotPaleTree_WildSpawn.xml (PatchOperationAdd), Royalty-gated; reuses vanilla TreeAnima verbatim (extracted TreeAnimaA from Data/Royalty/AssetBundles/resources_royalty, first alphabetically of A-E) \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "wildPlants commonality 0.01 \u2014 VANILLA. mature size 2.50 cells (grows 1.80\u21922.50); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). A bone-white tree that hums faintly at dusk, sacred to the wandering Wildsteam creed. Meditating in its shade for long\u2026 [added by RotPaleTree_WildSpawn.xml (PatchOperationAdd), Royalty-gated; reuses vanilla TreeAnima verbatim (extracted TreeAnimaA from Data/Royalty/AssetBundles/resources_royalty, first alphabetically of A-E) \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_PaleTree.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "Things/Plant/TreeAnima",
       "artStatus": "vanilla",
-      "commonality": 0.01
+      "commonality": 0.01,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 2.5,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_DulcisPlant",
     "label": "dulcis [RUT_DulcisPlant]",
     "group": "A) Rot flora",
-    "effect": "not in wildPlants (sow/companion-only) \u2014 OWNED. An oddly sweet mushroom grown by cave dwellers in place of berries. It can survive in a wide range of\u2026 [fungiponics' default grow target, NOT in wildPlants (sow-only, mustBeWildToSow paradoxically true \u2014 grows wild-style once sown); a same-day regen pass (dulcisgrown_a_v1 etc, PASS, not yet wired) reshot this already-owned art \u2014 see the report]",
+    "effect": "not in wildPlants (sow/companion-only) \u2014 OWNED. mature size 1.30 cells (grows 0.50\u21921.30); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here). An oddly sweet mushroom grown by cave dwellers in place of berries. It can survive in a wide range of\u2026 [fungiponics' default grow target, NOT in wildPlants (sow-only, mustBeWildToSow paradoxically true \u2014 grows wild-style once sown); a same-day regen pass (dulcisgrown_a_v1 etc, PASS, not yet wired) reshot this already-owned art \u2014 see the report]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_DulcisPlant.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/Dulcis/DulcisGrown",
       "artStatus": "owned",
-      "commonality": null
+      "commonality": null,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.3,
+      "mesh": 1
     }
   },
   {
     "id": "A_RUT_FurnaceCap",
     "label": "furnace cap [RUT_FurnaceCap]",
     "group": "A) Rot flora",
-    "effect": "not in wildPlants (sow/companion-only) \u2014 SHARED-PLACEHOLDER. A squat, thick-walled mushroom that runs its metabolism hot enough to steam in cold air. Cut one open and the\u2026 [ROT_WARM_MAT_1; NOT in wildPlants (not yet wild-spawned, ThingDef only); texPath shared with RUT_CrimsonCap/RUT_AgelessCap \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "not in wildPlants (sow/companion-only) \u2014 SHARED-PLACEHOLDER. mature size 1.00 cells (grows 0.50\u21921.00); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 4 meshes/cell (Graphic_Random tiling). A squat, thick-walled mushroom that runs its metabolism hot enough to steam in cold air. Cut one open and the\u2026 [ROT_WARM_MAT_1; NOT in wildPlants (not yet wild-spawned, ThingDef only); texPath shared with RUT_CrimsonCap/RUT_AgelessCap \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": null,
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "RotSporeKit/Things/Plant/CrimsonCap",
       "artStatus": "shared-placeholder",
-      "commonality": null
+      "commonality": null,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 1.0,
+      "mesh": 4
     }
   },
   {
     "id": "A_RUT_PaleMoss",
     "label": "pale moss [RUT_PaleMoss]",
     "group": "A) Rot flora",
-    "effect": "not in wildPlants (sow/companion-only) \u2014 VANILLA. A faintly glowing moss that only takes root beneath a pale tree, fed by whatever the tree is doing underground.\u2026 [NOT in wildPlants (companion-spawn only, grows beneath RUT_PaleTree); Royalty-gated; reuses vanilla Grass_Anima verbatim (extracted Grass_AnimaA from the base resources.assets, first alphabetically of A-C) \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
+    "effect": "not in wildPlants (sow/companion-only) \u2014 VANILLA. mature size 0.45 cells (grows 0.30\u21920.45); drawSize 1.0 \u00d7 1.0 cells (vanilla default on every Group A row, never overridden \u2014 not what drives apparent size here); 9 meshes/cell (Graphic_Random tiling). A faintly glowing moss that only takes root beneath a pale tree, fed by whatever the tree is doing underground.\u2026 [NOT in wildPlants (companion-spawn only, grows beneath RUT_PaleTree); Royalty-gated; reuses vanilla Grass_Anima verbatim (extracted Grass_AnimaA from the base resources.assets, first alphabetically of A-C) \u2014 one of the 22 new-art jobs FAILED tonight on quota]",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_PaleMoss.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit)",
       "texPath": "Things/Plant/Grass_Anima",
       "artStatus": "vanilla",
-      "commonality": null
+      "commonality": null,
+      "drawSize": [
+        1.0,
+        1.0
+      ],
+      "matureCells": 0.45,
+      "mesh": 9
     }
   },
   {
     "id": "B_RSW_FungalWeevil",
     "label": "fungal weevil [RSW_FungalWeevil]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.4 \u2014 class: ingest-strange, import. bodySize 0.5. kin tag: RotBroodmates | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: broods recover if you leave survivors; finish a brood or expect it back",
+    "effect": "commonality 0.4 \u2014 class: ingest-strange, import. adult drawSize 1.80 \u00d7 1.80 cells. bodySize 0.5. kin tag: RotBroodmates | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: broods recover if you leave survivors; finish a brood or expect it back",
     "thumb": "rot_review_thumbs_2026-09-18/RSW_FungalWeevil.png",
     "prefill": "keep",
     "meta": {
       "source": "SWBestiary (mandrake.rsw.swbestiary)",
       "bodySize": 0.5,
-      "kinTag": "RotBroodmates"
+      "kinTag": "RotBroodmates",
+      "adultDrawSize": 1.8
     }
   },
   {
     "id": "B_AA_Swarmling",
     "label": "swarmling [AA_Swarmling]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.3 \u2014 class: hybrid-vermin, adjust-keep. bodySize 0.3. kin tag: RotSwarm | wound-link: YES | no | alarm-responder: YES. Trade: one body: wound one, wound the swarm \u2014 both ways (a grenade into a swarm mirrors 60% of every hit across the pack)",
+    "effect": "commonality 0.3 \u2014 class: hybrid-vermin, adjust-keep. adult drawSize 1.75 \u00d7 1.75 cells. bodySize 0.3. kin tag: RotSwarm | wound-link: YES | no | alarm-responder: YES. Trade: one body: wound one, wound the swarm \u2014 both ways (a grenade into a swarm mirrors 60% of every hit across the pack)",
     "thumb": "rot_review_thumbs_2026-09-18/AA_Swarmling.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals)",
       "bodySize": 0.3,
-      "kinTag": "RotSwarm"
+      "kinTag": "RotSwarm",
+      "adultDrawSize": 1.75
     }
   },
   {
     "id": "B_AA_Agaripod",
     "label": "agaripod [AA_Agaripod]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.25 \u2014 class: hybrid-native, keep. bodySize 4.0. kin tag: RotAgarikin | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: the flagship organ: hunting one agari wounds every agari within 12 cells, but a huddled herd knits together",
+    "effect": "commonality 0.25 \u2014 class: hybrid-native, keep. adult drawSize 3.80 \u00d7 3.80 cells. bodySize 4.0. kin tag: RotAgarikin | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: the flagship organ: hunting one agari wounds every agari within 12 cells, but a huddled herd knits together",
     "thumb": "rot_review_thumbs_2026-09-18/AA_Agaripod.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals); AgaripodArtOverride (game Mods folder) overrides the base art",
       "bodySize": 4.0,
-      "kinTag": "RotAgarikin"
+      "kinTag": "RotAgarikin",
+      "adultDrawSize": 3.8
     }
   },
   {
     "id": "B_AA_MycoidColossus",
     "label": "mycoid colossus [AA_MycoidColossus]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.25 \u2014 class: hybrid-giant, keep. bodySize 6.0. kin tag: none (solitary) | wound-link: no | no | alarm-responder: YES. Trade: the forest walks over, when it's near \u2014 rare (0.25), the jackpot alarm response",
+    "effect": "commonality 0.25 \u2014 class: hybrid-giant, keep. adult drawSize 6.00 \u00d7 6.00 cells. bodySize 6.0. kin tag: none (solitary) | wound-link: no | no | alarm-responder: YES. Trade: the forest walks over, when it's near \u2014 rare (0.25), the jackpot alarm response",
     "thumb": "rot_review_thumbs_2026-09-18/AA_MycoidColossus.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals); MycoidColossusArtOverride (game Mods folder) overrides the base art",
       "bodySize": 6.0,
-      "kinTag": "none (solitary)"
+      "kinTag": "none (solitary)",
+      "adultDrawSize": 6.0
     }
   },
   {
     "id": "B_RSW_BovineBeetle",
     "label": "bovine beetle [RSW_BovineBeetle]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.2 \u2014 class: ingest-producer, import. bodySize 2.45. kin tag: RotHerd | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: a tamed train spreads a raid volley across the herd, but one wild predator strike bloodies the whole line",
+    "effect": "commonality 0.2 \u2014 class: ingest-producer, import. adult drawSize 3.00 \u00d7 3.00 cells. bodySize 2.45. kin tag: RotHerd | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: a tamed train spreads a raid volley across the herd, but one wild predator strike bloodies the whole line",
     "thumb": "rot_review_thumbs_2026-09-18/RSW_BovineBeetle.png",
     "prefill": "keep",
     "meta": {
       "source": "SWBestiary (mandrake.rsw.swbestiary)",
       "bodySize": 2.45,
-      "kinTag": "RotHerd"
+      "kinTag": "RotHerd",
+      "adultDrawSize": 3.0
     }
   },
   {
     "id": "B_AA_Agaripawn",
     "label": "agaripawn [AA_Agaripawn]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.2 \u2014 class: hybrid-native, keep. bodySize 1.4. kin tag: RotAgarikin | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: same organ as the agaripod \u2014 the flagship's other half",
+    "effect": "commonality 0.2 \u2014 class: hybrid-native, keep. adult drawSize 2.00 \u00d7 2.00 cells. bodySize 1.4. kin tag: RotAgarikin | wound-link: YES | mend \u221d bodySize | alarm-responder: no. Trade: same organ as the agaripod \u2014 the flagship's other half",
     "thumb": "rot_review_thumbs_2026-09-18/AA_Agaripawn.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals)",
       "bodySize": 1.4,
-      "kinTag": "RotAgarikin"
+      "kinTag": "RotAgarikin",
+      "adultDrawSize": 2.0
     }
   },
   {
     "id": "B_AA_Wildpawn",
     "label": "wildpawn [AA_Wildpawn]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.2 \u2014 class: hybrid-native, adjust-keep. bodySize 1.4. kin tag: RotWildkin | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: the fastest healer in the biome, but only in company \u2014 split them before you hunt",
+    "effect": "commonality 0.2 \u2014 class: hybrid-native, adjust-keep. adult drawSize 2.00 \u00d7 2.00 cells. bodySize 1.4. kin tag: RotWildkin | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: the fastest healer in the biome, but only in company \u2014 split them before you hunt",
     "thumb": "rot_review_thumbs_2026-09-18/AA_Wildpawn.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals)",
       "bodySize": 1.4,
-      "kinTag": "RotWildkin"
+      "kinTag": "RotWildkin",
+      "adultDrawSize": 2.0
     }
   },
   {
     "id": "B_AA_Wildpod",
     "label": "wildpod [AA_Wildpod]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.2 \u2014 class: hybrid-native, adjust-keep. bodySize 4.0. kin tag: RotWildkin | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: same organ as the wildpawn \u2014 the soft-aura variant",
+    "effect": "commonality 0.2 \u2014 class: hybrid-native, adjust-keep. adult drawSize 3.80 \u00d7 3.80 cells. bodySize 4.0. kin tag: RotWildkin | wound-link: no | mend \u221d bodySize | alarm-responder: no. Trade: same organ as the wildpawn \u2014 the soft-aura variant",
     "thumb": "rot_review_thumbs_2026-09-18/AA_Wildpod.png",
     "prefill": "keep",
     "meta": {
       "source": "Alpha Animals (sarg.alphaanimals); WildpodArtOverride (game Mods folder) overrides the base art",
       "bodySize": 4.0,
-      "kinTag": "RotWildkin"
+      "kinTag": "RotWildkin",
+      "adultDrawSize": 3.8
     }
   },
   {
     "id": "B_RSW_FungalMantis",
     "label": "fungal mimic mantis [RSW_FungalMantis]",
     "group": "B) Rot fauna",
-    "effect": "commonality 0.15 \u2014 class: guardian, import. bodySize 2.0. kin tag: none (solitary predator) | wound-link: no | no | alarm-responder: YES. Trade: the false-fruit trap now has teeth \u2014 the mantis you never saw answers",
+    "effect": "commonality 0.15 \u2014 class: guardian, import. adult drawSize 3.00 \u00d7 3.00 cells. bodySize 2.0. kin tag: none (solitary predator) | wound-link: no | no | alarm-responder: YES. Trade: the false-fruit trap now has teeth \u2014 the mantis you never saw answers",
     "thumb": "rot_review_thumbs_2026-09-18/RSW_FungalMantis.png",
     "prefill": "keep",
     "meta": {
       "source": "SWBestiary (mandrake.rsw.swbestiary)",
       "bodySize": 2.0,
-      "kinTag": "none (solitary predator)"
+      "kinTag": "none (solitary predator)",
+      "adultDrawSize": 3.0
     }
   },
   {
     "id": "B_RUT_Emberscythe",
     "label": "emberscythe mantis [RUT_Emberscythe]",
     "group": "B) Rot fauna",
-    "effect": "not in wildAnimals \u2014 class: NOT in RUT_TheRot \u2014 a Pyrelands fire-follower shipped in this same kit. bodySize 1.3. kin tag: none | wound-link: no | no (already has a solo InjuryHealingFactor 1.6) | alarm-responder: no. Trade: keep Rot kin-mechanics out of fire country \u2014 wrong biome, already self-sufficient",
+    "effect": "not in wildAnimals \u2014 class: NOT in RUT_TheRot \u2014 a Pyrelands fire-follower shipped in this same kit. adult drawSize 2.20 \u00d7 2.20 cells. bodySize 1.3. kin tag: none | wound-link: no | no (already has a solo InjuryHealingFactor 1.6) | alarm-responder: no. Trade: keep Rot kin-mechanics out of fire country \u2014 wrong biome, already self-sufficient",
     "thumb": "rot_review_thumbs_2026-09-18/RUT_Emberscythe.png",
     "prefill": "keep",
     "meta": {
       "source": "RotSporeKit (mandrake.rut.rotsporekit) \u2014 art is a vanilla Megascarab recolor placeholder, per its own header comment",
       "bodySize": 1.3,
-      "kinTag": "none"
+      "kinTag": "none",
+      "adultDrawSize": 2.2
     }
   },
   {
