@@ -323,6 +323,26 @@ all tiers now set `dlc: True`. A tier's `want` list may still narrow which
 `B*`/`C*`/`D*`/`W*` IDs; legacy IDs are never renamed and are always cited with
 their title attached — `B58 (the dead Jawa pawnkind)`, never bare.
 
+## Correctness outranks seat ownership — owner, 2026-09-19
+
+*"It is WORSE to leave incorrect information that belongs to another seat than it is
+to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
+
+🔴 **A false statement in another seat's file is yours to fix, on sight.** Item prose,
+spec, design doc — no correction ticket, no note, no waiting. A wrong sentence left
+standing is believed by everyone who reads it next; the seat boundary was never
+supposed to protect one.
+
+- **Commit it at once, explicit paths.** The danger was always the UNCOMMITTED fix in
+  a tree four threads share — erased by the next checkout, nobody told. Committing is
+  the safeguard, not the risk.
+- **The commit says what was WRONG**, not merely what changed.
+- ⛔ **Correcting is not redirecting.** Their scope, priorities and open decisions stay
+  theirs — fix what is false, `rimflow file --for <them>` anything that is a judgement.
+- Enforced, not exhorted: `.claude/hooks/queue_lint.py` WARNS on a cross-seat item
+  edit and never blocks it. Pair with the deletion rule directly below — remove wrong
+  content, don't annotate it.
+
 ## Inaccurate material is DELETED, not superseded-in-place — owner, 2026-09-09
 
 *"Simply remove offending inaccurate material, don't leave it in and supersede

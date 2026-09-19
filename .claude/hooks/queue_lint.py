@@ -157,33 +157,34 @@ VIEW_MSG = (
 # correcting seat may write AND commit the new item's own file. The correction ends up
 # durable, in git, addressed to the right seat — which is everything the stranded edit
 # was not.
+# 🔴 CORRECTNESS OUTRANKS SEAT OWNERSHIP — OWNER'S RULING, 2026-09-19, verbatim:
+# *"It is WORSE to leave incorrect information that belongs to another seat than it is
+# to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
+#
+# ⛔ So this is a WARNING and never a refusal. It used to deny at the write, on the
+# reasoning that a stranded edit in a shared tree is worse than no edit. That reasoning
+# was only ever half the ledger: the other half is the wrong sentence left standing in
+# another seat's file, which every later reader believes. He has ruled which half wins,
+# repeatedly, and the hook now agrees with him.
+#
+# ⚠️ The stranded-edit risk is REAL and unchanged — so the warning says commit it
+# now, by explicit path, rather than leaving it in the tree. That is the actual remedy;
+# refusing the edit never was.
 ITEM_OWNED_MSG = (
-    "\u26d4 Blocked at the WRITE, not at the commit \u2014 and that is deliberate.\n\n"
-    "    %(iid)s belongs to %(holder)s.\n\n"
-    "If you write this and the commit bounces, your correction exists ONLY in a working "
-    "tree\nfour seats share, where the next `git checkout` erases it and nothing tells "
-    "%(holder)s it\nwas ever there. That happened twice, and both were found by luck the "
-    "next morning. So\nthe refusal moved here, to the moment the work would be created.\n\n"
-    "\u2705 SEND the correction instead. Two commands, and the work ends up in git:\n\n"
-    "  1. File it against them \u2014 this leaves it UNCLAIMED, which is what lets you "
-    "write it:\n\n"
-    "     python3 src/RimMandrake/rimflow/cli.py file %(new)s \\\n"
-    "       --for %(holder)s --kind task --caused-by %(iid)s \\\n"
-    "       --title \"<what is wrong with %(iid)s, in one line>\"\n\n"
-    "  2. Write the correction into ITS file \u2014 yours to write and yours to commit:\n\n"
-    "     infrastructure/state/items/%(new)s.md\n"
-    "       ## Spec        the correction IN FULL. This is the deliverable.\n"
-    "       ## Verify      how %(holder)s confirms it landed\n"
-    "       ## Criteria    what done looks like\n\n"
-    "     git commit infrastructure/state/items/%(new)s.md -m \"<subject>\"\n\n"
-    "\U0001f511 Write the WHOLE correction into `## Spec`. %(holder)s should be able to "
-    "apply it\nwithout reconstructing anything you already worked out.\n\n"
-    "\u26a0\ufe0f  Genuinely urgent, or %(holder)s is wrong on the merits? Say so in\n"
-    "infrastructure/state/queue/HUMAN.md \u2014 any seat may write that one.\n\n"
-    "\U0001f511 The OWNER has ruled on this item out loud? Record his ruling and the "
-    "file unlocks\nfor any seat until the item's next ordinary event:\n\n"
-    "     python3 src/RimMandrake/rimflow/cli.py <verb> %(iid)s \\\n"
-    "       --owner-said \"<his words, VERBATIM>\"\n"
+    "⚠️  %(iid)s belongs to %(holder)s — editing it anyway, which is allowed.\n\n"
+    "🔴 OWNER'S RULING 2026-09-19: leaving WRONG information in another seat's item is\n"
+    "   worse than crossing the seat boundary to fix it. Correctness wins. You are not\n"
+    "   being stopped.\n\n"
+    "✅ Two things make this safe rather than merely allowed:\n\n"
+    "  1. COMMIT IT NOW, by explicit path — an uncommitted correction in a shared\n"
+    "     working tree is erased by the next checkout and nobody is told:\n"
+    "       git commit infrastructure/state/items/%(iid)s.md -m \"<what you corrected>\"\n\n"
+    "  2. Say in the commit WHAT WAS WRONG, not just what you changed. %(holder)s reads\n"
+    "     the log, not your reasoning.\n\n"
+    "⛔ Still not yours to do: REDIRECTING their work — rewriting the spec, changing\n"
+    "   scope, or re-deciding something they own. Fix what is FALSE; file the rest:\n"
+    "       python3 src/RimMandrake/rimflow/cli.py file %(new)s --for %(holder)s \\\n"
+    "         --kind task --caused-by %(iid)s --title \"<what %(holder)s should decide>\"\n"
 )
 
 
@@ -355,6 +356,10 @@ def changed(root, paths):
 
 
 def main():
+    # \u26a0\ufe0f Set once, here, so every return path is defined. A cross-seat item
+    # correction sets it (owner's ruling 2026-09-19) and main() exits 1: a NOTICE, not
+    # a block. Exit 2 is the only code that gates.
+    warned = False
     try:
         ev = json.load(sys.stdin)
     except Exception:
@@ -394,9 +399,11 @@ def main():
                     and owners(root, "unclaimed_filers").get(iid) != seat
                     and iid not in owners(root, "owner_unlocked")):
                 bits = [b for b in iid.split("_") if not b.isdigit()][:2]
-                return deny(ITEM_OWNED_MSG % {
+                # Owner's ruling 2026-09-19: warn, never refuse. See ITEM_OWNED_MSG.
+                print(ITEM_OWNED_MSG % {
                     "iid": iid, "holder": holder,
-                    "new": "_".join(["CORRECT"] + bits + ["1"])})
+                    "new": "_".join(["CORRECT"] + bits + ["1"])}, file=sys.stderr)
+                return 1                  # non-blocking: visible, but the write lands
         return 0                          # rule 4 is about commits, not edits
 
     cmd = ti.get("command") or ""
@@ -462,17 +469,22 @@ def main():
                     continue             # the owner ruled on it; his word unlocks it
                 bad.append((iid, holder))
         if bad:
-            return deny(
-                "Blocked: %s is editing %d item(s) owned by another seat.\n\n%s\n\n"
-                "Filing work FOR another seat is normal and encouraged. Changing their "
-                "work is refused — four seats share one working tree, so this is easy "
-                "to do by accident and impossible to notice afterwards.\n\n"
-                "File instead:  rimflow file --for %s --title \"…\" --kind task <ID>\n"
-                "Or, if the owner is genuinely wrong, say so in "
-                "infrastructure/state/queue/HUMAN.md."
+            # \U0001f534 Owner's ruling 2026-09-19: correctness outranks seat ownership, so a
+            # commit that CORRECTS another seat's item is exactly what should happen.
+            # Committing is the safe end of the act \u2014 it is the uncommitted edit that
+            # strands. Refusing here produced the very stranding it warned about.
+            print(
+                "\u26a0\ufe0f  %s is committing %d item(s) owned by another seat \u2014 allowed.\n\n%s\n\n"
+                "\U0001f534 OWNER 2026-09-19: leaving wrong information in another seat's item is "
+                "worse\n   than crossing the boundary to fix it. Committing it is the RIGHT "
+                "end of that act.\n\n"
+                "\u26d4 Fix what is FALSE. Do not redirect their work \u2014 scope and decisions "
+                "stay theirs:\n"
+                "   rimflow file --for %s --title \"…\" --kind task <ID>"
                 % (seat, len(bad),
                    "\n".join("    %-44s belongs to %s" % (i, h) for i, h in bad),
-                   bad[0][1]))
+                   bad[0][1]), file=sys.stderr)
+            warned = True
 
     # ---- 4. the repo root is shared -----------------------------------------
     # ⚠️ Scope the check to THIS repo. `git commit SKILL.md` run from another
@@ -480,6 +492,8 @@ def main():
     # without the existence test it is judged against Rimworld's root — which
     # refuses a legitimate commit in a repo this guard has no authority over.
     # Measured 2026-08-21 on a sibling skill repo.
+    # A cross-seat item correction warned above; carry that out as exit 1 (visible,
+    # non-blocking) rather than swallowing it in the rule-4 return.
     tracked = set((git(root, "ls-files") or "").split())
     for p in paths:
         if "/" in p or not p.endswith(".md"):
@@ -520,7 +534,10 @@ def main():
                       file=sys.stderr)
         except Exception:
             pass
-    return 0
+    # \u26a0\ufe0f A cross-seat item correction warned earlier (owner's ruling 2026-09-19)
+    # exits 1: visible on the owner's screen, non-blocking for the seat. Exit 2 is the
+    # only blocking code; 1 is a notice.
+    return 1 if warned else 0
 
 
 if __name__ == "__main__":

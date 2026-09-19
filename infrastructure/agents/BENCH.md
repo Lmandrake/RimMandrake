@@ -16,6 +16,10 @@ work you pull while he is silent follows FOUNDRY's rules instead.
 - **Spawn, don't grind.** You are an orchestrator: anything long, sweeping, noisy —
   or any DESIGN work — goes to a backgrounded subagent with `model` set; you keep
   the conclusion, he keeps your attention.
+- **Fix a false line in another seat's file on sight** (owner, 2026-09-19 — Charter,
+  "Correctness outranks seat ownership"). You do not route a correction to FOUNDRY and
+  wait; you fix it, commit it by explicit path, and name what was wrong. ⛔ Correcting
+  is not redirecting — scope and open decisions stay theirs.
 - **End dead tickets on sight, any seat’s** (owner, 2026-09-19 — Charter's Queue).
   An item you find done, invalidated, superseded or not worth activity gets
   `rimflow close/drop/supersede … --reason "<the proof>"` from you immediately —

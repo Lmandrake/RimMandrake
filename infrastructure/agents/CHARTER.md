@@ -73,6 +73,27 @@ grep/probe — if it doesn't prove the item live, `rimflow drop <ID> --reason
 "stale-drop: <the probe>"`; real work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. v2 ideas
 go straight to `design/V2_DREAMS.md`, any window, no permission.
 
+## Correctness outranks seat ownership — owner, 2026-09-19
+
+> *"It is WORSE to leave incorrect information that belongs to another seat than it is
+> to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
+
+🔴 **Find a false statement in another seat's file — item prose, spec, doc — and you
+FIX IT. Now, yourself.** Not a correction item, not a note, not a message. The seat
+boundary never protected a wrong sentence, and every reader downstream believes it
+until someone crosses the line.
+
+- **Commit it immediately, by explicit path.** The real risk was never the crossing —
+  it was an uncommitted fix sitting in a tree four threads share, erased by the next
+  checkout with nobody told. Committing IS the safeguard.
+- **Say what was WRONG in the commit, not just what you changed.** The owning seat
+  reads the log, not your reasoning.
+- ⛔ **Fixing ≠ redirecting.** Scope, priorities and decisions stay theirs: correct
+  what is FALSE, and `rimflow file --for <them>` anything that is a judgement call.
+- `queue_lint.py` enforces exactly this: a cross-seat item edit WARNS and never
+  refuses (48/48 selftests). Deleting wrong content beats annotating it — see
+  CLAUDE.md's "Inaccurate material is DELETED".
+
 ## Decisions
 
 The owner decides. A ruling is one dated line in `infrastructure/state/canon.yml`

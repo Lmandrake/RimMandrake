@@ -174,10 +174,16 @@ CASES = [
     ("ALLOW the filer finishing the spec of an UNCLAIMED item it filed", ALLOW, None,
      {I + "/FILED_BY_ME_1.md": "## spec\nx\n"},
      "git commit %s/FILED_BY_ME_1.md -m x" % I, "BUILD", None),
-    ("DENY  the filer once the owning seat has CLAIMED it", DENY, "belongs to",
+    # \U0001f534 These four asserted a REFUSAL until 2026-09-19, when the owner ruled that
+    # leaving wrong information in another seat's item is worse than crossing the
+    # boundary to fix it. They now assert the warning still NAMES the owning seat -
+    # the notice is the whole remaining safeguard, so losing it is the regression.
+    ("ALLOW the filer once the owning seat has CLAIMED it - warned, not refused",
+     ALLOW, None,
      {I + "/FILED_THEN_CLAIMED_1.md": "## spec\nx\n"},
      "git commit %s/FILED_THEN_CLAIMED_1.md -m x" % I, "BUILD", None),
-    ("DENY  another seat's item when it IS in the pathspec", DENY, "belongs to",
+    ("ALLOW another seat's item in the pathspec - correctness outranks the seat",
+     ALLOW, None,
      {I + "/THEIRS_ITEM_HERE_1.md": "changed\n"},
      "git commit %s/THEIRS_ITEM_HERE_1.md -m \"x\"" % I, "BUILD", None),
     ("ALLOW a commit naming no item while ANOTHER item is dirty", ALLOW, None,
@@ -227,7 +233,7 @@ CASES = [
      "python3 src/RimMandrake/rimflow/cli.py close X_Y_1 --sha abc", "BUILD", None),
 
     # ---- 3. file for any seat; change only what you own --------------------
-    ("DENY  editing another seat's item file", DENY, "belongs to",
+    ("ALLOW editing another seat's item file - owner's ruling 2026-09-19", ALLOW, None,
      {I + "/THEIRS_ITEM_HERE_1.md": "## spec\nedited\n"},
      "git commit %s/THEIRS_ITEM_HERE_1.md -m x" % I, "BUILD", None),
     ("ALLOW editing your OWN item file", ALLOW, None,
@@ -253,9 +259,10 @@ CASES = [
     # is a much bigger hammer than refusing at the commit — it stops the work being
     # created at all — so every legitimate write must keep working, especially step 2
     # of the route the refusal itself hands over.
-    ("DENY  WRITING another seat's item file", DENY, "Blocked at the WRITE",
+    ("ALLOW WRITING another seat's item file - the fix must be able to happen",
+     ALLOW, None,
      {}, I + "/THEIRS_ITEM_HERE_1.md", "BUILD", None, "Edit"),
-    ("DENY  ...and it names the two-command route out", DENY, "cli.py file CORRECT_",
+    ("ALLOW ...and writing it still lands", ALLOW, None,
      {}, I + "/THEIRS_ITEM_HERE_1.md", "BUILD", None, "Write"),
     ("ALLOW WRITING your OWN item file", ALLOW, None,
      {}, I + "/MINE_ITEM_HERE_1.md", "BUILD", None, "Edit"),
@@ -268,7 +275,8 @@ CASES = [
     # the refusal above is sending seats into a wall instead of out of one.
     ("ALLOW writing an item you filed that nobody has claimed", ALLOW, None,
      {}, I + "/FILED_BY_ME_1.md", "BUILD", None, "Edit"),
-    ("DENY  writing it once they have claimed it", DENY, "belongs to",
+    ("ALLOW writing it once they have claimed it - warned, never refused",
+     ALLOW, None,
      {}, I + "/FILED_THEN_CLAIMED_1.md", "BUILD", None, "Edit"),
     # ⚠️ An item file for an id the ledger has never heard of is a NEW item being
     # drafted. Nobody owns it, so nothing may refuse it.
@@ -298,8 +306,11 @@ CASES = [
     ("ALLOW committing another seat's item after an OWNER ruling", ALLOW, None,
      {I + "/RULED_BY_OWNER_1.md": "## spec\nruled\n"},
      "git commit %s/RULED_BY_OWNER_1.md -m x" % I, "BUILD", None),
-    ("DENY  the same item once a later ordinary event re-locks it", DENY,
-     "belongs to",
+    # \u26a0\ufe0f Since 2026-09-19 the re-lock no longer GATES - it only decides whether a
+    # warning is printed. The owner ruled that a wrong sentence in another seat's item
+    # must be fixable at any time, ruling or no ruling.
+    ("ALLOW the same item after a later ordinary event - re-lock warns, never blocks",
+     ALLOW, None,
      {}, I + "/RULED_THEN_MOVED_1.md", "BUILD", None, "Edit"),
 
     # ---- not our business --------------------------------------------------
