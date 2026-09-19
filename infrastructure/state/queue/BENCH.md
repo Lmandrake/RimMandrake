@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:52:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T06:17:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -530,3 +530,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVEMODLISTDIVERGENCE1
 prose:    infrastructure/state/items/CANONICAL_SAVE_MODLIST_DIVERGENCE_1.md
+
+## DEEPS_FAUNA_REPOPULATION_1 Repopulate the Lantern Deeps fauna: a proposal portfolio of truly alien hydrocarbon-based life forms for the owner to pick from
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPS_FAUNA_REPOPULATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPS_FAUNA_REPOPULATION_1.md
