@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PyrelandsPortedFauna.xml          UtinniPatches — new file 2026-09-19
+
+  PYRELANDS_DONOR_PORT_4: our own re-authors of the four Pyrelands creatures
+  that were still riding a donor mod's defName while already being ours in
+  identity and art. Owner ruling 2026-09-19, verbatim: "The flamefang should be
+  added to the biome and any donors cut, period. Let's be done with these
+  lingering traces," then "port all four" when shown the options.
+
+    GR_Boomsnake   (Vanilla Genetics Expanded)  ->  RUT_Flamefang
+    AA_Razorjack   (Alpha Animals)              ->  RUT_Sytheclaw
+    AA_Barbslinger (Alpha Animals)              ->  RUT_Barbslinger
+    AA_FireWasp    (Alpha Animals)              ->  RUT_FireWasp
+
+  🔑 SHAPE: RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml, this campaign's
+  already-correct port of the donor GR_Mantistanis — ParentName="AnimalThingBase"
+  with a manually written race block, and NOT ONE class, comp, modExtension,
+  ToolCapacityDef, BodyDef, leatherDef or SoundDef from a donor mod referenced
+  anywhere below. Every def this file names is Core/expansion vanilla or this
+  mod's own. That is deliberate: a missing modExtension or comp type discards the
+  whole def silently, and a dangling PawnKindDef key in a biome's wildAnimals
+  kills GenStep_Animals and GiddyUp's startup cache on every map of that biome
+  (MEASURED, PYRELANDS_ANIMALS_GENSTEP_1).
+
+  IDENTITY carried in, not patched on. Flamefang's and sytheclaw's label and
+  description below are the owner-approved text verbatim from the two identity
+  patches this port retires (Patches/FlamefangIdentity.xml,
+  Patches/RazorjackIdentity_Sytheclaw.xml — both DELETED in the same change,
+  git is the provenance). Barbslinger and fire wasp never had an identity patch,
+  so they kept the donor's label AND the donor's description, Instagram artist
+  credit and all — those descriptions are rewritten here into our own modspace;
+  the two LABELS are unchanged because no ruling has ever renamed them and a new
+  name is the owner's to give (sytheclaw was named by owner card, 2026-09-14).
+
+  ART: the four override mods' own generated PNGs, moved into this mod at
+  Textures/Things/Pawn/Animal/Pyrelands/<Name>/<Name>_{north,east,south}.png
+  (git mv, same bytes — artpipe jobs pyrelands_boomsnake_v2, pyrelands_razorjack_v3,
+  pyrelands_barbslinger_v3, pyrelands_firewasp_v3). Graphic_Multi, three facings,
+  west mirrors east — the same three facings the overrides shipped. The four
+  BoomsnakeArtOverride/RazorjackArtOverride/BarbslingerArtOverride/
+  FireWaspArtOverride mods are DELETED with this change: their only job was to win
+  a same-texPath race against the donor, and nothing casts those donor defs any
+  more (checked: GR_Boomsnake and AA_FireWasp declare no race/wildBiomes at all;
+  every AA_Barbslinger and AA_Razorjack self-registered biome is already stripped
+  by Patches/BiomeCastEvictions_WildBiomes.xml + AnimalBiomeDuplicates_Generated.xml,
+  and the four remaining AA_Razorjack casts of ours are repointed to RUT_Sytheclaw
+  in the same change). Dessicated-corpse art stays on vanilla textures rather than
+  donor ones, same idiom RUT_Emberscythe uses.
+
+  WHAT WAS DROPPED with the donor frameworks, all OWED rather than replaced:
+    flamefang    VEF CompProperties_InitialAbility x2 (GR_DetonatePoison,
+                 GR_PoisonBlast) and GeneticRim's DeathActionWorker_ToxicExplosion.
+                 All three are boomalope-genome abilities; the owner cut boomalopes
+                 outright (BOOMALOPE_CUT_EVERYWHERE_1) and the ruled niche here is
+                 "venom-ambusher", not a bomb. The venom itself is NOT dropped — it
+                 is this mod's own RUT_FlamefangBite capacity, wired straight onto
+                 the bite tool below, which is what retires Patches/FlamefangVenom.xml.
+    sytheclaw    VEF CompProperties_Infecter (40% infection) and Alpha Animals'
+                 AA_InfectedClaws capacity -> vanilla Scratch.
+    barbslinger  VEF CompProperties_InitialAbility (AA_BarbedQuills ranged volley)
+                 and AA_ToxicSting -> vanilla ToxicBite on the sting, so the sting
+                 stays toxic; the ranged quill volley is gone.
+    fire wasp    VEF CompProperties_Floating (hover) and CompProperties_EggLayer
+                 (AA_FireWaspEggFertilized/Unfertilized are donor item defs), plus
+                 AA_BurningAndFeedingBite -> vanilla Bite. Its fire nature now rides
+                 the stats the donor also used for it (Flammability 0,
+                 ArmorRating_Heat 1, ComfyTemperatureMax 175), not a burning tool.
+  If any of these is wanted back, it attaches by PatchOperation from
+  src/RimUtinni/PyrelandsMechanics, the established place for comps on Pyrelands
+  fauna — no def here would need to change.
+
+  TEMPERATURE: sytheclaw's ComfyTemperatureMax (74.3) and barbslinger's
+  (79.7, with Min -2) are the values Patches/AnimalTolerances_Ashkarr.xml computes
+  for the donor defs from real Ash'karr tile demands (227 and 233 tiles) — baked in
+  here, because that generated patch targets the donor defName and will not reach
+  ours. Barbslinger's MeatAmount 875 is likewise baked in from
+  src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml's donor row (bodySize 2.50,
+  base 350).
+-->
+<Defs>
+
+  <!-- ======================================================================
+       RUT_Flamefang — was GR_Boomsnake (Vanilla Genetics Expanded).
+       Venom-ambusher band, Pyrelands commonality 0.50.
+       Body Snake is Core's own (Defs/Bodies/Bodies_Animal_Snake.xml — Mouth and
+       HeadAttackTool groups, exactly the two tool slots the donor used), so no
+       ported BodyDef is needed here as it was for RSW_Anooba.
+       Changed from the donor on purpose: foodType/predator. The donor was a
+       VegetarianRoughAnimal non-predator because of its boomalope half; the
+       owner's own description has it striking small things flushed by the fire,
+       so it is a carnivorous ambush predator with a small prey ceiling.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Flamefang</defName>
+    <label>flamefang</label>
+    <description>A serpent of the burning grass that reads a fire front the way other things read a scent trail. It beds down in the smoldering root-mat ahead of the flames and waits, coiled tight, until the heat rolls over it and drives every small thing running — then it strikes from the ash. Its bite carries a burning venom that keeps working long after the fangs are gone, a second, slower fire under the skin.</description>
+    <statBases>
+      <MoveSpeed>3</MoveSpeed>
+      <ComfyTemperatureMin>-75</ComfyTemperatureMin>
+      <ComfyTemperatureMax>75</ComfyTemperatureMax>
+      <MarketValue>400</MarketValue>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <uiIconScale>1.1</uiIconScale>
+    <tools>
+      <li>
+        <label>venom-fangs</label>
+        <capacities>
+          <li>RUT_FlamefangBite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <fleshType>Normal</fleshType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.6</maxPreyBodySize>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHungerRate>0.535</baseHungerRate>
+      <baseHealthScale>0.75</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <meatLabel>flamefang meat</meatLabel>
+      <trainability>Intermediate</trainability>
+      <intelligence>Animal</intelligence>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <lifeExpectancy>4</lifeExpectancy>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <manhunterOnTameFailChance>0.08</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Flamefang</defName>
+    <label>flamefang</label>
+    <race>RUT_Flamefang</race>
+    <combatPower>150</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.9</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>1.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       RUT_Sytheclaw — was AA_Razorjack (Alpha Animals).
+       Fire-follower band, Pyrelands commonality 0.20; also the floor-predator /
+       "the-pickers" rows in RUT_Greentide, RUT_Contagion, BiomeCypreJungle and
+       AB_OcularForest, all repointed here in the same change.
+       Body: the donor's AA_DualJawedQuadruped is an Alpha Animals BodyDef, so
+       this uses Core's QuadrupedAnimalWithPawsAndTail instead — MEASURED to
+       carry the exact four groups the donor's tools link to (FrontLeftPaw,
+       FrontRightPaw, Teeth, HeadAttackTool), because vanilla Warg links the
+       same four on that same body. The dual jaw was lore, never a body part.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Sytheclaw</defName>
+    <label>sytheclaw</label>
+    <description>A low-slung pack predator built for the tall gold grass of the burning plains. Above, its plates are the same dry yellow-gold as the standing quickgrass, so a hunting sytheclaw is a ripple in the field and nothing more; below, its underside is a raw furnace red that the prey only sees late. It trails the fire fronts the way other things trail water, taking whatever the smoke pushes out of cover, and its serrated forelimb blades leave a wound that ash gets into and keeps.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+      <ComfyTemperatureMax>74.3</ComfyTemperatureMax>
+      <MarketValue>350</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left blade</label>
+        <labelNoLocation>blade</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right blade</label>
+        <labelNoLocation>blade</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>fangs</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2</maxPreyBodySize>
+      <baseBodySize>1</baseBodySize>
+      <baseHealthScale>2</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>Advanced</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.75</manhunterOnDamageChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>18</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.5)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Warg_Wounded</soundWounded>
+          <soundDeath>Pawn_Warg_Death</soundDeath>
+          <soundCall>Pawn_Warg_Call</soundCall>
+          <soundAngry>Pawn_Warg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Sytheclaw</defName>
+    <label>sytheclaw</label>
+    <race>RUT_Sytheclaw</race>
+    <combatPower>190</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <!-- wildGroupSize is NEW, not the donor's (which had none, so groups of 1):
+         the owner's own description calls it a pack predator. -->
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,-0.05)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       RUT_Barbslinger — was AA_Barbslinger (Alpha Animals).
+       Ash-grazer band by the owner's routing call, Pyrelands commonality 0.15
+       (the roster's own note is explicit that "ash-grazer" is a role label and
+       not a diet claim — this is an omnivore that hunts).
+       Label unchanged; description rewritten out of the donor's (which carried
+       an artist credit for art we no longer ship).
+       Parent is AnimalThingBase + a hand-written Insectoid race block, not the
+       donor's AA_AlphaBaseInsect, and body is Core's BeetleLikeWithClaw —
+       MEASURED to carry HeadClaw, Mouth and HeadAttackTool, which is what the
+       donor's AA_PincerAttackTool / AA_Sting / HeadAttackTool tools map onto.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Barbslinger</defName>
+    <label>barbslinger</label>
+    <description>A shield-backed scorpion the size of a calf, plated in heat-cured chitin that the Pyrelands' burns have taught it to wear. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The barbed tail is not for hunting — it is what the barbslinger does to anything that stands over its find and refuses to move.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <ComfyTemperatureMin>-2</ComfyTemperatureMin>
+      <ComfyTemperatureMax>79.7</ComfyTemperatureMax>
+      <MarketValue>500</MarketValue>
+      <MeatAmount>875</MeatAmount>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left pincer</label>
+        <labelNoLocation>pincer</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right pincer</label>
+        <labelNoLocation>pincer</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>sting</label>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <baseBodySize>2.50</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>2.0</baseHealthScale>
+      <fleshType>Insectoid</fleshType>
+      <leatherDef>Leather_Chitin</leatherDef>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>7</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Spelopede_Pain</soundWounded>
+          <soundDeath>Pawn_Spelopede_Death</soundDeath>
+          <soundCall>Pawn_Spelopede_Call</soundCall>
+          <soundAngry>Pawn_Spelopede_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Barbslinger</defName>
+    <label>barbslinger</label>
+    <race>RUT_Barbslinger</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       RUT_FireWasp — was AA_FireWasp (Alpha Animals).
+       Small-predator band, Pyrelands commonality 0.40. Label unchanged;
+       description rewritten, and deliberately makes no promise about eggs,
+       because the donor's heat-producing egg items are not ported.
+       Body is Core's BeetleLike (Mouth + HeadAttackTool). The donor's third
+       tool linked LegAttackTool, a group BeetleLike does not carry, so it is
+       dropped rather than written dead — see RUT_PyrelandsFauna.xml's fire-hawk
+       note for the same class of defect found and fixed there.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_FireWasp</defName>
+    <label>fire wasp</label>
+    <description>A slow, drifting insect that lives inside the heat rather than beside it, plated in a scale that will not take a flame at all. Fire wasps hang over a burn in loose swarms, riding the column of hot air and dropping onto whatever the fire has already killed or crippled; a single one is barely a threat to a grown person, and a swarm of them over a fresh burn is a reason to walk the long way around.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>175</ComfyTemperatureMax>
+      <MarketValue>350</MarketValue>
+      <ArmorRating_Heat>1</ArmorRating_Heat>
+      <Flammability>0</Flammability>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.8</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>0.5</maxPreyBodySize>
+      <baseBodySize>0.79</baseBodySize>
+      <baseHealthScale>2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <leatherDef>Leather_Chitin</leatherDef>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>8</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_FireWasp</defName>
+    <label>fire wasp</label>
+    <race>RUT_FireWasp</race>
+    <combatPower>80</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
