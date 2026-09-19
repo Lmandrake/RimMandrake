@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.055864210007712,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.04482571099652,
+  "id": "rut_tea_bioregeneration_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T22-19-13-01a0b81a-b494-70c1-95ee-fe9943ae0bfc.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T22-19-00-01a0b81a-82f5-7b61-a628-eaaa6a807327.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_tea_bioregeneration_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0b81a-b494-70c1-95ee-fe9943ae0bfc\n--------\nuser\nUse $imagegen to [artpipe job rut_tea_bioregeneration_v1] RimWorld item sprite, painterly vanilla-RimWorld style: A small cup of murky green-grey liquor, veil tissue steeped just short of boiling so pale translucent shreds of it still float visibly in the cup. Single object, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the GlowGoo_B donor texture shared with another item in this same file \u2014 needs its own identity distinct from rut_tea_agereversal_v1.\n\nThen copy the generated image into the current working directory as rut_tea_bioregeneration_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}

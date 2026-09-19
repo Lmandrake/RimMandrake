@@ -1,0 +1,35 @@
+{
+  "decidedCount": 4,
+  "decisions": {
+    "RSW_BloodropMoth": {
+      "at": "2026-09-19T05:54:10.809Z",
+      "decision": "regen",
+      "note": "give it sacks that it uses to store drained body fluids. Strangely, if it drains any day-side races with normal warm iron blood, it becomes poisoned and rapidly dies. Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Drinker.",
+      "prefill": "keep"
+    },
+    "RSW_BovineBeetle": {
+      "at": "2026-09-19T05:56:02.393Z",
+      "decision": "regen",
+      "note": "Horrible, total remake. This should be huge, bodysize 4. A small room-sized blob of pale yellow substance with a glass-like carapace, many small legs, and one large pincer-ending arm. Truly alien. Call it a Grabber. Give it great strength to Hold someone with its pincer and slowly crush them each round.",
+      "prefill": "keep"
+    },
+    "RSW_Gembug": {
+      "at": "2026-09-19T05:56:28.736Z",
+      "decision": "regen",
+      "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Strangely beautiful jewel-like ",
+      "prefill": "keep"
+    },
+    "RSW_GlowSlug": {
+      "at": "2026-09-19T05:54:35.271Z",
+      "decision": "regen",
+      "note": "Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow.",
+      "prefill": "keep"
+    }
+  },
+  "frozen": false,
+  "posture": "blacklist",
+  "savedAt": "2026-09-18T22:56:29-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "deeps_flora_fauna_review_2026-09-18",
+  "writeCount": 43
+}

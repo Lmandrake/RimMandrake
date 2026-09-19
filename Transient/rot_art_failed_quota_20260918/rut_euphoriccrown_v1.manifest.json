@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 6.351383474015165,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 11.73417575500207,
+  "id": "rut_euphoriccrown_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T22-18-07-01a0b819-b5c0-7380-8717-d79e4781a05b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789797130,
+    "primary_used_percent": 17.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T19-00-27-01a0b764-bc25-76c0-9c05-946e4fc45207.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 4s (exit 1).\n--- last codex output ---\nrtpipe\\_artsrc\\rut_euphoriccrown_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0b819-b5c0-7380-8717-d79e4781a05b\n--------\nuser\nUse $imagegen to [artpipe job rut_euphoriccrown_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A broad, faintly luminous mushroom cap with a warm inner glow bleeding through its flesh, smooth rounded crown shape, brews into the biome's own pleasure tea. Reads as inviting and beautiful \u2014 the 'good stuff' a forager would want to reach for. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the VioletWimple donor texture shared with an unrelated plant (RUT_RotSporeKit_Flora.xml) \u2014 needs its own luminous-crown identity, visually distinct from RUT_FalseFruit below (which must look like an imitation of this one).\n\nThen copy the generated image into the current working directory as rut_euphoriccrown_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}

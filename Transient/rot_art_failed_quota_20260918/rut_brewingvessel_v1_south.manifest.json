@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.075086817989359,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 9.578794264991302,
+  "id": "rut_brewingvessel_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T22-18-07-01a0b819-b47d-7cf3-ab10-f4378fe18878.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1789797130,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/18/rollout-2026-09-18T18-57-14-01a0b761-ca77-7cc0-8f90-76333ff19480.jsonl",
+    "secondary_resets_at": 1790008324,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\npe job rut_brewingvessel_v1_south] RimWorld building sprite, painterly vanilla-RimWorld style: A wide, low fungal-leather vat lashed onto a rough wooden frame, built to be assembled on-site at a mushroom grove. Pale-violet stitched leather stretched over a hooped wooden hull, a simple open top for stirring and drinking, portable and improvised-looking rather than industrial \u2014 a field still, not a factory bench. South-facing canonical view. Heavy, clean black outline, transparent background, no ground shadow. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses vanilla's FermentingBarrel texture (Things/Building/Production/FermentingBarrel), tinted pale-violet via the def's own <color> field \u2014 needs bespoke art. graphicClass is Graphic_Multi (rotatable, default true) so a full set wants south/east/north facings; per the task's own fallback rule ('if unclear, file the single/_south canonical view and note it') this pass files ONLY the south view \u2014 east and north are still owed as a follow-up job. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as rut_brewingvessel_v1_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}

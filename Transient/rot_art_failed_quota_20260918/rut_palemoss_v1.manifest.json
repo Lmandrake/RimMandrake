@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.014818739000475,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.041962738003349,
+  "id": "rut_palemoss_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T22-18-44-01a0b81a-4350-7b02-9f94-d625834df84e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T22-18-35-01a0b81a-20a8-7cb2-be7e-70caacc4a944.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nipe\\_artsrc\\rut_palemoss_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0b81a-4350-7b02-9f94-d625834df84e\n--------\nuser\nUse $imagegen to [artpipe job rut_palemoss_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: A low carpet of faintly glowing pale-green moss, soft cold bioluminescence visible in its fibers, only ever seen clustered at the base of a pale tree \u2014 the biome's living substitute for a lamp. Single plant, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses vanilla Royalty's own Plant_GrassAnima texture (Things/Plant/Grass_Anima) verbatim \u2014 confirmed placeholder per the def's own header. Small ground subplant, visualSizeRange 0.3~0.45, default 256 canvas floor is correct here (not the tree's generous sizing). MayRequire=Ludeon.RimWorld.Royalty.\n\nThen copy the generated image into the current working directory as rut_palemoss_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}
