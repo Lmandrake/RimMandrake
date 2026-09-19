@@ -130,6 +130,15 @@ namespace RimMandrake.StarWars.JawaRules
         public RSW_JawaRulesMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RSW_JawaRulesSettings>();
+
+            // FULL_LOAD_ALPHAGENES_NRE_1 — MUST fire from this constructor, not from
+            // JawaRulesMod's [StaticConstructorOnStartup] static ctor: Mod subclass
+            // constructors run during LoadedModManager.CreateModClasses(), before
+            // RimWorld.DefGenerator.GenerateImpliedDefs_PreResolve() — the earliest
+            // point a Harmony patch can be armed and still be in place for it. See
+            // JawaRulesMod.ArmEarlyGuards() and Patch_PawnKindDef_RaceProps_NullGuard
+            // in JawaRules.cs for the full root-cause account.
+            JawaRulesMod.ArmEarlyGuards();
         }
 
         public override string SettingsCategory()
