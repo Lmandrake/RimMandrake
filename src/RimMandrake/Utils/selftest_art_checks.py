@@ -20,7 +20,14 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 
 # Clipped on the right edge — boundaries_respected must call this out.
-KNOWN_BAD = REPO / "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_south.png"
+# ⚠️ Was `Gizka_south.png` until 2026-09-18. That file was REPLACED by the
+# owner-locked dino_v5 set (bd9a1b8ee, 2026-09-17) and is no longer clipped, so
+# the gate's reject path silently stopped being exercised and the gate read as
+# working while nothing proved it refuses anything. `GizkaW_south.png` is the
+# stable stand-in: same folder, untouched since 2026-09-14, right margin 0 px in
+# both the current file and the pre-dino_v5 blob. A fixture must be a file
+# nobody is trying to fix.
+KNOWN_BAD = REPO / "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_south.png"
 KNOWN_OK = (REPO / "src/RimUtinni/RazorjackArtOverride/Textures/Things/Pawn/Animal"
                    "/AA_Razorjack/AA_Razorjack_east.png")
 

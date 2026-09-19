@@ -563,13 +563,34 @@ def print_table(findings) -> None:
 
 REVIEW_ART = REPO_ROOT / "Transient/pyrelands_art_review/art"
 
+#  RECALIBRATED 2026-09-18, SELFTEST_FAILURE_TRIAGE_1. The approved Pyrelands
+#  render wave (9e7e773a0) and the Gizka dino_v5 lock (bd9a1b8ee) both landed
+#  2026-09-17 and REPLACED the art these fixtures were pinned against on
+#  2026-09-15/16, so several pins described files that no longer exist. Every
+#  number below was re-measured against the art on disk; the two that moved for
+#  the WRONG reason are pinned separately as regressions rather than deleted.
+
 # Owner-confirmed or measurement-confirmed height breaks. Anooba is the only row the
 # owner named out loud ("North is HUGE compared to east, and South isn't south").
 HEIGHT_MUST_FLAG = {
     "Anooba_f", "Anooba_m", "Boomsnake", "Bolotaur", "AA_FireWasp",
-    "Zeer", "GR_Mantistanis", "Dalgo",
+    "GR_Mantistanis", "Dalgo",
 }
-HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "Orray", "FireHawk"}
+# ✅ Zeer moved FLAG -> PASS: the 2026-09-17 wave genuinely fixed it. MEASURED
+# 1.480 on the pre-wave blob (`9e7e773a0^`) against 1.024 now (east 0.990,
+# north 0.967, south 0.980 of canvas) — it is now the cleanest row in the
+# corpus, so it anchors the pass side instead of the flag side.
+HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer"}
+
+# 🔴 A REAL REGRESSION, PINNED RATHER THAN EXCUSED — do not fold this back into
+# HEIGHT_MUST_FLAG and do not delete it. Orray was known-GOOD and is not any
+# more: the 2026-09-17 wave took it from unflagged (pre-wave blob measures below
+# the 1.35 threshold) to 2.488, the second-worst row in the whole corpus and
+# worse than every row the owner called bad out loud. The art needs redoing or
+# the owner needs to rule it acceptable; until then the number is pinned so this
+# selftest fails loudly whether it worsens OR is quietly "fixed" by moving a
+# threshold. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
+HEIGHT_REGRESSION = {"Orray": 2.488}
 
 # 🔴 FurnaceBeast was handed to me as known-GOOD at 1.03x, and it is NOT. That 1.03x
 # is the RAW alpha bbox, inflated by 3901 px of alpha 1..16 dust reaching to y=480
@@ -583,15 +604,64 @@ HEIGHT_CONFLICT = {"FurnaceBeast": 1.636}
 # KEYLINE_MIN_FRAC. Headroom of 2 so a real new break is not a selftest failure.
 OUTLINE_MAX_FLAGGED_FILES = 4
 
-DUPLICATE_MUST_FLAG = [
-    ("Anooba", {"Anooba_f_east.png", "Anooba_m_east.png"}),
-    ("Anooba", {"Anooba_f_north.png", "Anooba_m_north.png"}),
-    ("Anooba", {"Anooba_f_south.png", "Anooba_m_south.png"}),
-    ("Nuna", {"Nuna_f_north.png", "Nuna_m_north.png"}),
-    ("Nuna", {"Nuna_f_south.png", "Nuna_m_south.png"}),
-    ("Gizka", {"Gizka_north.png", "GizkaW_north.png"}),
-    ("Gizka", {"Gizka_south.png", "GizkaW_south.png"}),
+# Facings whose visible content touches a canvas edge and is clipped, re-measured
+# 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
+# the 2026-09-17 wave replaced that file and its top margin is no longer 0.
+BOUNDARY_MUST_FLAG_HIGH = [
+    # Pre-existing and stable: unchanged since 2026-09-14, clipped on the right
+    # in both the current file and the pre-`bd9a1b8ee` blob. This is the anchor
+    # that does not move, so the check stays covered even if the other is fixed.
+    ("GizkaW_south.png", "right margin 0 px, unchanged since 2026-09-14"),
+    # 🔴 NEW, and a regression from the same 2026-09-17 wave that FIXED Zeer's
+    # facing-height break: the regen scales every Zeer facing to ~0.98 of canvas,
+    # which bought the 1.024 height ratio at the cost of clipping the top edge.
+    # The pre-wave blob raised no boundary finding at all.
+    # Item: ZEER_EAST_TOP_CLIP_1.
+    ("Zeer_east.png", "top margin 0 px, introduced by the 2026-09-17 regen"),
 ]
+
+# 🔑 duplicate_facings is now proven SYNTHETICALLY, and that is the point.
+# This used to pin 7 real pairs (3 Anooba, 2 Nuna, 2 Gizka/GizkaW). All 7 are
+# gone, because making them distinct was the DECLARED PURPOSE of the 2026-09-17
+# wave — 9e7e773a0's own message says the overrides are "now distinct on every
+# facing". So the corpus now contains zero identical pairs and the check had
+# nothing left covering it: it would have passed this selftest while being
+# completely broken. A check whose only fixtures are defects someone is actively
+# fixing is a check that goes dark the moment they succeed. The fixture below
+# cannot go dark — it builds its own positive AND negative case from two copies
+# of one real sprite, so art churn can never silence it.
+DUPLICATE_FIXTURE_SRC = (REPO_ROOT / "src/RimUtinni/RazorjackArtOverride/Textures"
+                         "/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_east.png")
+
+
+def _duplicate_facings_proof() -> list:
+    """-> list of failure strings. Proves the check both fires and discriminates."""
+    import shutil
+    import tempfile
+    if not DUPLICATE_FIXTURE_SRC.is_file():
+        return ["duplicate_facings fixture source missing: %s"
+                % DUPLICATE_FIXTURE_SRC]
+    fails = []
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        # Positive: _f/_m are merged into one variant group by variant_key, so
+        # two byte-identical copies MUST be reported.
+        shutil.copyfile(DUPLICATE_FIXTURE_SRC, d / "SynthDup_f_east.png")
+        shutil.copyfile(DUPLICATE_FIXTURE_SRC, d / "SynthDup_m_east.png")
+        # Negative control: same pairing, one pixel changed. A check that
+        # reports this too is matching on names, not on pixels.
+        shutil.copyfile(DUPLICATE_FIXTURE_SRC, d / "SynthUniq_f_east.png")
+        im = Image.open(DUPLICATE_FIXTURE_SRC).convert("RGBA")
+        im.putpixel((0, 0), (255, 0, 255, 255))
+        im.save(d / "SynthUniq_m_east.png")
+        dups = {f.subject for f in run([d]) if f.check == "duplicate_facings"}
+    if "SynthDup" not in dups:
+        fails.append("duplicate_facings did NOT report two byte-identical "
+                     "copies of one sprite — the check is dead, not the corpus")
+    if "SynthUniq" in dups:
+        fails.append("duplicate_facings reported a pair differing by one pixel "
+                     "— it is matching names, not pixel data")
+    return fails
 
 
 def selftest() -> int:
@@ -614,22 +684,19 @@ def selftest() -> int:
             fails.append("facing_height_consistency flagged known-good %s at %.3f "
                          "(threshold %.2f is too tight)"
                          % (name, heights[name], FACING_HEIGHT_MAX_RATIO))
-    for name, pinned in sorted(HEIGHT_CONFLICT.items()):
-        if name not in heights:
-            fails.append("%s is no longer flagged — the documented ground-truth "
-                         "conflict has changed and needs re-reporting to the owner"
-                         % name)
-        elif abs(heights[name] - pinned) > 0.01:
-            fails.append("%s height ratio moved %.3f -> %.3f; the conflict note in "
-                         "HEIGHT_CONFLICT cites the old number"
-                         % (name, pinned, heights[name]))
+    for label, pins in (("HEIGHT_CONFLICT", HEIGHT_CONFLICT),
+                        ("HEIGHT_REGRESSION", HEIGHT_REGRESSION)):
+        for name, pinned in sorted(pins.items()):
+            if name not in heights:
+                fails.append("%s is no longer flagged — the %s entry describes art "
+                             "that has changed and needs re-reporting to the owner"
+                             % (name, label))
+            elif abs(heights[name] - pinned) > 0.01:
+                fails.append("%s height ratio moved %.3f -> %.3f; the note in %s "
+                             "cites the old number"
+                             % (name, pinned, heights[name], label))
 
-    dups = [f for f in findings if f.check == "duplicate_facings"]
-    for subject, names in DUPLICATE_MUST_FLAG:
-        if not any(f.subject == subject and all(n in f.detail for n in names)
-                   for f in dups):
-            fails.append("duplicate_facings did NOT report %s as identical"
-                         % ", ".join(sorted(names)))
+    fails.extend(_duplicate_facings_proof())
 
     # The one keyline break in the corpus, confirmed by eye: FurnaceBeast north's
     # shoulder spikes are light grey with no dark edge.
@@ -652,11 +719,11 @@ def selftest() -> int:
 
     # Severity matters here: the low-severity margin advisory would keep catching this
     # file even if the touching/clipped rule were neutered, so require the high one.
-    if not any(f.check == "boundaries_respected" and f.severity == "high"
-               and "Nuna_f_east" in f.subject for f in findings):
-        fails.append("boundaries_respected did NOT raise a HIGH finding on "
-                     "Nuna_f_east.png, whose visible content touches the top edge "
-                     "(top margin 0 px) and is clipped")
+    for name, why in BOUNDARY_MUST_FLAG_HIGH:
+        if not any(f.check == "boundaries_respected" and f.severity == "high"
+                   and name in f.subject for f in findings):
+            fails.append("boundaries_respected did NOT raise a HIGH finding on "
+                         "%s — %s" % (name, why))
 
     n_creatures = len({f.subject for f in findings
                        if f.check == "facing_height_consistency"} | HEIGHT_MUST_PASS)
@@ -668,12 +735,15 @@ def selftest() -> int:
         return 1
     print("PASS  %d findings over %s" % (len(findings), REVIEW_ART))
     print("PASS  facing_height_consistency: %d flagged (%d required known-bad + %d "
-          "documented conflict), %d known-good clean, threshold %.2f"
+          "documented conflict + %d pinned regression), %d known-good clean, "
+          "threshold %.2f"
           % (len(heights), len(HEIGHT_MUST_FLAG), len(HEIGHT_CONFLICT),
-             len(HEIGHT_MUST_PASS), FACING_HEIGHT_MAX_RATIO))
-    print("PASS  duplicate_facings: all %d known-identical pairs reported"
-          % len(DUPLICATE_MUST_FLAG))
-    print("PASS  outline_coherence and boundaries_respected hit their confirmed cases")
+             len(HEIGHT_REGRESSION), len(HEIGHT_MUST_PASS),
+             FACING_HEIGHT_MAX_RATIO))
+    print("PASS  duplicate_facings fires on byte-identical copies and does NOT "
+          "fire on a one-pixel difference (synthetic fixture, corpus-independent)")
+    print("PASS  outline_coherence, and boundaries_respected on %d pinned clipped "
+          "facings" % len(BOUNDARY_MUST_FLAG_HIGH))
     return 0
 
 
