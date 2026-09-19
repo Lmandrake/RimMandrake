@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T19:23:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T19:36:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -189,16 +189,6 @@ blocked:  Scheduled at the END of the world sweeps by its own spec; assignment v
 summary:  Full economic sweep of what is sold where and when — trader kinds, settlement
 prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
 
-## CANON_STORAGE_ARCHITECTURE_1 Decide how to store the growing canon: options+tradeoffs report written (design/CANON_STORAGE_ARCHITECTURE_options.md) - recommends hybrid (prose canonical + derived claim/entity index + certainty tiers + self-healing checker); awaits owner review sitting
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-blocked:  Options report written; awaits the owner's review sitting.
-summary:  ADOPTED 2026-09-12 (owner card): Phase 0 + Phase 1
-prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
-
 ## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -252,16 +242,6 @@ kind:     build
 waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
-
-## PYRELANDS_FLORA_ART_IDENTITY_1 Pyrelands flora own art identity: 5 defs off vanilla texPaths, 11 sprites via artpipe, leafless states included (owner word 2026-09-14: regenerate the plants now too)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is UP
-summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
 # NOT THIS TARGET
 
@@ -490,16 +470,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Not written. Design work; goes to a backgrounded high-tier subagent per
 prose:    infrastructure/state/items/FLOWWORKS_DOOR_FAMILY_1.md
-
-## DESERT_TRIBES_FIRE_HARVEST_1 Scenario event: deep-desert tribes occasionally arrive in the Pyrelands to light the fires for harvesting (moved out of the dead FireEcology shim per owner ruling)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  Owner, 2026-09-17, verbatim, ruling the FireEcology shim dead: "The shim
-prose:    infrastructure/state/items/DESERT_TRIBES_FIRE_HARVEST_1.md
 
 ## ENVHAZARDS_NEVER_ACTIVATED_1 mandrake.rm.environmentalhazards has NEVER been in any mod list — every MayRequire-gated mechanic riding it has silently not existed in any load
 state:    proposed

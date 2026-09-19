@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T19:23:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T19:36:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -792,15 +792,6 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
-## PYRELANDS_FIRE_CADENCE_1 Pyrelands fires arrive every few days as the biome clock
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/PYRELANDS_FIRE_CADENCE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FIRE_CADENCE_1.md
-
 ## FURNACEBEAST_THERMAL_CYCLE_1 Furnace-beast thermal capacitor cycle: migration AI, true heat immunity, thornvine diet
 state:    doing
 row:      unassigned
@@ -872,15 +863,6 @@ target:   v1
 kind:     task
 summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
-
-## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DEEP_TRIBES_FIRE_RITE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEP_TRIBES_FIRE_RITE_1.md
 
 ## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
 state:    doing
