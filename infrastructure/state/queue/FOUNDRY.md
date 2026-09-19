@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:14:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T20:17:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1007,15 +1007,6 @@ target:   v1
 kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
-
-## LONGHUNGER_QUICKTEST_1 Live quicktest RUT_LongHunger (mandrake.rut.longhunger) enabled 2026-09-19 alongside donor sandworm
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  mandrake.rut.longhunger was enabled into the live 621-mod ModsConfig.xml by
-prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
