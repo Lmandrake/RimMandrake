@@ -561,7 +561,36 @@ def print_table(findings) -> None:
 
 # --- selftest --------------------------------------------------------------
 
-REVIEW_ART = REPO_ROOT / "Transient/pyrelands_art_review/art"
+# ART_SELFTEST_CORPUS_IN_TRANSIENT_1: the corpus used to be a staged copy under
+# Transient/pyrelands_art_review/art, which the ~14-day Transient sweep would
+# delete out from under this gate, AND whose staged filenames secretly decided
+# what got tested (`originals=True` mapped them back to these same repo files).
+# Declaring the roster here removes Transient/ from the loop entirely: new art
+# placed under any of these directories is automatically in scope, nothing
+# needs re-staging, and the roster survives any sweep because it IS the repo.
+# Equivalent-or-broader coverage of the 71 files staged 2026-09-16: every
+# ArtOverride mod that contributed a facing set, plus the two donor-mod
+# subdirectories (SWBestiary's Bolotaur, UtinniPatches' Pyrelands animals) and
+# the two Pyrelands item/plant directories that rounded out that staging.
+SELFTEST_ROSTER = (
+    REPO_ROOT / "src/RimStarWars/AnoobaArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/DalgoArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/GizkaArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/IriazArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/NunaArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/OrrayArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/ZeerArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/BarbslingerArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/BoomsnakeArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/FireWaspArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/GreenGooArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/MantistanisArtOverride/Textures",
+    REPO_ROOT / "src/RimUtinni/RazorjackArtOverride/Textures",
+    REPO_ROOT / "src/RimStarWars/SWBestiary/Textures/swanimals/Bolotaur",
+    REPO_ROOT / "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands",
+    REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Item/Resource",
+    REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Plant",
+)
 
 #  RECALIBRATED 2026-09-18, SELFTEST_FAILURE_TRIAGE_1. The approved Pyrelands
 #  render wave (9e7e773a0) and the Gizka dino_v5 lock (bd9a1b8ee) both landed
@@ -600,9 +629,12 @@ HEIGHT_REGRESSION = {"Orray": 2.488}
 # Whether that flag should reject is the owner's call, not this module's.
 HEIGHT_CONFLICT = {"FurnaceBeast": 1.636}
 
-# MEASURED: 2 of 57 facings (FurnaceBeast_north, FireHawk_east) fall below
+# RE-MEASURED 2026-09-19 against SELFTEST_ROSTER (ART_SELFTEST_CORPUS_IN_TRANSIENT_1):
+# walking the real Pyrelands FireHawk directory picks up its _Body_/_Wing_ part
+# textures too, which the old 71-file staging did not include. 3 of 88 files
+# (FurnaceBeast_north, FireHawk_east, FireHawk_Wing_east) now fall below
 # KEYLINE_MIN_FRAC. Headroom of 2 so a real new break is not a selftest failure.
-OUTLINE_MAX_FLAGGED_FILES = 4
+OUTLINE_MAX_FLAGGED_FILES = 5
 
 # Facings whose visible content touches a canvas edge and is clipped, re-measured
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
@@ -674,11 +706,13 @@ def _duplicate_facings_proof() -> list:
 
 
 def selftest() -> int:
-    if not REVIEW_ART.is_dir():
-        print("FAIL  corpus missing: %s (Transient has a ~14 day shelf life; "
-              "re-stage with build_pyrelands_art_sheet.py)" % REVIEW_ART)
+    missing = [d for d in SELFTEST_ROSTER if not d.is_dir()]
+    if missing:
+        print("FAIL  corpus director%s missing from SELFTEST_ROSTER (renamed or "
+              "deleted mod?): %s" % ("y" if len(missing) == 1 else "ies",
+                                     ", ".join(str(d) for d in missing)))
         return 1
-    findings = run([REVIEW_ART], originals=True)
+    findings = run(SELFTEST_ROSTER)
     fails = []
 
     heights = {f.subject: f.measure for f in findings
@@ -737,7 +771,7 @@ def selftest() -> int:
     # the file is gone — so name the roster rather than inferring it from findings.
     # `Nuna_f_east.png` sat in the must-flag list describing art that had already
     # been replaced; without this the same silence would hide a deleted repair.
-    roster = {f.name for f in collect([REVIEW_ART], originals=True)}
+    roster = {f.name for f in collect(SELFTEST_ROSTER)}
     for name, why in BOUNDARY_MUST_FLAG_HIGH + BOUNDARY_MUST_NOT_FLAG_HIGH:
         if name not in roster:
             fails.append("boundaries_respected pin names %s, which is not in the "
@@ -755,7 +789,8 @@ def selftest() -> int:
         print("\n%d/%d assertion(s) failed over %d findings" % (
             len(fails), len(fails), len(findings)))
         return 1
-    print("PASS  %d findings over %s" % (len(findings), REVIEW_ART))
+    print("PASS  %d findings over %d files in %d in-repo directories"
+          % (len(findings), len(roster), len(SELFTEST_ROSTER)))
     print("PASS  facing_height_consistency: %d flagged (%d required known-bad + %d "
           "documented conflict + %d pinned regression), %d known-good clean, "
           "threshold %.2f"
