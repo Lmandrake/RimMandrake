@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - the mood coupling for RSW_MoornakUnsettled
+     (HediffDefs_Moornak.xml). workerClass ThoughtWorker_Hediff is the same
+     vanilla pattern AmbrosiaHigh's own ThoughtDef uses (confirmed via
+     RimSage read_file, Defs/Core/Drugs/Ambrosia.xml) - it reads whichever
+     hediff stage the pawn is at and applies that stage's baseMoodEffect,
+     no C# of our own needed. -->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RSW_MoornakUnsettled</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RSW_MoornakUnsettled</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>unsettled</label>
+        <description>Something nearby is deeply wrong, and I can't shake the feeling.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

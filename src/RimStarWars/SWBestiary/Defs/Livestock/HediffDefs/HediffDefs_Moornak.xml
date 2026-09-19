@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - the ONLY visible symptom of a moornak's
+     presence (design/Jawa/proposals/ludicrous_livestock_deep_design.md
+     "Moornak - the grief-eater"; owner ruling, item ledger 2026-09-10:
+     "colony-wide unsettled hediff"). CompMoornakGrief.cs refreshes this on
+     every free colonist on the moornak's map while it is present, and
+     spikes it to 1 on the comp's 30-day release.
+
+     Deliberately says NOTHING about a moornak, a hidden ledger, or a
+     release timer in its label/description - only that the feeling is
+     there and unexplained, per the owner's "FULLY HIDDEN... first loss
+     teaches" filing ruling. HediffCompProperties_SeverityPerDay (same
+     class FoodPoisoning's own HediffDef uses, confirmed via RimSage
+     get_def_details) fades it out on its own once nothing is refreshing
+     it - e.g. the moornak dies, is sold, or is trapped elsewhere. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_MoornakUnsettled</defName>
+    <label>unsettled</label>
+    <description>A vague, persistent unease that will not resolve into a specific worry.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.62, 0.56, 0.72)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.4</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li/>
+    </stages>
+  </HediffDef>
+
+</Defs>

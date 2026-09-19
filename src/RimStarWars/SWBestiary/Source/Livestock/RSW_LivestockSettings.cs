@@ -13,7 +13,7 @@ namespace RimMandrake.StarWars.Livestock
     // see RSW_JawaIkeeSettings.cs's header for why this is a second
     // settings entry rather than one shared with Ikee.
     //
-    // Two runtime mechanics live here:
+    // Three runtime mechanics live here:
     //   1. CompKilnBelly — Onnik's feed-cycle kiln (3 spaced doses -> good
     //      batch; rushed dump -> cracked batch; underfed -> kiln cools).
     //      The dose counts/windows are per-def CompProperties (a species
@@ -23,6 +23,13 @@ namespace RimMandrake.StarWars.Livestock
     //      search radius is per-def CompProperties; exposed here as a
     //      global multiplier so the player can loosen or tighten how far
     //      any light-averse creature will path to find shade.
+    //   3. CompMoornakGrief — moornak's self-tame / hidden grief-ledger /
+    //      colony-wide unsettled hediff / 30-day manhunter-release timer
+    //      (LIVESTOCK_STARTER_TRIO_1, 2026-09-19). Per-def numbers (self-
+    //      tame MTB, grief charge, release delay) stay in XML; only the
+    //      master on/off and the release-timer multiplier are global
+    //      sliders, since a player wants a coarse "is this hazard active"
+    //      knob without spoiling the hidden mechanism's exact numbers.
     // ════════════════════════════════════════════════════════════════════
     public class RSW_LivestockSettings : ModSettings
     {
@@ -32,6 +39,9 @@ namespace RimMandrake.StarWars.Livestock
         public static bool lightAversionEnabled = true;
         public static float fleeRadiusMultiplier = 1f;
 
+        public static bool moornakGriefEnabled = true;
+        public static float moornakReleaseDelayMultiplier = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -39,6 +49,8 @@ namespace RimMandrake.StarWars.Livestock
             Scribe_Values.Look(ref kilnCooldownMultiplier, "kilnCooldownMultiplier", 1f);
             Scribe_Values.Look(ref lightAversionEnabled, "lightAversionEnabled", true);
             Scribe_Values.Look(ref fleeRadiusMultiplier, "fleeRadiusMultiplier", 1f);
+            Scribe_Values.Look(ref moornakGriefEnabled, "moornakGriefEnabled", true);
+            Scribe_Values.Look(ref moornakReleaseDelayMultiplier, "moornakReleaseDelayMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -69,6 +81,19 @@ namespace RimMandrake.StarWars.Livestock
                 list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00")
                     + "x (default searches 10 cells out)");
                 fleeRadiusMultiplier = list.Slider(fleeRadiusMultiplier, 0.5f, 2f);
+            }
+            list.GapLine();
+
+            list.Label("Moornak grief hazard");
+            list.CheckboxLabeled("Moornak grief hazard enabled", ref moornakGriefEnabled,
+                "A moornak can self-tame onto the colony, unsettles everyone while it is present, "
+              + "and periodically releases what it has absorbed. Off: it behaves as an ordinary, "
+              + "harmless animal — no self-taming, no mood effect, no release.");
+            if (moornakGriefEnabled)
+            {
+                list.Label("  Release timer: " + moornakReleaseDelayMultiplier.ToString("0.00")
+                    + "x (default is 30 in-game days between releases)");
+                moornakReleaseDelayMultiplier = list.Slider(moornakReleaseDelayMultiplier, 0.25f, 3f);
             }
 
             list.End();
