@@ -69,19 +69,28 @@ OURS_PREFIX = "mandrake."
 # --------------------------------------------------------------------- tiers
 # Each tier lists only what it WANTS. Dependencies are resolved automatically,
 # so these stay readable and honest about intent.
+#
+# 🔴 dlc is ALWAYS True now — owner ruling 2026-09-19, verbatim: "ALL TEST MOD
+# LISTS should include ALL THE EXPANSIONS; we're not trying to ablate
+# expansions out of our list at this time." Trigger: a FireHawk flight test
+# ran and looked broken, and the first question was whether Odyssey had even
+# been loaded (it had — this specific test used the full live list, not a
+# tier — but the standing tiers below still excluded DLC on principle, which
+# is exactly the gap this rule closes). A tier's "why" can still narrow the
+# MOD count for isolation; it no longer narrows the DLC set.
 TIERS = {
     "bridge": {
         "why": "Prove RimBridge connects and debug actions fire, with nothing "
                "else that could explain a failure.",
         "want": [BRIDGE],
-        "dlc": False,
+        "dlc": True,
     },
     "pits": {
         "why": "Prove the pit framework inside FlowWorks (dig stages, mass-sum "
                "cover trigger, struggle escape) with nothing else on the map "
                "that could spring a trap or explain a failure.",
         "want": [BRIDGE, "mandrake.rm.flowworks"],
-        "dlc": False,
+        "dlc": True,
     },
     "graffiti": {
         "why": "Prove mandrake.rm.graffiti + mandrake.rm.sacredgraffiti load "
@@ -89,7 +98,7 @@ TIERS = {
                "Mlie.GraffitiMod already retired and nothing else on the "
                "list that could explain a failure.",
         "want": [BRIDGE, "mandrake.rm.graffiti", "mandrake.rm.sacredgraffiti"],
-        "dlc": False,
+        "dlc": True,
     },
     "bench": {
         "why": "RimBridge + our mods + the smallest content set that can answer "
@@ -128,7 +137,7 @@ TIERS = {
                "590-mod stack (WorldGenStep errors, quicktest-crashes-full-"
                "modlist-use-cheap-mechanism-list), so prove it here instead.",
         "want": [BRIDGE, "mandrake.rm.oracle"],
-        "dlc": False,
+        "dlc": True,
     },
     "fish": {
         "why": "Prove FISH_BESTIARY_BUILD_1's live fishing wiring (Scald, "
