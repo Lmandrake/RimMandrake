@@ -65,17 +65,18 @@ skill. A seat that finds a defect in another seat's skill files a queue item
 rather than editing it — except where the fix is a fact it just measured, which
 it should write directly and say so.
 
-## ⭐ Two skills live OUTSIDE this repo, and are installed machine-wide
+## ⭐ Three skills live OUTSIDE this repo, and are installed machine-wide
 
 **They are generic. This project merely uses them** — so they are their own git
 repos, symlinked into `~/.claude/skills/`, and **every project on this machine
 gets them.** ⚠️ The generated roster below reads `skills/` and therefore **cannot
-see either one**; a skill missing from that table is not necessarily missing.
+see any of them**; a skill missing from that table is not necessarily missing.
 
 | skill | lives at | remote | wired by |
 |---|---|---|---|
 | `measuring-large-artifacts` | `D:\Luke\dev\measuring-large-artifacts` | `Lmandrake/measuring-large-artifacts` | `~/.claude/skills/` only |
 | `review-sheets` | `D:\Luke\dev\review-sheets` | `Lmandrake/review-sheet` (⚠️ singular; the **skill** is `review-sheets`, plural, everywhere) | `~/.claude/skills/` **and** `.claude/skills/` |
+| `claude-remote-control` | `D:\Luke\dev\claude-remote-control` | `Lmandrake/claude-remote-control` (private) | `~/.claude/skills/` only — the Remote Control protocol: why windows drop off the phone (a `/login`), what an agent can and cannot do about it, recovery from the phone (added 2026-09-19) |
 
 🔑 **No seat in this repo owns them.** The ownership table above is about who
 repairs a skill *in this checkout*; these are repaired in their own repos, and a
