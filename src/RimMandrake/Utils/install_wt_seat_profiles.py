@@ -21,8 +21,9 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, and the non-Claude
-`Artist` daemon tile — each with
+One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, the non-seat Claude
+windows `HESTIA` and `EMERGENCY`, and the two non-Claude tiles `Artist` (artpipe
+daemon) and `Server` (the standalone Remote Control server) — each with
 
   * a colour scheme cloned from Campbell with the seat's foreground,
   * `tabColor`, so the tab strip is colour-coded,
@@ -112,8 +113,25 @@ DISTRO = "Ubuntu"
 # that into `constraint=CONSTRAINT_MEMCG`: the offending seat dies alone and the
 # other three never notice. Full evidence: observed/2026-08-14_wsl_oom.md.
 # Arguments pass through untouched, so `--name` still does its job below.
+#
+# 🔴 `--remote-control` ON EVERY CLAUDE INSTANCE — owner, 2026-09-19: the fleet was
+# "regularly experiencing sudden disconnects from the rc server", so each session
+# now enables Remote Control itself instead of relying on one shared server. The
+# flag takes an OPTIONAL name (`--remote-control [name]`), so it is given the label
+# explicitly — a bare `--remote-control` followed by another token could swallow
+# it as the name. The standalone server is the separate SERVER tile below.
 LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
-          "--dangerously-skip-permissions --name '{label}' --model {model}")
+          "--dangerously-skip-permissions --name '{label}' --model {model} "
+          "--remote-control '{label}'")
+
+# The standalone Remote Control server (owner, 2026-09-19: "launched each time
+# independent of any one seat"). `claude remote-control` is a SUBCOMMAND, not a
+# session: it sits in the repo and spawns sessions on demand from claude.ai/code
+# or the phone, so it outlives any seat's disconnect. Through claude_bounded.sh
+# like everything else — its spawned sessions inherit the scope, hence the higher
+# MEM_MAX. `--permission-mode bypassPermissions` matches the seats' launch line.
+SERVER_CMD = ("MEM_MAX=16G /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
+              "remote-control --name '{label}' --permission-mode bypassPermissions")
 
 # Hue-distinct and legible on Campbell's near-black background.
 # Redesign #4 (2026-08-27): two windows. BENCH keeps BUILD's green, FOUNDRY keeps
@@ -134,18 +152,34 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 # exported for her. That variable is what makes `.claude/hooks/set_session_title.py`
 # inject `infrastructure/agents/<SEAT>.md` and hand a window this project's identity;
 # exporting it for a window that is not a seat here would tell her she is one.
+#
+# ⭐ THE FIFTH FIELD IS A COMMANDLINE OVERRIDE, and a non-None value marks a tile
+# that is NOT a Claude seat: bare capitalised name, no AGENT_SEAT export, no
+# LAUNCH. `{label}` is interpolated. The model field is ignored for those.
 SEATS = {
-    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None),
-    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None),
-    # ⭐ ARTIST IS NOT A CLAUDE SEAT. `model=None` routes build() to the daemon
+    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None, None),
+    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None, None),
+    # ⭐ ARTIST IS NOT A CLAUDE SEAT. The override routes build() to the daemon
     # commandline: the tile is the artpipe daemon's live console
     # (ART_PIPELINE_DAEMON_1: "dumb local Python daemon, no LLM"), so it gets no
     # AGENT prefix, no AGENT_SEAT export, no claude launch. On 2026-09-09 this
     # window was briefly converted into a Claude seat on a mistaken premise and
     # reverted the same day — the daemon console IS the design, don't "fix" it.
-    "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", None),
+    "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", None,
+                "python3 src/RimMandrake/Utils/artpipe/artpiped.py"),
+    # ⭐ SERVER IS NOT A CLAUDE SEAT EITHER — it is the standalone Remote Control
+    # server (owner, 2026-09-19), white so it reads as infrastructure in the tab
+    # strip, not as a voice. It spawns sessions on demand; it never holds a role.
+    "SERVER":  ("#FFFFFF", None, "white — the standalone `claude remote-control` server, NOT a seat",
+                None, SERVER_CMD),
     "HESTIA":  ("#FFC83D", "claude-fable-5", "gold-amber — the Hestia project, not a seat here",
-                ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia")),
+                ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia"), None),
+    # EMERGENCY was a hand-made profile (guid in STALE_GUIDS) until 2026-09-19, when
+    # the `--remote-control` change had to reach it too; folded in like Artist was.
+    # A Claude window over the whole dev tree, not a seat of this project — same
+    # non-seat mechanics as HESTIA (no AGENT_SEAT), just a different home.
+    "EMERGENCY": ("#FF4444", "claude-fable-5", "red — the floating emergency window, not a seat here",
+                  ("/mnt/d/Luke/dev", r"D:\Luke\dev"), None),
 }
 
 # Profiles from the retired four-seat fleet, removed on --apply.
@@ -154,9 +188,10 @@ RETIRED = ("DECIDE", "BUILD", "CHECK", "REP")
 # Hand-made drafts replaced by installer-owned profiles. Matched by their literal
 # guids — they predate seat_guid() so the derived form cannot find them — and
 # removed on --apply exactly like RETIRED. The 2026-09-09 hand-made 'Artist'
-# draft was folded into the installer-owned entry above (same daemon
-# commandline, stable derived guid).
-STALE_GUIDS = ("{95f50bf2-5cff-4e02-866c-a04b142b4b17}",)   # 'Artist', hand-made
+# draft and the 'EMERGENCY' draft (folded 2026-09-19) live on as installer-owned
+# entries above, with stable derived guids.
+STALE_GUIDS = ("{95f50bf2-5cff-4e02-866c-a04b142b4b17}",    # 'Artist', hand-made
+               "{ea3b103e-8f3d-5f0c-8b6a-7f866d2c79b4}")    # 'EMERGENCY', hand-made
 
 # Campbell, Windows Terminal's default scheme. Only `foreground` and
 # `cursorColor` differ per seat; everything else is left identical so ordinary
@@ -178,15 +213,22 @@ def seat_guid(seat):
     return "{%s}" % uuid.uuid5(NS, "rimworld-seat-" + seat)
 
 
-def build(seat):
-    colour, model, _, home = SEATS[seat]
-    home_wsl, home_win = home if home else (REPO_WSL, REPO_WIN)
+def label_for(seat):
     # ⭐ `AGENT` is this fleet's prefix, so only a seat of this fleet carries it
     # (owner, 2026-09-02, on HESTIA: "Just HESTIA"). The label is the tab name AND
     # the `--name` peers address, and those two must not drift apart.
-    # `model is None` marks a non-Claude tile (ARTIST): bare name, no AGENT_SEAT,
-    # and a daemon commandline instead of LAUNCH.
-    label = seat.capitalize() if model is None else (f"AGENT {seat}" if not home else seat)
+    # A commandline override marks a non-Claude tile (ARTIST, SERVER): bare
+    # capitalised name.
+    _, _, _, home, cmd = SEATS[seat]
+    if cmd is not None:
+        return seat.capitalize()
+    return seat if home else f"AGENT {seat}"
+
+
+def build(seat):
+    colour, model, _, home, cmd = SEATS[seat]
+    home_wsl, home_win = home if home else (REPO_WSL, REPO_WIN)
+    label = label_for(seat)
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as
@@ -195,11 +237,10 @@ def build(seat):
     # spawns inherit it — that variable is the whole zero-typing mechanism.
     # Claude Code is NOT exec'd into: when the owner quits it the tab drops to a
     # login shell that still carries AGENT_SEAT, rather than closing the window.
-    if model is None:
-        # The daemon's console, not a session. `exec $SHELL -l` keeps the tab
+    if cmd is not None:
+        # A daemon's console, not a session. `exec $SHELL -l` keeps the tab
         # alive when the daemon exits, same as the seat tabs.
-        inner = (f"cd {home_wsl} && "
-                 f"python3 src/RimMandrake/Utils/artpipe/artpiped.py; exec $SHELL -l")
+        inner = f"cd {home_wsl} && {cmd.format(label=label)}; exec $SHELL -l"
     else:
         export = "" if home else f"export AGENT_SEAT={seat} && "
         inner = (f"cd {home_wsl} && {export}"
@@ -289,9 +330,10 @@ def main():
     print(f"{'APPLY' if args.apply else 'PLAN'}: {added} profile(s) to add, "
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(SEATS)} scheme(s) synced")
-    for seat, (colour, model, why, home) in SEATS.items():
-        label = seat.capitalize() if model is None else (f"AGENT {seat}" if not home else seat)
-        print(f"  {label:<14} {colour}  model {model or 'none (daemon)':<15} tab+text  {why}")
+    for seat, (colour, model, why, home, cmd) in SEATS.items():
+        label = label_for(seat)
+        shown = "none (daemon)" if cmd is not None else model
+        print(f"  {label:<14} {colour}  model {shown:<15} tab+text  {why}")
         if home:
             print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")
     if args.font_size:

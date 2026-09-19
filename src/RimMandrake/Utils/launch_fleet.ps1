@@ -1,8 +1,10 @@
 <#
-launch_fleet.ps1 — open the four agent windows, each Windows Terminal window placed.
+launch_fleet.ps1 — open the fleet's windows, each Windows Terminal window placed.
 
     TOP-LEFT     HESTIA        (separate project, D:\Luke\dev\Hestia)
-    TOP-RIGHT    Artist        (purple — the artpipe daemon's console, no LLM, above EMERGENCY)
+    TOP-RIGHT    Artist        (purple — the artpipe daemon's console, no LLM, above Server/EMERGENCY)
+    TOP-RIGHT    Server        (white — the standalone `claude remote-control` server, no seat;
+                                launched FIRST so it is up before any seat, and independent of all)
     TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
     BOTTOM-LEFT  AGENT BENCH   (green — with the owner)
     BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
@@ -56,7 +58,7 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('HESTIA', 'ARTIST', 'EMERGENCY', 'FOUNDRY', 'BENCH'),
+    [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
     [switch]$CloseTest
@@ -152,6 +154,7 @@ $W = $work.R - $work.L; $H = $work.B - $work.T
 $place = [ordered]@{
     HESTIA    = @(($X + 4),    ($Y + 42),  1835, 818)
     ARTIST    = @(($X + 1899), ($Y + 42),  1930, 410)
+    SERVER    = @(($X + 1899), ($Y + 465), 1000, 374)
     EMERGENCY = @(($X + 2909), ($Y + 465),  923, 374)
     BENCH     = @(($X + 24),   ($Y + 900), 1835, 1151)
     FOUNDRY   = @(($X + 1899), ($Y + 901), 1930, 1151)
@@ -165,6 +168,7 @@ $place = [ordered]@{
 $titleFor = [ordered]@{
     HESTIA    = 'HESTIA'
     ARTIST    = 'Artist'
+    SERVER    = 'Server'
     EMERGENCY = 'EMERGENCY'
     BENCH     = 'AGENT BENCH'
     FOUNDRY   = 'AGENT FOUNDRY'
