@@ -673,7 +673,7 @@ carries it). Nothing here pre-empts the sweep.
   (§3–§8 verbatim igniter prose, ban 5 as amended 2026-09-10)
 - Rulings closing §11: commit `4a6f6200` (tameable igniters, spread-only, ilverr
   corona, Mechachicken cut) and
-  `infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md` §15 (final hand:
+  `infrastructure/state/items/closed/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md` §15 (final hand:
   chittik carve-out, one-species bolts, sacrilege hookup, bespoke furnace hide)
 - Item calibration: RimSage `get_def_details` on `Leather_Heavy` and
   `Leather_Thrumbo` (full XML, statBases present)

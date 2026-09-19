@@ -54,7 +54,7 @@ holding only some of the grid).
 
 ## 1. Quantization is the whole feasibility answer
 
-From `infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md`: a smoothly interpolated colour mints a
+From `infrastructure/state/items/closed/TWINKLE_FLORA_SPIKE_1.md`: a smoothly interpolated colour mints a
 new cached Graphic/Material **forever**, one per distinct float value, never reusing one. That is an
 unbounded leak, invisible in a five-minute test and bad after a week of play. Quantizing to a small
 fixed step count bounds the cache to exactly that many entries, permanently.

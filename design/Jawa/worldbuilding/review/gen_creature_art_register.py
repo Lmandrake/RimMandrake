@@ -12,7 +12,7 @@ his frozen verdicts forward.
 
 Three sources, in strict precedence:
 
-  1. infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md  owner rulings of
+  1. infrastructure/state/items/closed/CREATURE_ART_REVIEW_SHEET_1.md  owner rulings of
      2026-09-06, hard-coded below as RULINGS_2026_09_06. Atispec and Revenant are
      CANCELLED and are never re-asked.
   2. design/Jawa/fauna/creature_art_decisions.json              owner-frozen
@@ -618,7 +618,7 @@ def main() -> int:
             "design/Jawa/worldbuilding/biomes/rosters/*.json (residency, 2026-09-09) + "
             "creature_register_rows.json (art metrics, 595-mod dump 2026-09-05) + "
             "design/Jawa/fauna/creature_art_decisions.json (owner-frozen 2026-08-23, READ ONLY) + "
-            "infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md (owner rulings 2026-09-06)"
+            "infrastructure/state/items/closed/CREATURE_ART_REVIEW_SHEET_1.md (owner rulings 2026-09-06)"
         ),
         "invented": invented(counts),
         "decisions": {

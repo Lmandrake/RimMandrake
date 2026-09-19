@@ -7,7 +7,7 @@ Scope: the Biomes! family — Caverns (`biomesteam.biomescaverns`), Polluted Lan
 (`biomesteam.biomespollutedlands`), Fossils (`biomesteam.biomesfossils`) — against the
 standing KEEP-until-our-versions-retire-it ruling (`BIOMES_CAVERNS_DEEPSCAN_1`). All
 counts MEASURED 2026-09-18 unless marked; census base:
-`infrastructure/state/items/BIOMES_CAVERNS_DEEPSCAN_1.md` and
+`infrastructure/state/items/closed/BIOMES_CAVERNS_DEEPSCAN_1.md` and
 `Transient/biomes_caverns_deepscan_2026-09-18.md`.
 
 ## 1. What we actually use today

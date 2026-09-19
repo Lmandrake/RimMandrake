@@ -4,7 +4,7 @@
      that draft, it frames the CHOICES around it. Read the draft first if only one doc gets read. -->
 # The Sarlacc — discussion pack for the sitting
 
-Item: `infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md`. Premise binding everything:
+Item: `infrastructure/state/items/closed/SARLACC_NATIVE_HABITAT_1.md`. Premise binding everything:
 **the sarlacc is a well, not a predator; killing one is campaign-scale; it reads as grown in
 place.** Kept deliberately OUT of `biomes/deep_desert.md` (its ticket, sheet's "Owed" list).
 

@@ -45,7 +45,10 @@ touching a file another window may hold.
 ## Queue
 
 An item is one line — `THREE_UPPER_SNAKE_WORDS_# · lane · the ask` — plus optional
-prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. The
+prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. 🔑 **On
+close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*.md` is
+the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.
+Reboot handoffs are not items and live in `infrastructure/state/handoffs/`. The
 ledger (`events.jsonl`, written only by `rimflow`) is the truth; `queue/*.md` are
 rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.

@@ -569,7 +569,7 @@ terminal; 2,084 tracked text files; 9,679 candidate id tokens):
 - **14** citations in **9** files explicitly assert a live state (`| open |`,
   `| doing |`, `still open`, `open item`) for an item the ledger says is terminal —
   including `MACBENCH_REBOOT_HANDOFF_202609162042.md` and
-  `infrastructure/state/items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md`.
+  `infrastructure/state/items/closed/BESTIARY_ARMOURY_DESC_BACKFILL_1.md`.
 
 ### The deterministic replacement
 

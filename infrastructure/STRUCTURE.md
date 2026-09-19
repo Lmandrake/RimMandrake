@@ -195,6 +195,7 @@ this?* A rule is durable; a queue is meant to be consumed.
 | Path | Holds |
 |---|---|
 | `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before queueing anything.** The authority on the v1/v2 line. |
+| `infrastructure/state/items/` live item prose · `items/closed/` terminal · `infrastructure/state/handoffs/` reboot handoffs (2026-09-19) |
 | `infrastructure/state/items/COLD_LOAD_RUN_SHEET_*.md` | The run sheet for the next game load — a normal queue item since 2026-08-27; the two hand-kept run-sheet files are deleted. |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |

@@ -7,7 +7,7 @@
 WHAT THIS IS
 ============
 The first honest answer to "how close are we to delivery", per the ruling
-recorded at `infrastructure/state/items/PROJECT_MATURITY_DASHBOARD_1.md`. Two
+recorded at `infrastructure/state/items/closed/PROJECT_MATURITY_DASHBOARD_1.md`. Two
 spines on one page:
 
   1. SYSTEMS — a maturity grid, two independent axes per system:

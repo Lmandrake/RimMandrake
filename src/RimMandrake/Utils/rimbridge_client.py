@@ -147,7 +147,7 @@ RETIRED_TOOLS = {
         "  DO INSTEAD: deploy the XML and restart on the 19-mod minimal list - 22\n"
         "  seconds - then read the field back with jawa/get_defs.\n"
         "  Ruling: skills/rimworld-modding/SKILL.md #2.\n"
-        "  Evidence: infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md\n"
+        "  Evidence: infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md\n"
         "  To run the sanctioned re-test (MINIMAL LIST ONLY, where a broken game costs\n"
         "  22 s): set RIMBRIDGE_ALLOW_RETIRED=jawa/hot_reload_defs in the environment."
     ),

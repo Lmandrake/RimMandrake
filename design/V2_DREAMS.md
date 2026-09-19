@@ -786,7 +786,7 @@ state:    ready
 The Deep Desert Tribes' signature is a raid that targets water containers and
 disengages once loaded. v1 ships the COMPOSITION only — a light, fast, chiefless
 party. ✅ **CORRECTED 2026-08-31 (deeper source read; spec now lives at
-`infrastructure/state/items/TUSKEN_WATER_RAID_1.md`):** the 2026-08-14 line
+`infrastructure/state/items/closed/TUSKEN_WATER_RAID_1.md`):** the 2026-08-14 line
 below understated what ships. All 18 live `RaidStrategyDef`s are indeed
 attack/breach/siege — but the LordJob layer ALREADY composes
 attack→steal→leave (`LordJob_AssaultColony(canSteal:true)` +

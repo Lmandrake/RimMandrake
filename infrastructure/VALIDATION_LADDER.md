@@ -24,7 +24,7 @@ Blocked on: deep-serialize upgrade to `jawa/get_defs` (scalar-only today).
 > ⛔ **The `jawa/hot_reload_defs` step is DEAD** — retired by the owner 2026-09-03
 > as unstable. It hung a 589-mod game for 5 minutes and left it unable to generate
 > any pawn (`HairDef` missing from a Type-keyed index), reporting healthy throughout:
-> `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`. L1 loses no
+> `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`. L1 loses no
 > ground — a minimal-list restart is 22 seconds, so "zero restarts" was worth less
 > than it sounded.
 

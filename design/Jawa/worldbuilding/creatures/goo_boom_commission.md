@@ -13,7 +13,7 @@ done with them."*
 
 **What it replaces:** the 15-creature boom family cut by `BOOM_FAMILY_CUT_1` the same day
 (`Boomalope`, `Boomrat`, `VFEI2_Boomtick`, and the 12 Vanilla Genetics Expanded `GR_*`
-boom hybrids — record in `infrastructure/state/items/BOOM_FAMILY_CUT_1.md`). The
+boom hybrids — record in `infrastructure/state/items/closed/BOOM_FAMILY_CUT_1.md`). The
 Boomalope's own review row was the seed: *"Convert to a twisted thing the Assailants make
 in their dungeons"* (`review/round2/reserved_groups_draft.md` §9). This is that convert.
 
@@ -318,7 +318,7 @@ Left open for the owner / BENCH, with the default that ships if nobody rules:
 
 ## 7. Sources read for this brief (so the next reader need not re-derive)
 
-- `infrastructure/state/items/BOOM_FAMILY_CUT_1.md`, `ASSAILANT_FLESH_DUNGEON_1.md`, `ASSAILANT_DUNGEON_BUILD_1.md`
+- `infrastructure/state/items/closed/BOOM_FAMILY_CUT_1.md`, `ASSAILANT_FLESH_DUNGEON_1.md`, `ASSAILANT_DUNGEON_BUILD_1.md`
 - `design/Jawa/worldbuilding/review/round2/reserved_groups_draft.md` §1, §9, rulings 2026-09-10
 - `src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml` header; `ANCIENTS_AS_RAKATA_SPEC.md`; `reconciled_lore/03_deep_history.md`; `infrastructure/state/canon.yml` `assailant_reveal_arc`, `anomaly_content`; `dungeons_arc_spec.md` §1–2; `biomes/assailant_weapon_remnants.md`, `the_contagion.md` §9, `the_slime.md` palette line
 - `design/NAMING_SCHEME_PLAN.md`; `Alien_Bestiary.md` §1; `creature_names_ashkarr.md`; `creature_recognizability_rule.md`; `creature_normalization_doctrine.md`; `creature_size_model.md` §1, §4; `beast_normalization_spec.md` Law 3

@@ -414,6 +414,9 @@ src/                    mods, defs, C#, art            FOUNDRY owns
 design/                 campaign specs (Utinni)        the owner's, via BENCH
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
+  items/<ID>.md         LIVE item prose only — this glob is the live set
+  items/closed/         prose of done/dropped/superseded items (moved on close)
+  handoffs/             reboot handoffs — NOT queue items, never greppable queue state
 Transient/              output to LOOK AT, then bin    tracked+pushed, ~14 days
 ```
 

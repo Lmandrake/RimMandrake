@@ -1,6 +1,6 @@
 # lee.theforce.lightsaber — black-box behavioral inventory
 
-Prep for `FORCE_SYSTEM_OWNERSHIP_1` step 2. `infrastructure/state/items/FORCE_SYSTEM_OWNERSHIP_1.md`
+Prep for `FORCE_SYSTEM_OWNERSHIP_1` step 2. `infrastructure/state/items/closed/FORCE_SYSTEM_OWNERSHIP_1.md`
 does not exist yet (queue entry `infrastructure/state/queue/BENCH.md` still reads "no
 items/FORCE_SYSTEM_OWNERSHIP_1.md yet") — this file is the evidence step 1 will need, not a
 response to prose that hasn't been written.

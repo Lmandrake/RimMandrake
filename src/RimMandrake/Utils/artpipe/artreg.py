@@ -2,7 +2,7 @@
 """artreg.py — the SOLE writer of `infrastructure/artpipe/registry.jsonl`.
 
 Design: `design/RimMandrake/art_regen_registry_design.md` (owner-ruled
-2026-09-11). Item: `infrastructure/state/items/ART_REGEN_REGISTRY_1.md`.
+2026-09-11). Item: `infrastructure/state/items/closed/ART_REGEN_REGISTRY_1.md`.
 
 This is the tracking layer ABOVE `ART_PIPELINE_DAEMON_1`'s queue
 (`pending/active/done/failed/`, `throughput.jsonl`) — it changes nothing

@@ -3,7 +3,7 @@
 
 > 🔶 **PROPOSAL THROUGHOUT.** Nothing below is ruled. Prepared 2026-08-30 for
 > point 1 of the sitting brief in
-> `infrastructure/state/items/VAULT_DUNGEON_CONCEPT_1.md`
+> `infrastructure/state/items/closed/VAULT_DUNGEON_CONCEPT_1.md`
 > ("COUNT + SITING: how many vault sites on the frozen world, which tiles").
 > The owner rules count, mix and exact tiles at the sitting; this is the
 > candidate menu, not a decision.

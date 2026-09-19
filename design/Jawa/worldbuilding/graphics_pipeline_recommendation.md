@@ -2,7 +2,7 @@
 
 🔴 **Local generation (ComfyUI / Flux / any on-box model) is PARKED — owner,
 2026-09-05. Do not start it.** Cloud channels (Codex CLI, Gemini CLI) continue.
-Record: `infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`.
+Record: `infrastructure/state/items/closed/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`.
 
 _Research spike, 2026-09-05, BENCH. Owner brief: the current channel is slow &
 clumsy; want native transparency, multi-facing consistency (one hero → RimWorld's
@@ -120,7 +120,7 @@ commit the pipeline.
 🔴 **LOCAL GENERATION IS PARKED — owner ruling, 2026-09-05.** Nobody stands up
 ComfyUI, downloads weights, or spawns a local-generation agent. The full parking
 record — what was decided, what was measured, and what must be true to revisit —
-is `infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`. The local
+is `infrastructure/state/items/closed/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`. The local
 Flux.1-dev/ComfyUI channel this spike had recommended (IP-Adapter reference-lock,
 ControlNet facings, LayerDiffuse alpha, $0/image on the RTX 5080) was never proven
 end-to-end — no test render was ever run — and it OOM-killed both agent windows.
