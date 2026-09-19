@@ -66,13 +66,22 @@ plus a live-load pass, the same track `mandrake.rm.weathersuite` took.
 - `mandrake.rut.restrainingbolts` (RestrainingBolts) — `DROID_FDE_GOODWILL_CAP_1` closed
   2026-09-09 explicitly on OFFLINE criteria only ("live-observed goodwill-cap-in-effect
   test stays owed").
-- `mandrake.rut.longhunger` (LongHunger) — **HIGHEST PRIORITY OF THE SWEEP.**
-  `SANDWORM_MYTHOS_BUILD_1` closed 2026-09-09 carrying an explicit OWNER RULING
-  (2026-09-05): *"keep BOTH chezhou.creature.sandworm AND RUT_LongHunger active side by
-  side."* A 2026-09-12 review wave logged it as "not currently enabled in the minimal
-  ModsConfig, which is expected for un-quicktested content" — deliberately gated on a
-  live/quicktest pass, not forgotten. Owner already wants this active; next bridge
-  session should quicktest then flip it on.
+- `mandrake.rut.longhunger` (LongHunger) — **RESOLVED 2026-09-19 (FOUNDRY BELT).**
+  Re-verified from scratch before acting: packageId `mandrake.rut.longhunger` parsed
+  directly from the mod's own deployed `About.xml` (never guessed from the folder
+  name), `deploy_custom_mods.py` plan-only showed 7 files in sync with zero drift,
+  and the 2026-09-05 owner ruling on `SANDWORM_MYTHOS_BUILD_1` ("keep BOTH
+  chezhou.creature.sandworm AND RUT_LongHunger active side by side") stood
+  unretracted. That clears the same bar `injections`/`weathersuite` cleared
+  (byte-identical deploy + an explicit owner enable ruling), so it was enabled —
+  inserted into the live `ModsConfig.xml` immediately after
+  `chezhou.creature.sandworm` (index 521 of 621; its only real constraint,
+  `loadAfter Ludeon.RimWorld.Anomaly`, is trivially satisfied since Anomaly sits at
+  index 8). Pre-enable backup:
+  `infrastructure/state/modlists/ModsConfig.xml.pre-longhunger-enable.20260919T004032Z.bak`.
+  Live-fire verification (does it load clean, does the quest offer/fire, does it
+  coexist with the donor sandworm) is tracked as its own follow-up:
+  `LONGHUNGER_QUICKTEST_1`.
 
 ## Unclear — no dedicated build-or-close item found
 
