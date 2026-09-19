@@ -151,6 +151,15 @@ def discover_mods(roots):
         RimWorld/Data/<Core|Royalty|Odyssey|...>/
         RimWorld/Mods/<name>/
     First root wins a packageId collision.
+
+    A candidate with no About.xml of its own may itself be a TIER folder
+    whose children are the real two-levels-deep mods (this repo's own
+    src/<RimMandrake|RimStarWars|RimUtinni>/<ModName>/) - checked one level
+    further so passing `src` as a root does not silently find zero mods.
+    Kept in sync with skills/rimworld-modding/scripts/validate_patch.py's
+    copy per this module's own "fix bugs in BOTH" note (SWBESTIARY_DEPLOY_STALE_1,
+    2026-09-19). Purely additive: never overrides a packageId already found
+    at a shallower level.
     """
     index = {}
     for root_dir in roots:
@@ -166,12 +175,29 @@ def discover_mods(roots):
             if not os.path.isdir(cand):
                 continue
             got = read_about(cand)
-            if not got:
+            if got:
+                pid, name = got
+                if pid not in index:
+                    index[pid] = {"packageId": pid, "name": name,
+                                  "folder": cand, "root": root_dir}
                 continue
-            pid, name = got
-            if pid not in index:
-                index[pid] = {"packageId": pid, "name": name, "folder": cand,
-                              "root": root_dir}
+            if cand == root_dir:
+                continue  # root's own children are already in `candidates`
+            try:
+                sub_entries = sorted(os.listdir(cand))
+            except OSError:
+                continue
+            for sub_e in sub_entries:
+                sub_cand = os.path.join(cand, sub_e)
+                if not os.path.isdir(sub_cand):
+                    continue
+                got2 = read_about(sub_cand)
+                if not got2:
+                    continue
+                pid2, name2 = got2
+                if pid2 not in index:
+                    index[pid2] = {"packageId": pid2, "name": name2,
+                                   "folder": sub_cand, "root": root_dir}
     return index
 
 
