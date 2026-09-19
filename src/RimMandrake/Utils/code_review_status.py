@@ -375,6 +375,13 @@ def clean_state(rel, entry):
     made two `git` spawns per path here."""
     if entry is None:
         return "DIRTY", "never marked clean"
+    if entry.get("status") == "dirty":
+        # reopen() flipped this rather than deleting it - PRESERVE HISTORY
+        # (owner ruling 2026-09-04): the streak/cleanCount stays visible on
+        # the health board across the reopen.
+        streak = entry.get("cleanCount", 0)
+        return "DIRTY", "reopened — needs a fresh full-file review before " \
+            "mark-clean (prior clean streak: %d)" % streak
     recorded_hash = entry.get("hash")
     if not recorded_hash:
         # A pre-rewrite entry that `migrate-hashes` couldn't backfill (its
@@ -570,11 +577,15 @@ def cmd_reopen(paths, reason):
     """Undo a clean mark: a fix is not a review. Finding a bug and fixing it
     means the file was DIRTY and someone edited it - it does not mean a
     full-file review found nothing, which is the only thing mark-clean is
-    allowed to certify. `reopen` puts a path back to "never marked clean" so
-    it must survive a genuine follow-up review (only minor comments at most)
-    before mark-clean can be called on it again. `--reason` is required and
-    goes to stdout / the caller's commit message, not into the ledger itself
-    - git history is this repo's provenance, not a second copy of it here."""
+    allowed to certify. `reopen` flips the entry's `status` to "dirty" so it
+    must survive a genuine follow-up review (only minor comments at most)
+    before mark-clean can be called on it again - but PRESERVES the entry
+    (cleanCount and streak intact), per owner ruling 2026-09-04 (card,
+    re-confirmed 2026-09-19): "PRESERVE HISTORY - reopen marks the entry
+    dirty but keeps it, cleanCount and streak intact; schema gains a status
+    field." `--reason` is required and goes to stdout / the caller's commit
+    message, not into the ledger itself - git history is this repo's
+    provenance, not a second copy of it here."""
     if not reason or not reason.strip():
         print("FAIL: --reason is required - say why this is being reopened.", file=sys.stderr)
         return 2
@@ -617,13 +628,13 @@ def cmd_reopen(paths, reason):
         data = load()
         changed = []
         for rel in rels:
-            if rel in data:
-                # NOTE: this drops the entry's cleanCount with it, so a reopened
-                # file's "reviewed, then dirty again" streak restarts at 1 on the
-                # health board. Keeping the count would need a sha-less stub
-                # entry, and codebase_health.review_verdicts() reads entry["sha"]
-                # unguarded — not a change to make inside a review pass.
-                del data[rel]
+            if rel in data and data[rel].get("status") != "dirty":
+                # Flip status in place - keep hash/sha/date/cleanCount so the
+                # streak survives. codebase_health.review_verdicts() and
+                # classify() only ever read this dict with .get(), so a
+                # dirty-status stub (or one missing "hash" entirely) is safe
+                # for both of them.
+                data[rel]["status"] = "dirty"
                 changed.append(rel)
         if changed:
             save(data)

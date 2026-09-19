@@ -132,14 +132,35 @@ write("untracked.xml", "<Defs>never committed</Defs>\n")
 rc = run("mark-clean", os.path.join(TMP, "untracked.xml"))
 eq(rc, 2, "mark-clean refuses an untracked file")
 
-# ---- 5. reopen ------------------------------------------------------------
+# ---- 5. reopen preserves the entry (PRESERVE HISTORY, owner ruling 2026-09-04) --
 rc = run("mark-clean", os.path.join(TMP, "a.xml"))
 eq(rc, 0, "mark-clean v2 (committed) succeeds")
+count_before_reopen = CRS.load().get("a.xml", {}).get("cleanCount")
+eq(count_before_reopen, 2, "second mark-clean on a.xml bumps the streak to 2")
 rc = run("reopen", os.path.join(TMP, "a.xml"), "--reason", "selftest")
 eq(rc, 0, "reopen succeeds")
-state, detail = CRS.clean_state("a.xml", CRS.load().get("a.xml"))
-eq(state, "DIRTY", "a reopened file is never marked clean")
-eq(detail, "never marked clean", "reopen's reason matches a brand-new file")
+entry = CRS.load().get("a.xml")
+eq(entry is not None, True, "reopen keeps the entry rather than deleting it")
+eq(entry.get("status"), "dirty", "reopen flips status to dirty in place")
+eq(entry.get("cleanCount"), 2, "reopen preserves cleanCount/streak history")
+state, detail = CRS.clean_state("a.xml", entry)
+eq(state, "DIRTY", "a reopened file reads DIRTY")
+eq("reopened" in detail and "streak: 2" in detail, True,
+   "reopen's detail names the reason and the preserved streak")
+
+# reopening an already-dirty entry is a no-op, not a second flip
+rc = run("reopen", os.path.join(TMP, "a.xml"), "--reason", "selftest again")
+eq(rc, 0, "reopening an already-dirty entry still exits 0")
+eq(CRS.load().get("a.xml", {}).get("cleanCount"), 2,
+   "reopening twice does not touch the streak")
+
+# mark-clean after reopen (no further edit needed - HEAD already matches
+# a.xml's content) clears the dirty status and keeps counting
+rc = run("mark-clean", os.path.join(TMP, "a.xml"))
+eq(rc, 0, "mark-clean after reopen succeeds")
+entry = CRS.load().get("a.xml")
+eq(entry.get("status"), None, "mark-clean clears the dirty status")
+eq(entry.get("cleanCount"), 3, "the streak keeps counting across a reopen")
 
 # ---- 6. binary content round-trips (the real crash this rewrite hit) ------
 png_header = bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) + b"fake png body"
