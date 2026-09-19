@@ -1,7 +1,345 @@
 {
-  "sheetId": "rot_flora_fauna_review_2026-09-18",
-  "posture": "blacklist",
-  "frozen": false,
-  "writeCount": 0,
-  "decisions": {}
+ "decidedCount": 55,
+ "decisions": {
+  "A_AB_AgaricusDomeCap": {
+   "at": "2026-09-19T08:50:26.825Z",
+   "decision": "regen",
+   "note": "7 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_Agarilux": {
+   "at": "2026-09-19T08:45:47.883Z",
+   "decision": "regen",
+   "note": "rename",
+   "prefill": "keep"
+  },
+  "A_AB_AgariluxPrime": {
+   "at": "2026-09-19T08:51:46.328Z",
+   "decision": "regen",
+   "note": "20 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_ArbuscularMycorrhiza": {
+   "at": "2026-09-19T08:49:09.429Z",
+   "decision": "regen",
+   "note": "9 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_Bryolux": {
+   "at": "2026-09-19T08:45:39.052Z",
+   "decision": "regen",
+   "note": "rename",
+   "prefill": "keep"
+  },
+  "A_AB_DribblingCap": {
+   "at": "2026-09-19T08:50:33.684Z",
+   "decision": "regen",
+   "note": "12 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_GiantAgarilux": {
+   "at": "2026-09-19T08:46:35.466Z",
+   "decision": "regen",
+   "note": "wrong size, 6 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_GlowingAgarilux": {
+   "at": "2026-09-19T08:46:19.333Z",
+   "decision": "regen",
+   "note": "wrong size, 4 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_Glowstool": {
+   "at": "2026-09-19T08:45:41.846Z",
+   "decision": "regen",
+   "note": "rename",
+   "prefill": "keep"
+  },
+  "A_AB_LilacBeacon": {
+   "at": "2026-09-19T08:47:05.002Z",
+   "decision": "regen",
+   "note": "3 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_RecurvedStropharia": {
+   "at": "2026-09-19T08:48:19.545Z",
+   "decision": "regen",
+   "note": "5 wide, rename",
+   "prefill": "keep"
+  },
+  "A_AB_SlimyPholiota": {
+   "at": "2026-09-19T08:49:16.421Z",
+   "decision": "regen",
+   "note": "5 wide, , rename",
+   "prefill": "keep"
+  },
+  "A_AB_WitchesOyster": {
+   "at": "2026-09-19T08:47:10.177Z",
+   "decision": "regen",
+   "note": "6 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_AgelessCap": {
+   "at": "2026-09-19T08:51:26.091Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Arpeau": {
+   "at": "2026-09-19T08:47:42.632Z",
+   "decision": "regen",
+   "note": "10 wide, , rename",
+   "prefill": "keep"
+  },
+  "A_RUT_BlastpodShroom": {
+   "at": "2026-09-19T08:50:59.637Z",
+   "decision": "regen",
+   "note": "keep general appearance, just improve, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_BleedingTooth": {
+   "at": "2026-09-19T08:49:25.139Z",
+   "decision": "regen",
+   "note": "2 wlde, , rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Brightbell": {
+   "at": "2026-09-19T08:49:32.637Z",
+   "decision": "regen",
+   "note": "1.5 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_CrimsonCap": {
+   "at": "2026-09-19T08:49:41.293Z",
+   "decision": "regen",
+   "note": "2 cells, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Dewshrooms": {
+   "at": "2026-09-19T08:47:10.872Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_DulcisPlant": {
+   "at": "2026-09-19T08:52:06.948Z",
+   "decision": "regen",
+   "note": "3 cells, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_EuphoricCrown": {
+   "at": "2026-09-19T08:51:39.481Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_FalseFruit": {
+   "at": "2026-09-19T08:51:11.722Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_FlakespireFungus": {
+   "at": "2026-09-19T08:48:27.431Z",
+   "decision": "regen",
+   "note": "3 wide, , rename",
+   "prefill": "keep"
+  },
+  "A_RUT_FruitingBodies": {
+   "at": "2026-09-19T08:47:13.601Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_FurnaceCap": {
+   "at": "2026-09-19T08:52:15.264Z",
+   "decision": "regen",
+   "note": "2 cells, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_GreyLady": {
+   "at": "2026-09-19T08:49:52.464Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_MortalMorelPlant": {
+   "at": "2026-09-19T08:50:14.283Z",
+   "decision": "regen",
+   "note": "0.8, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Nogtyl": {
+   "at": "2026-09-19T08:48:08.756Z",
+   "decision": "regen",
+   "note": "12 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Nuitae": {
+   "at": "2026-09-19T08:47:24.540Z",
+   "decision": "regen",
+   "note": "1 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_PaleMoss": {
+   "at": "2026-09-19T08:52:25.653Z",
+   "decision": "regen",
+   "note": "make look really like moss, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_PaleTree": {
+   "at": "2026-09-19T08:51:58.990Z",
+   "decision": "regen",
+   "note": "6 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Pusmelon": {
+   "at": "2026-09-19T08:48:43.037Z",
+   "decision": "regen",
+   "note": "1 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_RegenerantVeil": {
+   "at": "2026-09-19T08:51:34.060Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_RustPuff": {
+   "at": "2026-09-19T08:48:45.529Z",
+   "decision": "regen",
+   "note": "",
+   "prefill": "keep"
+  },
+  "A_RUT_Sagecrust": {
+   "at": "2026-09-19T08:49:00.165Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Shinecap": {
+   "at": "2026-09-19T08:49:59.103Z",
+   "decision": "regen",
+   "note": "4 wide, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Skulltop": {
+   "at": "2026-09-19T08:50:39.421Z",
+   "decision": "regen",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "A_RUT_VioletWimple": {
+   "at": "2026-09-19T08:50:05.308Z",
+   "decision": "regen",
+   "note": "2 cells, rename",
+   "prefill": "keep"
+  },
+  "A_RUT_Wrinklecap": {
+   "at": "2026-09-19T08:47:36.118Z",
+   "decision": "regen",
+   "note": ".9 wide, rename",
+   "prefill": "keep"
+  },
+  "B_AA_Agaripawn": {
+   "at": "2026-09-19T08:53:57.190Z",
+   "decision": "regen",
+   "note": "7 wide, rename",
+   "prefill": "keep"
+  },
+  "B_AA_Agaripod": {
+   "at": "2026-09-19T08:53:19.213Z",
+   "decision": "keep",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "B_AA_MycoidColossus": {
+   "at": "2026-09-19T08:53:41.356Z",
+   "decision": "regen",
+   "note": "15 wide, , rename",
+   "prefill": "keep"
+  },
+  "B_AA_Swarmling": {
+   "at": "2026-09-19T08:53:03.855Z",
+   "decision": "regen",
+   "note": "0.5 wide, rename",
+   "prefill": "keep"
+  },
+  "B_AA_Wildpawn": {
+   "at": "2026-09-19T08:54:04.142Z",
+   "decision": "regen",
+   "note": "6 wide, , rename",
+   "prefill": "keep"
+  },
+  "B_AA_Wildpod": {
+   "at": "2026-09-19T08:54:20.329Z",
+   "decision": "regen",
+   "note": "5 wide, rename",
+   "prefill": "keep"
+  },
+  "B_RSW_BovineBeetle": {
+   "at": "2026-09-19T08:53:47.425Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
+  },
+  "B_RSW_FungalMantis": {
+   "at": "2026-09-19T08:54:27.002Z",
+   "decision": "keep",
+   "note": ", rename",
+   "prefill": "keep"
+  },
+  "B_RSW_FungalWeevil": {
+   "at": "2026-09-19T08:52:54.573Z",
+   "decision": "regen",
+   "note": "disgusting fungus bug hybrid, rename, 4 cells wide",
+   "prefill": "keep"
+  },
+  "B_RUT_Emberscythe": {
+   "at": "2026-09-19T08:54:39.089Z",
+   "decision": "cut",
+   "note": "",
+   "prefill": "keep"
+  },
+  "C_twistingthornweed_v1_r2": {
+   "at": "2026-09-19T08:54:56.642Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "undecided"
+  },
+  "C_twitchingpuffer_grown_v1": {
+   "at": "2026-09-19T08:54:57.224Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "undecided"
+  },
+  "C_twitchingpuffer_harvested_v2": {
+   "at": "2026-09-19T08:54:59.324Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "undecided"
+  },
+  "C_twitchingpuffer_immature_v1": {
+   "at": "2026-09-19T08:55:00.216Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "undecided"
+  },
+  "C_twitchingpuffer_tendrils_v1": {
+   "at": "2026-09-19T08:55:01.769Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "undecided"
+  }
+ },
+ "frozen": true,
+ "posture": "blacklist",
+ "savedAt": "2026-09-19T01:55:02-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "rot_flora_fauna_review_2026-09-18",
+ "writeCount": 124,
+ "frozen_at": "2026-09-19",
+ "reviewed_by": "OWNER",
+ "owner_said": "rot art ruled. Now, deploy these art decisions, regenerate what needs it, and push both biomes towards deployment as much as you can.",
+ "frozen_meaning": "Owner verdicts on the Rot flora/fauna: 45 regen with size+rename notes, 2 cut (BovineBeetle, Emberscythe), 3 keep, 5 new-art approve. Sidecar refuses writes; build_review_sheet.py must not regenerate this file."
 }
