@@ -287,7 +287,21 @@
       <li>
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>KotORElectricBolt</defaultProjectile>
+        <!-- Was KotORElectricBolt, which this mod does NOT have and never will:
+             that projectile's Class comes from AthenaPort, so absorption
+             deliberately excluded it (Absorbed_KotorCore_BLOCKED_manifest.txt).
+             It resolved only because donor guy762.mm.kotorcore was still
+             loaded; the moment that donor retired (2026-09-19,
+             WEAPONS_DONOR_RETIREMENT_1) the reference dangled and the live
+             cold load reported it — "Could not resolve cross-reference: No
+             Verse.ThingDef named KotORElectricBolt found to give to
+             VerbProperties(Systech Static Blaster)" — leaving this weapon with
+             a null projectile, i.e. unable to fire. Repointed to the same
+             projectile its three sibling ion weapons in this file already use,
+             which IS absorbed. Whether the Systech deserves a distinct
+             electric projectile of our own is a design call, filed separately
+             as SYSTECH_ELECTRIC_BOLT_1 — not something to guess at here. -->
+        <defaultProjectile>KotORIonBolt_default</defaultProjectile>
         <warmupTime>1</warmupTime>
         <range>17</range>
         <ticksBetweenBurstShots>15</ticksBetweenBurstShots>
