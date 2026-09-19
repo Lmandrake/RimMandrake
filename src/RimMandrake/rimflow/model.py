@@ -88,6 +88,29 @@ STATE = os.path.join(ROOT, "infrastructure", "state")
 LEDGER = os.path.join(STATE, "ledger")
 EVENTS = os.path.join(LEDGER, "events.jsonl")
 ITEMS = os.path.join(STATE, "items")
+# 🔑 Prose for an item that has REACHED A TERMINAL STATE lives one level down, in
+# items/closed/. Moved 2026-09-19 on the owner's word: 581 of the 730 files in items/
+# belonged to done/dropped/superseded work, and FOUNDRY.md sends every seat to grep
+# that directory for "what else it settled" — so four fifths of every such sweep was
+# walking finished tickets. Nothing is deleted; git holds the provenance either way.
+CLOSED = os.path.join(ITEMS, "closed")
+
+
+def item_path(iid, for_write=False):
+    """-> where this item's prose IS, live path first, then items/closed/.
+
+    ⚠️ Resolve, never assume. A reader that hardcodes items/<ID>.md silently
+    reports "no prose" for every closed item, which reads exactly like an item that
+    never had any — the failure this system exists to stop. `for_write=True` always
+    returns the LIVE path: new prose is never authored into the archive.
+    """
+    live = os.path.join(ITEMS, "%s.md" % iid)
+    if for_write:
+        return live
+    if os.path.exists(live):
+        return live
+    closed = os.path.join(CLOSED, "%s.md" % iid)
+    return closed if os.path.exists(closed) else live
 
 # BENCH and FOUNDRY are the live windows (redesign #4, 2026-08-27). The four retired
 # seats stay listed so the ledger's history replays and legacy items keep their owners.

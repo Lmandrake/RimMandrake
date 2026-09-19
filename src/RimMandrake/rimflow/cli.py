@@ -399,7 +399,7 @@ def _undocumented_work_warning(item_id):
     out = git("log", "-F", "--grep=%s:" % item_id, "--name-only", "--format=%x01%H")
     if not out:
         return None
-    item_file = os.path.relpath(os.path.join(model.ITEMS, "%s.md" % item_id), model.ROOT)
+    item_file = os.path.relpath(model.item_path(item_id), model.ROOT)
     hits = []
     for rec in out.split("\x01")[1:]:
         lines = [ln for ln in rec.splitlines() if ln.strip()]
@@ -420,8 +420,11 @@ def _undocumented_work_warning(item_id):
 # PROSE
 # ---------------------------------------------------------------------------
 def read_prose(iid):
-    """-> [(section, body)] from items/<ID>.md, in file order. Missing file -> []."""
-    path = os.path.join(model.ITEMS, "%s.md" % iid)
+    """-> [(section, body)] from the item's prose, in file order. Missing file -> [].
+
+    Resolves through `model.item_path`, so a CLOSED item's prose still reads after
+    the 2026-09-19 move into items/closed/ rather than silently reporting none."""
+    path = model.item_path(iid)
     try:
         with open(path, encoding="utf-8") as fh:
             text = fh.read()

@@ -320,14 +320,19 @@ def item_texts():
                 )
                 if chunk:
                     blobs[iid] = blobs.get(iid, "") + " " + chunk
+    # Both dirs: terminal items' prose moved to items/closed/ on 2026-09-19 and this
+    # walk is over the WHOLE corpus, not just open work — scanning only the live dir
+    # would quietly drop 581 items' path evidence and shrink the health picture.
     items_dir = os.path.join(ROOT, "infrastructure", "state", "items")
-    if os.path.isdir(items_dir):
-        for name in os.listdir(items_dir):
+    for d in (items_dir, os.path.join(items_dir, "closed")):
+        if not os.path.isdir(d):
+            continue
+        for name in os.listdir(d):
             if not name.endswith(".md"):
                 continue
             iid = name[:-3]
             try:
-                with open(os.path.join(items_dir, name), "r", encoding="utf-8",
+                with open(os.path.join(d, name), "r", encoding="utf-8",
                           errors="replace") as f:
                     blobs[iid] = blobs.get(iid, "") + " " + descriptive_prose(f.read())
             except OSError:
