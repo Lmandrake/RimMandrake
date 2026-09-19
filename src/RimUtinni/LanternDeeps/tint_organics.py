@@ -2,7 +2,7 @@
 """Owner ruling 2026-09-18: the Deep's ORGANIC sprites lean purple, the minerals stay blue.
 
 Hue-shifts only the blue-cyan band (160-262 deg, feathered) of every PNG under
-Textures/RUT_LanternDeeps/Things/Plant by +70 deg; warm hues (YumBulbs' amber) and greys
+Textures/RUT_LanternDeeps/Things/Plant by +70 deg; warm hues (BrellikBulb's amber) and greys
 are untouched. Re-run after wire_art.py whenever a plant sprite is re-rendered, never on
 Crystals/, Chunks/, Item/, Natural/ or Terrains/.
 

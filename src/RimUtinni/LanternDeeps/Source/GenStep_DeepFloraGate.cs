@@ -29,16 +29,16 @@ namespace RimMandrake.Utinni.LanternDeeps
 		private static readonly string[] OwnedFloraDefNames =
 		{
 			"RUT_DeepMycelium",
-			"RUT_Gleamtip",
-			"RUT_Fungusfern",
-			"RUT_CrystaltipBrambles",
-			"RUT_YumBulbs",
-			"RUT_DeepDulcisPlant",
-			"RUT_Crystalcap",
-			"RUT_DeepGreyLady",
-			"RUT_DeepArpeau",
-			"RUT_LuminousSpout",
-			"RUT_DeepNuitae",
+			"RUT_ZivvitTaper",
+			"RUT_QuorrFern",
+			"RUT_OsskBramble",
+			"RUT_BrellikBulb",
+			"RUT_TwitchingPuffer",
+			"RUT_ThrakkCap",
+			"RUT_PrennaLace",
+			"RUT_VellokReed",
+			"RUT_KuvraSpout",
+			"RUT_NurrikGill",
 			"RUT_Lanternstone_Sowable",
 		};
 

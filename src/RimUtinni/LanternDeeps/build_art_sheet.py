@@ -35,6 +35,7 @@ OUT_DECISIONS = REPO_ROOT / "Transient" / "deeps_art_review_2026-09-18.decisions
 # (job_id or None, group/def name, effect line, status)
 # status: "pass" (facts PASS, image on disk) | "failed" (job ran, no usable image)
 #         | "unserved" (no artpipe job exists at all)
+#         | "pending" (job filed in artpipe/pending, not yet rendered — DEEP_FLORA_RENAME_1 puffer set)
 ROWS = [
     ("lanternstoneterrain_v1", "Terrain/Lanternstone", "Tiling cave floor, 1024x1024 opaque (no alpha needed). MEASURED: real facet texture, mean RGB (20,27,36) — not the flat opaque colour a stale handoff note warned about.", "pass"),
     (None, "WallAtlas/lanternstone_wall_atlas", "Rough natural lanternstone linked-wall atlas, 2048x2048. NO artpipe job exists for this texPath at all — nothing to review, needs a job filed first.", "unserved"),
@@ -58,35 +59,35 @@ ROWS = [
     ("lanternstonechunk_b_v1", "Chunks/LanternstoneChunk", "Rubble chunk, variant b of 4, 256x256.", "pass"),
     ("lanternstonechunk_c_v1", "Chunks/LanternstoneChunk", "Rubble chunk, variant c of 4, 256x256.", "pass"),
     ("lanternstonechunk_d_v1", "Chunks/LanternstoneChunk", "Rubble chunk, variant d of 4, 256x256.", "pass"),
-    ("dulciscropitem_v1", "Item/Crops/Dulcis", "Harvested-heap crop item, 256x256. NOTE: no ThingDef currently references Things/Item/Crops/Dulcis — this render is not wired to anything yet.", "pass"),
+    ("twitchingpuffer_tendrils_v1", "Item/Crops/PufferTendrils", "Harvested crop item: heap of cut puffer tentacles, 256x256 (DEEP_FLORA_RENAME_1; render pending).", "pending"),
     ("mycelium_a_v1", "Plant/Mycelium", "Ground-cover filament mat, variant A of 3, 512x512, mostly texture not silhouette.", "pass"),
     ("mycelium_b_v1", "Plant/Mycelium", "Ground-cover filament mat, variant B of 3, 512x512.", "pass"),
     ("mycelium_c_v1", "Plant/Mycelium", "Ground-cover filament mat, variant C of 3, 512x512.", "pass"),
-    ("gleamtip_a_v1", "Plant/Gleamtip", "Narrow glow-tip mushroom, variant A of 2, 128x128, drawSize 2.0.", "pass"),
-    ("gleamtip_b_v1", "Plant/Gleamtip", "Narrow glow-tip mushroom, variant B of 2, 128x128.", "pass"),
-    ("fungusfern_a_v1", "Plant/Fungusfern", "Fern/fungus bush, variant A of 4, 128x128.", "pass"),
-    ("fungusfern_b_v1", "Plant/Fungusfern", "Fern/fungus bush, variant B of 4, 128x128.", "pass"),
-    ("fungusfern_c_v1", "Plant/Fungusfern", "Fern/fungus bush, variant C of 4, 128x128.", "pass"),
-    ("fungusfern_d_v1", "Plant/Fungusfern", "Fern/fungus bush, variant D of 4, 128x128.", "pass"),
-    ("crystaltipbrambles_a_v1", "Plant/CrystaltipBrambles", "Thorny shoots with crystal tips, variant A of 2, 128x128.", "pass"),
-    ("crystaltipbrambles_b_v1", "Plant/CrystaltipBrambles", "Thorny shoots with crystal tips, variant B of 2, 128x128.", "pass"),
-    ("yumbulbs_a_v1", "Plant/YumBulbs", "Squat bulbs, warm-amber glow tip (not blue — deliberate), variant A of 2, 128x128.", "pass"),
-    ("yumbulbs_b_v1", "Plant/YumBulbs", "Squat bulbs, warm-amber glow tip, variant B of 2, 128x128.", "pass"),
-    ("dulcisgrown_a_v1", "Plant/Dulcis/DulcisGrown", "Grown cream-capped mushroom cluster, 256x256.", "pass"),
-    ("dulcisimmature_a_v1", "Plant/Dulcis/DulcisImmature", "Immature small-button stage, 256x256.", "pass"),
-    ("dulcisharvested_a_v1", "Plant/Dulcis/DulcisHarvested", "Harvested/leafless stage — caps taken, stalks left, 256x256.", "pass"),
-    ("crystalcap_a_v1", "Plant/Crystalcap", "Mushroom tree with crystal-plated cap, variant A of 2, 256x256.", "pass"),
-    ("crystalcap_b_v1", "Plant/Crystalcap", "Mushroom tree with crystal-plated cap, variant B of 2, 256x256.", "pass"),
-    ("greyladygrown_a_v1", "Plant/GreyLady/GreyLadyGrown", "Grown stage with cloth-like lace (the harvest feature), variant A of 3, 256x256.", "pass"),
-    ("greyladygrown_b_v1", "Plant/GreyLady/GreyLadyGrown", "Grown stage with lace, variant B of 3, 256x256.", "pass"),
-    ("greyladygrown_c_v1", "Plant/GreyLady/GreyLadyGrown", "Grown stage with lace, variant C of 3, 256x256.", "pass"),
-    ("greyladyimmature_a_v1", "Plant/GreyLady/GreyLadyImmature", "Immature stage, cap closed, no lace yet, 256x256.", "pass"),
-    ("arpeau_a_v1", "Plant/Arpeau", "Tall aquatic fungus, cyan glow, variant A of 2, 256x256 (tree category).", "pass"),
-    ("arpeau_b_v1", "Plant/Arpeau", "Tall aquatic fungus, cyan glow, variant B of 2, 256x256.", "pass"),
-    ("luminousspout_a_v1", "Plant/LuminousSpout", "Upside-down glowing cone, shallow water, variant a of 2, 256x256.", "pass"),
-    ("luminousspout_b_v1", "Plant/LuminousSpout", "Upside-down glowing cone, variant b of 2, 256x256.", "pass"),
-    ("nuitae_a_v1", "Plant/Nuitae", "Dark cap, glowing underside (bounce light, not a glower), variant A of 2, 256x256.", "pass"),
-    ("nuitae_b_v1", "Plant/Nuitae", "Dark cap, glowing underside, variant B of 2, 256x256.", "pass"),
+    ("gleamtip_a_v1", "Plant/ZivvitTaper", "Narrow glow-tip mushroom, variant A of 2, 128x128, drawSize 2.0.", "pass"),
+    ("gleamtip_b_v1", "Plant/ZivvitTaper", "Narrow glow-tip mushroom, variant B of 2, 128x128.", "pass"),
+    ("fungusfern_a_v1", "Plant/QuorrFern", "Fern/fungus bush, variant A of 4, 128x128.", "pass"),
+    ("fungusfern_b_v1", "Plant/QuorrFern", "Fern/fungus bush, variant B of 4, 128x128.", "pass"),
+    ("fungusfern_c_v1", "Plant/QuorrFern", "Fern/fungus bush, variant C of 4, 128x128.", "pass"),
+    ("fungusfern_d_v1", "Plant/QuorrFern", "Fern/fungus bush, variant D of 4, 128x128.", "pass"),
+    ("crystaltipbrambles_a_v1", "Plant/OsskBramble", "Thorny shoots with crystal tips, variant A of 2, 128x128.", "pass"),
+    ("crystaltipbrambles_b_v1", "Plant/OsskBramble", "Thorny shoots with crystal tips, variant B of 2, 128x128.", "pass"),
+    ("yumbulbs_a_v1", "Plant/BrellikBulb", "Squat bulbs, warm-amber glow tip (not blue — deliberate), variant A of 2, 128x128.", "pass"),
+    ("yumbulbs_b_v1", "Plant/BrellikBulb", "Squat bulbs, warm-amber glow tip, variant B of 2, 128x128.", "pass"),
+    ("twitchingpuffer_grown_v1", "Plant/TwitchingPuffer/PufferGrown", "Grown swollen ball with twitching tentacle fringe, 256x256 (DEEP_FLORA_RENAME_1; render pending).", "pending"),
+    ("twitchingpuffer_immature_v1", "Plant/TwitchingPuffer/PufferImmature", "Immature wrinkled ball, tentacle nubs, 256x256 (render pending).", "pending"),
+    ("twitchingpuffer_harvested_v2", "Plant/TwitchingPuffer/PufferHarvested", "Harvested/leafless stage — ball sagging, tentacles cut to stubs, 256x256 (v1 rendered a wrapped cocoon: content miss; v2 pending).", "pending"),
+    ("crystalcap_a_v1", "Plant/ThrakkCap", "Mushroom tree with crystal-plated cap, variant A of 2, 256x256.", "pass"),
+    ("crystalcap_b_v1", "Plant/ThrakkCap", "Mushroom tree with crystal-plated cap, variant B of 2, 256x256.", "pass"),
+    ("greyladygrown_a_v1", "Plant/PrennaLace/PrennaLaceGrown", "Grown stage with cloth-like lace (the harvest feature), variant A of 3, 256x256.", "pass"),
+    ("greyladygrown_b_v1", "Plant/PrennaLace/PrennaLaceGrown", "Grown stage with lace, variant B of 3, 256x256.", "pass"),
+    ("greyladygrown_c_v1", "Plant/PrennaLace/PrennaLaceGrown", "Grown stage with lace, variant C of 3, 256x256.", "pass"),
+    ("greyladyimmature_a_v1", "Plant/PrennaLace/PrennaLaceImmature", "Immature stage, cap closed, no lace yet, 256x256.", "pass"),
+    ("arpeau_a_v1", "Plant/VellokReed", "Tall aquatic fungus, cyan glow, variant A of 2, 256x256 (tree category).", "pass"),
+    ("arpeau_b_v1", "Plant/VellokReed", "Tall aquatic fungus, cyan glow, variant B of 2, 256x256.", "pass"),
+    ("luminousspout_a_v1", "Plant/KuvraSpout", "Upside-down glowing cone, shallow water, variant a of 2, 256x256.", "pass"),
+    ("luminousspout_b_v1", "Plant/KuvraSpout", "Upside-down glowing cone, variant b of 2, 256x256.", "pass"),
+    ("nuitae_a_v1", "Plant/NurrikGill", "Dark cap, glowing underside (bounce light, not a glower), variant A of 2, 256x256.", "pass"),
+    ("nuitae_b_v1", "Plant/NurrikGill", "Dark cap, glowing underside, variant B of 2, 256x256.", "pass"),
 ]
 
 
@@ -96,7 +97,7 @@ def src_png(job_id):
 
 def build_items(thumbs_relpath):
     items = []
-    counts = {"pass": 0, "failed": 0, "unserved": 0}
+    counts = {"pass": 0, "failed": 0, "unserved": 0, "pending": 0}
     for job_id, group, effect, status in ROWS:
         counts[status] += 1
         rid = job_id or f"MISSING__{group}__{status}"
@@ -111,7 +112,7 @@ def build_items(thumbs_relpath):
             "prefill": prefill,
             "inferred": False,
             "contested": status != "pass",
-            "occurs": status != "unserved",
+            "occurs": status not in ("unserved", "pending"),
         })
     return items, counts
 
@@ -127,7 +128,7 @@ def main():
 
     items, counts = build_items(OUT_THUMBS_DIR.name)
     print(f"# build_art_sheet.py plan — {len(items)} rows "
-          f"({counts['pass']} pass, {counts['failed']} failed, {counts['unserved']} unserved)")
+          f"({counts['pass']} pass, {counts['failed']} failed, {counts['unserved']} unserved, {counts['pending']} pending)")
     for it in items:
         print(f"  [{('OK ' if it['thumb'] else 'N/A')}] {it['group']:40s} {it['id']}")
 

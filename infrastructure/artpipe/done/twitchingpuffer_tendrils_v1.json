@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T01:55:45Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "twitchingpuffer_tendrils_v1",
+  "priority": 40,
+  "prompt": "Harvested crop item: a small heap of cut fungal tentacles, finger-length, grey-blue, a few curled as if still moving. One of the few non-crystal things down here; must read as food at inventory scale. Lantern Deeps biome art (the_lantern_deeps.md \u00a79, owner ruling: \"a blue lantern burning under the mountain, and a dead miner's suit walking toward it\"). Palette: blue-on-black, fungal grey and green, lanternstone blue as the only ambient light. Silhouette language: facets, geodes, lattices \u2014 angular crystal forms, never rounded gems \u2014 EXCEPT this subject: the puffer ball is a rounded organic form, the one deliberate exception; keep the crystal language in the background spore-veins only. Render blue (tint_organics.py shifts it violet afterwards); do not prompt for purple. Painterly vanilla-RimWorld art style.",
+  "reference": null,
+  "rimflow_item_id": "DEEP_FLORA_RENAME_1",
+  "style_notes": "ART_JOBS.md job 12: texPath RUT_LanternDeeps/Things/Item/Crops/PufferTendrils, target PufferTendrils.png (Graphic_Single). New art for DEEP_FLORA_RENAME_1 (RUT_PufferTendrils item); blue-on-black sheet."
+}

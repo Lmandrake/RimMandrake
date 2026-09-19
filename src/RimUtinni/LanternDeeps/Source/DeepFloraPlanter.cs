@@ -58,8 +58,8 @@ namespace RimMandrake.Utinni.LanternDeeps
 		}
 
 		// Cheap pre-filter mirroring the head of CheckSpawnWildPlantAt. Water is
-		// let through because the biome's hydrophytes (Arpeau, LuminousSpout,
-		// Nuitae) are completelyIgnoreFertility + wildTerrainTags plants;
+		// let through because the biome's hydrophytes (VellokReed, KuvraSpout,
+		// NurrikGill) are completelyIgnoreFertility + wildTerrainTags plants;
 		// CanEverPlantAt is what actually decides for them.
 		public static bool CellIsOpen(Map map, IntVec3 c)
 		{

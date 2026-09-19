@@ -26,7 +26,9 @@ Usage:
                                          # substitute for the owner's review)
 
 Every entry below was hand-verified against src/RimUtinni/LanternDeeps/Defs
-and infrastructure/artpipe/done/*.manifest.json on 2026-09-18. If a job is
+and infrastructure/artpipe/done/*.manifest.json on 2026-09-18, and the flora
+dest paths re-derived the same day for DEEP_FLORA_RENAME_1 (job ids are the
+artpipe's history and keep their old names; only the dest paths moved). If a job is
 renamed or a def's texPath changes, this table goes stale silently — re-derive
 it, do not hand-patch one row.
 """
@@ -81,46 +83,48 @@ JOB_MAP = {
     "mycelium_a_v1": ("RUT_LanternDeeps/Things/Plant/Mycelium/A.png", (512, 512)),
     "mycelium_b_v1": ("RUT_LanternDeeps/Things/Plant/Mycelium/B.png", (512, 512)),
     "mycelium_c_v1": ("RUT_LanternDeeps/Things/Plant/Mycelium/C.png", (512, 512)),
-    # 14. Plant/Gleamtip (folder, A/B)
-    "gleamtip_a_v1": ("RUT_LanternDeeps/Things/Plant/Gleamtip/A.png", (128, 128)),
-    "gleamtip_b_v1": ("RUT_LanternDeeps/Things/Plant/Gleamtip/B.png", (128, 128)),
-    # 15. Plant/Fungusfern (folder, A-D)
-    "fungusfern_a_v1": ("RUT_LanternDeeps/Things/Plant/Fungusfern/A.png", (128, 128)),
-    "fungusfern_b_v1": ("RUT_LanternDeeps/Things/Plant/Fungusfern/B.png", (128, 128)),
-    "fungusfern_c_v1": ("RUT_LanternDeeps/Things/Plant/Fungusfern/C.png", (128, 128)),
-    "fungusfern_d_v1": ("RUT_LanternDeeps/Things/Plant/Fungusfern/D.png", (128, 128)),
-    # 16. Plant/CrystaltipBrambles (folder, A/B)
-    "crystaltipbrambles_a_v1": ("RUT_LanternDeeps/Things/Plant/CrystaltipBrambles/A.png", (128, 128)),
-    "crystaltipbrambles_b_v1": ("RUT_LanternDeeps/Things/Plant/CrystaltipBrambles/B.png", (128, 128)),
-    # 17. Plant/YumBulbs (folder, A/B)
-    "yumbulbs_a_v1": ("RUT_LanternDeeps/Things/Plant/YumBulbs/A.png", (128, 128)),
-    "yumbulbs_b_v1": ("RUT_LanternDeeps/Things/Plant/YumBulbs/B.png", (128, 128)),
-    # 18. Plant/Dulcis/DulcisGrown (folder, a)
-    "dulcisgrown_a_v1": ("RUT_LanternDeeps/Things/Plant/Dulcis/DulcisGrown/a.png", (256, 256)),
-    # 18b. Plant/Dulcis/DulcisImmature (folder, a)
-    "dulcisimmature_a_v1": ("RUT_LanternDeeps/Things/Plant/Dulcis/DulcisImmature/a.png", (256, 256)),
-    # 18c. Plant/Dulcis/DulcisHarvested (folder, a)
-    "dulcisharvested_a_v1": ("RUT_LanternDeeps/Things/Plant/Dulcis/DulcisHarvested/a.png", (256, 256)),
-    # 19. Plant/Crystalcap (folder, A/B)
-    "crystalcap_a_v1": ("RUT_LanternDeeps/Things/Plant/Crystalcap/A.png", (256, 256)),
-    "crystalcap_b_v1": ("RUT_LanternDeeps/Things/Plant/Crystalcap/B.png", (256, 256)),
-    # 20. Plant/GreyLady/GreyLadyGrown (folder, A/B/C)
-    "greyladygrown_a_v1": ("RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown/A.png", (256, 256)),
-    "greyladygrown_b_v1": ("RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown/B.png", (256, 256)),
-    "greyladygrown_c_v1": ("RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown/C.png", (256, 256)),
-    # 20b. Plant/GreyLady/GreyLadyImmature (folder, a)
-    "greyladyimmature_a_v1": ("RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyImmature/a.png", (256, 256)),
-    # 21. Plant/Arpeau (folder, A/B) — NOTE: use arpeau_a/b_v1, never the
+    # 14. Plant/ZivvitTaper (folder, A/B)
+    "gleamtip_a_v1": ("RUT_LanternDeeps/Things/Plant/ZivvitTaper/A.png", (128, 128)),
+    "gleamtip_b_v1": ("RUT_LanternDeeps/Things/Plant/ZivvitTaper/B.png", (128, 128)),
+    # 15. Plant/QuorrFern (folder, A-D)
+    "fungusfern_a_v1": ("RUT_LanternDeeps/Things/Plant/QuorrFern/A.png", (128, 128)),
+    "fungusfern_b_v1": ("RUT_LanternDeeps/Things/Plant/QuorrFern/B.png", (128, 128)),
+    "fungusfern_c_v1": ("RUT_LanternDeeps/Things/Plant/QuorrFern/C.png", (128, 128)),
+    "fungusfern_d_v1": ("RUT_LanternDeeps/Things/Plant/QuorrFern/D.png", (128, 128)),
+    # 16. Plant/OsskBramble (folder, A/B)
+    "crystaltipbrambles_a_v1": ("RUT_LanternDeeps/Things/Plant/OsskBramble/A.png", (128, 128)),
+    "crystaltipbrambles_b_v1": ("RUT_LanternDeeps/Things/Plant/OsskBramble/B.png", (128, 128)),
+    # 17. Plant/BrellikBulb (folder, A/B)
+    "yumbulbs_a_v1": ("RUT_LanternDeeps/Things/Plant/BrellikBulb/A.png", (128, 128)),
+    "yumbulbs_b_v1": ("RUT_LanternDeeps/Things/Plant/BrellikBulb/B.png", (128, 128)),
+    # 12. Item/Crops/PufferTendrils (single file) — DEEP_FLORA_RENAME_1, pending job
+    "twitchingpuffer_tendrils_v1": ("RUT_LanternDeeps/Things/Item/Crops/PufferTendrils.png", (256, 256)),
+    # 18. Plant/TwitchingPuffer/PufferGrown (folder, a) — DEEP_FLORA_RENAME_1, pending job
+    "twitchingpuffer_grown_v1": ("RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown/a.png", (256, 256)),
+    # 18b. Plant/TwitchingPuffer/PufferImmature (folder, a)
+    "twitchingpuffer_immature_v1": ("RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferImmature/a.png", (256, 256)),
+    # 18c. Plant/TwitchingPuffer/PufferHarvested (folder, a)
+    "twitchingpuffer_harvested_v2": ("RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested/a.png", (256, 256)),
+    # 19. Plant/ThrakkCap (folder, A/B)
+    "crystalcap_a_v1": ("RUT_LanternDeeps/Things/Plant/ThrakkCap/A.png", (256, 256)),
+    "crystalcap_b_v1": ("RUT_LanternDeeps/Things/Plant/ThrakkCap/B.png", (256, 256)),
+    # 20. Plant/PrennaLace/PrennaLaceGrown (folder, A/B/C)
+    "greyladygrown_a_v1": ("RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/A.png", (256, 256)),
+    "greyladygrown_b_v1": ("RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/B.png", (256, 256)),
+    "greyladygrown_c_v1": ("RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/C.png", (256, 256)),
+    # 20b. Plant/PrennaLace/PrennaLaceImmature (folder, a)
+    "greyladyimmature_a_v1": ("RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceImmature/a.png", (256, 256)),
+    # 21. Plant/VellokReed (folder, A/B) — NOTE: use arpeau_a/b_v1, never the
     #   older single-variant "arpeau_v1" (pre-facts-gate render, superseded).
-    "arpeau_a_v1": ("RUT_LanternDeeps/Things/Plant/Arpeau/A.png", (256, 256)),
-    "arpeau_b_v1": ("RUT_LanternDeeps/Things/Plant/Arpeau/B.png", (256, 256)),
-    # 22. Plant/LuminousSpout (folder, a/b)
-    "luminousspout_a_v1": ("RUT_LanternDeeps/Things/Plant/LuminousSpout/a.png", (256, 256)),
-    "luminousspout_b_v1": ("RUT_LanternDeeps/Things/Plant/LuminousSpout/b.png", (256, 256)),
-    # 23. Plant/Nuitae (folder, A/B) — use nuitae_a/b_v1, never the older
+    "arpeau_a_v1": ("RUT_LanternDeeps/Things/Plant/VellokReed/A.png", (256, 256)),
+    "arpeau_b_v1": ("RUT_LanternDeeps/Things/Plant/VellokReed/B.png", (256, 256)),
+    # 22. Plant/KuvraSpout (folder, a/b)
+    "luminousspout_a_v1": ("RUT_LanternDeeps/Things/Plant/KuvraSpout/a.png", (256, 256)),
+    "luminousspout_b_v1": ("RUT_LanternDeeps/Things/Plant/KuvraSpout/b.png", (256, 256)),
+    # 23. Plant/NurrikGill (folder, A/B) — use nuitae_a/b_v1, never the older
     #   single-variant "nuitae_v1" (pre-facts-gate render, superseded).
-    "nuitae_a_v1": ("RUT_LanternDeeps/Things/Plant/Nuitae/A.png", (256, 256)),
-    "nuitae_b_v1": ("RUT_LanternDeeps/Things/Plant/Nuitae/B.png", (256, 256)),
+    "nuitae_a_v1": ("RUT_LanternDeeps/Things/Plant/NurrikGill/A.png", (256, 256)),
+    "nuitae_b_v1": ("RUT_LanternDeeps/Things/Plant/NurrikGill/B.png", (256, 256)),
 }
 
 # texPaths with NO artpipe job at all as of 2026-09-18 — wire_art.py cannot
@@ -135,7 +139,11 @@ UNSERVED_TEXPATHS = [
 EXCLUDED_JOB_IDS = {
     "arpeau_v1": "superseded by arpeau_a_v1/arpeau_b_v1 (pre-facts-gate render)",
     "nuitae_v1": "superseded by nuitae_a_v1/nuitae_b_v1 (pre-facts-gate render)",
-    "dulciscropitem_v1": "no Def currently references Things/Item/Crops/Dulcis — orphan render, not wired",
+    "dulciscropitem_v1": "RotSporeKit's mushroom; the Deeps stopped growing it (DEEP_FLORA_RENAME_1) — never wired",
+    "dulcisgrown_a_v1": "replaced by twitchingpuffer_grown_v1 (DEEP_FLORA_RENAME_1)",
+    "dulcisimmature_a_v1": "replaced by twitchingpuffer_immature_v1 (DEEP_FLORA_RENAME_1)",
+    "dulcisharvested_a_v1": "replaced by twitchingpuffer_harvested_v2 (DEEP_FLORA_RENAME_1)",
+    "twitchingpuffer_harvested_v1": "facts PASS but content miss: a smooth wrapped cocoon, no ball, no tentacle stubs — superseded by twitchingpuffer_harvested_v2",
 }
 
 

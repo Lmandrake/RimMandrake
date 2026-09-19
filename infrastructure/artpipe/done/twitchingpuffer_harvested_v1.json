@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T01:55:45Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "twitchingpuffer_harvested_v1",
+  "priority": 40,
+  "prompt": "The twitching puffer fungus after harvest: the grey-blue ball intact but sagging, half-deflated, on its stubby foot, its fringe of tentacles cut to short stubs. Nothing broken open \u2014 the ball never bursts in any state. No face, no eyes, no mouth. Lantern Deeps biome art (the_lantern_deeps.md \u00a79, owner ruling: \"a blue lantern burning under the mountain, and a dead miner's suit walking toward it\"). Palette: blue-on-black, fungal grey and green, lanternstone blue as the only ambient light. Silhouette language: facets, geodes, lattices \u2014 angular crystal forms, never rounded gems \u2014 EXCEPT this subject: the puffer ball is a rounded organic form, the one deliberate exception; keep the crystal language in the background spore-veins only. Render blue (tint_organics.py shifts it violet afterwards); do not prompt for purple. Painterly vanilla-RimWorld art style.",
+  "reference": null,
+  "rimflow_item_id": "DEEP_FLORA_RENAME_1",
+  "style_notes": "ART_JOBS.md job 18c: texPath RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested, target a.png, variant a (leaflessGraphicPath). New art for DEEP_FLORA_RENAME_1; blue-on-black sheet."
+}
