@@ -37,7 +37,7 @@ namespace RimMandrake.Utinni.LanternDeeps
 		private const int CheckIntervalTicks = 250;
 		private const float ExposureThreshold = 60f;
 		private const float ExposureDecayPerCheck = 1.5f;
-		private const int MinTicksBetweenAmbushes = 15000; // half an in-game day
+		private const int MinTicksBetweenAmbushes = 15000; // a quarter of an in-game day (GenDate.TicksPerDay = 60000)
 		private static readonly IntRange AmbushGroupSize = new IntRange(1, 2);
 
 		// CAVERNS_PARITY_BUILD_1: the predators that actually live in
@@ -109,7 +109,7 @@ namespace RimMandrake.Utinni.LanternDeeps
 			// returns 1.0 only inside a sun lamp's overlight radius. The Deep
 			// is roofed everywhere, so 0.5 IS "fully lit" here: torches,
 			// campfires and standing lamps all top out there. MEASURED live
-			// 2026-09-19: six campfires around a drafted colonist for 16,500
+			// 2026-09-18: six campfires around a drafted colonist for 16,500
 			// ticks never fired the old (glow^2 * 4) formula, because
 			// 0.5^2 * 4 = 1.0 < the 1.5 decay. Normalise against the cap.
 			float lit = Mathf.Min(1f, brightest * 2f);
