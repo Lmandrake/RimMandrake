@@ -96,7 +96,7 @@
 
   <RecipeDef ParentName="RUT_LivePrepRecipeBase">
     <defName>RUT_Brew_EuphoricBrew</defName>
-    <label>brew euphoric crown brew</label>
+    <label>brew lussa crown brew</label>
     <description>Wring a euphoric crown cap out over heat into a single cup. It must be drunk within two days and cannot be refrigerated.</description>
     <jobString>Brewing euphoric crown brew.</jobString>
     <workAmount>1400</workAmount>

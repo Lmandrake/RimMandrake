@@ -182,7 +182,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_NuitaeMarsh</defName>
-    <label>nuitae</label>
+    <label>nissik gill</label>
     <description>While its cap's exterior is largely dark in color, its underside glows brightly. It grows most often in water or extremely wet environments.</description>
     <statBases>
       <MaxHitPoints>90</MaxHitPoints>
@@ -263,7 +263,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_WrinklecapMarsh</defName>
-    <label>wrinklecap</label>
+    <label>rukka cap</label>
     <description>A subterranean fungus that grows in damp environments. It is often eaten by fungivores.</description>
     <statBases>
       <MaxHitPoints>90</MaxHitPoints>
@@ -384,7 +384,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_GreenArpeau</defName>
-    <label>arpeau</label>
+    <label>churrun mast</label>
     <description>Fast-growing, but doesn't yield much usable material. Aquatic fungus.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/ArpeauGreen</texPath>
@@ -534,7 +534,7 @@
 
   <ThingDef ParentName="TreeBase">
     <defName>RUT_NogtylMarsh</defName>
-    <label>nogtyl</label>
+    <label>brommok timber</label>
     <description>A strong wood-like mushroom. Fast-growing, but doesn't yield much usable material. It can only be grown by people on marshy soil.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Nogtyl</texPath>
@@ -1028,7 +1028,7 @@
 
   <ThingDef ParentName="RUT_CavePlantBase">
     <defName>RUT_MortalMorelPlantGrowable</defName>
-    <label>mortal morel</label>
+    <label>vennik salve</label>
     <description>A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of its delicate structure.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>

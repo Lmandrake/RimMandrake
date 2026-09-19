@@ -28,7 +28,7 @@
     <stackedEffectMultiplier>0.6</stackedEffectMultiplier>
     <stages>
       <li>
-        <label>euphoric crown brew</label>
+        <label>lussa crown brew</label>
         <description>I drank it beside the vat while it was still warm and the whole world was briefly, completely fine.</description>
         <baseMoodEffect>30</baseMoodEffect>
       </li>
