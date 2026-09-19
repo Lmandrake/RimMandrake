@@ -83,9 +83,16 @@ PACKS = [
         ("_BTDKotORGravships", "BTDKotORGravships"),
         ("EBSG", "EBSG"),
     ]),
+    # BiomesCaverns subfolder REMOVED 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1:
+    # Biomes! Caverns retired). Its only absorbed output patched Caverns' own
+    # BMT_CrystalsGenerator GenStepDef directly -- with Caverns gone that
+    # GenStepDef no longer exists, so the patch is permanently dead weight,
+    # not a guardable cross-mod reference. Deleted
+    # (Absorbed_AdditionalMods/kotorweapons/BiomesCaverns/, 1 file); leaving
+    # the tuple here would silently regenerate it on the next run against the
+    # still-live donor mod.
     ("kotorweapons", "2938932438", "guy762.KotORWeapons", [
         ("ShowMeYourHands", "ShowMeYourHands"),
-        ("BiomesCaverns", "BiomesCaverns"),
         ("_TheForceLightsabers", "TheForceLightsabers"),
     ]),
 ]
