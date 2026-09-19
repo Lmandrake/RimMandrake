@@ -206,3 +206,52 @@ these mechanics attach to (`a00f52f10`).
 ## north star
 
 (none filed — this is a mechanics build, not a bar-gated content mod.)
+
+---
+
+## ⚠️ LIVE TEST 2026-09-19 (FOUNDRY, overnight full-621-mod batch) — mechanics did NOT
+observably fire live; NOT closing, new finding for whoever owns the next pass
+
+`CreatureBehaviors` deployed clean (assembly + XML in sync, confirmed via
+`deploy_custom_mods.py`). Confirmed via `jawa/get_defs` that all four comps ARE
+correctly wired on the live defs: `RSW_BovineBeetle` carries
+`RM_CompProperties_Grappler`, `RSW_BloodropMoth` carries
+`RM_CompProperties_FluidSacs`, `RSW_FacetMothLarvae` carries
+`RM_CompProperties_ProximityPsychicStun` + `PlantAlarm` + `ShardArmor` +
+`TameSootheAura` — the defs load clean with the comps attached, nothing threw
+building or spawning them.
+
+**But the actual mechanics did not visibly trigger in a real live test.** Spawned 3x
+each creature (faction `none`) + 6 human test pawns nearby, issued repeated
+`jawa/ordered_job AttackMelee` (grabber/drinker → victim) and `Goto` (victim → next to
+soulchime), stepped the game **~2000 ticks total** via `rimworld/step_game_ticks`
+(explicit paused-mode stepping — the first attempt relied on `waitTicks` on an
+ordered job while the quicktest was still paused and silently advanced 0 game ticks;
+caught and corrected before drawing any conclusion from it):
+
+- **Grabber**: never landed a single hit on its victim in 8 retries over ~2000 ticks
+  (victim's hediff list never changed at all) — `RM_Grappled` never appeared.
+- **Drinker**: DID land hits (3 separate `Bruise` wounds accumulated on Arm/Leg/Torso
+  across retries), but every hit was generic `Bruise` (Blunt), never a
+  `Bite`/`RSW_BloodSuck`-tagged hit — so `RM_Hediff_Drained`/`RM_FluidSacks`/
+  `RM_FluidSacPoison` never appeared on victim or attacker. Consistent with the moth's
+  own multi-tool RNG simply not drawing the modded tool in this sample, not
+  necessarily proof the path is unreachable.
+- **Soulchime**: victim was walked onto/adjacent to the soulchime's own cell and left
+  there ~2000 ticks (well past any plausible cooldown); no `PsychicShock` ever
+  appeared. More concerning than the tool-RNG story covers, since
+  `CompProximityPsychicStun` is an automatic proximity scan, not melee-RNG-gated.
+
+**Disposition**: not proven broken — the sample used non-hostile `faction: none` wild
+pawns driven by `jawa/ordered_job`; between orders their own AI (`GotoWander` was
+observed overriding a queued `AttackMelee` at least once) may interfere with sustained
+combat in a way a drafted/hostile pawn would not. But it is also not a live PASS: zero
+of the three mechanics fired even once in ~2000 ticks of dedicated attempts. **Leaving
+`doing`, not closing.** Owed for whoever picks this up:
+1. Retest with an actually-hostile/manhunter creature, or a drafted colonist attacking
+   a tamed Grabber, to rule out the ordered-job/non-hostile-AI interference explanation.
+2. Read `RM_CompProximityPsychicStun`'s actual default `radius`/`cooldownTicks` (not
+   read this pass) — a smaller-than-assumed radius or longer-than-2000-tick cooldown
+   alone would explain the soulchime non-result with no code defect.
+3. A hostile-pawn retest still showing zero Grabber hits is the strongest signal of a
+   real defect — three-tool selection odds should not be that low across 8 attempts.

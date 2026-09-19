@@ -1,81 +1,59 @@
-# Expected-failure signatures — next load(s), 2026-09-19 overnight BELT pass
+# Decision strings — FOUNDRY overnight batch, full 621-mod load, 2026-09-19
 
-Written BEFORE any restart, per `rimworld-load-round` §3. Seven touched
-assemblies ride the same minimal-list batch; each has its own distinguishing
-signature so a `TypeLoadException`/Harmony patch failure/crash can be
-attributed to the right one rather than guessed after the fact.
+Written BEFORE launch per rimworld-load-round §2/§3. Five assemblies ride this one load
+(JawaRules, FireEcologyHook/Pyrelands, RimMandrakeFlowWorks, RimMandrake.CreatureBehaviors,
+RimMandrakeProperty) plus the JawaBench companion DLL and one XML-only gene (StarWarsRaces).
+Per the owner's standing three-assembly waiver, batching is affordable only because each
+assembly's failure mode is distinguishable — written down here first.
 
-| # | assembly (DLL) | new symbol(s) that must appear/behave | distinguishing failure signature to grep for |
-|---|---|---|---|
-| 1 | JawaBench.BridgeTools (companion) | `jawa/do_bill_now`, `jawa/droid_format_tier`, finalize-sequence fix in `jawa/world_tile_map_generate` | Exception text containing `JawaBenchTerrainTools` / `RimBridgeServer` at startup; OR the two new tool names absent from `--list-tools` |
-| 2 | JawaRules.dll | `Patch_RedressPawn_ForceKind` (Harmony postfix on `PawnGenerator.RedressPawn`) | `Patch_RedressPawn_ForceKind` or `JawaRules` in a Harmony-patch-failed or TypeLoadException line |
-| 3 | RimMandrakeFlowWorks.dll | `CompPitFitting.CanSwim`, `RM_GenStep_LiquidShores`, `RM_WorldComponent_LiquidTags` | `RimMandrakeFlowWorks` / `CompPitFitting` / `RM_GenStep_LiquidShores` / `RM_WorldComponent_LiquidTags` in a crash, ConfigError, or missing-type line |
-| 4 | RimMandrakeNinefold.dll | `GetLoudness`/`GetLoudnessRank`/`GetFront`/`ReckonFrontAtLanding` on `GameComponent_Ninefold`, `Patch_GravshipLanded` postfix | `RimMandrakeNinefold` / `GameComponent_Ninefold` / `Patch_GravshipLanded` in a crash or Harmony-patch-failed line |
-| 5 | RimMandrake.CreatureBehaviors.dll | `RM_Hediff_Grappled`, fluid-sac/poison comp, Soulchime stun/soothe/armor comp | `RimMandrake.CreatureBehaviors` / `RM_Hediff_Grappled` / `RM_CompProperties_FluidSacs` / `RM_CompProperties_ProximityPsychicStun` in a crash or ConfigError line |
-| 6 | RimMandrakeProperty.dll | `FloatMenuOptionProvider_Bribe`, `HirePlacelessUtility`, Pickpocket csproj-registration fix | `RimMandrakeProperty` / `FloatMenuOptionProvider_Bribe` / `FloatMenuOptionProvider_HirePlaceless` / `PickpocketUtility` in a crash, TypeLoadException, or "type not found" line |
-| 7 | FireEcologyHook.dll (Pyrelands) | `WildPlantAllowlist` Harmony postfix on `WildPlantSpawner.CalculatePlantsWhichCanGrowAt` | `FireEcologyHook` / `WildPlantAllowlist` in a Harmony-patch-failed or crash line |
+## Per-assembly distinguishing signature (if it breaks, this is what names it)
+- JawaRules (`Patch_RedressPawn_ForceKind`): `Log.WarningOnce` hash `0x4A57A3`,
+  text names "pawnkind-redress-fix" and before/after kind. Startup arm line:
+  `[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: armed;`
+- FireEcologyHook (`WildPlantAllowlist`): no startup line expected (silent unless it fires);
+  failure mode is an exception naming `WildPlantAllowlist` or `CalculatePlantsWhichCanGrowAt`.
+- FlowWorks (`RM_WorldComponent_LiquidTags`/`RM_GenStep_LiquidShores`): a config error or
+  crossref naming `RM_LiquidBodyDef`, `RM_GenStep_LiquidShores`, or `RM_LiquidBodyRegistry`.
+- CreatureBehaviors (Grabber/Drinker/Soulchime comps): an exception naming
+  `RM_CompGrappler`, `RM_CompFluidSacs`, `RM_CompProximityPsychicStun`, or
+  `RM_CompShardArmor`.
+- RimProperty (Bribe/HirePlaceless/Pickpocket): an exception naming
+  `FloatMenuOptionProvider_Bribe`, `FloatMenuOptionProvider_HirePlaceless`, or
+  `FloatMenuOptionProvider_Pickpocket`.
+- JawaBench companion (`--gm` build, RunMapFinalizeSteps): tool list should show
+  `jawa/do_bill_now`, `jawa/droid_format_tier`, `jawa/fire_incident`, `jawa/send_letter`.
+  Absence of any = a build/deploy problem specific to that tool, not the others.
 
-## Baseline (no signal = pass)
+## Per-item decision strings (written before launch)
 
-A CLEAN load shows **none** of the seven signature strings above anywhere in
-`Player.log`, and `--list-tools` includes `jawa/do_bill_now` and
-`jawa/droid_format_tier`. Any signature string present attributes the failure
-to that row and only that row — do not batch-blame.
+1. KCSG_PAWNKIND_COLONIST_FALLBACK_1 — `jawa/kcsg_place structure RUT_Ashfall_Spire` x5.
+   PASS: all 5 pawn-symbol cells per placement show Helix kind + faction xenotype (never
+   `Colonist`/`Baseliner`). Needs a stocked Ascendant Helix world-pawn pool first (redress
+   only fires with candidates in `Find.WorldPawns`).
+2. PYRELANDS_FLORA_LEAK_1 — generate a Pyrelands map. PASS: `jawa/list_things` (or census)
+   shows 0x `AB_SessileMechanoid`, 0x `AB_GiantStikehr`.
+3. DEEPS_FAUNA_MECHANICS_1/2 — spawn RSW_BovineBeetle (Grabber), RSW_BloodropMoth (Drinker),
+   RSW_FacetMothLarvae (Soulchime) + test pawns. PASS: grapple hediff `RM_Grappled` applies
+   and torso damage ticks; Drinker feed applies `RM_FluidSacks` gauge and poisons on
+   normal-blood victim; Soulchime proximity stun (`PsychicShock`) fires on approach.
+4. WORLDMAP_LIQUID_TAGS_1 — confirm 0 config errors naming `RM_LiquidBodyDef`/
+   `RM_GenStep_LiquidShores`/`RM_LiquidBodyRegistry`. No world-tile writes.
+5. AQUATIC_WATER_BREATHING_GENE_1 — add `RSW_WaterBreathing` gene to a test pawn via bridge.
+   PASS: no exception; pawn card shows the gene's effect description; if riggable, immune to
+   `RM_PitDrowning`.
+6. SETTLEMENT_VERBS_WAVE_1 — two pawns, right-click. PASS: Bribe/HirePlaceless/Pickpocket
+   float-menu options appear under correct gates and execute with no exception.
+7. BRIDGE_MAPGEN_STALE_FINALIZE_1 — `--list-tools` shows `jawa/do_bill_now` and
+   `jawa/droid_format_tier`. Destroy a plant via `world_tile_map_generate` reuse path (no
+   `map_commit`), screenshot. PASS: renders correctly, not stale.
+8. MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1 — re-check candidates post-full-load; no force-enable.
+9. LONGHUNGER_QUICKTEST_1 — per `design/validation_walks/RimUtinni/LongHunger.md`: def
+   read-backs (RUT_LongHunger, RUT_Groundcaller, RUT_LongHungerSurfaces,
+   RUT_LongHungerContract, RUT_DuneHaze), spawn RUT_LongHunger, eruption explosion,
+   tremor pulses, submerge at ~2500 ticks + loot, quest offer/fire.
+10. FULL_LOAD_RESIDUE_TRIAGE_1 — harvest_log.py full sweep; pull DEAD MODS(1)/DISCARDED
+    DEFS(5) threads if time allows.
 
-## RESULT — Phase 1 minimal-list sweep, 2026-09-19 (CLEAN)
-
-Ran via `loadsweep/sweep_load.sh` on the 9-mod loadsweep BASE +
-`overnight_batch.txt` (the 6 custom mod packageIds; the companion DLL loads
-automatically with `brrainz.rimbridgeserver`, not a Mods-folder entry) = 15
-active mods. Bridge up in 18s. `recovery_hits=0`, `patch_failed=0`,
-`typeload=0`. Zero hits on any of the 7 signature strings above except
-`JawaRules`, which appeared 6 times as its own **armed** log lines — including
-`pawnkind-redress-fix: armed; KCSG_PAWNKIND_COLONIST_FALLBACK_1 — a redressed
-world pawn is forced onto the requested kind and xenotype even when ChangeKind
-was blocked`, confirming `Patch_RedressPawn_ForceKind` registered successfully.
-114 config errors / 57 crossref errors present, but 100% attributable to
-pre-existing FlowWorks liquid-authoring notes and other mods' missing
-dependencies on the minimal list — none touch any of the 7 rows above.
-`jawa/do_bill_now` and `jawa/droid_format_tier` both confirmed present in
-`--list-tools`. **All 7 assemblies: CLEAN on the minimal-list signal.**
-
-## RESULT — Phase 2 full-list load: BLOCKED by an unrelated pre-existing crash
-
-4 consecutive full-list launch attempts (with and without `mandrake.rut.longhunger`
-inserted) all hit the SAME `AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch`
-NullReferenceException during `DefGenerator.GenerateImpliedDefs_PreResolve`,
-before Playing was ever reached. **Confirmed unrelated to all 7 touched
-assemblies and to LongHunger** — reproduces identically on the plain
-`FULL.LATEST` list with LongHunger absent. Filed as `FULL_LOAD_ALPHAGENES_NRE_1`
-with a strong lead (bisect `df261b2bc` ROT_FLORA_FAUNA_VERDICTS_1's 48-species
-rename/resize pass, landed the same session, touches exactly the content class
-implicated). This blocks every full-list-only item below from being directly
-observed tonight — see each item's own note for what Phase 1 could still
-confirm indirectly (assembly loads clean) versus what remains genuinely
-unverified.
-
-## Full-list-only decision strings (Phase 2)
-
-Written per named item, read off each item's own file, before the full-list
-load:
-
-- `BIOME_CONFIGERRORS_NRE_1`: grep `Player.log` for `NullReferenceException` +
-  `ConfigErrors` on the 5 named biomes (see item file for the list). Expect
-  ABSENT (prior pass: "looks resolved").
-- `FULL_LOAD_RESIDUE_TRIAGE_1`: grep for the aquatic Juv lifeStageAges config
-  error pattern (42 lines previously). Expect ABSENT after the `Inherit="False"`
-  fix.
-- `MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1`: LongHunger's own first-load criteria
-  — grep for LongHunger's defNames loading clean alongside the donor sandworm
-  mod, 0 config errors attributable to it.
-- `WORLDMAP_LIQUID_TAGS_1` / `AQUATIC_WATER_BREATHING_GENE_1`: grep for
-  `Config error in RM_` on any FlowWorks liquid-tag/gene def. Expect 0.
-- `KCSG_PAWNKIND_COLONIST_FALLBACK_1`: confirm JawaRules assembly loads clean
-  (no signature-2 hit); full KCSG placement repro deferred if time-limited.
-- `PYRELANDS_FLORA_LEAK_1`: spawn/generate a Pyrelands map, grep spawned flora
-  for `AB_SessileMechanoid` / `AB_GiantStikehr`. Expect 0 occurrences.
-- `DEEPS_FAUNA_MECHANICS_1` / `SETTLEMENT_VERBS_WAVE_1`: confirm assemblies
-  load clean (signatures 5 and 6 absent); quick spawn-and-poke if time allows.
-- `BRIDGE_MAPGEN_STALE_FINALIZE_1`: `do_bill_now`/`droid_format_tier` present
-  in `--list-tools`; a map-finalize call renders correctly (visual/read-back
-  check, not just `success: true`).
+Baseline standing counts (pre-existing, not this pass's concern unless they move):
+patchfail should now read 0 (was 10, fixed offline). configerror should now read ~17
+(was 93, fixed offline, minus RM_FE_Ground_SoilRich which is expected/accepted).

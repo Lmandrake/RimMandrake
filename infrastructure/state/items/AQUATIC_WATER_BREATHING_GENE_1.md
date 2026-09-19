@@ -73,3 +73,21 @@ water-breather) — offline build only this pass, no bridge touched.
 Left `doing`. Not closeable: the roster card is unresolved and there is no
 live-game proof this actually behaves as designed, only an offline build that
 compiles, validates, and passes the existing self-test suite.
+
+## 2026-09-19 FOUNDRY (overnight full-621-mod batch) — gene applies cleanly, live-confirmed
+
+`StarWarsRaces` had 2 drifted files (`Defs/GeneDefs/RSW_Aquatic.xml`,
+`Patches/RSW_Aquatic_SoakingWet.xml`) — deployed this pass
+(`deploy_custom_mods.py --mod StarWarsRaces --apply`). Full 621-mod cold load
+confirmed clean via `Bridge token:`. Live test: spawned a colonist, added
+`RSW_WaterBreathing` as a xenogene via `jawa/pawn_genes action=add` — **no
+exception**, `xenogeneCount` incremented 0→1, gene listed back correctly, and a
+follow-up `jawa/pawn_get` on the same pawn read back fine (no crash, appearance/
+skills/traits all intact). **Confirms the minimum bar from this item's own recipe**
+("at minimum confirm the gene itself applies cleanly with no exceptions").
+
+**Not tested this pass** (time-boxed batch, prioritized elsewhere): rigging an actual
+`RM_PitDrowning` immunity test (needs a FlowWorks pit + a flooded cell, more setup
+than this pass's slot allowed) and the wading-path/mood behavior. Both remain owed.
+Card 1 (roster wiring) and Card 2 (deep water pathing) are unchanged — still explicitly
+his to rule on, not touched this pass.

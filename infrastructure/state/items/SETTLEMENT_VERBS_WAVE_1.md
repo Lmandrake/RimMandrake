@@ -1,3 +1,35 @@
+## 2026-09-19 (FOUNDRY, overnight full-621-mod batch) — PARTIAL live confirmation: HirePlaceless + Pickpocket
+
+`RimProperty` deployed clean (in sync). Full 621-mod cold load confirmed via `Bridge
+token:`. First live float-menu test of ANY verb in this item, ever.
+
+Spawned an actor colonist and a "placeless" target (faction `none`, no items). Selected
+the actor (`rimworld/select_pawn`), right-clicked the target
+(`rimworld/open_context_menu`), read the resulting menu
+(`rimworld/get_context_menu_options`) — **8 options built with no exception**:
+- `"Cannot hire Poiork: not enough silver (need 20, have 0)"` — **HirePlaceless option
+  present**, correctly disabled with the correct reason (actor genuinely has 0 silver,
+  gate reads `hirePlacelessFeeSilver` default 20 correctly).
+- `"Can's steal from Poiork (No items)"` — **Pickpocket option present**, correctly
+  disabled (target genuinely carries no items). Note: pre-existing label typo in the
+  mod's own text ("Can's" should read "Can't") — cosmetic, not this item's scope, flagged
+  for whoever next touches that string.
+- **Bribe did not appear** — correctly absent: this test's target had `faction: null`
+  (placeless), and Bribe's own gate requires `targetPawn.Faction != null`. This is the
+  gate working as designed, not a miss; Bribe's actual presence/behavior against a
+  real non-hostile-faction pawn (and Pickpocket/HirePlaceless's ACTUAL execution, which
+  needs a funded actor and an item-carrying target respectively) were not exercised —
+  time-boxed out of this pass.
+
+**Disposition**: PARTIAL confirmation. "Options appear under correct gate conditions"
+is confirmed for HirePlaceless and Pickpocket (present, correctly gated, no throw
+building the menu); Bribe's presence-when-eligible and all three verbs' actual
+click-through EXECUTION remain untested. Leaving `doing` — not closing on a partial.
+Owed: fund an actor with 20+ silver and give a target-with-a-faction + an item-carrying
+target, then actually execute all three options via
+`rimworld/execute_context_menu_option` and confirm no throw + the expected ledger
+write (`ClaimBasis`/`FactionRecord.DampenSuspicion`).
+
 ## 2026-09-18 (FOUNDRY, belt mode, subagent) — social fabric's second sub-mechanic: bribes/bought rounds
 
 Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`
