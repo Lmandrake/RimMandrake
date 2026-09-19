@@ -607,13 +607,13 @@
     },
     {
       "commonality": 0.5,
-      "def": "BMT_Plant_TwistingThorngrass",
-      "law": "§4: alien scrub at the seep line — twisted, unnameable"
+      "def": "RUT_TwistingThorngrass",
+      "law": "§4: alien scrub at the seep line — twisted, unnameable (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_TwistingThorngrass, biomesteam.biomespollutedlands retired)"
     },
     {
       "commonality": 0.4,
-      "def": "BMT_Plant_TwistingThornweed",
-      "law": "§4: as thorngrass"
+      "def": "RUT_TwistingThornweed",
+      "law": "§4: as thorngrass (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_TwistingThornweed)"
     },
     {
       "commonality": 0.15,
@@ -622,8 +622,8 @@
     },
     {
       "commonality": 0.2,
-      "def": "BMT_Plant_TreeTwistingThornwood",
-      "law": "§4: occasional twisted trees — interim body for the authored trees (TREE_GRAPHICS_OWNERSHIP_1); owner-favourite donor (prep §5.4)",
+      "def": "RUT_TwistingThornwood",
+      "law": "§4: occasional twisted trees — interim body for the authored trees (TREE_GRAPHICS_OWNERSHIP_1); owner-favourite donor (prep §5.4) (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_TreeTwistingThornwood)",
       "note": "shared with poison forest's flora assignment — plants dual-home freely"
     }
   ],

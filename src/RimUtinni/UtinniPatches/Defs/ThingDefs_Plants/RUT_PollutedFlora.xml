@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    POLLUTED_LANDS_FLORA_PORT_1 — the 5 Polluted-Lands-lineage plants worth keeping when
+    `biomesteam.biomespollutedlands` leaves the load: the two owner-named favourite trees
+    (biome_flora_rosters.md: "his three named favourites all have a home… in PoisonForest,
+    where the rest of the Polluted Lands trees live") plus their two Thorn-family
+    companions (RUT_CrackedLands) and the one-plant RUT_Scarlands roster (cutting it
+    outright would leave that biome plantless, which nobody ruled).
+
+    Ported field-for-field from the donor's 1.6 source
+    (vendor/mod_sources/BiomesPollutedLands/BiomesPollutedLands-main/1.6/Defs/ThingDefs_Plants),
+    same precedent as RUT_RotSporeKit_Flora.xml. Art copied verbatim from the live Workshop
+    install (steamapps/workshop/content/294100/3390196656) at a new RUT-owned texPath.
+
+    Dropped on ingest, same rationale as the RotSporeKit raid:
+    - `BMT_PollutedLands_*` abstract parents and their `<pollution>PollutedOnly</pollution>`
+      field — that gates wild spawning on Biotech's runtime "Polluted" tile state (an
+      event-driven mechanic), which is NOT what Ash'karr's Wasteland/PoisonForest/
+      CrackedLands/Scarlands themes mean by "poisoned ground". Keeping it would make these
+      plants effectively never spawn wild. Plain vanilla PlantBase/TreeBase/BushBase used
+      instead (RUT_Dewshrooms precedent).
+    - `BiomesCore.DefModExtensions.*` (terrain-tag water/marsh gating, harvest-memory
+      thoughts) — BiomesCore-only, silent no-ops without that mod; none of the 5 ported
+      here were water plants so nothing is lost.
+    - `harvestedThingDef>BMT_Toxwood<` (the donor's own wood-alike resource, retired with
+      the mod) — repointed to vanilla `WoodLog`, same substance every other wood-harvest
+      tree in our rosters already yields.
+  -->
+
+  <!-- ============== Twisting Thornwood (tree) — RUT_CrackedLands, RUT_PoisonForest ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_TwistingThornwood</defName>
+    <label>twisting thornwood</label>
+    <description>A large species of tree found in polluted arid environments. It is one of three closely related species of plant, alongside the thornweed and thorngrass.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>210</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/TwistingThornwood</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>15</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>25</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Martyr tree — RUT_PoisonForest ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_TreeMartyr</defName>
+    <label>martyr tree</label>
+    <description>A large yucca-related plant adapted to poisoned soils. It yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/MartyrTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Twisting thorngrass — RUT_CrackedLands ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_TwistingThorngrass</defName>
+    <label>twisting thorngrass</label>
+    <description>Similar to grass yet covered in small thorn-like structures. It is related in part to the twisting thornwood and thornweed.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.50</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/TwistingThorngrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>2.5</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Twisting thornweed — RUT_CrackedLands ============== -->
+  <ThingDef ParentName="BushBase">
+    <defName>RUT_TwistingThornweed</defName>
+    <label>twisting thornweed</label>
+    <description>A bush-sized plant related to the thornwood tree, hardy enough to survive on heavily polluted ground.</description>
+    <graphicData>
+      <texPath>Things/Plant/TwistingThornweed</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>115</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <growDays>5</growDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Scorched stars — RUT_Wasteland, RUT_Scarlands ============== -->
+  <ThingDef ParentName="BushBase">
+    <defName>RUT_ScorchedStars</defName>
+    <label>scorched stars</label>
+    <description>Rounder cacti covered in sharp spines. They are often said to look like a burnt star.</description>
+    <graphicData>
+      <texPath>Things/Plant/ScorchedStars</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>115</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <growDays>5</growDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+</Defs>

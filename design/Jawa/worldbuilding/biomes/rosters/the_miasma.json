@@ -480,26 +480,6 @@
       "commonality": 6,
       "def": "AB_MangrovePalm",
       "law": "§3 mangal family, donor weight kept"
-    },
-    {
-      "commonality": 1.5,
-      "def": "BMT_Plant_TreeTanglerootMangrove",
-      "law": "§3 the stilt-root maze — root-mat reinforcement from the Polluted Lands donor"
-    },
-    {
-      "commonality": 0.6,
-      "def": "BMT_RainbowTongue",
-      "law": "§6 ban 2 the rainbow flora never lies — donor 'rainbow' bloom as the first of the suite (verify benign, see confidence)"
-    },
-    {
-      "commonality": 0.8,
-      "def": "BMT_Plant_SewerReed",
-      "law": "§1 brackish channel fringe — muck flora"
-    },
-    {
-      "commonality": 0.5,
-      "def": "BMT_Plant_Snaketails",
-      "law": "channel-edge cover; alien label"
     }
   ],
   "flora_purged": [
@@ -534,6 +514,22 @@
     {
       "def": "Plant_Rafflesia",
       "reason": "Earth-nameable (rafflesia)"
+    },
+    {
+      "def": "BMT_Plant_TreeTanglerootMangrove",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18; the mangal family (AB_MangroveTree/ParasiticMangrove/MangrovePalm, weight 39 of this roster's 40.4) already carries the \"trees run the plumbing\" identity, so these donor understory rows are cut rather than ported"
+    },
+    {
+      "def": "BMT_RainbowTongue",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18; the mangal family (AB_MangroveTree/ParasiticMangrove/MangrovePalm, weight 39 of this roster's 40.4) already carries the \"trees run the plumbing\" identity, so these donor understory rows are cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_SewerReed",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18; the mangal family (AB_MangroveTree/ParasiticMangrove/MangrovePalm, weight 39 of this roster's 40.4) already carries the \"trees run the plumbing\" identity, so these donor understory rows are cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_Snaketails",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18; the mangal family (AB_MangroveTree/ParasiticMangrove/MangrovePalm, weight 39 of this roster's 40.4) already carries the \"trees run the plumbing\" identity, so these donor understory rows are cut rather than ported"
     }
   ],
   "law_sources": [
