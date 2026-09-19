@@ -660,10 +660,10 @@
     "sha": "43f96b1b"
   },
   "src/DEPLOY_HOLD.txt": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "713cdf79867cbd608c70d57bb2054c3b93aff15e9fd1e838f4f0f437aa302e93",
-    "sha": "d0639c8e6"
+    "hash": "b2902a0eeda8bd323d6aee068b31bb6dd320826431e324d7e9ba68c763b22a6e",
+    "sha": "504ead829"
   },
   "src/RimMandrake/Aftermath/About/About.xml": {
     "cleanCount": 2,
@@ -840,10 +840,10 @@
     "sha": "3bcf80ccf"
   },
   "src/RimMandrake/CreatureBehaviors/Source/CompProperties_KinMending.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-18",
-    "hash": "569bb114de25f32b24e8abbc06f118ed6100ca6c6faf164cb8dc0bd18fb2a0b1",
-    "sha": "113ad7131"
+    "hash": "57bb2402c799216eb9173c9e4a2236f621aaa13d4da304d89eb40af982ab5134",
+    "sha": "504ead829"
   },
   "src/RimMandrake/CreatureBehaviors/Source/CompProperties_WoundLink.cs": {
     "cleanCount": 1,
@@ -936,10 +936,10 @@
     "sha": "31e9db1cd"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_KinMending.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-18",
-    "hash": "96373891a3c61b165a7b84420b0037db98746dedda638d158d1cda236cc017bf",
-    "sha": "e1c3162cb"
+    "hash": "9342b3330f3f541d5116b726895cbc61a3fcd8bd71a56ab2e8ee1c0f0a6f1cc3",
+    "sha": "504ead829"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_SunScald.cs": {
     "cleanCount": 2,
@@ -2286,10 +2286,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamHook.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "9adfbb99b06ede391536752701e156f69bcde54c03284fbe8359a700b6b26f79",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "b4894dc28dba7174c87e9d00f5301e17cfa92a6c1782731dd381efd957794b9e",
+    "sha": "504ead829"
   },
   "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamSettings.cs": {
     "cleanCount": 1,
@@ -5136,10 +5136,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/art_checks.py": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "df533215a862d50a97bb30185217f3d04629f1bb0d791352b5e5cccc3db234c3",
-    "sha": "af9a1f94b"
+    "hash": "e2ed699b0e185eeb7054eb1ee540539dffc21d67816b432789e27c66a485e82e",
+    "sha": "504ead829"
   },
   "src/RimMandrake/Utils/art_legibility.py": {
     "cleanCount": 1,
@@ -7552,10 +7552,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimStarWars/Armoury/About/About.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "14c9ded39371bdb69f20bb057719d963ebc2430cbefe2bebda2c9eeff6eb445d",
-    "sha": "e97fc76e4"
+    "hash": "80a9be05b0e5dca8407f567b93c1f89c68c13247fdc07a29d4f8b008f4af7872",
+    "sha": "504ead829"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/AdaptiveStorageFramework/Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml": {
     "cleanCount": 4,
@@ -7636,10 +7636,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantDock3.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "60792bef5c2353b401d2dde20bac251dee31262611b88d93253b6ca27f09dcf7",
-    "sha": "85401ce7"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "69753bc4b37da0a3066c31b28b023fe3cd9bd72af22eac2ee7cd2b48b5f76f72",
+    "sha": "504ead829"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantImplants.xml": {
     "cleanCount": 2,
@@ -17530,10 +17530,10 @@
     "sha": "d9ff62d8"
   },
   "src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "2b131a435ecd8be628788e8f4911eac1ff1f7fc88c5bfa2f515a4c5615245fc8",
-    "sha": "59173f610"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "361d0ba40f40ad2b96893b97d75d3619f174e484a44ac10e4b012f71191e8aa5",
+    "sha": "504ead829"
   },
   "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml": {
     "cleanCount": 1,
