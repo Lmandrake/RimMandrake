@@ -144,7 +144,7 @@ a single pawn — `jawa/spawn_pawn` NRE'd on Muffalo, Hare, Colonist, Tribespers
 Villager alike, and vanilla's own debug spawn named the cause:
 `The given key 'RimWorld.HairDef' was not present in the dictionary`. The defs
 themselves all still resolved, so a Type-keyed index is what the reload broke.
-Evidence: `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+Evidence: `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
 
 ⇒ **L1 is now: deploy → minimal-list restart (22 s) → `jawa/get_defs` → offline diff
 against the expectations manifest.** The ladder loses nothing; a 22-second restart was
