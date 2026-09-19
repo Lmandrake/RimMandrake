@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:27:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T05:40:27Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -125,15 +125,6 @@ target:   v1
 kind:     task
 summary:  SHIELDMODSLEVERAGE1 — particulate screen finished, predictive-failure and landing-advisory built, offline-ver…
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
-
-## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
 state:    doing
@@ -1699,16 +1690,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
-
-## ORRAY_FACING_HEIGHT_REGRESSION_1 Orray south is 2.49x taller than east after the 2026-09-17 approved render wave (was known-good, now the corpus's 2nd-worst facing-height break)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  The approved Pyrelands render wave (9e7e773a0, 2026-09-17, "Wire approved
-prose:    infrastructure/state/items/ORRAY_FACING_HEIGHT_REGRESSION_1.md
 
 ## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
 state:    proposed
