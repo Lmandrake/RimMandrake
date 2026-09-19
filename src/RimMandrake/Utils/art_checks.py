@@ -725,8 +725,6 @@ def selftest() -> int:
             fails.append("boundaries_respected did NOT raise a HIGH finding on "
                          "%s — %s" % (name, why))
 
-    n_creatures = len({f.subject for f in findings
-                       if f.check == "facing_height_consistency"} | HEIGHT_MUST_PASS)
     for line in fails:
         print("FAIL  " + line)
     if fails:

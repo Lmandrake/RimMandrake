@@ -6316,10 +6316,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/selftest_art_checks.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "2f4330c6cab7fa1ed5b813126168f71215ced5a44911ef52807e4e5abd04de10",
-    "sha": "66fbc9bbc"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "bf0ad68260508f3163455386a52ebce5fae34019e97f3e562c1ca4f12909b2f4",
+    "sha": "115846630"
   },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
@@ -6436,10 +6436,10 @@
     "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/selftest_sound_paths.py": {
-    "cleanCount": 2,
-    "date": "2026-09-12",
-    "hash": "b7bd1a89cae5933441a597bdd79c4ae8bef02db4355cb7737c10ba6c5c582520",
-    "sha": "6b81019d0"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "b0711179ef5215f3e87087a236b68e5890e048fba3c13cf6490d6e421b6eea4f",
+    "sha": "115846630"
   },
   "src/RimMandrake/Utils/selftest_stun_scaling.py": {
     "cleanCount": 1,
@@ -7312,10 +7312,10 @@
     "sha": "353b3c33"
   },
   "src/RimMandrake/bridgetools/selftest_tool_metadata.py": {
-    "cleanCount": 1,
-    "date": "2026-09-08",
-    "hash": "75b7606fef141366970fed1363533ca500626b505c9fcbc1f2d25bd566254216",
-    "sha": "2174503f"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "be072ecd16b4e017202ec4c9bf9dcd7f3514681fd380a6ed6d812a2faf5d7a89",
+    "sha": "115846630"
   },
   "src/RimMandrake/bridgetools/shoot_planet.py": {
     "cleanCount": 1,
@@ -9028,16 +9028,16 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/Armoury/Patches/Turrets_DamageDoctrine.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "515c17beeb97fac9fec6a48695406b99a87e39d35924c70d64005cb7381e3fdc",
-    "sha": "d27125d2"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "b23ad3a0ff8a3d95f585ff426b6bedd0d5d2260b4049c40bf83f5c460d4f2f23",
+    "sha": "115846630"
   },
   "src/RimStarWars/Armoury/Patches/Turrets_Renames.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "2bcf8a54d8a5b522d4a80620d77593567f8b0202d1ef9772cdbdbe65459b05ce",
-    "sha": "d27125d2"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "b0ff597325f5becbeecc755cfbf2e269de91cd9eec34cb46eaa0b6f70aaf8916",
+    "sha": "115846630"
   },
   "src/RimStarWars/Armoury/Patches/Warcasket_BuildPathCut.xml": {
     "cleanCount": 1,
