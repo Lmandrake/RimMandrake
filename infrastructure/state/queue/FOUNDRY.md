@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T06:17:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T06:27:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -71,15 +71,6 @@ target:   v1
 kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
-
-## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Per the doc's rosters and §7.2 shared-art batching:
-prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
 
 ## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
 state:    doing  (BLOCKED)
@@ -864,6 +855,15 @@ kind:     task
 summary:  (no items/DEEP_TRIBES_FIRE_RITE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEP_TRIBES_FIRE_RITE_1.md
 
+## PYRELANDS_TERRAIN_BURNDEF_1 RM_FE terrain burnedDef flammable config errors on load
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
+
 ## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
 state:    doing
 row:      unassigned
@@ -926,6 +926,15 @@ target:   v1
 kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
+
+## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1443,26 +1452,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
 
-## LIQUID_SINK_DRAINAGE_1 Map-edge sinks that drain a canal on purpose - the inverse of a limitless source, so liquid leaving is transferred off-map rather than destroyed and overflow stays the only exception to conservation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIQUID_SINK_DRAINAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_SINK_DRAINAGE_1.md
-
-## PYRELANDS_TERRAIN_BURNDEF_1 RM_FE terrain burnedDef flammable config errors on load
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
-
 ## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
 state:    proposed
 row:      unassigned
@@ -1662,16 +1651,6 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
-
-## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
 
 ## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
 state:    proposed
