@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:35:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:41:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -990,6 +990,15 @@ kind:     task
 summary:  The Systech Static Blaster lost its distinctive electric projectile
 prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
 
+## DRILL_IMPASSABLE_FILLPERCENT_1 RM_LiquidDrill logs a config error: impassable but shootable over
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
+prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1636,16 +1645,6 @@ thin:     no ## spec, no ## verify
 summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
 
-## DRILL_IMPASSABLE_FILLPERCENT_1 RM_LiquidDrill logs a config error: impassable but shootable over
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
-prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
-
 ## DEEPS_FAUNA_VERDICTS_1 Lantern Deeps fauna verdicts: cut 7 kinds from RUT_LanternDeeps, rename 4 (Drinker, Grabber, Soulchime, Glowbulb), file 8 restyle art jobs with the owner's briefs
 state:    proposed
 row:      unassigned
@@ -1665,3 +1664,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPS_FAUNA_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
+
+## LONGHUNGER_QUICKTEST_1 Live quicktest RUT_LongHunger (mandrake.rut.longhunger) enabled 2026-09-19 alongside donor sandworm
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LONGHUNGER_QUICKTEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
