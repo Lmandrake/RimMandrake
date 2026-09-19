@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T22:35:27Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_vandal_regen_v1_2",
+  "priority": 60,
+  "prompt": "A single bold spray-paint graffiti mark: a thick dripping paint blob-splash, like a can was shaken and burst against the wall -- an irregular splattered mass with long drips running down. Punk/urban vandalism register, ONE large readable motif filling most of the frame, no lettering, no words, no readable text of any kind, no other marks anywhere else in the frame. Deep orange spray paint over transparent background, rough spray edges.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VANDAL_ART_REGEN_1",
+  "style_notes": "GRAFFITI_VANDAL_ART_REGEN_1: variant 3 of 6, see variant 0's style_notes for the full brief."
+}
