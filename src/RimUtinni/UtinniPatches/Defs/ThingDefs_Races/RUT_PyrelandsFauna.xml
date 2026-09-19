@@ -49,7 +49,13 @@
       <ComfyTemperatureMax>65</ComfyTemperatureMax>
       <ArmorRating_Heat>0.3</ArmorRating_Heat>
       <Wildness>0.9</Wildness>
-    </statBases>
+    
+      <!-- Flight, per the owner's standing rule 2026-09-19 — this creature's own
+           description calls it "the Pyrelands' first igniter with wings" and has it
+           carrying a burning twig between fires, which a grounded pawn cannot do.
+           Bird numbers (30s aloft) rather than the insect's 10. -->
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown></statBases>
     <tools>
       <!-- body Bird (Defs/Core/Bodies/Bodies_Animal_Bird.xml) has no
            FrontLeftLeg/FrontRightLeg groups; those exist only on
@@ -126,7 +132,11 @@
           <minAge>0.4</minAge>
         </li>
       </lifeStageAges>
-    </race>
+    
+      <flightStartChanceOnJobStart>0.15</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying></race>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>

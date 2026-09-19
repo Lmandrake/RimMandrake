@@ -220,6 +220,42 @@ as such. Biome-kit mechanics are feature-gated so they can be enabled in other
 biomes without the biome. Spec + retrofit of existing mods:
 `MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
 
+## If it flies in the fiction, it flies in the game — owner, 2026-09-19
+
+*"if we're going to wait for it as though it's not available, we might as well make
+it a Flyer while we're here. Standing rule: we make flyers flyers when we can, ok?"*
+
+Any creature whose description, canon entry or art shows it airborne gets real
+flight, not a walking animal with wings drawn on. Applies to new defs and to any
+def already open for another reason — the rule is "when we can", so the trigger is
+touching it, not a sweep.
+
+🔑 **1.6 flight is CORE, not a donor framework and not Odyssey.** The stat
+`MaxFlightTime` is declared in `Defs/Core/Stats/Stats_Pawns_General.xml` and Core's
+own chicken uses it. MEASURED from the decompiled engine 2026-09-19.
+
+⛔ **The switch is a STAT, not a bool.** `Pawn_FlightTracker.CanEverFly` returns
+`GetStatValue(StatDefOf.MaxFlightTime) > 0f` — there is no `canFly` field, and
+setting `race` flags alone gives you a grounded animal that reads as configured.
+
+The vanilla shape, copied from `Locust` (`Races_Animal_Insect.xml`):
+
+```xml
+<statBases>  <MaxFlightTime>10</MaxFlightTime>  <FlightCooldown>5</FlightCooldown>  </statBases>
+<race>
+  <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+  <flightSpeedFactor>2.5</flightSpeedFactor>
+  <canFlyIntoMap>true</canFlyIntoMap>
+  <canLeaveMapFlying>true</canLeaveMapFlying>   <!-- birds; omit for something that lairs -->
+</race>
+```
+
+⚠️ **The flight ANIMATION is separate and optional.** `PawnKindDef`'s
+`flyingAnimationFramePathPrefix` + `flyingAnimationFrameCount` need a real frame
+sequence (Locust ships 5). With none, `GetBestFlyAnimation` returns null and the
+creature flies with no wing-beat — correct behaviour, plainer look. Never block
+flight waiting on frames.
+
 ## Queue items are NAMED, not numbered — owner, 2026-08-20
 
 `THREE_UPPER_SNAKE_WORDS_#`, guessable cold: `SANDSTORM_WEATHER_TUNING_1`. No new
