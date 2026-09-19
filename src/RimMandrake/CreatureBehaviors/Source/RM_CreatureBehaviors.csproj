@@ -79,6 +79,9 @@
     <Compile Include="RUT_Plant_FalseFruit.cs" />
     <Compile Include="RM_HediffDef_Grapple.cs" />
     <Compile Include="RM_Hediff_Grappled.cs" />
+    <Compile Include="RM_CompProperties_Grappler.cs" />
+    <Compile Include="RM_CompGrappler.cs" />
+    <Compile Include="RM_HydrocarbonBloodExtension.cs" />
     <Compile Include="RM_CompProperties_FluidSacs.cs" />
     <Compile Include="RM_CompFluidSacs.cs" />
     <Compile Include="RM_Hediff_Drained.cs" />

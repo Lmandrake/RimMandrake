@@ -2950,6 +2950,8 @@ copied verbatim from the donor mods' own Textures trees.
           <li>Normal</li>
         </poisonousFleshTypes>
         <poisonHediff>RM_FluidSacPoison</poisonHediff>
+        <sacksHediff>RM_FluidSacks</sacksHediff>
+        <drainedFluidsThing>RM_DrainedFluids</drainedFluidsThing>
       </li>
     </comps>
     <tools>
@@ -9745,6 +9747,12 @@ copied verbatim from the donor mods' own Textures trees.
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
         <eggCountRange>1~2</eggCountRange>
       </li>
+      <!-- DEEPS_FAUNA_MECHANICS_1 — the crushing half of the pincer hold:
+           Blunt damage to the held pawn's torso every few seconds while
+           this grabber stands over it, and each melee hit on the grabber
+           from a third pawn rolls to break the hold. Defaults live on the
+           comp class (RM_CompProperties_Grappler). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_Grappler" />
     </comps>
     <tradeTags>
       <li>AnimalUncommon</li>

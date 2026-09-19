@@ -9,8 +9,9 @@
   uncurable ("rapidly dies", not "gets sick and might recover" —
   tendable=false, no HediffCompProperties_Immunizable): a big initial
   severity (set by RM_CompFluidSacs, not here) plus a strongly positive
-  HediffCompProperties_SeverityPerDay pushes it to lethalSeverity in well
-  under an in-game day.
+  HediffCompProperties_SeverityPerDay pushes it to lethalSeverity in
+  under an in-game day (1.25/day from ~0: ~19 hours; a big bite's initial
+  severity shortens that).
 -->
 <Defs>
 
@@ -27,7 +28,7 @@
     <lethalSeverity>1</lethalSeverity>
     <comps>
       <li Class="HediffCompProperties_SeverityPerDay">
-        <severityPerDay>6</severityPerDay>
+        <severityPerDay>1.25</severityPerDay>
       </li>
     </comps>
     <stages>

@@ -22,7 +22,25 @@ namespace RimMandrake.CreatureBehaviors
         public override void CompTickRare()
         {
             base.CompTickRare();
+            TryEmit(Props.requireLineOfSight);
+        }
 
+        /// <summary>Seam: ThingComp.PostPostApplyDamage — fires from
+        /// ThingWithComps.PostApplyDamage (ThingWithComps.cs l.394) right
+        /// after this carrier is hurt. "Alarms it": being struck emits the
+        /// stun at once, walls or no walls, subject to the same cooldown.</summary>
+        public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
+        {
+            base.PostPostApplyDamage(dinfo, totalDamageDealt);
+
+            if (Props.triggerOnDamage && totalDamageDealt > 0f)
+            {
+                TryEmit(requireLos: false);
+            }
+        }
+
+        private void TryEmit(bool requireLos)
+        {
             if (!RM_CreatureBehaviorsSettings.soulchimePsychicStunEnabled)
             {
                 return;
@@ -64,6 +82,17 @@ namespace RimMandrake.CreatureBehaviors
                 if (candidate.health.hediffSet.HasHediff(Props.stunHediff))
                 {
                     continue; // already reeling from this — don't pile on every rare-tick
+                }
+
+                if (Props.psychicallyDeafImmune && candidate.GetStatValue(StatDefOf.PsychicSensitivity) <= 0f)
+                {
+                    continue; // psychically deaf — a psychic stun has nothing to grip
+                }
+
+                // GenSight.LineOfSight(IntVec3, IntVec3, Map, bool skipFirstCell, ...) — GenSight.cs l.20.
+                if (requireLos && !GenSight.LineOfSight(self.Position, candidate.Position, self.Map, skipFirstCell: true))
+                {
+                    continue; // behind a wall: not "too close" as far as the chime can tell
                 }
 
                 Hediff hediff = HediffMaker.MakeHediff(Props.stunHediff, candidate);
