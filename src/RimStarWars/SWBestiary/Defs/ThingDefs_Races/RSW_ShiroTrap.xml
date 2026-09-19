@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — ShiroTrap creature port.
+  Ported from mlie.starwarsanimalcollection's `ShiroTrap` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Its custom `ShiroTrap` BodyDef (Bodies_Animal_StarWars.xml) is entirely
+  vanilla-part composition (TurtleShell/Plastron/Tail/Spine/Stomach/Heart/
+  Lung x2/Kidney x2/Hump/Liver/HeadWithEarHoles/Brain/Eye x2/Nose/
+  TurtleBeak, 4x Leg) — no SW-prefixed part or group anywhere, defName
+  rename only. Ported as RSW_ShiroTrap (RSW_MlieWaveC_Bodies.xml).
+  `leatherDef` (`Leather_Testudine`) and both eggs
+  (`EggShiroFertilized`/`EggShiroUnFertilized`) are shared with RSW_Shiro
+  (ported together this pass, RSW_MlieWaveC_Resources.xml) —
+  `specificMeatDef` (`Saurian_Meat`) ALREADY EXISTS as `RSW_Saurian_Meat`
+  (Wave B). This species' own `CompProperties_EggLayer` points at the SAME
+  2 eggs as Shiro, not a separate ShiroTrap-named pair — matches the donor's
+  own flavor text ("any offspring this creature has will hatch as the
+  non-symbiote version of the Shiro"), confirmed directly off the donor's
+  own XML, not assumed. Adult lifeStage sounds (`Pawn_Shiro_*` — ShiroTrap
+  reuses Shiro's own sound set, confirmed off the donor's own `<race>`
+  block) were already absorbed in the 2026-09-02 sound wave, wired, not
+  re-done. `canCrossBreedWith` repointed `Shiro` -> `RSW_Shiro`.
+
+  **Flagged, not fixed**: the adult lifeStage's `butcherBodyPart` names
+  `RawTookeTrapRoot`, a donor plant-harvest item (Plants_Farm_SW.xml +
+  Recipes_ShiroTrap.xml — a whole separate farmable-plant/recipe subsystem,
+  out of scope for a creature-geometry pass). Left pointing at the donor's
+  own bare `RawTookeTrapRoot` — resolves fine while mlie.starwarsanimalcollection
+  stays active (this item's own standing pattern for a dependency not yet
+  in scope to port), same as any other not-yet-ported cross-reference this
+  item tolerates pre-donor-retirement.
+
+  No `*ArtOverride` mod exists for ShiroTrap (checked first — the only
+  Shiro-family override, `mandrake.rsw.shiroartoverride`, explicitly
+  excludes "the separate ShiroTrap creature", confirmed against its own
+  About.xml this pass). 12 PNGs extracted this pass via extract_bundle.py
+  against the same AssetBundle every prior wave used: all 3 lifeStages'
+  facings (`ShiroTrap_j_{south,east,north}`, `ShiroTrap_i_{south,east,north}`,
+  `ShiroTrap_{south,east,north}`) plus their 3 dessicated variants
+  (`ShiroTrap_j_Dessicated`, `ShiroTrap_i_Dessicated`, `ShiroTrap_Dessicated`)
+  — every texPath the def references, none excluded. Sits at
+  Textures/swanimals/ShiroTrap/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "ShiroTrap" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_ShiroTrap</defName>
+    <label>shiro-trap</label>
+    <description>The Shiro-trap was native to planet Naboo and was not entirely a separate creature, but in fact a symbiotic pairing of a Tooke-trap plant and a Shiro. The plant disguised the animal, while the Shiro provided the plant a form of locomotion. The plant influences the animal host in one other interesting way by making the generally herbivorous Shiro into a more active predator to repel would be herbivores. Any offspring this creature has will hatch as the non-symbiote version of the Shiro.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>300</MarketValue>
+      <ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>tooke-trap</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>8</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggShiroUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggShiroFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>8</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_ShiroTrap</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>1.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Testudine</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.01</petness>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <lifeExpectancy>90</lifeExpectancy>
+      <canCrossBreedWith>
+        <li>RSW_Shiro</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.6</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Shiro_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Shiro_Death</soundDeath>
+          <soundCall>RSW_Pawn_Shiro_Call</soundCall>
+          <soundAngry>RSW_Pawn_Shiro_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_ShiroTrap</defName>
+    <label>shiro-trap</label>
+    <race>RSW_ShiroTrap</race>
+    <combatPower>125</combatPower>
+    <ecoSystemWeight>0.40</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap_j</texPath>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap_j_Dessicated</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap_i</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap_i_Dessicated</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.45, 0.45, 0.45)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/ShiroTrap/ShiroTrap_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>RawTookeTrapRoot</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
