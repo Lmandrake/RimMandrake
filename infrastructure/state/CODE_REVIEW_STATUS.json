@@ -936,10 +936,10 @@
     "sha": "e1c3162cb"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "d6d771b9ba3a8cf4aade39d3665b6042a67d27652b89f437aa29588a6124d05e",
-    "sha": "40c4d4fed"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "9b82f3105fe3ed316cc9a1bf68463a93343e676af8635d4a2d44b51ba706090c",
+    "sha": "640d910a8"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs": {
     "cleanCount": 1,
@@ -11722,10 +11722,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveC_Bodies.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "3ce67722b3ae45bb5bac7a5598e4b4982c195952c37a5d0887cc73a318550608",
-    "sha": "3f9a899d9"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "29a8dd45580ed3b241063c20abbaa0ba3140007b7e6cfc7ca9d62ecafc7eb55f",
+    "sha": "640d910a8"
   },
   "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
     "cleanCount": 1,
@@ -11836,10 +11836,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "03b3b2731a5111ff0d1389b912df37985ec4b10ae8ede0a7618f64ab1a330be2",
-    "sha": "2f8d4a99a"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "6c47d0cb4e7c2ab6e728d734736a160398c9c2b3acbf739075c1d4c4c7ed6086",
+    "sha": "640d910a8"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml": {
     "cleanCount": 3,
@@ -11902,10 +11902,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "aff91f75438275bae27a20078753a43c40bd85f30f517c4532cf9a7c3ef42982",
-    "sha": "09e0629c3"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "112aca0cb5f239929de5d6c83307927886550fecb9f1f706a5127b64beef0cc0",
+    "sha": "640d910a8"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml": {
     "cleanCount": 2,
@@ -15418,10 +15418,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_PaleTree.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "1674a13af4b919220336b4f91ed929971652dbae48f6b05998accfae7b7e45b4",
-    "sha": "534c14f53"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "ee922523aedc87516d7496d7e025dfe26b7f75d6d59f8eb41395ca22374b35e7",
+    "sha": "640d910a8"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
     "cleanCount": 1,
@@ -16684,10 +16684,10 @@
     "sha": "4e41e0f74"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "c92a5d8396e6d4bec9d944a6f58135c1fab4e5fe2f7b02f4c6f829435580373a",
-    "sha": "4e41e0f74"
+    "cleanCount": 5,
+    "date": "2026-09-19",
+    "hash": "4506b5dd46b376c8ea62d594cd8bb409e11ec3cbd652e38aae7a73befbc92bda",
+    "sha": "640d910a8"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
     "cleanCount": 3,
