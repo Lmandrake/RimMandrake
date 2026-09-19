@@ -1,5 +1,6 @@
 # VaultDungeons — validation walk
 subject: src/RimUtinni/StructureInjectionsRUT  (packageId mandrake.rut.injections)
+feature: vault-dungeons-kcsg
 absorbed: VaultDungeons (dying id rut.vaultdungeons) folded into StructureInjectionsRUT at Defs/VaultDungeons + Source/VaultDungeons in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: OskarPotocki.VanillaFactionsExpanded.Core (KCSG framework, modDependencies + loadAfter)
 list: minimal+OskarPotocki.VanillaFactionsExpanded.Core

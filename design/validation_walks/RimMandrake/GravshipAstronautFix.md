@@ -1,5 +1,6 @@
 # Missing North Facings — Vanilla Gravship Expanded — validation walk
 subject: src/RimMandrake/MandrakePatches  (packageId `mandrake.rm.patches`)
+feature: gravship-astronaut-north-facings
 absorbed: GravshipAstronautFix (dying id rm.gravshipastronautfix) folded into MandrakePatches at Source/GravshipAstronautFix + Textures/Things/Structures/GravshipGenebank in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: `vanillaexpanded.gravship` (Vanilla Gravship Expanded - Chapter 1, third-party, hard modDependency)
 list: minimal+vanillaexpanded.gravship

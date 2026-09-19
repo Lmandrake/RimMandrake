@@ -1,5 +1,6 @@
 # CereanManeFix — validation walk
 subject: src/RimStarWars/StarWarsPatches  (packageId: mandrake.rsw.patches)
+feature: cerean-mane-fix
 absorbed: CereanManeFix (dying id rsw.cereanmanefix) folded into StarWarsPatches at Source/CereanManeFix + Textures/OuterRim/Hairs/Cerean/CereanMane_south.png in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: Neronix17.OuterRim.GalacticDiversity (Outer Rim - Galactic Diversity) — required
 list: minimal+Neronix17.OuterRim.GalacticDiversity

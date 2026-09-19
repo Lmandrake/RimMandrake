@@ -1,5 +1,6 @@
 # SeaBeasts — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+feature: sea-beasts-roster
 absorbed: SeaBeasts (dying id rsw.seabeasts) folded into SWBestiary at Defs/SeaBeasts + Source/art/SeaBeasts + Textures/Pawn/Animal/SeaBeasts in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: Ludeon.RimWorld.Odyssey (hard modDependency — Crab and Pinniped BodyDefs are Odyssey-only)
 list: minimal+Ludeon.RimWorld.Odyssey

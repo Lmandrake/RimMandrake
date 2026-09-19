@@ -1,5 +1,6 @@
 # SalvageClaim — validation walk
 subject: src/RimMandrake/RimProperty  (packageId mandrake.rm.property)
+feature: claim-fee-verb
 absorbed: SalvageClaim (dying id rm.salvageclaim) merged into RimProperty at Source/SalvageClaim in the Sprint wave A crime merge (commit f32eef5f5) — no longer ships alone.
 deps: mandrake.rm.property (hard modDependency, "RimMandrake: Property" — this mod is a thin verb layer over Property's `PropertyEngine`/`ClaimEngine`/`RecognizabilityUtility`)
 list: minimal+property

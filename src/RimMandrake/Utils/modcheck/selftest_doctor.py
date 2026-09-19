@@ -43,8 +43,19 @@ def _fixture_repo(tmp):
       names a different path (SUBJECT_MISMATCH).
     - `BadPkg` resolves fine but declares the wrong packageId
       (PACKAGEID_MISMATCH).
-    - `Shared1`/`Shared2` both declare the same `subject:`
-      (SUBJECT_COLLISION).
+    - `Shared1`/`Shared2` both declare the same `subject:`, neither carries
+      a `feature:` key (SUBJECT_COLLISION -- WALK_FEATURE_KEY_1's "missing
+      key" case).
+    - `FeatureA`/`FeatureB` both declare the same `subject:` but each
+      carries its OWN distinct `feature:` key -- a deliberate per-feature
+      pair, WALK_FEATURE_KEY_1's whole point: no finding at all, even
+      though neither basename matches the shared mod folder's name.
+    - `MixedA`/`MixedB` share a `subject:`; `MixedA` carries a `feature:`
+      key, `MixedB` does not -- still SUBJECT_COLLISION, naming only the
+      walk that is missing the key.
+    - `DupFeatureA`/`DupFeatureB` share a `subject:` AND declare the SAME
+      `feature:` value -- still a real collision even under the
+      feature: convention.
     """
     _write(os.path.join(tmp, "src", "RimUtinni", "Good", "About",
                          "About.xml"),
@@ -63,6 +74,18 @@ def _fixture_repo(tmp):
     _write(os.path.join(tmp, "src", "RimUtinni", "Shared", "About",
                          "About.xml"),
            "<ModMetaData><packageId>mandrake.rut.shared</packageId>"
+           "</ModMetaData>")
+    _write(os.path.join(tmp, "src", "RimUtinni", "MultiFeature", "About",
+                         "About.xml"),
+           "<ModMetaData><packageId>mandrake.rut.multifeature</packageId>"
+           "</ModMetaData>")
+    _write(os.path.join(tmp, "src", "RimUtinni", "MixedMod", "About",
+                         "About.xml"),
+           "<ModMetaData><packageId>mandrake.rut.mixed</packageId>"
+           "</ModMetaData>")
+    _write(os.path.join(tmp, "src", "RimUtinni", "DupFeatureMod", "About",
+                         "About.xml"),
+           "<ModMetaData><packageId>mandrake.rut.dupfeature</packageId>"
            "</ModMetaData>")
 
     walks = os.path.join(tmp, "design", "validation_walks", "RimUtinni")
@@ -83,6 +106,24 @@ def _fixture_repo(tmp):
            "subject: src/RimUtinni/Shared  (packageId mandrake.rut.shared)\n")
     _write(os.path.join(walks, "Shared2.md"),
            "subject: src/RimUtinni/Shared  (packageId mandrake.rut.shared)\n")
+    _write(os.path.join(walks, "FeatureA.md"),
+           "subject: src/RimUtinni/MultiFeature  (packageId "
+           "mandrake.rut.multifeature)\nfeature: alpha\n")
+    _write(os.path.join(walks, "FeatureB.md"),
+           "subject: src/RimUtinni/MultiFeature  (packageId "
+           "mandrake.rut.multifeature)\nfeature: beta\n")
+    _write(os.path.join(walks, "MixedA.md"),
+           "subject: src/RimUtinni/MixedMod  (packageId "
+           "mandrake.rut.mixed)\nfeature: gamma\n")
+    _write(os.path.join(walks, "MixedB.md"),
+           "subject: src/RimUtinni/MixedMod  (packageId "
+           "mandrake.rut.mixed)\n")
+    _write(os.path.join(walks, "DupFeatureA.md"),
+           "subject: src/RimUtinni/DupFeatureMod  (packageId "
+           "mandrake.rut.dupfeature)\nfeature: same-name\n")
+    _write(os.path.join(walks, "DupFeatureB.md"),
+           "subject: src/RimUtinni/DupFeatureMod  (packageId "
+           "mandrake.rut.dupfeature)\nfeature: same-name\n")
     return tmp
 
 
@@ -93,7 +134,7 @@ def test_positive_counts_on_the_fixture():
         _fixture_repo(tmp)
         import walklint
         walks = walklint.find_walks(tmp)
-        ok(len(walks) == 7, "all 7 fixture walks were found (got %d)"
+        ok(len(walks) == 13, "all 13 fixture walks were found (got %d)"
            % len(walks))
 
 
@@ -180,7 +221,10 @@ def test_subject_collision_is_caught():
           "---")
     with tempfile.TemporaryDirectory() as tmp:
         _fixture_repo(tmp)
-        findings, counts = doctor.check_walks(tmp)
+        import walklint
+        walks = [w for w in walklint.find_walks(tmp)
+                 if doctor.mod_name_from_walk(w) in ("Shared1", "Shared2")]
+        findings, counts = doctor.check_walks(tmp, walks)
         collisions = [f for f in findings if f[1] == doctor.SUBJECT_COLLISION]
         ok(len(collisions) == 1,
            "exactly one collision reported (got %d)" % len(collisions))
@@ -191,6 +235,81 @@ def test_subject_collision_is_caught():
                "the collision names both walks (got %r)" % (collisions[0],))
             ok(collisions[0][0] == doctor.FAIL,
                "SUBJECT_COLLISION is FAIL severity")
+
+
+def test_per_feature_walks_with_distinct_keys_are_not_flagged():
+    print("--- two walks sharing a subject: are NOT a collision once each "
+          "carries its own distinct feature: key (WALK_FEATURE_KEY_1) ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        _fixture_repo(tmp)
+        findings, _ = doctor.check_walks(tmp)
+        relevant = [f for f in findings
+                    if "MultiFeature" in f[2]
+                    or "FeatureA" in f[2] or "FeatureB" in f[2]]
+        ok(not any(f[1] in (doctor.SUBJECT_COLLISION, doctor.ORPHAN_WALK)
+                   for f in relevant),
+           "FeatureA/FeatureB (neither basename matches the shared "
+           "MultiFeature folder) resolve via subject:, not basename, and "
+           "raise neither ORPHAN_WALK nor SUBJECT_COLLISION (got %r)"
+           % (relevant,))
+
+
+def test_per_feature_walk_missing_key_is_still_flagged():
+    print("--- one walk in a shared subject: missing its feature: key is "
+          "STILL flagged, not silently accepted as per-feature ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        _fixture_repo(tmp)
+        findings, _ = doctor.check_walks(tmp)
+        collisions = [f for f in findings if f[1] == doctor.SUBJECT_COLLISION
+                      and "MixedMod" in f[2]]
+        ok(len(collisions) == 1,
+           "the MixedMod pair is flagged exactly once (got %r)"
+           % (collisions,))
+        if collisions:
+            ok("MixedB" in collisions[0][3] and "MixedA" not in
+               collisions[0][3],
+               "the finding names only the walk missing the key, MixedB "
+               "(got %r)" % (collisions[0][3],))
+            ok(collisions[0][0] == doctor.FAIL,
+               "a missing-key collision is FAIL severity")
+
+
+def test_duplicate_feature_value_is_still_a_collision():
+    print("--- two walks sharing a subject: AND the same feature: value "
+          "is still a real collision ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        _fixture_repo(tmp)
+        findings, _ = doctor.check_walks(tmp)
+        collisions = [f for f in findings if f[1] == doctor.SUBJECT_COLLISION
+                      and "DupFeatureMod" in f[2]]
+        ok(len(collisions) == 1,
+           "the DupFeatureMod pair is flagged exactly once (got %r)"
+           % (collisions,))
+        if collisions:
+            ok("DupFeatureA" in collisions[0][3]
+               and "DupFeatureB" in collisions[0][3],
+               "the finding names both walks sharing the duplicate "
+               "feature value (got %r)" % (collisions[0][3],))
+
+
+def test_mod_name_for_walk_prefers_subject_over_basename():
+    print("--- mod_name_for_walk() derives the mod from subject:, not "
+          "the walk's own basename ---")
+    with tempfile.TemporaryDirectory() as tmp:
+        _fixture_repo(tmp)
+        import walklint
+        walks = {os.path.splitext(os.path.basename(w))[0]: w
+                 for w in walklint.find_walks(tmp)}
+        ok(doctor.mod_name_for_walk(walks["FeatureA"]) == "MultiFeature",
+           "FeatureA.md's mod is MultiFeature, not FeatureA (got %r)"
+           % doctor.mod_name_for_walk(walks["FeatureA"]))
+        # A walk with no subject: line at all still falls back to its own
+        # basename -- there is nothing else to derive it from.
+        no_subject = os.path.join(tmp, "design", "validation_walks",
+                                   "RimUtinni", "NoSubjectAtAll.md")
+        _write(no_subject, "just a title line, no headers\n")
+        ok(doctor.mod_name_for_walk(no_subject) == "NoSubjectAtAll",
+           "a walk with no subject: line falls back to its own basename")
 
 
 class _fake_status_registry(object):
@@ -343,13 +462,17 @@ def test_real_repo_run_has_positive_counts():
        % counts.get("capabilities"))
     ok(isinstance(findings, list),
        "run() returns a findings list (got %r)" % type(findings))
-    # This is the specific defect the ledger already knew about --
-    # SS1/SS4. If it ever disappears, the repo has actually been fixed,
-    # not this test broken: leave it here as a live tripwire either way.
-    ok(any(f[1] == doctor.SUBJECT_COLLISION and "SWBestiary" in f[2]
-           for f in findings),
-       "live repo: SWBestiary's 7-way subject collision is still "
-       "detected (update this test, not the checker, once it's resolved)")
+    # WALK_FEATURE_KEY_1 (2026-09-19) resolved this: SWBestiary's 7 walks
+    # (BeastNorm, HelixTellurox, JawaIkee, Livestock, SWBestiary, SeaBeasts,
+    # SeasWaterline) now each carry a distinct `feature:` key, so the old
+    # tripwire ("still detected, update this test once it's resolved") is
+    # exactly what fires now -- assert the fix, not the old defect.
+    sw_collisions = [f for f in findings if f[1] == doctor.SUBJECT_COLLISION
+                     and "SWBestiary" in f[2]]
+    ok(not sw_collisions,
+       "live repo: SWBestiary's 7-way subject collision is resolved -- "
+       "every walk sharing it now carries a distinct feature: key "
+       "(got %r)" % sw_collisions)
 
 
 def main():
@@ -360,6 +483,10 @@ def main():
               test_subject_mismatch_is_caught,
               test_packageid_mismatch_is_caught,
               test_subject_collision_is_caught,
+              test_per_feature_walks_with_distinct_keys_are_not_flagged,
+              test_per_feature_walk_missing_key_is_still_flagged,
+              test_duplicate_feature_value_is_still_a_collision,
+              test_mod_name_for_walk_prefers_subject_over_basename,
               test_status_disagreement_ignores_reason_decoration,
               test_status_disagreement_on_stale_hash_is_caught,
               test_orphan_status_is_caught_not_raised,

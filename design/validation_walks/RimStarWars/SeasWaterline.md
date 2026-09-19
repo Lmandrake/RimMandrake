@@ -1,5 +1,6 @@
 # SeasWaterline — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId: mandrake.rsw.swbestiary)
+feature: seas-waterline-wiring
 absorbed: SeasWaterline folded into SWBestiary at Patches/SeasWaterline/Waterline_Lane1.xml — owner-ruled "the fauna cell owns the seas wiring" (commit 0fbc0e149) — no longer ships alone.
 deps: mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued)), biomesteam.biomespollutedlands (Biomes! Polluted Lands), van.beasts (Dark Ages: Beasts and Monsters) — all required (modDependencies). loadAfter also names sarg.alphabiomes (already in the minimal list), zylle.morevanillabiomes, sarg.alphaanimals — soft, override-race only, not required to run this walk.
 list: minimal+mlie.starwarsanimalcollection+biomesteam.biomespollutedlands+van.beasts

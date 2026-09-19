@@ -1,5 +1,6 @@
 # DesertFixtures — validation walk
 subject: src/RimUtinni/StructureInjectionsRUT
+feature: desert-fixtures-buildings
 packageId: mandrake.rut.injections  (from About.xml, verbatim)
 absorbed: DesertFixtures (dying id rut.desertfixtures) folded into StructureInjectionsRUT at Defs/DesertFixtures/ThingDefs_Buildings/RUT_DesertFixtures_Buildings.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none (only Ludeon.RimWorld in modDependencies+loadAfter)

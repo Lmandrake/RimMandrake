@@ -1,5 +1,6 @@
 # Fire Ecology — validation walk
 subject: src/RimMandrake/Pyrelands  (packageId mandrake.rm.pyrelands)
+feature: fire-ecology-biome-origin
 absorbed: FireEcology (dying id rsw.fireecology) was promoted whole to a RimMandrake-tier mod and renamed Pyrelands in Sprint wave A (commit 485380d4) — Pyrelands's own About.xml no longer mentions "FireEcology" by name; RimUtinni/PyrelandsFireEcology.md is the separate campaign-side wiring walk that still names it explicitly.
 deps: brrainz.harmony (hard), Ludeon.RimWorld base (declared modDependency, always present)
 list: minimal   # no third-party mod dependency; the ash ladder/terrain/weather all ride vanilla mechanisms

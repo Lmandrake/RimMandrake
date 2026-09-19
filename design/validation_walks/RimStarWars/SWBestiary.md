@@ -1,5 +1,6 @@
 # SWBestiary — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+feature: absorbed-creature-roster
 deps: none (Ludeon.RimWorld only) — content-only, no assemblies, no patches
 list: minimal
 status-hint: absorbed-content salvage bin — 10 creature ThingDef/PawnKindDef pairs (bantha, jerba, 8 ex-Jurassic-Rimworld dinosaurs), their egg/wool/milk/leather/meat/horn items, one ThoughtDef, and 589 SoundDefs absorbed wholesale from three retired mods so retiring them cost the campaign nothing.

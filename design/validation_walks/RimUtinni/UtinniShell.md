@@ -1,5 +1,6 @@
 # UtinniShell — validation walk
 subject: src/RimUtinni/MenuShell  (packageId mandrake.rut.menushell)
+feature: utinni-rimtheme-shell
 absorbed: UtinniShell (dying id rut.shell) folded into MenuShell at Defs/UtinniShell/VBE_Backgrounds_Utinni.xml + RimThemes/Utinni Shell/... in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: aRandomKiwi.RimThemes (modDependencies + loadAfter), vanillaexpanded.backgrounds (loadAfter, MayRequire-guarded)
 list: minimal+aRandomKiwi.RimThemes

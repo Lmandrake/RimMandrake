@@ -1,5 +1,6 @@
 # StructureInjectionsSW — validation walk
 subject: src/RimStarWars/StructureInjectionsSW  (packageId: mandrake.rsw.injections)
+feature: structure-templates
 deps: mandrake.rm.injections (RimMandrake: Structure Injections) — required, loadAfter it; TileMutatorDefs also carry MayRequire="Ludeon.RimWorld.Odyssey" (Odyssey is already in the minimal list); RSW_MiningSite's two extra extraGenSteps entries carry MayRequire="mandrake.rm.inhabited" (also already in the minimal list)
 list: minimal+mandrake.rm.injections
 status-hint: SW content for the promise/whisper structure program, riding mandrake.rm.injections' GenStep_RimplacePlan engine — 7 GenStepDefs each replaying one rimplace-exported Templates/*.txt plan, each paired with a TileMutatorDef carrying it in extraGenSteps. None are placed on any live Ash'karr tile yet (deliberate deferral, a live world-tile edit out of scope for this pass).
