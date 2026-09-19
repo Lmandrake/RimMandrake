@@ -1,0 +1,28 @@
+{
+  "item": "LIVESTOCK_STARTER_TRIO_1",
+  "note": "MASS_VALIDATION_LADDER_1 L2 batch trial (2026-09-18/19). Covers all three creatures the item shipped: karrask + onnik (both confirmed deployed and live via jawa/get_defs at manifest-authoring time) and moornak (checked with the same manifest ON PURPOSE even though `deploy_custom_mods.py --mod SWBestiary` showed its defs/texture/assembly as undeployed drift at authoring time - its checks are expected to read MISSING-DEF live, which is itself the correct, informative result: the item's close note claims 'trio complete' but moornak has never actually been proven live). Ground truth read directly from src/RimStarWars/SWBestiary/Defs/Livestock/{ThingDefs_Animals,PawnKindDefs}/*.xml on 2026-09-19, cross-checked live for karrask/onnik via jawa/get_defs deep=true.",
+  "checks": [
+    {"defType": "ThingDef", "defName": "RSW_Karrask", "path": "label", "expected": "karrask"},
+    {"defType": "ThingDef", "defName": "RSW_Karrask", "path": "race.trainability", "expected": "None"},
+    {"defType": "ThingDef", "defName": "RSW_Karrask", "path": "statBases[stat=Wildness].value", "expected": 0.35},
+    {"defType": "ThingDef", "defName": "RSW_Karrask", "path": "comps[woolDef=RSW_KarraskShedRaw].shearIntervalDays", "expected": 15},
+    {"defType": "ThingDef", "defName": "RSW_Karrask", "path": "comps[woolDef=RSW_KarraskShedRaw].woolAmount", "expected": 40},
+    {"defType": "PawnKindDef", "defName": "RSW_Karrask", "path": "combatPower", "expected": 45},
+
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "label", "expected": "onnik"},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "race.trainability", "expected": "None"},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "statBases[stat=Wildness].value", "expected": 0.25},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "comps[doseFeedDef=RSW_KilnClay].goodProductDef", "expected": "RSW_FiredCeramicware"},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "comps[doseFeedDef=RSW_KilnClay].goodProductCount", "expected": 6},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "comps[doseFeedDef=RSW_KilnClay].badProductDef", "expected": "RSW_CrackedCeramicShards"},
+    {"defType": "ThingDef", "defName": "RSW_Onnik", "path": "comps[doseFeedDef=RSW_KilnClay].fireCooldownTicks", "expected": 240000},
+    {"defType": "PawnKindDef", "defName": "RSW_Onnik", "path": "combatPower", "expected": 40},
+
+    {"defType": "ThingDef", "defName": "RSW_Moornak", "path": "label", "expected": "moornak"},
+    {"defType": "ThingDef", "defName": "RSW_Moornak", "path": "race.trainability", "expected": "None"},
+    {"defType": "ThingDef", "defName": "RSW_Moornak", "path": "statBases[stat=Wildness].value", "expected": 0.6},
+    {"defType": "ThingDef", "defName": "RSW_Moornak", "path": "tradeability", "expected": "Sellable"},
+    {"defType": "PawnKindDef", "defName": "RSW_Moornak", "path": "combatPower", "expected": 30},
+    {"defType": "HediffDef", "defName": "RSW_MoornakUnsettled", "path": "hediffClass", "expected": "HediffWithComps"}
+  ]
+}

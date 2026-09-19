@@ -1,0 +1,22 @@
+{
+  "ThingDef::RSW_TelluroxRace": {
+    "label": "tellurox",
+    "statBases": [
+      {"stat": "Wildness", "value": 0.3},
+      {"stat": "MarketValue", "value": 420},
+      {"stat": "ArmorRating_Sharp", "value": 0.18}
+    ],
+    "butcherProducts": [
+      {"thingDef": "RSW_TelluroxShell", "count": 6}
+    ],
+    "tools": [
+      {"label": "head plate", "power": 9.0}
+    ]
+  },
+  "ThingDef::RSW_TelluroxShell": {
+    "label": "tellurox shell plate",
+    "statBases": [
+      {"stat": "MarketValue", "value": 6.2}
+    ]
+  }
+}

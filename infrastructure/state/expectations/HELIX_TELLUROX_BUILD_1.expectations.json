@@ -1,0 +1,16 @@
+{
+  "item": "HELIX_TELLUROX_BUILD_1",
+  "note": "MASS_VALIDATION_LADDER_1 L2 batch trial (2026-09-18/19). Item is still 'doing BLOCKED' (ecosystem/wild-spawn wiring owed, an owner design decision, not a mechanical gap) but the ThingDef pair itself is fully built and deployed - confirmed no drift via `deploy_custom_mods.py --mod SWBestiary` and confirmed live via jawa/get_defs deep=true at manifest-authoring time. Ground truth read directly from src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml on 2026-09-19.",
+  "checks": [
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "label", "expected": "tellurox"},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "statBases[stat=Wildness].value", "expected": 0.3},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "statBases[stat=MarketValue].value", "expected": 420},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "statBases[stat=ArmorRating_Sharp].value", "expected": 0.18},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "butcherProducts[0].thingDef", "expected": "RSW_TelluroxShell"},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "butcherProducts[0].count", "expected": 6},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxRace", "path": "tools[label=head plate].power", "expected": 9.0},
+
+    {"defType": "ThingDef", "defName": "RSW_TelluroxShell", "path": "label", "expected": "tellurox shell plate"},
+    {"defType": "ThingDef", "defName": "RSW_TelluroxShell", "path": "statBases[stat=MarketValue].value", "expected": 6.2}
+  ]
+}
