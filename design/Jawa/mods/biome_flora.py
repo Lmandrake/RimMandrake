@@ -75,15 +75,8 @@ FAMILIES = {
   'RUT_Desert': {   # 2,390 tiles · 5 plants
     'AB_HardyGrass': 0.6, 'Plant_Chakroot_Wild': 0.3, 'Plant_HubbaGourd_Wild': 0.2,
     'AB_Aaklac': 0.12, 'AB_DessertTree': 0.06},
-  # 🔴 KNOWN GAP, not fixed here (BIOME_FLORA_GENERATOR_REPAIR_1 is scoped to this file and
-  # the generated patch only): the_propane_lakes.json's roster still keys its shore flora to
-  # `AB_PropaneLakes`, but the LIVE tile map (world/ASHKARR_WORLDMAP_tiles.csv) now carries
-  # those same 2,531 tiles under `RUT_Umbra` — same label lineage ("the Propane Lakes" ->
-  # "Umbra"), same plantDensity 0.75, same wildPlants count. AB_PropaneLakes is no longer on
-  # the map; RUT_Umbra has no roster naming it. `--check` reports this pair and only this
-  # pair as a residual, explained problem. Fixing it means editing the roster JSON (out of
-  # this item's scope) — file a follow-up rather than guessing the rename here.
-  'AB_PropaneLakes': {   # 0 tiles now (was 2,531 pre-rename) · 4 plants
+  'RUT_Umbra': {   # 2,531 tiles · 4 plants — the_propane_lakes.json's shore flora, rekeyed
+                    # from the pre-rename defName `AB_PropaneLakes` (PROPANE_LAKES_ROSTER_STALE_1)
     'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
     'AB_RimeNodules': 0.4},
   'RUT_CrackedLands': {   # 970 tiles · 6 plants
