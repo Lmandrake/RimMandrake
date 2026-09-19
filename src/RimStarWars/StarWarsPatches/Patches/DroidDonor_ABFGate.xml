@@ -94,43 +94,70 @@
        mechanics are real, fires only once ABF actually retires. -->
 
   <!-- Site 2: guy762_DroidPawnKindBase's ABF_ArtificialPawnKindExtension
-       (also reaches guy762.KotORDroids' own duplicate copy - see NEW FINDING above) -->
+       (also reaches guy762.KotORDroids' own duplicate copy - see NEW FINDING above).
+       DROID_DONOR_PATCH_GATE_NODE_GUARD_1, 2026-09-19: this Name only exists in
+       kotorcore's _DroidsBase AdditionalMods folder, itself gated
+       IfModActive="guy762.KotORDroids" - a mod that is NOT in the current
+       ModsConfig.xml. With it absent, nomatch fired (ABF also absent, confirmed
+       via ModsConfig parse) but found no node to remove, logging a false
+       failure. Wrapped in an inner Conditional so absence of the target node
+       (donor droid content not loaded) is a silent no-op, same shape as
+       OUTERRIM_DROIDDEPOT_PATCH_GUARD_1. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[@Name="guy762_DroidPawnKindBase"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/PawnKindDef[@Name="guy762_DroidPawnKindBase"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 3: KotORDroidBase_good's ABF_ArtificialPawnKindExtension (live Name, not the item doc's stale guess) -->
+  <!-- Site 3: KotORDroidBase_good's ABF_ArtificialPawnKindExtension (live Name, not the item doc's stale guess).
+       Same guard as site 2 - also only exists via guy762.KotORDroids' _DroidsBase folder. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[@Name="KotORDroidBase_good"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/PawnKindDef[@Name="KotORDroidBase_good"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 4: SWCPDroidBase_bad's ABF_ArtificialPawnKindExtension -->
+  <!-- Site 4: SWCPDroidBase_bad's ABF_ArtificialPawnKindExtension. Same guard - also from _DroidsBase. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[@Name="SWCPDroidBase_bad"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/PawnKindDef[@Name="SWCPDroidBase_bad"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 5: guy762_DroidBattery's IngestionOutcomeDoer_OffsetArtificialNeed -->
+  <!-- Site 5: guy762_DroidBattery's IngestionOutcomeDoer_OffsetArtificialNeed.
+       This defName exists in BOTH _DroidsBase (guy762.KotORDroids) and _BnSDroidsBase
+       (SWCP.GCWVehicles) - both currently absent from ModsConfig.xml, so the node is
+       absent either way. Same guard. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="guy762_DroidBattery"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="guy762_DroidBattery"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 6: guy762_DroidBattery_adv's IngestionOutcomeDoer_OffsetArtificialNeed -->
+  <!-- Site 6: guy762_DroidBattery_adv's IngestionOutcomeDoer_OffsetArtificialNeed. Same guard as site 5. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="guy762_DroidBattery_adv"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="guy762_DroidBattery_adv"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
