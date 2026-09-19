@@ -60,11 +60,18 @@ param(
     [int]$Gap = 0,
     [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
+    [int]$DelaySec = 0,
     [switch]$Test,
     [switch]$CloseTest
 )
 
 $ErrorActionPreference = 'Stop'
+
+# -DelaySec exists for the Startup-folder copy of the shortcut only. At logon the
+# desktop is ready long before WSL2, Tailscale and the network are, and the seats
+# are WSL sessions whose Server tile wants the network on its first second. A
+# double-clicked launch passes 0 and is unaffected.
+if ($DelaySec -gt 0) { Start-Sleep -Seconds $DelaySec }
 
 Add-Type @'
 using System;
