@@ -29,9 +29,6 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>mandrake.rut.rotsporekit</li>
-    <!-- CAVERNS_PARITY_BUILD_1: the donor is on the cut path; this entry only orders
-         us after it while it is still installed. Nothing here references it. -->
-    <li>BiomesTeam.BiomesCaverns</li>
     <li>m00nl1ght.GeologicalLandforms</li>
     <!-- CRYSTAL_INGEST_EXECUTION_1 item 4: RUT_LanternDeepGateKotorStygium.xml removes a
          <li> that guy762.mm.kotorcore's OWN patch adds to Base_Player/BasePlayer_Second

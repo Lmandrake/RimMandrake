@@ -57,7 +57,6 @@ whichever item eventually places Moisture Farmer settlements on the world.</desc
          no-ops on that particular map/roster entry rather than failing to load. -->
     <li>sarg.alphabiomes</li>        <!-- AB_MycoticJungle, the Rot -->
     <li>sarg.alphaanimals</li>       <!-- AA_Agaripawn/Agaripod/Wildpawn/Wildpod/Swarmling/MycoidColossus -->
-    <li>BiomesTeam.BiomesCaverns</li> <!-- MycelialSoil placeholder icon texture -->
     <li>mandrake.rut.patches</li>    <!-- BiomeCast_Ashkarr.xml, the source for the roster's live commonalities -->
   </loadAfter>
 </ModMetaData>

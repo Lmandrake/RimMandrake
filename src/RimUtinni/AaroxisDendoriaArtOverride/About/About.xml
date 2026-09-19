@@ -13,6 +13,5 @@ ONLY - no defName touched, no Defs, no Patches, loose Textures/ only, same
 relative path (BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria_&lt;facing&gt;) the donor uses so this mod's later
 load order wins the same-path resolution.</description>
   <loadAfter>
-    <li>BiomesTeam.BiomesCaverns</li>
   </loadAfter>
 </ModMetaData>

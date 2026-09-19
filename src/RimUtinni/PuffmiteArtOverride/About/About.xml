@@ -20,6 +20,5 @@ for the same reasoning). loose Textures/ at the same relative path
 uses, plus a small Patches/ pass renaming the label/description on both the
 ThingDef and the PawnKindDef.</description>
   <loadAfter>
-    <li>BiomesTeam.BiomesCaverns</li>
   </loadAfter>
 </ModMetaData>
