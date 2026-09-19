@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:01:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T05:13:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -954,15 +954,6 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
-## ASHFALL_RESEARCH_BASE_1 The Ashfall Research Base (the Spire): Rakatan command codes, the war lab's two-key gate
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Discovered mid-pass while continuing ANCIENTWARLAB1 (2026-09-18): the
-prose:    infrastructure/state/items/ASHFALL_RESEARCH_BASE_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1718,3 +1709,13 @@ kind:     bug
 thin:     no ## criteria
 summary:  artchecks.py's --selftest reads its ENTIRE corpus from
 prose:    infrastructure/state/items/ART_SELFTEST_CORPUS_IN_TRANSIENT_1.md
+
+## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  KCSG pawn symbols silently fall back to vanilla Colonist
+prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
