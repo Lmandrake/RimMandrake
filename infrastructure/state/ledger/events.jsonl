@@ -9946,3 +9946,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T20:16:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"LONGHUNGER_QUICKTEST_1","sha":"b680469950b6cf9db43148236230b4a8eee8cae6","ts":"2026-09-19T20:17:32Z"}
 {"seat":"FOUNDRY","event":"note","id":"LIQUID_SINK_DRAINAGE_1","text":"Checked live-proof feasibility 2026-09-19 (FOUNDRY): SinkTransferredTotal/fillGrid are private MapComponent state with no DebugAction or bridge-reflectable exposure (jawa/get_defs only reads Defs, not live MapComponent instances); the only real observable is visual (water receding from an excavated edge-band channel), which needs a colonist-dug canal from a source to the edge or an admin excavation shortcut plus render investigation -- a genuine build/rig task, not a quick bridge check. Deferring to a dedicated slot rather than rushing it; leaving doing exactly as the prior two passes left it.","ts":"2026-09-19T20:19:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_ART_WAVE_1","ts":"2026-09-19T20:22:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROT_ART_WAVE_1","ts":"2026-09-19T20:22:24Z"}

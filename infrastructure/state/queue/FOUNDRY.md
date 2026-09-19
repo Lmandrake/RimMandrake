@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:19:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T20:22:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,6 +918,15 @@ kind:     design
 summary:  AQUATICWATERBREATHINGGENE1
 prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
 
+## ROT_ART_WAVE_1 Land the 22 rot artpipe jobs: review daemon output, deploy textures, verify texPaths render
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  ROTARTWAVE1 — land the 22 rot artpipe jobs
+prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
+
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing
 row:      unassigned
@@ -1523,16 +1532,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  MODLISTINACTIVECUSTOMMODSSWEEP1 — full custom-mod activation sweep, 2026-09-19
 prose:    infrastructure/state/items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md
-
-## ROT_ART_WAVE_1 Land the 22 rot artpipe jobs: review daemon output, deploy textures, verify texPaths render
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_ART_WAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_ART_WAVE_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
