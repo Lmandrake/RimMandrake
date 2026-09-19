@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:52:49Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-19T03:55:31Z (the last event's own timestamp, not the render clock)
+game:  DEPLOYING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1042,7 +1042,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  Verify agent hung/looped and was stopped by the owner mid-session; left the live ModsConfig.xml swapped to a throwaway 18-mod quicktest list. Recovered: restored the owner's real 603-mod list from the agent's own pre-swap scratchpad backup (verified against ModsConfig.FULL601.bench-backup.xml, only 4 legitimate mod-list deltas since 09-05). Bridge released. Live-observe verify for this item still owed to a fresh session.
+blocked:  Needs a bridge window on the 621-mod list (flowworks + rut.patches + zylle.morevanillabiomes all required, all absent from the 26-mod pre-reboot session). Recipe recorded on the item; use jawa/colony_found on a ZBiome_Grasslands river tile, never world_tile_map_generate (blank-void trap).
 summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
@@ -1747,3 +1747,13 @@ kind:     defect
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
+
+## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md

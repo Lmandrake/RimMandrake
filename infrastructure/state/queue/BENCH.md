@@ -7,12 +7,30 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:52:49Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-19T03:55:31Z (the last event's own timestamp, not the render clock)
+game:  DEPLOYING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
+prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
+
+## PYRELANDS_FLORA_ART_IDENTITY_1 Pyrelands flora own art identity: 5 defs off vanilla texPaths, 11 sprites via artpipe, leafless states included (owner word 2026-09-14: regenerate the plants now too)
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
 # IN PROGRESS
 
@@ -241,27 +259,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is DOWN
-summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
-prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
-
-## PYRELANDS_FLORA_ART_IDENTITY_1 Pyrelands flora own art identity: 5 defs off vanilla texPaths, 11 sprites via artpipe, leafless states included (owner word 2026-09-14: regenerate the plants now too)
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-waiting:  needs `deploy`, game is DOWN
-summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
+_none._
 
 # NOT THIS TARGET
 
