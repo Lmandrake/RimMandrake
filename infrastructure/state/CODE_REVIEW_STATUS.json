@@ -16731,6 +16731,12 @@
     "hash": "55bd8a267dc59471e5cbdf40a8cc49728365e906a2e49191b86491eb945d3856",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_FlamefangVenomBite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "9ce21480bc2686dce3d729fe1a3154c37fc56adb908a18e4e622c8a7239ba0df",
+    "sha": "c1b342131"
+  },
   "src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -16844,6 +16850,12 @@
     "date": "2026-09-13",
     "hash": "a6cedf63992708ca5916c275f30107633ed300fe0898a465336027c0c063be8e",
     "sha": "779a079ab"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_FlamefangVenom.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "6148a1df77672f997f819ed60118020385071b572f4d22cb96ba569861316027",
+    "sha": "c1b342131"
   },
   "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_MiasmaExposure.xml": {
     "cleanCount": 1,
@@ -17300,6 +17312,12 @@
     "date": "2026-09-14",
     "hash": "725033b9cada27dfc20c60bfaf3992070f0820ca4d47b2cd08dbb6b412f8664d",
     "sha": "52c8c982c"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ToolCapacityDefs/RUT_FlamefangBite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "bd4bfe864c3df49a248b10978e79a35102cdf61f9b814d479c6bd9261fe96a9f",
+    "sha": "c1b342131"
   },
   "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
     "cleanCount": 1,
@@ -17900,6 +17918,12 @@
     "date": "2026-09-11",
     "hash": "17ffac9b0839544489e42f580ea7cba299efaa831a1e36f6232f0d5e5d35d3e5",
     "sha": "7c80850cb"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "3390d728c5e94f9d31ca85aae4f78b0a2ca8fcbfc8906ecb31a054e35441c05a",
+    "sha": "c1b342131"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
     "cleanCount": 3,
