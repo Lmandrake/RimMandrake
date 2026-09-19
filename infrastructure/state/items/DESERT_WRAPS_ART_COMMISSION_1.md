@@ -62,6 +62,23 @@ ship — 4 wraps + 2 option heads, full body-type × direction matrix
 **buildable now**. This line said "do not build, awaits the pick" for 8 days
 after the pick; unblocked at the 2026-09-18 decay sweep.
 
+## Matrix state (wave 2, 2026-09-18, commit 2d9b7f04b)
+49 of 66 texture files placed and validated. **Spiral, Banded, Segmented are
+15/15** (Male/Female/Fat/Hulk/Thin × south/north/east). **Draped is 2/15,
+HeadPot 1/3, HeadRidged 1/3** — the Codex imagegen quota wall stopped wave 2
+after 36 of 53 jobs.
+
+Resume with `DW_WORKERS=4 python3
+src/RimStarWars/Armoury/_artsrc/desert_wraps_candidates_2026-09-09/work/gen_matrix_parallel.py`
+then `process_matrix.py` in the same folder; both skip what already exists, so
+they resume with no argument list. The 17 owed cells are the 13 remaining
+`wrap_D_weathered__*` and the 4 `head_H{1,2}_*__{north,east}`.
+
+Look at it: `/mnt/d/Luke/dev/Rimworld/Transient/DESERT_WRAPS_matrix_wave2_2026-09-18.png`
+
+Still owed after the matrix: the live in-game visual check (a DeepDesert pawn
+wearing each wrap, as a savegame review), which needs the bridge.
+
 ## Verify
 Candidates sheet reviewed by owner; picked styles produce the full
 matrix passing validate_sprite; defs load on minimal list; DeepDesert
