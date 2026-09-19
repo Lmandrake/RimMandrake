@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -43,9 +45,94 @@ namespace RimMandrake.Utinni.LanternDeeps
         public static float lanternstoneDensityMultiplier = 1f;
         public static bool deepFloraEnabled = true;
 
+        // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
+        // will be (3) but for the Utinni scenario it's definitely (1)". The
+        // biomes an entrance may scatter onto are a Mod Setting (any biome
+        // selectable); the DEFAULT is exactly the three the Utinni campaign
+        // ruled ≤ -40°C (the_lantern_deeps.md "Injection rule"), which is what
+        // both GenSteps hardcoded before this setting existed. WORLDGEN-AFFECTING:
+        // read once per map generation, so a change applies to new maps only.
+        // A name that resolves to no loaded BiomeDef is simply never matched.
+        public static readonly string[] UtinniDefaultEntranceBiomes =
+        {
+            "BiomeGRimond",
+            "RUT_NightsideIce",
+            "RUT_PropaneLake",
+        };
+
+        public static List<string> entranceBiomes = new List<string>(UtinniDefaultEntranceBiomes);
+
+        // Lazy lookup set. Invalidated explicitly by every UI edit and by
+        // ResetEntranceBiomes(); ALSO rebuilt whenever the backing list's
+        // reference or count differs from what the set was built from, because
+        // the bridge's jawa/mod_settings_field writes the static field directly
+        // and never calls a setter (BRIDGE_STATIC_SETTINGS_FIELDS_1).
+        private static HashSet<string> entranceBiomeSet;
+        private static List<string> entranceBiomeSetSource;
+        private static int entranceBiomeSetCount = -1;
+
+        public static bool IsEntranceBiome(BiomeDef biome)
+        {
+            if (biome == null)
+            {
+                return false;
+            }
+            List<string> list = entranceBiomes;
+            if (list == null)
+            {
+                return false;
+            }
+            if (entranceBiomeSet == null
+                || !ReferenceEquals(entranceBiomeSetSource, list)
+                || entranceBiomeSetCount != list.Count)
+            {
+                entranceBiomeSet = new HashSet<string>(list);
+                entranceBiomeSetSource = list;
+                entranceBiomeSetCount = list.Count;
+            }
+            return entranceBiomeSet.Contains(biome.defName);
+        }
+
+        public static void InvalidateEntranceBiomeSet()
+        {
+            entranceBiomeSet = null;
+            entranceBiomeSetSource = null;
+            entranceBiomeSetCount = -1;
+        }
+
+        public static void ResetEntranceBiomes()
+        {
+            entranceBiomes = new List<string>(UtinniDefaultEntranceBiomes);
+            InvalidateEntranceBiomeSet();
+        }
+
+        public static bool EntranceBiomesAreUtinniDefault()
+        {
+            List<string> list = entranceBiomes;
+            return list != null
+                && list.Count == UtinniDefaultEntranceBiomes.Length
+                && UtinniDefaultEntranceBiomes.All(list.Contains);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Collections.Look(ref entranceBiomes, "entranceBiomes", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                // ReadModSettings loads through Scribe_Deep.Look, which registers
+                // this object for the PostLoadInit pass, so this branch does run.
+                // Null = a settings file written before this key existed; empty =
+                // nothing useful to keep. Either way: the Utinni defaults.
+                if (entranceBiomes == null || entranceBiomes.Count == 0)
+                {
+                    ResetEntranceBiomes();
+                }
+                else
+                {
+                    InvalidateEntranceBiomeSet();
+                }
+            }
             Scribe_Values.Look(ref emergenceEnabled, "emergenceEnabled", true);
             Scribe_Values.Look(ref emergenceChanceMultiplier, "emergenceChanceMultiplier", 1f);
             Scribe_Values.Look(ref mineshaftEnabled, "mineshaftEnabled", true);
@@ -115,7 +202,99 @@ namespace RimMandrake.Utinni.LanternDeeps
                 "Off: a newly entered Deep has no mycelium carpet, no mushroom trees and no glow-fungi — "
               + "no forageable food and no cloth or wood from below. Bare rock and crystal.");
 
+            // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
+            list.Gap();
+            list.Label("World generation: entrance biomes (affects new maps only)");
+            Text.Font = GameFont.Tiny;
+            list.Label("Both entrance types can only appear on a new map whose biome is ticked below. "
+                + "Shipped default: the three Utinni deep-cold biomes. A ticked biome that is not loaded "
+                + "is ignored. Ticking none is restored to the defaults on next load; use the toggles "
+                + "above to turn entrances off.");
+            Text.Font = GameFont.Small;
+
+            List<string> selected = entranceBiomes ?? (entranceBiomes = new List<string>());
+            List<BiomeDef> biomes = AllBiomesSorted;
+            int loadedSelected = 0;
+            for (int i = 0; i < biomes.Count; i++)
+            {
+                if (selected.Contains(biomes[i].defName))
+                {
+                    loadedSelected++;
+                }
+            }
+            list.Label(loadedSelected + " of " + biomes.Count + " loaded biomes selected"
+                + (EntranceBiomesAreUtinniDefault() ? " (Utinni defaults)" : ""));
+
+            Rect buttonRow = list.GetRect(30f);
+            float buttonWidth = (buttonRow.width - 2f * 8f) / 3f;
+            if (Widgets.ButtonText(new Rect(buttonRow.x, buttonRow.y, buttonWidth, buttonRow.height),
+                "Reset to Utinni defaults"))
+            {
+                ResetEntranceBiomes();
+            }
+            if (Widgets.ButtonText(new Rect(buttonRow.x + buttonWidth + 8f, buttonRow.y, buttonWidth, buttonRow.height),
+                "Select all"))
+            {
+                entranceBiomes = biomes.Select(b => b.defName).ToList();
+                InvalidateEntranceBiomeSet();
+            }
+            if (Widgets.ButtonText(new Rect(buttonRow.x + 2f * (buttonWidth + 8f), buttonRow.y, buttonWidth, buttonRow.height),
+                "Select none"))
+            {
+                entranceBiomes = new List<string>();
+                InvalidateEntranceBiomeSet();
+            }
+            list.Gap(4f);
+
+            float usedHeight = list.CurHeight;
             list.End();
+
+            Rect outRect = new Rect(inRect.x, inRect.y + usedHeight, inRect.width,
+                Mathf.Max(inRect.height - usedHeight, 120f));
+            DrawBiomeChecklist(outRect);
+        }
+
+        private static Vector2 biomeScrollPosition = Vector2.zero;
+        private static List<BiomeDef> allBiomesSortedCached;
+
+        // DefDatabase is fixed after load, so one sorted snapshot is enough.
+        private static List<BiomeDef> AllBiomesSorted =>
+            allBiomesSortedCached ?? (allBiomesSortedCached = DefDatabase<BiomeDef>.AllDefsListForReading
+                .OrderBy(b => b.LabelCap.ToString())
+                .ThenBy(b => b.defName)
+                .ToList());
+
+        private const float BiomeRowHeight = 24f;
+
+        private static void DrawBiomeChecklist(Rect outRect)
+        {
+            List<BiomeDef> biomes = AllBiomesSorted;
+            List<string> selected = entranceBiomes;
+            Rect viewRect = new Rect(0f, 0f, outRect.width - 16f, biomes.Count * BiomeRowHeight);
+            Widgets.BeginScrollView(outRect, ref biomeScrollPosition, viewRect);
+            float y = 0f;
+            for (int i = 0; i < biomes.Count; i++)
+            {
+                BiomeDef biome = biomes[i];
+                Rect row = new Rect(0f, y, viewRect.width, BiomeRowHeight);
+                bool was = selected.Contains(biome.defName);
+                bool now = was;
+                Widgets.CheckboxLabeled(row, biome.LabelCap + " (" + biome.defName + ")", ref now);
+                if (now != was)
+                {
+                    if (now)
+                    {
+                        selected.Add(biome.defName);
+                    }
+                    else
+                    {
+                        selected.RemoveAll(n => n == biome.defName);
+                    }
+                    InvalidateEntranceBiomeSet();
+                }
+                y += BiomeRowHeight;
+            }
+            Widgets.EndScrollView();
         }
     }
 

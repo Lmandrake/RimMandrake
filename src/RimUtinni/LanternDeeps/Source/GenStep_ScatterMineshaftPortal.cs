@@ -9,9 +9,12 @@ namespace RimMandrake.Utinni.LanternDeeps
 	// counterpart to RUT_LanternDeepEmergence's natural-mouth scatter
 	// (GenStep_ScatterCavePortal). Both entrance types reach the SAME Deeps
 	// (the_lantern_deeps.md's "Injection rule"), so both are bound by the
-	// same host-biome gate; this one carries its own independent chance and
+	// same host-biome gate (LanternDeepsSettings.entranceBiomes, a Mod Setting
+	// since DEEP_ENTRANCE_BIOMES_SETTING_1, defaulting to the three Utinni
+	// deep-cold biomes); this one carries its own independent chance and
 	// its own Mod Settings toggle so the two entrance types don't compete
-	// for the same map roll or the same on/off switch.
+	// for the same map roll or the same on/off switch. Check order (toggle,
+	// then biome, then roll) is relied on by validation.py.
 	//
 	// ASSUMPTION recorded, not guessed silently: the task brief's "near
 	// existing mine/ruin sites rather than random biome scatter" is NOT
@@ -25,13 +28,6 @@ namespace RimMandrake.Utinni.LanternDeeps
 	// actual ruin/mine world sites is owed at the caverns sitting.
 	public class GenStep_ScatterMineshaftPortal : GenStep_ScatterGroup
 	{
-		private static readonly HashSet<string> AllowedBiomeDefNames = new HashSet<string>
-		{
-			"BiomeGRimond",
-			"RUT_NightsideIce",
-			"RUT_PropaneLake",
-		};
-
 		public float chancePerMap = 0.04f;
 
 		private static ThingDef mineshaftDefCached;
@@ -45,7 +41,7 @@ namespace RimMandrake.Utinni.LanternDeeps
 			{
 				return;
 			}
-			if (map.Biome == null || !AllowedBiomeDefNames.Contains(map.Biome.defName))
+			if (!LanternDeepsSettings.IsEntranceBiome(map.Biome))
 			{
 				return;
 			}
