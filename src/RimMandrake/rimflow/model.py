@@ -231,9 +231,20 @@ VERBS = {
     # FOUNDRY_QUEUE_NOT_OFFERING_READY_1). `who` is the "owner" sentinel: the item's
     # owning seat (and the human OWNER) may reclaim; nobody reclaims another seat's.
     "reclaim":   {"who": ("owner",), "req": (), "opt": ("reason",)},
-    "close":     {"who": "owner", "req": ("sha",), "opt": ()},
-    "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
-    "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
+    # 🔴 ANY SEAT MAY END AN ITEM — owner's ruling, 2026-09-19. Verbatim: *"when any
+    # queue item is found to have been completed, totally invalidated or superceded, or
+    # otherwise rendered into something no longer worthy of being considered for
+    # activity, ANY SEAT may denote this in its log, record which seat ruled this, and
+    # CLOSE it completely. Too many tickets are being left open, and this is one way to
+    # prevent that."* The seat that can SEE an item is dead is routinely not the seat
+    # that owns it, and an observation routed to the owning seat was simply never made.
+    # 🔑 The event's own `seat` field IS the record of who ruled — no new mechanism.
+    # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
+    # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
+    # removes the seat boundary, never the evidence requirement.
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason",)},
+    "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
+    "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
     # ⚠️ `note` is the HANDOFF and POLICY.md's 90% ritual instructs it by name:
     # `rimflow seat idle --reason context-exhausted --note "<where I stopped>"`.

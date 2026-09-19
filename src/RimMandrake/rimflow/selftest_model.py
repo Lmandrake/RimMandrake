@@ -144,11 +144,26 @@ def t_drop_then_ready_refused():
             "a dropped item was revived instead of a new one being filed")
 
 
-def t_cross_seat_write_refused():
+def t_cross_seat_close_is_allowed_and_attributed():
+    """Owner's ruling, 2026-09-19 — any seat ends an item it has proven dead.
+
+    ⚠️ The seat boundary still stands on every OTHER verb (`claim`, `start`,
+    `block`, `verify`, `reclaim`): those change work in flight. Only the three
+    terminal verbs opened, and the closing seat is stamped on the event.
+    """
+    w = model.replay([filed("OTHER_SEATS_ITEM_1", for_="BUILD"),
+                      ev(seat="CHECK", event="close", id="OTHER_SEATS_ITEM_1",
+                         sha="abc1234", reason="proven done")], strict=True)
+    assert w.items["OTHER_SEATS_ITEM_1"].state == "done"
+    assert w.items["OTHER_SEATS_ITEM_1"].owner == "BUILD", (
+        "closing does not transfer ownership — the ledger event carries who ruled")
+
+
+def t_cross_seat_claim_is_still_refused():
     evs = [filed("OTHER_SEATS_ITEM_1", for_="BUILD"),
-           ev(seat="CHECK", event="close", id="OTHER_SEATS_ITEM_1", sha="abc1234")]
+           ev(seat="CHECK", event="claim", id="OTHER_SEATS_ITEM_1")]
     refuses(lambda: model.replay(evs, strict=True), "belongs to",
-            "CHECK closed BUILD's item")
+            "CHECK took over BUILD's live item")
 
 
 def t_filing_for_another_seat_is_fine():
@@ -1102,12 +1117,14 @@ def t_check_reports_only_the_candidates_own_override():
     """
     p = os.path.join(TMP, "overrides.jsonl")
     model.append(filed("AN_OLD_OVERRIDE_HERE_1", for_="BUILD"), p)
-    model.append(ev(seat="OWNER", event="drop", id="AN_OLD_OVERRIDE_HERE_1",
-                    reason="an owner override from long ago"), p)
+    # ⚠️ The verb here is `claim`, not `drop`. `drop`/`close`/`supersede` became
+    # any-seat on 2026-09-19 (owner's ruling) and so no longer produce an override
+    # notice at all; this test is about the NOTICE LIST leaking history, so it needs a
+    # verb that still has a seat boundary for the OWNER to cross.
+    model.append(ev(seat="OWNER", event="claim", id="AN_OLD_OVERRIDE_HERE_1"), p)
     model.append(filed("THE_CANDIDATES_ITEM_1", for_="BUILD"), p)
 
-    model.check(ev(seat="OWNER", event="drop", id="THE_CANDIDATES_ITEM_1",
-                   reason="the candidate"), path=p)
+    model.check(ev(seat="OWNER", event="claim", id="THE_CANDIDATES_ITEM_1"), path=p)
     notices = list(model.OVERRIDE_NOTICES)
     assert len(notices) == 1, (
         "check() returned %d notices; the ledger's own history leaked into the list "

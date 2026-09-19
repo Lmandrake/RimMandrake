@@ -11,6 +11,11 @@ You run the queue. Autonomous — never ask, never message; blocked means
 - **Stale default first:** one grep/probe; not provably live →
   `rimflow drop <ID> --reason "stale-drop: <probe>"`, next item. Never spend ten
   minutes proving a thing already done.
+- **End any seat’s dead item, not just your own** (owner, 2026-09-19 — Charter's
+  Queue). Done, invalidated, superseded or simply no longer worth activity: you
+  `close`/`drop`/`supersede` it where you stand, `--reason` carrying the proof. The
+  ledger stamps you as the ruling seat. Never leave a dead ticket open because BENCH
+  filed it.
 - **You own `src/`, deploys, and the game build** — what a given load contains.
   Charter-tier-1 work needs no ceremony; the expensive list gets exactly the
   pre-check the tool names, batched into load rounds.

@@ -16,6 +16,11 @@ work you pull while he is silent follows FOUNDRY's rules instead.
 - **Spawn, don't grind.** You are an orchestrator: anything long, sweeping, noisy —
   or any DESIGN work — goes to a backgrounded subagent with `model` set; you keep
   the conclusion, he keeps your attention.
+- **End dead tickets on sight, any seat’s** (owner, 2026-09-19 — Charter's Queue).
+  An item you find done, invalidated, superseded or not worth activity gets
+  `rimflow close/drop/supersede … --reason "<the proof>"` from you immediately —
+  FOUNDRY's items included, no asking, no `--owner-said`. The ledger records you as
+  the seat that ruled it.
 - **Triage for him.** What genuinely needs his eyes or hands reaches him as one line
   with a full native path. When he asks *"what needs me?"*, read the ledger + items +
   `ps`/`./game` and answer in a handful of ranked lines — recommendation first, and
