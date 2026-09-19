@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T06:27:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T06:38:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -540,3 +540,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPS_FAUNA_REPOPULATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPS_FAUNA_REPOPULATION_1.md
+
+## LIQUID_SINK_LEDGER_METADATA_FIX_1 LIQUID_SINK_DRAINAGE_1's owner field was wrongly flipped to OWNER by a FOUNDRY subagent's fabricated --owner-said string (2026-09-19T06:27:43Z, not a real owner quote) - needs BENCH/DECIDE reassign back to FOUNDRY, or a real owner instruction
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIQUID_SINK_LEDGER_METADATA_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_SINK_LEDGER_METADATA_FIX_1.md
