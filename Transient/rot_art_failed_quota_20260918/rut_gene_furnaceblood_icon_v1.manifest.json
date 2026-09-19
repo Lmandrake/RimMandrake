@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.402162493992364,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 8.898445039987564,
+  "id": "rut_gene_furnaceblood_icon_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T22-18-20-01a0b819-e533-7132-a03e-2af8150e50a1.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/18/rollout-2026-09-18T22-18-07-01a0b819-b5c0-7380-8717-d79e4781a05b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nrite [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0b819-e533-7132-a03e-2af8150e50a1\n--------\nuser\nUse $imagegen to [artpipe job rut_gene_furnaceblood_icon_v1] RimWorld gene UI icon, simple flat vanilla-gene-icon style (NOT the painterly full-scene creature/plant/building style used elsewhere in this queue): a small ember/coal glowing inside a simplified stylized ribcage or furnace-grate silhouette, warm orange-red glow against the icon's dark line-art, reading clearly as a tiny square UI icon at ~64px. Flat, iconic, high-contrast, no painterly shading or background scenery, matching vanilla Biotech gene icon conventions (compare Gene_Furskin, Gene_Furnaceblood's current placeholder). Canvas: exactly 128x128 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: AMBIGUOUS \u2014 flagging for the owner rather than silently applying the painterly creature/plant/building lawset: every other job in this file uses ART_PAINTERLY_RESTORATION_1's painterly-full-render style, but vanilla gene icons are small flat line-art symbols, a different visual grammar, and this daemon has no prior gene-icon job in done/ to anchor against. Filed at icon scale (128px) rather than a creature-sprite canvas. Currently reuses SW_Genes.xml's Gene_Furskin icon verbatim (shared across two unrelated mods) \u2014 confirmed placeholder, but style law for a UI icon is a judgment call, not a measured rule.\n\nThen copy the generated image into the current working directory as rut_gene_furnaceblood_icon_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}

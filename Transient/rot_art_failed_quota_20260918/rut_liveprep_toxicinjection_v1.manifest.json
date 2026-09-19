@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 3.890244127018377,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.8732845350168645,
+  "id": "rut_liveprep_toxicinjection_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T22-18-35-01a0b81a-20a8-7cb2-be7e-70caacc4a944.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/18/rollout-2026-09-18T22-18-26-01a0b819-feb2-7fe1-8bfb-ab6604b872cb.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_liveprep_toxicinjection_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0b81a-20a8-7cb2-be7e-70caacc4a944\n--------\nuser\nUse $imagegen to [artpipe job rut_liveprep_toxicinjection_v1] RimWorld item sprite, painterly vanilla-RimWorld style: A taut, swollen gut-bladder sac filled with a sickly yellow-green fluid, veined, faintly pulsing, ominous rather than appetizing. Single object, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Painterly vanilla-RimWorld lawset (owner ruling ART_PAINTERLY_RESTORATION_1, 2026-09-14, Ronto exemplar) \u2014 no cartoonish/flat-cel option, heavy clean black outline required, real anatomy/structure at full resolution. NEW art, no seed sprite to reskin against, so no 'reference' field. Currently reuses the GlowGoo_A donor texture shared with several other items in this file \u2014 needs its own bladder-sac identity, visually distinct and more overtly toxic-looking than the teas/symbionts.\n\nThen copy the generated image into the current working directory as rut_liveprep_toxicinjection_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:52 PM.\n\n",
+  "worker_stdout_tail": ""
+}
