@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T08:41:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T08:44:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -990,15 +990,6 @@ kind:     task
 summary:  jawa/worldtilemapgenerate (JawaBenchSocietyTools.cs, method WorldTileMapGenerate)
 prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
 
-## WORLDGEN_CLICK_RECONCILE_1 Verify the 2026-09-12 canonical start save against what the gate docs said was owed at click time
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WORLDGEN_CLICK_RECONCILE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WORLDGEN_CLICK_RECONCILE_1.md
-
 ## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
 state:    doing
 row:      unassigned
@@ -1016,6 +1007,15 @@ target:   v1
 kind:     build
 summary:  CUTFALLOUTGENERATEDDATA1 — Load C fallout from the Caverns + Polluted Lands cuts
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
+
+## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
+state:    doing
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     defect
+summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
 
 ## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
 state:    doing
@@ -1628,16 +1628,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANONICAL_SAVE_CUT_RESIDUE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANONICAL_SAVE_CUT_RESIDUE_1.md
 
-## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
-state:    proposed
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
-
 ## DEEPS_FAUNA_VERDICTS_1 Lantern Deeps fauna verdicts: cut 7 kinds from RUT_LanternDeeps, rename 4 (Drinker, Grabber, Soulchime, Glowbulb), file 8 restyle art jobs with the owner's briefs
 state:    proposed
 row:      unassigned
@@ -1657,3 +1647,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LONGHUNGER_QUICKTEST_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
+
+## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
