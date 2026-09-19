@@ -49,7 +49,7 @@ LLM plan author (step 8). Terrain and one idea, nothing else.
 Round 3's comparator sheet (`Transient/mapgen_v3/comparator_sheet.png`) went to
 the owner and came back **FAIL — 0 of 8 premises readable**, against this
 item's own ≥3 bar. Full grade and disposition:
-`infrastructure/state/items/MAPGEN_ROUND3_VERDICT_LANDING_1.md`.
+`infrastructure/state/items/closed/MAPGEN_ROUND3_VERDICT_LANDING_1.md`.
 
 Three things this item's next round must fix, not the corpus-stats regression:
 
