@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:44:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T05:51:10Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -53,15 +53,6 @@ target:   v1
 kind:     build
 summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
 prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
 state:    doing
@@ -864,15 +855,6 @@ kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
-## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
-
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1005,7 +987,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  Needs a bridge window on the 621-mod list (flowworks + rut.patches + zylle.morevanillabiomes all required, all absent from the 26-mod pre-reboot session). Recipe recorded on the item; use jawa/colony_found on a ZBiome_Grasslands river tile, never world_tile_map_generate (blank-void trap).
+blocked:  Wiring FIXED and proven (RM_FE_Pyrelands now carries RiverSteamBiomeExtension live; map has 1301 river-terrain cells). The remaining bar is visual only and is blocked on the render-void: a map from jawa/world_tile_map_generate draws pure black while a normally-entered map on the same connection draws fine (control shot kept). refresh_rect+map_commit and the vanilla 'Regen All Map Mesh Sections' action BOTH fail to fix it, and jawa/colony_found cannot enter a map (AddNewHome generates none). Cheapest close is now the owner looking at a Pyrelands river tile in the real campaign.
 summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
@@ -1700,3 +1682,23 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  KCSG pawn symbols silently fall back to vanilla Colonist
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
+
+## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  The Systech Static Blaster lost its distinctive electric projectile
+prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
+
+## DRILL_IMPASSABLE_FILLPERCENT_1 RM_LiquidDrill logs a config error: impassable but shootable over
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
+prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
