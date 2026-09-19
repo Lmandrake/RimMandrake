@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GenStep_LiquidShores.xml                  WORLDMAP_LIQUID_TAGS_1, half 2
+  ============================================================================
+  The landing repaint: a map generated on a tile belonging to a TYPED body
+  (RM_LiquidBodyRegistry.xml) has its standing water repainted to that
+  liquid's terrain suite. On an untyped tile the step reads the tag, gets
+  null and returns having touched nothing.
+
+  ORDER 245, and the number is not arbitrary. Core's own steps:
+      210  Terrain                  <- generates the water this repaints
+      220  MutatorPostTerrain       <- mutators get their terrain edits in
+      240  RemoveTinyIslands
+    * 245  RM_GenStep_LiquidShores  <- here
+      390  Roads
+  So it runs after everything that AUTHORS terrain and before anything that
+  places structures on top of it, which means a road, a ruin or a set-piece
+  is never repainted out from under itself.
+
+  It draws no random numbers, so its position costs nothing in world
+  determinism; SeedPart is distinct from every vanilla step's purely so the
+  seed-part de-duplication in MapGenerator.GetSeedPart does not fold it in
+  with a neighbour.
+
+  Registration is via Patches/RM_LiquidShores_MapGenPatch.xml, onto the
+  shared MapCommonBase generator — the same self-gating shape
+  RUT_FungalSoilScatter already uses. That is safe precisely because the step
+  no-ops on every untyped tile.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_LiquidShores</defName>
+    <order>245</order>
+    <genStep Class="RimMandrake.FlowWorks.LiquidTypes.RM_GenStep_LiquidShores" />
+  </GenStepDef>
+
+</Defs>

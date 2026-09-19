@@ -187,6 +187,23 @@ namespace RimMandrake.FlowWorks
         public static float drillYieldChanceMultiplier = 1f;
         public static float drillUnitsPerCycle = 1f;
 
+        // ══════════════════════════════════════════════════════════════════
+        // WORLDMAP_LIQUID_TAGS_1 — TYPED WORLDMAP BODIES.
+        //
+        // ⚠️ ITS OWN CONTIGUOUS SECTION, same discipline as the blocks above.
+        //
+        //  30. typedLiquidShoresEnabled — the landing repaint. On (shipped):
+        //      a colony landing on a tile belonging to a TYPED body of water
+        //      finds that body's own liquid underfoot instead of generic
+        //      water. Off: every map generates exactly as vanilla would,
+        //      which is ALREADY what an untyped tile does — so this switch
+        //      changes nothing at all on an untyped tile and is
+        //      "worldgen-affecting" only in the sense that it decides what a
+        //      NEWLY generated map looks like. An already-generated map keeps
+        //      whatever terrain it has either way; nothing repaints
+        //      retroactively and nothing un-repaints.
+        public static bool typedLiquidShoresEnabled = true;
+
         public static float DrillUnitsPerCycle => Mathf.Max(0.05f, drillUnitsPerCycle);
 
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
@@ -233,6 +250,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidDrillingEnabled, "liquidDrillingEnabled", true);
             Scribe_Values.Look(ref drillYieldChanceMultiplier, "drillYieldChanceMultiplier", 1f);
             Scribe_Values.Look(ref drillUnitsPerCycle, "drillUnitsPerCycle", 1f);
+            // ── WORLDMAP_LIQUID_TAGS_1 (see the block above; contiguous) ───
+            Scribe_Values.Look(ref typedLiquidShoresEnabled, "typedLiquidShoresEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -245,7 +264,7 @@ namespace RimMandrake.FlowWorks
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5100f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5400f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -516,6 +535,26 @@ namespace RimMandrake.FlowWorks
             list.Label("How much a drill (or a slower tap, scaled down per building) can pull "
                      + "from the ground every 250 ticks once its outlet has room to take it. "
                      + "The reserve it draws from is finite and never comes back.");
+
+            // ══════════════════════════════════════════════════════════════
+            // WORLDMAP_LIQUID_TAGS_1 SECTION — kept whole and kept last.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Typed bodies of water");
+            Text.Font = GameFont.Small;
+            list.Label("Some named seas and lakes on the planet are made of something other "
+                     + "than plain water — brine, boiling water, liquid propane. Landing on "
+                     + "one finds that liquid underfoot instead of generic blue water. Water "
+                     + "that has not been given a type is untouched, and always was.");
+
+            list.CheckboxLabeled("Landing repaints typed water  (affects newly generated maps)",
+                ref typedLiquidShoresEnabled,
+                "On: a map generated on a tile belonging to a typed body has its lake and sea "
+              + "water repainted to that body's own liquid. Rivers are never repainted — a "
+              + "river feeding a brine sea is still fresh — and neither is shore sand. Off: "
+              + "every map generates exactly as it would without this mod. Either way, a map "
+              + "you have already generated keeps the terrain it was generated with.");
 
             list.End();
             Widgets.EndScrollView();
