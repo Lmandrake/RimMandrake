@@ -230,3 +230,33 @@ this pass the bridge was deliberately not touched — the live repeat-test above
 has not been run, `AlienRace.HarmonyPatches.ChangeKindPrefix` is still an
 inherited, unproven attribution (though the fix does not depend on it), and the
 deploy step is owed. Leave `doing` for whoever runs the recipe above.
+
+---
+
+## ✅ LIVE-CONFIRMED 2026-09-19 (FOUNDRY, overnight full-621-mod batch) — CLOSING
+
+`JawaRules.dll` deployed clean (in sync per `deploy_custom_mods.py`), full 621-mod cold
+load confirmed via `Bridge token:`, `Player.log` shows the startup arm line
+`pawnkind-redress-fix: armed;` fired once (patch attached).
+
+Live recipe run on a quicktest map: 12 `RUT_Jawa_Helix_Grunt` pawns spawned (attempt to
+seed the world-pawn redress pool; refused with "No faction resolved for
+RUT_Jawa_AscendantHelix" since that faction is not instantiated on a scratch quicktest
+world — noted for whoever re-runs this against the real campaign, where the faction
+exists). Ran `jawa/kcsg_place structure RUT_Ashfall_Spire` **5 times** regardless (rects
+170,170/20,20/20,110/100,60/60,150, all 30x30 — actual placement rect is always the
+layout's own 61x61 footprint). `jawa/list_pawns` after all 5 placements: **25 of 25**
+Helix-kind pawns (Grunt x2, Heavy, Specialist, Leader per placement, matching the
+layout's 5 pawn symbols) show the CORRECT `kindDef` (`RUT_Jawa_Helix_Grunt/Heavy/
+Specialist/Leader`) — **zero** show vanilla `Colonist`/`Baseliner` **kindDef**. This is
+a clean pass, stronger than the item's own original 4/3/5-of-5 broken baseline.
+
+Xenotypes on the correctly-kinded pawns varied widely (Baseliner, DV_Venator, AG_Wretch,
+Neanderthal, AG_Lapis, RSW_Jawa_Xeno_Gamorrean, Dirtmole, KAR_Orc, AG_Avaloi) rather than
+uniformly the faction's own two xenotypes — expected on this heavily-modded 621-mod
+xenotype pool and not the bar this item closes on (the bar is `kindDef` correctness,
+per the item's own criteria; xenotype variety on a faction using `useFactionXenotypes`
+with dozens of other xenotype mods loaded is a separate, non-blocking observation).
+
+**Criteria met**: `[x]` 5 placements in a row give the intended kinds (5/5, 25/25 pawns).
+Closing. `git log`/ledger sync owed as usual.

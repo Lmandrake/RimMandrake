@@ -110,3 +110,14 @@ off, flagging for whoever next has bridge/research time.
 `mandrake.rut.injections`, `mandrake.rm.environmentalhazards`, `mandrake.rm.weathersuite`
 all ACTIVE. `mandrake.rut.utinnipatches` is a phantom id — real id is
 `mandrake.rut.patches` (folder `UtinniPatches`), already active. Do not re-add it.
+
+## 2026-09-19 FOUNDRY (overnight full-621-mod batch) — not re-swept, time-boxed
+
+The full 621-mod list (with `LongHunger` now enabled per this item's own prior entry)
+loaded clean this session (`Bridge token:` confirmed). Did not re-run the full 29-mod
+re-check against this now-confirmed-clean load — this pass's time went to the
+live-fire batch named in the overnight brief (KCSG, Pyrelands, DEEPS_FAUNA, LiquidTags,
+AquaticGene, SettlementVerbs, BridgeMapgen, LongHunger, ResidueTriage). No mods were
+force-enabled or disabled this pass beyond what the prior `LongHunger` entry already
+recorded. Leaving this item exactly as the prior pass left it for whoever next has a
+slot to run the 29-candidate re-check for real.

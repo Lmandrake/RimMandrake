@@ -93,6 +93,19 @@ taken and released; nothing on the planet was altered.
    actually has the four biomes on it — the canonical Ash'karr save — so it is
    a cold-load item, not a minimal-list one.
 
+## ✅ 2026-09-19 FOUNDRY (overnight full-621-mod batch) — deployed, config-error-clean confirmed
+
+`FlowWorks` deployed clean this session (assembly + XML in sync, no separate deploy
+call needed — a prior window in this same overnight session already did it). Full
+621-mod cold load confirmed via `Bridge token:`. `harvest_log.py` full-log sweep shows
+**zero** config errors, exceptions or crossref failures naming `RM_LiquidBodyDef`,
+`RM_GenStep_LiquidShores`, `RM_LiquidBodyRegistry` or `RM_WorldComponent_LiquidTags` —
+the defs load clean. Per this item's own scope for this pass, **no world-tile writes
+were attempted** (the live world this session is a scratch 119,904-tile quicktest
+world anyway, not Ash'karr). The `## verify` quicktest against the real four Ash'karr
+biomes remains owed and is still a cold-load-on-the-canonical-save item, not closed by
+this pass.
+
 ## verify
 
 Read the tags back through `RM_WorldComponent_LiquidTags.TagForTile` on a tile

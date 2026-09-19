@@ -116,3 +116,16 @@ change. Committed and pushed at `a448e9657`.
 - 2026-09-19 FOUNDRY claim/start — investigated via RimSage, built
   `WildPlantAllowlist.cs` runtime enforcement, `dotnet build` clean, committed+pushed
   `a448e9657`. Left `doing` — live-quicktest proof owed.
+- ✅ **2026-09-19 FOUNDRY (overnight full-621-mod batch) — LIVE-CONFIRMED, CLOSING.**
+  `FlowWorks`/`Pyrelands` deployed clean (in sync). This scratch quicktest world has no
+  Pyrelands tile of its own (100% TemperateForest), so — since nothing about this
+  scratch world is precious — set one tile's biome directly to `RM_FE_Pyrelands` via
+  `jawa/world_tile_set` + `jawa/world_commit`, then `jawa/world_tile_map_generate` on
+  it. Switched to the new map (`jawa/set_current_map`) before censusing — a first
+  attempt without switching silently scanned the wrong (previous) map and returned a
+  false-clean 0/0 against a thing count that didn't match; corrected before trusting
+  it. On the correct map (18,563 things scanned, matching that map's own reported
+  `thingCount`): **0x `AB_SessileMechanoid`, 0x `AB_GiantStikehr`.** A sample of the
+  map's wild plants showed only `RM_FE_Plant_EmberGrass` and `RM_FE_Plant_Quickgrass`
+  — exactly Pyrelands' own two-species eviction list, nothing foreign. Clean pass.
+  Closing.

@@ -67,5 +67,31 @@ running; this pass is build-only by design). At the next natural shutdown window
 - [x] shared finalize sequence extracted, `map_commit` behaviour unchanged
 - [x] `world_tile_map_generate` runs the same sequence unconditionally before returning
 - [x] build: 0 warnings, 0 errors
-- [ ] deployed to the live game
-- [ ] live-proven: destroy/convert + re-call + screenshot with no separate map_commit
+- [x] deployed to the live game
+- [x] live-proven: destroy/convert + re-call + screenshot with no separate map_commit
+
+## ✅ LIVE-CONFIRMED 2026-09-19 (FOUNDRY, overnight full-621-mod batch) — CLOSING
+
+Deployed via `build.py --gm --apply` (the `--gm` flag was required — a plain `--apply`
+without it would have dropped 41 GM tools that were already live; caught by the
+build's own removal guard before deploying). Full 621-mod cold load confirmed via
+`Bridge token:`.
+
+`--list-tools` confirms both `jawa/do_bill_now` and `jawa/droid_format_tier` present
+and callable (each refused cleanly on a missing required param, proving they're real
+registered tools, not phantoms).
+
+Live mapgen test: generated a fresh map (`jawa/world_tile_map_generate`, tile 5000) —
+`mapFinalize.failedSteps: 0`, all 6 steps `ok`. Destroyed a plant on it
+(`jawa/destroy_batch`). Re-called `world_tile_map_generate` on the SAME tile (hits the
+`wasAlreadyGenerated=true` reuse branch) with **no separate `map_commit` call** —
+`mapFinalize.failedSteps: 0` again, all 6 steps `ok` including
+`mapDrawer.RegenerateEverythingNow`, exactly the step the original defect skipped on
+this branch. Screenshot taken
+(`Screenshots/foundry_mapgen_stale_finalize_test.png`, 2.07 MB, written this session).
+The tool's own live description string (read straight off the deployed DLL via
+`--list-tools`) additionally confirms the intended behavior is what's actually
+running: *"this now runs jawa/map_commit's own finalize sequence itself... so a
+caller no longer has to remember a separate map_commit call."*
+
+Closing.

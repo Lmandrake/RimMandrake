@@ -154,3 +154,61 @@ class this item was filed under.
 list without the 2 stale `TYR_` entries and/or ask LWM DeepStorage to purge
 its own stale cache — neither is a repo change, both are optional cleanup
 with zero urgency.
+
+## (4) 2026-09-19 FOUNDRY (overnight full-621-mod batch) — live re-confirmation + one NEW regression found and fixed
+
+Full 621-mod cold load, confirmed via `Bridge token:`. `harvest_log.py` full sweep:
+
+- **A genuinely NEW config error, caused by this item's own (1) fix**: 7 lines,
+  `Config error in RSW_{Mee,Faa,Laa,Yobshrimp,SiltLamprey,RustNipper,OpeeSeaKiller}Juv:
+  PawnKindDef defines 5 lifeStages while race def defines 2`. Root cause: the (1) fix
+  above added `Inherit="False"` to each Juv **ThingDef's** `<lifeStageAges>` (correctly
+  trimming the ThingDef to 2 stages), but the sibling **PawnKindDef's** own
+  `<lifeStages>` block (already hand-written with exactly 2 `<li>` entries, per this
+  same file's own header comment: *"PawnKindDef.lifeStages is trimmed to match (2
+  entries instead of 3)"*) had no `Inherit="False"` of its own — so it inherited its
+  parent kind's 3-stage list and APPENDED its 2, landing at 5, the same
+  List<T>-append shape as the original bug, just one field over. **FIXED**: added
+  `Inherit="False"` to all 7 `<lifeStages>` blocks in
+  `src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml`.
+  Deployed this session (`deploy_custom_mods.py --mod SWBestiary --apply`).
+  **Not yet live-re-verified** — defs are startup-parsed only, and this repo's own
+  batch-restart doctrine says don't spend a second full restart to prove one
+  def-only XML fix; it rides the next natural load.
+- **patchfail**: live count read **96** (baseline 5), not 0 as the (1) entry above
+  expected. Broken down: 75 of 96 are `[RimUtinni Patches (Jawa campaign)]
+  PatchOperationConditional(.../BMT_*/statBases) failed` (from
+  `AnimalTolerances_Ashkarr.xml`) and 10 more are the sibling
+  `[RimStarWars Patches] .../BMT_*/weaponTags failed` (from
+  `WeaponTags_Renormalise.xml`) — a large, previously-uncounted-at-this-scale wave
+  hitting dozens of `BMT_*` creature defs each. **NOT investigated further this
+  pass** (time-boxed) — flagging as the single highest-value unresolved thread from
+  this item: 85 of the 96 current patchfail lines are this one wave, from two
+  patch files each iterating the full `BMT_*` roster. The 10x `ABF`-gated fix and
+  4x `OuterRim_DroidWeapon` fix from the (1) entry above are confirmed absent from
+  this list (i.e., those two specific fixes are holding) — this is a DIFFERENT,
+  larger, not-yet-triaged wave.
+- **configerror**: live count read **160** (baseline 17). A large fraction is
+  repeating `RM_LiquidProperties does nothing beyond documenting viscosity...`
+  advisory lines (WaterDeep/WaterShallow/Marsh/slime fills etc.) which read as
+  intentional/advisory per their own text, not investigated as defects. The 7 Juv
+  PawnKindDef lines above are the one new confirmed regression; the rest of the
+  160 were not individually triaged this pass.
+- **1 DEAD MOD**: `JumppackForMeleeAI` — `Error in static constructor of
+  JumppackForMeleeAI.JumppackForMeleeAI: ... HarmonyException` (third-party mod,
+  not ours). Not investigated further — flagging only.
+- **5 DEFS DISCARDED**: all from `Absorbed_*` files (this repo's own Cherry
+  Picker/absorption output) — `Absorbed_KotorWeapons_WeaponRanged_KotOR{Bowcaster,
+  HeavyRepeater,LightRepeater}.xml` each fail on `Could not find type named
+  IgnoreConfigErrors.Ignore_ForcedMissRadius`, and
+  `Absorbed_Kotorcore_BTDKotORGravships_Gravship_{DynamicFreighter,KT400Freighter}.xml`
+  each fail on `Could not find type named SWCP.Core.ThingComps.
+  CompProperties_HideShipRoof`. Both missing types belong to donor mods/classes not
+  currently active in this mod set — these are absorbed-content files referencing a
+  class from whatever mod they were absorbed from, not currently satisfied. Worth a
+  proper investigation (is the type genuinely gone, or is this a load-order/
+  MayRequire gap in the absorbed file) but not attempted this pass.
+
+**Not pulled this pass** (time-boxed, ~250 lines of the original ~350 remain
+untouched): crossref (185), stale Scribe (105 — largely the DeepStorage/CherryPicker
+advisory noise already root-caused in (3) above, likely unchanged).
