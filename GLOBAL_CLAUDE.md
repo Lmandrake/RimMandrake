@@ -132,6 +132,17 @@ broadcast reaches windows through that same inbound socket, so `refuse` drops HI
 game-state announcements too — the one class of message that must get through. Working
 example: `D:\Luke\dev\Rimworld\.claude\hooks\block_peer_messages.py`.
 
+## Remote Control (the phone) is a protocol, and it lives in one skill — owner, 2026-09-19
+
+`claude-remote-control` (`D:\Luke\dev\claude-remote-control`, symlinked into
+`~/.claude/skills/`) is the whole record: every Claude profile launches with
+`--remote-control`, a standalone `Server` tile runs `claude remote-control`, and
+🔴 **every machine-wide RC drop in the record was a `/login` in ONE window** (MEASURED,
+4 of 4 events) — so never `/login` while other windows hold RC. An agent **cannot** turn
+RC on in itself or a peer, and relaying *"resume remote control"* to peers scored 0 of 3
+— load the skill before touching anything RC-related, and add new evidence to its
+`references/incident-log.md`, never to prose here.
+
 ## 🔴 RUN IT YOURSELF. DO NOT HAND HIM A COMMAND TO PASTE — owner's ruling, 2026-08-22
 
 > *"JUST RUN IT YOURSELF, ok? No more of this cut-paste weirdness. Make this true."*
