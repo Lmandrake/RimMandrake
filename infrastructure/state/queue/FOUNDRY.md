@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:10:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T03:36:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1717,3 +1717,33 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
+
+## MLIE_GENERATED_BIOME_COLLISIONS_1 AnimalBiomeDuplicates_Generated.xml still carries bare-donor duplicate-animal collisions for GraniteSlug x ExtremeDesert, Cannok/Sketto x AridShrubland, Falumpaset x Desert - post-Mlie-port, needs regen against current RSW_ cast
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MLIE_GENERATED_BIOME_COLLISIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MLIE_GENERATED_BIOME_COLLISIONS_1.md
+
+## SWBESTIARY_DEPLOY_STALE_1 deployed/Mods/SWBestiary is stale - 26 files behind src/, missing RSW_Scurrier/RSW_WarWyrm/RSW_Urusai and likely other recently-ported Mlie species entirely
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SWBESTIARY_DEPLOY_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SWBESTIARY_DEPLOY_STALE_1.md
+
+## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
+state:    proposed
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
