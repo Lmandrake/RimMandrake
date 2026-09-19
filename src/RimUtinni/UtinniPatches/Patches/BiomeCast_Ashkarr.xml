@@ -71,14 +71,14 @@
         <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
         <RSW_LongtailGorg>0.4</RSW_LongtailGorg> <!-- longtail gorg - ambush-small, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Ronto>0.4</RSW_Ronto> <!-- ronto - huge-herd, keep -->
-        <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
+        <RSW_Sketto>0.4</RSW_Sketto> <!-- sketto - ambush-small, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
         <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
         <RSW_IridonianReek>0.3</RSW_IridonianReek> <!-- iridonian reek - herd, import -->
         <RSW_Jimvu>0.3</RSW_Jimvu> <!-- jimvu - herd, import -->
         <RSW_Kwi>0.3</RSW_Kwi> <!-- Kwi - herd, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
-        <Skalder>0.3</Skalder> <!-- skalder - huge-herd, import -->
+        <RSW_Skalder>0.3</RSW_Skalder> <!-- skalder - huge-herd, import -->
         <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
         <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
         <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
@@ -198,7 +198,7 @@
         <RSW_Lothcat>0.8</RSW_Lothcat> <!-- loth-cat - small-runway, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <RSW_Ronto>0.8</RSW_Ronto> <!-- ronto - huge-grazer, keep -->
         <RSW_Scurrier>0.8</RSW_Scurrier> <!-- scurrier - small-runway, keep -->
-        <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
+        <RSW_Sketto>0.8</RSW_Sketto> <!-- sketto - small-runway, keep -->
         <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
         <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Massiff>0.6</RSW_Massiff> <!-- massiff - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
@@ -214,7 +214,7 @@
         <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <RSW_Pikobis>0.1</RSW_Pikobis> <!-- pikobis - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
-        <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
+        <RSW_Skalder>0.08</RSW_Skalder> <!-- skalder - huge-grazer, keep -->
         <RSW_FeralNerf>0.04</RSW_FeralNerf> <!-- feral nerf - medium-runner, keep -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
         <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
