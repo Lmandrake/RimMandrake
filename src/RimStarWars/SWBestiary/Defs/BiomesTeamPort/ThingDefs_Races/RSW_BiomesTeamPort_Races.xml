@@ -3131,8 +3131,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="BaseInsect">
     <defName>RSW_FleeceSpider</defName>
-    <label>fleece spider</label>
-    <description>Small and fluffy, these spiders have become a popular pet amongst the cavern-dwelling populace. It can be easily fed from whatever food falls onto the ground.</description>
+    <label>puffmite</label>
+    <description>A filament-tufted, faintly bioluminescent tiny arachnid, its crystalline hairs catching what little light reaches the caverns it favors. Harmless and easily fed from whatever scraps hit the floor, it has become a popular pet among cavern-dwellers despite - or because of - how little it resembles anything found on the surface.</description>
     <statBases>
       <MoveSpeed>4.4</MoveSpeed>
       <MarketValue>100</MarketValue>
@@ -3233,7 +3233,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_FleeceSpider</defName>
-    <label>fleece spider</label>
+    <label>puffmite</label>
     <race>RSW_FleeceSpider</race>
     <combatPower>70</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
@@ -5706,8 +5706,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="RSW_PollutedLands_AnimalThingBase">
     <defName>RSW_Maligoat</defName>
-    <label>maligoat</label>
-    <description>Naturally so hideous and maligned for its looks that it makes people flinch and cringe on sight, it is not often kept as a farm animal. For those that do so however, it produces milk of a high quality not seen elsewhere.</description>
+    <label>kroffa</label>
+    <description>A hardy, squat six-legged herbivore built for wasteland grazing. Its broad, low-slung barrel body rides on three pairs of short thick legs, hide overlapping in tough plates rather than fur, and its blunt insectile face works small mandible-like mouthparts around a pair of thick backward-curling horns. Docile enough to farm, and its milk is prized despite - or because of - how little the animal itself resembles anything back home.</description>
     <statBases>
       <MoveSpeed>3.9</MoveSpeed>
       <ComfyTemperatureMin>-20</ComfyTemperatureMin>
@@ -5794,8 +5794,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Maligoat</defName>
-    <label>maligoat</label>
-    <labelFemale>maligoat doe</labelFemale>
+    <label>kroffa</label>
+    <labelFemale>kroffa doe</labelFemale>
     <race>RSW_Maligoat</race>
     <combatPower>45</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
