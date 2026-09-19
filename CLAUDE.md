@@ -398,6 +398,13 @@ if you want it, look again.** ⚠️ Do not message the other window — that ch
 ⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
 lands in the same file you already read.
 
+🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
+2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch
+game, anything you need."*). Once `bridge who`/`bridge take` says it's yours, starting
+Steam, launching the game, running a cold load, anything the session needs — none of it
+needs a question first. This supersedes asking-first instincts elsewhere in this file for
+anything gated only on "do you have the bridge."
+
 `src/RimMandrake/Utils/broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
 (hook-enforced on Stop); anything he must LOOK at comes with the complete native path.
