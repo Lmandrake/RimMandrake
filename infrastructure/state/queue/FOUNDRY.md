@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T09:31:10Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-19T09:51:43Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1061,15 +1061,6 @@ target:   v1
 kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
-
-## YOBSHRIMP_DEFNAME_COLLISION_1 Two ThingDefs/PawnKindDefs both named RSW_Yobshrimp; DefDatabase silently drops one
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  YOBSHRIMPDEFNAMECOLLISION1
-prose:    infrastructure/state/items/YOBSHRIMP_DEFNAME_COLLISION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
