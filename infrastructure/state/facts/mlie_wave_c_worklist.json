@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 16,
+  "remaining_worklist_count": 1,
   "ported_and_wired_this_pass_2026-09-19_pass23": [
     "RSW_Shaak",
     "RSW_Shiro",
@@ -54,126 +54,12 @@
   ],
   "remaining_worklist": [
     {
-      "donor_defName": "TeeMuss",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Urusai",
-      "biomes": [
-        "AridShrubland",
-        "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Uvak",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Varactyl",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Voorpak",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
       "donor_defName": "Vornskyr",
       "biomes": [
         "AB_MiasmicMangrove"
       ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "WarWyrm",
-      "biomes": [
-        "ExtremeDesert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Whisperbird",
-      "biomes": [
-        "AB_MiasmicMangrove",
-        "AridShrubland",
-        "BiomeCypreJungle",
-        "COMIGO_GreaterSwamp_Tropical"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "WompRat",
-      "biomes": [
-        "AridShrubland",
-        "Desert",
-        "ExtremeDesert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Woolamander",
-      "biomes": [
-        "ZBiome_Badlands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Worrt",
-      "biomes": [
-        "AridShrubland",
-        "BiomeCypreJungle",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Wraid",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Wyyyschokk",
-      "biomes": [
-        "AB_FeraliskInfestedJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Yobshrimp",
-      "biomes": [
-        "AB_MiasmicMangrove"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Zakkeg",
-      "biomes": [
-        "AB_MiasmicMangrove"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Zeer",
-      "biomes": [
-        "Desert",
-        "ZBiome_Grasslands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true,
+      "blocked_2026-09-19": "Needs a new SW_ForceFocus AbilityDef+HediffDef+TrainableDef chain (donor AbilityDefs/SW_Abilities.xml lines ~797-887) - unlike SW_Calamity/SW_SootheSong/SW_WebShot (all already ported as RSW_ ability groups and consumed this pass), SW_ForceFocus has never been ported. Skipped this pass rather than guess the hediff shape; port it as its own small pass before Vornskyr."
     }
   ],
   "ported_and_wired_this_pass_2026-09-12_batch2": [
@@ -478,5 +364,25 @@
       }
     ],
     "note": "Runyip, Scavrat, Scurrier ported and wired. Runyip: vanilla body, no new resources (RSW_Pachydermoid_Meat/RSW_SW_Spur already existed). Scavrat: new RSW_Scavrat BodyDef (vanilla-part composition), no new resources (RSW_Leather_SoftFur/RSW_Rodentia_Meat already existed), vanilla Pawn_Rodent_* sounds. Scurrier: new RSW_Scurrier BodyDef (SWClaws -> RSW_SWClaws repoint), no new resources."
+  },
+  "ported_and_wired_this_pass_2026-09-19_pass24": {
+    "species": [
+      "TeeMuss",
+      "Urusai",
+      "Uvak",
+      "Varactyl",
+      "Voorpak",
+      "WarWyrm",
+      "Whisperbird",
+      "WompRat",
+      "Woolamander",
+      "Worrt",
+      "Wraid",
+      "Wyyyschokk",
+      "Yobshrimp",
+      "Zakkeg",
+      "Zeer"
+    ],
+    "note": "15 of 16 remaining Wave C species ported+wired in one pass (TeeMuss, Urusai, Uvak, Varactyl, Voorpak, WarWyrm, Whisperbird, WompRat, Woolamander, Worrt, Wraid, Wyyyschokk, Yobshrimp, Zakkeg, Zeer). Only Vornskyr skipped (see remaining_worklist entry). 7 new BodyDefs (Varactyl/Voorpak/WarWyrm/Worrt/Wyyyschokk/Yobshrimp/Zakkeg), all vanilla-part composition or already-ported RSW_SW_* parts/groups, no new part/group defs. New resources: RSW_Cameloid_Meat, RSW_Leather_Wraid, RSW_Leather_Zakkeg, RSW_WoolWyyyschokk, plus 8 new egg pairs (Urusai/Uvak/Varactyl/Whisperbird/Worrt/Wraid/Wyyyschokk/Yobshrimp). Three donor abilities (SW_Calamity for WarWyrm, SW_SootheSong for Whisperbird, SW_WebShot for Wyyyschokk) turned out to already be ported as RSW_ AbilityDef+HediffDef+TrainableDef groups by an earlier pass but never consumed by any species - wired to their first real consumer this pass. 5 species (Vornskyr[skipped]/Whisperbird/Wyyyschokk/Zakkeg/Zeer) have their own ArtOverride mods covering the base south/east/north facing - only extracted the facings NOT covered (Dessicated, and Whisperbird's 12 flying frames which no override touches)."
   }
 }
