@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:49:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T20:58:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## LIQUID_SINK_DRAINAGE_1 Map-edge sinks that drain a canal on purpose - the inverse of a limitless source, so liquid leaving is transferred off-map rather than destroyed and overflow stays the only exception to conservation
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/LIQUID_SINK_DRAINAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_SINK_DRAINAGE_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 

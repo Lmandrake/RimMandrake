@@ -1,34 +1,29 @@
 {
- "generatedAt": "2026-09-19T20:38:00Z",
+ "generatedAt": "2026-09-19T20:56:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 697529,
-  "sha256_12": "4d9716e401e8"
+  "bytes": 697646,
+  "sha256_12": "3a3007ad5a91"
  },
- "head": "1ef2e1e3f",
+ "head": "ce7a8b0a6",
  "counts": {
   "red": 29,
-  "blue": 847,
-  "green": 1833,
+  "blue": 849,
+  "green": 1831,
   "grey": 430,
   "unmeasured": 0,
   "total": 3139
  },
  "loc": {
   "red": 10377,
-  "blue": 350191,
-  "green": 577134,
-  "grey": 105210,
+  "blue": 352891,
+  "green": 576560,
+  "grey": 103286,
   "unmeasured": 0,
-  "total": 1042912
+  "total": 1043114
  },
  "reviewEntries": 3003,
  "recidivists": [
-  {
-   "path": "src/RimMandrake/rimflow/cli.py",
-   "loc": 2348,
-   "cycles": 3
-  },
   {
    "path": "src/RimMandrake/rimflow/selftest_model.py",
    "loc": 1214,
@@ -43,6 +38,11 @@
    "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
    "loc": 150,
    "cycles": 2
+  },
+  {
+   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+   "loc": 424,
+   "cycles": 1
   },
   {
    "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml",
@@ -67,5 +67,5 @@
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3139 files (1833 clean, 430 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3139 files (1831 clean, 430 dirty, 0 unmeasured)."
 }
