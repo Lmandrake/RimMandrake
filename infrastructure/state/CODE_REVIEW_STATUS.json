@@ -11644,10 +11644,10 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "8371cea5a2b9e1d3efec0c8e9aacc3eb7d9d103ad3470b06d48f5f8846576cdf",
-    "sha": "2f8d4a99a"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "d389fbec792c5f6fe62ce052413ca1e7fb66fd1d3dbc00956218d55c5fd0bf72",
+    "sha": "3f9a899d9"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
@@ -11662,10 +11662,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveC_Bodies.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "8c537e85b5a15853d8912a8567e81a4f5f1c6ae6706b310c2803acacea58844b",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "3ce67722b3ae45bb5bac7a5598e4b4982c195952c37a5d0887cc73a318550608",
+    "sha": "3f9a899d9"
   },
   "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
     "cleanCount": 1,
