@@ -118,7 +118,7 @@ check(name is None or ts,
       "whatever it returns carries a git timestamp, so the window has a start")
 if name:
     newest_on_disk = sorted(
-        fn for fn in os.listdir(handoff.ITEMS)
+        fn for fn in os.listdir(handoff.HANDOFFS)
         if fn.startswith(handoff.seat() + "_REBOOT_HANDOFF_") and fn.endswith(".md"))
     check(bool(newest_on_disk),
           "this seat has handoffs on disk to choose between (%d)" % len(newest_on_disk))
@@ -172,8 +172,12 @@ names = handoff.handoff_files()
 check(len(names) >= 1, "this seat has handoffs to choose between (%d)" % len(names))
 stamped = []
 for fn in names:
-    rel = os.path.join("infrastructure", "state", "items", fn)
-    ts = handoff.sh("git", "log", "-1", "--format=%cI", "--", rel)
+    # Mirror production: both paths (pre-move handoffs live in history under
+    # items/) and AM so the rename commit is not mistaken for authorship.
+    rel = os.path.join("infrastructure", "state", "handoffs", fn)
+    old_rel = os.path.join("infrastructure", "state", "items", fn)
+    ts = handoff.sh("git", "log", "-1", "--format=%cI", "--diff-filter=AM", "--",
+                    rel, old_rel)
     if ts:
         stamped.append((handoff._to_utc_z(ts), fn))
 picked_name, picked_ts = handoff.previous_handoff()
