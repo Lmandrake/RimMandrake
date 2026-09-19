@@ -486,24 +486,37 @@ natural quantisation, since a tier is a volume.
 continuum rather than a depth one, but the shape — several terrains, one substance, one gradient — is
 already established here and worth matching.
 
-🔴 **RULED — owner, 2026-09-16: "Agreed that Tar needs the viscosity most of all."** Tar is the top
-art priority of this mod. It is also the highest-leverage single fix, because tar is the defense
-spine's signature liquid (a burning tar moat) and it is the liquid currently *least* served by tinted
-water: water tinted black still ripples like water, which reads as an oil slick rather than as
-something a raider wades through. Adopt Alpha Biomes' `AB_Tar` / `AB_TarPits` surfaces first, by the
-same `MayRequire` pattern ManyWaters already uses for `AB_SlimeRamp`, and only author bespoke tar art
-if adoption cannot carry it.
+✅ **DONE — `TAR_VISCOUS_SURFACE_ART_1`.** Owner, 2026-09-16: *"Agreed that Tar needs the viscosity
+most of all."* Tar was the top art priority of this mod: the defense spine's signature liquid (a
+burning tar moat) and the liquid *least* served by tinted water — water tinted black still ripples
+like water, which reads as an oil slick rather than as something a raider wades through.
 
-🔴 **The defect: differentiation between liquids is currently a colour multiply, not a look.** Every
-in-repo liquid tints the vanilla water ramp via `<color>(R,G,B)</color>`. So **tar today is tinted
-water** — it ripples like water and reads like water — which fails the spirit of
-`slime_reads_as_viscous_not_water` and would fail the same test for tar. Real bespoke art for
-viscous liquids **exists and is adoptable but not yet adopted**: Alpha Biomes ships
-`Terrain/Surfaces/AB_SlimeRamp`, `AB_Tar` / `AB_ArtificialTar`, `AB_LiquidSlime`, `AB_PropaneLake`,
-`AB_TarPits` / `AB_TarPuddle` / `AB_TarLakes`. ManyWaters already tints `AB_SlimeRamp` for its slime
-rows under `MayRequire="sarg.alphabiomes"`, so the adoption pattern is written — it simply has not
-been applied to tar or propane. `AB_TarPits` is also recorded as placed on the frozen world across 62
-measured tiles.
+`src/RimMandrake/FlowWorks/Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml` adopts Alpha Biomes'
+tar art onto FlowWorks' own always-resolvable `RM_Fill_Tar_*` terrains via `PatchOperationConditional`
+gated on the real AB def being loaded (not a bare `MayRequire`, because `RM_Fluid_Tar`'s
+`floodTerrain` needs `temporary="true"` terrains, which `AB_Tar` — `ParentName="WaterDeepBase"` —
+does not set; pointing the FluidDef at it directly would throw ConfigErrors). Without Alpha Biomes
+the tinted-vanilla-ramp fallback still renders and floods; with it, all four fill tiers retexture to
+`Terrain/Surfaces/AB_TarDeepRamp` (the only tar ramp AB ships — it does not distinguish tar depth by
+texture either) and `recededTerrain` adopts `AB_TarMud` for the drained lakebed.
+
+**Corrected donor facts** (measured directly against Alpha Biomes 1.6 on this machine,
+`workshop/content/294100/1841354677`, packageId `sarg.alphabiomes` confirmed in its own About.xml —
+three of the four names originally cited here were wrong): `AB_Tar` and `AB_TarMud` are real
+TerrainDefs and both are adopted above. `AB_TarPits` is a **BiomeDef**
+(`1.6/Defs/BiomeDefs/Biomes_TarPits.xml`), not a paintable per-cell terrain, so it is not adoptable
+here at all — it remains a real biome that IS placed on the frozen world (62 measured tiles), which
+is a fact about biome placement, not about terrain art. `AB_TarPuddle` is a Plant ThingDef plus a
+Filth texture, not a TerrainDef. `AB_TarLakes` does not exist anywhere in Alpha Biomes 1.6.
+
+🔴 **The defect this closed: differentiation between liquids was a colour multiply, not a look.**
+Every in-repo liquid tints the vanilla water ramp via `<color>(R,G,B)</color>`. So tar was tinted
+water — it rippled like water and read like water — which failed the spirit of
+`slime_reads_as_viscous_not_water` and would fail the same test for tar. ManyWaters already tints
+`AB_SlimeRamp` for its slime rows under `MayRequire="sarg.alphabiomes"`. Propane remains unadopted —
+Alpha Biomes does ship a real `AB_PropaneLake` TerrainDef (`ParentName="WaterDeepBase"`, same
+non-`temporary` shape as `AB_Tar`), so the same conditional-retexture pattern should carry it, but
+that adoption is separate, still-open work; this item was tar only, per the owner's "Tar first."
 
 **So the authoring list shrinks to two things nothing can be adopted for** *(was four; rulings 34 and
 36 removed two on 2026-09-17)*:
