@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:32:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:35:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,6 +116,15 @@ target:   v1
 kind:     task
 summary:  (no items/CAVERNS_PARITY_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
+
+## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  ROTSIZEREJUDGEAPPLY1
+prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -532,13 +541,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  MYCOIDCOLOSSUSARTMISROUTE1
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
-
-## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  ROTSIZEREJUDGEAPPLY1
-prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md

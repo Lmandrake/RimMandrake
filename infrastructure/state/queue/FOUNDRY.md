@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:32:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:35:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -855,6 +855,15 @@ kind:     task
 summary:  FLOWWORKSBUILDPROGRAM1 — one liquid mod, built on depth
 prose:    infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md
 
+## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
+state:    doing
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     build
+summary:  the ask
+prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
+
 ## GRAFFITI_VARIANT_COUNTS_1 Graffiti variant counts are lopsided 6:2:2:2 - Scratches, TallyMarks and WarningGlyph have only 2 variants each so Graphic_Random repeats visibly on any spree; raise the three new marks toward parity (owner cut this from the visual checklist 2026-09-16, it is content work)
 state:    doing
 row:      unassigned
@@ -1531,16 +1540,6 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md
-
-## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
