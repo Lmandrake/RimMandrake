@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - moornak (grief-eater), the trio's third and
+     last entry (design/Jawa/proposals/ludicrous_livestock_deep_design.md
+     "Moornak - the grief-eater"). Built against the RICHER owner ruling
+     recorded in the item's own ledger (2026-09-10), which SUPERSEDES this
+     item's original simpler filing spec: self-tames extremely readily,
+     arrives already grief-loaded, causes a colony-wide "unsettled" hediff
+     while present, the debuff-storage mechanism is FULLY HIDDEN (no tell,
+     no research reveal - first loss teaches), a 30-day release timer that
+     goes manhunter on release, and sells-but-never-buys-back.
+
+     Mechanism: CompMoornakGrief.cs - see that file's own header for the
+     full design and its RimSage-confirmed precedents (IncidentWorker_
+     SelfTame's own candidate gate, Hediff_Scaria's own manhunter call).
+     Zero new job types.
+
+     Body/stat shape: "Small-medium, unsettling... moves in slow
+     deliberate steps" -> QuadrupedAnimalWithPawsAndTail (karrask's own
+     body - a shaggy quadruped, not karrask's armored plating), bodySize
+     0.5 sits below karrask (0.6) per beast_normalization_spec Law 1;
+     statBases/Mass stays the vanilla flat 60 per that spec's Law 2 (see
+     ThingDefs_Karrask.xml's 2026-09-09 fix note for why NOT to
+     pre-multiply by bodySize) so the engine's own StatPart_BodySize
+     produces the real ~30 kg.
+
+     tradeability Sellable (not the ThingDef default All) is the whole of
+     "sells but never buys back": TradeabilityUtility.PlayerCanSell
+     returns true for Sellable (we can sell it to a trader) while
+     TraderCanSell returns false for Sellable (a trader can never offer it
+     back to us) - confirmed via RimSage search_source against
+     Verse/TradeabilityUtility.cs, not guessed.
+
+     Art: option 3 of the owner's 3-option mockup round (PICKS.md, "moornak
+     - option 3 is the moornak"), chroma-keyed and conformed onto a 256x256
+     canvas against Onnik.png (closer subject-extent match than Karrask.png
+     - measured coverage 28.7% vs Onnik's own 30.6%, versus Karrask's 10%),
+     validate_sprite.py PASS (1 warning: a soft/faint edge consistent with
+     the shaggy matte-black hide, not a defect).
+
+     NOT live-verified this pass (offline build only, matching onnik's and
+     karrask's own precedent - see LIVESTOCK_STARTER_TRIO_1's item file). -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Moornak</defName>
+    <label>moornak</label>
+    <description>A shaggy, matte-black creature with too many small dark eyes set asymmetrically across its lowered head, moving in slow, deliberate steps. It never flinches and rarely calls out. Colonists who spend time near one report feeling strangely on edge - though nobody can say exactly why.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>320</MarketValue>
+      <Mass>60</Mass>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <uiIconScale>1.15</uiIconScale>
+    <tradeability>Sellable</tradeability>
+    <comps>
+      <li Class="RimMandrake.StarWars.Livestock.CompProperties_MoornakGrief">
+        <unsettledHediffDef>RSW_MoornakUnsettled</unsettledHediffDef>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>1</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <meatLabel>moornak meat</meatLabel>
+      <roamMtbDays>6</roamMtbDays>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Dog_Wounded</soundWounded>
+          <soundDeath>Pawn_Dog_Death</soundDeath>
+          <soundCall>Pawn_Dog_Call</soundCall>
+          <soundAngry>Pawn_Dog_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>1.5</chanceFactor>
+      </li>
+    </tools>
+    <graphicData>
+      <!-- see file header: conformed from the owner's picked mockup,
+           art/Livestock/mockups/moornak_opt3.png -->
+      <texPath>Things/Pawn/Animal/Moornak/Moornak</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.7</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>
