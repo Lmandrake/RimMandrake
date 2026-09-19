@@ -35,6 +35,17 @@
   texPath reused across all lifeStages, matching this campaign's own sea-beast
   precedent (SWBestiary/Defs/SeaBeasts) rather than inventing a facing set this
   pass owes no design gate for.
+
+  FIREHAWK_FLIGHT_BEHAVIOR_1, 2026-09-19: FireHawk's body/renderTree reverted
+  to plain vanilla Bird — the PawnRenderNodeProperties_Spastic wing-split
+  render tree (RUT_FireHawkRenderTree.xml, now deleted) shipped broken on live
+  test (no flap, misaligned/missing wing by facing) and is the wrong mechanism
+  for flying-animal animation per CLAUDE.md/generating-rimworld-sprites — a
+  whole-body flip-book (flyingAnimationFramePathPrefix) is owed instead. The
+  MaxFlightTime/FlightCooldown/flightSpeedFactor stat block below is unaffected
+  and already correct; only the animation layer was retired. texPath reverted
+  to the original complete FireHawk_<dir> art (the wing-cropped FireHawk_Body_*
+  split art is deleted with the render tree).
 -->
 <Defs>
 
@@ -97,8 +108,7 @@
       </li>
     </tools>
     <race>
-      <body>RUT_FireHawkBody</body>
-      <renderTree>RUT_FireHawk</renderTree>
+      <body>Bird</body>
       <predator>true</predator>
       <maxPreyBodySize>0.5</maxPreyBodySize>
       <baseBodySize>0.65</baseBodySize>
@@ -152,21 +162,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Body</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.1</drawSize>
         </bodyGraphicData>
