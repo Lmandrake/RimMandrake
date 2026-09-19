@@ -839,6 +839,24 @@
     "hash": "1a1d7f59ff75ba3bf6ea77432fcf326450fd9ad46c6b8e937dfca6a34f1e185c",
     "sha": "3bcf80ccf"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/CompProperties_KinMending.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "569bb114de25f32b24e8abbc06f118ed6100ca6c6faf164cb8dc0bd18fb2a0b1",
+    "sha": "113ad7131"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/CompProperties_WoundLink.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "0895115ef7a25325c88d8c133d311db5b105db3dc985b989a1cb50ae68f349b4",
+    "sha": "113ad7131"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_AlarmResponderExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "6468607f3b04536883aab57b4c9f247a47929d3162327686bbe45d2897bd1662",
+    "sha": "113ad7131"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Alert_VerminPopulationBase.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1282,6 +1300,12 @@
     "date": "2026-09-14",
     "hash": "2ffc860fe9b7013abb7fd39a54fcc72831f1df764504654fcca8abbf208c3225",
     "sha": "0dedc6cfa"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_AcceleratedRotExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "3ddbe3083b2238a9064aea288281428ccdcdf27d01c5960aff105525bf683faf",
+    "sha": "113ad7131"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs": {
     "cleanCount": 1,
@@ -1738,6 +1762,12 @@
     "date": "2026-09-14",
     "hash": "ab1de1fb4fe3a7baf0657514dd54802ce402ef464e6bd407b731a3bbc9ce7f1a",
     "sha": "3bcf80ccf"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_WarmGroundExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "63b95033b9612d16a84489d4742fb3b99a5e341826fcc54ede21031be9d5e024",
+    "sha": "113ad7131"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs": {
     "cleanCount": 2,
@@ -4469,6 +4499,18 @@
     "hash": "fce03410cf6025f5b92fa7ccfa7bbce5e2c278555f3676886620fcc5d8608804",
     "sha": "dad4e548"
   },
+  "src/RimMandrake/RimProperty/Source/HirePlaceless/FloatMenuOptionProvider_HirePlaceless.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "e943eccfb959dbdc0c8b381452db0b083ec185cc6d78fd1c71818b7591818c5a",
+    "sha": "113ad7131"
+  },
+  "src/RimMandrake/RimProperty/Source/HirePlaceless/HirePlacelessUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "43e5a4681e7710838c228ea3f4a44e86d63aad10113d36cbbc9a84300a1f5035",
+    "sha": "113ad7131"
+  },
   "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs": {
     "cleanCount": 2,
     "date": "2026-09-11",
@@ -5990,6 +6032,12 @@
     "date": "2026-09-03",
     "hash": "ffe9fe263ecaeabc99334968b28a29b783483722214399301ac1162053c6d4c5",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/repair_torn_ledger.py": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "454f52c1dad1526c858ac48d27b229ccd80ef4d656043a550c38bfbd35bc9fcd",
+    "sha": "113ad7131"
   },
   "src/RimMandrake/Utils/research_manifest_validate.py": {
     "cleanCount": 3,
