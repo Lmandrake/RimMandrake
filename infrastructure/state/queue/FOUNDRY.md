@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:43:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:50:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,6 +116,15 @@ target:   v1
 kind:     decision
 summary:  the bug
 prose:    infrastructure/state/items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md
+
+## BRIDGETOOLS_TILE_LAYER_DROPPED_1 bridgetools world-tile resolution drops layer/surface id
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     decision
+summary:  the bug, confirmed by one live read (per the 2026-09-18 decay note)
+prose:    infrastructure/state/items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    doing  (BLOCKED)
@@ -1529,16 +1538,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BRIDGETOOLS_TILE_LAYER_DROPPED_1 bridgetools world-tile resolution drops layer/surface id
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
