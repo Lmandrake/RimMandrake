@@ -15,11 +15,14 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 20,
+  "remaining_worklist_count": 17,
   "ported_and_wired_this_pass_2026-09-19_pass23": [
     "RSW_Shaak",
     "RSW_Shiro",
-    "RSW_ShiroTrap"
+    "RSW_ShiroTrap",
+    "RSW_Shyrack",
+    "RSW_Skalder",
+    "RSW_Sketto"
   ],
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
@@ -49,30 +52,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Shyrack",
-      "biomes": [
-        "AB_FeraliskInfestedJungle",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Skalder",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Sketto",
-      "biomes": [
-        "AridShrubland",
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Strill",
       "biomes": [
