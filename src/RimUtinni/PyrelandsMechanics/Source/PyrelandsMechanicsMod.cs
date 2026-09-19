@@ -55,6 +55,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public static int fireRiteGroupMin = PyrelandsTuning.FireRiteGroupMin;
         public static int fireRiteGroupMax = PyrelandsTuning.FireRiteGroupMax;
         public static float fireRiteHarvestHours = PyrelandsTuning.FireRiteHarvestHours;
+        public static int fireRiteCarryPerPawn = PyrelandsTuning.FireRiteCarryPerPawn;
 
         public override void ExposeData()
         {
@@ -81,6 +82,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Scribe_Values.Look(ref fireRiteGroupMin, "fireRiteGroupMin", PyrelandsTuning.FireRiteGroupMin);
             Scribe_Values.Look(ref fireRiteGroupMax, "fireRiteGroupMax", PyrelandsTuning.FireRiteGroupMax);
             Scribe_Values.Look(ref fireRiteHarvestHours, "fireRiteHarvestHours", PyrelandsTuning.FireRiteHarvestHours);
+            Scribe_Values.Look(ref fireRiteCarryPerPawn, "fireRiteCarryPerPawn", PyrelandsTuning.FireRiteCarryPerPawn);
 
             Scribe_Values.Look(ref furnaceBedIgnitionChance, "furnaceBedIgnitionChance", PyrelandsTuning.FurnaceBedIgnitionChance);
             Scribe_Values.Look(ref fireHawkCooldownTicks, "fireHawkCooldownTicks", PyrelandsTuning.FireHawkCooldownTicks);
@@ -199,6 +201,16 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
             list.Label("They work the burn for " + fireRiteHarvestHours.ToString("0.0") + " in-game hours");
             fireRiteHarvestHours = list.Slider(fireRiteHarvestHours, 1f, 24f);
+            // \U0001f511 THE NUMBER THAT IS THE EXPERIENCE. A party of 3-5 at the shipped
+            // 25 walks off with 75-125 scorch fruit a rite, every 6-12 days - they are a
+            // competing harvester on the player's own resource, not set dressing. That
+            // made it the one [INVENTED] rite constant with real economic weight and no
+            // way to move it (PYRELANDS_FIRE_RITE_TAKE_TUNING_1). 0 is a lawful setting:
+            // they still come, still light it, and take nothing.
+            list.Label("Each harvester carries off " + fireRiteCarryPerPawn + " scorch fruit ("
+                     + (fireRiteCarryPerPawn * fireRiteGroupMin) + "-"
+                     + (fireRiteCarryPerPawn * fireRiteGroupMax) + " a rite)");
+            fireRiteCarryPerPawn = Mathf.RoundToInt(list.Slider(fireRiteCarryPerPawn, 0f, 100f));
 
             list.End();
         }
