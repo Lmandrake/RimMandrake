@@ -1,81 +1,46 @@
 {
- "generatedAt": "2026-09-18T19:39:00Z",
+ "generatedAt": "2026-09-19T13:30:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 673175,
-  "sha256_12": "9b9de46f3e37"
+  "bytes": 698602,
+  "sha256_12": "a63e8c7814c0"
  },
- "head": "44f41d160",
+ "head": "960d911db",
  "counts": {
-  "red": 24,
-  "blue": 810,
-  "green": 1793,
-  "grey": 390,
+  "red": 31,
+  "blue": 858,
+  "green": 1830,
+  "grey": 426,
   "unmeasured": 0,
-  "total": 3017
+  "total": 3145
  },
  "loc": {
-  "red": 10661,
-  "blue": 321817,
-  "green": 588442,
-  "grey": 95732,
+  "red": 13083,
+  "blue": 349407,
+  "green": 579407,
+  "grey": 100441,
   "unmeasured": 0,
-  "total": 1016652
+  "total": 1042338
  },
- "reviewEntries": 2943,
+ "reviewEntries": 2999,
  "recidivists": [
   {
-   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
-   "loc": 122,
-   "cycles": 5
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 69,
+   "cycles": 1
   },
   {
-   "path": "src/RimMandrake/Utils/gen_pawnkind_roster.py",
-   "loc": 2986,
-   "cycles": 4
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 52,
+   "cycles": 1
   },
   {
-   "path": "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs",
-   "loc": 126,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml",
-   "loc": 1062,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
-   "loc": 486,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml",
-   "loc": 411,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml",
-   "loc": 372,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/Inhabited/Defs/PlaceDefs/Places_Inhabited.xml",
-   "loc": 139,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
-   "loc": 134,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/RimProperty/Source/PropertyTuning.cs",
-   "loc": 100,
-   "cycles": 2
+   "path": "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml",
+   "loc": 38,
+   "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3017 files (1793 clean, 390 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3145 files (1830 clean, 426 dirty, 0 unmeasured)."
 }
