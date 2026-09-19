@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T19:46:28Z",
+  "drawsize": 1.1,
+  "facing": "south",
+  "facings": [
+    "north",
+    "east",
+    "south"
+  ],
+  "id": "rut_firehawk_flying_3_south",
+  "priority": 80,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: a lean raptor of the standing burn, ash-grey plumage with deep ember-orange wing and tail feather accents, hooked dark beak, taloned feet, amber eye \u2014 the fire-hawk of the Pyrelands. FLYING POSE: wings fully spread horizontal at the widest point of the wingbeat, downstroke just beginning, full wingspan visible, mid-air, legs trailing behind. Single creature, centered, mid-air (no ground, no perch, no shadow), no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. This is frame 3 of a 5-frame wingbeat cycle \u2014 the fully spread extreme of the cycle.",
+  "reference": null,
+  "rimflow_item_id": "FIREHAWK_FLIGHT_BEHAVIOR_1",
+  "style_notes": "Match the palette and line quality of the existing grounded FireHawk_north/east/south.png art in src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireHawk/ \u2014 same ash-grey/ember-orange raptor, same painterly treatment, same heavy black outline. Also match frame 1 of this same cycle (rut_firehawk_flying_1) on palette and material so all five frames read as the same animal. Per-facing framing: south = front view, eyes and face toward the viewer; north = rear view, seen from behind, no face or eyes visible; east = side profile view. Never a top-down rotation for north/south."
+}
