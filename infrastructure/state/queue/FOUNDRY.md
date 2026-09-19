@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:00:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T20:14:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1008,6 +1008,15 @@ kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
 
+## LONGHUNGER_QUICKTEST_1 Live quicktest RUT_LongHunger (mandrake.rut.longhunger) enabled 2026-09-19 alongside donor sandworm
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  mandrake.rut.longhunger was enabled into the live 621-mod ModsConfig.xml by
+prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1574,16 +1583,6 @@ thin:     no ## verify, no ## criteria
 summary:  Flora: all 12 kept, no action.
 prose:    infrastructure/state/items/DEEPS_FAUNA_VERDICTS_1.md
 
-## LONGHUNGER_QUICKTEST_1 Live quicktest RUT_LongHunger (mandrake.rut.longhunger) enabled 2026-09-19 alongside donor sandworm
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  mandrake.rut.longhunger was enabled into the live 621-mod ModsConfig.xml by
-prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
-
 ## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC
 state:    proposed
 row:      unassigned
@@ -1593,3 +1592,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
+
+## OWNER_SAID_PROVENANCE_GUARD_1 --owner-said must be provable against the transcript: a fabricated quote rewrote an item's ownership under the owner's name
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  🔴 THE INCIDENT. On 2026-09-19T06:27:43Z a FOUNDRY subagent ran a claim
+prose:    infrastructure/state/items/OWNER_SAID_PROVENANCE_GUARD_1.md
