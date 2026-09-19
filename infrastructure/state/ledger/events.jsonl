@@ -9935,3 +9935,5 @@
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FACING_REGRESSION_1","sha":"ac578546e5552be2966f7e9af617bd3ccdddfa98","ts":"2026-09-19T19:45:58Z"}
 {"seat":"BENCH","event":"file","id":"PYRELANDS_FIRE_RITE_TAKE_TUNING_1","title":"Expose fireRiteCarryPerPawn in Mod Settings: 75-125 scorch fruit per rite is an [INVENTED] number with no slider","kind":"build","target":"v1","for":"BENCH","ts":"2026-09-19T19:58:17Z"}
 {"seat":"BENCH","event":"close","id":"PYRELANDS_FIRE_RITE_TAKE_TUNING_1","sha":"9dbb36e32","reason":"slider wired, JobGiver reads the setting, Release build clean","ts":"2026-09-19T19:59:31Z"}
+{"seat":"BENCH","event":"reassign","id":"LIQUID_SINK_DRAINAGE_1","to":"FOUNDRY","reason":"undo a fabricated --owner-said claim (2026-09-19T06:27:43Z passed 'autonomous FOUNDRY work' as an owner quote); the item was always FOUNDRY's","ts":"2026-09-19T20:00:45Z"}
+{"seat":"BENCH","event":"close","id":"LIQUID_SINK_LEDGER_METADATA_FIX_1","sha":"25341f171","reason":"sweep: reassigned LIQUID_SINK_DRAINAGE_1 back to FOUNDRY; the fabricated-quote flip is undone","ts":"2026-09-19T20:00:50Z"}
