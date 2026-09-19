@@ -99,6 +99,33 @@ namespace RimMandrake.Ninefold
         private const int TaBaaFirstContactRootedTicks = OneDayTicks * 4;
         private const int ShkaarFirstContactViolentDeaths = 3;
 
+        // NINEFOLD_LOUDNESS_FRONT_1: canon.yml `in_front`, owner ruling
+        // 2026-08-30 (canonizing the 2026-08-29 sketch): "engagement
+        // (positive or negative, per-god via the satiation tracks) makes a
+        // god LOUDER; the loudest is IN FRONT and holds the ship's actuator
+        // priority - lights, doors, subsystem behavior... The front is
+        // reckoned at each LANDING (judgement of the past map) AND can shift
+        // MID-MAP on a sufficiently violent engagement swing (a massacre, a
+        // great feast, a betrayal) - the landing judgement is the scheduled
+        // reckoning, not the only one."
+        //
+        // Loudness is engagement magnitude, and satiation IS this engine's
+        // engagement track (§9 safe core) -- so GetLoudness/GetLoudnessRank
+        // below are PURE derived reads over the existing satiation array,
+        // never a second tracked value that could drift from it. `front`
+        // (frontGod/frontReckoned) is the one piece of real state this item
+        // adds: an officiated, hysteresis-holding value that only moves at a
+        // landing or a violent swing, deliberately NOT equal to "whoever is
+        // loudest right this instant" (that live value is GetLoudnessRank()
+        // [0], available separately for anything that wants it).
+        //
+        // 🔑 Rank is READ here and only here -- this is the repo's one
+        // ranking computation for Ninefold; a consumer (e.g.
+        // ATMOSPHERIC_BASE_BUILD_PROGRAM_1) slices GetLoudnessRank() for
+        // "top two" / "third and below" rather than building its own compare.
+        private God frontGod = God.Ishko;
+        private bool frontReckoned;
+
         public GameComponent_Ninefold(Game game)
         {
             // NINEFOLD_ENUM_ORDER_SAVE_TRAP_1: cheap, checked once per game
@@ -122,6 +149,17 @@ namespace RimMandrake.Ninefold
         {
             if (lastLaunchTick == 0 && Find.TickManager != null)
                 lastLaunchTick = Find.TickManager.TicksGame;
+
+            // NINEFOLD_LOUDNESS_FRONT_1: a fresh colony (or a save from
+            // before this item shipped) has never had a landing reckoned --
+            // give it one baseline reckoning now rather than leaving GetFront
+            // null until the first real gravship landing. For a brand-new
+            // game this is a trivial judgement (all satiation at/near 0, tie
+            // broken by enum order) standing in for "no past map to judge
+            // yet"; it is overwritten by the first real Patch_GravshipLanded
+            // postfix.
+            if (!frontReckoned)
+                ReckonFrontAtLanding();
         }
 
         // Convenience accessor for the event hooks (Patch_*.cs) so every hook
@@ -137,6 +175,81 @@ namespace RimMandrake.Ninefold
 
         public SatiationBand GetBand(God god) => SatiationBandUtility.BandFor(satiation[(int)god]);
 
+        // NINEFOLD_LOUDNESS_FRONT_1: pure derived read, no new tracked state
+        // -- loudness IS engagement magnitude and satiation already IS the
+        // engagement track (canon.yml `in_front.core_src`).
+        public float GetLoudness(God god) => Mathf.Abs(satiation[(int)god]);
+
+        // Every god, loudest first, deterministic tie-break by enum ordinal
+        // (never RNG) so a repeated call with unchanged satiation is always
+        // identical. Consumers wanting "top two" (territory) or "third and
+        // below" (tremor, capped at three per
+        // ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3/4) slice this list.
+        public List<God> GetLoudnessRank()
+        {
+            var ranked = new List<God>(GodExtensions.All);
+            ranked.Sort((a, b) =>
+            {
+                int cmp = GetLoudness(b).CompareTo(GetLoudness(a)); // descending
+                return cmp != 0 ? cmp : ((int)a).CompareTo((int)b);
+            });
+            return ranked;
+        }
+
+        // The officiated front -- null only before this colony's very first
+        // FinalizeInit/landing reckoning has ever run (should not happen in
+        // practice; FinalizeInit always reckons a baseline). Distinct from
+        // GetLoudnessRank()[0]: this value only moves at a landing or a
+        // sufficiently violent mid-map swing, per canon.yml `in_front`.
+        public God? GetFront() => frontReckoned ? (God?)frontGod : null;
+
+        private God LoudestGod()
+        {
+            List<God> ranked = GetLoudnessRank();
+            return ranked[0];
+        }
+
+        // canon.yml `in_front.core_src`: "The front is reckoned at each
+        // LANDING (judgement of the past map)." Called from FinalizeInit
+        // (baseline) and Patch_GravshipLanded.cs (every real arrival).
+        public void ReckonFrontAtLanding()
+        {
+            if (!RM_NinefoldSettings.engineEnabled) return;
+
+            God loudest = LoudestGod();
+            bool changed = !frontReckoned || loudest != frontGod;
+            frontGod = loudest;
+            frontReckoned = true;
+            if (changed && Prefs.DevMode)
+                Log.Message("[Ninefold] front reckoned at landing: " + frontGod +
+                    " (loudness " + GetLoudness(frontGod).ToString("F1") + ")");
+        }
+
+        // canon.yml `in_front.core_src`: front "can shift MID-MAP on a
+        // sufficiently violent engagement swing (a massacre, a great feast,
+        // a betrayal)". EventMagnitude.Large is this codebase's own existing
+        // tag for exactly that class of event (Ta'Baa's launch, Ozzik's
+        // research breakthrough, Zizzik's mental break, Rekko's demolition --
+        // grep EventMagnitude.Large across Patch_*.cs) -- reusing it means no
+        // second, competing definition of "violent" and no new hook: every
+        // event already funnels through ApplyDelta below. `rawAmount` is the
+        // UNSCALED tag value (before eventMagnitudeMultiplier) so this reads
+        // the event's own authored weight, not a tuning slider.
+        private void MaybeFlipFrontOnViolentSwing(God god, float rawAmount)
+        {
+            if (!frontReckoned) return; // no landing yet -- FinalizeInit/the first landing sets it
+            if (Mathf.Abs(rawAmount) < EventMagnitude.Large) return;
+
+            God loudest = LoudestGod();
+            if (loudest == frontGod) return;
+
+            frontGod = loudest;
+            if (Prefs.DevMode)
+                Log.Message("[Ninefold] front FLIPPED mid-map on a violent swing (" + god +
+                    " " + rawAmount.ToString("F1") + ") -> " + frontGod +
+                    " (loudness " + GetLoudness(frontGod).ToString("F1") + ")");
+        }
+
         // The additive raise/lower hook every event-driven delta routes
         // through (§9 safe core: "all event-driven deltas... pure
         // read/compute/text. No live mutation"). `reason` is for logging/
@@ -151,6 +264,7 @@ namespace RimMandrake.Ninefold
             if (!RM_NinefoldSettings.engineEnabled) return;
 
             int i = (int)god;
+            float rawAmount = amount; // pre-multiplier, for MaybeFlipFrontOnViolentSwing
             amount *= RM_NinefoldSettings.eventMagnitudeMultiplier;
             satiation[i] = Mathf.Clamp(satiation[i] + amount, -100f, 100f);
             if (reason != null && Prefs.DevMode)
@@ -158,6 +272,8 @@ namespace RimMandrake.Ninefold
                             (amount >= 0 ? "+" : "") + amount.ToString("F1") +
                             " (" + reason + ") -> " + satiation[i].ToString("F1") +
                             " [" + GetBand(god) + "]");
+
+            MaybeFlipFrontOnViolentSwing(god, rawAmount);
         }
 
         public override void GameComponentTick()
@@ -297,6 +413,14 @@ namespace RimMandrake.Ninefold
             Scribe_Values.Look(ref nextFirstContactTick, "ninefoldNextFirstContactTick", 0);
             Scribe_Values.Look(ref violentDeathCount, "ninefoldViolentDeathCount", 0);
             Scribe_Values.Look(ref lastLaunchTick, "ninefoldLastLaunchTick", 0);
+            // NINEFOLD_LOUDNESS_FRONT_1: persist the officiated front across
+            // save/load so a mid-map flip survives a reload instead of
+            // reverting to a freshly-reckoned baseline. A save from before
+            // this item shipped has frontReckoned default to false, which
+            // FinalizeInit's `if (!frontReckoned) ReckonFrontAtLanding();`
+            // then fills in.
+            Scribe_Values.Look(ref frontGod, "ninefoldFrontGod", God.Ishko);
+            Scribe_Values.Look(ref frontReckoned, "ninefoldFrontReckoned", false);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 FromLists();
