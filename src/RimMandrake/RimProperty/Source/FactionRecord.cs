@@ -106,6 +106,35 @@ namespace RimMandrake.Property
             return false;
         }
 
+        // SETTLEMENT_VERBS_WAVE_1, social-fabric pass: the NEW write surface
+        // this pass adds — spec item 9's "bribes and bought rounds as
+        // propagation dampers." Every method above this point only ever
+        // APPENDS (RegisterWitness) or READS (GetSuspicion/
+        // HasAnyPropagatedKnowledge) entries; nothing before this pass could
+        // reduce or remove one. Reduces (never fully erases in one call,
+        // unless fraction is 1) each of `suspect`'s own entries' Confidence
+        // by `fraction` — a partial "cools it off" rather than a hard wipe,
+        // matching spec item 9's own word "dampers" rather than "erasers".
+        // Called unconditionally by the verb regardless of whether `suspect`
+        // has any entries here at all (module boundary: "Verbs ... must not
+        // know perception outcomes" — the float-menu option never queries
+        // GetSuspicion to decide whether to offer itself or to report
+        // whether the bribe "worked"; it always fires, and this method is a
+        // silent no-op when nothing matches).
+        public void DampenSuspicion(ClaimantRef suspect, float fraction, int nowTick)
+        {
+            PruneFullyDecayedEntries(nowTick);
+            fraction = Mathf.Clamp01(fraction);
+            if (fraction <= 0f) return;
+
+            for (int i = 0; i < entries.Count; i++)
+            {
+                WitnessEntry e = entries[i];
+                if (!e.Suspect.Equals(suspect)) continue;
+                e.Confidence *= (1f - fraction);
+            }
+        }
+
         public void ExposeData()
         {
             Scribe_References.Look(ref Faction, "faction");

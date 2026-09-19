@@ -77,6 +77,9 @@
     <!-- SETTLEMENT_VERBS_WAVE_1, social-fabric pass. -->
     <Compile Include="HirePlaceless\FloatMenuOptionProvider_HirePlaceless.cs" />
     <Compile Include="HirePlaceless\HirePlacelessUtility.cs" />
+    <!-- SETTLEMENT_VERBS_WAVE_1, social-fabric pass (bribes/bought-rounds). -->
+    <Compile Include="Bribe\FloatMenuOptionProvider_Bribe.cs" />
+    <Compile Include="Bribe\BribeUtility.cs" />
     <!-- Absorbed from mandrake.rm.property (BUILDING_THEFT_HAULER_1). -->
     <Compile Include="TheftHauler\DebugActions_TheftHauler.cs" />
     <Compile Include="TheftHauler\FloatMenuOptionProvider_TheftHaulUninstall.cs" />
