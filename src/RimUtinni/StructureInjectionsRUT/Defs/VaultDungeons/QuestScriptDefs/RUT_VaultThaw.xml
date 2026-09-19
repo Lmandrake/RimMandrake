@@ -5,7 +5,13 @@
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V1_RustCathedral</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V1_RustCathedral (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>3</defaultChallengeRating>
@@ -47,7 +53,7 @@ The outer works will tell you what kind of place it is before you are through th
         <!-- The tile is FIXED (no-worldgen doctrine): a literal PlanetTile on the surface layer. -->
         <li Class="QuestNode_Set">
           <name>siteTile</name>
-          <value>678</value>
+          <value>11353</value>
         </li>
         <!-- Site faction by FactionDef defName; hidden factions are fine here (SiteMaker never checks FactionCanOwn). -->
         <li Class="QuestNode_Set">
@@ -126,7 +132,13 @@ The outer works will tell you what kind of place it is before you are through th
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V2_Scorch</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V2_Scorch (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>2</defaultChallengeRating>
@@ -247,7 +259,13 @@ Smaller than the one under the Cathedral. Not safer.</li>
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V3_FallLine</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V3_FallLine (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>3</defaultChallengeRating>
@@ -368,7 +386,13 @@ Still powered. Still held.</li>
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V4_Deadstone</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V4_Deadstone (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>3</defaultChallengeRating>
@@ -472,7 +496,13 @@ There is nothing in it to carry home. There is something in it to learn.</li>
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V5_Slough</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V5_Slough (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>3</defaultChallengeRating>
@@ -576,7 +606,13 @@ No loot. Survival, and the shape of what happened.</li>
 
   <QuestScriptDef>
     <defName>RUT_VaultThaw_V6_Umbra</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V6_Umbra (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>200</minRefireDays>
     <defaultChallengeRating>4</defaultChallengeRating>
@@ -657,25 +693,36 @@ Wake them. Or take what is theirs. Or leave the door shut. The ship will remembe
 
         <!-- ============================================================
              The three-way scene. Two of the three arrive on signals no
-             vanilla QuestPart sends (see the design doc, "the C# gap"):
+             vanilla QuestPart sends natively - MapComponent_VaultSleepers
+             (built 2026-09-12) supplies them:
                site.RUT_SleepersWoken   first casket OPENED
                site.RUT_SleepersLooted  a casket BROKEN with sleepers in it
-             The XML is complete and inert until a sender exists; only
-             LEAVE can fire today. That is stated, not hidden.
              ============================================================ -->
 
-        <!-- Either touch disarms the leave branch. -->
-        <li Class="QuestNode_SendSignals">
+        <!-- Either touch disarms the leave branch. QuestNode_SendSignals has
+             no settable inSignal field of its own (VAULT_THAW_FIXED_TILES_
+             UNFIREABLE_1, 2026-09-18, header provenance) - it reads whatever
+             the AMBIENT slate "inSignal" holds, so it must be nested as the
+             `node` of a QuestNode_SignalActivable, which sets that ambient
+             var to its own trigger while running `node`. Same shape as the
+             LEAVE branch below, just with a different inSignal/node. -->
+        <li Class="QuestNode_SignalActivable">
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
           <inSignal>site.RUT_SleepersWoken</inSignal>
-          <outSignals>
-            <li>SleepersTouched</li>
-          </outSignals>
+          <node Class="QuestNode_SendSignals">
+            <outSignals>
+              <li>SleepersTouched</li>
+            </outSignals>
+          </node>
         </li>
-        <li Class="QuestNode_SendSignals">
+        <li Class="QuestNode_SignalActivable">
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
           <inSignal>site.RUT_SleepersLooted</inSignal>
-          <outSignals>
-            <li>SleepersTouched</li>
-          </outSignals>
+          <node Class="QuestNode_SendSignals">
+            <outSignals>
+              <li>SleepersTouched</li>
+            </outSignals>
+          </node>
         </li>
 
         <!-- WAKE: the reversal arrives in dialogue (canon.yml rakata.woken_brutality, verbatim line). -->
