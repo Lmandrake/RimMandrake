@@ -19,10 +19,16 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
+    <li>
+      <!-- DEEP_DULCIS_DEDUP_1: dulcis harvest now yields RotSporeKit's RUT_RawDulcis. -->
+      <packageId>mandrake.rut.rotsporekit</packageId>
+      <displayName>RimUtinni: Rot Spore Kit</displayName>
+    </li>
   </modDependencies>
 
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rut.rotsporekit</li>
     <!-- CAVERNS_PARITY_BUILD_1: the donor is on the cut path; this entry only orders
          us after it while it is still installed. Nothing here references it. -->
     <li>BiomesTeam.BiomesCaverns</li>

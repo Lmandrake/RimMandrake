@@ -34,7 +34,7 @@
     <settlementSelectionWeight>0</settlementSelectionWeight>
     <movementDifficulty>0.5</movementDifficulty>
     <forageability>0.5</forageability>
-    <foragedFood>RUT_DeepRawDulcis</foragedFood>
+    <foragedFood>RUT_RawDulcis</foragedFood>
     <wildPlantRegrowDays>5</wildPlantRegrowDays>
     <disableShadows>true</disableShadows>
     <disableSkyLighting>false</disableSkyLighting>
