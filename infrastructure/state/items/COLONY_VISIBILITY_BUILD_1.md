@@ -313,3 +313,76 @@ to reset it to a lower band did not register in the log; low-stakes since
 in-game state is disposable per standing doctrine, but worth a note for
 whoever next reads the live dial. Left `doing` — the Prefix live-check
 criterion is now met; the tile-memory live-check criterion is not.
+
+## 2026-09-19 (FOUNDRY) — tile-memory round trip LIVE-PROVEN, item closed
+
+The remaining gap (six prior passes over three weeks) was a live proof that a
+real gravship launch records tile-memory on departure and a real arrival
+restores it. Every prior pass concluded no debug shortcut existed for a
+player gravship launch, checking only the debug-action tree. **That
+conclusion was wrong** — `jawa/gravship_launch`/`jawa/gravship_land`
+already existed as closed, proven tools (`GRAVSHIP_LAUNCH_TRAVEL_1`,
+2026-08-27) and call the real vanilla path
+(`WorldComponent_GravshipController.InitiateTakeoff` → `GravshipUtility.
+GenerateGravship`, and — confirmed via RimSage source read,
+`Gravship.TickInterval` — `ArriveExistingMap`/`ArriveNewMap` fire
+automatically once world-travel ticks complete, no landing confirmation
+needed for the arrival hook itself). Both are exactly the methods this
+item's Harmony patches (`Prefix_RecordTileMemoryOnLaunch`,
+`Postfix_ApplyTileMemoryOnArrival`) are patched onto.
+
+Built two small read/seed bridge tools (`jawa/visibility_report`,
+`jawa/visibility_seed_tile_memory`; `cd50c47d3`, `2eca56cd8` — a same-session
+duplicate-tool collision with a background fork happened and self-resolved
+mid-pass, see the ledger note on this item, no data lost) and reused
+`prove_gravship.py`'s already-proven minimal-ship recipe (adapted for a
+vanilla, non-VGE mod list: `ChemfuelTank` is itself a facility with
+`CompRefuelable`, no astrofuel pipe network needed — `DEV: Set fuel to max`
+refuels it directly). Custom 9-mod test tier: `brrainz.rimbridgeserver` +
+`mandrake.rm.visibility` + all DLC (`modset_builder.py`'s new `visibility`
+tier, filed by the background fork this same pass).
+
+### Live proof 1 — departure (real launch, real tile)
+Built a minimal flyable ship on a quicktest map, launched for real to a
+neighbouring tile. `jawa/visibility_report` before/after:
+- Pre-launch dial: **10.0**. Recorded memory for the origin tile: **10.0**,
+  exact match — `Prefix_RecordTileMemoryOnLaunch` fires on a real
+  `GenerateGravship` call and records the correct pre-reset value.
+- Post-launch dial: **5.0** (Ta'Baa reset, within the ruled 5-15 floor).
+- Arrival at the (memory-less) destination tile restored nothing — correct,
+  a dictionary miss is a no-op.
+
+### Live proof 2 — arrival restore (real postfix, seeded data)
+Vanilla marks an abandoned origin permanently unlandable (a `GravshipLaunch`
+world object at the tile — confirmed via `jawa/world_objects_get`), so a real
+round trip back to a tile the SAME ship departed cannot be flown. Seeded a
+synthetic memory (`jawa/visibility_seed_tile_memory`, visibility 80.0, 0
+ticks ago) for a tile about to be launched to — same "sealed room" pattern
+as `LIQUID_SINK_DRAINAGE_1`'s driver-API test, real wiring under test, only
+the input data manufactured. Fresh minimal ship, real launch, real travel,
+real `ArriveNewMap` postfix (unmodified):
+```
+PROVE    seed tile T's memory at 80.0/0-ticks-ago, real-launch to T, real-travel,
+         real-land; read jawa/visibility_report before vs after.
+EXPECT   dial rises from the 5-15 post-launch-reset range to ~80 (DecayedTileVisibility
+         at ~860 ticks elapsed is ~79.9, negligible decay).
+LIES     a false pass would be the dial matching by coincidence of the reset range
+         alone -- ruled out by seeding a value (80) far outside 5-15 and by predicting
+         the exact number BEFORE looking, then checking within 1.0.
+```
+Result: dial rose to **79.96**, band **Marked**, matching the pre-stated
+prediction (**80.00 - decay ≈ 79.9469**) within 0.04. A second, independent
+memory entry (the real 10.0 recorded on THIS launch's own departure) sits
+alongside it in the report, unaffected — confirms the restore targeted the
+right dictionary key, not every entry.
+
+## status — CLOSED, 2026-09-19 (FOUNDRY)
+
+Both halves of the tile-memory round trip are now live-proven, closing the
+one gap this item was left open for. Everything else this item's own history
+already named as out of scope stays out of scope: `VisibilityToThreatCurve`'s
+anchor points are untuned (§5's tuning protocol not run), the other design-doc
+raise/lower hooks are unwired, `ShkaarEscalationMultiplier` has no setter, and
+F17's reign-calendar/band-crossing-letter pieces wait on Ninefold's unbuilt
+signed-letter infrastructure (`NINEFOLD_ENGINE_M0_1`) — none of that was ever
+this item's own bar.
