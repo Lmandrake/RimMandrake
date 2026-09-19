@@ -36,9 +36,17 @@ those defs any more — but they are gone from the repo, so the two must eventua
 agree. Removing them is **621 → 617 active mods**, a Charter expensive-list action on
 his live game that he has not asked for, so it was left.
 
-⚠️ Whoever does it: remove the folders AND the `activeMods` entries together. A
-folder removed alone leaves a dangling entry; an entry removed alone leaves an
-orphan folder that still wins same-path texture resolution.
+⚠️ Remove the folders AND the `activeMods` entries together — but for tidiness, not
+safety. ⛔ **An earlier version of this line claimed an orphan folder "still wins
+same-path texture resolution". That is FALSE and is deleted:** RimWorld loads only
+the mods in `activeMods`, so a folder left behind after its entry is removed
+contributes no textures at all. It is inert clutter, and the only real risk is
+someone re-activating it by hand later.
+
+**STATE 2026-09-19:** FOUNDRY took this on and removed the four `activeMods`
+entries — MEASURED 617 active, down from 621, parsed (not scanned) from
+`ModsConfig.xml`. The four folders are still present in the live `Mods/` directory
+and are harmless as above.
 
 ## owed — mechanics, dropped with the donor frameworks
 
