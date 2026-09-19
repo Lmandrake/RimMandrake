@@ -1,71 +1,30 @@
 {
- "generatedAt": "2026-09-19T20:56:00Z",
+ "generatedAt": "2026-09-19T21:27:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 697646,
-  "sha256_12": "3a3007ad5a91"
+  "bytes": 730879,
+  "sha256_12": "63dad7a7e429"
  },
- "head": "ce7a8b0a6",
+ "head": "cd50c47d3",
  "counts": {
   "red": 29,
-  "blue": 849,
-  "green": 1831,
-  "grey": 430,
-  "unmeasured": 0,
+  "blue": 845,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 2265,
   "total": 3139
  },
  "loc": {
   "red": 10377,
-  "blue": 352891,
-  "green": 576560,
-  "grey": 103286,
-  "unmeasured": 0,
-  "total": 1043114
+  "blue": 347517,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 683074,
+  "total": 1040968
  },
  "reviewEntries": 3003,
- "recidivists": [
-  {
-   "path": "src/RimMandrake/rimflow/selftest_model.py",
-   "loc": 1214,
-   "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
-   "loc": 378,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
-   "loc": 150,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
-   "loc": 424,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml",
-   "loc": 69,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml",
-   "loc": 52,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml",
-   "loc": 38,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/MycoidColossusArtOverride/About/About.xml",
-   "loc": 32,
-   "cycles": 1
-  }
- ],
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": true,
- "headline": "OK: measured 3139 files (1831 clean, 430 dirty, 0 unmeasured)."
+ "measurementOk": false,
+ "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
 }

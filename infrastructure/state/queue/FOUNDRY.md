@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T21:31:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T21:43:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/structureinjectionroster.md (the content
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
-
-## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
-prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 ## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
 state:    doing  (BLOCKED)
@@ -1031,16 +1022,6 @@ kind:     build
 blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  threat-point Prefix criterion MET (09-13 proof, code-parity reconfirmed); tile-memory round trip still needs a real gravship flight - no debug shortcut exists, full build is FOUR-GATES multi-hour work, not attempted solo this pass
-summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
-prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 ## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
 state:    doing  (BLOCKED)
