@@ -188,7 +188,18 @@
     </descriptionHyperlinks>
     <jobString>Removing implant dock.</jobString>
     <removesHediff>guy762_BionicHediff_implantIII</removesHediff>
-    <workerClass>RemoveImplantForcibly.Recipe_RemoveImplantForcibly</workerClass>
+    <!-- workerClass RemoveImplantForcibly.Recipe_RemoveImplantForcibly REMOVED
+         2026-09-19 (WEAPONS_DONOR_RETIREMENT_1, live cold load). That class
+         belongs to the third-party "Remove Implant Forcibly" mod, which is not
+         installed anywhere on this machine (searched the whole Workshop tree,
+         zero hits) — so the field resolved to null and the live load reported
+         "Config error in guy762_RemoveHediff_implantIII: workerClass is null",
+         which means the recipe would throw the moment a surgeon took it.
+         Its two siblings, guy762_RemoveHediff_implantI and _implantII in the
+         neighbouring Dock1/Dock2 files, declare no workerClass at all and
+         inherit SurgeryRemoveImplantBase's — this one now matches them.
+         ⚠️ If that mod is ever added, restore the line: the forcible removal
+         it provides is the flavour this recipe's own description promises. -->
     <deathOnFailedSurgeryChance>5</deathOnFailedSurgeryChance>
   </RecipeDef>
 
