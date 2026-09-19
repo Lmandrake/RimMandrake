@@ -66,15 +66,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>GravTech</li></mods>
-    <match Class="PatchOperationReplace">
-      <!-- it pushes, it does not shoot bolts -->
-      <xpath>/Defs/ThingDef[defName="Turret_GravBlaster"]/label</xpath>
-      <value><label>grav shockwave turret</label></value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Laser Cannon</li></mods>
     <match Class="PatchOperationReplace">
       <!-- Rakatan relic group; "Laser Cannon" said nothing -->

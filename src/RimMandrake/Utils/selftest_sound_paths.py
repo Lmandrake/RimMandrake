@@ -36,6 +36,14 @@ VANILLA_PACKED = {
     "Building/MechanoidRelayIdle_A": "vanilla MechanoidRelay_Ambient",
     "Buildings/MechanoidStabilizerIdle_A": "vanilla MechanoidStabilizer_Ambient",
     "Misc/AncientVent_A": "vanilla AncientVent_Ambient",
+    # LanternDeeps RUT_DeepHum / RUT_DeepChorus (DEEPCALM_AMBIENT_SOUND_1,
+    # 7c0f81401). Both ship in ANOMALY, packed in Data/Anomaly/AssetBundles/,
+    # so no loose-file walk can ever see them; verified verbatim against the
+    # donor SoundDefs via RimSage 2026-09-18 -- Ambient_Undercave's grain is
+    # `Ambience/Undercave/Undercave_Ambience_Loop_A` and VoidNode_Ambient's is
+    # `Building/VoidNode/VoidNode_Ambience_Loop_A`, character for character.
+    "Ambience/Undercave/Undercave_Ambience_Loop_A": "Anomaly Ambient_Undercave",
+    "Building/VoidNode/VoidNode_Ambience_Loop_A": "Anomaly VoidNode_Ambient",
 }
 
 

@@ -262,11 +262,21 @@ would have broken its hard dependency at the next load. All 4 recorded in
 ported def does), which removes the `QUICKTEST_POSTSETUP_CRASH_1` self-loop
 at the source instead of patching around it. Stale `forceLoadAfter`/
 `loadAfter` entries for the 3 donors cleaned from `MandrakePatches`/
-`ResearchRetag` `About.xml`. Left Armoury's `loadAfter` alone —
-`Turrets_Renames.xml`/`Turrets_DamageDoctrine.xml` still carry live
-`PatchOperationFindMod("GravTech"/"GravTech - Big cannons")` guards that
-become harmless no-ops, same pattern as every other retired-donor compat
-guard already in this repo.
+`ResearchRetag` `About.xml`. Left Armoury's `loadAfter` alone.
+
+🔴 **The 3 dead `PatchOperationFindMod` blocks are DELETED** (2026-09-18,
+SELFTEST_FAILURE_TRIAGE_1) — `Turrets_Renames.xml` (1: `Turret_GravBlaster`
+label) and `Turrets_DamageDoctrine.xml` (2: the `GravTech` beam-repeater
+sequence and the `GravTech - Big cannons` projectile sequence). They were
+left in on the reasoning that they "become harmless no-ops, same pattern as
+every other retired-donor compat guard already in this repo", and BOTH halves
+of that were wrong: `selftest_retired_mods.py` exists precisely to refuse this
+shape (a generator re-run silently re-emits such blocks —
+`ARMOURY_LEATHER_GEN_DESYNC_1`), and it scanned 1422 XML files and found
+**these 3 and nothing else**, so there was no such existing pattern to match.
+Nothing outside the deleted blocks referenced anything they defined
+(`RSW_Jawa_TD_Turret_BeamRepeater` was declared and consumed inside one block);
+git holds the numbers if GravTech ever returns.
 
 **Deployed**: `deploy_custom_mods.py --apply` (ResearchRetag: 8 files;
 MandrakePatches `--prune`: 2 files, deletes the deployed copy of the fix file

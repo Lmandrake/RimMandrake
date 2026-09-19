@@ -137,9 +137,13 @@ def vanilla_probes() -> list[dict]:
     sys.path.insert(0, str(common.REPO_ROOT / "src" / "RimMandrake" / "Utils"))
     import gen_plant_register as GPR  # noqa: E402
     import sqlite3
+    # The LocalLow locator is game_paths.py's job and only its job (the
+    # ONE_PATH_SEAM rule): DUMP_ROOT, not DEF_DUMP, because defs.sqlite sits
+    # at the top of DefDump/ while DEF_DUMP resolves to the newest capture
+    # directory underneath it.
+    import game_paths  # noqa: E402
 
-    dumpdb = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                   "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+    dumpdb = Path(game_paths.DUMP_ROOT) / "defs.sqlite"
     if not dumpdb.is_file():
         print(f"  vanilla_probes: no live DefDump at {dumpdb} — probes skipped "
               f"(UNMEASURED, not zero)", file=sys.stderr)
