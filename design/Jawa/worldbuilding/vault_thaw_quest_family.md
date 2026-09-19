@@ -1,4 +1,7 @@
-<!-- status: built-offline + WAKE/LOOT sender built 2026-09-12, live quicktest still owed -->
+<!-- status: built-offline + WAKE/LOOT sender built 2026-09-12; VAULT_THAW_FIXED_TILES_UNFIREABLE_1
+     fixed 2026-09-18 (V1 re-sited off an Ocean tile, V6's SendSignals wiring, both
+     quests' isRootSpecial/rootSelectionWeight config error) - live quicktest and
+     re-fire still owed -->
 # The vault thaw quest family — what makes the six Forsaken vaults play
 
 > **Scope.** `VAULT_THAW_QUEST_FAMILY_1`. The six vault layouts exist
@@ -53,10 +56,21 @@ Antiquities CARTOGRAPHY. The family honours both without inventing a third:
   reading gives the place, *the ship gives the name it has not said in an
   age*. Cradle-register only where canon allows (one word "in the
   Cradle-register" for V6; "Kolyska" is never spoken to the player here).
-- **Firing route: the natural pool** (`rootSelectionWeight 1.0`) behind the
-  gate, plus a named `IncidentDef` per quest (`RUT_GiveQuest_VaultThaw_V#`,
-  `baseChance 0`) so a dev-mode or bridge trigger exists — never "wait for
-  the storyteller".
+- **Firing route: the named `IncidentDef` only** (`RUT_GiveQuest_VaultThaw_V#`,
+  `baseChance 0`) — dev-mode or a bridge trigger, never "wait for the
+  storyteller". **Corrected 2026-09-18, `VAULT_THAW_FIXED_TILES_UNFIREABLE_1`:**
+  this section originally said "the natural pool (`rootSelectionWeight 1.0`)
+  … plus a named `IncidentDef`" — both at once. That combination is a hard
+  vanilla `ConfigError` (`IncidentDef.cs:235`, *"quest is run from both
+  incident and random quest"*, the instant an `IncidentDef.questScriptDef`
+  points at a def whose own `rootSelectionWeight != 0`), confirmed by a live
+  load and by reading `IncidentDef.ConfigErrors()` directly — not a style
+  nit, the two firing routes cannot coexist on one def in this engine. All
+  six vault-thaw quests and V6 now carry `isRootSpecial=true`,
+  `rootSelectionWeight=0`, matching `RUT_VaultClaimConflict`/`RUT_Reclamation`
+  below, `KyberTradePlot`'s incident-fired quests, and vanilla Core's
+  `Script_EndGame_ShipEscape`. The CARTOGRAPHY/VOICE research gates below are
+  unaffected — they still gate the incident's own `TestRun`.
 - **Once at a time, and re-remembered slowly.** `QuestNode_QuestUnique` blocks
   a second ongoing copy; `minRefireDays 120` (V6: 200). A once-EVER gate is
   not expressible in XML: `QuestNode_GetSameQuestsCount` reads

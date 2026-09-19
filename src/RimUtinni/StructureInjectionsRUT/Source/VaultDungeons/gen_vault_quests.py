@@ -44,6 +44,28 @@ was read in decompiled 1.6 source (rimsage) or vanilla Data on 2026-09-05:
     accept gate.
   QuestNode_QuestUnique { tag } - blocks a second ONGOING copy only.
   QuestNode_SignalActivable { inSignal, inSignalEnable, inSignalDisable, node }.
+    VAULT_THAW_FIXED_TILES_UNFIREABLE_1, 2026-09-18: QuestNode_SendSignals has
+    NO settable inSignal field (only outSignals/outSignalsFormat/
+    outSignalsFormattedCount - confirmed against RimWorld.QuestGen.
+    QuestNode_SendSignals.RunInt(), which reads QuestGen.slate.Get<string>
+    ("inSignal"), the AMBIENT slate var, not a field on itself). A bare
+    <inSignal> on QuestNode_SendSignals is silently DISCARDED at load (no
+    error - Def loader ignores an unknown field name) and the node fires on
+    whatever "inSignal" already holds at that point in the sequence, i.e. the
+    quest's accept signal - never the casket signal named in the XML. The fix
+    is QuestNode_SignalActivable, whose RunInt() calls QuestGenUtility.
+    RunInnerNode(node, ...), which temporarily SETS the ambient slate
+    "inSignal" to its own completion signal before running `node` - so a
+    QuestNode_SendSignals nested as `node` with no inSignal of its own
+    correctly inherits the wrapper's trigger. QuestPartActivable.
+    Notify_QuestSignalReceived (RimWorld/QuestPartActivable.cs:221) also
+    means a QuestNode_SignalActivable with no inSignalEnable set falls back
+    (QuestNode_SignalActivable.cs's RunInt) to the ambient "inSignal", but
+    state starts NeverEnabled (QuestPartState.cs, enum default 0) and never
+    transitions without a real inSignalEnable signal firing - so every
+    QuestNode_SignalActivable in this file sets inSignalEnable explicitly
+    (site.MapGenerated for the vault branches) rather than relying on that
+    fallback.
   QuestNode_Delay { inSignalEnable, delayTicks, outSignalComplete, node }.
   QuestNode_Incident { inSignal, incidentDef } -> QuestPart_Incident; with a
     GiveQuest incident, IncidentWorker_GiveQuest.TryExecuteWorker generates
@@ -65,6 +87,19 @@ was read in decompiled 1.6 source (rimsage) or vanilla Data on 2026-09-05:
   Building_AncientCryptosleepCasket.EjectContents gives AncientsHostile
     contents a LordJob_AssaultColony(canTimeoutOrFlee: true) - the woken
     fight, and flee when losing; Designator_Open has no faction check.
+  IncidentDef.ConfigErrors() (RimWorld/IncidentDef.cs:235-237): "quest is run
+    from both incident and random quest" the instant questScriptDef != null
+    AND that def's own rootSelectionWeight != 0 - a hard vanilla rule, not a
+    style nit. VAULT_THAW_FIXED_TILES_UNFIREABLE_1, 2026-09-18: all six vault
+    quests + V6 shipped rootSelectionWeight=1.0 (meant to sit in "the natural
+    pool", design doc SS1.1) *and* a named GiveQuest IncidentDef each - the
+    exact combination this check refuses. The two firing routes are mutually
+    exclusive in this engine; there is no way to keep both. Matches the
+    established local pattern (RUT_VaultClaimConflict/RUT_Reclamation below,
+    KyberTradePlot's RUT_KyberHomesteadVisit/RUT_KyberDonationSmuggle, and
+    vanilla Core's Script_EndGame_ShipEscape): isRootSpecial=true,
+    rootSelectionWeight=0 - fires ONLY through its own incident. Design doc
+    SS1.1 corrected to match.
 
 Run: python3 gen_vault_quests.py
 """
@@ -75,9 +110,31 @@ DAY = 60000
 
 # ---------------------------------------------------------------------------
 # The six sites - RULED (dungeons_arc_spec.md SS3.2, VAULT_DUNGEON_BUILD_1).
+#
+# V1's tile was RE-SITED 2026-09-18 (VAULT_THAW_FIXED_TILES_UNFIREABLE_1):
+# the originally ruled tile=678 read biome=RUT_RustCathedral/water=0 (land)
+# in world/ASHKARR_WORLDMAP_tiles.csv (the 2026-09-12 frozen export, same day
+# as the frozen start save) but jawa/world_tile_get against the live
+# campaign confirmed it biome=Ocean, waterCovered=true on 2026-09-18 - a
+# land dungeon site cannot generate there, and Util_GenerateSite/SiteMaker
+# never retries a failed tile. Something painted ocean over this tile AFTER
+# the 2026-09-12 freeze (no re-export of the CSV records it); a fresh bridge
+# session that day had a different world loaded (not the Ash'karr campaign),
+# so the live water state of a REPLACEMENT could not be re-confirmed in that
+# same pass either. Replacement tile=11353: the nearest tile in the CSV's
+# own 236-tile RUT_RustCathedral cluster to the original 678 (dist 1.45 deg
+# in lat/lon; elev 625m/temp 60.6C, essentially identical to 678's 624m/
+# 60.7C), confirmed settlement-free against ASHKARR_WORLDMAP_settlements.csv.
+# ⚠️ OWED, not yet done: live-reconfirm 11353 is still land before treating
+# V1 as proven fireable - the CSV has now been shown capable of drifting
+# from the live/frozen world at least once, on this exact tile. The
+# AncientGarrison landmark ("somebody defended this once") stays recorded at
+# 678 in ASHKARR_WORLDMAP_landmarks.csv and is now decoupled from the site
+# tile; moving or duplicating it is a world-authoring action out of this
+# defect fix's scope, flagged for whoever next holds world-edit + bridge.
 # ---------------------------------------------------------------------------
 VAULTS = [
-    dict(id="V1", slug="RustCathedral", tile=678, vtype=1, rating=3,
+    dict(id="V1", slug="RustCathedral", tile=11353, vtype=1, rating=3,
          place="the Rust Cathedral", region="under the substellar glare",
          name="The Vault That Held: Rust Cathedral",
          desc=("The reading gave up a place, and the ship gave up a face for it. Under the "
@@ -288,7 +345,13 @@ def vault_quest(v):
     tag = f"RUT_VaultThaw_{v['id']}"
     body = f"""  <QuestScriptDef>
     <defName>{defname}</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_{defname.replace('RUT_', '')} (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>120</minRefireDays>
     <defaultChallengeRating>{v['rating']}</defaultChallengeRating>
@@ -358,7 +421,13 @@ def v6_quest():
                   "the ones who opened it.")
     body = f"""  <QuestScriptDef>
     <defName>{defname}</defName>
-    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <!-- Fires ONLY through RUT_GiveQuest_VaultThaw_V6_Umbra (IncidentDefs_Vaults.xml).
+         rootSelectionWeight 1.0 alongside a named GiveQuest incident is a hard
+         vanilla ConfigError ("quest is run from both incident and random
+         quest", IncidentDef.cs:235) - VAULT_THAW_FIXED_TILES_UNFIREABLE_1,
+         2026-09-18. Same shape as RUT_VaultClaimConflict/RUT_Reclamation below. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <minRefireDays>200</minRefireDays>
     <defaultChallengeRating>{v['rating']}</defaultChallengeRating>
@@ -386,25 +455,36 @@ def v6_quest():
 {letter("Arrived: the Umbra vault", "Dark. Frost on every surface, thick enough to write in. The turrets on the ring are here, and they are asleep with everyone else - nothing in this place has drawn power in an age. At the core, a plinth with a socket the shape of a persona core, and beyond it, caskets.\\n\\nFeed the heart and the ring wakes with the hall. Open a casket and the war generation wakes with it. Break one and you have decided for them. Or shut the door and go; the ship will know which.", in_signal="site.MapGenerated")}
         <!-- ============================================================
              The three-way scene. Two of the three arrive on signals no
-             vanilla QuestPart sends (see the design doc, "the C# gap"):
+             vanilla QuestPart sends natively - MapComponent_VaultSleepers
+             (built 2026-09-12) supplies them:
                site.RUT_SleepersWoken   first casket OPENED
                site.RUT_SleepersLooted  a casket BROKEN with sleepers in it
-             The XML is complete and inert until a sender exists; only
-             LEAVE can fire today. That is stated, not hidden.
              ============================================================ -->
 
-        <!-- Either touch disarms the leave branch. -->
-        <li Class="QuestNode_SendSignals">
+        <!-- Either touch disarms the leave branch. QuestNode_SendSignals has
+             no settable inSignal field of its own (VAULT_THAW_FIXED_TILES_
+             UNFIREABLE_1, 2026-09-18, header provenance) - it reads whatever
+             the AMBIENT slate "inSignal" holds, so it must be nested as the
+             `node` of a QuestNode_SignalActivable, which sets that ambient
+             var to its own trigger while running `node`. Same shape as the
+             LEAVE branch below, just with a different inSignal/node. -->
+        <li Class="QuestNode_SignalActivable">
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
           <inSignal>site.RUT_SleepersWoken</inSignal>
-          <outSignals>
-            <li>SleepersTouched</li>
-          </outSignals>
+          <node Class="QuestNode_SendSignals">
+            <outSignals>
+              <li>SleepersTouched</li>
+            </outSignals>
+          </node>
         </li>
-        <li Class="QuestNode_SendSignals">
+        <li Class="QuestNode_SignalActivable">
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
           <inSignal>site.RUT_SleepersLooted</inSignal>
-          <outSignals>
-            <li>SleepersTouched</li>
-          </outSignals>
+          <node Class="QuestNode_SendSignals">
+            <outSignals>
+              <li>SleepersTouched</li>
+            </outSignals>
+          </node>
         </li>
 
         <!-- WAKE: the reversal arrives in dialogue (canon.yml rakata.woken_brutality, verbatim line). -->
