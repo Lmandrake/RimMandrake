@@ -100,10 +100,20 @@ namespace RimMandrake.Utinni.LanternDeeps
 			}
 
 			// Darkness (glow ~0) accumulates almost nothing; bright light
-			// (glow -> 1) accumulates fastest -- the "beacon" tension the
-			// ruling describes. Squared so a dim work-light reads very
-			// differently from a floodlit base.
-			lightExposure += brightest * brightest * 4f;
+			// accumulates fastest -- the "beacon" tension the ruling
+			// describes. Squared so a dim work-light reads very differently
+			// from a floodlit base.
+			//
+			// GlowGrid.GroundGlowAt CAPS a roofed cell at 0.5 for every
+			// non-overlit light (MaxGameGlowFromNonOverlitGroundLights) and
+			// returns 1.0 only inside a sun lamp's overlight radius. The Deep
+			// is roofed everywhere, so 0.5 IS "fully lit" here: torches,
+			// campfires and standing lamps all top out there. MEASURED live
+			// 2026-09-19: six campfires around a drafted colonist for 16,500
+			// ticks never fired the old (glow^2 * 4) formula, because
+			// 0.5^2 * 4 = 1.0 < the 1.5 decay. Normalise against the cap.
+			float lit = Mathf.Min(1f, brightest * 2f);
+			lightExposure += lit * lit * 4f;
 			lightExposure = Mathf.Max(0f, lightExposure - ExposureDecayPerCheck);
 
 			if (lightExposure < ExposureThreshold * LanternDeepsSettings.darknessThresholdMultiplier)
