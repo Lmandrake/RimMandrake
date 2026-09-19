@@ -21,25 +21,20 @@ namespace RimMandrake.CreatureBehaviors
 		public int tickIntervalTicks = 2500;
 
 		/// <summary>Extra severity healed off the carrier's own tendable
-		/// injuries per in-game day while ≥kinMendingMinKin same-tag kin sit
-		/// in radius, applied pro-rated per cycle. INVENTED, and flagged
-		/// explicitly rather than silently guessed: the spec's own "+50%
-		/// natural-healing severity adjustment" reads as a MULTIPLIER on
-		/// vanilla's own built-in per-tick natural-healing math, but that
-		/// math lives inside Hediff_Injury's tick logic, which this session
-		/// could not read (RimSage does not connect from this laptop/WSL
-		/// session — confirmed, per CLAUDE.md — and no cached decompile of
-		/// Hediff_Injury was found in this repo). Rather than guess at
-		/// multiplying an unverified internal number, this comp adds its own
-		/// small, independent, ADDITIVE heal instead — 0.5 severity/day is a
-		/// deliberately modest constant (comparable in scale to a real
-		/// wound's own natural mend) so it reads as "kin nearby heals
-		/// noticeably faster" without needing to reproduce vanilla's exact
-		/// rate. OWED (noted on the item): calibrate this constant against
-		/// the real per-tick engine value once RimSage or a decompile is
-		/// reachable, and re-express it as a true multiplier if that
-		/// changes the tuning meaningfully.</summary>
-		public float extraSeverityHealedPerDay = 0.5f;
+		/// injuries per in-game day, PER POINT of the carrier's
+		/// Pawn.BodySize, while ≥kinMendingMinKin same-tag kin sit in
+		/// radius, applied pro-rated per cycle. Formula: heal/day =
+		/// healPerDayPerBodySize × pawn.BodySize × kinMendingBoostMultiplier.
+		/// Owner ruling 2026-09-18 (ROT_HEALTH_SHARING_1): "Make the healing
+		/// ability be proportional to body size per day" — supersedes the
+		/// earlier flat-per-day constant this field replaced
+		/// (extraSeverityHealedPerDay). Default 3f: vanilla natural healing
+		/// is 8 severity/day MEASURED at body size 1; the owner's target
+		/// range for this comp's boost was 2–4 severity/day at body size 1,
+		/// so 3f sits mid-range and now scales up for large kin (e.g. a
+		/// body-size-2 carrier heals 6 sev/day at the same multiplier) and
+		/// down for small ones.</summary>
+		public float healPerDayPerBodySize = 3f;
 
 		public CompProperties_KinMending()
 		{
