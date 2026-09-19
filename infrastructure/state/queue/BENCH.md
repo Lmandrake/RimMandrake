@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:58:05Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T21:15:50Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
-prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
 
 ## EXPLOSIVE_PLANT_GROWTH_1 World mechanic: water-soaked plants grow VISIBLY on screen; design the terminal moment (what happens at the top), then custom mod actions so players experience and replay it — jungles visibly grow
 state:    doing
@@ -45,17 +36,8 @@ kind:     task
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 
-## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
-prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
-
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    owner
 target:   v1
@@ -139,16 +121,6 @@ prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
 
-## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  All per-type rules RULED (owner sitting 2026-09-12, recorded in the review doc); done when the two FOUNDRY fix items land (on VAPOR_PLACEMENT_CLEANUP_1)
-summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
-prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
-
 ## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -179,6 +151,16 @@ blocked:  Owner picks the site (Zeddo's Yard vs Gorga's shadow) — card for his
 summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
 prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
 
+## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  OWNER 2026-09-19, verbatim: 'We are working this through the biomes now. I need to finish and deploy all the biomes, then return to this to see if anything is left.' Do not serve the sheets until the biome wave is finished and deployed - the biome pass may consume rows the sheets still list. (on BIOME_KITS_PUSH_TO_TEST_1)
+summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
+prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
+
 ## ECONOMY_TRADE_SWEEP_1 Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lanternstone) as expensive trader stock and loot
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -205,7 +187,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-blocked:  Owner-judged round that rides the beast graphics/lore pass — after the art wave and with him present.
+blocked:  owner 2026-09-19: runs after biomes + creature art + body sizes (BIOME_KITS_PUSH_TO_TEST_1, CANON_CREATURE_REGEN_1, ROT_SIZE_REJUDGE_APPLY_1) and BEFORE FAUNA_TOLERANCE_NORMALIZATION_1 - the art is the judging evidence (on CANON_CREATURE_REGEN_1)
 summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
 prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
 
@@ -231,7 +213,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -239,7 +221,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
