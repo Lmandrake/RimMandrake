@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidDrill.xml                     FlowWorks · MANY_WATERS_DRILL_BUILDINGS_1
+  ============================================================================
+  The fourth acquisition route (design doc §3 ruling 3, owner: "you can drill
+  it, on the right maps, with custom buildings"): a drill/tap family that
+  raises whatever RM_MapComponent_SubsurfaceLiquid's per-map survey found
+  into a dug channel at its outlet cell (Building_LiquidDrill.OutletCell —
+  the cell the building's rotation faces). Neither building is a source in
+  ruling 24's sense: it spends its own separate, non-refilling reserve, never
+  an RM_LiquidBody.
+
+  Two ThingDefs, one C# class (RimMandrake.FlowWorks.Drilling
+  .Building_LiquidDrill), tuned per-def by RM_LiquidDrillExtension — the same
+  "one property block, read generically" discipline Building_LiquidTank uses:
+    RM_LiquidDrill — powered, expensive, the higher-output rig.
+    RM_LiquidTap   — hand-worked (no power), cheap, a slower bleed.
+
+  Texture: reuses vanilla DeepDrill's own real texPath as a placeholder, the
+  same "reuse vanilla art, no hold needed" posture RUT_DigShaft already used
+  for the same silhouette class (a shaft/rig standing over ground it draws
+  something up from). Art pass owns a bespoke replacement.
+
+  No researchPrerequisites: gating this behind a ResearchProjectDef is
+  content-authoring the owner has not ruled on, left always-buildable and
+  flagged rather than silently decided, same posture RUT_DigShaft took for
+  its own dig-stage building.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LiquidDrill</defName>
+    <label>liquid drill</label>
+    <description>A cored rig staked over ground a survey says is worth drilling. Powered, and it runs as long as the power does and the ground still has something in it — point its open face at a dug channel and it pours straight in. It never touches a pond or a river; whatever it finds, it finds underground, on maps that have anything down there at all.</description>
+    <thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.8</fillPercent>
+    <coverEffectiveness>0.5</coverEffectiveness>
+    <pathCost>50</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <WorkToBuild>4800</WorkToBuild>
+      <MaxHitPoints>240</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-10</Beauty>
+      <Mass>90</Mass>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Drilling.RM_LiquidDrillExtension">
+        <requiresPower>true</requiresPower>
+        <unitsPerCycleMultiplier>1.0</unitsPerCycleMultiplier>
+      </li>
+    </modExtensions>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Drilling.PlaceWorker_DrillNeedsExcavatedOutlet</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LiquidTap</defName>
+    <label>liquid tap</label>
+    <description>A hand-bled pipe hammered down to whatever a survey found. No power, no moving parts worth the name — it just bleeds, slowly, into whatever channel you have dug for it. Cheaper than a drill and a fraction of the output, but it never needs the grid.</description>
+    <thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>30</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <WorkToBuild>1600</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>25</Mass>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Drilling.RM_LiquidDrillExtension">
+        <requiresPower>false</requiresPower>
+        <unitsPerCycleMultiplier>0.35</unitsPerCycleMultiplier>
+      </li>
+    </modExtensions>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Drilling.PlaceWorker_DrillNeedsExcavatedOutlet</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

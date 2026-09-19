@@ -163,6 +163,32 @@ namespace RimMandrake.FlowWorks
         public static bool tankLoopEnabled = true;
         public static float tankCapacityMultiplier = 1f;
 
+        // ══════════════════════════════════════════════════════════════════
+        // MANY_WATERS_DRILL_BUILDINGS_1 — THE DRILL/TAP FAMILY.
+        //
+        // ⚠️ ITS OWN CONTIGUOUS SECTION, same discipline as the blocks above.
+        //
+        //  27. liquidDrillingEnabled    — master switch for the whole route.
+        //      Off: a built drill or tap sits there consuming nothing and
+        //      producing nothing (RM_MapComponent_SubsurfaceLiquid still
+        //      SURVEYS every map regardless — that fact does not depend on a
+        //      slider — only spending the reserve does). Default ON: this is
+        //      the shipped fourth acquisition route, not a hidden prototype.
+        //  28. drillYieldChanceMultiplier — scales every biome's own
+        //      chanceMapHasYield. 1x is what the biome extension authored;
+        //      raise it to make "the right maps" common, lower it to make a
+        //      drillable map a real find.
+        //  29. drillUnitsPerCycle       — fill-units a drill may pull from
+        //      the reserve per TickRare (250 ticks) once its outlet has
+        //      room. The RM_LiquidDrillExtension.unitsPerCycleMultiplier on
+        //      each ThingDef (drill vs. tap) scales this same number rather
+        //      than duplicating it.
+        public static bool liquidDrillingEnabled = true;
+        public static float drillYieldChanceMultiplier = 1f;
+        public static float drillUnitsPerCycle = 1f;
+
+        public static float DrillUnitsPerCycle => Mathf.Max(0.05f, drillUnitsPerCycle);
+
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
@@ -203,6 +229,10 @@ namespace RimMandrake.FlowWorks
             // ── LIQUID_BOTTLE_LOOP_1 tank (see the block above; contiguous) ─
             Scribe_Values.Look(ref tankLoopEnabled, "tankLoopEnabled", true);
             Scribe_Values.Look(ref tankCapacityMultiplier, "tankCapacityMultiplier", 1f);
+            // ── MANY_WATERS_DRILL_BUILDINGS_1 (see the block above; contiguous) ─
+            Scribe_Values.Look(ref liquidDrillingEnabled, "liquidDrillingEnabled", true);
+            Scribe_Values.Look(ref drillYieldChanceMultiplier, "drillYieldChanceMultiplier", 1f);
+            Scribe_Values.Look(ref drillUnitsPerCycle, "drillUnitsPerCycle", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -215,7 +245,7 @@ namespace RimMandrake.FlowWorks
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4600f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5100f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -454,6 +484,38 @@ namespace RimMandrake.FlowWorks
             list.Label("Every RM_LiquidTank ships holding this many units at 1x. Raise it for a "
                      + "colony that wants to stockpile; lower it to keep a tank a modest buffer "
                      + "rather than a warehouse.");
+
+            // ══════════════════════════════════════════════════════════════
+            // MANY_WATERS_DRILL_BUILDINGS_1 SECTION — kept whole and kept last.
+            // ══════════════════════════════════════════════════════════════
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Drilling and tapping");
+            Text.Font = GameFont.Small;
+            list.Label("The fourth acquisition route: some maps sit on a liquid you never see "
+                     + "the surface of. A drill (powered) or a tap (hand-worked, smaller) pours "
+                     + "whatever a subsurface survey found into a dug channel at its outlet, "
+                     + "drawing down a fixed reserve that never refills. Every map is surveyed "
+                     + "once, quietly, whether or not you ever build one.");
+
+            list.CheckboxLabeled("Drilling and tapping", ref liquidDrillingEnabled,
+                "Master switch for the whole route. Off: a built drill or tap sits there inert, "
+              + "consuming no power and producing nothing — the underlying survey still runs so "
+              + "flipping this back on does not need a new game.");
+
+            list.Gap();
+            list.Label("How often a map has anything down there: " + drillYieldChanceMultiplier.ToString("F2") + "x");
+            drillYieldChanceMultiplier = list.Slider(drillYieldChanceMultiplier, 0.1f, 3f);
+            list.Label("Scales every biome's own odds of yielding a drillable liquid at all. "
+                     + "1x is what the biome was authored with; raise it to make 'the right "
+                     + "maps' common, lower it to make a real find rare.");
+
+            list.Gap();
+            list.Label("Extraction rate: " + DrillUnitsPerCycle.ToString("F2") + " fill-unit(s) per cycle");
+            drillUnitsPerCycle = list.Slider(drillUnitsPerCycle, 0.1f, 6f);
+            list.Label("How much a drill (or a slower tap, scaled down per building) can pull "
+                     + "from the ground every 250 ticks once its outlet has room to take it. "
+                     + "The reserve it draws from is finite and never comes back.");
 
             list.End();
             Widgets.EndScrollView();

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- MANY_WATERS_DRILL_BUILDINGS_1 — which of Ash'karr's maps yield a drillable
+       liquid, wired as DATA, same shape as ManyWaters_RiverSteam_Ashkarr.xml.
+
+       FlowWorks (RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension)
+       is a RimMandrake-tier engine and names no biome of its own — which biome
+       drills, for what, and how richly is campaign wiring, and campaign wiring
+       lives here, exactly like river steam.
+
+       ZBiome_Grasslands is zylle's More Vanilla Biomes grasslands def, reskinned
+       as the Pyrelands ("stormy savanna") by BiomeNames_Ashkarr.xml. See
+       design/Jawa/worldbuilding — ASHKARR_WORLD_DEFINITION.md's biome table.
+
+       Two candidate liquids, both already shipped with a canal form
+       (LiquidDef.canalFluid) so a drill striking either can actually pour:
+         - RM_Liquid_FreshWater (RM_Fluid_Water) — the common case. The
+           excavation engine's ActiveFluid defaults to water on any map that
+           has not otherwise committed to something else, so a fresh-water
+           drill works out of the box with no other setup (see
+           Building_LiquidDrill's own doc comment on the one-fluid-per-map
+           limitation).
+         - RM_Liquid_Tar (RM_Fluid_Tar) — "Tar needs the viscosity most of
+           all" (owner ruling, 2026-09-16). A tar drill on a map whose
+           channels are not ALREADY running tar (e.g. via the debug
+           ActiveFluid switch) produces nothing rather than mixing two
+           liquids the engine has no model for — a disclosed limitation, not
+           a bug, until true multi-fluid maps ship.
+
+       Gated twice, both deliberately (same reasoning as the river-steam
+       patch): PatchOperationFindMod so a cut FlowWorks makes this a no-op
+       rather than leaving a dangling modExtension reference, and
+       PatchOperationConditional on the biome def so a missing More Vanilla
+       Biomes does not throw against a missing xpath. -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+      <match Class="PatchOperationConditional">
+        <!-- ManyWaters_RiverSteam_Ashkarr.xml already checked this file has no
+             native <modExtensions> as of 2026-09-08, and its own patch (which
+             loads before this one, same PatchOperationFindMod gate) has since
+             ADDED one via the nomatch branch below — so by the time this
+             patch runs, <modExtensions> exists whenever FlowWorks is active.
+             Checked again here rather than assumed, because a second
+             <modExtensions> element is not a merge: the loader keeps one and
+             silently drops the other's contents. -->
+        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
+              <chanceMapHasYield>0.6</chanceMapHasYield>
+              <options>
+                <li>
+                  <liquid>RM_Liquid_FreshWater</liquid>
+                  <commonality>3</commonality>
+                  <reserveUnits>600~1800</reserveUnits>
+                </li>
+                <li>
+                  <liquid>RM_Liquid_Tar</liquid>
+                  <commonality>1</commonality>
+                  <reserveUnits>400~1200</reserveUnits>
+                </li>
+              </options>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
+                <chanceMapHasYield>0.6</chanceMapHasYield>
+                <options>
+                  <li>
+                    <liquid>RM_Liquid_FreshWater</liquid>
+                    <commonality>3</commonality>
+                    <reserveUnits>600~1800</reserveUnits>
+                  </li>
+                  <li>
+                    <liquid>RM_Liquid_Tar</liquid>
+                    <commonality>1</commonality>
+                    <reserveUnits>400~1200</reserveUnits>
+                  </li>
+                </options>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
