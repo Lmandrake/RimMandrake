@@ -60,7 +60,7 @@
     <defName>RSW_MeeJuv</defName>
     <label>young mee scalefish</label>
     <race>RSW_MeeJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
@@ -111,7 +111,7 @@
     <defName>RSW_FaaJuv</defName>
     <label>young faa scalefish</label>
     <race>RSW_FaaJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
@@ -162,7 +162,7 @@
     <defName>RSW_LaaJuv</defName>
     <label>young laa scalefish</label>
     <race>RSW_LaaJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa</texPath>
@@ -213,7 +213,7 @@
     <defName>RSW_YobshrimpJuv</defName>
     <label>young pale yobshrimp</label>
     <race>RSW_YobshrimpJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp</texPath>
@@ -264,7 +264,7 @@
     <defName>RSW_SiltLampreyJuv</defName>
     <label>young silt lamprey</label>
     <race>RSW_SiltLampreyJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
@@ -315,7 +315,7 @@
     <defName>RSW_RustNipperJuv</defName>
     <label>young rust nipper</label>
     <race>RSW_RustNipperJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
@@ -371,7 +371,7 @@
     <defName>RSW_OpeeSeaKillerJuv</defName>
     <label>sub-adult opee sea killer</label>
     <race>RSW_OpeeSeaKillerJuv</race>
-    <lifeStages>
+    <lifeStages Inherit="False">
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
