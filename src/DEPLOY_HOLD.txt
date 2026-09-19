@@ -169,7 +169,16 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 #   these 918 defs. Absorbed_KotorWeapons and Absorbed_AdditionalMods keep
 #   deploying: their donors are already gone, and the abstract parents they
 #   reach for come from the live kotorcore meanwhile.
-Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+# ✅ HOLD LIFTED 2026-09-19 (FOUNDRY, WEAPONS_DONOR_RETIREMENT_1) on this hold's own
+#    stated condition, in one atomic change: guy762.mm.kotorcore was removed from
+#    ModsConfig.xml and from ModsConfig.FULL.LATEST.xml, its <li> was dropped from
+#    Armoury/About/About.xml's <modDependencies>, and this folder was deployed —
+#    so from that moment it is the ONLY source of those 918 defs, which is exactly
+#    what the hold said it would become. Kept as the record of why 918 absorbed defs
+#    sat undeployed for thirteen days, and of the reason the order matters: deploy
+#    before the donor leaves and 99 defs silently play our stale values alongside it;
+#    retire before deploying and RSW_Jawa's own apparelRequired (guy762_Robes_jawa +
+#    guy762_JawaHood) has no source at all and every Jawa generates undressed.
 
 # --- Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml: HOLD WAS STALE, LIFTED 2026-09-18 --
 # Added 2026-09-17 (FOUNDRY, dirty-code-review wave) on the file's own header

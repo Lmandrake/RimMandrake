@@ -8,10 +8,12 @@
        "ZBiome_Grasslands" inside the engine's C# — backwards: which biome
        steams is campaign wiring, and campaign wiring lives here.
 
-       ZBiome_Grasslands is zylle's More Vanilla Biomes grasslands def,
-       reskinned as the Pyrelands ("stormy savanna") by BiomeNames_Ashkarr.xml
-       and friends. See design/Jawa/worldbuilding — ASHKARR_WORLD_DEFINITION.md's
-       biome table.
+       RM_FE_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
+       world actually carries — 222 tiles, MEASURED live 2026-09-19. The second
+       operation below is the one that does the work on the shipped world.
+       ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
+       "the Pyrelands" by BiomeNames_Ashkarr.xml but carrying ZERO tiles on the
+       canonical planet; it is patched too, conditionally, and costs nothing.
 
        ⚠️ Gated twice, both deliberately:
        - PatchOperationFindMod on ManyWaters, because a `Class=` naming a type
@@ -55,6 +57,47 @@
         </match>
         <nomatch Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </match>
+  </Operation>
+
+
+  <!-- 🔴 RM_FE_Pyrelands is the biome the FROZEN WORLD actually carries.
+       MEASURED live 2026-09-19 (FOUNDRY bridge wave 2) against the canonical
+       planet (seed "raven", coverage 1.0, jawa/world_tile_export, 21872
+       surface tiles): 222 tiles are BiomeDef RM_FE_Pyrelands and ZERO are
+       ZBiome_Grasslands. The Pyrelands moved off zylle's reskinned grassland
+       onto our own biome def in mandrake.rm.pyrelands, and the operation above
+       was never re-pointed — so on the shipped world MapComponent_RiverSteam
+       could never fire on a single tile, and the item's "steam has never been
+       seen" symptom had this as its cause, not a render bug.
+
+       Both defNames are patched, not one: ZBiome_Grasslands is still labelled
+       "the Pyrelands" live and may carry tiles on a non-canonical world, and
+       every operation here is conditional on the def existing, so patching a
+       biome with no tiles costs nothing. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
           <value>
             <modExtensions>
               <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
