@@ -37,9 +37,16 @@ Engine rule confirmed from source: `Plant.Print` → `drawSize.x *
 visualSizeRange.LerpThroughRange(growth)`.
 
 ⚠️ **The mycoid colossus is a CREATURE, not a plant** — its size is
-`bodyGraphicData.drawSize` on the adult life stage, and the live value is **4**. The
-"15" that appears in older notes is NOT what the running game carries; set 12 against
-the measured 4, not against 15.
+`bodyGraphicData.drawSize` on the adult life stage of its **PawnKindDef**, not
+anything on the ThingDef.
+
+🔴 **The adult value was 15, not 4.** MEASURED 2026-09-19 against the live def dump
+(`mods=621/fedd946a33bb7137`, captured 16:54Z): `AA_MycoidColossus`'s PawnKindDef
+carries drawSize **4 / 5 / 15** across baby / juvenile / adult. The **4 is the BABY
+stage** — reading life stage `[0]` instead of the adult is how it was mistaken for
+the live size. And the 15 is *ours*: `RotSpecies_NamesAndSizes.xml` already patched
+`lifeStages/li[3]/bodyGraphicData/drawSize` to 15 in `df261b2bc`, so it is exactly
+what the running game carries. His 12 was therefore applied against 15.
 
 ## 5 rows he left UNDECIDED on purpose
 
