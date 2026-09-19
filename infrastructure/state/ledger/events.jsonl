@@ -9547,3 +9547,13 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down — POLLUTED_LANDS_FLORA_PORT_1 quicktest verify, custom 29-mod list (minimal+UtinniPatches)","ts":"2026-09-19T02:16:43Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-19T02:16:48Z"}
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-19T02:16:58Z"}
+{"seat":"BENCH","event":"note","id":"CAVERNS_PARITY_BUILD_1","text":"DEPLOYED 2026-09-19: LanternDeeps whole (55 files: DLL w/ entrance-biome settings, renamed flora defs, 50 textures, sound, About) while the peer's 29-mod quicktest ran - the mod was not loaded so the DLL was free. VERIFIED in sync. Next full-list load = Load C. Restore the FULL list from the peer's Config .bak (622/621), never from the pre-cut 630 PRECAPTURE archive.","ts":"2026-09-19T02:20:00Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-19T02:20:46Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T02:20:47Z"}
+{"seat":"OWNER","event":"note","id":"DEEP_FLORA_RENAME_1","text":"PUFFER ART ACCEPTED 2026-09-19 (owner looked at Transient/deep_flora_puffer_final_2026-09-18.png): immature/grown/harvested v2/tendrils, purple-tinted, already wired (a1e40ff04) and deployed.","ownerSaid":"Accept new art","ts":"2026-09-19T02:20:47Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up — restored full modlist minus biomespollutedlands after POLLUTED_LANDS_FLORA_PORT_1 live verify","ts":"2026-09-19T02:21:01Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up","ts":"2026-09-19T02:21:04Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"Load C: restart onto the 621 full list, harvest, Deep on the full list","ts":"2026-09-19T02:21:14Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-19T02:21:39Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-19T02:21:44Z"}
+{"seat":"FOUNDRY","event":"close","id":"POLLUTED_LANDS_FLORA_PORT_1","sha":"e4ab343f3d3abf7ed5a57f8cef391429af0dd0f4","ts":"2026-09-19T02:21:58Z"}
