@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:51:10Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-19T05:52:04Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1680,7 +1680,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify
-summary:  KCSG pawn symbols silently fall back to vanilla Colonist
+summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
 
 ## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
