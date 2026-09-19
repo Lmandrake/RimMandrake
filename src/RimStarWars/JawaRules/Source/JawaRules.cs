@@ -42,6 +42,11 @@ namespace RimMandrake.StarWars.JawaRules
                   typeof(Patch_GenerateNecessaryName), "pet-names",
                   "armed; tamed and newborn animals will draw from their race namer");
 
+            Apply(h, AccessTools.Method(typeof(PawnGenerator), "RedressPawn"),
+                  typeof(Patch_RedressPawn_ForceKind), "pawnkind-redress-fix",
+                  "armed; KCSG_PAWNKIND_COLONIST_FALLBACK_1 — a redressed world pawn is forced "
+                  + "onto the requested kind and xenotype even when ChangeKind was blocked");
+
             ApplyTranspiler(h, AccessTools.Method(typeof(WorldFeatures), "UpdateAlpha"),
                   typeof(Patch_WorldFeatures_UpdateAlpha), "world-labels",
                   "armed; world feature names peak at "
@@ -229,6 +234,77 @@ namespace RimMandrake.StarWars.JawaRules
             {
                 // Naming is cosmetic; taming and birth are not. Never throw here.
                 Log.WarningOnce("[RimMandrake.StarWars.JawaRules] pet-names: " + e.Message, 0x4A57A2);
+            }
+        }
+    }
+
+    // KCSG_PAWNKIND_COLONIST_FALLBACK_1 — a raid, quest, faction roster or KCSG
+    // dungeon layout can ask PawnGenerator for one of our PawnKindDefs and silently
+    // get back a vanilla Colonist/Baseliner instead, with the right faction, no
+    // error, and no KCSG involved (reproduces through the plain vanilla debug
+    // "Spawn Pawn..." action). Root-caused from the 1.6 decompile via RimSage:
+    //
+    //   PawnGenerator.GeneratePawn(kind, faction) leaves forceGenerateNewPawn FALSE,
+    //   so GenerateOrRedressPawnInternal can roll Rand.Chance(ChanceToRedressAnyWorldPawn)
+    //   and, on a hit, pull an EXISTING pawn out of Find.WorldPawns
+    //   (GetValidCandidatesToRedress) instead of generating a fresh one.
+    //   RedressPawn is then supposed to force that recycled pawn onto the requested
+    //   kind via `pawn.ChangeKind(request.KindDef)` (Verse/Pawn.cs:6094, unconditional
+    //   in vanilla) — but does NOT touch the pawn's xenotype/genes at all.
+    //
+    // That ChangeKind call is Harmony-prefixed by HumanoidAlienRaces
+    // (AlienRace.HarmonyPatches.ChangeKindPrefix, workshop 839005762) — the standing
+    // suspect for why the kind correction sometimes does not take, leaving the
+    // recycled pawn's OLD kind (usually vanilla Colonist) and OLD xenotype
+    // (usually Baseliner) standing in for the requested Helix/etc. kind. This is a
+    // vanilla-redress / third-party-Harmony-patch interaction, not a misconfigured
+    // field on any of our own FactionDefs or PawnKindDefs — useFactionXenotypes
+    // being true on every affected kind is a correlation (it is what makes a kind
+    // "Humanlike-alien-race-flavoured" and therefore reachable by that patch), not
+    // the cause. See infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
+    // and its sibling SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md (which fixed our own
+    // jawa/spawn_pawn bridge tool locally with forceGenerateNewPawn: true — a fix
+    // that cannot reach KCSG, raids, quests or faction rosters because we do not
+    // control those call sites).
+    //
+    // Mitigation, not a root fix: whatever blocked ChangeKind runs as a Harmony
+    // Prefix on Pawn.ChangeKind, so calling ChangeKind again here would hit the
+    // exact same prefix. Assigning the field directly bypasses it. Re-rolling the
+    // xenotype repairs the other half of the same symptom, since RedressPawn never
+    // touches genes at all (correct kind + wrong xenotype is not an improvement).
+    public static class Patch_RedressPawn_ForceKind
+    {
+        public static void Postfix(Pawn pawn, PawnGenerationRequest request)
+        {
+            if (!RSW_JawaRulesSettings.pawnKindRedressFixEnabled) return;
+            try
+            {
+                if (pawn == null || request.KindDef == null) return;
+                if (pawn.kindDef == request.KindDef) return;
+
+                string before = pawn.kindDef?.defName;
+                pawn.kindDef = request.KindDef;
+
+                if (ModsConfig.BiotechActive && pawn.genes != null && request.KindDef.useFactionXenotypes)
+                {
+                    XenotypeDef wanted = PawnGenerator.GetXenotypeForGeneratedPawn(request);
+                    if (wanted != null && pawn.genes.Xenotype != wanted)
+                    {
+                        pawn.genes.SetXenotype(wanted);
+                    }
+                }
+
+                Log.WarningOnce("[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a "
+                    + "recycled world pawn came back as '" + before + "' instead of the "
+                    + "requested '" + request.KindDef.defName + "' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) "
+                    + "— corrected in place.", 0x4A57A3);
+            }
+            catch (Exception e)
+            {
+                // Pawn generation is not a place to throw: a failure here would abort
+                // the whole pawn and take a raid or a colonist with it.
+                Log.WarningOnce("[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: " + e.Message,
+                    0x4A57A4);
             }
         }
     }
