@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -26,6 +25,11 @@ namespace RimMandrake.FlowWorks
 		/// truncated — a 40,000-cell list in every save is a cost paid for a
 		/// number the sentinel already answers.</summary>
 		private const int MaxBodyCells = 4000;
+
+		/// <summary>Used only when a body forms with no active FluidDef at all —
+		/// the same 5 the field defaults to, so a def-less map still gets §5's
+		/// budget rather than a capacity of zero.</summary>
+		private const float DefaultCanalCellsPerSourceCell = 5f;
 
 		private List<RM_LiquidBody> bodies = new List<RM_LiquidBody>();
 
@@ -146,18 +150,18 @@ namespace RimMandrake.FlowWorks
 			body.cells = found;
 			body.truncated = truncated;
 			// Ruling 16: edge contact AND a minimum size. Both, and only here.
-			body.limitless = RimMandrakeFlowWorksSettings.stickyLimitlessEnabled
-				&& (truncated || (touchesEdge && found.Count >= RimMandrakeFlowWorksSettings.MinLimitlessBodyCells));
+			body.limitless = RM_StockMath.IsLimitless(
+				RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,
+				truncated,
+				touchesEdge,
+				found.Count,
+				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
 			FluidDef fluid = owner.ActiveFluid;
-			float perCell = fluid != null
-				? fluid.canalCellsPerSourceCell * fluid.volumePerTile
-				: 5f;
-			perCell *= RimMandrakeFlowWorksSettings.sourceBudgetMultiplier;
-			if (perCell < 0.01f)
-			{
-				perCell = 0.01f;
-			}
-			body.capacity = found.Count * perCell;
+			body.capacity = RM_StockMath.BodyCapacity(
+				found.Count,
+				fluid != null ? fluid.canalCellsPerSourceCell : DefaultCanalCellsPerSourceCell,
+				fluid != null ? fluid.volumePerTile : 1f,
+				RimMandrakeFlowWorksSettings.sourceBudgetMultiplier);
 			body.stock = body.capacity;
 			bodies.Add(body);
 			byId[body.id] = body;
@@ -197,7 +201,7 @@ namespace RimMandrake.FlowWorks
 			// stutters rather than one that is empty.
 			FluidDef fluid = owner.ActiveFluid;
 			float unit = fluid != null ? fluid.volumePerTile : 1f;
-			return body.limitless || body.stock >= unit;
+			return RM_StockMath.CanSupply(body.limitless, body.stock, unit);
 		}
 
 		/// <summary>Spend from the body behind a source cell. Returns false when
@@ -215,7 +219,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			if (body.stock < units)
+			if (!RM_StockMath.CanDebit(body.limitless, body.stock, units))
 			{
 				return false;
 			}
@@ -234,16 +238,11 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
+			float taken = RM_StockMath.CreditAccepted(body.limitless, body.stock, body.capacity, units);
 			if (body.limitless)
 			{
-				return units;
+				return taken;
 			}
-			float room = body.capacity - body.stock;
-			if (room <= 0f)
-			{
-				return 0f;
-			}
-			float taken = Mathf.Min(room, units);
 			body.stock += taken;
 			return taken;
 		}
@@ -293,28 +292,35 @@ namespace RimMandrake.FlowWorks
 			// WeatherManager.RainRate (RimWorld/WeatherManager.cs:45) and
 			// GenLocalDate.Season(Map) (RimWorld/GenLocalDate.cs:31).
 			float rainRate = map.weatherManager != null ? map.weatherManager.RainRate : 0f;
-			float perDay = oozePerDay * body.cells.Count * (1f + rainFactor * rainRate)
-				* SeasonFactor(map) * RimMandrakeFlowWorksSettings.refillRateMultiplier;
 			// Proportional to footprint on purpose (§5's formula): a one-cell
 			// seep regains fill-units slowest in absolute terms, which is what a
 			// player watching a small pond actually sees.
-			float gained = perDay * (pulseTicks / (float)GenDate.TicksPerDay);
-			body.stock = Mathf.Min(body.capacity, body.stock + gained);
+			float perDay = RM_StockMath.RefillPerDay(
+				oozePerDay,
+				body.cells.Count,
+				rainFactor,
+				rainRate,
+				BandFor(GenLocalDate.Season(map)),
+				RimMandrakeFlowWorksSettings.refillRateMultiplier);
+			float gained = RM_StockMath.RefillForPulse(perDay, pulseTicks, GenDate.TicksPerDay);
+			body.stock = RM_StockMath.ClampToCapacity(body.stock, gained, body.capacity);
 		}
 
-		/// <summary>Ruling 2's season term. Desert-world shaped: the wet seasons
-		/// carry the refill and high summer barely moves it.</summary>
-		private static float SeasonFactor(Map map)
+		/// <summary>Ruling 2's season term, mapped onto the Verse-free bands whose
+		/// NUMBERS live in <see cref="RM_StockMath"/>. Desert-world shaped: the wet
+		/// seasons carry the refill and high summer barely moves it. Only this
+		/// switch touches the Verse <see cref="Season"/> enum, which is why it is
+		/// here and the arithmetic is not.</summary>
+		private static RM_StockMath.SeasonBand BandFor(Season season)
 		{
-			switch (GenLocalDate.Season(map))
+			switch (season)
 			{
-				case Season.Spring: return 1.25f;
-				case Season.Summer: return 0.5f;
-				case Season.Fall: return 1f;
-				case Season.Winter: return 0.75f;
-				case Season.PermanentSummer: return 0.5f;
-				case Season.PermanentWinter: return 0.75f;
-				default: return 1f;
+				case Season.Spring: return RM_StockMath.SeasonBand.Wet;
+				case Season.Summer: return RM_StockMath.SeasonBand.Dry;
+				case Season.PermanentSummer: return RM_StockMath.SeasonBand.Dry;
+				case Season.Winter: return RM_StockMath.SeasonBand.Cool;
+				case Season.PermanentWinter: return RM_StockMath.SeasonBand.Cool;
+				default: return RM_StockMath.SeasonBand.Neutral;
 			}
 		}
 
@@ -331,7 +337,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int supported = Mathf.FloorToInt(body.stock / perCell);
+			int supported = RM_StockMath.SupportedCells(body.stock, perCell);
 			int guard = 0;
 			while (body.ActiveCellCount > supported && body.ActiveCellCount > 0 && guard++ < 64)
 			{
@@ -340,7 +346,19 @@ namespace RimMandrake.FlowWorks
 				{
 					return;
 				}
-				owner.DryNaturalCell(pick, fluid);
+				// 🔴 ONLY record a cell as receded when the terrain write actually
+				// happened. DryNaturalCell declines when the fluid authors no
+				// recededTerrain, and the cell then stays natural liquid — so
+				// recording it anyway would let PickRecedeCell choose the SAME
+				// cell on the next iteration and every pulse after, duplicating
+				// it in `receded` without bound, under-counting ActiveCellCount
+				// and growing the save forever. Stop instead: nothing this pulse
+				// can shed a cell, and a body that cannot recede is a missing
+				// visual, not a runaway list.
+				if (!owner.DryNaturalCell(pick, fluid))
+				{
+					return;
+				}
 				body.receded.Add(pick);
 			}
 		}
@@ -370,9 +388,7 @@ namespace RimMandrake.FlowWorks
 				}
 				int dist = (c - centroid).LengthHorizontalSquared;
 				int idx = map.cellIndices.CellToIndex(c);
-				if (neighbours < bestNeighbours
-					|| (neighbours == bestNeighbours && dist > bestDist)
-					|| (neighbours == bestNeighbours && dist == bestDist && idx < bestIndex))
+				if (RM_StockMath.PrefersCandidate(neighbours, dist, idx, bestNeighbours, bestDist, bestIndex))
 				{
 					bestNeighbours = neighbours;
 					bestDist = dist;
@@ -395,7 +411,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int supported = Mathf.FloorToInt(body.stock / perCell);
+			int supported = RM_StockMath.SupportedCells(body.stock, perCell);
 			int guard = 0;
 			while (body.receded.Count > 0 && body.ActiveCellCount < supported && guard++ < 64)
 			{

@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    FLUID_SOURCE_STOCK_MODEL_1: offline, no-game selftest harness for the
+    source stock model of flowworks_mod_definition.md §5. NOT the mod build
+    (RimMandrake_FlowWorks.csproj, one directory up, is unaffected: its
+    EnableDefaultCompileItems is false and its Compile list does not mention
+    this folder).
+
+    This project targets plain net8.0 with zero RimWorld/Unity references, on
+    purpose. Unlike the sibling Pits selftest it hand-extracts NOTHING:
+    RM_StockMath.cs below is the production file, compiled in directly, so a
+    change to any §5 constant or clause fails this test immediately instead of
+    drifting away from a copy. That is only possible because RM_StockMath.cs
+    is kept free of Verse and UnityEngine types — if a `using Verse;` ever
+    lands in it, this build breaks, and that break is the guard rail working.
+
+    Run via the wrapper, which resolves the Windows native dotnet.exe and the
+    D drive path for you:
+      python3 src/RimMandrake/Utils/selftest_flowworks_stock.py
+
+    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj -c Release
+      (that flag is two hyphens then "project" - written apart here only because
+      an XML comment cannot contain two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeFlowWorks.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Keep every build artifact out of the tree the mod build/deploy scan
+         walks - this is a throwaway test binary, never deployed. -->
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source file. This is what makes the coverage
+         genuine rather than a reimplementation nobody keeps in sync. -->
+    <Compile Include="..\RM_StockMath.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
