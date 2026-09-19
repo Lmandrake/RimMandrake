@@ -38,7 +38,7 @@
 
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_LiveIngredient_AgelessCap</defName>
-    <label>ageless cap flesh</label>
+    <label>orlath cap flesh</label>
     <description>Freshly cut flesh from an ageless cap, still faintly warm. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/MushroomLog/MushroomlLog_a</texPath>
@@ -81,7 +81,7 @@
 
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_LiveIngredient_RegenerantVeil</defName>
-    <label>regenerant veil tissue</label>
+    <label>mirrash veil tissue</label>
     <description>A cut strip of living veil tissue, still faintly pulsing. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/GlowGoo/GlowGoo_A</texPath>
@@ -124,7 +124,7 @@
 
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_LiveIngredient_EuphoricCrown</defName>
-    <label>euphoric crown cap</label>
+    <label>lussa crown cap</label>
     <description>A whole cap cut from a euphoric crown, still faintly luminous. It has to reach a brewing vessel fast, or it's worthless.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/ThrumbungusShroom/ThrumbungusShroom</texPath>

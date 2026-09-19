@@ -176,7 +176,7 @@
        ═══════════════════════════════════════════════════════════════════ -->
   <ThingDef ParentName="DrugBase">
     <defName>RUT_Tea_Pleasure</defName>
-    <label>euphoric crown brew</label>
+    <label>lussa crown brew</label>
     <description>The crown's cap wrung out over heat into half a cup of something that smells like a remembered summer. It is the most straightforwardly wonderful thing on this planet and it is gone by the day after tomorrow.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/Drug/Ambrosyx</texPath>

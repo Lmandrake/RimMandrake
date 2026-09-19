@@ -21,7 +21,7 @@
 
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_LivingFurnaceCap</defName>
-    <label>living furnace cap</label>
+    <label>living thurrom hearth</label>
     <description>A furnace cap taken whole and still alive, warm to hold and slightly damp. Packed into a frame it will keep burning its own tissue for heat until there is nothing left of it.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Item/Crops/MortalMorel</texPath>

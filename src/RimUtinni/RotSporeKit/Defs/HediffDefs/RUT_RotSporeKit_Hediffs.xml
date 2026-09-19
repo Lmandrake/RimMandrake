@@ -143,7 +143,7 @@
   <!-- Skulltop's own toxic-spore-lung disease, ported from BMT_Skulltop.xml. -->
   <HediffDef ParentName="DiseaseBase">
     <defName>RUT_HediffSkulltopSpores</defName>
-    <label>skulltop spores</label>
+    <label>vekkra choker spores</label>
     <description>The toxic spores of the fungus settled in the creature's lungs. Prolonged exposure can be fatal.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.7, 1.0, 0.7)</defaultLabelColor>
