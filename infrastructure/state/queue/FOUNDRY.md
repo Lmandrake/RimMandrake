@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T09:21:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T09:31:10Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1062,6 +1062,15 @@ kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
 
+## YOBSHRIMP_DEFNAME_COLLISION_1 Two ThingDefs/PawnKindDefs both named RSW_Yobshrimp; DefDatabase silently drops one
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  YOBSHRIMPDEFNAMECOLLISION1
+prose:    infrastructure/state/items/YOBSHRIMP_DEFNAME_COLLISION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1657,13 +1666,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
-
-## YOBSHRIMP_DEFNAME_COLLISION_1 Two ThingDefs/PawnKindDefs both named RSW_Yobshrimp; DefDatabase silently drops one
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  YOBSHRIMPDEFNAMECOLLISION1
-prose:    infrastructure/state/items/YOBSHRIMP_DEFNAME_COLLISION_1.md
