@@ -120,6 +120,100 @@ namespace RimMandrake.StarWars.JawaRules
                 && pawn.genes.Xenotype != null
                 && pawn.genes.Xenotype.defName == JawaXenotype;
         }
+
+        // FULL_LOAD_ALPHAGENES_NRE_1 — armed from RSW_JawaRulesMod's CONSTRUCTOR
+        // (RSW_JawaRulesSettings.cs), NOT from this class's static ctor above.
+        // Read from the 1.6 source: Verse.PlayDataLoader.DoPlayLoad() calls
+        // LoadedModManager.LoadAllActiveMods() — which runs CreateModClasses(),
+        // i.e. every Mod subclass's constructor — BEFORE it ever reaches
+        // RimWorld.DefGenerator.GenerateImpliedDefs_PreResolve(). A
+        // [StaticConstructorOnStartup] class (this one) is only invoked much
+        // later, via LongEventHandler.ExecuteWhenFinished queued well after that
+        // call. A guard armed the JawaRulesMod way would never be in place in
+        // time to catch this crash, so it has to live on the Mod constructor's
+        // early path instead.
+        private static bool raceNullGuardArmed;
+
+        public static void ArmEarlyGuards()
+        {
+            if (raceNullGuardArmed) return;
+            raceNullGuardArmed = true;
+            var h = new Harmony("mandrake.rsw.jawarules");
+            var target = AccessTools.PropertyGetter(typeof(PawnKindDef), nameof(PawnKindDef.RaceProps));
+            if (target == null)
+            {
+                Log.Error("[RimMandrake.StarWars.JawaRules] pawnkind-raceprops-null-guard: TARGET "
+                          + "METHOD NOT FOUND — this guard is NOT in effect. A game update renamed "
+                          + "PawnKindDef.RaceProps.");
+                return;
+            }
+            try
+            {
+                h.Patch(target, prefix: new HarmonyMethod(
+                    typeof(Patch_PawnKindDef_RaceProps_NullGuard), "Prefix"));
+                Log.Message("[RimMandrake.StarWars.JawaRules] pawnkind-raceprops-null-guard: armed "
+                            + "early (before GenerateImpliedDefs_PreResolve) — FULL_LOAD_ALPHAGENES_NRE_1");
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.StarWars.JawaRules] pawnkind-raceprops-null-guard: patch "
+                          + "FAILED, guard NOT in effect — " + e.Message);
+            }
+        }
+    }
+
+    // FULL_LOAD_ALPHAGENES_NRE_1 — root cause, confirmed via decompile (ilspycmd against the
+    // owner's live Workshop copies of both assemblies):
+    //
+    //   Verse/PawnKindDef.cs:327   public RaceProperties RaceProps => race.race;
+    //
+    // If a PawnKindDef's `race` field (the ThingDef it points at) is null — a third-party def
+    // with a missing/blank <race> tag, or a mod-generated implied PawnKindDef read before its
+    // race gets wired up — reading .RaceProps throws NullReferenceException on the SAME
+    // expression that is supposed to guard it. AlphaGenes' own filter
+    // (AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch.Postfix, decompiled from
+    // 2891845502/1.6/Assemblies/AlphaGenes.dll) already tries to protect against exactly this:
+    //
+    //   .Where((PawnKindDef element) => ((element != null) ? element.RaceProps : null) != null
+    //          && element.RaceProps.Animal && !element.RaceProps.Dryad && ...)
+    //
+    // and still crashes, because the ternary's own TRUE branch (`element.RaceProps`) is the
+    // expression that throws — there is no way to null-check a property getter that NREs on
+    // its own read. This reproduced 4/4 on the owner's full 621-mod list immediately after
+    // "Failed to patch VFEInsectoids 2's Creep with additional genes.", crashing inside
+    // RimWorld.DefGenerator.GenerateImpliedDefs_PreResolve -> GeneDefGenerator.ImpliedGeneDefs
+    // -> this AlphaGenes postfix, and RimWorld's own recovery then reset ModsConfig.xml to
+    // Core-only every time. AlphaGenes, BigAndSmall and VFEInsectoids2 are third-party
+    // assemblies we do not control and cannot patch source-first; this guard instead makes the
+    // GETTER itself never throw, which is strictly safer for EVERY caller in the game, not
+    // just this one collision. It does not identify which specific def has the null race (the
+    // offline def dump cannot see this field at all — DefDump drops object-reference fields,
+    // per rimworld-def-dump-blind-spots — and the game cannot currently reach a point where a
+    // live bridge read could ask it either), but this stops the crash regardless of which def
+    // it turns out to be, and the warning below names it the moment it fires.
+    public static class Patch_PawnKindDef_RaceProps_NullGuard
+    {
+        private static readonly System.Collections.Generic.HashSet<string> warnedOnce =
+            new System.Collections.Generic.HashSet<string>();
+
+        public static bool Prefix(PawnKindDef __instance, ref RaceProperties __result)
+        {
+            if (__instance != null && __instance.race == null)
+            {
+                __result = null;
+                string key = __instance.defName ?? "<unnamed PawnKindDef>";
+                if (warnedOnce.Add(key))
+                {
+                    Log.Warning("[RimMandrake.StarWars.JawaRules] pawnkind-raceprops-null-guard: "
+                        + "PawnKindDef '" + key + "' has no race (ThingDef) set — RaceProps would "
+                        + "NullReferenceException here (FULL_LOAD_ALPHAGENES_NRE_1). Returning null "
+                        + "instead of crashing; this def is broken at its source and should be "
+                        + "fixed there, not just tolerated here.");
+                }
+                return false;
+            }
+            return true;
+        }
     }
 
     // ⛔ NOT a postfix on WorkGiver_GrowerSow.ShouldSkip, which is what the item
