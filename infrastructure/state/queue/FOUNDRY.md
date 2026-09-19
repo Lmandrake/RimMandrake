@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T00:49:22Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-19T01:07:40Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -190,7 +190,7 @@ summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -972,6 +972,24 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
+## POLLUTED_LANDS_FLORA_PORT_1 Polluted Lands cut step 2: port-or-cut its ~40 injected plants (21 BMT_ rows still live in BiomeFlora_Ashkarr with no RUT twin) + inert-check the 52 Waterline fish refs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/POLLUTED_LANDS_FLORA_PORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POLLUTED_LANDS_FLORA_PORT_1.md
+
+## BIOME_FLORA_GENERATOR_REPAIR_1 biome_flora.py cannot regenerate BiomeFlora_Ashkarr.xml: FAMILIES still keys on pre-rename biome defNames (AB_MycoticJungle, ZBiome_Badlands, Wasteland...) so check() fails 80x at baseline and --write refuses
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/BIOME_FLORA_GENERATOR_REPAIR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_FLORA_GENERATOR_REPAIR_1.md
+
 ## ASHFALL_RESEARCH_BASE_1 The Ashfall Research Base (the Spire): Rakatan command codes, the war lab's two-key gate
 state:    doing
 row:      unassigned
@@ -1074,6 +1092,16 @@ kind:     task
 blocked:  rules 5/7/8 need owner design calls (arrival-mode restrictions + recall scoring; Rumor Has It's actual API; tributedemand's dialog API) or a filed decision item, not guessable wiring -- see item file's 2026-09-13 catch-up note
 summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
+## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  MEASURED 2026-09-19T01:06Z: CANONICAL_ASHKARR_START_2026-09-12.rws (635 recorded mods) refuses to load on the live 632-mod list - missing als.gravtech, als.gravtech.bc, halituisamaricanous.gravtechbigcannons, petetimessix.researchreinvented.steppingstones, biomesteam.biomescaverns. Did NOT force-load with compatibility ignored (Caverns was deliberately retired). Tried Autosave-5 instead (632/632 compatible) but it loaded the SAME scratch quicktest colony (Raido Barber/New Arrivals, Thing_Human61607) that was already live on the bridge before this session touched anything - not the real campaign. Blocked on CANONICAL_SAVE_CAVERNS_SCRUB_1 landing first.
+summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
+prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
 
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing  (BLOCKED)
@@ -1716,63 +1744,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
-
-## DEEPCALM_AMBIENT_SOUND_1 Lantern Deeps ambient sound: RUT_DeepCalm ships silent - author/source an owned cave-hum SoundDef (the sheet's 'hum rising to a Chorus'), donor .ogg does not come with us
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEPCALM_AMBIENT_SOUND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPCALM_AMBIENT_SOUND_1.md
-
-## POLLUTED_LANDS_FLORA_PORT_1 Polluted Lands cut step 2: port-or-cut its ~40 injected plants (21 BMT_ rows still live in BiomeFlora_Ashkarr with no RUT twin) + inert-check the 52 Waterline fish refs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/POLLUTED_LANDS_FLORA_PORT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/POLLUTED_LANDS_FLORA_PORT_1.md
-
-## BIOME_FLORA_GENERATOR_REPAIR_1 biome_flora.py cannot regenerate BiomeFlora_Ashkarr.xml: FAMILIES still keys on pre-rename biome defNames (AB_MycoticJungle, ZBiome_Badlands, Wasteland...) so check() fails 80x at baseline and --write refuses
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_FLORA_GENERATOR_REPAIR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_FLORA_GENERATOR_REPAIR_1.md
-
-## DEEP_DULCIS_DEDUP_1 LanternDeeps: drop RUT_DeepRawDulcis, harvest yields RotSporeKit's RUT_RawDulcis (owner ruled 2026-09-18: RotSporeKit owns it); add mandrake.rut.rotsporekit dependency/loadAfter to LanternDeeps About.xml; deploy; ships in the next load
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEP_DULCIS_DEDUP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEP_DULCIS_DEDUP_1.md
-
-## CAVERNS_LOADAFTER_STRIP_1 Biomes! Caverns left ModsConfig 2026-09-18 (Core stays until POLLUTED_LANDS_FLORA_PORT_1): strip the now-inert loadAfter BiomesTeam.BiomesCaverns lines from 12 of our About.xml (rm.patches, rsw.armoury, rut.doctrine, rut.patches, rut.pawnflavor, rut.rotsporekit, rut.lanterndeeps, 5 rut.*artoverride) and decide whether the 5 Caverns-creature art-override mods are dead now (do their creatures live in SWBestiary's BiomesTeamPort?) - retire them if so
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CAVERNS_LOADAFTER_STRIP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CAVERNS_LOADAFTER_STRIP_1.md
-
-## CANONICAL_SAVE_CAVERNS_SCRUB_1 CANONICAL_ASHKARR_START_2026-09-12.rws holds 5 pawns carrying BMT_CaveSpiderHead (Biomes! Caverns weapon, MEASURED 5 <def> + 13 peq refs) - Caverns left ModsConfig 2026-09-18 so the next load of this save throws Could-not-load-reference and disarms them. Scrub via the rimworld-savegame skill (back up first) or re-cast those pawns' gear; same pass notes Core's BMT_Hermetic* (4+3+1) and Polluted's BMT_BufoBile/BMT_Toxwood for when those mods go
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANONICAL_SAVE_CAVERNS_SCRUB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANONICAL_SAVE_CAVERNS_SCRUB_1.md
