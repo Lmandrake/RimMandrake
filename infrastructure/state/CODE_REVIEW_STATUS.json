@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 6,
-    "date": "2026-09-12",
-    "hash": "5f6b7f8f75502ec8b4d255a269d0a780b04db8ddd05e43f689cd2ffba9fdced3",
-    "sha": "efb2f02ad"
+    "cleanCount": 7,
+    "date": "2026-09-18",
+    "hash": "a0f8674ef96a81c5a8fd963713177ed19d7f812642491ea061f6064215b65d2e",
+    "sha": "2eb08d1a4"
   },
   "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
     "cleanCount": 1,
@@ -17338,10 +17338,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 8,
-    "date": "2026-09-12",
-    "hash": "d9065ea5ee14df604ede58b00d71cdc99c2e0567c13cbfa63288b0d360d2dd80",
-    "sha": "bfa7c2f92"
+    "cleanCount": 9,
+    "date": "2026-09-18",
+    "hash": "d56df730ca7351764b588469736307861de81a5c0162278639517a44a18f8f3b",
+    "sha": "2eb08d1a4"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
     "cleanCount": 1,
