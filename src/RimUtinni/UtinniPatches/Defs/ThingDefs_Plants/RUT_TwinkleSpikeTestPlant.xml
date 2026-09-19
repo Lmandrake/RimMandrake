@@ -15,9 +15,15 @@
   RUT_PlantTwinkle's Graphic override calls Graphic_Single.GetColoredVersion
   specifically (verified in Verse/Graphic_Single.cs before use).
 
-  Texture reused from vanilla (Things/Plant/Bush) rather than commissioning
-  new art: this spike is about the mechanism and its cost, not a new
-  species' look.
+  Texture reuse, corrected 2026-09-19 (FULL_LOAD_RESIDUE_TRIAGE_1): vanilla
+  Plant_Bush's own texPath (Things/Plant/Bush) is NOT a single file — it
+  inherits Graphic_Random from PlantBaseNonEdible (Core/Defs/ThingDefs_Plants/
+  Plants_Bases.xml), so no bare "Bush" texture exists for Graphic_Single to
+  load ("Could not load Texture2D at 'Things/Plant/Bush'" every load). Uses
+  RUT_DigShaft's own placeholder convention instead: a real vanilla
+  Graphic_Single asset (DeepDrill, a building, so genuinely single-file) as
+  a stand-in. Still "not a new species' look" - the mechanism and its
+  measured cost are the point, never this test article's appearance.
 -->
 <Defs>
 
@@ -37,13 +43,12 @@
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutPlant</shaderType>
-      <texPath>Things/Plant/Bush</texPath>
+      <texPath>Things/Building/Production/DeepDrill</texPath>
       <drawSize>1.15</drawSize>
     </graphicData>
     <statBases>
       <Flammability>1</Flammability>
       <MaxHitPoints>120</MaxHitPoints>
-      <Nutrition>0.1</Nutrition>
     </statBases>
     <plant>
       <fertilityMin>0.0</fertilityMin>

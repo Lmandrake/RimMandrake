@@ -23,6 +23,18 @@
   changes. The Grey Sea/terminator roster keeps using the un-capped RSW_*
   defNames for adults (out of this item's scope: only the Miasma wildAnimals
   patch).
+
+  🔴 FULL_LOAD_RESIDUE_TRIAGE_1, 2026-09-19: all 7 ThingDefs' <lifeStageAges>
+  below were missing Inherit="False", so instead of replacing AnimalThingBase's
+  inherited 3-stage vanilla list (Baby/Juvenile/Adult, ascending minAges) they
+  APPENDED their own 2-stage list onto it — RimWorld's default List<T> merge
+  behaviour on ParentName inheritance. Result: 5 stages per race
+  (Baby@0, Juvenile@vanilla, Adult@vanilla, Baby@0, Juvenile@0.05-or-0.1), not
+  ascending, logged 6x each ("Config error ...: lifeStages minAges are not in
+  ascending order") = 42 of the 93 config errors in a 2026-09-18 full-list
+  harvest. Fixed by adding Inherit="False" to each <lifeStageAges>, the same
+  pattern already used in ThingDefs_ForsakenCrags.xml, RUT_LivingBolt.xml and
+  RUT_CathedralRoach.xml.
 -->
 <Defs>
 
@@ -31,7 +43,7 @@
     <label>young mee scalefish</label>
     <description>A mee scalefish too young for the open sea, still schooling in the mangal shallows where it hatched. Small, quick, and almost charming -- and every scavenger who has fished a delta channel knows better than to wonder where its mother is.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -82,7 +94,7 @@
     <label>young faa scalefish</label>
     <description>A faa scalefish still too small to hunt the open channels, taking fry and drift-shrimp in the mangal shallows where it was spawned. The gold-olive dot-line is already bright; the temper comes later.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -133,7 +145,7 @@
     <label>young laa scalefish</label>
     <description>A laa scalefish not yet grown into the ornate streamer-fins and eye-spot false faces that make the adult so hard to net. Still schooling with its own kind in the shallows, waiting to be worth catching.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -184,7 +196,7 @@
     <label>young pale yobshrimp</label>
     <description>A pale yobshrimp too small yet to swarm a carcass with the rest of its kind, picking over what the shallows offer instead.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -235,7 +247,7 @@
     <label>young silt lamprey</label>
     <description>A silt lamprey not yet grown into the round maw that makes the adult the swarm's nasty edge. Still working the shallows for what it can latch onto.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -286,7 +298,7 @@
     <label>young rust nipper</label>
     <description>A rust nipper too small yet to join a massed crawl over a wreck, its shell not hardened, its eyes barely glowing.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -342,7 +354,7 @@
     <label>sub-adult opee sea killer</label>
     <description>An opee sea killer not yet grown to its full twenty-metre patience, lingering at the crèche mouths where it hatched rather than claiming a stretch of the open sea. Still armored, still fast on the tongue -- "don't kill what's small here" was written for beasts exactly this size.</description>
     <race>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
