@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:28:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:32:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -882,6 +882,15 @@ kind:     build
 summary:  canon.yml infront.coresrc (owner, 2026-08-30, canonizing the 2026-08-29 sketch), the exact
 prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
 
+## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
+state:    doing
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     build
+summary:  the ask (owner, verbatim, 2026-09-17)
+prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
+
 ## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
 state:    doing
 row:      unassigned
@@ -1532,16 +1541,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
-
-## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BARBSLINGER_SCORPION_REDESIGN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
