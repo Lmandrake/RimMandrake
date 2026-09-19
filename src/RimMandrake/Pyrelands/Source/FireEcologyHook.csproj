@@ -49,6 +49,7 @@
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
     <Compile Include="RM_PyrelandsDensityEnforcer.cs" />
+    <Compile Include="WildPlantAllowlist.cs" />
   </ItemGroup>
 
   <ItemGroup>

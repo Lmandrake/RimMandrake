@@ -40,6 +40,15 @@ namespace RimMandrake.StarWars.FireEcology
 
         public static bool biomeGenerationEnabled = true;
 
+        // PYRELANDS_FLORA_LEAK_1 — a Harmony postfix on WildPlantSpawner strips
+        // any wild-plant candidate off the RM_FE_ grass allowlist on a
+        // Pyrelands map, however it reached the candidate list (a foreign
+        // mod's plant.wildBiomes entry, a tile mutator's AdditionalWildPlants,
+        // or a mixed-biome secondary biome sharing the map). Off: Pyrelands
+        // reverts to trusting its own biome-level <wildPlants> list alone,
+        // which measurably does not hold on a heavily biome-modded list.
+        public static bool wildPlantAllowlistEnabled = true;
+
         public static bool plantGrowthStagesEnabled = true;
 
         // PYRELANDS_SCORCHED_RUINS_1: GenStep_ScorchPyrelandsRuins (FireEcologyHook.cs)
@@ -64,6 +73,7 @@ namespace RimMandrake.StarWars.FireEcology
             Scribe_Values.Look(ref ashfallAccumulationEnabled, "ashfallAccumulationEnabled", true);
             Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);
             Scribe_Values.Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", true);
+            Scribe_Values.Look(ref wildPlantAllowlistEnabled, "wildPlantAllowlistEnabled", true);
             Scribe_Values.Look(ref plantGrowthStagesEnabled, "plantGrowthStagesEnabled", true);
             Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
         }
@@ -133,6 +143,14 @@ namespace RimMandrake.StarWars.FireEcology
               + "ash terrain and soot filth laid over their footprint as the map is made. "
               + "Off: ruins generate with plain ground, same as any other biome. Map-generation-"
               + "affecting — only the NEXT map generated is affected; an existing map is untouched.");
+            list.GapLine();
+
+            list.Label("Wild flora enforcement");
+            list.CheckboxLabeled("Only RM_FE grasses grow wild on Pyrelands", ref wildPlantAllowlistEnabled,
+                "Strips any wild-plant candidate outside the two RM_FE_ grasses on a Pyrelands map, "
+              + "however it got there (a foreign mod's own biome list leaking in via a mixed-biome "
+              + "or tile-mutator mechanism). Off: Pyrelands trusts its own biome definition alone, "
+              + "which other biome-blending mods can bypass.");
             list.GapLine();
 
             list.Label("Biome placement (WORLDGEN-AFFECTING — new worlds only)");
