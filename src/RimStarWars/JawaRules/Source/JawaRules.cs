@@ -294,10 +294,16 @@ namespace RimMandrake.StarWars.JawaRules
                     }
                 }
 
-                Log.WarningOnce("[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a "
+                // Log.Message, not Log.WarningOnce: WarningOnce dedupes by KEY, not by
+                // text, and every mismatch for every pawn/kind would otherwise share this
+                // one literal key — printing once per session, total, no matter how many
+                // times this mitigation actually re-fires. This path is exception-guarded
+                // and rare (a redress mismatch, not a per-tick call), so there's no spam
+                // risk in logging every occurrence.
+                Log.Message("[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a "
                     + "recycled world pawn came back as '" + before + "' instead of the "
                     + "requested '" + request.KindDef.defName + "' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) "
-                    + "— corrected in place.", 0x4A57A3);
+                    + "— corrected in place.");
             }
             catch (Exception e)
             {
