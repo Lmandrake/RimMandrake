@@ -8,9 +8,12 @@
        drills, for what, and how richly is campaign wiring, and campaign wiring
        lives here, exactly like river steam.
 
-       ZBiome_Grasslands is zylle's More Vanilla Biomes grasslands def, reskinned
-       as the Pyrelands ("stormy savanna") by BiomeNames_Ashkarr.xml. See
-       design/Jawa/worldbuilding — ASHKARR_WORLD_DEFINITION.md's biome table.
+       RM_FE_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
+       world actually carries — 222 tiles, MEASURED live 2026-09-19. The second
+       operation below is the one that does the work on the shipped world.
+       ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
+       "the Pyrelands" by BiomeNames_Ashkarr.xml but carrying ZERO tiles on the
+       canonical planet; it is patched too, conditionally, and costs nothing.
 
        Two candidate liquids, both already shipped with a canal form
        (LiquidDef.canalFluid) so a drill striking either can actually pour:
@@ -71,6 +74,70 @@
         </match>
         <nomatch Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
+                <chanceMapHasYield>0.6</chanceMapHasYield>
+                <options>
+                  <li>
+                    <liquid>RM_Liquid_FreshWater</liquid>
+                    <commonality>3</commonality>
+                    <reserveUnits>600~1800</reserveUnits>
+                  </li>
+                  <li>
+                    <liquid>RM_Liquid_Tar</liquid>
+                    <commonality>1</commonality>
+                    <reserveUnits>400~1200</reserveUnits>
+                  </li>
+                </options>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </match>
+  </Operation>
+
+
+  <!-- 🔴 RM_FE_Pyrelands is the biome the FROZEN WORLD actually carries.
+       MEASURED live 2026-09-19 (FOUNDRY bridge wave 2) on the canonical planet
+       (seed "raven", coverage 1.0, jawa/world_tile_export over 21872 surface
+       tiles): 222 tiles are BiomeDef RM_FE_Pyrelands and ZERO are
+       ZBiome_Grasslands. The Pyrelands live in mandrake.rm.pyrelands now; the
+       operation above was copied from the river-steam patch, which had the same
+       stale target, so no map on the shipped world could ever roll a subsurface
+       yield. Both defNames are patched and each operation is conditional on its
+       def existing, so patching a biome with no tiles costs nothing. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
+                <chanceMapHasYield>0.6</chanceMapHasYield>
+                <options>
+                  <li>
+                    <liquid>RM_Liquid_FreshWater</liquid>
+                    <commonality>3</commonality>
+                    <reserveUnits>600~1800</reserveUnits>
+                  </li>
+                  <li>
+                    <liquid>RM_Liquid_Tar</liquid>
+                    <commonality>1</commonality>
+                    <reserveUnits>400~1200</reserveUnits>
+                  </li>
+                </options>
+              </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]</xpath>
           <value>
             <modExtensions>
               <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">

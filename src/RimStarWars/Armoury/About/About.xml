@@ -41,11 +41,6 @@ Generated from a live post-patch def dump; load last.</description>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
     <li>
-      <packageId>guy762.mm.kotorcore</packageId>
-      <displayName>Star Wars KotOR Resources and Materials</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3254370945</steamWorkshopUrl>
-    </li>
-    <li>
       <packageId>oskarpotocki.vanillafactionsexpanded.core</packageId>
       <displayName>Vanilla Expanded Framework</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2023507013</steamWorkshopUrl>
@@ -69,7 +64,15 @@ Generated from a live post-patch def dump; load last.</description>
   <!-- Harmony dependency added WEAPONS_ABSORPTION_WAVE_1 (2026-08-30): this mod's first
        C# (Source/), porting 7 load-bearing kotorcore comp classes; see items/
        WEAPONS_ABSORPTION_WAVE_1.md. -->
-  <!-- kotorcore/VEF/AdaptiveStorageFramework/EBSG/OuterRim Core dependencies added
+  <!-- The guy762.mm.kotorcore modDependency this block used to describe is GONE,
+       dropped 2026-09-19 (WEAPONS_DONOR_RETIREMENT_1) in the same change that
+       retired that donor from ModsConfig.xml and lifted the DEPLOY_HOLD on
+       Defs/Absorbed_KotorCore/* — this mod is now the only source of those 918
+       defs, so a dependency on the donor would be a hard requirement on a mod
+       nobody loads. The `guy762.mm.kotorcore` entry in <loadAfter> below is kept
+       deliberately, per this file's own note that an inactive packageId there
+       no-ops and reads as an optional-compat statement.
+       VEF/AdaptiveStorageFramework/EBSG/OuterRim Core dependencies added
        ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 (2026-09-02): a minimal-list sweep (BENCH)
        measured that Defs/Absorbed_AdditionalMods/kotorcore/{VEF,AdaptiveStorageFramework,
        EBSG}/*.xml reference those frameworks' own C# classes directly (Class=
