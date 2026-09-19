@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T01:15:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T01:20:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1735,13 +1735,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
-
-## PROPANE_LAKES_ROSTER_STALE_1 design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json still keys shore flora to AB_PropaneLakes; live tile map moved those 2531 tiles to RUT_Umbra
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROPANE_LAKES_ROSTER_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPANE_LAKES_ROSTER_STALE_1.md
