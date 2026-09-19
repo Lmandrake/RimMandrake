@@ -2,7 +2,7 @@
 <Patch>
   <!-- ROT_FLORA_FAUNA_VERDICTS_1 — owner ruling 2026-09-19, applied provisionally
        (design/Jawa/worldbuilding/biomes/rot_flora_fauna_names.md /
-       rosters/rot_regen_briefs.json). Renames + resizes 19 donor AB_/AA_ defs
+       design/Jawa/worldbuilding/biomes/rot_regen_briefs.json). Renames + resizes 19 donor AB_/AA_ defs
        (Alpha Biomes' Plants_MycoticJungle.xml, Alpha Animals' Races_*.xml) to
        the Rot's own campaign names and ruled mature widths.
 

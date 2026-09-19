@@ -10,7 +10,9 @@ campaign name, the mature width he ruled, a def description and a visual brief f
 pipeline — plus the 2 rows he marked **keep** but also wrote "rename" on (agaripod, fungal
 mimic mantis), which get a name and no art brief. One regen row (rustpuff) carries no note at
 all, so it keeps its name and size and only gets a repaint. The machine-readable copy is
-`rosters/rot_regen_briefs.json` (48 objects, `decision` = `regen` | `keep-rename`).
+`rot_regen_briefs.json` (48 objects, `decision` = `regen` | `keep-rename`) — deliberately
+NOT under `rosters/`, which `biome_flora.py` globs as flora-roster dicts; this file is a
+LIST and broke that loader when it sat there (`BIOME_FLORA_ROSTERS_DIR_POLLUTION_1`).
 
 Inputs: his verbatim notes from the decisions file; current labels, descriptions, texPaths
 and sizes read from the defs themselves (`RUT_RotSporeKit_*.xml`, `RUT_PaleTree.xml`,
