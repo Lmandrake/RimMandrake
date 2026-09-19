@@ -222,10 +222,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/mods/biome_flora.py": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-18",
-    "hash": "69d3d09eeab4832700031796d664cddbdd08ea295c89193ef3fb259a51bbe596",
-    "sha": "2247c176e"
+    "hash": "e56e057854a5c7a62db56d22790b384466d09cbcb4829defbd18f334b0d3523c",
+    "sha": "5ab0e549a"
   },
   "design/Jawa/mods/gen_fish_types.py": {
     "cleanCount": 1,
@@ -2430,16 +2430,16 @@
     "sha": "4fde88749"
   },
   "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "cad9559740968c4ac00224a90c8110e4c038ed10e08576b150240851c5045138",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "8317056a72310ce1c290446f52af77f727dd271328b3bf31332a1613dad84b41",
+    "sha": "5ab0e549a"
   },
   "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "593a2b672acd79125923981e60a4f3fbc86b03db8ad511dd35efc67eee2c33ee",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "82b90738e2f79d1221933988e6f4e7cd04c5b27e127b2f4704a77fb8c5422376",
+    "sha": "5ab0e549a"
   },
   "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs": {
     "cleanCount": 1,
@@ -17296,10 +17296,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-12",
-    "hash": "8425a99344ddbb531a97ad88e9db6cfac810720c512192ec003cc21cde278e79",
-    "sha": "bfa7c2f92"
+    "cleanCount": 6,
+    "date": "2026-09-18",
+    "hash": "1baaa496107d66694b8a78c5c1fd5a690eab5d4a45d306734181fdba340f48dd",
+    "sha": "5ab0e549a"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
     "cleanCount": 3,
@@ -17374,10 +17374,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "1d1967f04d6b60b6851e00b6d5df51b9599f00b166d4cdc87ba5e61bd6874e97",
-    "sha": "48b321e95"
+    "hash": "5974f6e015450658ec9a94ba2dc7a390fc1d03a13aecb9960683307b954a49c1",
+    "sha": "5ab0e549a"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml": {
     "cleanCount": 2,
