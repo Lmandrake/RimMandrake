@@ -1,0 +1,76 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.108 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.688000 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Environmental Hazards Kit dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Flooded Canyon dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 26494.
+Total: 120.187800 ms (FindLiveObjects: 0.799400 ms CreateObjectMapping: 0.920500 ms MarkObjects: 118.211700 ms  DeleteObjects: 0.256000 ms)
+
