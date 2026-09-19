@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T19:00:52Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-19T19:23:04Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -607,6 +607,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_SIZE_REJUDGE_APPLY_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  ROTSIZEREJUDGEAPPLY1
 prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
