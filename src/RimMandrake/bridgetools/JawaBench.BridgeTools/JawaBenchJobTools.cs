@@ -1136,6 +1136,270 @@ namespace JawaBench.BridgeTools
         }
 
         // =====================================================================
+        // jawa/do_bill_now - WorkGiver_DoBill.JobOnThing(forced:true) +
+        //                    Pawn_JobTracker.TryTakeOrderedJob
+        // =====================================================================
+        // BRIDGE_DOBILL_FORCE_TOOL_1, MEASURED 2026-09-19: jawa/ordered_job and
+        // jawa/prioritized_work both hand-build the Job with JobMaker.MakeJob(jobDef,
+        // targets) and never touch Job.bill, so a DoBill job issued through either one
+        // has bill==null and JobDriver_DoBill's first toil (which dereferences job.bill
+        // unguarded) falls straight back to Wait. This tool goes through the REAL
+        // WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) - RimWorld/
+        // WorkGiver_DoBill.cs:139 - so the Job it hands to TryTakeOrderedJob actually
+        // carries a bill.
+
+        [Tool(
+            "jawa/do_bill_now",
+            Description =
+                "Force a pawn to start a bill on a bill-giver RIGHT NOW, through the REAL " +
+                "WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) - the exact call " +
+                "the game's own AI scan uses - so the returned Job actually carries .bill. " +
+                "⛔ jawa/ordered_job and jawa/prioritized_work CANNOT do this for a DoBill " +
+                "job: both hand-build the Job with JobMaker.MakeJob(jobDef, targets), which " +
+                "leaves Job.bill null, and JobDriver_DoBill's first toil dereferences " +
+                "job.bill unguarded and falls straight back to Wait (measured 2026-09-19, " +
+                "BRIDGE_DOBILL_FORCE_TOOL_1). 'workGiverDef' names the WorkGiverDef whose " +
+                "Worker is instantiated - it must resolve to a WorkGiver_DoBill (e.g. " +
+                "DoBillsWorktable, DoBillsFrame, DoBillsPatient, DoSurgeryHumanlikeGiver); " +
+                "jawa/ordered_job/jawa/prioritized_work handle every non-bill WorkGiver. " +
+                "'billGiverId' is the ThingID of the bill giver itself (a workbench, a pawn " +
+                "for surgery, a corpse for butchery, ...) and must implement IBillGiver with " +
+                "at least one bill that AnyShouldDoNow. JobOnThing gives no reason when it " +
+                "returns null, so this tool pre-checks every branch WorkGiver_DoBill.cs:141 " +
+                "checks (usableBillGiver / anyBillShouldDoNow / usableAfterFueling / " +
+                "pawnCanReserve / isBurning / the interaction-cell reservation) and names the " +
+                "one that failed. Once a Job comes back this issues it through " +
+                "TryTakeOrderedJob exactly like jawa/ordered_job, waits waitTicks game " +
+                "ticks, and reads curJob AND curJob.bill.recipe back - the read-back this " +
+                "whole tool exists for, since a job silently missing its bill is the bug.",
+            ResultDescription =
+                "jobOnThingReturnedNull plus the individual precondition checks when it did, " +
+                "so a null Job names its cause instead of a bare failure. On a non-null Job: " +
+                "jobDefFromJobOnThing and billOnJob (RecipeDef off Job.bill.recipe - null " +
+                "here on a non-DoBill result such as a refuel job means JobOnThing chose a " +
+                "different job, not the DoBill bug), accepted (TryTakeOrderedJob's own bool), " +
+                "interruptibleBefore, beforeJobDef/afterJobDef, nowRunningRequested, " +
+                "afterJobBillRecipe (Job.bill.recipe read back off curJob after the wait), " +
+                "pausedDuringWait. success requires accepted, nowRunningRequested AND " +
+                "afterJobBillRecipe non-null.")]
+        public static async Task<object> DoBillNow(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "ThingID, name or thingIDNumber of the pawn to order.")]
+            string pawnId = null,
+            [ToolParameter(Description = "ThingID of the bill giver (workbench, pawn for surgery, corpse, ...).")]
+            string billGiverId = null,
+            [ToolParameter(Description =
+                "WorkGiverDef defName whose Worker must resolve to a WorkGiver_DoBill, e.g. DoBillsWorktable.")]
+            string workGiverDef = null,
+            [ToolParameter(Description = "JobTag: Misc, Idle, Homework, ... Defaults to Misc.")]
+            string jobTag = "Misc",
+            [ToolParameter(Description = "requestQueueing - queue after the current job instead of interrupting.",
+                DefaultValue = false)]
+            bool queue = false,
+            [ToolParameter(Description = "Game ticks to wait before reading curJob back.", DefaultValue = 60)]
+            int waitTicks = 60,
+            [ToolParameter(Description = "Wall-clock ceiling on the wait.", DefaultValue = 15)]
+            int timeoutSeconds = 15)
+        {
+            if (string.IsNullOrWhiteSpace(billGiverId))
+                return Fail("billGiverId is required: the ThingID of the bill giver.");
+            if (string.IsNullOrWhiteSpace(workGiverDef))
+                return Fail("workGiverDef is required, e.g. 'DoBillsWorktable'.");
+            if (waitTicks < 0) return Fail($"waitTicks must be >= 0, got {waitTicks}.");
+            if (timeoutSeconds < 1 || timeoutSeconds > 300)
+                return Fail($"timeoutSeconds must be 1-300, got {timeoutSeconds}.");
+
+            var startTicks = 0;
+            var accepted = false;
+            var interruptibleBefore = false;
+            string beforeJobDef = null;
+            string jdefName = null;
+            string billOnJob = null;
+            string jobDefFromJobOnThing = null;
+
+            var setup = await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map. Load a game first.");
+
+                string perr;
+                var pawn = FindPawn(pawnId, out perr);
+                if (pawn == null) return Fail(perr);
+                if (pawn.jobs == null) return Fail($"'{pawnId}' has no Pawn_JobTracker.");
+                // Same off-map / cross-map guards as jawa/ordered_job (2026-09-03 sonnet
+                // fallback review) - JobOnThing and TryMakePreToilReservations both
+                // dereference pawn.Map unguarded.
+                if (!pawn.Spawned)
+                    return Fail(
+                        $"'{pawnId}' is not Spawned (contained or a world pawn) and has no " +
+                        "Map. jawa/do_bill_now only works on a pawn spawned on a loaded map.",
+                        new { spawned = pawn.Spawned, mapHeld = pawn.MapHeld?.ToString() });
+                if (pawn.Map != map)
+                    return Fail(
+                        $"'{pawnId}' is spawned on map '{pawn.Map}', not the current map " +
+                        $"'{map}'. billGiverId is resolved against Find.CurrentMap.");
+
+                JobTag tag;
+                // Enum.TryParse accepts any integer literal; IsDefined is the rejection -
+                // same pattern as jawa/ordered_job and jawa/stop_job.
+                if (!Enum.TryParse(string.IsNullOrWhiteSpace(jobTag) ? "Misc" : jobTag.Trim(), true, out tag)
+                    || !Enum.IsDefined(typeof(JobTag), tag))
+                    return Fail($"Unknown JobTag '{jobTag}'.",
+                        new { accepted = Enum.GetNames(typeof(JobTag)) });
+
+                var wgd = DefDatabase<WorkGiverDef>.GetNamedSilentFail(workGiverDef.Trim());
+                if (wgd == null) return Fail($"Unknown WorkGiverDef '{workGiverDef}'.",
+                    new { suggestions = DefSuggestions<WorkGiverDef>(workGiverDef) });
+                if (wgd.giverClass == null) return Fail($"WorkGiverDef '{wgd.defName}' has no giverClass.");
+
+                WorkGiver giverRaw;
+                try { giverRaw = wgd.Worker; }
+                catch (Exception ex)
+                {
+                    return Fail($"Could not build WorkGiver for '{wgd.defName}': {ex.GetType().Name}: {ex.Message}");
+                }
+                var giver = giverRaw as WorkGiver_DoBill;
+                if (giver == null)
+                    return Fail(
+                        $"WorkGiverDef '{wgd.defName}' resolves to a {giverRaw.GetType().Name}, not a " +
+                        "WorkGiver_DoBill. jawa/ordered_job or jawa/prioritized_work handle non-bill " +
+                        "WorkGivers.");
+
+                var thing = map.listerThings.AllThings.FirstOrDefault(
+                    t => string.Equals(t.ThingID, billGiverId.Trim(), StringComparison.OrdinalIgnoreCase));
+                if (thing == null) return Fail($"No spawned thing with id '{billGiverId}'.");
+
+                // Pre-checked in the SAME order WorkGiver_DoBill.JobOnThing checks them
+                // (RimWorld/WorkGiver_DoBill.cs:139-148, read via RimSage, not guessed), so a
+                // null Job names its cause instead of a bare failure - JobOnThing itself
+                // gives no reason back.
+                var billGiver = thing as IBillGiver;
+                var isBillGiver = billGiver != null;
+                var usableBillGiver = isBillGiver && giver.ThingIsUsableBillGiver(thing);
+                var anyBillShouldDoNow = isBillGiver && billGiver.BillStack != null && billGiver.BillStack.AnyShouldDoNow;
+                var usableAfterFueling = isBillGiver && billGiver.UsableForBillsAfterFueling();
+                var pawnCanReserve = pawn.CanReserve(thing, 1, -1, null, true);
+                var isBurning = thing.IsBurning();
+                var pawnCanReserveInteractionCell = !thing.def.hasInteractionCell
+                    || pawn.CanReserveSittableOrSpot(thing.InteractionCell, thing, true);
+
+                Job job;
+                try { job = giver.JobOnThing(pawn, thing, forced: true); }
+                catch (Exception ex)
+                {
+                    return Fail($"WorkGiver_DoBill.JobOnThing threw: {ex.GetType().Name}: {ex.Message}");
+                }
+
+                if (job == null)
+                {
+                    string reason;
+                    if (!isBillGiver) reason = $"'{billGiverId}' is a {thing.GetType().Name}, which does not implement IBillGiver.";
+                    else if (!usableBillGiver) reason = "ThingIsUsableBillGiver is false (faction/mindstate/forbidden check on the giver failed).";
+                    else if (!anyBillShouldDoNow) reason = "BillStack.AnyShouldDoNow is false - no bill on this giver is currently runnable (none exist, all suspended, or ingredients unavailable).";
+                    else if (!usableAfterFueling) reason = "UsableForBillsAfterFueling is false - the giver needs fuel.";
+                    else if (!pawnCanReserve) reason = "pawn.CanReserve on the giver is false - reserved by another pawn.";
+                    else if (isBurning) reason = "The bill giver isBurning().";
+                    else if (!pawnCanReserveInteractionCell) reason = "pawn.CanReserveSittableOrSpot on the interaction cell is false - reserved by another pawn.";
+                    else reason = "All checked preconditions passed - JobOnThing itself refused for another reason " +
+                                  "(e.g. TryFindBestBillIngredients found no ingredients, or CompRefuelable needs " +
+                                  "refuelling and RefuelWorkGiverUtility.CanRefuel is also false).";
+                    return Fail("WorkGiver_DoBill.JobOnThing(forced:true) returned null.", new
+                    {
+                        isBillGiver, usableBillGiver, anyBillShouldDoNow, usableAfterFueling,
+                        pawnCanReserve, isBurning, pawnCanReserveInteractionCell, reason,
+                    });
+                }
+
+                jobDefFromJobOnThing = job.def?.defName;
+                billOnJob = job.bill?.recipe?.defName;
+                job.playerForced = true;
+                jdefName = job.def?.defName;
+
+                interruptibleBefore = pawn.jobs.IsCurrentJobPlayerInterruptible();
+                beforeJobDef = pawn.jobs.curJob?.def?.defName;
+
+                var tm = Find.TickManager;
+                startTicks = tm?.TicksGame ?? -1;
+
+                accepted = pawn.jobs.TryTakeOrderedJob(job, tag, queue);
+                return null;
+            }, cancellationToken).ConfigureAwait(false);
+            if (setup != null) return setup;
+
+            var pausedDuringWait = await ctx.MainThread.InvokeAsync(
+                () => Find.TickManager != null && Find.TickManager.Paused, cancellationToken)
+                .ConfigureAwait(false);
+
+            var ticksNow = startTicks;
+            var elapsedMs = 0;
+            while (ticksNow - startTicks < waitTicks && elapsedMs < timeoutSeconds * 1000)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+                elapsedMs += 100;
+                ticksNow = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                string perr;
+                var pawn = FindPawn(pawnId, out perr);
+                if (pawn == null)
+                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait." };
+
+                var afterJobDef = pawn.jobs?.curJob?.def?.defName;
+                var afterJobBillRecipe = pawn.jobs?.curJob?.bill?.recipe?.defName;
+                var nowRunningRequested = string.Equals(afterJobDef, jdefName, StringComparison.OrdinalIgnoreCase);
+
+                string note = null;
+                if (!accepted)
+                    note = "TryTakeOrderedJob returned false: job.TryMakePreToilReservations failed - the " +
+                           "pawn could not reserve the bill giver or its interaction cell.";
+                else if (!nowRunningRequested)
+                    note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
+                           $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, failed " +
+                           "immediately, or be queued rather than current." +
+                           (!interruptibleBefore
+                               ? " 🔑 THE PAWN WAS NOT PLAYER-INTERRUPTIBLE when the order was issued " +
+                                 $"(it was running '{beforeJobDef ?? "(none)"}'), so it was enqueued LAST " +
+                                 "instead of replacing the current one. jawa/stop_job first if you meant to pre-empt."
+                               : "") +
+                           (queue
+                               ? " 🔑 You passed queue:true, so a non-current curJob is the REQUESTED outcome."
+                               : "") +
+                           (pausedDuringWait
+                               ? " ⚠️ THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading " +
+                                 "proves nothing."
+                               : "");
+                else if (afterJobBillRecipe == null)
+                    note = "curJob is the requested JobDef but curJob.bill.recipe read back null - this IS " +
+                           "the exact silent-Wait bug BRIDGE_DOBILL_FORCE_TOOL_1 exists to prevent, showing " +
+                           "up even through the real WorkGiver_DoBill.JobOnThing path. Something downstream " +
+                           "cleared the bill after TryTakeOrderedJob accepted it.";
+
+                return new
+                {
+                    success = accepted && nowRunningRequested && afterJobBillRecipe != null,
+                    jobDefFromJobOnThing,
+                    billOnJob,
+                    accepted,
+                    interruptibleBefore,
+                    beforeJobDef,
+                    requestedJobDef = jdefName,
+                    afterJobDef,
+                    afterJobBillRecipe,
+                    nowRunningRequested,
+                    ticksElapsed = ticksNow - startTicks,
+                    pausedDuringWait,
+                    queueLength = pawn.jobs?.jobQueue?.Count ?? 0,
+                    note,
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // =====================================================================
         // jawa/stop_job - StopAll / EndCurrentJob / ClearQueuedJobs
         // =====================================================================
 
