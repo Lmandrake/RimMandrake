@@ -2263,4 +2263,45 @@
       <MarketValue>25.0</MarketValue>
     </statBases>
   </ThingDef>
+<!-- Pass 23: Shyrack's own 2 eggs. leatherDef (Leather_Dark) and
+     specificMeatDef (Insectile_Meat) already exist as
+     RSW_Leather_Dark/RSW_Insectile_Meat (Wave B/Pass 3) — no new
+     leather/meat needed. -->
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggShyrackFertilized</defName>
+    <label>shyrack egg (fert.)</label>
+    <description>A fertilized shyrack egg. If all goes well, it should hatch into a baby shyrack. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,50,50)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Shyrack</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggShyrackUnFertilized</defName>
+    <label>shyrack egg (unfert.)</label>
+    <description>An unfertilized shyrack egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,50,50)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>

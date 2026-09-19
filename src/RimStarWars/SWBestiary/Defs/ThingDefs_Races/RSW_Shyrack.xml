@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Shyrack creature port.
+  Ported from mlie.starwarsanimalcollection's `Shyrack` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Shyrack` BodyDef (Bodies_Animal_StarWars.xml) reuses ALREADY-PORTED Wave B
+  parts/groups throughout — `RSW_SW_DexterousTail`/`RSW_SW_Club`/
+  `RSW_SWTailAttackTool` (the same tail-club combo Boma already established),
+  `RSW_SWLeftArmClawAttackTool`/`RSW_SWRightArmClawAttackTool` (the same
+  claw groups Scurrier/others reuse), `RSW_SW_LeftWing`/`RSW_SW_RightWing`
+  — no new body part needed. Ported as RSW_Shyrack
+  (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Dark`) and
+  `specificMeatDef` (`Insectile_Meat`) ALREADY EXIST as
+  `RSW_Leather_Dark`/`RSW_Insectile_Meat` (Wave B/Pass 3) — no new
+  leather/meat needed. Its 2 eggs (`EggShyrackFertilized`/
+  `EggShyrackUnFertilized`) are new this pass, ported as
+  `RSW_EggShyrackFertilized`/`RSW_EggShyrackUnFertilized`
+  (RSW_MlieWaveC_Resources.xml). Adult lifeStage sounds (`Pawn_Shyrack_*`)
+  were already absorbed in the 2026-09-02 sound wave — confirmed present in
+  SoundDefs_SWBestiary.xml as `RSW_Pawn_Shyrack_*`, wired, not re-done.
+  `modExtensions` (`NocturnalAnimals.ExtendedRaceProperties`,
+  MayRequire="Mlie.XNDNocturnalAnimals") left verbatim, gated on a donor
+  add-on mod that stays out of scope for this pass — degrades cleanly
+  (extension simply doesn't load) if that add-on isn't installed, no
+  cross-reference risk. `specialTrainables`/`abilities` (`SW_SwarmCall`,
+  Odyssey-gated) repointed to the newly-ported `RSW_SW_SwarmCall`
+  (RSW_MlieWaveC_Abilities.xml) — this species references it both ways
+  (ThingDef `specialTrainables` AND PawnKindDef `abilities`), matching the
+  donor's own dual-wiring.
+
+  No `*ArtOverride` mod exists for Shyrack (checked first). 16 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used: `Shyrack_{south,east,north}` (base facing),
+  `Shyrack_Dessicated`, and all 12 flying-animation frame textures
+  (`Shyrack_Flying_{1,2,3,44}_{south,east,north}`) the donor's own
+  PawnKindDef `flyingAnimationFramePathPrefix`/`flyingAnimationFrameCount`
+  fields reference. **Flagged, not fixed**: the donor names its 4th flying
+  frame `Shyrack_Flying_44_<facing>`, not `_4_<facing>` — with
+  `flyingAnimationFrameCount>4</flyingAnimationFrameCount>` RimWorld looks
+  for frame index 4 and won't find it under this naming; this is the
+  donor's own pre-existing asset-naming quirk (present, unchanged, across
+  all 3 facings — not a one-off typo we introduced), ported byte-identical
+  rather than guessed at a rename, matching this item's "verbatim port,
+  don't invent fixes to donor content" convention. Every texPath the def
+  references is otherwise present. Sits at Textures/swanimals/Shyrack/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Shyrack" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Shyrack</defName>
+    <label>shyrack</label>
+    <description>Shyracks were large, bat-like avian creatures with razor like teeth native to the caves of the planet Korriban. While ungainly and slow-moving without eyes, Shyracks were potentially dangerous pests, especially when they converged as a flock on an opponent. It's believed these creatures were spread to various planets as "live prey" for the others beasts in Sith armies (such as the Tuk'ata).</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-7</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>1.0</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+      <Wildness>0.75</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>left scythe claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftArmClawAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right scythe claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightArmClawAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggShyrackUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggShyrackFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Nocturnal</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Shyrack</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>0.7</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Dark</leatherDef>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <manhunterOnTameFailChance>0.75</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <lifeExpectancy>5</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SwarmCall</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.6</Desert>
+        <ExtremeDesert>0.8</ExtremeDesert>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>RSW_Pawn_Shyrack_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Shyrack_Death</soundDeath>
+          <soundCall>RSW_Pawn_Shyrack_Call</soundCall>
+          <soundAngry>RSW_Pawn_Shyrack_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>Sithspawn</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Shyrack</defName>
+    <label>shyrack</label>
+    <race>RSW_Shyrack</race>
+    <combatPower>55</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Shyrack/Shyrack_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SwarmCall</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shyrack/Shyrack_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
