@@ -37,6 +37,17 @@ namespace RimMandrake.StarWars.JawaRules
         public static bool droidRelationsEnabled = true;
         public static bool petNamesEnabled = true;
 
+        // KCSG_PAWNKIND_COLONIST_FALLBACK_1: PawnGenerator's world-pawn redress path
+        // (GenerateOrRedressPawnInternal -> RedressPawn) is SUPPOSED to force the
+        // redressed pawn onto the requested kind via pawn.ChangeKind(request.KindDef)
+        // (Verse/Pawn.cs:6094), but AlienRace.HarmonyPatches.ChangeKindPrefix
+        // (HumanoidAlienRaces) can skip that original call, leaving a recycled world
+        // pawn (usually vanilla Colonist, xenotype Baseliner) standing in for one of
+        // our useFactionXenotypes kinds. Reaches every caller of
+        // PawnGenerator.GeneratePawn(kind, faction) with forceGenerateNewPawn left
+        // false — raids, quests, faction rosters and KCSG dungeon layouts alike.
+        public static bool pawnKindRedressFixEnabled = true;
+
         public static bool worldLabelAlphaBoostEnabled = true;
         public static float worldLabelAlpha = 0.6f;
         public static bool worldLabelLiftEnabled = true;
@@ -48,6 +59,7 @@ namespace RimMandrake.StarWars.JawaRules
             Scribe_Values.Look(ref sowBanEnabled, "sowBanEnabled", true);
             Scribe_Values.Look(ref droidRelationsEnabled, "droidRelationsEnabled", true);
             Scribe_Values.Look(ref petNamesEnabled, "petNamesEnabled", true);
+            Scribe_Values.Look(ref pawnKindRedressFixEnabled, "pawnKindRedressFixEnabled", true);
             Scribe_Values.Look(ref worldLabelAlphaBoostEnabled, "worldLabelAlphaBoostEnabled", true);
             Scribe_Values.Look(ref worldLabelAlpha, "worldLabelAlpha", 0.6f);
             Scribe_Values.Look(ref worldLabelLiftEnabled, "worldLabelLiftEnabled", true);
@@ -82,6 +94,12 @@ namespace RimMandrake.StarWars.JawaRules
             list.CheckboxLabeled("Tamed/newborn animals draw names from their race", ref petNamesEnabled,
                 "Off: animals fall back to vanilla's numeric names (\"Dromedary 1\") instead of "
               + "their race's name generator.");
+            list.CheckboxLabeled("Fix recycled-pawn kind mismatches", ref pawnKindRedressFixEnabled,
+                "KCSG_PAWNKIND_COLONIST_FALLBACK_1: RimWorld can silently hand back a recycled "
+              + "world pawn (usually a vanilla Colonist/Baseliner) instead of the pawn kind a "
+              + "raid, quest, faction or dungeon layout asked for, when a Humanoid Alien Races "
+              + "compatibility patch blocks the engine's own kind correction. Off: vanilla "
+              + "behaviour, including the mismatch.");
             list.GapLine();
 
             list.Label("World map labels");

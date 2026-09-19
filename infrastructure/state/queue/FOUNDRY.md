@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:41:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T08:09:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -963,13 +963,31 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
+## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
+
+## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
+
 ## CUT_FALLOUT_GENERATED_DATA_1 Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
+summary:  CUTFALLOUTGENERATEDDATA1 — Load C fallout from the Caverns + Polluted Lands cuts
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
 
 ## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
@@ -980,6 +998,15 @@ target:   v1
 kind:     build
 summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
+
+## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
+prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
 
 ## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
 state:    doing
@@ -998,6 +1025,15 @@ target:   v1
 kind:     task
 summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
 prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
+
+## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  (no items/DEEPS_FAUNA_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1565,16 +1601,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
 
-## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
-
 ## BRIDGE_MAPGEN_STALE_FINALIZE_1 world_tile_map_generate leaves the map rendering stale until map_commit finalize
 state:    proposed
 row:      unassigned
@@ -1605,16 +1631,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WORLDGEN_CLICK_RECONCILE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORLDGEN_CLICK_RECONCILE_1.md
 
-## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
-
 ## CANONICAL_SAVE_CUT_RESIDUE_1 The start save loads on the 621 list but drops content: MEASURED Load C 2026-09-19 (load_game with ignoreModCompatibility) 4,828 'Could not load reference' lines (4,543 BMT_; 4,800 ThingDef, 24 WorkGiverDef, 3 ResearchProjectDef, 1 FactionDef), 22 SaveableFromNode NREs = Things with a dead def dropped (RR_Weapon_Torch on several pawns, BMT_BufoBile, GravBeamCannon), 2 GameComponents from als.gravtech/.bc. Save recorded 635 mods; 16 missing (Caverns, Polluted Lands, GravTech x2 + retexture, RR Stepping Stones, 10 ArtOverrides). Scrub or re-save the ship artifact; the bridge refuses it without the override flag. Detail: Transient/canonical_save_loadC_exceptions_2026-09-19.txt, Transient/canonical_save_caverns_scrub_2026-09-18.md
 state:    proposed
 row:      unassigned
@@ -1635,16 +1651,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIGERRORS_NRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIGERRORS_NRE_1.md
 
-## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
-prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
-
 ## DEEPS_FAUNA_VERDICTS_1 Lantern Deeps fauna verdicts: cut 7 kinds from RUT_LanternDeeps, rename 4 (Drinker, Grabber, Soulchime, Glowbulb), file 8 restyle art jobs with the owner's briefs
 state:    proposed
 row:      unassigned
@@ -1654,16 +1660,6 @@ kind:     build
 thin:     no ## verify, no ## criteria
 summary:  Flora: all 12 kept, no action.
 prose:    infrastructure/state/items/DEEPS_FAUNA_VERDICTS_1.md
-
-## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEPS_FAUNA_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
 
 ## LONGHUNGER_QUICKTEST_1 Live quicktest RUT_LongHunger (mandrake.rut.longhunger) enabled 2026-09-19 alongside donor sandworm
 state:    proposed
