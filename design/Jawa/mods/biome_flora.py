@@ -53,8 +53,13 @@ import argparse, collections, csv, glob, json, os, sqlite3, sys, textwrap
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
-from game_paths import DUMP_ROOT  # noqa: E402
-DB = os.path.join(DUMP_ROOT, "defs.sqlite")
+from game_paths import DEF_DUMP  # noqa: E402
+import dump_projection  # noqa: E402
+# 🔴 MEASURED 2026-09-03 (dump_projection.py `_capture_to_check`): `sqlite_path(DUMP_ROOT)`
+# can hand back a stale db because the DefDump root carries no manifest.json under the
+# dated layout. `game_paths.DEF_DUMP` is `newest_capture() or DUMP_ROOT` — the correct
+# current-capture resolution, matching xenotype_size_audit.py's pattern.
+DB = dump_projection.sqlite_path(str(DEF_DUMP)) or os.path.join(DEF_DUMP, "defs.sqlite")
 TILES = os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv')
 # ⚠️ This used to point at src/Jawa/Jawa_Patches/, which JAWA_PATCHES_SPLIT_1 retired.
 # The deployed file has been under RimUtinni since that split; `--write` was silently
