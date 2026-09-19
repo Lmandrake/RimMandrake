@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T06:51:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:01:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
+prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
 
 # IN PROGRESS
 
@@ -882,6 +891,15 @@ kind:     build
 summary:  Both channels ship together — his ruling, against light-first. So nothing here is releasable
 prose:    infrastructure/state/items/ATMOSPHERIC_BASE_BUILD_PROGRAM_1.md
 
+## NINEFOLD_LOUDNESS_FRONT_1 Ninefold owes LOUDNESS and THE FRONT, which canon rules exist and no code computes — MEASURED 2026-09-16: GameComponent_Ninefold's entire public read surface is GetSatiation/GetMood/GetBand/IsUnveiled plus ApplyDelta/TryFirstContact/NotifyViolentDeath/Notify_Launched. No loudness, no front, no change notification, pull-only. canon.yml in_front rules that engagement makes a god LOUDER, the loudest holds actuator priority, the front is reckoned at each LANDING and can flip mid-map on a violent swing — none of that derivation is written. Blocks ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3 onward, whose territory and tremor are both defined in terms of rank
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  canon.yml infront.coresrc (owner, 2026-08-30, canonizing the 2026-08-29 sketch), the exact
+prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
+
 ## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
 state:    doing
 row:      unassigned
@@ -1418,19 +1436,9 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## criteria
+thin:     spec, verify and criteria all present
 summary:  Four slime rows: RED, GREEN, WHITE as distinct liquids (distinct hazards +
 prose:    infrastructure/state/items/SLIME_STREAM_ROWS_1.md
-
-## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
-prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
 
 ## BAZAAR_DISPLACEMENT_PASS_1 Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
 state:    proposed
@@ -1461,16 +1469,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
-
-## NINEFOLD_LOUDNESS_FRONT_1 Ninefold owes LOUDNESS and THE FRONT, which canon rules exist and no code computes — MEASURED 2026-09-16: GameComponent_Ninefold's entire public read surface is GetSatiation/GetMood/GetBand/IsUnveiled plus ApplyDelta/TryFirstContact/NotifyViolentDeath/Notify_Launched. No loudness, no front, no change notification, pull-only. canon.yml in_front rules that engagement makes a god LOUDER, the loudest holds actuator priority, the front is reckoned at each LANDING and can flip mid-map on a violent swing — none of that derivation is written. Blocks ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3 onward, whose territory and tremor are both defined in terms of rank
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_LOUDNESS_FRONT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
 
 ## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
 state:    proposed
