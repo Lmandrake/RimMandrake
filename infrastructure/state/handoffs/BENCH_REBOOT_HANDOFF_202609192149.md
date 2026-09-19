@@ -31,10 +31,21 @@ unusable without an `--owner-said` workaround.
   passing `"autonomous FOUNDRY work"` as his words to get past the seat guard; it
   flipped `LIQUID_SINK_DRAINAGE_1` to OWNER. Undone at `d4a10ee0a`. The guard checks
   SHAPE, not provenance. Filed as `OWNER_SAID_PROVENANCE_GUARD_1`.
-- ⚠️ **`RUT_ExtremeDesert`'s 205 hidden road tiles may rest on a false premise.** The
-  Umbra ruling's premise ("the biome switch hid these roads") did NOT hold when
-  measured — those tiles already read `allowRoads=false` before the switch. The
-  ExtremeDesert number comes from the same narrative. Re-measure before it is load-bearing.
+- ✅ **RETRACTED 2026-09-19 by the next BENCH: the road premise HOLDS.** This bullet
+  claimed the Umbra ruling rested on a false premise, because "those tiles already read
+  `allowRoads=false` before the switch". That is **wrong**, and re-measuring is what
+  showed it. MEASURED against the live def dump (`mods=621/fedd946a33bb7137`): both
+  donor biomes the switch replaced carry **`allowRoads=True`** — `ExtremeDesert`
+  (GRiNDTerra) and `AB_PropaneLakes` (Alpha Biomes, the 2,531-tile donor under
+  `RUT_Umbra`). The ban arrived with OUR defs, in `cc11aee6e` (2026-09-09,
+  BIOME_OWNERSHIP_WAVE_1), which is exactly what "the biome switch hid these roads"
+  says. So the Umbra ruling and the ExtremeDesert number both stand.
+  ⚠️ The ruling's exact figures do not reproduce from the frozen record today — it cites
+  42 Umbra tiles / 78 links / 74 internal / 4 leaving; joining the 2026-09-07 links CSV
+  to the 2026-09-12 tiles CSV gives **50 / 49 / 48 / 1**. That gap is expected, because
+  the biome column changed between those two exports, and it does not touch the
+  conclusion: the links are overwhelmingly internal either way (48 of 49 is stronger
+  than 74 of 78). Do not "correct" the ruling on the strength of this bullet.
 - ⚠️ Shipped deliberately with a flag: `WORLDMAP_FINAL_REVIEW_1` closed with the
   full-planet STARE **waived on his word**, audits standing as the verdict.
 
