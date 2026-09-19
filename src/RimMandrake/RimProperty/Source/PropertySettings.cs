@@ -6,9 +6,10 @@ namespace RimMandrake.Property
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for RimProperty.
     //
-    // Seven independently-gateable mechanics, found by reading every .cs
+    // Eight independently-gateable mechanics, found by reading every .cs
     // file in this mod before writing this (walkable commerce, pickpocket,
-    // and hire-the-placeless added by SETTLEMENT_VERBS_WAVE_1):
+    // hire-the-placeless, and bribes/bought-rounds added by
+    // SETTLEMENT_VERBS_WAVE_1):
     //   1. Perception/propagation (PropertyEngine.RollPerceptionAndPropagate)
     //      — witnesses seeing a theft and telling their faction.
     //   2. Animal theft (AnimalTheftUtility.FindStealTarget, the single
@@ -27,6 +28,10 @@ namespace RimMandrake.Property
     //   7. Hire the placeless (FloatMenuOptionProvider_HirePlaceless /
     //      HirePlacelessUtility) — the right-click "hire this faction-less
     //      pawn/droid" order.
+    //   8. Bribes / bought rounds (FloatMenuOptionProvider_Bribe /
+    //      BribeUtility) — the right-click "buy a round" order that cools
+    //      off a faction's own suspicion record (FactionRecord.
+    //      DampenSuspicion), no TakingEvent involved.
     //
     // The claim engine itself (ClaimEngine/ClaimDecay/GameComponent_
     // PropertyLedger/PropertyEngine.Fire's WasAuthorized resolution) is left
@@ -79,6 +84,11 @@ namespace RimMandrake.Property
         public static bool hirePlacelessEnabled = true;
         public static float hirePlacelessFeeSilver = PropertyTuning.HirePlacelessFeeSilver;
 
+        // --- Bribes / bought rounds (SETTLEMENT_VERBS_WAVE_1, social-fabric pass) --
+        public static bool bribeEnabled = true;
+        public static float bribeFeeSilver = PropertyTuning.BribeFeeSilver;
+        public static float bribeDampenFraction = PropertyTuning.BribeDampenFraction;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -100,6 +110,9 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref pickpocketMinItemValueSilver, "pickpocketMinItemValueSilver", PropertyTuning.PickpocketMinItemValueSilver);
             Scribe_Values.Look(ref hirePlacelessEnabled, "hirePlacelessEnabled", true);
             Scribe_Values.Look(ref hirePlacelessFeeSilver, "hirePlacelessFeeSilver", PropertyTuning.HirePlacelessFeeSilver);
+            Scribe_Values.Look(ref bribeEnabled, "bribeEnabled", true);
+            Scribe_Values.Look(ref bribeFeeSilver, "bribeFeeSilver", PropertyTuning.BribeFeeSilver);
+            Scribe_Values.Look(ref bribeDampenFraction, "bribeDampenFraction", PropertyTuning.BribeDampenFraction);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -188,6 +201,19 @@ namespace RimMandrake.Property
             {
                 list.Label("  Hiring advance: " + hirePlacelessFeeSilver.ToString("0") + " silver");
                 hirePlacelessFeeSilver = list.Slider(hirePlacelessFeeSilver, 0f, 100f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Bribes / bought rounds (cool off a faction's suspicion)", ref bribeEnabled,
+                "Lets a pawn right-click a factioned pawn from a different faction and pay for a round, "
+              + "cooling off some of whatever that faction already knows about the payer. Never reveals "
+              + "whether there was anything to cool off. Off: that order never appears.");
+            if (bribeEnabled)
+            {
+                list.Label("  Cost per round: " + bribeFeeSilver.ToString("0") + " silver");
+                bribeFeeSilver = list.Slider(bribeFeeSilver, 0f, 100f);
+                list.Label("  Suspicion cooled per round: " + (bribeDampenFraction * 100f).ToString("0") + "%");
+                bribeDampenFraction = list.Slider(bribeDampenFraction, 0f, 1f);
             }
 
             list.End();

@@ -1,3 +1,123 @@
+## 2026-09-18 (FOUNDRY, belt mode, subagent) — social fabric's second sub-mechanic: bribes/bought rounds
+
+Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`
+item 9: **salvage-law gray zone (built) · walkable commerce (built) · crime
+suite (pickpocket built; night burglary/fencing/smuggling still unbuilt) ·
+social fabric (hiring the placeless built, bribes/bought-rounds built THIS
+pass; rumors as intel and sabacc still unbuilt).** Per this pass's own brief
+(candidate list: crime suite's night burglary/fencing/smuggling, or social
+fabric's bribes), picked bribes — the item's own prior entry (below) already
+flagged crime suite's three remaining sub-mechanics as blocked on concepts
+`SETTLEMENT_VISIT_LOOP_1` hasn't landed yet (a buyer/vendor NPC for fencing,
+a district/gate concept for smuggling, and for night burglary specifically an
+`AccessPolicy` concept — "locks vs AccessPolicy" per the spec's own ledger
+note — that doesn't exist anywhere in this codebase yet: `grep -rn
+AccessPolicy src/RimMandrake/RimProperty` returns nothing). Bribes needed no
+such groundwork.
+
+**Built this pass** (`mandrake.rm.property`, `src/RimMandrake/RimProperty/
+Source/Bribe/`): a right-click `FloatMenuOptionProvider_Bribe` order, same
+shape as every other verb in this item (needs a selected paying pawn +
+a clicked target Pawn; no JobDriver, the transaction runs instantly from the
+option's own delegate) — "Buy X a round (N silver)".
+
+**The genuinely new fabric work, checked before writing it**: unlike every
+prior verb in this item, this one does NOT route through
+`PropertyEngine.Fire`/`TakingEvent` — there's no Thing being taken, bought
+or claimed, so no existing `TakingAct` case fits. Read `FactionRecord.cs` in
+full first: every method on it before this pass only ever APPENDED
+(`RegisterWitness`) or READ (`GetSuspicion`/`HasAnyPropagatedKnowledge`)
+witness entries — nothing could reduce or remove one. Added
+`FactionRecord.DampenSuspicion(ClaimantRef suspect, float fraction, int
+nowTick)`: multiplies each of `suspect`'s own matching `WitnessEntry.
+Confidence` values by `(1 - fraction)` — a damper, not an eraser, per the
+spec's own word choice ("propagation dampers", not "erasers"); silently a
+no-op when the suspect has no entries. Wired through a new
+`PropertyEngine.DampenSuspicion(Faction, ClaimantRef, float, int)` static
+entry point (the ledger-lookup wrapper, same shape as `RecordGift`/
+`RecordInheritance`'s own "direct write, no spine, no perception roll"
+section) rather than having the float-menu option reach into
+`GameComponent_PropertyLedger` directly — keeps "one entry point future verb
+code calls" intact for this new write direction too.
+
+**The design-boundary question, resolved for THIS verb specifically**: this
+item's own 2026-09-18 entry (below) flagged that the module boundary
+("Verbs ... must not know perception outcomes") reads in tension with
+rumors-as-intel, whose whole point is reporting a perception-derived fact TO
+the player. Checked whether the same tension applies to bribes before
+building: it does not, because this verb only ever WRITES — it never calls
+`GetSuspicion`/`HasAnyPropagatedKnowledge` to decide whether to offer itself,
+and never reports back whether the bribe "worked." The float menu option is
+offered on gate conditions alone (faction/hostility/downed/prisoner/race),
+completely independent of whatever the ledger currently holds, and fires the
+same silent write regardless. No perception outcome is ever exposed to the
+verb code or the player — spec item 6's "No meter, no indicator, ever"
+holds. Confirms the task brief's own claim that bribes is not blocked by
+rumors' open tension; not a re-litigation of that still-unresolved tension,
+which remains for whoever eventually builds rumors.
+
+**The gate**: `targetPawn.Faction != null` and `!= actor.Faction` (bribing
+your own colonist has no separate faction record to dampen — same "needs a
+different faction" shape WalkableCommerce/HirePlaceless already use for
+their own exclusions), `!Downed` (claim-fee gizmo's droid territory),
+`!IsPrisoner` (already belongs to the player), `!HostileTo(actor)` (same gate
+every other social/crime verb here uses), `RaceProps.Humanlike` only (a
+bought round is a conversation a mechanoid can't have — deliberately
+narrower than HirePlaceless, which includes an active droid as a legitimate
+hire target for a different reason). Fee: `BribeUtility.
+ComputeBribeFeeSilver()`, flat and tunable
+(`PropertySettings.bribeFeeSilver`, default 15 silver,
+`PropertyTuning.BribeFeeSilver`) — same "no second pricing model" discipline
+every other verb's fee in this mod already applies. Dampen amount:
+`PropertySettings.bribeDampenFraction`, default 0.35 (three rounds roughly
+halve a fresh entry's confidence, 0.65³ ≈ 0.27), also tunable 0-100%. Silver
+counting/removal reuses `SalvageClaimFeeUtility.CountSilverInInventory`/
+`RemoveSilverFromInventory` directly, same reuse chain every prior verb here
+established.
+
+Mod Settings retrofitted (`PropertySettings.cs`): `bribeEnabled` (default on),
+`bribeFeeSilver` slider (0-100 silver), `bribeDampenFraction` slider (0-100%),
+same checkbox+slider(s) pattern as every other gateable mechanic in this mod.
+Module doc-comment count updated from seven to eight gateable mechanics.
+
+**Verified this pass**: added both new files
+(`Bribe/FloatMenuOptionProvider_Bribe.cs`, `Bribe/BribeUtility.cs`) to
+`RM_Property.csproj`'s explicit `<Compile>` list BEFORE building — the exact
+step the 2026-09-18 crime-suite pass (below) shipped a dead verb by skipping.
+`dotnet.exe build RM_Property.csproj -c Release` (Windows-native, D-drive
+path) compiles clean, 0 warnings, 0 errors, DLL rebuilt at
+`src/RimMandrake/RimProperty/Assemblies/RimMandrakeProperty.dll`. Per this
+item's own standing lesson, did NOT trust that alone: `MEASURE_ALLOW_SCAN=1
+strings RimMandrakeProperty.dll | grep -E
+"FloatMenuOptionProvider_Bribe|BribeUtility|ComputeBribeFeeSilver|
+DampenSuspicion"` — all four literal strings present in the rebuilt DLL.
+`selftest_property_fabric.py` still passes 20/20, unaffected (it tests
+`ClaimDecay`/`ClaimantRef`/`ClaimEngine`, none of which this pass touched).
+Full `run_selftests.py` sweep: **61/61 passed** (up from the prior pass's
+58/60 — the two previously-failing selftests now pass too, unrelated to this
+change; not investigated further as out of this pass's scope). No new
+XML/patches shipped (C#-only), so `validate_patch.py` has nothing to check.
+`deploy_custom_mods.py --mod RimProperty` (plan only) reports drift, as
+expected — **not deployed**: same "game may be up, and deploy/live-quicktest
+is a separate later step" posture every prior pass on this item took; did
+not touch the bridge per this pass's own brief.
+
+**Not built this pass, explicitly out of scope**: rumors as intel (still
+carries the open module-boundary tension flagged in the entry below — needs
+an owner ruling or a qualitative-flavor-text design before it's buildable)
+and sabacc (a whole minigame, not a right-click order). Crime suite's night
+burglary/fencing/smuggling remain unbuilt and blocked on
+`SETTLEMENT_VISIT_LOOP_1` groundwork (buyer/vendor NPC, district/gate
+concept) and, for night burglary specifically, an `AccessPolicy` concept
+that doesn't exist in this codebase at all yet — confirmed by grep, not
+assumed.
+
+**Live-quicktest still owed for ALL FIVE verbs now built** (salvage-law,
+walkable commerce, pickpocket, hiring the placeless, bribes) — none of them
+has ever been proven against a running game with a DLL that actually
+contains them; this pass didn't touch the bridge, per its own brief. Left
+`doing`.
+
 ## 2026-09-18 (FOUNDRY, belt mode, subagent) — fourth verb family started: social fabric
 
 Tally, all four v1 verb families from `design/Jawa/ownership_settlement_spec.md`

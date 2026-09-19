@@ -96,5 +96,18 @@ namespace RimMandrake.Property
         // labor-value scaling exists yet — that needs an actual wage/
         // contract system this pass does not build.
         public const float HirePlacelessFeeSilver = 20f;
+
+        // Bribes / bought rounds (SETTLEMENT_VERBS_WAVE_1, social-fabric
+        // pass): a flat, tunable silver cost for the "buy a round" verb,
+        // same "flat and tunable only, no second pricing model" discipline
+        // every other verb's fee in this mod already applies.
+        public const float BribeFeeSilver = 15f;
+
+        // How much of a matching FactionRecord entry's own Confidence one
+        // bribe/round removes (FactionRecord.DampenSuspicion) — a damper,
+        // not an eraser, per spec item 9's own wording. 0.35 means three
+        // rounds roughly halve a fresh entry's remaining confidence
+        // (0.65^3 ≈ 0.27), a meaningful but not instantly-erasing effect.
+        public const float BribeDampenFraction = 0.35f;
     }
 }

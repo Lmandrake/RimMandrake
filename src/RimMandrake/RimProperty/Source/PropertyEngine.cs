@@ -162,5 +162,25 @@ namespace RimMandrake.Property
 
         public static void RecordInheritance(Thing thing, ClaimantRef heir, int tick)
             => RecordTransfer(thing, heir, ClaimBasis.Inherited, 1f, tick);
+
+        // --- Faction record writes (no spine, no Thing, no perception roll) -
+
+        // SETTLEMENT_VERBS_WAVE_1, social-fabric pass: bribes / bought
+        // rounds (spec item 9). The one entry point a verb calls to reduce
+        // what a faction's record already knows about a suspect. Unlike
+        // every Take/Buy/Claim case above, there is no Thing being acted on
+        // and nothing to roll perception for — this WRITES to perception
+        // state directly, the mirror image of "rumors as intel" READING it
+        // (that direction still carries an open module-boundary question;
+        // see SETTLEMENT_VERBS_WAVE_1's item file). Silently does nothing if
+        // `faction` is null or the ledger has no active Game.
+        public static void DampenSuspicion(Faction faction, ClaimantRef suspect, float fraction, int tick)
+        {
+            GameComponent_PropertyLedger ledger = GameComponent_PropertyLedger.Get();
+            if (ledger == null || faction == null) return;
+
+            FactionRecord record = ledger.GetOrCreateFactionRecord(faction);
+            record?.DampenSuspicion(suspect, fraction, tick);
+        }
     }
 }
