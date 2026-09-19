@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:27:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T05:27:16Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1408,6 +1408,16 @@ blocked:  Same open Bazaar dependency chain as the other two slices I checked th
 summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
 prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
+## ROT_FAUNA_KIN_WIRING_1 Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
+summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1709,13 +1719,3 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  KCSG pawn symbols silently fall back to vanilla Colonist
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
-
-## ROT_FAUNA_KIN_WIRING_1 Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
