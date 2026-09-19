@@ -18,7 +18,9 @@
   2. **Harvest products are vanilla where the donor's were its own.** The donor's
      BMT_MushroomLog becomes WoodLog and BMT_MycelialBlocks is dropped (mycelium
      becomes pure ground cover, purpose Misc). Grey Lady already harvested vanilla
-     Cloth and still does; dulcis harvests our own RUT_DeepRawDulcis.
+     Cloth and still does; dulcis harvests RotSporeKit's RUT_RawDulcis
+     (DEEP_DULCIS_DEDUP_1, owner ruling 2026-09-18 — RotSporeKit owns raw dulcis,
+     this mod no longer ships its own RUT_DeepRawDulcis).
 
   3. **No research or fungiponics gates.** sowResearchPrerequisites
      BMT_ResearchMushrooms and the BMT_Fungiponics sowTag are donor defs. Sowing
@@ -231,7 +233,7 @@
       <harvestYield>12</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.1</harvestAfterGrowth>
-      <harvestedThingDef>RUT_DeepRawDulcis</harvestedThingDef>
+      <harvestedThingDef>RUT_RawDulcis</harvestedThingDef>
       <sowMinSkill>4</sowMinSkill>
       <sowTags>
         <li>Ground</li>
