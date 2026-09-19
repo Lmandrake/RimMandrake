@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:36:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T03:40:59Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -93,7 +93,7 @@ prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
