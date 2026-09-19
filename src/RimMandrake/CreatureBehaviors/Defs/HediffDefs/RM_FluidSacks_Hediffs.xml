@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FluidSacks_Hediffs.xml              CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Owner's own words (Drinker): "sacks that it uses to store drained body
+  fluids." The visible gauge on the DRINKER itself. RM_CompFluidSacs raises
+  its severity on every feed (sackFillPerSeverity * drained severity),
+  maxSeverity caps it at full, and on the drinker's death the comp drops
+  RM_DrainedFluids in proportion (Notify_Killed). Not bad, not tendable,
+  never decays: a full drinker stays full until it dies or is butchered.
+  Three stages so the health tab reads empty / part-full / full at a
+  glance. No capMods — carrying fluid is not an injury.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_FluidSacks</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>fluid sacks</label>
+    <labelNoun>fluid sacks</labelNoun>
+    <description>Distended sacks along the body, holding whatever this creature has drained from its prey. The fuller they are, the more can be recovered from the carcass.</description>
+    <defaultLabelColor>(0.55, 0.35, 0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <initialSeverity>0.001</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <label>near empty</label>
+      </li>
+      <li>
+        <minSeverity>0.34</minSeverity>
+        <label>part full</label>
+      </li>
+      <li>
+        <minSeverity>0.9</minSeverity>
+        <label>full</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

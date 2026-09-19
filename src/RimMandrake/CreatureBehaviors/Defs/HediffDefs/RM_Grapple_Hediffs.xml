@@ -12,11 +12,11 @@
   why: re-entering the victim's HediffSet tick loop mid-iteration is exactly
   the hazard RM_CompWoundLink already avoids for a sibling mechanism).
 
-  <lethalSeverity>1</lethalSeverity> is the "until freed or killed" half —
-  same vanilla mechanism (HediffWithComps.CheckForStateChange killing the
-  pawn once severity crosses it) RUT_FlamefangVenom already relies on, so
-  a hold pressed all the way through actually kills the victim with zero
-  extra code.
+  The KILL route is real injury: RM_CompGrappler on the GRABBER deals Blunt
+  crush damage to the victim's torso each round (RM_CompProperties_Grappler
+  for the numbers), so bruising, pain and death follow vanilla's own injury
+  rules. This hediff's severity is the tightening gauge only — it drives
+  the three stages below and caps at maxSeverity; it never kills by itself.
 
   Tuning (severityGainPerRoundPerBodySize, roundIntervalTicks,
   escapeChancePerRound, releaseRadius) lives on the RM_HediffDef_Grapple
@@ -35,7 +35,7 @@
     <isBad>true</isBad>
     <tendable>false</tendable>
     <scenarioCanAdd>false</scenarioCanAdd>
-    <lethalSeverity>1</lethalSeverity>
+    <maxSeverity>1</maxSeverity>
     <severityGainPerRoundPerBodySize>0.08</severityGainPerRoundPerBodySize>
     <roundIntervalTicks>300</roundIntervalTicks>
     <escapeChancePerRound>0.05</escapeChancePerRound>

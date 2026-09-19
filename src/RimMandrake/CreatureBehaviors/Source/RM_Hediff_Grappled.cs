@@ -12,11 +12,11 @@ namespace RimMandrake.CreatureBehaviors
     // own Tick() runs from inside the victim's HediffSet tick loop, and
     // calling TakeDamage from there risks re-entering that same loop mid-
     // iteration (the exact hazard RM_CompWoundLink's own header already
-    // flags for a sibling mechanism). Instead the "crush" is this hediff's
-    // OWN severity climbing each round toward its XML-defined
-    // <lethalSeverity> — the same vanilla-native, fully safe pattern
-    // RUT_FlamefangVenom and vanilla's own ToxicBuildup/WoundInfection use
-    // for a damage-over-time condition. Releasing the hold by removing this
+    // flags for a sibling mechanism). The physical crush — Blunt damage to
+    // the torso each round — is dealt from the GRABBER's side instead, by
+    // RM_CompGrappler's CompTick, which is outside this loop. This hediff's
+    // OWN severity climbing each round (capped by <maxSeverity>) is only the
+    // tightening gauge that drives its stages. Releasing the hold by removing this
     // hediff from within its own Tick() is the exact mechanism
     // HediffCompProperties_Disappears already relies on for RUT_MatGrip, so
     // it's a proven-safe idiom in this same assembly.
@@ -33,6 +33,18 @@ namespace RimMandrake.CreatureBehaviors
 
         public RM_HediffDef_Grapple Def => (RM_HediffDef_Grapple)def;
 
+        /// <summary>Who is holding this pawn — read by RM_CompGrappler on the
+        /// grappler's side for the per-round crush and the rescue roll.</summary>
+        public Pawn Grappler => grappler;
+
+        /// <summary>Ends the hold from outside (RM_CompGrappler's rescue
+        /// roll). Safe to call from any tick that is not this pawn's own
+        /// HediffSet iteration.</summary>
+        public void ReleaseHold()
+        {
+            Release();
+        }
+
         public override void PostAdd(DamageInfo? dinfo)
         {
             base.PostAdd(dinfo);
@@ -44,7 +56,7 @@ namespace RimMandrake.CreatureBehaviors
             // start a SECOND independent hold ticking down in parallel — it
             // refreshes who's holding (the most recent hit) and this new
             // instance stands down, leaving the original's accumulated
-            // severity (and its progress toward lethalSeverity) intact.
+            // severity (and its stage progress) intact.
             var hediffs = pawn.health.hediffSet.hediffs;
             for (int i = 0; i < hediffs.Count; i++)
             {

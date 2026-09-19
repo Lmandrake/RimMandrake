@@ -23,8 +23,9 @@ namespace RimMandrake.CreatureBehaviors
         /// Grabber crushes harder per round than a bodySize-1 one would,
         /// with zero per-species tuning needed. INVENTED: 0.08 — a handful
         /// of rounds (see roundIntervalTicks) climbs through this hediff's
-        /// own stages toward its lethalSeverity at a body size around 4,
-        /// matching Grabber's own remade bodySize.</summary>
+        /// own stages to its maxSeverity cap at a body size around 4,
+        /// matching Grabber's own remade bodySize. The crush DAMAGE is
+        /// RM_CompProperties_Grappler's business, not this field's.</summary>
         public float severityGainPerRoundPerBodySize = 0.08f;
 
         /// <summary>Ticks between one crush "round" and the next. INVENTED:

@@ -34,6 +34,26 @@ namespace RimMandrake.CreatureBehaviors
         /// bite, no severity math here.</summary>
         public HediffDef poisonHediff;
 
+        /// <summary>The visible gauge hediff on the DRINKER (RM_FluidSacks
+        /// in this mod's Defs): every feed raises its severity by
+        /// sackFillPerSeverity * drained severity, its own XML maxSeverity
+        /// caps it, and on death its severity sets the drainedFluidsThing
+        /// drop. Null = no gauge, no drop (hunger/poison still work).</summary>
+        public HediffDef sacksHediff;
+
+        /// <summary>Gauge severity gained per point of drained severity.
+        /// INVENTED: 0.1 — about ten solid bites to fill the sacks.</summary>
+        public float sackFillPerSeverity = 0.1f;
+
+        /// <summary>Item dropped beside the corpse on death, count =
+        /// round(gauge severity * drainedFluidsAtFull). RM_DrainedFluids in
+        /// this mod's Defs; null = nothing drops.</summary>
+        public ThingDef drainedFluidsThing;
+
+        /// <summary>Items dropped by a drinker killed with FULL sacks
+        /// (gauge severity 1). INVENTED: 10.</summary>
+        public int drainedFluidsAtFull = 10;
+
         public RM_CompProperties_FluidSacs()
         {
             compClass = typeof(RM_CompFluidSacs);
@@ -49,6 +69,21 @@ namespace RimMandrake.CreatureBehaviors
             if (hungerRestoredPerSeverity < 0f)
             {
                 yield return "RM_CompProperties_FluidSacs hungerRestoredPerSeverity must be >= 0.";
+            }
+
+            if (sackFillPerSeverity < 0f)
+            {
+                yield return "RM_CompProperties_FluidSacs sackFillPerSeverity must be >= 0.";
+            }
+
+            if (drainedFluidsAtFull < 0)
+            {
+                yield return "RM_CompProperties_FluidSacs drainedFluidsAtFull must be >= 0.";
+            }
+
+            if (drainedFluidsThing != null && sacksHediff == null)
+            {
+                yield return "RM_CompProperties_FluidSacs sets drainedFluidsThing but no sacksHediff — nothing would ever drop.";
             }
 
             if (!poisonousFleshTypes.NullOrEmpty() && poisonHediff == null)

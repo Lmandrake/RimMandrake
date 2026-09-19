@@ -77,11 +77,13 @@ namespace RimMandrake.CreatureBehaviors
     //      "Gas emitters"/"Gas damage and transmuting" toggles, which
     //      already cover it kit-wide.
     //  15. grapplerHoldEnabled / grapplerCrushMultiplier — RM_Hediff_Grappled
-    //      (DEEPS_FAUNA_MECHANICS_1, Grabber). Off: any active hold releases
-    //      immediately and a fresh pincer hit never starts a new one. The
-    //      dial scales only the per-round severity gain (never the escape
-    //      chance, round interval or release radius, which stay whatever
-    //      the hediff's own def says).
+    //      + RM_CompGrappler (DEEPS_FAUNA_MECHANICS_1, Grabber). Off: any
+    //      active hold releases immediately, a fresh pincer hit never starts
+    //      a new one, no crush damage is dealt and hurting the grabber no
+    //      longer rolls to break a hold (there is none). The dial scales the
+    //      per-round crush damage and the hold's tightening rate together
+    //      (never the escape chance, rescue chance, round interval or
+    //      release radius, which stay whatever the defs say).
     //  16. drinkerFluidSacsEnabled / drinkerPoisonMultiplier —
     //      RM_CompFluidSacs (DEEPS_FAUNA_MECHANICS_1, Drinker). Off: a bite
     //      never restores the drinker's hunger and never poisons it either
@@ -235,19 +237,24 @@ namespace RimMandrake.CreatureBehaviors
             list.GapLine();
 
             list.CheckboxLabeled("Grabber hold-and-crush", ref grapplerHoldEnabled,
-                "A grappled pincer hold releases immediately and a fresh hit stops starting a new one.");
+                "On: a pawn caught in a grabber's pincer cannot move and takes crush damage every "
+              + "few seconds; break the hold by hurting the grabber (each hit from someone else has "
+              + "a chance to free them). Off: any hold releases immediately and a pincer hit is just a hit.");
             list.Label("Hold crush rate: " + grapplerCrushMultiplier.ToString("0.00") + "x");
             grapplerCrushMultiplier = list.Slider(grapplerCrushMultiplier, 0f, 3f);
             list.GapLine();
 
             list.CheckboxLabeled("Drinker fluid sacs", ref drinkerFluidSacsEnabled,
-                "A drinker's bite stops restoring its own hunger and stops poisoning it on a bad meal — a bite is just a bite.");
+                "On: a drinker's bite feeds it and fills its fluid sacs (more drained fluids from the carcass), "
+              + "but warm iron blood poisons it and it dies within a day. Off: a bite is just a bite, and its "
+              + "sacs never yield anything.");
             list.Label("Bad-blood poison severity: " + drinkerPoisonMultiplier.ToString("0.00") + "x");
             drinkerPoisonMultiplier = list.Slider(drinkerPoisonMultiplier, 0f, 3f);
             list.GapLine();
 
             list.CheckboxLabeled("Soulchime psychic stun", ref soulchimePsychicStunEnabled,
-                "A wild Soulchime stops psychically stunning anyone who gets too close.");
+                "On: a Soulchime psychically stuns anyone not of its own faction who gets too close in its "
+              + "line of sight, or who hurts it; psychically deaf pawns are immune. Off: nobody is ever stunned.");
             list.CheckboxLabeled("Soulchime shard armor", ref soulchimeShardArmorEnabled,
                 "A Soulchime's shard armor stops growing (whatever it's already grown stays).");
             list.Label("Shard armor growth rate: " + soulchimeShardArmorRateMultiplier.ToString("0.00") + "x");

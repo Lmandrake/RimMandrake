@@ -21,7 +21,7 @@
       <li>
         <label>soothing presence nearby</label>
         <description>Something calm and steady is close by. It's hard to stay tense around it.</description>
-        <baseMoodEffect>3</baseMoodEffect>
+        <baseMoodEffect>6</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

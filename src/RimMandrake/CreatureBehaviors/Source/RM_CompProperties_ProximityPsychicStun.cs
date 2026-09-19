@@ -42,6 +42,19 @@ namespace RimMandrake.CreatureBehaviors
         /// same shape (a radius scan off a DefModExtension tag).</summary>
         public bool alsoRingPlantAlarm = true;
 
+        /// <summary>The proximity trigger (the rare-tick scan) only stuns
+        /// pawns the carrier can see (GenSight.LineOfSight). The damage
+        /// trigger ignores this — being struck alarms it regardless.</summary>
+        public bool requireLineOfSight = true;
+
+        /// <summary>Taking any damage emits the stun at once (same radius,
+        /// same cooldown, no line-of-sight check) — "alarms it".</summary>
+        public bool triggerOnDamage = true;
+
+        /// <summary>A pawn whose PsychicSensitivity stat is 0 or less
+        /// (psychically deaf trait, some xenotypes) is never stunned.</summary>
+        public bool psychicallyDeafImmune = true;
+
         public RM_CompProperties_ProximityPsychicStun()
         {
             compClass = typeof(RM_CompProximityPsychicStun);

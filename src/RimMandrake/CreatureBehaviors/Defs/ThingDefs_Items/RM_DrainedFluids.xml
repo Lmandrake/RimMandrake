@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DrainedFluids.xml                   CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  What a dead drinker's fluid sacks give up: RM_CompFluidSacs drops
+  round(RM_FluidSacks severity * drainedFluidsAtFull) of this beside the
+  corpse. A plain raw resource — no recipe consumes it yet (a trade good
+  and, later, whatever the Deeps' own crafting wants it for). Art: vanilla
+  Chemfuel's blob tinted dark, same borrowed-texture posture as
+  RM_ScaldWalkerChitin (DivingInteraction).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DrainedFluids</defName>
+    <label>drained fluids</label>
+    <description>Thick, dark body fluid recovered from a drinker's sacks. Whatever it was pulled from, it has been sitting in there for a while. Sealed, it keeps; traders in the dark places know what it is.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(70, 40, 75)</color>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>6</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>
