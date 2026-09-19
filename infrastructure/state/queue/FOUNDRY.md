@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:57:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T03:10:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,15 +116,6 @@ target:   v1
 kind:     task
 summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
-
-## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
-prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
 ## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
 state:    doing  (BLOCKED)
