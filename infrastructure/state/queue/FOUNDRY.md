@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:24:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:35:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,6 +918,15 @@ kind:     build
 summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
 
+## AQUATIC_WATER_BREATHING_GENE_1 Design and build a real water-breathing mechanism (gene or hediff) for the 4 aquatic xenotypes currently missing one entirely
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  AQUATICWATERBREATHINGGENE1
+prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
+
 ## FISH_BESTIARY_BUILD_1 Build the fish bestiary: 32 RUT_ species across 8 registers on 7 waters, per-biome mod homes, all 8 §6 questions ruled 2026-09-18
 state:    doing
 row:      unassigned
@@ -1504,18 +1513,8 @@ needs:    game-up
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md yet — write one when you have something to say)
+summary:  MODLISTINACTIVECUSTOMMODSSWEEP1 — full custom-mod activation sweep, 2026-09-19
 prose:    infrastructure/state/items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md
-
-## AQUATIC_WATER_BREATHING_GENE_1 Design and build a real water-breathing mechanism (gene or hediff) for the 4 aquatic xenotypes currently missing one entirely
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/AQUATIC_WATER_BREATHING_GENE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/AQUATIC_WATER_BREATHING_GENE_1.md
 
 ## ROT_ART_WAVE_1 Land the 22 rot artpipe jobs: review daemon output, deploy textures, verify texPaths render
 state:    proposed

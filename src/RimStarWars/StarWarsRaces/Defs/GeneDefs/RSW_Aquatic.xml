@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RSW_Aquatic.xml
+  ============================================================================
+
+  AQUATIC_WATER_BREATHING_GENE_1 (design/RimStarWars/aquatic_water_breathing_design.md).
+  Hand-authored, not gen_races_mod.py output.
+
+  One plain GeneDef: swims (waterCellCost), never drowns in a FlowWorks pit
+  (makeImmuneTo RM_PitDrowning, MayRequire-gated so this loads fine with
+  FlowWorks absent), doesn't mind being wet (SoakingWet nullifyingGenes patch,
+  see Patches/RSW_Aquatic_SoakingWet.xml in this same mod).
+
+  Deliberately NOT wired onto any GeneSet/Xenotype/species yet — the item's
+  roster card (which of Mon Calamari/Nautolan/Gungan/Selkath/Quarren actually
+  gets this) is still open for the owner. Wiring is the next owed step once
+  that card resolves.
+
+  Does NOT open deep water (Impassable, decided before any per-pawn water
+  cost — a separate engineering item, not a field on this gene).
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RSW_WaterBreathing</defName>
+    <label>water-breathing</label>
+    <description>Carriers of this gene breathe water as easily as air. They never drown, swim through open water as easily as walking on land, and do not mind being soaked.</description>
+    <iconPath>UI/Icons/Genes/Gene_WebbedPhalanges</iconPath>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
+    <displayOrderInCategory>710</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <waterCellCost>1</waterCellCost>
+    <makeImmuneTo>
+      <li MayRequire="mandrake.rm.flowworks">RM_PitDrowning</li>
+    </makeImmuneTo>
+    <customEffectDescriptions>
+      <li>Never drowns. Moves through water as easily as land. Does not mind being soaked.</li>
+    </customEffectDescriptions>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>gill</symbol>
+        </li>
+        <li>
+          <symbol>deep</symbol>
+        </li>
+        <li>
+          <symbol>tide</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+
+</Defs>

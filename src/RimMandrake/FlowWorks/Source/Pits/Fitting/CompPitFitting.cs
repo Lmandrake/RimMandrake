@@ -120,6 +120,20 @@ namespace RimMandrake.FlowWorks.Pits
 
         private bool CanSwim(Pawn p)
         {
+            // AQUATIC_WATER_BREATHING_GENE_1: a gene declaring immunity to our own
+            // RM_PitDrowning hediff means the pawn does not drown here, regardless
+            // of species or swim art. Vanilla public API
+            // (ImmunityHandler.AnyGeneMakesFullyImmuneTo) - references no
+            // StarWarsRaces def, so any current or future gene/mod can opt in this
+            // way with zero cross-mod dependency in either direction. Checked ahead
+            // of the swim-art heuristics below because WaterCellCost alone (the
+            // *swim* signal, e.g. WebbedPhalanges) does not imply immunity to
+            // drowning - only a gene that actually declares makeImmuneTo does.
+            if (p?.health?.immunity != null
+                && p.health.immunity.AnyGeneMakesFullyImmuneTo(RMPits_HediffDefOf.RM_PitDrowning))
+            {
+                return true;
+            }
             // No vanilla "aquatic" RaceProperties flag exists to key this off,
             // and confirmed (2026-09-02) that no vanilla BodyDef defName contains
             // "aquatic" either - so the substring heuristic below was previously
