@@ -149,7 +149,53 @@ def resolve_visual_size_range(defname, index):
         f"Fix the def or the def roots — do NOT substitute a default.")
 
 
-_VSR_INDEX = _plant_def_index()
+
+# Our own XML patches override the donor's authored value, and the game reads
+# the PATCHED number — so a resolver that stops at the ThingDef is still wrong.
+# MEASURED 2026-09-19: RotSpecies_NamesAndSizes.xml replaces visualSizeRange on
+# 10 of the 13 AlphaBiomes rows (AB_DribblingCap's donor def says 3.5~5; the
+# patch that carries the owner's ruling says 8.4~12). Reading only the donor
+# would understate 6 of those rows by 1.5-3.5x.
+VSR_XPATH = re.compile(
+    r'ThingDef\[\s*defName\s*=\s*"([^"]+)"\s*\]/plant/visualSizeRange\s*$')
+
+
+def _apply_our_vsr_patches(index):
+    """Overlay PatchOperationReplace/Add on plant/visualSizeRange from OUR mods.
+
+    Only our own src/ roots are scanned: a donor patching another donor is
+    already reflected in what we read, and we do not model load order here.
+    Operations nested inside PatchOperationConditional/Sequence are found too
+    (iter walks the whole tree); a conditional that would NOT fire at runtime
+    is the known limit of this — every one in scope is gated on the def
+    existing, and all 40 rows' defs were MEASURED present."""
+    for root in (REPO_ROOT / "src" / "RimUtinni", REPO_ROOT / "src" / "RimStarWars",
+                 REPO_ROOT / "src" / "RimMandrake"):
+        if not root.exists():
+            continue
+        for f in root.rglob("*.xml"):
+            try:
+                tree = ET.parse(f)
+            except ET.ParseError:
+                continue
+            if tree.getroot().tag != "Patch":
+                continue
+            for op in tree.getroot().iter("li"):
+                cls = op.get("Class", "")
+                if not cls.endswith(("Replace", "Add")):
+                    continue
+                m = VSR_XPATH.search((op.findtext("xpath") or "").strip())
+                if not m:
+                    continue
+                val = op.find("./value/visualSizeRange")
+                if val is None or not (val.text or "").strip():
+                    continue
+                prev = index.get(m.group(1))
+                index[m.group(1)] = (val.text.strip(), prev[1] if prev else None)
+    return index
+
+
+_VSR_INDEX = _apply_our_vsr_patches(_plant_def_index())
 # defName -> maxMeshCount (absent/None means 1 — a single sprite per cell).
 FLORA_MESH = {
     "AB_Bryolux": 4, "RUT_Dewshrooms": 9, "RUT_FruitingBodies": 25,
