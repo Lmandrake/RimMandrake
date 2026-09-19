@@ -9643,3 +9643,5 @@
 {"seat":"FOUNDRY","event":"file","id":"SELFTEST_FAILURE_TRIAGE_1","title":"Triage the 5 standing selftest failures: 3 stale instruments, 1 real dead-patch catch, 1 real art regression pair","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-19T04:42:01Z"}
 {"seat":"FOUNDRY","event":"file","id":"ART_SELFTEST_CORPUS_IN_TRANSIENT_1","title":"art_checks.py --selftest reads its whole corpus from Transient/pyrelands_art_review/art, which the ~14-day Transient sweep will delete out from under the suite","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-19T04:42:02Z"}
 {"seat":"FOUNDRY","event":"close","id":"EMBERGRASS_LEAFLESS_ALTS_1","sha":"2687b48b614fc5798793b9c779d309eb6506afca","ts":"2026-09-19T04:43:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SELFTEST_FAILURE_TRIAGE_1","ts":"2026-09-19T04:46:09Z"}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_FAILURE_TRIAGE_1","sha":"695e87683cb90d52bb5f0f7d26e0d8fef844b833","ts":"2026-09-19T04:46:10Z"}
