@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AQUATIC_WATER_BREATHING_GENE_1 (design/RimStarWars/aquatic_water_breathing_design.md).
+  SoakingWet is a vanilla Core ThoughtDef; patched, not hand-edited. A water-
+  breather does not mind being wet, same convention as
+  RSW_BiomesTeamPort_Support.xml's RobustDigestion patch on a food thought.
+  SoakingWet is Core (not gated behind any DLC), so no MayRequire is needed
+  on the target xpath itself, and RSW_WaterBreathing ships in this same mod
+  so its own li needs none either.
+
+  🔴 CONFIRMED via RimSage (raw ThoughtDef, 2026-09-19): SoakingWet's own XML has
+  NO <nullifyingGenes> element at all (only nullifyingPrecepts). A
+  PatchOperationAdd targeting ".../nullifyingGenes" would find no such node and
+  silently add nothing (CLAUDE.md: "a patch that matches nothing logs nothing").
+  So this adds the whole <nullifyingGenes> element onto the ThoughtDef itself.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThoughtDef[defName="SoakingWet"]</xpath>
+    <value>
+      <nullifyingGenes>
+        <li>RSW_WaterBreathing</li>
+      </nullifyingGenes>
+    </value>
+  </Operation>
+
+</Patch>
