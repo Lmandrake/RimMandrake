@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T06:12:02Z",
+  "drawsize": 8.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "deeps_grabber_v2_south",
+  "priority": 50,
+  "prompt": "Horrible, total remake. This should be huge, bodysize 4. A small room-sized blob of pale yellow substance with a glass-like carapace, many small legs, and one large pincer-ending arm. Truly alien. Call it a Grabber. Give it great strength to Hold someone with its pincer and slowly crush them each round. hydrocarbon-based life: glowing pale blue exterior, pale yellow internal liquids, painterly RimWorld sprite, top-down-ish south facing, transparent background",
+  "reference": null,
+  "rimflow_item_id": "DEEPS_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}
