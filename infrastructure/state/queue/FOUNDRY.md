@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T15:57:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T16:27:00Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1025,6 +1025,15 @@ target:   v1
 kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
+
+## VENTFORGE_KILN_RECIPEWIRING_HELD_1 RUT_VentForge_RecipeWiring.xml / RUT_VentKiln_RecipeWiring.xml deployed while their sibling ThingDefs stayed DEPLOY_HOLD'd for art -- 109+38=147 of 185 crossref failures on the 621-mod load were these two dangling recipeUsers defNames. Added both patches to DEPLOY_HOLD.txt (sibling-hold pattern, matching RUT_BeastBulge/RUT_ScaldWreckScatter precedent)
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+summary:  (no items/VENTFORGE_KILN_RECIPEWIRING_HELD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VENTFORGE_KILN_RECIPEWIRING_HELD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
