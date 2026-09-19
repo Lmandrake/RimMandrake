@@ -1045,7 +1045,7 @@
 <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggGutkurrUnFertilized</defName>
     <label>gutkurr egg (unfert.)</label>
-    <description>A fertilized gutkurr egg. It can be eaten raw, but it's much better cooked.</description>
+    <description>An unfertilized gutkurr egg. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>swresource/EggInsectile</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -1787,7 +1787,7 @@
 <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggKryknaFertilized</defName>
     <label>krykna egg (fert.)</label>
-    <description>A fertilized kinrath egg. If all goes well, it should hatch into a baby krykna. It can be eaten raw, but it's much better cooked.</description>
+    <description>A fertilized krykna egg. If all goes well, it should hatch into a baby krykna. It can be eaten raw, but it's much better cooked.</description>
     <possessionCount>1</possessionCount>
     <graphicData>
       <texPath>swresource/EggNodule</texPath>
@@ -1808,7 +1808,7 @@
 <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggKryknaUnFertilized</defName>
     <label>krykna egg (unfert.)</label>
-    <description>An unfertilized kinrath egg. It can be eaten raw, but it's much better cooked.</description>
+    <description>An unfertilized krykna egg. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>swresource/EggNodule</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -2484,7 +2484,7 @@
 <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggVaractylUnFertilized</defName>
     <label>varactyl egg (unfert.)</label>
-    <description>A fertilized varactyl egg. If all goes well, it should hatch into a baby varactyl. It can be eaten raw, but it's much better cooked.</description>
+    <description>An unfertilized varactyl egg. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>swresource/EggScaled</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
