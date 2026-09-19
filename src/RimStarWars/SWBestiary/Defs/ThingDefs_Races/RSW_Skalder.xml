@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Skalder creature port.
+  Ported from mlie.starwarsanimalcollection's `Skalder` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Skalder` BodyDef (Bodies_Animal_StarWars.xml) is entirely vanilla-part
+  composition (Body/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/
+  Skull/Brain/Eye x2/Trunk/AnimalJaw/Tusk x2/Teeth, 4x Leg/Hoof) — its 2
+  Tusk parts use the bare `TuskAttackTool` group left ungated exactly as
+  the donor leaves it, same "confirmed Alpha Animals, not Mlie content"
+  precedent already established (Boma/Pass 9, Jakobeast/Pass 11) — no
+  SW-prefixed part or group anywhere, defName rename only. Ported as
+  RSW_Skalder (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Elephant`)
+  is vanilla Core, left bare. `specificMeatDef` (`Pachydermoid_Meat`)
+  ALREADY EXISTS as `RSW_Pachydermoid_Meat` (Pass 1, Iriaz/Mudhorn) — no new
+  resource needed. Adult lifeStage sounds (`Pawn_Skalder_*`) were already
+  absorbed in the 2026-09-02 sound wave — confirmed present in
+  SoundDefs_SWBestiary.xml as `RSW_Pawn_Skalder_*`, wired, not re-done.
+  `specialTrainables`/`abilities` (`WarTrumpet`) left bare — this is the
+  VANILLA Odyssey `WarTrumpet` AbilityDef (Data/Odyssey/Defs/AbilityDefs/
+  Abilities.xml, confirmed directly off the game's own def dump), NOT donor
+  content, same as every other species referencing it (RSW_MlieWaveB/C
+  Abilities.xml both already use vanilla `WarTrumpet` as an
+  `effecterDef`). `willNeverEat` block (DLC special-tree defNames) is
+  vanilla Core/DLC content, left bare verbatim.
+
+  **Flagged, not fixed**: the adult lifeStage's `butcherBodyPart` names
+  `SkalderTusk`, a donor ivory-trophy item (Items_Resource_swanimal_Items.xml
+  + Recipes_Ivory.xml — a separate trophy/recipe subsystem, out of scope
+  for a creature-geometry pass, same pattern as ShiroTrap's
+  `RawTookeTrapRoot` this same pass). Left pointing at the donor's own bare
+  `SkalderTusk` — resolves fine while mlie.starwarsanimalcollection stays
+  active.
+
+  No `*ArtOverride` mod exists for Skalder (checked first). 7 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used: `Skalder_{south,east,north}` (base facing),
+  `Skalder_Swimming_{south,east,north}` (the donor's own
+  `<swimmingGraphicData>` block, same pattern already used elsewhere in
+  this wave), and `Skalder_Dessicated`. The donor's own
+  `SkalderPack_{south,east,north}` variants (3 PNGs) were excluded —
+  unreferenced by the donor's own ThingDef/PawnKindDef despite
+  `<race><packAnimal>true</packAnimal>`, same "unreferenced-by-the-def"
+  precedent as every prior wave's "m"/"Pack" exclusions (confirmed off the
+  donor's own PawnKindDef, no separate pack texPath anywhere in its
+  lifeStages). Sits at Textures/swanimals/Skalder/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Skalder" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Skalder</defName>
+    <label>skalders</label>
+    <description>The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed. They made exceptional pack animals, even in toxic environments and so were exported by pirate bands for use offworld.</description>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>650</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.50</ArmorRating_Heat>
+      <FilthRate>24</FilthRate>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tusk</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Skalder</body>
+      <baseHungerRate>1.5</baseHungerRate>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>3.6</baseHealthScale>
+      <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
+      <leatherDef>Leather_Elephant</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>65</lifeExpectancy>
+      <gestationPeriodDays>15</gestationPeriodDays>
+      <packAnimal>true</packAnimal>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">WarTrumpet</li>
+      </specialTrainables>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.04</Desert>
+        <ExtremeDesert>0.02</ExtremeDesert>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.02</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.7</minAge>
+          <soundWounded>RSW_Pawn_Skalder_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Skalder_Death</soundDeath>
+          <soundCall>RSW_Pawn_Skalder_Call</soundCall>
+          <soundAngry>RSW_Pawn_Skalder_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Skalder</defName>
+    <label>skalder</label>
+    <race>RSW_Skalder</race>
+    <combatPower>260</combatPower>
+    <ecoSystemWeight>2.0</ecoSystemWeight>
+    <wildGroupSize>3~7</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">WarTrumpet</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>skalder calf</label>
+        <bodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder</texPath>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Dessicated</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder</texPath>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Dessicated</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder</texPath>
+          <drawSize>3.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.8</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Skalder/Skalder_Dessicated</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>TuskAttackTool</bodyPartGroup>
+          <thing>SkalderTusk</thing>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
