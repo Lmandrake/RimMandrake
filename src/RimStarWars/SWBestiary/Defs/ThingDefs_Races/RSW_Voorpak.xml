@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Voorpak creature port.
+  Ported from mlie.starwarsanimalcollection's `Voorpak` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_Voorpak` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — entirely vanilla-part composition (Body/Tail/
+  Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/Brain/Eye x2/
+  Ear x2/Nose/AnimalJaw, 8x InsectLeg/Paw), defName rename only.
+  `leatherDef` (`Leather_SoftFur`) ALREADY EXISTS as `RSW_Leather_SoftFur`
+  (Wave B). `specificMeatDef` (`Felinoid_Meat`) ALREADY EXISTS as
+  `RSW_Felinoid_Meat` (Pass 11, Jakobeast). No egg comp (live birth via
+  gestationPeriodDays/litterSizeCurve). All 4 vocal sounds already absorbed
+  (`RSW_Pawn_Voorpak_*`). `modExtensions`' NocturnalAnimals entry left
+  verbatim (gated on a donor add-on mod, degrades cleanly if absent).
+  `specialTrainables`' `Comfort` is a vanilla Odyssey trainable, bare.
+
+  No `*ArtOverride` mod exists for Voorpak. 4 PNGs extracted this pass:
+  `Voorpak_{south,east,north}` and `Voorpak_Dessicated`.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Voorpak</defName>
+    <label>voorpak</label>
+    <description>Voorpaks were a non-sentient but still quite smart species of puffy-looking mammalians that were native to the planet of Naboo. Diminutive carnivores, voorpaks were much beloved by many due to their cuteness and as pets which in turn led to their export to many other worlds.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Crepuscular</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Voorpak</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.5</maxPreyBodySize>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.125</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_SoftFur</leatherDef>
+      <specificMeatDef>RSW_Felinoid_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.20</petness>
+      <lifeExpectancy>12</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(2, 0)</li>
+          <li>(3, 1)</li>
+          <li>(5, 1)</li>
+          <li>(6, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.02</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.01</TropicalSwamp>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.8</BorealForest>
+        <Tundra>0.4</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Voorpak_Wounded</soundWounded>
+          <soundDeath>Pawn_Voorpak_Death</soundDeath>
+          <soundCall>Pawn_Voorpak_Call</soundCall>
+          <soundAngry>Pawn_Voorpak_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Voorpak</defName>
+    <label>voorpak</label>
+    <race>RSW_Voorpak</race>
+    <combatPower>33</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>voorling</label>
+        <labelPlural>voorlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak</texPath>
+          <drawSize>0.85</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Voorpak/Voorpak_Dessicated</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

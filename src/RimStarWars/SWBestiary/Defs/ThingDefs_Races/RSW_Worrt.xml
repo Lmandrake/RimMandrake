@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Worrt creature port.
+  Ported from mlie.starwarsanimalcollection's `Worrt` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_Worrt` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — entirely vanilla-part composition (Body/
+  Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Hump/Neck/Head/Skull/Brain/
+  Eye x2/Antenna x2/AnimalJaw, Leg x4/Paw x4), defName rename only.
+  `leatherDef` (`Leather_Insectile`) ALREADY EXISTS as `RSW_Leather_Insectile`
+  (Wave B). `specificMeatDef` (`Gorg_Meat`) ALREADY EXISTS as `RSW_Gorg_Meat`
+  (Pass 9, Gorg). New `RSW_EggWorrtFertilized`/`UnFertilized` eggs (texPath
+  swresource/EggAmphispawn, already-extracted shared texture). All 4 vocal
+  sounds already absorbed (`RSW_Pawn_Worrt_*`).
+
+  No `*ArtOverride` mod exists for Worrt. 32 PNGs extracted this pass —
+  Worrt has 3 `alternateGraphics` variants (`WorrtA`/`WorrtB`/`WorrtC`, each
+  base + `_Swimming`, referenced by the donor's own PawnKindDef with
+  `alternateGraphicChance>0.8`), a juvenile lifeStage graphic (`Worrt_j`,
+  base + Dessicated + Swimming) and the adult base set (`Worrt`, base +
+  Dessicated + Swimming): `Worrt_{south,east,north}`, `Worrt_Dessicated`,
+  `Worrt_Swimming_{south,east,north}`, `Worrt_j_{south,east,north}`,
+  `Worrt_j_Dessicated`, `Worrt_j_Swimming_{south,east,north}`, and
+  `Worrt{A,B,C}_{south,east,north}` + `Worrt{A,B,C}_Swimming_{south,east,north}`
+  — every one of these IS referenced by the donor's own def (unlike the
+  usual excluded "Pack" variants), so all 32 were extracted, none skipped.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Worrt</defName>
+    <label>worrt</label>
+    <description>The Worrt was an amphibious creature native to the planet Tatooine, though they could also be found on other worlds (including Nal Hutta and Phaeda). Worrts were omnivorous, but was also known to attempt to eat rocks and metal objects. They used their long, prehensile tongue to catch smaller prey, such as gorgs, but were known to also attack creatures larger than itself.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>webbed foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>webbed foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>prehensile tongue</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggWorrtUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggWorrtFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggCountRange>2~6</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Worrt</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>CarnivoreAnimal, OmnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <roamMtbDays>1.5</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>40</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.2</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.3</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Worrt_Wounded</soundWounded>
+          <soundDeath>Pawn_Worrt_Death</soundDeath>
+          <soundCall>Pawn_Worrt_Call</soundCall>
+          <soundAngry>Pawn_Worrt_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Worrt</defName>
+    <label>worrt</label>
+    <race>RSW_Worrt</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.60</ecoSystemWeight>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Worrt/WorrtA</texPath>
+        <swimmingTexPath>swanimals/Worrt/WorrtA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Worrt/WorrtB</texPath>
+        <swimmingTexPath>swanimals/Worrt/WorrtB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Worrt/WorrtC</texPath>
+        <swimmingTexPath>swanimals/Worrt/WorrtC_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>worrtling</label>
+        <labelPlural>worrtlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt_j</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Worrt/Worrt_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt_j_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Worrt/Worrt_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Worrt/Worrt_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Worrt/Worrt_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

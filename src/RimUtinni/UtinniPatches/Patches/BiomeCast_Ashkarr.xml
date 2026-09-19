@@ -72,27 +72,27 @@
         <RSW_LongtailGorg>0.4</RSW_LongtailGorg> <!-- longtail gorg - ambush-small, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Ronto>0.4</RSW_Ronto> <!-- ronto - huge-herd, keep -->
         <RSW_Sketto>0.4</RSW_Sketto> <!-- sketto - ambush-small, keep -->
-        <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
-        <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
+        <RSW_WompRat>0.4</RSW_WompRat> <!-- womp rat - ambush-small, keep -->
+        <RSW_Wraid>0.4</RSW_Wraid> <!-- wraid - burst-predator, adjust-keep -->
         <RSW_IridonianReek>0.3</RSW_IridonianReek> <!-- iridonian reek - herd, import -->
         <RSW_Jimvu>0.3</RSW_Jimvu> <!-- jimvu - herd, import -->
         <RSW_Kwi>0.3</RSW_Kwi> <!-- Kwi - herd, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Skalder>0.3</RSW_Skalder> <!-- skalder - huge-herd, import -->
-        <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
-        <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
-        <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
+        <RSW_Uvak>0.3</RSW_Uvak> <!-- uvak - herd, import -->
+        <RSW_Varactyl>0.3</RSW_Varactyl> <!-- varactyl - herd, import -->
+        <RSW_Zeer>0.3</RSW_Zeer> <!-- zeer - herd, import -->
         <RSW_FrilledGorg>0.2</RSW_FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
         <RSW_Jakobeast>0.2</RSW_Jakobeast> <!-- jakobeast - herd, import -->
         <RSW_Nerf>0.2</RSW_Nerf> <!-- nerf - herd, keep -->
         <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
         <RSW_Shaak>0.2</RSW_Shaak> <!-- shaak - herd, import -->
-        <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
-        <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
+        <RSW_TeeMuss>0.2</RSW_TeeMuss> <!-- tee muss - herd, import -->
+        <RSW_Worrt>0.2</RSW_Worrt> <!-- worrt - ambush-small, keep -->
         <RSW_Gizka>0.1</RSW_Gizka> <!-- gizka - ambush-small, keep -->
         <RSW_Krykna>0.1</RSW_Krykna> <!-- krykna - ambush-small, keep -->
         <RSW_Runyip>0.1</RSW_Runyip> <!-- runyip - herd, import -->
-        <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
+        <RSW_Voorpak>0.05</RSW_Voorpak> <!-- voorpak - ambush-small, keep -->
         <RSW_Horax>0.01</RSW_Horax> <!-- horax - megafauna, import -->
       </value>
     </match>
@@ -199,24 +199,24 @@
         <RSW_Ronto>0.8</RSW_Ronto> <!-- ronto - huge-grazer, keep -->
         <RSW_Scurrier>0.8</RSW_Scurrier> <!-- scurrier - small-runway, keep -->
         <RSW_Sketto>0.8</RSW_Sketto> <!-- sketto - small-runway, keep -->
-        <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
+        <RSW_Urusai>0.7</RSW_Urusai> <!-- urusai - medium-interface, keep -->
         <RSW_Kybuck>0.6</RSW_Kybuck> <!-- kybuck - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
         <RSW_Massiff>0.6</RSW_Massiff> <!-- massiff - medium-interface, keep [MLIE_FAUNA_ABSORPTION_1 Pass 17] -->
         <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
         <RSW_Pufferpig>0.5</RSW_Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <RSW_Gizka>0.4</RSW_Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
-        <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
-        <Worrt>0.4</Worrt> <!-- worrt - small-runway, keep -->
+        <RSW_WompRat>0.4</RSW_WompRat> <!-- womp rat - ship-vermin, import -->
+        <RSW_Worrt>0.4</RSW_Worrt> <!-- worrt - small-runway, keep -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Grank>0.2</RSW_Grank> <!-- Grank - medium-interface, keep -->
         <RSW_Qormot>0.2</RSW_Qormot> <!-- qormot - medium-interface, keep -->
         <RSW_Strill>0.2</RSW_Strill> <!-- strill - medium-interface, keep -->
-        <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
+        <RSW_Whisperbird>0.15</RSW_Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <RSW_Pikobis>0.1</RSW_Pikobis> <!-- pikobis - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
         <RSW_Skalder>0.08</RSW_Skalder> <!-- skalder - huge-grazer, keep -->
         <RSW_FeralNerf>0.04</RSW_FeralNerf> <!-- feral nerf - medium-runner, keep -->
-        <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
+        <RSW_Voorpak>0.02</RSW_Voorpak> <!-- voorpak - small-runway, keep -->
         <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
       </value>
     </match>
@@ -282,13 +282,13 @@
       <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
         <RSW_Kreetle>1.0</RSW_Kreetle> <!-- kreetle - arthropod-floor, keep -->
-        <Yobshrimp>0.8</Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
+        <RSW_Yobshrimp>0.8</RSW_Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
         <RSW_Runyip>0.5</RSW_Runyip> <!-- runyip - muck-forager, adjust-keep -->
         <RSW_Shiro>0.4</RSW_Shiro> <!-- shiro - arthropod-floor, keep -->
         <RSW_Grank>0.3</RSW_Grank> <!-- Grank - channel-predator, import -->
-        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - flier, keep -->
+        <RSW_Whisperbird>0.3</RSW_Whisperbird> <!-- whisperbird - flier, keep -->
         <Vornskyr>0.15</Vornskyr> <!-- vornskyr - strange, keep -->
-        <Zakkeg>0.05</Zakkeg> <!-- zakkeg - big-wanderer, keep -->
+        <RSW_Zakkeg>0.05</RSW_Zakkeg> <!-- zakkeg - big-wanderer, keep -->
       </value>
     </match>
   </Operation>
@@ -358,8 +358,8 @@
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
         <RSW_Gizka>1.0</RSW_Gizka> <!-- gizka - floor-vermin, keep -->
-        <Whisperbird>0.7</Whisperbird> <!-- whisperbird - flier, keep -->
-        <Worrt>0.7</Worrt> <!-- worrt - ambush, keep -->
+        <RSW_Whisperbird>0.7</RSW_Whisperbird> <!-- whisperbird - flier, keep -->
+        <RSW_Worrt>0.7</RSW_Worrt> <!-- worrt - ambush, keep -->
         <RSW_Shiro>0.5</RSW_Shiro> <!-- shiro - floor-ambush, keep -->
         <RSW_ShiroTrap>0.5</RSW_ShiroTrap> <!-- shiro-trap - floor-ambush, keep -->
         <RSW_Klorslug>0.4</RSW_Klorslug> <!-- k'lor'slug - gnawer, keep -->
@@ -442,10 +442,10 @@
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
       <value>
         <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
-        <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
+        <RSW_WompRat>0.4</RSW_WompRat> <!-- womp rat - ship-vermin, import -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - grain-scale, keep -->
-        <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
+        <RSW_WarWyrm>0.2</RSW_WarWyrm> <!-- war wyrm - giant, keep -->
         <RSW_KraytDragon>0.15</RSW_KraytDragon> <!-- krayt dragon - giant, keep -->
         <RSW_GraniteSlug>0.1</RSW_GraniteSlug> <!-- granite slug - grain-scale, keep -->
         <RSW_Scurrier>0.1</RSW_Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
@@ -749,11 +749,11 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
-        <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
+        <RSW_Urusai>0.5</RSW_Urusai> <!-- urusai - crown-flier, keep -->
         <RSW_Gelagrub>0.4</RSW_Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
         <RSW_LongtailGorg>0.3</RSW_LongtailGorg> <!-- longtail gorg - wait-ambush, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
-        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
+        <RSW_Whisperbird>0.3</RSW_Whisperbird> <!-- whisperbird - crown-flier, import -->
         <RSW_Fambaa>0.02</RSW_Fambaa> <!-- fambaa - the-terribly-lost, import -->
       </value>
     </match>
@@ -832,7 +832,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
         <RSW_Gornt>0.3</RSW_Gornt> <!-- gornt - the-Patient, keep -->
-        <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
+        <RSW_Woolamander>0.15</RSW_Woolamander> <!-- woolamander - flier-commuter, import -->
       </value>
     </match>
   </Operation>
@@ -1027,7 +1027,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
       <value>
-        <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
+        <RSW_Zeer>0.6</RSW_Zeer> <!-- zeer - large-herd, adjust-keep -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
         <RSW_Gizka>0.3</RSW_Gizka> <!-- gizka - grain, adjust-keep -->
         <RSW_Orray>0.25</RSW_Orray> <!-- orray - medium, import [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
@@ -1243,7 +1243,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
-        <Wyyyschokk>0.4</Wyyyschokk> <!-- wyyyschokk - owner, import -->
+        <RSW_Wyyyschokk>0.4</RSW_Wyyyschokk> <!-- wyyyschokk - owner, import -->
         <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - trace-prey, adjust-keep -->
         <RSW_Shyrack>0.2</RSW_Shyrack> <!-- shyrack - trace-flier, keep -->
       </value>

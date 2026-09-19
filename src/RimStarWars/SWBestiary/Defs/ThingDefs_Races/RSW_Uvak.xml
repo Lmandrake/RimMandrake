@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Uvak creature port.
+  Ported from mlie.starwarsanimalcollection's `Uvak` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. Body (`Bogwing`) ALREADY EXISTS
+  as `RSW_Bogwing` (RSW_MlieWaveC_Bodies.xml) — no new BodyDef. `leatherDef`/
+  `specificMeatDef` (`Leather_Reptavian`/`Reptavian_Meat`) ALREADY EXIST as
+  RSW_ ports (Wave B). New `RSW_EggUvakFertilized`/`UnFertilized` eggs
+  (texPath swresource/EggWiggly, an already-extracted shared texture — no
+  new PNG). All 4 vocal sounds already absorbed (`RSW_Pawn_Uvak_*`).
+  `specialTrainables`' `AttackTarget` is a vanilla Odyssey trainable, left
+  bare.
+
+  No `*ArtOverride` mod exists for Uvak. 16 PNGs extracted this pass:
+  `Uvak_{south,east,north}`, `Uvak_Dessicated`, and 12 flying-frame PNGs
+  (`Uvak_Flying_{1,2,3,4}_{south,east,north}`). The donor's own
+  `UvakPack_{south,east,north}` variants excluded — unreferenced by the
+  donor's own def.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Uvak</defName>
+    <label>uvak</label>
+    <description>Uvak were a large, membranous-winged reptavian species with sharp beaks. They were native to the planet of Kesh, where they were used by the indigenous Keshiri as pack animals and mounts. It's was believed that the deities known as the "Skyborn" may have transplanted these creatures to other worlds before disappearing into Keshiri mythology.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>750</MarketValue>
+      <ComfyTemperatureMin>-14</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <CaravanRidingSpeedFactor>2.0</CaravanRidingSpeedFactor>
+      <Wildness>0.75</Wildness>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>30</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggUvakUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggUvakFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Bogwing</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.60</petness>
+      <trainability>Advanced</trainability>
+      <packAnimal>true</packAnimal>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.4</leaveMapOnFleeChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.02</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Uvak_Wounded</soundWounded>
+          <soundDeath>Pawn_Uvak_Death</soundDeath>
+          <soundCall>Pawn_Uvak_Call</soundCall>
+          <soundAngry>Pawn_Uvak_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Uvak</defName>
+    <label>uvak</label>
+    <labelPlural>uvak</labelPlural>
+    <race>RSW_Uvak</race>
+    <combatPower>350</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Uvak/Uvak_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>uvak chick</label>
+        <labelPlural>uvak chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Uvak/Uvak_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

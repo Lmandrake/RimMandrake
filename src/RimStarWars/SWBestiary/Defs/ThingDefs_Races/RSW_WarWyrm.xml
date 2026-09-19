@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — WarWyrm creature port.
+  Ported from mlie.starwarsanimalcollection's `WarWyrm` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_WarWyrm` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — vanilla `SnakeBody`/`SnakeHead`/`SnakeMouth`
+  parts (same family as Thrumbo) plus the already-ported
+  `RSW_SW_SerpentTail`/`RSW_SW_Club` and `RSW_SWToxicAppendage`/
+  `RSW_SWTailAttackTool` groups (Wave B) — no new part/group defs, only
+  renames of the parts/groups already carrying the RSW_ prefix elsewhere.
+  `leatherDef` (`Leather_Dark`) and `specificMeatDef` (`Silica_Meat`) ALREADY
+  EXIST as RSW_ ports (per Shyrack/Skalder passes). Ability: `SW_Calamity`
+  (specialTrainables + PawnKindDef abilities) ALREADY EXISTS as
+  `RSW_SW_Calamity` (AbilityDef+TrainableDef pair, RSW_MlieWaveC_Abilities.xml)
+  — ported by an earlier pass but not yet consumed by any species; wired
+  here for the first time. All 4 vocal sounds already absorbed
+  (`RSW_Pawn_WarWyrm_*`). Flagged, not fixed: the PawnKindDef's own
+  `butcherBodyPart` still names the donor's own bare `WarWyrmSkull` trophy
+  item (a whole separate trophy-item subsystem, out of scope for this pass)
+  — resolves fine while Mlie stays active. `modExtensions`' PathfindingFramework
+  entry left verbatim (gated on an inactive donor-adjacent mod).
+
+  No `*ArtOverride` mod exists for WarWyrm. 4 PNGs extracted this pass:
+  `WarWyrm_{south,east,north}` and `WarWyrm_Dessicated`.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_WarWyrm</defName>
+    <label>war wyrm</label>
+    <description>The war wyrm (or sometimes called the 'sith wyrm') were a truly colossal creature believed to have been created on the fourth moon of Yavin where one such creature lived in a large subterranean lair beneath a Massassi temple. The war wyrm was originally an infant exogorth that had been mutated and warped by Sith alchemy. They were very rare and very large and several specimens were believed to have been left behind by Sith armies on various worlds having fulfilled their roles as apex siege beasts.</description>
+    <statBases>
+      <MoveSpeed>6.0</MoveSpeed>
+      <ComfyTemperatureMin>-270</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <MarketValue>7000</MarketValue>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <HypoxiaResistance MayRequire="kentington.saveourship2">1</HypoxiaResistance>
+      <DecompressionResistance MayRequire="kentington.saveourship2">1</DecompressionResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <ArmorRating_Blunt>2.0</ArmorRating_Blunt>
+      <ArmorRating_Sharp>1.5</ArmorRating_Sharp>
+      <ArmorRating_Heat>3.0</ArmorRating_Heat>
+      <PainShockThreshold>1.0</PainShockThreshold>
+      <Flammability>0.0</Flammability>
+      <ToxicResistance>1.0</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <PsychicSensitivityOffset>-1.0</PsychicSensitivityOffset>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>serpentine tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_WarWyrm</body>
+      <predator>true</predator>
+      <baseHungerRate>1.5</baseHungerRate>
+      <baseBodySize>15.0</baseBodySize>
+      <baseHealthScale>25.0</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Dark</leatherDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <lifeExpectancy>5000</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.95</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1.0, 1)</li>
+          <li>(2.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.75</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.5</minAge>
+          <soundWounded>Pawn_WarWyrm_Wounded</soundWounded>
+          <soundDeath>Pawn_WarWyrm_Death</soundDeath>
+          <soundCall>Pawn_WarWyrm_Call</soundCall>
+          <soundAngry>Pawn_WarWyrm_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>Sithspawn</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_WarWyrm</defName>
+    <label>war wyrm</label>
+    <race>RSW_WarWyrm</race>
+    <combatPower>2000</combatPower>
+    <ecoSystemWeight>0.001</ecoSystemWeight>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
+    </abilities>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>war wyrmling</label>
+        <labelPlural>war wyrmlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm</texPath>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm_Dessicated</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm</texPath>
+          <drawSize>10.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/WarWyrm/WarWyrm_Dessicated</texPath>
+          <drawSize>10.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>WarWyrmSkull</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Whisperbird creature port.
+  Ported from mlie.starwarsanimalcollection's `Whisperbird` ThingDef/
+  PawnKindDef pair, renamed under the RSW_ tier prefix. Body (`FlyingAvian`)
+  ALREADY EXISTS as `RSW_FlyingAvian` (RSW_MlieWaveC_Bodies.xml) — no new
+  BodyDef. `leatherDef` (`Leather_Bird`) is vanilla Core, left bare.
+  `specificMeatDef` (`Reptavian_Meat`) ALREADY EXISTS as `RSW_Reptavian_Meat`
+  (Wave B). Ability: `SW_SootheSong` (specialTrainables + PawnKindDef
+  abilities) ALREADY EXISTS as `RSW_SW_SootheSong` (AbilityDef+HediffDef+
+  TrainableDef trio, RSW_MlieWaveC_Abilities.xml) — ported by an earlier
+  pass but not yet consumed by any species; wired here for the first time.
+  New `RSW_EggWhisperbirdFertilized`/`UnFertilized` eggs (texPath
+  swresource/EggSpeckled, an already-extracted shared texture). All 4 vocal
+  sounds already absorbed (`RSW_Pawn_Whisperbird_*`).
+
+  `mandrake.rsw.whisperbirdartoverride` ships owner-approved art at the SAME
+  relative texPath the donor uses (swanimals/Whisperbird/Whisperbird_{south,
+  east,north}) — per the Anooba incident precedent, did NOT extract or ship
+  those 3 facings. The override does NOT cover the flying-animation frames,
+  so `Whisperbird_Dessicated` (1 PNG) and all 12 flying-frame PNGs
+  (`Whisperbird_Flying_{1,2,3,4}_{south,east,north}`) WERE extracted and
+  shipped this pass — 13 PNGs total.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Whisperbird</defName>
+    <label>whisperbird</label>
+    <description>Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their sweet, low-pitched song or call. These traits made them popular pets with avian enthausiasts and wild populations soon appeared from escapees on numerous worlds (even on polluted worlds like Coruscant).</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>80</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.3</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggWhisperbirdUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggWhisperbirdFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_FlyingAvian</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.3</petness>
+      <roamMtbDays>5</roamMtbDays>
+      <trainability>None</trainability>
+      <lifeExpectancy>15</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SootheSong</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Whisperbird_Wounded</soundWounded>
+          <soundDeath>Pawn_Whisperbird_Death</soundDeath>
+          <soundCall>Pawn_Whisperbird_Call</soundCall>
+          <soundAngry>Pawn_Whisperbird_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Whisperbird</defName>
+    <label>whisperbird</label>
+    <labelPlural>whisperbirds</labelPlural>
+    <race>RSW_Whisperbird</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>1.25</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SootheSong</li>
+    </abilities>
+    <flyingAnimationFramePathPrefix>swanimals/Whisperbird/Whisperbird_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>whisperbird chick</label>
+        <labelPlural>whisperbird chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

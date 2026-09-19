@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Varactyl creature port.
+  Ported from mlie.starwarsanimalcollection's `Varactyl` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_Varactyl` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — entirely vanilla-part composition (Body/Tail/
+  Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Hump/Neck/Head/Skull/Brain/
+  Eye x2/Beak/Leg x4/Paw x4), no SW-prefixed part anywhere, defName rename
+  only. `leatherDef`/`specificMeatDef` (`Leather_Reptavian`/`Reptavian_Meat`)
+  ALREADY EXIST as RSW_ ports (Wave B). New `RSW_EggVaractylFertilized`/
+  `UnFertilized` eggs (texPath swresource/EggScaled, already-extracted shared
+  texture). All 4 vocal sounds already absorbed (`RSW_Pawn_Varactyl_*`).
+  `specialTrainables`' `AttackTarget` is a vanilla Odyssey trainable, bare.
+
+  No `*ArtOverride` mod exists for Varactyl. 7 PNGs extracted this pass:
+  `Varactyl_m_{south,east,north}` (male), `Varactyl_f_{south,east,north}`
+  (female) and `Varactyl_Dessicated` — Varactyl is one of the donor's
+  gender-dimorphic species (separate `bodyGraphicData`/`femaleGraphicData`
+  texPaths per lifeStage). The donor's own `Varactyl_{m,f}Pack_{...}`
+  variants (6 PNGs) excluded — unreferenced by the donor's own def.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Varactyl</defName>
+    <label>varactyl</label>
+    <description>Varactyls, also known as 'dragonmounts', were reptavian herbivores native to the planet Utapau, though some specimens found their way to other worlds (such as Kashyyyk and Belsavis) as their eggs were easily transported by Black-marketeers. They had beaked faces and long, powerful tails and not only could a varactyl run very fast, but their feet were adapted with tiny hairlike structures that allowed them to climb the rocky walls of sinkholes.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-14</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggVaractylUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggVaractylFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Varactyl</body>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>0.75</baseHungerRate>
+      <baseHealthScale>2.0</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.80</petness>
+      <!-- <roamMtbDays>4</roamMtbDays> -->
+      <trainability>Intermediate</trainability>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>35</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.02</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.08</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>Pawn_Varactyl_Wounded</soundWounded>
+          <soundDeath>Pawn_Varactyl_Death</soundDeath>
+          <soundCall>Pawn_Varactyl_Call</soundCall>
+          <soundAngry>Pawn_Varactyl_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Varactyl</defName>
+    <label>varactyl</label>
+    <race>RSW_Varactyl</race>
+    <combatPower>275</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>varactyl chick</label>
+        <labelPlural>varactyl chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <drawSize>4</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>
+          <drawSize>4</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
+          <drawSize>4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
