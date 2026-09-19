@@ -5,11 +5,24 @@ Caverns window are harvested (`CAVERNS_PARITY_BUILD_1` notes, 2026-09-18); this 
 is the load that follows. Backup of the pre-cut list:
 `infrastructure/state/modlists/ModsConfig_before_caverns_cut_2026-09-18.xml`.
 
-## Load C — full list, `biomesteam.biomescaverns` OUT, `mandrake.rut.lanterndeeps` IN (632 active, MEASURED)
+## Load C — full list, `biomesteam.biomescaverns` OUT, `mandrake.rut.lanterndeeps` IN, 10 ArtOverride mods OUT (622 active, MEASURED)
 
 Riding: the LanternDeeps assembly on the FULL list for the first time (it was only ever
-proven on the 10-mod list — Load B never had it enabled). Core, Polluted Lands and Fossils
-STAY (owner ruled Caverns only; Fossils kept on his word).
+proven on the 10-mod list — Load B never had it enabled), AND a rebuilt DLL
+(`DEEP_ENTRANCE_BIOMES_SETTING_1`: entrance biomes are now a Mod Settings list). Core,
+Polluted Lands and Fossils STAY (owner ruled Caverns only; Fossils kept on his word).
+
+🔴 **SHUTDOWN WINDOW WORK before this load** — LanternDeeps is committed but NOT deployed:
+`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod LanternDeeps --apply` (DLL +
+About.xml + `Defs/SoundDefs/RUT_DeepAmbience.xml` + `Defs/Weather/RUT_DeepCalm.xml`) with
+the game DOWN. Also `modcheck run LanternDeeps` if there is time — it swaps the list.
+
+| item | string | baseline | means |
+|---|---|---|---|
+| entrance setting round-trips | Mod Settings → Lantern Deeps → "World generation: entrance biomes" shows 3 of N selected; `Player.log` has no `Scribe_Collections` error naming `entranceBiomes` | — | error ⇒ settings load shape wrong; entrances silently gate on nothing |
+| the hum plays | enter a Deep, listen 30 s: steady low hum, periodic swell. If silent: `Player.log` lines naming `RUT_DeepHum` / `RUT_DeepChorus` / `Undercave_Ambience` / `VoidNode` | — | a "could not find clip" line ⇒ cross-pack clip path does not resolve; fall back to a Core clip |
+| canonical save loads without Caverns | load `CANONICAL_ASHKARR_START_2026-09-12.rws`: count `Could not load reference` lines naming `BMT_` (expect dict-key skips), and 0 NREs on the mothballed colonists Nina Marsh / Kazuya Sexton (apparel stuff `BMT_MoonlessSilk` / `BMT_BatWool`) | never loaded this way | an NRE on apparel ⇒ scrub those 3 `<stuff>` (finding on `CANONICAL_SAVE_CAVERNS_SCRUB_1`) |
+| rehomed override art | NOT in this load unless SWBestiary was redeployed (its plan carries Pass 21) — kroffa/puffmite still read maligoat/fleece spider until then; not a finding | — | — |
 
 | item | string | baseline | means |
 |---|---|---|---|
