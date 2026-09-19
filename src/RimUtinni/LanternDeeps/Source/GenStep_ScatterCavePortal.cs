@@ -5,11 +5,15 @@ using Verse;
 
 namespace RimMandrake.Utinni.LanternDeeps
 {
-	// LANTERN_DEEPS_INJECTION_1: RUT_LanternDeepEmergence must scatter only onto
-	// the three host biomes the design doc rules ≤ -40°C (the_lantern_deeps.md
-	// "Injection rule"). GenStepDef has no biome field and vanilla ships no
+	// LANTERN_DEEPS_INJECTION_1: RUT_LanternDeepEmergence scatters only onto
+	// qualifying host biomes. GenStepDef has no biome field and vanilla ships no
 	// ScattererValidator_Biome (confirmed absent), so the filter lives here,
 	// mirroring how Biomes! Caverns' own BMT_CrystalsGenerator self-gates.
+	// DEEP_ENTRANCE_BIOMES_SETTING_1: the qualifying set is
+	// LanternDeepsSettings.entranceBiomes (Mod Settings, any biome selectable);
+	// its default is the three biomes the design doc rules ≤ -40°C
+	// (the_lantern_deeps.md "Injection rule"). Order matters and is relied on by
+	// validation.py: the toggle is checked FIRST, then the biome, then the roll.
 	//
 	// chancePerMap is a tuning knob, not a ruling: the design doc says a Deep
 	// mouth exists somewhere on the qualifying biomes, not how densely. 0.08
@@ -17,13 +21,6 @@ namespace RimMandrake.Utinni.LanternDeeps
 	// actual density call at the assignment sitting.
 	public class GenStep_ScatterCavePortal : GenStep_ScatterGroup
 	{
-		private static readonly HashSet<string> AllowedBiomeDefNames = new HashSet<string>
-		{
-			"BiomeGRimond",
-			"RUT_NightsideIce",
-			"RUT_PropaneLake",
-		};
-
 		public float chancePerMap = 0.08f;
 
 		public override void Generate(Map map, GenStepParams parms)
@@ -32,7 +29,7 @@ namespace RimMandrake.Utinni.LanternDeeps
 			{
 				return;
 			}
-			if (map.Biome == null || !AllowedBiomeDefNames.Contains(map.Biome.defName))
+			if (!LanternDeepsSettings.IsEntranceBiome(map.Biome))
 			{
 				return;
 			}

@@ -9,10 +9,13 @@ GROUNDING, read whole before writing this: `Source/LanternDeepsMod.cs`
 (MOD_OPTIONS_RETROFIT_1 -- 3 boolean toggles + 3 float multipliers, all
 `public static`, per its own comment); `Source/GenStep_ScatterCavePortal.cs`
 and `Source/GenStep_ScatterMineshaftPortal.cs` (both extend vanilla
-`GenStep_ScatterGroup`; both self-gate on a hardcoded 3-biome
-`HashSet<string>` -- `BiomeGRimond`, `RUT_NightsideIce`, `RUT_PropaneLake`
--- read directly from the .cs, not the walk doc's own quoting, though they
-match); `Source/MapComponent_LanternDeepDarkness.cs` (the darkness
+`GenStep_ScatterGroup`; both self-gate through
+`LanternDeepsSettings.IsEntranceBiome`, a Mod Setting list
+(DEEP_ENTRANCE_BIOMES_SETTING_1) whose DEFAULT is `BiomeGRimond`,
+`RUT_NightsideIce`, `RUT_PropaneLake` -- `QUALIFYING_BIOMES` below is that
+default, read from `UtinniDefaultEntranceBiomes` in `LanternDeepsMod.cs`, and
+holds only while the runner's settings file carries no other list);
+`Source/MapComponent_LanternDeepDarkness.cs` (the darkness
 mechanic, scoped to Lantern Deep pocket maps only via
 `customMapComponents`); and all 4 `Defs/**/*.xml` + both patch files.
 

@@ -75,6 +75,12 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- DEEP_ENTRANCE_BIOMES_SETTING_1: Widgets.CheckboxLabeled/ButtonText carry
+         an optional TextAnchor parameter, which lives in this module. -->
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
