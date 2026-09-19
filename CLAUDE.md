@@ -250,11 +250,72 @@ The vanilla shape, copied from `Locust` (`Races_Animal_Insect.xml`):
 </race>
 ```
 
-⚠️ **The flight ANIMATION is separate and optional.** `PawnKindDef`'s
+⚠️ **The flight ANIMATION is separate from the flight STAT, and it is its OWN
+whole-body multi-frame system — not a wing render-tree.** `PawnKindDef`'s
 `flyingAnimationFramePathPrefix` + `flyingAnimationFrameCount` need a real frame
-sequence (Locust ships 5). With none, `GetBestFlyAnimation` returns null and the
-creature flies with no wing-beat — correct behaviour, plainer look. Never block
-flight waiting on frames.
+sequence (Locust ships 5, Chicken/Duck/Goose/Sparrow ship 8). With none,
+`GetBestFlyAnimation` returns null and the creature flies with no wing-beat —
+correct behaviour, plainer look. Never block flight waiting on frames.
+
+🔴 **REVERSED 2026-09-19 — do not build a `PawnRenderNodeProperties_Spastic`
+wing-layer render tree for this.** `FIREHAWK_FLIGHT_BEHAVIOR_1` did exactly
+that (a custom `BodyDef` wing part + a Spastic node jiggling one wing texture)
+and the owner's own live test found it broken: standing still sideways with no
+visible flap, and north missing one wing entirely with the other misaligned.
+Root cause is architectural, not a bug to patch — Spastic drives a small idle
+wiggle on ONE static texture per node; it was never a per-facing, per-frame
+flying animation, so it cannot express "wings up" vs "wings down" the way the
+directional flip-book below does, and nothing keeps a single wing texture
+aligned across four facings.
+
+**The correct mechanism, MEASURED against the installed game** (Core's own
+Chicken/Duck/Goose retrofits, `Data/Core/Defs/ThingDefs_Races/
+Races_Animal_ChickenGroup.xml`, and their textures pulled live from
+`resources.assets` via UnityPy):
+
+```xml
+<PawnKindDef>
+  <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Chicken/Chicken_Flying_</flyingAnimationFramePathPrefix>
+  <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+  <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+  <flyingAnimationDrawSize>2.4</flyingAnimationDrawSize>
+  <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+  <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+</PawnKindDef>
+```
+
+The texture set is a **whole-animal directional flip-book**, one full-body pose
+per frame, NOT a separate wing layer: `<prefix><N>_<direction>` for N = 1..
+frameCount, directions `north`/`east`/`south` only (west mirrors east, same as
+every other RimWorld facing set) — confirmed by extracting all 24
+`Chicken_Flying_*` textures and diffing frame 1 (wings tucked) against frame 5
+(wings spread) at `_east`: genuinely different poses, not a static image
+jiggled. `flyingAnimationDrawSizeIsMultiplier` scales the whole flying sprite
+relative to the grounded one (birds read bigger mid-flight); gendered species
+(Quail, Peafowl) add `flyingAnimationFramePathPrefixFemale` alongside the
+default (male) prefix. Reference doc:
+`~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md` (owner,
+2026-09-19) — read it before touching any flyer again; it names Sparrow as the
+cleanest from-scratch template and Chicken/Duck/Goose as the retrofit
+references, and gives the full verification checklist (loop correctness,
+all-facing correctness, landing restores the grounded graphic, save/load
+safety).
+
+⛔ **`FIREHAWK_FLIGHT_BEHAVIOR_1`'s BodyDef/PawnRenderTreeDef/Spastic wiring
+needs replacing with this**, not extending — the wing-split art
+(`FireHawk_Wing_*`) and the custom body part it hangs off are the wrong shape
+for the problem and should come back out once the real flip-book frames exist.
+The `MaxFlightTime`/`FlightCooldown`/race-flag half of that work (and of the
+2026-09-19 fire wasp/fire hawk flight pass) is unaffected — those fields are
+correct and unrelated to the animation defect.
+
+🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right
+now.** Owner ruling, 2026-09-19, verbatim: *"Was Odyssey even loaded for this
+test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying
+to ablate expansions out of our list at this time."* `modset_builder.py`'s
+`bridge`/`pits`/`graffiti`/`oracle` tiers built Core-only before this ruling;
+all tiers now set `dlc: True`. A tier's `want` list may still narrow which
+*mods* load for isolation — it may no longer narrow which *DLC* loads.
 
 ## Queue items are NAMED, not numbered — owner, 2026-08-20
 
