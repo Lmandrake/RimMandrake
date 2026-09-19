@@ -7090,10 +7090,10 @@
     "sha": "af2d8daa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "d15c05ca0c0af5f4e6b4a3df11f92e2ca85d87fd2327bc47107602b6bd1a5b43",
-    "sha": "ef1525da6"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "5a64ff5331d7b21a977aaaec15c956af942310846ad833a0775b378fc504abf8",
+    "sha": "fad263d00"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMiscTools2.cs": {
     "cleanCount": 1,
@@ -7168,10 +7168,10 @@
     "sha": "f10e21c4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSocietyTools.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-12",
-    "hash": "40c06ac983dfe81e4112a4bff1bd356825cded3731d815ac73ebc3c988772fc2",
-    "sha": "e82a4ea05"
+    "cleanCount": 5,
+    "date": "2026-09-19",
+    "hash": "15b168ce6d7ba15ab1fd3e3f2d1e997444d7dfdbc77d57eb90802034138159f5",
+    "sha": "fad263d00"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs": {
     "cleanCount": 2,
@@ -11056,10 +11056,10 @@
     "sha": "92e56d4f"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "c4d5db65809e0d2a06e0ac489a9a57f52c43b0f19fcbcc14b8ca854d16e3db39",
-    "sha": "2467e0a2d"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "5045a64a494f76c11e061c34bb0fade18ae8c394471daa9f3a0743acb37c0951",
+    "sha": "fad263d00"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.csproj": {
     "cleanCount": 2,
@@ -11068,10 +11068,10 @@
     "sha": "2467e0a2d"
   },
   "src/RimStarWars/JawaRules/Source/RSW_JawaRulesSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "ca02b90aebcd943defb1fa37a420cbe808bf3a299885189ff594495c8a75309a",
-    "sha": "c4858101e"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "adda61360d2b12f60b2306e657ec9536830236c8e792a32f0cf0f67c4a593a07",
+    "sha": "fad263d00"
   },
   "src/RimStarWars/JawaVoice/About/About.xml": {
     "cleanCount": 1,
@@ -11662,10 +11662,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "b99807a80dc9b347af13f703e9b3496094c9d6a7fdf1d68bc1ea01e21808af68",
-    "sha": "4fde88749"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "24079516d512a54fbec5c85d7503ee1cb08312d4e20b40b22c6498bda94b068f",
+    "sha": "fad263d00"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
     "cleanCount": 1,
@@ -11692,10 +11692,10 @@
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/Support/RSW_BiomesTeamPort_Support.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "c10d0327e6e9496c57bd8e0b3759e020dddc86d284e3c4dd93aeb69cd2ef7f04",
-    "sha": "2f8d4a99a"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "6a64168b7a01cf9989985421d9fbeb7eac7cb7591bb837547397df2e4f7cd2ec",
+    "sha": "fad263d00"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Items.xml": {
     "cleanCount": 1,
@@ -11806,10 +11806,10 @@
     "sha": "4de0abdce"
   },
   "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Onnik.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "0c07be20346f9ea2374004deb0bafa2f368a9ab623eedf9f62e67dc7829c6e52",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "799e8b1d71eea19b767557f158baad51d80d856fbe156d33056fe8fa81a9d831",
+    "sha": "fad263d00"
   },
   "src/RimStarWars/SWBestiary/Defs/Livestock/ThoughtDefs/ThoughtDefs_Moornak.xml": {
     "cleanCount": 1,
@@ -12466,10 +12466,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/StarWarsPatches/Patches/DroidDonor_ABFGate.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "e096e784316a07087665e5228d1db564fb509e543585b0e74e96a56085f49ef1",
-    "sha": "3c8d5d73"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "9852c09aba77510874213f6e9825873ec421f365f246c4749ac0deafc8360caa",
+    "sha": "c97663189"
   },
   "src/RimStarWars/StarWarsPatches/Patches/DroidFemaleTexture_Fix.xml": {
     "cleanCount": 2,
@@ -14884,10 +14884,10 @@
     "sha": "21d7a2cec"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "ac8ea51f76895310f8d30e6f95c953147ed07e656f070f4f97501cfe33fe88ff",
-    "sha": "40c4d4fed"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "a6795732d5d411d177b33ed8f65ffef8457c6ee43b8e6fa47605b6d40132a4a3",
+    "sha": "c97663189"
   },
   "src/RimUtinni/PlantGrowth/About/About.xml": {
     "cleanCount": 1,
@@ -17272,10 +17272,10 @@
     "sha": "ac17db00a"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "e943b5a5158ae0c6fc8e1c88731c07352a466830509a8bdc48f9081ec02032b5",
-    "sha": "0e94b4d2"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "51e47c386a33a1bd8e2aa70ab749ee0212151cfe52e09931a4ad33c3d5e3417d",
+    "sha": "fad263d00"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Placeholder_SumpMouseRace.xml": {
     "cleanCount": 1,
