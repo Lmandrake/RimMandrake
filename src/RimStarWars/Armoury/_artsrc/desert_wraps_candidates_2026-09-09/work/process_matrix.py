@@ -43,10 +43,30 @@ WRAP_RE = re.compile(r"^(wrap_[A-Z]_\w+)__(Male|Female|Fat|Hulk|Thin)_(south|nor
 HEAD_RE = re.compile(r"^(head_H[12]_\w+)__(south|north|east)$")
 
 
+# validate_sprite.py's ALPHA_SOLID: anything below this is invisible on screen
+# (<12.5% opacity) yet still counts as subject, so it inflates the measured bbox
+# and makes conform_sprite scale the art DOWN to fit a box the fringe widened.
+# Measured 2026-09-19 on the placed 49: Banded/Wraps_Male_east and
+# Spiral/Wraps_Female_east carried a fringe reaching 3.0% and 6.8% of canvas
+# beyond the silhouette, both REJECT-grade. Snapping it to 0 changes nothing a
+# player can see and restores honest geometry -- the skill's own remedy
+# ("fix at the export step rather than by re-rendering").
+ALPHA_FLOOR = 32
+
+
+def floor_alpha(p: Path):
+    """Snap sub-visible alpha to fully transparent, in place."""
+    im = np.asarray(Image.open(p).convert("RGBA")).astype(np.uint8)
+    a = np.where(im[..., 3] < ALPHA_FLOOR, 0, im[..., 3]).astype(np.uint8)
+    Image.fromarray(np.dstack([im[..., 0], im[..., 1], im[..., 2], a]),
+                    "RGBA").save(p)
+
+
 def achromatic(src: Path, dst: Path):
     im = np.asarray(Image.open(src).convert("RGBA")).astype(np.uint8)
     g = im[..., 1]
-    out = np.dstack([g, g, g, im[..., 3]])
+    a = np.where(im[..., 3] < ALPHA_FLOOR, 0, im[..., 3]).astype(np.uint8)
+    out = np.dstack([g, g, g, a])
     Image.fromarray(out, "RGBA").save(dst)
 
 
@@ -76,6 +96,13 @@ def process_one(name: str, bodyref: Path, final: Path):
     if r.returncode != 0:
         print(f"CONFORM FAIL {name}: {r.stderr.strip()}")
         return False
+    # Floor AGAIN, on the conformed output: the downscale averages thin wisps of
+    # real art against transparency and lands them at alpha 1-31 -- invisible on
+    # screen, but they extend the measured bbox tens of px past the body and so
+    # corrupt every geometric check. Measured: 112-131 such px pushed two cells'
+    # bbox ~50px left of the silhouette. Flooring before conform cannot catch
+    # these because conform is what creates them.
+    floor_alpha(final)
     v = subprocess.run([sys.executable, str(GS / "validate_sprite.py"),
                         "--reference", str(final), "--describe"],
                        capture_output=True, text=True)
