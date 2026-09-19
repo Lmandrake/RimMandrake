@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T19:38:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T19:45:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,22 +810,13 @@ kind:     task
 summary:  Owner card, 2026-09-14, verbatim: "Absolutely no boomalopes." Reverses the
 prose:    infrastructure/state/items/BOOMALOPE_CUT_EVERYWHERE_1.md
 
-## PYRELANDS_FACING_REGRESSION_1 Creature facing inverted on both axes despite FACING_COMPLETE closed
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  Owner report (2026-09-14): "when they go north, they're looking south. and
-prose:    infrastructure/state/items/PYRELANDS_FACING_REGRESSION_1.md
-
 ## FIREHAWK_FLIGHT_BEHAVIOR_1 FireHawk and all flying fauna get donor-style flight animation
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap
+summary:  FIREHAWKFLIGHTBEHAVIOR1 — donor-style wing flap → real flight animation
 prose:    infrastructure/state/items/FIREHAWK_FLIGHT_BEHAVIOR_1.md
 
 ## TWILEK_TROPE_GENES_MOVE_1 Move the Twi'lek submissive-aggression, high-libido and beautiful genes off the xenotype and onto individual pawns as a background or trait, so a stereotype is a fact about a person rather than about a race - a mechanism change, not a gene-list edit

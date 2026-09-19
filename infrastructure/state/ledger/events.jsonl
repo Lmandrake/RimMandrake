@@ -9929,3 +9929,7 @@
 {"seat":"BENCH","event":"drop","id":"DESERT_TRIBES_FIRE_HARVEST_1","reason":"sweep-moot: the mechanism it asks to DESIGN was already built 2 days before it was filed — PyrelandsFireRite.cs at 1e73ce51b resolves WHO (Deep Tribes off PyrelandsFactions) and hostility posture in code. Re-tuning cadence/map scope is a tuning item on a live mechanism, not this design item.","ts":"2026-09-19T19:36:45Z"}
 {"seat":"FOUNDRY","event":"claim","id":"EMBERSCYTHE_PYRELANDS_REHOME_1","ts":"2026-09-19T19:38:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"EMBERSCYTHE_PYRELANDS_REHOME_1","sha":"b88357f6ecf8ebe46358702a3fbbaffdb60efb09","ts":"2026-09-19T19:38:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"PYRELANDS_FACING_REGRESSION_1 live rotate check: Barbslinger/Flamefang","ts":"2026-09-19T19:43:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T19:45:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_FACING_REGRESSION_1","ts":"2026-09-19T19:45:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FACING_REGRESSION_1","sha":"ac578546e5552be2966f7e9af617bd3ccdddfa98","ts":"2026-09-19T19:45:58Z"}
