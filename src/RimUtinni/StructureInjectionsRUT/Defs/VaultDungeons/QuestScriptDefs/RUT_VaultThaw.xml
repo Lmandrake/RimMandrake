@@ -688,7 +688,9 @@ Wake them. Or take what is theirs. Or leave the door shut. The ship will remembe
         <li Class="QuestNode_Letter">
           <inSignal>site.MapGenerated</inSignal>
           <label>Arrived: the Umbra vault</label>
-          <text>Dark. Frost on every surface, thick enough to write in. The turrets on the ring are here, and they are asleep with everyone else - nothing in this place has drawn power in an age. At the core, a plinth with a socket the shape of a persona core, and beyond it, caskets.\n\nFeed the heart and the ring wakes with the hall. Open a casket and the war generation wakes with it. Break one and you have decided for them. Or shut the door and go; the ship will know which.</text>
+          <text>Dark. Frost on every surface, thick enough to write in. The turrets on the ring are here, and they are asleep with everyone else - nothing in this place has drawn power in an age. At the core, a plinth with a socket the shape of a persona core, and beyond it, caskets.
+
+Feed the heart and the ring wakes with the hall. Open a casket and the war generation wakes with it. Break one and you have decided for them. Or shut the door and go; the ship will know which.</text>
         </li>
 
         <!-- ============================================================
@@ -773,7 +775,9 @@ No gratitude. No question about the war, which they believe is still on. Only th
           <inSignal>site.RUT_SleepersLooted</inSignal>
           <letterDef>NegativeEvent</letterDef>
           <label>The caskets</label>
-          <text>You broke the caskets open for what was in them. What was in them was people, and now it is not. The Forsaken tech is yours.\n\nThe game will not dress this up, and neither will the ship.</text>
+          <text>You broke the caskets open for what was in them. What was in them was people, and now it is not. The Forsaken tech is yours.
+
+The game will not dress this up, and neither will the ship.</text>
         </li>
 
         <li Class="QuestNode_RecordHistoryEvent">
@@ -796,7 +800,9 @@ No gratitude. No question about the war, which they believe is still on. Only th
             <nodes>
               <li Class="QuestNode_Letter">
                 <label>Quest completed: the Umbra vault</label>
-                <text>You shut the door on them. The cold will keep them the way it has kept them, and the war they are still fighting will go on without a single shot.\n\nThe ship, which once carried their parents here under another name, says nothing about it. It will remember that you did not decide for them. It remembers everything.</text>
+                <text>You shut the door on them. The cold will keep them the way it has kept them, and the war they are still fighting will go on without a single shot.
+
+The ship, which once carried their parents here under another name, says nothing about it. It will remember that you did not decide for them. It remembers everything.</text>
               </li>
 
               <li Class="QuestNode_RecordHistoryEvent">
