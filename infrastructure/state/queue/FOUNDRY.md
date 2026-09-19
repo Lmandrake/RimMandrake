@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:19:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:28:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -945,6 +945,15 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
+## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
+state:    doing
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     task
+summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
+
 ## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
 state:    doing
 row:      unassigned
@@ -1543,16 +1552,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  None yet — this is an open design question, not a scoped build. Candidate
 prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
-
-## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
 
 ## CANONICAL_SAVE_CUT_RESIDUE_1 The start save loads on the 621 list but drops content: MEASURED Load C 2026-09-19 (load_game with ignoreModCompatibility) 4,828 'Could not load reference' lines (4,543 BMT_; 4,800 ThingDef, 24 WorkGiverDef, 3 ResearchProjectDef, 1 FactionDef), 22 SaveableFromNode NREs = Things with a dead def dropped (RR_Weapon_Torch on several pawns, BMT_BufoBile, GravBeamCannon), 2 GameComponents from als.gravtech/.bc. Save recorded 635 mods; 16 missing (Caverns, Polluted Lands, GravTech x2 + retexture, RR Stepping Stones, 10 ArtOverrides). Scrub or re-save the ship artifact; the bridge refuses it without the override flag. Detail: Transient/canonical_save_loadC_exceptions_2026-09-19.txt, Transient/canonical_save_caverns_scrub_2026-09-18.md
 state:    proposed
