@@ -15,7 +15,12 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 23,
+  "remaining_worklist_count": 20,
+  "ported_and_wired_this_pass_2026-09-19_pass23": [
+    "RSW_Shaak",
+    "RSW_Shiro",
+    "RSW_ShiroTrap"
+  ],
   "ported_and_wired_this_pass_2026-09-18_batch16": [
     "RSW_Kybuck",
     "RSW_LavaFlea",
@@ -44,28 +49,6 @@
     }
   ],
   "remaining_worklist": [
-    {
-      "donor_defName": "Shaak",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Shiro",
-      "biomes": [
-        "AB_MiasmicMangrove",
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "ShiroTrap",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Shyrack",
       "biomes": [
