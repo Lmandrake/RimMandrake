@@ -33,28 +33,28 @@ P = "src/RimMandrake/Pyrelands/Textures/Things"
 # id, group, label, [(facing, path)], prefill, effect
 ROWS: list[tuple] = [
     # ── invented / non-canon fauna: ours outright ───────────────────────────
-    ("razorjack", "Invented fauna (ours)", "Razorjack", [
-        ("east", f"{U}/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_east.png"),
-        ("north", f"{U}/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_north.png"),
-        ("south", f"{U}/RazorjackArtOverride/Textures/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_south.png"),
+    ("razorjack", "Invented fauna (ours)", "Sytheclaw", [
+        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png"),
+        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_north.png"),
+        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png"),
     ], "keep", "Fire-follower recast. Full painterly set, deployed. No structural defect found."),
 
     ("barbslinger", "Invented fauna (ours)", "Barbslinger", [
-        ("east", f"{U}/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_east.png"),
-        ("north", f"{U}/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_north.png"),
-        ("south", f"{U}/BarbslingerArtOverride/Textures/Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger_south.png"),
+        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_east.png"),
+        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_north.png"),
+        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_south.png"),
     ], "keep", "Ash-grazer. South landed in the 09-14 facing wave, completing the set."),
 
     ("firewasp", "Invented fauna (ours)", "FireWasp", [
-        ("east", f"{U}/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_east.png"),
-        ("north", f"{U}/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_north.png"),
-        ("south", f"{U}/FireWaspArtOverride/Textures/Things/Pawn/Animal/AA_FireWasp/AA_FireWasp_south.png"),
+        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_east.png"),
+        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_north.png"),
+        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_south.png"),
     ], "keep", "Full painterly set. Smallest canvases in the roster — check it reads at play zoom."),
 
-    ("boomsnake", "Invented fauna (ours)", "Boomsnake", [
-        ("east", f"{U}/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_east.png"),
-        ("north", f"{U}/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_north.png"),
-        ("south", f"{U}/BoomsnakeArtOverride/Textures/Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake_south.png"),
+    ("boomsnake", "Invented fauna (ours)", "Flamefang", [
+        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_east.png"),
+        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_north.png"),
+        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_south.png"),
     ], "keep", "N/S landed in the 09-14 facing wave. The item file still lists these as missing."),
 
     ("mantistanis", "Invented fauna (ours)", "Mantistanis", [
