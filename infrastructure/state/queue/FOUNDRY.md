@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:16:58Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-19T02:28:09Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -971,15 +971,6 @@ target:   v1
 kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
-
-## POLLUTED_LANDS_FLORA_PORT_1 Polluted Lands cut step 2: port-or-cut its ~40 injected plants (21 BMT_ rows still live in BiomeFlora_Ashkarr with no RUT twin) + inert-check the 52 Waterline fish refs
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/POLLUTED_LANDS_FLORA_PORT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/POLLUTED_LANDS_FLORA_PORT_1.md
 
 ## ASHFALL_RESEARCH_BASE_1 The Ashfall Research Base (the Spire): Rakatan command codes, the war lab's two-key gate
 state:    doing
