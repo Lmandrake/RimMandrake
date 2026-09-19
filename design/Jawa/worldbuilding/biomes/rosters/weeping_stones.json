@@ -46,7 +46,7 @@
   "stat_adjustments": [],
   "flora": [
     {"def": "Plant_Reeds", "commonality": 1.0, "law": "upright blade at the water margin — the one donor form that already obeys §4's blade law; generic architecture, not an Earth species name"},
-    {"def": "BMT_Dewshrooms", "commonality": 0.4, "law": "DEW-named moisture flora (pool: not cave-flagged) — the seep-line mat register (§4 'mats on the stone')"},
+    {"def": "RUT_Dewshrooms", "commonality": 0.4, "law": "DEW-named moisture flora (pool: not cave-flagged) — the seep-line mat register (§4 'mats on the stone')", "note": "renamed from BMT_Dewshrooms 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1): Biomes! Caverns retired, same RUT_ port already used for the_rot.json's identical plant; amendment (defName only), not a ruling change per BIOME_FREEZE_FABLE_REVIEW_1"},
     {"def": "AB_GreenRockFern", "commonality": 0.4, "law": "alien rock fern — lives on stone-shade real estate (§4: nothing here lives on soil)"},
     {"def": "Plant_Ambrosia", "commonality": 0.12, "law": "kept from prior assignment — a rare sweet find at sacred water fits §7's romance-and-reward register; RimWorld-fictional, not Earth-nameable"}
   ],

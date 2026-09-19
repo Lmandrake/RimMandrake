@@ -88,9 +88,11 @@ FAMILIES = {
     'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'AB_BloodBouquet': 0.4,
     'AB_RavenNettle': 0.4, 'AB_RedBugloss': 0.3, 'AB_GiantAgariTox': 0.3,
     'AB_KeeningCordax': 0.2},
-  'RUT_Greentide': {   # 235 tiles · 11 plants
+  'RUT_Greentide': {   # 235 tiles · 10 plants — BMT_GiantLeaf (1.0, commonality-top
+                       # understory slot) cut 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1):
+                       # Biomes! Caverns retired, no RUT_ port exists yet, port owed
     'AB_JungleTree': 3.0, 'Plant_HydenockTree_Wild': 1.5, 'Plant_JoganTree_Wild': 1.2,
-    'Plant_MujaFruit_Wild': 1.0, 'BMT_GiantLeaf': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
+    'Plant_MujaFruit_Wild': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
     'Plant_FelucianGlowspore_Wild': 0.6, 'AB_SugarFamewort': 0.6,
     'Plant_TookeTrap_Wild': 0.5, 'Plant_Bubblespore_Wild': 0.5, 'Plant_Chakroot_Wild': 0.5},
   'ZBiome_Grasslands': {   # 222 tiles · 1 plant — roster redesigned since 2026-09-09,
@@ -104,8 +106,10 @@ FAMILIES = {
     'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
     'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
     'AB_Aaklac': 0.05},
-  'RUT_FeverWood': {   # 43 tiles · 7 plants
-    'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2, 'BMT_GiantLeaf': 0.8,
+  'RUT_FeverWood': {   # 43 tiles · 6 plants — BMT_GiantLeaf (0.8, understory slot) cut
+                       # 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1): Biomes! Caverns
+                       # retired, no RUT_ port exists yet, port owed
+    'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2,
     'Plant_JoganTree_Wild': 0.6, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
     'Plant_Chakroot_Wild': 0.4},
  },
@@ -113,24 +117,30 @@ FAMILIES = {
  'B. the mycoid and fire massif': {
   'RUT_ExtremeDesert': {   # 3,969 tiles · 2 plants
     'Plant_Bloddle': 0.05, 'AB_GiantStikehr': 0.04},
-  'RUT_TheRot': {   # 2,204 tiles · 32 plants — was AB_MycoticJungle; the RUT_-prefixed
-                     # fungi below also renamed to BMT_ (e.g. RUT_Dewshrooms -> BMT_Dewshrooms)
+  'RUT_TheRot': {   # 2,204 tiles · 32 plants — was AB_MycoticJungle. 18 of the fungi
+                     # below were BMT_ (Biomes! Caverns donor) until Caverns retired;
+                     # renamed to their RUT_ ports 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1,
+                     # e.g. BMT_Dewshrooms -> RUT_Dewshrooms), same renames CAVERNS_PARITY_
+                     # BUILD_1 already hand-applied to the deployed patch and a later
+                     # --write reverted because this dict (the roster's mirror) still
+                     # said BMT_
     'AB_Bryolux': 10, 'AB_Glowstool': 3, 'AB_Agarilux': 2, 'AB_GiantAgarilux': 2,
     'AB_GlowingAgarilux': 1, 'AB_LilacBeacon': 0.5, 'AB_WitchesOyster': 0.5,
-    'BMT_Dewshrooms': 0.5, 'BMT_FruitingBodies': 0.5, 'BMT_Nuitae': 0.5,
-    'BMT_Wrinklecap': 0.5, 'BMT_Arpeau': 0.4, 'BMT_Nogtyl': 0.4,
-    'AB_RecurvedStropharia': 0.3, 'BMT_FlakespireFungus': 0.3, 'BMT_Pusmelon': 0.3,
-    'BMT_RustPuff': 0.3, 'BMT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
-    'AB_SlimyPholiota': 0.2, 'BMT_BleedingTooth': 0.2, 'BMT_Brightbells': 0.2,
-    'BMT_CrimsonCap': 0.2, 'BMT_GreyLady': 0.2, 'BMT_Shinecap': 0.2,
-    'BMT_VioletWimple': 0.2, 'BMT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
-    'AB_DribblingCap': 0.1, 'BMT_Skulltop': 0.1, 'Boomshroom': 0.05,
+    'RUT_Dewshrooms': 0.5, 'RUT_FruitingBodies': 0.5, 'RUT_Nuitae': 0.5,
+    'RUT_Wrinklecap': 0.5, 'RUT_Arpeau': 0.4, 'RUT_Nogtyl': 0.4,
+    'AB_RecurvedStropharia': 0.3, 'RUT_FlakespireFungus': 0.3, 'RUT_Pusmelon': 0.3,
+    'RUT_RustPuff': 0.3, 'RUT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
+    'AB_SlimyPholiota': 0.2, 'RUT_BleedingTooth': 0.2, 'RUT_Brightbell': 0.2,
+    'RUT_CrimsonCap': 0.2, 'RUT_GreyLady': 0.2, 'RUT_Shinecap': 0.2,
+    'RUT_VioletWimple': 0.2, 'RUT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
+    'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1, 'Boomshroom': 0.05,
     'AB_AgariluxPrime': 0.01},
   'RUT_ForsakenCrags': {   # 1,135 tiles · 6 plants
     'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
     'AB_WildRadagast': 0.5, 'AB_GiantStikehr': 0.3, 'AB_GiantSeptimum': 0.2},
-  'RUT_WeepingStones': {   # 223 tiles · 4 plants
-    'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'BMT_Dewshrooms': 0.4,
+  'RUT_WeepingStones': {   # 223 tiles · 4 plants — BMT_Dewshrooms -> RUT_Dewshrooms
+                           # 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1), same port as TheRot's
+    'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'RUT_Dewshrooms': 0.4,
     'Plant_Ambrosia': 0.12},
   'RUT_Slime': {   # 96 tiles · 6 plants
     'AB_TallSlimyGrass': 1.0, 'AB_SlimyFern': 0.5, 'AB_SlimyTree': 0.5,
