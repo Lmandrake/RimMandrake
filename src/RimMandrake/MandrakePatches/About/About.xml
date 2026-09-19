@@ -13,7 +13,6 @@
          JAWA_PATCHES_SPLIT_1, and never named several mods this tier's own
          patches actually touch. Every entry below is cited against a file
          that is actually in this mod's Patches/ folder. -->
-    <li>biomesteam.biomescaverns</li>                       <!-- AnimalDessicatedTexPaths_Fix.xml -->
     <li>mlie.starwarsanimalcollection</li>                  <!-- AnimalDessicatedTexPaths_Fix.xml -->
     <li>Who.VFEE.IsopodaGeneline</li>                       <!-- AnimalDessicatedTexPaths_Fix.xml -->
     <li>btd.remix.gravshipblueprints</li>                   <!-- BTDGravshipQuest_GrammarFix.xml -->

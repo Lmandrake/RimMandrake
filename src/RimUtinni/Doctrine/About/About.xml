@@ -79,7 +79,6 @@ Load last.</description>
           that every declared entry is still emitted). Never a live bug,
           same silent-no-op class as the two entries above. -->
   <loadAfter>
-    <li>BiomesTeam.BiomesCaverns</li>                     <!-- Biomes! Caverns -->
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
     <li>Erin.FFAnimals</li>                               <!-- Erin's Final Fantasy Animals -->

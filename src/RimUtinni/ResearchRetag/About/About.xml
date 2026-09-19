@@ -43,7 +43,6 @@ their own - a scoped, named follow-on, not silently invented or silently
 dropped.</description>
   <forceLoadAfter>
     <li>aoba.fortress.industrial</li>
-    <li>biomesteam.biomescaverns</li>
     <li>cain.mineshaft</li>
     <li>coldcrow.betterkibble</li>
     <li>dubwise.dubsbadhygiene.lite</li>
