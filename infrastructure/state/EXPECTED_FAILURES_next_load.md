@@ -1,68 +1,81 @@
-# Decision strings — next load after the Caverns cut, 2026-09-18
+# Expected-failure signatures — next load(s), 2026-09-19 overnight BELT pass
 
-Written BEFORE the game closes (rimworld-load-round §2/§3). Loads A and B of the
-Caverns window are harvested (`CAVERNS_PARITY_BUILD_1` notes, 2026-09-18); this sheet
-is the load that follows. Backup of the pre-cut list:
-`infrastructure/state/modlists/ModsConfig_before_caverns_cut_2026-09-18.xml`.
+Written BEFORE any restart, per `rimworld-load-round` §3. Seven touched
+assemblies ride the same minimal-list batch; each has its own distinguishing
+signature so a `TypeLoadException`/Harmony patch failure/crash can be
+attributed to the right one rather than guessed after the fact.
 
-## Load C — full list, `biomesteam.biomescaverns` OUT, `mandrake.rut.lanterndeeps` IN, 10 ArtOverride mods OUT (622 active, MEASURED)
-
-Riding: the LanternDeeps assembly on the FULL list for the first time (it was only ever
-proven on the 10-mod list — Load B never had it enabled), AND a rebuilt DLL
-(`DEEP_ENTRANCE_BIOMES_SETTING_1`: entrance biomes are now a Mod Settings list). Core,
-Polluted Lands and Fossils STAY (owner ruled Caverns only; Fossils kept on his word).
-
-✅ **LanternDeeps DEPLOYED 2026-09-19 02:2x** (BENCH, during the other window's 29-mod
-quicktest — the mod was not in that list, so its DLL was not locked): DLL + About + defs +
-sound + 50 textures under the renamed paths, `--prune` removed the old plant folders,
-VERIFIED in sync. `modcheck run LanternDeeps` still owed in a window of its own (it swaps
-the list). ⚠️ The live list is the peer's 29-mod quicktest list; the FULL list to restore is
-`Config/ModsConfig.xml.bak_pollutedlands_removal_20260919T021429Z` (622: Caverns out,
-LanternDeeps in, 10 ArtOverrides out) or the peer's own 621 (Polluted Lands out as well) —
-NOT `infrastructure/state/modlists/ModsConfig.FULL.PRECAPTURE.20260918_141403.xml`, which is
-the pre-cut 630.
-
-| item | string | baseline | means |
+| # | assembly (DLL) | new symbol(s) that must appear/behave | distinguishing failure signature to grep for |
 |---|---|---|---|
-| entrance setting round-trips | Mod Settings → Lantern Deeps → "World generation: entrance biomes" shows 3 of N selected; `Player.log` has no `Scribe_Collections` error naming `entranceBiomes` | — | error ⇒ settings load shape wrong; entrances silently gate on nothing |
-| the hum plays | enter a Deep, listen 30 s: steady low hum, periodic swell. If silent: `Player.log` lines naming `RUT_DeepHum` / `RUT_DeepChorus` / `Undercave_Ambience` / `VoidNode` | — | a "could not find clip" line ⇒ cross-pack clip path does not resolve; fall back to a Core clip |
-| canonical save loads without Caverns | load `CANONICAL_ASHKARR_START_2026-09-12.rws`: count `Could not load reference` lines naming `BMT_` (expect dict-key skips), and 0 NREs on the mothballed colonists Nina Marsh / Kazuya Sexton (apparel stuff `BMT_MoonlessSilk` / `BMT_BatWool`) | never loaded this way | an NRE on apparel ⇒ scrub those 3 `<stuff>` (finding on `CANONICAL_SAVE_CAVERNS_SCRUB_1`) |
-| rehomed override art | NOT in this load unless SWBestiary was redeployed (its plan carries Pass 21) — kroffa/puffmite still read maligoat/fleece spider until then; not a finding | — | — |
+| 1 | JawaBench.BridgeTools (companion) | `jawa/do_bill_now`, `jawa/droid_format_tier`, finalize-sequence fix in `jawa/world_tile_map_generate` | Exception text containing `JawaBenchTerrainTools` / `RimBridgeServer` at startup; OR the two new tool names absent from `--list-tools` |
+| 2 | JawaRules.dll | `Patch_RedressPawn_ForceKind` (Harmony postfix on `PawnGenerator.RedressPawn`) | `Patch_RedressPawn_ForceKind` or `JawaRules` in a Harmony-patch-failed or TypeLoadException line |
+| 3 | RimMandrakeFlowWorks.dll | `CompPitFitting.CanSwim`, `RM_GenStep_LiquidShores`, `RM_WorldComponent_LiquidTags` | `RimMandrakeFlowWorks` / `CompPitFitting` / `RM_GenStep_LiquidShores` / `RM_WorldComponent_LiquidTags` in a crash, ConfigError, or missing-type line |
+| 4 | RimMandrakeNinefold.dll | `GetLoudness`/`GetLoudnessRank`/`GetFront`/`ReckonFrontAtLanding` on `GameComponent_Ninefold`, `Patch_GravshipLanded` postfix | `RimMandrakeNinefold` / `GameComponent_Ninefold` / `Patch_GravshipLanded` in a crash or Harmony-patch-failed line |
+| 5 | RimMandrake.CreatureBehaviors.dll | `RM_Hediff_Grappled`, fluid-sac/poison comp, Soulchime stun/soothe/armor comp | `RimMandrake.CreatureBehaviors` / `RM_Hediff_Grappled` / `RM_CompProperties_FluidSacs` / `RM_CompProperties_ProximityPsychicStun` in a crash or ConfigError line |
+| 6 | RimMandrakeProperty.dll | `FloatMenuOptionProvider_Bribe`, `HirePlacelessUtility`, Pickpocket csproj-registration fix | `RimMandrakeProperty` / `FloatMenuOptionProvider_Bribe` / `FloatMenuOptionProvider_HirePlaceless` / `PickpocketUtility` in a crash, TypeLoadException, or "type not found" line |
+| 7 | FireEcologyHook.dll (Pyrelands) | `WildPlantAllowlist` Harmony postfix on `WildPlantSpawner.CalculatePlantsWhichCanGrowAt` | `FireEcologyHook` / `WildPlantAllowlist` in a Harmony-patch-failed or crash line |
 
-| item | string | baseline | means |
-|---|---|---|---|
-| Caverns gone | mod roster in Player.log lacks `Biomes! Caverns`; `measure get BMT_CrystalCaverns` → UNMEASURED/absent | present | present ⇒ ModsConfig was rewritten by the mod menu or RimSort — re-apply the cut |
-| LanternDeeps loads | `measure get RUT_LanternDeeps` → BiomeDef; NO `TypeLoadException` naming `RimMandrake.Utinni.LanternDeeps` | absent in Load B | absent ⇒ the mod is off again or its About.xml failed |
-| Harmony patch attaches | NO Harmony error naming `Patch_PocketMapGrowthRate`; Harmony patch failures stay = 1 (HAR/Universal Pregnancy) | 1 | 2 ⇒ our patch collided on the full list |
-| cave-fungus crash surface dead | NO `MapComponent_CaveFungus` / `Caveworld_Flora_Unleashed` in any stack | present before | present ⇒ Caverns is still loading |
-| guarded refs stayed silent | `Could not resolve cross-reference` lines naming `BMT_` from OUR files (UtinniPatches, Doctrine, PawnFlavor, Armoury) = 0 — every BMT_ op there is Conditional/FindMod-guarded | 0 | >0 ⇒ an unguarded Caverns reference; name the file |
-| Polluted Lands still whole | NO dependency warning for `biomesteam.biomespollutedlands` (its Core dependency is still active) | 0 | present ⇒ Core was removed by mistake |
-| art-override mods | the 5 `mandrake.rut.*artoverride` mods load without error but now patch nothing — expected, NOT a finding (`CAVERNS_LOADAFTER_STRIP_1`) | — | — |
-| EmptyAICore | `Could not resolve cross-reference ... EmptyAICore` still logs — KNOWN (`RUT_Ported_GravForge.xml`, finding on `CAVERNS_PARITY_BUILD_1`), not new | 1 | — |
-| Deep generates on the full list | quicktest → enter the emergence entrance → map with biome `RUT_LanternDeeps` exists; `RUT_Lanternstone*` count > 0; 0 exceptions | Load A: 525 walls / 21 formations | exception ⇒ a full-list mod collides with the pocket-map patch — read the stack, it was clean on 10 mods |
-| magenta is EXPECTED | pink textures on crystals/flora are NOT a finding (art in the one-sheet sitting) | — | do not file |
-| Deep flora renamed (`DEEP_FLORA_RENAME_1`) | after the dump, `measure get` resolves all eleven: `RUT_DeepMycelium`, `RUT_ZivvitTaper`, `RUT_QuorrFern`, `RUT_OsskBramble`, `RUT_BrellikBulb`, `RUT_TwitchingPuffer`, `RUT_ThrakkCap`, `RUT_PrennaLace`, `RUT_VellokReed`, `RUT_KuvraSpout`, `RUT_NurrikGill`, plus item `RUT_PufferTendrils`; the old ten (`RUT_Gleamtip`, `RUT_Fungusfern`, `RUT_CrystaltipBrambles`, `RUT_YumBulbs`, `RUT_DeepDulcisPlant`, `RUT_Crystalcap`, `RUT_DeepGreyLady`, `RUT_DeepArpeau`, `RUT_LuminousSpout`, `RUT_DeepNuitae`) are ABSENT; `RUT_RawDulcis` is referenced by nothing in LanternDeeps (RotSporeKit dependency dropped) | old names present | a `Config error` or cross-reference line naming any old name ⇒ a missed reference in the rename; the puffer's three plant stages and the tendrils item render magenta until the four `twitchingpuffer_*_v1` jobs are wired — NOT a finding |
+## Baseline (no signal = pass)
 
-## Owed before this load, if they land in time
-- `DEEP_DULCIS_DEDUP_1` / `DEEP_FLORA_RENAME_1` (FOUNDRY): `RUT_DeepRawDulcis` and
-  `RUT_DeepDulcisPlant` ABSENT from the dump; `RUT_RawDulcis` present (RotSporeKit's, now
-  unreferenced by LanternDeeps); `RUT_TwitchingPuffer` and `RUT_PufferTendrils` PRESENT and
-  `RUT_LanternDeeps.foragedFood` resolves to the tendrils. If the rename is not deployed,
-  the old ten defs still load — expected, not a finding.
-- SWBestiary Pass 21 (other window): if committed + deployed, `RSW_Scavrat`, `RSW_Runyip`,
-  `RSW_Scurrier` appear in the dump and the BiomeCast regen unblocks. If not, they stay absent
-  and it is STILL not a regression.
+A CLEAN load shows **none** of the seven signature strings above anywhere in
+`Player.log`, and `--list-tools` includes `jawa/do_bill_now` and
+`jawa/droid_format_tier`. Any signature string present attributes the failure
+to that row and only that row — do not batch-blame.
 
-## Not riding this load
-- No Core / Polluted Lands cut (waits on `POLLUTED_LANDS_FLORA_PORT_1`). No Fossils cut, ever
-  unless he says so again. No BiomeCast regen until the dump holds the Pass 21 kinds.
+## RESULT — Phase 1 minimal-list sweep, 2026-09-19 (CLEAN)
 
-## Load D — full list 622 (Load C's 621 + `mandrake.rsw.gizkastowaway` back at 553), LanternDeeps darkness DLL rebuilt, defs dump ARMED (`all`)
+Ran via `loadsweep/sweep_load.sh` on the 9-mod loadsweep BASE +
+`overnight_batch.txt` (the 6 custom mod packageIds; the companion DLL loads
+automatically with `brrainz.rimbridgeserver`, not a Mods-folder entry) = 15
+active mods. Bridge up in 18s. `recovery_hits=0`, `patch_failed=0`,
+`typeload=0`. Zero hits on any of the 7 signature strings above except
+`JawaRules`, which appeared 6 times as its own **armed** log lines — including
+`pawnkind-redress-fix: armed; KCSG_PAWNKIND_COLONIST_FALLBACK_1 — a redressed
+world pawn is forced onto the requested kind and xenotype even when ChangeKind
+was blocked`, confirming `Patch_RedressPawn_ForceKind` registered successfully.
+114 config errors / 57 crossref errors present, but 100% attributable to
+pre-existing FlowWorks liquid-authoring notes and other mods' missing
+dependencies on the minimal list — none touch any of the 7 rows above.
+`jawa/do_bill_now` and `jawa/droid_format_tier` both confirmed present in
+`--list-tools`. **All 7 assemblies: CLEAN on the minimal-list signal.**
 
-Backup of the pre-reactivation list: `infrastructure/state/modlists/ModsConfig_before_gizka_reactivate_2026-09-19.xml`.
+## RESULT — Phase 2 full-list load: BLOCKED by an unrelated pre-existing crash
 
-| item | string | baseline | means |
-|---|---|---|---|
-| gizka exonerated (`GIZKA_TRIBBLE_ADAPTATION_1`, `FULL_LIST_CANNOT_LOAD_GAME_1`) | load `CANONICAL_ASHKARR_START_2026-09-12.rws` with gizka ON: 0 lines `ReadingPolicyDatabase` / `GenerateStartingPolicies`; 0 `has null thingClass` | Load B (gizka ON, FlowWorks DLL stale): NRE every `new Game()`, `Config error in RM_LiquidTank: has null thingClass` | save reaches Playing ⇒ the NRE was `RM_LiquidTank`'s null thingClass (stale FlowWorks DLL), gizka stays ON and the item closes. NRE again ⇒ gizka really is the culprit; deactivate from the backup |
-| darkness ambush fires (`LANTERN_DEEPS_INJECTION_1`) | on a Deep, 6 campfires around a drafted colonist, ≤ 8,000 stepped ticks: a new `RSW_BloodropMoth` on the map in `Manhunter`, 0 exceptions in `effects.logs` | Load C build: 16,500 ticks, nothing (glow capped at 0.5 under roof) | fires ⇒ item closes on live proof; silent ⇒ `lightExposure` never crosses 60 — read the component, not the light |
-| defs dump lands | `DefDump/captures/` gains a fresh `defs` capture (not animals-only); `dump_request.txt` deleted after | Load C wrote an animals-only dump (request content `1`) | no capture ⇒ request content wrong again |
+4 consecutive full-list launch attempts (with and without `mandrake.rut.longhunger`
+inserted) all hit the SAME `AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch`
+NullReferenceException during `DefGenerator.GenerateImpliedDefs_PreResolve`,
+before Playing was ever reached. **Confirmed unrelated to all 7 touched
+assemblies and to LongHunger** — reproduces identically on the plain
+`FULL.LATEST` list with LongHunger absent. Filed as `FULL_LOAD_ALPHAGENES_NRE_1`
+with a strong lead (bisect `df261b2bc` ROT_FLORA_FAUNA_VERDICTS_1's 48-species
+rename/resize pass, landed the same session, touches exactly the content class
+implicated). This blocks every full-list-only item below from being directly
+observed tonight — see each item's own note for what Phase 1 could still
+confirm indirectly (assembly loads clean) versus what remains genuinely
+unverified.
+
+## Full-list-only decision strings (Phase 2)
+
+Written per named item, read off each item's own file, before the full-list
+load:
+
+- `BIOME_CONFIGERRORS_NRE_1`: grep `Player.log` for `NullReferenceException` +
+  `ConfigErrors` on the 5 named biomes (see item file for the list). Expect
+  ABSENT (prior pass: "looks resolved").
+- `FULL_LOAD_RESIDUE_TRIAGE_1`: grep for the aquatic Juv lifeStageAges config
+  error pattern (42 lines previously). Expect ABSENT after the `Inherit="False"`
+  fix.
+- `MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1`: LongHunger's own first-load criteria
+  — grep for LongHunger's defNames loading clean alongside the donor sandworm
+  mod, 0 config errors attributable to it.
+- `WORLDMAP_LIQUID_TAGS_1` / `AQUATIC_WATER_BREATHING_GENE_1`: grep for
+  `Config error in RM_` on any FlowWorks liquid-tag/gene def. Expect 0.
+- `KCSG_PAWNKIND_COLONIST_FALLBACK_1`: confirm JawaRules assembly loads clean
+  (no signature-2 hit); full KCSG placement repro deferred if time-limited.
+- `PYRELANDS_FLORA_LEAK_1`: spawn/generate a Pyrelands map, grep spawned flora
+  for `AB_SessileMechanoid` / `AB_GiantStikehr`. Expect 0 occurrences.
+- `DEEPS_FAUNA_MECHANICS_1` / `SETTLEMENT_VERBS_WAVE_1`: confirm assemblies
+  load clean (signatures 5 and 6 absent); quick spawn-and-poke if time allows.
+- `BRIDGE_MAPGEN_STALE_FINALIZE_1`: `do_bill_now`/`droid_format_tier` present
+  in `--list-tools`; a map-finalize call renders correctly (visual/read-back
+  check, not just `success: true`).

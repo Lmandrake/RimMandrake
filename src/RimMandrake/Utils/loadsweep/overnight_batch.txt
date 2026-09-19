@@ -1,0 +1,6 @@
+mandrake.rsw.jawarules
+mandrake.rm.flowworks
+mandrake.rm.ninefold
+mandrake.rm.creaturebehaviors
+mandrake.rm.property
+mandrake.rm.pyrelands

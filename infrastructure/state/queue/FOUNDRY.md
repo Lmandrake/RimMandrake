@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T09:51:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T10:55:27Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1657,3 +1657,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
+
+## FULL_LOAD_ALPHAGENES_NRE_1 Full 620-mod list crashes at DefGenerator.GenerateImpliedDefs_PreResolve (AlphaGenes NRE), auto-resets to Core-only
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FULL_LOAD_ALPHAGENES_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FULL_LOAD_ALPHAGENES_NRE_1.md
