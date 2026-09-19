@@ -907,6 +907,17 @@ def discover_mods(defs_roots: list[str]) -> dict[str, ModInfo]:
       RimWorld/Data/<Core|Royalty|Odyssey|...>/
       RimWorld/Mods/<name>/
     First root wins on a packageId collision.
+
+    🔴 A candidate with no About.xml of its own may itself be a TIER folder
+    whose children are the real two-levels-deep mods (this repo's own
+    src/<RimMandrake|RimStarWars|RimUtinni>/<ModName>/). Without checking one
+    level further, `--defs src` silently finds ZERO mods under such a root and
+    any later --defs root (typically the deployed, possibly-stale Mods copy)
+    wins every packageId instead - so a validated "OK" can be checking the
+    wrong, stale files while looking clean (SWBESTIARY_DEPLOY_STALE_1,
+    2026-09-19). This only ADDS candidates that previously resolved to
+    nothing; it never overrides a packageId already found at a shallower
+    level, so it cannot change the outcome for the ordinary one-level layouts.
     """
     index: dict[str, ModInfo] = {}
     unreadable: list[str] = []
@@ -928,11 +939,27 @@ def discover_mods(defs_roots: list[str]) -> dict[str, ModInfo]:
             if not os.path.isdir(cand):
                 continue
             got = read_about(cand)
-            if not got:
+            if got:
+                pid, name = got
+                if pid not in index:
+                    index[pid] = ModInfo(pid, name, cand)
                 continue
-            pid, name = got
-            if pid not in index:
-                index[pid] = ModInfo(pid, name, cand)
+            if cand == root_dir:
+                continue  # root's own children are already in `candidates`
+            try:
+                sub_entries = sorted(os.listdir(cand))
+            except OSError:
+                continue
+            for sub_e in sub_entries:
+                sub_cand = os.path.join(cand, sub_e)
+                if not os.path.isdir(sub_cand):
+                    continue
+                got2 = read_about(sub_cand)
+                if not got2:
+                    continue
+                pid2, name2 = got2
+                if pid2 not in index:
+                    index[pid2] = ModInfo(pid2, name2, sub_cand)
     if unreadable:
         raise LoadSetUnmeasurable(
             "--defs root(s) could not be read, so the load set is UNMEASURABLE, "
