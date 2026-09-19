@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T06:27:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T06:28:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -854,15 +854,6 @@ target:   v1
 kind:     task
 summary:  (no items/DEEP_TRIBES_FIRE_RITE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEP_TRIBES_FIRE_RITE_1.md
-
-## PYRELANDS_TERRAIN_BURNDEF_1 RM_FE terrain burnedDef flammable config errors on load
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  (no items/PYRELANDS_TERRAIN_BURNDEF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_TERRAIN_BURNDEF_1.md
 
 ## FLOWWORKS_BUILD_PROGRAM_1 FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
 state:    doing
