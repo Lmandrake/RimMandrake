@@ -660,10 +660,10 @@
     "sha": "43f96b1b"
   },
   "src/DEPLOY_HOLD.txt": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-18",
-    "hash": "f4d0d40b266b3246d87745555027f59ec3db1a50796929155a234970fbf87076",
-    "sha": "d946c8522"
+    "hash": "713cdf79867cbd608c70d57bb2054c3b93aff15e9fd1e838f4f0f437aa302e93",
+    "sha": "d0639c8e6"
   },
   "src/RimMandrake/Aftermath/About/About.xml": {
     "cleanCount": 2,
@@ -3834,10 +3834,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "895af0112a17ce754f55a1309a354c637b88966024d82723ef81e2b30bd0894d",
-    "sha": "7fc491ebc"
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "1b8a5a03329bd1d76fedb7b85a48dbdc3fd3ded1b5862acb271e526e6d4740f4",
+    "sha": "d0639c8e6"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 1,
