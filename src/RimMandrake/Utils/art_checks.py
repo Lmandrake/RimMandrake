@@ -580,12 +580,8 @@ SELFTEST_ROSTER = (
     REPO_ROOT / "src/RimStarWars/NunaArtOverride/Textures",
     REPO_ROOT / "src/RimStarWars/OrrayArtOverride/Textures",
     REPO_ROOT / "src/RimStarWars/ZeerArtOverride/Textures",
-    REPO_ROOT / "src/RimUtinni/BarbslingerArtOverride/Textures",
-    REPO_ROOT / "src/RimUtinni/BoomsnakeArtOverride/Textures",
-    REPO_ROOT / "src/RimUtinni/FireWaspArtOverride/Textures",
     REPO_ROOT / "src/RimUtinni/GreenGooArtOverride/Textures",
     REPO_ROOT / "src/RimUtinni/MantistanisArtOverride/Textures",
-    REPO_ROOT / "src/RimUtinni/RazorjackArtOverride/Textures",
     REPO_ROOT / "src/RimStarWars/SWBestiary/Textures/swanimals/Bolotaur",
     REPO_ROOT / "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Item/Resource",
@@ -612,7 +608,7 @@ SELFTEST_ROSTER = (
 # because the art is bad. ⛔ Do not "fix" this row by loosening
 # FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
 HEIGHT_MUST_FLAG = {
-    "Anooba_f", "Anooba_m", "Boomsnake", "Bolotaur", "AA_FireWasp",
+    "Anooba_f", "Anooba_m", "Flamefang", "Bolotaur", "FireWasp",
     "GR_Mantistanis", "Dalgo", "Orray",
 }
 # ✅ Zeer moved FLAG -> PASS: the 2026-09-17 wave genuinely fixed it. MEASURED
@@ -678,8 +674,8 @@ BOUNDARY_MUST_NOT_FLAG_HIGH = [
 # fixing is a check that goes dark the moment they succeed. The fixture below
 # cannot go dark — it builds its own positive AND negative case from two copies
 # of one real sprite, so art churn can never silence it.
-DUPLICATE_FIXTURE_SRC = (REPO_ROOT / "src/RimUtinni/RazorjackArtOverride/Textures"
-                         "/Things/Pawn/Animal/AA_Razorjack/AA_Razorjack_east.png")
+DUPLICATE_FIXTURE_SRC = (REPO_ROOT / "src/RimUtinni/UtinniPatches/Textures"
+                         "/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png")
 
 
 def _duplicate_facings_proof() -> list:

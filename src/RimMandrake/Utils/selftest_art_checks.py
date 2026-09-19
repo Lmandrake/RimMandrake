@@ -28,8 +28,8 @@ REPO = HERE.parents[2]
 # both the current file and the pre-dino_v5 blob. A fixture must be a file
 # nobody is trying to fix.
 KNOWN_BAD = REPO / "src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_south.png"
-KNOWN_OK = (REPO / "src/RimUtinni/RazorjackArtOverride/Textures/Things/Pawn/Animal"
-                   "/AA_Razorjack/AA_Razorjack_east.png")
+KNOWN_OK = (REPO / "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal"
+                   "/Pyrelands/Sytheclaw/Sytheclaw_east.png")
 
 
 def main() -> int:
