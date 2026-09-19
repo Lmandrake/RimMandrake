@@ -449,11 +449,9 @@ namespace RimMandrake.FlowWorks
 			}
 			byte f = fillGrid[i] > d ? d : fillGrid[i];
 			byte newD = (byte)(d - 1);
-			int displaced = f - newD;
-			if (displaced < 0)
-			{
-				displaced = 0;
-			}
+			// The F - (D-1) clamp lives in RM_StockMath so the selftest covers the
+			// production arithmetic rather than a copy of it.
+			int displaced = RM_StockMath.DisplacedLevels(d, f);
 			depthGrid[i] = newD;
 			fillGrid[i] = (byte)(f - displaced);
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap, so its
@@ -493,23 +491,42 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>
 		/// The displacement walk. Offer the liquid to the connected body,
-		/// NEAREST FIRST — remaining channel cells below their brim, then the
+		/// NEAREST FIRST — remaining channel cells below their brim, THEN the
 		/// natural body up to its capacity — and destroy only what finds no
 		/// room anywhere.
 		///
-		/// 🔑 That last clause is the ONE sanctioned exception to conservation
-		/// of mass in this whole design, which is why it routes through
-		/// <see cref="NotifyOverflowDestroyed"/> and is announced rather than
-		/// quietly dropped. Everything else here is a transfer.
+		/// 🔴 THE CHANNEL IS SERVED BEFORE THE BODY, AND THAT IS NOT AN
+		/// ORDERING PREFERENCE. §5's third consequence is a thing the player
+		/// must SEE: <i>"the receiving cells' fill tiers rise, so displacement
+		/// is visible: filling in one end of a canal makes the rest of it
+		/// deeper."</i> A single breadth-first walk that credits whichever
+		/// recipient it reaches first lets a pond one cell away swallow the
+		/// whole displacement while the canal beyond it stays exactly as it
+		/// was — mass conserved, and the only visible evidence of it gone. So
+		/// the walk runs in two phases: phase 1 credits channel cells, nearest
+		/// first; phase 2 offers whatever is still homeless to the source
+		/// cells the walk touched, again nearest first.
+		///
+		/// 🔑 Whatever finds no room is the ONE sanctioned exception to
+		/// conservation of mass in this whole design, which is why every exit
+		/// from this method routes through <see cref="ReportOverflow"/> and is
+		/// announced rather than quietly dropped. Everything else is a
+		/// transfer.
+		///
+		/// <paramref name="units"/> is in fill LEVELS, the unit the grids hold.
+		/// The body's stock is in fill-units of volume, so phase 2 converts —
+		/// see <see cref="RM_LiquidStock.CreditLevels"/>.
 		/// </summary>
 		private void Displace(IntVec3 from, int units)
 		{
 			if (!RimMandrakeFlowWorksSettings.fillInDisplacementEnabled)
 			{
-				// All-off degradation: no displacement at all, every unit is
+				// All-off degradation: no displacement at all, every level is
 				// overflow. Still disclosed — the exception does not become
-				// silent just because the mechanic is switched off.
-				NotifyOverflowDestroyed(units);
+				// silent just because the mechanic is switched off, which is why
+				// this takes the same reporting exit as a real overflow rather
+				// than only writing a DevMode log.
+				ReportOverflow(from, units);
 				return;
 			}
 			int remaining = units;
@@ -521,9 +538,16 @@ namespace RimMandrake.FlowWorks
 			HashSet<IntVec3> seen = new HashSet<IntVec3>();
 			Queue<IntVec3> queue = new Queue<IntVec3>();
 			List<IntVec3> credited = new List<IntVec3>();
+			// Source cells in the order the walk reached them, i.e. nearest
+			// first. They are NOT credited during phase 1 (see above) and are
+			// never expanded through — the channel is what conducts, a pond is a
+			// destination.
+			List<IntVec3> sources = new List<IntVec3>();
 			seen.Add(from);
 			queue.Enqueue(from);
 			int walked = 0;
+
+			// ── phase 1: the channel, below the brim, nearest first ────────
 			while (queue.Count > 0 && remaining > 0 && walked < MaxComponentCells)
 			{
 				IntVec3 c = queue.Dequeue();
@@ -532,15 +556,11 @@ namespace RimMandrake.FlowWorks
 				{
 					if (IsSourceCell(c))
 					{
-						// The natural body is the last resort and the reason a
-						// fill-in is REVERSIBLE: liquid you spent digging comes
-						// back to the pond you took it from.
-						float accepted = stock.TryCredit(map, c, remaining, this);
-						remaining -= Mathf.FloorToInt(accepted);
-						continue; // never expand through a source
+						sources.Add(c);
+						continue;
 					}
 					int ci = map.cellIndices.CellToIndex(c);
-					int room = depthGrid[ci] - fillGrid[ci];
+					int room = RM_StockMath.CellRoom(depthGrid[ci], fillGrid[ci]);
 					if (room > 0)
 					{
 						int take = room < remaining ? room : remaining;
@@ -563,19 +583,44 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+
+			// ── phase 2: the natural body, nearest source cell first ───────
+			// The body is the last resort and the reason a fill-in is
+			// REVERSIBLE: liquid you spent digging comes back to the pond you
+			// took it from, in the same fill-units the pulse debited to get it.
 			FluidDef fluid = ActiveFluid;
+			float unitPerLevel = fluid != null ? fluid.volumePerTile : 1f;
+			for (int i = 0; i < sources.Count && remaining > 0; i++)
+			{
+				remaining -= stock.CreditLevels(map, sources[i], remaining, unitPerLevel, this);
+			}
+
 			for (int i = 0; i < credited.Count; i++)
 			{
 				ApplyFillTerrain(credited[i], fluid);
 			}
-			if (remaining > 0)
+			ReportOverflow(from, remaining);
+		}
+
+		/// <summary>Disclose destroyed liquid. §5 is explicit that this may not be
+		/// silent — <i>"an overflow report so destroyed liquid is disclosed rather
+		/// than silent — a message or an inspect line, since silent loss in a
+		/// conservation-of-mass system reads as a bug."</i>
+		///
+		/// Zero destroyed says nothing, which is not silence about a loss: it is
+		/// the case where there was no loss.</summary>
+		private void ReportOverflow(IntVec3 at, int levels)
+		{
+			if (levels <= 0)
 			{
-				NotifyOverflowDestroyed(remaining);
-				Messages.Message(
-					"Filling in displaced more liquid than the channel could hold — "
-					+ remaining + " level(s) overflowed and were lost.",
-					new TargetInfo(from, map), MessageTypeDefOf.NeutralEvent, false);
+				return;
 			}
+			NotifyOverflowDestroyed(levels);
+			Messages.Message(
+				"Filling in displaced more liquid than the channel could hold — "
+				+ levels + " level(s) overflowed and were lost. "
+				+ "Lost this way on this map so far: " + overflowDestroyedTotal.ToString("F0") + ".",
+				new TargetInfo(at, map), MessageTypeDefOf.NeutralEvent, false);
 		}
 
 		// ── the original-terrain record ───────────────────────────────────

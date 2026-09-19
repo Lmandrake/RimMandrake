@@ -229,5 +229,88 @@ namespace RimMandrake.FlowWorks
 			}
 			return room < units ? room : units;
 		}
+
+		// ── fill-in displacement (§5, "Filling a canal back in") ──────────
+		//
+		// 🔑 TWO UNITS LIVE HERE AND THEY ARE NOT THE SAME. The depth/fill grids
+		// count LEVELS (0..4, one byte per cell); a body's stock counts
+		// FILL-UNITS of volume. One level of a given liquid is
+		// `fluid.volumePerTile` fill-units — which is exactly what the pulse
+		// already spends, debiting volumePerTile per ONE level moved out of a
+		// source. Displacement is the same transfer read backwards, so it must
+		// convert the same way. Handing a level count straight to a fill-unit
+		// credit under-pays every liquid whose volumePerTile is not 1.
+
+		/// <summary>How much a fill-in displaces out of a cell: whatever the new,
+		/// shallower cell can no longer hold, <c>F - (D-1)</c>, clamped at zero.
+		///
+		/// A trench holding one level out of four loses nothing when it is raised
+		/// to three — the liquid simply sits higher, which is what actually
+		/// happens when you shovel earth in under it.</summary>
+		public static int DisplacedLevels(int depth, int fill)
+		{
+			if (depth <= 0)
+			{
+				return 0;
+			}
+			if (fill > depth)
+			{
+				fill = depth;
+			}
+			int displaced = fill - (depth - 1);
+			return displaced > 0 ? displaced : 0;
+		}
+
+		/// <summary>Room below a channel cell's brim, in levels. Negative fill or
+		/// a fill above the brim (only reachable from a corrupt grid) reads as no
+		/// room rather than as negative room, so a caller can add this to a
+		/// running total without guarding.</summary>
+		public static int CellRoom(int depth, int fill)
+		{
+			int room = depth - fill;
+			return room > 0 ? room : 0;
+		}
+
+		/// <summary>How many WHOLE fill levels a body will take back.
+		///
+		/// Whole levels, not a float, and that is the point: the grid can only
+		/// record an integer fill, so crediting a body a fractional level's worth
+		/// of volume would put stock into the world that no cell ever gave up.
+		/// Flooring here and crediting exactly <c>result * unitPerLevel</c> keeps
+		/// the two ledgers equal to the unit.
+		///
+		/// A limitless body takes everything — the off-map continuation it stands
+		/// for cannot be overfilled (§5).</summary>
+		public static int CreditableLevels(bool limitless, float stock, float capacity, int offeredLevels, float unitPerLevel)
+		{
+			if (offeredLevels <= 0)
+			{
+				return 0;
+			}
+			if (limitless)
+			{
+				return offeredLevels;
+			}
+			if (unitPerLevel <= 0f)
+			{
+				// A malformed FluidDef (volumePerTile <= 0 is rejected by
+				// FluidDef's own ConfigErrors) would otherwise divide by zero.
+				// Accept nothing rather than accept everything: an unbounded
+				// credit is a silent mass gain, and a refused credit shows up as
+				// disclosed overflow, which is the failure the player can see.
+				return 0;
+			}
+			float room = capacity - stock;
+			if (room <= 0f)
+			{
+				return 0;
+			}
+			int levels = (int)Math.Floor(room / unitPerLevel);
+			if (levels <= 0)
+			{
+				return 0;
+			}
+			return levels < offeredLevels ? levels : offeredLevels;
+		}
 	}
 }

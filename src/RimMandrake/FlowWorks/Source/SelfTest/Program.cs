@@ -1,4 +1,6 @@
-// Selftest for the source stock model built under FLUID_SOURCE_STOCK_MODEL_1.
+// Selftest for the source stock model built under FLUID_SOURCE_STOCK_MODEL_1,
+// extended under CANAL_FILL_IN_DISPLACEMENT_1 to cover the fill-in
+// displacement walk's arithmetic (§5, "Filling a canal back in").
 //
 // WHY THIS EXISTS: §5 of design/RimMandrake/flowworks_mod_definition.md is a
 // tuning spec as much as an architecture. Every number in it — the 5:1 budget,
@@ -405,6 +407,184 @@ namespace RimMandrake.FlowWorks.SelfTest
                 stock += back;
                 AssertClose(stock, capacity,
                     "🔑 conservation of mass: dig a canal and fill it straight back in, and the pond is whole again");
+            });
+
+            // ═══════ the fill-in displacement walk (CANAL_FILL_IN_DISPLACEMENT_1) ═
+            //
+            // OWNER, 2026-09-16: "There should also be a way to 'fill in' a canal
+            // that displaces liquid BACK. It does not destroy liquid if there's a
+            // place for it to go, but if it would 'overflow' it is destroyed."
+            //
+            // The grid walking (BFS order, terrain writes, the message) needs a
+            // live Map and is NOT covered here. What IS covered is every number
+            // the walk decides with: how much a raised cell displaces, how much
+            // room a channel cell has, and how many whole levels a body takes.
+
+            Case("Displaced_is_what_the_shallower_cell_can_no_longer_hold", () =>
+                Assert(RM_StockMath.DisplacedLevels(4, 4) == 1,
+                    "a brimming depth-4 cell raised to 3 sheds exactly one level"));
+
+            Case("Displacing_a_cell_with_slack_sheds_NOTHING", () =>
+            {
+                // §5's own worked example: "a trench holding one level out of four
+                // loses nothing when it is raised to three — the liquid simply sits
+                // higher, which is what actually happens when you shovel earth in
+                // under it."
+                Assert(RM_StockMath.DisplacedLevels(4, 1) == 0, "1 of 4 raised to 3 still fits");
+                Assert(RM_StockMath.DisplacedLevels(4, 3) == 0, "3 of 4 raised to 3 fits exactly");
+                Assert(RM_StockMath.DisplacedLevels(4, 0) == 0, "a dry trench displaces nothing");
+            });
+
+            Case("Displacing_a_brimming_cell_at_every_depth_sheds_exactly_one", () =>
+            {
+                for (int d = 1; d <= 4; d++)
+                {
+                    Assert(RM_StockMath.DisplacedLevels(d, d) == 1,
+                        $"depth {d} brimming sheds one level, never the whole column");
+                }
+            });
+
+            Case("Displacing_an_unexcavated_cell_is_zero_not_negative", () =>
+            {
+                Assert(RM_StockMath.DisplacedLevels(0, 0) == 0, "nothing dug, nothing displaced");
+                Assert(RM_StockMath.DisplacedLevels(0, 2) == 0, "a corrupt fill above a zero depth cannot go negative");
+            });
+
+            Case("Displacement_clamps_a_fill_that_exceeds_its_own_brim", () =>
+                Assert(RM_StockMath.DisplacedLevels(2, 5) == 1,
+                    "fill is clamped to the brim first, so a corrupt grid sheds one level, not four"));
+
+            Case("CellRoom_is_the_gap_below_the_brim", () =>
+            {
+                Assert(RM_StockMath.CellRoom(4, 1) == 3, "a depth-4 cell holding 1 has 3 levels of room");
+                Assert(RM_StockMath.CellRoom(4, 4) == 0, "a brimming cell has none");
+                Assert(RM_StockMath.CellRoom(2, 5) == 0, "over-full never reads as negative room");
+            });
+
+            Case("CreditableLevels_converts_fill_units_to_WHOLE_levels", () =>
+            {
+                // 🔴 The unit bug this function exists to prevent. The grids count
+                // LEVELS; a body's stock counts FILL-UNITS, and one level is
+                // volumePerTile units — exactly what the pulse debits per level
+                // poured out of a source. A walk that handed its level count
+                // straight to a fill-unit credit would under-pay every liquid
+                // whose volumePerTile is not 1.
+                const float viscous = 2f;
+                // 10 units of room at 2 units per level = 5 levels.
+                Assert(RM_StockMath.CreditableLevels(false, 5f, 15f, 8, viscous) == 5,
+                    "room in units, answer in levels");
+                Assert(RM_StockMath.CreditableLevels(false, 5f, 15f, 3, viscous) == 3,
+                    "never more than was offered");
+            });
+
+            Case("CreditableLevels_floors_rather_than_crediting_a_part_level", () =>
+            {
+                // A body with 3 units of room and a 2-unit level takes ONE level
+                // and leaves 1 unit of room. Rounding up here would credit stock
+                // that no cell ever gave up, which is a silent mass GAIN — the
+                // mirror of the leak the conservation ledger hunts.
+                Assert(RM_StockMath.CreditableLevels(false, 12f, 15f, 4, 2f) == 1,
+                    "3 units of room at 2 per level is one whole level, not one and a half");
+                Assert(RM_StockMath.CreditableLevels(false, 14f, 15f, 4, 2f) == 0,
+                    "1 unit of room at 2 per level is no level at all");
+            });
+
+            Case("CreditableLevels_to_a_full_body_is_zero_so_the_rest_overflows", () =>
+                Assert(RM_StockMath.CreditableLevels(false, 15f, 15f, 5, WaterVolumePerTile) == 0,
+                    "a full pond takes nothing, and §5 destroys what finds no room — disclosed, not silent"));
+
+            Case("CreditableLevels_to_a_LIMITLESS_body_takes_everything", () =>
+                Assert(RM_StockMath.CreditableLevels(true, 0f, 0f, 9, WaterVolumePerTile) == 9,
+                    "the off-map continuation cannot be overfilled (ruling 16), so it never causes an overflow"));
+
+            Case("CreditableLevels_of_nothing_offered_is_nothing", () =>
+            {
+                Assert(RM_StockMath.CreditableLevels(false, 0f, 15f, 0, WaterVolumePerTile) == 0, "zero in, zero out");
+                Assert(RM_StockMath.CreditableLevels(true, 0f, 0f, 0, WaterVolumePerTile) == 0,
+                    "and limitless does not invent levels out of an empty offer");
+            });
+
+            Case("CreditableLevels_refuses_rather_than_dividing_by_a_zero_unit", () =>
+                Assert(RM_StockMath.CreditableLevels(false, 0f, 15f, 4, 0f) == 0,
+                    "a malformed FluidDef must not produce an unbounded credit; refusing shows up as "
+                    + "disclosed overflow, which is the failure a player can actually see"));
+
+            Case("Scenario_fill_in_one_end_of_a_full_canal_and_the_rest_gets_DEEPER", () =>
+            {
+                // §5's third consequence, the one the player must SEE: "the
+                // receiving cells' fill tiers rise, so displacement is visible:
+                // filling in one end of a canal makes the rest of it deeper."
+                //
+                // Four depth-4 cells, the first brimming and the rest holding 2.
+                // Raise the first to depth 3; it sheds one level, which the
+                // nearest channel cell below its brim takes.
+                int[] depth = { 4, 4, 4, 4 };
+                int[] fill = { 4, 2, 2, 2 };
+                int displaced = RM_StockMath.DisplacedLevels(depth[0], fill[0]);
+                Assert(displaced == 1, "one level comes out");
+                int remaining = displaced;
+                for (int i = 1; i < depth.Length && remaining > 0; i++)
+                {
+                    int take = Math.Min(RM_StockMath.CellRoom(depth[i], fill[i]), remaining);
+                    fill[i] += take;
+                    remaining -= take;
+                }
+                Assert(remaining == 0, "the channel had room, so nothing was destroyed");
+                Assert(fill[1] == 3, "🔑 the neighbour is visibly deeper — that is the whole point of the mechanic");
+                Assert(fill[2] == 2 && fill[3] == 2, "nearest first: the far end is untouched while the near end has room");
+            });
+
+            Case("Scenario_filling_in_a_sealed_full_canal_destroys_exactly_the_overflow", () =>
+            {
+                // No room anywhere and no body to take it: §5's one sanctioned
+                // exception. The amount destroyed is the displacement and not one
+                // level more.
+                int[] depth = { 4, 4 };
+                int[] fill = { 4, 4 };
+                int remaining = RM_StockMath.DisplacedLevels(depth[0], fill[0]);
+                for (int i = 1; i < depth.Length && remaining > 0; i++)
+                {
+                    int take = Math.Min(RM_StockMath.CellRoom(depth[i], fill[i]), remaining);
+                    fill[i] += take;
+                    remaining -= take;
+                }
+                Assert(remaining == 1, "one level had nowhere to go");
+                Assert(fill[1] == 4, "and the brimming neighbour took none of it");
+            });
+
+            Case("Scenario_channel_is_served_BEFORE_the_body_so_displacement_stays_visible", () =>
+            {
+                // The two-phase ordering, stated as a number. A pond one cell away
+                // with room to spare would swallow the whole displacement in a
+                // single mixed breadth-first walk, leaving the canal exactly as it
+                // was: mass conserved and every visible trace of it gone.
+                int channelRoom = RM_StockMath.CellRoom(4, 2);
+                int remaining = 2;
+                int toChannel = Math.Min(channelRoom, remaining);
+                remaining -= toChannel;
+                int toBody = RM_StockMath.CreditableLevels(false, 0f, 99f, remaining, WaterVolumePerTile);
+                Assert(toChannel == 2, "the channel takes what it can hold first");
+                Assert(toBody == 0, "so the pond — which would have taken all of it — gets nothing");
+            });
+
+            Case("Scenario_displaced_liquid_the_channel_cannot_hold_goes_home_to_the_pond", () =>
+            {
+                // And the reverse: a sealed channel with a pond at the end loses
+                // nothing at all. This is §5's reversibility argument — "fill it
+                // back in before a raid that never came and you get most of your
+                // liquid back."
+                float capacity = WaterCapacity(3);
+                float stock = capacity - 4f * WaterVolumePerTile; // four levels were dug out
+                int remaining = 3;                                // and three are coming back
+                int toChannel = RM_StockMath.CellRoom(4, 4);      // sealed: no room
+                Assert(toChannel == 0, "the channel is brimming");
+                int toBody = RM_StockMath.CreditableLevels(false, stock, capacity, remaining, WaterVolumePerTile);
+                Assert(toBody == 3, "the pond had room for all three, so nothing is destroyed");
+                stock += toBody * WaterVolumePerTile;
+                remaining -= toBody;
+                Assert(remaining == 0, "nothing left over to destroy");
+                AssertClose(stock, capacity - WaterVolumePerTile,
+                    "and the pond is back to exactly what the one remaining dug level took from it");
             });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
