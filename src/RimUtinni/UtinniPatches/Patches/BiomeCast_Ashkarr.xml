@@ -392,7 +392,22 @@
       <value>
         <AA_Needlepost>0.3</AA_Needlepost> <!-- needlepost - floor-vermin, keep -->
         <AA_BloodShrimp>0.2</AA_BloodShrimp> <!-- blood shrimp - margin-predator, keep -->
-        <AA_Razorjack>0.2</AA_Razorjack> <!-- razorjack - floor-predator, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <!-- PYRELANDS_DONOR_PORT_4 (owner 2026-09-19, "any donors cut, period"):
+       the floor-predator row here was the donor AA_Razorjack, which this
+       campaign had already renamed to "sytheclaw" and re-arted. It is now our
+       own RUT_Sytheclaw, so it gets its OWN operation gated on the BIOME's mod
+       alone — leaving it in the sarg.alphaanimals block above would drop OUR
+       creature out of this biome if that donor mod were ever removed. -->
+  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod">
+    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+      <value>
+        <RUT_Sytheclaw>0.2</RUT_Sytheclaw> <!-- sytheclaw - floor-predator, keep -->
       </value>
     </match>
   </Operation>
@@ -791,11 +806,23 @@
         <AA_InfectedAerofleet>0.5</AA_InfectedAerofleet> <!-- infected aerofleet - the-sower, keep -->
         <AA_BloodShrimp>0.2</AA_BloodShrimp> <!-- blood shrimp - the-drinker, adjust-keep -->
         <AA_Drainer>0.15</AA_Drainer> <!-- drainer - the-thieves, adjust-keep -->
-        <AA_Razorjack>0.15</AA_Razorjack> <!-- razorjack - the-pickers, adjust-keep -->
         <AA_Helixien>0.1</AA_Helixien> <!-- helixien - the-undertaker, adjust-keep -->
         <AA_RoughPlatedMonitor>0.1</AA_RoughPlatedMonitor> <!-- rough-plated monitor - the-basker, keep -->
         <AA_Swarmling>0.1</AA_Swarmling> <!-- swarmling - the-pickers, adjust-keep -->
         <AA_DrainerLarva>0.05</AA_DrainerLarva> <!-- drainer larva - the-thieves, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <!-- PYRELANDS_DONOR_PORT_4 (owner 2026-09-19): the-pickers row, was the donor
+       AA_Razorjack, now our own RUT_Sytheclaw. Own operation, gated on the
+       BIOME's mod alone — see the BiomeCypreJungle note above. -->
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
+      <value>
+        <RUT_Sytheclaw>0.15</RUT_Sytheclaw> <!-- sytheclaw - the-pickers, adjust-keep -->
       </value>
     </match>
   </Operation>
