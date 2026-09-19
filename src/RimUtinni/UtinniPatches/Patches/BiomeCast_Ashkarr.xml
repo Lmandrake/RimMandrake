@@ -999,48 +999,31 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+  <!-- PYRELANDS CAST — owner's ruling 2026-09-19, verbatim: "Zeer, Nuna, Gizka, Orray and
+       Firewasp are all legitimate occupants of the Pyrelands. They should be using OUR
+       creatures, not the donor references. The donor references, if any, should never be
+       used again."
+       This replaces four operations that cast these creatures into ZBiome_Grasslands, which
+       carries ZERO tiles on the frozen world (222 RM_FE_Pyrelands; MEASURED f7e2bd21c over
+       all 21872 surface tiles) — so none of them could ever spawn. Deleted rather than
+       superseded, per the repo's standing rule on inaccurate material.
+       Three deliberate departures from the block this replaces:
+         - the bare donor <Nuna> that sat beside <RSW_Nuna> is GONE, per the ruling above.
+         - the old gate named mlie.starwarsanimalcollection for zeer/gizka/orray. Those are
+           OUR defs now (all six live in SWBestiary, MEASURED), so a donor gate would have
+           silently dropped our own creatures if that mod were ever removed.
+         - the replaced block also WIPED its target's <wildAnimals> before adding. That wipe
+           is NOT carried across: RM_FE_Pyrelands ships 13 animals of its own and clearing
+           them was never ruled. This operation only ADDS. -->
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands,mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
       <value>
-        <RSW_Iriaz>0.5</RSW_Iriaz> <!-- iriaz - small-herd, import -->
-        <RSW_Nuna>0.5</RSW_Nuna> <!-- nuna - small, adjust-keep -->
-        <RSW_Anooba>0.35</RSW_Anooba> <!-- anooba - medium-predator, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <RSW_Zeer>0.6</RSW_Zeer> <!-- zeer - large-herd, adjust-keep -->
-        <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
-        <RSW_Gizka>0.3</RSW_Gizka> <!-- gizka - grain, adjust-keep -->
-        <RSW_Orray>0.25</RSW_Orray> <!-- orray - medium, import [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <AA_FireWasp>0.4</AA_FireWasp> <!-- fire wasp - small-predator, keep -->
+        <RSW_Zeer>0.6</RSW_Zeer> <!-- zeer - large-herd -->
+        <RSW_Nuna>0.5</RSW_Nuna> <!-- nuna - small -->
+        <RSW_Gizka>0.3</RSW_Gizka> <!-- gizka - grain; also spawns natively elsewhere, per the ruling -->
+        <RSW_Orray>0.25</RSW_Orray> <!-- orray - medium -->
       </value>
     </match>
   </Operation>
