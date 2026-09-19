@@ -56,3 +56,13 @@ the pre-cut 630.
 ## Not riding this load
 - No Core / Polluted Lands cut (waits on `POLLUTED_LANDS_FLORA_PORT_1`). No Fossils cut, ever
   unless he says so again. No BiomeCast regen until the dump holds the Pass 21 kinds.
+
+## Load D — full list 622 (Load C's 621 + `mandrake.rsw.gizkastowaway` back at 553), LanternDeeps darkness DLL rebuilt, defs dump ARMED (`all`)
+
+Backup of the pre-reactivation list: `infrastructure/state/modlists/ModsConfig_before_gizka_reactivate_2026-09-19.xml`.
+
+| item | string | baseline | means |
+|---|---|---|---|
+| gizka exonerated (`GIZKA_TRIBBLE_ADAPTATION_1`, `FULL_LIST_CANNOT_LOAD_GAME_1`) | load `CANONICAL_ASHKARR_START_2026-09-12.rws` with gizka ON: 0 lines `ReadingPolicyDatabase` / `GenerateStartingPolicies`; 0 `has null thingClass` | Load B (gizka ON, FlowWorks DLL stale): NRE every `new Game()`, `Config error in RM_LiquidTank: has null thingClass` | save reaches Playing ⇒ the NRE was `RM_LiquidTank`'s null thingClass (stale FlowWorks DLL), gizka stays ON and the item closes. NRE again ⇒ gizka really is the culprit; deactivate from the backup |
+| darkness ambush fires (`LANTERN_DEEPS_INJECTION_1`) | on a Deep, 6 campfires around a drafted colonist, ≤ 8,000 stepped ticks: a new `RSW_BloodropMoth` on the map in `Manhunter`, 0 exceptions in `effects.logs` | Load C build: 16,500 ticks, nothing (glow capped at 0.5 under roof) | fires ⇒ item closes on live proof; silent ⇒ `lightExposure` never crosses 60 — read the component, not the light |
+| defs dump lands | `DefDump/captures/` gains a fresh `defs` capture (not animals-only); `dump_request.txt` deleted after | Load C wrote an animals-only dump (request content `1`) | no capture ⇒ request content wrong again |
