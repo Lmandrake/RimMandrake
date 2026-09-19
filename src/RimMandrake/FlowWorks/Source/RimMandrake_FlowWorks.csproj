@@ -146,6 +146,12 @@
     <Compile Include="LiquidTypes\JobDriver_EmptyBottleIntoTank.cs" />
     <Compile Include="LiquidTypes\WorkGiver_FillBottleFromTank.cs" />
     <Compile Include="LiquidTypes\JobDriver_FillBottleFromTank.cs" />
+    <!-- WORLDMAP_LIQUID_TAGS_1: the typed-worldmap layer (a body def, the
+         per-tile tag component that derives tags from it, and the landing
+         GenStep that repaints generated water to the tagged liquid). -->
+    <Compile Include="LiquidTypes\RM_LiquidBodyDef.cs" />
+    <Compile Include="LiquidTypes\RM_WorldComponent_LiquidTags.cs" />
+    <Compile Include="LiquidTypes\RM_GenStep_LiquidShores.cs" />
   </ItemGroup>
 
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route: drill/tap

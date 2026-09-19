@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_LiquidBodyRegistry.xml                    WORLDMAP_LIQUID_TAGS_1, half 1
+  ============================================================================
+  Which named body of water on the planet is made of which liquid. This is
+  the AUTHORING half of the typed-worldmap layer; RM_LiquidBodyDef.cs carries
+  the reasoning for why it is data here rather than a per-tile write into a
+  savegame, and RM_GenStep_LiquidShores.cs is what reads it at landing time.
+
+  The four rows are Ash'karr's four authored liquid bodies (LIQUID_BIOMES_MAP_1,
+  closed at 182c6984). Each is named by its BIOME, because that item's whole
+  output was giving these bodies their own BiomeDefs — so the frozen world
+  already records which tile belongs to which body and nothing new has to be
+  written onto it.
+
+  MEASURED against world/ASHKARR_WORLDMAP_tiles.csv (21,872 rows, the frozen
+  record, 2026-09-19):
+
+      RUT_TwilightSea    607 tiles    all water
+      RUT_GreySea        472 tiles    all water
+      RUT_TheScald       312 tiles    all water
+      RUT_PropaneLake     57 tiles    all water
+                       =======
+                       1,448 tiles = EVERY water tile on the planet
+
+  🔑 There is no fifth row and there is no "ordinary seas and lakes" row,
+  because Ash'karr has no ordinary seas or lakes. The item that filed this
+  asked for the four authored bodies "plus the ordinary vanilla seas/lakes";
+  measured, that set is EMPTY. The last vanilla water on the planet was
+  removed 2026-09-07 (262 SeaIce tiles folded into their parent sea, 10
+  vanilla Lake tiles drained to land keeping their lake mutators) and the
+  frozen CSV's own stamp records it. Every remaining water tile is one of the
+  four above.
+
+  Biome defNames are resolved by STRING at runtime, so this file costs
+  nothing when the campaign biomes are absent — which is the state under a
+  minimal mod list, and the state for anyone running FlowWorks without the
+  Utinni campaign.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- The boiling ocean. Its BiomeDef already wires its own RUT_ScaldWater*
+       terrains, so on the Scald itself the repaint is a no-op unless those
+       terrains change; the tag exists so every OTHER consumer (the tanker
+       raid's target picker, a pump asking what it is drawing) can ask what
+       this water is and get an answer. -->
+  <RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+    <defName>RM_Body_TheScald</defName>
+    <label>the Scald</label>
+    <liquid>RM_Liquid_BoilingWater</liquid>
+    <biomes>
+      <li>RUT_TheScald</li>
+    </biomes>
+  </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+
+  <!-- Brine sea 1 of 2. This one and the Grey Sea are the rows the repaint
+       actually exists for: both BiomeDefs deliberately inherit vanilla
+       WaterOcean{Deep,Shallow}, so without this tag a hypersaline sea
+       generates as ordinary blue saltwater. -->
+  <RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+    <defName>RM_Body_TwilightSea</defName>
+    <label>the Twilight Sea</label>
+    <liquid>RM_Liquid_Brine</liquid>
+    <biomes>
+      <li>RUT_TwilightSea</li>
+    </biomes>
+  </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+
+  <!-- Brine sea 2 of 2. -->
+  <RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+    <defName>RM_Body_GreySea</defName>
+    <label>the Grey Sea</label>
+    <liquid>RM_Liquid_Brine</liquid>
+    <biomes>
+      <li>RUT_GreySea</li>
+    </biomes>
+  </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+
+  <!-- The propane lake under Umbra. Its BiomeDef wires the donor's own
+       AB_PropaneLake / AB_SolidPropane terrains; the RM_Liquid_Propane row's
+       suite (RM_PropaneShallow / RM_PropaneDeep) is FlowWorks' own, so on
+       this body the repaint does real work whenever the lake generates from
+       vanilla water rather than from the donor patchmakers. -->
+  <RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+    <defName>RM_Body_PropaneLake</defName>
+    <label>the Propane Lake</label>
+    <liquid>RM_Liquid_Propane</liquid>
+    <biomes>
+      <li>RUT_PropaneLake</li>
+    </biomes>
+  </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
+
+</Defs>
