@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:10:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T03:36:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -134,15 +134,6 @@ target:   v1
 kind:     task
 summary:  (no items/CAVERNS_PARITY_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
-
-## DEEP_ENTRANCE_BIOMES_SETTING_1 LanternDeeps entrance biomes become a Mod Settings list: default = the Utinni three (BiomeGRimond, RUT_NightsideIce, RUT_PropaneLake), any biome selectable; GenStep_ScatterCavePortal/ScatterMineshaftPortal read the setting instead of the hardcoded HashSet. DLL rebuild - deploys in the next shutdown window
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  (no items/DEEP_ENTRANCE_BIOMES_SETTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEP_ENTRANCE_BIOMES_SETTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
