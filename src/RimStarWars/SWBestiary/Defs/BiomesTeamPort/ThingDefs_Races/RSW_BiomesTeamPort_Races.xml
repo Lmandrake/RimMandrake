@@ -15,9 +15,16 @@ donor-framework-only behaviour (pack defense hediff, lure-prey AI, filth
 trail, water-walker/floating, dig-periodically, custom thing-eater, animal
 spawner comps, hermaphroditic-mate job giver, corpse spawner). Two
 non-resident adult forms (RSW_RoyalRhino, RSW_ShatterjawBeetle) are ported
-as back-end evolveIntoPawnKindDef targets for their resident larva/pupa
-stages, decided "out" for biome residency but required for the vanilla
-evolve mechanism not to dangle - not added to any biome cast.
+alongside their resident larva/pupa stages (RSW_RoyalRhinoLarvae/Pupa,
+RSW_ShatterjawBeetlePupa) even though the pupa-to-adult metamorphosis link
+was itself part of the donor-framework comp dropped above - nothing in
+this file references these two adult forms by name, so they currently
+load as inert, unreachable defs. Kept rather than cut because that is a
+content call this port does not make; decided "out" for biome residency
+either way - not added to any biome cast. Code review wave 17, 2026-09-18:
+corrected this comment, which previously claimed a live
+evolveIntoPawnKindDef mechanism that does not exist anywhere in the
+ported files.
 Texture texPaths repathed to swanimals/BiomesTeam/<original path>, files
 copied verbatim from the donor mods' own Textures trees.
 
@@ -919,7 +926,7 @@ copied verbatim from the donor mods' own Textures trees.
     </tools>
     <tradeTags>
       <li>AnimalUncommon</li>
-      <li>BMT_PollutedAnimalUncommon</li>
+      <li>RSW_PollutedAnimalUncommon</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="BigBirdKindBase">
@@ -1100,7 +1107,7 @@ copied verbatim from the donor mods' own Textures trees.
     </butcherProducts>
     <tradeTags>
       <li>AnimalCommon</li>
-      <li>BMT_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalCommon</li>
     </tradeTags>
     <modExtensions>
 			</modExtensions>
@@ -2372,8 +2379,8 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalCommon</li>
       <li>AnimalFarm</li>
-      <li>BMT_PollutedAnimalCommon</li>
-      <li>BMT_PollutedAnimalInsect</li>
+      <li>RSW_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalInsect</li>
     </tradeTags>
     <comps>
       <li Class="CompProperties_EggLayer">
@@ -4068,7 +4075,7 @@ copied verbatim from the donor mods' own Textures trees.
     </tools>
     <tradeTags>
       <li>AnimalUncommon</li>
-      <li>BMT_PollutedAnimalUncommon</li>
+      <li>RSW_PollutedAnimalUncommon</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
@@ -4703,7 +4710,7 @@ copied verbatim from the donor mods' own Textures trees.
     </tools>
     <tradeTags>
       <li>AnimalFighter</li>
-      <li>BMT_PollutedAnimalFighter</li>
+      <li>RSW_PollutedAnimalFighter</li>
     </tradeTags>
     <modExtensions>
 			</modExtensions>
@@ -4786,8 +4793,8 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalCommon</li>
       <li>AnimalPet</li>
-      <li>BMT_PollutedAnimalCommon</li>
-      <li>BMT_PollutedAnimalPet</li>
+      <li>RSW_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalPet</li>
     </tradeTags>
     <tools>
       <li>
@@ -5068,8 +5075,8 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalUncommon</li>
       <li>AnimalFighter</li>
-      <li>BMT_PollutedAnimalUncommon</li>
-      <li>BMT_PollutedAnimalFighter</li>
+      <li>RSW_PollutedAnimalUncommon</li>
+      <li>RSW_PollutedAnimalFighter</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="BigBirdKindBase">
@@ -5338,7 +5345,7 @@ copied verbatim from the donor mods' own Textures trees.
     </race>
     <tradeTags>
       <li>AnimalExotic</li>
-      <li>BMT_PollutedAnimalFighter</li>
+      <li>RSW_PollutedAnimalFighter</li>
     </tradeTags>
     <tools>
       <li>
@@ -5767,7 +5774,7 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalCommon</li>
       <li>AnimalFarm</li>
-      <li>BMT_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalCommon</li>
     </tradeTags>
     <tools>
       <li>
@@ -6228,7 +6235,7 @@ copied verbatim from the donor mods' own Textures trees.
     </race>
     <tradeTags>
       <li>AnimalCommon</li>
-      <li>BMT_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalCommon</li>
     </tradeTags>
     <comps>
 			</comps>
@@ -6529,7 +6536,7 @@ copied verbatim from the donor mods' own Textures trees.
     </comps>
     <tradeTags>
       <li>AnimalExotic</li>
-      <li>BMT_PollutedCommon</li>
+      <li>RSW_PollutedCommon</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
@@ -6973,8 +6980,8 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalCommon</li>
       <li>AnimalInsect</li>
-      <li>BMT_PollutedAnimalCommon</li>
-      <li>BMT_PollutedAnimalInsect</li>
+      <li>RSW_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalInsect</li>
     </tradeTags>
     <modExtensions>
 			</modExtensions>
@@ -7043,7 +7050,7 @@ copied verbatim from the donor mods' own Textures trees.
     </race>
     <tradeTags>
       <li>AnimalUncommon</li>
-      <li>BMT_TradeTag_Crab</li>
+      <li>RSW_TradeTag_Crab</li>
     </tradeTags>
   </ThingDef>
   <ThingDef ParentName="BaseInsect">
@@ -7389,8 +7396,8 @@ copied verbatim from the donor mods' own Textures trees.
     <tradeTags>
       <li>AnimalUncommon</li>
       <li>AnimalFarm</li>
-      <li>BMT_PollutedAnimalCommon</li>
-      <li>BMT_PollutedAnimalInsect</li>
+      <li>RSW_PollutedAnimalCommon</li>
+      <li>RSW_PollutedAnimalInsect</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
