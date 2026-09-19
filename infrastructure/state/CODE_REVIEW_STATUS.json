@@ -4439,6 +4439,18 @@
     "hash": "d737f56bfa795eaddcbc3a6a2fb0b4d17c81919475c5340318a8a4a59c0ce260",
     "sha": "dad4e548"
   },
+  "src/RimMandrake/RimProperty/Source/Bribe/BribeUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "0dd9a70d638d1156012dbfc18f8b0fde6e9b0248a8165e2915db784891593bdc",
+    "sha": "4de0abdce"
+  },
+  "src/RimMandrake/RimProperty/Source/Bribe/FloatMenuOptionProvider_Bribe.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "3c439a0dfa50b12a740a2c071c4c36d5bcf0a934eea917628668b5ac5b55cf7a",
+    "sha": "4de0abdce"
+  },
   "src/RimMandrake/RimProperty/Source/ClaimBasis.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -4488,10 +4500,10 @@
     "sha": "dad4e548"
   },
   "src/RimMandrake/RimProperty/Source/FactionRecord.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "a39845b2a35a395d8a384acc62bfb79ac199f60f37e71f513a01ea79a40086f5",
-    "sha": "c62d11c4c"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "211718cd0b3c4bf04a39250e485384ab7d44b6ec286ae5fc389d16d3f056bfe6",
+    "sha": "4de0abdce"
   },
   "src/RimMandrake/RimProperty/Source/GameComponent_PropertyLedger.cs": {
     "cleanCount": 1,
@@ -4530,10 +4542,10 @@
     "sha": "e1c3162cb"
   },
   "src/RimMandrake/RimProperty/Source/PropertyEngine.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "541b0912e1e921c8d84fc795a212543a29f351c1b2dc98b600a62ed57ce49927",
-    "sha": "c62d11c4c"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "5603e5272c4b6be407dcc72a5cd16d5aa1306045830e561ea6a684044d665156",
+    "sha": "4de0abdce"
   },
   "src/RimMandrake/RimProperty/Source/PropertyEvents.cs": {
     "cleanCount": 1,
@@ -4542,22 +4554,22 @@
     "sha": "dad4e548"
   },
   "src/RimMandrake/RimProperty/Source/PropertySettings.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "de7eb7a7cc2d3162f2b676e0045920a23b95379b20bdf9f768f221e9416b345f",
-    "sha": "9104d3024"
-  },
-  "src/RimMandrake/RimProperty/Source/PropertyTuning.cs": {
     "cleanCount": 3,
     "date": "2026-09-18",
-    "hash": "e7e74d7e513c8a44648673c7d7389a70420d3b562f3af931184152a11e7ad2a4",
-    "sha": "9104d3024"
+    "hash": "b890f6285edaf229c18208a174ab6a8f05e77af8ea73a9a957e358cf29c20889",
+    "sha": "4de0abdce"
   },
-  "src/RimMandrake/RimProperty/Source/RM_Property.csproj": {
+  "src/RimMandrake/RimProperty/Source/PropertyTuning.cs": {
     "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "8b1015f3f10bffc07f11922ba738d14dc261ef9be3f9f209ad55929c9ae24df2",
-    "sha": "9104d3024"
+    "hash": "d95aeb10d405842f0eb492cd4bc602c60811fe96208ab6c0aa022d7c409a2f39",
+    "sha": "4de0abdce"
+  },
+  "src/RimMandrake/RimProperty/Source/RM_Property.csproj": {
+    "cleanCount": 5,
+    "date": "2026-09-18",
+    "hash": "258c0435d548c259f7f48c100adaf9eb4ac9dec3168e08f0caab036354247911",
+    "sha": "4de0abdce"
   },
   "src/RimMandrake/RimProperty/Source/RecognizabilityUtility.cs": {
     "cleanCount": 1,
@@ -6909,6 +6921,12 @@
     "hash": "2daf0f347ed51f5f44acb63f3f6e48b84edb83a29d2b27d2afbb6ea279f9d84f",
     "sha": "4311a368"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDroidworksTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "c1b694984c62e9f0e5c4372fb132ba12ecc7149e7073e9746261810d61e507dd",
+    "sha": "4de0abdce"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchEventTools.cs": {
     "cleanCount": 3,
     "date": "2026-09-11",
@@ -6982,10 +7000,10 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchJobTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "3831ec5c028bda4fb0d85e534f9c5cb19044017cbf065a0b56797348214abeeb",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "c89c0df14528b46a1df1535e5efa26045dcc274dd3eed331efb69d6e23d3b808",
+    "sha": "4de0abdce"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchKcsgTools.cs": {
     "cleanCount": 1,
@@ -11691,6 +11709,12 @@
     "hash": "4a6b8bb35858688dc39225583fecf8942500cbe275e46d2d1c6f10a5b2fc4627",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/HediffDefs/HediffDefs_Moornak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "260d1364c49206ef2d480f8d4ec5528461b30e74f142070c4302a1fb183bdf57",
+    "sha": "4de0abdce"
+  },
   "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -11702,6 +11726,12 @@
     "date": "2026-09-09",
     "hash": "4cfbcb13757688559b890aaa607364e36ed9d666427e5c3659dca00b3fb18704",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Moornak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "c71a194e3937b48a4bff0536963a483421bffccb14318bc9c765034db171a6d8",
+    "sha": "4de0abdce"
   },
   "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Onnik.xml": {
     "cleanCount": 1,
@@ -11727,11 +11757,23 @@
     "hash": "ae307b09049b9bdd964336650bd129af0612d2b7bd3d8a4e5adb19a3b2c742a7",
     "sha": "ab37da311"
   },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Moornak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "e6ab03136de35610f1ef54ab253214963f9ff4deaf7599f4cf473175aa1d393d",
+    "sha": "4de0abdce"
+  },
   "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Onnik.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "0c07be20346f9ea2374004deb0bafa2f368a9ab623eedf9f62e67dc7829c6e52",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/ThoughtDefs/ThoughtDefs_Moornak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "2d76f6bb794719cdf8077d8651e6fd139a947cf706a311216829f6d4ec29909f",
+    "sha": "4de0abdce"
   },
   "src/RimStarWars/SWBestiary/Defs/PawnRenderTreeDefs/RSW_MlieWaveC_RenderTree.xml": {
     "cleanCount": 2,
@@ -12105,11 +12147,17 @@
     "hash": "2b5ad91e09dbe0d90ff8a4c71dcd68e63b999047606881c2171d9756c1e45b0f",
     "sha": "4b5c50715"
   },
-  "src/RimStarWars/SWBestiary/Source/Livestock/RSW_LivestockSettings.cs": {
+  "src/RimStarWars/SWBestiary/Source/Livestock/CompMoornakGrief.cs": {
     "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "30de0f8f171ce0c1efd4fc748fe8337e8435ad5915433a6beaac296e1e8612a3",
-    "sha": "c4858101e"
+    "date": "2026-09-18",
+    "hash": "a82f63148a9c4179be1a2fb26a330fc5039e72808d43fa2ddc368830c35bf5fe",
+    "sha": "4de0abdce"
+  },
+  "src/RimStarWars/SWBestiary/Source/Livestock/RSW_LivestockSettings.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "fd00dd33c2478ce599bd8e6a84e69c93c8ccc904573c8b0a4dbbf60c5524ed35",
+    "sha": "4de0abdce"
   },
   "src/RimStarWars/SWBestiary/art/Livestock/gen_livestock_mockups.py": {
     "cleanCount": 2,
@@ -16917,6 +16965,12 @@
     "hash": "763ed4f262dbf9a04ef8351fc489fb0f29702afbd217e196fbb9526b0cc8295f",
     "sha": "212775b67"
   },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_WastelandBrineScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "a2361fd1ea0cb8c7a3238919e689d6e03b02576a4f92732fd7b52c2c7eef2a52",
+    "sha": "2ed696dd2"
+  },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -17000,6 +17054,12 @@
     "date": "2026-09-17",
     "hash": "20900ef4e58ef0d8dc50b56c624bbb994d6e34992ce87a1d02e4e5a2c1edd3a2",
     "sha": "fa8ec9d9a"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_WastelandBrineWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "6e7e20454654739930b6864c2ae73876ebecbdbb259df66694a3686cf551670f",
+    "sha": "4de0abdce"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml": {
     "cleanCount": 1,
@@ -17091,6 +17151,12 @@
     "hash": "ef7e285fcb92445ada773cf20430cfea1c78eb912e7311beec9627e7515a865e",
     "sha": "b62604fad"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WastelandBrineDeposits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "590518a67926a7e46a4b15c51a84a676cf04f6149ef8b6b31e43f084b45bbf62",
+    "sha": "2ed696dd2"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WebworkStructures.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -17120,6 +17186,12 @@
     "date": "2026-09-13",
     "hash": "9f94d0cacb0307afc832d036789e8ffeb490c34abfaa5365b85d687ee9f9142f",
     "sha": "b62604fad"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WastelandBrine_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "83f70262b1f78dd33e59748c7097483b28fd8ae4e73135fe2b6ede74c9e9513f",
+    "sha": "4de0abdce"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml": {
     "cleanCount": 1,
@@ -17714,6 +17786,12 @@
     "date": "2026-09-18",
     "hash": "7e5a72f798f1eaa8536823ff26cfee12ae78a472fca6624717fa4835653294f6",
     "sha": "48b321e95"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RUT_WastelandBrineScatter_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "2805bb93dfab364b78f7f68cc7da2fa87f8f25ba7357940bd1985f0b9bba03a9",
+    "sha": "2ed696dd2"
   },
   "src/RimUtinni/UtinniPatches/Patches/RazorjackIdentity_Sytheclaw.xml": {
     "cleanCount": 1,
