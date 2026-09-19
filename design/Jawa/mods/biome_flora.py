@@ -72,88 +72,88 @@ DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters
 #   0.2-0.5  punctuation                       <0.2     trees and set pieces
 FAMILIES = {
  'A. dayside desert, badlands and the river jungles': {
-  'Desert': {   # 3,932 tiles · 5 plants
+  'RUT_Desert': {   # 2,390 tiles · 5 plants
     'AB_HardyGrass': 0.6, 'Plant_Chakroot_Wild': 0.3, 'Plant_HubbaGourd_Wild': 0.2,
     'AB_Aaklac': 0.12, 'AB_DessertTree': 0.06},
-  'AB_PropaneLakes': {   # 2,531 tiles · 4 plants
+  # 🔴 KNOWN GAP, not fixed here (BIOME_FLORA_GENERATOR_REPAIR_1 is scoped to this file and
+  # the generated patch only): the_propane_lakes.json's roster still keys its shore flora to
+  # `AB_PropaneLakes`, but the LIVE tile map (world/ASHKARR_WORLDMAP_tiles.csv) now carries
+  # those same 2,531 tiles under `RUT_Umbra` — same label lineage ("the Propane Lakes" ->
+  # "Umbra"), same plantDensity 0.75, same wildPlants count. AB_PropaneLakes is no longer on
+  # the map; RUT_Umbra has no roster naming it. `--check` reports this pair and only this
+  # pair as a residual, explained problem. Fixing it means editing the roster JSON (out of
+  # this item's scope) — file a follow-up rather than guessing the rename here.
+  'AB_PropaneLakes': {   # 0 tiles now (was 2,531 pre-rename) · 4 plants
     'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
     'AB_RimeNodules': 0.4},
-  'ZBiome_Badlands': {   # 985 tiles · 6 plants
+  'RUT_CrackedLands': {   # 970 tiles · 6 plants
     'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'BMT_Plant_TwistingThorngrass': 0.5,
     'BMT_Plant_TwistingThornweed': 0.4, 'BMT_Plant_TreeTwistingThornwood': 0.2,
     'AB_GargantuanLithops': 0.15},
-  'PoisonForest': {   # 557 tiles · 9 plants
-    'BMT_Plant_TreeTwistingThornwood': 0.6, 'AB_CrystalFlower': 0.5,
-    'BMT_Plant_TreeMartyr': 0.5, 'AB_BloodBouquet': 0.4, 'AB_CrystalHorn': 0.4,
-    'AB_RavenNettle': 0.4, 'AB_GiantAgariTox': 0.3, 'AB_RedBugloss': 0.3,
+  'RUT_PoisonForest': {   # 546 tiles · 9 plants
+    'BMT_Plant_TreeTwistingThornwood': 0.6, 'BMT_Plant_TreeMartyr': 0.5,
+    'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'AB_BloodBouquet': 0.4,
+    'AB_RavenNettle': 0.4, 'AB_RedBugloss': 0.3, 'AB_GiantAgariTox': 0.3,
     'AB_KeeningCordax': 0.2},
-  'BiomeCypreJungle': {   # 235 tiles · 11 plants
+  'RUT_Greentide': {   # 235 tiles · 11 plants
     'AB_JungleTree': 3.0, 'Plant_HydenockTree_Wild': 1.5, 'Plant_JoganTree_Wild': 1.2,
-    'BMT_GiantLeaf': 1.0, 'Plant_MujaFruit_Wild': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
-    'AB_SugarFamewort': 0.6, 'Plant_FelucianGlowspore_Wild': 0.6,
-    'Plant_Bubblespore_Wild': 0.5, 'Plant_Chakroot_Wild': 0.5, 'Plant_TookeTrap_Wild': 0.5},
-  'ZBiome_Grasslands': {   # 222 tiles · 3 plants
-    'Plant_YellowGrass': 2.4, 'Plant_YellowTallGrass': 2.0, 'AB_HardyGrass': 0.4},
-  'AB_OcularForest': {   # 179 tiles · 10 plants
-    'AB_AlienGrass': 1.0, 'AB_AlienTree': 1.0, 'AB_EyeGrass': 0.6, 'AB_RedLeaves': 0.6,
-    'AB_HalfAlienTree': 0.5, 'AB_RedPlantsTall': 0.5, 'AB_GlobularPlant': 0.4,
-    'AB_TentacularPlant': 0.4, 'AB_BloodBouquet': 0.3, 'AB_AlienTree_Polluted': 0.15},
-  'AB_FeraliskInfestedJungle': {   # 161 tiles · 7 plants
+    'Plant_MujaFruit_Wild': 1.0, 'BMT_GiantLeaf': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
+    'Plant_FelucianGlowspore_Wild': 0.6, 'AB_SugarFamewort': 0.6,
+    'Plant_TookeTrap_Wild': 0.5, 'Plant_Bubblespore_Wild': 0.5, 'Plant_Chakroot_Wild': 0.5},
+  'ZBiome_Grasslands': {   # 222 tiles · 1 plant — roster redesigned since 2026-09-09,
+                           # was a 3-plant grass mix, now a single grass at higher weight
+    'RM_FE_Plant_Quickgrass': 4.0},
+  'RUT_Contagion': {   # 179 tiles · 10 plants
+    'AB_AlienTree': 1.0, 'AB_AlienGrass': 1.0, 'AB_EyeGrass': 0.6, 'AB_RedLeaves': 0.6,
+    'AB_RedPlantsTall': 0.5, 'AB_HalfAlienTree': 0.5, 'AB_TentacularPlant': 0.4,
+    'AB_GlobularPlant': 0.4, 'AB_BloodBouquet': 0.3, 'AB_AlienTree_Polluted': 0.15},
+  'RUT_Webwork': {   # 161 tiles · 7 plants
     'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
     'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
     'AB_Aaklac': 0.05},
-  'COMIGO_GreaterSwamp_Tropical': {   # 43 tiles · 7 plants
+  'RUT_FeverWood': {   # 43 tiles · 7 plants
     'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2, 'BMT_GiantLeaf': 0.8,
     'Plant_JoganTree_Wild': 0.6, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
     'Plant_Chakroot_Wild': 0.4},
  },
 
  'B. the mycoid and fire massif': {
-  'ExtremeDesert': {   # 3,172 tiles · 2 plants
+  'RUT_ExtremeDesert': {   # 3,969 tiles · 2 plants
     'Plant_Bloddle': 0.05, 'AB_GiantStikehr': 0.04},
-  'AB_MycoticJungle': {   # 2,258 tiles · 32 plants
+  'RUT_TheRot': {   # 2,204 tiles · 32 plants — was AB_MycoticJungle; the RUT_-prefixed
+                     # fungi below also renamed to BMT_ (e.g. RUT_Dewshrooms -> BMT_Dewshrooms)
     'AB_Bryolux': 10, 'AB_Glowstool': 3, 'AB_Agarilux': 2, 'AB_GiantAgarilux': 2,
     'AB_GlowingAgarilux': 1, 'AB_LilacBeacon': 0.5, 'AB_WitchesOyster': 0.5,
-    'RUT_Dewshrooms': 0.5, 'RUT_FruitingBodies': 0.5, 'RUT_Nuitae': 0.5,
-    'RUT_Wrinklecap': 0.5, 'RUT_Arpeau': 0.4, 'RUT_Nogtyl': 0.4,
-    'AB_RecurvedStropharia': 0.3, 'RUT_FlakespireFungus': 0.3, 'RUT_Pusmelon': 0.3,
-    'RUT_RustPuff': 0.3, 'RUT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
-    'AB_SlimyPholiota': 0.2, 'RUT_BleedingTooth': 0.2, 'RUT_Brightbell': 0.2,
-    'RUT_CrimsonCap': 0.2, 'RUT_GreyLady': 0.2, 'RUT_Shinecap': 0.2,
-    'RUT_VioletWimple': 0.2, 'RUT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
-    'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1, 'Boomshroom': 0.05,
+    'BMT_Dewshrooms': 0.5, 'BMT_FruitingBodies': 0.5, 'BMT_Nuitae': 0.5,
+    'BMT_Wrinklecap': 0.5, 'BMT_Arpeau': 0.4, 'BMT_Nogtyl': 0.4,
+    'AB_RecurvedStropharia': 0.3, 'BMT_FlakespireFungus': 0.3, 'BMT_Pusmelon': 0.3,
+    'BMT_RustPuff': 0.3, 'BMT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
+    'AB_SlimyPholiota': 0.2, 'BMT_BleedingTooth': 0.2, 'BMT_Brightbells': 0.2,
+    'BMT_CrimsonCap': 0.2, 'BMT_GreyLady': 0.2, 'BMT_Shinecap': 0.2,
+    'BMT_VioletWimple': 0.2, 'BMT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
+    'AB_DribblingCap': 0.1, 'BMT_Skulltop': 0.1, 'Boomshroom': 0.05,
     'AB_AgariluxPrime': 0.01},
-  'AB_RockyCrags': {   # 1,170 tiles · 6 plants
+  'RUT_ForsakenCrags': {   # 1,135 tiles · 6 plants
     'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
     'AB_WildRadagast': 0.5, 'AB_GiantStikehr': 0.3, 'AB_GiantSeptimum': 0.2},
-  'ZBiome_DesertOasis': {   # 223 tiles · 4 plants
-    'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'RUT_Dewshrooms': 0.4,
+  'RUT_WeepingStones': {   # 223 tiles · 4 plants
+    'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'BMT_Dewshrooms': 0.4,
     'Plant_Ambrosia': 0.12},
-  'AB_GelatinousSuperorganism': {   # 96 tiles · 6 plants
+  'RUT_Slime': {   # 96 tiles · 6 plants
     'AB_TallSlimyGrass': 1.0, 'AB_SlimyFern': 0.5, 'AB_SlimyTree': 0.5,
     'AB_Slimecasia': 0.4, 'AB_SlimyPholiota': 0.4, 'AB_LargeSlimyTree': 0.3},
-  'AB_PyroclasticConflagration': {   # 31 tiles · 13 plants
+  'RUT_TheForge': {   # 44 tiles · 13 plants — AB_PyroclasticConflagration (31),
+                       # LavaField (8) and Volcano (5) were consolidated into this single
+                       # live biome (31+8+5=44 tiles matches exactly); one roster now, not three
     'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
-    'AG_Gamma': 0.5, 'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
-    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
-    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
-    'BMT_HeatsinkFungus': 0.2},
-  'LavaField': {   # 8 tiles · 13 plants
-    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
-    'AG_Gamma': 0.5, 'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
-    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
-    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
-    'BMT_HeatsinkFungus': 0.2},
-  'Volcano': {   # 5 tiles · 13 plants
-    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
-    'AG_Gamma': 0.5, 'RUT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+    'AG_Gamma': 0.5, 'BMT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
     'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
     'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
     'BMT_HeatsinkFungus': 0.2},
  },
 
  'C. contamination': {
-  'Wasteland': {   # 1,126 tiles · 25 plants
+  'RUT_Wasteland': {   # 1,853 tiles · 25 plants
     'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8, 'AB_ToxiGrass': 0.6,
     'BMT_Plant_GutterPlantain': 0.5, 'BMT_Plant_ToxicIvy': 0.5,
     'BMT_Plant_TwistedDandelion': 0.5, 'PoisonPlantTallGrass': 0.4, 'Plant_GrayGrass': 0.35,
@@ -164,16 +164,16 @@ FAMILIES = {
     'BMT_Plant_EclipsusFlower': 0.15, 'BMT_Plant_EclipsusLeaves': 0.15,
     'BMT_RainbowTongue': 0.15, 'AB_ToxiBulb': 0.1, 'Plant_TreePolux': 0.1,
     'AB_GiantToxicFlower': 0.08, 'VRE_PoluxBush': 0.08},
-  'AB_MiasmicMangrove': {   # 93 tiles · 7 plants
+  'RUT_Miasma': {   # 93 tiles · 7 plants
     'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6,
     'BMT_Plant_TreeTanglerootMangrove': 1.5, 'BMT_Plant_SewerReed': 0.8,
     'BMT_RainbowTongue': 0.6, 'BMT_Plant_Snaketails': 0.5},
-  'Scarlands': {   # 90 tiles · 1 plants
+  'RUT_Scarlands': {   # 90 tiles · 1 plants
     'BMT_Plant_ScorchedStars': 0.25},
  },
 
  'D. the shrub belt': {
-  'AridShrubland': {   # 665 tiles · 10 plants
+  'RUT_AridShrubland': {   # 628 tiles · 10 plants
     'Plant_ShrubLow': 0.9, 'RG_Plant_AridGrass': 0.5, 'Plant_Brambles': 0.3,
     'Plant_Bush': 0.3, 'Plant_Ripthorn': 0.3, 'Plant_HealrootWild': 0.25,
     'Plant_Nysyllin_Wild': 0.22, 'RG_Plant_CreepStern': 0.2, 'RG_Plant_CrimsonCushion': 0.2,
@@ -181,7 +181,7 @@ FAMILIES = {
  },
 
  'E. the tar': {
-  'AB_TarPits': {   # 42 tiles · 1 plants
+  'RUT_Sump': {   # 41 tiles · 1 plants
     'AB_TarPuddle': 0.6},
  },
 
@@ -210,7 +210,9 @@ FAMILIES = {
 #                      or photosynthetic tissue of any kind, no soil, nothing that reads
 #                      as a plant.
 #   RUT_BlueDesert     the_blue_desert.json lands zero flora rows (§6 ban 1).
-#   AB_MechanoidIntrusion  the_rust_cathedral.json lands zero flora rows.
+#   RUT_RustCathedral  the_rust_cathedral.json lands zero flora rows. (Renamed from
+#                      AB_MechanoidIntrusion — both defs still exist in the dump with the
+#                      same label/description, but only RUT_RustCathedral is on the live map.)
 #   RUT_TwilightSea / RUT_GreySea / RUT_TheScald  the sea rosters name mats and giants,
 #                      no wildPlants; the sea-bottom flora rides the deferred diving mods.
 #   RUT_PropaneLake    the_propane_lakes.json `flora_def_exclusions`: the roster's four
@@ -219,7 +221,7 @@ FAMILIES = {
 #                      Its life is the ruled propane-native exotics, owed as new defs.
 # Ocean/Lake/SeaIce/IceSheet are not painted on Ash'karr at all and are kept only so this
 # set still answers for a world that carries them.
-PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'AB_MechanoidIntrusion',
+PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'RUT_RustCathedral',
              'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald', 'RUT_PropaneLake',
              'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
@@ -231,13 +233,13 @@ PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'AB_MechanoidIntrusion',
 # is a named exception list, never a sweep.
 DENSITY = {
   # biome: (new, shipped, why)
-  'Wasteland': (0.12, 0.0099,
+  'RUT_Wasteland': (0.12, 0.0099,
      "1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - "
      "toxigrass, gutter plantain, twisted dandelion, scorched stars - that exists to say "
      "THIS GROUND IS POISONED. At 0.0099 it says nothing. Poisoned ground reads more "
      "strongly with sick plants on it than with nothing. 12x up, still visibly barren."),
 }
-# ⛔ `ExtremeDesert` stays at its shipped 0.008 and that is a RULING, not an oversight.
+# ⛔ `RUT_ExtremeDesert` stays at its shipped 0.008 and that is a RULING, not an oversight.
 # It is the lethal core of the dayside, median 48.2 C, and its four succulents are MEANT to
 # be scarce. Bare ground there is the honest reading of the place; a player crossing 3,214
 # tiles of genuinely dead sand is experiencing the planet, not a defect.
