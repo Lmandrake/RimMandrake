@@ -189,10 +189,20 @@ one-way commitment of the source's stock — fill it back in before a raid that 
 get most of your liquid back. That directly softens the "liquid spent is liquid gone" tension of
 loop step 3, which is a balance consequence worth him knowing about.
 
-**Consequences to build:** a fill-in designator, job and work giver mirroring the dig chain; a
-`TryCredit`-shaped displacement walk (§8 already has the credit primitive); and an overflow report so
-destroyed liquid is disclosed rather than silent — a message or an inspect line, since silent loss in
-a conservation-of-mass system reads as a bug.
+**Consequences — BUILT** (`CANAL_FILL_IN_DISPLACEMENT_1`). `Designator_FillInCanal` /
+`RM_FillInCanalJob` / `WorkGiver_FillInCanal` mirror the dig chain; `RM_MapComponent_Excavation.FillIn`
+sheds `RM_StockMath.DisplacedLevels(D, F)` and hands it to a two-phase `Displace` walk — phase 1
+credits channel cells below their brim, nearest first; phase 2 offers what is still homeless to the
+source cells the walk touched, nearest first, through `RM_LiquidStock.CreditLevels` (whole levels,
+converted at `volumePerTile`, credited via `TryCredit`). What finds no room is destroyed and
+**disclosed** by `ReportOverflow` — a player-visible message carrying the amount and the map's running
+total — including when the mechanic is switched off in Mod Settings, because the exception must not
+become silent just because the feature did.
+
+🔴 **The channel is served before the body, and that is load-bearing, not a preference.** A single
+mixed breadth-first walk lets a pond one cell away swallow the whole displacement while the canal
+beyond it stays exactly as it was: mass conserved, and consequence 3 above — the visible one, the one
+the owner named — gone.
 
 ⚠️ Filling in must also restore the *original* terrain, not leave generic soil. The channel already
 knows how to give the floor back on drain (`SetTempTerrain` + `QueueRemoveTerrain`); a fill-in is the

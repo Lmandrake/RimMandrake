@@ -247,6 +247,45 @@ namespace RimMandrake.FlowWorks
 			return taken;
 		}
 
+		/// <summary>Give back whole fill LEVELS — the displacement walk's half of
+		/// <see cref="TryCredit"/> (§5, "Filling a canal back in"). Returns the
+		/// number of levels accepted, which the caller subtracts from what it
+		/// still has to place.
+		///
+		/// 🔑 WHY THIS EXISTS INSTEAD OF CALLING TryCredit DIRECTLY. The grids
+		/// count levels and the stock counts fill-units, and one level is
+		/// <paramref name="unitPerLevel"/> units — the very quantity the pulse
+		/// debits per level poured out of a source. A walk that handed its level
+		/// count to TryCredit would under-credit every liquid whose volumePerTile
+		/// is not 1, and would then floor the float it got back, crediting the
+		/// body a fraction of a level that no cell ever gave up. Deciding the
+		/// whole-level count FIRST and crediting exactly that many levels' worth
+		/// keeps both ledgers equal to the unit. The arithmetic is
+		/// <see cref="RM_StockMath.CreditableLevels"/>; the credit itself still
+		/// routes through TryCredit, so there is one place stock rises.</summary>
+		public int CreditLevels(Map map, IntVec3 c, int levels, float unitPerLevel, RM_MapComponent_Excavation owner)
+		{
+			if (levels <= 0)
+			{
+				return 0;
+			}
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			if (body == null)
+			{
+				return 0;
+			}
+			int take = RM_StockMath.CreditableLevels(
+				body.limitless, body.stock, body.capacity, levels, unitPerLevel);
+			if (take <= 0)
+			{
+				return 0;
+			}
+			// By construction TryCredit accepts this whole amount, so the level
+			// count above is what actually landed.
+			TryCredit(map, c, take * unitPerLevel, owner);
+			return take;
+		}
+
 		// ── recession and refill, once per pulse ──────────────────────────
 
 		public void Pulse(Map map, RM_MapComponent_Excavation owner, int pulseTicks)
