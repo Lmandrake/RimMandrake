@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T16:42:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T16:55:17Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -864,6 +864,15 @@ kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
+## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
+
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1511,16 +1520,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/OFFBIOME_SHEET_RERENDERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/OFFBIOME_SHEET_RERENDERS_1.md
 
 ## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
 state:    proposed
