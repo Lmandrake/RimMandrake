@@ -603,6 +603,62 @@ is approved; it is the anchor, and it costs one 80-second call per facing.
 so a batch of four is 52 wasted minutes. If you try the two-image form again,
 give it a **120 s** timeout, not 780.
 
+## 🔴 Flying creatures need a DIFFERENT asset shape — not a wing layer
+
+**A flier's animation is a whole-body directional flip-book, never a separate
+wing texture jiggled by a render-tree node.** Owner ruling 2026-09-19, filed
+after `FIREHAWK_FLIGHT_BEHAVIOR_1` shipped a custom `BodyDef` wing part +
+`PawnRenderNodeProperties_Spastic` node and it looked broken live: standing
+still with no visible flap going sideways, and one wing missing (the other
+misaligned) going north. That is not a tuning miss — a Spastic node idle-jiggles
+ONE static texture; it was never built to express a per-facing "wings up" vs
+"wings down" pose, and nothing keeps a single wing texture registered across
+four facings. Full account and the CLAUDE.md correction: search this repo's
+CLAUDE.md for "If it flies in the fiction".
+
+**The real mechanism is `PawnKindDef.flyingAnimationFramePathPrefix`** — MEASURED
+against the installed game by extracting `Chicken_Flying_*` from
+`resources.assets` (UnityPy) and diffing frame 1 against frame 5:
+
+```xml
+<flyingAnimationFramePathPrefix>Things/Pawn/Animal/Chicken/Chicken_Flying_</flyingAnimationFramePathPrefix>
+<flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+<flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+<flyingAnimationDrawSize>2.4</flyingAnimationDrawSize>
+<flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+<flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+```
+
+**What to generate, per commissioned flier:** `frameCount` full-body poses (8 is
+vanilla's number for Chicken/Duck/Goose/Sparrow; Locust ships 5), each one
+covering the WHOLE animal wings-and-all in a different point of the wingbeat
+cycle — frame 1 tucked/streamlined, a mid-cycle frame fully spread, same idea
+as a walk cycle but for flight — **times three directions**, named
+`<prefix><N>_<direction>` for N = 1..frameCount and direction in
+`north`/`east`/`south` (no separate west — mirrors east, same convention as
+every other RimWorld facing set). That is `frameCount × 3` individual images,
+not `frameCount` images reused across facings and not a 2×2-style sheet (the
+per-facing generation guidance above applies here too, doubled by frame count).
+Gendered species (vanilla Quail, Peafowl) add a second full set under
+`flyingAnimationFramePathPrefixFemale`.
+
+**Before generating anything**, read the reference doc a fresh implementation
+pass should start from: `~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md`
+(owner, 2026-09-19) if present, or re-derive the same facts from the installed
+game the way this section did — Sparrow (Odyssey) is the cleanest from-scratch
+template, Chicken/Duck/Goose (Core) are the retrofit references for turning an
+existing grounded animal into a flier. `flyingAnimationDrawSizeIsMultiplier`
+scales the flying sprite relative to the grounded one — most vanilla fliers
+read bigger mid-flight, and that is timing/scale tuning, not art.
+
+**Validation plan for a flier specifically** (on top of the standard one below):
+verify the cycle actually alternates pose (not a static image, per the
+worked-example lie above), verify all three facings resolve (a missing
+`_north_3` silently drops to the bare-path fallback — see "How sprite checks
+lie"), and verify the grounded graphic returns cleanly on landing. A screenshot
+of the animal standing still proves nothing about whether it flies; step ticks
+until it actually takes off and look then.
+
 ## Before it ships
 
 Deploying is a separate claim from writing. The game reads the Steam Mods
