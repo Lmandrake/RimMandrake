@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T19:36:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T19:38:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1593,13 +1593,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
-
-## EMBERSCYTHE_PYRELANDS_REHOME_1 Move RUT_Emberscythe out of RotSporeKit into a Pyrelands mod — owner ruled MOVE, not cut (2026-09-19 question card)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EMBERSCYTHE_PYRELANDS_REHOME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/EMBERSCYTHE_PYRELANDS_REHOME_1.md

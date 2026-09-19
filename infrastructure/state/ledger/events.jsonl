@@ -9927,3 +9927,5 @@
 {"seat":"BENCH","event":"close","id":"PYRELANDS_FIRE_CADENCE_1","sha":"58a08013f","reason":"sweep: PyrelandsFireFront.cs fire clock built, wired and deployed in sync","ts":"2026-09-19T19:36:39Z"}
 {"seat":"BENCH","event":"close","id":"PYRELANDS_FLORA_ART_IDENTITY_1","sha":"51e0cebc1","reason":"sweep: 11 sprites installed under Pyrelands/Textures/Things/Plant, deployed in sync","ts":"2026-09-19T19:36:40Z"}
 {"seat":"BENCH","event":"drop","id":"DESERT_TRIBES_FIRE_HARVEST_1","reason":"sweep-moot: the mechanism it asks to DESIGN was already built 2 days before it was filed — PyrelandsFireRite.cs at 1e73ce51b resolves WHO (Deep Tribes off PyrelandsFactions) and hostility posture in code. Re-tuning cadence/map scope is a tuning item on a live mechanism, not this design item.","ts":"2026-09-19T19:36:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EMBERSCYTHE_PYRELANDS_REHOME_1","ts":"2026-09-19T19:38:28Z"}
+{"seat":"FOUNDRY","event":"close","id":"EMBERSCYTHE_PYRELANDS_REHOME_1","sha":"b88357f6ecf8ebe46358702a3fbbaffdb60efb09","ts":"2026-09-19T19:38:29Z"}
