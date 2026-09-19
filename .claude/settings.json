@@ -41,6 +41,12 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_canon_contradiction.py\"",
             "timeout": 60,
             "statusMessage": "Checking design docs against canon"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_forged_owner_said.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking --owner-said against the transcript"
           }
         ]
       },
