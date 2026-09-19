@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T02:00:23Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "twitchingpuffer_harvested_v2",
+  "priority": 40,
+  "prompt": "The SAME twitching-puffer fungus as the grown stage, seen after harvest: a swollen grey-blue fungal BALL (a round sphere-like bladder with pale spore-veins under the skin) sitting on a short stubby foot, now sagging and half-deflated with soft creases, and its ring of tentacles around the upper half CUT DOWN TO SHORT STUBS \u2014 a crown of a dozen severed finger-stumps, each clearly visible. Not a cocoon, not a dome, not a wrapped or bandaged shape, not a pod: a deflated ball with cut tentacle stubs. Nothing broken open \u2014 the ball never bursts. No face, no eyes, no mouth. Lantern Deeps biome art (the_lantern_deeps.md \u00a79, owner ruling: \"a blue lantern burning under the mountain, and a dead miner's suit walking toward it\"). Palette: blue-on-black, fungal grey and green, lanternstone blue as the only ambient light. Silhouette language: facets, geodes, lattices \u2014 angular crystal forms, never rounded gems \u2014 EXCEPT this subject: the puffer ball is a rounded organic form, the one deliberate exception; keep the crystal language in the background spore-veins only. Render blue (tint_organics.py shifts it violet afterwards); do not prompt for purple. Painterly vanilla-RimWorld art style.",
+  "reference": null,
+  "rimflow_item_id": "DEEP_FLORA_RENAME_1",
+  "style_notes": "ART_JOBS.md job 18c: texPath RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested, target a.png, variant a (leaflessGraphicPath). v2: v1 passed the facts gate but rendered a smooth wrapped cocoon with no ball and no tentacle stubs (content miss, Transient/deep_flora_puffer_strip_2026-09-18.png third tile). DEEP_FLORA_RENAME_1; blue-on-black sheet."
+}

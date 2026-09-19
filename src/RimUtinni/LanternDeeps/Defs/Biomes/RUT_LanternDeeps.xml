@@ -34,7 +34,7 @@
     <settlementSelectionWeight>0</settlementSelectionWeight>
     <movementDifficulty>0.5</movementDifficulty>
     <forageability>0.5</forageability>
-    <foragedFood>RUT_RawDulcis</foragedFood>
+    <foragedFood>RUT_PufferTendrils</foragedFood>
     <wildPlantRegrowDays>5</wildPlantRegrowDays>
     <disableShadows>true</disableShadows>
     <disableSkyLighting>false</disableSkyLighting>
@@ -113,24 +113,24 @@
     <wildPlants>
       <!-- ground cover -->
       <RUT_DeepMycelium>5.0</RUT_DeepMycelium>
-      <RUT_Gleamtip>1.0</RUT_Gleamtip>
+      <RUT_ZivvitTaper>1.0</RUT_ZivvitTaper>
 
       <!-- mid sized -->
-      <RUT_Fungusfern>0.5</RUT_Fungusfern>
-      <RUT_CrystaltipBrambles>0.3</RUT_CrystaltipBrambles>
-      <RUT_YumBulbs>0.3</RUT_YumBulbs>
-      <RUT_DeepDulcisPlant>0.02</RUT_DeepDulcisPlant>
+      <RUT_QuorrFern>0.5</RUT_QuorrFern>
+      <RUT_OsskBramble>0.3</RUT_OsskBramble>
+      <RUT_BrellikBulb>0.3</RUT_BrellikBulb>
+      <RUT_TwitchingPuffer>0.02</RUT_TwitchingPuffer>
 
       <!-- trees -->
-      <RUT_Crystalcap>0.5</RUT_Crystalcap>
+      <RUT_ThrakkCap>0.5</RUT_ThrakkCap>
 
       <!-- other harvestable -->
-      <RUT_DeepGreyLady>0.02</RUT_DeepGreyLady>
+      <RUT_PrennaLace>0.02</RUT_PrennaLace>
 
       <!-- hydrophytes -->
-      <RUT_DeepArpeau>0.05</RUT_DeepArpeau>
-      <RUT_LuminousSpout>0.2</RUT_LuminousSpout>
-      <RUT_DeepNuitae>0.4</RUT_DeepNuitae>
+      <RUT_VellokReed>0.05</RUT_VellokReed>
+      <RUT_KuvraSpout>0.2</RUT_KuvraSpout>
+      <RUT_NurrikGill>0.4</RUT_NurrikGill>
 
       <!-- special: the sowable lanternstone line -->
       <RUT_Lanternstone_Sowable>0.1</RUT_Lanternstone_Sowable>

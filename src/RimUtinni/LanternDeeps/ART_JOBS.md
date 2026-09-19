@@ -66,7 +66,7 @@ a geode base, never a rounded gem.
 |---|---|---|---|---|
 | 10 | `RUT_LanternDeeps/Things/Item/Lanternstone` | 256×256 | 3 (`A`,`B`,`C`) | `Graphic_StackCount` set for the raw material: cut blue blocks, increasingly large piles. Faintly self-lit. |
 | 11 | `RUT_LanternDeeps/Things/Chunks/LanternstoneChunk` | 256×256 | 4 (`a`–`d`) | Rubble chunk of blue crystal in black matrix, four silhouettes. Should read as a chunk, not a gem. |
-| 12 | `RUT_LanternDeeps/Things/Item/Crops/Dulcis` | 256×256 | 1 | Harvested dulcis mushrooms in a small heap. Pale cream caps — one of the few non-blue things down here, deliberately. |
+| 12 | `RUT_LanternDeeps/Things/Item/Crops/PufferTendrils` | 256×256 | 1 | Harvested crop item for `RUT_PufferTendrils`: a small heap of cut fungal tentacles, finger-length, grey-blue, a few curled as if still moving. One of the few non-crystal things down here; must read as food at inventory scale. Job `twitchingpuffer_tendrils_v1` (DEEP_FLORA_RENAME_1). |
 
 ## 6. Cave flora — 11 jobs
 
@@ -78,19 +78,19 @@ faceted crystal art.
 | # | texPath | canvas | files | subject |
 |---|---|---|---|---|
 | 13 | `RUT_LanternDeeps/Things/Plant/Mycelium` | 512×512 | 3 (`A`,`B`,`C`) | Ground-cover mat of pale filaments, `maxMeshCount 4`, `visualSizeRange 0.2~0.4` — mostly texture, almost no silhouette. Grey-green, very slight bloom. |
-| 14 | `RUT_LanternDeeps/Things/Plant/Gleamtip` | 128×128 | 2 (`A`,`B`) | Narrow mushroom with a long glowing cap tip. `drawSize 2.0` at a small canvas — keep it simple and bright at the tip only. |
-| 15 | `RUT_LanternDeeps/Things/Plant/Fungusfern` | 128×128 | 4 (`A`–`D`) | Bush-sized fern/mushroom symbiosis: fern fronds rising from a fungal base. Grey-green, no glow. |
-| 16 | `RUT_LanternDeeps/Things/Plant/CrystaltipBrambles` | 128×128 | 2 (`A`,`B`) | Tangled thorny shoots with **crystalline tips** — leaves grey-green, thorn tips blue and faceted. The one place flora and crystal meet. |
-| 17 | `RUT_LanternDeeps/Things/Plant/YumBulbs` | 128×128 | 2 (`A`,`B`) | Squat bulbs with brightly glowing tips. 🔑 Glow colour here is **warm amber** `(252,187,113)`, not blue — deliberate contrast against the ambient; keep it. |
-| 18 | `RUT_LanternDeeps/Things/Plant/Dulcis/DulcisGrown` | 256×256 | 1 (`a`) | Cluster of sweet cream-capped mushrooms, ready to harvest. |
-| 18b | `RUT_LanternDeeps/Things/Plant/Dulcis/DulcisImmature` | 256×256 | 1 (`a`) | Same cluster, small buttons. |
-| 18c | `RUT_LanternDeeps/Things/Plant/Dulcis/DulcisHarvested` | 256×256 | 1 (`a`) | Same cluster, caps taken, stalks left (`leaflessGraphicPath`). |
-| 19 | `RUT_LanternDeeps/Things/Plant/Crystalcap` | 256×256 | 2 (`A`,`B`) | Mushroom **tree** with a crystal-plated cap. Woody trunk, cap faceted and faintly blue. Must read at tree scale. |
-| 20 | `RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyGrown` | 256×256 | 3 (`A`,`B`,`C`) | Grey fungus trailing cloth-like lace from under the cap — the lace is the harvest, so it must be the readable feature. |
-| 20b | `RUT_LanternDeeps/Things/Plant/GreyLady/GreyLadyImmature` | 256×256 | 1 (`a`) | Same, cap closed, no lace yet. |
-| 21 | `RUT_LanternDeeps/Things/Plant/Arpeau` | 256×256 | 2 (`A`,`B`) | Tall aquatic fungus, tree-category, `visualSizeRange 1.5~2.5`. Glows cyan `(78,226,229)`. Stands in shallow water. |
-| 22 | `RUT_LanternDeeps/Things/Plant/LuminousSpout` | 256×256 | 2 (`a`,`b`) | Upside-down cone growing out of shallow water, glowing cyan `(78,226,229)`. `maxMeshCount 9` — small and clustered. |
-| 23 | `RUT_LanternDeeps/Things/Plant/Nuitae` | 256×256 | 2 (`A`,`B`) | Dark, almost black cap; the **underside** glows brightly. The glow is reflected light on the water/ground under it, not a glower comp — draw the bounce. |
+| 14 | `RUT_LanternDeeps/Things/Plant/ZivvitTaper` | 128×128 | 2 (`A`,`B`) | Zivvit taper: narrow mushroom with a long glowing cap tip. `drawSize 2.0` at a small canvas — keep it simple and bright at the tip only. |
+| 15 | `RUT_LanternDeeps/Things/Plant/QuorrFern` | 128×128 | 4 (`A`–`D`) | Quorr fern: bush-sized fern/mushroom symbiosis: fern fronds rising from a fungal base. Grey-green, no glow. |
+| 16 | `RUT_LanternDeeps/Things/Plant/OsskBramble` | 128×128 | 2 (`A`,`B`) | Ossk bramble: tangled thorny shoots with **crystalline tips** — leaves grey-green, thorn tips blue and faceted. The one place flora and crystal meet. |
+| 17 | `RUT_LanternDeeps/Things/Plant/BrellikBulb` | 128×128 | 2 (`A`,`B`) | Brellik bulb: squat bulbs with brightly glowing tips. 🔑 Glow colour here is **warm amber** `(252,187,113)`, not blue — deliberate contrast against the ambient; keep it. |
+| 18 | `RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown` | 256×256 | 1 (`a`) | Twitching puffer, grown: a single swollen grey-blue fungal ball on a stubby foot, taut and faintly translucent as if inflated, ringed on its upper half by a fringe of short finger-like tentacles caught mid-twitch. The ball is a **rounded** organic form — the one exception to the no-rounded-gems rule; crystal language stays in the background veins only. No face, eyes or mouth. Job `twitchingpuffer_grown_v1`. |
+| 18b | `RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferImmature` | 256×256 | 1 (`a`) | Same fungus young: fist-sized ball, dull and wrinkled, not yet inflated, tentacle nubs as bumps; smaller silhouette inside the same footprint. Job `twitchingpuffer_immature_v1`. |
+| 18c | `RUT_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested` | 256×256 | 1 (`a`) | Same fungus after harvest: ball intact but sagging, half-deflated, tentacles cut to stubs; nothing broken open (`leaflessGraphicPath`). Job `twitchingpuffer_harvested_v2` (v1 rendered a wrapped cocoon, content miss). |
+| 19 | `RUT_LanternDeeps/Things/Plant/ThrakkCap` | 256×256 | 2 (`A`,`B`) | Thrakk cap: mushroom **tree** with a crystal-plated cap. Woody trunk, cap faceted and faintly blue. Must read at tree scale. |
+| 20 | `RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown` | 256×256 | 3 (`A`,`B`,`C`) | Prenna lace: grey fungus trailing cloth-like lace from under the cap — the lace is the harvest, so it must be the readable feature. |
+| 20b | `RUT_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceImmature` | 256×256 | 1 (`a`) | Same, cap closed, no lace yet. |
+| 21 | `RUT_LanternDeeps/Things/Plant/VellokReed` | 256×256 | 2 (`A`,`B`) | Vellok reed: tall aquatic fungus, tree-category, `visualSizeRange 1.5~2.5`. Glows cyan `(78,226,229)`. Stands in shallow water. |
+| 22 | `RUT_LanternDeeps/Things/Plant/KuvraSpout` | 256×256 | 2 (`a`,`b`) | Kuvra spout: upside-down cone growing out of shallow water, glowing cyan `(78,226,229)`. `maxMeshCount 9` — small and clustered. |
+| 23 | `RUT_LanternDeeps/Things/Plant/NurrikGill` | 256×256 | 2 (`A`,`B`) | Nurrik gill: dark, almost black cap; the **underside** glows brightly. The glow is reflected light on the water/ground under it, not a glower comp — draw the bounce. |
 
 ---
 

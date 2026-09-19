@@ -4,6 +4,8 @@
 > sheet are frozen: **amendments add detail; they never change a ruling.** The
 > unfreeze path is an owner ruling at a sitting, recorded on the item that
 > changes it; contradiction cards from the freeze review amend under this rule.
+>
+> Amended 2026-09-18 on the owner's word (DEEP_FLORA_RENAME_1): flora renamed, dulcis replaced by the twitching puffer; lanternstone and the biome name unchanged.
 
 
 _Owner + BENCH, 2026-09-06, written in conversation over three passes. **Not a worldmap
@@ -38,7 +40,7 @@ the phrase means everywhere: **every crystal mouth leads to a Lantern Deep.**
 
 Donor inventory taken in (Biomes! Caverns, ws 2969748433): the enclosed cavern map, its
 `Calm` weather, animal density 4.5, plant density 0.75, movement 0.5, the fungal carpet
-(cavern mycelium, gleamtip, crystalcap for mushroom logs, grey lady for lace, the aquatic
+(cavern mycelium, zivvit taper, thrakk cap for mushroom logs, prenna lace for lace, the aquatic
 glow-fungi) and the **blue crystals as growing things** (sowable → huge; "surprisingly
 volatile"). 🔴 **Evicted: the crystal-studded animals** (crystalope, crystalback beetle,
 crystal crabs, crystal fairy mole, mimic mantis and kin — owner: "a bit hokey... I'd

@@ -11,10 +11,10 @@
   BMT_AppearanceCrystal: a StuffAppearanceDef reference into a mod we are
   retiring would take the whole def down with it.
 
-  DEEP_DULCIS_DEDUP_1 (owner ruling 2026-09-18): the raw-dulcis food item is no
-  longer shipped here. RotSporeKit owns `RUT_RawDulcis`; the biome's foragedFood
-  and RUT_DeepDulcisPlant's harvest both point at it instead. See About.xml's new
-  mandrake.rut.rotsporekit dependency/loadAfter.
+  DEEP_FLORA_RENAME_1 (owner ruling 2026-09-18): the Deeps' food crop is
+  RUT_PufferTendrils, harvested from RUT_TwitchingPuffer (RUT_DeepFlora.xml) and
+  the biome's foragedFood. Shape copied from RotSporeKit's raw-mushroom item so
+  the two cook alike; no dependency on that mod.
 -->
 <Defs>
 
@@ -109,6 +109,34 @@
     <butcherProducts>
       <RUT_Lanternstone>20</RUT_Lanternstone>
     </butcherProducts>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RUT_PufferTendrils</defName>
+    <label>puffer tendrils</label>
+    <description>Cut tentacles of the twitching puffer. They keep twitching for hours after harvest — pressure, not life — and are good to eat, even raw, if you can watch them.</description>
+    <graphicData>
+      <texPath>RUT_LanternDeeps/Things/Item/Crops/PufferTendrils</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.027</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>16</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fungus</foodType>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
   </ThingDef>
 
 </Defs>
