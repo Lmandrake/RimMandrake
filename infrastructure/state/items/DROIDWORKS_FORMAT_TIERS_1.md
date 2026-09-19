@@ -444,3 +444,23 @@ force. **Owed to the next game-down window:**
 exact source lines on both the XML and C# sides). Fix: WRITTEN and
 BUILD-VERIFIED offline, not yet deployed or live-tested — that step is owed to
 whoever next has a game-down window, not forced onto a live, shared session.
+
+## re-verify pass 2026-09-18 (FOUNDRY, belt mode, subagent) — confirmed already done, no duplicate work
+
+Picked up with a brief asking to build `jawa/droid_format_tier` calling
+`DroidFormatTierUtility.SetTier` and forcing the needs rebuild. That work was
+**already written and committed** by the immediately-prior pass (section
+above) at `b60c7e4ff`: `JawaBenchDroidworksTools.cs` exists, the `.csproj`
+carries the `DroidworksModDir`/`Reference Include="Droidworks"`/`Error
+Condition` wiring, all committed, no local diff. Did not re-do it.
+
+Re-confirmed offline this pass: `python.exe src/RimMandrake/bridgetools/build.py`
+(plan-only, no `--apply`) → **0 Warnings, 0 Errors**, unchanged from the prior
+report. Checked live state fresh: `./game` → RimWorldWin64 RUNNING, bridge
+answers; `rimflow bridge who` → FREE. Per this pass's own brief (game up means
+build-only, no deploy, no forced restart), **did not deploy and did not touch
+the live game/bridge**.
+
+Deploy + live-proof of boxes 2/3/6/7 via `jawa/droid_format_tier` is still
+owed at the next game-down window, exactly as stated above — nothing new
+found, nothing regressed. Item left in `doing`.
