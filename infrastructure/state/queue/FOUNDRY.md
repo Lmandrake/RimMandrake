@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T08:09:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T08:32:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,6 +972,15 @@ kind:     task
 summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
 
+## BRIDGE_MAPGEN_STALE_FINALIZE_1 world_tile_map_generate leaves the map rendering stale until map_commit finalize
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  jawa/worldtilemapgenerate (JawaBenchSocietyTools.cs, method WorldTileMapGenerate)
+prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
+
 ## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
 state:    doing
 row:      unassigned
@@ -1600,26 +1609,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
-
-## BRIDGE_MAPGEN_STALE_FINALIZE_1 world_tile_map_generate leaves the map rendering stale until map_commit finalize
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
-
-## WALK_FEATURE_KEY_1 Walk model ruled: add a feature: key so per-feature walks are first-class; teach doctor.py the key
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WALK_FEATURE_KEY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WALK_FEATURE_KEY_1.md
 
 ## WORLDGEN_CLICK_RECONCILE_1 Verify the 2026-09-12 canonical start save against what the gate docs said was owed at click time
 state:    proposed
