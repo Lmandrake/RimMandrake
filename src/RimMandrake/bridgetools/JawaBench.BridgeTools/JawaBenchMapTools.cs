@@ -2357,21 +2357,40 @@ namespace JawaBench.BridgeTools
                 var doomed = new List<Thing>();
                 foreach (var c in route)
                 {
+                    // The cell's own edifice (if any) is classified separately below into
+                    // needMine/`cleared` when td is buildable here. When td is ITSELF an
+                    // edifice def, GenSpawn.SpawningWipes(td, ed.def) is also true (an
+                    // edifice always wipes another edifice per its own IsEdifice() branch),
+                    // so without this exclusion that same Thing would land in BOTH `doomed`
+                    // (-> displaced[]) and `cleared` - one destroyed thing double-counted
+                    // and double-reported to the caller.
+                    var thisEdifice = c.GetEdifice(map);
+
                     var here = map.thingGrid.ThingsListAtFast(c);
                     for (int i = 0; i < here.Count; i++)
                     {
                         var other = here[i];
                         if (other == null || other.Destroyed) continue;
                         if (other.def == td) continue;              // the `skipped` case below
+                        if (other == thisEdifice) continue;         // handled by needMine/cleared instead
                         if (!GenSpawn.SpawningWipes(td, other.def)) continue;
                         if (!doomed.Contains(other)) doomed.Add(other);
                     }
 
                     if (GenConstruct.CanBuildOnTerrain(td, c, map, Rot4.North))
                     {
-                        var ed = c.GetEdifice(map);
-                        if (ed != null && ed.def != td) needMine.Add(c);
+                        if (thisEdifice != null && thisEdifice.def != td) needMine.Add(c);
                         continue;
+                    }
+
+                    // Edge case: an edifice sits on a cell td cannot build on (bridging
+                    // path) - not classified above (CanBuildOnTerrain false, so it never
+                    // reaches needMine), but it will still be wiped if this route commits,
+                    // so it belongs in `doomed`/displaced[] after all.
+                    if (thisEdifice != null && thisEdifice.def != td && GenSpawn.SpawningWipes(td, thisEdifice.def)
+                        && !doomed.Contains(thisEdifice))
+                    {
+                        doomed.Add(thisEdifice);
                     }
                     var terr = c.GetTerrain(map);
                     bool bridgeable = isBridgeable(c);
