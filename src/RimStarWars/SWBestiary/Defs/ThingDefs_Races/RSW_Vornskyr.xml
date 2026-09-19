@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 25 — Vornskyr creature port, the LAST
+  Wave C species (worklist 1 -> 0). Ported from mlie.starwarsanimalcollection's
+  `Vornskyr` ThingDef/PawnKindDef pair, renamed under the RSW_ tier prefix.
+
+  New `RSW_Vornskyr` BodyDef (RSW_MlieWaveC_Bodies.xml) — its own custom body
+  in the donor, all-vanilla-part composition except the whip-tail's poisonous
+  gland, which repoints the donor's `SW_Club` to the ALREADY-PORTED Wave B
+  `RSW_SW_Club`/`RSW_SWToxicAppendage` (same toxic-appendage precedent as
+  Hssiss/Kinrath/Klorslug/Lylek this wave).
+
+  `leatherDef` (`Leather_Wolf`) is vanilla Core, left bare. `specificMeatDef`
+  (`Tough_Meat`) ALREADY EXISTS as `RSW_Tough_Meat` (Wave B, shared with
+  Vulptex/Borcatu/Anooba/Kybuck/IridonianReek/Zeer). All 4 vocal sounds
+  already absorbed (`RSW_Pawn_Vornskyr_*`, 589-sound wave). The
+  `NocturnalAnimals.ExtendedRaceProperties` modExtension is a THIRD-PARTY mod
+  (Mlie.XNDNocturnalAnimals) gate, unrelated to the donor being ported — kept
+  verbatim, MayRequire preserved, game is whole without it.
+
+  New `RSW_SW_ForceFocus` AbilityDef+HediffDef+TrainableDef chain
+  (RSW_MlieWaveC_Abilities.xml) — the ability this species was blocked on
+  since Pass 24 (never ported before this pass). Wired both ways (PawnKindDef
+  `<abilities>` AND ThingDef `<race><specialTrainables>`), matching the
+  donor's own dual wiring.
+
+  Vornskyr has its own ArtOverride mod (`mandrake.rsw.vornskyrartoverride`,
+  confirmed by reading its own About.xml — covers only the base
+  south/east/north facing across every life stage, dessicated corpse texture
+  stays on donor art, same pattern as Ronto/Shiro's overrides). Only
+  `Vornskyr_Dessicated` extracted this pass, plus the ability's own icon
+  (`Ability_AnimalForceFocus`, 128x128, no sibling ArtOverride).
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Vornskyr</defName>
+    <label>vornskyr</label>
+    <description>The vornskr were a pack hunting canine beast native to the forest planet Myrkr. Vornskrs were primarily nocturnal hunters, and used their whip-like, mildly venomous tails to stun prey before finishing it off with their teeth. They were popular attack beasts and pets within several criminal organisations and thus they were spread to numerous worlds as a result.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.06</ArmorRating_Heat>
+      <PsychicSensitivityOffset>-0.5</PsychicSensitivityOffset>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>whip-like tail</label>
+        <capacities>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWToxicAppendage</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Nocturnal</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Vornskyr</body>
+      <predator>true</predator>
+      <herdAnimal>true</herdAnimal>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseHealthScale>2.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <petness>0.60</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <lifeExpectancy>35</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <nuzzleMtbHours>48</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceFocus</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.4</BorealForest>
+        <Tundra>0.08</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>RSW_Pawn_Vornskyr_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Vornskyr_Death</soundDeath>
+          <soundCall>RSW_Pawn_Vornskyr_Call</soundCall>
+          <soundAngry>RSW_Pawn_Vornskyr_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Vornskyr</defName>
+    <label>Vornskyr</label>
+    <race>RSW_Vornskyr</race>
+    <combatPower>250</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceFocus</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>vornskyr pup</label>
+        <labelPlural>vornskyr pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vornskyr/Vornskyr_Dessicated</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
