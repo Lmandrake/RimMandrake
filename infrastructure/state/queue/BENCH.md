@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:00:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T02:16:58Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -144,15 +144,6 @@ kind:     build
 summary:  (no items/DEEP_ENTRANCE_BIOMES_SETTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEP_ENTRANCE_BIOMES_SETTING_1.md
 
-## DEEP_FLORA_RENAME_1 Lantern Deeps flora get Star Wars-STYLE invented names (no canon lookups); Lantern Deeps and lanternstone KEEP their names; the Deep's dulcis is replaced by its own mushroom, the twitching puffer (big swollen ball with small tentacles) with its own harvested item and regenerated art - the Rot's dulcis does not grow in the Deep
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/DEEP_FLORA_RENAME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEP_FLORA_RENAME_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -259,7 +250,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -267,7 +258,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -277,7 +268,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
