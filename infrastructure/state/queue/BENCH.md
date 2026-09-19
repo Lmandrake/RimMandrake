@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T21:43:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:04:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,6 +35,15 @@ target:   v1
 kind:     task
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
+
+## BIOME_LANDMARK_REFINEMENT_1 First-pass landmark density on 8 dense biomes (Greentide/Contagion/Webwork/Weeping Stones/Slime/Scarlands/Pyrelands/Cracked Lands) needs per-biome refinement — density and defs are BENCH drafts, not curated to each sheet's flagship
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BIOME_LANDMARK_REFINEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_LANDMARK_REFINEMENT_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    doing  (BLOCKED)

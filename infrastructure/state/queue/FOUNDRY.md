@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T21:43:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:04:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1465,7 +1465,17 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+waiting:  needs `deploy`, game is UP
+summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
 
 # NOT THIS TARGET
 
@@ -1475,15 +1485,25 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## REOPEN_DESTROYS_CLEANCOUNT_STREAK_1 code_review_status.py reopen deletes the whole entry, losing the cleanCount recidivist-streak history codebase_health.py surfaces - fix needs a schema decision, not just a code fix
+## DESIGNATE_BATCH_OVER_DESIGNATES_1 jawa/designate_batch's wantThings loop designates every Thing in a cell, not just the type-appropriate one - pre-existing, now reachable by default after tonight's NRE fix
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/REOPEN_DESTROYS_CLEANCOUNT_STREAK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/REOPEN_DESTROYS_CLEANCOUNT_STREAK_1.md
+summary:  (no items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md
+
+## BRIDGETOOLS_TILE_LAYER_DROPPED_1 bridgetools world-tile resolution drops layer/surface id
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGETOOLS_TILE_LAYER_DROPPED_1.md
 
 ## GRAFFITI_VANDAL_ART_REGEN_1 Regenerate all 6 RM_Graffiti_Vandal variants as punk/urban marks with ZERO real-world lettering (vandal_0.png ships the donor author's legible tag 'TARTE' plus English tags) and as ONE readable motif per tile rather than a dozen tiny doodles that are pixel mush at ~64px play zoom - owner ruled regenerate 2026-09-16
 state:    proposed
