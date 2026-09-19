@@ -132,13 +132,13 @@
 <Patch>
 
   <!-- Always: replace the vanilla core-only placeholder with the two
-       commissioned igniters plus vanilla Boomalope. Unconditional on any
-       DONOR mod — all three defNames are this mod's own or Core, always
-       loaded whenever UtinniPatches is — but still PatchOperationConditional-
-       guarded on the target node itself, so this becomes a silent no-op
-       rather than a red launch error in the (currently impossible, but not
-       worth risking) case that the Pyrelands mod is ever removed while
-       UtinniPatches stays in. -->
+       commissioned igniters (vanilla Boomalope was cut, BOOMALOPE_CUT_EVERYWHERE_1,
+       2026-09-14 — not in the value below). Unconditional on any DONOR mod — both
+       defNames are this mod's own, always loaded whenever UtinniPatches is — but
+       still PatchOperationConditional-guarded on the target node itself, so this
+       becomes a silent no-op rather than a red launch error in the (currently
+       impossible, but not worth risking) case that the Pyrelands mod is ever
+       removed while UtinniPatches stays in. -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_FE_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
