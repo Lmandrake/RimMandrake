@@ -1,0 +1,18 @@
+{
+  "background": "#504c46",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T22:24:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "pyrelands_ash_heavy_v1",
+  "priority": 45,
+  "prompt": "Tiling ground terrain texture: ash banked deep in soft drifted dunes, thick enough to drag at every footstep. Dark grey-charcoal ash with visible ripple patterns like wind-blown snowdrift, larger charred chunks and cinder fragments embedded throughout, a few pockets of near-black soot. Nothing green or alive shows anywhere. Must tile seamlessly edge-to-edge. Painterly vanilla-RimWorld terrain art style, top-down, dark charcoal-grey palette, visibly deeper and rougher than a thin ash layer. Full-bleed opaque seamless tiling texture filling the entire canvas edge to edge -- no transparency, no isolated subject, no vignette, no border; every edge must wrap to its opposite edge.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_WEATHER_SCAR_ART_1",
+  "style_notes": "PYRELANDS_WEATHER_SCAR_ART_1: rung 3 of 4 (AshLadder.xml RM_FE_Ash_Heavy). TerrainDef tint (80,76,70,230)."
+}
