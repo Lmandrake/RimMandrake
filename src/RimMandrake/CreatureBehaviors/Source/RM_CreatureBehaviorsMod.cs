@@ -76,6 +76,28 @@ namespace RimMandrake.CreatureBehaviors
     //      pre-existing switch — RM_EnvironmentalHazardsSettings'
     //      "Gas emitters"/"Gas damage and transmuting" toggles, which
     //      already cover it kit-wide.
+    //  15. grapplerHoldEnabled / grapplerCrushMultiplier — RM_Hediff_Grappled
+    //      (DEEPS_FAUNA_MECHANICS_1, Grabber). Off: any active hold releases
+    //      immediately and a fresh pincer hit never starts a new one. The
+    //      dial scales only the per-round severity gain (never the escape
+    //      chance, round interval or release radius, which stay whatever
+    //      the hediff's own def says).
+    //  16. drinkerFluidSacsEnabled / drinkerPoisonMultiplier —
+    //      RM_CompFluidSacs (DEEPS_FAUNA_MECHANICS_1, Drinker). Off: a bite
+    //      never restores the drinker's hunger and never poisons it either
+    //      — a bite is just a bite. The dial scales only the poison
+    //      severity applied on a bad bite (0 = a bad bite is simply never
+    //      fed, same as any other unwanted meal, never the hunger restored
+    //      from a good one).
+    //  17. soulchimePsychicStunEnabled — RM_CompProximityPsychicStun
+    //      (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: nobody gets
+    //      psychically stunned for standing too close, wild or tamed.
+    //  18. soulchimeShardArmorEnabled / soulchimeShardArmorRateMultiplier —
+    //      RM_CompShardArmor (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: its
+    //      shard armor stops growing (never shrinks what's already grown).
+    //  19. soulchimeTameSootheEnabled — RM_CompTameSootheAura
+    //      (DEEPS_FAUNA_MECHANICS_1, Soulchime). Off: a tamed carrier stops
+    //      handing out its soothing memory to nearby colonists.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -98,6 +120,14 @@ namespace RimMandrake.CreatureBehaviors
         public static bool kinMendingEnabled = true;
         public static float kinMendingBoostMultiplier = 1f;
         public static bool guardianAlarmEnabled = true;
+        public static bool grapplerHoldEnabled = true;
+        public static float grapplerCrushMultiplier = 1f;
+        public static bool drinkerFluidSacsEnabled = true;
+        public static float drinkerPoisonMultiplier = 1f;
+        public static bool soulchimePsychicStunEnabled = true;
+        public static bool soulchimeShardArmorEnabled = true;
+        public static float soulchimeShardArmorRateMultiplier = 1f;
+        public static bool soulchimeTameSootheEnabled = true;
 
         public override void ExposeData()
         {
@@ -121,6 +151,14 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref kinMendingEnabled, "kinMendingEnabled", true);
             Scribe_Values.Look(ref kinMendingBoostMultiplier, "kinMendingBoostMultiplier", 1f);
             Scribe_Values.Look(ref guardianAlarmEnabled, "guardianAlarmEnabled", true);
+            Scribe_Values.Look(ref grapplerHoldEnabled, "grapplerHoldEnabled", true);
+            Scribe_Values.Look(ref grapplerCrushMultiplier, "grapplerCrushMultiplier", 1f);
+            Scribe_Values.Look(ref drinkerFluidSacsEnabled, "drinkerFluidSacsEnabled", true);
+            Scribe_Values.Look(ref drinkerPoisonMultiplier, "drinkerPoisonMultiplier", 1f);
+            Scribe_Values.Look(ref soulchimePsychicStunEnabled, "soulchimePsychicStunEnabled", true);
+            Scribe_Values.Look(ref soulchimeShardArmorEnabled, "soulchimeShardArmorEnabled", true);
+            Scribe_Values.Look(ref soulchimeShardArmorRateMultiplier, "soulchimeShardArmorRateMultiplier", 1f);
+            Scribe_Values.Look(ref soulchimeTameSootheEnabled, "soulchimeTameSootheEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -194,6 +232,28 @@ namespace RimMandrake.CreatureBehaviors
               + "false-fruit lure stops gripping the hand that picks it — the grove simply lets "
               + "you take what it would otherwise defend. Not a neutral accessibility setting: "
               + "it is your own conscience being asked, every time you open this menu.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Grabber hold-and-crush", ref grapplerHoldEnabled,
+                "A grappled pincer hold releases immediately and a fresh hit stops starting a new one.");
+            list.Label("Hold crush rate: " + grapplerCrushMultiplier.ToString("0.00") + "x");
+            grapplerCrushMultiplier = list.Slider(grapplerCrushMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Drinker fluid sacs", ref drinkerFluidSacsEnabled,
+                "A drinker's bite stops restoring its own hunger and stops poisoning it on a bad meal — a bite is just a bite.");
+            list.Label("Bad-blood poison severity: " + drinkerPoisonMultiplier.ToString("0.00") + "x");
+            drinkerPoisonMultiplier = list.Slider(drinkerPoisonMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Soulchime psychic stun", ref soulchimePsychicStunEnabled,
+                "A wild Soulchime stops psychically stunning anyone who gets too close.");
+            list.CheckboxLabeled("Soulchime shard armor", ref soulchimeShardArmorEnabled,
+                "A Soulchime's shard armor stops growing (whatever it's already grown stays).");
+            list.Label("Shard armor growth rate: " + soulchimeShardArmorRateMultiplier.ToString("0.00") + "x");
+            soulchimeShardArmorRateMultiplier = list.Slider(soulchimeShardArmorRateMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Soulchime tamed soothing", ref soulchimeTameSootheEnabled,
+                "A tamed Soulchime stops handing out its soothing calm to nearby colonists.");
 
             list.End();
         }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TameSoothe_Thoughts.xml             CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Owner's own words (Soulchime): "Taming one produces a soothing effect on
+  those around it." Generic, content-blind (no species named), granted by
+  RM_CompTameSootheAura to every colonist in radius of a TAMED carrier —
+  reusable by any future tamed-aura creature, not Soulchime-specific.
+  Shape copied from RSW_GizkaWatchedCull (GizkaStowaway): Thought_Memory,
+  mood only, stacked/refreshed by repeated TryGainMemory calls rather than
+  tracked per-pawn state in C#.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RM_TameSootheThought</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>soothing presence nearby</label>
+        <description>Something calm and steady is close by. It's hard to stay tense around it.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

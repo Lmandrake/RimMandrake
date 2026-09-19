@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Drained_Hediffs.xml                 CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Owner's own words (Drinker): "sacks that it uses to store drained body
+  fluids. Strangely, if it drains any day-side races with normal warm iron
+  blood, it becomes poisoned and rapidly dies." RM_Hediff_Drained
+  (Source/RM_Hediff_Drained.cs) is a silent marker: it fires once
+  (PostAdd reads dinfo.Instigator and hands its own severity to that
+  attacker's RM_CompFluidSacs, if it has one) and clears itself a tick
+  later via HediffCompProperties_Disappears — same idiom RUT_MatGrip uses
+  for a short-lived effect hediff.
+
+  A content mod adds this as a SECOND <li> in any bite DamageDef's own
+  <additionalHediffs> (already wired onto the shared RSW_BloodSuck
+  DamageDef, SWBestiary's own Support file, alongside its existing
+  BloodLoss entry):
+    <li>
+      <hediff>RM_Drained</hediff>
+      <severityPerDamageDealt>0.1</severityPerDamageDealt>
+      <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+    </li>
+  Any pawn whose attacker has no RM_CompFluidSacs just gets this hediff
+  added and silently removed a tick later — a harmless no-op.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_Drained</defName>
+    <hediffClass>RimMandrake.CreatureBehaviors.RM_Hediff_Drained</hediffClass>
+    <label>drained</label>
+    <labelNoun>a drained wound</labelNoun>
+    <description>A marker for a bite that drew fluid — this should never linger long enough to see.</description>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>1</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

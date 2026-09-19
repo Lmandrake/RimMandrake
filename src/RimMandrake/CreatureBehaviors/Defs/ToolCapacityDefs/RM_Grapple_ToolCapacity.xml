@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Grapple_ToolCapacity.xml            CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  ToolCapacityDef + ManeuverDef pair routing a race's own pincer tool to
+  RM_PincerCrush (DamageDefs/RM_Grapple_DamageDefs.xml) instead of a generic
+  Blunt/Crush capacity. Shape copied from UtinniPatches'
+  RUT_FlamefangBite.xml (its own header cites the vanilla ToxicBite trio
+  this pattern is built on).
+
+  A content mod gives its grappler race a tool like:
+    <li>
+      <label>pincer</label>
+      <capacities><li>RM_PincerGrapple</li></capacities>
+      <power>22</power>
+      <cooldownTime>3</cooldownTime>
+      <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      <chanceFactor>0.5</chanceFactor>
+    </li>
+-->
+<Defs>
+
+  <ToolCapacityDef>
+    <defName>RM_PincerGrapple</defName>
+    <label>grapple</label>
+  </ToolCapacityDef>
+
+  <ManeuverDef>
+    <defName>RM_PincerGrapple</defName>
+    <requiredCapacity>RM_PincerGrapple</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_PincerCrush</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Smash_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Smash_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Smash_MeleeMiss</combatLogRulesMiss>
+  </ManeuverDef>
+
+</Defs>

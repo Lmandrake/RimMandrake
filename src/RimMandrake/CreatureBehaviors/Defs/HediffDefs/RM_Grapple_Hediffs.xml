@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Grapple_Hediffs.xml                 CreatureBehaviors — DEEPS_FAUNA_MECHANICS_1
+
+  Owner's own words (Grabber): "Give it great strength to Hold someone with
+  its pincer and slowly crush them each round." Delivered by a pincer tool
+  routed through RM_PincerCrush (DamageDefs/RM_Grapple_DamageDefs.xml) via
+  vanilla's own <additionalHediffs> — see that file's header. RM_Hediff_Grappled
+  (Source/RM_Hediff_Grappled.cs) reads dinfo.Instigator to know who's
+  holding, then climbs its OWN severity each round rather than calling
+  Pawn.TakeDamage from inside its own Tick (that class's own header explains
+  why: re-entering the victim's HediffSet tick loop mid-iteration is exactly
+  the hazard RM_CompWoundLink already avoids for a sibling mechanism).
+
+  <lethalSeverity>1</lethalSeverity> is the "until freed or killed" half —
+  same vanilla mechanism (HediffWithComps.CheckForStateChange killing the
+  pawn once severity crosses it) RUT_FlamefangVenom already relies on, so
+  a hold pressed all the way through actually kills the victim with zero
+  extra code.
+
+  Tuning (severityGainPerRoundPerBodySize, roundIntervalTicks,
+  escapeChancePerRound, releaseRadius) lives on the RM_HediffDef_Grapple
+  class fields below, not a DefModExtension — see that class's own header
+  for why.
+-->
+<Defs>
+
+  <HediffDef Class="RimMandrake.CreatureBehaviors.RM_HediffDef_Grapple">
+    <defName>RM_Grappled</defName>
+    <hediffClass>RimMandrake.CreatureBehaviors.RM_Hediff_Grappled</hediffClass>
+    <label>held and crushed</label>
+    <labelNoun>a crushing hold</labelNoun>
+    <description>Something immensely strong has closed around the body and is not letting go. Every so often it tightens a little more.</description>
+    <defaultLabelColor>(0.6, 0.15, 0.05)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <lethalSeverity>1</lethalSeverity>
+    <severityGainPerRoundPerBodySize>0.08</severityGainPerRoundPerBodySize>
+    <roundIntervalTicks>300</roundIntervalTicks>
+    <escapeChancePerRound>0.05</escapeChancePerRound>
+    <releaseRadius>1.5</releaseRadius>
+    <stages>
+      <li>
+        <label>gripped</label>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.05</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.3</minSeverity>
+        <label>squeezed</label>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.02</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.6</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.65</minSeverity>
+        <label>crushed</label>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.45</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <setMax>0</setMax>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.5</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T08:32:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T08:41:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -963,6 +963,15 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
+## PYRELANDS_FLORA_LEAK_1 Alpha Biomes flora spawns on Pyrelands past the grass-only eviction
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PYRELANDS_FLORA_LEAK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FLORA_LEAK_1.md
+
 ## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
 state:    doing
 row:      unassigned
@@ -981,13 +990,22 @@ kind:     task
 summary:  jawa/worldtilemapgenerate (JawaBenchSocietyTools.cs, method WorldTileMapGenerate)
 prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
 
+## WORLDGEN_CLICK_RECONCILE_1 Verify the 2026-09-12 canonical start save against what the gate docs said was owed at click time
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WORLDGEN_CLICK_RECONCILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLDGEN_CLICK_RECONCILE_1.md
+
 ## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
+summary:  (1) patchfail lines — FIXED, live re-confirmation owed
 prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
 
 ## CUT_FALLOUT_GENERATED_DATA_1 Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
@@ -1041,7 +1059,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-summary:  (no items/DEEPS_FAUNA_MECHANICS_1.md yet — write one when you have something to say)
+summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -1590,16 +1608,6 @@ thin:     spec, verify and criteria all present
 summary:  None yet — this is an open design question, not a scoped build. Candidate
 prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
 
-## PYRELANDS_FLORA_LEAK_1 Alpha Biomes flora spawns on Pyrelands past the grass-only eviction
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_FLORA_LEAK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FLORA_LEAK_1.md
-
 ## PYRELANDS_WEATHER_SCAR_ART_1 Pyrelands scar+weather art: ash rungs, filth legibility, Cinderfall drama
 state:    proposed
 row:      unassigned
@@ -1609,16 +1617,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WEATHER_SCAR_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WEATHER_SCAR_ART_1.md
-
-## WORLDGEN_CLICK_RECONCILE_1 Verify the 2026-09-12 canonical start save against what the gate docs said was owed at click time
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WORLDGEN_CLICK_RECONCILE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WORLDGEN_CLICK_RECONCILE_1.md
 
 ## CANONICAL_SAVE_CUT_RESIDUE_1 The start save loads on the 621 list but drops content: MEASURED Load C 2026-09-19 (load_game with ignoreModCompatibility) 4,828 'Could not load reference' lines (4,543 BMT_; 4,800 ThingDef, 24 WorkGiverDef, 3 ResearchProjectDef, 1 FactionDef), 22 SaveableFromNode NREs = Things with a dead def dropped (RR_Weapon_Torch on several pawns, BMT_BufoBile, GravBeamCannon), 2 GameComponents from als.gravtech/.bc. Save recorded 635 mods; 16 missing (Caverns, Polluted Lands, GravTech x2 + retexture, RR Stepping Stones, 10 ArtOverrides). Scrub or re-save the ship artifact; the bridge refuses it without the override flag. Detail: Transient/canonical_save_loadC_exceptions_2026-09-19.txt, Transient/canonical_save_caverns_scrub_2026-09-18.md
 state:    proposed
