@@ -49,6 +49,95 @@ AA_ROOT = WORKSHOP / "1541721856"   # Alpha Animals (sarg.alphaanimals)
 GAME_MODS = Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods")
 RAW_VANILLA = REPO_ROOT / "Transient" / "rot_review_thumbs_2026-09-18" / "_raw_vanilla"
 
+# ── to-scale panels (owner ask, 2026-09-18 late pass) ────────────────────────
+# Same method as src/RimMandrake/Utils/gen_plant_register.py (_scale_panel,
+# _human_figure, mesh tiling) and gen_creature_register.py (_scale_panel for
+# pawns) — copied rather than imported: those modules pull in cherrypicker,
+# game_paths, rimworld_loadset (live def-dump / Windows-path machinery) that
+# this generator's own hand-curated ROWS data doesn't need or want as a
+# dependency. PX_PER_CELL/HUMAN_CELLS match exactly; PANEL_MAX_PX (240) is
+# THIS sheet's own cap — the reference scripts build big inspection images
+# (SCALE_CAP 1200-1500px) for a dedicated art-review page, but this is a row
+# thumbnail on a mixed sheet, so the owner asked for 240px max here.
+PX_PER_CELL = 64
+HUMAN_CELLS = 1.5
+PANEL_MAX_PX = 240
+MESH_CAP = 9
+HUMAN_ANCHOR = REPO_ROOT / "design" / "Jawa" / "worldbuilding" / "review" / "assets" / "human_anchor_south.png"
+
+# MEASURED 2026-09-18: graphicData.drawSize is 1.0 (vanilla default) for EVERY
+# one of the 40 Group A flora defs — resolved the full ParentName chain for
+# each (through RotSporeKit's own abstracts and AlphaBiomes' AB_CavePlantBase)
+# and grepped every file in scope for the literal string "drawSize": it
+# appears exactly once in the whole flora set, on RUT_MedicineFungal (an
+# ingredient item, not a plant). None of these defs override it. The apparent
+# ankle-high-to-building-sized spread the descriptions promise comes entirely
+# from <plant><visualSizeRange>, which scales the SAME 1x1 quad up at growth —
+# printed on the row and used for the scale panel's box; see mature_cells()
+# below and CONFIG.invented on the sheet.
+FLORA_DRAWSIZE = (1.0, 1.0)  # (x, y) — constant, see note above
+#
+# CORRECTED 2026-09-18, second late pass: the first pass only checked each
+# def's OWN <visualSizeRange> and, finding none on 13 rows (the 12 AB_
+# donor rows besides Bryolux/AgariluxPrime, plus RUT_FlakespireFungus and
+# RUT_BleedingTooth), fell back to the raw drawSize=1.0 quad. That was
+# incomplete: RimWorld's own vanilla plant bases carry a visualSizeRange too,
+# and none of those 13 rows' custom parent chains override it, so it inherits
+# all the way down. MEASURED from Data/Core/Defs/ThingDefs_Plants/
+# Plants_Bases.xml: PlantBaseNonEdible 0.3~1.00 (PlantBase inherits this
+# unchanged), TreeBase 1.5~2.0. Resolving through that fixes one real number
+# (RUT_FlakespireFungus: RUT_CaveTreeBase -> TreeBase -> max 2.0, not the
+# fallback 1.0) and correctly re-labels the other 12 (their own numeric
+# fallback of 1.0 already matched PlantBase's inherited max by coincidence,
+# but they were mislabeled 'visualSizeRange not set'  when they do have one,
+# inherited). Every one of the 40 flora rows now resolves a real
+# visualSizeRange — none fall back to a bare, un-sourced 1x1 quad any more.
+#
+# defName -> (min, max) fully resolved (own def, else RotSporeKit/AlphaBiomes
+# abstract, else the vanilla Plant base measured above).
+FLORA_VSR = {
+    "AB_Bryolux": (0.82, 0.95), "AB_Glowstool": (0.3, 1.0), "AB_Agarilux": (0.3, 1.0),
+    "AB_GiantAgarilux": (0.3, 1.0), "AB_GlowingAgarilux": (0.3, 1.0), "AB_LilacBeacon": (0.3, 1.0),
+    "AB_WitchesOyster": (0.3, 1.0), "AB_RecurvedStropharia": (0.3, 1.0),
+    "AB_ArbuscularMycorrhiza": (0.3, 1.0), "AB_SlimyPholiota": (0.3, 1.0),
+    "AB_AgaricusDomeCap": (0.3, 1.0), "AB_DribblingCap": (0.3, 1.0), "AB_AgariluxPrime": (7.95, 8.0),
+    "RUT_Dewshrooms": (0.3, 0.5), "RUT_FruitingBodies": (0.3, 0.5), "RUT_Nuitae": (0.4, 0.6),
+    "RUT_Wrinklecap": (0.7, 0.85), "RUT_Arpeau": (1.5, 2.5), "RUT_Nogtyl": (1.5, 2.5),
+    "RUT_FlakespireFungus": (1.5, 2.0), "RUT_Pusmelon": (0.3, 0.7), "RUT_RustPuff": (0.25, 0.6),
+    "RUT_Sagecrust": (0.2, 0.5), "RUT_BleedingTooth": (0.3, 1.0), "RUT_Brightbell": (0.3, 0.7),
+    "RUT_CrimsonCap": (0.8, 1.0), "RUT_GreyLady": (0.4, 1.0), "RUT_Shinecap": (1.5, 2.5),
+    "RUT_VioletWimple": (0.3, 0.7), "RUT_MortalMorelPlant": (0.6, 1.0), "RUT_Skulltop": (0.3, 0.7),
+    "RUT_BlastpodShroom": (0.7, 0.9), "RUT_PaleTree": (1.8, 2.5), "RUT_AgelessCap": (1.3, 1.6),
+    "RUT_RegenerantVeil": (1.0, 1.3), "RUT_EuphoricCrown": (1.2, 1.5), "RUT_FalseFruit": (0.4, 0.6),
+    "RUT_DulcisPlant": (0.5, 1.3), "RUT_FurnaceCap": (0.5, 1.0), "RUT_PaleMoss": (0.3, 0.45),
+}
+# The 13 rows above whose OWN def (and RotSporeKit/AlphaBiomes custom
+# abstract chain) sets no visualSizeRange at all — their number in FLORA_VSR
+# is inherited from a vanilla Plant base, not authored in this mod.
+FLORA_VSR_VANILLA_INHERITED = {
+    "AB_Glowstool", "AB_Agarilux", "AB_GiantAgarilux", "AB_GlowingAgarilux",
+    "AB_LilacBeacon", "AB_WitchesOyster", "AB_RecurvedStropharia",
+    "AB_ArbuscularMycorrhiza", "AB_SlimyPholiota", "AB_AgaricusDomeCap",
+    "AB_DribblingCap", "RUT_FlakespireFungus", "RUT_BleedingTooth",
+}
+# defName -> maxMeshCount (absent/None means 1 — a single sprite per cell).
+FLORA_MESH = {
+    "AB_Bryolux": 4, "RUT_Dewshrooms": 9, "RUT_FruitingBodies": 25,
+    "RUT_Wrinklecap": 4, "RUT_Pusmelon": 4, "RUT_RustPuff": 4,
+    "RUT_Sagecrust": 9, "RUT_CrimsonCap": 4, "RUT_VioletWimple": 4,
+    "RUT_MortalMorelPlant": 4, "RUT_BlastpodShroom": 1, "RUT_FurnaceCap": 4,
+    "RUT_PaleMoss": 9,
+}
+# Adult (last) life-stage bodyGraphicData.drawSize per fauna defName — MEASURED
+# from each race's PawnKindDef life stages (RSW_/AA_ from their own source;
+# RUT_Emberscythe from its own def in this repo).
+FAUNA_DRAWSIZE = {
+    "RSW_FungalWeevil": 1.8, "AA_Swarmling": 1.75, "AA_Agaripod": 3.8,
+    "AA_MycoidColossus": 6.0, "RSW_BovineBeetle": 3.0, "AA_Agaripawn": 2.0,
+    "AA_Wildpawn": 2.0, "AA_Wildpod": 3.8, "RSW_FungalMantis": 3.0,
+    "RUT_Emberscythe": 2.2,
+}
+
 # ============================================================================
 # GROUP A — Rot flora
 # Fields: (defName, label, source, commonality_or_None, desc20, texPath, art_status,
@@ -196,6 +285,8 @@ def thumb_name(defname_or_id: str) -> str:
 
 
 def make_thumb(src: Path, dst: Path):
+    """Plain thumbnail — still used for Group C (new art), which isn't a
+    creature or a plant and has no drawSize/cells to be 'to scale' against."""
     from PIL import Image
     dst.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(src) as im:
@@ -204,21 +295,177 @@ def make_thumb(src: Path, dst: Path):
         im.save(dst)
 
 
+def _human_figure(hh, Image):
+    """A REAL RimWorld colonist body, the same asset the creature/plant scale
+    sheets use (design/Jawa/worldbuilding/review/assets/human_anchor_south.png
+    — the engine's own body+head sprites composited top-down), scaled to hh px
+    tall (HUMAN_CELLS cells). Falls back to a crude outline only if that asset
+    is gone, and deliberately crudely so the fallback is obvious on sight."""
+    from PIL import ImageDraw
+    try:
+        im = Image.open(HUMAN_ANCHOR).convert("RGBA")
+        k = hh / float(im.height)
+        return im.resize((max(1, int(im.width * k)), hh), Image.LANCZOS)
+    except Exception:                                        # noqa: BLE001
+        fig = Image.new("RGBA", (max(6, int(hh * 0.45)), hh), (0, 0, 0, 0))
+        ImageDraw.Draw(fig).rectangle([0, 0, fig.width - 1, hh - 1],
+                                       outline=(255, 80, 80, 255))
+        return fig
+
+
+def _cap_panel(panel, Image):
+    """Downscale to PANEL_MAX_PX if the built panel is wider/taller than that
+    — this sheet's own cap (see the PANEL_MAX_PX note above)."""
+    if max(panel.size) > PANEL_MAX_PX:
+        k = PANEL_MAX_PX / float(max(panel.size))
+        panel = panel.resize((max(1, int(panel.width * k)), max(1, int(panel.height * k))),
+                              Image.LANCZOS)
+    return panel
+
+
+def _mesh_offsets(mesh):
+    """The sub-grid the engine prints a multi-mesh plant on, in CELL fractions
+    — identical to gen_plant_register.py's _mesh_offsets (Plant.Print,
+    Plant.cs:1000-1020): side = sqrt(mesh), each copy at a grid center. No
+    jitter, because a review picture must be identical between two runs."""
+    side = int(round(mesh ** 0.5)) or 1
+    step = 1.0 / side
+    return [(((i // side) + 0.5) * step, ((i % side) + 0.5) * step)
+            for i in range(side * side)]
+
+
+def make_plant_scale_panel(src: Path, dst: Path, cells: float, mesh: int):
+    """The plant at true in-game screen size (a `cells` x `cells` quad, the
+    engine's own render, times a mesh-tiled sub-grid when maxMeshCount > 1)
+    beside a human on a 1-cell grid. Same method as
+    gen_plant_register.py's _scale_panel; copied here, see the module note."""
+    from PIL import Image, ImageDraw
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(src) as raw:
+        im = raw.convert("RGBA")
+        bbox = im.getbbox()
+        if bbox:
+            im = im.crop(bbox)
+
+        hh = int(round(HUMAN_CELLS * PX_PER_CELL))
+        fig = _human_figure(hh, Image)
+        fig_w = fig.width
+        quad = max(8, int(round(cells * PX_PER_CELL)))
+        footprint = max(quad, PX_PER_CELL) if mesh > 1 else quad
+        gap, pad = 12, 8
+        tw = pad + fig_w + gap + footprint + pad
+        th = pad + max(hh, footprint) + pad
+        panel = Image.new("RGBA", (tw, th), (16, 22, 18, 255))
+        d = ImageDraw.Draw(panel)
+        for x in range(pad, tw, PX_PER_CELL):
+            d.line([(x, 0), (x, th)], fill=(32, 42, 34, 255))
+        for y in range(th - pad, -1, -PX_PER_CELL):
+            d.line([(0, y), (tw, y)], fill=(32, 42, 34, 255))
+
+        base_y = th - pad
+        panel.alpha_composite(fig, (pad, base_y - hh))
+
+        k = min(quad / float(im.width), quad / float(im.height))
+        cw, ch = max(1, int(round(im.width * k))), max(1, int(round(im.height * k)))
+        spr = im.resize((cw, ch), Image.LANCZOS if im.width > cw else Image.NEAREST)
+
+        left = pad + fig_w + gap
+        if mesh <= 1:
+            panel.alpha_composite(spr, (left, base_y - ch))
+        else:
+            cell = max(footprint, PX_PER_CELL)
+            for fx, fz in _mesh_offsets(mesh):
+                x = left + int(fx * cell) - cw // 2
+                y = base_y - int(fz * cell) - ch // 2
+                x = max(0, min(tw - cw, x))
+                y = max(0, min(th - ch, y))
+                panel.alpha_composite(spr, (x, y))
+
+        panel = _cap_panel(panel, Image)
+        panel.convert("RGB").save(dst, optimize=True)
+
+
+def make_creature_scale_panel(src: Path, dst: Path, cells: float):
+    """The creature at true in-game screen size (a `cells` x `cells` box, its
+    adult bodyGraphicData.drawSize) beside a human on a 1-cell grid. Same
+    method as gen_creature_register.py's _scale_panel; copied, see module note."""
+    from PIL import Image, ImageDraw
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(src) as raw:
+        im = raw.convert("RGBA")
+        bbox = im.getbbox()
+        if bbox:
+            im = im.crop(bbox)
+
+        box = max(8, int(round(cells * PX_PER_CELL)))
+        hh = int(round(HUMAN_CELLS * PX_PER_CELL))
+        k = min(box / float(im.width), box / float(im.height))
+        cw, ch = max(1, int(round(im.width * k))), max(1, int(round(im.height * k)))
+        fig = _human_figure(hh, Image)
+        fig_w = fig.width
+        gap, pad = 12, 8
+        tw = pad + fig_w + gap + cw + pad
+        th = pad + max(hh, ch) + pad
+        panel = Image.new("RGBA", (tw, th), (18, 21, 26, 255))
+        d = ImageDraw.Draw(panel)
+        for x in range(pad, tw, PX_PER_CELL):
+            d.line([(x, 0), (x, th)], fill=(34, 39, 47, 255))
+        for y in range(th - pad, -1, -PX_PER_CELL):
+            d.line([(0, y), (tw, y)], fill=(34, 39, 47, 255))
+
+        base_y = th - pad
+        panel.alpha_composite(fig, (pad, base_y - fig.height))
+        cre = im.resize((cw, ch), Image.LANCZOS if im.width > cw else Image.NEAREST)
+        panel.alpha_composite(cre, (pad + fig_w + gap, base_y - ch))
+
+        panel = _cap_panel(panel, Image)
+        panel.convert("RGB").save(dst, optimize=True)
+
+
+def mature_cells_flora(defname):
+    """drawSize.x * visualSizeRange.max — 'true in-game scale' at growth 1.0,
+    same formula as gen_plant_register.py's mature_cells(). visualSizeRange is
+    the size that actually varies per plant (drawSize is a constant 1.0 on
+    every Group A def — see FLORA_DRAWSIZE's note); FLORA_VSR is already fully
+    resolved through the def's own value, its RotSporeKit/AlphaBiomes custom
+    abstract, or the vanilla Plant base (PlantBase/TreeBase/PlantBaseNonEdible)
+    — every one of the 40 rows resolves a real range, so this never falls back
+    to a guess. Only raises if a defName is missing from FLORA_VSR entirely,
+    which would mean the table itself is incomplete, not a plant with no size."""
+    vmin, vmax = FLORA_VSR[defname]
+    return FLORA_DRAWSIZE[0] * vmin, FLORA_DRAWSIZE[0] * vmax
+
+
 def build_items(thumbs_relpath):
     items = []
     counts = {"A": 0, "B": 0, "C": 0}
-    thumb_jobs = []  # (src_abs, dst_abs, dst_relpath)
+    # thumb_jobs entries: {"kind": "plant"|"creature"|"plain", "src", "dst", "rel", ...extra}
+    thumb_jobs = []
 
     # ---- Group A ----
     for defname, label, source, comm, desc, texpath, status, thumb_src, note in FLORA:
         counts["A"] += 1
+        mincells, mcells = mature_cells_flora(defname)
+        mesh = min(FLORA_MESH.get(defname, 1), MESH_CAP)
+        inherited = defname in FLORA_VSR_VANILLA_INHERITED
+        # Headline: mature size (what governs the panel and what a player
+        # actually sees), drawSize demoted to a secondary note — drawSize is a
+        # constant 1.0 on every Group A row and printing it first was
+        # wallpaper (owner correction, 2026-09-18).
+        sizetxt = f"mature size {mcells:.2f} cells (grows {mincells:.2f}→{mcells:.2f})"
+        sizetxt += " [vanilla Plant-base default, not authored on this def]" if inherited else ""
+        sizetxt += f"; drawSize {FLORA_DRAWSIZE[0]:.1f} × {FLORA_DRAWSIZE[1]:.1f} cells (vanilla default on every Group A row, never overridden — not what drives apparent size here)"
+        if mesh > 1:
+            sizetxt += f"; {mesh} meshes/cell (Graphic_Random tiling)"
         thumb_rel = None
         if thumb_src:
             dst_rel = f"{thumbs_relpath}/{thumb_name(defname)}"
-            thumb_jobs.append((REPO_ROOT / thumb_src, REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(defname), dst_rel))
+            dst_abs = REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(defname)
+            thumb_jobs.append({"kind": "plant", "src": REPO_ROOT / thumb_src, "dst": dst_abs,
+                                "rel": dst_rel, "cells": mcells, "mesh": mesh})
             thumb_rel = dst_rel
         commtxt = f"wildPlants commonality {comm}" if comm is not None else "not in wildPlants (sow/companion-only)"
-        effect = f"{commtxt} — {status.upper()}. {desc}…"
+        effect = f"{commtxt} — {status.upper()}. {sizetxt}. {desc}…"
         if note:
             effect += f" [{note}]"
         prefill = "keep"
@@ -230,20 +477,26 @@ def build_items(thumbs_relpath):
             "thumb": thumb_rel,
             "prefill": prefill,
             "sortkey": -(comm or 0),
-            "meta": {"source": source, "texPath": texpath, "artStatus": status, "commonality": comm},
+            "meta": {"source": source, "texPath": texpath, "artStatus": status, "commonality": comm,
+                     "drawSize": list(FLORA_DRAWSIZE), "matureCells": round(mcells, 3), "mesh": mesh},
         })
 
     # ---- Group B ----
     for defname, label, comm, xmlclass, bodysize, source, thumb_src, kintag, woundlink, mend, alarm, trade in FAUNA:
         counts["B"] += 1
+        adult_cells = FAUNA_DRAWSIZE.get(defname)
+        commtxt = f"commonality {comm}" if comm is not None else "not in wildAnimals"
+        bstxt = f"bodySize {bodysize}" if bodysize is not None else "bodySize n/a (not in wildAnimals)"
+        dstxt = (f"adult drawSize {adult_cells:.2f} × {adult_cells:.2f} cells"
+                 if adult_cells is not None else "adult drawSize UNMEASURED")
         thumb_rel = None
         if thumb_src:
             dst_rel = f"{thumbs_relpath}/{thumb_name(defname)}"
-            thumb_jobs.append((REPO_ROOT / thumb_src, REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(defname), dst_rel))
+            dst_abs = REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(defname)
+            thumb_jobs.append({"kind": "creature", "src": REPO_ROOT / thumb_src, "dst": dst_abs,
+                                "rel": dst_rel, "cells": adult_cells or 1.0})
             thumb_rel = dst_rel
-        commtxt = f"commonality {comm}" if comm is not None else "not in wildAnimals"
-        bstxt = f"bodySize {bodysize}" if bodysize is not None else "bodySize n/a (not in wildAnimals)"
-        effect = (f"{commtxt} — class: {xmlclass}. {bstxt}. "
+        effect = (f"{commtxt} — class: {xmlclass}. {dstxt}. {bstxt}. "
                   f"kin tag: {kintag} | wound-link: {woundlink} | {mend} | alarm-responder: {alarm}. "
                   f"Trade: {trade}")
         items.append({
@@ -254,14 +507,16 @@ def build_items(thumbs_relpath):
             "thumb": thumb_rel,
             "prefill": "keep",
             "sortkey": -(comm or 0),
-            "meta": {"source": source, "bodySize": bodysize, "kinTag": kintag},
+            "meta": {"source": source, "bodySize": bodysize, "kinTag": kintag, "adultDrawSize": adult_cells},
         })
 
     # ---- Group C ----
     for job_id, target, mod, verdict, thumb_abs, wired, note in GROUP_C:
         counts["C"] += 1
         dst_rel = f"{thumbs_relpath}/{thumb_name(job_id)}"
-        thumb_jobs.append((thumb_abs, REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(job_id), dst_rel))
+        thumb_jobs.append({"kind": "plain", "src": thumb_abs,
+                            "dst": REPO_ROOT / "Transient" / thumbs_relpath / thumb_name(job_id),
+                            "rel": dst_rel})
         effect = f"target: {target} | mod: {mod} | verdict: {verdict} | wired: {'YES' if wired else 'not wired'}. {note}"
         items.append({
             "id": f"C_{job_id}",
@@ -315,16 +570,26 @@ def main():
 
     OUT_THUMBS_DIR.mkdir(parents=True, exist_ok=True)
     made, missing = 0, []
-    for src, dst, _rel in thumb_jobs:
+    made_by_kind = {"plant": 0, "creature": 0, "plain": 0}
+    for job in thumb_jobs:
+        src, dst, kind = job["src"], job["dst"], job["kind"]
         if not src.exists():
             missing.append(str(src))
             continue
         try:
-            make_thumb(src, dst)
+            if kind == "plant":
+                make_plant_scale_panel(src, dst, job["cells"], job["mesh"])
+            elif kind == "creature":
+                make_creature_scale_panel(src, dst, job["cells"])
+            else:
+                make_thumb(src, dst)
             made += 1
+            made_by_kind[kind] += 1
         except Exception as exc:
             missing.append(f"{src} ({exc})")
-    print(f"\nThumbnails written: {made}; missing/failed: {len(missing)}")
+    print(f"\nThumbnails written: {made} (plant scale panels: {made_by_kind['plant']}, "
+          f"creature scale panels: {made_by_kind['creature']}, plain: {made_by_kind['plain']}); "
+          f"missing/failed: {len(missing)}")
     for m in missing:
         print(f"  NO THUMB: {m}")
 
@@ -362,6 +627,17 @@ def main():
             "<p>Start with donor art where new art is unavailable — owner's instruction. The 22 "
             "Guardian-Groves/Furnace-Cap/Pale-Tree new-art jobs FAILED tonight on a codex quota limit and are "
             "still queued to re-run; until then those rows keep their shared-placeholder or vanilla texPath.</p>"
+            "<p><b>Scale panels (owner ask):</b> every Group A/B thumbnail with a source image is now a "
+            "TO-SCALE panel — the sprite at its true in-game cell size beside a real colonist "
+            "(human_anchor_south.png, 1.5 cells tall), on a 1-cell grid, capped at 240px wide. A plant's "
+            "in-game size is <code>plant.visualSizeRange</code> (its max at maturity), NOT "
+            "<code>graphicData.drawSize</code> — drawSize measures 1.0 × 1.0 on every one of the 40 flora "
+            "rows and drives nothing, so each row leads with <b>mature size {max} cells (grows {min}→"
+            "{max})</b> and demotes drawSize to a secondary note. visualSizeRange is resolved through the full "
+            "inheritance chain including vanilla RimWorld's own Plant bases (PlantBase/TreeBase default to "
+            "0.3~1.0 / 1.5~2.0 when nothing else overrides) — every one of the 40 rows resolves a real range, "
+            "none are a guess. Fauna rows print the adult life stage's drawSize plus bodySize (fauna drawSize "
+            "genuinely does vary per race, unlike flora's). See CONFIG.invented for the full sourcing.</p>"
         ),
         "criterion": "Sorted by commonality within each group (flora/fauna) — ranks how often the player "
                      "meets it, not its worth. Group C is unordered (five rows).",
@@ -404,6 +680,34 @@ def main():
             "also excluded from Group C because their target (RUT_DulcisPlant) is a Group A row in THIS sheet.",
             "'wired' in Group C is a literal md5 byte-match between the artpipe _artsrc PNG and every PNG under "
             "src/**/Textures/ — none of the 5 remaining rows matched, so all five read 'not wired'.",
+            "A plant's in-game size is <plant><visualSizeRange> (its MAX at maturity), NOT "
+            "graphicData.drawSize — owner correction, 2026-09-18. drawSize IS measured 1.0 × 1.0 on "
+            "every one of the 40 Group A flora defs (confirmed by grep: the literal string 'drawSize' occurs "
+            "exactly once in the whole flora file set, on RUT_MedicineFungal, an item not a plant) — but that's "
+            "wallpaper, not the size signal, and the headline text now leads with mature size "
+            "(visualSizeRange.max) with drawSize demoted to a secondary note.",
+            "visualSizeRange is now resolved through the FULL inheritance chain, including vanilla RimWorld's "
+            "own Plant bases, not just each def's own tag and its RotSporeKit/AlphaBiomes custom abstract. "
+            "MEASURED from the game's own Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml: PlantBaseNonEdible "
+            "sets 0.3~1.00 (PlantBase inherits it unchanged), TreeBase sets 1.5~2.0. Resolving through that "
+            "fixed one real number — RUT_FlakespireFungus (RUT_CaveTreeBase -> TreeBase) is 1.5~2.0, not the "
+            "first pass's fallback of a bare 1.0 — and correctly re-labels the other 12 rows that inherit "
+            "PlantBase's 0.3~1.0 (11 AlphaBiomes donor rows + RUT_BleedingTooth) as 'vanilla default, "
+            "inherited', not 'not set'. Every one of the 40 flora rows now resolves a REAL visualSizeRange; "
+            "none are an un-sourced guess.",
+            "Scale panels reuse the exact method in gen_plant_register.py's _scale_panel/_human_figure (plants, "
+            "including its mesh-tiling sub-grid for maxMeshCount > 1) and gen_creature_register.py's "
+            "_scale_panel (fauna) — copied rather than imported, because both modules pull in cherrypicker / "
+            "game_paths / rimworld_loadset (live def-dump and Windows-path machinery) this generator's own "
+            "hand-curated ROWS tables don't use. The human figure is the SAME real colonist sprite those "
+            "scripts use (design/Jawa/worldbuilding/review/assets/human_anchor_south.png, already on disk — "
+            "no re-extraction needed). PX_PER_CELL (64) and HUMAN_CELLS (1.5) match those scripts exactly; the "
+            "240px panel cap is THIS sheet's own (the reference scripts build much larger dedicated inspection "
+            "images, 1200-1500px, for a page whose only job is art review — this is a row thumbnail on a mixed "
+            "sheet, so 240px per the owner's instruction here).",
+            "Fauna cell size is the ADULT (last) life stage's bodyGraphicData.drawSize, MEASURED per race from "
+            "its own PawnKindDef life-stage list (RSW_/AA_ from their own source files, RUT_Emberscythe from "
+            "this repo) — not a fitted or inferred figure.",
         ],
         "posture": {"mode": "blacklist", "explain": "Default is KEEP for flora/fauna. A row only leaves the "
                     "biome if you mark it cut. Group C defaults to its own pre-filled approve/undecided call."},
