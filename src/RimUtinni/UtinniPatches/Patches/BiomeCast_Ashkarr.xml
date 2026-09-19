@@ -287,7 +287,7 @@
         <RSW_Shiro>0.4</RSW_Shiro> <!-- shiro - arthropod-floor, keep -->
         <RSW_Grank>0.3</RSW_Grank> <!-- Grank - channel-predator, import -->
         <RSW_Whisperbird>0.3</RSW_Whisperbird> <!-- whisperbird - flier, keep -->
-        <Vornskyr>0.15</Vornskyr> <!-- vornskyr - strange, keep -->
+        <RSW_Vornskyr>0.15</RSW_Vornskyr> <!-- vornskyr - strange, keep -->
         <RSW_Zakkeg>0.05</RSW_Zakkeg> <!-- zakkeg - big-wanderer, keep -->
       </value>
     </match>

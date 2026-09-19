@@ -34,7 +34,7 @@ AB_MiasmicMangrove,RSW_SiltLamprey,silt lamprey,RimMandrake - SW Sea Beasts,nurs
 AB_MiasmicMangrove,AA_Lockjaw,lockjaw,Alpha Animals,channel-predator,2.5,0.2,,,0.613,keep,the_miasma: §4 the shallows' jaws; slow (spd 3.0 MEASURED),0
 AB_MiasmicMangrove,AA_Mantrap,mantrap,Alpha Animals,root-ambush,2,0.2,,,0.65,keep,the_miasma: §3 the stilt-root maze is the terrain — root-maze ambusher,0
 AB_MiasmicMangrove,AA_RaptorShrimp,raptor shrimp,Alpha Animals,channel-predator,1.399999976158142,0.2,,,0.702,keep,the_miasma: §4 the water crowds with life — crustacean predator,0
-AB_MiasmicMangrove,Vornskyr,vornskyr,Star Wars Animal Collection (Continued),strange,2,0.15,,,0.63,keep,"the_miasma: §1 verge-of-something register; SW icon, venomous (MEASURED)",0
+AB_MiasmicMangrove,RSW_Vornskyr,vornskyr,RimMandrake: SW — Bestiary,strange,2,0.15,,,0.63,keep,"the_miasma: §1 verge-of-something register; SW icon, venomous (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 25: repointed to RSW_ port]",0
 AB_MiasmicMangrove,AA_BloodShrimp,blood shrimp,Alpha Animals,channel-predator,1,0.1,,,0.658,keep,the_miasma: §4 crowded waters,0
 AB_MiasmicMangrove,AA_DecayDrake,decay drake,Alpha Animals,composter,1,0.1,,,0.575,keep,the_miasma: §4 the composters — decay-feeding is the biome's engine,0
 AB_MiasmicMangrove,AA_Helixien,helixien,Alpha Animals,strange,4,0.1,,,0.65,keep,the_miasma: §1 strange slow bulk (spd 0.6 MEASURED),0

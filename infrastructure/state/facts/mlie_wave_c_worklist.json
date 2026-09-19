@@ -15,7 +15,7 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 1,
+  "remaining_worklist_count": 0,
   "ported_and_wired_this_pass_2026-09-19_pass23": [
     "RSW_Shaak",
     "RSW_Shiro",
@@ -52,16 +52,7 @@
       "reason": "RSW_Nuna already ported+wired in Wave B (2026-09-09), confirmed present as src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml and wired into all 5 cast rows in design/Jawa/fauna/cast_assignment.csv (AridShrubland, BiomeCypreJungle, COMIGO_GreaterSwamp_Tropical, Desert, ZBiome_Grasslands). The bare donor 'Nuna' cast rows genuinely persist alongside RSW_Nuna by owner's own 'keep both' ruling (2026-09-02), not because porting is incomplete -- there is nothing left to port for this species. Flagged by Pass 11, verified and removed this pass."
     }
   ],
-  "remaining_worklist": [
-    {
-      "donor_defName": "Vornskyr",
-      "biomes": [
-        "AB_MiasmicMangrove"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true,
-      "blocked_2026-09-19": "Needs a new SW_ForceFocus AbilityDef+HediffDef+TrainableDef chain (donor AbilityDefs/SW_Abilities.xml lines ~797-887) - unlike SW_Calamity/SW_SootheSong/SW_WebShot (all already ported as RSW_ ability groups and consumed this pass), SW_ForceFocus has never been ported. Skipped this pass rather than guess the hediff shape; port it as its own small pass before Vornskyr."
-    }
-  ],
+  "remaining_worklist": [],
   "ported_and_wired_this_pass_2026-09-12_batch2": [
     "RSW_Anooba",
     "RSW_Beldon",
@@ -384,5 +375,11 @@
       "Zeer"
     ],
     "note": "15 of 16 remaining Wave C species ported+wired in one pass (TeeMuss, Urusai, Uvak, Varactyl, Voorpak, WarWyrm, Whisperbird, WompRat, Woolamander, Worrt, Wraid, Wyyyschokk, Yobshrimp, Zakkeg, Zeer). Only Vornskyr skipped (see remaining_worklist entry). 7 new BodyDefs (Varactyl/Voorpak/WarWyrm/Worrt/Wyyyschokk/Yobshrimp/Zakkeg), all vanilla-part composition or already-ported RSW_SW_* parts/groups, no new part/group defs. New resources: RSW_Cameloid_Meat, RSW_Leather_Wraid, RSW_Leather_Zakkeg, RSW_WoolWyyyschokk, plus 8 new egg pairs (Urusai/Uvak/Varactyl/Whisperbird/Worrt/Wraid/Wyyyschokk/Yobshrimp). Three donor abilities (SW_Calamity for WarWyrm, SW_SootheSong for Whisperbird, SW_WebShot for Wyyyschokk) turned out to already be ported as RSW_ AbilityDef+HediffDef+TrainableDef groups by an earlier pass but never consumed by any species - wired to their first real consumer this pass. 5 species (Vornskyr[skipped]/Whisperbird/Wyyyschokk/Zakkeg/Zeer) have their own ArtOverride mods covering the base south/east/north facing - only extracted the facings NOT covered (Dessicated, and Whisperbird's 12 flying frames which no override touches)."
+  },
+  "ported_and_wired_this_pass_2026-09-19_pass25": {
+    "species": [
+      "Vornskyr"
+    ],
+    "note": "Final Wave C species (1 -> 0 remaining, Wave C complete). New RSW_Vornskyr BodyDef (vanilla-part composition, its toxic whip-tail repoints to the already-ported RSW_SW_Club/RSW_SWToxicAppendage from Wave B). New RSW_SW_ForceFocus AbilityDef+HediffDef+TrainableDef chain (the ability this species was blocked on since Pass 24) -- ported verbatim from the donor's SW_Abilities.xml, wired both ways (PawnKindDef abilities + ThingDef specialTrainables), soundCast/warmupStartSound repointed to already-absorbed RSW_Ability_Force/RSW_Ability_ForceFocus_Warmup. leatherDef (Leather_Wolf) vanilla, specificMeatDef repointed to already-existing RSW_Tough_Meat, all 4 vocal sounds already absorbed. Vornskyr has its own ArtOverride mod (mandrake.rsw.vornskyrartoverride, covers south/east/north base facing only) -- only Vornskyr_Dessicated and the ability's own icon (Ability_AnimalForceFocus) extracted."
   }
 }
