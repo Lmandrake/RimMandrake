@@ -400,3 +400,18 @@ UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml   # FOUNDRY: structurally 
 # together at the next shutdown window; remove this hold in the same change.
 # ✅ LIFTED 2026-09-18 14:20 (BENCH) in the shutdown window it named: game DOWN,
 # DLL (rebuilt after the RUT_Deep* rename) + XML deployed together in one --apply.
+
+# --- Droidworks/ArtIncoming: rescued renders, wired to nothing, never shipped ---
+# MYCOID_COLOSSUS_ART_MISROUTE_1 (BENCH, 2026-09-19): three droid facings that the
+# bulk install cea007c3a mis-routed onto the vorrugath's texPath. The owner ruled
+# they be KEPT for the Droidworks rather than deleted, so they live in the repo —
+# but they are a holding area, not game content: no def references that path and
+# shipping them would put three unreferenced PNGs in the live mod for no reason.
+# => LIFT when a def actually claims them, at which point they move to a real
+#    Textures/ path and this hold goes with them.
+# ⚠️ A DIRECTORY pattern matches NOTHING here — holds are FILE paths. The first
+#    attempt used `Droidworks/ArtIncoming/` and all three shipped anyway; the
+#    tool warned that the pattern matched nothing and the warning was missed.
+Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_south.png   # BENCH: rescued mis-route, wired to no def, 2026-09-19
+Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_east.png   # BENCH: rescued mis-route, wired to no def, 2026-09-19
+Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: rescued mis-route, wired to no def, 2026-09-19
