@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:35:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:43:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,6 +107,15 @@ target:   v1
 kind:     task
 summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
+
+## DESIGNATE_BATCH_OVER_DESIGNATES_1 jawa/designate_batch's wantThings loop designates every Thing in a cell, not just the type-appropriate one - pre-existing, now reachable by default after tonight's NRE fix
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     decision
+summary:  the bug
+prose:    infrastructure/state/items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    doing  (BLOCKED)
@@ -1520,16 +1529,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DESIGNATE_BATCH_OVER_DESIGNATES_1 jawa/designate_batch's wantThings loop designates every Thing in a cell, not just the type-appropriate one - pre-existing, now reachable by default after tonight's NRE fix
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DESIGNATE_BATCH_OVER_DESIGNATES_1.md
 
 ## BRIDGETOOLS_TILE_LAYER_DROPPED_1 bridgetools world-tile resolution drops layer/surface id
 state:    proposed
