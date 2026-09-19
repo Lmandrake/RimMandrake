@@ -2,6 +2,202 @@
   "sheetId": "deeps_art_review_2026-09-18",
   "posture": "whitelist",
   "frozen": false,
-  "writeCount": 0,
-  "decisions": {}
+  "writeCount": 1,
+  "decisions": {
+    "arpeau_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "arpeau_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "crystalcap_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "crystalcap_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "crystaltipbrambles_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "crystaltipbrambles_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "dulciscropitem_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "dulcisgrown_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "dulcisharvested_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "dulcisimmature_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "fungusfern_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "fungusfern_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "fungusfern_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "fungusfern_d_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "gleamtip_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "gleamtip_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "greyladygrown_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "greyladygrown_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "greyladygrown_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "greyladyimmature_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonechunk_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonechunk_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonechunk_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonechunk_d_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonehuge_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonehuge_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstoneitem_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstoneitem_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstoneitem_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonelarge_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonelarge_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonemedium_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonemedium_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonesmall_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonesmall_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonesmall_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonesowableimmature_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstoneterrain_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "lanternstonewallicon_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "luminousspout_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "luminousspout_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "mycelium_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "mycelium_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "mycelium_c_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "nuitae_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "nuitae_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "yumbulbs_a_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    },
+    "yumbulbs_b_v1": {
+      "decision": "keep",
+      "note": "owner: approve all (2026-09-18)"
+    }
+  },
+  "reviewed_by": "OWNER",
+  "reviewed_at": "2026-09-18",
+  "owner_said": "We approve all of the art review of Lantern deeps!"
 }
