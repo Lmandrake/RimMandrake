@@ -9846,3 +9846,4 @@
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FLORA_LEAK_1","sha":"960d911dbe80e0496d6975d4ee1cb5b9814211b4","ts":"2026-09-19T13:29:54Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_MAPGEN_STALE_FINALIZE_1","sha":"960d911dbe80e0496d6975d4ee1cb5b9814211b4","ts":"2026-09-19T13:29:55Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T13:30:27Z"}
+{"seat":"BENCH","event":"file","id":"REBOOT_BREAKGLASS_VERIFY_1","title":"Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand","kind":"chore","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-19T15:04:34Z"}

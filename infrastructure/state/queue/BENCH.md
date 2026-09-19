@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T13:30:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T15:04:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -570,3 +570,13 @@ kind:     build
 thin:     no ## verify, no ## criteria
 summary:  Second pass on DEEPSFAUNAMECHANICS1 (FOUNDRY's, built at 0e0fa8bef),
 prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_2.md
+
+## REBOOT_BREAKGLASS_VERIFY_1 Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     chore
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/REBOOT_BREAKGLASS_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
