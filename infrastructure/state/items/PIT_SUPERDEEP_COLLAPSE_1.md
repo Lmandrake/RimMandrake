@@ -247,6 +247,29 @@ BENCH LOOKED at the reference on disk
 - **It is a multi-cell enclosed space that reads as a room**, with irregular organic
   edges rather than a tile grid — which is `pit_reads_at_size` and "this defines a
   room" both satisfied by the same art.
+
+### sprite economy agrees with the wall-face read (carried from PIT_TRAP_VISUAL_REDESIGN_1, superseded 2026-09-19)
+
+`pit_trap_visual_interface_spec.md` compared three art directions before ruling 19
+set four depths. Its sprite counts now argue for the same answer Quarry does:
+
+- **A "Painted Hole"** pays for depth by MULTIPLICATION — the depth read is painted
+  into each composite, so 6 variant composites x 4 depths is roughly **24 full
+  repaints**.
+- **B "Layered Well"** does not — the expensive rim planes are SHARED and only the
+  mouth-wall gradient varies, so four depths costs roughly **four gradient rings**
+  on top of the existing ~10-11.
+
+🔑 So depth legibility makes the layered/wall-face approach CHEAPER relative to the
+painted one, not more expensive — the opposite of the usual "more states, more art"
+intuition. That is the same conclusion as the Quarry read arrived at from a
+different direction: the walls carry the depth, so depth is a property of a shared
+rim, not of every composite.
+
+⚠️ **INFERENCE, not a measurement.** It is arithmetic on the spec's own sprite
+counts, and that spec predates rulings 18/19/24 and fakes ONE depth. Treat it as
+supporting evidence for the wall-face direction, never as a costed plan.
+
 - **No Building is involved.** Quarry is terrain. That is existence proof that the
   collapse ruled here can look right, which is the strongest argument available for
   it.
