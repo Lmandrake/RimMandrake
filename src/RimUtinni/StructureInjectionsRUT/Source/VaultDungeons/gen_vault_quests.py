@@ -452,7 +452,7 @@ def v6_quest():
 
 {site_setup(v['tile'], 3)}
 {letter("The ship remembers", "The reading gave a place in the deep Umbra. The ship went quiet, and then said one word in the Cradle-register that the short ones do not have: a word for children. There is a mark on your map, and there are people under it.")}
-{letter("Arrived: the Umbra vault", "Dark. Frost on every surface, thick enough to write in. The turrets on the ring are here, and they are asleep with everyone else - nothing in this place has drawn power in an age. At the core, a plinth with a socket the shape of a persona core, and beyond it, caskets.\\n\\nFeed the heart and the ring wakes with the hall. Open a casket and the war generation wakes with it. Break one and you have decided for them. Or shut the door and go; the ship will know which.", in_signal="site.MapGenerated")}
+{letter("Arrived: the Umbra vault", "Dark. Frost on every surface, thick enough to write in. The turrets on the ring are here, and they are asleep with everyone else - nothing in this place has drawn power in an age. At the core, a plinth with a socket the shape of a persona core, and beyond it, caskets.\n\nFeed the heart and the ring wakes with the hall. Open a casket and the war generation wakes with it. Break one and you have decided for them. Or shut the door and go; the ship will know which.", in_signal="site.MapGenerated")}
         <!-- ============================================================
              The three-way scene. Two of the three arrive on signals no
              vanilla QuestPart sends natively - MapComponent_VaultSleepers
@@ -511,7 +511,7 @@ def v6_quest():
 {end("Success", in_signal="ClaimDue")}
 
         <!-- LOOT: kills them, plainly. The game says so. -->
-{letter("The caskets", "You broke the caskets open for what was in them. What was in them was people, and now it is not. The Forsaken tech is yours.\\n\\nThe game will not dress this up, and neither will the ship.", in_signal="site.RUT_SleepersLooted", letter_def="NegativeEvent")}
+{letter("The caskets", "You broke the caskets open for what was in them. What was in them was people, and now it is not. The Forsaken tech is yours.\n\nThe game will not dress this up, and neither will the ship.", in_signal="site.RUT_SleepersLooted", letter_def="NegativeEvent")}
 {history("RUT_VaultSleepersKilled", in_signal="site.RUT_SleepersLooted")}
 {end("Success", in_signal="site.RUT_SleepersLooted")}
 
@@ -522,7 +522,7 @@ def v6_quest():
           <inSignalDisable>SleepersTouched</inSignalDisable>
           <node Class="QuestNode_Sequence">
             <nodes>
-{letter("Quest completed: the Umbra vault", "You shut the door on them. The cold will keep them the way it has kept them, and the war they are still fighting will go on without a single shot.\\n\\nThe ship, which once carried their parents here under another name, says nothing about it. It will remember that you did not decide for them. It remembers everything.", indent=14)}
+{letter("Quest completed: the Umbra vault", "You shut the door on them. The cold will keep them the way it has kept them, and the war they are still fighting will go on without a single shot.\n\nThe ship, which once carried their parents here under another name, says nothing about it. It will remember that you did not decide for them. It remembers everything.", indent=14)}
 {history("RUT_VaultLeftSleeping", indent=14)}
 {end("Success", indent=14)}
             </nodes>
