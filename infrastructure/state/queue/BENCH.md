@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T16:27:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T16:42:38Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -598,5 +598,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md yet — write one when you have something to say)
+summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
