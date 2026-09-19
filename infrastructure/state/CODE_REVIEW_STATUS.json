@@ -2424,10 +2424,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/RM_LiquidBody.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "a5a148744fadf8dcb2ab67187209d17b52eaf6703773c894627312375e4fcf83",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "6b53d6bb4f023bf606c0260b65c4278278e2cf81881b2d023ee3426c9c276f52",
+    "sha": "4fde88749"
   },
   "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs": {
     "cleanCount": 1,
@@ -3420,10 +3420,10 @@
     "sha": "92e56d4f"
   },
   "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "32a5ab8e28e6a7763c380180d140fd58b2bc0412fa6d97ce2e5e6f20de4c798a",
-    "sha": "21d72dc5"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "70adf3b39dba129fa33db8085cbf5fc39929e9682431de486d6025f76c0f8555",
+    "sha": "4fde88749"
   },
   "src/RimMandrake/MandrakePatches/Patches/BTDGravshipQuest_GrammarFix.xml": {
     "cleanCount": 1,
@@ -11602,10 +11602,10 @@
     "sha": "38ce6b1fa"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "e9c6fe363abe7bedfa2eaa5d9da78a1b4f5157d09bcc5431f00ec32adb7b2404",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "b99807a80dc9b347af13f703e9b3496094c9d6a7fdf1d68bc1ea01e21808af68",
+    "sha": "4fde88749"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
     "cleanCount": 1,
@@ -11734,10 +11734,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/PawnRenderTreeDefs/RSW_MlieWaveC_RenderTree.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "5155593bf13de1b89d8e19f880177c74fc1e0074b3d10707785d60480ae3075c",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "7539e8ea1b7e403d0abe447fe3ef348823f3828d99636cf1b386cfaddf5dff86",
+    "sha": "4fde88749"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml": {
     "cleanCount": 1,
@@ -11890,10 +11890,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Anooba.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "b0529d960950a336ff85964882ca4b86a6b63cd232131fd78925397a13c0408d",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "059995d854ccd1c4dbc9af0696d02b9f0d4204ebc26ad38f3e664d4ed7ba87b3",
+    "sha": "fb1150a17"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bantha.xml": {
     "cleanCount": 2,
@@ -11914,10 +11914,10 @@
     "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Boma.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "ee0facda2ad053d5f44c9ff476c2994cae7a0f215c21ba0dee9e05c8468951ff",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "fb2af350a20e3e3fc26d14677434ca188e3e45e9bbb8e5842730d2875b80d646",
+    "sha": "fb1150a17"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Borcatu.xml": {
     "cleanCount": 1,
@@ -11944,10 +11944,10 @@
     "sha": "032461ff4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Convor.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "b20e119d419edbbd362209695d67f60aad578a7fcdb7b0ce89e31db462899815",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "77790d05a28760512f2b3776953c15c9ad460679cf037768ac3c5e9971cf329b",
+    "sha": "fb1150a17"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Corinathoth.xml": {
     "cleanCount": 1,
@@ -12070,10 +12070,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6c2ccb32a43c4c16e1ddd69b4d13c81fa253276985454417540e2d2fc7ce9963",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "fb72103ed2dd717a79fc79689f20211bfe0a26b4fe9b2f4f4b91277cc6e63337",
+    "sha": "4fde88749"
   },
   "src/RimStarWars/SWBestiary/Patches/SeasWaterline/Waterline_Lane1.xml": {
     "cleanCount": 1,
@@ -14116,10 +14116,10 @@
     "sha": "18e1ab1b6"
   },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-18",
-    "hash": "f873fda5d62a5450f7fe1a4c2df5cf320d245fc4584eb3eccaac9201e2e824fd",
-    "sha": "e97fc76e4"
+    "hash": "3d0a88dd1bdff3b460f6c1daf3e4c47674b95742f64c4751404b77b050521ac0",
+    "sha": "4fde88749"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepEmergence_Scatter.xml": {
     "cleanCount": 1,
