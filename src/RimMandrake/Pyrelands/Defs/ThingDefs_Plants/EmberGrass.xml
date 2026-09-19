@@ -56,6 +56,13 @@
       <fertilitySensitivity>0.15</fertilitySensitivity>
       <growDays>0.8</growDays>
       <lifespanDaysPerGrowDays>26</lifespanDaysPerGrowDays>
+      <!-- A FOLDER, not a file, and it takes four random variants exactly the
+           way texPath above does. PlantProperties.ResolveReferences builds it
+           as GraphicDatabase.Get(parentDef.graphicData.graphicClass, ...)
+           (RimSage, RimWorld/PlantProperties.cs:263), so the graphicClass and
+           the <color> of graphicData above both carry over: Graphic_Random
+           picks one PNG under this folder per plant, ochre-tinted like the
+           living art. Adding a PNG here adds a variant; no def change. -->
       <leaflessGraphicPath>Things/Plant/RM_FE_EmberGrass_Leafless</leaflessGraphicPath>
       <harvestWork>40</harvestWork>
       <maxMeshCount>9</maxMeshCount>
