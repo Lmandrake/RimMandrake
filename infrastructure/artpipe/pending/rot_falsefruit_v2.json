@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_falsefruit_v2",
+  "priority": 40,
+  "prompt": "Just over half a cell: a small, tempting, rounded pale cap with the same milk-white-and-lilac colouring as the lussa crown, deliberately similar at a glance but with a subtly wrong detail up close \u2014 the gills run in a spiral rather than radially, and the stalk is threaded with fine dark root-hairs into the mat. No glow. Currently the mold-fruiting-bodies placeholder; must become a single small cap, not a carpet. Owner's note: \", rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

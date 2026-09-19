@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:49Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_agaricusdomecap_v2",
+  "priority": 40,
+  "prompt": "A single broad, low dome seven cells across \u2014 height about a third of its width, so the silhouette is a squashed hemisphere sitting almost flat on the mat, the stem hidden. Skin bone-white going lilac at the crown, blotched with sickly yellow-gold warning rings and a wet Sheen gloss on top; thin dark gill-slits visible only around the rim. No stalk, no protrusions: this is the one flat dome in a forest of towers. Scale cue: a colonist is shorter than the dome's edge is thick. Owner's note: \"7 wide, rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-19T09:29:50Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rot_sagecrust_v2",
+  "priority": 40,
+  "prompt": "Half a cell, nine meshes per cell: a flat, leafy, lobed crust hugging the ground, grey-white with a dusty sage-grey cast and darker seams between the lobes, edges curling up slightly, dry-looking and matte. No glow, no gloss \u2014 with the pimmik mold, one of only two matte things here. Distinct from the lumma moss (soft, glowing) and hessuk moss (stringy, blue). Owner's note: \", rename\". painterly RimWorld sprite, transparent background",
+  "reference": null,
+  "rimflow_item_id": "ROT_FLORA_FAUNA_VERDICTS_1",
+  "style_notes": ""
+}

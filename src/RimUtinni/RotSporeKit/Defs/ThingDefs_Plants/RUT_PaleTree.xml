@@ -46,8 +46,8 @@
   <!-- ============== The pale tree — Wildsteam's Force door ============== -->
   <ThingDef ParentName="TreeBase" MayRequire="Ludeon.RimWorld.Royalty">
     <defName>RUT_PaleTree</defName>
-    <label>pale tree</label>
-    <description>A bone-white tree that hums faintly at dusk, sacred to the wandering Wildsteam creed. Meditating in its shade for long enough leaves you with a faint, tugging sense of the Force — and the unshakable feeling that you should find someone who actually knows what this is.</description>
+    <label>quellan tree</label>
+    <description>A bone-white tower of fungus grown in the shape of a tree, humming faintly at dusk, sacred to a wandering creed of the wild. Meditate long enough in its shade and you leave with a faint, tugging sense of the Force — and the unshakable feeling that you should find someone who actually knows what this is.</description>
     <altitudeLayer>Building</altitudeLayer>
     <blockWind>true</blockWind>
     <canScatterOver>false</canScatterOver>
@@ -76,7 +76,7 @@
       <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
       <sowWork>4000</sowWork>
       <harvestWork>800</harvestWork>
-      <visualSizeRange>1.8~2.5</visualSizeRange>
+      <visualSizeRange>4.32~6</visualSizeRange>
       <topWindExposure>0.25</topWindExposure>
       <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
       <sowMinSkill>0</sowMinSkill>
@@ -172,8 +172,8 @@
   <!-- ============== Pale moss — the tree's own biological light ============== -->
   <ThingDef ParentName="PlantBaseNonEdible" MayRequire="Ludeon.RimWorld.Royalty">
     <defName>RUT_PaleMoss</defName>
-    <label>pale moss</label>
-    <description>A faintly glowing moss that only takes root beneath a pale tree, fed by whatever the tree is doing underground. It gives off a soft, cold light of its own — the Rot's usual answer to a lamp.</description>
+    <label>lumma moss</label>
+    <description>A faintly glowing moss that only takes root beneath a quellan tree, fed by whatever the tree is doing underground. It gives off a soft, cold, white-green light of its own — the pale forest's usual answer to a lamp.</description>
     <altitudeLayer>LowPlant</altitudeLayer>
     <category>Plant</category>
     <drawerType>MapMeshOnly</drawerType>
