@@ -132,7 +132,6 @@
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin, adjust-keep -->
       <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native, keep -->
       <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant, keep -->
-      <RSW_BovineBeetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_BovineBeetle>  <!-- bovine beetle - ingest-producer, import -->
       <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native, keep -->
       <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native, adjust-keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native, adjust-keep -->
