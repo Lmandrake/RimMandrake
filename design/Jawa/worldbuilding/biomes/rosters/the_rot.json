@@ -568,94 +568,94 @@
     },
     {
       "commonality": 0.5,
-      "def": "BMT_Nuitae",
+      "def": "RUT_Nuitae",
       "law": "§7b ingested marsh fungi — the milk ponds' own plants"
     },
     {
       "commonality": 0.5,
-      "def": "BMT_Wrinklecap",
+      "def": "RUT_Wrinklecap",
       "law": "§7b marsh fungi"
     },
     {
       "commonality": 0.4,
-      "def": "BMT_Nogtyl",
+      "def": "RUT_Nogtyl",
       "law": "§7b marsh fungi (tree-form)"
     },
     {
       "commonality": 0.4,
-      "def": "BMT_Arpeau",
+      "def": "RUT_Arpeau",
       "law": "§7b marsh fungi (tree-form)"
     },
     {
       "commonality": 0.5,
-      "def": "BMT_Dewshrooms",
+      "def": "RUT_Dewshrooms",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.5,
-      "def": "BMT_FruitingBodies",
+      "def": "RUT_FruitingBodies",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.3,
-      "def": "BMT_Pusmelon",
+      "def": "RUT_Pusmelon",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.3,
-      "def": "BMT_RustPuff",
+      "def": "RUT_RustPuff",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.3,
-      "def": "BMT_Sagecrust",
+      "def": "RUT_Sagecrust",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.3,
-      "def": "BMT_FlakespireFungus",
+      "def": "RUT_FlakespireFungus",
       "law": "§7b ingested (tree-form)"
     },
     {
       "commonality": 0.2,
-      "def": "BMT_BleedingTooth",
+      "def": "RUT_BleedingTooth",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.2,
-      "def": "BMT_CrimsonCap",
+      "def": "RUT_CrimsonCap",
       "law": "§7b ingested"
     },
     {
       "commonality": 0.2,
-      "def": "BMT_VioletWimple",
+      "def": "RUT_VioletWimple",
       "law": "§7b ingested; §9 lilac palette"
     },
     {
       "commonality": 0.2,
-      "def": "BMT_GreyLady",
+      "def": "RUT_GreyLady",
       "law": "§7b ingested (grey lady lace)",
-      "note": "donor bug, clamped 2026-09-09 fix wave: BMT_GreyLady ships Flammability 40 (MEASURED — the whole pool's next-highest is 1.5, so 40 is a typo in the donor mod, not a design). Clamped to 1.0 by BiomeFloraStatAdjustments_Generated.xml."
+      "note": "donor bug, clamped 2026-09-09 fix wave: RUT_GreyLady ships Flammability 40 (MEASURED — the whole pool's next-highest is 1.5, so 40 is a typo in the donor mod, not a design). Clamped to 1.0 by BiomeFloraStatAdjustments_Generated.xml."
     },
     {
       "commonality": 0.2,
-      "def": "BMT_Shinecap",
+      "def": "RUT_Shinecap",
       "law": "§7b ingested; biological light"
     },
     {
       "commonality": 0.2,
-      "def": "BMT_Brightbells",
+      "def": "RUT_Brightbell",
       "law": "§7b ingested; biological light"
     },
     {
       "commonality": 0.15,
-      "def": "BMT_MortalMorelPlant",
+      "def": "RUT_MortalMorelPlant",
       "law": "§7b ingested — fungal medicine"
     },
     {
       "commonality": 0.1,
-      "def": "BMT_Skulltop",
-      "law": "§7b the Skultop defender — defName now MEASURED against the pool (BMT_Skulltop); sibling of the Agarilux Prime (ban 8)"
+      "def": "RUT_Skulltop",
+      "law": "§7b the Skultop defender — defName now MEASURED against the pool (RUT_Skulltop); sibling of the Agarilux Prime (ban 8)"
     },
     {
       "commonality": 0.05,
@@ -672,7 +672,7 @@
   "flora_stat_adjustments": [
     {
       "authority": "donor-bug clamp, 2026-09-09 fix wave: 40 is 26x the pool maximum (1.5) and would make one ingested marsh fungus the most flammable object on the planet. 1.0 is the pool's ordinary living-plant value. No sheet law changes.",
-      "def": "BMT_GreyLady",
+      "def": "RUT_GreyLady",
       "field": "flammability",
       "from": 40,
       "to": 1.0

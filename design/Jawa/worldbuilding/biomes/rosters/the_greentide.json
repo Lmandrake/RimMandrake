@@ -323,11 +323,6 @@
       "law": "§9 green-black canopy; Felucia jungle tree, maxGrowthTemp 75 covers 64 °C tiles (MEASURED pool)"
     },
     {
-      "commonality": 1.0,
-      "def": "BMT_GiantLeaf",
-      "law": "§1 understory mass"
-    },
-    {
       "commonality": 0.5,
       "def": "Plant_TookeTrap_Wild",
       "law": "§7 every export has a tooth in it — predatory SW plant"
@@ -396,6 +391,10 @@
     {
       "def": "TreeDragoberry",
       "reason": "GRim donor tree — sheet §0 replaced"
+    },
+    {
+      "def": "BMT_GiantLeaf",
+      "reason": "Biomes! Caverns retired (CAVERNS_PARITY_BUILD_1/CUT_FALLOUT_GENERATED_DATA_1, 2026-09-19) — no RUT_ port exists yet for this commonality-1.0 understory slot (unlike the_rot.json's 18 same-shape renames); cut-not-port stopgap so the roster stops naming a dead def, port/replace owed"
     }
   ],
   "law_sources": [

@@ -248,11 +248,6 @@
       "law": "§7 crown economy fruit; SW"
     },
     {
-      "commonality": 0.8,
-      "def": "BMT_GiantLeaf",
-      "law": "§1 understory in the dim ground level"
-    },
-    {
       "commonality": 0.5,
       "def": "AB_Iashiphus",
       "law": "alien groundcover — thin floor is doctrine (§3 ground mostly empty)"
@@ -312,6 +307,10 @@
     {
       "def": "Plant_Rafflesia",
       "reason": "Earth-nameable (rafflesia)"
+    },
+    {
+      "def": "BMT_GiantLeaf",
+      "reason": "Biomes! Caverns retired (CAVERNS_PARITY_BUILD_1/CUT_FALLOUT_GENERATED_DATA_1, 2026-09-19) — no RUT_ port exists yet for this commonality-0.8 understory slot (unlike the_rot.json's 18 same-shape renames); cut-not-port stopgap so the roster stops naming a dead def, port/replace owed"
     }
   ],
   "law_sources": [
