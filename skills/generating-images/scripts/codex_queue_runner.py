@@ -3,7 +3,7 @@
 
 CODEX_PARALLEL_WORKERS_1's own architecture: NOT a persistent app-server
 controller (that heavier design was reviewed and largely declined - see
-`infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_202609070239.md`). This is
+`infrastructure/state/handoffs/FOUNDRY_REBOOT_HANDOFF_202609070239.md`). This is
 N parallel, independent `codex_image.py generate|edit` subprocess calls, each
 against its own `--codex-home` (openai/codex #11435: parallel instances
 cross-talk through a shared one), draining a plain directory of job files.

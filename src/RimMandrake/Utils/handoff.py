@@ -13,7 +13,7 @@ So: at the end of a wave the agent runs
     python3 src/RimMandrake/Utils/handoff.py
 
 which GATES first (refusing if the seat is not actually safe to reboot), then
-writes `infrastructure/state/items/<SEAT>_REBOOT_HANDOFF_<stamp>.md` with every
+writes `infrastructure/state/handoffs/<SEAT>_REBOOT_HANDOFF_<stamp>.md` with every
 fact a script can establish — items closed and filed since the last handoff,
 the commits, game and bridge state, the live mod count, what is uncommitted —
 and prints the headings the agent must fill in itself.
@@ -55,7 +55,11 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 LEDGER = os.path.join(ROOT, "infrastructure", "state", "ledger", "events.jsonl")
-ITEMS = os.path.join(ROOT, "infrastructure", "state", "items")
+# 🔑 Handoffs are NOT queue items and never were — no ledger entry, no seat
+# ownership, nothing greps them for queue state. They lived in items/ only by
+# habit, where 82 of them (1.9 MB) sat in the directory doctrine tells agents to
+# grep for "what else this settled". Moved out 2026-09-19 on the owner's word.
+HANDOFFS = os.path.join(ROOT, "infrastructure", "state", "handoffs")
 BRIDGE = os.path.join(ROOT, "infrastructure", "state", "BRIDGE")
 
 TODO = "<<< WRITE THIS >>>"
@@ -160,13 +164,13 @@ def handoff_files(all_seats=False):
 
     `all_seats` serves --harvest and --cull, which sweep the whole corpus and
     must not require a resolvable seat."""
-    if not os.path.isdir(ITEMS):
+    if not os.path.isdir(HANDOFFS):
         return []
     if all_seats:
-        return [fn for fn in os.listdir(ITEMS)
+        return [fn for fn in os.listdir(HANDOFFS)
                 if "_REBOOT_HANDOFF_" in fn and fn.endswith(".md")]
     s = seat()
-    return [fn for fn in os.listdir(ITEMS)
+    return [fn for fn in os.listdir(HANDOFFS)
             if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")]
 
 
@@ -392,7 +396,7 @@ def wake():
     if not prev_name:
         print("no committed handoff for %s — nothing to wake from" % seat())
         return 0
-    text = io.open(os.path.join(ITEMS, prev_name), encoding="utf-8").read()
+    text = io.open(os.path.join(HANDOFFS, prev_name), encoding="utf-8").read()
     print(text)
     ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
     if ids:
@@ -420,7 +424,18 @@ def _corpus_commit_times():
     """{handoff filename: newest commit ts, ledger format} for ALL seats, in
     ONE git call — a per-file `git log` across this 67-file corpus on the
     drvfs mount measures in minutes, not seconds (hit live 2026-09-18)."""
-    out = sh("git", "log", "--format=@@%cI", "--name-only", "--",
+    # ⚠️ BOTH paths AND --diff-filter=AM, deliberately. Handoffs moved out of items/
+    # on 2026-09-19;
+    # keys here are BASENAMES, and the log is newest-first with first-sighting-wins,
+    # so including the historical items/ path keeps every pre-move handoff's ORIGINAL
+    # commit time. Query only the new path and all 82 collapse to the move commit's
+    # timestamp — `previous_handoff()` picks "newest by commit time", so it would then
+    # pick an arbitrary one and wake the seat on the wrong predecessor. AM then drops
+    # the move commit itself, which is a pure rename (R) touching all 82 at once and
+    # would otherwise become every file's "newest" time — the same collapse by another
+    # route. Each handoff keeps the time of the commit that actually WROTE it.
+    out = sh("git", "log", "--format=@@%cI", "--name-only", "--diff-filter=AM", "--",
+             "infrastructure/state/handoffs/*_REBOOT_HANDOFF_*.md",
              "infrastructure/state/items/*_REBOOT_HANDOFF_*.md")
     times, ts = {}, ""
     for line in out.splitlines():
@@ -466,7 +481,7 @@ def harvest(since_ts):
         ts = times.get(fn, "")
         if since_ts and ts and ts <= since_ts:
             continue
-        text = io.open(os.path.join(ITEMS, fn), encoding="utf-8").read()
+        text = io.open(os.path.join(HANDOFFS, fn), encoding="utf-8").read()
         secs = []
         for title in ("The one thing to carry forward", "Traps learned"):
             body = _section(text, title)
@@ -519,7 +534,7 @@ def cull(apply_):
         print("%s  (%s, %dd)" % (fn, ts, age))
     if apply_:
         for fn, _, _ in cands:
-            os.remove(os.path.join(ITEMS, fn))
+            os.remove(os.path.join(HANDOFFS, fn))
         print("deleted %d — commit the deletions with explicit paths; git is "
               "the archive." % len(cands))
     else:
@@ -555,7 +570,7 @@ def build(since_sha, since_ts, prev_name):
         bridge = bridge[-1] if bridge else ""
 
     stamp = datetime.datetime.utcnow().strftime("%Y%m%d%H%M")
-    out = os.path.join(ITEMS, "%s_REBOOT_HANDOFF_%s.md" % (s, stamp))
+    out = os.path.join(HANDOFFS, "%s_REBOOT_HANDOFF_%s.md" % (s, stamp))
 
     L = []
     L.append("# %s_REBOOT_HANDOFF_%s — READ FIRST on wake" % (s, stamp))
@@ -680,18 +695,18 @@ def main():
     prev_name, prev_ts = previous_handoff()
     since_sha = a.since
     if not since_sha and prev_name:
-        p = os.path.join("infrastructure", "state", "items", prev_name)
+        p = os.path.join("infrastructure", "state", "handoffs", prev_name)
         since_sha = sh("git", "log", "-1", "--format=%h", "--", p) or None
 
     # --check validates the handoff THIS session wrote, which is the most recently
     # touched one — again not the alphabetically last, for the same reason.
-    cands = [os.path.join(ITEMS, fn) for fn in handoff_files()]
+    cands = [os.path.join(HANDOFFS, fn) for fn in handoff_files()]
     newest = max(cands, key=os.path.getmtime) if cands else None
 
     if prev_name and window_is_empty(since_sha, prev_ts) and not a.force:
         print("ALREADY HANDED OFF — nothing has closed, been filed or been "
               "committed since\n  %s"
-              % os.path.join("infrastructure", "state", "items", prev_name))
+              % os.path.join("infrastructure", "state", "handoffs", prev_name))
         print("\nThat handoff still stands. Do NOT write another and do NOT say "
               "HANDOFF READY again;\nsay it once, then stay quiet until real work "
               "comes in. --force overrides.")
