@@ -137,37 +137,33 @@
     </wildPlants>
 
     <!--
-      The donor's 28 wildAnimals minus the six crystal-studded residents the
-      sheet's hard ban 3 evicts (crystalope, crystalback beetle, crystal crab,
-      crystal fairy mole, mimic mantis, crystal beetle larvae) and minus the
-      three RULED CUT 2026-09-11 (chem snail, cave spider, glow bat).
-      Everything left points at the RSW_* ports already shipped in SWBestiary.
-      MEASURED 2026-09-18: RSW_Shimmershell*, RSW_Xyrion and RSW_Woollybat do
-      NOT exist in src — those three donor residents are dropped, not repointed.
+      DEEPS_FAUNA_VERDICTS_1 (owner ruling 2026-09-19, frozen source
+      Transient/deeps_flora_fauna_review_2026-09-18.decisions.json): cut 8 kinds
+      the owner rejected outright (AaroxisDendoria + its larva, BloodropLarvae,
+      BovineBeetleLarvae, FacetMoth, MossBeetle, PodWorm, RoyalRhino — race defs
+      left alone, only the spawn entries removed). The remaining donor's 28
+      wildAnimals minus the six crystal-studded residents the sheet's hard ban 3
+      evicts (crystalope, crystalback beetle, crystal crab, crystal fairy mole,
+      mimic mantis, crystal beetle larvae) and minus the three RULED CUT
+      2026-09-11 (chem snail, cave spider, glow bat). Everything left points at
+      the RSW_* ports already shipped in SWBestiary. MEASURED 2026-09-18:
+      RSW_Shimmershell*, RSW_Xyrion and RSW_Woollybat do NOT exist in src —
+      those three donor residents are dropped, not repointed.
     -->
     <wildAnimals>
-      <RSW_AaroxisDendoria>0.05</RSW_AaroxisDendoria>
-      <RSW_AaroxisDendoriaLarvae>0.05</RSW_AaroxisDendoriaLarvae>
       <RSW_BovineBeetle>0.1</RSW_BovineBeetle>
-      <RSW_BovineBeetleLarvae>0.05</RSW_BovineBeetleLarvae>
       <RSW_Gembug>0.1</RSW_Gembug>
       <RSW_GlowSlug>0.2</RSW_GlowSlug>
       <RSW_Megapleura>0.1</RSW_Megapleura>
       <RSW_ShatterjawBeetle>0.1</RSW_ShatterjawBeetle>
       <RSW_FacetMothLarvae>0.05</RSW_FacetMothLarvae>
-      <RSW_FacetMoth>0.05</RSW_FacetMoth>
-      <RSW_PodWorm>0.0001</RSW_PodWorm>
-      <RSW_MossBeetle>0.1</RSW_MossBeetle>
       <RSW_MossBeetleLarvae>0.1</RSW_MossBeetleLarvae>
-      <RSW_RoyalRhino>0.025</RSW_RoyalRhino>
-      <RSW_BloodropLarvae>0.05</RSW_BloodropLarvae>
       <RSW_BloodropMoth>0.25</RSW_BloodropMoth>
     </wildAnimals>
 
     <allowedPackAnimals>
       <li>Muffalo</li>
       <li>Alpaca</li>
-      <li>RSW_RoyalRhino</li>
       <li>RSW_BovineBeetle</li>
       <li>RSW_ShatterjawBeetle</li>
     </allowedPackAnimals>

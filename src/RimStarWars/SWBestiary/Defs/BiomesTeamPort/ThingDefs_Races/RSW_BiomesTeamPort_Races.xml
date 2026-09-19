@@ -2883,8 +2883,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_BloodropMoth</defName>
-    <label>bloodrop moth</label>
-    <description>The adult form of this species. It flies near silently through cave systems in search of blood it can drain from prey using its razor sharp proboscis. Much like bats, they live in large groups.\n\nEven a small group of them can drain a large animal to death in mere minutes.</description>
+    <label>drinker</label>
+    <description>A pale, near-silent flier that drains blood into swollen storage sacs beneath its carapace using a razor-sharp proboscis. Strangely, a meal from a warm-blooded surface creature poisons it — it dies rapidly afterward.</description>
     <statBases>
       <MoveSpeed>5</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -2967,7 +2967,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_BloodropMoth</defName>
-    <label>bloodrop moth</label>
+    <label>drinker</label>
     <race>RSW_BloodropMoth</race>
     <combatPower>70</combatPower>
     <wildGroupSize>1</wildGroupSize>
@@ -8030,8 +8030,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_FacetMothLarvae</defName>
-    <label>crystalline caterpillar</label>
-    <description>The larval form of the facet moth. To deter predators, its body appears spiky and hard through a form of natural mimicry.</description>
+    <label>soulchime</label>
+    <description>A stubby larva-like creature that builds armor from crystal shards it gathers off the ground. It emits a powerful psychic stun on anyone who approaches too closely and alarms it, but a tamed one has a soothing effect on those nearby.</description>
     <statBases>
       <MoveSpeed>2</MoveSpeed>
       <LeatherAmount>2</LeatherAmount>
@@ -8107,7 +8107,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_FacetMothLarvae</defName>
-    <label>facet larvae</label>
+    <label>soulchime</label>
     <race>RSW_FacetMothLarvae</race>
     <combatPower>15</combatPower>
     <ecoSystemWeight>0.4</ecoSystemWeight>
@@ -8828,8 +8828,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_GlowSlug</defName>
-    <label>glowslug</label>
-    <description>This bioluminescent slug is easily spotted in any dark environment, both by its own species and by predators. It is a wonder how they have survived this long, let alone to such a large size.</description>
+    <label>glowbulb</label>
+    <description>A glowing pale-blue slug with pale yellow liquids beneath its skin, easily spotted in any dark environment by its own steady bioluminescence — and by whatever else is hunting in the dark.</description>
     <statBases>
       <MoveSpeed>0.8</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -8848,6 +8848,10 @@ copied verbatim from the donor mods' own Textures trees.
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
         <eggCountRange>1~2</eggCountRange>
         <eggLayFemaleOnly>false</eggLayFemaleOnly>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(150,200,255,0)</glowColor>
       </li>
     </comps>
     <tools>
@@ -8910,7 +8914,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_GlowSlug</defName>
-    <label>glowslug</label>
+    <label>glowbulb</label>
     <race>RSW_GlowSlug</race>
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>
@@ -9592,8 +9596,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_BovineBeetle</defName>
-    <label>bovine beetle</label>
-    <description>A large beetle originally from Caveworlds, this bug is often kept in farms for its production of a milk-like substance and flakes of chitin.</description>
+    <label>grabber</label>
+    <description>A small room-sized blob of pale yellow substance under a glass-like carapace, moving on many small legs. Its single great pincer-ending arm can hold a victim fast and slowly crush them.</description>
     <statBases>
       <MoveSpeed>3.1</MoveSpeed>
       <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
@@ -9631,7 +9635,7 @@ copied verbatim from the donor mods' own Textures trees.
       <fleshType>Insectoid</fleshType>
       <bloodDef>Filth_BloodInsect</bloodDef>
       <body>BeetleLike</body>
-      <baseBodySize>2.45</baseBodySize>
+      <baseBodySize>4</baseBodySize>
       <baseHungerRate>0.20</baseHungerRate>
       <baseHealthScale>1.6</baseHealthScale>
       <foodType>VegetarianRoughAnimal</foodType>
@@ -9689,7 +9693,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_BovineBeetle</defName>
-    <label>bovine beetle</label>
+    <label>grabber</label>
     <race>RSW_BovineBeetle</race>
     <combatPower>30</combatPower>
     <ecoSystemWeight>1.15</ecoSystemWeight>
