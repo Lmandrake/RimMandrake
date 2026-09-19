@@ -92,6 +92,14 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.flowworks"],
         "dlc": True,
     },
+    "visibility": {
+        "why": "Prove mandrake.rm.visibility's threat-point Prefix and "
+               "tile-memory round trip (COLONY_VISIBILITY_BUILD_1) with "
+               "nothing else on the list that could explain a failure. "
+               "Needs Odyssey for GravshipUtility/Building_GravEngine.",
+        "want": [BRIDGE, "mandrake.rm.visibility"],
+        "dlc": True,
+    },
     "graffiti": {
         "why": "Prove mandrake.rm.graffiti + mandrake.rm.sacredgraffiti load "
                "clean and the absorbed vandal spree mechanic runs, with "
