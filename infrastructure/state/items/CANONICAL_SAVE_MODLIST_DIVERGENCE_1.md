@@ -2,8 +2,12 @@
 
 The canonical campaign save cannot be loaded on the live mod list. This is not a
 "one retired mod disarms some pawns" regression — the save's recorded mod list and
-the live list have diverged by 16 mods, so RimWorld's own compatibility check
-refuses the load before any def resolution happens.
+the live list have diverged, so RimWorld's own compatibility check refuses the
+load before any def resolution happens.
+
+🔴 **5 of the divergences are SCRUBBED as of 2026-09-19** on the owner's
+*"Yes, scrub it now"* — see **"Scrub applied"** below. **14 remain, so the save is
+still refused.** Every count in "Measured" below is the PRE-scrub state.
 
 ## Measured
 
@@ -11,14 +15,16 @@ MEASURED 2026-09-19 (FOUNDRY, offline). Both lists parsed with `ElementTree`,
 never grepped — `ModsConfig.xml` puts many `<li>` on one line and a
 `grep -c '<li>'` returns a plausible wrong number.
 
-- `CANONICAL_ASHKARR_START_2026-09-12.rws` — `<meta><modIds>`: **635** entries.
+- `CANONICAL_ASHKARR_START_2026-09-12.rws` — `<meta><modIds>`: **635** entries
+  pre-scrub, **630** now.
   `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CANONICAL_ASHKARR_START_2026-09-12.rws`
-- Live `activeMods`: **621** entries.
+- Live `activeMods`: **621** entries (**620** when re-read during the scrub).
   `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml`
   ⚠️ This file describes the NEXT load, and it was being rewritten by the other
   window during this measurement (it read 632 an hour earlier) — so the count is a
-  moment, not a constant. The 16-mod **set** below is the durable finding.
-- **16 mods the save needs and the live list lacks:**
+  moment, not a constant. The absence **set** below is the durable finding.
+- **19 mods the save needed and the live list lacked** (re-measured during the
+  scrub; the first pass recorded 16 and missed the last three rows):
 
 | packageId | name | why absent |
 |---|---|---|
@@ -33,11 +39,14 @@ never grepped — `ModsConfig.xml` puts many `<li>` on one line and a
 | `mandrake.rut.fungalmantisartoverride` | FungalMantis Art Override | same retirement |
 | `mandrake.rut.jamelartoverride` | Jamel Art Override | same retirement |
 | `mandrake.rut.screecherartoverride` | Screecher Art Override | same retirement |
-| `als.gravtech` | GravTech | **unexplained** |
-| `als.gravtech.bc` | GravTech - Big cannons | **unexplained** |
-| `halituisamaricanous.gravtechbigcannons` | GravTech - Big cannons Retextured | **unexplained** |
-| `petetimessix.researchreinvented.steppingstones` | Research Reinvented: Stepping Stones | **unexplained** |
-| `biomesteam.biomespollutedlands` | Biomes! Polluted Lands | **unexplained** |
+| `als.gravtech` | GravTech | deliberate (`RESEARCH_TRIO_RETIRE_1`) — ✅ **SCRUBBED** |
+| `als.gravtech.bc` | GravTech - Big cannons | deliberate (same) — ✅ **SCRUBBED** |
+| `halituisamaricanous.gravtechbigcannons` | GravTech - Big cannons Retextured | deliberate (same) — ✅ **SCRUBBED** |
+| `petetimessix.researchreinvented.steppingstones` | Research Reinvented: Stepping Stones | deliberate (same) — ✅ **SCRUBBED** |
+| `biomesteam.biomespollutedlands` | Biomes! Polluted Lands | deliberate (`POLLUTED_LANDS_FLORA_PORT_1`) — ✅ **SCRUBBED** |
+| `badoaks.meatonastick` | Meat on a Stick | 🔴 **untraced**. ON DISK: workshop `3435027361` *and* `3577333297` |
+| `badoaks.meatonastick.expansion` | Meat on a Stick - Expansion | 🔴 **untraced**. **NOT on disk** — restoring it is a Steam action, not a ModsConfig edit |
+| `guy762.mm.kotorcore` | Star Wars KotOR Resources and Materials | 🔴 **untraced**. ON DISK: workshop `3254370945` |
 
 - 2 mods live but not in the save (harmless — a save loads fine with extra mods):
   `mandrake.rm.weathersuite`, `mandrake.rut.lanterndeeps`.
@@ -51,17 +60,22 @@ still owed"). That remedy **contradicts** the two deliberate cuts here — Caver
 was retired on purpose, and the 10 ArtOverride mods were retired on purpose the
 same day. A seat restoring them would silently revert two decisions.
 
-Three routes, and picking one is his:
+He picked **route 2 for the 5 ported-then-cut mods** (*"Yes, scrub it now"*,
+2026-09-19) and that is applied. The route for the remaining **14** — Caverns, the
+10 ArtOverrides, and the 3 untraced — is still his:
 
-1. **Restore** the 16 mods to the live list (reverts the Caverns and ArtOverride
+1. **Restore** those 14 to the live list (reverts the Caverns and ArtOverride
    cuts for the campaign's sake). ModsConfig write — expensive list.
-2. **Scrub and re-mint** the canonical save against the current list. The scrub is
-   much larger than the one already done: `CANONICAL_SAVE_CAVERNS_SCRUB_1`'s own
-   finding MEASURED **3,279 refs to 575 Caverns defNames still in the save** after
-   the `BMT_CaveSpiderHead` scrub, and map terrain/biome grids are still
-   UNMEASURED (needs `savemap.py` and a shortHash table from a matching dump).
-2 of those refs are the NRE-risk class (`<stuff>` on worn apparel of two
-   mothballed colonists).
+   `badoaks.meatonastick.expansion` is not installed, so for that one this is a
+   Steam action, not a ModsConfig edit.
+2. **Scrub and re-mint** the canonical save against the current list. The `<meta>`
+   half is cheap (the 5-mod scrub took 15 lines and 477 bytes). The DATA half is
+   much larger: `CANONICAL_SAVE_CAVERNS_SCRUB_1`'s own finding MEASURED **3,279
+   refs to 575 Caverns defNames still in the save** after the `BMT_CaveSpiderHead`
+   scrub, of which 2 are the NRE-risk class (`<stuff>` on worn apparel of two
+   mothballed colonists). ✅ **The grids are no longer UNMEASURED** — see
+   "Scrub applied": terrain resolves 62,500/62,500 cells with 0 unresolved against
+   the current 622-mod dump, so no grid scrub is owed.
 3. **Accept a force-load** with compatibility ignored, once, and see what breaks.
    Nobody has ever loaded this save without Caverns, so the blast radius is
    genuinely unknown — which is why no seat has done it unasked.
@@ -79,17 +93,13 @@ Three routes, and picking one is his:
   one item: `VAULT_THAW_QUEST_FAMILY_1` (V1/V6's fixed siteTiles are Ash'karr tile
   ids and are meaningless on any other world) and `RIVER_STEAM_ANIMATION_1` (needs
   a real Pyrelands river tile). Both are blocked on this.
-- The 5 **unexplained** absences (3 GravTech, SteppingStones, PollutedLands) were
-  already flagged as unexplained on `CANONICAL_SAVE_CAVERNS_SCRUB_1` at
-  2026-09-19T01:07Z and still are. Nobody has traced when or why they left the
-  list; there is no snapshot named for their retirement, unlike Caverns and the
-  ArtOverrides. Worth answering before choosing route 1 — they may simply be
-  uninstalled from disk, in which case restoring them is a Steam action, not a
-  ModsConfig edit.
-  🔴 **TRACED — see "The 5 unexplained absences, traced" below. All 5 are
-  deliberate and recorded; the claim above is stale.**
+- The 3 GravTech mods, SteppingStones and PollutedLands were once flagged
+  "unexplained" here and on `CANONICAL_SAVE_CAVERNS_SCRUB_1`. **They are traced and
+  scrubbed** — see the two sections below. The open untraced absences are the three
+  *new* rows in the table: `badoaks.meatonastick`,
+  `badoaks.meatonastick.expansion`, `guy762.mm.kotorcore`.
 
-## The 5 unexplained absences, traced (FOUNDRY, offline forensics, 2026-09-19)
+## The 5 once-unexplained absences, traced (FOUNDRY, offline forensics, 2026-09-19)
 
 All 5 are **deliberate, owner-authorized, and recorded** — the "unexplained"
 framing above was itself stale, written before (or without checking) the
@@ -163,3 +173,86 @@ trap" `RESEARCH_TRIO_RETIRE_1`'s own ruling warned about, run in reverse).
 These 5 are **not** the same class as the Caverns/ArtOverride restore
 question — for these 5, "scrub and re-mint the canonical save" (route 2) is
 the fit, not "restore."
+
+## Scrub applied — the 5 ported-then-cut mods (FOUNDRY, offline, 2026-09-19)
+
+Owner authorization: **"Yes, scrub it now"**. Full report:
+`Transient/canonical_save_modlist_scrub_2026-09-19.md`; script
+`Transient/canonical_save_modlist_scrub_2026-09-19_scrub.py`; commit `32f1d34c2`.
+
+**Backup** (byte-identical, `cp -p`):
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_START_2026-09-12.rws.bak-pre-modlist-scrub-20260919`
+— 17,590,355 bytes, sha256 `220703b4f454023d904bc48ab183d77cce9a5177185502c5839933ae6ec4e735`.
+Edited file: 17,589,878 bytes, sha256 `e750f98b6b81ddac52a8453860a7c1ba764faaf9b0c707fd90fe61819f59662e`.
+
+⛔ **The `.rws` is not in this repo and must not be committed** — `.gitignore:157`
+ignores `*.rws` globally, with only two `world/` exceptions. That is a standing
+decision. The backup beside the save is the undo.
+
+**What changed.** `<meta>` holds exactly three parallel lists, one `<li>` per line,
+CRLF: `modIds` (lines 5–639), `modSteamIds` (642–1276), `modNames` (1279–1913),
+635 each. Removed 15 whole lines — one from each list at indices **429**
+`als.gravtech`, **450** `petetimessix.researchreinvented.steppingstones`, **478**
+`biomesteam.biomespollutedlands`, **484** `als.gravtech.bc`, **501**
+`halituisamaricanous.gravtechbigcannons`. All three lists 635 → **630**. Raw byte
+edit, no XML re-serialisation; `diff` = **15 deletions, 0 additions, 0
+modifications**.
+
+🔑 **Alignment was verified POSITIONALLY, not by value.** `modSteamIds` is `0` for
+628 of 635 entries, so matching values proves nothing; the indices were resolved
+once from `modIds` and applied to all three lists, then the written file's three
+lists were compared element-wise against `source minus {429,450,478,484,501}`.
+All 630 survivors match in all three lists. Whole-file `ElementTree` parse OK.
+
+**Verification — the edit introduced nothing.** Reference: dump
+`DefDump/captures/2026-09-19T04-19-13Z`, `modCount` **622**, all 5 packageIds
+absent (the 621-mod `2026-09-19T02-35-03Z` capture is unusable — no `defs/`).
+The 5 mods owned 678 defs / 630 distinct defNames in the 584-mod
+`2026-08-29T13-30-02Z` dump; 583 of those names are absent from the 622-mod dump.
+Scanning for all 583, **before and after the edit: 388 names occur, 1,500
+element-value hits, 3 as `<def>NAME</def>` Thing refs, 5 hits — identical.**
+Controls in the same run: `>Steel<` 916, `>Human<` 860, `>ZZZ_NoSuchDefName_ZZZ<` 0.
+A `<meta>` edit removes no data and changes no def's availability, so it cannot
+create a cross-reference error — now measured, not assumed.
+
+**Grids** (`rimbench/savemap.py`, identical before and after; `fogGrid` untouched
+by construction): terrain 11 distinct defs / 62,500 cells / **0 unresolved**;
+`under` and `roof` each carry one pseudo-entry `hash:0` (51,929 and 55,158 cells)
+which means "nothing buried" / "no roof". `roundtrip_check`: `lossless: True`.
+
+**Pre-existing residue, NOT introduced here and not fixable by a `<meta>` edit.**
+Of the 1,500 hits only **5** are real `<def>` Thing instance references, to 3
+donor defNames, and **every one is on a world pawn** — no live colonist, no map
+thing, no caravan:
+
+| defName | owner | count | where |
+|---|---|---|---|
+| `RR_Weapon_Torch` | Stepping Stones | 3 | 1 × `worldPawns/pawnsDead/li/inventory`, 2 × `worldPawns/pawnsDead/li/equipment` |
+| `BMT_BufoBile` | Polluted Lands | 1 | `worldPawns/pawnsAlive/li/inventory` |
+| `BMT_Toxwood` | Polluted Lands | 1 | `worldPawns/pawnsDead/li/inventory` |
+
+The other ~1,495 are registry / dictionary / filter entries — VTE
+`priceHistoryRecorders` keys and values, ThingFilter `allowedDefs`, tale and
+battle-log def refs — the same classes `CANONICAL_SAVE_CAVERNS_SCRUB_1`
+enumerated. They yield Scribe `Could not load reference to` lines and the Thing is
+dropped. **That is route 2's DATA half, owed separately.**
+
+⚠️ **Limit.** Donor ownership comes from the 584-mod dump of **2026-08-29**, which
+predates the save (2026-09-12). A def one of the 5 mods gained between those dates
+is invisible to this comparison; no dump of the save's own 635-mod set exists.
+
+## Still open after the scrub
+
+1. 🔴 **The save is still refused.** 14 `modIds` entries have no live counterpart —
+   Caverns, the 10 ArtOverrides, and the 3 untraced rows in the table above. The
+   route for those is the owner's (see "Why this needs the owner").
+2. 🔴 **Trace `badoaks.meatonastick`, `badoaks.meatonastick.expansion` and
+   `guy762.mm.kotorcore`.** No recorded retirement; not the class he ruled on.
+   `badoaks.meatonastick` resolves to **two** workshop folders
+   (`3435027361`, `3577333297`) — worth knowing which is which before restoring.
+3. **Owed to bridge, not taken** (another FOUNDRY agent held it this wave): load
+   the save and confirm RimWorld itself accepts it. Expect it still refused on the
+   14 above. When it does load, harvest `Player.log` for
+   `Could not load reference to` and expect the 5 world-pawn Things to be dropped.
+4. **Ledger gap, one line**: `biomesteam.biomespollutedlands` is still absent from
+   `infrastructure/state/facts/retired_mods.json` (the other 4 are recorded).
