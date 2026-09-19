@@ -45,6 +45,52 @@
   # while mlie.starwarsanimalcollection stays active. 8 pairs remain below
   # (was 9); Gizka/Iriaz/Nuna/Orray/Zeer are untouched by this pass.
   ############################################################################
+  # 2026-09-19 - MLIE_FAUNA_ABSORPTION_1's own last criterion: "our 3
+  # Mlie-touching patch files repointed and confirmed resolving." Audited
+  # every remaining bare Mlie defName in this file against the CURRENT
+  # BiomeCast_Ashkarr.xml + the live RSW_ port defs (not guessed):
+  #
+  #   REPOINTED (real collision now exists on the RSW_ name, same biome -
+  #   the port's race/wildBiomes carried the donor's own value across
+  #   verbatim, and BiomeCast_Ashkarr.xml now casts the RSW_ name into that
+  #   same biome under the still-correct mlie.starwarsanimalcollection gate):
+  #     #10 Scurrier repointed to RSW_Scurrier x ExtremeDesert (own
+  #         wildBiomes 0.6, cast 0.1 - the VALUES differ, the KEY collision
+  #         doesn't care)
+  #     #14 WarWyrm repointed to RSW_WarWyrm x ExtremeDesert (own wildBiomes
+  #         0.0, cast 0.2 - a zero-commonality wildBiomes entry still throws
+  #         on Dictionary.Add(), same as Titan's own self-duplicate above)
+  #     #20 Urusai repointed to RSW_Urusai x AridShrubland (own wildBiomes
+  #         0.6, cast 0.7)
+  #
+  #   LEFT BARE, VERIFIED CORRECT (checked, not skipped):
+  #     #6/#8/#11 Cannok/Falumpaset/Sketto x ExtremeDesert - RSW_Cannok,
+  #         RSW_Falumpaset and RSW_Sketto are NOT cast in ExtremeDesert by
+  #         BiomeCast_Ashkarr.xml (their cast moved to AridShrubland/Desert/
+  #         BiomeCypreJungle across later rebalance passes). These three ops
+  #         still fire against the still-present, unchanged donor ThingDefs
+  #         (kept alongside their RSW_ ports, per the standing "keep both"
+  #         ruling) and are harmless (values 0.0/0.0/0.01) - not stale, just
+  #         no longer load-bearing against a crash. Their species DO now
+  #         collide at a DIFFERENT biome (Cannok/Sketto x AridShrubland,
+  #         Falumpaset x Desert) - already tracked bare in the sibling
+  #         GENERATED file (AnimalBiomeDuplicates_Generated.xml #90/#116/
+  #         #134), which is BIOME_CAST_DUPLICATE_ANIMALS_1's regeneration
+  #         problem, not a same-day repoint on this hand-authored file: fixing
+  #         it here would mean changing the BIOME the op targets, not just
+  #         the defName, and guessing a biome is exactly what this pass was
+  #         told not to do.
+  #     #29/#30/#33 GraniteSlug/Krykna/Neebray x IceSheet - BiomeCast_Ashkarr
+  #         never touches IceSheet at all (grepped, zero hits), so this is
+  #         NOT a BiomeCast-caused collision and was never going to be fixed
+  #         by an RSW_ rename. Confirmed a real donor-self collision
+  #         independent of our port (RSW_Krykna.xml's own header already
+  #         documents this for Krykna: "stays live and correct... no change
+  #         needed here" - the same class applies to GraniteSlug and Neebray,
+  #         same biome, same unchanged donor wildBiomes value carried
+  #         verbatim into their RSW_ ports with no matching biome-side entry
+  #         to collide with).
+  ############################################################################
 -->
 <!--
   ============================================================================
@@ -252,10 +298,10 @@
       <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 10. Scurrier x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
-    <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- 10. RSW_Scurrier x ExtremeDesert (MLIE_FAUNA_ABSORPTION_1: repointed from bare Scurrier, live collision confirmed against RSW_Scurrier's own wildBiomes + BiomeCast_Ashkarr.xml's cast) -->
+    <xpath>/Defs/ThingDef[defName="RSW_Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 11. Sketto x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
@@ -276,10 +322,10 @@
       <xpath>/Defs/ThingDef[defName="Tooke"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 14. WarWyrm x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
-    <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- 14. RSW_WarWyrm x ExtremeDesert (MLIE_FAUNA_ABSORPTION_1: repointed from bare WarWyrm, live collision confirmed against RSW_WarWyrm's own wildBiomes + BiomeCast_Ashkarr.xml's cast) -->
+    <xpath>/Defs/ThingDef[defName="RSW_WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 19. Torton x AridShrubland (Star Wars Animal Collection (Continued)) -->
@@ -288,10 +334,10 @@
       <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 20. Urusai x AridShrubland (Star Wars Animal Collection (Continued)) -->
-    <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- 20. RSW_Urusai x AridShrubland (MLIE_FAUNA_ABSORPTION_1: repointed from bare Urusai, live collision confirmed against RSW_Urusai's own wildBiomes + BiomeCast_Ashkarr.xml's cast) -->
+    <xpath>/Defs/ThingDef[defName="RSW_Urusai"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Urusai"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
   <!-- == ZBiome_DesertOasis : 1 pair(s) : Little Critters == -->

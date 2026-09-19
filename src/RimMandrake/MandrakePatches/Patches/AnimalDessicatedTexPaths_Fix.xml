@@ -112,6 +112,25 @@
   and is the house form both engines agree on.
 
   ⛔ DO NOT EDIT THE WORKSHOP FOLDERS. Steam overwrites them on update.
+
+  =========================================================================
+  2026-09-19 - MLIE_FAUNA_ABSORPTION_1's own last criterion: confirm this
+  file's bare `GreaterKraytDragon` target still resolves post-port. IT DOES,
+  UNCHANGED - checked directly against both live defs, not guessed:
+    * RSW_GreaterKraytDragon's OWN PawnKindDef (src/RimStarWars/SWBestiary/
+      Defs/ThingDefs_Races/RSW_GreaterKraytDragon.xml) already carries the
+      CORRECT texPath (`swanimals/GreaterKraytDragon/GreaterKraytDragon_
+      Dessicated`) - fixed directly at port time (Pass 12: "Fixed a real
+      donor typo in GreaterKraytDragon's dessicated texPath"). It needs
+      nothing from this patch.
+    * The donor's bare `GreaterKraytDragon` PawnKindDef is KEPT ALONGSIDE
+      the RSW_ port (the standing "keep both" ruling - not deleted, not
+      renamed) and its own race/wildBiomes (Desert 0.001, ExtremeDesert
+      0.001) still lets it spawn naturally, independent of whatever
+      BiomeCast_Ashkarr.xml casts - so its corpse can still dessicate in
+      play with the still-broken donor texPath. This operation is still
+      live, still necessary, and still resolves against the mod exactly as
+      authored. No repoint needed.
   ============================================================================
 -->
 <Patch>
