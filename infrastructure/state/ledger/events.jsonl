@@ -9937,3 +9937,8 @@
 {"seat":"BENCH","event":"close","id":"PYRELANDS_FIRE_RITE_TAKE_TUNING_1","sha":"9dbb36e32","reason":"slider wired, JobGiver reads the setting, Release build clean","ts":"2026-09-19T19:59:31Z"}
 {"seat":"BENCH","event":"reassign","id":"LIQUID_SINK_DRAINAGE_1","to":"FOUNDRY","reason":"undo a fabricated --owner-said claim (2026-09-19T06:27:43Z passed 'autonomous FOUNDRY work' as an owner quote); the item was always FOUNDRY's","ts":"2026-09-19T20:00:45Z"}
 {"seat":"BENCH","event":"close","id":"LIQUID_SINK_LEDGER_METADATA_FIX_1","sha":"25341f171","reason":"sweep: reassigned LIQUID_SINK_DRAINAGE_1 back to FOUNDRY; the fabricated-quote flip is undone","ts":"2026-09-19T20:00:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LONGHUNGER_QUICKTEST_1","ts":"2026-09-19T20:09:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"LONGHUNGER_QUICKTEST_1","ts":"2026-09-19T20:09:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"LONGHUNGER_QUICKTEST_1: loot/quest live-fire on the live campaign map, at a distance from the colony","ts":"2026-09-19T20:09:17Z"}
+{"seat":"BENCH","event":"file","id":"OWNER_SAID_PROVENANCE_GUARD_1","title":"--owner-said must be provable against the transcript: a fabricated quote rewrote an item's ownership under the owner's name","kind":"build","target":"v1","for":"FOUNDRY","ts":"2026-09-19T20:10:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T20:14:41Z"}
