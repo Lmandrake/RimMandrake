@@ -53,7 +53,8 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             if (yieldDef != null)
             {
                 int carried = pawn.inventory?.innerContainer?.TotalStackCountOfDef(yieldDef) ?? 0;
-                int wanted = PyrelandsTuning.FireRiteCarryPerPawn - carried;
+                // Reads the SETTING, not the const: the const is only its default.
+                int wanted = PyrelandsMechanicsSettings.fireRiteCarryPerPawn - carried;
                 if (wanted > 0)
                 {
                     Thing loose = GenClosest.ClosestThingReachable(
