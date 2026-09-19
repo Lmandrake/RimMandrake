@@ -11614,10 +11614,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveC_Abilities.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "97d3584611acb1ca2345ba92ef4da5f3028f5ce8a0cbf06d9db58aaae913c093",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "3c0d44d8e43852d57edfab9aa20d74bb8bf49eac2f80c19e84099ec8a30682e8",
+    "sha": "5d3db25dc"
   },
   "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/Bodies/RSW_BiomesTeamPort_Bodies.xml": {
     "cleanCount": 1,
