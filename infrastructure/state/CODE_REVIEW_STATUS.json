@@ -881,6 +881,12 @@
     "hash": "8169cbfbc6a2aa9099e22e674d4da0334f1ab30e7416374baf411c27ec832bc4",
     "sha": "20ce46f24"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompWoundLink.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "4030ac12d9211fc303078d4789f5ae21d56d16bb0413a19042a3aad4e83be916",
+    "sha": "e1c3162cb"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
     "cleanCount": 3,
     "date": "2026-09-17",
@@ -904,6 +910,12 @@
     "date": "2026-09-11",
     "hash": "f00769718018d6d0de7c77d2b1710b248475bade40c2b797f2a78bd75599c8d7",
     "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_KinMending.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "96373891a3c61b165a7b84420b0037db98746dedda638d158d1cda236cc017bf",
+    "sha": "e1c3162cb"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_SunScald.cs": {
     "cleanCount": 2,
@@ -1481,6 +1493,12 @@
     "hash": "bb47193aef1dd11ee3b7bfc10f0b2f5ddc654b98604139cdb4b87ac523fc2ffd",
     "sha": "c1ae25eaa"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_HealPermanentWounds.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "1c2b4e5143afa7bf28a5a3d5f0da0ef7a6711729f6476cae513ed4e8b3927cc7",
+    "sha": "e1c3162cb"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_LocalGrowthAura.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
@@ -1504,6 +1522,12 @@
     "date": "2026-09-14",
     "hash": "5963ad8eb6b6cbaa0fd07f53163ee41c14f7db6cbf235704eb515b486a0945fc",
     "sha": "0dedc6cfa"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_StunVictim.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "88691bc49f7fa70b7b725b0f130af83762459b9545f3d078fa5b601cf39d3783",
+    "sha": "e1c3162cb"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_WorkLottery.cs": {
     "cleanCount": 1,
@@ -1552,6 +1576,12 @@
     "date": "2026-09-17",
     "hash": "37c6379e3e046d804a26af56c825d21d9b45e4187764c65c83699ca87b05aee4",
     "sha": "d3aa7fb5d"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_AcceleratedRot.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "e2d6a8223f110713c0f78a1deb6d90f6bd56807eb72da5da29038a401f7256d3",
+    "sha": "e1c3162cb"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CrecheMemory.cs": {
     "cleanCount": 1,
@@ -2128,6 +2158,12 @@
     "date": "2026-09-17",
     "hash": "fbb0c54380594e3edc2f87ceca48a1de067c96fc066bcc8b40a7930fc36f8d6e",
     "sha": "b32878458"
+  },
+  "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "77fea876288a3b3ff4bb73227fde7afc1de6f66251f0345b182fc17ab4020e5b",
+    "sha": "e1c3162cb"
   },
   "src/RimMandrake/FlowWorks/Source/LiquidTypes/IngestionOutcomeDoer_BottleResidue.cs": {
     "cleanCount": 1,
@@ -4414,6 +4450,18 @@
     "date": "2026-09-11",
     "hash": "7950dceba64cb250c71bf01f66746bbe91ce988c22de5b2d65c4c161a12dcc68",
     "sha": "c62d11c4c"
+  },
+  "src/RimMandrake/RimProperty/Source/Pickpocket/FloatMenuOptionProvider_Pickpocket.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "9e0f6832d15b19dc09c4a1a346f963e997db6197b093d0ba03fe9bf91eb11acd",
+    "sha": "e1c3162cb"
+  },
+  "src/RimMandrake/RimProperty/Source/Pickpocket/PickpocketUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "1cf09a7873abd078b0c4deaf296c1eb6be0bd466652e406cd7ec274b8a2110bb",
+    "sha": "e1c3162cb"
   },
   "src/RimMandrake/RimProperty/Source/PropertyEngine.cs": {
     "cleanCount": 2,
@@ -15704,6 +15752,18 @@
     "date": "2026-09-09",
     "hash": "566dbc12c2df1e1b7b4827d5f1790e91be6545ba2ee2e259f8b5a250a747dc4f",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/ShieldHazardExposureTracker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "b9d726482d6e95d3f49908adb01fab3b70621c31f484dd878d0e30fa9722f0ef",
+    "sha": "e1c3162cb"
+  },
+  "src/RimUtinni/ShipShields/Source/ShieldHazardUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "da9a83b6338423e6bbf1bc3defae2d9d71c56031651f70bdbe77ba25b786a12e",
+    "sha": "e1c3162cb"
   },
   "src/RimUtinni/ShipShields/Source/ShieldLandingAdvisory.cs": {
     "cleanCount": 2,
