@@ -24,7 +24,9 @@ You run the queue. Autonomous — never ask, never message; blocked means
   a texPath, anything the game must load. A file written, a def edited, a rename: the
   return value is the verification. A live check is owed only to a mechanism never
   once observed running — the owner playing is the default validation. Whoever proves
-  it closes it; then grep `infrastructure/state/items/` for what else it settled.
+  it closes it; then grep `infrastructure/state/items/` for what else it settled —
+  that glob is the LIVE set only (terminal prose sits in `items/closed/`, and
+  `items/closed/` is where you look for history, deliberately not by default).
 - **Specs state outcomes.** A named defName/xpath is an example, not a mandate;
   implement a better route freely while `criteria:` is met, and record what you
   assumed.

@@ -756,7 +756,7 @@ parameter names are both in scope; `AccessTools.Method` reaches a private static
 ⚠️ **It carries no compatibility promise** — an upstream rename makes the patch a silent no-op,
 which is the very defect being fixed, so the patch must assert its target resolved and say so
 loudly if it did not. 🔴 **And it rides a game-DOWN window**, because the OS locks assemblies.
-Full evidence: `infrastructure/state/items/BRIDGE_DROPS_UNKNOWN_PARAMS_1.md`.
+Full evidence: `infrastructure/state/items/closed/BRIDGE_DROPS_UNKNOWN_PARAMS_1.md`.
 
 **34 — "Listing the dev menu" SECRETLY RUNS several hundred mod-authored enumerations, and
 that is why it wedges the bridge.** Read out of `LudeonTK/DebugTabMenu_Actions.cs`

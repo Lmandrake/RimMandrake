@@ -28,7 +28,7 @@ health flag still read green. ⚠️ Its clean minimal-list pass (0.04 s, 2026-0
 was real and is *why* it is retired rather than gated: a call that behaves on 19
 mods and destroys pawn generation on 589 cannot be trusted by the seat deciding
 which case it is in. Canonical entry: `skills/rimworld-modding/SKILL.md` §2;
-evidence: `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+evidence: `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status

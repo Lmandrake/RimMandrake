@@ -15,7 +15,7 @@ four call sites named below (`TimedDetectionRaids`) after re-reading live
 1.6 source found the other three citations do not match current source and
 are not load-bearing for ordinary raids — current build status, corrected
 call-site facts, and what's still TODO live in
-`infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md`, not here._
+`infrastructure/state/items/closed/COLONY_VISIBILITY_STAT_1.md`, not here._
 
 ---
 

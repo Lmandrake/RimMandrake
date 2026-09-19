@@ -1,6 +1,6 @@
 # Anomaly exception access — the Memory-Core revelation (buildable spec)
 
-Item: `infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md`. Ruled by the
+Item: `infrastructure/state/items/closed/ANOMALY_EXCEPTION_ACCESS_1.md`. Ruled by the
 owner 2026-09-03: *"Yes the memory core event."* Options (a) class-item grant and
 (c) no access are dead. Gameplay being granted: `research_review/recovery_drafts.md`
 §1 (The Pit — a captured beast yields beast-metal and 2,000 W; containment

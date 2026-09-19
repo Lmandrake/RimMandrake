@@ -3,7 +3,7 @@
 StructureLayoutDef: the Spire, the Ashfall Research Base, on the Contagion
 peak in the Ashfall Range.
 
-Full spec: infrastructure/state/items/ASHFALL_RESEARCH_BASE_1.md and
+Full spec: infrastructure/state/items/closed/ASHFALL_RESEARCH_BASE_1.md and
 design/Jawa/worldbuilding/ashfall_research_base.md (§4 "dungeon sketch", §6
 owner rulings). Precedent this follows, not duplicates: StructureInjectionsRUT/
 Source/WarLab/gen_war_lab_layout.py (ANCIENT_WAR_LAB_1) - same concentric

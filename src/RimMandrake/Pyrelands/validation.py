@@ -3,7 +3,7 @@
 Assigned as the resolution for the maturity dashboard's "FireEcology" system
 (`Transient/project_maturity_dashboard.json`: functionRung "validated",
 evidenceRef "FIRE_ECOLOGY_LOOP_1", tier ""). No folder named `FireEcology`
-exists. Traced, not guessed: `infrastructure/state/items/FIRE_ECOLOGY_LOOP_1.md`
+exists. Traced, not guessed: `infrastructure/state/items/closed/FIRE_ECOLOGY_LOOP_1.md`
 records that its RimStarWars-tier engine mod (`src/RimStarWars/FireEcology`,
 packageId `mandrake.rsw.fireecology`) and its RimUtinni-tier wiring mod
 (`src/RimUtinni/FireEcology`, renamed `PyrelandsFireEcology` the same day

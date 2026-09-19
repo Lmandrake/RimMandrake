@@ -120,7 +120,7 @@ there is barely a load to save.
   Type-keyed index the pawn generator walks did not. The game reads healthy
   (`programState: Playing`, `playable: true`, `mapDataReady: true`) right up until
   something tries to make a pawn. Full evidence:
-  `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+  `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
 * ⚠️ **The 2026-09-02 minimal-list PASS was real** (Core `Campfire` description
   edited, reloaded in 0.04 s, read back live, reverted clean) — and it is exactly
   why this is retired rather than merely gated. A capability that passes cleanly on

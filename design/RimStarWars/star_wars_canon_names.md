@@ -528,7 +528,7 @@ defs): *Utinni!*, *M'um m'aloo*, *Ibana*, *Nyeta*, *Taa baa*. [A]
    (`Killathon.ArtificialBeings`, Workshop id 3288463094) self-declares
    packageId `Killathon.ArtificialBeings` with no `.syncore` suffix — no folder
    on disk actually declares the `.syncore` packageId. Name recovered only from
-   `infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md`.
+   `infrastructure/state/items/closed/DROID_RETIRE_ABF_SYNCORE_1.md`.
 
 ## UNCERTAIN entries needing follow-up (relevant to the donor-faction proper-noun rename backlog)
 

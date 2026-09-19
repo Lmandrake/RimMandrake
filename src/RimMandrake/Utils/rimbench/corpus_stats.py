@@ -1,6 +1,6 @@
 """HASH-ONLY topology statistics over the hand-authored map corpus.
 
-Spec: infrastructure/state/items/CORPUS_MAP_STATISTICS_1.md. Computes the
+Spec: infrastructure/state/items/closed/CORPUS_MAP_STATISTICS_1.md. Computes the
 feature families from design/RimMandrake/beautiful_tilemap.md §6 over every
 `.rws` under research/RimMandrake/hand_authored_maps/, WITHOUT resolving any
 shortHash to a defName -- the corpus spans mod sets our dump cannot resolve

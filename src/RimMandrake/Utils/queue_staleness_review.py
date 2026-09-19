@@ -6,7 +6,7 @@
     python3 src/RimMandrake/Utils/queue_staleness_review.py --json         # machine-readable
     python3 src/RimMandrake/Utils/queue_staleness_review.py --blocked-days 2 --doing-days 5
 
-⭐ WHY THIS EXISTS. `QUEUE_HEALTH_CHECK_1` (infrastructure/state/items/QUEUE_HEALTH_CHECK_1.md)
+⭐ WHY THIS EXISTS. `QUEUE_HEALTH_CHECK_1` (infrastructure/state/items/closed/QUEUE_HEALTH_CHECK_1.md)
 was a ONE-OFF hand-run census: 20 `doing` items, three read as multi-day-stale "by the
 clock alone", each one hand-verified against its item file and commit history before being
 cleared. Its own closing line named the gap: *"A fuller pass ... is real remaining scope if

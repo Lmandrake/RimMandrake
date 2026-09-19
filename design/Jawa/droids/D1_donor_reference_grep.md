@@ -264,7 +264,7 @@ These ARE gated and therefore safe to retire.
 
 ### Critical Item File
 
-See `infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md` for retirement criteria and rollback procedures. The DroidDonor_ABFGate.xml file has already been authored and validated to handle the ABF retirement scenario; similar gating will be needed for other donors when they actually retire.
+See `infrastructure/state/items/closed/DROID_DONOR_PATCH_GATE_1.md` for retirement criteria and rollback procedures. The DroidDonor_ABFGate.xml file has already been authored and validated to handle the ABF retirement scenario; similar gating will be needed for other donors when they actually retire.
 
 ---
 

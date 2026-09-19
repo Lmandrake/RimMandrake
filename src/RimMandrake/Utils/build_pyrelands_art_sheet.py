@@ -244,7 +244,7 @@ CONFIG = {
     ],
     "sources": [
         "infrastructure/artpipe/registry.jsonl (1810 records, MEASURED)",
-        "infrastructure/state/items/PYRELANDS_CREATURE_RERENDER_1.md (roster + walk verdicts)",
+        "infrastructure/state/items/closed/PYRELANDS_CREATURE_RERENDER_1.md (roster + walk verdicts)",
         "infrastructure/state/items/ART_PAINTERLY_RESTORATION_1.md (the ruling)",
         "sha256 of every sprite pair suspected of being a duplicate",
     ],

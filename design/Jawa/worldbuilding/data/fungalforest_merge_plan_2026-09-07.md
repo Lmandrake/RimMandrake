@@ -3,7 +3,7 @@
 Offline plan only. Nothing painted, nothing committed to the world. Produced while
 RimWorld was mid-load, from `world/ASHKARR_WORLDMAP_tiles.csv` (21872 rows) and
 `world/world_neighbors_sub7b.csv`, parsed with Python's `csv` module — no grep/wc/strings
-on either file. See `infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md` for the
+on either file. See `infrastructure/state/items/closed/FUNGALFOREST_RAID_MERGE_1.md` for the
 owner's ruling and the prior region×sector cluster spec already on file there; this
 plan re-derives the same merge at PER-TILE granularity, using the neighbors CSV directly,
 as a cross-check on that spec (see §6).

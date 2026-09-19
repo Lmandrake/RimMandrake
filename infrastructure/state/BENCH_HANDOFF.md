@@ -18,7 +18,7 @@ next. Everything below is committed and pushed through `8bead41e`.
 
 ## 🔴 The one thing that must not be lost: FOUR COMPILED, UNDEPLOYED FIXES
 Full detail and per-fix proof steps are in
-`infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md`. A DLL cannot be written
+`infrastructure/state/items/closed/COLD_LOAD_RUN_SHEET_2.md`. A DLL cannot be written
 while the game runs, so all four wait on the shutdown window:
 
 ```

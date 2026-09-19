@@ -4,7 +4,7 @@
 No game, no bridge, no mod set at runtime (beyond reading one static def
 dump for name resolution). This is the iteration loop for the map
 generator: render, LOOK, adjust -- see
-infrastructure/state/items/TERRAIN_GRID_RENDERER_1.md.
+infrastructure/state/items/closed/TERRAIN_GRID_RENDERER_1.md.
 
 Two input shapes render through the SAME colour-classification path so a
 corpus save and a generated grid are comparable on one contact sheet:

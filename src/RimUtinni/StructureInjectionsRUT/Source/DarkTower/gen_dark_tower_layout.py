@@ -3,7 +3,7 @@
 StructureLayoutDef: the dark tower, the Rakatan's ground-based high command,
 rising from RUT_TheScald's crater lake.
 
-Full spec: infrastructure/state/items/SCALD_DARK_TOWER_1.md (owner ruling,
+Full spec: infrastructure/state/items/closed/SCALD_DARK_TOWER_1.md (owner ruling,
 2026-09-07). Precedent this follows, not duplicates: StructureInjectionsRUT/
 Source/VaultDungeons/gen_vault_layouts.py (VAULT_DUNGEON_BUILD_1) - same KCSG
 StructureLayoutDef/SymbolDef format, same "every third-party or our-own

@@ -5,7 +5,7 @@
 
 Everything here follows from three settled inputs: the concept
 (`depths_concept.md`, owner-seeded twice), the Odyssey source read
-(`infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md` — verdict: **clone job,
+(`infrastructure/state/items/closed/DEPTHS_ODYSSEY_VERIFY_1.md` — verdict: **clone job,
 not patch job**; triggers data-driven, consumers hardcoded), and the donor scans.
 The C# surface is small and bounded: one MapComponent, one GenStep, one Harmony
 weapon gate. Everything else is defs.
