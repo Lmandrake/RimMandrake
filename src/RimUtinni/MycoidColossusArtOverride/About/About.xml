@@ -6,6 +6,20 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <!-- 🔴 SHIPS NO ART RIGHT NOW, ON PURPOSE (2026-09-19).
+       The three PNGs this mod carried were a DROID, mis-routed here by the bulk
+       install cea007c3a ("install every gate-passed render awaiting verdict, 95
+       stems"). They bound to the vorrugath/mycoid colossus texPath, so the creature
+       rendered as a rusty bipedal droid in game. The owner caught it on the size
+       re-judge sheet: "What IS this graphic? Is this wired correctly?"
+       The renders were NOT deleted — they are kept at
+       src/RimStarWars/Droidworks/ArtIncoming/ on his word that they belong to the
+       Droidworks.
+       With no Textures/ here the donor's own colossus art wins again, which is
+       wrong-but-not-absurd, and strictly better than a droid. Correct art is owed:
+       see MYCOID_COLOSSUS_ART_MISROUTE_1. Drop the new PNGs back at
+       Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_<facing>.png
+       and this mod resumes working with no other change. -->
   <description>Replaces sarg.alphaanimals's AA_MycoidColossus art (adult lifeStage look, south/east/north
 facings only - any alternate-skin or dessicated-corpse textures stay on donor
 art) with an invented-recast render generated for this campaign. LABEL/ART
