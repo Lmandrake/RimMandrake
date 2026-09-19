@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Zeer creature port.
+  Ported from mlie.starwarsanimalcollection's `Zeer` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. Body
+  (`QuadrupedAnimalWithHoovesAndHorn`) is vanilla Core, left bare.
+  `leatherDef` (`Leather_Plain`) is vanilla Core, left bare. `specificMeatDef`
+  (`Tough_Meat`) ALREADY EXISTS as `RSW_Tough_Meat` (Wave B). `CompProperties_
+  Milkable`'s `milkDef` (`Milk`) is vanilla Core, left bare. No egg comp
+  (live birth via gestationPeriodDays). All 4 vocal sounds already absorbed
+  (`RSW_Pawn_Zeer_*`). `willNeverEat`'s tree-plant list left verbatim (all
+  vanilla DLC-gated plant defNames).
+
+  `mandrake.rsw.zeerartoverride` ships owner-approved art at the SAME
+  relative texPath the donor uses (swanimals/Zeer/Zeer_{south,east,north})
+  — per the Anooba incident precedent, did NOT extract or ship those 3
+  facings, only `Zeer_Dessicated` (1 PNG).
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Zeer</defName>
+    <label>zeer</label>
+    <description>The Zeer were a species of long-necked herbivorous animals of unknown planetary origin. They were sociable herd animals. Their exotic appearance made them popular in both galactic zoological exhibits and circuses, ultimately leading to their spread to multiple worlds in order to supply demand.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>600</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <Wildness>0.60</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>3</milkIntervalDays>
+        <milkAmount>15</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <baseHungerRate>0.8</baseHungerRate>
+      <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <petness>0.20</petness>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>240</nuzzleMtbHours>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <lifeExpectancy>25</lifeExpectancy>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.6</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Zeer_Wounded</soundWounded>
+          <soundDeath>Pawn_Zeer_Death</soundDeath>
+          <soundCall>Pawn_Zeer_Call</soundCall>
+          <soundAngry>Pawn_Zeer_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Zeer</defName>
+    <label>zeer</label>
+    <race>RSW_Zeer</race>
+    <combatPower>400</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>zeer calf</label>
+        <labelPlural>zeer calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.7, 0.6, 0.4)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(1, 0.8, 0.5)</volume>
+            <offset>(0,0,-0.5)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

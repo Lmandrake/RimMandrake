@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Wraid creature port.
+  Ported from mlie.starwarsanimalcollection's `Wraid` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. Body (`Dewback`) ALREADY EXISTS
+  as `RSW_Dewback` (Wave B) — Wraid reuses the SAME BodyDef as the standalone
+  Dewback species per the donor's own def, no new BodyDef. New
+  `RSW_Leather_Wraid` (donor-custom leather, texPath swresource/Leather_Scaled,
+  an already-extracted shared texture — no new PNG). `specificMeatDef`
+  (`Saurian_Meat`) ALREADY EXISTS as `RSW_Saurian_Meat` (Wave B). New
+  `RSW_EggWraidFertilized`/`UnFertilized` eggs (texPath swresource/EggSaurian,
+  already-extracted shared texture). All 4 vocal sounds already absorbed
+  (`RSW_Pawn_Wraid_*`). `specialTrainables`' `AttackTarget` is a vanilla
+  Odyssey trainable, left bare.
+
+  No `*ArtOverride` mod exists for Wraid. 4 PNGs extracted this pass:
+  `Wraid_{south,east,north}` and `Wraid_Dessicated`.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Wraid</defName>
+    <label>wraid</label>
+    <description>Wraids were large reptilian creatures found on many desert planets across the galaxy (including but not limited to Tatooine, Ruhnuk, Korriban and even Tython). They were carnivorous creatures, relying on scavening and ambush to find their prey. Wraids were often over hunted for their valuable hides, causing their populations to spike and fall.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>750</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.20</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.40</ArmorRating_Heat>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggWraidUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggWraidFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Dewback</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>0.8</baseHungerRate>
+      <baseHealthScale>3.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>40</lifeExpectancy>
+      <leatherDef>RSW_Leather_Wraid</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.8</Desert>
+        <ExtremeDesert>0.4</ExtremeDesert>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>Pawn_Wraid_Wounded</soundWounded>
+          <soundDeath>Pawn_Wraid_Death</soundDeath>
+          <soundCall>Pawn_Wraid_Call</soundCall>
+          <soundAngry>Pawn_Wraid_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUnommon</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Wraid</defName>
+    <label>wraid</label>
+    <race>RSW_Wraid</race>
+    <combatPower>400</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>wraidling</label>
+        <labelPlural>wraidlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

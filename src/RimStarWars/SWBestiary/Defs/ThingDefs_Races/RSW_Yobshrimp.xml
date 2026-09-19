@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Yobshrimp creature port.
+  Ported from mlie.starwarsanimalcollection's `Yobshrimp` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_Yobshrimp` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — vanilla Shell/Elytra/InsectHeart/Pronotum/
+  InsectHead/InsectNostril/InsectMouth/Arm/InsectLeg/Foot parts plus the
+  already-ported `RSW_SW_LeftClaw` part and `RSW_SWLeftLegClawAttackTool`/
+  `RSW_SWRightLegClawAttackTool` groups (Wave B) — the donor's own body
+  reuses `SW_LeftClaw` for BOTH the front-left AND front-right pincer
+  (ported byte-identical, a pre-existing donor quirk, not our call to
+  "fix"). `leatherDef`/`specificMeatDef` (`Leather_Crustapod`/
+  `Crustapod_Meat`) ALREADY EXIST as RSW_ ports (Wave B). New
+  `RSW_EggYobshrimpFertilized`/`UnFertilized` eggs (texPath swresource/EggRoe,
+  already-extracted shared texture); the unfertilized egg's own
+  `tasteThought`/`specialThoughtAsIngredient` (`AteCrustapodRoe`) stays a
+  bare donor reference, same precedent as `RSW_Crustapod_Meat`'s own use of
+  it (Wave B) — resolves fine while Mlie stays active, no new ThoughtDef.
+  All 4 vocal sounds already absorbed (`RSW_Pawn_Yobshrimp_*`).
+
+  No `*ArtOverride` mod exists for Yobshrimp. 13 PNGs extracted this pass:
+  `Yobshrimp_{south,east,north}`, `Yobshrimp_Dessicated`, the juvenile
+  lifeStage's `Yobshrimp_j_{south,east,north}`, and the swimming variants
+  `Yobshrimp_Swimming_{south,east,north}`/`Yobshrimp_j_Swimming_{south,east,
+  north}` — all referenced by the donor's own PawnKindDef.
+
+  Real donor-bundle asset gap found and worked around (same class as the
+  Igitz juvenile-swimming gap, Pass 10): the donor's own PawnKindDef
+  references `swanimals/Yobshrimp/Yobshrimp_j_Dessicated` for the juvenile
+  life stage's dessicated corpse, but no such texture exists anywhere in the
+  AssetBundle (confirmed via extract_bundle.py's list mode — 6 total
+  `Yobshrimp_j*` matches, none named `Yobshrimp_j_Dessicated`).
+  `validate_patch.py` caught this as a real error (pink placeholder). Worked
+  around by repointing the juvenile `dessicatedBodyGraphicData` to the
+  already-extracted adult `Yobshrimp_Dessicated` texPath instead, same fix
+  pattern as Igitz.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Yobshrimp</defName>
+    <label>yobshrimp</label>
+    <description>Yobshrimp were a carnivorous crustacean native to the shallow waters of the planet Naboo. These clawed creatures were typically preyed upon by animals such as Blarths and larger scalefish. Some considered this animal a delicacy and many fishing families cultivated the yobshrimp for consumption which resulted in it's dispersal to various worlds.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>60</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <Wildness>0.2</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggYobshrimpUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggYobshrimpFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>3</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>1.0</eggProgressUnfertilizedMax>
+        <eggCountRange>1~6</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Yobshrimp</body>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHungerRate>0.08</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <lifeExpectancy>3</lifeExpectancy>
+      <trainability>None</trainability>
+      <roamMtbDays>1.5</roamMtbDays>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <leatherDef>RSW_Leather_Crustapod</leatherDef>
+      <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>Pawn_Yobshrimp_Wounded</soundWounded>
+          <soundDeath>Pawn_Yobshrimp_Death</soundDeath>
+          <soundCall>Pawn_Yobshrimp_Call</soundCall>
+          <soundAngry>Pawn_Yobshrimp_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Yobshrimp</defName>
+    <label>yobshrimp</label>
+    <race>RSW_Yobshrimp</race>
+    <combatPower>75</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>yobshrimp skrimp</label>
+        <labelPlural>yobshrimp skrimps</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_j</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Yobshrimp/Yobshrimp_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

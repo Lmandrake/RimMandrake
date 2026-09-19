@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Urusai creature port.
+  Ported from mlie.starwarsanimalcollection's `Urusai` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. Body (`FlyingAvian`) ALREADY
+  EXISTS as `RSW_FlyingAvian` (RSW_MlieWaveC_Bodies.xml, reused by
+  Convor/Dactillion/Hawkbat/PekoPeko/Sketto) — no new BodyDef. `leatherDef`
+  (`Leather_Reptavian`) and `specificMeatDef` (`Reptavian_Meat`) ALREADY EXIST
+  as RSW_ ports (Wave B). New `RSW_EggUrusaiFertilized`/`UnFertilized` eggs
+  (texPath swresource/EggMammavian, an already-extracted shared texture —
+  no new PNG). All 4 vocal sounds already absorbed in the 2026-09-02 sound
+  wave (`RSW_Pawn_Urusai_*`).
+
+  No `*ArtOverride` mod exists for Urusai. 16 PNGs extracted this pass:
+  `Urusai_{south,east,north}`, `Urusai_Dessicated`, and the 12 flying-frame
+  PNGs (`Urusai_Flying_{1,2,3,4}_{south,east,north}`, matching
+  `flyingAnimationFrameCount>4`).
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Urusai</defName>
+    <label>urusai</label>
+    <description>Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of an easy meal. Their tolerance to harsh climates and propensity to be clean, efficive corpse disposal meant they were spread to numerous worlds by various corporate and criminal organisations.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>80</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.6</Wildness>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggUrusaiUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggUrusaiFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>8</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_FlyingAvian</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>0.7</maxPreyBodySize>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>1.0</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.3</petness>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>50</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <wildBiomes>
+        <AridShrubland>0.6</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Urusai_Wounded</soundWounded>
+          <soundDeath>Pawn_Urusai_Death</soundDeath>
+          <soundCall>Pawn_Urusai_Call</soundCall>
+          <soundAngry>Pawn_Urusai_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Urusai</defName>
+    <label>urusai</label>
+    <labelPlural>urusai</labelPlural>
+    <race>RSW_Urusai</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>1.25</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Urusai/Urusai_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>urusai chick</label>
+        <labelPlural>urusai chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai</texPath>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Urusai/Urusai_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

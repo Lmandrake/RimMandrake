@@ -2304,4 +2304,382 @@
       <MarketValue>7.0</MarketValue>
     </statBases>
   </ThingDef>
+<!-- Pass 24 (TeeMuss..Zeer, 2026-09-19): new leather/meat/wool for species whose
+     donor resource wasn't already ported by an earlier wave. TeeMuss's own
+     woolDef (WoolCoarse) ALREADY EXISTS as RSW_WoolCoarse (Pass 6, Mudhorn) -
+     no new resource. -->
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Cameloid_Meat</defName>
+    <label>cameloid meat</label>
+    <description>A piece of meat from a cameloid.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Cameloid</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Wraid</defName>
+    <label>wraidskin</label>
+    <description>The hide of an Wraid. Harvested from a large, hardy animal. This thick skin protects well and command a decent price.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Scaled</texPath>
+      <color>(175,175,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>12.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.8</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.8</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(175,175,50)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Zakkeg</defName>
+    <label>zakkeg hide</label>
+    <description>The pelt of a Zakkeg. Harvested from a large, predatory animal. This hide protects very well but isn't insulative.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Scaled</texPath>
+      <color>(50,50,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+      <StuffPower_Armor_Sharp>2.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>2.0</StuffPower_Armor_Blunt>
+    </statBases>
+    <stuffProps>
+      <color>(50,50,50)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="WoolBase">
+    <defName>RSW_WoolWyyyschokk</defName>
+    <label>wyyyschokk silk</label>
+    <description>Sticky insectoid silk-wool squeezed from a wyyyschokk labial glands, it offers reasonable insulation and is resilient.</description>
+    <statBases>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>2.0</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>35</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
+    </statBases>
+    <graphicData>
+      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
+      <color>(200,255,255)</color>
+    </graphicData>
+    <stuffProps>
+      <color>(200,255,255)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <Beauty>2.0</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggUrusaiFertilized</defName>
+    <label>urusai egg (fert.)</label>
+    <description>A fertilized urusai egg. If all goes well, it should hatch into a baby urusai. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggMammavian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,150,250)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>15.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Urusai</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggUrusaiUnFertilized</defName>
+    <label>urusai egg (unfert.)</label>
+    <description>An unfertilized urusai egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggMammavian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(200,150,250)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>15.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggUvakFertilized</defName>
+    <label>uvak egg (fert.)</label>
+    <description>A fertilized uvak egg. If all goes well, it should hatch into a baby uvak. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggWiggly</texPath>
+      <color>(250,100,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Uvak</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggUvakUnFertilized</defName>
+    <label>uvak egg (unfert.)</label>
+    <description>An unfertilized uvak egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggWiggly</texPath>
+      <color>(250,100,100)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggVaractylFertilized</defName>
+    <label>varactyl egg (fert.)</label>
+    <description>A fertilized varactyl egg. If all goes well, it should hatch into a baby varactyl. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,215,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Varactyl</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggVaractylUnFertilized</defName>
+    <label>varactyl egg (unfert.)</label>
+    <description>A fertilized varactyl egg. If all goes well, it should hatch into a baby varactyl. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,215,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWhisperbirdFertilized</defName>
+    <label>whisperbird egg (fert.)</label>
+    <description>A fertilized whisperbird egg. If all goes well, it should hatch into a baby whisperbird. It can be eaten raw, but it's much better cooked..</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(0,255,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Whisperbird</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWhisperbirdUnFertilized</defName>
+    <label>whisperbird egg (unfert.)</label>
+    <description>An unfertilized whisperbird egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(0,255,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWorrtFertilized</defName>
+    <label>worrt egg (fert.)</label>
+    <description>A fertilized worrt egg. If all goes well, it should hatch into a baby worrt. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggAmphispawn</texPath>
+      <color>(255,165,0)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Worrt</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWorrtUnFertilized</defName>
+    <label>worrt egg (unfert.)</label>
+    <description>An unfertilized worrt egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggAmphispawn</texPath>
+      <color>(255,165,0)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWraidFertilized</defName>
+    <label>wraid egg (fert.)</label>
+    <description>A fertilized wraid egg. If all goes well, it should hatch into a baby wraid. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(150, 25, 25)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>80.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Wraid</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWraidUnFertilized</defName>
+    <label>wraid egg (unfert.)</label>
+    <description>An unfertilized wraid egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(150, 25, 25)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>80.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWyyyschokkFertilized</defName>
+    <label>wyyyschokk egg (fert.)</label>
+    <description>A fertilized wyyyschokk egg. If all goes well, it should hatch into a baby wyyyschokk. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,255,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>70.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Wyyyschokk</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWyyyschokkUnFertilized</defName>
+    <label>wyyyschokk egg (unfert.)</label>
+    <description>An unfertilized wyyyschokk egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,255,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>70.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<!-- Yobshrimp's own tasteThought (AteCrustapodRoe) stays a bare donor reference,
+     same precedent as RSW_MlieWaveB_Resources.xml's own use of it for
+     RSW_Crustapod_Meat - resolves fine while Mlie stays active, no RSW_
+     ThoughtDef ported for it. -->
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggYobshrimpFertilized</defName>
+    <label>yobshrimp roe (fert.)</label>
+    <description>A fertilized yobshrimp egg. If all goes well, it should hatch into a baby yobshrimp. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,00,200)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Yobshrimp</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggYobshrimpUnFertilized</defName>
+    <label>yobshrimp roe (unfert.)</label>
+    <description>An unfertilized yobshrimp egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,00,200)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>AteCrustapodRoe</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
 </Defs>

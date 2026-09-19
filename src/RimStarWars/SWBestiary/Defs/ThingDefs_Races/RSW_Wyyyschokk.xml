@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Wyyyschokk creature port.
+  Ported from mlie.starwarsanimalcollection's `Wyyyschokk` ThingDef/
+  PawnKindDef pair, renamed under the RSW_ tier prefix. New `RSW_Wyyyschokk`
+  BodyDef (RSW_MlieWaveC_Bodies.xml) — vanilla Shell/InsectHeart/Pronotum/
+  InsectHead/InsectMouth/Arm/InsectLeg parts plus the already-ported
+  `RSW_SWLeftLegClawAttackTool`/`RSW_SWRightLegClawAttackTool` groups (Wave B)
+  — no new part/group defs. `leatherDef` (`Leather_Insectile`) ALREADY
+  EXISTS as `RSW_Leather_Insectile` (Wave B). New `RSW_WoolWyyyschokk`
+  (donor-custom shearable wool, texPath swresource/Leather_Wool/Leather_Wool,
+  an already-extracted shared texture). `useMeatFrom>Megaspider` stays
+  bare (vanilla Core meat-appearance reuse, not a specificMeatDef). Ability:
+  `SW_WebShot` (specialTrainables + PawnKindDef abilities) ALREADY EXISTS as
+  `RSW_SW_WebShot` (a FOUR-def group — AbilityDef/HediffDef `RSW_SW_Webbed`/
+  TrainableDef/projectile `RSW_SW_WebShotprojectile`, RSW_MlieWaveC_Abilities.xml,
+  first consumed by Kinrath) — wired here as its second consumer. New
+  `RSW_EggWyyyschokkFertilized`/`UnFertilized` eggs (texPath swresource/EggSilk,
+  2 PNGs newly extracted this pass — no prior species used this egg color).
+  All 4 vocal sounds already absorbed (`RSW_Pawn_Wyyyschokk_*`).
+
+  `mandrake.rsw.wyyyschokkartoverride` ships owner-approved art at the SAME
+  relative texPath the donor uses (swanimals/Wyyyschokk/Wyyyschokk_{south,
+  east,north}) — per the Anooba incident (5a8fc8c1c) precedent, did NOT
+  extract or ship those 3 facings, only `Wyyyschokk_Dessicated` (1 PNG, the
+  one facing the override doesn't cover).
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Wyyyschokk</defName>
+    <label>wyyyschokk</label>
+    <description>Wyyyschokk were a species of gigantic spider that lived on the planet Kashyyyk. Both highly intelligent and extremely hostile, they could ensnare prey by casting webbing at them.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-17</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <MarketValue>1000</MarketValue>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.20</ArmorRating_Blunt>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fanged chelicerae</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>fanged pedipalp</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftLegClawAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>fanged pedipalp</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightLegClawAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggWyyyschokkUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggWyyyschokkFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>4~8</eggCountRange>
+      </li>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_WoolWyyyschokk</woolDef>
+        <shearIntervalDays>12</shearIntervalDays>
+        <woolAmount>60</woolAmount>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Wyyyschokk</body>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>3.5</maxPreyBodySize>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>400</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <nuzzleMtbHours>240</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_WebShot</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.2</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Wyyyschokk_Wounded</soundWounded>
+          <soundDeath>Pawn_Wyyyschokk_Death</soundDeath>
+          <soundCall>Pawn_Wyyyschokk_Call</soundCall>
+          <soundAngry>Pawn_Wyyyschokk_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Wyyyschokk</defName>
+    <label>wyyyschokk</label>
+    <race>RSW_Wyyyschokk</race>
+    <combatPower>600</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_WebShot</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.5, 0.37)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wyyyschokk/Wyyyschokk_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

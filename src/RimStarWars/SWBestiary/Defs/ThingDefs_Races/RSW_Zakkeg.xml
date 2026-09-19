@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Zakkeg creature port.
+  Ported from mlie.starwarsanimalcollection's `Zakkeg` ThingDef/PawnKindDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_Zakkeg` BodyDef
+  (RSW_MlieWaveC_Bodies.xml) — entirely vanilla-part composition (Body/Tail/
+  Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Hump/Neck/Head/Skull/Brain/
+  Eye x2/Ear x2/Nose/AnimalJaw, Leg x4/FrontClaw x6/RearClaw x6) plus the
+  already-ported `RSW_SW_Club`/`RSW_SWTailAttackTool` (Wave B) for the tail
+  — no new part/group defs. New `RSW_Leather_Zakkeg` (donor-custom leather,
+  texPath swresource/Leather_Scaled, an already-extracted shared texture).
+  `specificMeatDef` (`Saurian_Meat`) ALREADY EXISTS as `RSW_Saurian_Meat`
+  (Wave B). No egg comp (live birth via gestationPeriodDays/litterSizeCurve).
+  Flagged, not fixed: the adult lifeStage's own vocal sounds are the donor's
+  own bug — they point at `Pawn_Boma_*` (a DIFFERENT species' sounds), not
+  `Pawn_Zakkeg_*`; ported byte-identical (pre-existing donor mismatch, not
+  introduced here).
+
+  `mandrake.rsw.zakkegartoverride` ships owner-approved art at the SAME
+  relative texPath the donor uses (swanimals/Zakkeg/Zakkeg_{south,east,
+  north}) — per the Anooba incident precedent, did NOT extract or ship
+  those 3 facings, only `Zakkeg_Dessicated` (1 PNG).
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Zakkeg</defName>
+    <label>zakkeg</label>
+    <description>Zakkegs were rare alpha-predators indigenous to the moon of Dxun. They were huge, armoured quadrupeds, typically solitary and territorial. Even Mandalorians were impressed by someone who killed one, and one could gain great honor for proving one's success. Due to this, several Mandalorian clans and big game hunters exported these creatures to numerous worlds to provide a ready supply of the beasts.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>3000</MarketValue>
+      <ComfyTemperatureMin>-17</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>16</FilthRate>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.99</ArmorRating_Heat>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.4</ToxicEnvironmentResistance>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claws</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claws</label>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+    </comps>
+    <race>
+      <body>RSW_Zakkeg</body>
+      <predator>true</predator>
+      <baseBodySize>5.0</baseBodySize>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseHealthScale>5.0</baseHealthScale>
+      <baseHungerRate>0.40</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Zakkeg</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <lifeExpectancy>48</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1.7)</li>
+          <li>(2, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.00</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>Pawn_Boma_Wounded</soundWounded>
+          <soundDeath>Pawn_Boma_Death</soundDeath>
+          <soundCall>Pawn_Boma_Call</soundCall>
+          <soundAngry>Pawn_Boma_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Zakkeg</defName>
+    <label>zakkeg</label>
+    <race>RSW_Zakkeg</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Zakkeg/Zakkeg_Dessicated</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — TeeMuss creature port.
+  Ported from mlie.starwarsanimalcollection's `TeeMuss` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml), renamed under the RSW_ tier prefix. Body
+  (`QuadrupedAnimalWithHoovesAndHump`) is vanilla Core, left bare.
+  `leatherDef` (`Leather_Plain`) and `woolDef` (`WoolCoarse`) are vanilla
+  Core / already-ported (`RSW_WoolCoarse`, Pass 6 Mudhorn) — left/renamed
+  accordingly, no new resource for either. `specificMeatDef` (`Cameloid_Meat`)
+  is NEW this pass — ported as `RSW_Cameloid_Meat` (RSW_MlieWaveC_Resources.xml),
+  texPath swresource/Meat_Cameloid, 3 PNGs newly extracted. All 4 vocal sounds
+  reuse vanilla `Pawn_Dromedary_*` (donor's own choice, unchanged).
+
+  No `*ArtOverride` mod exists for TeeMuss. 4 PNGs extracted this pass via
+  extract_bundle.py: `TeeMuss_{south,east,north}` (base facing) and
+  `TeeMuss_Dessicated`. The donor's own `TeeMussPack_{south,east,north}`
+  variants (3 PNGs) excluded — unreferenced by the donor's own
+  ThingDef/PawnKindDef, same "unreferenced-by-the-def" precedent as every
+  prior wave's "Pack" exclusions. Sits at Textures/swanimals/TeeMuss/.
+-->
+<Defs>
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_TeeMuss</defName>
+    <label>tee muss</label>
+    <description>Tee-muss were a species of domesticated farm animals native to the jungle planet Onderon. They were found on various worlds around the galaxy due to escape from domestic populations.</description>
+    <statBases>
+      <MoveSpeed>4.3</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>12</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.10</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>WoolCoarse</woolDef>
+        <shearIntervalDays>12</shearIntervalDays>
+        <woolAmount>60</woolAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>2.1</baseBodySize>
+      <baseHealthScale>1.6</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Cameloid_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <petness>0.30</petness>
+      <roamMtbDays>7</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <lifeExpectancy>40</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateSwamp>0.04</TemperateSwamp>
+        <TemperateForest>0.08</TemperateForest>
+        <BorealForest>0.8</BorealForest>
+        <Tundra>0.4</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Dromedary_Wounded</soundWounded>
+          <soundDeath>Pawn_Dromedary_Death</soundDeath>
+          <soundCall>Pawn_Dromedary_Call</soundCall>
+          <soundAngry>Pawn_Dromedary_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_TeeMuss</defName>
+    <label>tee muss</label>
+    <race>RSW_TeeMuss</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>tee muss calf</label>
+        <labelPlural>tee muss calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/TeeMuss/TeeMuss_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
