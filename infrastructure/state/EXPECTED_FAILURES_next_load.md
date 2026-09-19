@@ -12,10 +12,15 @@ proven on the 10-mod list — Load B never had it enabled), AND a rebuilt DLL
 (`DEEP_ENTRANCE_BIOMES_SETTING_1`: entrance biomes are now a Mod Settings list). Core,
 Polluted Lands and Fossils STAY (owner ruled Caverns only; Fossils kept on his word).
 
-🔴 **SHUTDOWN WINDOW WORK before this load** — LanternDeeps is committed but NOT deployed:
-`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod LanternDeeps --apply` (DLL +
-About.xml + `Defs/SoundDefs/RUT_DeepAmbience.xml` + `Defs/Weather/RUT_DeepCalm.xml`) with
-the game DOWN. Also `modcheck run LanternDeeps` if there is time — it swaps the list.
+✅ **LanternDeeps DEPLOYED 2026-09-19 02:2x** (BENCH, during the other window's 29-mod
+quicktest — the mod was not in that list, so its DLL was not locked): DLL + About + defs +
+sound + 50 textures under the renamed paths, `--prune` removed the old plant folders,
+VERIFIED in sync. `modcheck run LanternDeeps` still owed in a window of its own (it swaps
+the list). ⚠️ The live list is the peer's 29-mod quicktest list; the FULL list to restore is
+`Config/ModsConfig.xml.bak_pollutedlands_removal_20260919T021429Z` (622: Caverns out,
+LanternDeeps in, 10 ArtOverrides out) or the peer's own 621 (Polluted Lands out as well) —
+NOT `infrastructure/state/modlists/ModsConfig.FULL.PRECAPTURE.20260918_141403.xml`, which is
+the pre-cut 630.
 
 | item | string | baseline | means |
 |---|---|---|---|
