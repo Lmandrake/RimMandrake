@@ -1,6 +1,6 @@
 # Orray
 
-**defName**: `Orray` (third-party, mlie.starwarsanimalcollection, not vendored — see Watch out)
+**defName**: `RSW_Orray` (vendored in this repo's SWBestiary mod)
 
 ## Sourced text (Wookieepedia)
 Orrays are large, stour (stout) quadruped reptiles native to the deserts of Geonosis.

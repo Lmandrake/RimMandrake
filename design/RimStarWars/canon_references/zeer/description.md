@@ -1,11 +1,6 @@
 # Zeer
 
-**defName**: not vendored in this repo; lives only in the third-party donor mod
-`mlie.starwarsanimalcollection` ("Star Wars Animal Collection (Continued)"),
-which is ACTIVE in the mod list but whose install could not be located on
-disk this pass (checked both the Steam Workshop content cache at
-`294100/` and `.../RimWorld/Mods/` — see `PYRELANDS_CREATURE_RERENDER_1`
-notes). No local ThingDef/PawnKindDef or sprite file exists to read.
+**defName**: `RSW_Zeer` (vendored in this repo's SWBestiary mod)
 
 **Provenance flag**: the task brief that requested this library entry
 described Zeer as a "KOTOR-era creature." That does not match what
