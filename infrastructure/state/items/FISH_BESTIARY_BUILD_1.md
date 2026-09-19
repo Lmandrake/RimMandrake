@@ -772,3 +772,50 @@ this item could fix by editing its own XML. Added: the `fish` tier in
 
 **Git**: see the commit this section ships with.
 
+## 2026-09-19 wave 6 (FOUNDRY, belt mode, subagent) — assigned brief already complete, verified not rebuilt
+
+Dispatched with a brief to build "the Wasteland brine mining mechanism" per
+the 08:17:02Z owner-ruling note (RUT_Tekk/RUT_Drazz/RUT_BrinePlate reachable
+by mining the ToxicWater pool floor, not fishing) — the same brief wave 2
+already executed. **Read the item file in full before touching anything**
+(per this item's own two prior "surprise already built" near-misses) and
+found wave 2 (`29689337f`, committed 2026-09-18 08:51:49Z — 34 min AFTER the
+ruling note, not stale) had already built the complete mechanism: four
+`RUT_WastelandBrine*` TerrainDefs, `RUT_Wasteland.xml`'s water fields wired
+to them, three `RockBase`-parented Mineable `RUT_BrineDeposit_Tekk`/`_Drazz`/
+`_BrinePlate` ThingDefs, three `GenStep_ScatterThings` defs registered onto
+`Base_Player.genSteps`, and both v1 hediffs (`RUT_BrineShock` from wave 1,
+`RUT_CoolantLoad` on the pre-existing coolant eel). Waves 3-5 then re-swept
+for the wave-3 dead-donor-patch bug class (Wasteland confirmed clean, still
+wired onto the live `RUT_Wasteland` def), and the 2026-09-18 live-verification
+pass already ran an actual bridge quicktest attempt against it — blocked not
+by anything in this mechanism but by `QUICKTEST_RIVER_WATER_MISSING_1` (no
+water terrain generates on ANY biome this session, control-tested against a
+non-`RUT_` biome too, so the brine terrain/scatter tags never get cells to
+scatter onto).
+
+**Verified, did not rebuild:** re-ran `validate_patch.py` static on all four
+wave-2 mining files (`RUT_WastelandBrineWater.xml`,
+`RUT_WastelandBrineDeposits.xml`, `RUT_WastelandBrineScatter.xml`,
+`RUT_WastelandBrineScatter_Register.xml`) — still 0 errors, 3 advisory
+warnings (the same pre-existing `RockFlecked_Atlas` vanilla-texPath
+not-locally-scannable advisory wave 2's own header already named, and the
+`ParentName="RockBase"` "pass --defs" info-only note). Confirmed via
+`git status --porcelain` these files carry no uncommitted changes and via
+`git status -sb` that `main` is not ahead of `origin/main` — wave 2 through
+the live-verification pass are already committed and pushed, nothing of
+this item's own work is sitting local-only.
+
+**Nothing built this pass** — building a second mining mechanism, a second
+`RUT_Tekk`/`RUT_Drazz`/`RUT_BrinePlate`, or a duplicate hediff would have
+been exactly the class of mistake this item's own "Watch out" already warns
+against. The genuinely owed pieces are unchanged and belong to their own
+filed items, not this one's remaining scope: `QUICKTEST_RIVER_WATER_MISSING_1`
+(blocks live-proving the mining GenSteps, and every other water this item
+touches), `SCALD_MECHANICS_1` (owed cove painting), and
+`TWILIGHT_DEEP_WATER_LAYER_1` (owner ruling, AFK). Left `doing` — the item's
+own 32-species build and its owed live quicktest are unchanged by this pass.
+
+**Git**: none — no code change this wave, only this log entry (committed with
+the ledger-sync note).
+
