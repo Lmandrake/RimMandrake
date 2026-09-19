@@ -65,11 +65,21 @@
   RUT_ScaldWrecks.xml's own restraint on its loot-ThingSetMaker idea) declines
   to add on top of the mechanism itself. RUT_BrineShock (wave 1's ingestion
   hediff, unaffected) still fires on eating a raw drazz once mined.
+
+  🔴 CORRECTED (FOUNDRY code review, 2026-09-18): RUT_BrineDeposit_Tekk and
+  RUT_BrineDeposit_Drazz now carry MayRequire="Ludeon.RimWorld.Odyssey" — their
+  mineableThing (RUT_Tekk/RUT_Drazz, RUT_WastelandBrine_Items.xml) is itself
+  Odyssey-gated, and without a matching gate here the two deposit ThingDefs
+  would still load without Odyssey and leave mineableThing an unresolvable
+  cross-reference. RUT_BrineDeposit_BrinePlate is unaffected: RUT_BrinePlate is
+  an ungated ResourceBase def. RUT_WastelandBrineScatter.xml's Tekk/Drazz
+  GenStepDefs and RUT_WastelandBrineScatter_Register.xml's registration are
+  gated to match.
   ============================================================================
 -->
 <Defs>
 
-  <ThingDef ParentName="RockBase">
+  <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_BrineDeposit_Tekk</defName>
     <label>tekk bed</label>
     <description>A crust of salt-white mineral over a shallow shelf, crawling with plate-scrapers just under the surface. Break the crust and they scatter for the taking.</description>
@@ -98,7 +108,7 @@
     </building>
   </ThingDef>
 
-  <ThingDef ParentName="RockBase">
+  <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_BrineDeposit_Drazz</defName>
     <label>drazz bed</label>
     <description>A stack of mineral wafers half-buried in the pool floor, salt-white and dark by turns — the owner, dormant and heavy, waiting under the crust. Mining it out is the only way anyone gets one without a dry line and a lot of patience.</description>

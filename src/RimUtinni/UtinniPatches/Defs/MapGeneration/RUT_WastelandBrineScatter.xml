@@ -50,7 +50,7 @@
 -->
 <Defs>
 
-  <GenStepDef>
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Jawa_ScatterWastelandBrineTekk</defName>
     <order>971</order>
     <genStep Class="GenStep_ScatterThings">
@@ -65,7 +65,7 @@
     </genStep>
   </GenStepDef>
 
-  <GenStepDef>
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Jawa_ScatterWastelandBrineDrazz</defName>
     <order>972</order>
     <genStep Class="GenStep_ScatterThings">

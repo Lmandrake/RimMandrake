@@ -19,25 +19,44 @@
   ParentName="MapCommonBase" Name="Base_Player", <genSteps> a plain list of
   GenStepDef names.
 
-  No MayRequire needed on this patch — its three GenStepDefs are this mod's
-  own, always loaded together with this patch. Conditional test xpath is
-  identical to the inner Add's xpath, same discipline as its own precedent.
-
-  Not held via DEPLOY_HOLD.txt: unlike RUT_ScaldWreckScatter_Register.xml, none
-  of the three ThingDefs this patch's GenStepDefs name are missing art (see
-  RUT_WastelandBrineDeposits.xml's own header) — nothing here is a dangling
-  cross-reference.
+  🔴 CORRECTED (FOUNDRY code review, 2026-09-18): two of the three GenStepDefs
+  ARE cross-mod-gated, so this patch is split into two Operations rather than
+  one. RUT_Jawa_ScatterWastelandBrineTekk/Drazz's own thingDef (RUT_BrineDeposit_
+  Tekk/Drazz) sets mineableThing to RUT_Tekk/RUT_Drazz, both
+  MayRequire="Ludeon.RimWorld.Odyssey" ThingDefs (RUT_WastelandBrine_Items.xml) —
+  so both the deposit ThingDefs and their GenStepDefs now carry that same
+  MayRequire (RUT_WastelandBrineDeposits.xml / RUT_WastelandBrineScatter.xml).
+  Adding a <li> naming either GenStepDef unconditionally, as this patch
+  originally did, would have added a name to Base_Player's genSteps list that
+  resolves to nothing without Odyssey — a dangling cross-reference at load.
+  RUT_Jawa_ScatterWastelandBrinePlate has no such gate (its thingDef's
+  mineableThing is RUT_BrinePlate, an ungated ResourceBase def) and keeps its
+  own unconditional Operation.
   ============================================================================
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional">
+  <!-- Tekk/Drazz GenStepDefs are themselves MayRequire="Ludeon.RimWorld.Odyssey"
+       (RUT_WastelandBrineScatter.xml, since their own thingDef's mineableThing
+       points at the Odyssey-gated RUT_Tekk/RUT_Drazz ThingDefs) - added
+       separately from BrinePlate's so this patch never adds a <li> naming a
+       GenStepDef that does not exist without Odyssey active. -->
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
     <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
         <li>RUT_Jawa_ScatterWastelandBrineTekk</li>
         <li>RUT_Jawa_ScatterWastelandBrineDrazz</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
         <li>RUT_Jawa_ScatterWastelandBrinePlate</li>
       </value>
     </match>
