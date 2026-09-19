@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Strill creature port.
+  Ported from mlie.starwarsanimalcollection's `Strill` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Strill` BodyDef (Bodies_Animal_StarWars.xml) reuses the ALREADY-PORTED
+  Wave B `RSW_SW_Club`/`RSW_SWTailAttackTool` (the same whip-tail combo
+  Shyrack this same pass and Boma already established) — every other part
+  (Body/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/Brain/
+  Eye x2/Ear x4/Nose/AnimalJaw, 6x Leg/Paw for its hexapod gliding stance)
+  is vanilla Core, no new body part needed. Ported as RSW_Strill
+  (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Mammavian`) and
+  `specificMeatDef` (`Mammavian_Meat`) ALREADY EXIST as
+  `RSW_Leather_Mammavian`/`RSW_Mammavian_Meat` (Wave B) — no new resource
+  needed. Adult lifeStage sounds (`Pawn_Strill_*`, `soundWounded` reusing
+  `Pawn_Strill_Angry`, confirmed directly off the donor's own `<race>`
+  block, not a typo) were already absorbed in the 2026-09-02 sound wave —
+  confirmed present in SoundDefs_SWBestiary.xml as `RSW_Pawn_Strill_*`,
+  wired, not re-done. `specialTrainables` (`AttackTarget`) left bare — this
+  is the VANILLA Odyssey `AttackTarget` TrainableDef (Data/Odyssey/Defs/
+  Misc/Trainables.xml, confirmed directly off the game's own def dump), NOT
+  donor content.
+
+  No `*ArtOverride` mod exists for Strill (checked first). 7 PNGs extracted
+  this pass via extract_bundle.py against the same AssetBundle every prior
+  wave used: `Strill_{south,east,north}` (base facing), `Strill_Dessicated`,
+  and the single flying-animation frame (`flyingAnimationFrameCount>1</`,
+  `Strill_Flying_1_{south,east,north}` — a glide pose, not a multi-frame
+  flap cycle like Shyrack/Sketto this same pass). Every texPath the def
+  references resolves. Sits at Textures/swanimals/Strill/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row for this species, repointed from the bare "Strill" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Strill</defName>
+    <label>strill</label>
+    <description>Strills were a species of highly intelligent, six-legged carnivorous mammals native to the planet Mandalore. They had folds of leathery skin between their legs which allowed them to glide short distances with sufficient updraft and they purportedly had a very distinct (often unpleasant) smell. A number of Mandalorians took to keeping strills (or 'striile' in Mando'a) as pets, making use of their naturally ferocious predatory instincts as hunting animals. This resulted in small Strill populations being found on numerous worlds where Mandalorians were or had been.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>-45</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+      <FilthRate>12</FilthRate>
+      <Wildness>0.40</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Strill</body>
+      <predator>true</predator>
+      <baseBodySize>1.0</baseBodySize>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseHealthScale>2.00</baseHealthScale>
+      <baseHungerRate>0.36</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Mammavian</leatherDef>
+      <specificMeatDef>RSW_Mammavian_Meat</specificMeatDef>
+      <petness>0.40</petness>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <trainability>Advanced</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>18</nuzzleMtbHours>
+      <gestationPeriodDays>15</gestationPeriodDays>
+      <lifeExpectancy>300</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.2</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.2</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Strill_Angry</soundWounded>
+          <soundDeath>RSW_Pawn_Strill_Death</soundDeath>
+          <soundCall>RSW_Pawn_Strill_Call</soundCall>
+          <soundAngry>RSW_Pawn_Strill_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Strill</defName>
+    <label>strill</label>
+    <race>RSW_Strill</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Strill/Strill_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>1</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>strill pup</label>
+        <labelPlural>strill pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Strill/Strill</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Strill/Strill_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Strill/Strill</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Strill/Strill_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Strill/Strill</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Strill/Strill_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

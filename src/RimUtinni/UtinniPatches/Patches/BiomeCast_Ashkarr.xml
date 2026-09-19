@@ -211,7 +211,7 @@
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
         <RSW_Grank>0.2</RSW_Grank> <!-- Grank - medium-interface, keep -->
         <RSW_Qormot>0.2</RSW_Qormot> <!-- qormot - medium-interface, keep -->
-        <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
+        <RSW_Strill>0.2</RSW_Strill> <!-- strill - medium-interface, keep -->
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <RSW_Pikobis>0.1</RSW_Pikobis> <!-- pikobis - medium-runner, keep [MLIE_FAUNA_ABSORPTION_1 Pass 19] -->
         <RSW_Skalder>0.08</RSW_Skalder> <!-- skalder - huge-grazer, keep -->

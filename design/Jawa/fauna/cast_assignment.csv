@@ -124,7 +124,7 @@ AridShrubland,VFEI2_Fuelmite,fuelmite,Vanilla Factions Expanded - Insectoids 2,s
 AridShrubland,AA_Cactipine,cactipine,Alpha Animals,small-venom,0.5,0.25,,,0.562,keep,"arid_shrubland: venom-quilled small, bs 0.5 (MEASURED)",0
 AridShrubland,RSW_Grank,Grank,RimMandrake: SW — Bestiary,medium-interface,0.8500000238418579,0.2,,,0.621,keep,"arid_shrubland: SW interface killer, bs 0.85 spd 5.0 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 12: repointed to RSW_ port]",0
 AridShrubland,RSW_Qormot,qormot,RimMandrake: SW — Bestiary,medium-interface,1,0.2,,,0.575,keep,"arid_shrubland: SW edge-pouncer, bs 1.0 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 20: repointed to RSW_ port]",0
-AridShrubland,Strill,strill,Star Wars Animal Collection (Continued),medium-interface,1,0.2,,,0.615,keep,"arid_shrubland: SW icon (Mandalorian strill), bs 1.0 (MEASURED)",0
+AridShrubland,RSW_Strill,strill,RimMandrake: SW — Bestiary,medium-interface,1,0.2,,,0.615,keep,"arid_shrubland: SW icon (Mandalorian strill), bs 1.0 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 23: repointed to RSW_ port]",0
 AridShrubland,RSW_Cannok,cannok,RimMandrake: SW — Bestiary,medium-interface,0.8500000238418579,0.16,,,0.581,keep,"arid_shrubland: SW (KOTOR), bs 0.85 (MEASURED)",0
 AridShrubland,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),flier-interface,0.4000000059604645,0.15,,,0.56,keep,arid_shrubland: SW bird-analog — the dive route on the interface (§4),0
 AridShrubland,AA_Needlepost,needlepost,Alpha Animals,small-venom,0.7900000214576721,0.1,,,0.47,adjust-keep,"arid_shrubland: venom-armed small (register venomous, MEASURED special); signature boost",0
