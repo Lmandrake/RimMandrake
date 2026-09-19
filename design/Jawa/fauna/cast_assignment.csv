@@ -21,7 +21,7 @@ AB_MiasmicMangrove,RSW_Runyip,runyip,RimMandrake: SW — Bestiary,muck-forager,1
 AB_MiasmicMangrove,VFEI2_BlackSwarmling,black swarmlings,Alpha Animals,vermin,0.20000000298023224,0.5,,,0.605,keep,the_miasma: §2 the drain,0
 AB_MiasmicMangrove,RSW_CrestedDragon,crested dragon,RimMandrake: SW — Bestiary,channel-predator,0.699999988079071,0.4,,,0.567,keep,the_miasma: §2 lifeboat crowding — no chase ban here; alien wet lizard [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_CrestedDragon port],0
 AB_MiasmicMangrove,RSW_Mee,mee scalefish,RimMandrake - SW Sea Beasts,nursery,0.15,0.4,,,,import,the_miasma: R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows,0
-AB_MiasmicMangrove,Shiro,shiro,Star Wars Animal Collection (Continued),arthropod-floor,0.5,0.4,,,0.729,keep,the_miasma: §4 armored scuttler; slow (spd 1.0 MEASURED),0
+AB_MiasmicMangrove,RSW_Shiro,shiro,RimMandrake: SW — Bestiary,arthropod-floor,0.5,0.4,,,0.729,keep,"the_miasma: §4 armored scuttler; slow (spd 1.0 MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 23: repointed to RSW_ port]",0
 AB_MiasmicMangrove,RSW_Anooba,anooba,RimMandrake: SW — Bestiary,scavenger,0.949999988079071,0.3,,,0.574,keep,the_miasma: §2 the compost of a war feeds scavenger packs; SW icon [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Anooba port],0
 AB_MiasmicMangrove,RSW_AaroxisDendoria,aaroxis dendoria,RimMandrake: SW — Bestiary,strange,1,0.3,,,0.425,keep,the_miasma: §1 on the verge of something — slow alien oddity (spd 2.0 MEASURED) [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_AaroxisDendoria port],0
 AB_MiasmicMangrove,RSW_Grank,Grank,RimMandrake: SW — Bestiary,channel-predator,0.8500000238418579,0.3,,,0.621,import,the_miasma: §2 refugee crowding; wet SW predator (evicted from the Fever Wood's stillness) [MLIE_FAUNA_ABSORPTION_1 Pass 12: repointed to RSW_ port],0
@@ -151,8 +151,8 @@ BiomeCypreJungle,RSW_Gizka,gizka,RimMandrake: SW — Bestiary,floor-vermin,0.180
 BiomeCypreJungle,RSW_Clodhopper,clodhopper,RimMandrake: SW — Bestiary,floor-vermin,0.5,0.7,,,0.572,keep,the_greentide: §4 everything eats everything — small hopper prey base,0
 BiomeCypreJungle,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),flier,0.4000000059604645,0.7,,,0.56,keep,"the_greentide: §4 The Fliers — absolutely everywhere, screaming; R17",0
 BiomeCypreJungle,Worrt,worrt,Star Wars Animal Collection (Continued),ambush,0.6000000238418579,0.7,,,0.585,keep,"the_greentide: §4 open free-for-all; positional water-margin ambusher, spd 2.5 (MEASURED); SW icon",0
-BiomeCypreJungle,Shiro,shiro,Star Wars Animal Collection (Continued),floor-ambush,0.5,0.5,,,0.729,keep,the_greentide: §4 free-for-all; slow sit-and-wait (spd 1.0 MEASURED),0
-BiomeCypreJungle,ShiroTrap,shiro-trap,Star Wars Animal Collection (Continued),floor-ambush,0.75,0.5,,,0.735,keep,the_greentide: §4 free-for-all; trap-form ambusher,0
+BiomeCypreJungle,RSW_Shiro,shiro,RimMandrake: SW — Bestiary,floor-ambush,0.5,0.5,,,0.729,keep,"the_greentide: §4 free-for-all; slow sit-and-wait (spd 1.0 MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 23: repointed to RSW_ port]",0
+BiomeCypreJungle,RSW_ShiroTrap,shiro-trap,RimMandrake: SW — Bestiary,floor-ambush,0.75,0.5,,,0.735,keep,"the_greentide: §4 free-for-all; trap-form ambusher [MLIE_FAUNA_ABSORPTION_1 Pass 23: repointed to RSW_ port]",0
 BiomeCypreJungle,RSW_Diggerpede,diggerpede,RimMandrake: SW — Bestiary,floor-predator,1.5,0.4,,,0.687,keep,the_greentide: §4 no pursuit ban here; root-tangle predator [BMT_FAUNA_ABSORPTION_1: repointed to our own RSW_Diggerpede port],0
 BiomeCypreJungle,RSW_Klorslug,k'lor'slug,RimMandrake: SW — Bestiary,gnawer,1.5,0.4,,,0.737,keep,"the_greentide: §4 The Gnawers — insectoid chewing the wet floor; SW canon swamp slug [MLIE_FAUNA_ABSORPTION_1 Pass 14: repointed to RSW_ port]",0
 BiomeCypreJungle,RSW_Mott,mott,RimMandrake: SW — Bestiary,brake,0.75,0.4,,,0.419,import,the_greentide: §4 The Brakes — small swamp grazer herd (MEASURED); grazing suppresses encroachment [MLIE_FAUNA_ABSORPTION_1 Pass 18: repointed to RSW_ port],0
@@ -219,7 +219,7 @@ Desert,RSW_Jakobeast,jakobeast,RimMandrake: SW — Bestiary,herd,2.5999999046325
 Desert,RSW_Nerf,nerf,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,keep,"desert: SW icon herd beast, spd 3.2 (MEASURED)",0
 Desert,Nuna,nuna,Star Wars Animal Collection (Continued),herd-small,0.6000000238418579,0.2,,,0.415,keep,"desert: SW herbivore bird, spd 3.0 (MEASURED)",0
 Desert,RSW_Nuna,nuna,RimMandrake: SW — Bestiary,herd-small,0.6000000238418579,0.2,,,0.415,keep,"MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 - Nuna defName collision with vanilla Core resolved by porting under RSW_Nuna and keeping BOTH (this row) alongside vanilla Nuna, same commonality",0
-Desert,Shaak,shaak,Star Wars Animal Collection (Continued),herd,2,0.2,,,0.45,import,desert: bulk-move; slow herd grazer spd 2.4 (MEASURED),0
+Desert,RSW_Shaak,shaak,RimMandrake: SW — Bestiary,herd,2,0.2,,,0.45,import,"desert: bulk-move; slow herd grazer spd 2.4 (MEASURED) [MLIE_FAUNA_ABSORPTION_1 Pass 23: repointed to RSW_ port]",0
 Desert,TeeMuss,tee muss,Star Wars Animal Collection (Continued),herd,2.0999999046325684,0.2,,,0.452,import,desert: bulk-move; herd herbivore spd 4.3 (MEASURED),0
 Desert,Worrt,worrt,Star Wars Animal Collection (Continued),ambush-small,0.6000000238418579,0.2,,,0.585,keep,"desert: Tatooine ambush frog, spd 2.5 (MEASURED) — positional icon",0
 Desert,RSW_Bolotaur,bolotaur,RimMandrake: SW — Bestiary,herd,3,0.1,,,0.475,import,desert: bulk-move; fast herbivore spd 5.5 non-pred (MEASURED) [MLIE_FAUNA_ABSORPTION_1: repointed to our own RSW_Bolotaur port],0

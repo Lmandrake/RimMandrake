@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Shiro creature port.
+  Ported from mlie.starwarsanimalcollection's `Shiro` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Uses the vanilla
+  Core `TurtleLike` body — no BodyDef port needed. `leatherDef`
+  (`Leather_Testudine`, NOT the already-ported `RSW_Leather_Saurian` —
+  different stuffProps, donor uses a distinct chitin-shell resource for
+  testudines) and both eggs (`EggShiroFertilized`/`EggShiroUnFertilized`)
+  are new this pass, ported as `RSW_Leather_Testudine`/
+  `RSW_EggShiroFertilized`/`RSW_EggShiroUnFertilized`
+  (RSW_MlieWaveC_Resources.xml) — `specificMeatDef` (`Saurian_Meat`) ALREADY
+  EXISTS as `RSW_Saurian_Meat` (Wave B). Adult lifeStage sounds
+  (`Pawn_Shiro_*`) were already absorbed in the 2026-09-02 sound wave —
+  confirmed present in SoundDefs_SWBestiary.xml as `RSW_Pawn_Shiro_*`, wired,
+  not re-done. `canCrossBreedWith` repointed `ShiroTrap` -> `RSW_ShiroTrap`
+  (ported together this same pass, both share this file's own dependency
+  chain). No `specialTrainables` at all (donor leaves it bare).
+
+  `mandrake.rsw.shiroartoverride` (checked FIRST, per the flag left by
+  Pass 20) ships owner-approved custom art at the EXACT SAME relative path
+  the donor uses (`swanimals/Shiro/Shiro_{south,east,north}`) — its own
+  About.xml states it relies on same-path resolution, loading after the
+  donor. The Anooba incident (5a8fc8c1c) already proved shipping a
+  duplicate PNG at that same path from mandrake.rsw.swbestiary (which loads
+  AFTER the override) silently reverts the override back to donor art — so
+  this port does NOT extract or ship `Shiro_{south,east,north}.png` at all,
+  leaving the override's own copies as the sole source once the override is
+  active (and the donor's own copies as fallback if it ever isn't). Only
+  `Shiro_Dessicated` (a facing the override does not cover, confirmed
+  against its own description) was extracted this pass via extract_bundle.py
+  against the same AssetBundle every prior wave used. Sits at
+  Textures/swanimals/Shiro/ (1 file only, by design).
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Shiro" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Shiro</defName>
+    <label>shiro</label>
+    <description>Shiros were hard-shelled, benign, slow-moving reptiles native to the planet of Naboo. A Shiro's main defense was to retract its head, legs and tail into its spiny shell. The Shiro's low metabolism meant it could be transported over long journeys and understandably the species was spread to many worlds.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggShiroUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggShiroFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>8</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.06</baseHungerRate>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Testudine</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.60</petness>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <lifeExpectancy>90</lifeExpectancy>
+      <canCrossBreedWith>
+        <li>RSW_ShiroTrap</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.6</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>RSW_Pawn_Shiro_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Shiro_Death</soundDeath>
+          <soundCall>RSW_Pawn_Shiro_Call</soundCall>
+          <soundAngry>RSW_Pawn_Shiro_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Shiro</defName>
+    <label>shiro</label>
+    <race>RSW_Shiro</race>
+    <combatPower>85</combatPower>
+    <ecoSystemWeight>0.40</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro</texPath>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro_Dessicated</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro_Dessicated</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.45, 0.45, 0.45)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shiro/Shiro_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

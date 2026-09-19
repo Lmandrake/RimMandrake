@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Shaak creature port.
+  Ported from mlie.starwarsanimalcollection's `Shaak` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom `Shaak`
+  BodyDef (Bodies_Animal_StarWars.xml) is entirely vanilla-part composition
+  (Body/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/Brain/
+  Eye x2/Ear x2/Trunk/AnimalJaw, 4x Leg/Hoof) — the same `Trunk`/`Hoof`
+  vanilla Core part defs Mudhorn/Iriaz already established, no SW-prefixed
+  part or group anywhere, defName rename only. Ported as RSW_Shaak
+  (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Plain`) is vanilla Core,
+  left bare. `specificMeatDef` (`Pachydermoid_Meat`) ALREADY EXISTS as
+  `RSW_Pachydermoid_Meat` (Pass 1, Iriaz/Mudhorn) — no new resource needed.
+  Adult lifeStage sounds (`Pawn_Shaak_*`) were already absorbed in the
+  2026-09-02 sound wave — confirmed present in SoundDefs_SWBestiary.xml as
+  `RSW_Pawn_Shaak_*`, wired, not re-done. No `specialTrainables` at all
+  (donor leaves it bare). No `canCrossBreedWith` (donor sets none).
+
+  No `*ArtOverride` mod exists for Shaak (checked first, deployed Mods
+  folder and workshop content both searched). 4 PNGs extracted this pass
+  via extract_bundle.py against the same AssetBundle every prior wave used:
+  `Shaak_{south,east,north}` (base facing) and `Shaak_Dessicated`. The
+  donor's own `ShaakPack_{south,east,north}` variants (3 PNGs) were
+  excluded — unreferenced by the donor's own ThingDef/PawnKindDef (the
+  `<race><packAnimal>true</packAnimal>` flag doesn't switch art; only the
+  bare `Shaak` texPath is used across all lifeStages), same
+  "unreferenced-by-the-def" precedent as every prior wave's "m"/"Pack"
+  exclusions. Sits at Textures/swanimals/Shaak/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row for this species, repointed from the bare "Shaak" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Shaak</defName>
+    <label>shaaks</label>
+    <description>Shaaks were plump pachydermoid herd animals native to the planet of Naboo. Shaaks were often raised for their meat, and had large, rotund bodies. Due to their high rate of reproduction they were often sold offworld in livestock markets.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <FilthRate>6</FilthRate>
+      <Wildness>0.1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Shaak</body>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.0</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <petness>0.10</petness>
+      <roamMtbDays>7</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>24</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.08</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.00</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.04</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(3, 1)</li>
+          <li>(5, 1.7)</li>
+          <li>(7, 0.7)</li>
+          <li>(9, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Shaak_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Shaak_Death</soundDeath>
+          <soundCall>RSW_Pawn_Shaak_Call</soundCall>
+          <soundAngry>RSW_Pawn_Shaak_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Shaak</defName>
+    <label>shaak</label>
+    <race>RSW_Shaak</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>shaaklet</label>
+        <labelPlural>shaaklets</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak</texPath>
+          <drawSize>0.5</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Shaak/Shaak_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

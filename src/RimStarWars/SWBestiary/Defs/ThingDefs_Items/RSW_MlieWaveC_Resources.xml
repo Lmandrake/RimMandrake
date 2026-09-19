@@ -2198,4 +2198,69 @@
       <MarketValue>2.0</MarketValue>
     </statBases>
   </ThingDef>
+<!-- Pass 23: Shiro/ShiroTrap need `Leather_Testudine` (donor uses this,
+     NOT the already-ported RSW_Leather_Saurian - different stuffProps) and
+     the 2 eggs they share (EggShiroFertilized/UnFertilized - ShiroTrap's own
+     CompProperties_EggLayer points at these SAME eggs per the donor's own
+     "offspring hatch as the non-symbiote form" description, not a separate
+     EggShiroTrap* pair). -->
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Testudine</defName>
+    <label>testudine chitin</label>
+    <description>The shell of a testudine. It provides excellent protection but does not insulate well.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Chitin</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,100,0)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+      <StuffPower_Armor_Sharp>2.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>2.0</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>5</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>5</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(100,100,0)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggShiroFertilized</defName>
+    <label>shiro egg (fert.)</label>
+    <description>A fertilized shiro egg. If all goes well, it should hatch into a baby shiro. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpotted</texPath>
+      <color>(225,250,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Shiro</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggShiroUnFertilized</defName>
+    <label>shiro egg (unfert.)</label>
+    <description>An unfertilized shiro egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpotted</texPath>
+      <color>(225,250,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>
