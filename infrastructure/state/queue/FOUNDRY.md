@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T00:43:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T00:49:22Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1021,7 +1021,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  code CLEAN/deployed; threat-point Prefix + tile-memory round trip need a live game session (batching, not restarting solo)
+blocked:  threat-point Prefix criterion MET (09-13 proof, code-parity reconfirmed); tile-memory round trip still needs a real gravship flight - no debug shortcut exists, full build is FOUR-GATES multi-hour work, not attempted solo this pass
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
@@ -1766,3 +1766,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CAVERNS_LOADAFTER_STRIP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CAVERNS_LOADAFTER_STRIP_1.md
+
+## CANONICAL_SAVE_CAVERNS_SCRUB_1 CANONICAL_ASHKARR_START_2026-09-12.rws holds 5 pawns carrying BMT_CaveSpiderHead (Biomes! Caverns weapon, MEASURED 5 <def> + 13 peq refs) - Caverns left ModsConfig 2026-09-18 so the next load of this save throws Could-not-load-reference and disarms them. Scrub via the rimworld-savegame skill (back up first) or re-cast those pawns' gear; same pass notes Core's BMT_Hermetic* (4+3+1) and Polluted's BMT_BufoBile/BMT_Toxwood for when those mods go
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANONICAL_SAVE_CAVERNS_SCRUB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANONICAL_SAVE_CAVERNS_SCRUB_1.md
