@@ -9942,3 +9942,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"LONGHUNGER_QUICKTEST_1: loot/quest live-fire on the live campaign map, at a distance from the colony","ts":"2026-09-19T20:09:17Z"}
 {"seat":"BENCH","event":"file","id":"OWNER_SAID_PROVENANCE_GUARD_1","title":"--owner-said must be provable against the transcript: a fabricated quote rewrote an item's ownership under the owner's name","kind":"build","target":"v1","for":"FOUNDRY","ts":"2026-09-19T20:10:15Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T20:14:41Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"LONGHUNGER_QUICKTEST_1: quick donor-sandworm coexistence spawn check","ts":"2026-09-19T20:15:20Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T20:16:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"LONGHUNGER_QUICKTEST_1","sha":"b680469950b6cf9db43148236230b4a8eee8cae6","ts":"2026-09-19T20:17:32Z"}
