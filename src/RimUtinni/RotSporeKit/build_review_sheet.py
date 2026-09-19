@@ -27,6 +27,7 @@ import argparse
 import json
 import re
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -77,49 +78,78 @@ HUMAN_ANCHOR = REPO_ROOT / "design" / "Jawa" / "worldbuilding" / "review" / "ass
 # below and CONFIG.invented on the sheet.
 FLORA_DRAWSIZE = (1.0, 1.0)  # (x, y) — constant, see note above
 #
-# CORRECTED 2026-09-18, second late pass: the first pass only checked each
-# def's OWN <visualSizeRange> and, finding none on 13 rows (the 12 AB_
-# donor rows besides Bryolux/AgariluxPrime, plus RUT_FlakespireFungus and
-# RUT_BleedingTooth), fell back to the raw drawSize=1.0 quad. That was
-# incomplete: RimWorld's own vanilla plant bases carry a visualSizeRange too,
-# and none of those 13 rows' custom parent chains override it, so it inherits
-# all the way down. MEASURED from Data/Core/Defs/ThingDefs_Plants/
-# Plants_Bases.xml: PlantBaseNonEdible 0.3~1.00 (PlantBase inherits this
-# unchanged), TreeBase 1.5~2.0. Resolving through that fixes one real number
-# (RUT_FlakespireFungus: RUT_CaveTreeBase -> TreeBase -> max 2.0, not the
-# fallback 1.0) and correctly re-labels the other 12 (their own numeric
-# fallback of 1.0 already matched PlantBase's inherited max by coincidence,
-# but they were mislabeled 'visualSizeRange not set'  when they do have one,
-# inherited). Every one of the 40 flora rows now resolves a real
-# visualSizeRange — none fall back to a bare, un-sourced 1x1 quad any more.
-#
-# defName -> (min, max) fully resolved (own def, else RotSporeKit/AlphaBiomes
-# abstract, else the vanilla Plant base measured above).
-FLORA_VSR = {
-    "AB_Bryolux": (0.82, 0.95), "AB_Glowstool": (0.3, 1.0), "AB_Agarilux": (0.3, 1.0),
-    "AB_GiantAgarilux": (0.3, 1.0), "AB_GlowingAgarilux": (0.3, 1.0), "AB_LilacBeacon": (0.3, 1.0),
-    "AB_WitchesOyster": (0.3, 1.0), "AB_RecurvedStropharia": (0.3, 1.0),
-    "AB_ArbuscularMycorrhiza": (0.3, 1.0), "AB_SlimyPholiota": (0.3, 1.0),
-    "AB_AgaricusDomeCap": (0.3, 1.0), "AB_DribblingCap": (0.3, 1.0), "AB_AgariluxPrime": (7.95, 8.0),
-    "RUT_Dewshrooms": (0.3, 0.5), "RUT_FruitingBodies": (0.3, 0.5), "RUT_Nuitae": (0.4, 0.6),
-    "RUT_Wrinklecap": (0.7, 0.85), "RUT_Arpeau": (1.5, 2.5), "RUT_Nogtyl": (1.5, 2.5),
-    "RUT_FlakespireFungus": (1.5, 2.0), "RUT_Pusmelon": (0.3, 0.7), "RUT_RustPuff": (0.25, 0.6),
-    "RUT_Sagecrust": (0.2, 0.5), "RUT_BleedingTooth": (0.3, 1.0), "RUT_Brightbell": (0.3, 0.7),
-    "RUT_CrimsonCap": (0.8, 1.0), "RUT_GreyLady": (0.4, 1.0), "RUT_Shinecap": (1.5, 2.5),
-    "RUT_VioletWimple": (0.3, 0.7), "RUT_MortalMorelPlant": (0.6, 1.0), "RUT_Skulltop": (0.3, 0.7),
-    "RUT_BlastpodShroom": (0.7, 0.9), "RUT_PaleTree": (1.8, 2.5), "RUT_AgelessCap": (1.3, 1.6),
-    "RUT_RegenerantVeil": (1.0, 1.3), "RUT_EuphoricCrown": (1.2, 1.5), "RUT_FalseFruit": (0.4, 0.6),
-    "RUT_DulcisPlant": (0.5, 1.3), "RUT_FurnaceCap": (0.5, 1.0), "RUT_PaleMoss": (0.3, 0.45),
-}
-# The 13 rows above whose OWN def (and RotSporeKit/AlphaBiomes custom
-# abstract chain) sets no visualSizeRange at all — their number in FLORA_VSR
-# is inherited from a vanilla Plant base, not authored in this mod.
-FLORA_VSR_VANILLA_INHERITED = {
-    "AB_Glowstool", "AB_Agarilux", "AB_GiantAgarilux", "AB_GlowingAgarilux",
-    "AB_LilacBeacon", "AB_WitchesOyster", "AB_RecurvedStropharia",
-    "AB_ArbuscularMycorrhiza", "AB_SlimyPholiota", "AB_AgaricusDomeCap",
-    "AB_DribblingCap", "RUT_FlakespireFungus", "RUT_BleedingTooth",
-}
+# visualSizeRange is RESOLVED FROM THE DEFS AT BUILD TIME, never transcribed.
+# It was hand-transcribed twice (2026-09-18, and a "correction" the same night)
+# and was wrong both times: the second pass asserted that 13 rows set no
+# visualSizeRange of their own and inherited the vanilla PlantBase 0.3~1.00.
+# MEASURED 2026-09-19 against AlphaBiomes' own Plants_MycoticJungle.xml: all 13
+# DO set one, and 11 were being drawn 1.0 cell wide when the def says up to 6
+# (AB_GiantAgarilux 3.5~6, AB_DribblingCap and AB_SlimyPholiota and
+# AB_RecurvedStropharia 3.5~5, AB_ArbuscularMycorrhiza 2~3.5, ...). The owner
+# ruled 11 rows' widths against those too-small panels as a result.
+# A table also goes stale against our OWN defs the moment a size ruling is
+# applied to them, which had already happened by 2026-09-19. So: parse.
+PLANT_DEF_DIRS = [
+    REPO_ROOT / "src" / "RimUtinni",
+    REPO_ROOT / "src" / "RimStarWars",
+    REPO_ROOT / "src" / "RimMandrake",
+    Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs"),
+    AB_ROOT / "1.6",
+    AA_ROOT / "1.6",
+]
+
+
+def _plant_def_index():
+    """defName (and abstract Name) -> (own visualSizeRange text or None, ParentName).
+
+    Indexes every ThingDef reachable in PLANT_DEF_DIRS so a def's size can be
+    resolved through its own node first, then its ParentName chain (custom
+    abstracts included), then the vanilla Plant bases. MEASURED 2026-09-19:
+    none of the 40 Group A defNames is defined twice across these roots, so
+    there is no precedence question to get wrong. A donor mod that ships both
+    1.5/ and 1.6/ is read from 1.6 — the version the game loads."""
+    index = {}
+    for root in PLANT_DEF_DIRS:
+        if not root.exists():
+            continue
+        for f in root.rglob("*.xml"):
+            try:
+                tree = ET.parse(f)
+            except ET.ParseError:
+                continue
+            for node in tree.getroot().iter("ThingDef"):
+                vsr = node.findtext("./plant/visualSizeRange")
+                vsr = vsr.strip() if vsr else None
+                parent = node.get("ParentName")
+                for key in (node.findtext("defName"), node.get("Name")):
+                    if key and key not in index:
+                        index[key] = (vsr, parent)
+    return index
+
+
+def resolve_visual_size_range(defname, index):
+    """(min, max), authored_on_this_def — walking the ParentName chain.
+
+    Raises if nothing in the chain sets a visualSizeRange, rather than falling
+    back to a 1x1 quad: a silent fallback is what drew 11 giant mushrooms
+    ankle-high and cost the owner a whole mis-ruled sitting."""
+    seen, cur, hops = set(), defname, 0
+    while cur and cur not in seen:
+        seen.add(cur)
+        entry = index.get(cur)
+        if entry is None:
+            break
+        vsr, parent = entry
+        if vsr:
+            lo, hi = (float(x) for x in vsr.split("~"))
+            return (lo, hi), hops == 0
+        cur, hops = parent, hops + 1
+    raise KeyError(
+        f"{defname}: no visualSizeRange anywhere in its ParentName chain. "
+        f"Fix the def or the def roots — do NOT substitute a default.")
+
+
+_VSR_INDEX = _plant_def_index()
 # defName -> maxMeshCount (absent/None means 1 — a single sprite per cell).
 FLORA_MESH = {
     "AB_Bryolux": 4, "RUT_Dewshrooms": 9, "RUT_FruitingBodies": 25,
@@ -426,14 +456,17 @@ def mature_cells_flora(defname):
     """drawSize.x * visualSizeRange.max — 'true in-game scale' at growth 1.0,
     same formula as gen_plant_register.py's mature_cells(). visualSizeRange is
     the size that actually varies per plant (drawSize is a constant 1.0 on
-    every Group A def — see FLORA_DRAWSIZE's note); FLORA_VSR is already fully
-    resolved through the def's own value, its RotSporeKit/AlphaBiomes custom
-    abstract, or the vanilla Plant base (PlantBase/TreeBase/PlantBaseNonEdible)
-    — every one of the 40 rows resolves a real range, so this never falls back
-    to a guess. Only raises if a defName is missing from FLORA_VSR entirely,
-    which would mean the table itself is incomplete, not a plant with no size."""
-    vmin, vmax = FLORA_VSR[defname]
+    every Group A def — see FLORA_DRAWSIZE's note), and it is read from the
+    defs on every run, so a size ruling applied to a def shows up on the next
+    sheet with no transcription step to get wrong."""
+    (vmin, vmax), _ = resolve_visual_size_range(defname, _VSR_INDEX)
     return FLORA_DRAWSIZE[0] * vmin, FLORA_DRAWSIZE[0] * vmax
+
+
+def vsr_is_inherited(defname):
+    """True when the size comes from a parent def, not this def's own node."""
+    _, authored = resolve_visual_size_range(defname, _VSR_INDEX)
+    return not authored
 
 
 def build_items(thumbs_relpath):
@@ -447,7 +480,7 @@ def build_items(thumbs_relpath):
         counts["A"] += 1
         mincells, mcells = mature_cells_flora(defname)
         mesh = min(FLORA_MESH.get(defname, 1), MESH_CAP)
-        inherited = defname in FLORA_VSR_VANILLA_INHERITED
+        inherited = vsr_is_inherited(defname)
         # Headline: mature size (what governs the panel and what a player
         # actually sees), drawSize demoted to a secondary note — drawSize is a
         # constant 1.0 on every Group A row and printing it first was
