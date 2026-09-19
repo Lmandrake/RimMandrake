@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:08:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:12:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Two halves. (1) AUTHORING: one bridge pass writes worldTag liquid types
-prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -675,6 +666,15 @@ kind:     task
 summary:  A new WreckedMachines module in the existing wreck-tier grammar
 prose:    infrastructure/state/items/WRECKED_DISTILLATION_MODULE_1.md
 
+## WORLDMAP_LIQUID_TAGS_1 worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Two halves. (1) AUTHORING: the planet's water tiles and named bodies carry a
+prose:    infrastructure/state/items/WORLDMAP_LIQUID_TAGS_1.md
+
 ## LIQUID_INDUSTRY_SETPIECES_1 Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -953,6 +953,15 @@ target:   v1
 kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
+
+## MLIE_GENERATED_BIOME_COLLISIONS_1 AnimalBiomeDuplicates_Generated.xml still carries bare-donor duplicate-animal collisions for GraniteSlug x ExtremeDesert, Cannok/Sketto x AridShrubland, Falumpaset x Desert - post-Mlie-port, needs regen against current RSW_ cast
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/MLIE_GENERATED_BIOME_COLLISIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MLIE_GENERATED_BIOME_COLLISIONS_1.md
 
 ## SWBESTIARY_DEPLOY_STALE_1 deployed/Mods/SWBestiary is stale - 26 files behind src/, missing RSW_Scurrier/RSW_WarWyrm/RSW_Urusai and likely other recently-ported Mlie species entirely
 state:    doing
@@ -1617,16 +1626,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
-
-## MLIE_GENERATED_BIOME_COLLISIONS_1 AnimalBiomeDuplicates_Generated.xml still carries bare-donor duplicate-animal collisions for GraniteSlug x ExtremeDesert, Cannok/Sketto x AridShrubland, Falumpaset x Desert - post-Mlie-port, needs regen against current RSW_ cast
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MLIE_GENERATED_BIOME_COLLISIONS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MLIE_GENERATED_BIOME_COLLISIONS_1.md
 
 ## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
 state:    proposed
