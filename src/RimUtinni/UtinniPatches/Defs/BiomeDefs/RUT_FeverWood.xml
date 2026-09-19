@@ -210,13 +210,21 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
-      <AB_KeeningCordax>1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
-      <BMT_GiantLeaf>0.8</BMT_GiantLeaf>  <!-- giant leaf -->
-      <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
-      <AB_Iashiphus>0.5</AB_Iashiphus>  <!-- iashiphus -->
-      <AB_Gomphoeria>0.4</AB_Gomphoeria>  <!-- gomphoeria -->
-      <Plant_Chakroot_Wild>0.4</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 17: none of these seven carried a
+           MayRequire, unlike every wildAnimals entry above and the sibling
+           RUT_Greentide.xml's own wildPlants (which gates these exact same
+           defNames). Verified owner against the live def dump
+           (/DefDump/defs.sqlite): all seven belong to third-party mods, so
+           without the guard an inactive donor throws an unresolved
+           cross-reference at load instead of the silent MayRequire no-op
+           every other cross-mod ref in this file relies on. -->
+      <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
+      <AB_KeeningCordax MayRequire="sarg.alphabiomes">1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <BMT_GiantLeaf MayRequire="biomesteam.biomescaverns">0.8</BMT_GiantLeaf>  <!-- giant leaf -->
+      <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
+      <AB_Iashiphus MayRequire="sarg.alphabiomes">0.5</AB_Iashiphus>  <!-- iashiphus -->
+      <AB_Gomphoeria MayRequire="sarg.alphabiomes">0.4</AB_Gomphoeria>  <!-- gomphoeria -->
+      <Plant_Chakroot_Wild MayRequire="mlie.starwarsanimalcollection">0.4</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>
