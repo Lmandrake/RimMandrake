@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:40:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T03:43:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -530,3 +530,13 @@ kind:     investigate
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FULL_LIST_CANNOT_LOAD_GAME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FULL_LIST_CANNOT_LOAD_GAME_1.md
+
+## CANONICAL_SAVE_MODLIST_DIVERGENCE_1 CANONICAL_ASHKARR_START_2026-09-12.rws records 635 mods; the live list is 621 and lacks 16 of them - Biomes! Caverns and 10 mandrake.rut.*ArtOverride mods were DELIBERATELY retired 2026-09-18, plus GravTech/GravTech-BC/GravTechBigCannons-Retextured, ResearchReinvented SteppingStones and Biomes! PollutedLands are absent unexplained. So the canonical campaign save cannot be loaded at all without ignoring compatibility, which blocks every live verify that needs the real Ash'karr campaign (VAULT_THAW_QUEST_FAMILY_1, RIVER_STEAM_ANIMATION_1). Precedent (DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1, DROID_DONOR_SAVE_COMPAT_REGRESSION_1) was to RESTORE the mods, which contradicts the deliberate cuts - needs the owner to choose: restore the retired mods to the list, scrub+re-mint the canonical save, or accept a force-load
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CANONICALSAVEMODLISTDIVERGENCE1
+prose:    infrastructure/state/items/CANONICAL_SAVE_MODLIST_DIVERGENCE_1.md

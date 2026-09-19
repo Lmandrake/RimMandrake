@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T03:40:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T03:43:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1072,7 +1072,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-blocked:  MEASURED 2026-09-19T01:06Z: CANONICAL_ASHKARR_START_2026-09-12.rws (635 recorded mods) refuses to load on the live 632-mod list - missing als.gravtech, als.gravtech.bc, halituisamaricanous.gravtechbigcannons, petetimessix.researchreinvented.steppingstones, biomesteam.biomescaverns. Did NOT force-load with compatibility ignored (Caverns was deliberately retired). Tried Autosave-5 instead (632/632 compatible) but it loaded the SAME scratch quicktest colony (Raido Barber/New Arrivals, Thing_Human61607) that was already live on the bridge before this session touched anything - not the real campaign. Blocked on CANONICAL_SAVE_CAVERNS_SCRUB_1 landing first.
+blocked:  Live re-fire needs the Ash'karr campaign (V1/V6 siteTiles are Ash'karr tile ids); that save refuses to load on the live 621-mod list - 16 recorded mods absent, 11 of them deliberately retired 2026-09-18. Did not force-load. (on CANONICAL_SAVE_MODLIST_DIVERGENCE_1)
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
 
