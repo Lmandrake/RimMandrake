@@ -43,7 +43,7 @@
     <size>(2,2)</size>
     <rotatable>true</rotatable>
     <altitudeLayer>Building</altitudeLayer>
-    <passability>Impassable</passability>
+    <passability>PassThroughOnly</passability>
     <fillPercent>0.8</fillPercent>
     <coverEffectiveness>0.5</coverEffectiveness>
     <pathCost>50</pathCost>
