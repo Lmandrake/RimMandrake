@@ -64,6 +64,62 @@ namespace JawaBench.BridgeTools
         }
 
         // ================================================================
+        //  Shared finalize sequence - jawa/map_commit's steps, extracted so
+        //  jawa/world_tile_map_generate (BRIDGE_MAPGEN_STALE_FINALIZE_1) can run
+        //  the identical sequence before returning, instead of leaving a caller
+        //  to remember a separate map_commit call to get a non-stale render.
+        // ================================================================
+        private static List<object> RunMapFinalizeSteps(
+            Map map, bool regions, bool pathing, bool power, bool redraw, bool full)
+        {
+            var steps = new List<object>();
+            Action<string, Action> step = (name, act) =>
+            {
+                try { act(); steps.Add(new { step = name, status = "ok" }); }
+                catch (Exception e) { steps.Add(new { step = name, status = "failed", error = e.GetType().Name + ": " + e.Message }); }
+            };
+
+            if (regions)
+            {
+                step("regionAndRoomUpdater.Enabled = true", () => map.regionAndRoomUpdater.Enabled = true);
+                step("RebuildAllRegionsAndRooms", () => map.regionAndRoomUpdater.RebuildAllRegionsAndRooms());
+            }
+            else steps.Add(new { step = "regions", status = "skipped" });
+
+            if (pathing)
+            {
+                step("pathing.RecalculateAllPerceivedPathCosts", () => map.pathing.RecalculateAllPerceivedPathCosts());
+                step("reachability.ClearCache", () => map.reachability.ClearCache());
+            }
+            else steps.Add(new { step = "pathing", status = "skipped" });
+
+            if (power)
+                step("powerNetManager.UpdatePowerNetsAndConnections_First",
+                    () => map.powerNetManager.UpdatePowerNetsAndConnections_First());
+            else steps.Add(new { step = "power", status = "skipped" });
+
+            if (redraw)
+            {
+                if (full) step("mapDrawer.RegenerateEverythingNow", () => map.mapDrawer.RegenerateEverythingNow());
+                else
+                    step("mapDrawer.WholeMapChanged", () =>
+                    {
+                        ulong flags = (ulong)MapMeshFlagDefOf.Buildings
+                                    | (ulong)MapMeshFlagDefOf.Things
+                                    | (ulong)MapMeshFlagDefOf.Terrain
+                                    | (ulong)MapMeshFlagDefOf.Roofs
+                                    | (ulong)MapMeshFlagDefOf.GroundGlow
+                                    | (ulong)MapMeshFlagDefOf.Snow
+                                    | (ulong)MapMeshFlagDefOf.PowerGrid;
+                        map.mapDrawer.WholeMapChanged(flags);
+                    });
+            }
+            else steps.Add(new { step = "redraw", status = "skipped" });
+
+            return steps;
+        }
+
+        // ================================================================
         //  M1 - map_commit. The map twin of world_commit.
         // ================================================================
         [Tool(
@@ -94,50 +150,7 @@ namespace JawaBench.BridgeTools
                 string err; var map = MapOrNull(out err);
                 if (map == null) return Fail(err);
 
-                var steps = new List<object>();
-                Action<string, Action> step = (name, act) =>
-                {
-                    try { act(); steps.Add(new { step = name, status = "ok" }); }
-                    catch (Exception e) { steps.Add(new { step = name, status = "failed", error = e.GetType().Name + ": " + e.Message }); }
-                };
-
-                if (regions)
-                {
-                    step("regionAndRoomUpdater.Enabled = true", () => map.regionAndRoomUpdater.Enabled = true);
-                    step("RebuildAllRegionsAndRooms", () => map.regionAndRoomUpdater.RebuildAllRegionsAndRooms());
-                }
-                else steps.Add(new { step = "regions", status = "skipped" });
-
-                if (pathing)
-                {
-                    step("pathing.RecalculateAllPerceivedPathCosts", () => map.pathing.RecalculateAllPerceivedPathCosts());
-                    step("reachability.ClearCache", () => map.reachability.ClearCache());
-                }
-                else steps.Add(new { step = "pathing", status = "skipped" });
-
-                if (power)
-                    step("powerNetManager.UpdatePowerNetsAndConnections_First",
-                        () => map.powerNetManager.UpdatePowerNetsAndConnections_First());
-                else steps.Add(new { step = "power", status = "skipped" });
-
-                if (redraw)
-                {
-                    if (full) step("mapDrawer.RegenerateEverythingNow", () => map.mapDrawer.RegenerateEverythingNow());
-                    else
-                        step("mapDrawer.WholeMapChanged", () =>
-                        {
-                            ulong flags = (ulong)MapMeshFlagDefOf.Buildings
-                                        | (ulong)MapMeshFlagDefOf.Things
-                                        | (ulong)MapMeshFlagDefOf.Terrain
-                                        | (ulong)MapMeshFlagDefOf.Roofs
-                                        | (ulong)MapMeshFlagDefOf.GroundGlow
-                                        | (ulong)MapMeshFlagDefOf.Snow
-                                        | (ulong)MapMeshFlagDefOf.PowerGrid;
-                            map.mapDrawer.WholeMapChanged(flags);
-                        });
-                }
-                else steps.Add(new { step = "redraw", status = "skipped" });
-
+                var steps = RunMapFinalizeSteps(map, regions, pathing, power, redraw, full);
                 int failed = steps.Count(o => (o.GetType().GetProperty("status").GetValue(o, null) as string) == "failed");
                 return (object)new
                 {

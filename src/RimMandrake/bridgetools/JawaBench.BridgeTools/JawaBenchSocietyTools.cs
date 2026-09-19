@@ -599,10 +599,15 @@ namespace JawaBench.BridgeTools
                 "generate a map; this is that missing other half. " +
                 "🔑 IDEMPOTENT: if a Map already exists at this tile it is returned as-is, no error, " +
                 "with wasAlreadyGenerated=true - and if no MapParent world object exists there yet, " +
-                "one of type 'suggestedMapParentDef' is created and added first.",
+                "one of type 'suggestedMapParentDef' is created and added first. " +
+                "BRIDGE_MAPGEN_STALE_FINALIZE_1: before returning (both branches - fresh generation " +
+                "AND the wasAlreadyGenerated reuse path) this now runs jawa/map_commit's own finalize " +
+                "sequence itself - regionAndRoomUpdater.Enabled=true, RebuildAllRegionsAndRooms, and " +
+                "mapDrawer.RegenerateEverythingNow - so a caller no longer has to remember a separate " +
+                "map_commit call to get a map that is actually consistent to look at or screenshot.",
             ResultDescription =
                 "success, tile, mapParentDef, wasAlreadyGenerated, mapSize{x,z}, mapIndex " +
-                "(Find.Maps position), pawnCount, thingCount.")]
+                "(Find.Maps position), pawnCount, thingCount, mapFinalize{failedSteps, steps[]}.")]
         public static async Task<object> WorldTileMapGenerate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -696,6 +701,17 @@ namespace JawaBench.BridgeTools
                                 "mapCount and jawa/map_info before assuming anything generated.");
                 }
 
+                // BRIDGE_MAPGEN_STALE_FINALIZE_1 - run jawa/map_commit's own finalize
+                // sequence here rather than leaving it as a step the caller has to
+                // remember. Run unconditionally, not only on fresh generation: the
+                // wasAlreadyGenerated=true reuse path hands back a map that may have
+                // been left stale by an EARLIER caller's edits (destroyed plants,
+                // converted terrain) with no redraw since, so a caller relying on this
+                // tool for "give me a map I can trust to look at" needs the same
+                // guarantee either way.
+                var finalizeSteps = RunMapFinalizeSteps(map, regions: true, pathing: true, power: true, redraw: true, full: true);
+                int finalizeFailed = finalizeSteps.Count(o => (o.GetType().GetProperty("status").GetValue(o, null) as string) == "failed");
+
                 return new
                 {
                     success = true,
@@ -710,6 +726,7 @@ namespace JawaBench.BridgeTools
                     mapIndex = map.Index,
                     pawnCount = map.mapPawns != null ? map.mapPawns.AllPawnsSpawned.Count : 0,
                     thingCount = map.listerThings != null ? map.listerThings.AllThings.Count : 0,
+                    mapFinalize = new { failedSteps = finalizeFailed, steps = finalizeSteps },
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
