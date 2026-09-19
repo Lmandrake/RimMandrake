@@ -6,9 +6,10 @@
   Sky colours are the donor's, unchanged: they are what makes an enclosed cavern
   read as lit-from-within rather than as an overcast surface map.
 
-  ⚠️ No ambientSounds. The donor's BMT_Ambient_Cave_Calm is a SoundDef backed by
-  a donor .ogg; we ship no audio, and a missing SoundDef reference would cost the
-  def. Cave ambience is an owed audio job, tracked in ART_JOBS.md.
+  DEEPCALM_AMBIENT_SOUND_1: ambientSounds now points at RUT_DeepHum and
+  RUT_DeepChorus (Defs/SoundDefs/RUT_DeepAmbience.xml) — our own SoundDefs, no
+  new audio asset, both grains reused from Anomaly's shipped clips. Target:
+  the_lantern_deeps.md §9, "the hum, rising to a Chorus".
 -->
 <Defs>
 
@@ -20,6 +21,10 @@
     <favorability>Good</favorability>
     <perceivePriority>0</perceivePriority>
     <windSpeedFactor>0</windSpeedFactor>
+    <ambientSounds>
+      <li>RUT_DeepHum</li>
+      <li>RUT_DeepChorus</li>
+    </ambientSounds>
     <skyColorsDay>
       <sky>(0.65,0.70,0.75)</sky>
       <shadow>(0.92,0.92,0.92)</shadow>
