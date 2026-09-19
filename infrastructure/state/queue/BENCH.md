@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T04:19:54Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-19T04:31:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -241,7 +241,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -249,7 +249,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -259,7 +259,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
@@ -520,16 +520,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_DENSITY_TRIPLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_DENSITY_TRIPLE_1.md
-
-## FULL_LIST_CANNOT_LOAD_GAME_1 Full 635-mod list throws a deterministic NRE in new Game() — no save loads, no map generates
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     investigate
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FULL_LIST_CANNOT_LOAD_GAME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FULL_LIST_CANNOT_LOAD_GAME_1.md
 
 ## CANONICAL_SAVE_MODLIST_DIVERGENCE_1 CANONICAL_ASHKARR_START_2026-09-12.rws records 635 mods; the live list is 621 and lacks 16 of them - Biomes! Caverns and 10 mandrake.rut.*ArtOverride mods were DELIBERATELY retired 2026-09-18, plus GravTech/GravTech-BC/GravTechBigCannons-Retextured, ResearchReinvented SteppingStones and Biomes! PollutedLands are absent unexplained. So the canonical campaign save cannot be loaded at all without ignoring compatibility, which blocks every live verify that needs the real Ash'karr campaign (VAULT_THAW_QUEST_FAMILY_1, RIVER_STEAM_ANIMATION_1). Precedent (DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1, DROID_DONOR_SAVE_COMPAT_REGRESSION_1) was to RESTORE the mods, which contradicts the deliberate cuts - needs the owner to choose: restore the retired mods to the list, scrub+re-mint the canonical save, or accept a force-load
 state:    proposed

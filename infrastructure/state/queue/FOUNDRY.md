@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T04:19:54Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-19T04:31:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -233,15 +233,6 @@ target:   v1
 kind:     task
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
-
-## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
-prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
 
 ## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
 state:    doing
@@ -882,6 +873,33 @@ kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
+## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
+
+## TAR_VISCOUS_SURFACE_ART_1 Give tar a viscous surface instead of tinted water - adopt Alpha Biomes AB_Tar/AB_TarPits by the same MayRequire pattern ManyWaters already uses for AB_SlimeRamp, authoring bespoke art only if adoption cannot carry it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md
+
+## EMBERGRASS_LEAFLESS_ALTS_1 EmberGrass leafless: additional variant sprites
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/EMBERGRASS_LEAFLESS_ALTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EMBERGRASS_LEAFLESS_ALTS_1.md
+
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1106,16 +1124,6 @@ kind:     task
 blocked:  own file's 2026-09-10 correction explicitly says do not resume without a fresh ruling; today's fresh MAPGEN_GL_SHEET_1 (8/8, v3 sheet) and MAPGEN_PAINTER_V1_1 (round 4, v4 sheet) are both sitting on needs:owner already - next convergence round is the owner's call, not FOUNDRY's to resume.
 summary:  Each round:
 prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
-
-## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  built+validated+deployed offline; needs a live quicktest to prove both new entrances and the darkness ambush before closing
-summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
-prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
 
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
 state:    ready  (BLOCKED)
@@ -1468,36 +1476,6 @@ kind:     task
 thin:     no ## criteria
 summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
 prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
-
-## MANY_WATERS_DRILL_BUILDINGS_1 Many Waters gains drill/tap buildings that raise a liquid from underground on maps whose subsurface yields it - his fourth acquisition route, and the one that needs no frozen-world authoring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
-
-## TAR_VISCOUS_SURFACE_ART_1 Give tar a viscous surface instead of tinted water - adopt Alpha Biomes AB_Tar/AB_TarPits by the same MayRequire pattern ManyWaters already uses for AB_SlimeRamp, authoring bespoke art only if adoption cannot carry it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md
-
-## EMBERGRASS_LEAFLESS_ALTS_1 EmberGrass leafless: additional variant sprites
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EMBERGRASS_LEAFLESS_ALTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/EMBERGRASS_LEAFLESS_ALTS_1.md
 
 ## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
 state:    proposed
