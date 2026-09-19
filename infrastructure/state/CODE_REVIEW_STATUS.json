@@ -14248,10 +14248,10 @@
     "sha": "009b887ef"
   },
   "src/RimUtinni/LanternDeeps/Source/MapComponent_LanternDeepDarkness.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-18",
-    "hash": "8711da93903df943c370ece9a1b84e9636ed55e4ea6e89359ad5f114e3dc2c50",
-    "sha": "cd7a57e06"
+    "hash": "84c8f4bf6fd68ba2888bf58fa4cb6a5b723646f4eea72df8808d3285028170ef",
+    "sha": "cb87d217b"
   },
   "src/RimUtinni/LanternDeeps/Source/Patch_PocketMapGrowthRate.cs": {
     "cleanCount": 1,
