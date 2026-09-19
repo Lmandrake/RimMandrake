@@ -11818,10 +11818,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "5ae4bd476dd192da58fa2f8649f34308870a2a360dd6ba906b7be133bf8bc4de",
-    "sha": "032461ff4"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "aff91f75438275bae27a20078753a43c40bd85f30f517c4532cf9a7c3ef42982",
+    "sha": "09e0629c3"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml": {
     "cleanCount": 2,
