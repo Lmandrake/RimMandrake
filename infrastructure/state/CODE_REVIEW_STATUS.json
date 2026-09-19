@@ -222,10 +222,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/mods/biome_flora.py": {
-    "cleanCount": 5,
-    "date": "2026-09-18",
-    "hash": "e56e057854a5c7a62db56d22790b384466d09cbcb4829defbd18f334b0d3523c",
-    "sha": "5ab0e549a"
+    "cleanCount": 6,
+    "date": "2026-09-19",
+    "hash": "83ae4c2de3296e7c932234e5aca907878e379eeaecc4b31b28b0b2ae481c6706",
+    "sha": "51867f432"
   },
   "design/Jawa/mods/gen_fish_types.py": {
     "cleanCount": 1,
@@ -636,10 +636,10 @@
     "sha": "a0e9f2d6"
   },
   "skills/rimworld-modding/scripts/validate_patch.py": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "4705ec8fc338e080a97ad8ef3a125ce105ab474c0b6354f1a087619bd429cf41",
-    "sha": "8abbec7b"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "5bb1c188d3c0c19f6cc0953100d1439dfe7b7f72f391f04c08c26d3ec2334963",
+    "sha": "51867f432"
   },
   "skills/rimworld-quests/scripts/validate_quest.py": {
     "cleanCount": 1,
@@ -1920,10 +1920,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "93b68280ef4380e20564f12e2820fe238549f22e3c1cde096d191d40ad6ea7c4",
-    "sha": "d0b0d6b7b"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "2be3f00f37dc48e0002930b8057206b1972cf243426c11143b30dd1932ada693",
+    "sha": "51867f432"
   },
   "src/RimMandrake/FlowWorks/Defs/Canals/JobDefs/FlowWorks_JobDefs.xml": {
     "cleanCount": 1,
@@ -1956,10 +1956,10 @@
     "sha": "336688eb2"
   },
   "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "29d1d0085f01c590fe8fabbd0250f4440e2615fcf6c6853dbfea297953762e08",
-    "sha": "d0b0d6b7b"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "8f76a22cd5da2e24e585a59e71d55a8e908823be066b967066214fabab3f74be",
+    "sha": "51867f432"
   },
   "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml": {
     "cleanCount": 2,
@@ -2346,10 +2346,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/Pits/Fitting/CompPitFitting.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "3726ba0c6d856d1f3d165877dede149b17c07e51b5ed964005144fc45b6082d8",
-    "sha": "b32878458"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "0579982715acb6ec67f243849b9295afe853f2e49d7473caeb57be3c4af5fedb",
+    "sha": "51867f432"
   },
   "src/RimMandrake/FlowWorks/Source/Pits/Fitting/CompProperties_PitFitting.cs": {
     "cleanCount": 1,
@@ -2448,10 +2448,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "eceaf9751fcd80c6b8b562fffe4212e738542130702c9e81361bde596c22e2da",
-    "sha": "c0b15fdbc"
+    "cleanCount": 5,
+    "date": "2026-09-19",
+    "hash": "8179e129b4e979414a4bcfe4739e2e7b17ef9c18d72b3d2a5f9d69f26250b40e",
+    "sha": "51867f432"
   },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs": {
     "cleanCount": 3,
@@ -2490,10 +2490,10 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "024f90a913e6632c0d1109a0caa11be35ffe59e31ad951ae3f0d317b07ebfbe8",
-    "sha": "2bd3af70f"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "7c8b12d59d9127208e669086d1889b5191e08ca7a4aa3829f8bdc4ed8d3f1330",
+    "sha": "51867f432"
   },
   "src/RimMandrake/FlowWorks/validation.py": {
     "cleanCount": 1,
@@ -3642,10 +3642,10 @@
     "sha": "58b9acc94"
   },
   "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
-    "cleanCount": 6,
-    "date": "2026-09-18",
-    "hash": "240209f68dcdd50491449f7e9f052a10c6add5e4c13559318fcca3779c421188",
-    "sha": "58b9acc94"
+    "cleanCount": 7,
+    "date": "2026-09-19",
+    "hash": "faf18cfa132cb60d00975f6c40e28fb7d93a1a19134eb0d6a07808e9eab3bf05",
+    "sha": "51867f432"
   },
   "src/RimMandrake/Ninefold/Source/God.cs": {
     "cleanCount": 2,
@@ -6292,10 +6292,10 @@
     "sha": "ade756fc"
   },
   "src/RimMandrake/Utils/rimworld_loadset.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "b51a8c8c8c1f9303323e6886965cfc06349eb63dc3a193bc30a6a56559fd0758",
-    "sha": "6d60a241"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "7feec2dc562cb1d8b15288433e54b3e34e7ca7c271584dc57578940aee53dc7c",
+    "sha": "51867f432"
   },
   "src/RimMandrake/Utils/run_expectations.py": {
     "cleanCount": 2,
@@ -8752,10 +8752,10 @@
     "sha": "0fc737f9d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonPistol.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "afa4af88e0abfa48ff488aa5920ce41056bd240341677684854b799fb1489466",
-    "sha": "4e2a7912d"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "b7f7d7511d6d88007bd5aaf67344ab99bbac33a43694433e9fd1e185aa1f7835",
+    "sha": "51867f432"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonRifle.xml": {
     "cleanCount": 3,
@@ -8871,6 +8871,12 @@
     "hash": "b2b1b059f7ef1b91f6fc1f421b7e89fbaad147930bede5b43b6800b285804438",
     "sha": "ef81a0b7"
   },
+  "src/RimStarWars/Armoury/Defs/DamageDefs/RSW_ElectricalDamage.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "545edfcc47db0ee311a8eec5e1a1034bca043fd1c9a7d4d66e1a8cb40b23fe41",
+    "sha": "51867f432"
+  },
   "src/RimStarWars/Armoury/Defs/HediffDefs/Absorbed_Eweb_Hediff.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -8924,6 +8930,12 @@
     "date": "2026-09-17",
     "hash": "087cb00e4edef6fe37010c3b4472b23834101e4ca097a41114b1d64bd53a5772",
     "sha": "0afdb147c"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_ElectricArcBolt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "b952868c7870019ea0684b4b611419cfcfd5bcd8a6ef9f7c5825af27f558a02a",
+    "sha": "51867f432"
   },
   "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Sonic_Cannon.xml": {
     "cleanCount": 1,
@@ -9370,10 +9382,10 @@
     "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "7ec0ec3d2e12154942f398f9c9c34e34c1238e95597ebe206bba199ddcd0433b",
-    "sha": "0afdb147c"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "46ec6a9a3105912f8dbf00769327e1ac074ab3d904ff4a61ec36abd9c1ff5cab",
+    "sha": "51867f432"
   },
   "src/RimStarWars/Armoury/Source/gen_armour_patch.py": {
     "cleanCount": 3,
@@ -12118,10 +12130,10 @@
     "sha": "4fde88749"
   },
   "src/RimStarWars/SWBestiary/Patches/SeasWaterline/Waterline_Lane1.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "75ffab558da1c78ad9a13996febbbbf74b91afa18101e41c2b37d3b20a52db9a",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-19",
+    "hash": "eccbe0b535fdd3b091076e1d758a23c081f1a35baade21aae1853f66bfbe2ba1",
+    "sha": "51867f432"
   },
   "src/RimStarWars/SWBestiary/Source/JawaIkee/RSW_JawaIkeeSettings.cs": {
     "cleanCount": 1,
@@ -12538,10 +12550,10 @@
     "sha": "98863702"
   },
   "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "e89d9580e45b8f626db6304034107f15f95f3e88e5f20dcef994679ef0354f2a",
-    "sha": "4e2a7912d"
+    "cleanCount": 5,
+    "date": "2026-09-19",
+    "hash": "ce824f94dfaa00f51535c2d299ee95441e513c3aae2328036e3dbbcc28a21015",
+    "sha": "51867f432"
   },
   "src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/build_frameasync_east.py": {
     "cleanCount": 1,
@@ -12609,6 +12621,12 @@
     "hash": "4610863cf31a76141853a6394c7a39d528edd834dbc9a86e02d9c532f6350dd4",
     "sha": "e69e40f3"
   },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/RSW_Aquatic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "23fdab2d1fce1d2f94db3296319f152e5d262da5299a0f0023738ff8f1af3632",
+    "sha": "51867f432"
+  },
   "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -12668,6 +12686,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimStarWars/StarWarsRaces/Patches/RSW_Aquatic_SoakingWet.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-19",
+    "hash": "5ffa29efb7c2fa3944d001502801940c42ad818e47fbbbd6693a9537d58fbe2b",
+    "sha": "51867f432"
   },
   "src/RimStarWars/StarWarsRaces/README.md": {
     "cleanCount": 1,
@@ -17374,10 +17398,10 @@
     "sha": "5ab0e549a"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "4e1ae9ceb702ae6abf02b38572e66362be35961eb444a8e84a89b7d1124bfd19",
-    "sha": "774ed90f1"
+    "cleanCount": 4,
+    "date": "2026-09-19",
+    "hash": "7d9b15d3b7bd5d5a8010ccec51e34cd1436f5f7f6c32e3095aa03e0e85210ab3",
+    "sha": "51867f432"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
     "cleanCount": 4,
