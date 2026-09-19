@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T13:30:27Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T15:57:16Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1480,6 +1480,16 @@ blocked:  Same open Bazaar dependency chain as the other two slices I checked th
 summary:  RMBazaarTabDef Broker: rows of (LiquidDef, amount in reachable universal
 prose:    infrastructure/state/items/BAZAAR_BROKER_TAB_1.md
 
+## BAZAAR_DISPLACEMENT_PASS_1 Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  precondition unmet: Bazaar slices 1-2 not live-proven yet (WINDOW_GRID needs deploy, PRICE_ENGINE BLOCKED) — premature to rehearse VTE unwind
+summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
+prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
+
 ## ROT_FAUNA_KIN_WIRING_1 Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -1501,16 +1511,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BAZAAR_DISPLACEMENT_PASS_1 Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  When The Bazaar's slices 1–2 are live-proven AND their useful behaviors are
-prose:    infrastructure/state/items/BAZAAR_DISPLACEMENT_PASS_1.md
 
 ## OFFBIOME_SHEET_RERENDERS_1 Sheet rerenders outside Pyrelands: bolotaur, gualaar, fulgurite
 state:    proposed
@@ -1621,3 +1621,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
+
+## EMBERSCYTHE_PYRELANDS_REHOME_1 Move RUT_Emberscythe out of RotSporeKit into a Pyrelands mod — owner ruled MOVE, not cut (2026-09-19 question card)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EMBERSCYTHE_PYRELANDS_REHOME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EMBERSCYTHE_PYRELANDS_REHOME_1.md
