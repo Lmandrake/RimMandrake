@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T15:57:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T16:27:00Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -580,3 +580,23 @@ kind:     chore
 thin:     no ## criteria
 summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
 prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
+
+## GRASSLANDS_CAST_DEAD_BIOME_1 Eight Ash'karr creatures cast into ZBiome_Grasslands, a biome with ZERO tiles
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## criteria
+summary:  src/RimUtinni/UtinniPatches/Patches/BiomeCastAshkarr.xml casts eight creatures
+prose:    infrastructure/state/items/GRASSLANDS_CAST_DEAD_BIOME_1.md
+
+## VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1 Assess the 14 non-Star-Wars xenotypes (Baseliner/Dirtmole/Genie/Highmate/Hussar/Impid/Neanderthal/Pigskin/Sanguophage/Starjack/VRESaurids_Saurid/Waster/Yttakin/guy762_debugxenotype_droid) kept+reflavored in PawnFlavorPhase2_Xenotype.xml for possible removal -- owner ruling: only Star Wars xenotypes belong
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
