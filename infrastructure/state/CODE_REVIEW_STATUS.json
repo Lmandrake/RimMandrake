@@ -5136,10 +5136,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/art_checks.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-18",
-    "hash": "151c1666e8421260e0ab38ec2ab19f2c509053d4ed6caabed2dd6e1070da4c79",
-    "sha": "46252860e"
+    "hash": "df533215a862d50a97bb30185217f3d04629f1bb0d791352b5e5cccc3db234c3",
+    "sha": "af9a1f94b"
   },
   "src/RimMandrake/Utils/art_legibility.py": {
     "cleanCount": 1,

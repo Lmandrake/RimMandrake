@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T04:59:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-19T05:01:35Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1708,16 +1708,6 @@ kind:     bug
 thin:     no ## criteria
 summary:  The approved Pyrelands render wave (9e7e773a0, 2026-09-17, "Wire approved
 prose:    infrastructure/state/items/ORRAY_FACING_HEIGHT_REGRESSION_1.md
-
-## ZEER_EAST_TOP_CLIP_1 Zeer_east.png top margin is 0 px after the 2026-09-17 regen: the fix for Zeer's facing-height break scaled every facing to ~0.98 of canvas and clipped the top edge
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  The same 2026-09-17 render wave (9e7e773a0) that fixed Zeer's
-prose:    infrastructure/state/items/ZEER_EAST_TOP_CLIP_1.md
 
 ## ART_SELFTEST_CORPUS_IN_TRANSIENT_1 art_checks.py --selftest reads its whole corpus from Transient/pyrelands_art_review/art, which the ~14-day Transient sweep will delete out from under the suite
 state:    proposed
