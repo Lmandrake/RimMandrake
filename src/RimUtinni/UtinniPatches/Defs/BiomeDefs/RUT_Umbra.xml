@@ -47,6 +47,19 @@
     <description>The far end of the world: a black sea of liquid fuel under the brightest sky on the planet, ringed by frozen ammonia flats. It snows fuel. The aurora is the strongest anywhere -- the magnetosphere slamming back together after its rude shock upstream -- so the ice glows green and violet even without a moon. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and grow overnight from what falls.</description>
     <workerClass>AlphaBiomes.BiomeWorker_PropaneLakes</workerClass>
 
+    <!-- OWNER RULING 2026-09-19 (RUT_UMBRA_ROADS_RULING_1): the ban STANDS. No
+         roads in the Umbra, same as RUT_ExtremeDesert's "No roads through the deep
+         dune". This flag was previously an unexamined default with no sheet behind
+         it; it is now ruled and the sheet says so.
+         MEASURED (2026-09-07 link export): 42 Umbra tiles carry stored road links,
+         and 74 of their 78 links run Umbra-to-Umbra - only 4 leave the region. So
+         the ban costs almost no connectivity: it hides an internal web in the
+         coldest land on the planet, not a route to anywhere.
+         Nothing is destroyed by this. `potentialRoads` keeps every link in the
+         world data (2,470 across the planet, unchanged); the flag only decides
+         whether they DRAW. Flipping this to true restores all 42 tiles with no
+         re-authoring, should the Assailant/Rakata-vault pilgrimage ever want a
+         road in. -->
     <allowRoads>false</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>true</allowFarmingCamps>
