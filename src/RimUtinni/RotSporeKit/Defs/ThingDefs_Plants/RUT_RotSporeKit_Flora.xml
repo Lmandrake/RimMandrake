@@ -620,7 +620,7 @@
       <Beauty>4</Beauty>
     </statBases>
     <plant>
-      <visualSizeRange>0.9~3</visualSizeRange>
+      <visualSizeRange>0.6~2</visualSizeRange>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>1000</wildClusterWeight>
       <growDays>18</growDays>
@@ -744,7 +744,7 @@
       <interferesWithRoof>false</interferesWithRoof>
       <pollution>Any</pollution>
       <topWindExposure>0.0</topWindExposure>
-      <visualSizeRange>0.6~2</visualSizeRange>
+      <visualSizeRange>0.45~1.5</visualSizeRange>
     </plant>
     <selectable>true</selectable>
     <ingestible>
@@ -777,7 +777,7 @@
       <growDays>5</growDays>
       <fertilityMin>0.05</fertilityMin>
       <maxMeshCount>4</maxMeshCount>
-      <visualSizeRange>1.6~2</visualSizeRange>
+      <visualSizeRange>0.72~0.9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildClusterRadius>8</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
@@ -870,7 +870,7 @@
       <harvestAfterGrowth>0.15</harvestAfterGrowth>
       <harvestFailable>true</harvestFailable>
       <harvestedThingDef>RUT_Glimmerslime</harvestedThingDef>
-      <visualSizeRange>2.4~4</visualSizeRange>
+      <visualSizeRange>1.8~3</visualSizeRange>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -973,7 +973,7 @@
       <growDays>5</growDays>
       <fertilityMin>0.05</fertilityMin>
       <maxMeshCount>4</maxMeshCount>
-      <visualSizeRange>0.86~2</visualSizeRange>
+      <visualSizeRange>0.43~1</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildClusterRadius>8</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>

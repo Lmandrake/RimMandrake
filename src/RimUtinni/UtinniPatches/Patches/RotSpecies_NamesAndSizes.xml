@@ -40,7 +40,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>5.25~7</visualSizeRange></value>
+          <value><visualSizeRange>1.5~2</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -99,7 +99,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>5.14~9</visualSizeRange></value>
+          <value><visualSizeRange>4.57~8</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -137,7 +137,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>8.4~12</visualSizeRange></value>
+          <value><visualSizeRange>6.3~9</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -280,7 +280,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>3~6</visualSizeRange></value>
+          <value><visualSizeRange>1.5~3</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -368,7 +368,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>15</drawSize></value>
+          <value><drawSize>12</drawSize></value>
         </li>
       </operations>
     </match>
