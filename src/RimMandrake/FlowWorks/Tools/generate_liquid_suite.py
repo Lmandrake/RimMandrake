@@ -371,6 +371,138 @@ LIQUID_ROWS = {
         },
         "compat_targets": [],
     },
+
+    # ── SLIME_STREAM_ROWS_1 — R/G/W mucosal slime + YELLOW (human snot) ────
+    # The item's own blocker: the only slime terrain already in this mod set
+    # is either MayRequire="sarg.alphabiomes" (ManyWaters' RM_Slime_<Colour>,
+    # Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml) or a SINGLE un-tinted
+    # terrain owned by a separate, optional mod (GelatinousSlime's own
+    # RM_Slime_Liquid — see this table's own "slime" COMPAT_ONLY_ROWS entry
+    # below, unaffected by this addition). Neither is four distinct
+    # always-loaded colors. These four rows are therefore NEW, FlowWorks-
+    # owned terrain — same clone-and-tint mechanism this table already uses
+    # for RM_Tar/RM_Ooze/RM_Ichor, texture unchanged (vanilla
+    # WaterShallowRamp/WaterDeepRamp, "colour with material" — no new art),
+    # so no MayRequire gate is needed at all: FlowWorks is the mod authoring
+    # them, and FlowWorks is always itself when FlowWorks is loaded.
+    #
+    # DISTINCTNESS (not recolors): each row carries its own pH and hazard
+    # combination in RM_LiquidProperties, so the four differ from EACH OTHER
+    # in a recorded property, not only in <color>:
+    #   RED    pH 4, AcidBurn on contact+immersion, corrodesApparel true —
+    #          the caustic one.
+    #   GREEN  pH 9, Rotting damage on immersion only — the necrotic one,
+    #          no contact hazard (you can look at it; don't soak in it).
+    #   WHITE  pH 7 neutral, flammable true — the waxy/tallow one (echoes
+    #          GelatinousSlime's own "hardened slime... cold tallow" flavor
+    #          text, SlimeTerrain.xml — same substance read differently).
+    #   YELLOW pH 6, no damage spec, no corrosion, no flammability — human
+    #          snot: unpleasant, not hazardous. THIS is the item's own
+    #          "documented example row others should follow": every field
+    #          below is commented for a future contributor copying the shape
+    #          rather than inventing one.
+    #
+    # native pathCost: Heavy per the item's own spec ("visibly-slower-than-
+    # water"), anchored to this table's own tar/ooze precedent (deep tier
+    # Standable at pathCost 300, the same ceiling every other tier-3 liquid
+    # here already uses) rather than a fresh number.
+    "slime_red": {
+        "defnamePrefix": "RM_SlimeRed",
+        "file_name": "RM_SlimeRed.xml",
+        "label_shallow": "red slime",
+        "label_deep": "red slime, deep",
+        "description": (
+            "Mucosal and the color of a fresh wound. It does not react to "
+            "skin so much as insist on it."
+        ),
+        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] Heavy, thicker than tar's shallow (30 inherited)
+        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "extension": {
+            "viscosityClass": "heavy",
+            "pH": 4,
+            "damageOnContact": {"damageDef": "AcidBurn", "amount": 1},
+            "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 2},
+            "corrodesApparel": True,
+        },
+        "compat_targets": [],
+    },
+    "slime_green": {
+        "defnamePrefix": "RM_SlimeGreen",
+        "file_name": "RM_SlimeGreen.xml",
+        "label_shallow": "green slime",
+        "label_deep": "green slime, deep",
+        "description": (
+            "Mucosal and faintly luminous where it pools deep. Nothing "
+            "immersed in it for long comes out the way it went in."
+        ),
+        "native_overrides_shallow": {"pathCost": 40},
+        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "extension": {
+            "viscosityClass": "heavy",
+            "pH": 9,  # [INVENTED] basic-leaning, below the >10 corrosion threshold — irritant, not corrosive
+            "damageOnImmersion": {"damageDef": "Rotting", "amount": 2},
+            "corrodesApparel": False,
+        },
+        "compat_targets": [],
+    },
+    "slime_white": {
+        "defnamePrefix": "RM_SlimeWhite",
+        "file_name": "RM_SlimeWhite.xml",
+        "label_shallow": "white slime",
+        "label_deep": "white slime, deep",
+        "description": (
+            "Mucosal and the color of rendered fat. It clings and it "
+            "burns — not on contact, but readily once something else "
+            "provides the spark."
+        ),
+        # Same prerequisite as propane/fuelsap above: native extinguishesFire
+        # must be false and canFreeze false, or vanilla's own Fire logic
+        # self-extinguishes on this terrain the instant one stands here,
+        # and LiquidIgnitionMapComponent's trigger-gated ignition is meant
+        # to be the only route in.
+        "native_overrides": {"canFreeze": False, "extinguishesFire": False},
+        "native_overrides_shallow": {"pathCost": 40},
+        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "extension": {
+            "viscosityClass": "heavy",
+            "pH": 7,
+            "flammable": True,
+            "igniteTemp": 150,  # [INVENTED] between propane's 40 (thin fuel) and water's inert — waxy, not volatile
+        },
+        "compat_targets": [],
+    },
+    "slime_yellow": {
+        # THE DOCUMENTED EXAMPLE ROW (item spec: "authored as the documented
+        # example row others follow"). Every field a future slime/mucosal row
+        # needs is present and commented here, even the ones that end up
+        # doing nothing (RM_LiquidProperties.ConfigErrors explicitly allows
+        # an inert-but-valid extension, §3 — the "empty but valid" case).
+        "defnamePrefix": "RM_SlimeYellow",
+        "file_name": "RM_SlimeYellow.xml",
+        "label_shallow": "yellow slime",
+        "label_deep": "yellow slime, deep",
+        "description": (
+            "Human, apparently — mucosal, the color of dried snot, and no "
+            "more dangerous than that. It exists to prove the least "
+            "exciting slime can still be one."
+        ),
+        # Heavy-viscosity look only: same shallow/deep pathCost ladder as
+        # its three siblings above, no other native override — this row
+        # deliberately touches nothing else, so a copy of this block that
+        # changes only description/color/extension is a complete new row.
+        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] matches RED/GREEN/WHITE's own shallow tier
+        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "extension": {
+            "viscosityClass": "heavy",  # documents viscosity even though nothing else on this row is hazardous
+            "pH": 6,  # [INVENTED] mildly acidic, mucus-typical, well inside the neutral 4..10 band
+            # No damageOnContact/damageOnImmersion, no corrodesApparel, no
+            # flammable: snot is unpleasant, not a hazard. RM_LiquidProperties.
+            # ConfigErrors flags this combination as a naming/authoring note
+            # only ("does nothing beyond documenting viscosity"), never a
+            # hard error — that note is expected and correct for this row.
+        },
+        "compat_targets": [],
+    },
 }
 
 # Rows built out of scope for a cloned suite — compat patch only. See
@@ -605,12 +737,16 @@ def build_compat_patch(out_dir: Path):
 # left for the pass that builds that adoption.
 #
 # Explicitly DEFERRED, not forgotten:
-#   - Slime RED/GREEN/WHITE/YELLOW: design §7 phase ④ ("slime streams"), its
-#     own build slice after this one (②) -- and the only always-loaded slime
-#     terrain in this mod is GelatinousSlime's RM_Slime_Liquid, a SEPARATE
-#     mod not guaranteed present under "the mod" alone; the tinted
-#     RM_Slime_<Colour> defs in ManyWaters/RM_ColoredWater.xml are
-#     MayRequire="sarg.alphabiomes" and would red-error a minimal-list load.
+#   - Slime RED/GREEN/WHITE/YELLOW: BUILT (SLIME_STREAM_ROWS_1) as four new
+#     always-loaded rows below, each owning its own natural-body terrain
+#     suite (the slime_red/green/white/yellow LIQUID_ROWS entries above)
+#     and canal FluidDef (FlowWorks_Fluids.xml) -- the blocker this note
+#     used to name (only always-loaded slime terrain was GelatinousSlime's
+#     single un-tinted RM_Slime_Liquid, a separate optional mod; ManyWaters'
+#     tinted RM_Slime_<Colour> are MayRequire="sarg.alphabiomes") is solved
+#     by authoring NEW FlowWorks-owned terrain rather than adopting either
+#     donor -- same tinted-vanilla-texture convention as RM_Tar/RM_Ooze
+#     above, no new art, no gate needed.
 #   - Blood: item-only bottled row (design §3), phase ⑤/⑥ -- no bottle
 #     ThingDef exists yet (LIQUID_BOTTLE_LOOP_1 territory).
 #   - Astrofuel: "adopts VGE" needs a soft MayRequire-gated adoption patch,
@@ -780,6 +916,68 @@ LIQUID_DEF_ROWS = {
         # one unit of this liquid. No terrain/canal form in v1.
         "bottled": {"bottle": "Chemfuel", "unitsPerBottle": 1},
     },
+
+    # ── SLIME_STREAM_ROWS_1 ─────────────────────────────────────────────
+    # Ties each colour's natural-body terrain suite (LIQUID_ROWS'
+    # slime_red/green/white/yellow above, generated into
+    # Defs/LiquidTypes/TerrainDefs/RM_Slime<Colour>.xml) to its own canal
+    # FluidDef (FlowWorks_Fluids.xml). No bottled/worldTag/thirstQuality on
+    # any of the four -- not asked for by this item, and inventing a bottle
+    # ThingDef or a frozen-world body tag ahead of a consumer is exactly the
+    # risk LIQUID_REGISTRY_CORE_1's own notes already flagged for every
+    # other row here. pH/damage/flammable per-row match the extension
+    # already written into that row's own terrain (see this table's own
+    # module comment above the four slime_* LIQUID_ROWS entries for why
+    # each was chosen) -- kept in agreement by hand, the same way "acid" and
+    # "tar"'s LiquidDef rows already mirror their own LIQUID_ROWS entries.
+    "slime_red": {
+        "defName": "RM_Liquid_SlimeRed",
+        "label": "red slime",
+        "description": "Mucosal and the color of a fresh wound. It does not react to skin so much as insist on it.",
+        "viscosityClass": "Heavy",
+        "pH": 4,
+        "damageOnContact": {"damageDef": "AcidBurn", "amount": 1},
+        "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 2},
+        "corrodesApparel": True,
+        "terrainSuite": {"shallow": "RM_SlimeRedShallow", "deep": "RM_SlimeRedDeep"},
+        "canalFluid": "RM_Fluid_SlimeRed",
+    },
+    "slime_green": {
+        "defName": "RM_Liquid_SlimeGreen",
+        "label": "green slime",
+        "description": "Mucosal and faintly luminous where it pools deep. Nothing immersed in it for long comes out the way it went in.",
+        "viscosityClass": "Heavy",
+        "pH": 9,
+        "damageOnImmersion": {"damageDef": "Rotting", "amount": 2},
+        "corrodesApparel": False,
+        "terrainSuite": {"shallow": "RM_SlimeGreenShallow", "deep": "RM_SlimeGreenDeep"},
+        "canalFluid": "RM_Fluid_SlimeGreen",
+    },
+    "slime_white": {
+        "defName": "RM_Liquid_SlimeWhite",
+        "label": "white slime",
+        "description": "Mucosal and the color of rendered fat. It clings and it burns -- not on contact, but readily once something else provides the spark.",
+        "viscosityClass": "Heavy",
+        "pH": 7,
+        "flammable": True,
+        "igniteTemp": 150,
+        "terrainSuite": {"shallow": "RM_SlimeWhiteShallow", "deep": "RM_SlimeWhiteDeep"},
+        "canalFluid": "RM_Fluid_SlimeWhite",
+    },
+    # THE DOCUMENTED EXAMPLE ROW (item spec). Human snot: mucosal, Heavy,
+    # and otherwise harmless -- no damage spec, no corrosion, not flammable.
+    # A future contributor copying "a new slime/mucosal liquid" should be
+    # able to duplicate this block, change description/pH/hazard fields,
+    # and have a complete row; nothing here is special-cased.
+    "slime_yellow": {
+        "defName": "RM_Liquid_SlimeYellow",
+        "label": "yellow slime",
+        "description": "Human, apparently -- mucosal, the color of dried snot, and no more dangerous than that.",
+        "viscosityClass": "Heavy",
+        "pH": 6,
+        "terrainSuite": {"shallow": "RM_SlimeYellowShallow", "deep": "RM_SlimeYellowDeep"},
+        "canalFluid": "RM_Fluid_SlimeYellow",
+    },
 }
 
 
@@ -907,12 +1105,16 @@ def build_liquiddef_registry(out_dir: Path):
   src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py; edit the table,
   never this file.
 
-  Ten rows this pass: fresh/salt/boiling/icy/toxic/acid water, tar, brine,
-  propane, chemfuel — every one resolving only against vanilla Core defs and
-  FlowWorks' own already-shipped terrain/FluidDefs, so it loads clean under
-  a minimal mod list with no third-party dependency. Slime (RED/GREEN/WHITE/
-  YELLOW), blood and astrofuel are deliberately NOT here — see the table's
-  own module comment for why each is deferred to a later build phase.
+  Ten rows from LIQUID_REGISTRY_CORE_1: fresh/salt/boiling/icy/toxic/acid
+  water, tar, brine, propane, chemfuel — every one resolving only against
+  vanilla Core defs and FlowWorks' own already-shipped terrain/FluidDefs,
+  so it loads clean under a minimal mod list with no third-party
+  dependency. Plus four more from SLIME_STREAM_ROWS_1: red/green/white/
+  yellow slime, each owning its own new always-loaded terrain suite and
+  canal FluidDef (no MayRequire gate — see the table's own module comment
+  above the slime_* rows for how the previous blocker was solved). Blood
+  and astrofuel are deliberately NOT here — see the table's own module
+  comment for why each is deferred to a later build phase.
   ============================================================================
 -->
 <Defs>

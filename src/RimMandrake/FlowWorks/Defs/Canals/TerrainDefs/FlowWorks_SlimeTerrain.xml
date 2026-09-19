@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SLIME_STREAM_ROWS_1 — four canal fill-tier ladders, one per colour.
+
+       Same shape as the water/tar ladders in FlowWorks_Terrain.xml
+       (ParentName WaterShallow, temporary=true, empty driesTo, canFreeze
+       false — the flooded-cell contract every FluidDef.fillTerrain* field
+       requires) — these are the CANAL side (what an excavated cell shows
+       once RM_Fluid_Slime<Colour> pulses into it), distinct from the
+       NATURAL body terrain (RM_Slime<Colour>Shallow/Deep) that
+       Tools/generate_liquid_suite.py's LIQUID_ROWS table generates into
+       Defs/LiquidTypes/TerrainDefs/ — a natural, non-excavated placement of
+       THAT terrain is what auto-primes a reservoir
+       (RM_MapComponent_Excavation.IsSourceCell reads any natural cell whose
+       TerrainDef.IsWater is true, i.e. carries the vanilla `Water` tag,
+       which WaterShallow already does and this file's ParentName inherits,
+       as a limitless source — no new C#).
+
+       pathCost per tier matches RM_Fill_Tar_* exactly (200/300/300,
+       Trace left at WaterShallow's own inherited 30) — slime is the SAME
+       Heavy viscosityClass as tar on the wade axis; what makes it read as
+       thicker still is the canal fluid's own ticksPerTile (480 vs tar's
+       360, FlowWorks_Fluids.xml), not a heavier wade cost invented fresh.
+
+       Colours are tints of vanilla's own WaterShallowRamp/WaterDeepRamp —
+       no new art, the same "colour with material" convention this mod
+       already uses for RM_Water_<Colour> (Defs/ManyWaters/TerrainDefs/
+       RM_ColoredWater.xml) and RM_Fill_Tar_* above. WHITE and YELLOW reuse
+       ManyWaters' own already-authored "Chalk"/"Amber-adjacent" tint
+       values rather than inventing new ones from nothing.
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- ── RED ─────────────────────────────────────────────────────────── -->
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeRed_Trace</defName>
+    <label>shallow channel, red slime</label>
+    <description>A channel carrying a trace of red slime — already thick enough to cling.</description>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(168,40,40)</color>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeRed_Half</defName>
+    <label>half-full channel, red slime</label>
+    <description>A channel filling with red slime to about half its depth.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(168,40,40)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeRed_Brim</defName>
+    <label>brimming channel, red slime</label>
+    <description>A channel filled to its brim with red slime. Depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(168,40,40)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeRed_Superdeep</defName>
+    <label>flooded excavation, red slime</label>
+    <description>A superdeep excavation holding red slime. Whatever falls in is held there.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(168,40,40)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- ── GREEN ───────────────────────────────────────────────────────── -->
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeGreen_Trace</defName>
+    <label>shallow channel, green slime</label>
+    <description>A channel carrying a trace of green slime — already thick enough to cling.</description>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(60,140,50)</color>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeGreen_Half</defName>
+    <label>half-full channel, green slime</label>
+    <description>A channel filling with green slime to about half its depth.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(60,140,50)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeGreen_Brim</defName>
+    <label>brimming channel, green slime</label>
+    <description>A channel filled to its brim with green slime. Depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(60,140,50)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeGreen_Superdeep</defName>
+    <label>flooded excavation, green slime</label>
+    <description>A superdeep excavation holding green slime. Whatever falls in is held there.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(60,140,50)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- ── WHITE ───────────────────────────────────────────────────────── -->
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeWhite_Trace</defName>
+    <label>shallow channel, white slime</label>
+    <description>A channel carrying a trace of white slime — already thick enough to cling.</description>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <extinguishesFire>false</extinguishesFire>
+    <color>(200,196,178)</color>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeWhite_Half</defName>
+    <label>half-full channel, white slime</label>
+    <description>A channel filling with white slime to about half its depth.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <extinguishesFire>false</extinguishesFire>
+    <color>(200,196,178)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeWhite_Brim</defName>
+    <label>brimming channel, white slime</label>
+    <description>A channel filled to its brim with white slime. Depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <extinguishesFire>false</extinguishesFire>
+    <color>(200,196,178)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeWhite_Superdeep</defName>
+    <label>flooded excavation, white slime</label>
+    <description>A superdeep excavation holding white slime. Whatever falls in is held there.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <extinguishesFire>false</extinguishesFire>
+    <color>(200,196,178)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- ── YELLOW (the documented example row's canal side) ───────────── -->
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeYellow_Trace</defName>
+    <label>shallow channel, yellow slime</label>
+    <description>A channel carrying a trace of yellow slime — already thick enough to cling.</description>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(200,178,40)</color>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeYellow_Half</defName>
+    <label>half-full channel, yellow slime</label>
+    <description>A channel filling with yellow slime to about half its depth.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(200,178,40)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeYellow_Brim</defName>
+    <label>brimming channel, yellow slime</label>
+    <description>A channel filled to its brim with yellow slime. Depth captures, fill does not.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(200,178,40)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_SlimeYellow_Superdeep</defName>
+    <label>flooded excavation, yellow slime</label>
+    <description>A superdeep excavation holding yellow slime. Whatever falls in is held there.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <color>(200,178,40)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>
