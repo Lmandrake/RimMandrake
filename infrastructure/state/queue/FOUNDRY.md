@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:47:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-19T02:53:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -900,6 +900,15 @@ kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
 
+## CANAL_FILL_IN_DISPLACEMENT_1 Fill-in designator that displaces a canal cell's liquid back into connected channel and source, crediting whatever has room and destroying only the overflow - the single sanctioned place liquid leaves the world, and it must be disclosed not silent
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/CANAL_FILL_IN_DISPLACEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANAL_FILL_IN_DISPLACEMENT_1.md
+
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1507,16 +1516,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
 
-## CANAL_FILL_IN_DISPLACEMENT_1 Fill-in designator that displaces a canal cell's liquid back into connected channel and source, crediting whatever has room and destroying only the overflow - the single sanctioned place liquid leaves the world, and it must be disclosed not silent
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANAL_FILL_IN_DISPLACEMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANAL_FILL_IN_DISPLACEMENT_1.md
-
 ## TAR_VISCOUS_SURFACE_ART_1 Give tar a viscous surface instead of tinted water - adopt Alpha Biomes AB_Tar/AB_TarPits by the same MayRequire pattern ManyWaters already uses for AB_SlimeRamp, authoring bespoke art only if adoption cannot carry it
 state:    proposed
 row:      unassigned
@@ -1716,3 +1715,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FULL_LOAD_RESIDUE_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FULL_LOAD_RESIDUE_TRIAGE_1.md
+
+## CANONICAL_SAVE_CUT_RESIDUE_1 The start save loads on the 621 list but drops content: MEASURED Load C 2026-09-19 (load_game with ignoreModCompatibility) 4,828 'Could not load reference' lines (4,543 BMT_; 4,800 ThingDef, 24 WorkGiverDef, 3 ResearchProjectDef, 1 FactionDef), 22 SaveableFromNode NREs = Things with a dead def dropped (RR_Weapon_Torch on several pawns, BMT_BufoBile, GravBeamCannon), 2 GameComponents from als.gravtech/.bc. Save recorded 635 mods; 16 missing (Caverns, Polluted Lands, GravTech x2 + retexture, RR Stepping Stones, 10 ArtOverrides). Scrub or re-save the ship artifact; the bridge refuses it without the override flag. Detail: Transient/canonical_save_loadC_exceptions_2026-09-19.txt, Transient/canonical_save_caverns_scrub_2026-09-18.md
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANONICAL_SAVE_CUT_RESIDUE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANONICAL_SAVE_CUT_RESIDUE_1.md
+
+## CUT_FALLOUT_GENERATED_DATA_1 Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md

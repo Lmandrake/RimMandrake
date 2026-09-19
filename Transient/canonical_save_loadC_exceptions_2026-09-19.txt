@@ -1,0 +1,104 @@
+----
+Could not load reference to RimWorld.WorkGiverDef named BMT_TakeMushroomWineOutOfFermentingBarrel
+Could not load reference to RimWorld.WorkGiverDef named BMT_FillMushroomFermentingBarrel
+Could not find class als.gravtech.ApplyToLoaded while resolving node li. Trying to use Verse.GameComponent instead. Full node: <li Class="als.gravtech.ApplyToLoaded" />
+SaveableFromNode exception: System.ArgumentException: Can't load abstract class Verse.GameComponent
+[Ref 8FA4C5EC]
+at Verse.ScribeExtractor.SaveableFromNode[T] (System.Xml.XmlNode subNode, System.Object[] ctorArgs) [0x00143] in <61e4173561894da49d210260257b5097>:0
+Subnode:
+----
+<li Class="als.gravtech.ApplyToLoaded" />
+[RimAI.Core][P6.Persistence] op=load, nodes=21, elapsed=19ms
+Could not find class als.gravtech.bc.ApplyToLoaded while resolving node li. Trying to use Verse.GameComponent instead. Full node: <li Class="als.gravtech.bc.ApplyToLoaded
+SaveableFromNode exception: System.ArgumentException: Can't load abstract class Verse.GameComponent
+[Ref 8FA4C5EC] Duplicate stacktrace, see ref for original
+Subnode:
+<li Class="als.gravtech.bc.ApplyToLoaded" />
+----
+Could not load reference to Verse.ThingDef named GravBeamCannon
+Tried to register the same load ID twice: null, pathRelToParent=/sourcePrecept, parent=guy762_LgtBattleArmor915
+Could not load reference to Verse.ThingDef named BMT_BufoBile
+SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34DEA5]
+at Verse.Thing.ExposeData () [0x00034] in <61e4173561894da49d210260257b5097>:0
+- TRANSPILER bs.savegamecompatibilityoperation: IEnumerable`1 SaveGameCompatibility.ExposeDataPatch:Transpiler(IEnumerable`1 instructions, MethodBase targetMethod)
+----
+Could not load reference to Verse.ThingDef named RR_Weapon_Torch
+Tried to register the same load ID twice: null, pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668757
+Could not load reference to Verse.ThingDef named RR_Weapon_Torch
+SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34DEA5] Duplicate stacktrace, see ref for original
+Subnode:
+<li Class="ThingWithComps"><def>RR_Weapon_Torch</def><id>RR_Weapon_Torch668760</id><health>100</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick
+----
+Tried to register the same load ID twice: null, pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668768
+Tried to register the same load ID twice: null, pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668774
+Could not load reference to Verse.ThingDef named RR_Weapon_Torch
+SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34DEA5] Duplicate stacktrace, see ref for original
+Subnode:
+<li><def>RR_Weapon_Torch</def><id>RR_Weapon_Torch668830</id><health>100</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick>-1</despawnedTick><cus
+----
+Subnode:
+<li><def>RR_Weapon_Torch</def><id>RR_Weapon_Torch668830</id><health>100</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick>-1</despawnedTick><cus
+Error in PostExposeData of Verse.BackCompatibilityConverter_Universal
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A2359DBA]
+at Verse.BackCompatibilityConverter_Universal.PostExposeData (System.Object obj) [0x0044c] in <61e4173561894da49d210260257b5097>:0
+at Verse.BackCompatibility.PostExposeData (System.Object obj) [0x00063] in <61e4173561894da49d210260257b5097>:0
+----
+- PREFIX WorldbuilderMod: Boolean Worldbuilder.BackCompatibility_PostExposeData_Patch:Prefix(Object obj)
+- POSTFIX makeitso.configurabletechprints: Void ConfigurableTechprints.ClassExtension_BackCompatibility:PostExposeData_HP(Object obj)
+Could not load reference to Verse.ThingDef named RR_Weapon_Torch
+SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34DEA5] Duplicate stacktrace, see ref for original
+Subnode:
+<li><def>RR_Weapon_Torch</def><id>RR_Weapon_Torch668824</id><health>100</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick>-1</despawnedTick><cus
+----
+Subnode:
+<li><def>RR_Weapon_Torch</def><id>RR_Weapon_Torch668824</id><health>100</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick>-1</despawnedTick><cus
+Error in PostExposeData of Verse.BackCompatibilityConverter_Universal
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A2359DBA] Duplicate stacktrace, see ref for original
+Could not load reference to Verse.ThingDef named BMT_Toxwood
+Could not load reference to Verse.ThingDef named BMT_Toxwood
+----
+[Ref A2359DBA] Duplicate stacktrace, see ref for original
+Could not load reference to Verse.ThingDef named BMT_Toxwood
+Could not load reference to Verse.ThingDef named BMT_Toxwood
+SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34DEA5] Duplicate stacktrace, see ref for original
+Subnode:
+<li Class="ThingWithComps"><def>BMT_Toxwood</def><id>BMT_Toxwood668840</id><health>120</health><stackCount>1</stackCount><questTags IsNull="True" /><despawnedTick>-1</des
+----
+gridId:2
+gridId:3
+Could not find class Caveworld_Flora_Unleashed.MapComponent_CaveFungus while resolving node li. Trying to use Verse.MapComponent instead. Full node: <li Class="Caveworld_
+SaveableFromNode exception: System.ArgumentException: Can't load abstract class Verse.MapComponent
+[Ref 8FA4C5EC] Duplicate stacktrace, see ref for original
+Subnode:
+<li Class="Caveworld_Flora_Unleashed.MapComponent_CaveFungus"><nextRandomSpawnTick>142758</nextRandomSpawnTick></li>
+----
+Exception registering Verse.ThingWithComps Verse.ThingWithComps in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key ha
+[Ref FF0803AD] Duplicate stacktrace, see ref for original
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_LgtBattleArmor915
+Could not resolve cross refs: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref FD02721A]
+at Verse.Thing.ExposeData () [0x00034] in <61e4173561894da49d210260257b5097>:0
+- TRANSPILER bs.savegamecompatibilityoperation: IEnumerable`1 SaveGameCompatibility.ExposeDataPatch:Transpiler(IEnumerable`1 instructions, MethodBase targetMethod)
+----
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_Robes_tusken668752
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668753
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668757
+Could not resolve cross refs: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref FD02721A] Duplicate stacktrace, see ref for original
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_Robes_tusken668767
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668768
+----
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668768
+Could not get load ID. We're asking for something which was never added during LoadingVars. pathRelToParent=/sourcePrecept, parent=guy762_TuskenMask668774
+Error in PostExposeData of Verse.BackCompatibilityConverter_Universal
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref A2359DBA] Duplicate stacktrace, see ref for original
+Error in PostExposeData of Verse.BackCompatibilityConverter_Universal
+System.NullReference
