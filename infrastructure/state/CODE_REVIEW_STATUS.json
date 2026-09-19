@@ -5825,10 +5825,10 @@
     "sha": "43884307"
   },
   "src/RimMandrake/Utils/install_fleet_shortcut.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "0ceb547eb4157e6fb053e10f6072d8906b9729ce87496724af9ce95bf0613908",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-19",
+    "hash": "a22e445b3d41371a4c4dc16d5f61b468c1e98eaf690a5c6ab91941c03ea73a09",
+    "sha": "91038bf96"
   },
   "src/RimMandrake/Utils/install_wt_seat_profiles.py": {
     "cleanCount": 2,
