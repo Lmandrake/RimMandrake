@@ -36,11 +36,14 @@ the game DOWN. Also `modcheck run LanternDeeps` if there is time — it swaps th
 | EmptyAICore | `Could not resolve cross-reference ... EmptyAICore` still logs — KNOWN (`RUT_Ported_GravForge.xml`, finding on `CAVERNS_PARITY_BUILD_1`), not new | 1 | — |
 | Deep generates on the full list | quicktest → enter the emergence entrance → map with biome `RUT_LanternDeeps` exists; `RUT_Lanternstone*` count > 0; 0 exceptions | Load A: 525 walls / 21 formations | exception ⇒ a full-list mod collides with the pocket-map patch — read the stack, it was clean on 10 mods |
 | magenta is EXPECTED | pink textures on crystals/flora are NOT a finding (art in the one-sheet sitting) | — | do not file |
+| Deep flora renamed (`DEEP_FLORA_RENAME_1`) | after the dump, `measure get` resolves all eleven: `RUT_DeepMycelium`, `RUT_ZivvitTaper`, `RUT_QuorrFern`, `RUT_OsskBramble`, `RUT_BrellikBulb`, `RUT_TwitchingPuffer`, `RUT_ThrakkCap`, `RUT_PrennaLace`, `RUT_VellokReed`, `RUT_KuvraSpout`, `RUT_NurrikGill`, plus item `RUT_PufferTendrils`; the old ten (`RUT_Gleamtip`, `RUT_Fungusfern`, `RUT_CrystaltipBrambles`, `RUT_YumBulbs`, `RUT_DeepDulcisPlant`, `RUT_Crystalcap`, `RUT_DeepGreyLady`, `RUT_DeepArpeau`, `RUT_LuminousSpout`, `RUT_DeepNuitae`) are ABSENT; `RUT_RawDulcis` is referenced by nothing in LanternDeeps (RotSporeKit dependency dropped) | old names present | a `Config error` or cross-reference line naming any old name ⇒ a missed reference in the rename; the puffer's three plant stages and the tendrils item render magenta until the four `twitchingpuffer_*_v1` jobs are wired — NOT a finding |
 
 ## Owed before this load, if they land in time
-- `DEEP_DULCIS_DEDUP_1` (FOUNDRY): if deployed, `RUT_DeepRawDulcis` must be ABSENT from the
-  dump and `RUT_RawDulcis` present; if not deployed, both defs exist and do not stack —
-  expected, not a finding.
+- `DEEP_DULCIS_DEDUP_1` / `DEEP_FLORA_RENAME_1` (FOUNDRY): `RUT_DeepRawDulcis` and
+  `RUT_DeepDulcisPlant` ABSENT from the dump; `RUT_RawDulcis` present (RotSporeKit's, now
+  unreferenced by LanternDeeps); `RUT_TwitchingPuffer` and `RUT_PufferTendrils` PRESENT and
+  `RUT_LanternDeeps.foragedFood` resolves to the tendrils. If the rename is not deployed,
+  the old ten defs still load — expected, not a finding.
 - SWBestiary Pass 21 (other window): if committed + deployed, `RSW_Scavrat`, `RSW_Runyip`,
   `RSW_Scurrier` appear in the dump and the BiomeCast regen unblocks. If not, they stay absent
   and it is STILL not a regression.
