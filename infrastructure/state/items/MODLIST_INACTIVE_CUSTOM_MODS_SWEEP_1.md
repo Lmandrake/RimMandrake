@@ -111,6 +111,31 @@ off, flagging for whoever next has bridge/research time.
 all ACTIVE. `mandrake.rut.utinnipatches` is a phantom id — real id is
 `mandrake.rut.patches` (folder `UtinniPatches`), already active. Do not re-add it.
 
+## 2026-09-19 FOUNDRY (re-check for real, owner asked to prioritize biome-mod deploy work)
+
+Re-ran the full parse from scratch against the CURRENT live state (this machine, Desktop,
+`/mnt/c/.../Mods` + live `ModsConfig.xml` — not a snapshot): **137 `mandrake.*` mods on
+disk (was 141 — the 4-mod drop matches `PYRELANDS_DONOR_PORT_4`'s dead-ArtOverride
+removal, 621→617 active), 617 active (was 620), 28 inactive (was 29).**
+
+The one-mod delta is `mandrake.rut.longhunger` — correctly absent from the inactive set
+now, matching its enable+close in `LONGHUNGER_QUICKTEST_1` earlier this wave. **No other
+drift**: the remaining 28 packageIds are byte-identical to the prior pass's 29-minus-LongHunger.
+Checked each category's status for anything that newly clears the activation bar:
+`RUST_CATHEDRAL_MECHANICS_1` still `doing` (not closed) — the staged quicktest recipe
+this item's own note pointed to has not run yet, so `mandrake.rut.rustcathedralhum` /
+`mandrake.rut.rustcathedralwalls` stay off. No commit since the last pass gives an
+explicit owner enable ruling for any of the other 27. **Nothing flipped.**
+
+Biome-mods among the 28 (the owner's stated priority, 2026-09-19): `FloodedCanyon`,
+`GelatinousSlime`, `ManyWaters`, `LiquidTypes` (retire candidate, not activate),
+`RustCathedralHum`/`RustCathedralWalls`, `ScarlandsLadder`, `Sarlacc`, `AshkarrFlora`,
+`DivingInteraction` (Scald), `AshkarrWeatherSuite`, `RiverColors`, `FungalSoilTrade` —
+all already carry a specific blocking reason above (BLOCKED item, mid-dev churn, or
+missing owner ruling); none is a mechanical gap this pass can close solo. The
+reconciliation this item asks for is current as of this re-check; re-run after the next
+mod-count-changing commit.
+
 ## 2026-09-19 FOUNDRY (overnight full-621-mod batch) — not re-swept, time-boxed
 
 The full 621-mod list (with `LongHunger` now enabled per this item's own prior entry)
