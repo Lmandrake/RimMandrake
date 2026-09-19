@@ -11056,10 +11056,10 @@
     "sha": "92e56d4f"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-19",
-    "hash": "5045a64a494f76c11e061c34bb0fade18ae8c394471daa9f3a0743acb37c0951",
-    "sha": "fad263d00"
+    "hash": "63beee136fea0e8c4aa956afa92530e780b43b934b9bc81b89bcbd89ed288352",
+    "sha": "2d32e8be7"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.csproj": {
     "cleanCount": 2,
@@ -11068,10 +11068,10 @@
     "sha": "2467e0a2d"
   },
   "src/RimStarWars/JawaRules/Source/RSW_JawaRulesSettings.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-19",
-    "hash": "adda61360d2b12f60b2306e657ec9536830236c8e792a32f0cf0f67c4a593a07",
-    "sha": "fad263d00"
+    "hash": "d9457bef6dd4ae5e5f2bcf7a382541703f068dcf69e334453091ebb62c52dd8f",
+    "sha": "2d32e8be7"
   },
   "src/RimStarWars/JawaVoice/About/About.xml": {
     "cleanCount": 1,
