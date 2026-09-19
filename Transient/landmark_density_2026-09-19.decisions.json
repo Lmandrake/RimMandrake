@@ -1,0 +1,138 @@
+{
+  "sheetId": "landmark_density_2026-09-19",
+  "posture": "whitelist",
+  "decidedCount": 0,
+  "decisions": {
+    "ZBiome_Grasslands__TerraformingScar": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ZBiome_Grasslands__Ruins": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ZBiome_Grasslands__VEE_DryRiver": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Webwork__Cavern": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Webwork__VEE_SerpentineCanyons": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Webwork__Valley": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_WeepingStones__Oasis": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_WeepingStones__VEE_Cenotes": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Contagion__Ruins": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Contagion__TerraformingScar": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Contagion__AncientGarrison": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_CrackedLands__Valley": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_CrackedLands__DryLake": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_CrackedLands__VEE_DryRiver": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Greentide__Valley": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Greentide__VEE_Cenotes": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Greentide__Oasis": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Greentide__Cavern": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "RUT_Scarlands__TerraformingScar": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Scarlands__Ruins": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Scarlands__AncientGarrison": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_TwilightSea__Valley": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "RUT_TwilightSea__DryLake": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "RUT_Slime__VEE_Cenotes": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_Slime__Cavern": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RUT_GreySea__Valley": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    }
+  },
+  "frozen": false
+}
