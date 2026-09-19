@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T20:22:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T20:49:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1522,16 +1522,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BARBSLINGER_SCORPION_REDESIGN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
-
-## MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1 Live 632-mod ModsConfig.xml has several deployed custom mods INACTIVE -- reconcile before the next restart/play session
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  MODLISTINACTIVECUSTOMMODSSWEEP1 — full custom-mod activation sweep, 2026-09-19
-prose:    infrastructure/state/items/MODLIST_INACTIVE_CUSTOM_MODS_SWEEP_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed

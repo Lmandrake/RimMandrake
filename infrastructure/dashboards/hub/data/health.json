@@ -1,30 +1,71 @@
 {
- "generatedAt": "2026-09-19T20:09:00Z",
+ "generatedAt": "2026-09-19T20:38:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 730758,
-  "sha256_12": "822fb1162da7"
+  "bytes": 697529,
+  "sha256_12": "4d9716e401e8"
  },
- "head": "d4a10ee0a",
+ "head": "1ef2e1e3f",
  "counts": {
   "red": 29,
-  "blue": 845,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 2264,
-  "total": 3138
+  "blue": 847,
+  "green": 1833,
+  "grey": 430,
+  "unmeasured": 0,
+  "total": 3139
  },
  "loc": {
   "red": 10377,
-  "blue": 347839,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 682406,
-  "total": 1040622
+  "blue": 350191,
+  "green": 577134,
+  "grey": 105210,
+  "unmeasured": 0,
+  "total": 1042912
  },
  "reviewEntries": 3003,
- "recidivists": [],
+ "recidivists": [
+  {
+   "path": "src/RimMandrake/rimflow/cli.py",
+   "loc": 2348,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/rimflow/selftest_model.py",
+   "loc": 1214,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
+   "loc": 378,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml",
+   "loc": 150,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 69,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_FurnaceCap.xml",
+   "loc": 52,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml",
+   "loc": 38,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimUtinni/MycoidColossusArtOverride/About/About.xml",
+   "loc": 32,
+   "cycles": 1
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "measurementOk": true,
+ "headline": "OK: measured 3139 files (1833 clean, 430 dirty, 0 unmeasured)."
 }
