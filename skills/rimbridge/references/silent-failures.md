@@ -356,3 +356,24 @@ Asked for a 4,034-cell rect with `limit: 1500` on a ship holding ~2,340 things, 
 rows that did not include the decals I had just placed — and I concluded the placement
 had silently failed. It had not; `get_cell_info` showed them. **Read `countMatched`,
 never `len(things)`, and filter by `defName` when hunting for one kind.**
+
+## 🔴 A mod's own spawn-grace guard silently no-ops `T: Destroy`
+
+Alpha-team's Sandworm mod (`chezhou.creature.sandworm`, thing class
+`SandWormLib.SandWormThing`) refuses a non-lethal destroy for a window right after
+spawn: `execute_debug_action {"path":"Actions\\T: Destroy", thingId}` returned
+`success: true` and `jawa/list_things` still matched it afterward — no error, no
+`false`, nothing but `effects.logs` carrying `"[SandWorm] Ignored early non-lethal
+vanish destroy during spawn grace period."`. **Read `effects.logs` on every
+mutation, not just the top-level `success` field** — this is the same shape as
+the envelope-vs-payload trap in §2 of the main skill, one layer further in. Fix:
+wait (a few hundred ticks was enough here) and reissue the same Destroy call; it
+worked cleanly once the grace period lapsed.
+
+⚠️ **The same creature also self-relocates every tick the clock is stepped, even
+while `paused: true`** — 600 explicitly-stepped ticks moved it ~60 tiles from its
+spawn point toward the colony. `step_game_ticks` runs a Thing's normal AI/tick
+logic regardless of whether the wall-clock speed reads Paused; "paused" describes
+the UI speed control, not a freeze on everything with a `Tick()`. Spawn anything
+with autonomous movement well clear of anything precious, and re-check its
+position before assuming it is still where you left it.
