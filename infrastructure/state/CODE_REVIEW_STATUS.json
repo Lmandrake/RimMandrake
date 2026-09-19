@@ -863,6 +863,12 @@
     "hash": "d15125b00f2ccce8dca747b80a2efe666dbb0e64275d01939fea3d21170969c6",
     "sha": "3bcf80ccf"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompPlantAlarm.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "b0bcdca296fc9d7e0a39e3f2f76705f96576c284f5eee598a84bf49dfcaed4b7",
+    "sha": "009b887ef"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -1517,6 +1523,12 @@
     "hash": "3c9b632313a8792bf1577bba1005bd649ef415f8b702315712414eb9d94b8068",
     "sha": "8801d8429"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_SunlightScald.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "669a77453e7670b6e618ad6bf9e1c9d14ca5f7c512862cf9e850e5652b8a7abc",
+    "sha": "009b887ef"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_GnawTreeBase.cs": {
     "cleanCount": 1,
     "date": "2026-09-14",
@@ -1637,11 +1649,23 @@
     "hash": "a90ac88401da39686634f849ab37ca1e460ca5b316768be92f323dc6a3d032e4",
     "sha": "0cdbc22b8"
   },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WarmGround.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "256f09b2c699527a99473e3135f6efd6bf970d91642add536b011862abbb9d13",
+    "sha": "009b887ef"
+  },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_CrecheDespoilManhunterFactor.cs": {
     "cleanCount": 1,
     "date": "2026-09-13",
     "hash": "a8f59a4f457c4bea541aa7f92eda6681d458c79036c96e9223ef9fb2793550a6",
     "sha": "ce17e0865"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LivePrepViability.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "b016353eebbf1b0aca075b31fcd79d56248e622e921b08ba80bcf41907f22e65",
+    "sha": "009b887ef"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_PlaceWorker_OnRequiredVentComp.cs": {
     "cleanCount": 1,
@@ -14139,6 +14163,18 @@
     "hash": "09dacaf2198c44a292b1ec1cf2721faf07f7ad97eaf6e7264c1ab406f02e6dee",
     "sha": "1dc7382d"
   },
+  "src/RimUtinni/LanternDeeps/Source/DeepFloraPlanter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "afdb2b8869a8d0244a34e55e7c5a228f0a7d7c5dbd8ce79d1bfddcb5cf27a22e",
+    "sha": "009b887ef"
+  },
+  "src/RimUtinni/LanternDeeps/Source/GenStep_DeepFloraGate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "7780230c7e5655bdb43c3e3c2d5f02b55237954ee530ce90c006a447954307a5",
+    "sha": "009b887ef"
+  },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
     "cleanCount": 3,
     "date": "2026-09-18",
@@ -14157,11 +14193,23 @@
     "hash": "f37781050f1e2477c66d528adec9fe111f309a7b0465674ca14237f34f13f853",
     "sha": "50cdce358"
   },
+  "src/RimUtinni/LanternDeeps/Source/MapComponent_DeepFloraRegrowth.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "9dee5b53acfb83ca5b4a4faa22af2ea9a67374750bd02bfffe9190db7562d59f",
+    "sha": "009b887ef"
+  },
   "src/RimUtinni/LanternDeeps/Source/MapComponent_LanternDeepDarkness.cs": {
     "cleanCount": 2,
     "date": "2026-09-18",
     "hash": "8711da93903df943c370ece9a1b84e9636ed55e4ea6e89359ad5f114e3dc2c50",
     "sha": "cd7a57e06"
+  },
+  "src/RimUtinni/LanternDeeps/Source/Patch_PocketMapGrowthRate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "39032303a70dc7c6b47611bf1c24bcae98be18707a3bb3c005ec33e0ada322b7",
+    "sha": "009b887ef"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
     "cleanCount": 4,
@@ -14828,6 +14876,12 @@
     "date": "2026-09-11",
     "hash": "5833b3246d4ed74db7e1f9176df895ab5f5c8df1ab536d5f1f848bf3d36f7164",
     "sha": "2679d79d8"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceThermalCharge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-18",
+    "hash": "562e70ccb803f84dfb7625fac43a0b3e319c08e648a25e6d71d3cf360e942515",
+    "sha": "009b887ef"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceWarmthAura.cs": {
     "cleanCount": 3,
