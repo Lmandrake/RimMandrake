@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T22:35:26Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_vandal_regen_v1_1",
+  "priority": 60,
+  "prompt": "A single bold spray-paint graffiti mark: a crude circled scrawl -- one rough hand-drawn circle with a jagged diagonal slash torn through it -- sprayed fast, uneven and lopsided on purpose. Punk/urban vandalism register, ONE large readable motif filling most of the frame, no lettering, no words, no readable text of any kind, no other marks anywhere else in the frame. Hot pink spray paint over transparent background, rough spray edges and a few drips.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VANDAL_ART_REGEN_1",
+  "style_notes": "GRAFFITI_VANDAL_ART_REGEN_1: variant 2 of 6, see variant 0's style_notes for the full brief."
+}
