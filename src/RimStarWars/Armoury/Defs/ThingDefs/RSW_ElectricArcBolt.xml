@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- New native content, SYSTECH_ELECTRIC_BOLT_1 (not absorbed — RSW_ prefix per
+     design/NAMING_SCHEME_PLAN.md). The Systech Static Blaster's replacement
+     projectile: the donor's KotORElectricBolt needed an AthenaPort class we
+     never absorbed and must never re-add (see the item file). Repointing the
+     weapon to the existing KotORIonBolt_default kept it firing but made it
+     visually and mechanically identical to its three ion-pistol siblings in
+     the same file — an ion bolt's EMP extra damage is a droid-only effect,
+     wasted on the organic creature (a veermok) the weapon's own fluff names.
+
+     Same base as KotORIonBolt_default (guy762_BaseBullet_VehicleDamageReducer)
+     and same order of magnitude damage, so this is a flavour/identity fix, not
+     a rebalance — Systech's overall power is left where WEAPONS_DONOR_RETIREMENT_1
+     put it. A real damage-tier pass for this weapon (if the owner wants it to
+     hit like a real anti-creature weapon rather than a near-zero verb weapon,
+     per this mod's own "the verb IS the weapon" doctrine) is a separate, larger
+     call this item was not asked to make.
+
+     Zero new art: Weapons/Projectiles/zap.png already ships in this mod's own
+     Textures folder and is a lightning-bolt sprite no def in the pack
+     references (checked: only zapbeam_blue and setforSTUN are wired to
+     anything). Same zero-art-cost reuse pattern as RSW_Sonic_Cannon.xml. -->
+<Defs>
+
+  <ThingDef ParentName="guy762_BaseBullet_VehicleDamageReducer">
+    <defName>RSW_ElectricArcBolt_default</defName>
+    <label>electric arc</label>
+    <graphicData>
+      <texPath>Weapons/Projectiles/zap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>RSW_RangedDamage_electrical</damageDef>
+      <damageAmountBase>8</damageAmountBase>
+      <armorPenetrationBase>0.05</armorPenetrationBase>
+      <speed>50</speed>
+    </projectile>
+  </ThingDef>
+
+</Defs>

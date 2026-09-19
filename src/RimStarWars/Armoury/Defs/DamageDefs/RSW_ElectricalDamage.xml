@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- New native content, SYSTECH_ELECTRIC_BOLT_1 (not absorbed — RSW_ prefix per
+     design/NAMING_SCHEME_PLAN.md). Restores a distinct mechanical identity for the
+     Systech Static Blaster's projectile after guy762.mm.kotorcore retired
+     KotORElectricBolt (WEAPONS_DONOR_RETIREMENT_1) — see the item file for the
+     full history; do NOT re-add KotORElectricBolt, its Class needs an AthenaPort
+     type this repo never absorbed.
+
+     Modelled directly on the RANGED sibling of an already-absorbed MELEE damage
+     def, guy762_MeleeDamage_electrical
+     (Absorbed_KotorCore_MeleeDamages.xml) — same shape: Burn/Heat plus an
+     additionalHediffs entry granting guy762_Electrocuted
+     (Absorbed_KotorCore_Hediff_Electrocuted.xml), just isRanged via
+     ParentName="guy762_RangedDamage_energy" instead of the melee energy parent.
+     That hediff already exists in this mod set and was previously wired only to
+     melee electrostaves — this is its first ranged user. -->
+<Defs>
+
+  <DamageDef ParentName="guy762_RangedDamage_energy">
+    <defName>RSW_RangedDamage_electrical</defName>
+    <label>electrical burn</label>
+    <deathMessage>{0} has been shocked to death.</deathMessage>
+    <additionalHediffs>
+      <li>
+        <hediff>guy762_Electrocuted</hediff>
+        <severityPerDamageDealt>0.025</severityPerDamageDealt>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+
+</Defs>
