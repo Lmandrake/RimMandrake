@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T08:53:58Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-19T09:21:00Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -241,7 +241,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -249,7 +249,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -259,7 +259,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
@@ -550,3 +550,23 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LIQUID_SINK_LEDGER_METADATA_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LIQUID_SINK_LEDGER_METADATA_FIX_1.md
+
+## ROT_FLORA_FAUNA_VERDICTS_1 Rot flora/fauna verdicts: 45 species regen at ruled cell widths with new campaign names, BovineBeetle + Emberscythe cut from the Rot, 5 landed sprites approved
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  Wire the 5 owner-approved landed sprites from Group C of
+prose:    infrastructure/state/items/ROT_FLORA_FAUNA_VERDICTS_1.md
+
+## DEEPS_FAUNA_MECHANICS_2 Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immunity, drinker hydrocarbon-blood extension + fluid-sack gauge + drained-fluids drop
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  Second pass on DEEPSFAUNAMECHANICS1 (FOUNDRY's, built at 0e0fa8bef),
+prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_2.md
