@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T07:17:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T07:24:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -954,14 +954,14 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
-## SWBESTIARY_DEPLOY_STALE_1 deployed/Mods/SWBestiary is stale - 26 files behind src/, missing RSW_Scurrier/RSW_WarWyrm/RSW_Urusai and likely other recently-ported Mlie species entirely
+## CUT_FALLOUT_GENERATED_DATA_1 Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    offline
 target:   v1
-kind:     task
-summary:  (no items/SWBESTIARY_DEPLOY_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SWBESTIARY_DEPLOY_STALE_1.md
+kind:     build
+summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
 
 ## BRIDGE_DOBILL_FORCE_TOOL_1 No bridge tool can start a DoBill job, so no recipe's ApplyOnPawn can ever be force-verified. MEASURED offline 2026-09-19 by reading JawaBenchZoneTools.cs: jawa/prioritized_work calls Pawn_JobTracker.TryTakeOrderedJobPrioritizedWork on a HAND-BUILT Job, and jawa/ordered_job calls TryTakeOrderedJob the same way - neither ever calls WorkGiver_DoBill.JobOnThing, so Job.bill is null and JobDriver_DoBill falls straight back to Wait. Confirmed there is no vanilla escape hatch either: no [DebugAction] in the 1.6 source matches bill/surgery/recipe (RimSage regex over *.cs), and jawa/debug_actions is a catalogue that executes nothing by its own description. Build jawa/do_bill_now: resolve pawn + billGiver, call the real WorkGiver_DoBill.JobOnThing(pawn, billGiver, forced: true) so the returned Job carries bill, then TryTakeOrderedJob it and read curJob back after waitTicks, same discipline as ordered_job. This has now cost DROIDWORKS_WIPE_SEVERITY_1 three separate live passes (2026-09-12, 09-18, 09-19) and blocks every future recipe verify, not just the memory wipe
 state:    doing
@@ -1616,16 +1616,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANONICAL_SAVE_CUT_RESIDUE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANONICAL_SAVE_CUT_RESIDUE_1.md
-
-## CUT_FALLOUT_GENERATED_DATA_1 Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CUT_FALLOUT_GENERATED_DATA_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CUT_FALLOUT_GENERATED_DATA_1.md
 
 ## BIOME_CONFIGERRORS_NRE_1 NullReferenceException inside BiomeDef.ConfigErrors() on 5 biomes at startup (AridShrubland, Desert, ExtremeDesert since 2026-09-06; +AB_MiasmicMangrove, +BiomeCypreJungle after the Caverns/Polluted cut, MEASURED Load C 2026-09-19 Transient/harvest_loadC_triage_2026-09-19.md). Root cause unknown - harvested lines carry no stack; plausibly a biome plant/animal roster now holding a dangling BMT_ ref. Next load: pull the full exception text from Player.log, name the field, fix at the source (likely CUT_FALLOUT_GENERATED_DATA_1 flora purge)
 state:    proposed
