@@ -1,0 +1,13 @@
+{
+  "item": "MLIE_FAUNA_ABSORPTION_1",
+  "note": "MASS_VALIDATION_LADDER_1 L2 batch trial (2026-09-18/19). One representative Wave-C port (of ~150) picked as a manifest subject: RSW_Hawkbat, ported verbatim from mlie.starwarsanimalcollection. Confirmed deployed (no drift) and live via jawa/get_defs deep=true at manifest-authoring time. Ground truth read from src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Hawkbat.xml on 2026-09-19. A tools[label=tail].surpriseAttack.extraMeleeDamages[0].def check was deliberately NOT written - confirmed live that path sits 4 levels deep and jawa/get_defs's own depth cap (3, MASS_VALIDATION_LADDER_1's own DeepSerializeValue) returns a placeholder string there, not real data; this is an engine-side depth limit, not a manifest bug, so the check is scoped to what the tool can actually see.",
+  "checks": [
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "label", "expected": "hawk-bat"},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "statBases[stat=Wildness].value", "expected": 0.8},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "statBases[stat=MarketValue].value", "expected": 500},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "statBases[stat=MaxFlightTime].value", "expected": 120},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "tools[label=beak].power", "expected": 10.0},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "race.lifeExpectancy", "expected": 27.0},
+    {"defType": "ThingDef", "defName": "RSW_Hawkbat", "path": "race.foodType", "expected": "CarnivoreAnimalStrict, OvivoreAnimal"}
+  ]
+}

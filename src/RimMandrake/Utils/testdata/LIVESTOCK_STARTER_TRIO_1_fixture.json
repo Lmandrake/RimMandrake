@@ -1,0 +1,46 @@
+{
+  "ThingDef::RSW_Karrask": {
+    "label": "karrask",
+    "race": {"trainability": "None"},
+    "statBases": [
+      {"stat": "Wildness", "value": 0.35},
+      {"stat": "MoveSpeed", "value": 3.2}
+    ],
+    "comps": [
+      {"compClass": "CompAttachBase"},
+      {"woolDef": "RSW_KarraskShedRaw", "shearIntervalDays": 15, "woolAmount": 40}
+    ]
+  },
+  "ThingDef::RSW_Onnik": {
+    "label": "onnik",
+    "race": {"trainability": "None"},
+    "statBases": [
+      {"stat": "Wildness", "value": 0.25},
+      {"stat": "MoveSpeed", "value": 2.6}
+    ],
+    "comps": [
+      {"compClass": "CompAttachBase"},
+      {
+        "doseFeedDef": "RSW_KilnClay",
+        "goodProductDef": "RSW_FiredCeramicware",
+        "goodProductCount": 6,
+        "badProductDef": "RSW_CrackedCeramicShards",
+        "badProductCount": 2,
+        "fireCooldownTicks": 240000
+      }
+    ]
+  },
+  "ThingDef::RSW_Moornak": {
+    "label": "moornak",
+    "race": {"trainability": "None"},
+    "tradeability": "Sellable",
+    "statBases": [
+      {"stat": "Wildness", "value": 0.6},
+      {"stat": "MoveSpeed", "value": 2.4}
+    ]
+  },
+  "PawnKindDef::RSW_Karrask": {"combatPower": 45},
+  "PawnKindDef::RSW_Onnik": {"combatPower": 40},
+  "PawnKindDef::RSW_Moornak": {"combatPower": 30},
+  "HediffDef::RSW_MoornakUnsettled": {"hediffClass": "HediffWithComps"}
+}

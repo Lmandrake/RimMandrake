@@ -1,0 +1,18 @@
+{
+  "ThingDef::RSW_Hawkbat": {
+    "label": "hawk-bat",
+    "statBases": [
+      {"stat": "Wildness", "value": 0.8},
+      {"stat": "MarketValue", "value": 500},
+      {"stat": "MaxFlightTime", "value": 120}
+    ],
+    "tools": [
+      {"label": "tail"},
+      {"label": "beak", "power": 10.0}
+    ],
+    "race": {
+      "lifeExpectancy": 27.0,
+      "foodType": "CarnivoreAnimalStrict, OvivoreAnimal"
+    }
+  }
+}
