@@ -1,5 +1,6 @@
 # FactionSlate — validation walk
 subject: src/RimUtinni/UtinniPatches  (packageId: mandrake.rut.patches)
+feature: only-our-factions-patch
 absorbed: FactionSlate (dying id rut.factionslate) folded into UtinniPatches at Patches/FactionSlate/OnlyOurFactions.xml in Sprint wave A (commit 485380d4) — no longer ships alone.
 deps: none in modDependencies/loadAfter — but 23 packageIds are pinned via `forceLoadAfter` (see must-be-true; this mod's whole purpose only exercises on the full list)
 list: full

@@ -1,5 +1,6 @@
 # Property — validation walk
 subject: src/RimMandrake/RimProperty  (packageId mandrake.rm.property)
+feature: ownership-engine
 absorbed: Property's folder was renamed RimProperty and merged with SalvageClaim and TheftHauler in the Sprint wave A crime merge (commit f32eef5f5); the packageId is unchanged and Property's own content is RimProperty's root (Source/PropertyEngine.cs etc.), not a subfolder.
 deps: none (modDependencies: Ludeon.RimWorld only)
 list: minimal

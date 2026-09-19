@@ -1,5 +1,6 @@
 # Pyrelands — validation walk
 subject: src/RimMandrake/Pyrelands  (packageId `mandrake.rm.pyrelands`)
+feature: biome-core
 deps: none — self-contained biome mod (own terrain/plants/weathers, RM_FE_ prefix); fauna wiring rides mandrake.rut.patches (WildAnimals_Pyrelands.xml)
 list: minimal+mandrake.rm.pyrelands+mandrake.rut.patches
 status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all 222 of Ash'karr's Pyrelands tiles are RM_FE_Pyrelands; the ZBiome_Grasslands donor is retired from the worldmap.

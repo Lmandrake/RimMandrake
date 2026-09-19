@@ -1,5 +1,6 @@
 # TheftHauler — validation walk
 subject: src/RimMandrake/RimProperty  (packageId mandrake.rm.property)
+feature: uninstall-theft-verb
 absorbed: TheftHauler (dying id rm.theft_hauler) merged into RimProperty at Source/TheftHauler + Patches/TheftHauler + Defs/TheftHauler in the Sprint wave A crime merge (commit f32eef5f5) — no longer ships alone.
 deps: mandrake.rm.property (hard, modDependencies); loadAfter also mandrake.rsw.droidworks (soft, MayRequire-gated patch only)
 list: minimal+property   # the Droidworks-marked-chassis patch check additionally needs +droidworks; note per-step

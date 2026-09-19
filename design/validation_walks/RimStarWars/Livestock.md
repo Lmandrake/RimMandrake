@@ -1,5 +1,6 @@
 # Livestock — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId `mandrake.rsw.swbestiary`)
+feature: karrask-livestock
 absorbed: Livestock (dying id rsw.livestock) folded into SWBestiary at Source/Livestock + Defs/Livestock in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: sarg.alphabiomes (Alpha Biomes) — loadAfter only, needed solely for `Patches/ForsakenCrags_WildSpawns.xml` (targets `BiomeDef[defName="AB_RockyCrags"]`); everything else in this mod (both animal ThingDefs/PawnKindDefs, the karrask recipe/materials, the DamageDef/HediffDef pair, `CompLightAversion.cs`) needs only Ludeon.RimWorld
 list: minimal for everything except the wild-spawn patch check; minimal+sarg.alphabiomes for that one

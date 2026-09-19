@@ -1,5 +1,6 @@
 # MenuShell — validation walk
 subject: src/RimUtinni/MenuShell  (packageId mandrake.rut.menushell)
+feature: menu-shell-core
 deps: vanillaexpanded.backgrounds (loadAfter; all ten BackgroundImageDefs carry MayRequire="vanillaexpanded.backgrounds" so it is a soft dep, not a hard one)
 list: minimal   # loads clean with VBE absent (MayRequire skips before type resolution); minimal+vanillaexpanded.backgrounds needed to exercise the ten BackgroundImageDefs themselves
 status-hint: the campaign's menu/loading-screen shell — ten VBE.BackgroundImageDef main-menu backgrounds (pantheon slide + one per god icon), a Core-planet-background fallback texture with no VBE dependency, and a 30-line Jawa-voiced TipSetDef read by GameplayTipWindow. Pure XML + textures, no C#, no Harmony.

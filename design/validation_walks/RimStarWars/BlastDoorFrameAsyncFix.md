@@ -1,5 +1,6 @@
 # BlastDoorFrameAsyncFix — validation walk
 subject: src/RimStarWars/StarWarsPatches  (packageId: mandrake.rsw.patches)
+feature: blast-door-frame-async-fix
 absorbed: BlastDoorFrameAsyncFix (dying id rsw.blastdoorframeasyncfix) folded into StarWarsPatches at Source/BlastDoorFrameAsyncFix + its Textures/.../Blast/SWDoorBlastBDoor_FrameAsync art in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: Lumi.doorsexpanded (Doors Expanded Star Wars edition) — required, this mod loadAfters it
 list: minimal+Lumi.doorsexpanded

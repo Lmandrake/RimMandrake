@@ -1,5 +1,6 @@
 # BeastNorm — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+feature: beast-melee-law3-scaling
 absorbed: BeastNorm (dying id rsw.beastnorm) folded into SWBestiary at Patches/BeastNorm/BeastNorm_Law3.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued))
 list: minimal+mlie.starwarsanimalcollection

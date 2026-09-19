@@ -63,7 +63,9 @@ WARN = "WARN"
 
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
 
-ORPHAN_WALK = "ORPHAN_WALK"                     # walk basename -> no src folder
+ORPHAN_WALK = "ORPHAN_WALK"                     # walk's subject (or, absent
+                                                 # a subject:, its basename)
+                                                 # -> no src folder
 WALK_NO_ABOUT = "WALK_NO_ABOUT"                 # folder exists, holds no About.xml
 SUBJECT_MISSING = "SUBJECT_MISSING"             # no `subject:` header at all
 SUBJECT_MISMATCH = "SUBJECT_MISMATCH"           # subject: path != resolved folder
@@ -80,6 +82,7 @@ _SUBJECT_PKGID_RE = re.compile(r"packageid:?\s*`?([A-Za-z0-9_.]+)`?",
                                re.IGNORECASE)
 _PACKAGEID_TAG_RE = re.compile(r"<packageId>([^<]+)</packageId>",
                                re.IGNORECASE)
+_FEATURE_LINE_RE = re.compile(r"^feature:\s*(\S.*)$", re.IGNORECASE)
 
 
 def _read(path):
@@ -138,48 +141,111 @@ def parse_subject(walk_path):
     return None, None
 
 
+def parse_feature(walk_path):
+    """The walk's `feature:` header value (WALK_FEATURE_KEY_1), or None if
+    it carries no such line. The FIRST matching line, same discipline as
+    `parse_subject` -- never a fixed line index."""
+    for line in _read(walk_path).splitlines():
+        m = _FEATURE_LINE_RE.match(line.strip())
+        if m:
+            return m.group(1).strip()
+    return None
+
+
+def mod_name_for_walk(walk_path):
+    """The real mod-folder basename this walk is ABOUT.
+
+    WALK_FEATURE_KEY_1: a walk's own filename no longer decides this --
+    32 of 78 walks are deliberately named after one FEATURE of a mod
+    (`GravshipAstronautFix.md`) rather than the mod itself
+    (`src/RimMandrake/MandrakePatches`), so deriving "the mod" from the
+    walk's basename asserts a one-walk-per-mod convention this repo does
+    not follow. The walk's own `subject:` header is the ground truth;
+    the basename is only a fallback for a walk that carries no subject
+    line at all (already separately flagged SUBJECT_MISSING)."""
+    subj_path, _ = parse_subject(walk_path)
+    if subj_path:
+        return os.path.basename(subj_path.rstrip("/"))
+    return mod_name_from_walk(walk_path)
+
+
+def _duplicate_features(entries):
+    """entries is [(walk_path, feature_or_None), ...] for one shared
+    subject. Returns [(feature_text, count), ...] for any feature value
+    (case/space-insensitively) claimed by more than one walk -- a REAL
+    collision even under the feature: convention."""
+    seen = {}
+    for _, feat in entries:
+        if feat:
+            seen.setdefault(feat.strip().lower(), []).append(feat)
+    return [(texts[0], len(texts)) for texts in seen.values()
+            if len(texts) > 1]
+
+
 # --------------------------------------------------------------- assertions
 def check_walks(repo_root, walks=None):
-    """Assertions 1-5 of SS4's table: every walk's basename resolves to
-    exactly one folder holding About.xml, its `subject:` agrees with that
-    folder, its declared packageId agrees with that folder's About.xml, and
-    no two walks share a `subject:`. Returns (findings, counts)."""
+    """Assertions 1-5 of SS4's table, as amended by WALK_FEATURE_KEY_1:
+    every walk's declared `subject:` resolves to exactly one folder holding
+    About.xml (falling back to basename resolution only when a walk has no
+    `subject:` at all), its declared packageId agrees with that folder's
+    About.xml, and no two walks sharing a `subject:` fail to distinguish
+    themselves with distinct `feature:` keys. Returns (findings, counts)."""
     if walks is None:
         walks = walklint.find_walks(repo_root)
     findings = []
-    subjects = {}   # normalized subject path -> [walk paths]
+    subjects = {}   # normalized subject path -> [(walk path, feature)]
 
     for w in walks:
-        mod = mod_name_from_walk(w)
-        mod_dir, ambiguous = find_mod_folder(repo_root, mod)
+        subj_path, subj_pkgid = parse_subject(w)
+        feature = parse_feature(w)
+
+        if subj_path is not None:
+            norm = subj_path.rstrip("/")
+            subj_dir = os.path.join(repo_root, norm)
+            mod_dir = subj_dir if os.path.isdir(subj_dir) else None
+            ambiguous = False
+            not_found_label = "the subject: path %r" % norm
+        else:
+            norm = None
+            mod = mod_name_from_walk(w)
+            mod_dir, ambiguous = find_mod_folder(repo_root, mod)
+            not_found_label = "src/<tier>/%s" % mod
 
         if ambiguous:
             findings.append((FAIL, ORPHAN_WALK, w,
-                             "`%s` exists in more than one tier -- "
-                             "ambiguous, cannot resolve" % mod))
+                             "%s exists in more than one tier -- "
+                             "ambiguous, cannot resolve" % not_found_label))
         elif mod_dir is None:
             findings.append((FAIL, ORPHAN_WALK, w,
-                             "no src/<tier>/%s folder exists" % mod))
+                             "no folder exists at %s" % not_found_label))
         elif not has_about(mod_dir):
             findings.append((FAIL, WALK_NO_ABOUT, w,
                              "%s holds no About/About.xml" %
                              os.path.relpath(mod_dir, repo_root)))
 
-        subj_path, subj_pkgid = parse_subject(w)
         if subj_path is None:
             findings.append((WARN, SUBJECT_MISSING, w,
                              "no `subject:` header line"))
         else:
-            norm = subj_path.rstrip("/")
-            subjects.setdefault(norm, []).append(w)
+            subjects.setdefault(norm, []).append((w, feature))
 
-            if mod_dir is not None:
-                resolved_rel = os.path.relpath(mod_dir, repo_root).replace(
-                    os.sep, "/")
-                if norm != resolved_rel:
+            # A walk's own basename independently resolving to a
+            # DIFFERENT, real folder than its declared subject is a
+            # genuine staleness bug -- distinct from the deliberate
+            # per-feature convention, whose basenames resolve to no
+            # folder at all (that is exactly what used to mis-fire here
+            # as ORPHAN_WALK before WALK_FEATURE_KEY_1).
+            basename_dir, basename_ambiguous = find_mod_folder(
+                repo_root, mod_name_from_walk(w))
+            if basename_dir is not None and not basename_ambiguous:
+                basename_rel = os.path.relpath(
+                    basename_dir, repo_root).replace(os.sep, "/")
+                if basename_rel != norm:
                     findings.append((FAIL, SUBJECT_MISMATCH, w,
-                                     "subject: says %r, resolves to %r"
-                                     % (norm, resolved_rel)))
+                                     "subject: says %r, but this walk's "
+                                     "own basename independently resolves "
+                                     "to the DIFFERENT folder %r"
+                                     % (norm, basename_rel)))
 
             if subj_pkgid is not None and mod_dir is not None and has_about(mod_dir):
                 real_pkgid = about_packageid(mod_dir)
@@ -189,16 +255,43 @@ def check_walks(repo_root, walks=None):
                                      "About.xml says %r"
                                      % (subj_pkgid, real_pkgid)))
 
-    for norm, ws in sorted(subjects.items()):
-        if len(ws) > 1:
+    def _is_real_collision(entries):
+        return (any(not feat for _, feat in entries)
+                or bool(_duplicate_features(entries)))
+
+    for norm, entries in sorted(subjects.items()):
+        if len(entries) <= 1:
+            continue
+        missing = [w for w, feat in entries if not feat]
+        if missing:
             findings.append((FAIL, SUBJECT_COLLISION, norm,
-                             "%d walks all declare subject: %s -- %s"
-                             % (len(ws), norm,
+                             "%d walks declare subject: %s but %d carry no "
+                             "`feature:` key naming which part of the mod "
+                             "they cover -- %s"
+                             % (len(entries), norm, len(missing),
                                 ", ".join(sorted(mod_name_from_walk(x)
-                                                 for x in ws)))))
+                                                 for x in missing)))))
+            continue
+        dupes = _duplicate_features(entries)
+        if dupes:
+            dup_feature = dupes[0][0]
+            dup_walks = [w for w, feat in entries
+                         if feat and feat.strip().lower()
+                         == dup_feature.strip().lower()]
+            findings.append((FAIL, SUBJECT_COLLISION, norm,
+                             "%d walks declare subject: %s and %d of them "
+                             "claim the SAME feature: %r -- %s"
+                             % (len(entries), norm, len(dup_walks),
+                                dup_feature,
+                                ", ".join(sorted(mod_name_from_walk(x)
+                                                 for x in dup_walks)))))
+        # else: every walk sharing this subject carries its own distinct
+        # feature: key -- deliberate per-feature walks (WALK_FEATURE_KEY_1),
+        # not a collision.
 
     counts = {"walks": len(walks), "subject_collisions":
-              sum(1 for ws in subjects.values() if len(ws) > 1)}
+              sum(1 for entries in subjects.values()
+                  if len(entries) > 1 and _is_real_collision(entries))}
     return findings, counts
 
 
@@ -318,7 +411,7 @@ def run(repo_root=None):
     findings.extend(c_findings)
     counts.update(c_counts)
 
-    walk_mod_names = {mod_name_from_walk(w) for w in walks}
+    walk_mod_names = {mod_name_for_walk(w) for w in walks}
     findings.extend(check_cross_registry(walk_mod_names, capabilities.keys()))
 
     return findings, counts
@@ -342,11 +435,12 @@ _REMEDY = {
     PACKAGEID_MISMATCH: "The walk's declared packageId does not match the "
                         "resolved folder's About.xml. Fix whichever one is "
                         "wrong.",
-    SUBJECT_COLLISION: "Multiple walks claim the same folder; only one "
-                       "basename can ever be reached by `modcheck run`. "
-                       "Decide (owner's call) whether to merge them into "
-                       "one walk, keep the rest as per-feature walks under "
-                       "a new `feature:` key, or delete the redundant ones.",
+    SUBJECT_COLLISION: "Multiple walks claim the same subject. Per "
+                       "WALK_FEATURE_KEY_1 this is fine IF every one of "
+                       "them carries its own distinct `feature:` header "
+                       "naming which part of the mod it covers -- add the "
+                       "missing key(s), or fix the duplicate, rather than "
+                       "merging or deleting.",
     ORPHAN_STATUS: "`infrastructure/state/modcheck_status.json` has a row "
                   "for a mod that no longer exists. If it was renamed or "
                   "absorbed, retire the old rimflow capability with "

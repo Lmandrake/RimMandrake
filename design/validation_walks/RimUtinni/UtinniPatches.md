@@ -1,5 +1,6 @@
 # UtinniPatches — validation walk
 subject: src/RimUtinni/UtinniPatches  (packageId mandrake.rut.patches)
+feature: patch-collection
 deps: mandrake.rsw.starwarsraces, Neronix17.OuterRim.Core, Neronix17.OuterRim.GalacticEmpire, Neronix17.OuterRim.RebelAlliance, Neronix17.OuterRim.GalacticDiversity, Neronix17.OuterRim.DroidDepot, Neronix17.Outland.Genetics, LazyFridayStudio.GenesExpandedEyes, guy762.StarWarsXenotypes, guy762.MM.KotORCore, guy762.KotORWeapons, sarg.alphabiomes, IronScruff.PrimordialGeysers, zylle.MoreVanillaBiomes, titans.fl, Dark.Signs, Nals.FacialAnimation, DanZinagri.FacialAnimationCompatabilityProject, ab.hoffa, 7f.alienworlds.tidallylocked, 7f.alienworlds, mandrake.rm.patches, mandrake.rsw.patches (all loadAfter; every patch is MayRequire/Conditional-guarded per About.xml)
 list: full     # this mod's whole purpose is patching third-party defs across ~20 loadAfter mods; the minimal list cannot exercise it
 status-hint: the Utinni campaign patch layer — factions, scenario, doctrine, and Ash'karr worldbuilding patches across the third-party mod stack; loads LAST of the three patch tiers.

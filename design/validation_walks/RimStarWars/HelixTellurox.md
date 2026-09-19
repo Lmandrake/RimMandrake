@@ -1,5 +1,6 @@
 # Helix Tellurox — validation walk
 subject: src/RimStarWars/SWBestiary  (packageId mandrake.rsw.swbestiary)
+feature: tellurox-race
 absorbed: HelixTellurox (dying id rsw.helixtellurox) folded into SWBestiary at Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none
 list: minimal

@@ -1,5 +1,6 @@
 # Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk
 subject: src/RimMandrake/MandrakePatches  (packageId `mandrake.rm.patches`)
+feature: phytokin-bark-head-east-fix
 absorbed: PhytokinBarkHeadFix (dying id rm.phytokinbarkheadfix) folded into MandrakePatches at Textures/Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal_east.png in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: `vanillaracesexpanded.phytokin` (Vanilla Races Expanded - Phytokin, third-party, hard modDependency)
 list: minimal+vanillaracesexpanded.phytokin

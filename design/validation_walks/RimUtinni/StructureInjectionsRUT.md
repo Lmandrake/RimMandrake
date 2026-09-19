@@ -1,5 +1,6 @@
 # StructureInjectionsRUT — validation walk
 subject: src/RimUtinni/StructureInjectionsRUT  (packageId `mandrake.rut.injections`)
+feature: structure-templates
 deps: mandrake.rm.injections (GenStep_RimplacePlan engine), mandrake.rut.desertfixtures (RUT_WindowAdobe used by homestead templates)
 list: minimal+mandrake.rm.injections+mandrake.rut.desertfixtures
 status-hint: Ash'karr "promise/whisper" structure content — 12 GenStepDef/TileMutatorDef pairs (batches 3–6 plus the homestead family) that each replay a `Templates/*.txt` rimplace plan via `GenStep_RimplacePlan`; none are yet placed on any world tile.

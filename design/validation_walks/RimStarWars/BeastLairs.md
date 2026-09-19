@@ -1,5 +1,6 @@
 # BeastLairs — validation walk
 subject: src/RimStarWars/StructureInjectionsSW  (packageId mandrake.rsw.injections)
+feature: beast-lairs-structures
 absorbed: BeastLairs (dying id rsw.beastlairs) folded into StructureInjectionsSW at Defs/BeastLairs + Textures/Things/Building/RSW_BeastNest_Large in Sprint wave A (commit 247cd6d40) — no longer ships alone.
 deps: none (Ludeon.RimWorld only)
 list: minimal
