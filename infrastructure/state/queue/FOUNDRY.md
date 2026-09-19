@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T00:43:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T00:43:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -192,7 +192,7 @@ prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
