@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T04:31:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T04:43:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -882,24 +882,6 @@ kind:     task
 summary:  (no items/MANY_WATERS_DRILL_BUILDINGS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MANY_WATERS_DRILL_BUILDINGS_1.md
 
-## TAR_VISCOUS_SURFACE_ART_1 Give tar a viscous surface instead of tinted water - adopt Alpha Biomes AB_Tar/AB_TarPits by the same MayRequire pattern ManyWaters already uses for AB_SlimeRamp, authoring bespoke art only if adoption cannot carry it
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/TAR_VISCOUS_SURFACE_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TAR_VISCOUS_SURFACE_ART_1.md
-
-## EMBERGRASS_LEAFLESS_ALTS_1 EmberGrass leafless: additional variant sprites
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/EMBERGRASS_LEAFLESS_ALTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/EMBERGRASS_LEAFLESS_ALTS_1.md
-
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
 row:      unassigned
@@ -1716,3 +1698,43 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
+
+## ORRAY_FACING_HEIGHT_REGRESSION_1 Orray south is 2.49x taller than east after the 2026-09-17 approved render wave (was known-good, now the corpus's 2nd-worst facing-height break)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  The approved Pyrelands render wave (9e7e773a0, 2026-09-17, "Wire approved
+prose:    infrastructure/state/items/ORRAY_FACING_HEIGHT_REGRESSION_1.md
+
+## ZEER_EAST_TOP_CLIP_1 Zeer_east.png top margin is 0 px after the 2026-09-17 regen: the fix for Zeer's facing-height break scaled every facing to ~0.98 of canvas and clipped the top edge
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  The same 2026-09-17 render wave (9e7e773a0) that fixed Zeer's
+prose:    infrastructure/state/items/ZEER_EAST_TOP_CLIP_1.md
+
+## SELFTEST_FAILURE_TRIAGE_1 Triage the 5 standing selftest failures: 3 stale instruments, 1 real dead-patch catch, 1 real art regression pair
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SELFTEST_FAILURE_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SELFTEST_FAILURE_TRIAGE_1.md
+
+## ART_SELFTEST_CORPUS_IN_TRANSIENT_1 art_checks.py --selftest reads its whole corpus from Transient/pyrelands_art_review/art, which the ~14-day Transient sweep will delete out from under the suite
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  artchecks.py's --selftest reads its ENTIRE corpus from
+prose:    infrastructure/state/items/ART_SELFTEST_CORPUS_IN_TRANSIENT_1.md
