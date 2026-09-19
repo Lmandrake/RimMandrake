@@ -33,12 +33,22 @@
       <canFilthAttach>true</canFilthAttach>
       <maxThickness>4</maxThickness>
     </filth>
+    <!--
+      Owner verdict 2026-09-18 on the minimal-list review: "I don't see ash...
+      anywhere" — 1,900 of these were on the map after ashfall+fire, mechanically
+      fine, invisible. The original (140,136,130,200) is a mid-grey close in
+      value to Pyrelands' own grey-brown ground (see ScorchableGround.xml's
+      Gravel/Soil tints, ~120-140 range) — same tone, low alpha, no contrast
+      either way. Real ash reads pale, near-white against dark ground; raised
+      here to a pale warm-grey and near-opaque so the drift actually stands out
+      rather than blending into the dirt it is meant to be visible on top of.
+    -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
       <texPath>Things/Filth/Ash</texPath>
-      <color>(140, 136, 130, 200)</color>
-      <drawSize>3</drawSize>
+      <color>(205, 200, 190, 235)</color>
+      <drawSize>3.3</drawSize>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>

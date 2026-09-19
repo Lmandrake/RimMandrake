@@ -4,8 +4,21 @@
   <!--
     Cinderfall — the storm (owner's ruling, 2026-09-09: "Cinderfall
     storms"). Ash fall's rare, violent sibling: the same falling-particle
-    trick, run at hard-snow density and tinted ember instead of grey, with
-    real lightning underneath it.
+    trick, tinted ember instead of grey, with real lightning underneath it.
+
+    OVERLAY CLASS, corrected 2026-09-19 (owner minimal-list review:
+    "weak little puffs of ash falling down... very unimpressive" —
+    WeatherOverlay_SnowHard read as the same light snow-speck sheet AshFall
+    already uses at gentle density, just faster; not the disaster's own
+    violence). MEASURED (RimSage): WeatherOverlay_SnowBlizzard is vanilla's
+    OWN storm-tier overlay (Defs/Odyssey/WeatherDefs/Weathers.xml `Blizzard`)
+    — a CloudLayer plus a ParticleLayer, not a single particle sheet — and
+    neither layer sets `ForcedOverlayColor` (Verse/WeatherOverlayDualPanner.cs's
+    `SetOverlayColor` only writes `Material.color`; SkyManager.cs:117 only
+    honours a FORCED color, which BloodRain/DeathpallAshes/BloodFog set and
+    SnowBlizzard does not), so the same `<overlay>` ember-tint trick below
+    still recolors it exactly as it did SnowHard — genuinely more violent
+    for free, zero new art, zero new code.
 
     THE IGNITION IS VANILLA'S, NOT AN INVENTED ONE. `eventMakers` takes
     weather-event classes the base game already ships, and
@@ -59,7 +72,7 @@
       <li>Ambient_Wind_Storm</li>
     </ambientSounds>
     <overlayClasses>
-      <li>WeatherOverlay_SnowHard</li>
+      <li>WeatherOverlay_SnowBlizzard</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <eventMakers>
