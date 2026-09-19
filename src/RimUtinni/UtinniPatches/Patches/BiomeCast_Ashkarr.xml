@@ -282,7 +282,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
         <RSW_Kreetle>1.0</RSW_Kreetle> <!-- kreetle - arthropod-floor, keep -->
-        <RSW_Yobshrimp>0.8</RSW_Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
+        <RSW_YobshrimpLand>0.8</RSW_YobshrimpLand> <!-- yobshrimp - arthropod-floor, import -->
         <RSW_Runyip>0.5</RSW_Runyip> <!-- runyip - muck-forager, adjust-keep -->
         <RSW_Shiro>0.4</RSW_Shiro> <!-- shiro - arthropod-floor, keep -->
         <RSW_Grank>0.3</RSW_Grank> <!-- Grank - channel-predator, import -->

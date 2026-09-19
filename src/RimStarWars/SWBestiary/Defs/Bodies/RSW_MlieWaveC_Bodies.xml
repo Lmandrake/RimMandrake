@@ -10261,7 +10261,7 @@
     </corePart>
   </BodyDef>
 <BodyDef>
-    <defName>RSW_Yobshrimp</defName>
+    <defName>RSW_YobshrimpLand</defName>
     <label>clawed crustaceous animal</label>
     <corePart>
       <def>Shell</def>

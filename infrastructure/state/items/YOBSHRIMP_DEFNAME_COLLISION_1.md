@@ -101,6 +101,79 @@ land variant. This is a naming collision to FIX, not a duplicate to delete.
 
 ## Status
 
-Filed, not started. `needs: offline`. Left DIRTY (not mark-cleaned) in
-CODE_REVIEW_STATUS.json: `SeaBeasts_NurseryJuveniles.xml`,
-`SeaBeasts_Swarm.xml`, `RSW_Yobshrimp.xml`.
+**FIXED 2026-09-19.** Renamed the Wave-C land ThingDef/PawnKindDef/BodyDef to
+`RSW_YobshrimpLand`. No existing suffix convention was found among sibling
+Wave-C ports (they're all a bare `RSW_<DonorName>` rename with no
+disambiguating suffix — this is apparently the first same-mod defName
+collision this mod has hit), so `RSW_YobshrimpLand` was chosen as the
+clearest label for "the terrestrial one" per the item's own suggestion.
+
+Per-step results:
+
+1. **Done.** `src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Yobshrimp.xml`:
+   ThingDef defName, `<race><body>`, PawnKindDef defName and `<race>` all
+   renamed `RSW_Yobshrimp` → `RSW_YobshrimpLand`. Header comment updated (was
+   citing the old BodyDef name) and a dated addendum added recording this fix.
+   `src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveC_Bodies.xml:10264`
+   BodyDef defName renamed to match.
+2. **Done.** `RSW_MlieWaveC_Resources.xml:2659` `<hatcherPawn>` repointed to
+   `RSW_YobshrimpLand`. No other same-file cross-references found.
+3. **Checked, no change needed.** `RUT_Miasma.xml` does NOT contain a bare
+   `RSW_Yobshrimp` reference — its "arthropod-floor, import" wildAnimals entry
+   (line 215, commonality 0.8) uses the DONOR's own bare `Yobshrimp` defName
+   gated `MayRequire="mlie.starwarsanimalcollection"`, a third, unrelated
+   entity from the live donor mod itself, not either RSW_ pair. Its only RSW_
+   reference is `RSW_YobshrimpJuv` (line 226, the aquatic nursery juvenile),
+   which is correct as-is. `validate_patch.py` confirms 0 errors/warnings.
+4. **Done, scoped.** `design/Jawa/fauna/cast_assignment.csv` row 17 (biome
+   `AB_MiasmicMangrove`, band `arthropod-floor`, the land port) updated to
+   `RSW_YobshrimpLand`. Ran the real generator
+   (`python3 design/Jawa/fauna/gen_cast_patch.py`) — it correctly REFUSED to
+   emit the renamed entry (today's freshest capture, `2026-09-19T04-19-13Z`,
+   predates this rename and has no `RSW_YobshrimpLand` PawnKindDef yet, so the
+   generator's own resolve-against-live-dump check skipped it rather than
+   emit something unresolvable). The full regen also produced a large,
+   unrelated diff against both committed `BiomeCast_Ashkarr.xml` copies (the
+   underlying capture/cast data has drifted independently since either file
+   was last generated — reordered/renamed entries across many other species,
+   nothing to do with yobshrimp) that is **out of scope for this item and was
+   NOT committed**. Instead, made the single scoped edit both a clean regen
+   would produce for this one entry: `<RSW_Yobshrimp>0.8</RSW_Yobshrimp>
+   <!-- yobshrimp - arthropod-floor, import -->` →
+   `<RSW_YobshrimpLand>0.8</RSW_YobshrimpLand>` (same comment, same value) in
+   both `design/Jawa/fauna/BiomeCast_Ashkarr.xml` and
+   `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml`, confirmed via
+   `git diff` to be exactly a 1-line change in each file. The nursery entry
+   (`RSW_Yobshrimp` 0.3, aquatic) was left untouched — it now correctly
+   resolves to the aquatic pair once this rename lands.
+   ⚠️ Whoever next runs `gen_cast_patch.py` for an unrelated reason will pick
+   up BOTH this cast_assignment.csv fix AND the large independent drift
+   flagged above in the same regen — that drift should get its own review
+   pass, not be nodded through as part of this collision fix.
+5. **Determined.** A fresh def dump already existed on disk from today's
+   restart-validation cycle (`.../DefDump/captures/2026-09-19T04-19-13Z`,
+   captured before this rename). Querying it directly: `RSW_Yobshrimp`
+   resolved to exactly one ThingDef (label "yobshrimp", body `RSW_Yobshrimp`
+   matching the now-renamed BodyDef) and one PawnKindDef (label "yobshrimp")
+   — **the LAND crustacean was the one DefDatabase kept; the aquatic "pale
+   yobshrimp" SeaBeasts swarm pair was the one silently absent from every
+   load until this fix.** No from-scratch reintroduction is needed for the
+   aquatic pair's biome/trade wiring: `BiomeCast_Ashkarr.xml`'s nursery
+   wildAnimals entry (`RSW_Yobshrimp` 0.3, `AB_MiasmicMangrove`) was already
+   present and unchanged by this fix, so it starts resolving to the aquatic
+   pair the next time the mod loads with these changes deployed. One real
+   gap found in passing, NOT fixed here (outside this item's scope — a
+   content/balance call, not a collision fix): the aquatic ThingDef
+   (`SeaBeasts_Swarm.xml`) has no `<tradeTags>` block, unlike the land one
+   (`AnimalUncommon`), so it won't be purchasable/sellable via traders even
+   once it starts spawning.
+
+`validate_patch.py` (full mod folder + `--live` against the 2026-09-19T04-19
+capture): all four touched def files
+(`RSW_Yobshrimp.xml`, `RSW_MlieWaveC_Bodies.xml`, `RSW_MlieWaveC_Resources.xml`,
+`BiomeCast_Ashkarr.xml`) report **0 errors, 0 warnings**. The mod-wide
+FAIL TOTAL (77 errors/54 warnings) is pre-existing and unrelated (missing
+textures for other creatures such as Wyyyschokk/Zakkeg/Zeer, an unrelated
+`RSW_SWanimals_RawMeatBase` ParentName gap) — none of it touches yobshrimp.
+
+Closed.

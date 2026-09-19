@@ -2656,7 +2656,7 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Yobshrimp</hatcherPawn>
+        <hatcherPawn>RSW_YobshrimpLand</hatcherPawn>
       </li>
     </comps>
   </ThingDef>

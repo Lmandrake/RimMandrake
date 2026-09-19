@@ -2,7 +2,7 @@
 <!--
   MLIE_FAUNA_ABSORPTION_1 Wave C, Pass 24 — Yobshrimp creature port.
   Ported from mlie.starwarsanimalcollection's `Yobshrimp` ThingDef/PawnKindDef
-  pair, renamed under the RSW_ tier prefix. New `RSW_Yobshrimp` BodyDef
+  pair, renamed under the RSW_ tier prefix. New `RSW_YobshrimpLand` BodyDef
   (RSW_MlieWaveC_Bodies.xml) — vanilla Shell/Elytra/InsectHeart/Pronotum/
   InsectHead/InsectNostril/InsectMouth/Arm/InsectLeg/Foot parts plus the
   already-ported `RSW_SW_LeftClaw` part and `RSW_SWLeftLegClawAttackTool`/
@@ -34,11 +34,20 @@
   around by repointing the juvenile `dessicatedBodyGraphicData` to the
   already-extracted adult `Yobshrimp_Dessicated` texPath instead, same fix
   pattern as Igitz.
+
+  YOBSHRIMP_DEFNAME_COLLISION_1 (2026-09-19): this pass's `RSW_Yobshrimp`
+  defName collided with the earlier SW_SEA_MONSTERS_ART_1 "pale yobshrimp"
+  (SeaBeasts_Swarm.xml, aquatic nursery swarm) — both ThingDef+PawnKindDef
+  pairs shared `mandrake.rsw.swbestiary`, so DefDatabase<T>.AddAllInMods()
+  silently dropped the second one it enumerated (the aquatic pair, per a
+  fresh def dump). This land crustacean's ThingDef/PawnKindDef/BodyDef were
+  renamed to `RSW_YobshrimpLand` to free `RSW_Yobshrimp` for the aquatic
+  pair, which was never previously reachable in play.
 -->
 <Defs>
 <!-- ThingDef -->
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
-    <defName>RSW_Yobshrimp</defName>
+    <defName>RSW_YobshrimpLand</defName>
     <label>yobshrimp</label>
     <description>Yobshrimp were a carnivorous crustacean native to the shallow waters of the planet Naboo. These clawed creatures were typically preyed upon by animals such as Blarths and larger scalefish. Some considered this animal a delicacy and many fishing families cultivated the yobshrimp for consumption which resulted in it's dispersal to various worlds.</description>
     <statBases>
@@ -94,7 +103,7 @@
       </li>
     </comps>
     <race>
-      <body>RSW_Yobshrimp</body>
+      <body>RSW_YobshrimpLand</body>
       <baseBodySize>0.4</baseBodySize>
       <baseHungerRate>0.08</baseHungerRate>
       <baseHealthScale>0.4</baseHealthScale>
@@ -156,9 +165,9 @@
 
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Yobshrimp</defName>
+    <defName>RSW_YobshrimpLand</defName>
     <label>yobshrimp</label>
-    <race>RSW_Yobshrimp</race>
+    <race>RSW_YobshrimpLand</race>
     <combatPower>75</combatPower>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
