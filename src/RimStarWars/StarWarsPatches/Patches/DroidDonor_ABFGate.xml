@@ -170,35 +170,54 @@
        rather than list position, per the item file's own guidance, since each
        trader def has two structurally-identical stockGenerators/li entries. -->
 
-  <!-- Site 7: orbital trader, common droids (KotORDroidColonist_DevWD/SentWD) -->
+  <!-- Site 7: orbital trader, common droids (KotORDroidColonist_DevWD/SentWD).
+       DROID_DONOR_PATCH_GATE_NODE_GUARD_1 (2026-09-19, extended to sites 7-10):
+       both li's this site can reach (the guy762.kotorweapons donor original AND
+       mandrake.rsw.armoury's absorbed copy) carry their own
+       MayRequire="guy762.KotORDroids" - a mod NOT in the current ModsConfig.xml,
+       so the node is absent from the loaded def regardless of ABF. Wrapped in
+       the same inner Conditional guard as sites 2-6 so a bare Remove doesn't
+       log a false failure while guy762.KotORDroids stays inactive. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 8: orbital trader, uncommon droids (KotORDroidColonist_ADMkI/ADMkIV) -->
+  <!-- Site 8: orbital trader, uncommon droids (KotORDroidColonist_ADMkI/ADMkIV). Same guard as site 7. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 9: base trader, common droids -->
+  <!-- Site 9: base trader, common droids. Same guard as site 7. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
-  <!-- Site 10: base trader, uncommon droids -->
+  <!-- Site 10: base trader, uncommon droids. Same guard as site 7. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Artificial Beings Framework</li></mods>
-    <nomatch Class="PatchOperationRemove">
+    <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+      </match>
     </nomatch>
   </Operation>
 
