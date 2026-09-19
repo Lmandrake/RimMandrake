@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T18:08:14Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-19T19:00:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -241,7 +241,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BACTA_TANK_CORE_1 Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
 state:    ready
@@ -249,7 +249,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BACTATANKCORE1 — the Bacta Tank mod: core building, fluid, healing comp
 prose:    infrastructure/state/items/BACTA_TANK_CORE_1.md
 
@@ -259,7 +259,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  (no items/PYRELANDS_FLORA_ART_IDENTITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FLORA_ART_IDENTITY_1.md
 
@@ -581,16 +581,6 @@ thin:     no ## criteria
 summary:  Do this at the desk, on a day when losing the fleet for ten minutes is fine.
 prose:    infrastructure/state/items/REBOOT_BREAKGLASS_VERIFY_1.md
 
-## GRASSLANDS_CAST_DEAD_BIOME_1 Eight Ash'karr creatures cast into ZBiome_Grasslands, a biome with ZERO tiles
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-thin:     no ## criteria
-summary:  src/RimUtinni/UtinniPatches/Patches/BiomeCastAshkarr.xml casts eight creatures
-prose:    infrastructure/state/items/GRASSLANDS_CAST_DEAD_BIOME_1.md
-
 ## VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1 Assess the 14 non-Star-Wars xenotypes (Baseliner/Dirtmole/Genie/Highmate/Hussar/Impid/Neanderthal/Pigskin/Sanguophage/Starjack/VRESaurids_Saurid/Waster/Yttakin/guy762_debugxenotype_droid) kept+reflavored in PawnFlavorPhase2_Xenotype.xml for possible removal -- owner ruling: only Star Wars xenotypes belong
 state:    proposed
 row:      unassigned
@@ -610,3 +600,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  MYCOIDCOLOSSUSARTMISROUTE1
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
+
+## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_SIZE_REJUDGE_APPLY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
