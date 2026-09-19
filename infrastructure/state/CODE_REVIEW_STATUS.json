@@ -2142,10 +2142,10 @@
     "sha": "d0b0d6b7b"
   },
   "src/RimMandrake/FlowWorks/Languages/English/Keyed/FlowWorks_Keys.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "64aaaf71db1a3a109e433c1d8163ae0fd83bf9541d29925faa288691d7b461b0",
-    "sha": "d0b0d6b7b"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "c17b9e48a92fed91737aeaf5ce9c78f5040d1206a443729281809b78fc8d2054",
+    "sha": "c0b15fdbc"
   },
   "src/RimMandrake/FlowWorks/Languages/English/Keyed/Pit_Keys.xml": {
     "cleanCount": 1,
@@ -2448,16 +2448,16 @@
     "sha": "b32878458"
   },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-18",
-    "hash": "66510661972f580cad9f1feb119bc43fc07ea1ea861a5a21698fe8bb5a363cc5",
-    "sha": "336688eb2"
+    "hash": "eceaf9751fcd80c6b8b562fffe4212e738542130702c9e81361bde596c22e2da",
+    "sha": "c0b15fdbc"
   },
   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-18",
-    "hash": "b62fd623b13f4f38d559c1ee2dc7a5b56ba9eafd61783c42ec31ffcd9df2b777",
-    "sha": "336688eb2"
+    "hash": "d532d9aa4833af23c2f49c3d2bf5ecafb953d1e7cc58a3105b03bfe9776f39eb",
+    "sha": "c0b15fdbc"
   },
   "src/RimMandrake/FlowWorks/Source/Superdeep/Building_SuperdeepPit.cs": {
     "cleanCount": 1,
@@ -3960,10 +3960,10 @@
     "sha": "7fc491ebc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "6fd4a120491e7bf290a3785b99c05cf475a656f7039f012b700d56064fda35b0",
-    "sha": "7fc491ebc"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "a080726b698a0ee76c8838dbf141964ba4e5de6986fbe6883ee340fd0d41b8cf",
+    "sha": "c0b15fdbc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml": {
     "cleanCount": 2,
