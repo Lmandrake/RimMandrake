@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:13:30Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-19T05:27:12Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1700,16 +1700,6 @@ thin:     no ## criteria
 summary:  The approved Pyrelands render wave (9e7e773a0, 2026-09-17, "Wire approved
 prose:    infrastructure/state/items/ORRAY_FACING_HEIGHT_REGRESSION_1.md
 
-## ART_SELFTEST_CORPUS_IN_TRANSIENT_1 art_checks.py --selftest reads its whole corpus from Transient/pyrelands_art_review/art, which the ~14-day Transient sweep will delete out from under the suite
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  artchecks.py's --selftest reads its ENTIRE corpus from
-prose:    infrastructure/state/items/ART_SELFTEST_CORPUS_IN_TRANSIENT_1.md
-
 ## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
 state:    proposed
 row:      unassigned
@@ -1719,3 +1709,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  KCSG pawn symbols silently fall back to vanilla Colonist
 prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
+
+## ROT_FAUNA_KIN_WIRING_1 Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
