@@ -1268,8 +1268,23 @@ def cmd_close(args, seat):
             "    python3 src/RimMandrake/rimflow/cli.py close %s\n\n"
             "⚠️  Nothing is lost by the refusal — the item is untouched and still yours."
             % args.id)
-    _emit({"seat": seat, "event": "close", "id": args.id, "sha": sha}, w, quiet=True)
-    print("%s closed at %s." % (args.id, sha))
+    # 🔴 A CROSS-SEAT CLOSE NAMES ITSELF — owner's ruling, 2026-09-19. Any seat may
+    # close any item it has PROVEN done, dead or superseded; the event's `seat` is the
+    # record of who ruled, and `--reason` is what that ruling says. The one-line echo
+    # below prints the ruling seat when it is not the owning seat, so the close is
+    # attributable on the screen as well as in the ledger.
+    it = w.items.get(args.id)
+    holder = getattr(it, "owner", None)
+    ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
+    if args.reason:
+        ev["reason"] = args.reason
+    _emit(ev, w, quiet=True)
+    if holder and holder != seat:
+        print("%s closed at %s — ruled by %s (%s's item)%s"
+              % (args.id, sha, seat, holder,
+                 (": " + args.reason) if args.reason else ""))
+    else:
+        print("%s closed at %s." % (args.id, sha))
     _announce_unblocks(args.id)
     return 0
 
@@ -2058,9 +2073,13 @@ def build_parser():
     add("start", "begin work; never refused for missing prose",
         _simple("start")).add_argument("id")
 
-    s = add("close", "close it against a commit", cmd_close)
+    s = add("close", "close it against a commit (any seat; --reason if not yours)",
+            cmd_close)
     s.add_argument("id")
     s.add_argument("--sha", help="defaults to git HEAD")
+    s.add_argument("--reason", help="why it is done/dead — required in practice when "
+                                    "the item is another seat's; the ledger records "
+                                    "which seat ruled")
 
     s = add("block", "something is WRONG (this is not `needs`)",
             _simple("block", (("reason", "reason"), ("on", "on"))))

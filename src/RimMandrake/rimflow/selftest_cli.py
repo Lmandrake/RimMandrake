@@ -195,16 +195,26 @@ def t_close_takes_git_head_when_no_sha_given():
         "a close with no commit behind it is a claim, not a close: %s" % out)
 
 
-def t_cross_seat_close_is_refused_in_the_models_own_words():
+def t_cross_seat_close_lands_and_names_the_ruling_seat():
+    """Owner's ruling, 2026-09-19: ANY seat closes an item it has proven dead.
+
+    🔴 This test USED to assert the opposite — that a cross-seat close is refused
+    and teaches `--owner-said`. That rule is gone: the seat that can see an item is
+    done is routinely not the seat that owns it, and routing the observation to the
+    owner meant tickets were simply left open. What the test protects now is the
+    other half of his ruling: the close must SAY who ruled it, so the echo and the
+    ledger both name the closing seat, not just the owning one.
+    """
     fresh()
     ok("file", "BUILDS_OWN_ITEM_1", "--for", "BUILD", "--title", "t")
     prose("BUILDS_OWN_ITEM_1")
     ok("claim", "BUILDS_OWN_ITEM_1")
-    refused(("close", "BUILDS_OWN_ITEM_1", "--sha", "abc1234"), "belongs to",
-            "CHECK closed BUILD's item", seat="CHECK")
-    refused(("close", "BUILDS_OWN_ITEM_1", "--sha", "abc1234"),
-            "Filing work FOR another seat is normal", "the actionable half of the "
-            "refusal was dropped", seat="CHECK")
+    out = ok("close", "BUILDS_OWN_ITEM_1", "--sha", "abc1234",
+             "--reason", "shipped at 51e0ceb", seat="CHECK")
+    assert "CHECK" in out and "BUILD" in out, (
+        "a cross-seat close must name the ruling seat AND the owning seat: %s" % out)
+    assert "shipped at 51e0ceb" in out, (
+        "the --reason is the ruling; it was dropped from the echo: %s" % out)
 
 
 def t_reopening_a_closed_item_is_refused():
