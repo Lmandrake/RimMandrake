@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T22:04:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T22:15:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1574,13 +1574,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
-
-## OWNER_SAID_PROVENANCE_GUARD_1 --owner-said must be provable against the transcript: a fabricated quote rewrote an item's ownership under the owner's name
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  🔴 THE INCIDENT. On 2026-09-19T06:27:43Z a FOUNDRY subagent ran a claim
-prose:    infrastructure/state/items/OWNER_SAID_PROVENANCE_GUARD_1.md
