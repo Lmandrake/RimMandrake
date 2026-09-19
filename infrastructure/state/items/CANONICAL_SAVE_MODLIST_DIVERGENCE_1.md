@@ -86,3 +86,80 @@ Three routes, and picking one is his:
   ArtOverrides. Worth answering before choosing route 1 — they may simply be
   uninstalled from disk, in which case restoring them is a Steam action, not a
   ModsConfig edit.
+  🔴 **TRACED — see "The 5 unexplained absences, traced" below. All 5 are
+  deliberate and recorded; the claim above is stale.**
+
+## The 5 unexplained absences, traced (FOUNDRY, offline forensics, 2026-09-19)
+
+All 5 are **deliberate, owner-authorized, and recorded** — the "unexplained"
+framing above was itself stale, written before (or without checking) the
+commits that explain them. None looks accidental or like a side-effect of an
+unrelated edit.
+
+**`als.gravtech`, `als.gravtech.bc`, `petetimessix.researchreinvented.steppingstones`
+— DELIBERATE.** Owner card 2026-09-18T20:05Z on `RESEARCH_TRIO_RETIRE_1`:
+*"Port all 17, then cut"* (superseding an earlier same-day "port the 4 ruled"
+card). Executed same day, commit `59944939f` (hash back-filled in
+`7d94e1219`), backed up first to
+`infrastructure/state/modlists/ModsConfig.PRESWAP.20260918_204447_pre_research_trio_retirement.xml`.
+All 18 owned `ResearchProjectDef`s (17 ruled + `GravEngineBuild`, a gap found
+mid-pass) ported natively with **identical defNames**
+(`RUT_Ported_ResearchTrio.xml`, `RUT_Ported_GravForge.xml`) so every existing
+cross-reference keeps resolving with zero repointing. All 3 recorded in
+`infrastructure/state/facts/retired_mods.json` with full rationale.
+`RESEARCH_TRIO_RETIRE_1` is deliberately left `status=doing`, not because the
+cut is undecided but because one closure criterion
+(`research_manifest_validate.py --inventory` recost re-check) needs a fresh
+def dump from a live restart, per its own 2026-09-18T20:54Z note.
+
+**`halituisamaricanous.gravtechbigcannons` — DELIBERATE**, same commit
+`59944939f`, as a derived consequence: a pure retexture with a hard
+`modDependencies` on `als.gravtech.bc` and zero own content
+(`stat_normalization_audit_2026-09-09.md` §2D). Retiring `gravtech.bc` alone
+would have left a load-breaking hard dependency, so this rode along in the
+same change — a real finding from the item's original 2026-09-11 diligence
+sweep, unactioned until the 09-18 execution. Recorded in `retired_mods.json`.
+
+**`biomesteam.biomespollutedlands` — DELIBERATE**, separate item
+`POLLUTED_LANDS_FLORA_PORT_1` (owner-authored spec 2026-09-18T20:33Z, closed
+by FOUNDRY at `e4ab343f3`, 2026-09-19T02:21Z). The spec named removing this
+mod as step 2's explicit endpoint: *"...and biomesteam.biomespollutedlands
+leaves ModsConfig."* 18 of its 21 unmapped `BMT_` flora rows were confirmed
+true donor-owned plants (via live def dump `packageId`, not the
+`plant_pool.csv` label); 5 were ported natively as `RUT_` `ThingDef`s with
+real donor art carried over (`RUT_TwistingThornwood`, `RUT_TreeMartyr`,
+`RUT_TwistingThorngrass`, `RUT_TwistingThornweed`, `RUT_ScorchedStars`), the
+other 13 toxic-filler rows cut at the `biome_flora.py` source as accepted
+loss (redundant with non-donor plants already in those rosters). Confirmed
+via `git show e4ab343f3 -- infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`:
+the diff removes exactly the `<li>biomesteam.biomespollutedlands</li>` entry.
+Live-verified via bridge on a 29-mod list before the cut landed.
+⚠️ **Gap**: unlike the trio, this packageId was never added to
+`infrastructure/state/facts/retired_mods.json` (checked — absent). The
+removal is fully documented in the commit and the closed item, so it isn't
+actually unexplained, but the cross-ref exclusion list is incomplete and
+worth a one-line fix.
+
+**Timeline correction**: the claim above that "there is no snapshot named for
+their retirement, unlike Caverns and the ArtOverrides" is wrong for the
+research trio —
+`ModsConfig.PRESWAP.20260918_204447_pre_research_trio_retirement.xml` is
+exactly that snapshot, same naming convention as
+`ModsConfig_before_caverns_cut_2026-09-18.xml`. UTC-normalized snapshot
+diffing places the trio+retexture's departure between that 20:44 UTC
+snapshot (still has all 4) and the 22:16 UTC `before_caverns_cut` snapshot
+(already lacks all 4, still has PollutedLands); PollutedLands itself departs
+between `before_caverns_cut` (22:16 UTC Sep 18) and `before_artoverride_retire`
+(01:04 UTC Sep 19).
+
+Live-checked 2026-09-19 (offline file read of the Windows `ModsConfig.xml`,
+not a bridge call): all 5 packageIds confirmed absent, 620 active mods.
+
+**Bearing on the 3-route decision above**: 4 of these 5 were deliberately
+*ported-then-cut* — their content already lives on natively under new/same
+defNames. "Restore" (route 1) would re-import mods whose content is now
+duplicated, risking defName collisions with the ported defs (the exact "Port
+trap" `RESEARCH_TRIO_RETIRE_1`'s own ruling warned about, run in reverse).
+These 5 are **not** the same class as the Caverns/ArtOverride restore
+question — for these 5, "scrub and re-mint the canonical save" (route 2) is
+the fit, not "restore."
