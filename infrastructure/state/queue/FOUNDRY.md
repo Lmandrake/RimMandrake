@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T12:24:01Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-19T13:29:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -963,15 +963,6 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
-## PYRELANDS_FLORA_LEAK_1 Alpha Biomes flora spawns on Pyrelands past the grass-only eviction
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  PYRELANDSFLORALEAK1
-prose:    infrastructure/state/items/PYRELANDS_FLORA_LEAK_1.md
-
 ## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
 state:    doing
 row:      unassigned
@@ -980,15 +971,6 @@ target:   v1
 kind:     task
 summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
-
-## BRIDGE_MAPGEN_STALE_FINALIZE_1 world_tile_map_generate leaves the map rendering stale until map_commit finalize
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  jawa/worldtilemapgenerate (JawaBenchSocietyTools.cs, method WorldTileMapGenerate)
-prose:    infrastructure/state/items/BRIDGE_MAPGEN_STALE_FINALIZE_1.md
 
 ## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
 state:    doing
@@ -1016,15 +998,6 @@ target:   v1
 kind:     build
 summary:  (no items/BRIDGE_DOBILL_FORCE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGE_DOBILL_FORCE_TOOL_1.md
-
-## KCSG_PAWNKIND_COLONIST_FALLBACK_1 KCSG pawn symbols silently fall back to vanilla Colonist, so a layout's pawn roster is nondeterministic
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  A PawnKindDef silently falls back to vanilla Colonist — NOT a KCSG bug
-prose:    infrastructure/state/items/KCSG_PAWNKIND_COLONIST_FALLBACK_1.md
 
 ## SYSTECH_ELECTRIC_BOLT_1 The Systech Static Blaster lost its distinctive electric projectile when kotorcore retired
 state:    doing
@@ -1635,8 +1608,8 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LONGHUNGER_QUICKTEST_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  mandrake.rut.longhunger was enabled into the live 621-mod ModsConfig.xml by
 prose:    infrastructure/state/items/LONGHUNGER_QUICKTEST_1.md
 
 ## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC

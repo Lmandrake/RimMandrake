@@ -9839,3 +9839,9 @@
 {"seat":"FOUNDRY","event":"note","id":"BIOME_CONFIGERRORS_NRE_1","text":"Fresh full-list load harvest, the exact confirmation this item was waiting for (needs=harvest): 621-mod load, reached Bridge token cleanly, Player.log 14846 lines. Checked all 5 named biomes (AridShrubland, Desert, ExtremeDesert, AB_MiasmicMangrove, BiomeCypreJungle) for ConfigErrors NRE -- ZERO exceptions on any of them. Only line touching any of the 5 is the pre-existing, already-identified, non-exception 'Config error in AB_MiasmicMangrove: Duplicate animal record: RSW_Yobshrimp' (real named duplicate, not a crash). Closing as resolved -- the prior pass's 'looks resolved' finding is now confirmed by a designed repro.","ts":"2026-09-19T12:23:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"BIOME_CONFIGERRORS_NRE_1","sha":"26fd2c9139aa784be7ba082fa51d03e1754fdcf8","ts":"2026-09-19T12:23:37Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-19T12:24:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"overnight batch live-verify","ts":"2026-09-19T12:29:19Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-19T13:14:06Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-19T13:14:09Z"}
+{"seat":"FOUNDRY","event":"close","id":"KCSG_PAWNKIND_COLONIST_FALLBACK_1","sha":"960d911dbe80e0496d6975d4ee1cb5b9814211b4","ts":"2026-09-19T13:29:49Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FLORA_LEAK_1","sha":"960d911dbe80e0496d6975d4ee1cb5b9814211b4","ts":"2026-09-19T13:29:54Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_MAPGEN_STALE_FINALIZE_1","sha":"960d911dbe80e0496d6975d4ee1cb5b9814211b4","ts":"2026-09-19T13:29:55Z"}
