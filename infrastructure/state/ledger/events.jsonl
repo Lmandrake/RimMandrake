@@ -9981,3 +9981,8 @@
 {"seat":"BENCH","event":"reassign","id":"DESIGNATE_BATCH_OVER_DESIGNATES_1","to":"FOUNDRY","reason":"Ruled 2026-09-04 ('Fix properly') and needs=deploy since, but left owned by OWNER where no seat pulls. C# companion work in JawaBenchMapTools.DesignateBatch — needs a per-designation CanDesignateThing predicate table.","ts":"2026-09-19T21:58:31Z"}
 {"seat":"BENCH","event":"reassign","id":"ROT_PALE_TREE_1","to":"FOUNDRY","reason":"Filed BENCH-for-FOUNDRY 2026-09-18; ownership flipped to OWNER by a refused claim and has sat unpullable since. Built and deployed (512d1fb57, f4d8dbf2b); what remains is a live re-proof on the next load — FOUNDRY's lane.","ts":"2026-09-19T21:58:38Z"}
 {"seat":"BENCH","event":"reassign","id":"BIOME_LANDMARK_REFINEMENT_1","to":"BENCH","reason":"Owner's 2026-09-18 card converted this to BENCH work: BENCH builds the 8-biome landmark review sheet, owner judges it after. Parked under OWNER it was pullable by nobody.","ts":"2026-09-19T21:58:40Z"}
+{"seat":"BENCH","event":"claim","id":"BIOME_LANDMARK_REFINEMENT_1","ts":"2026-09-19T21:59:16Z"}
+{"seat":"BENCH","event":"start","id":"BIOME_LANDMARK_REFINEMENT_1","ts":"2026-09-19T21:59:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"REOPEN_DESTROYS_CLEANCOUNT_STREAK_1","ts":"2026-09-19T21:59:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"REOPEN_DESTROYS_CLEANCOUNT_STREAK_1","ts":"2026-09-19T21:59:23Z"}
+{"seat":"FOUNDRY","event":"close","id":"REOPEN_DESTROYS_CLEANCOUNT_STREAK_1","sha":"340b06961","ts":"2026-09-19T22:04:11Z"}
