@@ -601,9 +601,19 @@ SELFTEST_ROSTER = (
 
 # Owner-confirmed or measurement-confirmed height breaks. Anooba is the only row the
 # owner named out loud ("North is HUGE compared to east, and South isn't south").
+#
+# ⭐ Orray is the one row here the owner has ruled ACCEPTABLE while still flagged —
+# 2026-09-18, verbatim, having looked at the facings himself: "New Orray art is
+# vastly better than old. North and east are good. South needs regen it is 'fat'
+# somehow. Older art is horrible. Discard." Its south was regenerated on that
+# ruling; the remaining ratio is north (a near-full-length rear view) against east
+# (a low side profile), i.e. legitimate camera-angle variety in art he approved by
+# eye. It stays in this set because the check must keep flagging it honestly, NOT
+# because the art is bad. ⛔ Do not "fix" this row by loosening
+# FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
 HEIGHT_MUST_FLAG = {
     "Anooba_f", "Anooba_m", "Boomsnake", "Bolotaur", "AA_FireWasp",
-    "GR_Mantistanis", "Dalgo",
+    "GR_Mantistanis", "Dalgo", "Orray",
 }
 # ✅ Zeer moved FLAG -> PASS: the 2026-09-17 wave genuinely fixed it. MEASURED
 # 1.480 on the pre-wave blob (`9e7e773a0^`) against 1.024 now (east 0.990,
@@ -611,15 +621,12 @@ HEIGHT_MUST_FLAG = {
 # corpus, so it anchors the pass side instead of the flag side.
 HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer"}
 
-# 🔴 A REAL REGRESSION, PINNED RATHER THAN EXCUSED — do not fold this back into
-# HEIGHT_MUST_FLAG and do not delete it. Orray was known-GOOD and is not any
-# more: the 2026-09-17 wave took it from unflagged (pre-wave blob measures below
-# the 1.35 threshold) to 2.488, the second-worst row in the whole corpus and
-# worse than every row the owner called bad out loud. The art needs redoing or
-# the owner needs to rule it acceptable; until then the number is pinned so this
-# selftest fails loudly whether it worsens OR is quietly "fixed" by moving a
-# threshold. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
-HEIGHT_REGRESSION = {"Orray": 2.488}
+# Height ratios that moved for the WRONG reason and are pinned to an exact number
+# so the selftest fails loudly whether they worsen OR are quietly "fixed" by moving
+# a threshold. Empty: the one entry this set was built for (Orray, 2.488 after the
+# 2026-09-17 wave) was settled by the owner on 2026-09-18 — south regenerated, the
+# rest of the set approved by eye — and now sits in HEIGHT_MUST_FLAG.
+HEIGHT_REGRESSION = {}
 
 # 🔴 FurnaceBeast was handed to me as known-GOOD at 1.03x, and it is NOT. That 1.03x
 # is the RAW alpha bbox, inflated by 3901 px of alpha 1..16 dust reaching to y=480
