@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T04:07:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T04:11:33Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/structureinjectionroster.md (the content
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
-
-## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
-prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
 ## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
 state:    doing  (BLOCKED)
@@ -995,16 +986,6 @@ kind:     build
 blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  physical split executed (commit 2385af29); close-out is gated on unclaimed MOD_CONSOLIDATION_SPRINT_1 / COLD_LOAD_RUN_SHEET_3, can't progress solo
-summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
-prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
 ## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
 state:    doing  (BLOCKED)
