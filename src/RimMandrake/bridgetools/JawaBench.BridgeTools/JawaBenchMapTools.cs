@@ -1245,6 +1245,100 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        // 🔴 DESIGNATE_BATCH_OVER_DESIGNATES_1 (owner ruling 2026-09-04: "Fix
+        // properly - filter by the designation's own target rules"). A THING
+        // designation's rect used to hand EVERY Thing in each cell straight to
+        // AddDesignation, not just the one type-appropriate for that
+        // DesignationDef - e.g. Deconstruct (buildings only) would also try to
+        // designate a plant or filth item sitting in the same cell, and later a
+        // WorkGiver casting `(Building)Target` on it throws InvalidCastException.
+        // Vanilla's own answer to "is this Thing a valid target for this
+        // DesignationDef" lives in 18 separate Designator_*.CanDesignateThing
+        // overrides (there is no generic engine predicate to call), so this is
+        // that table, read from 1.6 source rather than guessed: Haul,
+        // Deconstruct, Uninstall, ExtractTree, CutPlant, HarvestPlant, Hunt,
+        // PaintBuilding, RemovePaintBuilding, Strip, Slaughter, Tame, Open,
+        // EjectFuel, ReleaseAnimalToWild, ExtractSkull, FillIn (all targetType
+        // Thing in Designations.xml) plus Flick, which has no Designator_Flick
+        // at all - vanilla adds it from FlickUtility.UpdateFlickDesignation
+        // via `t is ThingWithComps && AllComps.Any(c => c is CompFlickable)`.
+        //
+        // Deliberately NOT copied: each Designator's own
+        // `DesignationOn(t, dd) != null` guard (DesignateBatch already tracks
+        // that separately as already/alreadyPresent), DebugSettings.godMode
+        // branches (a headless bridge caller is never in the editor), and
+        // UI-only side effects (Messages.Message warnings, ShowDesignationWarnings)
+        // - none of those decide whether `t` is the RIGHT TYPE of thing, which is
+        // the one property this table exists to check.
+        private static bool CanDesignateThingByType(DesignationDef dd, Thing t)
+        {
+            switch (dd.defName)
+            {
+                case "Haul":
+                    return t.def.designateHaulable && !t.IsInValidStorage();
+                case "Deconstruct":
+                    return t.GetInnerIfMinified() is Building db
+                        && db.def.category == ThingCategory.Building
+                        && db.DeconstructibleBy(Faction.OfPlayer).Accepted;
+                case "Uninstall":
+                    return t is Building ub
+                        && ub.def.category == ThingCategory.Building
+                        && ub.def.Minifiable
+                        && (ub.Faction == Faction.OfPlayer
+                            || ub.def.building.alwaysUninstallable
+                            || (ub.Faction == null && ub.ClaimableBy(Faction.OfPlayer)));
+                case "ExtractTree":
+                    return t is Plant tp && tp.def.Minifiable && tp.def.plant.IsTree;
+                case "CutPlant":
+                    return t.def.plant != null && t is Plant cp
+                        && !(cp.TryGetComp(out CompPlantPreventCutting ppc) && ppc.PreventCutting)
+                        && (!cp.def.plant.IsTree || !cp.HarvestableNow);
+                case "HarvestPlant":
+                    return t.def.plant != null && t is Plant hp
+                        && hp.HarvestableNow && hp.def.plant.harvestTag == "Standard";
+                case "Hunt":
+                    return t is Pawn huntP && huntP.AnimalOrWildMan()
+                        && !huntP.IsPrisonerInPrisonCell()
+                        && (huntP.Faction == null || !huntP.Faction.def.humanlikeFaction);
+                case "PaintBuilding":
+                    return t.def.building != null && t.def.building.paintable
+                        && t.Faction == Faction.OfPlayer;
+                case "RemovePaintBuilding":
+                    return t.Faction == Faction.OfPlayer
+                        && t is Building rpb && rpb.PaintColorDef != null;
+                case "Strip":
+                    return StrippableUtility.CanBeStrippedByColony(t);
+                case "Slaughter":
+                    return t is Pawn { IsAnimal: true } slP
+                        && slP.Faction == Faction.OfPlayer && !slP.InAggroMentalState;
+                case "Tame":
+                    return t is Pawn tmP && TameUtility.CanTame(tmP)
+                        && !tmP.health.hediffSet.HasHediff(HediffDefOf.Scaria);
+                case "Open":
+                    return t is IOpenable { CanOpen: true };
+                case "EjectFuel":
+                    return t.TryGetComp(out CompRefuelable ref_) && ref_.CanEjectFuel().Accepted;
+                case "ReleaseAnimalToWild":
+                    return t is Pawn { IsAnimal: true } relP && relP.Faction == Faction.OfPlayer
+                        && !relP.Dead && relP.RaceProps.canReleaseToWild;
+                case "ExtractSkull":
+                    return ModsConfig.IdeologyActive && t is Corpse corpse
+                        && corpse.InnerPawn.RaceProps.Humanlike
+                        && corpse.InnerPawn.health.hediffSet.GetNotMissingParts()
+                            .Any(p => p.def == BodyPartDefOf.Head)
+                        && !(t.SpawnedParentOrMe is Building);
+                case "FillIn":
+                    return t is Crater;
+                case "Flick":
+                    return t is ThingWithComps twc && twc.AllComps.Any(c => c is CompFlickable);
+                default:
+                    // A modded or future THING DesignationDef this table has never
+                    // seen - fail open rather than silently refuse every Thing for
+                    // a def nobody has taught this switch about yet.
+                    return true;
+            }
+        }
+
         [Tool(
             "jawa/designate_batch",
             Description =
@@ -1254,12 +1348,15 @@ namespace JawaBench.BridgeTools
                 "action='add' | 'remove' | 'query'. Always give a rect: the DesignationDef's " +
                 "own targetType decides what the rect means - a CELL designation (Mine, " +
                 "SmoothFloor, Plan) marks the cells, a THING designation (Deconstruct, " +
-                "HarvestPlant, Hunt, Flick, Strip - most of them) marks every thing standing " +
-                "in them. " +
+                "HarvestPlant, Hunt, Flick, Strip - most of them) marks every type-appropriate " +
+                "thing standing in them (a per-DesignationDef filter, not every Thing in the " +
+                "cell - see skippedWrongType in the result). " +
                 "⚠️ AddDesignation logs a red error on double-add, so this queries first.",
             ResultDescription =
-                "success, added, removed, alreadyPresent, targetType and targetedThings "
-                + "(which of the two readings of the rect was used), problems[], totalNow.")]
+                "success, added, removed, alreadyPresent, skippedWrongType (Things in the rect "
+                + "that are not a valid target for this DesignationDef, e.g. a plant under a "
+                + "Deconstruct rect), targetType and targetedThings (which of the two readings "
+                + "of the rect was used), problems[], totalNow.")]
         public static async Task<object> DesignateBatch(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1326,7 +1423,7 @@ namespace JawaBench.BridgeTools
                 CellRect r;
                 if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
-                int added = 0, removed = 0, already = 0, alreadyAbsent = 0;
+                int added = 0, removed = 0, already = 0, alreadyAbsent = 0, skippedWrongType = 0;
                 // 🔴 DESIGNATE_BATCH_PROBLEMS_CAPPED_1. `problems` is capped at 15 entries so
                 // the body stays small, and there was NO total beside it - the same capped-list
                 // lie already fixed in set_substructure_batch, set_terrain_layer and
@@ -1361,6 +1458,10 @@ namespace JawaBench.BridgeTools
                             {
                                 if (A == "add")
                                 {
+                                    // Type filter applies to ADD only - a stray
+                                    // wrong-type designation from before this fix
+                                    // (or from another mod) must still be removable.
+                                    if (!CanDesignateThingByType(dd, t)) { skippedWrongType++; continue; }
                                     if (dm.DesignationOn(t, dd) != null) { already++; continue; }
                                     dm.AddDesignation(new Designation(t, dd)); added++;
                                 }
@@ -1388,7 +1489,7 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, action = A, designation = dd.defName,
-                    added, removed, alreadyPresent = already, alreadyAbsent,
+                    added, removed, alreadyPresent = already, alreadyAbsent, skippedWrongType,
                     targetType = dd.targetType.ToString(), targetedThings = wantThings,
                     note = targetNote,
                     onThings,
