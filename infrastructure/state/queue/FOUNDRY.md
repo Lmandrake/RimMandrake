@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T02:34:30Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-19T02:44:08Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -899,15 +899,6 @@ target:   v1
 kind:     build
 summary:  (no items/VALIDATION_SCRIPT_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VALIDATION_SCRIPT_BACKFILL_1.md
-
-## FLUID_SOURCE_STOCK_MODEL_1 Give CompFluidReservoir a real volume stock per the owner's 2026-09-16 reversal - debit on fill and on pump, limited-vs-limitless by map-edge contact, slow refill from rain/season/seepage, all debited per pulse never per tick
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FLUID_SOURCE_STOCK_MODEL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLUID_SOURCE_STOCK_MODEL_1.md
 
 ## DEEP_TRIBES_FIRE_RITE_1 Deep Tribes fire rite: arrive, ignite the burn, harvest scorch fruit, leave
 state:    doing
