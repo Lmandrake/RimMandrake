@@ -8,12 +8,16 @@
   src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py; edit the table,
   never this file.
 
-  Ten rows this pass: fresh/salt/boiling/icy/toxic/acid water, tar, brine,
-  propane, chemfuel — every one resolving only against vanilla Core defs and
-  FlowWorks' own already-shipped terrain/FluidDefs, so it loads clean under
-  a minimal mod list with no third-party dependency. Slime (RED/GREEN/WHITE/
-  YELLOW), blood and astrofuel are deliberately NOT here — see the table's
-  own module comment for why each is deferred to a later build phase.
+  Ten rows from LIQUID_REGISTRY_CORE_1: fresh/salt/boiling/icy/toxic/acid
+  water, tar, brine, propane, chemfuel — every one resolving only against
+  vanilla Core defs and FlowWorks' own already-shipped terrain/FluidDefs,
+  so it loads clean under a minimal mod list with no third-party
+  dependency. Plus four more from SLIME_STREAM_ROWS_1: red/green/white/
+  yellow slime, each owning its own new always-loaded terrain suite and
+  canal FluidDef (no MayRequire gate — see the table's own module comment
+  above the slime_* rows for how the previous blocker was solved). Blood
+  and astrofuel are deliberately NOT here — see the table's own module
+  comment for why each is deferred to a later build phase.
   ============================================================================
 -->
 <Defs>
@@ -245,6 +249,74 @@
       <bottle>Chemfuel</bottle>
       <unitsPerBottle>1</unitsPerBottle>
     </bottled>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_SlimeRed</defName>
+    <label>red slime</label>
+    <description>Mucosal and the color of a fresh wound. It does not react to skin so much as insist on it.</description>
+    <viscosityClass>Heavy</viscosityClass>
+    <pH>4</pH>
+    <damageOnContact>
+      <damageDef>AcidBurn</damageDef>
+      <amount>1</amount>
+    </damageOnContact>
+    <damageOnImmersion>
+      <damageDef>AcidBurn</damageDef>
+      <amount>2</amount>
+    </damageOnImmersion>
+    <corrodesApparel>true</corrodesApparel>
+    <terrainSuite>
+      <shallow>RM_SlimeRedShallow</shallow>
+      <deep>RM_SlimeRedDeep</deep>
+    </terrainSuite>
+    <canalFluid>RM_Fluid_SlimeRed</canalFluid>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_SlimeGreen</defName>
+    <label>green slime</label>
+    <description>Mucosal and faintly luminous where it pools deep. Nothing immersed in it for long comes out the way it went in.</description>
+    <viscosityClass>Heavy</viscosityClass>
+    <pH>9</pH>
+    <damageOnImmersion>
+      <damageDef>Rotting</damageDef>
+      <amount>2</amount>
+    </damageOnImmersion>
+    <corrodesApparel>false</corrodesApparel>
+    <terrainSuite>
+      <shallow>RM_SlimeGreenShallow</shallow>
+      <deep>RM_SlimeGreenDeep</deep>
+    </terrainSuite>
+    <canalFluid>RM_Fluid_SlimeGreen</canalFluid>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_SlimeWhite</defName>
+    <label>white slime</label>
+    <description>Mucosal and the color of rendered fat. It clings and it burns -- not on contact, but readily once something else provides the spark.</description>
+    <viscosityClass>Heavy</viscosityClass>
+    <pH>7</pH>
+    <flammable>true</flammable>
+    <igniteTemp>150</igniteTemp>
+    <terrainSuite>
+      <shallow>RM_SlimeWhiteShallow</shallow>
+      <deep>RM_SlimeWhiteDeep</deep>
+    </terrainSuite>
+    <canalFluid>RM_Fluid_SlimeWhite</canalFluid>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_SlimeYellow</defName>
+    <label>yellow slime</label>
+    <description>Human, apparently -- mucosal, the color of dried snot, and no more dangerous than that.</description>
+    <viscosityClass>Heavy</viscosityClass>
+    <pH>6</pH>
+    <terrainSuite>
+      <shallow>RM_SlimeYellowShallow</shallow>
+      <deep>RM_SlimeYellowDeep</deep>
+    </terrainSuite>
+    <canalFluid>RM_Fluid_SlimeYellow</canalFluid>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
 </Defs>

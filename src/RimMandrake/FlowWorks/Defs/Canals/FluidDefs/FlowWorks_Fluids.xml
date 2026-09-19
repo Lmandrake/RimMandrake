@@ -74,4 +74,87 @@
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
 
+  <!-- SLIME_STREAM_ROWS_1 — four canal fluids, one per colour row in
+       Tools/generate_liquid_suite.py's LIQUID_ROWS table (slime_red/green/
+       white/yellow) and LIQUID_DEF_ROWS' matching LiquidDef entries. Own
+       fillTerrain* defNames (Defs/Canals/TerrainDefs/FlowWorks_SlimeTerrain.xml,
+       hand-authored the same way RM_Fill_Water_*/RM_Fill_Tar_* are — these
+       four tiers are the CANAL fill look, distinct from the natural-body
+       terrain the generator writes), so every row resolves regardless of
+       any third-party mod. ticksPerTile 480 — slower than tar's 360, per the
+       item's own "Heavy viscosityClass... visibly-slower-than-water oozing"
+       spec; [INVENTED], the one tunable an owner pass can retune without
+       touching anything else, same convention as tar's own multiplier note
+       above. Rest of the tuning (volumePerTile, floodedTicks,
+       canalCellsPerSourceCell, groundOozePerSourceCellPerDay,
+       rainRefillFactor, recededTerrain) matches water/tar's own numbers
+       rather than inventing a second mechanic. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_SlimeRed</defName>
+    <label>red slime</label>
+    <floodTerrain>RM_Fill_SlimeRed_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_SlimeRed_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_SlimeRed_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_SlimeRed_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>480</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_SlimeGreen</defName>
+    <label>green slime</label>
+    <floodTerrain>RM_Fill_SlimeGreen_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_SlimeGreen_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_SlimeGreen_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_SlimeGreen_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>480</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_SlimeWhite</defName>
+    <label>white slime</label>
+    <floodTerrain>RM_Fill_SlimeWhite_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_SlimeWhite_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_SlimeWhite_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_SlimeWhite_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>480</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <!-- YELLOW — the item's own "documented example row", canal side. Same
+       shape as its three siblings above; nothing about the fluid ladder
+       changes because the liquid is harmless — viscosity and flow are
+       independent of hazard. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_SlimeYellow</defName>
+    <label>yellow slime</label>
+    <floodTerrain>RM_Fill_SlimeYellow_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_SlimeYellow_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_SlimeYellow_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_SlimeYellow_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>480</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
 </Defs>
