@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T16:57:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T17:26:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -610,3 +610,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  MYCOIDCOLOSSUSARTMISROUTE1
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_ART_MISROUTE_1.md
+
+## PYRELANDS_DONOR_PORT_4 Four Pyrelands creatures ported off donor defNames onto our own RUT_ defs
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSDONORPORT4
+prose:    infrastructure/state/items/PYRELANDS_DONOR_PORT_4.md
