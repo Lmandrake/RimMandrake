@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Runyip creature port.
+  Ported from mlie.starwarsanimalcollection's `Runyip` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its own
+  `<race><body>` points at `QuadrupedAnimalWithHoovesAndHorn`, confirmed
+  VANILLA CORE (Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml) — left
+  bare, no BodyDef ported. `leatherDef` (`Leather_Plain`) is vanilla Core,
+  left bare; `specificMeatDef` (`Pachydermoid_Meat`) ALREADY EXISTS as
+  `RSW_Pachydermoid_Meat` (Pass 12, Mudhorn) — no new resource needed. Its
+  Odyssey specialTrainable (`SW_Spur`) repoints to the ALREADY-PORTED
+  `RSW_SW_Spur` (RSW_MlieWaveB_Abilities.xml, ported alongside Kybuck, Pass
+  16) — no new ability needed. Adult lifeStage sounds (`Pawn_Runyip_*`) were
+  already absorbed in the 2026-09-02 sound wave — confirmed present in
+  SoundDefs_SWBestiary.xml as `RSW_Pawn_Runyip_*`, wired, not re-done. No
+  `canCrossBreedWith` (donor sets none, and no already-ported species lists
+  bare `Runyip` either).
+
+  No `*ArtOverride` mod exists for Runyip (checked first). 14 PNGs extracted
+  this pass via extract_bundle.py against the same AssetBundle every prior
+  wave used: `Runyip_{south,east,north}` (adult/juvenile shared base facing),
+  `Runyip_Swimming_{south,east,north}` (a `waterSeeker`/`waterCellCost`
+  species with a per-life-stage `swimmingGraphicData`, same pattern
+  Mott/Pikobis established), `Runyip_Dessicated`, and the baby stage's own
+  distinct `Runyip_j_{south,east,north}` / `Runyip_j_Swimming_{south,east,
+  north}` / `Runyip_j_Dessicated`. The donor's own unreferenced
+  `RunyipPack_{south,east,north}` and `Runyip_jPack_{south,east,north}`
+  saddle-variant textures (6 PNGs) were excluded — unreferenced by the def,
+  same "unreferenced-by-the-def" precedent as every prior wave's "Pack"
+  exclusions. Sits at Textures/swanimals/Runyip/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Runyip" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Runyip</defName>
+    <label>runyip</label>
+    <description>Runyip or Yavin Runyip were a species of squat quadrupeds from the moon Yavin 4. The creatures had antlered heads with a flexible nose. Their coats had a characteristic pattern of black or dark brown stripes on a whitish background. It is believed this striation made them a popular game animal for export to other worlds.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.8</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <gestationPeriodDays>8</gestationPeriodDays>
+      <roamMtbDays>1.4</roamMtbDays>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>22</lifeExpectancy>
+      <manhunterOnDamageChance>0.40</manhunterOnDamageChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.6</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.03</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.20</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.30</minAge>
+          <soundWounded>RSW_Pawn_Runyip_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Runyip_Death</soundDeath>
+          <soundCall>RSW_Pawn_Runyip_Call</soundCall>
+          <soundAngry>RSW_Pawn_Runyip_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Runyip</defName>
+    <label>runyip</label>
+    <race>RSW_Runyip</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>runyip calf</label>
+        <labelPlural>runyip calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip_j</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Runyip/Runyip_j_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Runyip/Runyip_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Runyip/Runyip_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Runyip/Runyip_Dessicated</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Scurrier creature port.
+  Ported from mlie.starwarsanimalcollection's `Scurrier` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Scurrier` BodyDef (Bodies_Animal_StarWars.xml) needs its 2 clawed-paw
+  parts' `SWClaws` group repointed to the ALREADY-PORTED `RSW_SWClaws`
+  (Wave B, the same group Gutkurr/Kwi/Pikobis already reuse) — every other
+  part (Body/Tail/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/
+  Skull/Brain/Eye x2/Ear x2/Nose/AnimalJaw, 2x Shoulder/Arm/Humerus/Radius/
+  Paw, 2x Leg/Paw) is vanilla Core. Ported as RSW_Scurrier
+  (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Light`) is vanilla
+  Core, left bare; `specificMeatDef` (`Rodentia_Meat`) ALREADY EXISTS as
+  `RSW_Rodentia_Meat` (Pass 18, Mott) — no new resource needed. Adult
+  lifeStage sounds (`Pawn_Scurrier_*`) were already absorbed in the
+  2026-09-02 sound wave — confirmed present in SoundDefs_SWBestiary.xml as
+  `RSW_Pawn_Scurrier_*`, wired, not re-done. No `specialTrainables` at all
+  (donor leaves it bare). No `canCrossBreedWith` (donor sets none, and no
+  already-ported species lists bare `Scurrier` either).
+
+  No `*ArtOverride` mod exists for Scurrier (checked first). 7 PNGs
+  extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used: the donor's own per-sex split —
+  `Scurrier_m_{south,east,north}` (`bodyGraphicData`) and
+  `Scurrier_f_{south,east,north}` (`femaleGraphicData`, same pattern
+  RSW_Mudhorn's sex split already established for a small-critter species)
+  — plus `Scurrier_Dessicated`. All 7 are referenced by the def, none
+  excluded. Sits at Textures/swanimals/Scurrier/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Scurrier" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Scurrier</defName>
+    <label>scurrier</label>
+    <description>The scurrier was a rodent native to the planet Tatooine. They were fast breeding, curious omnivores that many considered a pest. The males could be distinguished from females by their curved display horns. They were known to find their way aboard docked freighters and transports, thus propagating the scurrier population across the galaxy.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>35</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <FilthRate>3</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.50</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Scurrier</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>0.29</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <specificMeatDef>RSW_Rodentia_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.15</petness>
+      <nuzzleMtbHours>36</nuzzleMtbHours>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>4</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(1.0, 0)</li>
+          <li>(2.0, 1)</li>
+          <li>(3.0, 1)</li>
+          <li>(4.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.8</Desert>
+        <ExtremeDesert>0.6</ExtremeDesert>
+        <TropicalRainforest>0.2</TropicalRainforest>
+        <TropicalSwamp>0.01</TropicalSwamp>
+        <TemperateForest>0.04</TemperateForest>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.06</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.12</minAge>
+          <soundWounded>RSW_Pawn_Scurrier_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Scurrier_Death</soundDeath>
+          <soundCall>RSW_Pawn_Scurrier_Call</soundCall>
+          <soundAngry>RSW_Pawn_Scurrier_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Scurrier</defName>
+    <label>scurrier</label>
+    <race>RSW_Scurrier</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>1.20</ecoSystemWeight>
+    <wildGroupSize>3~9</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_m</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_f</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_m</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_f</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_m</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_f</texPath>
+          <drawSize>1.25</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scurrier/Scurrier_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

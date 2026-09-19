@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Scavrat creature port.
+  Ported from mlie.starwarsanimalcollection's `Scavrat` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Its custom
+  `Scavrat` BodyDef (Bodies_Animal_StarWars.xml) is, like Anooba/Borcatu/
+  Orray, entirely vanilla-part composition (Body/Tail x2/Spine/Stomach/
+  Heart/Lung x2/Kidney x2/Liver/Neck/Head/Skull/Brain/Eye x2/Ear x4/Nose/
+  AnimalJaw, 2x Shoulder/Arm/Humerus/Radius/Paw, 2x Leg/Paw) — no
+  SW-prefixed part or group anywhere, defName rename only. Ported as
+  RSW_Scavrat (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_SoftFur`)
+  ALREADY EXISTS as `RSW_Leather_SoftFur` (Wave B) and `specificMeatDef`
+  (`Rodentia_Meat`) ALREADY EXISTS as `RSW_Rodentia_Meat` (Pass 18, Mott) —
+  no new resource needed. Adult lifeStage sounds (`Pawn_Rodent_*`) are ALL
+  vanilla Core, confirmed directly off the donor's own `<race>` block — NOT
+  a Mlie custom sound set, left bare (no sound port needed). No
+  `specialTrainables` at all (donor leaves it bare). No `canCrossBreedWith`
+  (donor sets none, and no already-ported species lists bare `Scavrat`
+  either).
+
+  No `*ArtOverride` mod exists for Scavrat (checked first). 4 PNGs extracted
+  this pass via extract_bundle.py against the same AssetBundle every prior
+  wave used: `Scavrat_{south,east,north}` (base facing — the donor's own
+  `alternateGraphics` block references this SAME bare texPath with 5
+  per-instance colour tints, not separate textures) and `Scavrat_Dessicated`.
+  The donor's own `Scavrat_{south,east,north}m` variants (3 PNGs) were
+  excluded — unreferenced by the donor's own PawnKindDef (no
+  `femaleBodyGraphicData` or per-sex block anywhere), same
+  "unreferenced-by-the-def" precedent as every prior wave's "m"/"Pack"
+  exclusions. Sits at Textures/swanimals/Scavrat/.
+
+  Wired into the live cast this same pass: per cast_assignment.csv's current
+  row(s) for this species, repointed from the bare "Scavrat" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Scavrat</defName>
+    <label>Scavrats</label>
+    <description>Scavrats were large, omnivorous rodents of unknown planetary origin albeit common enough on multiple worlds that they were considered pests. They were often mistaken for the Tattooinian Womp Rat, but the big behavioural distinction here being that they were not predatory and far more sociable creatures despite their strange appearance.</description>
+    <statBases>
+      <MoveSpeed>4.9</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>1.0</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Scavrat</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>0.7</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_SoftFur</leatherDef>
+      <specificMeatDef>RSW_Rodentia_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.2</petness>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <nuzzleMtbHours>36</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Forage</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.6</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.3</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.08</TropicalSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <BorealForest>0.4</BorealForest>
+        <Tundra>0.6</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Scavrat</defName>
+    <label>scavrat</label>
+    <race>RSW_Scavrat</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>3~5</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Scavrat/Scavrat</texPath>
+        <color>(58,50,40)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Scavrat/Scavrat</texPath>
+        <color>(86,70,45)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Scavrat/Scavrat</texPath>
+        <color>(112,87,58)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Scavrat/Scavrat</texPath>
+        <color>(135,111,83)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Scavrat/Scavrat</texPath>
+        <color>(66,61,48)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(200,175,100)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(200,175,100)</color>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(200,175,100)</color>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Scavrat/Scavrat_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
