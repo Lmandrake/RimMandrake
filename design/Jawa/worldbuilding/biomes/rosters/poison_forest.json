@@ -406,13 +406,13 @@
   "flora": [
     {
       "commonality": 0.6,
-      "def": "BMT_Plant_TreeTwistingThornwood",
-      "law": "prep §5.4: owner favourite, keep; no leaf-crown, no green — passes §6"
+      "def": "RUT_TwistingThornwood",
+      "law": "prep §5.4: owner favourite, keep; no leaf-crown, no green — passes §6 (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_TreeTwistingThornwood, biomesteam.biomespollutedlands retired)"
     },
     {
       "commonality": 0.5,
-      "def": "BMT_Plant_TreeMartyr",
-      "law": "prep §5.4: owner favourite, keep; weeping form fits trunks-that-sweat (§1)"
+      "def": "RUT_TreeMartyr",
+      "law": "prep §5.4: owner favourite, keep; weeping form fits trunks-that-sweat (§1) (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_TreeMartyr)"
     },
     {
       "commonality": 0.5,

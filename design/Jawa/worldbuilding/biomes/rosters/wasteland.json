@@ -407,64 +407,9 @@
       "law": "poison-marked shrub"
     },
     {
-      "commonality": 0.5,
-      "def": "BMT_Plant_GutterPlantain",
-      "law": "wretched-marked Earth descendant — ordinary lineages being ruined IS the biome (§4)"
-    },
-    {
-      "commonality": 0.5,
-      "def": "BMT_Plant_ToxicIvy",
-      "law": "wretched-marked Earth descendant"
-    },
-    {
-      "commonality": 0.5,
-      "def": "BMT_Plant_TwistedDandelion",
-      "law": "wretched-marked Earth descendant"
-    },
-    {
       "commonality": 0.3,
-      "def": "BMT_Plant_ScorchedStars",
-      "law": "ruin-marked alien"
-    },
-    {
-      "commonality": 0.3,
-      "def": "BMT_Plant_Snaketails",
-      "law": "alien form"
-    },
-    {
-      "commonality": 0.2,
-      "def": "BMT_Plant_WildRashroot",
-      "law": "affliction-marked"
-    },
-    {
-      "commonality": 0.15,
-      "def": "BMT_Plant_Doomsprout",
-      "law": "ruin-marked"
-    },
-    {
-      "commonality": 0.25,
-      "def": "BMT_Plant_TumorbulbHyacinth",
-      "law": "wretched-marked (tumorbulb) Earth descendant"
-    },
-    {
-      "commonality": 0.25,
-      "def": "BMT_Plant_PoxSorghum",
-      "law": "wretched-marked (pox) Earth descendant"
-    },
-    {
-      "commonality": 0.15,
-      "def": "BMT_RainbowTongue",
-      "law": "alien form (Polluted Lands)"
-    },
-    {
-      "commonality": 0.15,
-      "def": "BMT_Plant_EclipsusFlower",
-      "law": "alien-named (eclipsus)"
-    },
-    {
-      "commonality": 0.15,
-      "def": "BMT_Plant_EclipsusLeaves",
-      "law": "alien-named"
+      "def": "RUT_ScorchedStars",
+      "law": "ruin-marked alien (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_ScorchedStars, shared with RUT_Scarlands)"
     },
     {
       "commonality": 0.1,
@@ -569,6 +514,50 @@
     {
       "def": "BMT_Plant_Rashroot",
       "reason": "duplicate — BMT_Plant_WildRashroot carries the wild slot"
+    },
+    {
+      "def": "BMT_Plant_GutterPlantain",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_ToxicIvy",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_TwistedDandelion",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_Snaketails",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_WildRashroot",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_Doomsprout",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_TumorbulbHyacinth",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_PoxSorghum",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_RainbowTongue",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_EclipsusFlower",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_EclipsusLeaves",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
     }
   ],
   "law_sources": [

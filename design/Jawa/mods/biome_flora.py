@@ -80,11 +80,11 @@ FAMILIES = {
     'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
     'AB_RimeNodules': 0.4},
   'RUT_CrackedLands': {   # 970 tiles · 6 plants
-    'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'BMT_Plant_TwistingThorngrass': 0.5,
-    'BMT_Plant_TwistingThornweed': 0.4, 'BMT_Plant_TreeTwistingThornwood': 0.2,
+    'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'RUT_TwistingThorngrass': 0.5,
+    'RUT_TwistingThornweed': 0.4, 'RUT_TwistingThornwood': 0.2,
     'AB_GargantuanLithops': 0.15},
   'RUT_PoisonForest': {   # 546 tiles · 9 plants
-    'BMT_Plant_TreeTwistingThornwood': 0.6, 'BMT_Plant_TreeMartyr': 0.5,
+    'RUT_TwistingThornwood': 0.6, 'RUT_TreeMartyr': 0.5,
     'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'AB_BloodBouquet': 0.4,
     'AB_RavenNettle': 0.4, 'AB_RedBugloss': 0.3, 'AB_GiantAgariTox': 0.3,
     'AB_KeeningCordax': 0.2},
@@ -146,23 +146,22 @@ FAMILIES = {
  },
 
  'C. contamination': {
-  'RUT_Wasteland': {   # 1,853 tiles · 25 plants
+  'RUT_Wasteland': {   # 1,853 tiles · 14 plants — 11 Polluted-Lands filler rows cut
+                        # 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1); toxic-ground identity
+                        # already carried by the vanilla/AB_ poison flora below
     'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8, 'AB_ToxiGrass': 0.6,
-    'BMT_Plant_GutterPlantain': 0.5, 'BMT_Plant_ToxicIvy': 0.5,
-    'BMT_Plant_TwistedDandelion': 0.5, 'PoisonPlantTallGrass': 0.4, 'Plant_GrayGrass': 0.35,
-    'PoisonShrub': 0.35, 'BMT_Plant_ScorchedStars': 0.3, 'BMT_Plant_Snaketails': 0.3,
-    'PoisonPlantBush': 0.3, 'BMT_Plant_PoxSorghum': 0.25,
-    'BMT_Plant_TumorbulbHyacinth': 0.25, 'AB_WeepingToxberry': 0.2,
-    'BMT_Plant_WildRashroot': 0.2, 'Plant_Toxipotato': 0.2, 'BMT_Plant_Doomsprout': 0.15,
-    'BMT_Plant_EclipsusFlower': 0.15, 'BMT_Plant_EclipsusLeaves': 0.15,
-    'BMT_RainbowTongue': 0.15, 'AB_ToxiBulb': 0.1, 'Plant_TreePolux': 0.1,
+    'PoisonPlantTallGrass': 0.4, 'Plant_GrayGrass': 0.35,
+    'PoisonShrub': 0.35, 'RUT_ScorchedStars': 0.3,
+    'PoisonPlantBush': 0.3, 'AB_WeepingToxberry': 0.2,
+    'Plant_Toxipotato': 0.2,
+    'AB_ToxiBulb': 0.1, 'Plant_TreePolux': 0.1,
     'AB_GiantToxicFlower': 0.08, 'VRE_PoluxBush': 0.08},
-  'RUT_Miasma': {   # 93 tiles · 7 plants
-    'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6,
-    'BMT_Plant_TreeTanglerootMangrove': 1.5, 'BMT_Plant_SewerReed': 0.8,
-    'BMT_RainbowTongue': 0.6, 'BMT_Plant_Snaketails': 0.5},
+  'RUT_Miasma': {   # 93 tiles · 3 plants — 4 Polluted-Lands understory rows cut
+                     # 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1); the mangal family below
+                     # was already 92% of this roster's weight
+    'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6},
   'RUT_Scarlands': {   # 90 tiles · 1 plants
-    'BMT_Plant_ScorchedStars': 0.25},
+    'RUT_ScorchedStars': 0.25},
  },
 
  'D. the shrub belt': {

@@ -446,8 +446,8 @@
   "flora": [
     {
       "commonality": 0.25,
-      "def": "BMT_Plant_ScorchedStars",
-      "law": "interim crust — Polluted Lands, contamination-authored, reads burnt; stands in for the Glowers until the new def lands",
+      "def": "RUT_ScorchedStars",
+      "law": "interim crust — Polluted Lands, contamination-authored, reads burnt; stands in for the Glowers until the new def lands (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_ScorchedStars, biomesteam.biomespollutedlands retired; still the interim placeholder pending the Glowers def)",
       "note": "eye test owed: must read black/glass, never green (ban 3)"
     }
   ],

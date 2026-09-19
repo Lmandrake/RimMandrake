@@ -50,9 +50,9 @@
         <wildPlants>
           <AB_HardyGrass>1.0</AB_HardyGrass> <!-- hardy grass -->
           <GRimMoss>0.8</GRimMoss> <!-- moss -->
-          <BMT_Plant_TwistingThorngrass>0.5</BMT_Plant_TwistingThorngrass> <!-- twisting thorngrass -->
-          <BMT_Plant_TwistingThornweed>0.4</BMT_Plant_TwistingThornweed> <!-- twisting thornweed -->
-          <BMT_Plant_TreeTwistingThornwood>0.2</BMT_Plant_TreeTwistingThornwood> <!-- twisting thornwood - tree -->
+          <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass> <!-- twisting thorngrass -->
+          <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed> <!-- twisting thornweed -->
+          <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood> <!-- twisting thornwood - tree -->
           <AB_GargantuanLithops>0.15</AB_GargantuanLithops> <!-- gargantuan lithops -->
         </wildPlants>
       </value>
@@ -65,8 +65,8 @@
       <xpath>/Defs/BiomeDef[defName="RUT_PoisonForest"]/wildPlants</xpath>
       <value>
         <wildPlants>
-          <BMT_Plant_TreeTwistingThornwood>0.6</BMT_Plant_TreeTwistingThornwood> <!-- twisting thornwood - tree -->
-          <BMT_Plant_TreeMartyr>0.5</BMT_Plant_TreeMartyr> <!-- martyr tree - tree -->
+          <RUT_TwistingThornwood>0.6</RUT_TwistingThornwood> <!-- twisting thornwood - tree -->
+          <RUT_TreeMartyr>0.5</RUT_TreeMartyr> <!-- martyr tree - tree -->
           <AB_CrystalFlower>0.5</AB_CrystalFlower> <!-- crystal flower -->
           <AB_CrystalHorn>0.4</AB_CrystalHorn> <!-- crystal horn -->
           <AB_BloodBouquet>0.4</AB_BloodBouquet> <!-- blood bouquet -->
@@ -308,30 +308,19 @@
       <value>
         <wildPlants>
           <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass> <!-- toxigrass -->
-          <RG_Plant_TallToxiGrass>0.6271</RG_Plant_TallToxiGrass> <!-- tall toxigrass -->
-          <AB_ToxiGrass>0.3957</AB_ToxiGrass> <!-- toxi grass -->
-          <BMT_Plant_GutterPlantain>0.2956</BMT_Plant_GutterPlantain> <!-- gutter plantain -->
-          <BMT_Plant_ToxicIvy>0.2956</BMT_Plant_ToxicIvy> <!-- toxic ivy -->
-          <BMT_Plant_TwistedDandelion>0.2956</BMT_Plant_TwistedDandelion> <!-- twisted dandelion -->
-          <PoisonPlantTallGrass>0.2068</PoisonPlantTallGrass> <!-- tall grass -->
-          <Plant_GrayGrass>0.167</Plant_GrayGrass> <!-- ashskal -->
-          <PoisonShrub>0.167</PoisonShrub> <!-- poison shrub -->
-          <BMT_Plant_ScorchedStars>0.1305</BMT_Plant_ScorchedStars> <!-- scorched stars -->
-          <BMT_Plant_Snaketails>0.1305</BMT_Plant_Snaketails> <!-- snaketails -->
-          <PoisonPlantBush>0.1305</PoisonPlantBush> <!-- bush -->
-          <BMT_Plant_PoxSorghum>0.0975</BMT_Plant_PoxSorghum> <!-- pox sorghum -->
-          <BMT_Plant_TumorbulbHyacinth>0.0975</BMT_Plant_TumorbulbHyacinth> <!-- tumorbulb hyacinth -->
-          <AB_WeepingToxberry>0.0682</AB_WeepingToxberry> <!-- weeping toxberry -->
-          <BMT_Plant_WildRashroot>0.0682</BMT_Plant_WildRashroot> <!-- wild rashroot -->
-          <Plant_Toxipotato>0.0682</Plant_Toxipotato> <!-- toxipotato plant -->
-          <BMT_Plant_Doomsprout>0.043</BMT_Plant_Doomsprout> <!-- doomsprout -->
-          <BMT_Plant_EclipsusFlower>0.043</BMT_Plant_EclipsusFlower> <!-- eclipsus -->
-          <BMT_Plant_EclipsusLeaves>0.043</BMT_Plant_EclipsusLeaves> <!-- eclipsus -->
-          <BMT_RainbowTongue>0.043</BMT_RainbowTongue> <!-- rainbow tongue -->
-          <AB_ToxiBulb>0.0225</AB_ToxiBulb> <!-- toxibulb - tree -->
-          <Plant_TreePolux>0.0225</Plant_TreePolux> <!-- polux tree - tree -->
-          <AB_GiantToxicFlower>0.0157</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
-          <VRE_PoluxBush>0.0157</VRE_PoluxBush> <!-- polux bush - tree -->
+          <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass> <!-- tall toxigrass -->
+          <AB_ToxiGrass>0.6</AB_ToxiGrass> <!-- toxi grass -->
+          <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass> <!-- tall grass -->
+          <Plant_GrayGrass>0.35</Plant_GrayGrass> <!-- ashskal -->
+          <PoisonShrub>0.35</PoisonShrub> <!-- poison shrub -->
+          <RUT_ScorchedStars>0.3</RUT_ScorchedStars> <!-- scorched stars -->
+          <PoisonPlantBush>0.3</PoisonPlantBush> <!-- bush -->
+          <AB_WeepingToxberry>0.2</AB_WeepingToxberry> <!-- weeping toxberry -->
+          <Plant_Toxipotato>0.2</Plant_Toxipotato> <!-- toxipotato plant -->
+          <AB_ToxiBulb>0.1</AB_ToxiBulb> <!-- toxibulb - tree -->
+          <Plant_TreePolux>0.1</Plant_TreePolux> <!-- polux tree - tree -->
+          <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
+          <VRE_PoluxBush>0.08</VRE_PoluxBush> <!-- polux bush - tree -->
         </wildPlants>
       </value>
     </match>
@@ -346,10 +335,6 @@
           <AB_MangroveTree>25</AB_MangroveTree> <!-- mangrove tree - tree -->
           <AB_ParasiticMangrove>8</AB_ParasiticMangrove> <!-- parasitic mangrove -->
           <AB_MangrovePalm>6</AB_MangrovePalm> <!-- mangrove palm - tree -->
-          <BMT_Plant_TreeTanglerootMangrove>1.5</BMT_Plant_TreeTanglerootMangrove> <!-- tangleroot mangrove - tree -->
-          <BMT_Plant_SewerReed>0.8</BMT_Plant_SewerReed> <!-- sewer reed -->
-          <BMT_RainbowTongue>0.6</BMT_RainbowTongue> <!-- rainbow tongue -->
-          <BMT_Plant_Snaketails>0.5</BMT_Plant_Snaketails> <!-- snaketails -->
         </wildPlants>
       </value>
     </match>
@@ -361,7 +346,7 @@
       <xpath>/Defs/BiomeDef[defName="RUT_Scarlands"]/wildPlants</xpath>
       <value>
         <wildPlants>
-          <BMT_Plant_ScorchedStars>0.25</BMT_Plant_ScorchedStars> <!-- scorched stars -->
+          <RUT_ScorchedStars>0.25</RUT_ScorchedStars> <!-- scorched stars -->
         </wildPlants>
       </value>
     </match>
