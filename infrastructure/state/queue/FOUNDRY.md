@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T05:52:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-19T06:17:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1702,3 +1702,23 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
 prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
+
+## DEEPS_FAUNA_VERDICTS_1 Lantern Deeps fauna verdicts: cut 7 kinds from RUT_LanternDeeps, rename 4 (Drinker, Grabber, Soulchime, Glowbulb), file 8 restyle art jobs with the owner's briefs
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  Flora: all 12 kept, no action.
+prose:    infrastructure/state/items/DEEPS_FAUNA_VERDICTS_1.md
+
+## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPS_FAUNA_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPS_FAUNA_MECHANICS_1.md
