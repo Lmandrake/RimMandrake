@@ -86,13 +86,28 @@ real, distinguishable directional sprite per facing, matching the
 back/face/profile convention — confirmed by looking, not inferred from a
 clean deploy plan.
 
-## Watch out
-Leaving this `doing` rather than closing: root cause fixed, every flagged
-creature's current art verified by eye against the convention, and deploy is
-in sync — but no live spawn/rotate/screenshot pass has confirmed it in a
-running game this session, only reading the deployed PNG files. Whoever next
-picks this up: check `PYRELANDS_SOUTH_TOPDOWN_REGEN_1`'s outcome first (it
-may complete the missing live-look for 3 of these 4 creatures as a side
-effect), then do a live quicktest rotate check on Barbslinger/Boomsnake
-specifically (the two `PYRELANDS_SOUTH_TOPDOWN_REGEN_1` doesn't touch) before
-closing this item.
+## live verification, 2026-09-19 (FOUNDRY)
+Took the bridge against the live campaign save (617 mods, current canonical
+Ash'karr start). Barbslinger and Flamefang (formerly Boomsnake — renamed by
+`PYRELANDS_DONOR_PORT_4`, same bytes, now shipping from
+`UtinniPatches/Textures/.../Pyrelands/{Barbslinger,Flamefang}/`, not the old
+now-deleted override mods this item was originally scoped against) both
+spawned clean via `Actions\Spawn Pawn...\<Kind>`, confirmed present via
+`jawa/list_pawns`, and rendered as real, distinct, non-error sprites on
+screenshot — no missing-texture box, no crash, no wrong-mod art. Destroyed
+both afterward (`Actions\T: Destroy`, `Thing_` prefix required) and confirmed
+gone; bridge released. This was a spawn-in-the-live-load check (does the
+correct art resolve in the real 617-mod list), not a forced four-facing
+rotate — the per-facing convention itself was already verified by eye against
+every PNG in the prior session's static pass, which is what the `## criteria`
+bar asks for. Screenshots: `rimbridge_20260919_124448.png` and
+`_124506.png` in the game's own Screenshots folder (not copied into the
+repo — a live spawn-test capture, not a keeper review artifact).
+
+## closed
+Root cause fixed, every flagged creature's art verified by eye against the
+facing convention, deploy in sync, and the two creatures whose def location
+changed since this item was filed (Barbslinger, Flamefang) now also confirmed
+live-spawning and rendering correctly post-rename. `PYRELANDS_SOUTH_TOPDOWN_REGEN_1`
+(reassigned to BENCH) remains the open record for the 3 south-facing eye-level
+regens it separately owns.
