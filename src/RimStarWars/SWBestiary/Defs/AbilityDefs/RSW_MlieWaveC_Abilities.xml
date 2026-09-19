@@ -453,4 +453,68 @@
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_GoldForage</enablesAbility>
   </TrainableDef>
+<!--
+  Pass 23 addition (Shyrack, 2026-09-19): `SW_SwarmCall`, an AbilityDef +
+  TrainableDef pair (no HediffDef — the effect is a direct
+  CompProperties_AbilityGiveMentalState, not a hediff), renamed
+  RSW_SW_SwarmCall throughout. warmupStartSound (`Ability_SwarmCall_Warmup`)
+  and soundCast (`Ability_SwarmCall`) both already absorbed in the
+  589-sound wave (2026-09-02) as RSW_Ability_SwarmCall{,_Warmup} — repointed.
+  Icon (`Ability_AnimalSwarmCall`, 128x128) newly extracted this pass — no
+  sibling `*ArtOverride` mod. Wired off RSW_Shyrack's ThingDef
+  `<race><specialTrainables>` AND its PawnKindDef `<abilities>` (donor's
+  own Shyrack references it both ways, same dual-wiring GreaterKraytDragon's
+  SW_Calamity and Kinrath's SW_WebShot used).
+-->
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_SwarmCall</defName>
+    <label>swarm call</label>
+    <description>This creature can cause nearby animal to temporarily turn manhunter by directing a subsonic Force imbued screech at them. This mental state will last for 3 hours.</description>
+    <iconPath>UI/Abilities/Ability_AnimalSwarmCall</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <!-- 24 hours -->
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <warmupStartSound>RSW_Ability_SwarmCall_Warmup</warmupStartSound>
+    <statBases>
+      <Ability_Duration>120</Ability_Duration>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>24.9</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetAnimals>True</canTargetAnimals>
+        <canTargetHumans>False</canTargetHumans>
+        <canTargetMechs>False</canTargetMechs>
+        <canTargetEntities>False</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetLocations>False</canTargetLocations>
+        <canTargetSelf>False</canTargetSelf>
+      </targetParams>
+      <soundCast>RSW_Ability_SwarmCall</soundCast>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityGiveMentalState">
+        <compClass>CompAbilityEffect_GiveMentalState</compClass>
+        <stateDef>Manhunter</stateDef>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_SwarmCall</trainableDef>
+        <aiCanCastWithoutTrainable>false</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_SwarmCall</defName>
+    <label>swarm call</label>
+    <description>Command the creature to emit a swarm call that turns a single target manhunter.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_SwarmCall</enablesAbility>
+  </TrainableDef>
 </Defs>

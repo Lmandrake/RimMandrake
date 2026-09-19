@@ -66,7 +66,7 @@
       <value>
         <RSW_Kreetle>0.8</RSW_Kreetle> <!-- kreetle - ambush-small, keep -->
         <RSW_Scavrat>0.6</RSW_Scavrat> <!-- Scavrats - ship-vermin, import -->
-        <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
+        <RSW_Shyrack>0.6</RSW_Shyrack> <!-- shyrack - ambush-flier, keep -->
         <RSW_Gorg>0.4</RSW_Gorg> <!-- gorg - ambush-small, keep -->
         <RSW_Jamel>0.4</RSW_Jamel> <!-- Jamel - herd, keep -->
         <RSW_LongtailGorg>0.4</RSW_LongtailGorg> <!-- longtail gorg - ambush-small, keep [MLIE_FAUNA_ABSORPTION_1 Pass 16] -->
@@ -1245,7 +1245,7 @@
       <value>
         <Wyyyschokk>0.4</Wyyyschokk> <!-- wyyyschokk - owner, import -->
         <RSW_Kreetle>0.2</RSW_Kreetle> <!-- kreetle - trace-prey, adjust-keep -->
-        <Shyrack>0.2</Shyrack> <!-- shyrack - trace-flier, keep -->
+        <RSW_Shyrack>0.2</RSW_Shyrack> <!-- shyrack - trace-flier, keep -->
       </value>
     </match>
   </Operation>
