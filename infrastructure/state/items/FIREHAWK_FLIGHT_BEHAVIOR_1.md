@@ -39,21 +39,59 @@ extraction (UnityPy) and frame-diffed to confirm real pose change.
   alone.
 
 ## owed — the real flip-book animation
-Not attempted this pass (art-generation-heavy, scoped separately):
-1. Author `frameCount x {north,east,south}` whole-body directional flip-book
-   frames (`FireHawk_Flying_<N>_<direction>.png`) via the
-   `generating-rimworld-sprites` skill, style-matched to the existing
-   `FireHawk_{north,east,south}.png` grounded art. Core's own retrofits ship
-   8 frames (Chicken/Duck/Goose/Sparrow); a smaller frameCount (e.g. 4-6) is
-   an acceptable v1 per CLAUDE.md ("never block flight waiting on frames" —
-   the mechanism already flies with zero frames, animation is additive).
-2. Wire `flyingAnimationFramePathPrefix`, `flyingAnimationFrameCount`,
-   `flyingAnimationTicksPerFrame`, `flyingAnimationDrawSize` (+
-   `flyingAnimationDrawSizeIsMultiplier`) onto `RUT_FireHawk`'s PawnKindDef —
-   shape and defaults in `CLAUDE.md`'s "If it flies in the fiction" section.
-3. Re-verify live: step ticks to an actual takeoff (not a standing
-   screenshot) and confirm the flip-book plays and lands cleanly back on the
-   grounded graphic.
+### attempt 1, 2026-09-19 (background subagent) — blocked on art-gen quota, wiring deferred
+Filed 15 artpipe jobs (`FireHawk_Flying_<1-5>_<north|east|south>.png`, 5 frames
+— tucked/upstroke-peak/full-spread/downstroke-power/recovery). **All 15
+failed immediately**: the codex channel is quota-exhausted account-wide until
+**2026-09-21 09:32** (confirmed from `worker_stderr_tail` on each
+`infrastructure/artpipe/failed/rut_firehawk_flying_*.manifest.json`). No
+local codex/gemini CLI fallback exists in this environment; gemini is
+policy-disabled for this daemon ($0 budget). **No PNGs were fabricated** —
+correctly refused rather than faking placeholder art.
+
+The subagent also wired `flyingAnimation*` fields onto the PawnKindDef
+pointing at those not-yet-existing frames, reasoning from CLAUDE.md's "never
+block flight waiting on frames." **That wiring was reverted before commit**:
+the CLAUDE.md guidance covers fields being *absent* (no animation defined at
+all, definitely safe); it says nothing about fields *present* pointing at
+missing texture files, and the subagent's own report flagged this exact gap
+as unverified (RimSage/engine access unavailable on this machine). Given
+`flightStartChanceOnJobStart 0.15` means FireHawk will actually attempt to
+fly in the live, actively-played campaign, shipping an unverified "what
+happens when GetBestFlyAnimation's texture lookup misses" is the same class
+of mistake this item already cost once (a visibly broken flying animal the
+owner had to catch live). Reverting costs nothing — the block is preserved
+below, ready to re-apply once art exists.
+
+**Re-do once art lands**: run
+`python3 src/RimMandrake/Utils/artpipe/requeue_quota_failures.py` after
+2026-09-21 09:32 to regenerate the 15 filed jobs (already sitting in
+`infrastructure/artpipe/failed/rut_firehawk_flying_*.json`, committed this
+pass), then re-add this exact block as a sibling of `<lifeStages>` on
+`RUT_FireHawk`'s PawnKindDef, deploy, and **verify live — step ticks to an
+actual takeoff, not a standing screenshot** — before considering the missing-
+texture-fallback question settled one way or the other:
+
+```xml
+<flyingAnimationFramePathPrefix>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_</flyingAnimationFramePathPrefix>
+<flyingAnimationFrameCount>5</flyingAnimationFrameCount>
+<flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+<flyingAnimationDrawSize>1.35</flyingAnimationDrawSize>
+<flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+<flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+```
+
+Frame count (5, Locust's) and `ticksPerFrame` (2) are defaults, not gates —
+adjust freely once real art is in hand. **One measured finding worth
+keeping**: read live against all 5 vanilla flyers in the
+`2026-09-19T18-15-44Z` def dump rather than trusting CLAUDE.md's single
+Chicken example — Chicken is the ONLY one of the five using
+`flyingAnimationDrawSizeIsMultiplier=true` (2.4); Duck (1.7), Goose (1.35),
+Sparrow (2) and Locust (1) all use `false` with an absolute cell size. The
+block above follows the 4-of-5 majority (`false`, absolute `1.35` against
+this creature's 1.1 grounded adult drawSize) rather than copying Chicken's
+outlier pattern — if a future pass copies CLAUDE.md's Chicken example
+verbatim without re-checking this, it's copying the minority case.
 
 ## sweep — other flying Pyrelands roster kinds
 `RUT_FireWasp` also carries `MaxFlightTime`/flight race fields (from the same
