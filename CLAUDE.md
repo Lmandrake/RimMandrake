@@ -117,8 +117,10 @@ and nowhere else; never restate a model choice outside it.
 - 🔴 **A gate cited by NAME outlives the item it names — check the item's state.**
   `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's word,
   yet ~20 live docs still said "do not rename ahead of it" 16 days later, which is why
-  FlowWorks (named by ruling 20) still ships as `fluidcanals`. Owner: *"That file may be
-  VERY old… do not accept stale info."* Sweep: `STALE_RENAME_GATE_SWEEP_1`.
+  FlowWorks (named by ruling 20) kept shipping as `fluidcanals` for those 16 days. Now
+  `mandrake.rm.flowworks` (RE-VERIFIED 2026-09-19 against `About.xml` and the live
+  Mods folder). Owner: *"That file may be VERY old… do not accept stale info."*
+  Sweep: `STALE_RENAME_GATE_SWEEP_1`.
 - **North stars: `FlowWorks`, `Graffiti`, `Pits` and `WreckedMachines` are VALIDATED** —
   MEASURED 2026-09-17 through the parser: 13+3 / 8+2 / 11+1 / 12+2 = **44 bars**, every
   recorded hash MATCHing. ⛔ Do not casually edit their `## north star` sections: the hash
