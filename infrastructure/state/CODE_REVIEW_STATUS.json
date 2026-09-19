@@ -14092,22 +14092,22 @@
     "sha": "1dc7382d"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "de9a652fe14a789d1dc3068efe3a25e34de768d4cd025b3bce0bc176b42df670",
-    "sha": "fd3bafa39"
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "6208214ccaf669e5901ecda7b44c8289ab7a920cc69a262709cc065bc188a92c",
+    "sha": "50cdce358"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterMineshaftPortal.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "97b8d7672ea776ad509b0ab8263a007180f3303f7a4be54e033cdd9cc4011b60",
-    "sha": "7f2ff5541"
-  },
-  "src/RimUtinni/LanternDeeps/Source/LanternDeepsMod.cs": {
     "cleanCount": 2,
     "date": "2026-09-18",
-    "hash": "8d7d5efdff4a1e3129d8db3286d9bb861012136153a13bf1cf1add8a3d7f8d7f",
-    "sha": "cd7a57e06"
+    "hash": "29d3abd0a20662bf136906217ae60179b96f7af11f82b5034f42b7de157debb1",
+    "sha": "50cdce358"
+  },
+  "src/RimUtinni/LanternDeeps/Source/LanternDeepsMod.cs": {
+    "cleanCount": 3,
+    "date": "2026-09-18",
+    "hash": "f37781050f1e2477c66d528adec9fe111f309a7b0465674ca14237f34f13f853",
+    "sha": "50cdce358"
   },
   "src/RimUtinni/LanternDeeps/Source/MapComponent_LanternDeepDarkness.cs": {
     "cleanCount": 2,
@@ -15934,10 +15934,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "5eb3fda23e18822cbc623516c7b4bff082b6f602d5fffb6bf56fec55d7cb7d3c",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "6005f6d1d12f3a9080a7cfffe086352fca3b39b7bce450ddb7b3c39d1a9ee77e",
+    "sha": "50cdce358"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/SitePartDefs_Vaults.xml": {
     "cleanCount": 1,
@@ -16066,10 +16066,10 @@
     "sha": "4b81823b"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_quests.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6e5f7dda0c60540d36999c64114059f18f6a84ae1257ef1ab4dffcb85821dcba",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-18",
+    "hash": "956cc11fae635c3198d54ff722578deca493be04cf758e05c52d05816f6988d8",
+    "sha": "50cdce358"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/CompIgniteCraterOnDestroy.cs": {
     "cleanCount": 1,
@@ -16324,10 +16324,10 @@
     "sha": "ea0108daa"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "b10b55998b05bc8343f8da0028c73cb3bcf0c47b28a8f2470a38f54eba51f609",
-    "sha": "ac17db00a"
+    "cleanCount": 4,
+    "date": "2026-09-18",
+    "hash": "4d71c6487d971f6ab4b7f48f72e21da2c76b683cff94643966e6d7d4e42ae059",
+    "sha": "50cdce358"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml": {
     "cleanCount": 2,
