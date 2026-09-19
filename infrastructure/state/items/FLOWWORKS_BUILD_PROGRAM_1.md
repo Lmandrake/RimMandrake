@@ -118,7 +118,7 @@ Target (ruling 20): `RimMandrake: FlowWorks`, `mandrake.rm.flowworks`, namespace
 | Filenames carrying the old name | `RimMandrake_FluidCanals.csproj`, `RimMandrakeFluidCanals_DefOf.cs`, `RimMandrakeFluidCanalsMod.cs`, `FluidCanalsDebugActions.cs`, `Flood_FluidCanal.cs`, the `FluidCanal_*.xml` set |
 | Live mod-id list | `src/RimMandrake/Utils/loadsweep/batch1.txt` line 7 |
 | Prose cross-refs in other mods | `Graffiti/validation.py`, `StructureInjections/validation.py`, `Greentide/Source/RM_{JobDriver,WorkGiver}_DigOutBuried.cs`, `MovingDunes/Source/RimMandrake_MovingDunes.csproj`, `ManyWaters/Defs/TerrainDefs/RM_ColoredWater.xml`, `Utils/loadsweep/DECISION_STRINGS.md` |
-| Docs | `design/RimMandrake/fluid_canals_mod_definition.md` (filename too), `pit_trap_visual_interface_spec.md`, `liquids_framework_design.md`, plus ~44 other `.md` |
+| Docs | `design/RimMandrake/fluid_canals_mod_definition.md` (filename too), `liquids_framework_design.md`, plus ~44 other `.md`. ⚠️ `pit_trap_visual_interface_spec.md` was DELETED 2026-09-19 — it specced a TRAP against `Building_OpenPit`, which rulings 18/19/24 replaced with a SUPERDEEP excavated cell; the pit's art direction is now ruling 33 inside `PIT_SUPERDEEP_COLLAPSE_1.md` |
 
 🔴 **Two silent-failure hazards, both assembly-bound — this is why it is Desktop work:**
 

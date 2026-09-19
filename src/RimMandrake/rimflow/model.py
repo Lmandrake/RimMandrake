@@ -985,9 +985,22 @@ def _who_refusal(ev, item):
             # nothing. Raised, not returned, so `_may` never offers it to him.
             raise PermissionError_("`%s` names an item that does not exist" % verb)
         if item.owner and item.owner != seat:
-            return ("%s may not `%s` %s — it belongs to %s. Filing work FOR another "
-                    "seat is normal; changing another seat's item is refused."
-                    % (seat, verb, item.id, item.owner))
+            # \u26a0\ufe0f Narrow, and the message must SAY it is narrow. Owner's ruling
+            # 2026-09-19: correctness outranks seat ownership, and a cross-seat edit to
+            # an item's PROSE now only warns (queue_lint.py). What is still refused is
+            # this \u2014 a lifecycle verb that moves work someone else has in flight.
+            # An earlier version of this sentence said "changing another seat's item is
+            # refused", which now reads as forbidding the correction he requires.
+            return ("%s may not `%s` %s \u2014 it belongs to %s.\n\n"
+                    "\u26d4 This verb moves work that is IN FLIGHT for another seat, which is "
+                    "theirs to move.\n"
+                    "\u2705 Correcting FALSE PROSE in their item file is different, and is "
+                    "expected of you:\n"
+                    "   edit infrastructure/state/items/%s.md, then commit it by explicit "
+                    "path saying\n   what was wrong (owner, 2026-09-19 \u2014 correctness "
+                    "outranks seat ownership).\n"
+                    "\u2705 Filing work FOR them is always fine: rimflow file --for %s \u2026"
+                    % (seat, verb, item.id, item.owner, item.id, item.owner))
         return None
     # ⚠️ `who` may MIX seat names with the sentinel "owner" — `retarget` is
     # ("DECIDE", "owner"), meaning DECIDE may retarget anything and a seat may

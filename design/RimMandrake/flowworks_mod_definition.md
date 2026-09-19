@@ -28,11 +28,13 @@ document by naming pumps and tanks as FlowWorks' own, and `LIQUID_LOGISTICS_MOD_
 Framework pillar 2 — *pulsed spread only, no per-tick fluid sim, ever* — is an owner ruling, and
 everything below stays inside it.
 
-**The pit's visual/art spec is a separate document, not absent:**
-`design/RimMandrake/pit_trap_visual_interface_spec.md` — five states, the top-down depth grammar,
-a Pyrelands palette, and three costed directions with Direction B recommended, awaiting the owner's
-ruling. Ruling 27 sequences it after the merge; its own Status section records what rulings 18/19/25/27
-falsified in it. Read the two together before drawing anything.
+**The pit's visual/art direction lives in the pit item, not a separate spec:**
+`infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`. Ruling 33 (2026-09-16) settles the
+depth read — Quarry-style perspective, where **the wall faces carry the depth, not the occupant**
+— and the item also carries the sprite economy that agrees with it. The old
+`pit_trap_visual_interface_spec.md` was DELETED 2026-09-19: it designed a TRAP's five states
+against `Building_OpenPit`, and rulings 18/19/24 made a pit a SUPERDEEP excavated cell that is
+not a building at all. Git holds it if the history is ever wanted.
 
 ## 1. What the mod is
 

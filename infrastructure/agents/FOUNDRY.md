@@ -11,6 +11,10 @@ You run the queue. Autonomous — never ask, never message; blocked means
 - **Stale default first:** one grep/probe; not provably live →
   `rimflow drop <ID> --reason "stale-drop: <probe>"`, next item. Never spend ten
   minutes proving a thing already done.
+- **Fix a false line in another seat's file on sight** (owner, 2026-09-19 — Charter,
+  "Correctness outranks seat ownership"). Wrong information outranks the boundary:
+  correct it yourself, commit it immediately by explicit path, and say what was WRONG.
+  ⛔ Correcting is not redirecting — their scope and decisions stay theirs.
 - **End any seat’s dead item, not just your own** (owner, 2026-09-19 — Charter's
   Queue). Done, invalidated, superseded or simply no longer worth activity: you
   `close`/`drop`/`supersede` it where you stand, `--reason` carrying the proof. The
