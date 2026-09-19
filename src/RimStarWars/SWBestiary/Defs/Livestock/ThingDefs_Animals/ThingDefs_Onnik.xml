@@ -63,6 +63,12 @@
       <optimalityOffsetFeedingAnimals>10</optimalityOffsetFeedingAnimals>
       <babiesCanIngest>false</babiesCanIngest>
     </ingestible>
+    <!-- FULL_LOAD_RESIDUE_TRIAGE_1, 2026-09-19: RawBad preferability without
+         socialPropernessMatters=true makes wardens loop into prison cells
+         looking for "food" to hand prisoners. ResourceBase (our ParentName)
+         doesn't set this, unlike vanilla's own RawBad base (PlantFoodRawBase
+         in Items_Resource_RawPlant.xml) which does at the ThingDef level. -->
+    <socialPropernessMatters>true</socialPropernessMatters>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
