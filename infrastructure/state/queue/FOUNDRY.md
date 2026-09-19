@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-19T06:42:56Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-19T06:45:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -873,6 +873,15 @@ kind:     build
 summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
 
+## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Both channels ship together — his ruling, against light-first. So nothing here is releasable
+prose:    infrastructure/state/items/ATMOSPHERIC_BASE_BUILD_PROGRAM_1.md
+
 ## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
 state:    doing
 row:      unassigned
@@ -1452,16 +1461,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_VANDAL_ART_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
-
-## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Both channels ship together — his ruling, against light-first. So nothing here is releasable
-prose:    infrastructure/state/items/ATMOSPHERIC_BASE_BUILD_PROGRAM_1.md
 
 ## NINEFOLD_LOUDNESS_FRONT_1 Ninefold owes LOUDNESS and THE FRONT, which canon rules exist and no code computes — MEASURED 2026-09-16: GameComponent_Ninefold's entire public read surface is GetSatiation/GetMood/GetBand/IsUnveiled plus ApplyDelta/TryFirstContact/NotifyViolentDeath/Notify_Launched. No loudness, no front, no change notification, pull-only. canon.yml in_front rules that engagement makes a god LOUDER, the loudest holds actuator priority, the front is reckoned at each LANDING and can flip mid-map on a violent swing — none of that derivation is written. Blocks ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3 onward, whose territory and tremor are both defined in terms of rank
 state:    proposed
