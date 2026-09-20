@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:48:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T09:22:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -415,7 +415,7 @@ summary:  Owner-said: "Keep one big reskin boom creature for the assailant dunge
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1281,16 +1281,6 @@ blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/g
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
-## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  Retirement gate (1) as originally scoped (regenerate BiomeCast_Ashkarr.xml) is likely MOOT - that file appears to be dead code since BIOME_OWNERSHIP_WAVE_1 (see BIOME_CAST_PATCH_DEAD_NAMES_1, filed 2026-09-20). Real remaining blockers: gate (3) RotSporeKit GameCondition_SporeCloud has no data-only substitute (unchanged); confirm BIOME_CAST_PATCH_DEAD_NAMES_1's finding before treating gate (1) as done or needed. Gate (2) remains RULED/done. (on BIOME_CAST_PATCH_DEAD_NAMES_1)
-summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
-prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
-
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -1543,12 +1533,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
 
-## BIOME_CAST_PATCH_DEAD_NAMES_1 BiomeCast_Ashkarr.xml (gen_cast_patch.py) targets pre-BIOME_OWNERSHIP_WAVE_1 biome defNames - likely fully vestigial
+## ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1 rosters_to_cast.py's BIOMECAST_DEFS still names pre-migration biomes; excludes almost every live roster row
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     build
+kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  BIOMECASTPATCHDEADNAMES1 — BiomeCastAshkarr.xml targets biome defNames that no longer exist
-prose:    infrastructure/state/items/BIOME_CAST_PATCH_DEAD_NAMES_1.md
+summary:  ROSTERSTOCASTBIOMECASTDEFSSTALE1 — rosterstocast.py excludes nearly every live roster row
+prose:    infrastructure/state/items/ROSTERS_TO_CAST_BIOMECAST_DEFS_STALE_1.md

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:59:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T09:22:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -511,3 +511,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
+
+## GRASSLANDS_TILES_CSV_STALE_1 ASHKARR_WORLDMAP_tiles.csv disagrees with GRASSLANDS_CAST_DEAD_BIOME_1's live measurement on Grasslands vs Pyrelands tile count
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  GRASSLANDSTILESCSVSTALE1 — world/ASHKARRWORLDMAPtiles.csv may be stale vs. the live game for Grasslands/Pyrel…
+prose:    infrastructure/state/items/GRASSLANDS_TILES_CSV_STALE_1.md
