@@ -114,6 +114,14 @@ namespace RimMandrake.CreatureBehaviors
     //      what a frozen severity means. The dial scales the decay rate in
     //      both sun and shade together (never the stage thresholds or the
     //      stat offsets, which stay whatever the def says).
+    //  23. drumLureEnabled / drumLureChanceMultiplier — RM_CompDrumLure
+    //      (DRUM_LURE_PREDATOR_BUILD_1). Off: a lure predator drops any
+    //      in-progress compulsion immediately (the victim keeps walking
+    //      wherever it was already headed, it just stops being steered) and
+    //      never starts a new one; any lingering submersion clears and the
+    //      pawn hunts like a normal vanilla predator from then on. The dial
+    //      scales only the per-scan appraisal chance (never the radius or
+    //      ambush range, which stay whatever the race's own comp says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -148,6 +156,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool shadeSeekingWanderEnabled = true;
         public static bool heatDrivenBurstEnabled = true;
         public static float heatDrivenBurstDecayMultiplier = 1f;
+        public static bool drumLureEnabled = true;
+        public static float drumLureChanceMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -183,6 +193,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref shadeSeekingWanderEnabled, "shadeSeekingWanderEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstEnabled, "heatDrivenBurstEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
+            Scribe_Values.Look(ref drumLureEnabled, "drumLureEnabled", true);
+            Scribe_Values.Look(ref drumLureChanceMultiplier, "drumLureChanceMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -295,6 +307,15 @@ namespace RimMandrake.CreatureBehaviors
               + "wherever it currently sits).");
             list.Label("Heat-driven burst decay rate: " + heatDrivenBurstDecayMultiplier.ToString("0.00") + "x");
             heatDrivenBurstDecayMultiplier = list.Slider(heatDrivenBurstDecayMultiplier, 0.25f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Drum-lure ambush", ref drumLureEnabled,
+                "A lure predator stops calling victims closer with a false vibration signal; any "
+              + "victim already mid-compulsion is released immediately (they just keep walking "
+              + "wherever they were headed) and the predator hunts like a normal vanilla predator "
+              + "from then on.");
+            list.Label("Drum-lure appraisal chance: " + drumLureChanceMultiplier.ToString("0.00") + "x");
+            drumLureChanceMultiplier = list.Slider(drumLureChanceMultiplier, 0f, 3f);
 
             list.End();
         }

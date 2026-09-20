@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DRUM_LURE_PREDATOR_BUILD_1. deep_desert.md §4's actual named archetype —
+  "the ground lies to you": predators hunt by vibration and appraise by
+  water, and "some carry lures that drum juicy — an angler's decoy that
+  sounds like a fat animal." RSW_SandLion (EXTREME_DESERT_SUBSURFACE_
+  PREDATOR_1) is a straight ambush predator filling the biome's icon role
+  in the interim; this is the deeper mechanic the item asked for, a
+  distinct creature, not a re-skin of the sand lion. Do not touch
+  RSW_SandLion's own wiring.
+
+  drazzik: DRAFTED pseudo-Star-Wars name (NONCANON_BEAST_RENAME_1 process —
+  agent drafts, owner reacts), checked against check_pseudo_sw_name.py
+  (PASS: 2 syllables, doubled letter, k-ending, no canon collision, no
+  English stem). Not yet owner-ruled.
+
+  MECHANIC 1 — the lure (RM_CompProperties_DrumLure, RimMandrake.
+  CreatureBehaviors, this item's own new C#). Confirmed before writing any
+  C#: no stock RimWorld comp broadcasts a false signal that pulls another
+  pawn's own pathing toward a tile (rimsage search_defs/search_source for
+  "Lure" — zero hits in vanilla+DLC; this codebase's own two nearest
+  sibling ambush mechanisms, CompProperties_AquaticAmbusher and
+  RM_CompProperties_HeatBurstPredator, only ever act on the predator, never
+  compel the victim). See RM_CompDrumLure's own header for the state
+  machine. luredHediff/submersionHediff point at the two generic hediffs in
+  RM_DrumLure_Hediffs.xml (RimMandrake.CreatureBehaviors, sibling to that
+  assembly's own RM_AquaticAmbush_Hediffs.xml). No MayRequire on the comp
+  Class itself: RSW_WraidAlpha (this mod, DESERT_BURST_PREDATOR_FLAGSHIP_1)
+  already references RimMandrake.CreatureBehaviors.RM_CompProperties_
+  HeatBurstPredator the same way, unguarded — this mod already treats that
+  assembly as a hard dependency in practice (loadAfter mandrake.rm.
+  creaturebehaviors, this file's own About.xml).
+
+  MECHANIC 2 — the egg-trap clutch (deep_desert.md §4 "eggs are canteens —
+  and some are traps... the newborn tries to drink the intruder... sharp
+  beaks and needle claws... the clutch is bait"). Built as an ordinary
+  vanilla CompProperties_EggLayer clutch below (RSW_DrazzikEggFertilized/
+  Unfertilized), same shape as this mod's own RSW_WraidAlpha eggs and
+  RSW_BrainWormEggCluster (BrainWorms, absorbed pattern) — a mother that
+  invests water in a weapon, per the sheet's own line, rather than an
+  invented spawner building. The fertilized egg carries the exact same
+  RimMandrake.ProximityHatch.CompProperties_ProximityHatch already proven
+  live in this mod (RSW_ProtovermesEgg_ProximityHatch.xml, Patches/
+  ProximityHatch) and in BrainWorms' RSW_BrainWormEggCluster — MayRequire-
+  gated, so without that mod the clutch just falls back to CompHatcher's
+  vanilla timer.
+
+  Reading "interacted with (hauled/picked up)" (item prose) as PROXIMITY
+  rather than a haul-hook: deep_desert.md §4 itself says "Approached, they
+  hatch violently" — proximity is the sheet's own wording, closer to it
+  than inventing a haul-interrupt comp would be, and it reuses C# already
+  shipped and tested rather than adding a second new mechanism. Specs state
+  outcomes (rimworld-modding skill / FOUNDRY doctrine); this is the better
+  route while the criteria (reads as water, hatches hostile on approach) is
+  met.
+
+  BODY/ART: reuses RSW_SandLion's own body shape (QuadrupedAnimalWithPawsAndTail)
+  and donor texture, TEMP PLACEHOLDER, tinted pale bone/dust per deep_desert.md
+  §9's palette ("bleached bone, pale dust... no green, no black char") to read
+  as visually distinct from the untinted sand lion despite the shared
+  silhouette — same reskin-over-shared-art idiom this mod's own RSW_WraidAlpha
+  uses over RSW_Wraid. Checked infrastructure/artpipe/done/, _artsrc/ and
+  registry.jsonl for "drazzik"/"drum"/"lure" before placeholder-reusing: none
+  found (new name, first mention this session) — a real render remains owed,
+  not commissioned this pass.
+
+  Wired into RUT_ExtremeDesert at LOW commonality (0.05, a tenth of
+  RSW_SandLion's 0.5) per the item's own "rare, dangerous encounter, not a
+  common spawn" instruction and the sheet's §5/§6 population bans.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Drazzik</defName>
+    <label>drazzik</label>
+    <description>A pale, patient thing that lies still beneath the sand for hours, humming a false vibration through the ground that sounds exactly like something fat and wounded. Whatever comes to investigate walks the rest of the way in on its own. By the time the drazzik surfaces, the strike is already decided — the appraisal happened while it was still hidden.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>700</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>28</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>28</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>22</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.75</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <!-- MECHANIC 2: the egg-trap clutch. -->
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_DrazzikEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_DrazzikEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>20</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+      <!-- MECHANIC 1: the vibration lure. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DrumLure">
+        <luredHediff>RM_DrumLureLured</luredHediff>
+        <submersionHediff>RM_DrumLureSubmersion</submersionHediff>
+        <lureRadiusCells>18</lureRadiusCells>
+        <ambushRangeCells>1.9</ambushRangeCells>
+        <lureChancePerScan>0.35</lureChancePerScan>
+        <checkIntervalTicks>90</checkIntervalTicks>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <baseBodySize>2.2</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>2.3</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>20</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Drazzik</defName>
+    <label>drazzik</label>
+    <race>RSW_Drazzik</race>
+    <combatPower>340</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>drazzik cub</label>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: RSW_SandLion's own donor texture, bone/dust
+               tinted so the shared silhouette still reads distinct. -->
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <color>(222,214,196)</color>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>drazzik juvenile</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <color>(222,214,196)</color>
+          <drawSize>1.85</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>1.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <color>(222,214,196)</color>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The egg-trap clutch. "A large egg is portable water in a rigid shell,
+       which is exactly why a Jawa prizes one... Some eggs are birth traps.
+       Approached, they hatch violently, and the newborn tries to drink the
+       intruder as fast as it can with sharp beaks and needle claws. The
+       clutch is bait; the mother invested water in a weapon, not only in
+       offspring." (deep_desert.md §4) -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_DrazzikEggFertilized</defName>
+    <label>drazzik egg</label>
+    <description>Heavy for its size and cool to the touch, sloshing faintly when moved — everything a canteen-egg should feel like to a hand that has learned to trust that weight. Do not trust this one. Something is already moving inside, and it did not wait for the mother to leave before it started deciding who counts as prey.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(232,222,198)</color>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>35.0</MarketValue>
+      <Mass>1.2</Mass>
+      <Nutrition>0.55</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Nizzek</hatcherPawn>
+      </li>
+      <!-- The trap: hatches early the moment something living gets close,
+           rather than waiting out the vanilla timer above. -->
+      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">
+        <triggerRadius>1.5</triggerRadius>
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_DrazzikEggUnfertilized</defName>
+    <label>drazzik egg (unfert.)</label>
+    <description>Heavy for its size and cool to the touch, sloshing faintly when moved. Nothing is going to hatch out of this one — it is exactly what it feels like, a rigid shell of good water.</description>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(232,222,198)</color>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>35.0</MarketValue>
+      <Mass>1.2</Mass>
+      <Nutrition>0.55</Nutrition>
+    </statBases>
+  </ThingDef>
+
+</Defs>

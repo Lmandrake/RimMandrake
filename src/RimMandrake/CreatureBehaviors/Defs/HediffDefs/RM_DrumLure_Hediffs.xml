@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DrumLure_Hediffs.xml       CreatureBehaviors - DRUM_LURE_PREDATOR_BUILD_1
+
+  Granted/removed by RM_CompDrumLure — see that class's own header and
+  RM_CompProperties_DrumLure. Generic RM_-tier mechanism defs, not
+  RSW_Drazzik-hardcoded: any future drum-lure predator's own
+  RM_CompProperties_DrumLure can point at these same two hediffs, or author
+  its own.
+
+  RM_DrumLureSubmersion reuses the exact same vanilla machinery and the same
+  DLC caveat as this file's own sibling RM_AquaticAmbush_Hediffs.xml's
+  RM_AquaticAmbushInvisibility (stock Verse.HediffComp_Invisibility, gated
+  Anomaly-or-Royalty per its own UpdateTarget -> ModLister.
+  CheckRoyaltyOrAnomaly, confirmed via decompile there) — not re-derived
+  here. CLAUDE.md's 2026-09-19 ruling that all test mod lists carry all five
+  expansions means this is never actually absent from a load this campaign
+  runs.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_DrumLureSubmersion</defName>
+    <label>submerged</label>
+    <description>Submerged and hidden beneath the sand, invisible to anything that hasn't come within striking range.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>30</fadeDurationTicks> <!-- INVENTED, a snappy submerge/surface, matches RM_AquaticAmbushInvisibility -->
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks> <!-- INVENTED, ~5s forced-visible after taking damage -->
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <!-- Granted by RM_CompDrumLure.ApplyLuredHediff the instant a lure call
+       lands on a victim; removed the instant the ambush strikes, the
+       predator gives up, or it self-clears via Disappears if nobody acts on
+       it (predator killed mid-lure, victim wanders off, etc.) — same
+       self-clearing idiom RM_LungeSpeedBurst below it in the sibling file
+       already established. isBad true: this is the victim being deceived,
+       not a buff. No stat effects on purpose — it is a marker + a readable
+       reason the pawn is walking somewhere dangerous, not a mechanical
+       debuff, so turning drumLureEnabled off mid-compulsion (Mod Settings)
+       can simply remove it with nothing left to unwind. -->
+  <HediffDef>
+    <defName>RM_DrumLureLured</defName>
+    <label>drawn in</label>
+    <description>Something out there sounds like an easy meal, close and struggling. It's worth checking out.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>true</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>2500</disappearsAfterTicks> <!-- INVENTED, ~1 in-game hour: long enough to close a real gap, short enough that an unconsummated lure doesn't pin a victim forever -->
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

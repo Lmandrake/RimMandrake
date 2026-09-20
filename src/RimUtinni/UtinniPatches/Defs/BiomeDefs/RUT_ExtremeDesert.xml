@@ -169,9 +169,16 @@
       <!-- EXTREME_DESERT_SUBSURFACE_PREDATOR_1 2026-09-20: AA_SandLion round-2 import row
            (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
            0.5, "sand burrower swimmer") — ported as RSW_SandLion, the interim subsurface
-           strike predator for this biome (the drum-lure predator proper is separately
-           filed C# work). -->
+           strike predator for this biome. The drum-lure predator proper is now built
+           and wired below (DRUM_LURE_PREDATOR_BUILD_1, RSW_Drazzik) — SandLion stays as
+           its own separate creature, not superseded. -->
       <RSW_SandLion MayRequire="mandrake.rsw.swbestiary">0.5</RSW_SandLion>  <!-- vekka - sand burrower swimmer, interim strike predator, import -->
+      <!-- DRUM_LURE_PREDATOR_BUILD_1 2026-09-20: the biome's own named archetype (deep_desert.md
+           §4's "the ground lies to you" vibration-lure ambush predator, new C#
+           RM_CompDrumLure) plus its egg-trap clutch. LOW commonality, deliberately a
+           tenth of RSW_SandLion's — the item's own "rare, dangerous encounter, not a
+           common spawn" instruction and this sheet's §5/§6 population bans. -->
+      <RSW_Drazzik MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Drazzik>  <!-- drazzik - drum-lure subsurface predator -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

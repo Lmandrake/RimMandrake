@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DRUM_LURE_PREDATOR_BUILD_1 — the egg-trap clutch's own newborn. deep_desert.md
+  §4: "the newborn tries to drink the intruder as fast as it can with sharp
+  beaks and needle claws." Hatched exclusively by RSW_DrazzikEggFertilized's
+  CompProperties_Hatcher (RSW_Drazzik.xml) — never wired into any biome's
+  wildAnimals, same "only exists via hatching" posture as this mod's own
+  BrainWorms sibling RSW_BrainWormKind (ecoSystemWeight 0, canArriveManhunter
+  false).
+
+  nizzek: DRAFTED pseudo-Star-Wars name, distinct from the parent's "drazzik"
+  (check_pseudo_sw_name.py PASS: 2 syllables, doubled letter, k-ending, no
+  canon collision, no English stem). Not yet owner-ruled.
+
+  Single AnimalAdult lifeStageAges from minAge 0, same idiom as
+  RSW_BrainWorm: CompHatcher.Hatch() generates it at DevelopmentalStage.
+  Newborn, and the sheet's own framing ("tries to drink the intruder as fast
+  as it can") means it must be able to fight the instant it hatches, not grow
+  into the ability — there is no juvenile phase to this creature at all.
+
+  ART OWED: texPath is vanilla Chicken's own body art (a beaked animal,
+  closest available shape to "sharp beak"), tinted pale bone/dust to match
+  RSW_Drazzik's own placeholder tint. Checked infrastructure/artpipe/done/,
+  _artsrc/ and registry.jsonl for "nizzek" first: none found (new name, first
+  mention this session).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Nizzek</defName>
+    <label>nizzek</label>
+    <description>A drazzik newborn, wet from the shell and already hostile. It does not grow into being dangerous — it hatches that way, beak and claws going for whatever cracked the egg open, because out here a newborn that waits to be fed usually isn't.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>8</MarketValue>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.35</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Nizzek</defName>
+    <label>nizzek</label>
+    <race>RSW_Nizzek</race>
+    <combatPower>18</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: vanilla Chicken's own body art, tinted. -->
+          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <color>(222,214,196)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
