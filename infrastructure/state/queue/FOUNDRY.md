@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:00:27Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T14:31:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -984,7 +984,7 @@ prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
 ## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  Owner's own words (verbatim, from the filing, 2026-09-19):
@@ -1498,7 +1498,7 @@ prose:    infrastructure/state/items/CANONICAL_SAVE_CUT_RESIDUE_1.md
 ## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
