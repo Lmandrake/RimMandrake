@@ -294,8 +294,20 @@ def compute(plants):
             repicks.append((p, d_lo, d_hi, round(s_lo, 1), round(s_hi, 1), round(over, 1)))
             continue
 
-        # already survives its whole home? leave it completely alone.
-        if cur['minGrowthTemperature'] <= need_lo and cur['maxGrowthTemperature'] >= need_hi:
+        # already survives its whole home? leave it completely alone — but ONLY when `cur`
+        # is a true SHIPPED value from plant_pool.csv. 🔴 FOUND 2026-09-20
+        # (PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1): for a defName the pool does not carry,
+        # `cur` fell back to the LIVE DUMP a few lines up — which is this very patch's OWN
+        # prior output, not a shipped value. Skipping here for such a plant silently DROPS
+        # its widen operation next regen, and since patches apply against the BASE def on
+        # every load (never cumulatively against a prior patch), the plant reverts to its
+        # true, narrower shipped band — a silent narrow the "already" branch exists
+        # specifically to prevent. 9 plants hit this the first time it was measured
+        # (RUT_FireLavender among them: dump read 26.9..352.2 °C, shipped is 50..352.2,
+        # and the biome needs down to 26.9). Re-affirm those instead of skipping: they fall
+        # through to the widen branch below, which unions `cur` with `need` and so re-emits
+        # the same already-adequate bound rather than dropping it.
+        if p in donors and cur['minGrowthTemperature'] <= need_lo and cur['maxGrowthTemperature'] >= need_hi:
             already += 1
             continue
 
