@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- DESERT_SHADE_GRID_KEYSTONE_1. GhoulFrenzy-pattern (Anomaly's
+     Hediffs_Mutants.xml: statFactors/MeleeCooldownFactor + statOffsets/MoveSpeed
+     for the burst itself), staged by minSeverity the way Anomaly's AwokenCorpse
+     ramps MoveSpeed across six stages — here just two: a high-severity burst
+     stage and a low-severity heat-fatigue crash stage. Decay is
+     RM_HediffCompProperties_ShadeDrivenSeverity, not vanilla's own
+     HediffCompProperties_SeverityPerDay, because the whole point is that the
+     rate must depend on RM_MapComponent_ShadeGrid.ShadeAt at the pawn's
+     position (desert_ecology_feasibility.md §5) rather than being constant.
+
+     No trigger exists yet: a future burst-predator's own attack JobDriver
+     (DESERT_BURST_PREDATOR_FLAGSHIP_1) creates this with HediffMaker.MakeHediff,
+     sets Severity to 1 (the burst stage) before pawn.health.AddHediff — the
+     same one-line AddHediff idiom GhoulFrenzy itself uses. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_HeatDrivenBurst</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>heat-driven burst</label>
+    <description>A burst of adrenaline-fuelled speed, paid for in body heat that only sheds fast in shade.</description>
+    <everCurableByItem>false</everCurableByItem>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>heat-fatigued</label>
+        <minSeverity>0</minSeverity>
+        <statFactors>
+          <MoveSpeed>0.75</MoveSpeed>
+        </statFactors>
+      </li>
+      <li>
+        <label>bursting</label>
+        <minSeverity>0.5</minSeverity>
+        <statFactors>
+          <MeleeCooldownFactor>0.7</MeleeCooldownFactor>
+        </statFactors>
+        <statOffsets>
+          <MoveSpeed>4</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeDrivenSeverity">
+        <severityPerDayInSun>-0.5</severityPerDayInSun>
+        <severityPerDayInShade>-3</severityPerDayInShade>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>
