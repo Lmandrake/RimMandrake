@@ -226,4 +226,24 @@ none known — every finding in this entry (forced baldness, grey rather than vi
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+🔴 **RULED — owner, 2026-09-20. Verbatim: *"Umbaran too, greyish skin with a faint blue
+tone."***
+
+Shipped as `RSW_Skin_GreyBlue` (158,163,172) on `RSW_RimMandrakeUmbaran`, replacing
+`Outland_Skin_PaleBlue` + `Outland_Skin_PaleAzure`.
+
+🔑 **His ruling is narrower than the canon infobox, and it wins.** The infobox says
+*"Pale and bluish"* and the 2026-09-17 pass fitted two blue genes to it. He is ruling
+on how the species reads in OUR game: **grey dominant, blue as a faint tone.** The new
+value carries 14 points of blue lift over its red channel, against `RSW_Skin_SlateBlue`'s
+25, and sits one step off `RSW_Skin_MidGray` (162,162,162). ⛔ Do not drift it toward
+either neighbour.
+
+⛔ **Lavender-violet stays out, and both lines of evidence agree.** The words "lavender"
+and "violet" appear **nowhere** in the canon article (independently re-verified against
+the raw wikitext, 2026-09-20). It was only ever our own agent's reading of one painted
+illustration.
+
+⚠️ He noted he had ruled this before and it had not stuck. It is now data at
+`infrastructure/state/species_skin_rulings.json`, asserted by
+`Utils/selftest_species_skin_rulings.py`.
