@@ -1,14 +1,14 @@
 {
- "ts": 1789892547.9205022,
- "fingerprint": "c834a977d8d34cd7",
+ "ts": 1789942037.4497461,
+ "fingerprint": "7092f038c70aed66",
  "counts": {
-  "red": 29,
-  "blue": 845,
-  "green": 1828,
-  "grey": 445,
+  "red": 15,
+  "blue": 866,
+  "green": 1827,
+  "grey": 493,
   "unmeasured": 0,
-  "total": 3147
+  "total": 3201
  },
  "measurementOk": true,
- "iso": "2026-09-20T08:22:27Z"
+ "iso": "2026-09-20T22:07:17Z"
 }

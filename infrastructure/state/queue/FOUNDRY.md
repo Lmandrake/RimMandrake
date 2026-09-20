@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T21:55:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T22:11:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1401,26 +1401,6 @@ thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
-## EXTREME_DESERT_UNRULED_VERMIN_1 Owner card: rule the 12 Fall Line vermin rows for extreme desert
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
-prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
-
-## FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1 fall_line.json injects vermin at pre-rename biome defNames
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  FALLLINEINJECTIONDEADBIOMEKEYS1 — fallline.json injects vermin at dead biome keys
-prose:    infrastructure/state/items/FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1.md
-
 ## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
 state:    proposed
 row:      unassigned
@@ -1450,3 +1430,13 @@ kind:     bug
 thin:     no ## spec
 summary:  BRIDGEPAWNSPAWNCRASHESVEF1 — bridge-triggered pawn spawns NPE, universally
 prose:    infrastructure/state/items/BRIDGE_PAWN_SPAWN_CRASHES_VEF_1.md
+
+## CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1 gen_creature_register.py refuses: CORPSE CROSS-CHECK FAILED 1242 vs 1265
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  CREATUREREGISTERGENCORPSEMISMATCH1 — the register generator refuses on its own self-check
+prose:    infrastructure/state/items/CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1.md

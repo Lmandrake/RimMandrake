@@ -10350,3 +10350,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROSTER_VALIDATOR_STALE_REFS_1","ts":"2026-09-20T21:36:30Z"}
 {"seat":"FOUNDRY","event":"start","id":"ROSTER_VALIDATOR_STALE_REFS_1","ts":"2026-09-20T21:36:31Z"}
 {"seat":"FOUNDRY","event":"close","id":"ROSTER_VALIDATOR_STALE_REFS_1","sha":"ac8b64d1c49494275554ac3164c7a277c51614cf","ts":"2026-09-20T21:55:39Z"}
+{"seat":"FOUNDRY","event":"file","id":"CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1","title":"gen_creature_register.py refuses: CORPSE CROSS-CHECK FAILED 1242 vs 1265","kind":"build","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-20T21:57:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EXTREME_DESERT_UNRULED_VERMIN_1","ts":"2026-09-20T21:59:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_UNRULED_VERMIN_1","ts":"2026-09-20T21:59:34Z"}
+{"seat":"FOUNDRY","event":"file","id":"FALL_LINE_ARRIVAL_MECHANISM_1","title":"Build the Fall Line arrival mechanism for the 15 species pulled from ambient wildAnimals","kind":"design","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-20T22:07:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"EXTREME_DESERT_UNRULED_VERMIN_1","sha":"66649b5a0","ts":"2026-09-20T22:10:52Z"}
+{"seat":"FOUNDRY","event":"close","id":"FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1","sha":"66649b5a0","reason":"Fix changed from rekey-to-RUT_* to delete-entirely per the 2026-09-20 owner ruling (fall_line.md Sec8a): Fall Line fauna are arrivals, not biome fauna, so nothing remained biome-scoped once EXTREME_DESERT_UNRULED_VERMIN_1 pulled the vermin/droids out. injection_layer.defNames and fauna were deleted, not rekeyed; species list preserved in FALL_LINE_ARRIVAL_MECHANISM_1.","ts":"2026-09-20T22:11:06Z"}
