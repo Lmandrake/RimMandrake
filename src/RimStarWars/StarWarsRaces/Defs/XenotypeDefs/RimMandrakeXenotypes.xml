@@ -38,6 +38,7 @@
       <li>Outland_Skin_PalePink</li>
       <li>Outland_Skin_Brown</li>
       <li>Outland_Skin_PaleBrown</li>
+      <li>RSW_Skin_MidGray</li>
       <li>DarkVision</li>
       <li>Outland_ThickSkin</li>
       <li>AptitudeStrong_Construction</li>
@@ -554,6 +555,8 @@
       <li>Hair_DarkReddish</li>
       <li>RSW_Hair_SlateBlue</li>
       <li>RSW_Hair_SlateRed</li>
+      <li>Hair_DarkBlack</li>
+      <li>Hair_Gray</li>
       <li>Outland_Ears_Teddy</li>
       <li>DarkVision</li>
       <li>RSW_GS_Primitive</li>
@@ -923,6 +926,7 @@
       <li>Skin_Orange</li>
       <li>Outland_Skin_DeepBrown</li>
       <li>Outland_Skin_Brown</li>
+      <li>Outland_Skin_PaleBrown</li>
       <li>ElongatedFingers</li>
       <li>StrongStomach</li>
       <li>RobustDigestion</li>
@@ -1161,6 +1165,8 @@
       <li>Outland_HairColor_DarkPurple</li>
       <li>RSW_Skin_Lavender</li>
       <li>RSW_Skin_SlateBlue</li>
+      <li>Outland_Skin_PaleBrown</li>
+      <li>RSW_Skin_MidGray</li>
       <li>Ears_Pointed</li>
       <li>RSW_Eyes_BigYellow</li>
       <li>RSW_Eyes_BigGreen</li>
@@ -1190,6 +1196,8 @@
       <li>RSW_Head_Devolved</li>
       <li>Body_Thin</li>
       <li>Skin_DeepRed</li>
+      <li>Outland_Skin_Brown</li>
+      <li>RSW_Skin_MidGray</li>
       <li>DarkVision</li>
       <li>RSW_GS_Primitive</li>
       <li>Outland_ThickSkin</li>
