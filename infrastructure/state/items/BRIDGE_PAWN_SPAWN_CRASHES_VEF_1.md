@@ -201,3 +201,96 @@ or a real XML parse, not a regex; (2) decide fix-or-guard once identified;
 and would also defeat the debug-testing workflow this item exists to unblock.
 
 Bridge released — nothing to hold, the game process is gone.
+
+## ✅ ROOT CAUSE FOUND 2026-09-20 (FOUNDRY, offline) — the null-race PawnKindDefs, named
+
+**Instrument used, in order:** (1) `Player.log`'s "Initializing new game with
+mods:" block (lines 524-536) gave the EXACT 12-packageId list active at crash
+time — `brrainz.harmony`, `Ludeon.RimWorld` + 5 DLCs, `brrainz.rimbridgeserver`,
+`Mlie.StarWarsAnimalCollection`, `OskarPotocki.VanillaFactionsExpanded.Core`,
+`sarg.alphaanimals`, `mandrake.rsw.swbestiary` — **12, not 14**: this predates
+`modset_builder.py`'s current `beastmechanics` tier (14 mods), which as of
+*this same session* also pulls in `oskarpotocki.vfe.insectoid2` and
+`mandrake.rm.creaturebehaviors` as required transitive deps that the 12-mod
+crash list did NOT have. (2) Built a scratch `ModsConfig.xml` with exactly
+those 12 packageIds and resolved it with this project's own
+`rimworld_loadset.build_load_set()` (honors `LoadFolders.xml` conditionals —
+not a bare directory walk). (3) Parsed every `Defs/*.xml` across the resolved
+mod folders with `xml.etree.ElementTree`, resolving `PawnKindDef` `ParentName`
+chains correctly (a first pass indexed parents by `<defName>` and produced ~30
+false "parent not found" hits on plain vanilla Core defs like `Grenadier_*` /
+`Tribal_*` — **RimWorld's `ParentName` targets a node's `Name="..."`
+ATTRIBUTE, not its `<defName>` element**; fixed by indexing on `Name` first).
+Checked all 817 non-abstract leaf `PawnKindDef`s: **0 unresolved on base XML
+alone.**
+
+**The real defect is not in base XML — it's a comp `Class` that can't
+resolve.** Grepped all `Defs/*.xml` under `mandrake.rsw.swbestiary` for
+`Class="RimMandrake.CreatureBehaviors.*"` with no `MayRequire` guard. Five
+`ThingDef`s carry one:
+
+| ThingDef/PawnKindDef defName | file | unguarded comp Class |
+|---|---|---|
+| `RSW_Drazzik` | `Defs/ThingDefs_Races/RSW_Drazzik.xml:158` | `RM_CompProperties_DrumLure` |
+| `RSW_WraidAlpha` | `Defs/ThingDefs_Races/RSW_WraidAlpha.xml:151` | `RM_CompProperties_HeatBurstPredator` |
+| `RSW_BloodropMoth` | `Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml:2948` | `RM_CompProperties_FluidSacs` |
+| `RSW_FacetMothLarvae` | same file:8119-8128 | `RM_CompProperties_ProximityPsychicStun` (+3 more) |
+| `RSW_BovineBeetle` | same file:9755 | `RM_CompProperties_Grappler` |
+
+`mandrake.rm.creaturebehaviors` (the mod supplying every `RM_CompProperties_*`
+class above) was declared only under SWBestiary's `<loadAfter>`, never
+`<modDependencies>` — an ordering hint, not a requirement. On the 12-mod crash
+list that mod was **absent**, so RimWorld's XML deserializer hit an
+unresolvable `Class` attribute on each of the 5 `ThingDef`s above and — per
+this project's own standing fact ("a missing comp TYPE discards the whole def
+silently") — **discarded all 5 `ThingDef`s outright**, silently, no fatal
+error. Their sibling `PawnKindDef`s (same 5 defNames, each with a plain
+`<race>RSW_X</race>` pointing at its own now-nonexistent `ThingDef`) loaded
+fine on their own and registered in `DefDatabase<PawnKindDef>` with an
+**unresolvable cross-reference** — which is exactly `kindDef.race == null`,
+which is exactly what `GetCategoryForPawnKind` dereferences
+(`kindDef.RaceProps` = `kindDef.race.race`) while building the Spawn-Pawn
+debug-menu category tree over **every** `PawnKindDef`, which is why it fires
+on map load via dev mode's auto-palette-open regardless of which pawn a human
+or the bridge would have tried to spawn.
+
+⛔ Not VEF, not the bridge, not `GenSpawn` — a plain silently-discarded-def
+cross-reference bug in our own mod's dependency declaration, hitting only
+reduced test tiers (the owner's real 618-mod list has always carried
+`mandrake.rm.creaturebehaviors` active, so this never bit live play).
+
+## ✅ ALREADY FIXED — by a different session, 6 minutes after this crash
+
+`git log` on `src/RimStarWars/SWBestiary/About/About.xml` shows commit
+`3bb3e6966` ("SWBestiary: two hard dependencies were invisible to dependency
+closure"), timestamped **2026-09-20 15:52:55**, six minutes after
+`Player.log`'s last write (15:46:33, the crash). It promotes
+`mandrake.rm.creaturebehaviors` from `<loadAfter>` to `<modDependencies>` and
+adds `OskarPotocki.VFE.Insectoid2` (a second, unrelated silent-failure gap the
+same commit found: SWBestiary's `RSW_Cindermite` texPath binds to art that
+ships only inside that mod). **Deployed copy
+(`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\About\About.xml`)
+is byte-identical to the repo copy — already deployed, not just committed.**
+This investigation made no code changes; the fix already existed and needed
+no rework, only confirmation that it addresses this item's actual root cause
+(it does — `close_over()` on the 14-mod `beastmechanics` tier now correctly
+pulls in both former gaps, verified via `modset_builder.py --tier
+beastmechanics` this session).
+
+## ⚠️ still open
+
+- **Not yet live-reverified.** Nobody has relaunched the game on this or any
+  tier since the crash. The `About.xml` dependency fix should prevent the
+  5-def discard on any FUTURE tier build (closure now walks
+  `modDependencies` and includes `mandrake.rm.creaturebehaviors` +
+  `oskarpotocki.vfe.insectoid2`), but "should" is not "confirmed" — bridge
+  work for later, per this item's own standing rule.
+- **The ORIGINAL (non-"worse") finding above — `GenSpawn.Spawn` NPE'ing in
+  VEF's `CompShieldField.SpawnSetup_Patch`/`PhasingPatches` postfixes on a
+  `ThingMaker`-built `Pawn` — is UNRELATED and UNRESOLVED.** That is a
+  different code path (`rimworld/spawn_thing`/`jawa/spawn_batch` building a
+  raw Thing and handing it to `GenSpawn`, vs. this section's whole-
+  `DefDatabase<PawnKindDef>` enumeration for the debug-menu category tree).
+  Fixing today's null-race defect does not touch it. `jawa/spawn_pawn` remains
+  the correct workaround for that one.
+- Do not close this item on this finding alone.
