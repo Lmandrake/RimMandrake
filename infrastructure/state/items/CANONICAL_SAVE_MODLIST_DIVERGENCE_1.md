@@ -264,3 +264,18 @@ is invisible to this comparison; no dump of the save's own 635-mod set exists.
    `Could not load reference to` and expect the 5 world-pawn Things to be dropped.
 4. **Ledger gap, one line**: `biomesteam.biomespollutedlands` is still absent from
    `infrastructure/state/facts/retired_mods.json` (the other 4 are recorded).
+
+## ruling — owner, 2026-09-20
+
+Verbatim: **"Scrub all 18"**.
+
+Restore nothing. Every reference to all 18 absent mods is scrubbed out of
+`CANONICAL_ASHKARR_START_2026-09-12.rws`, **including the four that are still on
+disk** — `biomesteam.biomescaverns`, `badoaks.meatonastick`,
+`badoaks.meatonastick.expansion`, `guy762.mm.kotorcore`. The cave biome and
+whatever those four placed in the world go with them.
+
+- Route 1 (restore by ModsConfig edit) is **dead**, not deferred.
+- Route 3 (force-load with compatibility checks ignored) was **not** chosen.
+- Ruled alongside `CANONICAL_SAVE_SCENARIO_MISMATCH_1` ("Hand-edit the founders
+  in"), which is what makes a loadable save necessary in the first place.
