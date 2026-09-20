@@ -4,7 +4,7 @@
     "height": 512,
     "width": 512
   },
-  "channel": "gemini",
+  "channel": "codex",
   "created": "2026-09-19T16:56:11Z",
   "drawsize": 3.0,
   "facing": "south",
