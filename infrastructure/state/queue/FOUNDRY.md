@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:27:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:31:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,15 +918,6 @@ kind:     task
 summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
 prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
 
-## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  EXTREMEDESERTSUBSURFACEPREDATOR1 — replace AADunealisk with a real predator
-prose:    infrastructure/state/items/EXTREME_DESERT_SUBSURFACE_PREDATOR_1.md
-
 ## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
 state:    doing
 row:      unassigned
@@ -935,6 +926,15 @@ target:   v1
 kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
+
+## EXTREME_DESERT_CAVERN_BEAST_1 Author the Mandalorian cave-beast and its portable-water eggs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  EXTREMEDESERTCAVERNBEAST1 — author the Mandalorian cave-beast and its eggs
+prose:    infrastructure/state/items/EXTREME_DESERT_CAVERN_BEAST_1.md
 
 ## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
 state:    doing
@@ -1411,16 +1411,6 @@ thin:     no ## spec
 summary:  EXTREMEDESERTUNRULEDVERMIN1 — owner card: rule the Fall Line vermin rows for extreme desert
 prose:    infrastructure/state/items/EXTREME_DESERT_UNRULED_VERMIN_1.md
 
-## EXTREME_DESERT_CAVERN_BEAST_1 Author the Mandalorian cave-beast and its portable-water eggs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  EXTREMEDESERTCAVERNBEAST1 — author the Mandalorian cave-beast and its eggs
-prose:    infrastructure/state/items/EXTREME_DESERT_CAVERN_BEAST_1.md
-
 ## FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1 fall_line.json injects vermin at pre-rename biome defNames
 state:    proposed
 row:      unassigned
@@ -1460,3 +1450,13 @@ kind:     design
 thin:     no ## spec
 summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
 prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
+
+## DRUM_LURE_PREDATOR_BUILD_1 Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  DRUMLUREPREDATORBUILD1 — the drum-lure subsurface predator + its egg-trap clutch
+prose:    infrastructure/state/items/DRUM_LURE_PREDATOR_BUILD_1.md
