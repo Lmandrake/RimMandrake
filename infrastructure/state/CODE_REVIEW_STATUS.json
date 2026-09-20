@@ -558,10 +558,10 @@
     "sha": "40c4d4fed"
   },
   "skills/generating-images/scripts/codex_queue_runner.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b8368a436b4131ea144de82cac4170b17c99510f0297b3706252923f799efca2",
-    "sha": "6a7759f2"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "3486f467894b09670a0069b5f5743011fbf70c67ea44ac477f4a7a2a3b1338be",
+    "sha": "41e45cb6c"
   },
   "skills/generating-images/scripts/gemini_image.py": {
     "cleanCount": 3,
@@ -5208,10 +5208,10 @@
     "sha": "41ff665a4"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "e342d27f39b8a8ba2d106b5a4b3197c3eb62223db6512e144318612bbb08f153",
-    "sha": "74e9d4953"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "98358c5b1374120df21efaa8ec139f1e0ce398fada295a382554a81954bde557",
+    "sha": "41e45cb6c"
   },
   "src/RimMandrake/Utils/artpipe/fill_queue.py": {
     "cleanCount": 4,
@@ -5442,10 +5442,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/build_pyrelands_art_sheet.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "e9e0e8de5832aed3579ea2b0ca2ea03d1fde42f7d07808809ef0e0fb898cea86",
-    "sha": "69e7933af"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "99b57c500afaee327ead50328bb9c8e078a03afc91303c242b30c2ac3c2fe3e2",
+    "sha": "41e45cb6c"
   },
   "src/RimMandrake/Utils/build_salvation_rid.py": {
     "cleanCount": 3,
@@ -6454,10 +6454,10 @@
     "sha": "cbeff2d3"
   },
   "src/RimMandrake/Utils/selftest_research_validator.py": {
-    "cleanCount": 3,
-    "date": "2026-09-05",
-    "hash": "046bdceadf7808ee0bab101f5d5e706b2b807abece0cc7ed70f82b86b5ee8678",
-    "sha": "3287ca65"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "2ceb99dd9b4f35b86cdeb62f03ea1131f79feca6c16cabf5ab3ffa74a41aa26d",
+    "sha": "41e45cb6c"
   },
   "src/RimMandrake/Utils/selftest_retired_mods.py": {
     "cleanCount": 1,
