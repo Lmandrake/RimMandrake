@@ -72,5 +72,14 @@ belongs in this pipeline at all.
 
 ## closed
 22 of 22 landed or deliberately superseded by a re-ruled regen. See
-`ROT_FLORA_FAUNA_VERDICTS_1.md` for the collision-resolution detail and the
-3 rejected/failed wave-2 renders still owed their own v3.
+`ROT_FLORA_FAUNA_VERDICTS_1.md` for the collision-resolution detail.
+
+The 4 rejected/failed wave-2 renders are NOT owed — all four `_v3` regens
+(`rot_paletree_v3`, `rot_greylady_v3`, `rot_agariluxprime_v3`,
+`rot_recurvedstropharia_v3`) cleared the daemon the same session and their
+textures are on disk, VERIFIED 2026-09-20: `infrastructure/artpipe/pending/`
+and `failed/` hold no `rot_*_v3` job, and each one's PNG is present
+(`.../RotSporeKit/Things/Plant/PaleTree/PaleTree_A.png`,
+`.../Plant/GreyLady/GreyLadyGrown/GreyLadyGrown_A.png`,
+`.../UtinniPatches/Textures/RotSpecies/AgariluxPrime.png`,
+`.../RotSpecies/RecurvedStropharia.png`).
