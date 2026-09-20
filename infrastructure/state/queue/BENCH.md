@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:22:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T08:27:43Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -521,13 +521,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask (owner, 2026-09-19)
 prose:    infrastructure/state/items/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md
-
-## MYCOID_COLOSSUS_NORTH_RECOMPOSE_1 Mycoid colossus north facing draws ~1.5x taller than south/east, so the creature changes size as it turns - owner ruled recompose 2026-09-20
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MYCOID_COLOSSUS_NORTH_RECOMPOSE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MYCOID_COLOSSUS_NORTH_RECOMPOSE_1.md
