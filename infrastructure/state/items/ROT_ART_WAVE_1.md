@@ -33,21 +33,44 @@ incrementally as jobs complete rather than in one pass.
   `RUT_FurnaceCap` and an unrelated Flora species — same folder-per-plant
   pattern as EuphoricCrown above).
 
-## still pending (19 of 22 + follow-ups)
-Every other job in `Transient/rot_art_jobs_20260918.md`'s list of 22 is still
-in `infrastructure/artpipe/pending/` behind the rest of the shared queue
-(~100 jobs from other items were requeued at the same quota reset). Land each
-the same way as it completes: check the manifest/PNG by eye against the
-sibling that already landed well (don't assume clean == good — see
-AgelessCap above), give it its own folder+texPath if it's currently on a
-shared placeholder, `validate_patch.py --live`, deploy, note here.
+## landed 2026-09-20 (remaining 15 of 22 non-colliding + collision resolution)
+All 22 jobs are now in `infrastructure/artpipe/done/` (queue fully drained).
+This item's own 22 collided on 7 defs with `ROT_FLORA_FAUNA_VERDICTS_1` STEP
+5's separate 58-job `rot_*_v2` regen wave (same def, art generated twice by
+two different items) — landed together in one pass, full detail in
+`ROT_FLORA_FAUNA_VERDICTS_1.md`'s STEP 5 log:
 
-Also still owed per the filing note (not artpipe jobs, separate follow-up
-work): brewing-vessel east+north views once south lands; the
-`RUT_LivingFurnaceCap`/`MortalMorel`-vs-`HealingMorel` file-naming mismatch;
-whether the `RUT_Gene_Furnaceblood` icon even belongs in artpipe at all
-(flagged, not resolved, in the original filing note).
+- **15 of 22 landed as this item's own art** (no wave-2 collision):
+  `RUT_LiveIngredient_{AgelessCap,RegenerantVeil,EuphoricCrown}`,
+  `RUT_BrewingVessel` (south only — east/north still owed), `RUT_Tea_{AgeReversal,
+  Bioregeneration,Pleasure}`, `RUT_Symbiont_{Quickflesh,Nightwake,Sheenblood,
+  Mycoid}`, `RUT_LivePrep_ToxicInjection`, `RUT_LivingFurnaceCap` (moved off the
+  shared `RUT_MortalMorelPlant` item texPath onto its own
+  `RotSporeKit/Things/Item/Crops/LivingFurnaceCap` folder), `RUT_GrownFurnace`,
+  `RUT_Gene_Furnaceblood` icon (flat UI-icon style, not painterly — landed as
+  filed, still an open question whether this belongs in artpipe at all).
+- **6 of 22 lost the collision** (`RUT_AgelessCap`, `RUT_RegenerantVeil`,
+  `RUT_EuphoricCrown`, `RUT_FalseFruit`, `RUT_FurnaceCap` plant, `RUT_PaleMoss`)
+  — the wave-2 `rot_*_v2` re-ruled regen deployed instead; this item's own
+  `rut_*_v1` renders for these 6 (plus `rut_agelesscap_v2`, this item's own
+  quality-regen of AgelessCap) are superseded, not deployed.
+- **1 of 22 won on quality, then lost to a clean regen** (`RUT_PaleTree`): the
+  wave-2 collision winner `rot_paletree_v2` was rejected (flat achromatic
+  render, no color fill — same defect class as `rut_agelesscap_v1` below).
+  `rut_paletree_v1`'s real painterly art was deployed as the interim; the
+  daemon cleared `rot_paletree_v3` the same session and it replaced the
+  interim with the final re-ruled art.
 
-## not closed
-1 of 22 landed clean, 1 rejected+requeued, 19 still generating. Revisit as the
-daemon's queue advances rather than polling continuously.
+`validate_patch.py` (full-list ModsConfig snapshot): 0 errors. Deployed and
+verified in sync (RotSporeKit, UtinniPatches, SWBestiary). Contact sheet for
+owner review: `Transient/rot_art_landed_20260920/index.html`
+(`D:\Luke\dev\Rimworld\Transient\rot_art_landed_20260920\index.html`).
+
+Still owed (unchanged from the original filing note): brewing-vessel east+north
+views once a matched reference set is wanted; whether `RUT_Gene_Furnaceblood`
+belongs in this pipeline at all.
+
+## closed
+22 of 22 landed or deliberately superseded by a re-ruled regen. See
+`ROT_FLORA_FAUNA_VERDICTS_1.md` for the collision-resolution detail and the
+3 rejected/failed wave-2 renders still owed their own v3.

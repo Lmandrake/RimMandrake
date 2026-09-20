@@ -1,0 +1,189 @@
+{
+  "posture": "blacklist",
+  "savedBy": "prefill-script",
+  "decisions": {
+    "RUT_LiveIngredient_AgelessCap": {
+      "decision": "keep"
+    },
+    "RUT_LiveIngredient_RegenerantVeil": {
+      "decision": "keep"
+    },
+    "RUT_LiveIngredient_EuphoricCrown": {
+      "decision": "keep"
+    },
+    "RUT_BrewingVessel": {
+      "decision": "keep"
+    },
+    "RUT_Tea_AgeReversal": {
+      "decision": "keep"
+    },
+    "RUT_Tea_Bioregeneration": {
+      "decision": "keep"
+    },
+    "RUT_Tea_Pleasure": {
+      "decision": "keep"
+    },
+    "RUT_Symbiont_Quickflesh": {
+      "decision": "keep"
+    },
+    "RUT_Symbiont_Nightwake": {
+      "decision": "keep"
+    },
+    "RUT_Symbiont_Sheenblood": {
+      "decision": "keep"
+    },
+    "RUT_Symbiont_Mycoid": {
+      "decision": "keep"
+    },
+    "RUT_LivePrep_ToxicInjection": {
+      "decision": "keep"
+    },
+    "RUT_LivingFurnaceCap": {
+      "decision": "keep"
+    },
+    "RUT_GrownFurnace": {
+      "decision": "keep"
+    },
+    "RUT_Gene_Furnaceblood": {
+      "decision": "keep"
+    },
+    "RUT_AgelessCap": {
+      "decision": "keep"
+    },
+    "RUT_RegenerantVeil": {
+      "decision": "keep"
+    },
+    "RUT_EuphoricCrown": {
+      "decision": "keep"
+    },
+    "RUT_FalseFruit": {
+      "decision": "keep"
+    },
+    "RUT_FurnaceCap (plant)": {
+      "decision": "keep"
+    },
+    "RUT_PaleMoss": {
+      "decision": "keep"
+    },
+    "RUT_PaleTree": {
+      "decision": "keep"
+    },
+    "RUT_Arpeau": {
+      "decision": "keep"
+    },
+    "RUT_BlastpodShroom": {
+      "decision": "keep"
+    },
+    "RUT_BleedingTooth": {
+      "decision": "keep"
+    },
+    "RUT_Brightbell": {
+      "decision": "keep"
+    },
+    "RUT_CrimsonCap": {
+      "decision": "keep"
+    },
+    "RUT_Dewshrooms": {
+      "decision": "keep"
+    },
+    "RUT_DulcisPlant": {
+      "decision": "keep"
+    },
+    "RUT_FlakespireFungus": {
+      "decision": "keep"
+    },
+    "RUT_FruitingBodies": {
+      "decision": "keep"
+    },
+    "RUT_MortalMorelPlant": {
+      "decision": "keep"
+    },
+    "RUT_Nogtyl": {
+      "decision": "keep"
+    },
+    "RUT_Nuitae": {
+      "decision": "keep"
+    },
+    "RUT_Pusmelon": {
+      "decision": "keep"
+    },
+    "RUT_RustPuff": {
+      "decision": "keep"
+    },
+    "RUT_Sagecrust": {
+      "decision": "keep"
+    },
+    "RUT_Shinecap": {
+      "decision": "keep"
+    },
+    "RUT_Skulltop": {
+      "decision": "keep"
+    },
+    "RUT_VioletWimple": {
+      "decision": "keep"
+    },
+    "RUT_Wrinklecap": {
+      "decision": "keep"
+    },
+    "RUT_GreyLady": {
+      "decision": "keep"
+    },
+    "AB_AgaricusDomeCap": {
+      "decision": "keep"
+    },
+    "AB_Agarilux": {
+      "decision": "keep"
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "decision": "keep"
+    },
+    "AB_Bryolux": {
+      "decision": "keep"
+    },
+    "AB_DribblingCap": {
+      "decision": "keep"
+    },
+    "AB_GiantAgarilux": {
+      "decision": "keep"
+    },
+    "AB_GlowingAgarilux": {
+      "decision": "keep"
+    },
+    "AB_Glowstool": {
+      "decision": "keep"
+    },
+    "AB_LilacBeacon": {
+      "decision": "keep"
+    },
+    "AB_SlimyPholiota": {
+      "decision": "keep"
+    },
+    "AB_WitchesOyster": {
+      "decision": "keep"
+    },
+    "AB_AgariluxPrime": {
+      "decision": "keep"
+    },
+    "AB_RecurvedStropharia": {
+      "decision": "keep"
+    },
+    "AA_Agaripawn": {
+      "decision": "keep"
+    },
+    "AA_MycoidColossus": {
+      "decision": "keep"
+    },
+    "AA_Swarmling": {
+      "decision": "keep"
+    },
+    "AA_Wildpawn": {
+      "decision": "keep"
+    },
+    "AA_Wildpod": {
+      "decision": "keep"
+    },
+    "RSW_FungalWeevil": {
+      "decision": "keep"
+    }
+  }
+}

@@ -72,6 +72,54 @@ commit only own files; rimflow note.
   (absent def -> xpath simply doesn't match -> silent no-op, same guarantee, no name lookup
   needed). Used that pattern instead — same effect, matches the standing convention.
   `AA_Agaripod`/`RSW_FungalMantis` (owner's "keep + rename"): label only, no size, no art job.
+- 2026-09-20: STEP 5 (land the 58 `rot_*_v2` jobs) done, together with `ROT_ART_WAVE_1`'s
+  remaining 15 jobs (the two waves collide on 7 defs — landed in one pass, see that item for
+  its own side). Screened every render (automated grayscale/desaturation check + direct look
+  at every flagged and every collision row) before wiring. **3 renders were rejected/failed on
+  first landing (`rot_paletree_v2`, `rot_greylady_v2`, `rot_agariluxprime_v2` — all flat
+  achromatic renders, zero saturation sampled across the canvas, same defect class as
+  `rut_agelesscap_v1`; `rot_recurvedstropharia_v2` FAILED on a worker size mismatch, not
+  quality). v3 regens were filed for all 4 with style_notes demanding visible color where
+  relevant; the daemon cleared all 4 in the same sitting and all 4 landed clean on direct
+  look. Net: 57 of 58 STEP-5 defs now carry real bespoke art (`AA_Agaripod`/`RSW_FungalMantis`
+  are keep-rename, no art job, so not counted against 58).**
+  - **Collisions (7 defs, both waves generated art):** `rot_*_v2`/`rot_*_v3` won on
+    `RUT_AgelessCap`, `RUT_RegenerantVeil`, `RUT_EuphoricCrown` (replaced the already-landed
+    `rut_euphoriccrown_v1`), `RUT_FalseFruit`, `RUT_FurnaceCap` (plant), `RUT_PaleMoss`, and
+    `RUT_PaleTree` (`rot_paletree_v2` rejected, `rut_paletree_v1` stood in as interim,
+    `rot_paletree_v3` then replaced it with the final re-ruled art).
+  - **GreyLady**: `rot_greylady_v3` also replaced a stale flat-cel placeholder trio
+    (`GreyLadyGrownA/B/C.png`, cartoonish flat-cel style predating this campaign) that was
+    sitting in RUT_GreyLady's own folder — not just a texPath collision, an outright style
+    downgrade fixed in the same move.
+  - **AgariluxPrime**: `rot_agariluxprime_v3` landed clean but is still fairly muted/grey by
+    the brief's own design ("bone-white... bruised lilac... grey-lilac spore mist") — real
+    shading and a visible cool tint this time, not the pure-white sketch v2 was.
+  - **`AA_MycoidColossus`**: used `rot_mycoidcolossus_v2_east` + `_south` (owner pre-approved
+    per the v3 job's own manifest note) + `rot_mycoidcolossus_v3_north` (a recompose regen —
+    v2_north's subject aspect ratio didn't match east/south, so the creature changed size as it
+    turned; v3 fixed the framing only, palette/hide/line quality unchanged) — NOT v2_north.
+  - **27 RUT_ flora**: 20 landed directly (own texPath already existed, e.g. `RUT_CrimsonCap`,
+    `RUT_GreyLady`'s folder now correctly held by GreyLady itself once RegenerantVeil moved
+    off it, etc.) + 7 collision movers above. `RUT_FruitingBodies`'s art
+    (`rot_fruitingbodies_v2`) renders as a scattered field of many small sprigs rather than one
+    centered subject — unusual composition, flagged on the contact sheet for the owner rather
+    than rejected outright (it does have real color/shading, just an atypical layout).
+  - **13 AB_ (Alpha Biomes) + 5 AA_ (Alpha Animals) + RSW_FungalWeevil donor defs**: 11 AB_ + 5
+    AA_ + FungalWeevil landed via new `graphicData/texPath` (flora) or `bodyGraphicData/texPath`
+    (fauna, all 3 lifeStages) `PatchOperationConditional` blocks appended to
+    `RotSpecies_NamesAndSizes.xml` (same gate pattern as STEP 1's label/size ops), pointing at
+    new art under each OWNING mod's own `Textures/RotSpecies/<Name>/` — never inside the donor
+    mod's Steam Workshop folder. `AB_AgariluxPrime` and `AB_RecurvedStropharia` (rejected/failed
+    above) were NOT patched; they stay on their donor texPath until their v3 lands.
+  STEP 2 pattern repeated: `validate_patch.py` against the appended operations, full-list
+  ModsConfig snapshot — **0 errors**, every new operation 1-match (same benign Agaripod warning
+  as before). Deployed and verified in sync: RotSporeKit (31 files), UtinniPatches (27 files),
+  SWBestiary (4 files) — plans showed only own files plus pre-existing DEPLOY_HOLD entries and
+  (SWBestiary) unrelated `art/` source holds, no other-window drift.
+  Contact sheet for the owner's eye (review-sheets skill template, `check_sheet.py` 0 FAIL):
+  `Transient/rot_art_landed_20260920/index.html`
+  (`D:\Luke\dev\Rimworld\Transient\rot_art_landed_20260920\index.html`).
   `RSW_FungalMantis`/`RSW_FungalWeevil` edited directly in
   `src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml`
   (ours), both ThingDef+PawnKindDef label, `RSW_FungalWeevil`'s adult drawSize 1.8->4.
