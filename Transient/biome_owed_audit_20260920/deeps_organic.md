@@ -227,7 +227,50 @@ settlement excluded as explicitly out-of-scope v2). Examined 12.
 
 ## the_grey_deep.md
 
-(pending)
+Owed section: 4 bullets → 7 individual items. Examined 7.
+
+⭐ **This sheet is a POSITIVE control, not a gap**: its first Owed bullet
+literally states "no mechanics item filed" — but this is the sheet HONESTLY
+self-reporting a deliberate owner deferral ("when they need it," 2026-09-07),
+not a silent hole. Contrast with the Blue Desert pattern in the task brief:
+that one was ratified-and-forgotten; this one is ratified-and-declared-
+deferred. No defs exist anywhere for this biome's three named creatures
+(`PillarMason`/`CrustedGiant`/`OssuaryShrimp` — searched all three names,
+zero hits in `src/RimUtinni` or `src/RimMandrake`), which is exactly what
+"deferred by ruling" should look like on disk.
+
+1. **Implementation deferred by ruling** (murk visibility, pillar navigation
+   + waymarks, brine-pool lethality + shore harvest, scrape-sign/glow-mark
+   telegraphy, statuary salvage, shrimp evasion AI) — correctly UNFILED,
+   by design (see above). Not counted as a defect.
+2. **"The Twilight Deep... owed its own sitting"** — STALE SHEET PROSE
+   (flag, CONFIRMED). `the_grey_deep.md` was last edited 2026-09-10; the
+   Twilight Deep sheet it's asking to be sat on was already marked "✅ done
+   2026-09-07" in `README_BIOME_GRAMMAR.md` three days earlier. This note
+   asks for a sitting that had already happened when it was written.
+3. **Roster — the three residents into the assignment pass;
+   `sea_beasts_roster.md` pairing (the giant ↔ the Miasma's warden mothers)**
+   — UNFILED (CONFIRMED for the pairing specifically). Read
+   `sea_beasts_roster.md` in full (75 lines, RSW SeaBeasts roster) — zero
+   mentions of "Grey Deep," "warden mother," or "giant"; it's a different,
+   unrelated 18-creature roster. The underlying LORE connection already
+   exists in prose (`the_miasma.md`'s own "warden mothers" section and
+   `the_grey_deep.md`'s "bred at the Miasma's crèches" line both exist and
+   agree), but no roster FILE or item performs the pairing itself.
+   `BIOME_FAUNA_ASSIGNMENT_SITTING_1` (closed) is the only item touching
+   this biome by name and its own prose doesn't confirm a Grey-Deep-specific
+   admission pass. Searched: "Grey Deep", "pillar-mason", "crusted giant",
+   "ossuary shrimp", "warden mother" + "roster". Given #1, this may also be
+   intentionally deferred rather than a true gap — UNCERTAIN on urgency,
+   CONFIRMED on the literal absence.
+4. **Cross-flow ledger** (`terminator_sea.md` surface/shore law;
+   `the_miasma.md` crèche; preservation triptych `the_sump.md`/
+   `the_scarlands.md`; `LIQUID_TYPES_MOD_1` brine grade; future dry-statuary
+   archaeology) — PARTIALLY CONFIRMED: the Miasma crèche link is already
+   written into both sheets' prose (see #3). `LIQUID_TYPES_MOD_1` is
+   FILED/doing (see Twilight Deep section above). Did not check
+   `the_sump.md`/`the_scarlands.md`/`terminator_sea.md` for this specific
+   triptych/surface-law line — UNCERTAIN, not checked (budget).
 
 ## the_propane_lakes.md
 
