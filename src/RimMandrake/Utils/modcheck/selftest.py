@@ -47,6 +47,19 @@ def t_floor_uncovered():
          missing)
 
 
+def t_floor_triage_positive_counts():
+    """`modcheck floor --all` (DETERMINISM_ASSESSMENT.md SS6, C4), against the
+    REAL repo -- a positive-count assertion only, never a threshold on the
+    counts themselves (SS6's own instruction). The dangerous failure mode is
+    a glob that quietly matches nothing and reports a clean empty table, not
+    any specific count changing as walks/mods are added or fixed."""
+    rows, footer = floor.triage(runner.ROOT)
+    check("floor.triage: at least one walk read", len(rows) >= 1, len(rows))
+    check("floor.triage: at least one mod indexed with a resolvable subject",
+         any(r["subject_ok"] for r in rows), len(rows))
+    check("floor.triage: footer renders a non-empty summary line", bool(footer))
+
+
 def t_floor_met_when_every_toggle_has_a_component():
     missing = floor.uncovered(["a"], [{"toggle": "a", "beyond_toggle": False}])
     check("floor: fully covered toggles report nothing missing", missing == [])
@@ -495,6 +508,7 @@ def t_compose_test_list_appends_once_and_reads_back():
 
 TESTS = [
     t_floor_uncovered,
+    t_floor_triage_positive_counts,
     t_compose_test_list_appends_once_and_reads_back,
     t_floor_met_when_every_toggle_has_a_component,
     t_chain_happy_path_is_pass,
