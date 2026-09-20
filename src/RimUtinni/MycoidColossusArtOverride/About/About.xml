@@ -6,20 +6,22 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <!-- 🔴 SHIPS NO ART RIGHT NOW, ON PURPOSE (2026-09-19).
-       The three PNGs this mod carried were a DROID, mis-routed here by the bulk
-       install cea007c3a ("install every gate-passed render awaiting verdict, 95
-       stems"). They bound to the vorrugath/mycoid colossus texPath, so the creature
-       rendered as a rusty bipedal droid in game. The owner caught it on the size
-       re-judge sheet: "What IS this graphic? Is this wired correctly?"
-       The renders were NOT deleted — they are kept at
-       src/RimStarWars/Droidworks/ArtIncoming/ on his word that they belong to the
-       Droidworks.
-       With no Textures/ here the donor's own colossus art wins again, which is
-       wrong-but-not-absurd, and strictly better than a droid. Correct art is owed:
-       see MYCOID_COLOSSUS_ART_MISROUTE_1. Drop the new PNGs back at
-       Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_<facing>.png
-       and this mod resumes working with no other change. -->
+  <!-- Art wired 2026-09-20 from `rot_mycoidcolossus_v2_{south,east,north}`, rendered
+       2026-09-19 under ROT_FLORA_FAUNA_VERDICTS_1 and approved by the owner on sight
+       ("That's a cool mycoid. I like it."). 2048px masters downscaled to 1024 with
+       premultiplied alpha; the sub-visible export halo (alpha 1-16, ~80k px per facing)
+       was zeroed first, taking measured fringe from 2.1% to 0.85%.
+       1024 is deliberate, not a shortfall: at the ruled drawSize the 128 px/cell target
+       lands past what the generator fills with real detail, so this ships at ~85 px/cell,
+       the same call the sea-beast colossi shipped at.
+       HISTORY: this mod previously carried a DROID, mis-routed here by the bulk install
+       cea007c3a. Those renders were kept, not deleted, at
+       src/RimStarWars/Droidworks/ArtIncoming/ on the owner's word.
+       ⚠️ MEASURED and NOT fixed, because it is a cosmetic call that is his: north's
+       subject is 922x981 (aspect 0.94) against south 983x656 and east 1003x671 (aspect
+       ~1.50), so at one drawSize box north draws about half again as tall as the other
+       two facings. That is the same "north is HUGE compared to east" defect he named on
+       Anooba. Recomposing north would change the art, so it waits on his word. -->
   <description>Replaces sarg.alphaanimals's AA_MycoidColossus art (adult lifeStage look, south/east/north
 facings only - any alternate-skin or dessicated-corpse textures stay on donor
 art) with an invented-recast render generated for this campaign. LABEL/ART
