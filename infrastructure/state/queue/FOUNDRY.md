@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T15:20:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T15:48:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  SCALDDIVINGMOD1 — Deep Diving (RimMandrake tier)
-prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
