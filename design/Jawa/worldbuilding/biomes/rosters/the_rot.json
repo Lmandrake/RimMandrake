@@ -305,6 +305,31 @@
       "def": "AA_AcanthamoebaGiganteaSmall",
       "disposition": "homeless-reserve",
       "reason": "ubiquity-25 TRIM to wasteland/pans (prep §9)"
+    },
+    {
+      "def": "BMT_ChemSnail",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
+    },
+    {
+      "def": "BMT_Pillbug",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
+    },
+    {
+      "def": "BMT_GiantSlug",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
+    },
+    {
+      "def": "BMT_GiantSnail",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
+    },
+    {
+      "def": "BMT_CaveSpider",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
     }
   ],
   "fauna": [
@@ -351,25 +376,11 @@
       "law": "§0 donor natives name the Swarmlings; this is one of its ≤2-3 ubiquity-trimmed homes (prep §9)"
     },
     {
-      "action": "keep",
-      "band": "ingest-strange",
-      "commonality": 0.7,
-      "def": "BMT_ChemSnail",
-      "law": "§7b keep the strange — chem snail (already resident, weight kept)"
-    },
-    {
       "action": "import",
       "band": "ingest-strange",
       "commonality": 0.4,
       "def": "BMT_GlowBat",
       "law": "§7b keep the strange — glow bats; §5 all useful light is biological; R29 the FungalForest's creatures follow its tiles"
-    },
-    {
-      "action": "import",
-      "band": "ingest-strange",
-      "commonality": 0.4,
-      "def": "BMT_Pillbug",
-      "law": "§7b keep the strange — pillbug; eats-a-specific-thing special (MEASURED) fits the gut"
     },
     {
       "action": "import",
@@ -387,31 +398,10 @@
     },
     {
       "action": "import",
-      "band": "ingest-strange",
-      "commonality": 0.3,
-      "def": "BMT_GiantSlug",
-      "law": "§7b giant slugs; slow wet gloss-dweller"
-    },
-    {
-      "action": "import",
-      "band": "ingest-strange",
-      "commonality": 0.2,
-      "def": "BMT_GiantSnail",
-      "law": "§7b giant snails; retaliates-when-attacked (MEASURED) — the connected biology defends itself"
-    },
-    {
-      "action": "import",
       "band": "ingest-producer",
       "commonality": 0.2,
       "def": "BMT_BovineBeetle",
       "law": "§7b the bovine beetle's milk economy; producer special (MEASURED: animal thing spawner)"
-    },
-    {
-      "action": "import",
-      "band": "guardian",
-      "commonality": 0.05,
-      "def": "BMT_CaveSpider",
-      "law": "§7b cave spider; trace — a guardian-thicket terror, not an ambient one (bs 4.0, spd 5.5 MEASURED)"
     },
     {
       "action": "import",
