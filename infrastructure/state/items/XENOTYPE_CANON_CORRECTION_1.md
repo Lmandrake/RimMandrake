@@ -305,3 +305,95 @@ possible new mechanic work; it is not.
 neither RimSage nor the def dump is reachable — but it also asserted an absence it could not
 see. **An absence claimed by the instrument that cannot look is the same error as a guess.**
 (A donor alternative also exists, `GravTide_Gills`, should ours ever prove unsuitable.)
+
+
+---
+
+# 🔴 OWNER RULINGS, 2026-09-20 — the aptitude confirmations, Sith names, Bothans
+
+He asked for each aptitude to be confirmed individually. All six were put to him
+separately. **Five change; one is ruled to STAY.**
+
+## Aptitudes — five to fix
+
+| species | was | ruling |
+|---|---|---|
+| **Geonosian** | terrible intellectual | **REMOVE.** Verbatim: *"Geonosians are insect like workers. So I think I understand why they said low intellect but correct we should remove this."* |
+| **Mimbanese** | poor intellectual | **REMOVE** — canon says highly intelligent |
+| **Nelvaanian** | poor medicine | **REMOVE** — their shamans brew elixirs |
+| **Abednedo** | mining/construction | **SOFTEN, DO NOT DELETE.** Verbatim: *"Abednedo descended from underground builders before conquering their surface and space. So that's what they were going for. A light nod toward it would likely be better and then some intellectual."* ⇒ keep a LIGHT mining/construction nod AND add intellectual |
+| **Bith** | remarkable artistic | **REBALANCE.** Verbatim: *"The bith are listed as having some talent at intellectual and art."* ⇒ SOME intellectual and SOME art, not remarkable-at-art |
+
+🔑 **Abednedo and Bith are not deletions.** The original finding read both as pure
+errors; he ruled both as over-stated truths. Removing the aptitude entirely would
+be as wrong as leaving it.
+
+## 🔴 Gungan — RULED TO STAY, deliberately. Do NOT "fix" it.
+
+Verbatim: *"While can gungans may not be dumb, the movies portray them this way
+profoundly, so I'd like to leave it in as a half joke and half rebuke."*
+
+⛔ **`Gungan` keeps `poor intellectual`.** This item's own Pattern 7 lists it as an
+error against canon, and it IS one — the owner has chosen the error on purpose, as
+a joke and a rebuke of the films. 🔴 **A future canon-correctness sweep will find it
+again and want to fix it. It must not.** This is the same shape as the Fall Line
+`Rat`: ruled in against the rule it violates.
+
+## Geonosian hive-mind — an open design question he raised, not a defect
+
+Verbatim: *"Not sure how to genetically capture their hive structure and need to
+group think."* Removing the intellectual penalty does not capture what was actually
+true about them. Left open deliberately; see the new item below.
+
+## 🔴 A broader direction — traits, not skill bonuses
+
+Verbatim: *"Broad comment: we should consider deeply making better traits that might
+do a better job of capturing these fine points and nuances than pluses to skills."*
+
+This reaches well past this item — it questions whether aptitude numbers are the
+right instrument for species character at all. Filed as
+`SPECIES_TRAITS_OVER_APTITUDES_1`.
+
+## Sith names — fix BOTH label and defName
+
+He chose the full fix over the safe half. So all three castes lose the false
+"(Pureblood)" label, and `Zugurak` → `Zuguruk` in the **defName** as well.
+
+⚠️ **This is the ripple he accepted, so do it properly:** a defName change reaches
+faction xenotype lists and any existing save, and this campaign ships as a frozen
+savegame. Sweep every faction list and every `.rws` reference in the same change.
+🔑 `WORLD_REMAKE_FINAL_STEP_1` means a remake is expected anyway, which is what
+makes the full fix affordable — but do not rely on the remake to hide a missed
+reference.
+
+## 🔴 Bothans — this item's premise was WRONG
+
+This item said canon "deliberately has **no** appearance for them" and that choosing
+one would be authoring rather than correcting. **That is false, and the owner supplied
+the source.** Bothans are described in detail:
+
+- Furry mammalian anthropoids, **1.4–1.5 m** — notably short; body size wants setting
+- **Mood-sensitive fur** — the signature trait, and nothing in our defs expresses it
+- Hair brown or cream; eyes brown, green or violet
+- Facial and body variety spanning **canine, feline and equine** features
+- Origin Bothawui; languages Bothese, Botha, Wrendui
+- Lifespan stages: child 1–11, young adult 12–16, adult 17–45, middle age 46–65,
+  old 66–84, venerable 85+
+- Culturally master politicians and spies
+
+⇒ **So this is a CORRECTION, not authoring**, and the "his call alone" framing in
+`## Open for the owner` above is discharged — he has answered it with a source.
+
+⚠️ **Provenance note, recorded rather than argued:** the page he cited is a **Legends**
+entry, not current canon. He supplied it as the reference and that settles it for this
+campaign — but record it as Legends-sourced so a later canon sweep understands why it
+was accepted instead of re-litigating it.
+
+⚠️ **The cosmetic gate still applies to the ART.** His standing rule is that appearance
+changes can break animated faces and need his permission first, and the 2026-09-17
+order of work stands: **dossier → his verification → skin colour → grid screenshot →
+head shapes → grid screenshot again.** This ruling supplies the canon; it does not skip
+the queue.
+
+🔑 **Mood-sensitive fur is the interesting one** — it is a mechanic, not a palette. It
+belongs with `SPECIES_TRAITS_OVER_APTITUDES_1`'s question rather than in a colour pass.

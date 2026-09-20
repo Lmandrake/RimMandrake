@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:58:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:11:34Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -622,3 +622,13 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTTABLESDEPLOYEDAHEADOFSPECIES1 — tables shipped before the species
 prose:    infrastructure/state/items/DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1.md
+
+## SPECIES_TRAITS_OVER_APTITUDES_1 Species character is being expressed as plus-or-minus skill aptitudes, which cannot carry nuance - the owner asks whether purpose-built traits would do it better
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  SPECIESTRAITSOVERAPTITUDES1 — skill bonuses are the wrong instrument for species character
+prose:    infrastructure/state/items/SPECIES_TRAITS_OVER_APTITUDES_1.md

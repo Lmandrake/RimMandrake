@@ -10280,3 +10280,14 @@
 {"seat":"FOUNDRY","event":"close","id":"DESERT_DEF_HEADER_STALE_COUNTS_1","sha":"dbf42c53f7b606e8830d66beb9608f778c105949","reason":"Landed by a concurrent commit (dbf42c53f) that merged this fix with two other in-flight desert-biome fixes; verified both files: no tile-count figure remains in either header comment (both point at world/ASHKARR_WORLDMAP_tiles.csv instead), and all three plant comments use the ruled names (surra grass / vellara bloom / dommo tree).","ts":"2026-09-20T18:50:21Z"}
 {"seat":"FOUNDRY","event":"claim","id":"PAINTED_TILES_WITH_NO_CAST_1","ts":"2026-09-20T18:51:06Z"}
 {"seat":"FOUNDRY","event":"start","id":"PAINTED_TILES_WITH_NO_CAST_1","ts":"2026-09-20T18:51:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_PORT_PLACEHOLDER_ART_1","ts":"2026-09-20T18:53:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_PORT_PLACEHOLDER_ART_1","ts":"2026-09-20T18:53:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1","ts":"2026-09-20T18:53:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1","ts":"2026-09-20T18:53:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"PAINTED_TILES_WITH_NO_CAST_1","sha":"0b8dca280","reason":"RUT_PropaneLake wired: AA_AuroraSylph + AA_Skyeel from round2 move-mapping ruling (2026-09-10), never previously wired; RUT_BlueDesert stays filed under BLUE_DESERT_LIFE_AUTHORING_1","ts":"2026-09-20T18:58:41Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EXTREME_DESERT_SIGNATURE_FLORA_1","ts":"2026-09-20T19:01:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_SIGNATURE_FLORA_1","ts":"2026-09-20T19:01:11Z"}
+{"seat":"BENCH","event":"file","id":"SPECIES_TRAITS_OVER_APTITUDES_1","title":"Species character is being expressed as plus-or-minus skill aptitudes, which cannot carry nuance - the owner asks whether purpose-built traits would do it better","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-20T19:10:38Z"}
+{"seat":"FOUNDRY","event":"note","id":"EXTREME_DESERT_SIGNATURE_FLORA_1","text":"Defs authored+wired at commit ef3bca1a3: RSW_LightPipeNub/RSW_Ollim/RSW_OllimWood, RUT_ExtremeDesert wildPlants at nub 0.1/ollim 0.01. Art queued (rslpn_v1, rswollim_v1, rswollimwood_v1 in infrastructure/artpipe/pending/), not yet rendered. Item's own verify requires 'real (non-placeholder) art in a rendered contact sheet' — left claimed/doing, not closed, pending the daemon's renders and a contact-sheet check.","ts":"2026-09-20T19:11:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_SHADE_GRID_KEYSTONE_1","ts":"2026-09-20T19:11:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_SHADE_GRID_KEYSTONE_1","ts":"2026-09-20T19:11:34Z"}
