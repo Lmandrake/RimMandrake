@@ -52,9 +52,35 @@
       <li>CEC_OrbitalTrader_Tag</li>
     </tradeTags>
     <comps>
+<!-- SWCP.Core.ThingComps.CompProperties_HideShipRoof removed: SWCP.Core is not
+         in the live mod list (its only copy on disk, SWCP_Core.dll, was bundled
+         inside guy762.mm.kotorcore's own unconditional Assemblies/, and kotorcore
+         itself has since been fully retired from ModsConfig - confirmed
+         2026-09-20, zero guy762.* packageIds anywhere in
+         ModsConfig.FULL.LATEST.xml). This ThingDef is Abstract="True" - an
+         unresolvable <li> here does not just error on this def, it gets copied
+         verbatim by XML ParentName inheritance into every concrete child
+         (guy762_SWGravshipOverlay_DynamicFreighter,
+         _KT400Freighter, and any sibling overlay ThingDef using this same
+         Name="guy762_SWGravshipOverlayBASE" parent), silently discarding each
+         WHOLE child def at load - this is the actual, measured cause of the
+         "Could not find type named SWCP.Core.ThingComps.
+         CompProperties_HideShipRoof" load failures on
+         Gravship_DynamicFreighter.xml/Gravship_KT400Freighter.xml seen
+         identically across 3 separate full-mod-list cold loads
+         (FULL_LOAD_RESIDUE_TRIAGE_1 entries 4/5). The comp only ever hid a
+         specific rendering layer (a gravship-roof-overlay visual trick) -
+         dropping it leaves these hull-plating overlay pieces fully functional
+         as buildable ship parts; worst case is a minor rendering nicety (the
+         roof layer this would have hidden may render where it otherwise
+         wouldn't) instead of the def not existing at all. Same disposition as
+         the sibling SWCP.Core.CompProperties_PositionAttributes fix in
+         KotORHeavyRepeater/KotORLightRepeater (KOTORWEAPONS_ABSORPTION_
+         DANGLING_REFS_1).
       <li Class="SWCP.Core.ThingComps.CompProperties_HideShipRoof">
         <layer>10225</layer>
       </li>
+    -->
     </comps>
   </ThingDef>
 

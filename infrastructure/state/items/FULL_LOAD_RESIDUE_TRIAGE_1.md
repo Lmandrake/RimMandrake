@@ -271,3 +271,51 @@ across three separate loads — genuinely stable, low-urgency, still unowned.
 readers at `BMT_FAUNA_ABSORPTION_1` for the dominant cause rather than re-triaging
 line-by-line on every future load; a real fix here is that item landing, not another
 harvest pass.
+
+## (6) 2026-09-20 FOUNDRY — the 5 discarded Absorbed_* defs, root-caused and FIXED
+
+Investigated the one thread entry (4)/(5) explicitly flagged as "worth a proper
+investigation… not attempted." Root cause for BOTH missing types is the same, and
+it is NOT a load-order or `MayRequire` gap — it is that **`guy762.mm.kotorcore`
+itself has been fully retired from the live mod list** since this item's own
+entry (4)/(5) observations (0 `guy762.*` packageIds anywhere in
+`ModsConfig.FULL.LATEST.xml`, 617 mods, confirmed by parsing `activeMods`, not
+grepping). Both `IgnoreConfigErrors.dll` and `SWCP_Core.dll` exist on disk in
+exactly one place across the entire subscribed Workshop content
+(`.../workshop/content/294100/3254370945/1.6/Assemblies/`) — kotorcore's own
+unconditional `Assemblies/` folder, not gated by any `IfModActive` in its
+`LoadFolders.xml`, and not shipped by any other subscribed mod (confirmed:
+`find .../workshop/content/294100 -iname IgnoreConfigErrors.dll` returns only
+kotorcore's copy; no standalone "IgnoreConfigErrors" mod is subscribed at all,
+so `gen_kotorweapons_absorption.py`'s own docstring claim that this namespace
+"belongs to an independent framework mod… stays active regardless" was true of
+the pack's *intent* but not of what's actually subscribed here). With kotorcore
+gone, neither DLL loads, so both `Class=` references are unresolvable — and
+because both sit inside an `Abstract="True"` base def's `<comps>`/inherited
+`<modExtensions>` (the gravship overlay case) or directly on a concrete def
+(the 3 weapon files), XML `ParentName` inheritance copies the unresolvable `<li>`
+into every dependent def, discarding each one whole — textbook instance of this
+repo's own "the `<li>` trap in custom loaders" lesson (custom-loader silent
+whole-def discard on an unresolvable inherited `<li>`), not a new failure mode.
+
+**Fixed**, matching the established `KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1`
+pattern (comment out, don't guess a replacement, note why inline):
+- `Absorbed_KotorWeapons_WeaponRanged_Kotor{Bowcaster,HeavyRepeater,LightRepeater}.xml`
+  — commented out each's `<modExtensions><li Class="IgnoreConfigErrors.
+  Ignore_ForcedMissRadius" /></modExtensions>`. This class has zero gameplay
+  effect; it exists only to silence RimWorld's own advisory config-error
+  warning about `forcedMissRadius` alongside high accuracy on one verb. Absence
+  just lets that warning print instead of being suppressed.
+- `Absorbed_Kotorcore_BTDKotORGravships__GravshipOverlay_BASE.xml` (the shared
+  `Abstract="True"` parent of `guy762_SWGravshipOverlay_DynamicFreighter` and
+  `_KT400Freighter`) — commented out `<comps><li Class="SWCP.Core.ThingComps.
+  CompProperties_HideShipRoof">…</li></comps>`. This comp only hid a specific
+  render layer (a roof-overlay visual trick); absence leaves the hull-plating
+  overlay pieces fully buildable and functional, worst case a minor rendering
+  nicety lost, not a missing def.
+
+`validate_patch.py` (`--defs` Data + Workshop 294100 + Mods, live 617-mod
+`ModsConfig.xml`) on all 4 edited files: **0 errors, 0 warnings**.
+**Not yet live-re-verified** — offline-only pass, rides the next natural full
+load per this repo's batching doctrine; expect "5 DEFS DISCARDED" to read 0 on
+the next harvest.

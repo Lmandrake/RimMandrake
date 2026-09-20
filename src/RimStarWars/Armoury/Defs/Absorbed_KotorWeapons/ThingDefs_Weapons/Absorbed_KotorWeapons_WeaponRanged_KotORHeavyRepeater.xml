@@ -322,7 +322,22 @@
       </li> -->
     </comps>
     <modExtensions>
+<!-- IgnoreConfigErrors.Ignore_ForcedMissRadius removed: IgnoreConfigErrors is not
+           in the live mod list (its only copy on disk was bundled inside
+           guy762.mm.kotorcore's own Assemblies/, and kotorcore itself has since
+           been fully retired from ModsConfig - confirmed 2026-09-20, zero
+           guy762.* packageIds anywhere in ModsConfig.FULL.LATEST.xml). This
+           modExtension has no gameplay effect at all - it exists purely to
+           suppress RimWorld's own config-error WARNING about a
+           <forcedMissRadius> value paired with near-100% accuracy on one of
+           this def's verbs; dropping it just lets that (harmless,
+           advisory-only) warning print once at startup instead of being
+           silenced. Same disposition as the sibling
+           SWCP.Core.CompProperties_PositionAttributes fix already applied to
+           this file's own <comps> block above (KOTORWEAPONS_ABSORPTION_
+           DANGLING_REFS_1) - see FULL_LOAD_RESIDUE_TRIAGE_1 entry (5).
       <li Class="IgnoreConfigErrors.Ignore_ForcedMissRadius" />
+    -->
     </modExtensions>
   </ThingDef>
 
