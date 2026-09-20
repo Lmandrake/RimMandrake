@@ -383,3 +383,66 @@ Selftests: `run_selftests.py` still passes at the pre-existing baseline after th
 change (see commit). Fauna `decision=out` channel of this item is done; the other
 four channels (flora move/purge/improve, the 118-row ledger, sizeBin) are untouched
 by this pass and remain whatever state the rest of this file already records.
+
+---
+
+## NEW-ART/DEF commission ledger (118 rows) channel — MEASURED and FILED, 2026-09-20 (FOUNDRY, offline)
+
+Per this item's own note that this channel lacked an explicit 2026-09-20 owner
+ruling (unlike fauna/flora-move/flora-purge/flora-improve, which were each named
+verbatim), this pass treated it as **measurement-and-safe-filing only**: no
+ThingDefs authored, no art jobs queued, no roster edits. Full accounting:
+`Transient/sheet_orphan_118_ledger_2026-09-20.md`.
+
+Re-parsed the 118 `ledger:<sheet>:<slug>` rows directly from
+`flora_assignment_register.decisions.json` (script, not eye-count) — confirmed
+exactly 118, all `decision: "in"`, zero in the fauna file, matching the
+2026-09-12 audit. Re-verified that audit's specific claims by reading the cited
+defs/items directly, then ran a fresh token screen across **all** 118 (the
+2026-09-12 pass had only screened ~130 keyword hits across two partial passes,
+not every row) against items, kit specs, all of `src/`, and — new this pass —
+`infrastructure/artpipe/done/`, `pending/` and `registry.jsonl` by content (the
+2026-09-12 audit never checked artpipe for this channel at all).
+
+**Result: 12 ALREADY BUILT · 0 ALREADY QUEUED · 20 SUPERSEDED/OWNED-ELSEWHERE ·
+1 FLAGGED · 85 GENUINELY OWED.**
+
+- **0 already queued**: no artpipe job (`done/`, `pending/`, `registry.jsonl`) cites
+  this channel by its `ledger:` key, the same test the flora `art:improve` channel
+  used successfully. The item's original claim ("no artpipe registry entry
+  references any of the 118 concept slugs") holds for artpipe specifically — it was
+  only the "already built as a def" and "already owned by another item" halves of
+  the claim that were wrong.
+- **12 already built** (not 9-10 as the 2026-09-12 audit and the owner-ruling
+  section above both said): all previously-found ones re-verified, **plus one new
+  catch, `RUT_PaleTree`** (`the_rot:the-pale-tree-anima-reskin-...`) — its art
+  (`rot_paletree_v3`) landed via `ROT_FLORA_FAUNA_VERDICTS_1` on 2026-09-20, **the
+  same day as this audit**. The error rate really was higher than either prior
+  pass found, exactly as the addendum warned.
+- **20 owned-elsewhere**: every kit spec and mechanics item that names one of these
+  concepts (`RUST_CATHEDRAL_MECHANICS_1`, `sump_kit_spec.md`, `GREENTIDE_MECHANICS_2`,
+  `fever_wood_kit_spec.md`, `MIASMA_MECHANICS_1`, `SCALD_MECHANICS_1`,
+  `webwork_kit_spec.md`, `scarlands_kit_spec.md`, `FORGE_MECHANICS_1`) is still open
+  today — none had closed or gone stale since 2026-09-12. `greatbole` turned out to
+  already have a real ThingDef (`RUT_GreatboleHeartwood`/`RUT_GreatboleCore`,
+  placeholder art, DEPLOY_HOLD) owned by `GREENTIDE_MECHANICS_2` — a step further
+  along than "just named in a spec," but still not a fresh commission to file.
+- **1 flagged, not filed as owed**: `forsaken_crags:dusk-rat-art-redo` asks to redo
+  `AA_DuskRat`'s art, but `creature_art_register.decisions.json` already carries
+  `c:AA_DuskRat → decision: "approve"` — a separate, already-run curation channel
+  that approved the current art. This is a register data-quality defect (an
+  art-redo row for a creature a different channel already cleared), not a new
+  commission and not something this pass adjudicated — it needs an owner/BENCH call
+  on which channel is authoritative, same posture as the item's own finding #2
+  (the two flora decision files disagreeing).
+
+**Filed `COMMISSION_LEDGER_CLEANUP_1`** (FOUNDRY, v1, offline) carrying the 85
+genuinely-owed slugs verbatim, grouped by sheet, plus the watch-outs a future build
+pass needs (re-verify currency, several slugs name body-donor/mechanic dependencies,
+some may turn out to be mechanics asks rather than art commissions on closer read).
+No ThingDefs, art jobs, or roster edits were made by this filing pass.
+
+Selftests: `run_selftests.py` re-run after this pass, same pre-existing baseline
+(see commit). **Not touched by this pass**: the sizeBin OWED rows, executing the
+flora move/purge channels — this item stays open for those; they are not this
+pass's scope.
