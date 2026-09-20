@@ -240,6 +240,11 @@
       "def": "SW_Electrictick",
       "disposition": "move:Scarlands",
       "reason": "owner review 2026-09 (round2 move mapping): only scarlands"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
+      "disposition": "cut-for-real"
     }
   ],
   "fauna": [
@@ -291,14 +296,6 @@
       "commonality": 0.2,
       "def": "AA_Terramorph",
       "law": "crust-mimic oddity; slow (spd 1.8, MEASURED); ban 3 pass (non-headline)"
-    },
-    {
-      "action": "import",
-      "band": "extremophile-odd",
-      "commonality": 0.3,
-      "def": "AA_FissionMouse",
-      "law": "§9 (binding): RESKIN → the radiotroph archetype; the name is already the archetype (prep §4.4)",
-      "note": "reskin/rename owed before it reads right"
     },
     {
       "action": "import",
