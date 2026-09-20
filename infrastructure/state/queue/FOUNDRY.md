@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:31:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T14:35:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -136,7 +136,7 @@ summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -1073,16 +1073,6 @@ blocked:  rules 5/7/8 need owner design calls (arrival-mode restrictions + recal
 summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
-## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  Live re-fire needs the Ash'karr campaign (V1/V6 siteTiles are Ash'karr tile ids); that save refuses to load on the live 621-mod list - 16 recorded mods absent, 11 of them deliberately retired 2026-09-18. Did not force-load. (on CANONICAL_SAVE_MODLIST_DIVERGENCE_1)
-summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
-prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
-
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1484,16 +1474,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  None yet — this is an open design question, not a scoped build. Candidate
 prose:    infrastructure/state/items/TWILIGHT_DEEP_WATER_LAYER_1.md
-
-## CANONICAL_SAVE_CUT_RESIDUE_1 The start save loads on the 621 list but drops content: MEASURED Load C 2026-09-19 (load_game with ignoreModCompatibility) 4,828 'Could not load reference' lines (4,543 BMT_; 4,800 ThingDef, 24 WorkGiverDef, 3 ResearchProjectDef, 1 FactionDef), 22 SaveableFromNode NREs = Things with a dead def dropped (RR_Weapon_Torch on several pawns, BMT_BufoBile, GravBeamCannon), 2 GameComponents from als.gravtech/.bc. Save recorded 635 mods; 16 missing (Caverns, Polluted Lands, GravTech x2 + retexture, RR Stepping Stones, 10 ArtOverrides). Scrub or re-save the ship artifact; the bridge refuses it without the override flag. Detail: Transient/canonical_save_loadC_exceptions_2026-09-19.txt, Transient/canonical_save_caverns_scrub_2026-09-18.md
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANONICAL_SAVE_CUT_RESIDUE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANONICAL_SAVE_CUT_RESIDUE_1.md
 
 ## CANONICAL_SAVE_SCENARIO_MISMATCH_1 Canonical start save ships vanilla Crashlanded scenario, not Flight of the Utinni per SCENARIO_SPEC
 state:    proposed
