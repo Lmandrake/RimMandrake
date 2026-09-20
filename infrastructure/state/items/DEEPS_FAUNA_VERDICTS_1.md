@@ -107,3 +107,26 @@ psychic stun/soothe) ride `DEEPS_FAUNA_MECHANICS_1`, not this item.
   both `add` and `commit`) — did not touch the large concurrent
   artpipe/pending/ churn (many deletions, several `rut_*` new jobs) visible
   in `git status` at the same time; that belongs to another agent's wave.
+- 2026-09-20: all 8 restyle renders landed in `infrastructure/artpipe/done/`
+  as `deeps_{drinker,grabber,soulchime,gembug,glowbulb,megapleura,
+  mossbeetlelarvae,shatterjaw}_v2_{south,east,north}` (24 files, `facts: PASS`
+  on all, canvas dimensions matching the existing live texture at each
+  target). Mapped each job to its live texPath via each race's PawnKindDef
+  `lifeStages/li/bodyGraphicData/texPath` (not the ThingDef — these races
+  carry no `<graphicData>` of their own; the art lives on the PawnKindDef,
+  same defName as the race): BloodropMoth/BloodropMoth, BovineBeetle/
+  BovineBeetle, FacetMoth/Crystalpillar (Soulchime), Gembug/Blue/Jewelbug
+  (Gembug's Red/Green/Yellow color variants are NOT referenced by the live
+  PawnKindDef and were left untouched — out of scope, the frozen decision
+  filed one job per creature), GlowSlug/GlowSlug, Megapleura/Megapleura,
+  MossBeetle/MossGrub, ShatterjawBeetle/ShatterJaw. Copied all 24 PNGs over
+  the live textures, `deploy_custom_mods.py --mod SWBestiary --apply` —
+  clean drift (exactly these 24 files, nothing else), VERIFIED in sync.
+  All def/rename/mechanics work was already complete from the prior wave
+  (`a00f52f10`); this closes the harvest gap. No live bridge spot-check —
+  RimWorld caches `ContentFinder<Texture2D>` for the process lifetime with
+  no hot-reload tool in JawaBench, so a live check now would read the OLD
+  art regardless of the deploy's correctness; the swap is verified at the
+  file level (byte-identical on disk, clean `Graphic_Multi` texPath already
+  proven to resolve for these races) and will show correctly on RimWorld's
+  next restart, same as any other texture-only change.
