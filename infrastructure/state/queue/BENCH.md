@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:35:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-20T14:37:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -107,15 +107,6 @@ target:   v1
 kind:     task
 summary:  (no items/WORLDMAP_DOCS_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORLDMAP_DOCS_PASS_1.md
-
-## CAVERNS_PARITY_BUILD_1 Donor-free crystal Deeps: M-tier parity build on the Lantern Deeps route - START NOW (owner timing ruling)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  CAVERNSPARITYBUILD1
-prose:    infrastructure/state/items/CAVERNS_PARITY_BUILD_1.md
 
 ## ROT_SIZE_REJUDGE_APPLY_1 Apply the owner's 11 re-judged Rot sizes, measured against the TRUE numbers not the sheet's false ones
 state:    doing
@@ -541,3 +532,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Unwritten on purpose — the remake procedure is authored when the gates above are
 prose:    infrastructure/state/items/WORLD_REMAKE_FINAL_STEP_1.md
+
+## DESERT_FAMILY_VERDICT_PASS_1 Desert family flora/fauna verdict pass (RUT_ExtremeDesert 3969 + RUT_Desert 2390 + RUT_BlueDesert 1029 = 7388 tiles, a third of the planet and where the player starts) - same shape as the Rot and Lantern Deeps passes: sheet, owner verdicts, apply, art regen, land, live look
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_FAMILY_VERDICT_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_FAMILY_VERDICT_PASS_1.md
