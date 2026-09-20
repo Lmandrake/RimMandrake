@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:37:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T14:53:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -539,6 +539,16 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_FAMILY_VERDICT_PASS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  The shape the Rot and the Lantern Deeps both used, in order:
 prose:    infrastructure/state/items/DESERT_FAMILY_VERDICT_PASS_1.md
+
+## BLUE_DESERT_LIFE_AUTHORING_1 Author the Blue Desert's commissioned hydrocarbon life - Swallowers, Burners, Pickers and the transparent fractal flora - 1029 tiles currently carrying ZERO fauna and ZERO flora because the owner-ratified biology was specced and never built
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLUE_DESERT_LIFE_AUTHORING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUE_DESERT_LIFE_AUTHORING_1.md
