@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T13:56:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-20T14:00:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -285,7 +285,7 @@ prose:    infrastructure/state/items/ARTPIPE_FACING_COHERENCE_1.md
 ## ECOSYSTEM_PYRAMID_LAW_1 Food-pyramid law: small critters outnumber large in every biome roster
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
