@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PORTED_BEAST_MECHANICS_REBUILD_1 — owner, 2026-09-20: "Rebuild in our c#."
+
+  DESERT_FAMILY_PORT_EXECUTION_1 ported 91 desert species off their donor
+  frameworks and, per the standing port rule, dropped every donor comp. Three
+  of those drops were the creature's entire point, not flavour. This file is
+  the def half of rebuilding them against our own assembly
+  (RimMandrakeBeastMechanicsRSW.dll, Source/BeastMechanics/); the C# half
+  carries the MEASURED account of what each donor comp actually did.
+
+    RSW_Ferroclaw   eats steel and steel slag, digs slag when a map has none
+    RSW_Voltmaw     fires a four-shot plasma volley
+    RSW_Cindermite  sprays raw, UNIGNITED chemfuel in a cone
+
+  ART OWED: both AbilityDefs borrow a vanilla icon as a placeholder, and the
+  plasma bolt borrows the vanilla charge-shot projectile sprite. Named here so
+  the placeholder is found by looking rather than by playing.
+-->
+<Defs>
+
+  <!-- ══ the ferroclaw's steel diet ══════════════════════════════════════ -->
+
+  <JobDef>
+    <defName>RSW_EatMetal</defName>
+    <driverClass>RimMandrake.StarWars.SWBestiary.JobDriver_EatMetal</driverClass>
+    <reportString>eating TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!--
+    Inserted at the vanilla Animal think tree's own Animal_PreMain modding
+    hook, so a metal eater needs no thinkTreeMain override and inherits every
+    later change to the vanilla tree. The job giver's first act is a comp
+    check, so every other animal falls straight through it.
+    The donor cloned the whole 400-line vanilla Animal tree instead.
+  -->
+  <ThinkTreeDef>
+    <defName>RSW_MetalEaterInsert</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.StarWars.SWBestiary.JobGiver_EatMetal" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <!-- ══ the voltmaw's plasma volley ═════════════════════════════════════ -->
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RSW_Projectile_PlasmaBurst</defName>
+    <label>plasma burst</label>
+    <graphicData>
+      <!-- PLACEHOLDER art: vanilla's charge-shot sprite. Real art owed. -->
+      <texPath>Things/Projectile/Charge_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+    <projectile>
+      <flyOverhead>false</flyOverhead>
+      <damageDef>Flame</damageDef>
+      <damageAmountBase>40</damageAmountBase>
+      <speed>25</speed>
+    </projectile>
+  </ThingDef>
+
+  <AbilityDef>
+    <defName>RSW_VoltmawPlasmaVolley</defName>
+    <label>quad tesla cannon</label>
+    <description>Fire a volley of ionized plasma from the cores banked along the spine. Used defensively — a voltmaw would far rather leave than fight.</description>
+    <!-- PLACEHOLDER icon: vanilla's EMP pulse command art. Real art owed. -->
+    <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
+    <cooldownTicksRange>240</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <writeCombatLog>true</writeCombatLog>
+    <verbProperties>
+      <verbClass>Verb_AbilityShoot</verbClass>
+      <defaultProjectile>RSW_Projectile_PlasmaBurst</defaultProjectile>
+      <accuracyTouch>1</accuracyTouch>
+      <accuracyShort>1</accuracyShort>
+      <accuracyMedium>0.9</accuracyMedium>
+      <accuracyLong>0.8</accuracyLong>
+      <range>20</range>
+      <minRange>2</minRange>
+      <burstShotCount>4</burstShotCount>
+      <defaultCooldownTime>4</defaultCooldownTime>
+      <muzzleFlashScale>0</muzzleFlashScale>
+      <warmupTime>7</warmupTime>
+      <commonality>1</commonality>
+      <ai_IsWeapon>false</ai_IsWeapon>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+      </targetParams>
+    </verbProperties>
+  </AbilityDef>
+
+  <!-- ══ the cindermite's chemfuel spew ══════════════════════════════════ -->
+
+  <!--
+    Filth_Fuel is vanilla's chemfuel puddle. The donor laid its own flammable
+    bile; ours lays the real thing, which is flammable and burns hot but does
+    NOT ignite on contact — igniting it is the player's business. See
+    CompAbilityEffect_FuelSpew.cs for why this could not reuse vanilla's own
+    fire-spew comp.
+  -->
+  <AbilityDef>
+    <defName>RSW_CindermiteFuelSpew</defName>
+    <label>fuel spew</label>
+    <description>Discharge a stream of liquid chemfuel from the mouth. It coats whatever it touches without igniting; the sacs that synthesize it sit under the shell, behind the neck.</description>
+    <!-- PLACEHOLDER icon: vanilla's fire-spew ability art. Real art owed. -->
+    <iconPath>UI/Abilities/FireSpew</iconPath>
+    <cooldownTicksRange>6000</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <ai_IsIncendiary>false</ai_IsIncendiary>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>12.9</range>
+      <warmupTime>2</warmupTime>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="RimMandrake.StarWars.SWBestiary.CompProperties_AbilityFuelSpew">
+        <range>10.9</range>
+        <lineWidthEnd>6</lineWidthEnd>
+        <damAmount>1</damAmount>
+        <filthDef>Filth_Fuel</filthDef>
+        <canHitFilledCells>true</canHitFilledCells>
+      </li>
+    </comps>
+  </AbilityDef>
+
+</Defs>

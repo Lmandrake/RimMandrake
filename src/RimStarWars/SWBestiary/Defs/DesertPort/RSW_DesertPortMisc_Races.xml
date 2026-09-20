@@ -996,7 +996,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own RSW_Stoneback (sibling port, no dangling ref). Dropped: VEF.AnimalBehaviours.CompProperties_EatWeirdFood (steel/slag eating + auto-dig mechanic), CompProperties_NearbyEffecter - both donor framework; eats VegetarianRoughAnimal normally instead, which changes the creature's whole gimmick (steel diet) - flagged for the owner, since 'eats iron' was Terramorph's entire point and this port cannot keep it without VEF. -->
+		<!-- Alpha Animals AA_Terramorph -> RSW_Ferroclaw. useMeatFrom AA_BoulderMit repointed to this batch's own RSW_Stoneback (sibling port, no dangling ref). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. Still dropped: CompProperties_NearbyEffecter, the slow conversion of nearby steel into AA_SkySteel - that needs a sky-steel item this batch never ported, so it is owed work, not a decision. -->
 		<defName>RSW_Ferroclaw</defName>
 		<label>ferroclaw</label>
 		<description>A strange crustacean bred for one purpose: mineral processing. The ferroclaw feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a ferroclaw needs long stretches parked among mined steel to do its work.</description>
@@ -1031,6 +1031,24 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				<chanceFactor>0.2</chanceFactor>
 			</li>
 		</tools>
+		<comps>
+			<!-- Steel diet. Numbers are the donor's, verbatim: one nutrition a feed,
+			     a fifth of a full stack bitten off per feed, and slag dug up rather
+			     than starving when a map holds none. blockNormalFood is what makes
+			     it a diet instead of a snack - without it the ferroclaw grazes. -->
+			<li Class="RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater">
+				<customThingToEat>
+					<li>Steel</li>
+					<li>ChunkSlagSteel</li>
+				</customThingToEat>
+				<nutrition>1</nutrition>
+				<fullyDestroyThing>false</fullyDestroyThing>
+				<percentageOfDestruction>0.2</percentageOfDestruction>
+				<digThingIfMapEmpty>true</digThingIfMapEmpty>
+				<thingToDigIfMapEmpty>ChunkSlagSteel</thingToDigIfMapEmpty>
+				<blockNormalFood>true</blockNormalFood>
+			</li>
+		</comps>
 		<race>
 			<body>TurtleLike</body>
 			<herdAnimal>false</herdAnimal>
@@ -1474,7 +1492,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Stoneback/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. Dropped: VEF.AnimalBehaviours.CompProperties_InitialAbility (a ranged ability - this removes the 'ejects volatile charge' gimmick that was this creature's whole point; flagged for the owner, same as RSW_Ferroclaw's dropped steel-diet) and CompProperties_Electrified (donor framework). -->
+		<!-- Alpha Animals AA_TetraSlug -> RSW_Voltmaw. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Stoneback/RSW_Ferroclaw usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Tuskcoil. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
 		<defName>RSW_Voltmaw</defName>
 		<label>voltmaw</label>
 		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>
@@ -1495,6 +1513,11 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
 			</li>
 		</tools>
+		<comps>
+			<li Class="RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility">
+				<ability>RSW_VoltmawPlasmaVolley</ability>
+			</li>
+		</comps>
 		<race>
 			<body>TurtleLike</body>
 			<herdAnimal>false</herdAnimal>
@@ -1553,7 +1576,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- VFE - Insectoids 2 VFEI2_Fuelmite -> RSW_Cindermite. Tools/body/lifeStageAges already vanilla (BeetleLikeWithClaw, HeadClaw/HeadAttackTool, EusocialInsect* stages), no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_InitialAbility (the chemfuel-ejection ranged ability) and CompProperties_AnimalProduct (periodic chemfuel harvest) - both donor framework; this removes the mite's entire chemfuel gimmick, same caveat as RSW_Ferroclaw/RSW_Voltmaw, flagged for the owner. -->
+		<!-- VFE - Insectoids 2 VFEI2_Fuelmite -> RSW_Cindermite. Tools/body/lifeStageAges already vanilla (BeetleLikeWithClaw, HeadClaw/HeadAttackTool, EusocialInsect* stages), no substitution needed. The chemfuel ejection is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_CindermiteFuelSpew - a cone of raw chemfuel that coats without igniting, rebuilt rather than reusing vanilla's fire-spew comp precisely because vanilla's SETS IT ALIGHT. Still dropped: CompProperties_AnimalProduct, the ten-daily 15-chemfuel harvest off a tamed mite - owed work rather than a decision. -->
 		<defName>RSW_Cindermite</defName>
 		<label>cindermite</label>
 		<description>A large, genetically-engineered mite bred to synthesize volatile chemfuel in sacs beneath its shell. Once used to power industrial megaforges on distant worlds, wild cindermites now scavenge the open desert, restless and short-lived but fast-breeding.</description>
@@ -1589,6 +1612,11 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				<chanceFactor>0.2</chanceFactor>
 			</li>
 		</tools>
+		<comps>
+			<li Class="RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility">
+				<ability>RSW_CindermiteFuelSpew</ability>
+			</li>
+		</comps>
 		<race>
 			<body>BeetleLikeWithClaw</body>
 			<herdAnimal>false</herdAnimal>
