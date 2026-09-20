@@ -5,29 +5,20 @@
   build sketch names (§5.2: "new ... BiomeFishTypes_TwilightDeep.xml under
   DEPLOY_HOLD.txt").
 
-  🔴 HELD — see DEPLOY_HOLD.txt (deploy_custom_mods.py refuses to write this
-  file to the live Mods folder) and RUT_TwilightFish_Niim.xml's own header
-  for the full finding. Short version: `RUT_TwilightSea` is ONE BiomeDef for
-  the ruled no-fish SURFACE and the fishable UNDER-ROOF deep water. Applying
-  this patch today would make the surface fishable too — wrong per
-  terminator_sea.md's own solitary-sea ruling. The under-roof water is not
-  separable yet: no second BiomeDef exists for it, and the "diving-mods map
-  layer" alternative the doc floated is MEASURED closed as of this wave —
-  GravTide's dive maps (Biomes_Seabed.xml) are dry sea-FLOOR maps with
-  maxFishPopulation 0 and no water on them at all, not a second open-water
-  layer this water body's fishTypes could ever apply to. Resolving this for
-  real needs a new BiomeDef (or map-generation layer) for the under-roof
-  water plus a way for a colonist to reach it — biome/mechanism authoring,
-  not a fish-item build. Filed as its own open question, not guessed at
-  here: see FISH_BESTIARY_BUILD_1's wave 5 section.
+  ✅ HOLD LIFTED — owner ruling, 2026-09-20, verbatim: "Just make the surface
+  fishable." (TWILIGHT_DEEP_WATER_LAYER_1). This drops the "one BiomeDef,
+  two water bodies" premise the hold below was built on — there is no
+  separate no-fish surface / fishable under-roof split any more; the 8
+  Twilight species fish the biome's water via `RUT_TwilightSea`'s own
+  `fishTypes`, same as any other fishable biome. The three candidate
+  under-roof-water-layer shapes this item once weighed (a pocket-map biome,
+  a GravTide petition, shelving the species) are dead, not deferred.
 
-  This patch is otherwise complete and correct against the doc's own table
-  (§2D) and validates clean under validate_patch.py's def-checked mode — it
-  resolves the right xpath against the right live def RIGHT NOW, same as any
-  other patch.
-  Only the DEPLOY_HOLD.txt entry stops it reaching the game. Lift the hold
-  the moment the under-roof water gets its own def/layer; no other change to
-  this file should be needed at that point beyond removing the hold entry.
+  Superseded history, kept for provenance only: this patch previously sat
+  under DEPLOY_HOLD.txt because an earlier ruling read Twilight's surface as
+  deliberately no-fish while the deep water beneath it was meant to be
+  fishable, and `RUT_TwilightSea` has only ever been one BiomeDef for both.
+  That distinction is no longer the design.
 
   Values: saltwater_Common/_Uncommon exactly as §2D's table; maxFishPopulation
   700 — "high... against the Greentide's 720 as the ceiling, not above it"

@@ -135,3 +135,26 @@ MEASURED 2026-09-20 against the installed game and GravTide (workshop
   def comment reads "the water is the ceiling, not part of the map." So the
   existing dive provides no water to fish in; route 1 meant authoring a
   water-bearing pocket map from scratch.
+
+## resolved — owner, 2026-09-20
+
+Verbatim: **"Just make the surface fishable."** Drops the no-fish-surface premise
+entirely — the 8 Twilight species fish `RUT_TwilightSea` directly, no pocket map,
+no GravTide petition, no shelving.
+
+`Patches/BiomeFishTypes_TwilightDeep.xml` was already fully built and correct
+against `fish_bestiary_commission_2026-09-10.md` §2D — it only ever needed the
+`DEPLOY_HOLD.txt` entry lifted. Done: removed the hold entry, rewrote the file's
+own header comment (was describing the now-void split-water premise), re-ran
+`validate_patch.py --defs` against the live Data/Mods/Workshop roots (617 mods,
+1 match in `RUT_TwilightSea.xml`, 0 errors), deployed via
+`deploy_custom_mods.py --mod UtinniPatches --apply` — VERIFIED in sync.
+
+## needs: deploy
+
+Content-only change, defs parse at startup — cannot be spot-checked without a
+restart. A restart was already in flight when this landed (batched with the
+BridgeTools DLL fixes / Pyrelands / Barbslinger work); ride that one or the next.
+Verify: post-restart, `jawa/get_defs` on `RUT_TwilightSea` shows `maxFishPopulation`
+700 and the 8 species in `fishTypes`, then a live fishing spot-check (a colonist
+can actually catch one of the 8) before closing.
