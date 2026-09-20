@@ -126,7 +126,7 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RSW_Bantha>0.8</RSW_Bantha>  <!-- bantha - huge-herd, adjust-keep -->
+      <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Bantha>  <!-- bantha - huge-herd, adjust-keep -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            45.0% small, the biggest roster in the sweep. JOE_Landopus is already an
            OWNER-RULED member of this exact biome's fauna list
@@ -136,47 +136,47 @@
            The rest of the fix raises the grain already here (Kreetle/Scavrat/Sketto/
            WompRat/Rat all boosted below), same shape as the Gizka fix: no megafauna cut. -->
       <JOE_Landopus>0.5</JOE_Landopus>  <!-- landopus - small ambush predator, ruled, this mod's own def -->
-      <RSW_Kreetle>1.3</RSW_Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
+      <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">1.3</RSW_Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
       <RSW_Jellypot MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Jellypot>  <!-- jellypot - ambush-small, keep -->
-      <RSW_Scavrat>1.0</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
-      <RSW_Shyrack>0.6</RSW_Shyrack>  <!-- shyrack - ambush-flier, keep -->
-      <RSW_Gorg>0.4</RSW_Gorg>  <!-- gorg - ambush-small, keep -->
-      <RSW_Gutkurr>0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
-      <RSW_Jamel>0.4</RSW_Jamel>  <!-- Jamel - herd, keep -->
-      <RSW_LongtailGorg>0.4</RSW_LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
-      <RSW_Ronto>0.4</RSW_Ronto>  <!-- ronto - huge-herd, keep -->
-      <RSW_Sketto>0.8</RSW_Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
-      <RSW_WompRat>0.7</RSW_WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
-      <RSW_Wraid>0.4</RSW_Wraid>  <!-- wraid - burst-predator, adjust-keep -->
-      <RSW_Sandstrider>0.4</RSW_Sandstrider>  <!-- desert ave - navigator, keep -->
-      <RSW_Eopie>0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
-      <RSW_Hrumph>0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
-      <RSW_IridonianReek>0.3</RSW_IridonianReek>  <!-- iridonian reek - herd, import -->
-      <RSW_Jimvu>0.3</RSW_Jimvu>  <!-- jimvu - herd, import -->
-      <RSW_Kwi>0.3</RSW_Kwi>  <!-- Kwi - herd, import -->
-      <RSW_Mynock>0.3</RSW_Mynock>  <!-- mynock - ship-vermin, import -->
-      <RSW_Skalder>0.3</RSW_Skalder>  <!-- skalder - huge-herd, import -->
-      <RSW_Uvak>0.3</RSW_Uvak>  <!-- uvak - herd, import -->
-      <RSW_Varactyl>0.3</RSW_Varactyl>  <!-- varactyl - herd, import -->
-      <RSW_Zeer>0.3</RSW_Zeer>  <!-- zeer - herd, import -->
-      <RSW_Cindermite>0.3</RSW_Cindermite>  <!-- fuelmite - ship-vermin, import -->
-      <RSW_Falumpaset>0.2</RSW_Falumpaset>  <!-- falumpaset - herd, import -->
-      <RSW_FrilledGorg>0.2</RSW_FrilledGorg>  <!-- frilled gorg - ambush-small, keep -->
-      <RSW_Jakobeast>0.2</RSW_Jakobeast>  <!-- jakobeast - herd, import -->
-      <RSW_Nerf>0.2</RSW_Nerf>  <!-- nerf - herd, keep -->
-      <RSW_Nuna>0.2</RSW_Nuna>  <!-- nuna - herd-small, keep -->
-      <RSW_Shaak>0.2</RSW_Shaak>  <!-- shaak - herd, import -->
-      <RSW_TeeMuss>0.2</RSW_TeeMuss>  <!-- tee muss - herd, import -->
-      <RSW_Worrt>0.2</RSW_Worrt>  <!-- worrt - ambush-small, keep -->
-      <RSW_Spineroller>0.2</RSW_Spineroller>  <!-- needleroll - grain, keep -->
+      <RSW_Scavrat MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
+      <RSW_Shyrack MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Shyrack>  <!-- shyrack - ambush-flier, keep -->
+      <RSW_Gorg MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gorg>  <!-- gorg - ambush-small, keep -->
+      <RSW_Gutkurr MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
+      <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Jamel>  <!-- Jamel - herd, keep -->
+      <RSW_LongtailGorg MayRequire="mandrake.rsw.swbestiary">0.4</RSW_LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
+      <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Ronto>  <!-- ronto - huge-herd, keep -->
+      <RSW_Sketto MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
+      <RSW_WompRat MayRequire="mandrake.rsw.swbestiary">0.7</RSW_WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
+      <RSW_Wraid MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Wraid>  <!-- wraid - burst-predator, adjust-keep -->
+      <RSW_Sandstrider MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Sandstrider>  <!-- desert ave - navigator, keep -->
+      <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
+      <RSW_Hrumph MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
+      <RSW_IridonianReek MayRequire="mandrake.rsw.swbestiary">0.3</RSW_IridonianReek>  <!-- iridonian reek - herd, import -->
+      <RSW_Jimvu MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Jimvu>  <!-- jimvu - herd, import -->
+      <RSW_Kwi MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Kwi>  <!-- Kwi - herd, import -->
+      <RSW_Mynock MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Mynock>  <!-- mynock - ship-vermin, import -->
+      <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Skalder>  <!-- skalder - huge-herd, import -->
+      <RSW_Uvak MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Uvak>  <!-- uvak - herd, import -->
+      <RSW_Varactyl MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Varactyl>  <!-- varactyl - herd, import -->
+      <RSW_Zeer MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Zeer>  <!-- zeer - herd, import -->
+      <RSW_Cindermite MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Cindermite>  <!-- fuelmite - ship-vermin, import -->
+      <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Falumpaset>  <!-- falumpaset - herd, import -->
+      <RSW_FrilledGorg MayRequire="mandrake.rsw.swbestiary">0.2</RSW_FrilledGorg>  <!-- frilled gorg - ambush-small, keep -->
+      <RSW_Jakobeast MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Jakobeast>  <!-- jakobeast - herd, import -->
+      <RSW_Nerf MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Nerf>  <!-- nerf - herd, keep -->
+      <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Nuna>  <!-- nuna - herd-small, keep -->
+      <RSW_Shaak MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Shaak>  <!-- shaak - herd, import -->
+      <RSW_TeeMuss MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TeeMuss>  <!-- tee muss - herd, import -->
+      <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Worrt>  <!-- worrt - ambush-small, keep -->
+      <RSW_Spineroller MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Spineroller>  <!-- needleroll - grain, keep -->
       <Rat>0.2</Rat>  <!-- brown rat - ship-vermin, import; boosted from 0.1 for the ecosystem pyramid law -->
-      <RSW_Bolotaur>0.1</RSW_Bolotaur>  <!-- bolotaur - herd, import -->
-      <RSW_Clodhopper>0.1</RSW_Clodhopper>  <!-- clodhopper - ambush-small, keep -->
-      <RSW_FeralGrazer>0.1</RSW_FeralGrazer>  <!-- feral grazer - herd, import -->
-      <RSW_Gizka>0.1</RSW_Gizka>  <!-- gizka - ambush-small, keep -->
-      <RSW_Iriaz>0.1</RSW_Iriaz>  <!-- iriaz - herd-small, keep -->
-      <RSW_Krykna>0.1</RSW_Krykna>  <!-- krykna - ambush-small, keep -->
-      <RSW_Runyip>0.1</RSW_Runyip>  <!-- runyip - herd, import -->
+      <RSW_Bolotaur MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Bolotaur>  <!-- bolotaur - herd, import -->
+      <RSW_Clodhopper MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Clodhopper>  <!-- clodhopper - ambush-small, keep -->
+      <RSW_FeralGrazer MayRequire="mandrake.rsw.swbestiary">0.1</RSW_FeralGrazer>  <!-- feral grazer - herd, import -->
+      <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Gizka>  <!-- gizka - ambush-small, keep -->
+      <RSW_Iriaz MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Iriaz>  <!-- iriaz - herd-small, keep -->
+      <RSW_Krykna MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Krykna>  <!-- krykna - ambush-small, keep -->
+      <RSW_Runyip MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Runyip>  <!-- runyip - herd, import -->
       <!-- DROID_DEPOT_REPOINT 2026-09-20 (owner: "Droid depot is our custom mod we are
            building"). These 7 were pointing at neronix17.outerrim.droiddepot, which is NOT
            in the active mod list - MayRequire-guarded, so they silently never spawned.
@@ -187,24 +187,24 @@
       <RSW_DW_OuterRim_SalvageAssistDroid MayRequire="mandrake.rsw.droidworks">0.1</RSW_DW_OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
       <RSW_DW_OuterRim_DUMDroid MayRequire="mandrake.rsw.droidworks">0.08</RSW_DW_OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
       <RSW_DW_OuterRim_GNKDroid MayRequire="mandrake.rsw.droidworks">0.08</RSW_DW_OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
-      <RSW_Voorpak>0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
+      <RSW_Voorpak MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
       <RSW_DW_OuterRim_FX7Droid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
       <RSW_DW_OuterRim_MuckrakerDroid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
-      <RSW_Sandhorn>0.05</RSW_Sandhorn>  <!-- gigantelope - herd, keep -->
-      <RSW_Dunestalker>0.05</RSW_Dunestalker>  <!-- sand prowler - ambush-burrow, keep -->
-      <RSW_Ferroclaw>0.035</RSW_Ferroclaw>  <!-- terramorph - ambush-flat, keep -->
-      <RSW_Sandmaw>0.025</RSW_Sandmaw>  <!-- sand squid - subsurface-slow, keep -->
+      <RSW_Sandhorn MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Sandhorn>  <!-- gigantelope - herd, keep -->
+      <RSW_Dunestalker MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Dunestalker>  <!-- sand prowler - ambush-burrow, keep -->
+      <RSW_Ferroclaw MayRequire="mandrake.rsw.swbestiary">0.035</RSW_Ferroclaw>  <!-- terramorph - ambush-flat, keep -->
+      <RSW_Sandmaw MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Sandmaw>  <!-- sand squid - subsurface-slow, keep -->
       <RSW_DW_OuterRim_DestroyerDroid MayRequire="mandrake.rsw.droidworks">0.02</RSW_DW_OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
-      <RSW_Tuskcoil>0.015</RSW_Tuskcoil>  <!-- mammoth worm - subsurface-slow, keep -->
-      <RSW_Horax>0.01</RSW_Horax>  <!-- horax - megafauna, import -->
+      <RSW_Tuskcoil MayRequire="mandrake.rsw.swbestiary">0.015</RSW_Tuskcoil>  <!-- mammoth worm - subsurface-slow, keep -->
+      <RSW_Horax MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Horax>  <!-- horax - megafauna, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <RSW_Dunegrass>0.6</RSW_Dunegrass>  <!-- hardy grass -->
-      <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
-      <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
-      <RSW_VellaraBloom>0.12</RSW_VellaraBloom>  <!-- aaklac -->
-      <RSW_SweetbarkTree>0.06</RSW_SweetbarkTree>  <!-- dessert tree - tree -->
+      <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- hardy grass -->
+      <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- aaklac -->
+      <RSW_SweetbarkTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_SweetbarkTree>  <!-- dessert tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
   </BiomeDef>

@@ -125,18 +125,18 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RSW_Scavrat>0.6</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import -->
-      <RSW_WompRat>0.4</RSW_WompRat>  <!-- womp rat - ship-vermin, import -->
-      <RSW_Mynock>0.3</RSW_Mynock>  <!-- mynock - ship-vermin, import -->
-      <RSW_Cindermite>0.3</RSW_Cindermite>  <!-- fuelmite - ship-vermin, import -->
-      <RSW_Spineroller>0.3</RSW_Spineroller>  <!-- needleroll - grain-scale, adjust-keep -->
-      <RSW_Kreetle>0.2</RSW_Kreetle>  <!-- kreetle - grain-scale, keep -->
-      <RSW_WarWyrm>0.2</RSW_WarWyrm>  <!-- war wyrm - giant, keep -->
-      <RSW_KraytDragon>0.15</RSW_KraytDragon>  <!-- krayt dragon - giant, keep -->
-      <RSW_Stareling>0.15</RSW_Stareling>  <!-- ikee - grain-scale, adjust-keep -->
+      <RSW_Scavrat MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import -->
+      <RSW_WompRat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_WompRat>  <!-- womp rat - ship-vermin, import -->
+      <RSW_Mynock MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Mynock>  <!-- mynock - ship-vermin, import -->
+      <RSW_Cindermite MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Cindermite>  <!-- fuelmite - ship-vermin, import -->
+      <RSW_Spineroller MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Spineroller>  <!-- needleroll - grain-scale, adjust-keep -->
+      <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kreetle>  <!-- kreetle - grain-scale, keep -->
+      <RSW_WarWyrm MayRequire="mandrake.rsw.swbestiary">0.2</RSW_WarWyrm>  <!-- war wyrm - giant, keep -->
+      <RSW_KraytDragon MayRequire="mandrake.rsw.swbestiary">0.15</RSW_KraytDragon>  <!-- krayt dragon - giant, keep -->
+      <RSW_Stareling MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Stareling>  <!-- ikee - grain-scale, adjust-keep -->
       <Rat>0.1</Rat>  <!-- brown rat - ship-vermin, import -->
-      <RSW_GraniteSlug>0.1</RSW_GraniteSlug>  <!-- granite slug - grain-scale, keep -->
-      <RSW_Scurrier>0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
+      <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.1</RSW_GraniteSlug>  <!-- granite slug - grain-scale, keep -->
+      <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
       <!-- DROID_DEPOT_REPOINT 2026-09-20 (owner: "Droid depot is our custom mod we are
            building"). These 7 were pointing at neronix17.outerrim.droiddepot, which is NOT
            in the active mod list - MayRequire-guarded, so they silently never spawned.
@@ -149,15 +149,15 @@
       <RSW_DW_OuterRim_GNKDroid MayRequire="mandrake.rsw.droidworks">0.08</RSW_DW_OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
       <RSW_DW_OuterRim_FX7Droid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
       <RSW_DW_OuterRim_MuckrakerDroid MayRequire="mandrake.rsw.droidworks">0.05</RSW_DW_OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
-      <RSW_Stoneback>0.025</RSW_Stoneback>  <!-- bouldermit - giant, keep -->
+      <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Stoneback>  <!-- bouldermit - giant, keep -->
       <RSW_DW_OuterRim_DestroyerDroid MayRequire="mandrake.rsw.droidworks">0.02</RSW_DW_OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
-      <RSW_Gizka>0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
-      <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
-      <RSW_Voltmaw>0.0005</RSW_Voltmaw>  <!-- tetra slug - giant, keep -->
+      <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
+      <RSW_GreaterKraytDragon MayRequire="mandrake.rsw.swbestiary">0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
+      <RSW_Voltmaw MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Voltmaw>  <!-- tetra slug - giant, keep -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <RSW_Plant_Bloddle>0.05</RSW_Plant_Bloddle>  <!-- bloddle plant -->
+      <RSW_Plant_Bloddle MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Plant_Bloddle>  <!-- bloddle plant -->
       <!-- AB_GiantStikehr REMOVED 2026-09-20 on the owner's eye ("The giant mushroom seems
            misplaced"). Alpha Biomes' own description makes it a Forsaken Crags organism: "A
            giant alien mushroom that glows in the strange darkening mist... as long as it is
