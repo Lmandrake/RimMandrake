@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T09:08:57Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "facingrepair_grmolebear_v1_south",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: the Star Wars/Utinni canon creature \u2014 a stocky armored burrowing rodent-bear, a heavily plated segmented back like an armadillo, a short blunt snout with small dark eyes low between two massive digging claws held up in front of the chest, dense grey-brown scaled hide. The face and small eyes must be clearly visible above the claws, not hidden below them. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_FACING_REPAIR_WAVE_1",
+  "style_notes": "South-only repair, hand-authored prompt (no earlier artpipe job JSON existed for this creature to build from). facing_set_audit.py viewpoint check + a human look both confirmed: GR_Molebear (hand-written from visual review \u2014 no prior job JSON found; shipped south shows mostly the armored dorsal hump with the tiny face buried low between the claws, reading as a top-down view of the back). Owner ruling 2026-09-15: south = face toward camera."
+}

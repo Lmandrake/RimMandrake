@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T09:08:32Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "facingrepair_orray_v1_south",
+  "priority": 90,
+  "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: the Star Wars canon Orray, a heavy-bodied low-slung Geonosian desert reptile that reads as a cross between an alligator and a horse. Sandy tan-brown to olive-grey hide, mottled, wrinkled and tuberculate, leathery and pebbled rather than hard-scaled, with a paler throat and belly. A long alligator-like snout, small eyes set high on the head, and four thick powerful legs with real elbow and knee anatomy ending in broad clawed toes. A long thick tapering tail. Painterly rendering of the wrinkled hide folds at the neck and joints. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_FACING_REPAIR_WAVE_1",
+  "style_notes": "South-only repair. facing_set_audit.py viewpoint check + a human look both confirmed the shipped south (pyrelands_orray_v2_south's output) reads as looking down on the creature's back/spine rather than an eye-level front view, per owner ruling 2026-09-15 (south = face toward camera). Only the framing clause changed from the original job; all material/palette/creature description text is unchanged."
+}
