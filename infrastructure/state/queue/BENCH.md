@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:48:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T08:54:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -289,7 +289,7 @@ needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ECOSYSTEM_PYRAMID_LAW_1.md yet — write one when you have something to say)
+summary:  ECOSYSTEMPYRAMIDLAW1 — the food-pyramid law
 prose:    infrastructure/state/items/ECOSYSTEM_PYRAMID_LAW_1.md
 
 ## NARRATIVE_DICTIONARY_PILOT_1 Narrative dictionary pilot (batch 1): featurize ~30 placeable objects by claim/mood/Lynch-spatial-function/ISO-communicative-act/state, author ~8 vignettes as predicates over those axes, dress one room plan 4 ways (2 claim sets x dictionary/control), PIL-composite at play zoom, blind naive-reviewer 'describe this room' test with a pre-registered bar, and emit GAPS.md

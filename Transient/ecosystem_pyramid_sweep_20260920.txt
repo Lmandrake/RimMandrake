@@ -1,0 +1,38 @@
+ECOSYSTEM_PYRAMID_LAW_1 — per-biome food-pyramid sweep
+MEASURED 2026-09-20 against defs.sqlite mods=617/6a41e05c828eed67 captured 2026-09-20T07:47:24Z
+baseBodySize known for 2421 animal ThingDefs.
+Bands: SMALL = baseBodySize < 1.0 (below a human). LARGE = >= 1.0.
+Weight is COMMONALITY, which is what the roster actually controls.
+
+biome                         small%  smallC  largeC  defs  unk  verdict
+RUT_RustCathedral               0.0%    0.00    0.05     1    0  INVERTED
+RUT_TheScald                    0.0%    0.00    0.03     2    0  INVERTED
+RUT_NightsideIce               16.7%    0.00    0.01     6    0  INVERTED
+RUT_ForsakenCrags              33.3%    1.00    2.00    14    0  INVERTED
+RUT_TheRot                     35.9%    0.70    1.25     8    0  flat
+RUT_Webwork                    36.4%    0.40    0.70     4    0  flat
+RUT_TheForge                   43.4%    0.75    0.98     6    0  flat
+RUT_WeepingStones              44.4%    1.20    1.50    10    0  flat
+RUT_Desert                     45.0%    5.95    7.28    56    7  flat
+RUT_Sump                       52.4%    0.55    0.50     3    0  PYRAMID
+RUT_Scarlands                  53.0%    0.80    0.71     8    0  PYRAMID
+RUT_Umbra                      58.7%    0.35    0.25     4    0  PYRAMID
+RUT_Greentide                  63.3%    5.90    3.42    27    0  PYRAMID
+RUT_Contagion                  71.7%    3.55    1.40    11    0  PYRAMID
+RUT_Wasteland                  73.3%    6.80    2.48    21    0  PYRAMID
+RUT_CrackedLands               74.4%    1.60    0.55    10    0  PYRAMID
+RUT_Miasma                     76.1%    7.00    2.20    30    0  PYRAMID
+RUT_AridShrubland              76.3%   15.59    4.85    54    7  PYRAMID
+RUT_ExtremeDesert              77.0%    2.26    0.68    23    7  PYRAMID
+RUT_PoisonForest               80.4%    4.50    1.10    17    0  PYRAMID
+RUT_FeverWood                  80.7%    2.80    0.67    11    0  PYRAMID
+RUT_GreySea                    90.9%    0.05    0.01     2    0  PYRAMID
+RUT_TwilightSea                90.9%    0.05    0.01     2    0  PYRAMID
+RUT_Slime                      91.1%    2.16    0.21     9    0  PYRAMID
+
+9 of 24 biome rosters fail the law (small < 50% of commonality).
+
+Unresolved defNames per biome (not in the dump — a cut mod, or a typo):
+  RUT_Desert: 7  OuterRim_DUMDroid, OuterRim_DestroyerDroid, OuterRim_FX7Droid, OuterRim_GNKDroid, OuterRim_MSEDroid, OuterRim_MuckrakerDroid ...
+  RUT_AridShrubland: 7  OuterRim_DUMDroid, OuterRim_DestroyerDroid, OuterRim_FX7Droid, OuterRim_GNKDroid, OuterRim_MSEDroid, OuterRim_MuckrakerDroid ...
+  RUT_ExtremeDesert: 7  OuterRim_DUMDroid, OuterRim_DestroyerDroid, OuterRim_FX7Droid, OuterRim_GNKDroid, OuterRim_MSEDroid, OuterRim_MuckrakerDroid ...
