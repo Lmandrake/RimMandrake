@@ -17,20 +17,24 @@ design sheet's stated archetype.
 
 ## the work
 
-Port `AA_SandLion` (already ruled at 0.5 weight, "sand burrower swimmer"
-role) via `DESERT_ROUND2_IMPORTS_UNLANDED_1`'s port batch, as the interim
-strike predator. File the drum-lure subsurface predator and its egg-trap
-clutch as their own creature item — it needs C# (a vibration-lure job, the
-roster's "mechanic_load" entry). Before filing that item, check
-`SARLACC_HABITAT_BUILD_1` — it already owns birth-trap clutches and may cover
-the egg-trap half of this.
+🔴 **CORRECTED 2026-09-20:** `DESERT_ROUND2_IMPORTS_UNLANDED_1` closed without
+porting `AA_SandLion` — it explicitly stayed out of that item's scope because
+this item already owned it. Its named successor, `AA_JOE_DESERT_PORT_BATCH_1`,
+also explicitly excludes `AA_SandLion` for the same reason. Porting
+`AA_SandLion` (already ruled at 0.5 weight, "sand burrower swimmer" role) is
+this item's own owed work, not something riding on another item's batch.
+
+Port `AA_SandLion` as the interim strike predator. File the drum-lure
+subsurface predator and its egg-trap clutch as their own creature item — it
+needs C# (a vibration-lure job, the roster's "mechanic_load" entry). Before
+filing that item, check `SARLACC_HABITAT_BUILD_1` — it already owns birth-trap
+clutches and may cover the egg-trap half of this.
 
 ## Watch out
 
-This item's interim fix is entirely gated on `DESERT_ROUND2_IMPORTS_UNLANDED_1`
-landing `AA_SandLion`. Do not file the drum-lure predator's clutch mechanic
-without first confirming against `SARLACC_HABITAT_BUILD_1` whether it already
-owns that ground — filing a duplicate clutch mechanic wastes the work.
+Do not file the drum-lure predator's clutch mechanic without first confirming
+against `SARLACC_HABITAT_BUILD_1` whether it already owns that ground —
+filing a duplicate clutch mechanic wastes the work.
 
 ## verify
 
