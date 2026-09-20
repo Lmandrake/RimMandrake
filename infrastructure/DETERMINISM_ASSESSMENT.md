@@ -760,10 +760,44 @@ replaces, on today's evidence alone, is a bench sitting plus a full agent run pl
   with `git update-index --chmod=+x` rather than by making the assertion
   platform-conditional — the check was right and the tree was wrong. `run_selftests` now
   separates the buckets: **6** unmeasured (not the 8 claimed below), 6 real FAILs.
-- **Owed and not built:** C4 `modcheck floor --all`, C6 `rimflow lint --citations`.
-- **Also owed:** arming C1's suite gate after a findings cleanup, and
-  `bridgetools/selftest_tool_metadata.py` adopting the UNMEASURED phrase so its
-  Windows-toolchain absence stops counting as a failure.
+- **C4 `modcheck floor --all`** — shipped 2026-09-20 (`DETERMINISM_REMAINDER_C4_C6_1`),
+  `modcheck/floor.py`'s `triage()`/`format_triage()` wired as `modcheck floor --all`
+  from `src/RimMandrake/Utils`. Offline, ~2-4 s on this filesystem (spec estimated
+  ~0.5 s; drvfs I/O accounts for the rest). Reuses `northstar.parse`,
+  `runner.visual_floor` and `floor.uncovered_shows` exactly as specified. Live
+  footer today: **45 mods ship visual surface; 32 bars bind; 0 are covered** — the
+  drop from the 44-bar figure elsewhere in this doc is real, see the WreckedMachines
+  note in CLAUDE.md's north-star section (its section reverted to DRAFT at `6cdf52b39`,
+  2026-09-17, and was never re-validated). Selftest: a positive-count assertion in
+  `modcheck/selftest.py` (`t_floor_triage_positive_counts`), never a threshold on the
+  counts themselves, per this section's own instruction.
+- **C6 `rimflow lint --citations`** — shipped 2026-09-20 (`DETERMINISM_REMAINDER_C4_C6_1`),
+  `src/RimMandrake/rimflow/citations_lint.py` wired as `rimflow lint --citations`.
+  Live sweep today: 2204 files, 1436 items known (1258 terminal), 10322 citations —
+  **13 STATE_LIE** (gates the exit code), **243 STALE_GATE** (report only), **454
+  UNKNOWN** (no ledger entry at all, e.g. year-shaped false positives like
+  `CANONICAL_ASHKARR_START_2026` — never folded into clean, per spec). Both counts
+  are in the ballpark of this section's 2026-09-17 figures (14 / 289) without matching
+  exactly — expected, since three days of real fixes and file churn separate the two
+  measurements. `<!-- citation-ok: reason -->` escape hatch built, same shape as
+  `walklint-ok`/`canon-ok`. Selftest: `rimflow/selftest_citations_lint.py`, fixture-only
+  (never the real ledger/corpus), 11/11 passing.
+- **`bridgetools/selftest_tool_metadata.py`** — shipped 2026-09-20
+  (`DETERMINISM_REMAINDER_C4_C6_1`): its missing-DLL branch now prints the
+  `UNMEASURED, not a pass or a fail` phrase `run_selftests.py` actually greps for,
+  matching every other dotnet-needing selftest's convention. Before this it printed
+  `SKIP` with neither that phrase nor a `FAIL` substring, which `run_selftests.py`'s
+  own branching (`UNMEASURED_PHRASE in out and "FAIL" not in out`) could only read as
+  FAIL on a machine with no local build. Verified live by hiding and restoring the
+  real DLL on this machine (exit 2, phrase present, no `FAIL` substring; restored
+  byte-identical).
+- **Owed:** arming C1's suite gate. Confirmed still exactly **40 FAIL / 15 WARN**
+  (RE-MEASURED 2026-09-20, `modcheck lint --warn`, unchanged from the figure at the
+  top of this section) — the findings cleanup this section itself says comes first
+  is real work across ~30 walk files, not a same-sitting fix. Spun off as its own
+  item rather than forced through here: `WALKLINT_FINDINGS_CLEANUP_1` (caused by
+  `DETERMINISM_REMAINDER_C4_C6_1`), spec is "fix until `modcheck lint` reports 0
+  FAIL, then arm `selftest_walklint.py`'s suite gate."
 
 ### 🔴 The walk findings do NOT need a decision sheet — and the "orphan walks" are not rot
 
