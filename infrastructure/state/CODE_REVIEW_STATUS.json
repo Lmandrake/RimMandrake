@@ -3966,10 +3966,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/Filth_LooseAsh.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "7c720d8d36cd1993f88ec915f771cd4c6d4df79a52ce9d14d9dfed5bac3037f0",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "f6e23ee4e94298facc5b0fc1daa0fee063c2027f7bdedd8f1675e6675c54d467",
+    "sha": "de26a7ba4"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Fulgurite/Fulgurite.xml": {
     "cleanCount": 2,
@@ -4014,10 +4014,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/WeatherDefs/Cinderfall.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "d3d759176ab3c28df9297f326ad5d00947a91c3ce3b8697bb7d3ca8ebac39d90",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "1ce1466d686fdef3c499797159ee3932eeecf270b8dfa4016717de1a03251296",
+    "sha": "de26a7ba4"
   },
   "src/RimMandrake/Pyrelands/LICENSE": {
     "cleanCount": 1,
