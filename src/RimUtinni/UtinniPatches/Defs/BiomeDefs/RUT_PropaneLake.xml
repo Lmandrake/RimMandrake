@@ -54,20 +54,35 @@
   lake (R-H6b: propane liquefies at −42 C, so the shallow/cold edge freezes
   solid while the deep centre stays liquid).
 
-  fishTypes / wildAnimals: left EMPTY, documented. the_propane_lakes.md §4
-  already names the lake's intended exotics qualitatively ("the V-wake
-  creature and its kin — propane-native, agitated by pumping, attacking
-  pawns and pipe on sight") but no PawnKindDef exists for any of them yet
-  (checked the live dump: no def named anything resembling "V-wake" or
-  "VWake"). Authoring that creature is separate, unowed work (the sheet's
-  own "Owed" list — "the lake terrain (flammable, off-gassing into
-  saturation)" and the engine-feasibility pass are listed as owed there
-  too, ahead of any creature). AB_PropaneLakes' own donor fishTypes
+  fishTypes: left EMPTY. AB_PropaneLakes' own donor fishTypes
   (VCEF_PropaneBag, VCEF_AbyssalEel, VCEF_GiantPolarPrawn etc., read off the
   live dump this pass) belong to the LAND biome's local-map fishing zones
   and are not copied here — this is a world-tile water biome, a different
   gameplay surface, and copying them without an owner ruling would invent a
-  content decision, not just an engine reconciliation.
+  content decision, not just an engine reconciliation. the_propane_lakes.md
+  §4's "V-wake creature and its kin" (propane-native, agitated by pumping,
+  attacking pawns and pipe on sight) also stays unbuilt — no PawnKindDef
+  exists for it yet (checked the live dump: no def named anything
+  resembling "V-wake"/"VWake"); it is separate, unowed C# work
+  (propane_gas_deep_design.md v1 rows; the sheet's own "Owed" list).
+
+  wildAnimals: PAINTED_TILES_WITH_NO_CAST_1 (2026-09-20) found this
+  <wildAnimals /> empty and traced it — the 2026-09-09 comment here (now
+  replaced) cited rosters/the_propane_lakes.json's confidence block
+  claiming every fauna row bound RUT_Umbra only. That claim had gone
+  stale: two rows were added to the same file's fauna array on 2026-09-10
+  by the round2 move-mapping pass (design/Jawa/worldbuilding/review/
+  round2/decisions_propagated.json, keys homeless:AA_AuroraSylph and
+  homeless:AA_Skyeel — owner's verbatim notes "Perfect Propane Lake
+  creature" and "Electrostatic flyer over Propane Lakes") and never
+  wired here. Both are Alpha Animals (sarg.alphaanimals) floating/flying
+  creatures — the Sky Eel "ignores terrain movement costs" and the Aurora
+  Sylph is "immune to temperature extremes" and unaffected by gravity
+  (creature_register_rows.json descriptions) — the only kind of resident
+  that makes physical sense on an impassable liquid-propane sea. Wired
+  below at the roster's own commonality (0.5 each); the roster JSON's
+  stale confidence line and a leftover contradictory eviction row for
+  AA_Skyeel were corrected in the same pass.
 
   texture: reuses Biomes/AB_PropaneLakes (the donor's own world-map icon)
   as a placeholder rather than inventing new art — a dedicated icon
@@ -99,15 +114,15 @@
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
     <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
-    <!-- WILD ANIMALS: STAYS EMPTY, and that is a ruling, not an omission.
-         design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json binds every one
-         of its four fauna rows to AB_PropaneLakes (the LAND def, 2531 tiles) and rules
-         in its own confidence block: "RUT_PropaneLake wildAnimals stays EMPTY - the
-         sheet distinguishes the lake (its residents are the unauthored sea exotics)".
-         The lake's own life is the V-wake creature and kin, owed as new defs
-         (the_propane_lakes §4, propane_gas_deep_design v1). Checked 2026-09-09 by
-         BIOME_FAUNA_ASSIGNMENT_SITTING_1's build lane - do not "fill this in". -->
-    <wildAnimals />
+    <!-- WILD ANIMALS: two floating/flying residents, wired PAINTED_TILES_WITH_NO_CAST_1
+         (2026-09-20) from rosters/the_propane_lakes.json's fauna array (round2
+         move-mapping ruling, 2026-09-10 — see the file header above for the full
+         trace). The V-wake propane-sea exotic the sheet also names is still unbuilt
+         (no PawnKindDef exists) and is not represented here. -->
+    <wildAnimals>
+      <AA_AuroraSylph MayRequire="sarg.alphaanimals">0.5</AA_AuroraSylph>  <!-- aurora sylph - "Perfect Propane Lake creature" (round2 move mapping, 2026-09-10) -->
+      <AA_Skyeel MayRequire="sarg.alphaanimals">0.5</AA_Skyeel>  <!-- sky eel - "Electrostatic flyer over Propane Lakes" (round2 move mapping, 2026-09-10) -->
+    </wildAnimals>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).

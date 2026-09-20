@@ -32,7 +32,7 @@ PAINTED_DEFS = {
     'AB_FeraliskInfestedJungle', 'AB_GelatinousSuperorganism',
     'AB_MiasmicMangrove', 'Scarlands', 'RUT_PropaneLake',
     'COMIGO_GreaterSwamp_Tropical', 'AB_TarPits', 'AB_PyroclasticConflagration',
-    'LavaField', 'Volcano',
+    'LavaField', 'Volcano', 'RUT_Umbra',
     # pending-switch targets a roster may legitimately name
     'RUT_BlueDesert',
 }

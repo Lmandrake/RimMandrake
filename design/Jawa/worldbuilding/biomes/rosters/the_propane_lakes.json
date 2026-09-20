@@ -7,9 +7,9 @@
       "why": "binding table + sheet §0 amendment (paint done on V24)"
     },
     {
-      "claim": "RUT_PropaneLake wildAnimals stays EMPTY: every fauna row above binds RUT_Umbra (land, renamed from AB_PropaneLakes) only — the sheet distinguishes the lake (its residents are the unauthored sea exotics)",
-      "status": "ruled here",
-      "why": "one file per task instruction; the split is this line, so the generator must not copy the land cast onto the water def"
+      "claim": "CORRECTED 2026-09-20 (was: 'RUT_PropaneLake wildAnimals stays EMPTY'): the four keep/adjust-keep rows (Frostmite, FrostboundBehemoth, Terramorph, Slurrypede) still bind RUT_Umbra (land) only, but AA_AuroraSylph and AA_Skyeel are a later addition to this file's fauna list — the round2 move-mapping ruling (review/round2/decisions_propagated.json, both dated 2026-09-10: 'Perfect Propane Lake creature' / 'Electrostatic flyer over Propane Lakes'; both floating/flying, terrain-cost-ignoring per the creature register) — and those two DO bind RUT_PropaneLake, the water def. Wired into RUT_PropaneLake.xml under PAINTED_TILES_WITH_NO_CAST_1.",
+      "status": "MEASURED",
+      "why": "the original claim was written 2026-09-09, before the round2 import rows existed in this file's own fauna array; it was never re-checked against them and had gone stale"
     },
     {
       "claim": "GR_ prefix = Grindterra in the owner's card, but these GR_ rows are Vanilla Genetics Expanded per the register",
@@ -133,12 +133,6 @@
       "disposition": "homeless-reserve",
       "note": "the Dark is the crags' register (tholin cross-flow) — crags roster's call, not a propane resident",
       "reason": "fails §4 admission here"
-    },
-    {
-      "def": "AA_Skyeel",
-      "disposition": "homeless-reserve",
-      "note": "flier — R17 lets it visit without a resident row",
-      "reason": "fails §4 admission chemistry"
     },
     {
       "def": "VQE_Megamidge",
