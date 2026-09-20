@@ -279,3 +279,39 @@ whatever those four placed in the world go with them.
 - Route 3 (force-load with compatibility checks ignored) was **not** chosen.
 - Ruled alongside `CANONICAL_SAVE_SCENARIO_MISMATCH_1` ("Hand-edit the founders
   in"), which is what makes a loadable save necessary in the first place.
+
+## resolved via a clean re-save, 2026-09-20
+
+The 2026-09-19 FOUNDRY judgment call's prediction held: **a plain `save_game` under
+the live (617) mod list, with no per-reference surgery, cleared the divergence in
+one pass.** RimWorld's own Scribe never re-serializes a reference it failed to
+resolve on load — every dead `<def>` from the 18 absent mods was already dropped
+from the in-memory game the moment the mods went missing, and a save simply stopped
+recording their absence as an error.
+
+Sequence (done as part of `CANONICAL_SAVE_SCENARIO_MISMATCH_1`'s founder work, not a
+separate session — same backups cover it): loaded the save with
+`ignoreModCompatibility` (18 missing, as measured), made the Sekki Vosh/stock edits,
+`rimworld/save_game` under the exact existing filename. **Verified, not assumed**:
+- `<meta><modIds>` now reads **617**, matching the live list exactly (was 630).
+- A fresh `rimworld/load_game` call **with no override flag** now reports
+  `{"status": "compatible", "compatible": true, "missingModCount": 0}` — the save
+  loads clean on its own, no force-flag needed.
+- Player.log for that exact load (isolated by line-count before/after): **zero**
+  `Could not load reference`, `Could not resolve cross-reference`, or
+  `SaveableFromNode` lines, and zero hits for any of the specific dead defNames the
+  original filing named (`BMT_`, `GravBeamCannon`, `RR_Weapon_Torch`, `BufoBile`).
+  One unrelated pre-existing NRE (RimFridge's own def-load quirk) and one unrelated
+  assembly-reflection warning (`Mlie.LogAfterDefError`) are the only two "error"-class
+  hits in that load's log slice — neither is a dead-reference symptom.
+
+**"Restore nothing" is satisfied by construction**, not by a positive check that
+absolutely nothing from the 4 still-on-disk mods survived — Scribe already dropped
+everything from all 18 uniformly, on-disk-or-not, the moment they left the mod list;
+there is no code path that would have selectively kept Caverns/MeatOnAStick/KotOR
+content while dropping the other 14. `retired_mods.json`'s missing
+`biomesteam.biomespollutedlands` line (item's own note above) is a separate,
+pre-existing ledger-bookkeeping gap, not touched by this resolution.
+
+Closed as part of the same pass. See `CANONICAL_SAVE_CUT_RESIDUE_1` for the sibling
+item covering the same measurement from the residue side.
