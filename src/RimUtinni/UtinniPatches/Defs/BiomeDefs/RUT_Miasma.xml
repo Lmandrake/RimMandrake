@@ -247,10 +247,6 @@
       <AB_MangroveTree>25</AB_MangroveTree>  <!-- mangrove tree - tree -->
       <AB_ParasiticMangrove>8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
       <AB_MangrovePalm>6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
-      <BMT_Plant_TreeTanglerootMangrove>1.5</BMT_Plant_TreeTanglerootMangrove>  <!-- tangleroot mangrove - tree -->
-      <BMT_Plant_SewerReed>0.8</BMT_Plant_SewerReed>  <!-- sewer reed -->
-      <BMT_RainbowTongue>0.6</BMT_RainbowTongue>  <!-- rainbow tongue -->
-      <BMT_Plant_Snaketails>0.5</BMT_Plant_Snaketails>  <!-- snaketails -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>
   </BiomeDef>
