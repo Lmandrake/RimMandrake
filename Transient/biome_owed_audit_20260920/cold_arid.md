@@ -344,7 +344,35 @@ discovery surveys) and one cross-biome connective detail (flier nesting), not a
 load-bearing mechanic.
 
 ## fall_line.md
-(pending)
+
+This sheet has **no `## Owed` heading at all** — only `## Open, not ruled` (2 bullets,
+genuinely pre-ratification design questions, not commissioned work) — so I read the
+whole sheet for inline 🔴/⚠️ lines naming ratified-but-unbuilt work, per the brief's
+instruction. Found one, and it's a big one.
+
+1. 🔴 **§8b, "The ferals" — a complete, owner-ratified mechanic, fully specced, zero
+   trace anywhere in the ledger or the code.** Owner's verbatim ruling (2026-09-05):
+   crash survivors gone feral — sentient races AND droids — capturable and turned into
+   **slaves** (races, with a **permanent mental-problem penalty** that makes them "much
+   less valuable") or **memwiped and restored** (droids, "clean" restoration, and
+   killing them explicitly **does not anger neutral droids**); no faction affiliation;
+   wily/flee-prone behaviour. The sheet's own table spells out every stat needed to
+   build it, and explicitly scopes a mental-treatment payoff to v2 ("v2 only, do not
+   build now") while leaving the capture/slave/memwipe core as v1, buildable now.
+   **UNFILED (CONFIRMED).** Searched: `feral droid`, `feral pawn`, `memwipe`, `feral
+   race` — zero hits in `infrastructure/state/items/`, `.../closed/`. Also searched
+   `feralpawn`, `feraldroid`, `FallLineFeral`, `RUT_Feral` in `src/` — zero defs, zero
+   C#. (A loose `grep -li feral` across `src/` returns only unrelated substring hits —
+   `Feralisk` creature names etc. — confirmed by inspection, not a real match.)
+   Ranking this alongside the desert `ShadeAt` and nightside-fauna findings: it is a
+   named, fully-detailed mechanic the owner personally dictated, with a whole gameplay
+   loop (capture → choose slave-or-memwipe → live with the consequence) that currently
+   does not exist in the game at all — the Fall Line's one named population (crash
+   survivors) is simply absent from play.
+2. **Ridge line treatment** and **which donor mod supplies §8b vs custom C#** — both
+   explicitly `## Open, not ruled`; the sheet itself says these await a ruling, so they
+   are not "owed" work in the sense this audit is chasing (nothing was commissioned
+   yet). Not ranking.
 
 ## weeping_stones.md
 (pending)
