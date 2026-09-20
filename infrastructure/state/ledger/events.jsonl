@@ -10116,3 +10116,4 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-20T13:31:21Z"}
 {"seat":"OWNER","event":"note","id":"TWILIGHT_DEEP_WATER_LAYER_1","text":"OWNER RULING 2026-09-20: drop the empty-surface premise. The 8 fish go into RUT_TwilightSea itself via the biome's own maxFishPopulation + fishTypes. No pocket map, no GravTide petition, no shelving.","ownerSaid":"Just make the surface fishable","ts":"2026-09-20T13:32:14Z"}
 {"seat":"OWNER","event":"needs","id":"TWILIGHT_DEEP_WATER_LAYER_1","to":"offline","reason":"ruled: fish go on the Twilight Sea surface biome","ownerSaid":"Just make the surface fishable","ts":"2026-09-20T13:32:15Z"}
+{"seat":"FOUNDRY","event":"needs","id":"TWILIGHT_DEEP_WATER_LAYER_1","to":"deploy","reason":"hold lifted per owner ruling 'Just make the surface fishable'; patch deployed, restart owed to verify","ts":"2026-09-20T13:39:41Z"}

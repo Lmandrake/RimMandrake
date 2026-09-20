@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T13:18:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T13:39:41Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1464,7 +1464,7 @@ prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## ROT_PALE_TREE_1 The pale tree: Plant_TreeAnima reskin, psylink capped by a one-entry requiredSubplantCountPerPsylinkLevel list, RUT_PaleMoss subplants
 state:    ready
@@ -1472,7 +1472,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     build
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  (no items/ROT_PALE_TREE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_PALE_TREE_1.md
 
@@ -1487,7 +1487,7 @@ Claim one to work it. Any item can be claimed and started; the prose sections ar
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    deploy
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
