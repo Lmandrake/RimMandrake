@@ -10172,3 +10172,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SCALD_DIVING_MOD_1","ts":"2026-09-20T15:12:17Z"}
 {"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"PAUSED by owner, verbatim: 'Stop all clean/dirty code review until Wednesday 3pm token reset please.' Do not spawn or resume this loop (mark-clean, full-file review passes, bug-fix passes under this item) before 2026-09-23 15:00. Two waves ran today before the pause (6 files clean, 2 real bugs fixed - see ledger). A third wave was launched and killed mid-start with zero commits from it.","ts":"2026-09-20T15:12:18Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-20T15:12:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-20T15:15:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-20T15:15:59Z"}
+{"seat":"BENCH","event":"file","id":"PYRELANDS_WRONG_BIOME_DEF_1","title":"The Pyrelands content is wired to RM_FE_Pyrelands, which has ZERO tiles on the frozen world - the biome the player actually visits is ZBiome_Grasslands and it is missing the fauna roster, the ash weather and the fuel bed while keeping the donor's ordinary rain and snow","kind":"build","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-20T15:19:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-20T15:20:30Z"}
