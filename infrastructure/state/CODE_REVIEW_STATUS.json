@@ -7636,10 +7636,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships__GravshipOverlay_BASE.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "ffa12dba218488aff0f4cc22219942769c21bcf004351baebb4a85429de3a5d1",
-    "sha": "349152ba4"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "f94c6c6d15dad1d21ae35a679a0326bf848ce2956f1fadbe9ea84322fe0f104f",
+    "sha": "53f7efaaf"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_buildMenu.xml": {
     "cleanCount": 2,
