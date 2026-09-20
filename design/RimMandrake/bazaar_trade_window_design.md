@@ -274,15 +274,27 @@ logs missing-component Scribe warnings — **rehearse on a save copy first**
 assembly before judging the save safe). TradeHelper stays inactive (wishlist
 absorbed).
 
-**Droid modules cross a tier**: the D-layers require Droidworks
-(`mandrake.rsw.droidworks`, RimStarWars) for the chassis test, the part
-surgery and the ±6% advantage, and S1/D2/D3 require RimProperty
-(`mandrake.rm.property`). The Bazaar itself is `mandrake.rm.*` and must stay
-whole without either: with Droidworks absent the D-layers do not render and
-Settings says why; with RimProperty absent the stolen-goods rows do not render.
-Both are soft references (`MayRequire`), never hard dependencies. Trade droids
-on the other side of the deal are Droidworks' concern; The Bazaar only reads
-the existing functional test.
+**The tier crossing — owner-ruled 2026-09-20: generic concept, Star Wars
+body.** The D-layers are not "protocol droid" features at the RimMandrake tier.
+The Bazaar owns the ABSTRACT role — *a machine that can negotiate for you*,
+carrying module slots and a liveness test — and ships it as a def other mods
+register against. The protocol droid is what FILLS that role in this campaign;
+another game could fill it with something else entirely, and the generic mod is
+not poorer for lacking Star Wars. The role def's name is owed (it does not
+exist yet); do not invent one in passing.
+
+- **RimMandrake side** (`mandrake.rm.bazaar`): the role def, the four module
+  slots, the presence gate's shape (at the deal OR on a comms console), and the
+  D-layer rendering.
+- **RimStarWars side** (`mandrake.rsw.droidworks`): registers the
+  `DW_Family_Protocol` chassis against the role, supplies the shipped
+  functional test and the ±6% advantage, and owns the part surgery. Trade droids
+  on the other side of the deal stay Droidworks' concern.
+- **RimProperty** (`mandrake.rm.property`) carries S1/D2/D3's ownership records.
+
+With no mod registering the role, the D-layers do not render and Settings says
+why; with RimProperty absent the stolen-goods rows do not render. Soft
+references (`MayRequire`), never hard dependencies, in both directions.
 
 **Keep**: TraderGen, Better Traders, GTG junk framework, MultipleTraders,
 Trader Ships — they shape stock and arrivals, not UI; we consume vanilla
@@ -338,4 +350,6 @@ distinctiveness, stolen = cheaper, owner wrath up to raids, decoder = registry o
 lost/stolen goods, a distinct second scanner reads transponders on traders and
 settlements, fall-salvage reads as safe · *"The player didn't fall from space"* ·
 stolen-goods design pass owed → `BAZAAR_STOLEN_GOODS_PROPERTY_1` · lead only:
-fall-zone injected wreckage → lost-cargo quests.
+fall-zone injected wreckage → lost-cargo quests · tier crossing = generic
+concept, Star Wars body: The Bazaar owns the abstract negotiator role,
+Droidworks registers the protocol droid against it (§8).
