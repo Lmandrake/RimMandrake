@@ -115,6 +115,11 @@ library's antidote — the two Assailant siblings, pharmacologically entangled.
 - **The filter-feeder line** (owner's ruling): a whole family of scooping-mouthed
   animals grazing the Slime itself like krill-eaters — new art, NEW-ART ledger.
 - **Conventional munchers** browse the pseudo-plants and hunt the pseudo-herds.
+- **The Titanoslime** (amendment, owner ask 2026-09-20 — `TITANOSLIME_SLIME_BIOME_1`,
+  adds detail, changes no ruling): a lobe of the body that has learned to go and fetch
+  entries — swallows pawns whole, grows as it eats, returns what it finishes reading to the
+  flow with no corpse. Not a foreign apex (the Harvester eviction stands); it IS the body's
+  mouth. Spec: `design/RimMandrake/RM_titanoslime_spec.md`.
 - **The resistant characters:** the donor's engineered oddities read as immune-system
   champions — the giant trash-eating acanthamoeba, the corrosive Helixien slug, the
   iron-shelled plasmorph. Rendered down or milked, the resistant natives supply the
