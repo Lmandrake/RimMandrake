@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:40:45Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-20T19:53:48Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -927,6 +927,15 @@ kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
+## DRUM_LURE_PREDATOR_BUILD_1 Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  DRUMLUREPREDATORBUILD1 — the drum-lure subsurface predator + its egg-trap clutch
+prose:    infrastructure/state/items/DRUM_LURE_PREDATOR_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1341,6 +1350,16 @@ blocked:  Owner ruled 2026-09-18: no race def is patched until BMT_FAUNA_ABSORPT
 summary:  (no items/ROT_FAUNA_KIN_WIRING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROT_FAUNA_KIN_WIRING_1.md
 
+## DRUM_LURE_PREDATOR_BUILD_1 Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  Code+defs complete, built (0 errors), validate_patch.py clean, deployed via deploy_custom_mods.py --apply (commit c2403b3f2). Live quicktest of both mechanics (lure draw-in, egg ambush) not done: bridge held the entire session by a concurrent live FOUNDRY window (flight-animation quicktest), never idle/stale. Next FOUNDRY pass: take bridge, quicktest RSW_Drazzik + RSW_DrazzikEggFertilized, then close.
+summary:  DRUMLUREPREDATORBUILD1 — the drum-lure subsurface predator + its egg-trap clutch
+prose:    infrastructure/state/items/DRUM_LURE_PREDATOR_BUILD_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1423,12 +1442,12 @@ thin:     no ## spec
 summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
 prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
 
-## DRUM_LURE_PREDATOR_BUILD_1 Drum-lure subsurface predator (vibration-lure ambush) + egg-trap clutch
+## ROSTER_VALIDATOR_STALE_REFS_1 All 38 remaining roster-validator red errors are instrument staleness, not data defects - every flagged def resolves live; plant_pool.csv is from Aug 23 and the creature register from Sep 5
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     build
+kind:     task
 thin:     no ## spec
-summary:  DRUMLUREPREDATORBUILD1 — the drum-lure subsurface predator + its egg-trap clutch
-prose:    infrastructure/state/items/DRUM_LURE_PREDATOR_BUILD_1.md
+summary:  ROSTERVALIDATORSTALEREFS1 — the validator's remaining errors are all its own
+prose:    infrastructure/state/items/ROSTER_VALIDATOR_STALE_REFS_1.md
