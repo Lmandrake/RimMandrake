@@ -1,7 +1,8 @@
 # CANON_CREATURE_REGEN_1 — regenerate every SW-canon creature under library guidance
 
 Filed by BENCH, 2026-09-13. Owner: *"THEN we regenerate canon creatures with
-that guidance."* Gated on CANON_REFERENCE_LIBRARY_1 (the guidance) alone.
+that guidance."* CANON_REFERENCE_LIBRARY_1 (the guidance) closed
+`779938cbb2c43ab0390afd9e2d94d519367af707`; this item is unblocked and `doing`.
 
 🔴 The toy-figurine pilot that once gated this item is DEAD — terminated by the
 owner 2026-09-15, its art and lawset deleted. Painterly is the only style law.

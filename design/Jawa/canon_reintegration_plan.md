@@ -545,8 +545,8 @@ The full sweep (queues + items, MEASURED tonight). Items blocked on
 
 | item | what it actually waits on |
 |---|---|
-| `ANTIQUITIES_TREE_BUILD_1` | this plan being ruled (owner: "do not build yet") — released by F4 |
-| `RESEARCH_TREE_NORMALIZATION_1` | the owner's manifest review-sheet pass (its criteria §3) — F2/F3 change what he'd review; sequence his pass AFTER F2 |
+| `ANTIQUITIES_TREE_BUILD_1` | CLOSED `4c7cec491` — owner-unblocked 2026-09-04, F4 released it, Slice 1 built (`src/RimUtinni/Antiquities/`) |
+| `RESEARCH_TREE_NORMALIZATION_1` | CLOSED `f1ebc8c1` |
 | `TECHPRINT_FACTION_GATING_1` | the faction→tech-domain mapping — **answered by §E's grammar if ratified** (G5 + the mapping) |
 | `FLUID_CANAL_MECHANIC_1` | reservoir refill shape: steady drip vs periodic re-flood → **G8** |
 | `SHIELD_MODS_LEVERAGE_1` | building-scale shield foundation (no VEF hook into Odyssey's gravship slot; speed-curve canon conflict verified) → **G9** |

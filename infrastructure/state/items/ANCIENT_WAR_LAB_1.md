@@ -53,9 +53,13 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   validated. Recommend splitting scope: local-map spectacle (fire, terrain swap,
   roof breach) for the 95% of player-visible payoff using routine, well-precedented
   map-damage machinery; the real world-tile mutation only for the permanent
-  worldmap scar itself, likely a small tile count (propane lake's exact footprint
-  still owed by `LIQUID_BIOMES_MAP_1`). Do not fake the worldmap side only — that
-  leaves a permanent discrepancy between what the map shows and what a save holds.
+  worldmap scar itself, likely a small tile count (propane lake's exact footprint —
+  `LIQUID_BIOMES_MAP_1` closed 2026-09-06/07 without painting it, but it WAS
+  owner-ruled and painted the next day, commit `a5020486e` 2026-09-08: 57 tiles,
+  Umbra 29 / Ammonia Flats 28, live/frozen CSV confirms it — see `## criteria` and
+  `WAR_LAB_CRATER_HOOK_1` for the full account. Do not fake the worldmap side only
+  — that leaves a permanent discrepancy between what the map shows and what a save
+  holds.
 
 ## build spec (FOUNDRY, 2026-09-08 — consolidated, follows the `dungeons_arc_spec.md`
 pattern already used for `ASSAILANT_DUNGEON_BUILD_1`/`VAULT_DUNGEON_BUILD_1`)
@@ -118,9 +122,12 @@ material; `AA_Slurrypede` used as a bare-thing placeholder pending the same
 mutation is filed as its own item, `WAR_LAB_CRATER_HOOK_1` — new companion C# (a
 `QuestPart`/`CompDestroyed`/`GameComponent` hook calling the same `PrimaryBiome`-write
 + cache-regenerate sequence `jawa/world_tile_set`/`jawa/world_commit` already prove —
-`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs`), blocked
-on `LIQUID_BIOMES_MAP_1` freezing the propane lake's exact tile footprint. Do not
-build the crater hook against an unfrozen footprint.
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs`) — no
+longer blocked: the propane lake's tile footprint IS frozen (57 tiles, Umbra 29 /
+Ammonia Flats 28, painted `a5020486e` 2026-09-08, live/frozen CSV confirms it).
+`LIQUID_BIOMES_MAP_1` closed 2026-09-06/07 without painting it, but the paint
+landed the next day and `WAR_LAB_CRATER_HOOK_1` records the unblock (`rimflow
+unblock`, 2026-09-11) — see that item for the full account.
 
 ## criteria
 - [x] Three-band layout authored as `KCSG.StructureLayoutDef`(s) with real (not
@@ -158,8 +165,9 @@ build the crater hook against an unfrozen footprint.
 ## Watch out
 🔶 Same discipline as the sibling dungeons in `dungeons_arc_spec.md`: this stays
 `doing`, not closed, until the real (non-placeholder) content palette is confirmed and
-the site can be committed to the world (needs `LIQUID_BIOMES_MAP_1`'s propane-lake
-footprint frozen first). Do not close on a solo placeholder-content pass.
+the site can be committed to the world (the propane-lake footprint is already
+frozen — see `## criteria` above — so this no longer waits on that). Do not close
+on a solo placeholder-content pass.
 
 ## verify
 Lab placed and reachable via the submerged route in a test map; ignition triggers

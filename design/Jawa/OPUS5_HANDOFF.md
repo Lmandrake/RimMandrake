@@ -153,11 +153,11 @@ The per-workstream table above is one day stale. What changed on the 31st:
   GRAFFITI_FRAMEWORK_BUILD_1 · BEAST_DANGER_NORMALIZATION_1 ·
   TILE_STRUCTURE_DESIGNS_1 · SEAS_WATERLINE_PASS_1 · JAWA_PATCHES_SPLIT_1 ·
   ISHKO_DARK_LANDMARKS_1 · DEPTHS_ODYSSEY_VERIFY_1 · DUMP_DRAWSIZE_CAPTURE_1 ·
-  SELFTEST_DRIFT_REPAIR_1. Gated on game-up: RENAME_VERIFY_WINDOW_1 (RUN
-  FIRST), the muffalo coefficient quicktest, the Odyssey source read.
+  SELFTEST_DRIFT_REPAIR_1. Gated on game-up (RENAME_VERIFY_WINDOW_1 — CLOSED,
+  `6d50a65b`): the muffalo coefficient quicktest, the Odyssey source read.
 - **Needs the owner's hands only**: corpus redline on live M0 text ·
   sea-monster art session (SW_SEA_MONSTERS_ART_1) · sacred-site placement ·
-  RESEARCH_TREE_NORMALIZATION_1 (still gated on droids).
+  RESEARCH_TREE_NORMALIZATION_1 (CLOSED, `f1ebc8c1` — no longer gated on droids).
 - Process cautions that bit this window: a directory-scoped commit swept
   selftest-built game DLLs into the public repo (amended out; bin/obj now
   ignored); peers ship queue work without claiming — git log before starting
