@@ -95,11 +95,62 @@ Titanoslime variant needs to widen.
   design the creature itself in-window; that's this item's `for: BENCH`,
   `kind: design`, backgrounded to a Fable subagent.
 
+## design — DONE 2026-09-20 (Fable pass, backgrounded from BENCH)
+
+**Spec: `design/RimMandrake/RM_titanoslime_spec.md`.** Every decision point above
+is answered there; the item stays `doing` for the FOUNDRY build pass (§8 of the
+spec is the sized build list with a quicktest gate per piece). The headlines,
+so nobody has to open the spec to know the shape:
+
+- **Home:** `mandrake.rm.gelatinousslime` (RimMandrake tier — not Star Wars),
+  `RM_Titanoslime`; campaign wiring is one `wildAnimals` line in
+  `UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` + a roster JSON row.
+- **Growth is NOT a Harmony postfix** — the sketch above is superseded. It is the
+  vanilla life-stage system with the stage index **locked by our comp**
+  (`Pawn_AgeTracker.LockCurrentLifeStageIndex`, public + scribed, MEASURED): five
+  `LifeStageDef`s carry `bodySizeFactor`/`healthScaleFactor`/`meleeDamageFactor`/
+  `foodMaxFactor`, five kind life-stages carry `drawSize`, and `Pawn.BodySize`,
+  the sprite, the Titanic tier, the Large Pawns footprint and the T3 corpse-site
+  all follow that one index. Ladder: BodySize 6 → 10 → 16 → 24 → 40 (T1/T2/T2/T3/T3).
+  Counter `absorbedMass` (scribed): +prey.BodySize per absorption, +0.25×nutrition
+  for ordinary eating (polls the `NutritionEaten` record), −1/day starving, −0.5/day
+  off slime terrain, −1 per shed gelatid; thresholds 4/12/28/60, cap 80, max-stage
+  Mod Setting. Runs both ways; nothing is permanent.
+- **Swallow is a melee tool**, not an ability: `ManeuverDef RM_Engulf` → our
+  `Verb_MeleeAttack` subclass → `RM_CompEngulfer` (the `CompDevourer` hold shape
+  rewritten with zero Anomaly defs — vanilla `CompDevourer` needs `Defs/Anomaly/`
+  content, MEASURED, so it cannot be reused in a base-game mod). Reached through
+  the ordinary predator hunt and ordinary fights; the vanilla animal think tree is
+  untouched. Gate: prey ≤ 0.5 × own BodySize (so "nearly any size" is earned by
+  growing), flesh only, capacity floor(BodySize/4). Hold: several at once, no job,
+  the slime keeps moving with its cargo. Digest 20–400 s by prey size; held pawns
+  struggle (damage the slime from inside) and big ones can burst out. Downed or
+  killed → everything drops, stunned, acid-burned, +0.15 slimification.
+  **Timer runs out → absorbed: killed, no corpse, gear regurgitated, mass gained.**
+- **Roster:** wild predator, solitary, commonality 0.12 with `ecoSystemWeight` 6
+  (≈ one per map, rarely two), placid when fed, hunts when hungry (colonists too
+  where `predatorsHuntHumanlikes` allows — left as the player's setting), 100 %
+  manhunter on damage. Sheds gelatids as it is cut (stage ≥ 2). No incident, no
+  event — a resident. Spawns at stage 1–3; stages 4–5 are only ever earned on the
+  player's map.
+- **Art:** nothing usable exists (checked artpipe done/registry/status/decisions —
+  nearest is Oozemaw, which must stay visibly distinct). One 1024 px set, three
+  facings, reused across stages by drawSize (Thrumbo precedent); a glassy bright
+  green *hill* of jelly with faint half-dissolved "entries" inside; never eyes,
+  never a mouth, never limbs.
+- Two engine facts the build inherits: `Devourer` sets `specificMeatDef Meat_Twisted`,
+  so `Gelatid.xml`'s comment that no vanilla animal points meatDef at a hand-authored
+  def is false (fix it in passing); and whether GelatinousSlime is on the campaign's
+  full list is UNMEASURED this pass (spec §9).
+
 ## verify
 
 A design doc exists naming the growth mechanic's exact mechanism, the devour
 ability's exact numbers, and the roster placement — ready for a FOUNDRY build
-pass without further creative judgment calls.
+pass without further creative judgment calls. **Satisfied 2026-09-20 by
+`design/RimMandrake/RM_titanoslime_spec.md`.** The build pass's own verify is the
+spec's §8 gate table (seven pieces, each with a quicktest assertion); the item
+closes when all seven pass on the quicktest list with all five DLC loaded.
 
 ## criteria
 

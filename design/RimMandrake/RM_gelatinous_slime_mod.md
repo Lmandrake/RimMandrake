@@ -96,6 +96,9 @@ defs and art, inventory in §7):
 - **The substrate creature** — `RM_Gelatid` **[INVENTED name]**: slow goo-herd
   cells of the body itself, the biome's always-visible native. Resistant by
   identity.
+- **The apex** — `RM_Titanoslime` (owner ask 2026-09-20, `TITANOSLIME_SLIME_BIOME_1`):
+  a titanic green slime that swallows pawns whole and grows as it eats; full spec
+  `RM_titanoslime_spec.md` (five locked life stages, engulf-as-melee-tool, no DLC).
 - **Flora**: slime-grass + 2–3 pseudo-plants (rounded, soft-bodied silhouette
   language per the sheet's §9 register, genericized).
 - **Weather**: `RM_SlimeRain` — organism-induced, brief intense flooding,
