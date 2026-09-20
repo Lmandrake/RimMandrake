@@ -1822,7 +1822,7 @@
       "decision": "move",
       "note": "6 cells, would be awesome if we could add tentacle pulling capabilities like the lasso power or future sarlacc mod, put it in the maiasma",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "fauna:the_greentide:Dragonsnake": {
@@ -2045,7 +2045,7 @@
       "decision": "in",
       "note": "Twice as large, really frightening looking",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "fauna:the_miasma:AA_Plasmorph": {
@@ -2055,7 +2055,7 @@
       "decision": "move",
       "note": "The Poison Forest",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "fauna:the_miasma:AA_RaptorShrimp": {
@@ -2439,7 +2439,7 @@
       "decision": "in",
       "note": "8 squares",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "fauna:the_rot:AA_MycoidColossus": {
@@ -2477,7 +2477,7 @@
       "decision": "in",
       "note": "8 squares",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "fauna:the_rot:BMT_BovineBeetle": {
@@ -2575,7 +2575,7 @@
       "decision": "in",
       "note": "0.3 cells",
       "prefill": "in",
-      "sizeBin": "small",
+      "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "fauna:the_scald:RSW_ElderSando": {
@@ -2595,7 +2595,7 @@
       "decision": "move",
       "note": "Miasma",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "fauna:the_scarlands:AA_Helixien": {
@@ -2713,7 +2713,7 @@
       "decision": "in",
       "note": "",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "small",
       "sizeBinPrefill": "large"
     },
     "fauna:the_slime:AA_Helixien": {
@@ -3993,7 +3993,7 @@
       "decision": "move",
       "note": "ice sheet, rename",
       "prefill": "in",
-      "sizeBin": "small",
+      "sizeBin": "medium",
       "sizeBinPrefill": "large"
     },
     "homeless:BMT_ColonyPustuleHornet": {
@@ -4333,7 +4333,7 @@
       "decision": "move",
       "note": "wreckage-based creature for the Fall",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:BMT_Megaroach": {
@@ -5949,7 +5949,7 @@
       "decision": "in",
       "note": "7 squares, deep desert, very rare, very dangerous, rename to Great Thrumbo",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Rabbitchicken": {
@@ -7067,7 +7067,7 @@
       "decision": "move",
       "note": "Twilight Sea 9 squares long",
       "prefill": "in",
-      "sizeBin": "titan",
+      "sizeBin": "medium",
       "sizeBinPrefill": "large"
     },
     "homeless:RSW_ShaleGorger": {
@@ -7927,6 +7927,10 @@
       "prefill": "later"
     }
   },
+  "frozen": true,
+  "frozenBy": "FOUNDRY (owner ruling, SHEET_ORPHAN_CONSUMPTION_1)",
+  "frozenMeaning": "FROZEN by FOUNDRY 2026-09-20, on the owner's word closing SHEET_ORPHAN_CONSUMPTION_1 (all five 2026-09-10 sheet-verdict channels consumed: fauna decision=out cut, flora decision=move/out applied, flora art:improve re-derived and filed, the 118-row NEW-ART/DEF ledger measured and its 85 genuinely-owed rows filed as COMMISSION_LEDGER_CLEANUP_1, and the 12 OWED sizeBin corrections applied per the owner's verbatim ruling). Do NOT regenerate this file with gen_fauna_assignment_sheet.py's decisions-writing path (guard_decisions() already refuses on this 'frozen' key) - it would replace these landed owner decisions and corrections with a fresh agent prefill. The sheet HTML itself (fauna_assignment_register.html) stays free to regenerate with --sheet-only; only the decisions-file write path is frozen.",
+  "frozenOn": "2026-09-20",
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
   "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json",
   "invented": [

@@ -449,6 +449,106 @@ pass's scope.
 
 ---
 
+## sizeBin 12-OWED channel and the dusk-rat flag — CLOSED OUT, 2026-09-20 (FOUNDRY, offline)
+
+Owner ruled on both remaining open channels verbatim: *"apply ALL 12 corrections,
+including the two multi-bin-off ones — no holdback"* (sizeBin), and confirmed the
+art-register's `AA_DuskRat → approve` is authoritative over the flora ledger's
+redo row.
+
+**Mechanism confirmed before touching anything.** `sizeBin` is a **grading
+correction, not a bodySize change** — `bodySize` itself is untouched by this item
+throughout (per the ceiling-fields lesson, restated in this file's own 2026-09-20
+section). The field lives in `fauna_assignment_register.decisions.json`'s
+`decisions.<key>.sizeBin` (the human-graded call), separate from `sizeBinPrefill`
+(the historical record of what the pre-fill auto-suggested, left untouched). Its
+only consumer is `apply_assignment_verdicts.py`'s `size_worklist` report (lines
+~342-352) — which, per this item's earlier audit, has **never once been written**
+to a sidecar in this repo's history. No Law-3/`FAUNA_TOLERANCE_NORMALIZATION_1`
+consumer reads this field (that item's own §4 changes `bodySize` directly from
+drawSize capture, not this register). Blast radius: zero live consumers today.
+
+**All 12 rows corrected** in `fauna_assignment_register.decisions.json`, matching
+the item's own OWED table exactly (verified old value before writing each one;
+script refused to run if a current value didn't match what the table recorded):
+
+| defName | row key | old (graded) | new (live bin) |
+|---|---|---|---|
+| `Ling_Cockroach` | `fauna:the_rust_cathedral:Ling_Cockroach` | small | medium |
+| `AA_Mantrap` | `fauna:the_miasma:AA_Mantrap` | large | medium |
+| `AA_Plasmorph` | `fauna:the_miasma:AA_Plasmorph` | large | medium |
+| `RSW_SandoAquaMonster` | `fauna:the_scald:RSW_SandoAquaMonster` | large | titan |
+| `AA_Agaripod` | `fauna:the_rot:AA_Agaripod` | titan | large |
+| `AA_GreenGoo` | `fauna:the_slime:AA_GreenGoo` | titan | small |
+| `AA_Wildpod` | `fauna:the_rot:AA_Wildpod` | titan | large |
+| `Dianoga` | `fauna:the_greentide:Dianoga` | titan | large |
+| `GR_ParagonThrumbo` | `homeless:GR_ParagonThrumbo` | titan | large |
+| `RSW_CrimsonOpee` | `homeless:RSW_CrimsonOpee` | titan | medium |
+| `RSW_CaveLemming` | `homeless:BMT_CaveLemming` (donor key; absorbed under `RSW_` name) | small | medium |
+| `RSW_Megapleura` | `homeless:BMT_Megapleura` (donor key; absorbed under `RSW_` name) | medium | large |
+
+⚠️ Three of the twelve defNames (`AA_Plasmorph`, `AA_Wildpod`) carry more than one
+row across biomes in the register (`AA_Plasmorph`: `the_miasma` + `the_slime`;
+`AA_Wildpod`: `arid_shrubland` + `poison_forest` + `the_rot`). Only the ONE row
+per defName whose current `sizeBin` matched the table's "graded" column was
+touched — the other same-defName rows already carried a `sizeBin` matching the
+live bin and were left alone, per-row, not blanket-renamed across every
+occurrence of the defName. `RSW_CaveLemming`/`RSW_Megapleura` confirm the same
+donor-absorption trap this item's sizeBin section already flagged: their register
+rows are still keyed under the donor `BMT_` name, not `RSW_`.
+
+**Dusk-rat conflict resolved as a supersession, not a deletion.**
+`flora_assignment_register.decisions.json`'s
+`decisions."ledger:forsaken_crags:dusk-rat-art-redo"` had `decision: "in"` (would
+have queued a redo via `apply_assignment_verdicts.py`'s ledger path, which only
+skips ledger rows when `decision != "in"`). Set `decision: "out"` and recorded the
+reason in `note`: superseded by `creature_art_register.decisions.json`'s
+`c:AA_DuskRat → decision: "approve"`, citing the owner's 2026-09-20 ruling. The
+row's `prefill: "in"` was left as the historical record of what the sheet
+originally graded — the `decision != prefill` divergence is exactly this
+register's own convention for "a later ruling overrode this row," per the trap
+this item names at the top. No row was deleted; both defects (the sizeBin miss
+and the register disagreement) are now visible in the files as the correction
+that fixed them, not silently.
+
+**Both decisions files frozen** (`frozen-artifacts` skill, item's own spec step
+5 — now that the two blocking channels above have landed, freezing is no longer
+premature). Both pass all three tests: (a) real owner judgement — the 2026-09-10
+grading sitting plus today's corrections; (b) a generator exists that would
+overwrite them — `gen_fauna_assignment_sheet.py` / `gen_flora_assignment_sheet.py`
+(the flora script imports the fauna script's `guard_decisions()`); (c) an
+overwrite would be hard to notice — a fresh `--i-know-this-overwrites-the-owners-decisions`-free
+re-run produces a plausible, validly-shaped prefill file that silently discards
+every owner call. `guard_decisions()` already refused on `savedBy`/`writeCount`
+before this freeze (both files are sheet-stamped); the explicit `frozen: true` +
+`frozenOn`/`frozenBy`/`frozenMeaning` keys make the refusal self-documenting and
+are the mechanism this item's own spec step 5 and verify section asked for.
+Confirmed live: re-ran `guard_decisions()` against the frozen fauna file — it
+refuses. The sheet HTML regeneration path (`--sheet-only`) is untouched and
+stays free, per the skill's "freeze the writer, not the artifact" rule. No
+`serve_sheet.py` exists in this repo to check a `--status` flag against (the
+item's own verify line names a tool that isn't in the tree); the frozen keys
+inside each JSON file are the actual, checkable state.
+
+Selftests: `run_selftests.py`, 67/67 passed (2 skipped), 0 failed — baseline held
+after both the sizeBin correction and the freeze.
+
+## This item is now CLOSED
+
+All five original orphan channels (fauna `decision=out`, flora `decision=move`,
+flora `decision=out`, flora `art:improve`, the 118-row NEW-ART/DEF ledger) and
+both channels this item's own "Where this item stands now" section named as
+still blocking (the 12 sizeBin corrections, the dusk-rat register conflict) are
+resolved and recorded above. `COMMISSION_LEDGER_CLEANUP_1` is filed as its own
+separate successor item for the 85 genuinely-owed commission slugs — this item's
+spec (step 4: "the 118-row ledger becomes a real art-queue filing... commission
+/ defer / drop as graded") never required that successor to itself close before
+this item does, only that the ledger be filed somewhere real, which it now is.
+Both decisions files are frozen per spec step 5. Nothing in this item's spec or
+verify section remains outstanding.
+
+---
+
 ## flora `decision=move` (15) / `decision=out` (4) channels — CLOSED OUT, 2026-09-20 (FOUNDRY, offline)
 
 Ran concurrently with the fauna and 118-ledger passes above, and its own closing
