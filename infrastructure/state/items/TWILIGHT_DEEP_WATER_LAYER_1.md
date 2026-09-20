@@ -100,3 +100,38 @@ Filed this wave, caused by `FISH_BESTIARY_BUILD_1` wave 5. See that item's
 own wave 5 section for the full measurement (GravTide seabed read, CSV
 tile count, DEPLOY_HOLD.txt entry). Nothing built here; this file exists so
 the open question has a home separate from the mostly-finished parent item.
+
+## ruling — owner, 2026-09-20
+
+Verbatim: **"Just make the surface fishable"**.
+
+The deliberately fish-less surface is **dropped as a premise**. The 8 built species
+go into `RUT_TwilightSea` itself, by setting that BiomeDef's own
+`<maxFishPopulation>` and populating its `<fishTypes>` block. They come off
+`src/DEPLOY_HOLD.txt`.
+
+All three candidate shapes this item proposed are **dead, not deferred**:
+
+- ⛔ a separate water-bearing pocket map reached by a dive
+- ⛔ petitioning the GravTide author for a wet seabed variant
+- ⛔ shelving the species
+
+### Why the pocket-map route was never as close as this item implied
+
+MEASURED 2026-09-20 against the installed game and GravTide (workshop
+`3779600989`):
+
+- **Fishing is a BiomeDef property, not a terrain tag.** Every fishable biome
+  carries `<maxFishPopulation>` plus a `<fishTypes>` block; `JobDriver_Fish` reads
+  it off the map's biome. There is no per-terrain "fishable" flag and no
+  `FishingDef`, so a single map cannot be fishable in one area and not another.
+  That, not GravTide, was the real blocker.
+- **GravTide adds no "resting on the surface" mode.** Its surface is stock
+  `WaterOceanShallow`/`WaterOceanDeep`; `GravTide_SurgeWater` is a tinted tsunami
+  copy of `WaterShallowBase`, and `GravTide_PlatformDeck` is an ordinary
+  buildable foundation terrain.
+- **GravTide's dive already goes to a separate map, and that map is DRY.**
+  `GravTide_SeabedBase` sets `<maxFishPopulation>0</maxFishPopulation>` and its own
+  def comment reads "the water is the ceiling, not part of the map." So the
+  existing dive provides no water to fish in; route 1 meant authoring a
+  water-bearing pocket map from scratch.

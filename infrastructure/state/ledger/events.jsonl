@@ -10110,3 +10110,9 @@
 {"seat":"OWNER","event":"needs","id":"ECOSYSTEM_PYRAMID_LAW_1","to":"offline","reason":"ruled: 50% small-fauna floor","ownerSaid":"50% small","ts":"2026-09-20T13:26:07Z"}
 {"seat":"OWNER","event":"note","id":"CANONICAL_SAVE_MODLIST_DIVERGENCE_1","text":"OWNER RULING 2026-09-20: restore NOTHING. Scrub every reference to all 18 absent mods out of the save, including the 4 that are still on disk (biomescaverns, both meatonastick, kotorcore). Route 1 (restore) is dead; route 3 (force-load) is not chosen.","ownerSaid":"Scrub all 18","ts":"2026-09-20T13:29:05Z"}
 {"seat":"OWNER","event":"needs","id":"CANONICAL_SAVE_MODLIST_DIVERGENCE_1","to":"offline","reason":"ruled: scrub all 18, restore nothing","ownerSaid":"Scrub all 18","ts":"2026-09-20T13:29:06Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-20T13:30:26Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-20T13:30:40Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ts":"2026-09-20T13:31:15Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-20T13:31:21Z"}
+{"seat":"OWNER","event":"note","id":"TWILIGHT_DEEP_WATER_LAYER_1","text":"OWNER RULING 2026-09-20: drop the empty-surface premise. The 8 fish go into RUT_TwilightSea itself via the biome's own maxFishPopulation + fishTypes. No pocket map, no GravTide petition, no shelving.","ownerSaid":"Just make the surface fishable","ts":"2026-09-20T13:32:14Z"}
+{"seat":"OWNER","event":"needs","id":"TWILIGHT_DEEP_WATER_LAYER_1","to":"offline","reason":"ruled: fish go on the Twilight Sea surface biome","ownerSaid":"Just make the surface fishable","ts":"2026-09-20T13:32:15Z"}
