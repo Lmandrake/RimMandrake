@@ -32,6 +32,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_close_live_proof_owed.py\"",
+            "timeout": 15,
+            "statusMessage": "Checking a close names its live-proof debt a successor"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/queue_lint.py\"",
             "timeout": 20,
             "statusMessage": "Checking the ledger and the generated views"
