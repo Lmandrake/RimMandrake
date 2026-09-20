@@ -503,6 +503,33 @@ gear on a pawn — **build them and save the game.**
   calling it a review. A placement log's `thingsSpawned` is a NET count and goes
   negative when a build clears plants.
 
+## Check for existing regenerated art before queuing more — owner, 2026-09-20
+
+Before filing any `fill_queue.py` job (or otherwise deciding art is "owed"),
+check whether art for that subject was **already generated and already ruled
+on** — the artpipe daemon runs continuously and its output regularly sits
+unused for days because the def/roster work that would wire it in hasn't
+happened yet.
+
+- **Search `infrastructure/artpipe/done/` (and `_artsrc/`, `registry.jsonl`,
+  `art_status.json`) by subject/defName first**, not just by job-id guesswork.
+  A finished job's `rimflow_item_id` and `style_notes` often name the exact
+  roster row or item it was generated for.
+- **Check for a review sheet's `.decisions.json`** (`Transient/*.decisions.json`,
+  a `port_tail_*`/`bulk_art_*` sheet, or similar) — if the owner already ruled
+  on that art (kept/replace/improve), queuing a fresh regen throws that
+  ruling away and spends a job for nothing.
+- 🔑 **Caught live, 2026-09-20 (`BMT_FLORA_ABSORPTION_1`):** three plants
+  (giant leaf, fire lavender, heatsink fungus) were about to get a fresh
+  `fill_queue.py` job each. All three already had finished, validated art
+  sitting in `_artsrc/` since 2026-09-12/13 — one traced straight to the
+  exact roster row being fixed — found only because the owner said *"I
+  actually already saw beautiful art for giant leaf somewhere in a review
+  sheet"* and asked for a check across the rest of the missing set. Nothing
+  in the workflow up to that point had prompted the check on its own.
+- **How to apply:** whenever a def/item is "missing art" or "owed new art",
+  search first, generate only what the search comes up empty on.
+
 ## The bridge is passed through one file
 
 One window drives the live game at a time — not for ownership, for attributability.
