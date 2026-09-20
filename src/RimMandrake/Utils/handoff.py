@@ -644,7 +644,7 @@ def build(since_sha, since_ts, prev_name):
     L.append("- Bridge: %s" % (bridge or "unknown"))
     L.append("")
     if dirty:
-        L.append("Uncommitted (replace each %s with whose it is —" % WHOSE)
+        L.append("Uncommitted (replace the placeholder after each line below with whose it is —")
         L.append("yours, the other seat's, a subagent's):")
         L.append("")
         L.append("```")
