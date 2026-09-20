@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:54:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T20:20:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,6 +909,15 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
+## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
+prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
+
 ## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
 state:    doing
 row:      unassigned
@@ -1372,16 +1381,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## PORTED_BEAST_MECHANICS_REBUILD_1 Rebuild the three dropped donor mechanics (steel-eating, chemfuel ejection x2) in our own C#
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
-prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
-
 ## SWBESTIARY_UNPREFIXED_DONOR_DEFS_1 SWBestiary ships un-prefixed donor defNames (SWClaws, SWTailAttackTool, Dewback, Bogwing, Reek) and ~23 now-unreferenced BodyDefs left behind by the desert port dedup
 state:    proposed
 row:      unassigned
@@ -1411,16 +1410,6 @@ kind:     task
 thin:     no ## spec
 summary:  FALLLINEINJECTIONDEADBIOMEKEYS1 — fallline.json injects vermin at dead biome keys
 prose:    infrastructure/state/items/FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1.md
-
-## AA_JOE_DESERT_PORT_BATCH_1 Port AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast + absorb JOE_Cephalope, as one batch (round-2 desert imports)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Owner ruling 2026-09-20 (recorded on DESERTROUND2IMPORTSUNLANDED1): port
-prose:    infrastructure/state/items/AA_JOE_DESERT_PORT_BATCH_1.md
 
 ## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
 state:    proposed
