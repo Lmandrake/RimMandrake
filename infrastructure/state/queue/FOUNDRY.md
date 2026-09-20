@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T22:11:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-20T23:04:00Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1428,7 +1428,7 @@ needs:    bridge
 target:   v1
 kind:     bug
 thin:     no ## spec
-summary:  BRIDGEPAWNSPAWNCRASHESVEF1 — bridge-triggered pawn spawns NPE, universally
+summary:  BRIDGEPAWNSPAWNCRASHESVEF1 — GenSpawn-based bridge spawns NPE on pawns
 prose:    infrastructure/state/items/BRIDGE_PAWN_SPAWN_CRASHES_VEF_1.md
 
 ## CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1 gen_creature_register.py refuses: CORPSE CROSS-CHECK FAILED 1242 vs 1265
@@ -1440,3 +1440,13 @@ kind:     build
 thin:     no ## spec
 summary:  CREATUREREGISTERGENCORPSEMISMATCH1 — the register generator refuses on its own self-check
 prose:    infrastructure/state/items/CREATURE_REGISTER_GEN_CORPSE_MISMATCH_1.md
+
+## COMMISSION_LEDGER_CLEANUP_1 85 genuinely-owed new-art/def commissions from the 118-row ledger
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COMMISSION_LEDGER_CLEANUP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
