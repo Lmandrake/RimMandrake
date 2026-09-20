@@ -1,4 +1,51 @@
-# BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 — bridge-triggered pawn spawns NPE, universally
+# BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 — `GenSpawn`-based bridge spawns NPE on pawns
+
+# 🔴 RE-MEASURED 2026-09-20 (BENCH, live) — THE WORKFLOW IS NOT BLOCKED
+
+**The title claim "universally" was WRONG, and it is the most expensive kind of
+wrong: it says a standard workflow is dead when a working route was sitting next
+to it the whole time.** Corrected rather than annotated.
+
+`jawa/spawn_pawn` **WORKS**. MEASURED live on a VEF-loaded game (the 16-mod
+`xenotypes` tier includes `oskarpotocki.vanillafactionsexpanded.core`), same map,
+same session, same defName, back-to-back calls:
+
+| tool | pawn (`Chicken`) | non-pawn |
+|---|---|---|
+| `rimworld/spawn_thing` | 🔴 **NPE** | ✅ |
+| `jawa/spawn_batch` | 🔴 **NPE** | ✅ (`ChunkSlagSteel`) |
+| `jawa/spawn_pawn` | ✅ **success**, pawn count 81 → 82 | n/a |
+
+🔑 **65 pawns were spawned through `jawa/spawn_pawn` earlier in the same session**
+(13 xenotypes × grids, for `XENOTYPE_CANON_CORRECTION_1`) with zero failures. The
+"spawn many, screenshot, observe" method of `rimworld-debug-testing` is **usable
+today** — it just has to call `jawa/spawn_pawn`.
+
+⇒ **The common factor is `GenSpawn.Spawn` on a `ThingMaker`-made Thing.** Both
+failing tools construct the Thing and hand it to `GenSpawn`; a Pawn built that way
+never ran `PawnGenerator`, so its sub-trackers are null and VEF's `SpawnSetup`
+postfixes dereference one. `jawa/spawn_pawn` generates a real pawn instead, which
+is why it survives. (Construction detail confirmed from our own source — see below.)
+
+## ✅ RESOLVED: `jawa/spawn_batch`'s parameter shape
+
+The item recorded this as *"genuinely unknown, not a negative result"*. It is known
+now. **`ops` is a STRING, not a list** — `'Def:x,z[,count]'` separated by `;` or
+newlines, e.g. `'Chicken:124,100,1'`. The earlier `IConvertible` cast error came
+from passing `[{x,z}]`. And with the right shape it **still NPEs on a pawn**, so it
+is not an alternative route.
+
+## ⚠️ UNMEASURABLE: VEF's own internals
+
+RimSage indexes **core game assemblies only** — `RimWorld`, `Verse`, and the libs
+bundled with the engine. There is no `VEF`/`OskarPotocki` namespace in its index, so
+the bodies of `CompShieldField.SpawnSetup_Patch.Postfix` and
+`PhasingPatches.CheckPhasing` **cannot be read from this machine** and the exact
+member that is null is UNKNOWN. That does not block the fix: VEF's postfix is the
+victim, not the cause — it is reading a pawn that our own call built wrong.
+⛔ Do not write a guess at VEF's body into this item.
+
+
 
 ## what is wrong
 
