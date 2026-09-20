@@ -4,7 +4,7 @@ feature: uninstall-theft-verb
 absorbed: TheftHauler (dying id rm.theft_hauler) merged into RimProperty at Source/TheftHauler + Patches/TheftHauler + Defs/TheftHauler in the Sprint wave A crime merge (commit f32eef5f5) — no longer ships alone.
 deps: mandrake.rm.property (hard, modDependencies); loadAfter also mandrake.rsw.droidworks (soft, MayRequire-gated patch only)
 list: minimal+property   # the Droidworks-marked-chassis patch check additionally needs +droidworks; note per-step
-status-hint: the heist verb — a pawn carrying `RM_TheftHaulerExtension` can uninstall ANY Building (not gated by ownership) into a haulable MinifiedThing via a right-click order, firing `RimMandrake.Property.PropertyEngine.Fire(TakingEvent(Act=Strip))` at the moment of uninstall. Ships a MayRequire-gated patch marking Droidworks' Muckraker Crab Droid chassis as the reused heavy hauler.
+status-hint: the heist verb — a pawn carrying `TheftHaulerExtension` can uninstall ANY Building (not gated by ownership) into a haulable MinifiedThing via a right-click order, firing `RimMandrake.Property.PropertyEngine.Fire(TakingEvent(Act=Strip))` at the moment of uninstall. Ships a MayRequire-gated patch marking Droidworks' Muckraker Crab Droid chassis as the reused heavy hauler.
 
 ## must be true
 - `JobDef RM_TheftHaulUninstall` loads and drives `RimMandrake.TheftHauler.JobDriver_TheftHaulUninstall` (a `JobDriver_RemoveBuilding` subclass) with `suspendable=false`.
@@ -15,7 +15,7 @@ status-hint: the heist verb — a pawn carrying `RM_TheftHaulerExtension` can un
 - Without Droidworks active, no pawn kind on the map carries `TheftHaulerExtension`, so the REAL float-menu option never appears for anyone — the debug action is the only way to exercise the job driver on this mod list.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rm.theft_hauler" and no XML error naming `JobDefs_TheftHauler.xml` or `MuckrakerChassis_TheftHauler.xml`
+1. [L] Player.log after load contains no "Config error in mandrake.rm.property" (the id this verb now ships under, since it merged into RimProperty) and no XML error naming `JobDefs_TheftHauler.xml` or `MuckrakerChassis_TheftHauler.xml`
 2. [D] def read-back: `JobDef` `RM_TheftHaulUninstall` exists; `driverClass` = "RimMandrake.TheftHauler.JobDriver_TheftHaulUninstall", `suspendable` = false
 3. [D] with Droidworks NOT active (current live mod list, per this mod's own DebugActions comment): a def dump of `RSW_DW_Race_OuterRim_MuckrakerDroid` either does not exist or shows no `TheftHaulerExtension` in `modExtensions` — confirms the MayRequire gate is truly a no-op absent the dependency
 4. [B] `rimworld/search_debug_actions {"query": "theft-haul-uninstall"}` → returns exactly one match in category `RimMandrake.TheftHauler`, giving its stable path

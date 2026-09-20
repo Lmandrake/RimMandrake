@@ -1,6 +1,6 @@
 # RestrainingBolts — validation walk
 subject: src/RimUtinni/RestrainingBolts  (packageId `mandrake.rut.restrainingbolts`)
-deps: none declared in About.xml (soft-optional on neronix17.outerrim.droiddepot for OuterRim_RestraintBolt, and mandrake.rut.utinnipatches for the Jawa_FreeDroidEnclaves faction — both resolved lazily/GetNamedSilentFail, degrades to vanilla 100 if either is absent)
+deps: none declared in About.xml (soft-optional on neronix17.outerrim.droiddepot for OuterRim_RestraintBolt, and mandrake.rut.patches [=UtinniPatches] for the RUT_Jawa_FreeDroidEnclaves faction — both resolved lazily/GetNamedSilentFail, degrades to vanilla 100 if either is absent)
 list: minimal (load-clean only); full needed to exercise the actual cap (Droid Depot's hediff + UtinniPatches' Jawa_FreeDroidEnclaves faction)
 status-hint: caps player goodwill ceiling with the Free Droid Enclaves faction by live count of owned pawns carrying Droid Depot's restraint-bolt hediff — no stored state, no Harmony, recomputed every ~1000-tick GoodwillSituationManager recache.
 

@@ -1,5 +1,7 @@
 # RimMandrake Pits — validation walk
-subject: src/RimMandrake/Pits  (packageId `mandrake.rm.pits`)
+subject: src/RimMandrake/FlowWorks  (packageId `mandrake.rm.flowworks`)
+feature: pit-dig-trap-and-cell
+absorbed: Pits (dying id rm.pits) merged into FlowWorks at Source/Pits + Defs/Pits at commit cade628c1 — no longer ships alone. Superseded in design by PIT_SUPERDEEP_COLLAPSE_1 (owner, 2026-09-17: "a pit is a SUPERDEEP cell, not a building"); this walk still exercises the BUILDING-based dig/trap/cell code that currently ships, not the ruled-but-unbuilt superdeep redesign.
 deps: none (Ludeon.RimWorld only)
 list: minimal
 status-hint: species-agnostic covered-pit-trap framework — dig a pit in stages, arm a terrain-mimic cover, mass crossing it springs the trap and drops the walker in; a gated pit-cell variant doubles as prisoner holding
@@ -12,7 +14,7 @@ status-hint: species-agnostic covered-pit-trap framework — dig a pit in stages
 - Oiled fitting (`CompPitFitting` with `PitFittingType.Oiled`) can ignite once soaked, independent of the Sprung gate.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rm.pits" and no XML error naming `Pit_DigSites.xml`/`Pit_OpenPits.xml`/`Pit_Hediffs.xml`   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rm.flowworks" (the id this framework now ships under, since it merged into FlowWorks) and no XML error naming `Pit_DigSites.xml`/`Pit_OpenPits.xml`/`Pit_Hediffs.xml`   # load-time
 2. [D] def read-back: `ThingDef` `RM_PitDigSite_Shallow_Bare` exists; its `CompProperties_PitDigStage` names `openPitDef` = `RM_OpenPit_Bare`, `depthTier` = `Shallow`
 3. [D] def read-back: `HediffDef` `RM_PinnedInPit` exists, label "pinned in pit"; `RM_PitExposure` exists, label "pit exposure"; `RM_PitDrowning` exists, label "drowning"
 4. [D] def read-back: `WorkGiverDef` `RM_DigPitDeeper` exists; `giverClass` = `RimMandrake.Pits.WorkGiver_DigPitDeeper`; `workType` = `Mining`

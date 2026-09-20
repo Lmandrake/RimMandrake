@@ -17,7 +17,7 @@ status-hint: Zeroes `startingCountAtWorldCreation` on 46 non-campaign FactionDef
 
 ## the walk
 
-1. [L] Player.log after load contains no `Config error in mandrake.rut.factionslate` and no XML error naming `OnlyOurFactions.xml`
+1. [L] Player.log after load contains no `Config error in mandrake.rut.patches` (the id this patch now ships under, since it absorbed into UtinniPatches) and no XML error naming `OnlyOurFactions.xml`
 2. [D] def read-back: FactionDef `AA_BlackHive` (sarg.alphaanimals, forceLoadAfter target) exists; startingCountAtWorldCreation=0
 3. [D] def read-back: FactionDef `BS_LittlePeople` (redmattis.bigsmall, forceLoadAfter target) exists; startingCountAtWorldCreation=0
 4. [D] def read-back: FactionDef `OuterRim_GalacticEmpire` (neronix17.outerrim.galacticempire, forceLoadAfter target) exists; startingCountAtWorldCreation=0

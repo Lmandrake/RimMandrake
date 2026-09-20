@@ -13,7 +13,7 @@ status-hint: Tellurox — Ascendant Helix labour-line draft/pack animal with a P
 - The mod has no third-party dependency and no C# — it is pure content, so this walk is entirely [L]/[D]/[B].
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.helixtellurox" and no XML error naming Races_Tellurox.xml
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.swbestiary" and no XML error naming Races_Tellurox.xml
 2. [D] def read-back: ThingDef RSW_TelluroxRace exists; race.body = QuadrupedAnimalWithHooves, race.packAnimal = true, race.herdAnimal = true, statBases.ComfyTemperatureMin = -60
 3. [D] def read-back: ThingDef RSW_TelluroxRace.butcherProducts contains RSW_TelluroxShell with count 6 (proves the `<li><thingDef>` cross-ref form parsed correctly rather than silently producing a null-thingDef corpse-gen NRE, per the def file's own warning comment)
 4. [D] def read-back: ThingDef RSW_TelluroxShell exists; stuffProps.commonality = 0.04, statBases.StuffPower_Armor_Sharp = 1.65

@@ -15,7 +15,7 @@ status-hint: One real, player-buildable, stuffable wall-slot window (`RUT_Window
 - Its texture file exists on disk at the declared texPath and is a real, non-placeholder PNG (this mod is not using AIPersonaCore or any other stand-in).
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rut.desertfixtures" and no XML error naming RUT_DesertFixtures_Buildings.xml
+1. [L] Player.log after load contains no "Config error in mandrake.rut.injections" (the id this mod now ships under, since it absorbed into StructureInjectionsRUT) and no XML error naming RUT_DesertFixtures_Buildings.xml
 2. [D] def read-back: ThingDef RUT_WindowAdobe; designationCategory = Structure, terrainAffordanceNeeded = Heavy, isWall = true (confirms the inherited wall mechanics actually resolved, not just declared in the parent)
 3. [D] def read-back: ThingDef RUT_WindowAdobe; blockLight = false
 4. [D] def read-back: ThingDef RUT_WindowAdobe; stuffCategories = [Stony, Metallic] exactly (Woody absent — the Inherit="False" reset took effect rather than appending to Wall's list)

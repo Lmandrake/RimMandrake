@@ -12,7 +12,7 @@ status-hint: adds RSW_BeastNest_Large, a 3x3 non-buildable map-gen scatter prop 
 - Placing an instance on a live map fires the filth spawn once at PostSpawnSetup — dressing scatters itself, no player or lord action required.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.beastlairs" and no XML error naming RSW_BeastLairs_Buildings.xml   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.injections" and no XML error naming RSW_BeastLairs_Buildings.xml   # load-time
 2. [D] def read-back: ThingDef RSW_BeastNest_Large exists; size=(3,3), rotatable=false, building/claimable=false, no designationCategory field, comps/li[@Class="CompProperties_SpawnerFilth"]/filthDef=Filth_AnimalFilth, spawnCountOnSpawn=6, spawnRadius=3
 3. [B] jawa/spawn_batch {ops: "RSW_BeastNest_Large:X,Z"} on a dev quicktest map → returns success, one building placed
 4. [B] jawa/list_things {defName: "Filth_AnimalFilth", rect: <3-tile radius around X,Z>} → 6 filth things present immediately after spawn (confirms CompSpawnerFilth fired once on placement, per struct spec — not a live spawner)

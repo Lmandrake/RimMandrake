@@ -1,8 +1,8 @@
 # AshkarrWeatherSuite — validation walk
 subject: src/RimUtinni/AshkarrWeatherSuite  (packageId: mandrake.rut.weathersuite)
-deps: mandrake.rsw.weathersuite (modDependencies + loadAfter)
-list: minimal+mandrake.rsw.weathersuite
-status-hint: Wires the generic terminator-band/nightside-band weather engine (mandrake.rsw.weathersuite) onto Ash'karr's real substellar point and band arcs, plus folk-sign flavor text patched onto five vanilla WeatherDefs.
+deps: mandrake.rm.weathersuite (modDependencies + loadAfter)
+list: minimal+mandrake.rm.weathersuite
+status-hint: Wires the generic terminator-band/nightside-band weather engine (mandrake.rm.weathersuite) onto Ash'karr's real substellar point and band arcs, plus folk-sign flavor text patched onto five vanilla WeatherDefs.
 
 ## must be true
 

@@ -16,7 +16,7 @@ status-hint: six Forsaken-vault dungeons (three KCSG StructureLayoutDef template
 - Per the mod's own About.xml: "Not yet quicktest-proven" and V6's wake/loot branches listen on signals no vanilla part sends yet — this walk cannot assert those branches fire; it can only assert the defs load.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rut.vaultdungeons" and no XML error naming StructureLayoutDefs_Vaults.xml, SitePartDefs_Vaults.xml, QuestScriptDefs/RUT_VaultThaw.xml, or ThingDefs_Buildings/RUT_VaultHeart.xml
+1. [L] Player.log after load contains no "Config error in mandrake.rut.injections" (the id this content now ships under, since it absorbed into StructureInjectionsRUT) and no XML error naming StructureLayoutDefs_Vaults.xml, SitePartDefs_Vaults.xml, QuestScriptDefs/RUT_VaultThaw.xml, or ThingDefs_Buildings/RUT_VaultHeart.xml
 2. [D] def read-back: StructureLayoutDef RUT_VaultType1_MechanoidGarrison exists; StructureLayoutDef RUT_VaultType2_FleshWeaponLoose exists; StructureLayoutDef RUT_VaultType3_FrozenRakata exists
 3. [D] def read-back: ThingDef RUT_VaultHeart exists
 4. [D] def read-back: SitePartDef RUT_VaultSite_Type1 exists; minMapSize = (325,1,325); wantsThreatPoints = false

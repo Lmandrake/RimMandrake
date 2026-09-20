@@ -14,7 +14,7 @@ status-hint: 18 Naboo/Star Wars sea creatures across six roles (opee silt-ambush
 - Every lifeStage's bodyGraphicData and swimmingGraphicData point at the same texPath (Graphic_Multi fails silently on a missing facing — no magenta, no render — so a texPath drift here is invisible without a direct check).
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.seabeasts" and no XML error naming any of SeaBeasts_Opee.xml / SeaBeasts_Colo.xml / SeaBeasts_Sando.xml / SeaBeasts_Scalefish.xml / SeaBeasts_Swarm.xml / SeaBeasts_Colossi.xml   # load-time; requires Odyssey active or Crab/Pinniped body ParentNames will not resolve
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.swbestiary" and no XML error naming any of SeaBeasts_Opee.xml / SeaBeasts_Colo.xml / SeaBeasts_Sando.xml / SeaBeasts_Scalefish.xml / SeaBeasts_Swarm.xml / SeaBeasts_Colossi.xml   # load-time; requires Odyssey active or Crab/Pinniped body ParentNames will not resolve
 2. [D] def read-back: ThingDef RSW_OpeeSeaKiller exists; race/body=Crab, race/waterSeeker=true, race/waterCellCost=1, race/canFishForFood=true, race/foodType=CarnivoreAnimal, statBases/MarketValue=400
 3. [D] def read-back: PawnKindDef RSW_OpeeSeaKiller exists; race=RSW_OpeeSeaKiller, moveSpeedFactorByTerrainTag[Water]=2.0, lifeStages[0]/bodyGraphicData/texPath=lifeStages[0]/swimmingGraphicData/texPath=Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller
 4. [D] def read-back: ThingDef RSW_Reefback exists; race/body=Pinniped, race/foodType=None, race/predator=false, race/canBePredatorPrey=false, race/disableMating=true, statBases/MarketValue=8000; PawnKindDef RSW_Reefback/canArriveManhunter=false

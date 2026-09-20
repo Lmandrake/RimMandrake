@@ -15,7 +15,7 @@ status-hint: an ikee (Alpha Animals' AA_Eyeling) nearby gives Jawa/Hutt/etc a mo
 - Every MayRequire="mandrake.rsw.starwarsraces" entry in tolerantXenotypes must not throw a red load error when starwarsraces is present (all ten are guarded — no ungated entries exist in the def).
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rsw.jawaikee" and no XML error naming Thought_IkeeWatching.xml   # load-time
+1. [L] Player.log after load contains no "Config error in mandrake.rsw.swbestiary" and no XML error naming Thought_IkeeWatching.xml   # load-time
 2. [D] jawa/get_def defType=ThoughtDef defName=RSW_Jawa_IkeeWatching → workerClass = "RimMandrake.StarWars.JawaIkee.ThoughtWorker_IkeeNearby"; comps/modExtensions include IkeeToleranceExtension
 3. [B] jawa/spawn_pawn kindDef=<a Jawa PawnKindDef>, xenotype=RSW_MandrakeJawa, faction=player, at (x,z) → spawns a tolerant-xenotype pawn
 4. [B] jawa/spawn_pawn kindDef=AA_Eyeling, faction=none, at (x±3,z) → an ikee within the 12-cell radius of the pawn from step 3
