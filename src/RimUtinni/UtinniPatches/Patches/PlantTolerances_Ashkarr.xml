@@ -17,8 +17,8 @@
        a def, not the one that defines it. PatchOperationConditional on the def is
        the correct guard and a biome/plant that is absent simply fails the xpath. -->
 
-  <!-- aaklac (AB_Aaklac) - 2551 tiles, home demands -5.2 … 56.5 °C
-       minGrowthTem 0->-5.2  minOptimalGr 6->1.3  maxOptimalGr 42->40.6  maxGrowthTem 58->58 -->
+  <!-- aaklac (AB_Aaklac) - 2551 tiles, home demands -5.2 … 59.2 °C
+       minGrowthTem 0->-5.2  minOptimalGr 6->1.5  maxOptimalGr 42->41.4  maxGrowthTem 58->59.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -38,32 +38,194 @@
           <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>1.3</minOptimalGrowthTemperature></value>
+            <value><minOptimalGrowthTemperature>1.5</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>1.3</minOptimalGrowthTemperature></value>
+            <value><minOptimalGrowthTemperature>1.5</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>40.6</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>41.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>40.6</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>41.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+            <value><maxGrowthTemperature>59.2</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_Aaklac"]/plant</xpath>
+            <value><maxGrowthTemperature>59.2</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- skarrow dome (AB_AgaricusDomeCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- tolluk cap (AB_Agarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- grath elder (AB_AgariluxPrime) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -233,6 +395,60 @@
     </match>
   </Operation>
 
+  <!-- bollusk trunk (AB_ArbuscularMycorrhiza) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- blood bouquet (AB_BloodBouquet) - 725 tiles, home demands -21.6 … 57 °C
        minGrowthTem 0->-21.6  minOptimalGr 6->-13.4  maxOptimalGr 42->36  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
@@ -280,6 +496,60 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_BloodBouquet"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- hessuk moss (AB_Bryolux) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -449,6 +719,60 @@
     </match>
   </Operation>
 
+  <!-- ruvvak weeper (AB_DribblingCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- flowering ocular grass (AB_EyeGrass) - 179 tiles, home demands 9.9 … 66.5 °C
        minGrowthTem 0->0  minOptimalGr 6->6.9  maxOptimalGr 42->48.2  maxGrowthTem 58->66.5 -->
   <Operation Class="PatchOperationConditional">
@@ -497,6 +821,60 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_EyeGrass"]/plant</xpath>
             <value><maxGrowthTemperature>66.5</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- frost leaf (AB_FrostLeaf) - 2531 tiles, home demands -90.4 … -30.3 °C
+       minGrowthTem -60->-90.4  minOptimalGr -50->-76.1  maxOptimalGr 5->2.8  maxGrowthTem 10->10 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-90.4</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant</xpath>
+            <value><minGrowthTemperature>-90.4</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-76.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-76.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>2.8</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>2.8</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>10</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_FrostLeaf"]/plant</xpath>
+            <value><maxGrowthTemperature>10</maxGrowthTemperature></value>
           </nomatch>
         </li>
       </operations>
@@ -611,6 +989,222 @@
     </match>
   </Operation>
 
+  <!-- vokkun pillar (AB_GiantAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- giant gamma (AB_GiantGamma) - 1179 tiles, home demands -34.7 … 23.3 °C
+       minGrowthTem 0->-34.7  minOptimalGr 6->-25.1  maxOptimalGr 42->32.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantGamma"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- giant septimum (AB_GiantSeptimum) - 1135 tiles, home demands -34.7 … 18.1 °C
+       minGrowthTem 0->-34.7  minOptimalGr 6->-25.1  maxOptimalGr 42->32.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantSeptimum"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- giant stikehr (AB_GiantStikehr) - 5104 tiles, home demands -31.4 … 75.5 °C
+       minGrowthTem 0->-31.4  minOptimalGr 6->-20.3  maxOptimalGr 42->46  maxGrowthTem 58->75.5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-31.4</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant</xpath>
+            <value><minGrowthTemperature>-31.4</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-20.3</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-20.3</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>46</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>46</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>75.5</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GiantStikehr"]/plant</xpath>
+            <value><maxGrowthTemperature>75.5</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- giant toxic flower (AB_GiantToxicFlower) - 1853 tiles, home demands -28.1 … 43.1 °C
        minGrowthTem 0->-28.1  minOptimalGr 6->-19.2  maxOptimalGr 42->34.2  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
@@ -713,6 +1307,168 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_GlobularPlant"]/plant</xpath>
             <value><maxGrowthTemperature>66.5</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ithra glowcap (AB_GlowingAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- grass (AB_GlowingGrass) - 1135 tiles, home demands -34.7 … 18.1 °C
+       minGrowthTem 0->-34.7  minOptimalGr 6->-25.1  maxOptimalGr 42->32.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_GlowingGrass"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- nubbik stool (AB_Glowstool) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
       </operations>
@@ -1151,6 +1907,60 @@
     </match>
   </Operation>
 
+  <!-- quessa spire (AB_LilacBeacon) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- mangrove palm (AB_MangrovePalm) - 93 tiles, home demands 13 … 73.2 °C
        minGrowthTem 0->0  minOptimalGr 6->7.6  maxOptimalGr 42->53  maxGrowthTem 58->73.2 -->
   <Operation Class="PatchOperationConditional">
@@ -1367,6 +2177,60 @@
     </match>
   </Operation>
 
+  <!-- orrusk crook (AB_RecurvedStropharia) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- red bugloss (AB_RedBugloss) - 707 tiles, home demands -21.6 … 70.7 °C
        minGrowthTem 0->-21.6  minOptimalGr 6->-12.1  maxOptimalGr 42->45.2  maxGrowthTem 58->70.7 -->
   <Operation Class="PatchOperationConditional">
@@ -1529,6 +2393,60 @@
     </match>
   </Operation>
 
+  <!-- rime nodules (AB_RimeNodules) - 2531 tiles, home demands -90.4 … -30.3 °C
+       minGrowthTem -60->-90.4  minOptimalGr -50->-76.1  maxOptimalGr 5->2.8  maxGrowthTem 10->10 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-90.4</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant</xpath>
+            <value><minGrowthTemperature>-90.4</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-76.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-76.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>2.8</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>2.8</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>10</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_RimeNodules"]/plant</xpath>
+            <value><maxGrowthTemperature>10</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- slimecasia (AB_Slimecasia) - 96 tiles, home demands -15.3 … 34.9 °C
        minGrowthTem 0->-15.3  minOptimalGr 6->-7.7  maxOptimalGr 42->37.8  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
@@ -1630,6 +2548,60 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_SlimyFern"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- glissik slimecap (AB_SlimyPholiota) - 2300 tiles, home demands -53 … 31.7 °C
+       minGrowthTem 0->-53  minOptimalGr 6->-41.5  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <value><minGrowthTemperature>-53</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.5</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.5</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -2069,6 +3041,60 @@
     </match>
   </Operation>
 
+  <!-- toxic gamma (AB_ToxicGamma) - 1135 tiles, home demands -34.7 … 18.1 °C
+       minGrowthTem 0->-34.7  minOptimalGr 6->-25.1  maxOptimalGr 42->32.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_ToxicGamma"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- weeping toxberry (AB_WeepingToxberry) - 1853 tiles, home demands -28.1 … 43.1 °C
        minGrowthTem 0->-28.1  minOptimalGr 6->-19.2  maxOptimalGr 42->34.2  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
@@ -2116,6 +3142,114 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AB_WeepingToxberry"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- wild ragadast (AB_WildRadagast) - 1135 tiles, home demands -34.7 … 18.1 °C
+       minGrowthTem 0->-34.7  minOptimalGr 6->-25.1  maxOptimalGr 42->32.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant</xpath>
+            <value><minGrowthTemperature>-34.7</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-25.1</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>32.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WildRadagast"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- turrok shelf (AB_WitchesOyster) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -2225,6 +3359,60 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AG_Septimum"]/plant</xpath>
             <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- boomshroom (Boomshroom) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Boomshroom"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
       </operations>
@@ -4067,8 +5255,332 @@
     </match>
   </Operation>
 
+  <!-- quickgrass (RM_FE_Plant_Quickgrass) - 222 tiles, home demands 22.3 … 78.8 °C
+       minGrowthTem -4->-4  minOptimalGr 8->8  maxOptimalGr 50->50  maxGrowthTem 80->80 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-4</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant</xpath>
+            <value><minGrowthTemperature>-4</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>8</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>8</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>50</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>50</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>80</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_FE_Plant_Quickgrass"]/plant</xpath>
+            <value><maxGrowthTemperature>80</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- churrun mast (RUT_Arpeau) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Arpeau"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- rhukk tooth (RUT_BleedingTooth) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_BleedingTooth"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- tinnik bell (RUT_Brightbell) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Brightbell"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- rhessa cap (RUT_CrimsonCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- sikkra lure (RUT_Dewshrooms) - 2427 tiles, home demands -52.8 … 45.3 °C
+       minGrowthTem 0->-52.8  minOptimalGr 6->-41.3  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-52.8</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant</xpath>
+            <value><minGrowthTemperature>-52.8</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.3</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.3</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Dewshrooms"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- fire lavender (RUT_FireLavender) - 44 tiles, home demands 26.9 … 70.8 °C
-       minGrowthTem 50->26.9  minOptimalGr 50->43.2  maxOptimalGr 352.222->336  maxGrowthTem 352.222->352.2 -->
+       minGrowthTem 26.9->26.9  minOptimalGr 43.2->43.2  maxOptimalGr 336->335.9  maxGrowthTem 352.2->352.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_FireLavender"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4099,11 +5611,11 @@
           <xpath>/Defs/ThingDef[defName="RUT_FireLavender"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_FireLavender"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>336</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>335.9</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_FireLavender"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>336</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>335.9</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
@@ -4121,8 +5633,116 @@
     </match>
   </Operation>
 
+  <!-- tarrusk spire (RUT_FlakespireFungus) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FlakespireFungus"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- pimmik mold (RUT_FruitingBodies) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_FruitingBodies"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- giant leaf (RUT_GiantLeaf) - 278 tiles, home demands 23.2 … 74.6 °C
-       minGrowthTem 0->0  minOptimalGr 6->7.7  maxOptimalGr 42->54  maxGrowthTem 58->74.6 -->
+       minGrowthTem 0->0  minOptimalGr 7.7->7.7  maxOptimalGr 54->54  maxGrowthTem 74.6->74.6 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_GiantLeaf"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4175,8 +5795,62 @@
     </match>
   </Operation>
 
+  <!-- sylla lace (RUT_GreyLady) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_GreyLady"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <!-- heatsink fungus (RUT_HeatsinkFungus) - 44 tiles, home demands 26.9 … 70.8 °C
-       minGrowthTem 50->26.9  minOptimalGr 50->43.2  maxOptimalGr 352.222->336  maxGrowthTem 352.222->352.2 -->
+       minGrowthTem 26.9->26.9  minOptimalGr 43.2->43.2  maxOptimalGr 336->335.9  maxGrowthTem 352.2->352.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_HeatsinkFungus"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4207,11 +5881,11 @@
           <xpath>/Defs/ThingDef[defName="RUT_HeatsinkFungus"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_HeatsinkFungus"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>336</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>335.9</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_HeatsinkFungus"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>336</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>335.9</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
@@ -4230,7 +5904,7 @@
   </Operation>
 
   <!-- vennik salve (RUT_MortalMorelPlant) - 2204 tiles, home demands -53.1 … 31.4 °C
-       minGrowthTem -50->-53.1  minOptimalGr -45->-32.8  maxOptimalGr 352.222->332  maxGrowthTem 352.222->352.2 -->
+       minGrowthTem -53.1->-53.1  minOptimalGr -32.8->-32.8  maxOptimalGr 332->331.9  maxGrowthTem 352.2->352.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_MortalMorelPlant"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4261,11 +5935,11 @@
           <xpath>/Defs/ThingDef[defName="RUT_MortalMorelPlant"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_MortalMorelPlant"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>332</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>331.9</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_MortalMorelPlant"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>332</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>331.9</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
@@ -4283,8 +5957,278 @@
     </match>
   </Operation>
 
-  <!-- scorched stars (RUT_ScorchedStars) - 1943 tiles, home demands -28 … 65.5 °C
-       minGrowthTem 0->-28  minOptimalGr 6->-18.3  maxOptimalGr 42->39.7  maxGrowthTem 58->65.5 -->
+  <!-- brommok timber (RUT_Nogtyl) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nogtyl"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- nissik gill (RUT_Nuitae) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Nuitae"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- gubbra gourd (RUT_Pusmelon) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Pusmelon"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- rustpuff (RUT_RustPuff) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_RustPuff"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- tavvik crust (RUT_Sagecrust) - 2248 tiles, home demands -53.1 … 33 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Sagecrust"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- scorched stars (RUT_ScorchedStars) - 1943 tiles, home demands -28 … 69.4 °C
+       minGrowthTem -28->-28  minOptimalGr -18.3->-17.9  maxOptimalGr 39.7->42.5  maxGrowthTem 65.5->69.4 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4304,33 +6248,141 @@
           <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>-18.3</minOptimalGrowthTemperature></value>
+            <value><minOptimalGrowthTemperature>-17.9</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>-18.3</minOptimalGrowthTemperature></value>
+            <value><minOptimalGrowthTemperature>-17.9</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>39.7</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>42.5</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>39.7</maxOptimalGrowthTemperature></value>
+            <value><maxOptimalGrowthTemperature>42.5</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>65.5</maxGrowthTemperature></value>
+            <value><maxGrowthTemperature>69.4</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_ScorchedStars"]/plant</xpath>
-            <value><maxGrowthTemperature>65.5</maxGrowthTemperature></value>
+            <value><maxGrowthTemperature>69.4</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- dremmik cap (RUT_Shinecap) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Shinecap"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- vekkra choker (RUT_Skulltop) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Skulltop"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
       </operations>
@@ -4338,7 +6390,7 @@
   </Operation>
 
   <!-- martyr tree (RUT_TreeMartyr) - 546 tiles, home demands -22.1 … 37.5 °C
-       minGrowthTem 0->-22.1  minOptimalGr 6->-13.8  maxOptimalGr 42->35.9  maxGrowthTem 58->58 -->
+       minGrowthTem -22.1->-22.1  minOptimalGr -13.8->-13.8  maxOptimalGr 35.9->35.9  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_TreeMartyr"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4392,7 +6444,7 @@
   </Operation>
 
   <!-- twisting thorngrass (RUT_TwistingThorngrass) - 970 tiles, home demands -8.6 … 70.1 °C
-       minGrowthTem 0->-8.6  minOptimalGr 6->-0.5  maxOptimalGr 42->48.4  maxGrowthTem 58->70.1 -->
+       minGrowthTem -8.6->-8.6  minOptimalGr -0.5->-0.5  maxOptimalGr 48.4->48.4  maxGrowthTem 70.1->70.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_TwistingThorngrass"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4446,7 +6498,7 @@
   </Operation>
 
   <!-- twisting thornweed (RUT_TwistingThornweed) - 970 tiles, home demands -8.6 … 70.1 °C
-       minGrowthTem 0->-8.6  minOptimalGr 6->-0.5  maxOptimalGr 42->48.4  maxGrowthTem 58->70.1 -->
+       minGrowthTem -8.6->-8.6  minOptimalGr -0.5->-0.5  maxOptimalGr 48.4->48.4  maxGrowthTem 70.1->70.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_TwistingThornweed"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4500,7 +6552,7 @@
   </Operation>
 
   <!-- twisting thornwood (RUT_TwistingThornwood) - 1516 tiles, home demands -18.7 … 68.2 °C
-       minGrowthTem 0->-18.7  minOptimalGr 6->-9.7  maxOptimalGr 42->44.2  maxGrowthTem 58->68.2 -->
+       minGrowthTem -18.7->-18.7  minOptimalGr -9.7->-9.7  maxOptimalGr 44.2->44.2  maxGrowthTem 68.2->68.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_TwistingThornwood"]/plant</xpath>
     <match Class="PatchOperationSequence">
@@ -4547,6 +6599,114 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="RUT_TwistingThornwood"]/plant</xpath>
             <value><maxGrowthTemperature>68.2</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- pursk hood (RUT_VioletWimple) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_VioletWimple"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- rukka cap (RUT_Wrinklecap) - 2204 tiles, home demands -53.1 … 31.4 °C
+       minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/minGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/minGrowthTemperature</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant</xpath>
+            <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/minOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/minOptimalGrowthTemperature</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant</xpath>
+            <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant</xpath>
+            <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/maxGrowthTemperature</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant/maxGrowthTemperature</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_Wrinklecap"]/plant</xpath>
+            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
       </operations>
