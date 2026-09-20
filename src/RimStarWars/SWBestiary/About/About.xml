@@ -55,6 +55,26 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
       <displayName>Star Wars Animal Collection (Continued)</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
     </li>
+    <li>
+      <!-- 🔴 PROMOTED FROM <loadAfter> 2026-09-20. It supplies five
+           RM_CompProperties_* classes, so it was never an ordering preference -
+           it is a hard dependency. Under loadAfter it was INVISIBLE to
+           dependency closure (which walks THIS block), the comp types failed to
+           resolve, and a missing comp type DISCARDS THE WHOLE DEF silently.
+           MEASURED on a reduced tier: 5 missing types, eating RSW_Drazzik,
+           RSW_WraidAlpha and the BiomesTeamPort races. -->
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+    <li>
+      <!-- 🔴 ADDED 2026-09-20. Was declared NOWHERE, yet owns the ONLY copy of
+           Things/Pawn/Animal/Fuelmite/* - the texPath RSW_Cindermite (zhakka)
+           binds to. Art binds by texPath, not defName, so without this the
+           creature spawns perfectly and renders as a magenta X. Confirmed by
+           screenshot and by locating the PNGs in exactly one workshop folder. -->
+      <packageId>OskarPotocki.VFE.Insectoid2</packageId>
+      <displayName>Vanilla Factions Expanded - Insectoids 2</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
