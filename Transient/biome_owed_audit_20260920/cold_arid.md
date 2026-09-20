@@ -3,8 +3,8 @@
 Sheets audited (10): nightside_ice, forsaken_crags, desert, deep_desert, arid_shrubland,
 wasteland, the_cracked_lands, fall_line, weeping_stones, dune_sea.
 
-Method: per CLAUDE.md instructions in the task brief. Status: IN PROGRESS — filling in one
-sheet at a time, writing after every sheet.
+Method: per CLAUDE.md instructions in the task brief. Status: **COMPLETE** — all 10
+sheets audited; see `## Summary` at the bottom for the ranked UNFILED list.
 
 ## nightside_ice.md
 
@@ -411,4 +411,124 @@ section (7 bullets) split into 8 work items.
   ecosystem or missing gameplay loop.
 
 ## dune_sea.md
-(pending)
+
+**No `## Owed` heading, confirmed** (grep + full read) — and unlike `fall_line.md`
+(which lacked one but had a live "Open, not ruled" section), this sheet has neither.
+Read the whole 290-line sheet plus every inline 🔴/⚠️/🎫/🔑 line looking for
+ratified-but-unbuilt work.
+
+**Conclusion: nothing UNFILED found on this sheet.** What looked at first like
+candidates all resolve to tracked/ruled work:
+- **`ExtremeDesert` carrying two sheets (dune sea + deep desert) — "split or share"**
+  (flagged as an open question at the top of `BIOME_FAUNA_ASSIGNMENT_SITTING_1`) —
+  **RESOLVED**: same item, later: *"`ExtremeDesert`: one merged strict-intersection
+  roster (freeze R22, already ruled)"* — share, not split. Matches the live roster file
+  `design/Jawa/worldbuilding/biomes/rosters/dune_sea_deep_desert.json`, which exists and
+  carries both biomes' fauna together, giants included ("giants limited to the ruled
+  five").
+- **TetraSlug/Dunealisk/giants rulings** (from the same sitting: "dune sea: TetraSlug
+  cathedral-only, Dunealisk CUT from game, giants VERY RARE") — all three show up
+  correctly reflected in the roster JSON's `reason` fields (checked directly).
+- **Population deliberately near-empty** — the sheet's own §Roster consequences says
+  "sparse to the point of discomfort... the correct number of distinct creature defs...
+  is small," so a thin roster here is the design intent, not a gap.
+- **The dune-grain/transverse-ridge mechanism and the map-generator's yardang/wind-grain
+  rule** — this is the SAME open, not-yet-ruled map-generator work already reported
+  under `deep_desert.md` item 4 above (`map_generator_round4_options.md` /
+  `map_generator_chooser_spec.md` name dune sea explicitly alongside deep desert's
+  yardangs). Not double-counting it as a separate finding here — see that entry.
+No own `RUT_DuneSea` BiomeDef exists (only a terrain patch,
+`JawaTerrain_DuneSeas.xml`), which is consistent with the biome legitimately riding the
+shared `ExtremeDesert` def per the ruling above, not a sign of missing work.
+
+---
+
+## Summary — ranked UNFILED findings
+
+Owed entries examined across all 10 sheets: **~70** individual work items (splitting
+compound bullets), across roughly 45 distinct Owed/inline bullets.
+
+**Ranked worst-first** (CONFIRMED unless noted):
+
+1. **desert.md — the `ShadeAt(IntVec3)` shade-grid `MapComponent`, the keystone
+   mechanic §10 itself says "we must build."** Zero ledger item, zero C#. Without it,
+   shade-seeking fauna, the burst-then-recover hediff, megafauna heat and filter-feeding
+   sand all have no mechanism to read from. Desert is one of the two largest land biomes
+   (2,390 tiles) and the starting biome — this is the core desert playing with none of
+   its designed identity. Searched: `ShadeAt`, `shade grid`, `MapComponent.*shade`,
+   `ShadeSeek`/`ShadeComp`/`DesertShade`, `burst hediff`, `megafauna heat`,
+   `filter-feeding sand`.
+2. **fall_line.md §8b — the feral-survivor capture→slave/memwipe mechanic.** A complete
+   owner-dictated ruling (verbatim quote, full stat table, v1/v2 split already drawn) with
+   zero ledger item and zero code. The biome's one named population is simply absent from
+   play. Searched: `feral droid`, `feral pawn`, `memwipe`, `feral race`, `feralpawn`,
+   `feraldroid`, `FallLineFeral`, `RUT_Feral`.
+3. **nightside_ice.md — the vhorr/chittik/ilverr fauna trio** (tunneler warren creature,
+   inclusion-insect swarm, aurora-current feeder). Owner-commissioned by name at
+   `BIOME_FAUNA_ASSIGNMENT_SITTING_1`, fully specced in a 2026-09-10 Fable design brief
+   whose own header says "nothing here is built" — and nothing is. `RUT_NightsideIce`'s
+   `wildAnimals` list is deliberately empty by its own def spec, so the biome currently
+   ships with **zero native fauna** — the same shape of gap as the Blue Desert, on the
+   biome directly above it in the same thematic family. Searched: `vhorr`, `RUT_Vhorr`,
+   `chittik`, `RUT_Chittik`, `ilverr`, `RUT_Ilverr`, `tunneler warren`,
+   `inclusion-insect`, `aurora-current`.
+4. **nightside_ice.md — the 5-item incident-def equivalence table** (thaw pulse, calving
+   delivery, the lost soul, rime-fall/ablation, the Dark drifting over) plus the engine
+   feasibility pass for crevasse/collapse. No incidents fire on this biome at all right
+   now. Searched: `thaw pulse`, `calving delivery`, `lost soul`, `rime-fall`.
+5. **forsaken_crags.md — the darkbeast EM mechanism, the Unveiling rare-reveal
+   WeatherDef, gust-wind variability, turbine-breakage, pursuit/raid slowdown in the
+   Dark.** `RUT_ForsakenCrags.xml`'s own header confirms all of it as "NOT this pass's
+   scope... all C#, SS Owed," independently corroborating the ledger search. Searched:
+   `darkbeast`, `dark-folding`, `gust-wind`, `turbine-breakage`, `unveiling`,
+   `raid slowdown`.
+6. **wasteland.md — the radiation/pollution spine** (dose/geiger layer, three storm
+   WeatherDefs — ash/halo/plasma, storm map-reshuffle tooling) **and the Junkers'
+   tipping-fee economy.** Both independently confirmed absent by `RUT_Wasteland.xml`'s
+   own header. Searched: `geiger`, `dose layer`, `halo-storm`, `plasma-storm`,
+   `tipping-fee`, `waste-caravan`.
+7. **arid_shrubland.md — 7-mechanic engine feasibility pass** (Stall/Gale weather,
+   parental enrage, canopy-concealment wiring into the colony-visibility stat, venomvine
+   passability, nest-theft, giants' wall-indifference/fire-stamping, vaporator V-blight
+   desertification). Searched each term individually; zero hits for any.
+8. **deep_desert.md — the cavern/shaded-canyon mini-ecosystem** (brine-seep upwellings,
+   trap-striking plants/animals, the Mandalorian-cave-beast reference creature). Distinct
+   from the (separately owned) Lantern Deeps crystal-cavern work. Searched:
+   `mandalorian cave-beast`, cavern cross-checks against both Sarlacc items.
+9. **weeping_stones.md — ambient/mechanical polish layer** (condenser fin, servo-vent
+   enclosure, fog-at-wind-hour weather, aeolian ambient, the owner-ruled v1 predator
+   truce near water). Lowest-impact finding: this sheet's core biome is fully built and
+   tracked; this is finish work. Searched: `condenser fin`, `servo-vent`,
+   `fog-at-wind-hour`, `aeolian ambient`, `the truce`.
+10. **the_cracked_lands.md — flavour/economy dressing** (crack-wax and the bloom as item
+    defs, discovery surveys, the flier-commute vector line to the Desert sheet; grasses
+    and mosses, the non-tree two-thirds of flora authoring). Lowest-impact: this sheet is
+    the best-tracked of the ten and its core loop is built.
+
+**UNCERTAIN (flagged, not counted as UNFILED):** dusk rat art redo
+(`forsaken_crags.md` — donor art may have been deliberately kept, not abandoned);
+colder/warmer variant mapping (`forsaken_crags.md` — explicitly unratified by the sheet
+itself); wind-grain/yardang map-generator rule (`desert.md`/`deep_desert.md`/
+`dune_sea.md` — design still open, "reversed... open call," nothing to file yet).
+
+**DONE-BUT-UNRECORDED (no ledger ID, but proven built from the def/code):** the
+Frostling's admission to `forsaken_crags` (`AA_Frostling` in `RUT_ForsakenCrags.xml`,
+comment cites the sheet directly); `the_cracked_lands.md`'s def-tails check (985 tiles
+matches the def's own authoring measurement).
+
+**STALE/SUSPECT FILED ITEMS worth the owner's eye:**
+- `NIGHTSIDE_ICE_DEF_1` (closed/done) painted **802 tiles**; the sheet's own §0 measures
+  **1,506** (amended from "old 1,406"). ~700-tile gap, unexplained, not resolved by me.
+- `WORLDMAP_DESERT_BAND_REPAIR_1` (closed/done) ratified BOTH the Desert-band repair AND
+  an "AridShrubland folds in" 248-tile cut and a "Wasteland tail" 19-tile cut in the same
+  document — but its closing note names only the Desert bands as landed. The shrubland
+  and wasteland corrections may have been silently dropped when the item closed. Affects
+  both `arid_shrubland.md` and `wasteland.md`.
+- `wasteland.md`'s "the Throat" vs `GAPING_DOOM_SITE_1` ("the Gaping Doom") — very likely
+  the same landmark under two names, one closed as done, but `RUT_Wasteland.xml`'s own
+  header (same day) still lists "the Throat" as out of scope, and the built landmark's
+  biome tag doesn't cleanly match. Not resolved.
+
+All claims above are marked CONFIRMED (multi-term search, zero hits, often
+corroborated by a def's own header comment) or explicitly UNCERTAIN in-line; nothing is
+asserted UNFILED on a single search term alone.
