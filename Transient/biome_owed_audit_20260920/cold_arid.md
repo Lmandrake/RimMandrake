@@ -150,7 +150,47 @@ but explicitly unbuilt work per the brief's instruction to check inline 🔴/⚠
    model" is itself an amendment record, not owed work — no action needed.
 
 ## deep_desert.md
-(pending)
+
+Owed section (5 bullets) — 5 work items, one split further by cross-reference.
+
+1. **Sarlacc** ("its own item... three life-cycle stages, a dungeon-like module") —
+   **FILED**, `SARLACC_HABITAT_BUILD_1` (state `ready`, BLOCKED). `show` confirms
+   substantial work landed (swimmer/rooting/anchored/7 hediffs/settings/v1 breach) with
+   named remaining gaps (pocket-map dungeon interior not built, DBH water wiring, real
+   art, a RUT Sun-Debt patch) and world placement correctly split off to
+   `SARLACC_WORLDMAP_RELOCATE_1` (closed). Properly tracked, not a silent gap.
+2. **Silverbole's final name** — owner's-pick placeholder, not build work. Searched
+   `silverbole`, one unrelated hit (`INHABITED_AUGMENTATION_BUILD_1`). Not ranking.
+3. **Cavern authoring** ("Caverns and permanently shaded canyons — the real ecosystems...
+   Serious authoring effort belongs here — reference the Mandalorian cave-beast") —
+   **UNFILED (CONFIRMED)**. 🔴 Important disambiguation: this is **not** the Lantern
+   Deeps/crystal-caverns work (`CAVERNS_PARITY_BUILD_1`, closed — that's a different
+   named biome, `the_lantern_deeps.md`, donor-parity XML work, not mine to report). §8 of
+   *this* sheet describes a distinct mini-ecosystem local to the deep desert: brine-seep
+   upwellings, trap-striking plants/animals in a few-metres territory, and a named
+   reference creature (the Mandalorian cave-beast analog, "massive eggs a Jawa would
+   cross a desert for"). Searched: `mandalorian cave-beast`, `deep.desert.*cavern` /
+   `cavern.*deep.desert`, `cavern` inside the two Sarlacc closed items (checking it
+   wasn't folded into that build) — zero hits anywhere in items, closed items, or `src/`
+   (only `DeepDesertTribes.xml`/`.png`, faction art, exists under a DeepDesert name).
+   Nothing about brine ecosystems, trap-plants or a cave-beast creature is built or
+   ticketed. This is real, sheet-flagged ⭐ "serious authoring effort" with zero ledger
+   trace.
+4. **Wind-grain / yardang generation in the map-modification routine** — **UNFILED, but
+   with a caveat**: two open design docs exist —
+   `design/RimMandrake/map_generator_round4_options.md` and
+   `.../map_generator_chooser_spec.md` — that discuss yardang/wind-grain generation for
+   deep desert AND dune sea together, but the round4 doc's own text flags the underlying
+   rule as an **open call, not yet ruled** ("This reverses rule 11 as written: open
+   call"). Searched `yardang`, `wind-grain`/`wind grain`, `windgrain`, `MAP_GENERATOR` /
+   `map_generator_round4` / `map_generator_chooser` as item names — zero ledger items at
+   all, filed or closed, for this generator work on either biome. Ranking this below the
+   cavern ecosystem because the design itself isn't finished (nothing to build yet
+   without the ruling), but noting it here since the owner's underlying question was
+   "was this ever filed" and the honest answer is no, at any stage.
+5. **§0 per-region table stale against V23** — a documentation/measurement fix (re-run
+   `biome_sheet_stats.py` per-region), not a gameplay gap. Did not chase a ledger ID;
+   low-stakes doc accuracy issue, not ranking it.
 
 ## arid_shrubland.md
 (pending)
