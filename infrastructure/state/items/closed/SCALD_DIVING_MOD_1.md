@@ -75,23 +75,70 @@ pass can retire this once a real walker pawnkind ships).
 - `deploy_custom_mods.py --mod DivingInteraction --apply` — deployed clean,
   7 files, VERIFIED in sync.
 
-## Owed (why this is BLOCKED, not closed)
+## 🔴 The 2026-09-12 build had never actually applied its own patch
 
-This mechanism has never been observed running — FOUNDRY.md: "a live check
-is owed only to a mechanism never once observed running." The game was
-measured DOWN when this build finished, and shortly after came back UP
-under another window's own session (bridge held by that window per this
-item's own instructions — "stay off the bridge and world state entirely").
-So:
+Re-verifying live 2026-09-20 (bridge free all day, no contention) found the
+patch file deployed at `Defs/Patches/RM_ScaldDiveEligibleTerrain.xml` —
+**inside** the `Defs/` tree. RimWorld's Defs loader tried to parse it as a
+Defs file and rejected it twice (`root element named Patch; should be
+named Defs`, then `Type PatchOperationAdd is not a Def type`). **The
+`RM_DiveEligible` tag had never once landed on any Scald terrain, live or
+on disk, since the mod was built** — moved to a mod-root `Patches/` folder
+(sibling of `Defs/`, matching `FlowWorks/Patches/` and `RimUtinni
+Patches/Patches/`; commit `d38274fb3`) and redeployed.
 
-1. `mandrake.rm.divinginteraction` is deployed to `Mods/` but deliberately
-   **NOT added to ModsConfig.xml** — enabling it is a live mod-list write
-   (CHARTER expensive-list item 3) and doing it while another window is
-   mid-session risked their restart loading an unverified mod cold.
-2. Next FOUNDRY/BENCH window with the bridge free: enable the mod, cold
-   load (or minimal-list quicktest), confirm in Player.log there is no
-   `Config error` and no red patch-mismatch for `RM_ScaldDiveEligibleTerrain`,
-   then in a live/quicktest map right-click a tagged Scald shallow cell and
-   confirm both float menu options appear, a dive job completes, HP drops
-   from the terrain's own burn tick during it, and the mood thought /
-   chitin drop resolve. Then `rimflow close SCALD_DIVING_MOD_1 --sha <commit>`.
+## Verification done, live, post-fix (2026-09-20)
+
+Added a `diving` tier to `modset_builder.py`
+(`brrainz.rimbridgeserver` + `mandrake.rut.patches` +
+`mandrake.rm.divinginteraction`) and drove it through the bridge
+(`jawa/get_defs`, `jawa/set_terrain`, `jawa/spawn_pawn`,
+`jawa/ordered_job`, `rimworld/step_game_ticks`, `jawa/pawn_thoughts`,
+`jawa/list_things`, `jawa/mod_settings_field`):
+
+- **Tag now applies correctly**: `jawa/get_defs` on the four terrains shows
+  `RUT_ScaldWaterShallow`/`MovingShallow`/`MovingChestDeep` all carrying
+  `RM_DiveEligible` + `Standable`; `RUT_ScaldWaterDeep` carries neither the
+  tag nor `Standable` (`Impassable`) — ban 4's boiling-surface exclusion
+  holds structurally, not just by intent.
+- **"Priced in burns" fires live**: painted `RUT_ScaldWaterShallow` onto a
+  quicktest map, stood colonists on it — the vanilla `Burn` hediff
+  accumulated on every pawn standing there, unprompted, from the terrain's
+  own `burnDamage`/`burnIntervalTicks`.
+- **`RM_Job_DiveCommune` runs to completion**: given directly via
+  `jawa/ordered_job` (same `TryTakeOrderedJob` call the float menu's
+  `Action()` makes) at a tagged cell, ran ~2500 ticks, and applied
+  `RM_Thought_CommunedWithDeep` at `moodOffset: 6.0` — matching
+  `RM_DivingSettings.communeMoodOffset`'s live default, confirming the
+  `Thought_Memory.MoodOffset()` override actually reads the setting.
+- **`RM_Job_DiveHunt` runs to completion**: same call shape, produced one
+  `RM_ScaldWalkerChitin` on the map afterward.
+- **`RM_DivingSettings` loads live**: `jawa/mod_settings_field` lists all
+  10 fields (`masterEnabled`, `huntEnabled`, `communeEnabled`,
+  `diveDurationTicks`, `diveCooldownTicks`, `huntSuccessChance`,
+  `huntLashbackChance`, `huntYieldMin/Max`, `communeMoodOffset`) at exactly
+  their documented shipped defaults.
+- **Clean load twice** (the diving tier, then the real 618-mod full list
+  with this mod now added): no `Config error`, no cross-reference error, no
+  patch-failure line naming this mod or `RM_ScaldDiveEligibleTerrain.xml`
+  either time.
+- `mandrake.rm.divinginteraction` added to `ModsConfig.FULL.LATEST.xml`
+  (right after its `mandrake.rut.patches` `loadAfter`) and to the live
+  `ModsConfig.xml` — it now ships as real content, not deployed-but-inert.
+
+## Owed — one gap, deliberately not chased here
+
+**Not verified**: the literal right-click float menu presenting "Dive to
+hunt"/"Dive to commune" as two clickable UI rows. No bridge tool queries
+`FloatMenuMakerMap`'s output at a cell, and simulating the click would need
+a screen-coordinate/camera-projection tool that does not exist yet. What
+*is* verified is the exact code both menu rows execute
+(`JobMaker.MakeJob(jobDef, cell)` + `pawn.jobs.TryTakeOrderedJob`, driven
+identically via `jawa/ordered_job`) end to end, and that
+`RM_FloatMenuOptionProvider_Dive.AppliesInt` (`masterEnabled` +
+`CellIsDiveSite`) reads live-true data. `FloatMenuOptionProvider`
+auto-discovery via `FloatMenuMakerMap.Init()`'s reflection scan is a
+standard RimWorld mechanism with no custom registration to fail. Residual
+risk is low but real — if this specific UI presentation is ever doubted,
+the check is one screenshot after an OS-level right-click at the tagged
+cell's projected screen position, not a re-build.
