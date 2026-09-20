@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:33:28Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-20T19:40:45Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -927,15 +927,6 @@ kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
-## EXTREME_DESERT_CAVERN_BEAST_1 Author the Mandalorian cave-beast and its portable-water eggs
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  EXTREMEDESERTCAVERNBEAST1 — author the Mandalorian cave-beast and its eggs
-prose:    infrastructure/state/items/EXTREME_DESERT_CAVERN_BEAST_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1371,16 +1362,6 @@ kind:     build
 thin:     no ## spec
 summary:  PORTEDBEASTMECHANICSREBUILD1 — rebuild the three dropped donor mechanics in our own C
 prose:    infrastructure/state/items/PORTED_BEAST_MECHANICS_REBUILD_1.md
-
-## MYNOCK_FLIGHT_ART_FIRST_1 RSW_Mynock was wired for real 1.6 native flight against a texture folder that does not exist - the flyer rule is owed on it art-first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  MYNOCKFLIGHTARTFIRST1 — the mynock was made a flyer with no art to fly with
-prose:    infrastructure/state/items/MYNOCK_FLIGHT_ART_FIRST_1.md
 
 ## SWBESTIARY_UNPREFIXED_DONOR_DEFS_1 SWBestiary ships un-prefixed donor defNames (SWClaws, SWTailAttackTool, Dewback, Bogwing, Reek) and ~23 now-unreferenced BodyDefs left behind by the desert port dedup
 state:    proposed
