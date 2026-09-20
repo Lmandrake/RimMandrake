@@ -7,12 +7,30 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T14:53:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T15:06:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SCALDDIVINGMOD1 — Deep Diving (RimMandrake tier)
+prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 # IN PROGRESS
 
@@ -459,15 +477,6 @@ kind:     task
 summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
 prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
 
-## GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1 Giddy-Up's BuildAnimalBiomeCache throws 'same key already added: RSW_Iriaz' and skips its whole animal-biome cache. Root cause partially traced: RSW_Iriaz.xml keeps the donor's own <wildBiomes> block (AridShrubland 1.0, Desert 0.04) AND BiomeCast_Ashkarr.xml independently sets RSW_Iriaz's commonality on those SAME biomes (AridShrubland 1.0, Desert 0.1) - an overlap. BUT RSW_Anooba has the identical overlap pattern (wildBiomes AridShrubland/Desert + BiomeCast entries on the same biomes) and does NOT crash, so the overlap alone doesn't fully explain it - needs an actual read of RimWorld.BiomeDef.CommonalityOfAnimal/AllWildAnimals source (via RimSage) to find the real trigger before fixing blind. Pre-existing (byte-identical across the last two loads), not introduced by tonight's belt-mode work. Non-fatal - only Giddy-Up's own mountable-animal cache is affected, not core gameplay.
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
-prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
-
 ## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
 state:    doing
 row:      unassigned
@@ -485,15 +494,6 @@ target:   v1
 kind:     task
 summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
 prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
-
-## MODLIST_RULED_CUTS_1 Execute the 2026-09-12 bench modlist rulings: cut profiler + blood animations + slower pawn tickrate; Jurassic retirement lands after texPath check; MoEvents chances zeroed until port
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner rulings, bench sitting 2026-09-12 (cards + verbatim in the ledger notes):
-prose:    infrastructure/state/items/MODLIST_RULED_CUTS_1.md
 
 ## CATHEDRAL_REGARD_BLACKBOARD_1 Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
 state:    doing
@@ -602,15 +602,6 @@ target:   v1
 kind:     task
 summary:  In LiquidTypes (growing into RimMandrake: Liquids): the new top-level def
 prose:    infrastructure/state/items/LIQUID_REGISTRY_CORE_1.md
-
-## SLIME_STREAM_ROWS_1 R/G/W mucosal slime as distinct viscous stream/pool rows + yellow snot example row; purple dropped (owner 2026-09-13)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Four slime rows: RED, GREEN, WHITE as distinct liquids (distinct hazards +
-prose:    infrastructure/state/items/SLIME_STREAM_ROWS_1.md
 
 ## LIQUID_BOTTLE_LOOP_1 Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
 state:    doing
@@ -765,15 +756,6 @@ kind:     task
 summary:  Per design/Jawa/worldbuilding/biomes/thescarlands.md (FROZEN, §4 mynock,
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_2.md
 
-## FURNACEBEAST_THERMAL_CYCLE_1 Furnace-beast thermal capacitor cycle: migration AI, true heat immunity, thornvine diet
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FURNACEBEAST_THERMAL_CYCLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FURNACEBEAST_THERMAL_CYCLE_1.md
-
 ## BOOMALOPE_CUT_EVERYWHERE_1 Boomalope cut everywhere: roster, patch, Cherry Picker, in-joke lane dead
 state:    doing
 row:      unassigned
@@ -837,15 +819,6 @@ kind:     build
 summary:  the ask
 prose:    infrastructure/state/items/GRAFFITI_VANDAL_ART_REGEN_1.md
 
-## GRAFFITI_VARIANT_COUNTS_1 Graffiti variant counts are lopsided 6:2:2:2 - Scratches, TallyMarks and WarningGlyph have only 2 variants each so Graphic_Random repeats visibly on any spree; raise the three new marks toward parity (owner cut this from the visual checklist 2026-09-16, it is content work)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/GRAFFITI_VARIANT_COUNTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GRAFFITI_VARIANT_COUNTS_1.md
-
 ## ATMOSPHERIC_BASE_BUILD_PROGRAM_1 AtmosphericBase (mandrake.rm.atmosphericbase): the ambient framework the gods speak through — light AND sound, designed in full with the owner 2026-09-16, spec design/RimMandrake/atmospheric_base_mod_definition.md, 15 laws, DRAFT north star at design/validation_walks/RimMandrake/AtmosphericBase.md. Phase 0 is the seven UNMEASURED engine questions in spec §8 and is DESKTOP-ONLY; two are load-bearing (does a per-frame hook run while paused — L10 falls without it; what a live glow-colour change costs the light grid — TWINKLE_FLORA_SPIKE_1 measured a sprite tint, not a cast glow). Nothing else starts until those answer
 state:    doing
 row:      unassigned
@@ -873,15 +846,6 @@ kind:     build
 summary:  the ask (owner, verbatim, 2026-09-17)
 prose:    infrastructure/state/items/BARBSLINGER_SCORPION_REDESIGN_1.md
 
-## ROT_HEALTH_SHARING_1 Health-sharing comps: RM_CompWoundLink wound-splitting + RM_HediffComp_KinMending tend-aura, content-blind, tamed included
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  (no items/ROT_HEALTH_SHARING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROT_HEALTH_SHARING_1.md
-
 ## AQUATIC_WATER_BREATHING_GENE_1 Design and build a real water-breathing mechanism (gene or hediff) for the 4 aquatic xenotypes currently missing one entirely
 state:    doing
 row:      unassigned
@@ -899,15 +863,6 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/fishbestiarycommission2026-09-10.md
 prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
-
-## GIZKA_NEWGAME_NRE_FIX_1 Fix gizkastowaway's new Game() reading-policy NRE so it can be re-activated
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     investigate
-summary:  (no items/GIZKA_NEWGAME_NRE_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GIZKA_NEWGAME_NRE_FIX_1.md
 
 ## TWILIGHT_DEEP_WATER_LAYER_1 Twilight Deep needs its own under-roof water layer before fishTypes can wire
 state:    doing
@@ -936,15 +891,6 @@ kind:     defect
 summary:  Surfaced during DROIDWORKSPRIMITIVETIER1's 2026-09-13 live spawn: every
 prose:    infrastructure/state/items/DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.md
 
-## QUICKGRASS_VISUAL_SCALE_2X_1 Double quickgrass on-screen size - scale only, no new art
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  (no items/QUICKGRASS_VISUAL_SCALE_2X_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUICKGRASS_VISUAL_SCALE_2X_1.md
-
 ## FULL_LOAD_RESIDUE_TRIAGE_1 Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
 state:    doing
 row:      unassigned
@@ -972,15 +918,6 @@ kind:     task
 summary:  The Systech Static Blaster lost its distinctive electric projectile
 prose:    infrastructure/state/items/SYSTECH_ELECTRIC_BOLT_1.md
 
-## DRILL_IMPASSABLE_FILLPERCENT_1 RM_LiquidDrill logs a config error: impassable but shootable over
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  RMLiquidDrill: impassable, player-buildable, and shootable over
-prose:    infrastructure/state/items/DRILL_IMPASSABLE_FILLPERCENT_1.md
-
 ## DEEPS_FAUNA_MECHANICS_1 Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
 state:    doing
 row:      unassigned
@@ -1002,16 +939,6 @@ prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (faction/goodwill layer); DROID_SYSTEM_BUILD_1 is live but only in Phase 0
-summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    ready  (BLOCKED)
@@ -1262,16 +1189,6 @@ kind:     task
 blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentide's cross-biome opt-in included); live in-game verification (cold load / quicktest, confirm toggles work with no errors) not yet run — see item file's progress section
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
-
-## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  built+compiled+validate_patch clean, deployed to Mods/ but NOT enabled in ModsConfig (avoiding a live mod-list change while another window drives the bridge); owed: enable + live quicktest (float menu on tagged cell, job completes, burn ticks apply, settings render)
-summary:  SCALDDIVINGMOD1 — Deep Diving (RimMandrake tier)
-prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 ## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
 state:    ready  (BLOCKED)
