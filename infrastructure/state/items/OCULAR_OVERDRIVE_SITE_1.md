@@ -30,11 +30,18 @@ want it — at the risk of unleashing it across the planet.
   (Ocular Jelly, Red Spore, Red Goo, Infected Aerofleet).
 - **Named landmark** on the world (owner's real name owed) + **custom dungeon** at the
   site (scene-composition skill applies; KCSG or the dungeon items' method).
-- **Plot weave** (owner): the Rust Cathedral (`AB_MechanoidIntrusion`) hates it — a
-  mechanoid cathedral vs a biological weapon in frenzy. ⚠️ MEASURED 45.5° of arc apart:
-  write the enmity as ideological/strategic; a tile move is the owner's call if he wants
-  adjacency. What the Overdrive is FOR in the campaign — a quest line, a prize, a threat
-  clock — is design work with the owner.
+- **Plot weave** (owner): the Rust Cathedral (`RUT_RustCathedral`, 236 painted tiles —
+  the old `AB_MechanoidIntrusion` carries ZERO and is dead) hates it — a
+  mechanoid cathedral vs a biological weapon in frenzy. ⚠️ The 45.5°-of-arc figure was
+  MEASURED between the OLD defs and has not been re-derived against `RUT_Contagion`
+  (179 tiles) and `RUT_RustCathedral` (236) — treat it as UNMEASURED until it is.
+  The guidance holds regardless: write the enmity as ideological/strategic; a tile move
+  is the owner's call if he wants adjacency.
+
+  🔑 **Still open for the owner, and this is what keeps the item on his queue:**
+  what the Contagion is FOR in the campaign — a quest line, a prize, a threat clock —
+  plus the reveal gating (which datafiles disclose what, and when) and the named
+  landmark's real name.
 - Content stays a POINT (remnants doc ban 3): never terrain-scale.
 
 ## verify
