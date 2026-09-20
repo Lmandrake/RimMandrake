@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T19:37:32Z",
+  "drawsize": 4.8,
+  "facing": null,
+  "facings": [],
+  "id": "rsw_zakkro_dessicated_v1",
+  "priority": 100,
+  "prompt": "A desiccated, mummified husk of a zakkro cave-beast (see companion job rsw_zakkro_v1 for the living creature's design: hulking four-legged megafauna, dust-pale matted lichen-fiber dreadlocks, blind eyeless tendril-fringed head, lamprey-like circular maw). RimWorld top-down pawn sprite, painterly vanilla-RimWorld creature art style, desiccated/dessicated-corpse convention: dried, shrunken, hollowed, bone-and-dust pale throughout -- no wetness, no rot, no decay, pure desiccation. Transparent background, no scenery.",
+  "reference": null,
+  "rimflow_item_id": "EXTREME_DESERT_CAVERN_BEAST_1",
+  "style_notes": "RSW_Zakkro dessicatedBodyGraphicData. Desert biome hard rule: nothing rots, everything desiccates -- never a rot/decay read."
+}

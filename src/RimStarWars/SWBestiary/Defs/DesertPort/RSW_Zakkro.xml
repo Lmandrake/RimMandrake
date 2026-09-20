@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Zakkro.xml                                  EXTREME_DESERT_CAVERN_BEAST_1
+
+  Authors deep_desert.md SS8's headline cavern creature: "Serious authoring
+  effort belongs here — reference the Mandalorian cave-beast: a huge shaggy
+  thing deep in a cavern, with massive eggs a Jawa would cross a desert for."
+  Cavern map-generation itself is separate, larger work and is explicitly out
+  of scope for this item (deep_desert.md's own "Owed" section).
+
+  Canon check (rimworld-canon-references convention): "the Mandalorian
+  cave-beast" is Wookieepedia's mudhorn (Arvala-7, *The Mandalorian* Ch. 2 —
+  Din Djarin fights one in its cave for its egg). It is ALREADY ported into
+  this mod as RSW_Mudhorn (MLIE_FAUNA_ABSORPTION_1, ThingDefs_Races/
+  RSW_Mudhorn.xml) — but as ordinary AridShrubland/Desert ambient wildlife
+  (wildBiomes ExtremeDesert 0.0, i.e. explicitly EXCLUDED from this biome),
+  tameable, pack-animal, common (combatPower 475), with a plain hatching/food
+  egg pair. That def does not serve this design beat: a rare, dangerous,
+  cavern-exclusive headline encounter whose egg is a water-canteen, not food.
+  Rather than duplicate or repurpose the shipped Mudhorn, this file authors a
+  distinct invented species (RSW_Zakkro — coined per check_pseudo_sw_name.py,
+  PASS, no collision with any of the 137 canon_references entries) that fills
+  the narrative role the sheet actually asks for, and keeps the canon mudhorn
+  untouched.
+
+  Recognizability rule: a plain shaggy quadruped predator would read as
+  "that's a bear" or "that's a rhino" and fail the strangeness test (this is
+  NOT a Star Wars icon, so it gets no icon carve-out). Designed alien instead:
+  blind/eyeless, a tendril-fringed lamprey-like sideways maw in place of a
+  jaw/horn, matted dust-pale fibrous growths rather than mammal fur. Colour
+  and material kept pale/matte/dusty throughout, per the biome's hard ban on
+  anything reading mineralized/crystalline/gemstone.
+
+  Body QuadrupedAnimalWithPaws (vanilla, no new BodyDef needed) — claws off
+  FrontLeftPaw/FrontRightPaw, bite off Teeth/AnimalJaw, blunt off
+  HeadAttackTool, same tool shape as Bear_Grizzly/RSW_Maguana. Sounds reuse
+  vanilla Pawn_Bear_* (Call/Angry/Wounded/Death) and the
+  Pawn_Melee_BigBash_*/PredatorLarge_Eat set already used elsewhere in this
+  mod — no new SoundDefs. leatherDef reuses vanilla Leather_Bear;
+  specificMeatDef reuses RSW_Pachydermoid_Meat (already shipped for Mudhorn) —
+  no new resource defs beyond the egg this item also asks for (RSW_ZakkroEgg,
+  ThingDefs_Items/RSW_ZakkroEgg.xml).
+
+  Deliberately UNWIRED and deliberately no CompProperties_EggLayer:
+  - No <wildBiomes> block at all. deep_desert.md SS8 places this creature
+    "deep in a cavern", and cavern map-generation does not exist yet (out of
+    scope for this item, per its own "Watch out"). Wiring it into a SURFACE
+    BiomeDef (ExtremeDesert or otherwise) would be wrong — it has no route to
+    appear until cavern generation exists to place it. CAVERNS_PARITY_BUILD_1's
+    RSW_Maguana (BiomesTeamPort/ThingDefs_Races/RSW_Maguana.xml) is the
+    precedent for shipping a cavern creature def "not wired into any biome by
+    this file."
+  - No egg-laying comp. deep_desert.md SS4 "Eggs are canteens" is explicit the
+    egg is portable water, "not food... drink you can carry" — not a
+    hatch/breed mechanic. Wiring CompProperties_EggLayer here would need a
+    second (fertilized) egg def this item does not ask for and would turn the
+    canteen-egg into ordinary livestock breeding output. Once cavern
+    generation exists and a nest-placement/guardian mechanic is designed, a
+    later item can decide whether this creature ever lays eggs live in-world;
+    today the egg is simply the loot a Jawa takes from its lair.
+
+  Art: checked infrastructure/artpipe/{done,_artsrc,registry.jsonl,
+  art_status.json} for "zakkro"/"cave beast"/"cavern beast" first (per
+  CLAUDE.md's "Check for existing regenerated art before queuing more") —
+  nothing existed. Jobs filed this pass: rsw_zakkro_v1_{south,east,north}
+  (living adult, reused across all lifeStages here) and
+  rsw_zakkro_dessicated_v1 (desiccated corpse, single non-directional pose,
+  same convention as Mudhorn_Dessicated.png). texPaths below are the paths
+  the render will land at; validate_patch.py will flag them as pending until
+  the artpipe daemon delivers.
+
+  Not wired into MechCluster/ThingSetMaker loot tables or any biome cast —
+  that is cavern-generation's job, out of scope here.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Zakkro</defName>
+    <label>zakkro</label>
+    <description>A hulking cave-dweller found only deep in the caverns beneath Ash'karr's deep desert, its whole body matted in thick, dust-pale fibrous growths like packed dry lichen — never wet, never shining, powder-pale throughout. It has no eyes: a fringe of short, blunt tendrils rings a wide, sideways-ridged maw where a face would be, reading the cavern by touch and vibration alone. It guards a scattered nest of massive, canteen-heavy eggs somewhere in its territory, and a Jawa clan will cross open sand on the strength of finding one.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <MarketValue>3000</MarketValue>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>maw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>haunch</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <predator>true</predator>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <baseHungerRate>1.3</baseHungerRate>
+      <baseBodySize>5.5</baseBodySize>
+      <baseHealthScale>5.5</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, AnimalProduct</foodType>
+      <manhunterOnTameFailChance>0.9</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>60</lifeExpectancy>
+      <trainability>None</trainability>
+      <packAnimal>false</packAnimal>
+      <leatherDef>Leather_Bear</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.55</minAge>
+          <soundCall>Pawn_Bear_Call</soundCall>
+          <soundAngry>Pawn_Bear_Angry</soundAngry>
+          <soundWounded>Pawn_Bear_Injured</soundWounded>
+          <soundDeath>Pawn_Bear_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Zakkro</defName>
+    <label>zakkro</label>
+    <race>RSW_Zakkro</race>
+    <combatPower>850</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- No existing render found for "zakkro"/cave-beast (checked done/_artsrc/
+               registry.jsonl/art_status.json, 2026-09-20). Job rsw_zakkro_v1 filed
+               (south/east/north). Baby/juvenile reuse the adult texture at a smaller
+               drawSize rather than commissioning a separate juvenile set — a
+               reasonable scope cut for one headline encounter creature; a distinct
+               "mudpup"-style juvenile render is a fine follow-up, not required. -->
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro</texPath>
+          <drawSize>2.4</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <drawSize>2.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro</texPath>
+          <drawSize>3.6</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <drawSize>3.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro</texPath>
+          <drawSize>4.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <drawSize>4.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
