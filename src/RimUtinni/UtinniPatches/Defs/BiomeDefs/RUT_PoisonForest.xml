@@ -131,7 +131,7 @@
     <wildPlants>
       <RUT_TwistingThornwood>0.6</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
       <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
-      <BMT_Plant_TreeMartyr>0.5</BMT_Plant_TreeMartyr>  <!-- martyr tree - tree -->
+      <RUT_TreeMartyr>0.5</RUT_TreeMartyr>  <!-- martyr tree - tree -->
       <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
       <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
       <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
