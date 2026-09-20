@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T10:18:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T10:19:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1016,15 +1016,6 @@ target:   v1
 kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
-
-## DETERMINISM_REMAINDER_C4_C6_1 DETERMINISM_REMAINDER_C4_C6_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
