@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TILE_STRUCTURE_DESIGNS_1 PROMISE #2 The Sarlacc, RSW tier -
+       "responder polish (warning totems ring the pit)" onto the EXISTING
+       sw_Sarlacc/sw_SarlaccLair pair. Declared gap-design since
+       2026-08-31, re-diagnosed 2026-09-18 as a confirmed ENGINE gap
+       (GenStep_RimplacePlan had no way to place a plan relative to
+       wherever sw_SarlaccPit's own GenStep_ScatterThings randomly lands
+       its Thing at mapgen time) - closed this pass with a third placement
+       mode, anchorThingDef (RimMandrake/StructureInjections/Source/
+       GenStep_RimplacePlan.cs), which finds an already-spawned Thing of
+       the named def on the map and centers the plan on ITS OccupiedRect
+       center instead of the map's.
+
+       order=960 is load-bearing, not cosmetic: sw_SarlaccPit's own
+       GenStepDef (SW_Buildings_Natural.xml) has order=950, and
+       MapGenerator.cs sorts every extraGenSteps entry (this def included,
+       once the Patch below adds it to sw_SarlaccLair's own list) by
+       order before running any of them - this MUST run strictly after
+       950 or anchorThingDef would find nothing yet spawned. -->
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_GenStep_SarlaccRing</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/sarlacc_ring.txt</planFile>
+      <centerOnMap>false</centerOnMap>
+      <anchorThingDef>SarlaccPit</anchorThingDef>
+    </genStep>
+    <order>960</order>
+  </GenStepDef>
+
+</Defs>
