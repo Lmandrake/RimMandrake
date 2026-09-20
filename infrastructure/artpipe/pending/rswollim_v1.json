@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-20T19:10:26Z",
+  "drawsize": 5.0,
+  "facing": null,
+  "facings": [],
+  "id": "rswollim_v1",
+  "priority": 80,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a single ancient tree standing alone in open desert sand -- a bone-white, flat-topped, shield-shaped growth on a thick trunk, brilliantly reflective, with NO leaves and no foliage of any kind, more like a pale mineral formation than a living tree. Weathered true bones of a vast long-dead creature are half-buried in the sand around its base. Single organism, centered, standing pose, a short hard-edged black shadow directly beneath it, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "EXTREME_DESERT_SIGNATURE_FLORA_1",
+  "style_notes": "RSW_Ollim (final name, owner ruling EXTREME_DESERT_SIGNATURE_FLORA_1, 2026-09-20 -- supersedes working names Silverbole/Silverpan). deep_desert.md SS4b: inverted plant, no leaves, non-photosynthetic, bone-white, casts the only permanent shade for kilometres, grows among the bones of vast dead creatures. Canvas sized per drawSize~5 x 128px/cell rule of thumb capped at the generator's real ceiling (ART_PAINTERLY_RESTORATION_1), matching this repo's other single-landmark-tree render (rot_paletree, 1024)."
+}

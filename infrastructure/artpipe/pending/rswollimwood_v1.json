@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T19:10:26Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rswollimwood_v1",
+  "priority": 90,
+  "prompt": "RimWorld resource icon sprite, painterly vanilla-RimWorld item art style: a small stacked pile of pale bone-white wood logs/planks, dense and stone-like, with a faint cool silvery-grey sheen -- same read as vanilla wood but bleached bone-white instead of brown. Centered, no background scenery, no ground shadow. Heavy, clean black outline thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "EXTREME_DESERT_SIGNATURE_FLORA_1",
+  "style_notes": "RSW_OllimWood, EXTREME_DESERT_SIGNATURE_FLORA_1. Harvested-resource icon for RSW_Ollim, styled after vanilla WoodLog's own stack icon but bone-white/silvery per deep_desert.md SS4b's 'silver required' material signature. Currently placeholder-texPathed to vanilla WoodLog pending this render."
+}
