@@ -119,9 +119,18 @@ def main():
         return 1
 
     if not os.path.exists(DLL_PATH):
+        # DETERMINISM_ASSESSMENT.md SS11a (item 4): a missing companion DLL is a
+        # Windows-toolchain absence, not a failure of this test -- `run_selftests.py`
+        # only reads that distinction from the exact phrase below (never from the exit
+        # code alone), the convention every other dotnet-needing selftest already
+        # follows (selftest_pit_logic.py etc.). Before this, a real Mac/no-DLL machine
+        # printed "SKIP" with none of that phrase and exit 2, which the harness could
+        # only read as FAIL.
         print("SKIP - no local build at %s\n"
-              "  run: python.exe %s --gm" % (DLL_PATH,
-              os.path.join(HERE, "build.py")), file=sys.stderr)
+              "  run: python.exe %s --gm\n"
+              "  needs the user-local Windows-side .NET SDK (see CLAUDE.md's C# "
+              "build toolchain note); UNMEASURED, not a pass or a fail"
+              % (DLL_PATH, os.path.join(HERE, "build.py")), file=sys.stderr)
         return 2
 
     dll_set = tool_metadata.tool_names_from_dll(DLL_PATH)
