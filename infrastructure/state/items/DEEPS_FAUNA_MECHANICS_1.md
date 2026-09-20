@@ -255,3 +255,19 @@ of the three mechanics fired even once in ~2000 ticks of dedicated attempts. **L
    alone would explain the soulchime non-result with no code defect.
 3. A hostile-pawn retest still showing zero Grabber hits is the strongest signal of a
    real defect — three-tool selection odds should not be that low across 8 attempts.
+
+## correction — 2026-09-20, the OWED list's deploy line is STALE
+
+Item 2 in the "OWED, explicitly" list above ("Deploy
+`RimMandrake.CreatureBehaviors.dll`... blocked by a file lock this pass") is
+superseded by this file's OWN later "LIVE TEST 2026-09-19" section, which
+already confirms the assembly was deployed and loaded live. RE-MEASURED
+2026-09-20: the live Mods-folder DLL is still byte-identical (md5
+`de8bc66eef4c66c6d50a6e650b306c03`) to the repo copy, `deploy_custom_mods.py
+--mod CreatureBehaviors` (plan-only) reports "in sync (14 files)", and the
+deploy is traceable to commit `6be013af0` ("Overnight BELT validation: 7
+touched assemblies deployed... CreatureBehaviors... 0 typeload/patch_failed/
+recovery on a 15-mod minimal-list restart"). The mod is active in the live
+617-mod `ModsConfig.xml`. Deploy debt on this item is DISCHARGED; only the
+live-behavioral-test debt (items 1 and 3 in the OWED list, and the LIVE TEST
+section's own three follow-ups) remains open.

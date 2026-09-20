@@ -84,3 +84,27 @@ way. Owner's words and the three mechanics: see `DEEPS_FAUNA_MECHANICS_1`.
 ## north star
 
 (none — a mechanics build, not a bar-gated content mod.)
+
+## correction — 2026-09-20, deploy claim was STALE
+
+**"Not deployed — the DLL is locked by the running game" is no longer true and
+should not be read as current state.** MEASURED 2026-09-20: the live Mods-folder
+`RimMandrake.CreatureBehaviors.dll` is byte-identical (md5
+`de8bc66eef4c66c6d50a6e650b306c03`) to the repo copy at
+`src/RimMandrake/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll`,
+which is the second-pass build (source files through `RM_CompGrappler.cs`,
+`RM_HydrocarbonBloodExtension.cs` etc., all dated before the DLL's own build
+timestamp). `deploy_custom_mods.py --mod CreatureBehaviors` (plan-only) reports
+"in sync (14 files)". The actual deploy happened in commit `6be013af0`
+("Overnight BELT validation: 7 touched assemblies deployed... CreatureBehaviors...
+0 typeload/patch_failed/recovery on a 15-mod minimal-list restart"), timestamped
+after this item's own build note. `mandrake.rm.creaturebehaviors` is active in the
+live 617-mod `ModsConfig.xml` and `Player.log` shows no CreatureBehaviors-related
+XML/typeload errors this session.
+
+What is genuinely still owed (this part of the OLD note stands): a live behavioral
+test — see `DEEPS_FAUNA_MECHANICS_1`'s own "LIVE TEST 2026-09-19" section, which
+found the deployed assembly loads clean and the comps ARE wired on the live defs,
+but none of the three mechanics was observed to fire in ~2000 ticks of an
+in-game attempt. That is a behavior question, not a deploy question, and is not
+resolved by this correction.
