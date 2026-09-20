@@ -273,3 +273,67 @@ Deleted draft (git holds it); these are PROPOSED, nothing here is ruled:
   the tell (the SURVIVE verb names the tells but no notification mechanism).
 - Buildables for the trigger verbs: irrigation-channel/sprinkler for SOAK, a
   cistern-breach building for FLOOD.
+
+---
+
+## 8. Owner rulings, 2026-09-20 — and one that changes the SHAPE of §3
+
+Four questions were put to him off the proposed per-biome variant roster
+(`Transient/explosive_growth_variants.md`). Three were answered as asked. The fourth
+was not, and it is the important one.
+
+### 🔴 THE MODEL CHANGED: the variant belongs to the PLANT, not the biome
+
+Asked whether a clear-sky Burn should defuse a charging plant in the Contagion, he
+declined the framing. Verbatim:
+
+> *"It's less about the biome and more about the plants IN that biome having different
+> behaviors. Still comes out to differences between biomes, but it really should be
+> driven all by plant genetics / identity / adaptation to the intense sunlight and lack
+> of water. So this is about 'plants that are contaminated'."*
+
+⇒ **§3's "per-biome variants" is the wrong axis.** A biome does not have a terminal
+moment; **a plant** does. Biome-level difference is an *emergent consequence* of which
+plants grow where — it is the output, never the input.
+
+🔑 **What this makes right, and what it makes wrong:**
+
+- ✅ The three rulings below still stand — but each is now a property of the plants
+  concerned, not a rule attached to a map tile. "The Greentide fruit-glut" means *the
+  river-jungle plants* glut; a jungle plant growing elsewhere still gluts, and a
+  non-jungle plant growing in the Greentide does not.
+- ⛔ **Do not author a per-biome variant table.** The roster in
+  `Transient/explosive_growth_variants.md` is superseded as a *structure*; its content
+  survives as evidence about which PLANTS want which behaviour.
+- 🄸 The natural implementation is a small set of **plant traits** — contaminated,
+  fire-adapted, slime-fed, permanently-soaked — carried on the plant def and read by
+  the growth mechanism. Trait names above are INVENTED; the *principle* is his.
+- 🔑 This aligns with `SPECIES_TRAITS_OVER_APTITUDES_1`, where he made the same move
+  for species: *"we should consider deeply making better traits that might do a better
+  job of capturing these fine points and nuances."* Same instinct, different subject.
+
+**"Plants that are contaminated"** is his own phrase for the Contagion case and is the
+worked example: the behaviour rides the plant's contamination, not the sky above it.
+Whether sunlight/water adaptation defuses a charge is now a question about a plant
+trait, and is **NOT yet ruled** — it was asked as a biome question and he redirected it.
+
+### RULED as asked
+
+| case | ruling |
+|---|---|
+| **Greentide** | **Fruit-glut, not burst.** Permanently-soaked plants dump a heavy fruit crop and reset. Keeps the Burst rare and frightening where water is an event. |
+| **Slime** | **Slime comes up, not sprouts.** The burst still pays its harvest, but the ring it sows turns the ground to slime — farming there becomes a decision, not free food. |
+| **Pyrelands** | **Burst leaves dry tinder** — husk, chaff, a ring of quickgrass, all fuel. Growth loads the fire loop instead of fighting it. CHEAP: the normal Burst with different debris. |
+
+⚠️ Each is recorded above as a plant property, per the reframing.
+
+### Carve-out §3 omits — MEASURED 2026-09-20
+
+**`RUT_ExtremeDesert` (the deep desert) must not soak or fast-grow at all.**
+`biomes/deep_desert.md` §6 HARD BANS item 4 is explicit and linter-checkable:
+*"No fast growth. The planet's freakish-growth fact does NOT apply here — the same
+deliberate exception the terminator gets (R-H2b)."* The design doc never mentions it.
+Mapping `deep_desert` → `RUT_ExtremeDesert` is by elimination: three desert sheets
+(`deep_desert`, `desert`, `the_blue_desert`) against three desert BiomeDefs
+(`RUT_ExtremeDesert`, `RUT_Desert`, `RUT_BlueDesert`); the sheet names no defName
+itself.
