@@ -1,0 +1,433 @@
+##### FLAG  src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthBrazier/PyrinthBrazier  (4 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.9%  |  anchor drift 0.0%
+   FLAGS:
+   FLAG BYTE-IDENTICAL: PyrinthBrazier_east.png == PyrinthBrazier_west.png
+##### FLAG  src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/WallPyrinthTorch/WallPyrinthTorch  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 55.1%  |  anchor drift 69.5%
+   FLAGS:
+   FLAG size spread 55.1% > 15.0%
+   FLAG bottom-anchor drift 69.5% > 12.0%
+##### FLAG  src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter  (4 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.3%  |  anchor drift 4.6%
+   FLAGS:
+   FLAG canvas sizes differ across facings: AutomatedSmelter_north.png=(512, 640), AutomatedSmelter_south.png=(512, 640), AutomatedSmelter_east.png=(640, 512), AutomatedSmelter_west.png=(640, 512)
+##### FLAG  src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Repaired/AutomatedSmelter  (4 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.6%  |  anchor drift 4.1%
+   FLAGS:
+   FLAG canvas sizes differ across facings: AutomatedSmelter_north.png=(512, 640), AutomatedSmelter_south.png=(512, 640), AutomatedSmelter_east.png=(640, 512), AutomatedSmelter_west.png=(640, 512)
+##### FLAG  src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter  (4 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.6%  |  anchor drift 4.6%
+   FLAGS:
+   FLAG canvas sizes differ across facings: AutomatedSmelter_north.png=(512, 640), AutomatedSmelter_south.png=(512, 640), AutomatedSmelter_east.png=(640, 512), AutomatedSmelter_west.png=(640, 512)
+##### FLAG  src/RimStarWars/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_f  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 2.0%  |  anchor drift 15.2%
+   FLAGS:
+   FLAG bottom-anchor drift 15.2% > 12.0%
+##### FLAG  src/RimStarWars/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_m  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 10.6%  |  anchor drift 17.8%
+   FLAGS:
+   FLAG bottom-anchor drift 17.8% > 12.0%
+##### FLAG  src/RimStarWars/Bacta/Textures/Things/Building/Bacta/RSW_BactaTank  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.0%  |  anchor drift 8.6%
+   FLAGS:
+   FLAG RSW_BactaTank_north.png: mid-alpha wash 19.2% > 10.0%
+   FLAG RSW_BactaTank_south.png: mid-alpha wash 19.2% > 10.0%
+   FLAG RSW_BactaTank_east.png: mid-alpha wash 19.2% > 10.0%
+   FLAG canvas sizes differ across facings: RSW_BactaTank_north.png=(128, 256), RSW_BactaTank_south.png=(128, 256), RSW_BactaTank_east.png=(256, 128)
+   FLAG BYTE-IDENTICAL: RSW_BactaTank_north.png == RSW_BactaTank_south.png
+##### FLAG  src/RimStarWars/Bacta/Textures/Things/Building/Bacta/RSW_BactaTankShell  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.0%  |  anchor drift 2.7%
+   FLAGS:
+   FLAG RSW_BactaTankShell_north.png: mid-alpha wash 59.2% > 10.0%
+   FLAG RSW_BactaTankShell_north.png: coverage 0.0% outside (2.0, 85.0)
+   FLAG RSW_BactaTankShell_south.png: mid-alpha wash 59.2% > 10.0%
+   FLAG RSW_BactaTankShell_south.png: coverage 0.0% outside (2.0, 85.0)
+   FLAG RSW_BactaTankShell_east.png: mid-alpha wash 59.2% > 10.0%
+   FLAG RSW_BactaTankShell_east.png: coverage 0.0% outside (2.0, 85.0)
+   FLAG canvas sizes differ across facings: RSW_BactaTankShell_north.png=(128, 256), RSW_BactaTankShell_south.png=(128, 256), RSW_BactaTankShell_east.png=(256, 128)
+   FLAG BYTE-IDENTICAL: RSW_BactaTankShell_north.png == RSW_BactaTankShell_south.png
+##### FLAG  src/RimStarWars/DalgoArtOverride/Textures/swanimals/Dalgo/Dalgo  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.6%  |  anchor drift 15.4%
+   FLAGS:
+   FLAG bottom-anchor drift 15.4% > 12.0%
+##### FLAG  src/RimStarWars/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0/Chariot/AV_Chariot  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 13.4%  |  anchor drift 16.8%
+   FLAGS:
+   FLAG bottom-anchor drift 16.8% > 12.0%
+##### FLAG  src/RimStarWars/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0/CoveredCarriage/AV_CoveredCarriage  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 12.3%  |  anchor drift 23.6%
+   FLAGS:
+   FLAG bottom-anchor drift 23.6% > 12.0%
+##### FLAG  src/RimStarWars/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0/DogSled/AV_DogSled  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 6.0%  |  anchor drift 37.9%
+   FLAGS:
+   FLAG bottom-anchor drift 37.9% > 12.0%
+##### FLAG  src/RimStarWars/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0/OxCart/AV_OxCart  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 24.1%  |  anchor drift 21.5%
+   FLAGS:
+   FLAG size spread 24.1% > 15.0%
+   FLAG bottom-anchor drift 21.5% > 12.0%
+##### FLAG  src/RimStarWars/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0/WarChariot/AV_WarChariot  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 20.6%  |  anchor drift 23.4%
+   FLAGS:
+   FLAG size spread 20.6% > 15.0%
+   FLAG bottom-anchor drift 23.4% > 12.0%
+##### FLAG  src/RimStarWars/DewbackArtOverride/Textures/swanimals/Dewback/Dewback  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 8.3%  |  anchor drift 21.7%
+   FLAGS:
+   FLAG bottom-anchor drift 21.7% > 12.0%
+##### FLAG  src/RimStarWars/DragonsnakeArtOverride/Textures/swanimals/Dragonsnake/Dragonsnake  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 11.3%  |  anchor drift 15.6%
+   FLAGS:
+   FLAG bottom-anchor drift 15.6% > 12.0%
+##### FLAG  src/RimStarWars/FambaaArtOverride/Textures/swanimals/Fambaa/Fambaa  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 12.8%  |  anchor drift 12.3%
+   FLAGS:
+   FLAG bottom-anchor drift 12.3% > 12.0%
+##### FLAG  src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/Gizka  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 15.5%  |  anchor drift 15.2%
+   FLAGS:
+   FLAG size spread 15.5% > 15.0%
+   FLAG bottom-anchor drift 15.2% > 12.0%
+##### FLAG  src/RimStarWars/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 13.7%  |  anchor drift 4.3%
+   FLAGS:
+   FLAG palette distance 70 > 40.0: GizkaW_north.png vs GizkaW_east.png
+   FLAG palette distance 70 > 40.0: GizkaW_south.png vs GizkaW_east.png
+##### FLAG  src/RimStarWars/GrankArtOverride/Textures/swanimals/Grank/Grank  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 15.3%  |  anchor drift 19.3%
+   FLAGS:
+   FLAG size spread 15.3% > 15.0%
+   FLAG bottom-anchor drift 19.3% > 12.0%
+##### FLAG  src/RimStarWars/GreaterKraytDragonArtOverride/Textures/swanimals/GreaterKraytDragon/GreaterKraytDragon  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.4%  |  anchor drift 28.7%
+   FLAGS:
+   FLAG bottom-anchor drift 28.7% > 12.0%
+##### OK  src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.7%  |  anchor drift 10.0%
+##### OK  src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.7%  |  anchor drift 10.0%
+##### FLAG  src/RimStarWars/HoraxArtOverride/Textures/swanimals/Horax/Horax  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.4%  |  anchor drift 24.0%
+   FLAGS:
+   FLAG bottom-anchor drift 24.0% > 12.0%
+##### FLAG  src/RimStarWars/InsectomorphArtOverride/Textures/swanimals/Insectomorph/Insectomorph  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 15.3%  |  anchor drift 12.9%
+   FLAGS:
+   FLAG size spread 15.3% > 15.0%
+   FLAG bottom-anchor drift 12.9% > 12.0%
+##### OK  src/RimStarWars/IriazArtOverride/Textures/swanimals/Iriaz/Iriaz  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.2%  |  anchor drift 0.8%
+##### FLAG  src/RimStarWars/KinrathArtOverride/Textures/swanimals/Kinrath/Kinrath  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.0%  |  anchor drift 17.2%
+   FLAGS:
+   FLAG bottom-anchor drift 17.2% > 12.0%
+##### FLAG  src/RimStarWars/KreetleArtOverride/Textures/swanimals/Kreetle/Kreetle  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 21.9%  |  anchor drift 5.5%
+   FLAGS:
+   FLAG size spread 21.9% > 15.0%
+   FLAG palette distance 48 > 40.0: Kreetle_north.png vs Kreetle_south.png
+##### FLAG  src/RimStarWars/LockjawArtOverride/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 33.3%  |  anchor drift 16.4%
+   FLAGS:
+   FLAG size spread 33.3% > 15.0%
+   FLAG bottom-anchor drift 16.4% > 12.0%
+##### FLAG  src/RimStarWars/LockjawArtOverride/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 33.3%  |  anchor drift 16.4%
+   FLAGS:
+   FLAG size spread 33.3% > 15.0%
+   FLAG bottom-anchor drift 16.4% > 12.0%
+##### OK  src/RimStarWars/MynockArtOverride/Textures/swanimals/Mynock/Mynock  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 12.9%  |  anchor drift 9.0%
+##### OK  src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 14.3%  |  anchor drift 4.7%
+##### OK  src/RimStarWars/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 7.7%  |  anchor drift 7.0%
+##### FLAG  src/RimStarWars/OllopomArtOverride/Textures/swanimals/Ollopom/Ollopom  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 29.2%  |  anchor drift 6.8%
+   FLAGS:
+   FLAG size spread 29.2% > 15.0%
+##### FLAG  src/RimStarWars/OrrayArtOverride/Textures/swanimals/Orray/Orray  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.1%  |  anchor drift 27.3%
+   FLAGS:
+   FLAG bottom-anchor drift 27.3% > 12.0%
+##### OK  src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_f  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.6%  |  anchor drift 0.8%
+##### OK  src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 1.6%  |  anchor drift 0.8%
+##### OK  src/RimStarWars/RontoArtOverride/Textures/swanimals/Ronto/Ronto  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 10.8%  |  anchor drift 11.7%
+##### OK  src/RimStarWars/ShiroArtOverride/Textures/swanimals/Shiro/Shiro  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 13.5%  |  anchor drift 11.1%
+##### FLAG  src/RimStarWars/VornskyrArtOverride/Textures/swanimals/Vornskyr/Vornskyr  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.8%  |  anchor drift 24.4%
+   FLAGS:
+   FLAG bottom-anchor drift 24.4% > 12.0%
+##### FLAG  src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/Whisperbird  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.4%  |  anchor drift 20.3%
+   FLAGS:
+   FLAG bottom-anchor drift 20.3% > 12.0%
+##### FLAG  src/RimStarWars/WyyyschokkArtOverride/Textures/swanimals/Wyyyschokk/Wyyyschokk  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 15.7%  |  anchor drift 17.2%
+   FLAGS:
+   FLAG size spread 15.7% > 15.0%
+   FLAG bottom-anchor drift 17.2% > 12.0%
+##### FLAG  src/RimStarWars/ZakkegArtOverride/Textures/swanimals/Zakkeg/Zakkeg  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.5%  |  anchor drift 23.0%
+   FLAGS:
+   FLAG bottom-anchor drift 23.0% > 12.0%
+##### OK  src/RimStarWars/ZeerArtOverride/Textures/swanimals/Zeer/Zeer  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.2%  |  anchor drift 2.0%
+##### FLAG  src/RimUtinni/AcanthamoebaGiganteaLargeArtOverride/Textures/Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 2.2%  |  anchor drift 20.5%
+   FLAGS:
+   FLAG bottom-anchor drift 20.5% > 12.0%
+##### FLAG  src/RimUtinni/AgaripodArtOverride/Textures/Things/Pawn/Animal/AA_Agaripod/AA_Agaripod  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.0%  |  anchor drift 6.1%
+   FLAGS:
+   FLAG palette distance 44 > 40.0: AA_Agaripod_north.png vs AA_Agaripod_east.png
+##### FLAG  src/RimUtinni/BloodShrimpArtOverride/Textures/Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.1%  |  anchor drift 12.3%
+   FLAGS:
+   FLAG bottom-anchor drift 12.3% > 12.0%
+##### FLAG  src/RimUtinni/BumbledroneArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 9.3%  |  anchor drift 13.9%
+   FLAGS:
+   FLAG bottom-anchor drift 13.9% > 12.0%
+##### OK  src/RimUtinni/BumbledroneHierophantArtOverride/Textures/Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.9%  |  anchor drift 2.9%
+##### FLAG  src/RimUtinni/FrostmiteArtOverride/Textures/Things/Pawn/Animal/AA_FrostMite/AA_FrostMite  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 13.6%  |  anchor drift 11.7%
+   FLAGS:
+   FLAG AA_FrostMite_north.png: faint-fringe 2.00% > 2.0%
+##### OK  src/RimUtinni/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 7.7%  |  anchor drift 3.7%
+##### FLAG  src/RimUtinni/GritheArtOverride/Textures/Things/Pawn/Animal/Paragon/Rat/GR_ParagonRat  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 19.1%  |  anchor drift 18.4%
+   FLAGS:
+   FLAG size spread 19.1% > 15.0%
+   FLAG bottom-anchor drift 18.4% > 12.0%
+##### FLAG  src/RimUtinni/GruttArtOverride/Textures/Things/Pawn/Animal/Rodent/Molebear/GR_Molebear  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 19.9%  |  anchor drift 17.2%
+   FLAGS:
+   FLAG size spread 19.9% > 15.0%
+   FLAG bottom-anchor drift 17.2% > 12.0%
+##### FLAG  src/RimUtinni/MantistanisArtOverride/Textures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.8%  |  anchor drift 22.5%
+   FLAGS:
+   FLAG bottom-anchor drift 22.5% > 12.0%
+##### OK  src/RimUtinni/MycoidColossusArtOverride/Textures/Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.3%  |  anchor drift 4.5%
+##### OK  src/RimUtinni/RaptorShrimpArtOverride/Textures/Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.4%  |  anchor drift 5.5%
+##### FLAG  src/RimUtinni/ResearchRetag/Textures/Building/GravForge/GravForge  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.4%  |  anchor drift 7.6%
+   FLAGS:
+   FLAG canvas sizes differ across facings: GravForge_north.png=(512, 400), GravForge_south.png=(512, 400), GravForge_east.png=(400, 512)
+##### OK  src/RimUtinni/RimclawArtOverride/Textures/Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 8.4%  |  anchor drift 11.9%
+##### FLAG  src/RimUtinni/RotSporeKit/Textures/RotSporeKit/Things/Building/AdvFungiponics/AdvFungiponics  (2 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.0%  |  anchor drift 0.0%
+   FLAGS:
+   FLAG AdvFungiponics_north.png: coverage 99.9% outside (2.0, 85.0)
+   FLAG AdvFungiponics_east.png: coverage 99.9% outside (2.0, 85.0)
+   FLAG canvas sizes differ across facings: AdvFungiponics_north.png=(128, 512), AdvFungiponics_east.png=(512, 128)
+##### FLAG  src/RimUtinni/RotSporeKit/Textures/RotSporeKit/Things/Headgear/SpiderHelmet/SpiderHelmet  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 7.1%  |  anchor drift 6.2%
+   FLAGS:
+   FLAG palette distance 116 > 40.0: SpiderHelmet_north.png vs SpiderHelmet_south.png
+   FLAG palette distance 82 > 40.0: SpiderHelmet_north.png vs SpiderHelmet_east.png
+##### FLAG  src/RimUtinni/RustCathedralRoaches/Textures/Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoach  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 11.4%  |  anchor drift 19.9%
+   FLAGS:
+   FLAG bottom-anchor drift 19.9% > 12.0%
+##### FLAG  src/RimUtinni/RustCathedralRoaches/Textures/Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoachCorpse  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 10.6%  |  anchor drift 21.9%
+   FLAGS:
+   FLAG bottom-anchor drift 21.9% > 12.0%
+##### FLAG  src/RimUtinni/RustCathedralRoaches/Textures/Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 6.2%  |  anchor drift 20.1%
+   FLAGS:
+   FLAG bottom-anchor drift 20.1% > 12.0%
+##### OK  src/RimUtinni/ShadowChargerArtOverride/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 8.4%  |  anchor drift 9.6%
+##### FLAG  src/RimUtinni/SpidercatArtOverride/Textures/Things/Pawn/Animal/Insectoid/Spidercat/GR_Spidercat  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.2%  |  anchor drift 14.5%
+   FLAGS:
+   FLAG bottom-anchor drift 14.5% > 12.0%
+##### FLAG  src/RimUtinni/TarGuzzlerArtOverride/Textures/Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 12.0%  |  anchor drift 12.5%
+   FLAGS:
+   FLAG bottom-anchor drift 12.5% > 12.0%
+##### FLAG  src/RimUtinni/TerramorphArtOverride/Textures/Things/Pawn/Animal/AA_Terramorph/AA_Terramorph  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 12.2%  |  anchor drift 9.4%
+   FLAGS:
+   FLAG palette distance 142 > 40.0: AA_Terramorph_north.png vs AA_Terramorph_south.png
+   FLAG palette distance 158 > 40.0: AA_Terramorph_north.png vs AA_Terramorph_east.png
+##### FLAG  src/RimUtinni/ThermadonArtOverride/Textures/Things/Pawn/Animal/AA_Thermadon/AA_Thermadon  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 7.1%  |  anchor drift 21.9%
+   FLAGS:
+   FLAG bottom-anchor drift 21.9% > 12.0%
+##### FLAG  src/RimUtinni/ThunderoxArtOverride/Textures/Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 9.3%  |  anchor drift 8.8%
+   FLAGS:
+   FLAG palette distance 41 > 40.0: AA_Thunderox_male_north.png vs AA_Thunderox_male_east.png
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Megatardi/Megatardi  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 3.6%  |  anchor drift 23.4%
+   FLAGS:
+   FLAG bottom-anchor drift 23.4% > 12.0%
+##### OK  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 0.0%  |  anchor drift 0.0%
+##### OK  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 4.2%  |  anchor drift 3.9%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 14.4%  |  anchor drift 14.1%
+   FLAGS:
+   FLAG palette distance 55 > 40.0: FireWasp_north.png vs FireWasp_south.png
+   FLAG palette distance 49 > 40.0: FireWasp_south.png vs FireWasp_east.png
+   FLAG bottom-anchor drift 14.1% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.1%  |  anchor drift 27.0%
+   FLAGS:
+   FLAG bottom-anchor drift 27.0% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 8.8%  |  anchor drift 16.4%
+   FLAGS:
+   FLAG FurnaceBeast_north.png: faint-fringe 2.49% > 2.0%
+   FLAG bottom-anchor drift 16.4% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 10.6%  |  anchor drift 30.9%
+   FLAGS:
+   FLAG bottom-anchor drift 30.9% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/cephalope/cephalope  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 84.9%  |  anchor drift 9.2%
+   FLAGS:
+   FLAG size spread 84.9% > 15.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/cephalope/dessicated_cephalope  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 82.1%  |  anchor drift 9.0%
+   FLAGS:
+   FLAG size spread 82.1% > 15.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/cephalope/swimming_cephalope  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 47.5%  |  anchor drift 8.4%
+   FLAGS:
+   FLAG size spread 47.5% > 15.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/dessicated_landopus  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 35.2%  |  anchor drift 4.7%
+   FLAGS:
+   FLAG size spread 35.2% > 15.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/landopus  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 27.9%  |  anchor drift 30.1%
+   FLAGS:
+   FLAG size spread 27.9% > 15.0%
+   FLAG bottom-anchor drift 30.1% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/swimming_landopus  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 34.9%  |  anchor drift 19.1%
+   FLAGS:
+   FLAG size spread 34.9% > 15.0%
+   FLAG bottom-anchor drift 19.1% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/nautilant/dessicated_nautilant  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 7.3%  |  anchor drift 7.6%
+   FLAGS:
+   FLAG dessicated_nautilant_south.png: faint-fringe 2.25% > 2.0%
+   FLAG dessicated_nautilant_east.png: faint-fringe 2.93% > 2.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/nautilant/nautilant  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 14.7%  |  anchor drift 12.1%
+   FLAGS:
+   FLAG nautilant_east.png: faint-fringe 2.04% > 2.0%
+   FLAG bottom-anchor drift 12.1% > 12.0%
+##### FLAG  src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/nautilant/swimming_nautilant  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 24.2%  |  anchor drift 16.6%
+   FLAGS:
+   FLAG size spread 24.2% > 15.0%
+   FLAG bottom-anchor drift 16.6% > 12.0%
+##### OK  src/RimUtinni/WildpodArtOverride/Textures/Things/Pawn/Animal/AA_Wildpod/AA_Wildpod  (3 facings)
+   file                                            canvas  major   cov%  fringe%       meanRGB
+   size spread 5.8%  |  anchor drift 11.7%
+
+===== SUMMARY: 67 FLAG, 20 OK, 0 ERROR of 87 sets
