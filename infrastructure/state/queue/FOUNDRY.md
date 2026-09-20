@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T10:42:17Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-20T13:13:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -867,7 +867,7 @@ prose:    infrastructure/state/items/NINEFOLD_LOUDNESS_FRONT_1.md
 ## BARBSLINGER_SCORPION_REDESIGN_1 Barbslinger redesigned: yellowish large scorpion-like creature, bulbous domed body, TWO independent tails each carrying an unusually large javelin-like needle - art regen now; def work owed: shoots two venomous missile weapons in battle every few rounds, then closes for pincer assault
 state:    doing
 row:      unassigned
-needs:    harvest
+needs:    owner
 target:   v1
 kind:     build
 summary:  the ask (owner, verbatim, 2026-09-17)

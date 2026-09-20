@@ -81,7 +81,16 @@ elsewhere in this file (see Flamefang) as the established pattern for "this
 mod's own toxin, not AA's" — the missile weapon's damage/venom should reuse
 that idiom rather than inventing a third one.
 
-## needs: harvest
+## needs: owner
+
+2026-09-20: all 3 renders landed (`barbslinger_redesign_v1_{south,east,north}`,
+`infrastructure/artpipe/_artsrc/.../*.png`, `facts: PASS` on all three, no
+obvious defects on look — two independent tails each with a large needle tip,
+bulbous domed body, consistent yellow-gold, no missing limbs). Built a 3-facing
+review page: https://claude.ai/artifact/TqEA4oxv57teqaLAczUZ8n. Not wired into
+`RUT_Barbslinger`'s texPath yet and the turret-gun mechanics are not built —
+both wait on his verdict per this item's own instruction ("candidates go to
+the owner's eye before wiring"; tail geometry decides the turret-gun shape).
 
 Def/mechanics work correctly waits on reviewed art (tail geometry decides
 the turret-gun shape), not on the owner. Reclaim once
