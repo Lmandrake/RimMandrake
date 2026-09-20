@@ -403,17 +403,8 @@ Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_south.png   # BENCH: 
 Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_east.png   # BENCH: rescued mis-route, wired to no def, 2026-09-19
 Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: rescued mis-route, wired to no def, 2026-09-19
 
-# --- the two desert biome tables, held until SWBestiary ships with them ---
-# BENCH, 2026-09-20. The rewire (fda35ff14 + 96c1d9b81) repointed 68 entries at
-# our RSW_ desert-port defs. Those defs live in SWBestiary and are NOT deployed
-# yet, so deploying these tables alone leaves 18 dangling refs in wildAnimals /
-# wildPlants — MEASURED against the deployed folders. It was deployed that way
-# once already and the deployed copies were reverted by hand the same day.
-# 🔴 The MayRequire guard does NOT protect this. MayRequire tests whether the
-#    MOD is active, not whether the DEF is present, and SWBestiary is active as
-#    an older deployed build — so the guard passes and the refs dangle anyway.
-#    That reasoning error is why this hold exists rather than a guard.
-# => LIFT both lines together with the SWBestiary deploy, never before it, and
-#    never one without the other. See DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1.
-UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml   # BENCH: needs SWBestiary deployed first, 2026-09-20
-UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml   # BENCH: needs SWBestiary deployed first, 2026-09-20
+# --- the two desert biome tables: hold LIFTED 2026-09-20 ---
+# BENCH. Lifted in the same sitting as the SWBestiary deploy, which is the only
+# condition the hold ever had. SWBestiary (defs + RimMandrakeBeastMechanicsRSW.dll)
+# went to the game first, then these two. See
+# DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1 for why they must never ship apart.
