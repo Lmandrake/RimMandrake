@@ -72,7 +72,7 @@ who reads them has time to act; one who doesn't is standing next to it.
 
 ## 3. The terminal moment
 
-### The default: the Burst 🄸 INVENTED (proposed for ruling)
+### The default: the Burst — RULED 2026-09-20 (owner)
 
 An overgrown plant **bursts** — a wet, violent seed-discharge: a visible pop
 with a shockwave of chaff and sap, the plant collapses to a spent husk, and a
@@ -81,11 +81,15 @@ ring of ground around it is *sown* — sprouts erupt over the following hour.
 - **SEES**: swell → tremble → pop; chaff cloud; the husk; the ring greening.
 - **DROPS**: the plant's produce at a premium yield, scattered (fruit, seed
   pods, plant matter — biome roster's call), plus the husk as low-grade fuel.
-- **THREATENS**: minor blunt/cut damage and knockdown in the burst radius 🄸
-  (lethality ceiling is owner Q1); the sown ring does not respect zones —
+- **THREATENS**: minor blunt/cut damage and knockdown in the burst radius
+  (lethality ceiling is §7.1); **the sown ring does not respect zones** —
   sprouts come up in fields, floors, and doorways, and on this planet they
   grow ×4 the moment they exist. The burst is never just fireworks: every
   burst is an encroachment event.
+  🔴 **RULED by the owner 2026-09-20**, choosing this over a pop-that-sows-nothing
+  and over a zone-respecting middle: the sowing stays, and it stays indifferent to
+  what the player has built. That indifference is the mechanic — growth is pressure,
+  not scenery.
 
 One burst is a startle; the recurring "great moment" is **synchrony** — every
 plant a flood soaked charges on the same clock, so a soaked landscape goes up
@@ -214,7 +218,22 @@ What keeps the watching *dangerous* rather than cute:
   always enough to survive it (the flood design's law, shared); comfort
   never is.
 
-## 7. Owner rulings (2026-09-10 morning batch — all four answered)
+## 7. Owner rulings
+
+### 2026-09-20 — the default Burst, and it sows
+
+**The Burst is the ruled default terminal moment, and its sown ring ignores the
+player's zones.** He was offered three shapes — sow-and-ignore-zones, a pop that
+sows nothing, and a middle that sows only outside built ground — and took the
+first. So a burst is always an encroachment event: sprouts come up in fields, on
+floors and in doorways, and grow ×4 the moment they exist.
+
+⇒ What this settles beyond §3: the SURVIVE verbs in §4 are now load-bearing rather
+than optional flavour, because the player must have an answer — cut the charging
+plant, keep ground dry, salt it, or never build where water pools. And the
+per-biome variants below inherit a ruled default to diverge FROM.
+
+### 2026-09-10 morning batch — all four answered
 
 1. **Burst lethality: injury+knockdown ceiling.** The default Burst cannot
    down-to-death or kill; lethality is reserved for flagship performances
