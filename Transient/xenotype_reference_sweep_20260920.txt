@@ -1,0 +1,116 @@
+STRUCTURAL references only — prose fields (description/label/text/iconPath/...) excluded.
+MEASURED 2026-09-20 against defs.sqlite mods=617/6a41e05c828eed67 captured 2026-09-20T07:47:24Z
+🔴 The naive substring count was an ARTIFACT: 228 of Dirtmole's 230 'GeneDef references'
+   were ONE mod (Outland - Genetics) whose XenotypeAscension gene DESCRIPTIONS enumerate
+   every xenotype. Real structural cost is an order of magnitude smaller.
+
+xenotype                       own defs structural refs  referencing types
+Baseliner                             4             117  PawnKindDefx100, FactionDefx15, ScenarioDefx1, ThingDefx1
+Dirtmole                             19             243  GeneDefx226, FactionDefx7, PawnKindDefx6, AscensionGeneTemplateDefx1, MemeDefx1
+Genie                                 8             332  GeneDefx269, PawnKindDefx29, FactionDefx8, HediffDefx7, HeadTypeDefx3
+Highmate                              8             249  GeneDefx226, PawnKindDefx10, HairDefx7, FactionDefx3, AscensionGeneTemplateDefx1
+Hussar                                9             278  GeneDefx226, PawnKindDefx31, FactionDefx11, ThingDefx6, AscensionGeneTemplateDefx1
+Impid                                13             247  GeneDefx226, PawnKindDefx9, XenotypeDefx4, FactionDefx3, RulePackDefx3
+Neanderthal                          17             450  GeneDefx226, RecipeDefx92, ThingDefx89, PawnKindDefx25, FactionDefx8
+Pigskin                              12             248  GeneDefx227, PawnKindDefx12, FactionDefx6, AscensionGeneTemplateDefx1, XenoImplanterGeneTemplateDefx1
+Sanguophage                          46             261  GeneDefx237, AbilityDefx9, PawnKindDefx7, ThingDefx3, AscensionGeneTemplateDefx1
+Starjack                             27             257  GeneDefx228, PawnKindDefx21, FactionDefx6, AscensionGeneTemplateDefx1, XenoImplanterGeneTemplateDefx1
+VRESaurids_Saurid                    15             239  GeneDefx227, PawnKindDefx8, FactionDefx2, AscensionGeneTemplateDefx1, XenoImplanterGeneTemplateDefx1
+Waster                               15             245  GeneDefx226, PawnKindDefx10, RulePackDefx2, XenotypeDefx2, AbilityDefx1
+Yttakin                              41             245  GeneDefx226, FactionDefx6, CharacterDefx4, PawnKindDefx3, RulePackDefx2
+guy762_debugxenotype_droid            0               0  
+
+--- which FIELDS carry the reference (structural only) ---
+Baseliner: xenotypex116, pathx2
+Dirtmole: xenotypeDefx228, xenotypex14, preceptx1, patternx1
+Genie: xenotypeDefx228, modNamex66, namex66, xenotypex37, untranslatedRulesStringsx1
+Highmate: xenotypeDefx228, xenotypex13, styleTagsx7, untranslatedRulesStringsx1
+Hussar: xenotypeDefx228, xenotypex42, tagsx6, kindx4, racex1, untranslatedRulesStringsx1
+Impid: xenotypeDefx228, xenotypex7, defaultFactionDefx6, fileNamex5, nameMakerx3, rulesFilesx2
+Neanderthal: xenotypeDefx228, allowedDefsx225, recipeUsersx77, xenotypex33, keyx4, allChildThingDefsCachedx2
+Pigskin: xenotypeDefx228, xenotypex12, fileNamex7, soundCallx1, soundDeathx1, soundWoundedx1
+Sanguophage: xenotypeDefx228, untranslatedRulesStringsx21, fileNamex12, categoryx9, xenotypex7, $typex3
+Starjack: xenotypeDefx228, xenotypex27, exclusionTagsx2
+VRESaurids_Saurid: xenotypeDefx228, xenotypex10, soundCallx1, soundDeathx1, soundWoundedx1
+Waster: xenotypeDefx228, defaultFactionDefx7, fileNamex6, xenotypex5, warmupEffecterx1, siteFactionsx1
+Yttakin: xenotypeDefx228, xenotypex10, racex4, untranslatedRulesStringsx2, rulesFilesx1, untranslatedRulesFilesx1
+
+--- example referencing defs ---
+Baseliner:
+    FactionDef:OutlanderCivil [Core]
+    FactionDef:TribeCivil [Core]
+    FactionDef:Pirate [Core]
+    FactionDef:Empire [Royalty]
+    FactionDef:CannibalPirate [Ideology]
+Dirtmole:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:OutlanderRough [Core]
+    FactionDef:OutlanderRefugee [Royalty]
+    FactionDef:Beggars [Ideology]
+    FactionDef:Pilgrims [Ideology]
+Genie:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    ChemicalDef:VRE_Antibiotics [Vanilla Races Expanded - Genie]
+    EffecterDef:VRE_Damage_HitBlueFlesh [Vanilla Races Expanded - Genie]
+    FactionDef:OutlanderRough [Core]
+    FactionDef:OutlanderRefugee [Royalty]
+Highmate:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:OutlanderRefugee [Royalty]
+    FactionDef:Beggars [Ideology]
+    FactionDef:Pilgrims [Ideology]
+    GeneDef:Outland_XenotypeAscension_Dirtmole [Outland - Genetics]
+Hussar:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    CharacterDef:Inhabited_Empire_DrillInstructorHeskVaro [Inhabited (local)]
+    FactionDef:OutlanderRough [Core]
+    FactionDef:OutlanderRefugee [Royalty]
+    FactionDef:Beggars [Ideology]
+Impid:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:PirateWaster [Biotech]
+    FactionDef:VRESaurids_OutlanderRoughSaurid [Vanilla Races Expanded - Saurid]
+    FactionDef:VFEP_Junkers [Vanilla Factions Expanded - Pirates]
+    GeneDef:Outland_XenotypeAscension_Dirtmole [Outland - Genetics]
+Neanderthal:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    BiomeDef:TemperateForest [Core]
+    BiomeDef:TemperateSwamp [Core]
+    BiomeDef:TropicalRainforest [Core]
+    BiomeDef:TropicalSwamp [Core]
+Pigskin:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:OutlanderRefugee [Royalty]
+    FactionDef:Beggars [Ideology]
+    FactionDef:Pilgrims [Ideology]
+    FactionDef:OutlanderRoughPig [Biotech]
+Sanguophage:
+    AbilityDef:Bloodfeed [Biotech]
+    AbilityDef:Coagulate [Biotech]
+    AbilityDef:ReimplantXenogerm [Biotech]
+    AbilityDef:PiercingSpine [Biotech]
+    AbilityDef:Resurrect [Biotech]
+Starjack:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:OutlanderRough [Core]
+    FactionDef:OutlanderRefugee [Royalty]
+    FactionDef:Beggars [Ideology]
+    FactionDef:Pilgrims [Ideology]
+VRESaurids_Saurid:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:PirateWaster [Biotech]
+    FactionDef:VRESaurids_OutlanderRoughSaurid [Vanilla Races Expanded - Saurid]
+    GeneDef:VRESaurids_LizardVoice [Vanilla Races Expanded - Saurid]
+    GeneDef:Outland_XenotypeAscension_Dirtmole [Outland - Genetics]
+Waster:
+    AbilityDef:DV_Wastefeast [Det's Xenotypes - Buzzers]
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    FactionDef:VFEP_Junkers [Vanilla Factions Expanded - Pirates]
+    GeneDef:Outland_XenotypeAscension_Dirtmole [Outland - Genetics]
+    GeneDef:Outland_XenotypeAscension_Genie [Outland - Genetics]
+Yttakin:
+    AscensionGeneTemplateDef:Outland_XenotypeAscension [Outland - Genetics]
+    CharacterDef:Inhabited_Wildsteam_BoKesh [Inhabited (local)]
+    CharacterDef:Inhabited_Wildsteam_HakkoVurr [Inhabited (local)]
+    CharacterDef:Inhabited_Wildsteam_PellYoon [Inhabited (local)]
+    CharacterDef:Inhabited_Wildsteam_YorrumPell [Inhabited (local)]
