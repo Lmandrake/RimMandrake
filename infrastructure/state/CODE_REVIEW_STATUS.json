@@ -384,10 +384,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/worldbuilding/review/gen_creature_art_register.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "1a4190c420743174c472202985c541418458cac7ca66517ccd9db9a1f1d410c2",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "b3f8db60f54568da53cd2758806ed081c0b0b6352e17d6e71cad62f9c747f3a0",
+    "sha": "9ff1457ee"
   },
   "design/Jawa/worldbuilding/review/gen_creature_distribution_portfolio.py": {
     "cleanCount": 1,
@@ -5939,16 +5939,16 @@
     "sha": "d1c393c02"
   },
   "src/RimMandrake/Utils/modcheck/cli.py": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "570f0fc5648eff24d3781d996d9e8b0231751bf050612c57b89b5aedd9ab36b1",
-    "sha": "12a11996c"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "6bca848d17ba4f67d2887e57f5ab3d46c9b70aabf1919aea9ac9e556aa778905",
+    "sha": "9ff1457ee"
   },
   "src/RimMandrake/Utils/modcheck/floor.py": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "896c31b6e88f19703c795359f0544917e491640088611f0cee131d3be4995ab7",
-    "sha": "12a11996c"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "3396cf41000c84803d7342fc4395375ccb580564c6aeb8f556bf7d3216f53611",
+    "sha": "9ff1457ee"
   },
   "src/RimMandrake/Utils/modcheck/report.py": {
     "cleanCount": 2,
@@ -5963,10 +5963,10 @@
     "sha": "12a11996c"
   },
   "src/RimMandrake/Utils/modcheck/selftest.py": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "4b132a86419333fe73f8612c5440815593087b8316829af6915233d5fb386d7d",
-    "sha": "12a11996c"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "262f980323b1593082a42f36b33a809ac9e64796329bafcf363782f8f83bbf24",
+    "sha": "9ff1457ee"
   },
   "src/RimMandrake/Utils/modcheck/status.py": {
     "cleanCount": 2,
@@ -7378,10 +7378,10 @@
     "sha": "353b3c33"
   },
   "src/RimMandrake/bridgetools/selftest_tool_metadata.py": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "be072ecd16b4e017202ec4c9bf9dcd7f3514681fd380a6ed6d812a2faf5d7a89",
-    "sha": "115846630"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "d3a01f4b0815bbdb610bcacb37da0f1b360423eebacdb2eaa23324fc867021a3",
+    "sha": "9ff1457ee"
   },
   "src/RimMandrake/bridgetools/shoot_planet.py": {
     "cleanCount": 1,
@@ -7498,10 +7498,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/cli.py": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-20",
-    "hash": "6c855851e98ac8b96977ea74794db18f124149ab61fead25560862319aea0185",
-    "sha": "c5463a763"
+    "hash": "7f8104d1a55004271fe031c4caa2cc34a040813d70a9df26dc9d1d9cb21bcab8",
+    "sha": "9ff1457ee"
   },
   "src/RimMandrake/rimflow/model.py": {
     "cleanCount": 5,
