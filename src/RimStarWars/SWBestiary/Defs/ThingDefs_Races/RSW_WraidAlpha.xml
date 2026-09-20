@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DESERT_BURST_PREDATOR_FLAGSHIP_1. desert.md §4/§10's "flagship" burst
+  predator: bursts out of shadow at a speed nothing can evade, grabs, and
+  retreats to cool before its own crossing heat catches up with it. Filed
+  after DESERT_SHADE_GRID_KEYSTONE_1 landed RM_MapComponent_ShadeGrid,
+  RM_HeatDrivenBurst (the staged GhoulFrenzy-pattern hediff) and
+  RM_HediffComp_ShadeDrivenSeverity (its shade-driven decay). This item
+  supplies the two pieces the keystone explicitly left open: the trigger
+  (RM_CompHeatBurstPredator, this file's own comp reference) and the
+  retreat-to-shade job (the same comp's TryRetreatToShade).
+
+  RESKIN, not a new species from scratch, per the item's own "the work":
+  candidates were the two creatures already standing in as "burst-predator"
+  in RUT_Desert.xml's wildAnimals comments — RSW_Wraid (combatPower 400,
+  baseBodySize 3.0, ComfyTemperatureMax 80, canon description "relying on
+  scavenging and AMBUSH to find their prey") and RSW_Gutkurr (combatPower
+  450, baseBodySize 2.0, ComfyTemperatureMax 70, canon description "worked
+  in small hunting packs" — pack pursuit, not solo ambush-and-retreat).
+  Judged by FIT to the mechanic, not raw combatPower: desert.md §4's own
+  biology rule ("body size maps directly to maximum dash distance... large
+  animals hold heat longer and cross wider gaps") and its predator/prey
+  split ("the predator bursts out of shadow... and retreats to cool" as a
+  SOLITARY ambush, never a chase) both favour Wraid — bigger body for a
+  longer dash and higher heat tolerance, and a canon behaviour that is
+  already "ambush", not "pack". RSW_Wraid is the donor: same body
+  (RSW_Dewback, ADogSaidBody LegsTail), same tool/comp shape, its own
+  already-extracted art (swanimals/Wraid/*) reused verbatim — no new art
+  queued this pass (checked infrastructure/artpipe/done/ and the review-
+  sheet decisions.json convention first, per CLAUDE.md's "check for
+  existing regenerated art" rule: nothing on file for a desert burst
+  predator/flagship). Differentiated from stock Wraid the same way this
+  mod's own donor eggs differentiate a shared texture (RSW_MlieWaveC_
+  Resources.xml's Wraid eggs both carry a plain <color> tint over the same
+  swresource/EggSaurian art) — a rust/ember <color> tint on the shared
+  Wraid body texture, zero new PNGs. KNOWN GAP, flagged not fixed: this
+  means RSW_WraidAlpha and RSW_Wraid share a silhouette and differ only by
+  tint — a real art pass (a scarred/scorched variant sprite) is owed
+  whenever art capacity opens up, not blocking this item's mechanical work.
+
+  Solitary, not herdAnimal, unlike the donor: desert.md §4 "predator and
+  prey solve different problems" frames the burst predator as a lone
+  ambusher owning a shadow, not a pack. wildBiomes narrowed to Desert only
+  (this sheet's own biome) at a low, rare-apex commonality — RUT_Desert.xml
+  wires it in alongside (not replacing) RSW_Wraid/RSW_Gutkurr, which stay
+  as the item's own "Watch out" says not to remove without certainty.
+
+  Working name only ("Alpha Wraid" — a specialised branch of the Wraid
+  line) — owner's pick pending, same status as desert.md's own "staggerseed"
+  and glitter-bird names in its Owed section.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_WraidAlpha</defName>
+    <label>alpha wraid</label>
+    <description>A rarer, more specialised branch of the wraid line, fully committed to the outer dayside's sprint economy: bigger and tougher than an ordinary wraid, it lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing can evade. The burst cooks it from within — it must reach shade again before the heat catches up, or the same speed that let it hunt starts to fail it.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>950</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>85</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.50</ArmorRating_Heat>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>16</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>16</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>16</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggWraidAlphaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggWraidAlphaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>18</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+      <!-- DESERT_BURST_PREDATOR_FLAGSHIP_1 — the trigger + retreat-to-shade
+           behaviour. hediffDef is RM_HeatDrivenBurst
+           (DESERT_SHADE_GRID_KEYSTONE_1, RM_CreatureBehaviors), whose own
+           stages supply the burst MoveSpeed/MeleeCooldownFactor and the
+           heat-fatigue MoveSpeed penalty; decay reads
+           RM_MapComponent_ShadeGrid.ShadeAt at the pawn's position. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HeatBurstPredator">
+        <hediffDef>RM_HeatDrivenBurst</hediffDef>
+        <burstTriggerRangeCells>12</burstTriggerRangeCells>
+        <heatFatigueSeverityThreshold>0.5</heatFatigueSeverityThreshold>
+        <retreatShadeThreshold>0.5</retreatShadeThreshold>
+        <retreatSearchRadiusCells>20</retreatSearchRadiusCells>
+        <checkIntervalTicks>60</checkIntervalTicks>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Dewback</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseBodySize>3.4</baseBodySize>
+      <baseHungerRate>0.75</baseHungerRate>
+      <baseHealthScale>3.2</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnTameFailChance>0.35</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>false</herdAnimal> <!-- solitary ambusher, unlike the donor Wraid — desert.md §4 "predator and prey solve different problems" -->
+      <lifeExpectancy>45</lifeExpectancy>
+      <leatherDef>RSW_Leather_Wraid</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <Desert>0.15</Desert>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Wraid_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Wraid_Death</soundDeath>
+          <soundCall>RSW_Pawn_Wraid_Call</soundCall>
+          <soundAngry>RSW_Pawn_Wraid_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalRare</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_WraidAlpha</defName>
+    <label>alpha wraid</label>
+    <race>RSW_WraidAlpha</race>
+    <combatPower>520</combatPower>
+    <ecoSystemWeight>0.12</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>alpha wraidling</label>
+        <labelPlural>alpha wraidlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <color>(140, 60, 30)</color> <!-- ember/rust tint over the shared Wraid art — reskin, no new PNG -->
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <color>(140, 60, 30)</color>
+          <drawSize>2.2</drawSize>
+          <shadowData>
+            <volume>(0.65, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>2.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid</texPath>
+          <color>(140, 60, 30)</color>
+          <drawSize>3.4</drawSize>
+          <shadowData>
+            <volume>(0.9, 0.65, 0.65)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wraid/Wraid_Dessicated</texPath>
+          <drawSize>3.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+<!-- Eggs — same shape as RSW_MlieWaveC_Resources.xml's Wraid eggs, retinted
+     over the same shared swresource/EggSaurian art, hatching into
+     RSW_WraidAlpha instead of RSW_Wraid. -->
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWraidAlphaFertilized</defName>
+    <label>alpha wraid egg (fert.)</label>
+    <description>A fertilized alpha wraid egg. If all goes well, it should hatch into a baby alpha wraid. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(140, 60, 30)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>95.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>17</hatcherDaystoHatch>
+        <hatcherPawn>RSW_WraidAlpha</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWraidAlphaUnFertilized</defName>
+    <label>alpha wraid egg (unfert.)</label>
+    <description>An unfertilized alpha wraid egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(140, 60, 30)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>95.0</MarketValue>
+    </statBases>
+  </ThingDef>
+
+</Defs>

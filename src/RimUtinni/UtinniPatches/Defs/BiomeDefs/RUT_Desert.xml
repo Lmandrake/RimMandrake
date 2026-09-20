@@ -159,13 +159,21 @@
       <RSW_Scavrat MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
       <RSW_Shyrack MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Shyrack>  <!-- shyrack - ambush-flier, keep -->
       <RSW_Gorg MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gorg>  <!-- gorg - ambush-small, keep -->
-      <RSW_Gutkurr MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
+      <RSW_Gutkurr MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep; interim stand-in, complemented (not replaced) by RSW_WraidAlpha, DESERT_BURST_PREDATOR_FLAGSHIP_1 -->
       <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Jamel>  <!-- Jamel - herd, keep -->
       <RSW_LongtailGorg MayRequire="mandrake.rsw.swbestiary">0.4</RSW_LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
       <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Ronto>  <!-- ronto - huge-herd, keep -->
       <RSW_Sketto MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
       <RSW_WompRat MayRequire="mandrake.rsw.swbestiary">0.7</RSW_WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
-      <RSW_Wraid MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Wraid>  <!-- wraid - burst-predator, adjust-keep -->
+      <RSW_Wraid MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Wraid>  <!-- wraid - burst-predator, adjust-keep; interim stand-in, complemented (not replaced) by RSW_WraidAlpha below, DESERT_BURST_PREDATOR_FLAGSHIP_1 -->
+      <!-- DESERT_BURST_PREDATOR_FLAGSHIP_1: desert.md §4/§10's actual burst-predator
+           flagship — a rarer, solitary reskin of RSW_Wraid carrying the staged
+           RM_HeatDrivenBurst hediff (burst then heat-fatigue) and a retreat-to-shade
+           comp reading RM_MapComponent_ShadeGrid.ShadeAt. Wraid and Gutkurr above stay
+           as their own live entries (not removed — both remain legal, more common
+           predators of this biome); this is the rare apex on top of them, not a
+           replacement for either. -->
+      <RSW_WraidAlpha MayRequire="mandrake.rsw.swbestiary">0.15</RSW_WraidAlpha>  <!-- alpha wraid - THE burst-predator flagship, rare apex -->
       <RSW_Sandstrider MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Sandstrider>  <!-- desert ave - navigator, keep -->
       <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
       <RSW_Hrumph MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
