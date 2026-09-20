@@ -155,6 +155,14 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rsw.swbestiary"],
         "dlc": True,
     },
+    "diving": {
+        "why": "Prove SCALD_DIVING_MOD_1's dive-site float menu, job "
+               "completion, terrain burn ticks and Mod Settings load clean "
+               "against the actual RUT_ScaldWater* terrain it patches, with "
+               "nothing else on the map that could explain a failure.",
+        "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rm.divinginteraction"],
+        "dlc": True,
+    },
 }
 
 
