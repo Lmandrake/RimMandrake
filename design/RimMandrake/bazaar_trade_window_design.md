@@ -5,7 +5,7 @@ framework, which this integrates with).** Name canonized by the owner: **The
 Bazaar**. Identity per `design/NAMING_SCHEME_PLAN.md`: packageId
 `mandrake.rm.bazaar` · display `RimMandrake: The Bazaar` · namespace
 `RimMandrake.Bazaar` · defNames `RM_Bazaar*` · folder `src/RimMandrake/TheBazaar/`.
-Campaign wiring (Ash'karr settlement tags, artifact placements) lives in the
+Campaign wiring (Ash'karr settlement tags, droid-module placements) lives in the
 RimUtinni layer.
 
 The thesis: **the deal is the gameplay.** Vanilla treats trade as a spreadsheet
@@ -29,7 +29,7 @@ clamp/mean-reversion pattern is sound and is copied; nothing else is.
 1. **The deal is the gameplay** — every screen element either informs a decision
    or is a move in one.
 2. **Information is loot** — shallow intel earned with Social, deep intel FOUND
-   as artifacts.
+   as protocol-droid modules and fitted to a droid you keep alive.
 3. **Deterministic first, voiced second** — every price, crit and rumor is
    seeded C# math before any LLM sees it; banter only narrates what already
    happened (the two Oracle laws, inherited verbatim).
@@ -86,7 +86,7 @@ haggled prices are real at execution with zero rewrite of trade execution.
   colony-need, scarcity, provenance) — `GetBadge(Tradeable, session)`.
 - `RM_BazaarTabDef` + `BazaarTabWorker`: `ShouldShow(session)`,
   `DoTabContents(Rect)`.
-- `RM_BazaarIntelLayerDef`: names a gate (Social band or artifact) that columns
+- `RM_BazaarIntelLayerDef`: names a gate (Social band or droid module) that columns
   and badges reference — one place to rebalance gating.
 
 **Drawing.** IMGUI throughout; reuse vanilla `Widgets`/`GenUI`/`Text` and the
@@ -140,16 +140,50 @@ Bands use the negotiator's Social skill (vanilla has no trade skill;
 | L2 Good-deal badges | Social 5+ | outlier flags, both directions | price vs baseline |
 | L3 Local economy | Social 7+ | "this settlement pays 2.3× for water", best-sell-here hints | multiplier store + tags |
 | L4 Scarcity | Social 9+ | "only source of X in 30 days" | trader-visit log |
-| A1 Trader read | artifact `RM_HagglerModule` | personality tag, patience meter AS NUMBERS, crit-odds hint | deterministic personality (§5) |
-| A2 Provenance | artifact `RM_ManifestDecoder` | goods-origin flavor; stolen-goods + which-factions-notice is the documented RimProperty plugin seam (badge slot ships, worker doesn't) | stock metadata; future plugin |
-| A3 Deep almanac | artifact `RM_PriceAlmanac` | full history graphs; lowers every Social gate above by 2 | engine, all stores |
+| S1 Stolen-goods inkling | Social-scaled, no module | "this may be stolen" hint, confidence ∝ how distinct the item is (art, quality, named/unique, rare def) — generic bulk gives nothing | RimProperty ownership records |
+| D1 Trader read | droid module `RM_HagglerModule` | personality tag, patience meter AS NUMBERS, crit-odds hint | deterministic personality (§5) |
+| D2 Registry | droid module `RM_ManifestDecoder` | goods-origin flavor; definite stolen/lost flag + which owner notices; fall-salvage provenance reads as unowned (safe) | RimProperty lost-and-stolen registry |
+| D3 Transponder scan | droid module `RM_TransponderScanner` | reads the transponders goods radiate: stolen/lost flags on a trader's stock before a word is exchanged, and on a settlement's stock at arrival | live transponder emissions; RimProperty |
+| D4 Market analysis | droid module `RM_PriceAlmanac` | full history graphs; lowers every Social gate above by 2 | engine, all stores |
 
-**The artifacts — found, never built** (campaign placement is RimUtinni data;
-`RM_PriceAlmanac` follows the WreckedMachines found-Wrecked-then-repaired
-grammar): a water-stained pre-collapse commodities almanac; a negotiation-and-
-etiquette module salvaged from a dead protocol droid (carrier mechanic — utility
-slot vs inventory-checked — VERIFY at build); a cracked cargo-manifest scanner.
-Without the module the meter is hidden — you haggle *blind*, which is the point.
+**The deep layers are protocol-droid MODULES — droid parts, found, then
+fitted through Droidworks' surgery route (`Recipe_InstallDroidPart`), never
+carried items** (owner, 2026-09-20: *"This is why you bother with a flaked JPL
+combat droid like C-3PO and gives him a reason to exist."*). All four fit on one
+droid, installed as you find them; no slot limit. Campaign placement is
+RimUtinni data.
+
+- **Presence gate**: a module renders only when a FUNCTIONAL protocol droid
+  carrying it is either **in the trading party at the deal** or **at the colony
+  working a comms console** for a remote trade (communicators are assumed
+  ubiquitous in this world). Either satisfies it.
+- **Functional** is the test `Patch_ProtocolTradeAdvantage.cs` already ships
+  (`src/RimStarWars/Droidworks/Source/Droidworks/`): a `DW_Family_Protocol`
+  chassis (`DroidworksExtension.chassisClass == 1`) that is not dead, downed,
+  powered-down (`RSW_DW_PoweredDown`) or imprisoned. Reuse it; do not write a
+  second. Live protocol droids: `RSW_DW_Race_OuterRim_ProtocolDroid`,
+  `RSW_DW_Race_guy762_DroidRace_GE3PD`.
+- **The droid's shipped ±6% trade advantage stays** (`PerSideAdvantage`,
+  symmetric — a trader's droid works against you, both-or-neither cancels; owner
+  2026-09-06: *"dangerous not to"*). Modules ADD the intel unlocks on top of it.
+- **Why the droid is the reader**: protocol droids "speak" the language of trade
+  droids — how Star Wars handles databases and data formats.
+- `RM_PriceAlmanac` is a market-data-analysis module; `RM_ManifestDecoder` is a
+  registry of known lost and stolen goods; `RM_TransponderScanner` (working name, not
+  the owner's — he named no def) is a distinct second scanner (transponders,
+  not records). Without `RM_HagglerModule` the
+  meter is hidden — you haggle *blind*, which is the point.
+
+**Stolen goods — RULED IN, integrated with RimProperty** (owner, 2026-09-20:
+*"The stolen goods angle is brilliant and now must be included as integration
+with the property mod."*). Stolen goods are cheaper to buy; buying them *"may
+gain the wrath of the owner or even raids."* S1 gives the ungated inkling; D2
+and D3 give certainty. The player did not fall from space — the fall's wrecks
+are someone else's, and knowing a thing is fall-salvage is what makes it safe to
+buy. Owner: *"worth its own awesome design pass to expand"* — that pass is owed
+and carried by `BAZAAR_STOLEN_GOODS_PROPERTY_1`; this doc records the rulings,
+not the mechanics. Lead, not a commitment here: injected wreckage in the fall
+zone can seed quests about lost cargo of interest.
 
 ## 5. The haggle duel — WHOLE-DEAL (owner-ruled)
 
@@ -159,7 +193,7 @@ monotonous to do it on each item." So: assemble the basket in the grid, then the
 duel happens at the deal stage — confirm-time IS the dramatic moment.
 
 - One trader session holds one **patience meter P** (4–9: base by trader kind ±
-  personality, +1 per 25 goodwill band; numbers visible only with A1, else a
+  personality, +1 per 25 goodwill band; numbers visible only with D1, else a
   vague face icon at Social 7+). No regen within the session, except completing
   a deal above a silver threshold restores +1 (spending soothes; nudges players
   to actually close).
@@ -171,7 +205,7 @@ duel happens at the deal stage — confirm-time IS the dramatic moment.
 - **Crit** (top 15% of the success band): free (no patience) plus a spoil —
   a freebie thrown into the deal (drawn from the trader's lowest-value junk
   rows — the GTG junk pool shines here, with no GTG dependency) or a **rumor
-  token**: a true intel unlock (one A-layer row for this session, or a world
+  token**: a true intel unlock (one D-layer row for this session, or a world
   fact — "drought upriver, water's dear at Kesh crossing" — which is literally
   the engine's multiplier speaking). 50/50, weighted by personality.
 - **Fail**: no move, costs 2 patience, trader claws back your last concession.
@@ -240,6 +274,16 @@ logs missing-component Scribe warnings — **rehearse on a save copy first**
 assembly before judging the save safe). TradeHelper stays inactive (wishlist
 absorbed).
 
+**Droid modules cross a tier**: the D-layers require Droidworks
+(`mandrake.rsw.droidworks`, RimStarWars) for the chassis test, the part
+surgery and the ±6% advantage, and S1/D2/D3 require RimProperty
+(`mandrake.rm.property`). The Bazaar itself is `mandrake.rm.*` and must stay
+whole without either: with Droidworks absent the D-layers do not render and
+Settings says why; with RimProperty absent the stolen-goods rows do not render.
+Both are soft references (`MayRequire`), never hard dependencies. Trade droids
+on the other side of the deal are Droidworks' concern; The Bazaar only reads
+the existing functional test.
+
 **Keep**: TraderGen, Better Traders, GTG junk framework, MultipleTraders,
 Trader Ships — they shape stock and arrivals, not UI; we consume vanilla
 `TradeDeal` from whatever they generate and intercept only at `WindowStack.Add`
@@ -256,9 +300,12 @@ StockGenerators or their incident workers.
    function.
 2. **Price engine + intel** *(opus for the engine; column workers sonnet)*:
    `RM_BazaarEconomy`, worldTag seeding, ring buffer, drift tick, guarded
-   postfix, L0–L4 columns/badges, the three artifacts as items (placement
-   stub). Test: authored-tag fixture — water reads ~2× at a desert settlement;
-   save/load round-trips; vanilla wealth readout unchanged.
+   postfix, L0–L4 columns/badges, the four modules as Droidworks parts with the
+   presence gate (placement stub; stolen-goods mechanics wait on
+   `BAZAAR_STOLEN_GOODS_PROPERTY_1`). Test: authored-tag fixture — water reads
+   ~2× at a desert settlement; save/load round-trips; vanilla wealth readout
+   unchanged; a module renders with a functional droid in the caravan or at a
+   comms console, and not with the droid downed, powered-down or left home.
 3. **Whole-deal haggle duel** *(opus for tuning)*: patience, push resolution,
    crits/freebies/rumor tokens, lockout, XP, personalities, Ledger memory,
    deterministic seeding. Test: scripted push sequences replay identically
@@ -276,5 +323,19 @@ StockGenerators or their incident workers.
 Haggle = whole-deal only (per-item rejected as monotonous) · banter dormant
 until Oracle proof · public seeding = procedural locality · gift mode = Bazaar
 with haggle greyed · economy = own engine, VTE rejected and scheduled for
-deactivation · intel gating = Social + found artifacts · build order =
-grid+intel → duel → broker → banter.
+deactivation · intel gating = Social + found deep intel (its carrier reworked
+2026-09-20, below) · build order = grid+intel → duel → broker → banter.
+
+**2026-09-20 (bench sitting).** Deep intel = protocol-droid MODULES, not carried
+artifacts (*"gives him a reason to exist"*) · fitted via `Recipe_InstallDroidPart`
+· gate = functional droid present at the deal OR working a comms console for a
+remote trade (communicators ubiquitous) · "functional" = the shipped
+`Patch_ProtocolTradeAdvantage` test, no new one · ±6% advantage stays, modules
+add on top · all modules on one droid, no slot limit · almanac REPLACED by a
+market-data-analysis module, same function (pre-collapse book fiction dead) ·
+stolen goods RULED IN with RimProperty: ungated Social inkling ∝ item
+distinctiveness, stolen = cheaper, owner wrath up to raids, decoder = registry of
+lost/stolen goods, a distinct second scanner reads transponders on traders and
+settlements, fall-salvage reads as safe · *"The player didn't fall from space"* ·
+stolen-goods design pass owed → `BAZAAR_STOLEN_GOODS_PROPERTY_1` · lead only:
+fall-zone injected wreckage → lost-cargo quests.
