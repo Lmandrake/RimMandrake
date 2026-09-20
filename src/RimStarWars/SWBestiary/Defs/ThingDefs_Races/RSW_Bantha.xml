@@ -116,6 +116,8 @@
         <IceSheet>0</IceSheet>
         <BorealForest>0.01</BorealForest>
         <Tundra>0.5</Tundra>
+        <AridShrubland>0.5</AridShrubland>
+        <Desert>0.5</Desert>
       </wildBiomes>
       <nuzzleMtbHours>275</nuzzleMtbHours>
       <lifeStageAges>

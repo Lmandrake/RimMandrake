@@ -105,6 +105,7 @@
         <Tundra>0.02</Tundra>
         <ColdBog>0.0</ColdBog>
         <IceSheet>0.0</IceSheet>
+        <AridShrubland>0.16</AridShrubland>
       </wildBiomes>
       <litterSizeCurve>
         <points>

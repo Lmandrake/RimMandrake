@@ -122,6 +122,7 @@
         <Tundra>0.08</Tundra>
         <ColdBog>0.0</ColdBog>
         <IceSheet>0.0</IceSheet>
+        <AridShrubland>0.8</AridShrubland>
       </wildBiomes>
       <lifeStageAges>
         <li>

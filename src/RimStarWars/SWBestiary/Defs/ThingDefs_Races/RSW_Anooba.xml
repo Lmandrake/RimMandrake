@@ -150,6 +150,7 @@
         <Tundra>0.12</Tundra>
         <Desert>0.08</Desert>
         <ExtremeDesert>0.01</ExtremeDesert>
+        <AridShrubland>0.16</AridShrubland>
       </wildBiomes>
       <lifeStageAges>
         <li>
