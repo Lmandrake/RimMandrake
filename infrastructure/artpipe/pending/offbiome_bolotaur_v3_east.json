@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T16:56:11Z",
+  "drawsize": 4.0,
+  "facing": "east",
+  "facings": [
+    "east",
+    "north",
+    "south"
+  ],
+  "id": "offbiome_bolotaur_v3_east",
+  "priority": 60,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Bolotaur -- a large domesticated reptilian mount used by Imperial scout troopers on forest moons. Low-slung, wide turtle-like body on four short thick legs, each foot ending in several long heavy claws. Olive-green leathery hide with dark mottled scale texture across the back and flanks, paler cream-tan underside. Blunt, wide rounded snout, small dark eyes set into a bumpy-textured head, a short row of blunt horn-like spikes running from the crown of the head down the back of the neck. A short thick tail. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or rider. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "OFFBIOME_SHEET_RERENDERS_1",
+  "style_notes": "Owner ruling 2026-09-16: current sprite is cartoonish, redo to canon. Canon reference: design/RimStarWars/canon_references/bolotaur/ (two Wookieepedia images) -- wide reptilian mount, mottled hide, spiky head ridge, heavy clawed feet, NOT the current thin-tailed cartoon blob."
+}

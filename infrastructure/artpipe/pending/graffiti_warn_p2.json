@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T18:08:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_warn_p2",
+  "priority": 70,
+  "prompt": "A single icon of a hazard warning glyph: a jagged triangle outline with one torn/broken side, painted with a coarse brush stroke, serrated jagged edges throughout. Solid warm orange-amber color. Centered, no background, no other colors, no lettering, no words, no readable text of any kind.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VARIANT_COUNTS_1",
+  "style_notes": "Same family, a broken-triangle hazard shape distinct from the existing X/spike/ring -- variant 6 of 6."
+}

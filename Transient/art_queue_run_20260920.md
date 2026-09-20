@@ -119,3 +119,33 @@ Commit: `748a01731` (report + audit log + 12 queued jobs), pushed to `main`.
 - The 21 "boundary/acceptable pose" and 5 "faceless body plan" creatures above are UNMEASURED for viewpoint in any stronger sense than my own single look — a second human/Fable-tier look before fully closing them out would be good practice, but I judged them confidently enough not to spend quota on them.
 - 17 STAT-FLAG-ONLY creatures still carry a real defect (anchor drift / size spread / palette distance) — not a viewpoint problem, so out of scope for `ART_FACING_REPAIR_WAVE_1`, but still open work for whoever owns the conform/re-anchor pass.
 - Once the 12 queued jobs land in `done/`: zero alpha 1-16, downscale with premultiplied alpha to the target canvas, re-run `facing_set_audit.py` on the repaired set, install only if it improves, `deploy_custom_mods.py --mod <ModName>` plan then apply, commit+push per creature set. None of that has happened yet — nothing has landed from the daemon as of this writing.
+
+---
+
+## BENCH review of the 12 queued repairs, 2026-09-20 — 4 withdrawn
+
+I built a contact sheet of all 12 shortlisted `_south` sprites and looked at them:
+`Transient/facing_repair_shortlist_south.png`. A subagent's verdict is evidence, not a
+finding, and this shortlist came from a judge I separately measured as unreliable
+(83% false-positive rate against donor art), so it was worth one look before spending
+twelve generations.
+
+**Withdrawn to `infrastructure/artpipe/_withdrawn/` — these are NOT defects:**
+
+| sprite | why it is correct as it stands |
+|---|---|
+| **Ollopom** | A clear front view. Large forward-facing eyes, muzzle and chest toward camera. Textbook south. |
+| **Flamefang** | Coiled snake with its head RAISED and turned to the viewer — face, eyes and throat all visible. |
+| **GR_ParagonRat** | Front view; antennae, face and forelimbs toward camera. |
+| **RUT_CathedralRoachCorpse** | A CORPSE. A dead thing lying on the ground is correctly drawn from above; "eye-level front" is not a meaningful demand for it. Regenerating it would make it worse. |
+
+**Kept (8)** — these genuinely show back/carapace with no face to camera:
+`Orray` (pure top-down of a back and tail, no head at all), `Kreetle` (segmented back
+from directly above), `RUT_ScarRoach` and `RUT_CathedralRoach` (top-down carapaces),
+`GR_Molebear` (looking down on shoulders, face buried), plus `Dewback`, `Megatardi` and
+`Wyyyschokk`, which are borderline high-angle rather than flagrant but read closer to
+"looking down on it" than "it is looking at me".
+
+🔑 **The pattern worth keeping:** the raw judge said 33 of 50, the agent's own look cut
+that to 12, and a second look cut it to 8. Each pass of actually looking removed more
+false positives. ⛔ Nobody should regenerate from this judge's output without looking.
