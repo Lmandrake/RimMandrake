@@ -100,6 +100,68 @@
         "('infobox skin color is blue only'). The line was false; the outcome is now",
         "correct anyway, but for his reason and not that one."
       ]
+    },
+    {
+      "species": "Ithorian",
+      "xenotype_defName": "RSW_RimMandrakeIthorian",
+      "ruled": "2026-09-20",
+      "owner_said": "Four species ship a colour canon doesn't list -- ruled: trim Ithorian, Ewok and Zygerrian; LEAVE Lasat.",
+      "required_genes": [
+        "Skin_Orange",
+        "Outland_Skin_PaleBrown"
+      ],
+      "forbidden_genes": [
+        "Skin_PaleRed"
+      ],
+      "applied_at": "pending",
+      "note": [
+        "Canon is brown / green / light brown / orange, each with a named work.",
+        "Skin_PaleRed was the one value canon never lists; flagged unsourced in the",
+        "2026-09-17 dossier and never acted on. Dropped on his ruling.",
+        "The five that remain are all canon-sourced."
+      ]
+    },
+    {
+      "species": "Ewok",
+      "xenotype_defName": "RSW_RimMandrakeEwok",
+      "ruled": "2026-09-20",
+      "owner_said": "Four species ship a colour canon doesn't list -- ruled: trim Ithorian, Ewok and Zygerrian; LEAVE Lasat.",
+      "required_genes": [
+        "Hair_DarkBlack"
+      ],
+      "forbidden_genes": [
+        "RSW_Hair_SlateBlue"
+      ],
+      "applied_at": "pending",
+      "note": [
+        "Canon Ewok hair lists nine colours and blue is not among them. RSW_Hair_SlateRed",
+        "STAYS -- red IS canon. Hair_DarkBlack is required because the black Ewok is the",
+        "centre figure of the species' own canon infobox image and had no gene."
+      ]
+    },
+    {
+      "species": "Zygerrian",
+      "xenotype_defName": "RSW_RimMandrakeZygerrian",
+      "ruled": "2026-09-20",
+      "owner_said": "Four species ship a colour canon doesn't list -- ruled: trim Ithorian, Ewok and Zygerrian; LEAVE Lasat.",
+      "required_genes": [
+        "Skin_LightGray",
+        "Outland_Skin_PaleBrown"
+      ],
+      "forbidden_genes": [
+        "Outland_Skin_Brown",
+        "RSW_Skin_MidGray",
+        "Skin_SlateGray"
+      ],
+      "applied_at": "pending",
+      "note": [
+        "Canon gives ONE skin value, 'Light', identically in canon AND Legends.",
+        "It shipped five genes spanning brown to slate grey; the 2026-09-17 pass kept",
+        "them as 'already right'. He ruled trim toward Light.",
+        "⚠️ BENCH chose WHICH two survive -- the two that read light (LightGray,",
+        "PaleBrown) -- and dropped the three darker ones. He ruled the direction, not",
+        "the specific pair. If he wants it tighter still, drop PaleBrown too."
+      ]
     }
   ],
   "needs_ruling": []
