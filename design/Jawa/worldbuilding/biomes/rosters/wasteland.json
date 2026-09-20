@@ -405,11 +405,6 @@
     },
     {
       "commonality": 0.3,
-      "def": "PoisonPlantBush",
-      "law": "poison-marked shrub"
-    },
-    {
-      "commonality": 0.3,
       "def": "RUT_ScorchedStars",
       "law": "ruin-marked alien (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_ScorchedStars, shared with RUT_Scarlands)"
     },
@@ -555,6 +550,10 @@
     {
       "def": "BMT_Plant_EclipsusLeaves",
       "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "PoisonPlantBush",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
     }
   ],
   "law_sources": [
