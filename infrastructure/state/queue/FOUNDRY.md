@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:19:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:23:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,15 +936,6 @@ kind:     task
 summary:  DESERTPORTPLACEHOLDERART1 — 16 desert species still carry donor texPaths
 prose:    infrastructure/state/items/DESERT_PORT_PLACEHOLDER_ART_1.md
 
-## DESERT_SIGNATURE_FLORA_1 Author ultracactus, staggerseed, and shade plants for RUT_Desert
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
-prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
-
 ## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
 state:    doing
 row:      unassigned
@@ -1466,8 +1457,8 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_STAGGERSEED_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  DESERTSTAGGERSEEDBUILD1 — author the staggerseed cycle plant
 prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
 
 ## DESERT_SHADE_PLANTS_DESIGN_1 Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)
@@ -1476,6 +1467,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_SHADE_PLANTS_DESIGN_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  DESERTSHADEPLANTSDESIGN1 — design pass on the desert's defending shade plants
 prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md

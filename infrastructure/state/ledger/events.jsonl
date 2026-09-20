@@ -10296,3 +10296,10 @@
 {"seat":"FOUNDRY","event":"start","id":"DESERT_SIGNATURE_FLORA_1","ts":"2026-09-20T19:14:08Z"}
 {"seat":"BENCH","event":"file","id":"FOUNDERS_EXPORT_TO_REPO_1","title":"The founders exist only inside a savegame in the Steam-Cloud Saves folder - one of the three artifacts that must survive the world remake is not in the repo","kind":"task","target":"v1","needs":"game-up","for":"BENCH","ts":"2026-09-20T19:14:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1","sha":"46ef96ae9","ts":"2026-09-20T19:14:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_BURST_PREDATOR_FLAGSHIP_1","ts":"2026-09-20T19:15:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_BURST_PREDATOR_FLAGSHIP_1","ts":"2026-09-20T19:15:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EXTREME_DESERT_SUBSURFACE_PREDATOR_1","ts":"2026-09-20T19:16:53Z"}
+{"seat":"FOUNDRY","event":"start","id":"EXTREME_DESERT_SUBSURFACE_PREDATOR_1","ts":"2026-09-20T19:16:54Z"}
+{"seat":"FOUNDRY","event":"file","id":"DESERT_STAGGERSEED_BUILD_1","title":"Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)","kind":"build","target":"v1","needs":"owner","caused_by":"DESERT_SIGNATURE_FLORA_1","for":"FOUNDRY","ts":"2026-09-20T19:19:53Z"}
+{"seat":"FOUNDRY","event":"file","id":"DESERT_SHADE_PLANTS_DESIGN_1","title":"Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)","kind":"design","target":"v1","needs":"offline","caused_by":"DESERT_SIGNATURE_FLORA_1","for":"FOUNDRY","ts":"2026-09-20T19:19:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_SIGNATURE_FLORA_1","sha":"a74a7a4fb","ts":"2026-09-20T19:23:55Z"}
