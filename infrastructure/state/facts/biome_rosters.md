@@ -79,14 +79,35 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 8 third-party) — that is what a finished verdict pass looks like, and it is the
 before/after benchmark for every biome below it.
 
-### `RUT_BlueDesert` is deliberately sterile — it is not a gap
+### `RUT_BlueDesert` is empty because its life was never AUTHORED
 
 `<animalDensity>0</animalDensity>`, `<plantDensity>0</plantDensity>`, an EMPTY
-`<wildAnimals />`, and **no `<wildPlants>` element at all**. By design, per its
-own FROZEN sheet (`design/Jawa/worldbuilding/biomes/the_blue_desert.md`,
-`BIOME_FREEZE_FABLE_REVIEW_1`), which evicts the Earth desert zoo and all
-water-based flora wholesale. ⛔ A flora/fauna pass over it yields zero rows
-CORRECTLY. Do not read that as a parser bug and do not "repair" it.
+`<wildAnimals />`, and no `<wildPlants>` element at all.
+
+🔴 **This is a GAP, not design intent** — owner's correction, 2026-09-20. The
+def's own comment says so plainly, two lines below the density fields:
+
+> *"Zeroed, not the sheet's donor-read 0.5/0.33: nothing to scale until
+> Swallowers/Burners/Pickers and the transparent fractal flora exist."*
+> *"The Burners and the rest of the Blue Desert's intended life are new defs,
+> not pool creatures."*
+
+`design/Jawa/worldbuilding/biomes/the_blue_desert.md` carries a full
+**owner-ratified "Hydrocarbon biology"** section — no water-based life, methane
+metabolism, butane/pentane power storage, warm-reactive detonation — and names
+the cast: **Swallowers** (sealed armoured herbivores that swallow plants
+whole-rooted), **Burners** (fast oxidizers haloed in blue fire, exploding when
+badly wounded), **Pickers** (scavengers on the ablation line), and transparent
+fractal ferns/dandelions/fuzzballs, each a charge of liquid butane. The sheet's
+own Owed list carries "Fauna and flora authoring" for exactly these. The donor
+read it inherited was animalDensity **0.5** / plantDensity **0.33**, not zero.
+
+⚠️ **How this was got wrong, so it is not got wrong again:** this window read the
+zeroed densities plus the word FROZEN on the sheet and concluded "sterile by
+design" — publishing that to the owner and to a running subagent before he
+corrected it. The refuting sentence was inside the same file, a few lines down.
+🔑 An empty table is a question, not an answer: the nearest comment usually says
+which. Tracked at `BLUE_DESERT_LIFE_AUTHORING_1`.
 
 ### Unguarded entries — no `MayRequire`, not one of our defs
 

@@ -19,13 +19,20 @@ full method and the planet-wide table in `infrastructure/state/facts/biome_roste
 One sheet covers all three because they share a roster; every row records which
 of the three it belongs to.
 
-🔴 **`RUT_BlueDesert` (1,029 tiles) was in the original scope and is OUT.** It is
-deliberately sterile — `animalDensity` 0, `plantDensity` 0, an empty
-`<wildAnimals />` and no `<wildPlants>` element at all — by its own FROZEN sheet
-(`the_blue_desert.md`, `BIOME_FREEZE_FABLE_REVIEW_1`), which evicts the Earth
-desert zoo and all water-based flora wholesale. A verdict sheet over it is
-correctly zero rows. ⛔ Do not read that as a parser bug and do not repair it.
-`RUT_AridShrubland` took its place: it shares the family's roster and is the
+🔴 **`RUT_BlueDesert` (1,029 tiles) is OUT of this item — but it is a GAP, not a
+finished biome.** Its tables are empty because the life it was commissioned to
+have was **never authored**: the owner ratified a whole hydrocarbon biology for
+it (Swallowers, Burners, Pickers, transparent fractal flora), and the def's own
+comment says the densities are zeroed only "until Swallowers/Burners/Pickers and
+the transparent fractal flora exist". It is out of THIS item because a verdict
+pass rules on roster entries that already exist and it has none — it needs
+**authoring**, tracked separately at `BLUE_DESERT_LIFE_AUTHORING_1`.
+
+⚠️ This window first recorded it as "deliberately sterile by design" and told
+both the owner and a running subagent so. The owner corrected it. Do not restate
+the sterile reading.
+
+`RUT_AridShrubland` took its slot here: it shares the family's roster and is the
 second-heaviest third-party donor load on the planet.
 
 ⛔ `RUT_Wasteland` (1,853) is ADJACENT and out of scope — the obvious next pass,
