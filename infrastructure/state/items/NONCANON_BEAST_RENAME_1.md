@@ -75,3 +75,56 @@ changed; no label collides; label and description agree on every renamed def.
 
 A player who knows Star Wars cannot pick our invented beasts out of the canon
 ones by name alone.
+
+---
+
+## 🔴 THE STANDARD — owner, 2026-09-20, after BENCH got it wrong twice
+
+> *"No! I said [pseudo] Star Wars names. I don't want your whining real canon
+> names like that. This is the second error. When I say pseudo Star Wars I mean
+> it."*
+> *"Do not assign canon to non canon."*
+
+**What went wrong:** BENCH drafted 23 names — Sandstrider, Spineroller,
+EmberCarpet, Ferroclaw, Dunestalker, Whirlbloom — and **MEASURED 23 of 23 were
+built from English stems.** They are fantasy kennings, not Star Wars names. The
+whole batch was rejected.
+
+### The two rules, and they are SEPARATE
+
+**1. COINED, NOT COMPOUNDED.** The name reads as an alien word, not English
+parts glued together. ⛔ Never `<English adjective><English noun>`.
+
+⚠️ Star Wars does ship a few English compounds — `dewback`, `hawkbat`,
+`mudhorn`, `fanback`, `clodhopper`, `whisperbird`, `dragonsnake`. They are **7
+of 44** canon creature names, they are homely two-syllable nouns, and they are
+NOT the licence this rule denies. When in doubt, coin.
+
+**2. DO NOT ASSIGN CANON TO NON-CANON.** A coined name must not BE a real Star
+Wars name. Calling an invented beast "acklay" or "kinrath" is worse than a bad
+name — it tells the player a canon creature is present when it is not.
+
+### The phonetic target — MEASURED from the 37 coined creature names in `design/RimStarWars/canon_references/`
+
+| property | canon |
+|---|---|
+| syllables | **2** (26/37), 3 (6), 1 (3), 4 (2) |
+| length | **4–7 letters** (31/37) |
+| final char | vowel dominates — a (9), o (4), then r (4), k (3), g (2) |
+| doubled letter | 12/37 (`acklay`, `cannok`, `zakkeg`, `orray`, `massiff`) |
+| k / q / x / z | 14/37 (`gizka`, `horax`, `vulptex`, `vornskyr`) |
+
+### 🔑 Enforced, not exhorted
+
+`python3 src/RimMandrake/Utils/check_pseudo_sw_name.py <names...>`
+
+Refuses a name built from an English stem, a name that collides with any of the
+137 canon entries, and a name outside the measured shape. **Calibrated both
+ways before use:** BENCH's rejected drafts are REFUSED on English stems, and
+real canon names (`Gizka`, `Zakkeg`, `Kreetle`) are REFUSED on collision — which
+is correct, because a non-canon beast must not take them.
+
+⚠️ It checks SHAPE and COLLISION. It cannot tell you a name is GOOD. That is the
+owner's ear, and his overrule is the signal worth having — run every draft
+through it before he ever sees the list, so his attention is spent on taste
+rather than on catching English compounds.
