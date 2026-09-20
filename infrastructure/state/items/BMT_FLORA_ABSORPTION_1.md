@@ -150,3 +150,15 @@ and becomes a live defect.
 `BMT_Boneblade` and `BMT_Rocktooth` appear in a raw text grep of the BiomeDefs
 folder but are NOT entries in any `wildPlants`/`wildAnimals` table — they are
 prose in comments. 14 is the real count.
+
+### 5. Independently confirmed — two instruments, same answer
+
+The corrections above were re-derived by a second, unrelated route (walking each
+vendored source's own `About.xml` for its `packageId` and checking it against the
+active list, rather than querying the def dump). **Both agree exactly**: 14 defs,
+1 guarded / 13 unguarded, 5 Caverns / 9 Polluted Lands, all 14 not live.
+
+Exact source packageIds, for the port's own `About.xml` and any `MayRequire`
+you write: **`BiomesTeam.BiomesCaverns`** and **`BiomesTeam.BiomesPollutedLands`**.
+⚠️ Note the casing — the one guard in the biome files spells it
+`biomesteam.biomescaverns`, lowercase.
