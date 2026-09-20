@@ -90,6 +90,18 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Ling_Cockroach MayRequire="lingluo.cockroach">0.05</Ling_Cockroach>  <!-- Giant Cockroach - medium, import -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           0.0% small against a single large import. Both additions below are already
+           OWNER-RULED members of this exact biome's fauna list
+           (design/Jawa/worldbuilding/biomes/rosters/the_rust_cathedral.json "fauna")
+           that were never wired — not invented. RUT_CathedralRoach is this biome's own
+           built-and-unwired synthetic cleaner (bodySize 0.22); GR_Mecharat is the
+           roster's ruled mech-vermin (bodySize 0.2, GR_Mechachicken's row was CUT by a
+           2026-09-10 owner card and stays cut). Mynock is deliberately NOT added here:
+           the same roster's own confidence note rules it "homeless-reserve... R17 lets
+           it visit without a roster row." -->
+      <RUT_CathedralRoach MayRequire="mandrake.rut.rustcathedralroaches">0.12</RUT_CathedralRoach>  <!-- cathedral roach - synthetic cleaner, small, ruled -->
+      <GR_Mecharat MayRequire="vanillaexpanded.vgeneticse">0.5</GR_Mecharat>  <!-- mecharat - mech-vermin, small, ruled -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

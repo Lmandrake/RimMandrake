@@ -97,6 +97,15 @@
     <wildAnimals>
       <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>   <!-- sando aqua monster - bottom-walker adult, import -->
       <RSW_ElderSando MayRequire="mandrake.rsw.swbestiary">0.005</RSW_ElderSando>              <!-- elder sando - bottom-walker elder, import -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           0.0% small against the two sando bottom-walkers. Both additions are already
+           OWNER-RULED members of this exact biome's fauna list
+           (design/Jawa/worldbuilding/biomes/rosters/the_scald.json "fauna", "import",
+           0.5 each) that were never wired — not invented. RSW_Faa (bodySize 0.2) and
+           RSW_Mee (bodySize 0.15) are this mod's own defs, same package the sando pair
+           above already gates on. -->
+      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>  <!-- faa - small underwater resident, ruled -->
+      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>  <!-- mee - small underwater resident, ruled -->
     </wildAnimals>
     <!-- animalDensity: undeclared (engine default 0) -> 0.15, DESIGNED interim
          (2026-09-09 fix wave). the_scald.md is NOT a terminator sea (prep §6.5): it is

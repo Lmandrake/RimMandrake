@@ -127,17 +127,26 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>  <!-- bantha - huge-herd, adjust-keep -->
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - ambush-small, keep -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           45.0% small, the biggest roster in the sweep. JOE_Landopus is already an
+           OWNER-RULED member of this exact biome's fauna list
+           (design/Jawa/worldbuilding/biomes/rosters/desert.json "fauna", 0.5) that was
+           never wired — not invented; bodySize 0.15, and it is this mod's OWN def
+           (mandrake.rut.patches, this file's own package), so no MayRequire is needed.
+           The rest of the fix raises the grain already here (Kreetle/Scavrat/Sketto/
+           WompRat/Rat all boosted below), same shape as the Gizka fix: no megafauna cut. -->
+      <JOE_Landopus>0.5</JOE_Landopus>  <!-- landopus - small ambush predator, ruled, this mod's own def -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">1.3</Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
       <RSW_Jellypot MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Jellypot>  <!-- jellypot - ambush-small, keep -->
-      <Scavrat MayRequire="mlie.starwarsanimalcollection">0.6</Scavrat>  <!-- Scavrats - ship-vermin, import -->
+      <Scavrat MayRequire="mlie.starwarsanimalcollection">1.0</Scavrat>  <!-- Scavrats - ship-vermin, import; boosted from 0.6 for the ecosystem pyramid law -->
       <Shyrack MayRequire="mlie.starwarsanimalcollection">0.6</Shyrack>  <!-- shyrack - ambush-flier, keep -->
       <Gorg MayRequire="mlie.starwarsanimalcollection">0.4</Gorg>  <!-- gorg - ambush-small, keep -->
       <Gutkurr MayRequire="mlie.starwarsanimalcollection">0.4</Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
       <Jamel MayRequire="mlie.starwarsanimalcollection">0.4</Jamel>  <!-- Jamel - herd, keep -->
       <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.4</LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
       <Ronto MayRequire="mlie.starwarsanimalcollection">0.4</Ronto>  <!-- ronto - huge-herd, keep -->
-      <Sketto MayRequire="mlie.starwarsanimalcollection">0.4</Sketto>  <!-- sketto - ambush-small, keep -->
-      <WompRat MayRequire="mlie.starwarsanimalcollection">0.4</WompRat>  <!-- womp rat - ambush-small, keep -->
+      <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
+      <WompRat MayRequire="mlie.starwarsanimalcollection">0.7</WompRat>  <!-- womp rat - ambush-small, keep; boosted from 0.4 for the ecosystem pyramid law -->
       <Wraid MayRequire="mlie.starwarsanimalcollection">0.4</Wraid>  <!-- wraid - burst-predator, adjust-keep -->
       <AA_DesertAve MayRequire="sarg.alphaanimals">0.4</AA_DesertAve>  <!-- desert ave - navigator, keep -->
       <Eopie MayRequire="mlie.starwarsanimalcollection">0.3</Eopie>  <!-- eopie - herd, keep -->
@@ -160,7 +169,7 @@
       <TeeMuss MayRequire="mlie.starwarsanimalcollection">0.2</TeeMuss>  <!-- tee muss - herd, import -->
       <Worrt MayRequire="mlie.starwarsanimalcollection">0.2</Worrt>  <!-- worrt - ambush-small, keep -->
       <AA_Needleroll MayRequire="sarg.alphaanimals">0.2</AA_Needleroll>  <!-- needleroll - grain, keep -->
-      <Rat>0.1</Rat>  <!-- brown rat - ship-vermin, import -->
+      <Rat>0.2</Rat>  <!-- brown rat - ship-vermin, import; boosted from 0.1 for the ecosystem pyramid law -->
       <Bolotaur MayRequire="mlie.starwarsanimalcollection">0.1</Bolotaur>  <!-- bolotaur - herd, import -->
       <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.1</Clodhopper>  <!-- clodhopper - ambush-small, keep -->
       <FeralGrazer MayRequire="mlie.starwarsanimalcollection">0.1</FeralGrazer>  <!-- feral grazer - herd, import -->

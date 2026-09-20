@@ -156,6 +156,15 @@
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.003</AA_Terramorph>       <!-- terramorph - medium, import -->
       <AA_Slurrypede MayRequire="sarg.alphaanimals">0.002</AA_Slurrypede>       <!-- slurrypede - medium, import -->
       <AA_TetraSlug MayRequire="sarg.alphaanimals">0.002</AA_TetraSlug>         <!-- tetra slug - giant, import -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           16.7% small against five giant/medium imports. This addition is already an
+           OWNER-RULED "native visitor" in this exact biome's fauna list
+           (design/Jawa/worldbuilding/biomes/rosters/nightside_ice.json "fauna", band
+           "visitor", commonality 0.03) that was never wired — not invented. AA_ShockGoat
+           is bodySize 0.65, small. The roster's other three unwired visitors (Tauntaun
+           bodySize 1.0, Wampa bodySize 6, both LARGE) are left out on purpose: adding
+           them would move the ratio the wrong way. -->
+      <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
     </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />
