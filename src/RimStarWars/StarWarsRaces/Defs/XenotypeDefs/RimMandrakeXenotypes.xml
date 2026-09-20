@@ -41,7 +41,7 @@
       <li>DarkVision</li>
       <li>Outland_ThickSkin</li>
       <li>AptitudeStrong_Construction</li>
-      <li>AptitudeStrong_Mining</li>
+      <li>AptitudeStrong_Intellectual</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -167,7 +167,8 @@
       <li>ElongatedFingers</li>
       <li>AptitudePoor_Mining</li>
       <li>AptitudePoor_Animals</li>
-      <li>AptitudeRemarkable_Artistic</li>
+      <li>AptitudeStrong_Artistic</li>
+      <li>AptitudeStrong_Intellectual</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -752,7 +753,6 @@
       <li>AptitudeRemarkable_Construction</li>
       <li>AptitudeRemarkable_Crafting</li>
       <li>AptitudeTerrible_Social</li>
-      <li>AptitudeTerrible_Intellectual</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1194,7 +1194,6 @@
       <li>Outland_ThickSkin</li>
       <li>AptitudeStrong_Melee</li>
       <li>AptitudeStrong_Mining</li>
-      <li>AptitudePoor_Intellectual</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1412,7 +1411,6 @@
       <li>RSW_GS_Primitive</li>
       <li>Outland_UnusualSpeech</li>
       <li>AptitudePoor_Plants</li>
-      <li>AptitudePoor_Medicine</li>
       <li>AptitudePoor_Intellectual</li>
     </genes>
   </XenotypeDef>
