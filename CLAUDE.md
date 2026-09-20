@@ -24,6 +24,49 @@ and nowhere else; never restate a model choice outside it.
   THE map, judged by realism first, iterated by LOOKING (`worldview.py`); target and
   references: `design/Jawa/worldbuilding/the_one_map.md`.
 
+## 🔴 A BIOME WITH ZERO TILES IS NOT A DEFECT — owner, 2026-09-20, said repeatedly
+
+> *"Correct we will repaint the whole world when all the biomes are in. **You don't need
+> to keep rediscovering this.**"* · *"Don't worry about worldmap painting. Once we have
+> all the biomes in mods we will do the painting once and for all."*
+
+**The planet is painted ONCE, at the end, after every biome is its own mod.** Biome-to-tile
+assignment is redone wholesale at that pass.
+
+- ✅ **A BiomeDef of ours carrying 0 of 21,872 tiles is the EXPECTED mid-migration state.**
+  It is not a finding, not a defect, and not a reason to do, defer or escalate anything.
+- ⛔ **Never repoint owned content at a donor def to make it appear on today's map.** That
+  is backwards and was nearly shipped twice.
+- ⛔ **Do not cite a tile count as evidence that something is or is not built.** It answers
+  a question nobody is asking until the painting pass.
+- ✅ Do keep a paint list of owned BiomeDefs as biomes finish, so the repaint has a source
+  of truth. Item: `BIOME_PAINT_ONCE_AT_THE_END_1`.
+
+🔴 **This has now cost three reconciliation passes.** The Pyrelands was "discovered" to
+have all its content on `RM_FE_Pyrelands` with 0 tiles on 2026-09-19 AND AGAIN on
+2026-09-20, the second time producing a whole filed item
+(`PYRELANDS_WRONG_BIOME_DEF_1`, closed) and a false report to the owner. **If you find
+yourself about to report that one of our biomes is on zero tiles, you have rediscovered
+this. Stop.**
+
+### 🔴 And the instrument that keeps producing it: the tiles CSV is a RECORD, not the planet
+
+`world/ASHKARR_WORLDMAP_tiles.csv` is **exported from the savegame**, last on 2026-09-12.
+Its own freeze stamp (`ASHKARR_WORLDMAP_tiles.csv.frozen.json`, owner ruling 2026-09-07)
+says it outright:
+
+> *"It is a RECORD of the planet, not a rival to it. To change the world, change the
+> WORLD and re-export — never edit this file and import it back."* … *"Any future
+> live-vs-CSV validate must state which direction it is evidence for."*
+
+⇒ **Reading that CSV tells you what the planet looked like on its export date, never what
+it is now.** A live bridge edit after that date is invisible to it — which is exactly what
+happened: a live read on 2026-09-19 recorded the Pyrelands on 222 tiles of
+`RM_FE_Pyrelands`, while the CSV still showed 222 on the donor `ZBiome_Grasslands`. ⛔ Do
+not resolve such a disagreement from the CSV, and ⛔ never call a CSV-derived tile count
+MEASURED about the live world — the live system is the only instrument for "right now"
+(`~/.claude/skills/measuring-large-artifacts`).
+
 ## Facts you cannot guess
 
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
