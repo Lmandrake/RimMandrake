@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T09:45:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T10:03:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1017,6 +1017,15 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
+## DETERMINISM_REMAINDER_C4_C6_1 DETERMINISM_REMAINDER_C4_C6_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1523,12 +1532,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
 
-## DETERMINISM_REMAINDER_C4_C6_1 DETERMINISM_REMAINDER_C4_C6_1
+## WALKLINT_FINDINGS_CLEANUP_1 Clear walklint's 40 FAIL / 15 WARN, then arm C1's suite gate
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DETERMINISM_REMAINDER_C4_C6_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DETERMINISM_REMAINDER_C4_C6_1.md
+summary:  (no items/WALKLINT_FINDINGS_CLEANUP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WALKLINT_FINDINGS_CLEANUP_1.md
