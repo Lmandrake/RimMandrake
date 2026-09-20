@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T19:14:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:19:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,6 +918,15 @@ kind:     task
 summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
 prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
 
+## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  EXTREMEDESERTSUBSURFACEPREDATOR1 — replace AADunealisk with a real predator
+prose:    infrastructure/state/items/EXTREME_DESERT_SUBSURFACE_PREDATOR_1.md
+
 ## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
 state:    doing
 row:      unassigned
@@ -935,6 +944,15 @@ target:   v1
 kind:     task
 summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
 prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
+
+## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
+prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1392,16 +1410,6 @@ thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
-## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  EXTREMEDESERTSUBSURFACEPREDATOR1 — replace AADunealisk with a real predator
-prose:    infrastructure/state/items/EXTREME_DESERT_SUBSURFACE_PREDATOR_1.md
-
 ## EXTREME_DESERT_UNRULED_VERMIN_1 Owner card: rule the 12 Fall Line vermin rows for extreme desert
 state:    proposed
 row:      unassigned
@@ -1442,16 +1450,6 @@ thin:     no ## spec
 summary:  FALLLINEINJECTIONDEADBIOMEKEYS1 — fallline.json injects vermin at dead biome keys
 prose:    infrastructure/state/items/FALL_LINE_INJECTION_DEAD_BIOME_KEYS_1.md
 
-## DESERT_BURST_PREDATOR_FLAGSHIP_1 Author the desert's burst-predator flagship, blocked on ShadeAt
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
-prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
-
 ## AA_JOE_DESERT_PORT_BATCH_1 Port AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast + absorb JOE_Cephalope, as one batch (round-2 desert imports)
 state:    proposed
 row:      unassigned
@@ -1461,3 +1459,23 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Owner ruling 2026-09-20 (recorded on DESERTROUND2IMPORTSUNLANDED1): port
 prose:    infrastructure/state/items/AA_JOE_DESERT_PORT_BATCH_1.md
+
+## DESERT_STAGGERSEED_BUILD_1 Author the staggerseed cycle plant (corpse-dispersal + euphoric prepared-seed dish)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_STAGGERSEED_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_STAGGERSEED_BUILD_1.md
+
+## DESERT_SHADE_PLANTS_DESIGN_1 Design pass: desert's defending shade plants (thorn/contact damage, no native CompProperties)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_SHADE_PLANTS_DESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_SHADE_PLANTS_DESIGN_1.md
