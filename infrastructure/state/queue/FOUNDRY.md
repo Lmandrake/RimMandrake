@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:47:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:48:13Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,15 +909,6 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
-## DESERT_FORAGEDFOOD_INERT_1 RUT_Desert forageability is inert with no foragedFood set
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DESERTFORAGEDFOODINERT1 — RUTDesert forageability is inert, no foragedFood set
-prose:    infrastructure/state/items/DESERT_FORAGEDFOOD_INERT_1.md
-
 ## DESERT_ROUND2_IMPORTS_UNLANDED_1 Wire the landed round-2 desert imports, port the rest
 state:    doing
 row:      unassigned
@@ -1520,3 +1511,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Re-run python3 design/Jawa/mods/planttolerances.py --write, review the diff against the
 prose:    infrastructure/state/items/PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1.md
+
+## AA_JOE_DESERT_PORT_BATCH_1 Port AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast + absorb JOE_Cephalope, as one batch (round-2 desert imports)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/AA_JOE_DESERT_PORT_BATCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/AA_JOE_DESERT_PORT_BATCH_1.md
