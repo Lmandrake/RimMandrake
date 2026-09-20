@@ -8,8 +8,8 @@
     },
     {
       "claim": "Plant_Bloddle has no green leafy above-ground parts",
-      "status": "UNMEASURED",
-      "why": "texture eye test owed"
+      "status": "MEASURED",
+      "why": "green-dominant pixel fraction 0.0000 on all three Graphic_Random variants (BloddleA/B/C, 256x256, donor mlie Star Wars Animal Collection workshop 3497316713, extracted from Mlie_StarWarsAnimalCollection AssetBundle swplants/Bloddle/*): opaque pixels 19962/18021/20085, green pixels 0/0/0 on every variant, even under a loose g>r-and-g>b test. Average colour is warm brown/tan (~RGB 143,121,76), a bulbous rounded body with no leaf shapes — passes dune_sea.md §6's 'no green, no leaves' ban. Not glassy/white/mirrored per §6's positive aesthetic guidance, but that is a separate stylistic note, not the checkable ban this claim covers. BLODDLE_DUNE_SEA_EYE_TEST_1, 2026-09-20."
     },
     {
       "claim": "nocturnal-behaviour ban (dune sea ban 1) enforced",
@@ -691,7 +691,7 @@
       "commonality": 0.05,
       "def": "Plant_Bloddle",
       "law": "SW donor plant, alien name; trace density",
-      "note": "appearance eye test owed — dune sea bans green/leafy above-ground parts; see confidence"
+      "note": "appearance eye test done (BLODDLE_DUNE_SEA_EYE_TEST_1, 2026-09-20): MEASURED green-dominant pixel fraction 0.0000 across all three variants, warm brown/tan body — passes dune_sea.md §6 no-green/no-leaves ban; see confidence"
     }
   ],
   "flora_purged": [
