@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T15:06:03Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-20T15:55:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -453,16 +453,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPS_FAUNA_REPOPULATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPS_FAUNA_REPOPULATION_1.md
 
-## ROT_FLORA_FAUNA_VERDICTS_1 Rot flora/fauna verdicts: 45 species regen at ruled cell widths with new campaign names, BovineBeetle + Emberscythe cut from the Rot, 5 landed sprites approved
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## verify, no ## criteria
-summary:  Wire the 5 owner-approved landed sprites from Group C of
-prose:    infrastructure/state/items/ROT_FLORA_FAUNA_VERDICTS_1.md
-
 ## DEEPS_FAUNA_MECHANICS_2 Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immunity, drinker hydrocarbon-blood extension + fluid-sack gauge + drained-fluids drop
 state:    proposed
 row:      unassigned
@@ -559,6 +549,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SLIME_GENE_ARCHIVE_BUILD_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
 prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
+
+## PYRELANDS_WRONG_BIOME_DEF_1 The Pyrelands content is wired to RM_FE_Pyrelands, which has ZERO tiles on the frozen world - the biome the player actually visits is ZBiome_Grasslands and it is missing the fauna roster, the ash weather and the fuel bed while keeping the donor's ordinary rain and snow
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSWRONGBIOMEDEF1 — the Pyrelands was built onto a def nobody can reach
+prose:    infrastructure/state/items/PYRELANDS_WRONG_BIOME_DEF_1.md
+
+## ROT_ROSTER_DEAD_DONOR_NAMES_1 The Rot's fauna roster still names 17 BMT_ species from Biomes! Caverns, a donor mod NOT in the 621-mod active list - they can never spawn, so the roster needs re-ruling (port to our own defs or drop), NOT wiring into the biome table
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROT_ROSTER_DEAD_DONOR_NAMES_1.md
