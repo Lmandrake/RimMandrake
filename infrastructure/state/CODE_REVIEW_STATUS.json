@@ -17446,10 +17446,10 @@
     "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-19",
-    "hash": "3390d728c5e94f9d31ca85aae4f78b0a2ca8fcbfc8906ecb31a054e35441c05a",
-    "sha": "c1b342131"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "bb8d2a4e6322f5e325fd3adc9bda70bfb494f2f1a6f573363caeda6f398ba057",
+    "sha": "204a30ed7"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
     "cleanCount": 3,
