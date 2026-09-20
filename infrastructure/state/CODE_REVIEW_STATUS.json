@@ -6418,10 +6418,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/selftest_handoff.py": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "58d872cb6b8835997e21b5cec0f8c25d7027614d451dc44b9d22c097eb5f7c87",
-    "sha": "d946c8522"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "3a74d545f8da831412056fe421f85140f2fc0a7c6862134d672387477ba8b0e7",
+    "sha": "1135036ce"
   },
   "src/RimMandrake/Utils/selftest_lore_stages.py": {
     "cleanCount": 1,
@@ -6976,10 +6976,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "52115b11ea9379f520d2e539e7236c13aec5dc19f4b88e77b51fa826538692a1",
-    "sha": "c1ae25eaa"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "bc0009a3ffca00332ceefeed343115a260ed156b3cbe639b3a81eb1c3d1d0016",
+    "sha": "1135036ce"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
     "cleanCount": 1,
@@ -6994,10 +6994,10 @@
     "sha": "2424e896"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGroupTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5752f8890ddde0efbd3aa267a7577b966840817643ccb699a80877ecd6f67c93",
-    "sha": "c4ea71c4"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "542916e224dba0d91f0856fb0fe821dacf03b649105313c5fd7b84d4d63bb64c",
+    "sha": "1135036ce"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHarmonyInspect.cs": {
     "cleanCount": 1,
@@ -14680,10 +14680,10 @@
     "sha": "d966fa898"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "196d50dc1be69af433aafd599cc05eee625beadc222acfc2c9b103df78f8b913",
-    "sha": "d966fa898"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "b4c54aafd8762627061bc07b3b8e4bf75c1af9485eb6266deac2ac7c11108351",
+    "sha": "1135036ce"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsTuning.cs": {
     "cleanCount": 2,
