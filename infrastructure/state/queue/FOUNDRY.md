@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T07:33:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T07:38:31Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -440,15 +440,6 @@ target:   v1
 kind:     build
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
-
-## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
-prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
 ## WORLDMAP_AUDIT_LIVE_CHECKS_1 Four worldmap audit checks needing the live game — batch into next game-up window
 state:    doing
@@ -1568,3 +1559,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONICALSAVESCENARIOMISMATCH1 — second-look verification, 2026-09-19
 prose:    infrastructure/state/items/CANONICAL_SAVE_SCENARIO_MISMATCH_1.md
+
+## CLOSE_OWED_LIVE_PROOF_1 A close whose evidence is offline-only leaves its live proof owed in a COMMIT MESSAGE, where no queue reads it - the debt dies with the session
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CLOSE_OWED_LIVE_PROOF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CLOSE_OWED_LIVE_PROOF_1.md
