@@ -287,9 +287,21 @@ character `<description>` values in `RimMandrakeXenotypes.xml`: Defel, Gand, **H
 Dor**, **Kubaz**, Lasat, **Mimbanese**, Taung, Ugnaught. The four in bold were not on the filed
 list. Counted with `grep -c '<description>.</description>'` on the def itself.
 
-**Pattern 4's aquatic case may not be a data fix at all.** The four aquatic species do lack any
-water-breathing gene — CONFIRMED absent from both the xenotype file and our own `GeneDefs/`. But
-whether such a gene EXISTS to assign, in vanilla or a DLC, is **UNMEASURED on the Mac laptop**
-(no RimSage, no def dump reachable). If none exists, this is a mechanic somebody must build, not
-a value somebody forgot — a materially different piece of work. Measure it on the Desktop before
-scheduling it.
+**Pattern 4's aquatic case IS a data fix — RESOLVED 2026-09-20 on the Desktop.**
+
+🔴 **The claim that the gene was "CONFIRMED absent from ... our own `GeneDefs/`" was FALSE.**
+`RSW_WaterBreathing` **exists and is ours**, defined at
+`src/RimStarWars/StarWarsRaces/Defs/GeneDefs/RSW_Aquatic.xml` (with a companion patch,
+`Patches/RSW_Aquatic_SoakingWet.xml`). MEASURED against the live def dump — 3,733 GeneDefs,
+`mods=618/a48bc71544df1a7e`, captured 2026-09-20T17:44:19Z, which fingerprint-matches the
+full active list.
+
+⇒ **Nobody needs to build a water-breathing mechanic.** The four species are missing an
+ASSIGNMENT, not a capability, which is the cheaper of the two outcomes and is already inside
+the owner's 2026-09-15 "cleared to fix now" table. The earlier note had this scheduled as
+possible new mechanic work; it is not.
+
+🔑 The related lesson: the earlier pass correctly marked this UNMEASURED on the laptop, where
+neither RimSage nor the def dump is reachable — but it also asserted an absence it could not
+see. **An absence claimed by the instrument that cannot look is the same error as a guess.**
+(A donor alternative also exists, `GravTide_Gills`, should ours ever prove unsuitable.)
