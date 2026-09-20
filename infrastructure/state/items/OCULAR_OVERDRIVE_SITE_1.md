@@ -16,7 +16,12 @@ want it — at the risk of unleashing it across the planet.
 ## original filing (kept for provenance)
 
 ## spec
-- MEASURED site: 3 `AB_OcularForest` tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+- ⚠️ **The line below is the ORIGINAL 2026-09-06 filing and its def is DEAD.**
+  `AB_OcularForest` carries **0 painted tiles**; the biome is `RUT_Contagion` and it
+  carries **179** (MEASURED 2026-09-20 against `world/ASHKARR_WORLDMAP_tiles.csv`,
+  21,872 tiles). The site is no longer 3 tiles on a mountain — it is a biome. Kept
+  only for the coordinates and the climate reading, which are still good.
+- MEASURED site (ORIGINAL, dead def): 3 `AB_OcularForest` tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
   lon 63.1/63.2/64.3, elev 2,177 m, 23 °C, hilliness 4 — dayside high mountain, ringed by
   ExtremeDesert/Desert/AridShrubland.
 - **What it is**: the Assailant weapon in biological overdrive — ambient heat and energy
@@ -53,3 +58,33 @@ Spire" (local name; thin black needle, disc pad near top, intermittently
 visible through the Scald turbulence). Campaign function: NOT ruled — owner
 wants a whole plot discussion first (TBD); dungeon shell + landmark may
 proceed, function may not. Recorded in ashfall_research_base.md §6.
+
+
+---
+
+## 🔴 RULED 2026-09-20 — the owner confirms the identity, and adds the spire
+
+Verbatim: *"ocular overdrive is just another name for the contagion biome. It is
+in bioweapon overdrive. And yes it has the dungeon there too with the spire."*
+
+Three things settled:
+
+1. **"Ocular Overdrive" and "the Contagion" are ONE place, not two.** This item's
+   header already said so; the owner's word makes it a ruling rather than an
+   inference. ⛔ The name "Ocular Overdrive" is retired and must not come back as a
+   separate site, biome or landmark. Live def: `RUT_Contagion`, **179 tiles**.
+2. **"Bioweapon overdrive" is the biome's STATE, and that is what the old name was
+   describing.** The Assailant weapon driven into frenzy, mutation and contagion by
+   ambient heat and energy — the overdrive is the condition the Contagion is in,
+   not a different location that happens to be nearby.
+3. **The dungeon is there, and the spire is with it.** The Ashfall Research Base
+   and the spire both sit in the Contagion. They are not a separate site to be
+   placed elsewhere.
+
+⚠️ **Watch for the reverse error now.** Because the two names meant one place, any
+doc that lists them as separate entries is double-counting the planet — one biome
+appearing twice in a site list, a plot beat, or a tile budget. Fix on sight.
+
+🔑 `ASHFALL_SPIRE_LANDMARK_1` is CLOSED, so the spire already exists as a landmark;
+this ruling places it with the dungeon rather than asking for it to be built again.
+Check its def before authoring anything spire-shaped.
