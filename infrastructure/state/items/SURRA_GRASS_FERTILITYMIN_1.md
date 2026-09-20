@@ -1,5 +1,13 @@
 # SURRA_GRASS_FERTILITYMIN_1 — owner card: fertilityMin locks surra grass off Sand
 
+## ruling (owner, 2026-09-20)
+
+Owner chose (b): KEEP `fertilityMin` at 0.30. Surra grass stays confined to Soil
+islands, off Sand. Reasoning is now written into `RSW_Dunegrass`'s def comment
+in `src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml`:
+the grass being confined to the damper soil is the player's water-table signal
+— green means water. Landed and closed.
+
 ## what is wrong
 
 `RSW_Dunegrass` (surra grass) has `fertilityMin 0.30`, but Core's Sand

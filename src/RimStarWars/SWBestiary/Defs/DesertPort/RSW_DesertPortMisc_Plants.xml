@@ -50,6 +50,12 @@ evidence the path is good) but was fixed here on the same evidence.
 		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
 		<ingestible/>
 		<plant>
+			<!-- RULED (owner, 2026-09-20, SURRA_GRASS_FERTILITYMIN_1): KEEP fertilityMin at
+			     0.30, deliberately above Core Sand's 0.10 fertility, so surra grass is confined
+			     to Soil islands rather than spreading across Sand. This is intentional, not a
+			     bug: the grass being confined to the damper soil patches is the player's signal
+			     that water is near — green means water. Do NOT lower this to spread the grass
+			     onto Sand. -->
 			<fertilityMin>0.30</fertilityMin>
 			<fertilitySensitivity>0.3</fertilitySensitivity>
 			<growDays>2.5</growDays>
