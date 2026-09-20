@@ -197,7 +197,13 @@ def cross_check(paths, reg):
         if target_d is None:
             print(f'⚠️  cross: {sheet} moves {dn} -> {target}: target roster file not loaded')
             continue
-        if dn not in {r.get('def') for r in target_d.get('fauna', [])}:
+        # 🔴 Bug found and fixed 2026-09-20 (SHEET_ORPHAN_CONSUMPTION_1): this used to check
+        # only target_d['fauna'], so every FLORA move eviction (disposition move:X) reported
+        # a false 🔴 here even when the plant was correctly landed in the target roster's
+        # 'flora' list — a flora move can never satisfy a fauna-only check. Check both lists.
+        landed = ({r.get('def') for r in target_d.get('fauna', [])} |
+                  {r.get('def') for r in target_d.get('flora', [])})
+        if dn not in landed:
             print(f'🔴 cross: {sheet} evicts {dn} as move:{target}, but '
                   f'{target_d.get("sheet")} does not roster it')
             problems += 1

@@ -18,9 +18,9 @@
       <value>
         <wildPlants>
           <AB_CrystalHorn>1.0</AB_CrystalHorn> <!-- crystal horn -->
-          <AB_CrystalFlower>0.8</AB_CrystalFlower> <!-- crystal flower -->
           <AB_FrostLeaf>0.6</AB_FrostLeaf> <!-- frost leaf -->
           <AB_RimeNodules>0.4</AB_RimeNodules> <!-- rime nodules -->
+          <PoisonShrub>0.35</PoisonShrub> <!-- poison shrub -->
         </wildPlants>
       </value>
     </match>
@@ -36,7 +36,20 @@
           <Plant_Chakroot_Wild>0.3</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
           <Plant_HubbaGourd_Wild>0.2</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
           <AB_Aaklac>0.12</AB_Aaklac> <!-- aaklac -->
-          <AB_DessertTree>0.06</AB_DessertTree> <!-- dessert tree - tree -->
+        </wildPlants>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_BlueDesert"]/wildPlants</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="RUT_BlueDesert"]/wildPlants</xpath>
+      <value>
+        <wildPlants>
+          <AB_ToxiGrass>0.6</AB_ToxiGrass> <!-- toxi grass -->
+          <AB_CrystalHorn>0.4</AB_CrystalHorn> <!-- crystal horn -->
+          <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass> <!-- tall grass -->
         </wildPlants>
       </value>
     </match>
@@ -68,12 +81,12 @@
           <RUT_TwistingThornwood>0.6</RUT_TwistingThornwood> <!-- twisting thornwood - tree -->
           <RUT_TreeMartyr>0.5</RUT_TreeMartyr> <!-- martyr tree - tree -->
           <AB_CrystalFlower>0.5</AB_CrystalFlower> <!-- crystal flower -->
-          <AB_CrystalHorn>0.4</AB_CrystalHorn> <!-- crystal horn -->
           <AB_BloodBouquet>0.4</AB_BloodBouquet> <!-- blood bouquet -->
           <AB_RavenNettle>0.4</AB_RavenNettle> <!-- raven nettle -->
           <AB_RedBugloss>0.3</AB_RedBugloss> <!-- red bugloss -->
           <AB_GiantAgariTox>0.3</AB_GiantAgariTox> <!-- agaritox - tree -->
           <AB_KeeningCordax>0.2</AB_KeeningCordax> <!-- keening cordax - tree -->
+          <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
         </wildPlants>
       </value>
     </match>
@@ -121,13 +134,13 @@
         <wildPlants>
           <AB_AlienTree>1.0</AB_AlienTree> <!-- ocular tree - tree -->
           <AB_AlienGrass>1.0</AB_AlienGrass> <!-- ocular grass -->
-          <AB_EyeGrass>0.6</AB_EyeGrass> <!-- flowering ocular grass -->
           <AB_RedLeaves>0.6</AB_RedLeaves> <!-- ocular plant -->
           <AB_RedPlantsTall>0.5</AB_RedPlantsTall> <!-- ocular plant -->
           <AB_HalfAlienTree>0.5</AB_HalfAlienTree> <!-- half transformed ocular tree - tree -->
           <AB_TentacularPlant>0.4</AB_TentacularPlant> <!-- tentacular aberration -->
           <AB_GlobularPlant>0.4</AB_GlobularPlant> <!-- globular aberration -->
           <AB_BloodBouquet>0.3</AB_BloodBouquet> <!-- blood bouquet -->
+          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
           <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted> <!-- mutated ocular tree - tree -->
         </wildPlants>
       </value>
@@ -202,11 +215,9 @@
           <RUT_Nuitae>0.5</RUT_Nuitae> <!-- nissik gill -->
           <RUT_Wrinklecap>0.5</RUT_Wrinklecap> <!-- rukka cap -->
           <RUT_Arpeau>0.4</RUT_Arpeau> <!-- churrun mast - tree -->
-          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- brommok timber - tree -->
           <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- orrusk crook -->
           <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus> <!-- tarrusk spire - tree -->
           <RUT_Pusmelon>0.3</RUT_Pusmelon> <!-- gubbra gourd -->
-          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
           <RUT_Sagecrust>0.3</RUT_Sagecrust> <!-- tavvik crust -->
           <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- bollusk trunk -->
           <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- glissik slimecap -->
@@ -220,7 +231,6 @@
           <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- skarrow dome -->
           <AB_DribblingCap>0.1</AB_DribblingCap> <!-- ruvvak weeper -->
           <RUT_Skulltop>0.1</RUT_Skulltop> <!-- vekkra choker - tree -->
-          <Boomshroom>0.05</Boomshroom> <!-- boomshroom -->
           <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- grath elder -->
         </wildPlants>
       </value>
@@ -237,7 +247,9 @@
           <AB_ToxicGamma>0.6</AB_ToxicGamma> <!-- toxic gamma - tree -->
           <AB_GiantGamma>0.5</AB_GiantGamma> <!-- giant gamma -->
           <AB_WildRadagast>0.5</AB_WildRadagast> <!-- wild ragadast -->
+          <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
           <AB_GiantStikehr>0.3</AB_GiantStikehr> <!-- giant stikehr -->
+          <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
           <AB_GiantSeptimum>0.2</AB_GiantSeptimum> <!-- giant septimum - tree -->
         </wildPlants>
       </value>
@@ -269,7 +281,6 @@
           <AB_SlimyFern>0.5</AB_SlimyFern> <!-- slimy fern -->
           <AB_SlimyTree>0.5</AB_SlimyTree> <!-- slimy tree -->
           <AB_Slimecasia>0.4</AB_Slimecasia> <!-- slimecasia -->
-          <AB_SlimyPholiota>0.4</AB_SlimyPholiota> <!-- glissik slimecap -->
           <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree> <!-- large slimy tree -->
         </wildPlants>
       </value>
@@ -285,13 +296,10 @@
           <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <RUT_FireLavender>0.6</RUT_FireLavender> <!-- fire lavender -->
-          <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
           <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- tavvik crust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
-          <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
           <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass> <!-- primordial tall grass -->
-          <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
           <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
           <AB_FirevineTree>0.2</AB_FirevineTree> <!-- firevine tree - tree -->
           <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus> <!-- heatsink fungus - tree -->
@@ -309,17 +317,12 @@
         <wildPlants>
           <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass> <!-- toxigrass -->
           <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass> <!-- tall toxigrass -->
-          <AB_ToxiGrass>0.6</AB_ToxiGrass> <!-- toxi grass -->
-          <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass> <!-- tall grass -->
           <Plant_GrayGrass>0.35</Plant_GrayGrass> <!-- ashskal -->
-          <PoisonShrub>0.35</PoisonShrub> <!-- poison shrub -->
           <RUT_ScorchedStars>0.3</RUT_ScorchedStars> <!-- scorched stars -->
-          <PoisonPlantBush>0.3</PoisonPlantBush> <!-- bush -->
           <AB_WeepingToxberry>0.2</AB_WeepingToxberry> <!-- weeping toxberry -->
           <Plant_Toxipotato>0.2</Plant_Toxipotato> <!-- toxipotato plant -->
           <AB_ToxiBulb>0.1</AB_ToxiBulb> <!-- toxibulb - tree -->
           <Plant_TreePolux>0.1</Plant_TreePolux> <!-- polux tree - tree -->
-          <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
           <VRE_PoluxBush>0.08</VRE_PoluxBush> <!-- polux bush - tree -->
         </wildPlants>
       </value>
@@ -335,6 +338,7 @@
           <AB_MangroveTree>25</AB_MangroveTree> <!-- mangrove tree - tree -->
           <AB_ParasiticMangrove>8</AB_ParasiticMangrove> <!-- parasitic mangrove -->
           <AB_MangrovePalm>6</AB_MangrovePalm> <!-- mangrove palm - tree -->
+          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- brommok timber - tree -->
         </wildPlants>
       </value>
     </match>

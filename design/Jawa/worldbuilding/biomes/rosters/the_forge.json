@@ -37,6 +37,21 @@
   ],
   "evictions": [
     {
+      "def": "AB_GiantGamma",
+      "disposition": "move:forsaken_crags",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. Was a duplicate listing — already resident at forsaken_crags — so this is the eviction half only, no roster add needed"
+    },
+    {
+      "def": "AG_Gamma",
+      "disposition": "move:forsaken_crags",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. flora_move_mapping.md's 'already in forsaken_crags' claim was MEASURED FALSE (audit 2026-09-12) — AG_Gamma did not previously exist there; added to forsaken_crags.json in this same change rather than dropped. Target confirmed by climate (crags median -10.5/max 30.9 C fits the gamma family's 0-58 C growth band far better than the Forge's 42-56 C floor) and by the gamma/septimum family already resident there (AB_GiantGamma, AB_GiantSeptimum, AB_ToxicGamma)"
+    },
+    {
+      "def": "AG_Septimum",
+      "disposition": "move:forsaken_crags",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); elsewhere, not heat resistant. flora_move_mapping.md's 'already in forsaken_crags' claim was MEASURED FALSE (audit 2026-09-12) — AG_Septimum did not previously exist there; added to forsaken_crags.json in this same change rather than dropped. Same reasoning as AG_Gamma (its law entry in this file was itself 'as AG_Gamma') — same family, same growth band, its Giant sibling AB_GiantSeptimum already lives at forsaken_crags"
+    },
+    {
       "def": "Dewback",
       "disposition": "move:ZBiome_DesertOasis",
       "reason": "RULED move (owner 2026-09-06, weeping_stones.md Owed + WEEPING_STONES_ROSTER_1): the dew-drinking lizard was mis-cast to LavaField"
@@ -550,21 +565,6 @@
       "commonality": 0.4,
       "def": "RUT_Sagecrust",
       "law": "§4 'beautiful heat-resistant mosses' — crust form on the rock between flashes. Repointed BMT_Sagecrust -> RUT_Sagecrust (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired; RUT_Sagecrust already existed (RUT_RotSporeKit_Flora.xml), the roster just still named the donor's own defName"
-    },
-    {
-      "commonality": 0.5,
-      "def": "AG_Gamma",
-      "law": "incumbent Alpha gamma family — alien, reads volcanic-mineral; kept per pyroclastic donor inventory (§0 keep)"
-    },
-    {
-      "commonality": 0.3,
-      "def": "AB_GiantGamma",
-      "law": "as AG_Gamma"
-    },
-    {
-      "commonality": 0.25,
-      "def": "AG_Septimum",
-      "law": "as AG_Gamma"
     },
     {
       "commonality": 0.35,
