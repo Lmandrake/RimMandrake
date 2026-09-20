@@ -97,6 +97,21 @@ east) — separate independently-posed limbs, not a merged shape. Built
 **option (b): two separate `CompProperties_TurretGun` instances**, one per
 tail.
 
+## post-restart spot-check, 2026-09-20
+
+`jawa/get_defs ThingDef/RUT_Barbslinger fields=comps` post-restart: `comps`
+list carries `CompProperties_TurretGun` **twice** — both tail-gun comps
+resolved cleanly, no ConfigErrors logged against `RUT_Barbslinger` or
+`RUT_BarbslingerTailGun` this load. That confirms the def loads correctly
+with the new mechanics attached.
+
+**Still owed, not done here**: the actual combat behavior (ranged verb
+fires past `minRange`, goes quiet inside it, pincers take over once
+adjacent) needs a live target and unpaused ticks to observe — the item's own
+"assumption, not yet observed live" stands. Left for the next session with
+bridge time and a disposable hostile-test setup (§4b doctrine: hostiles at
+the map edge, keep paused between steps, re-pause immediately after).
+
 Wired and deployed (`deploy_custom_mods.py --mod UtinniPatches --apply`,
 4 files VERIFIED in sync):
 - 3 art files copied over `RUT_Barbslinger`'s existing texPath
