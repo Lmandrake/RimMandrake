@@ -220,7 +220,7 @@
            every other cross-mod ref in this file relies on. -->
       <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
       <AB_KeeningCordax MayRequire="sarg.alphabiomes">1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
-      <BMT_GiantLeaf MayRequire="biomesteam.biomescaverns">0.8</BMT_GiantLeaf>  <!-- giant leaf -->
+      <RUT_GiantLeaf>0.8</RUT_GiantLeaf>  <!-- giant leaf -->
       <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
       <AB_Iashiphus MayRequire="sarg.alphabiomes">0.5</AB_Iashiphus>  <!-- iashiphus -->
       <AB_Gomphoeria MayRequire="sarg.alphabiomes">0.4</AB_Gomphoeria>  <!-- gomphoeria -->
