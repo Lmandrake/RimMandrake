@@ -46,16 +46,25 @@ Deliberately NOT touched: `RUT_TheForge`'s `BMT_FireLavender`/`BMT_Sagecrust`/
 range. Reusing it blindly risks a wrong-climate plant silently failing to grow in an
 extreme-heat biome — a design call, not a mechanical rename. Left for a follow-up pass.
 
-**`--write` still refuses, for an UNRELATED reason found during this pass**:
-`DUMP_ROOT/defs.sqlite` (`measure`/`dumpdb.py`'s output, `captured_utc
-2026-09-19T02:35:03Z`) has **0 rows** in its `defs` table. Every biome/plant in
-`FAMILIES` therefore reads "not in defs" regardless of correctness (170 problems
-reported, almost all noise from this). `biome_flora.py`'s write path also reads plant
-labels straight from this same empty dict, so a bypass would crash outright, not just
-skip validation — there is no safe way to force a regen right now. This is a
-pre-existing infra defect, not caused by this item's edits; a `measure build` re-run
-(or equivalent) is owed before `BiomeFlora_Ashkarr.xml` can actually be regenerated and
-the ~20 deployed BMT_ patch failures actually go away in a live load.
+**`--write` refused for an UNRELATED reason found during this pass, FIXED 2026-09-20**:
+`DUMP_ROOT/defs.sqlite` had **0 rows** in its `defs` table (`captured_utc
+2026-09-19T02:35:03Z` build, empty). Every biome/plant in `FAMILIES` therefore read "not
+in defs" regardless of correctness (170 problems reported, almost all noise from this).
+FOUNDRY ran `measure build` against the live 2026-09-20T07-47-24Z capture (the 617-mod
+session that was up that day): MEASURED 77,387 defs, 531 types, 0 absent/shadowed/
+ambiguous/orphan/partial/failed. `biome_flora.py --check` now runs cleanly and reports
+exactly **3** problems — all three are the RUT_TheForge trio named just above
+(`BMT_FireLavender`/`BMT_Sagecrust`/`BMT_HeatsinkFungus`), confirming this pass's own
+diagnosis was correct and complete. **That one content call (port-or-cut, above) is now
+the ONLY thing blocking `--write`.** Also found: `RUT_TheRot.xml`'s own hand-authored
+`wildPlants` block is already correctly `RUT_`-renamed (per its own
+`FUNGALFOREST_RAID_MERGE_1` header), so the still-stale deployed
+`BiomeFlora_Ashkarr.xml` patch (`PatchOperationReplace`, unconditional) is not merely
+failing to fix anything — it is **actively clobbering that already-correct content back
+to broken `BMT_` names on every load**, which is worse than inert. Once the TheForge
+call lands, `--write` + `--doc` + `validate_patch.py` + deploy is a single short pass
+that should retire all 21 flora crossref lines in `FULL_LOAD_RESIDUE_TRIAGE_1` (5) at
+once.
 
 ## (c) Config/Mod_3532608331_DeepStorageMod.xml — NOT A REPO FILE, not touched
 
@@ -120,13 +129,19 @@ pre-existing staleness, not touched here.
 
 1. Live cold load to confirm the patch-failure count actually dropped (explicitly out
    of scope for this offline pass).
-2. `measure build` (or equivalent) to refresh `DUMP_ROOT/defs.sqlite` — currently 0
-   rows, blocking `biome_flora.py --write` regardless of roster correctness.
-3. Once defs.sqlite is refreshed: run `biome_flora.py --write`, diff
-   `BiomeFlora_Ashkarr.xml` against HEAD, confirm it's exactly the (b) renames/cuts with
-   no other drift, deploy.
-4. (a): the same purge as (b) but for `cast_assignment.csv`/`BiomeCast_Ashkarr.xml`
-   (creature side), then `animal_tolerances.py --write` to regenerate
+2. ✅ DONE 2026-09-20 (FOUNDRY): `measure build` refreshed `DUMP_ROOT/defs.sqlite`
+   against the live 2026-09-20T07-47-24Z capture — 77,387 defs, 0 gaps.
+   `biome_flora.py --check` now runs and reports exactly the 3 RUT_TheForge problems
+   named in (b)/§5 above, nothing else.
+3. Now the ONLY blocker: land the port-or-cut call for RUT_TheForge's 3 plants (§5
+   below), then run `biome_flora.py --write`, diff `BiomeFlora_Ashkarr.xml` against
+   HEAD, confirm it's exactly the (b) renames/cuts with no other drift, validate with
+   `validate_patch.py --live <capture>`, deploy.
+4. (a): the same purge as (b) but for `cast_assignment.csv` — BUT see
+   `BIOME_CAST_PATCH_DEAD_NAMES_1` (filed 2026-09-20) first: `BiomeCast_Ashkarr.xml`
+   may be entirely dead code (targets pre-`BIOME_OWNERSHIP_WAVE_1` biome defNames that
+   no longer exist on any live BiomeDef), in which case there is nothing to purge —
+   confirm that item's finding before spending time on (a) or on
    `AnimalTolerances_Ashkarr.xml`.
 5. (b) residual: a climate-aware port-or-cut decision for `RUT_TheForge`'s 3
    heat-tolerant BMT_ plants (FireLavender/Sagecrust/HeatsinkFungus), and separately a
