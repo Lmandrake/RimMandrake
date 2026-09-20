@@ -195,7 +195,12 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             int half = width / 2;
             int lit = 0;
 
-            for (int i = -half; i <= half; i++)
+            // Bug fixed here: `i <= half` gives 2*half+1 cells, which only equals
+            // `width` when width is odd — an even Mod Settings value (the slider
+            // allows 1..31, any integer) silently ignited one MORE cell than the
+            // settings label promised. `i < width - half` gives exactly `width`
+            // cells for both parities while leaving the odd case byte-identical.
+            for (int i = -half; i < width - half; i++)
             {
                 IntVec3 cell = origin + (step * i).ToIntVec3();
                 if (!IsLawfulFrontCell(cell))
