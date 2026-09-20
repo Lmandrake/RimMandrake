@@ -660,10 +660,10 @@
     "sha": "43f96b1b"
   },
   "src/DEPLOY_HOLD.txt": {
-    "cleanCount": 4,
-    "date": "2026-09-18",
-    "hash": "b2902a0eeda8bd323d6aee068b31bb6dd320826431e324d7e9ba68c763b22a6e",
-    "sha": "504ead829"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "1ba5bbd8019a8dbaa68dd6e9514eba989d874c0fcca1417f62ad4ce50f49833a",
+    "sha": "dec103e98"
   },
   "src/RimMandrake/Aftermath/About/About.xml": {
     "cleanCount": 2,
@@ -8740,10 +8740,10 @@
     "sha": "0fc737f9d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBowcaster.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "81341d646508dad28dc0ab5ff0cc0275aada680050221f3ea55edce7555df825",
-    "sha": "0fc737f9d"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "d605ef55be905c13febe13d8163531c08d55a4aaf6d2e56e2c563e32101c9dcb",
+    "sha": "dec103e98"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORDisruptorPistol.xml": {
     "cleanCount": 3,
@@ -8764,10 +8764,10 @@
     "sha": "0fc737f9d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyRepeater.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "fd8225de77757241871367c5c34bbb6a5ab77fabb55ee981de468a3821efcd29",
-    "sha": "0fc737f9d"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "224913c1c686f1f875a87d9292ac1259409cd4ef5e15bd75da8fe49ad03d2f21",
+    "sha": "dec103e98"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHoldoutPistol.xml": {
     "cleanCount": 3,
@@ -8788,10 +8788,10 @@
     "sha": "0fc737f9d"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORLightRepeater.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "7d432d9b7a52f3ce7831876f6368a231e71ce4479c7ecfa338541d4c5a60e965",
-    "sha": "0fc737f9d"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "292104eee4e6b420c1efc85822c695e3ec7c8de507cd50dac7300ea501fa11f0",
+    "sha": "dec103e98"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORMicroRepeater.xml": {
     "cleanCount": 3,
@@ -11824,10 +11824,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-19",
-    "hash": "6c47d0cb4e7c2ab6e728d734736a160398c9c2b3acbf739075c1d4c4c7ed6086",
-    "sha": "640d910a8"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "fb98ce2fcfe33150f6e4e0144725cc5475264803e54b60720870ba4c7770a7da",
+    "sha": "dec103e98"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml": {
     "cleanCount": 3,
@@ -16162,10 +16162,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 7,
-    "date": "2026-09-18",
-    "hash": "4592797dfc62666bafe5de37dab6c0eb502310dffb3f9622a212fdaa3588e840",
-    "sha": "b3c315579"
+    "cleanCount": 8,
+    "date": "2026-09-20",
+    "hash": "fe8b2f42424af822dac0432692ba5e160f3be84b33d4818ae881a31f4bef3ef9",
+    "sha": "dec103e98"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
@@ -16840,10 +16840,10 @@
     "sha": "b3a646c3f"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "50ae6626cc453817e2ec248bc9d33fa00adb3963bdae7a386a3760d242024850",
-    "sha": "ac17db00a"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "fae554c35e0bbb0aa9a5820cf7ad74ef6f125b665190139173fa67771fe400cf",
+    "sha": "dec103e98"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
     "cleanCount": 1,
