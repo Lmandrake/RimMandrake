@@ -7510,10 +7510,10 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/rimflow/selftest_cli.py": {
-    "cleanCount": 3,
-    "date": "2026-09-05",
-    "hash": "319f6919a13c3e3b38868ad5c0cd50ad7b330ab53424160deea053965d7585a9",
-    "sha": "f203d6f3"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "266665cb2047b0b683991db4678a76cae13117d9b594b25e3841114be801683e",
+    "sha": "f689a3485"
   },
   "src/RimMandrake/rimflow/selftest_concurrency.py": {
     "cleanCount": 1,
