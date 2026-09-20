@@ -71,3 +71,43 @@ and no species carries an aptitude offset that is standing in for a concept.
 ## criteria
 
 The defs say what the species IS, not the nearest number to it.
+
+
+---
+
+## 🔴 RULED 2026-09-20 — the shape, and the gene-vs-trait test
+
+Verbatim: *"A species' trait would handle things that aptitudes don't, ideally. So
+it would reduce the aptitudes that were surrogates for a better-suited trait.
+Ideally these would be genes in the modern game if they apply to ALL of the race's
+members, a traitdef for ones that apply to most/many but not all."*
+
+### It REPLACES the surrogates, and only the surrogates
+
+A trait does not sit alongside the aptitude it supersedes. **Where an aptitude was
+standing in for something a trait can say properly, the aptitude is REDUCED or
+removed.** ⛔ Do not leave both — that double-counts the species.
+
+⚠️ And do not strip aptitudes that are genuinely about skill. The test is *"was this
+number a surrogate for a concept?"*, not *"does this species have a trait now?"*
+
+### 🔑 The unit is decided by REACH, and this is the whole test
+
+| does it apply to… | use |
+|---|---|
+| **ALL** members of the race | **a GeneDef** |
+| **most or many, but not all** | **a TraitDef** |
+
+⇒ Worked against the three cases that raised this item:
+- **Geonosian hive dependency** — true of every Geonosian ⇒ **gene**.
+- **Bothan mood-sensitive fur** — canon describes it as a species-wide physiological
+  fact ⇒ **gene**. ⚠️ Its *visual* expression stays behind the cosmetic gate.
+- **Abednedo builder ancestry** — cultural and historical, not universal ⇒ likely a
+  **trait**, if it warrants a unit at all rather than just the softened aptitude he
+  already ruled.
+
+### What is still open after this
+
+The reach test answers *which unit*; it does not answer *which species qualify*.
+🔑 **That list is still the decision** — build it and put it to him, as this item
+already says. Do not start writing genes.

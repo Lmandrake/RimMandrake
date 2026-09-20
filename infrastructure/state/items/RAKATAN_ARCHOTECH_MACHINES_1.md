@@ -252,3 +252,60 @@ disk for exactly this machine (`WreckedMachines/DESIGN.md` §2) and is the route
   only three grades, the floor has very little room to move.
 - Does the reliquary need to be readable by the endgame's contest over the ship's
   future, or does Salvation Engine keep that to itself?
+
+
+---
+
+# 🔴 OWNER RULINGS, 2026-09-20 — four of the "Still open" questions answered
+
+## 1. Layer-3 naming — `mandrake.rut.salvation` WINS
+The packageId is `mandrake.rut.salvation`. ⛔ "Salvation Engine" is retired as the
+identifier; use it in prose only if at all. Mint the packageId under this name.
+
+## 2. The ship's floor CAN reach Refurbished — but LATE
+Verbatim: *"yes, the ship's floor can get to refurbished in late game. But this
+self-repair capability comes late, it's not an early part of the experience."*
+
+🔑 **The constraint is the schedule, not the ceiling.** The floor is not capped at
+Kludged — but a player must not meet ship self-repair early. Early game is hand
+refurbishment, one machine at a time, as already ruled. ⚠️ Anything that makes
+self-repair reachable early breaks this even if the end state is correct.
+
+## 3. 🔴 THERE ARE NO HULL SOCKETS
+Verbatim: *"There are no 'hull sockets,' they are just buildings that get installed
+on the gravship like any other."*
+
+⛔ **Delete the socket concept.** A found artefact is an ordinary building the player
+installs on the gravship by ordinary means. No bespoke socket mechanism, no
+reliquary slot system, no special placement rule.
+
+⚠️ **This reaches into the reliquary idea under §Sacred loot and into Salvation
+Engine's "reliquary sockets".** The sacred-loot *feeling* survives — seating a relic
+still matters — but it is expressed through what the building IS and what the gods
+react to, never through a socket. Any text above describing sockets is superseded by
+this line; correct it rather than layering on it.
+
+## 4. Mobile structures — the named set, and it grows
+Verbatim: *"Mobile structures would explicitly include things like turrets,
+batteries, psychic emitters, and other traditionally 'archotech' sources. We'll
+undoubtedly author more as we go on."*
+
+**Named now:** turrets · batteries · psychic emitters · and generally anything
+vanilla treats as archotech-sourced. 🔑 The selection rule is *"traditionally
+archotech"* — which follows directly from the standing ruling that archotech IS
+Rakatan. So the list is open-ended by design; adding to it later is expected and is
+not a scope change.
+
+## 5. 🔴 Rekko's endgame — BENCH's framing was too narrow, corrected
+Verbatim: *"Rekko's endgame is simply to restore as much of the ship as possible to
+be so powerful that you have won the game. It's not literally '1.0'. That's far too
+narrow a reading."*
+
+**The open question above asked whether a 0.75 cap makes Rekko unsatisfiable and
+whether the 1.0 mod option is what satisfies him. That was the wrong question.**
+Rekko's goal is not a number on a grade ladder — it is the ship restored far enough
+that the player has *won*. A specific cap value neither blocks nor delivers it.
+
+⇒ **Do not build a satisfaction condition that reads a grade float.** Do not make
+his endgame depend on a settings toggle. The "settings-dependent Rekko" concern
+listed under `## Still open` is **dissolved, not answered** — strike it.
