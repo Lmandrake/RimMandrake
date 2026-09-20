@@ -646,17 +646,16 @@
       "commonality": 0.1,
       "def": "RUT_Skulltop",
       "law": "§7b the Skultop defender — defName now MEASURED against the pool (RUT_Skulltop); sibling of the Agarilux Prime (ban 8)"
-    },
-    {
-      "commonality": 0.05,
-      "def": "Boomshroom",
-      "law": "§7b blastpod->chemfuel chain, ruled wild-only — RE-PICK 2026-09-09 fix wave, replacing BMT_Blastpod. Same plant under the skin (Blastpod's own texPath is BMT_Caverns/.../Boomshroom/BoomshroomGrown) and the same chemfuel yield, but shipped 0..58 °C instead of 50..352 °C: Blastpod's donor band confined it to hot caverns and reaching the Rot's -18.8 °C median would have meant a 78.8 °C stretch, which is a lie, not a tolerance (plant_tolerances.py REPICK_LIMIT 30). Boomshroom is Odyssey stock, so it is present whenever the DLC is."
     }
   ],
   "flora_purged": [
     {
       "def": "BMT_Blastpod",
       "reason": "re-picked out 2026-09-09 (fix wave, flora defect 2): donor band 50..352 °C cannot reach the Rot's -18.8 °C median (sheet §0) and the extension needed (78.8 °C) exceeds the 30 °C re-pick limit. Its role — the §7b blastpod->chemfuel chain — passes to Boomshroom, which is the same asset with a shippable temperature band."
+    },
+    {
+      "def": "Boomshroom",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
     }
   ],
   "flora_stat_adjustments": [

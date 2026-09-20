@@ -383,11 +383,6 @@
     },
     {
       "commonality": 0.6,
-      "def": "AB_EyeGrass",
-      "law": "§4 flora: flowering ocular grass"
-    },
-    {
-      "commonality": 0.6,
       "def": "AB_RedLeaves",
       "law": "§4 flora: aberrations — not even 100% carbon based"
     },
@@ -431,6 +426,10 @@
     {
       "def": "(donor vanilla wildPlants, wholesale)",
       "reason": "wholesale replace; Earth-nameable donor plants out by construction (owner flora card 2026-09-09); AA_-prefixed duplicate ocular plants (AA_AlienGrass etc.) not used — the biome's own AB_ defs are the one set"
+    },
+    {
+      "def": "AB_EyeGrass",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
     }
   ],
   "law_sources": [

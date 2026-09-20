@@ -1110,11 +1110,6 @@
       "commonality": 0.12,
       "def": "AB_Aaklac",
       "law": "Alpha Biomes alien arid form"
-    },
-    {
-      "commonality": 0.06,
-      "def": "AB_DessertTree",
-      "law": "alien tree at trace — a rare vertical is a shade-maker landmark (§9)"
     }
   ],
   "flora_purged": [
@@ -1217,6 +1212,10 @@
     {
       "def": "Plant_Chakroot",
       "reason": "crop def — the wild variant carries the wild slot"
+    },
+    {
+      "def": "AB_DessertTree",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
     }
   ],
   "law_sources": [
