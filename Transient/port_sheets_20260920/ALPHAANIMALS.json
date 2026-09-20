@@ -1,0 +1,725 @@
+[
+ {
+  "defName": "AA_GreenGoo",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Slime": "2.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_OcularJelly",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "2.0",
+   "RUT_PoisonForest": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_DuskRat",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "1.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Murkling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_CrackedLands": "0.2",
+   "RUT_ForsakenCrags": "1.0"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_RedSpore",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.85"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_RedGoo",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.75",
+   "RUT_NightsideIce": "0.003"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Eyeling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.15",
+   "RUT_Wasteland": "0.6",
+   "RUT_WeepingStones": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "VFEI2_BlackSwarmling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.5",
+   "RUT_Wasteland": "0.6"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_AngelMoth",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheRot": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_CrescendoAnole",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheForge": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_InfectedAerofleet",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.5",
+   "RUT_PoisonForest": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_NightMule",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_TarGuzzler",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Sump": "0.5"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Aerofleet",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_GreySea": "0.05",
+   "RUT_TheForge": "0.4",
+   "RUT_TwilightSea": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_DesertAve",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.4"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Bumbledrone",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Sump": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_CrepuscularBeetle",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Frostmite",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Umbra": "0.35"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_BedBug",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_PoisonForest": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_FissionMouse",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Wasteland": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Needlepost",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_AridShrubland": "0.1",
+   "RUT_Greentide": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Needleroll",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.2",
+   "RUT_ExtremeDesert": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Swarmling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.1",
+   "RUT_TheRot": "0.3"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Agaripod",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheRot": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Cactipine",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_AridShrubland": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_MycoidColossus",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheRot": "0.25"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Agaripawn",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheRot": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_BloodShrimp",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.2",
+   "RUT_Greentide": "0.2",
+   "RUT_Miasma": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_BumbledroneHierophant",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Sump": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_DuskProwler",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Lockjaw",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Mantrap",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_NightAve",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Nightling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_RaptorShrimp",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Terramorph",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.035",
+   "RUT_NightsideIce": "0.003",
+   "RUT_Umbra": "0.1",
+   "RUT_Wasteland": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Wildpawn",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_AridShrubland": "0.1",
+   "RUT_TheRot": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Wildpod",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_AridShrubland": "0.025",
+   "RUT_PoisonForest": "0.05",
+   "RUT_TheRot": "0.2"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_AcanthamoebaGiganteaLarge",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Slime": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_CrystalMit",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_PoisonForest": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_DarkVandal",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Drainer",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_GiantCrownedSilkie",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_PoisonForest": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Metallovore",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_TheForge": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_SpinedGow",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Scarlands": "0.15"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_FrostboundBehemoth",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Umbra": "0.126"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_AcanthamoebaGiganteaSmall",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Wasteland": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_DecayDrake",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.1",
+   "RUT_PoisonForest": "0.1",
+   "RUT_Slime": "0.02"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Helixien",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.1",
+   "RUT_Miasma": "0.1",
+   "RUT_PoisonForest": "0.1",
+   "RUT_Scarlands": "0.08",
+   "RUT_Slime": "0.075"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Plasmorph",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.05",
+   "RUT_Slime": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_RoughPlatedMonitor",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_SandSquid",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_CrackedLands": "0.1",
+   "RUT_Desert": "0.025"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Slurrypede",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.1",
+   "RUT_NightsideIce": "0.002",
+   "RUT_Umbra": "0.02"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Thermadon",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Miasma": "0.1"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_NightRam",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.09"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_ShadowCharger",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.09"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Thunderox",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.09"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_SandProwler",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.05",
+   "RUT_ForsakenCrags": "0.075"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_DrainerLarva",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Contagion": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Frostling",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Gigantelope",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.05"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_ShockGoat",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_NightsideIce": "0.03"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_BoulderMit",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.025",
+   "RUT_NightsideIce": "0.004"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_MammothWorm",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Desert": "0.015"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ },
+ {
+  "defName": "AA_Mime",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Slime": "0.01"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Darkbeast",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ForsakenCrags": "0.005"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_Thunderbeast",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_Slime": "0.005"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_SummitCrab",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_NightsideIce": "0.004"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": false
+ },
+ {
+  "defName": "AA_TetraSlug",
+  "kind": "fauna",
+  "mod": "sarg.alphaanimals",
+  "biomes": {
+   "RUT_ExtremeDesert": "0.0005",
+   "RUT_NightsideIce": "0.002"
+  },
+  "modActive": true,
+  "alreadyAskedInDesertSheet": true
+ }
+]
