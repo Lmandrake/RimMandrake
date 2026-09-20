@@ -877,8 +877,10 @@ restatement, and it is the strongest single expression of the defense spine.
    sitting than either mod alone, and it will sit at **REFUSED** for a long time because most lines
    will have no component claiming them. That is the system working, and it should be expected rather
    than discovered.
-2. 🔴 **Do not let the merge stall the pit's visual redesign.** `PIT_TRAP_VISUAL_REDESIGN_1` and
-   `NORTH_STAR_PIT_PILOT_1` are the **falsification test for the entire north-star system** —
+2. 🔴 **Do not let the merge stall the pit's visual redesign.** `PIT_TRAP_VISUAL_REDESIGN_1` is
+   superseded by `PIT_SUPERDEEP_COLLAPSE_1` (see CLAUDE.md's "A pit is a SUPERDEEP cell, not a
+   building"); that item and `NORTH_STAR_PIT_PILOT_1` (still proposed, unclaimed) are the
+   **falsification test for the entire north-star system** —
    §9 of `north_star_validation_spec.md` says the design fails if it does not turn the pit red. A
    consolidation that parks the pit fix would remove the one proof that the validation machinery works.
    Fix the pit, then merge it; the merge is a refactor and the pit is evidence.

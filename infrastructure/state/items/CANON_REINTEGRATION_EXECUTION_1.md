@@ -28,9 +28,8 @@ everything ruled is committed; this file is the short map.
    hidden reveals, LOGS LOUDLY on unmatched rows; ResearchRetag (live,
    deployed, active) retires only at proven parity — planned obsolescence,
    dated. Minimal-list restart proves the load; full-list proves content.
-2. **F4** — unblock + build `ANTIQUITIES_TREE_BUILD_1` (blocked on owner's
-   "do not build yet"; the reintegration sitting has since ruled everything —
-   still ask him before unblocking, the hold was his).
+2. **F4** — `ANTIQUITIES_TREE_BUILD_1`: owner-unblocked 2026-09-04, built
+   (Slice 1 shipped as `src/RimUtinni/Antiquities/`), closed `4c7cec491`.
 3. **Art program** — Urn Reading Station (animated centerpiece) + 8 factory
    modules × 3 restoration states, FIXED order Mill→Loom→Galley→Farm→Press→
    MachiningBay→Apothecary→Assembler ("the urns lock what they unlock").

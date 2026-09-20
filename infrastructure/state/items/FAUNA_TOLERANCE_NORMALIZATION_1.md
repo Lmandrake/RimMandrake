@@ -12,7 +12,8 @@ the first time — tolerance normalization can finally be judged per-biome.
    rostered animal's ComfortableTemperature range must comfortably envelop its
    ASSIGNED biome(s)' temperature envelope — wide margins, survival easy in its
    home. Domain truth = `round2/decisions_propagated.json` + `move_mapping_v2.md`
-   (rosters lag until ROSTER_MOVE_APPLY_1 lands). The four normalization laws in
+   (rosters caught up — ROSTER_MOVE_APPLY_1 landed all 114 ruled moves,
+   `688bddbb2`, 2026-09-10). The four normalization laws in
    `design/Jawa/worldbuilding/beast_normalization_spec.md` say NOTHING about
    temperature — this is new scope, add it to that spec, don't fork a second one.
 2. **Law 3 extension: damage ≈ K×bodySize for the FULL rostered set**, not just

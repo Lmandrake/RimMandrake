@@ -143,9 +143,10 @@ Mod Settings that degrade to indistinguishable-from-absent with everything off.
 - ⚠️ **L1 is the law a good demo hides.** Everything must read as tenants using the wiring, never
   as the ship having feelings — canon forbids moods-of-the-ship. A beautiful ambience that reads
   as the ship emoting is a failure even if it is liked.
-- ⚠️ The sound half is currently unbindable by the north-star system: it has a show axis and a
-  read axis and nothing for audio. Tracked as `NORTH_STAR_HEAR_AXIS_1`; do not let Phase 6 ship
-  believing a walk covers it.
+- ⚠️ The sound half is unbindable by the north-star system: it has a show axis and a read axis
+  and nothing for audio, and per the owner's ruling on `NORTH_STAR_HEAR_AXIS_1` (dropped
+  2026-09-17, no hear axis owed) it stays that way — sound is validated by PLAYTESTING, never
+  by the automated script. Do not let Phase 6 ship believing a walk covers it.
 - 📐 `RUT_HumLayers.xml` claims no audio pipeline exists in this repo. Measured false 2026-09-16:
   1048 custom audio files, including six ship-ambience sustainer defs and metal-creaking loops in
   `src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/`. Phase 6 needs no commissioned
