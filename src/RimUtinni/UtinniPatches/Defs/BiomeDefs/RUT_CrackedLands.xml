@@ -121,8 +121,8 @@
     <wildPlants>
       <AB_HardyGrass>1.0</AB_HardyGrass>  <!-- hardy grass -->
       <GRimMoss>0.8</GRimMoss>  <!-- moss -->
-      <BMT_Plant_TwistingThorngrass>0.5</BMT_Plant_TwistingThorngrass>  <!-- twisting thorngrass -->
-      <BMT_Plant_TwistingThornweed>0.4</BMT_Plant_TwistingThornweed>  <!-- twisting thornweed -->
+      <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass>  <!-- twisting thorngrass -->
+      <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed>  <!-- twisting thornweed -->
       <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
       <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
     </wildPlants>
