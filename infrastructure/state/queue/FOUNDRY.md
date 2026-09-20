@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T17:55:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:09:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1365,12 +1365,32 @@ thin:     spec, verify and criteria all present
 summary:  biomeclimate.json's biomes keys need to match the live RUT/AB-prefixed
 prose:    infrastructure/state/items/PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1.md
 
-## BIOME_BINDINGS_TABLE_STALE_1 25 of 29 rows in _def_bindings_2026-09-09.md name a biome defName that carries ZERO painted tiles - the table any fauna/flora pass consults to pick the owning def
+## MYNOCK_FLIGHT_ART_FIRST_1 RSW_Mynock was wired for real 1.6 native flight against a texture folder that does not exist - the flyer rule is owed on it art-first
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec
-summary:  BIOMEBINDINGSTABLESTALE1 — the def→sheet table points 25 of 29 rows at dead defs
-prose:    infrastructure/state/items/BIOME_BINDINGS_TABLE_STALE_1.md
+summary:  MYNOCKFLIGHTARTFIRST1 — the mynock was made a flyer with no art to fly with
+prose:    infrastructure/state/items/MYNOCK_FLIGHT_ART_FIRST_1.md
+
+## SWBESTIARY_UNPREFIXED_DONOR_DEFS_1 SWBestiary ships un-prefixed donor defNames (SWClaws, SWTailAttackTool, Dewback, Bogwing, Reek) and ~23 now-unreferenced BodyDefs left behind by the desert port dedup
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
+prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
+
+## PAINTED_TILES_WITH_NO_CAST_1 Two biome defs ship an empty wildAnimals over painted ground - RUT_BlueDesert 1029 tiles and RUT_PropaneLake 57 tiles, 1086 tiles with no fauna at all
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  PAINTEDTILESWITHNOCAST1 — 1,086 painted tiles carry no fauna at all
+prose:    infrastructure/state/items/PAINTED_TILES_WITH_NO_CAST_1.md
