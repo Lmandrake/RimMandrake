@@ -5,11 +5,25 @@
 that file is GENERATED, do not hand-edit). Matrix placement `Jawa_WildsteamClan: S` —
 some, in the Wildsteam Clan.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- canon infobox skin re-read as **four** values, not one — CORRECTED above.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 
 🔑 **This is the only species in this batch with BOTH height and mass sourced.**
-Infobox: **height 1 meter**; **mass 30 kilograms (66 lbs)**; skin colour **brown**; hair
-colour **black**; eye colour **black**. Origin is the **forest moon of Endor**. Lifespan
+Infobox: **height 1 meter**; **mass 30 kilograms (66 lbs)**; skin colour **brown, light,
+pink, tan** (four values — RE-VERIFIED 2026-09-20; this entry previously listed brown
+alone); hair colour **black, brown, cream, dark brown, gray, light brown, red, tan,
+white** (nine values, black among them); eye colour **black**.
+🔑 The body text's "brown and black as the most common colors" is about **FUR**, not a
+skin-brown / hair-black split — do not read it as a skin claim. Origin is the **forest moon of Endor**. Lifespan
 and diet are blank in the infobox — but the article body states they are **omnivorous**.
 
 **Body plan.** "Ewoks were sentient humanoids, averaging about **one meter** in height.

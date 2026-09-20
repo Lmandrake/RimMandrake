@@ -6,6 +6,16 @@ icon**, and it also borrows `RSW_CatharHead`. Cathar are a *different* feline sp
 For a Zygerrian that is far more defensible than for the Lasat (feline really is the
 Zygerrian canon class), but the icon is a placeholder either way.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- canon AND Legends infoboxes both carry the single value **"Light"** — CONFIRMED verbatim. The shipped def's deep red contradicts both continuities.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 
 ⚠️ **The canon article has NO "Biology and appearance" section** — it opens straight

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-20T20:59:46Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "north",
+    "east",
+    "south"
+  ],
+  "id": "xeno_head_ortolan_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld humanlike HEAD sprite only (no body) of an Ortolan. Enormous narrow tapering PENDULOUS ears hanging from high on the skull down past the jaw, drooping forward - NOT round elephant fans. Large round glossy solid BLACK eyes with no visible sclera, iris, brow or lid, set wide and high on the skull. Short-to-medium thick trunk tapering and hanging straight down, with no visible mouth from the front. Bare hairless slightly rubbery blue skin, no fur anywhere.",
+  "reference": null,
+  "rimflow_item_id": "XENOTYPE_CANON_CORRECTION_1",
+  "style_notes": "Canon skin is BLUE, sourced to Return of the Jedi (Wookieepedia canon infobox, CONFIRMED 2026-09-20) - our existing skin genes are already correct, so only the HEAD is the defect. REPLACES a borrowed RSW_Head_kubaz, which is the wrong snout entirely."
+}

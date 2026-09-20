@@ -7,6 +7,16 @@ Assigned `Jawa_Junkers: S`, `Jawa_FreeDroidEnclaves: S`, `OutlanderCivil: R`,
 the right shape for canon: Ugnaughts are the galaxy's tradesmen and they turn up
 everywhere someone needs machinery kept alive.
 
+## ✅ INDEPENDENTLY RE-VERIFIED — 2026-09-20
+
+Re-sourced from the live web by an agent **forbidden from reading this library**, so this is corroboration rather than an echo. Source: Wookieepedia **raw wikitext** via the Fandom API (the rendered pages sit behind a Cloudflare wall; wikitext gives the infobox and its `<ref>` citations verbatim), with the CANON and LEGENDS pages kept apart.
+
+- provenance of the pink value re-read — CORRECTED above.
+
+⚠️ **Text only.** No infobox image was rendered or pixel-sampled, so any claim in this entry that rests on how a picture *looks* is untouched by this pass and remains unmeasured.
+
+---
+
 ## Sourced text (Wookieepedia)
 
 **Canon article.** Ugnaughts were **porcine, sentient humanoids** native to **Gentes**,
@@ -58,8 +68,15 @@ an extreme **aptitude for smithing, machinery and droid work.** The tusks are a
 
 ## Visual brief
 
-⚠️ **The infobox's "pink skin" is Legends colour asserted over canon art, and the
-live-action canon Ugnaught is not pink.**
+⚠️ **Two CANON sources say pink and the canon infobox IMAGE does not look pink. The
+conflict is canon-vs-canon, not canon-vs-Legends.**
+
+🔴 RE-VERIFIED 2026-09-20: the canon infobox's "varying shades of pink" is cited to
+***The Empire Strikes Back*** — a canon film — and the starwars.com Databank entry
+(fetched, canon) independently states *"They have pink skin, white hair, upturned
+noses."* So pink is **first-hand canon in two places**. This entry previously called it
+"Legends colour asserted over canon art", which misattributed its provenance; the
+observation below about the image is unaffected and still stands.
 
 - `wookieepedia_kuiil_infobox.jpg` — the canon infobox image, Kuiil from *The
   Mandalorian*, full figure, evenly lit, transparent background. His skin is a
