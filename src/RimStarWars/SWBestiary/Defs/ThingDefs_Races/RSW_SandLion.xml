@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EXTREME_DESERT_SUBSURFACE_PREDATOR_1 — AA_SandLion port.
+  Ported from Alpha Animals (`sarg.alphaanimals`, workshop 1541721856,
+  `1.6/Defs/ThingDefs_Races/Races_SandLion.xml`) under the RSW_ tier.
+  Ruled at 0.5 weight, "sand burrower swimmer" role
+  (`design/Jawa/worldbuilding/review/round2/decisions_propagated.json`
+  "homeless:AA_SandLion": note "Sand burrower swimmer deserts"; also
+  `rosters/dune_sea_deep_desert.json` row, commonality 0.5). Interim strike
+  predator for RUT_ExtremeDesert per this item — the deeper drum-lure
+  vibration-strike mechanic is separately-filed C# work
+  (`DRUM_LURE_PREDATOR_BUILD_1`), not attempted here.
+
+  Stats/tools/race body copied verbatim (body is already vanilla Core
+  `QuadrupedAnimalWithPawsAndTail`, no substitution needed). Dropped, per the
+  `BMT_FAUNA_ABSORPTION_1` precedent (donor-framework comps come out, the
+  creature keeps its stats/body/form): `VEF.AnimalBehaviours.
+  CompProperties_GasProducer` (dust-cloud-while-digging cosmetic, VEF not a
+  dependency of this mod), `AlphaBehavioursAndEvents.
+  CompProperties_GraphicsRefresher` (donor recolour-refresh framework),
+  `<renderTree>AA_AlternatesWithVariations` and its `alternateGraphics` list
+  (donor recolour system — a single fixed graphic per life stage substitutes),
+  the `VEF.AnimalBehaviours.AnimalStatExtension` modExtension (info-card
+  flavor only), and `specialTrainables` (one entry, `VEF_FumeRegulation`, is
+  VEF-only; the other, gated `MayRequire="Ludeon.RimWorld.Odyssey"`, is
+  donor-specific enough to drop alongside it rather than guess at). `giving
+  chase` mechanics are otherwise vanilla `AnimalThingBase` defaults.
+
+  `useMeatFrom AA_ArcticLion` (unported donor creature) substituted with
+  vanilla `Cougar` — same substitute already used for this batch's sibling
+  big-cat predator port, `RSW_Dunestalker` (AA_SandProwler). `leatherDef
+  AA_SandLion_Leather` substituted with vanilla `Leather_Panthera` (a big-cat
+  leather already shipped in Core). Donor life-stage sounds
+  (`AA_ArcticLion_Wounded/Death/Angry/Call`) are not ported (unported donor
+  sound defs); omitted, matching the sibling ports in this same wave
+  (`RSW_Dunestalker`/`RSW_Sandstrider`) which also ship with no custom vocal
+  set.
+
+  Art: donor's own texture used as a loud TEMP PLACEHOLDER (round2 disposition
+  for this species is `"art": "improve"`, not "keep" — a fresh render remains
+  owed, not commissioned in this pass). Label "vekka" is a DRAFTED
+  pseudo-Star-Wars name (`NONCANON_BEAST_RENAME_1` process — agent drafts,
+  owner reacts), not yet owner-ruled; "sand lion" is the donor's own plain
+  Earth-animal name and is not carried over as the shipped label.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_SandLion</defName>
+    <label>vekka</label>
+    <description>A heavy, big-cat predator bred for the deep desert, able to work its whole body down into loose sand to close on prey unseen. It surfaces claws-first, and the strike is usually over before anything has time to run. Guns are a poor answer to something that was never on the surface to begin with.</description>
+    <statBases>
+      <MoveSpeed>6</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>600</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.75</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <baseBodySize>2</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_SandLion</defName>
+    <label>vekka</label>
+    <race>RSW_SandLion</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>vekka cub</label>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>vekka juvenile</label>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <drawSize>1.85</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>1.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
