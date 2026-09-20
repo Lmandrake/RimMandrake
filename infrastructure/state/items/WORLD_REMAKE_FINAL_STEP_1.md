@@ -86,8 +86,27 @@ once, deliberately, at the end — with nothing half-migrated behind it.
 
 ## Watch out
 
-- 🔴 The worldmap is the single point of failure. Verify the saved-out map is
-  loadable **before** the remake is scheduled, not during it.
+- 🔴 **The worldmap is NOT the single point of failure — the FOUNDERS are.**
+  Corrected 2026-09-20 after checking all three carried artifacts on disk:
+
+  | carried artifact | where it lives | risk |
+  |---|---|---|
+  | **worldmap** | `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows) + landmarks/links/settlements/mutators CSVs + `world/ASHKARR_DRAFT_2026-08-24.rws` (21 MB) | ✅ in the repo, committed, plural formats |
+  | **gravship** | `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml` (`ShipLayoutDefV2`) | ✅ in the repo |
+  | **founders** | **ONLY inside `CANONICAL_ASHKARR_START_2026-09-12.rws`**, in the Windows Saves folder | 🔴 **not in the repo at all** |
+
+  MEASURED: `CharacterEditor/` holds only `options.txt` and `pawnslots.txt` — **no
+  founder presets are exported**. The repo's `JawaColonistPawnKinds.xml` and
+  `Scenario_Utinni.xml` are pawnkind templates and scenario wiring, not the
+  hand-edited individuals.
+
+  ⚠️ That save sits in a Steam-Cloud-reconciled folder outside version control, and
+  it was modified today (a `.bak-pre-founder-scrub-20260920T134157Z` sibling
+  exists, so founders were being edited on 2026-09-20). Work products belong in the
+  repo; this one is not.
+
+  ⇒ Owed: `FOUNDERS_EXPORT_TO_REPO_1`. Verify the worldmap loads too — but it is
+  the artifact in the best shape, not the worst.
 - The canonical save's mod-list divergence (`CANONICAL_SAVE_MODLIST_DIVERGENCE_1`,
   `CANONICAL_SAVE_SCENARIO_MISMATCH_1`) becomes moot at the remake — check
   whether those items are still worth their remaining effort once this is in
