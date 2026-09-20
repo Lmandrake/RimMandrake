@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:39:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:47:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,16 +522,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Unwritten on purpose — the remake procedure is authored when the gates above are
 prose:    infrastructure/state/items/WORLD_REMAKE_FINAL_STEP_1.md
-
-## DESERT_FAMILY_VERDICT_PASS_1 Desert family flora/fauna verdict pass (RUT_ExtremeDesert 3969 + RUT_Desert 2390 + RUT_BlueDesert 1029 = 7388 tiles, a third of the planet and where the player starts) - same shape as the Rot and Lantern Deeps passes: sheet, owner verdicts, apply, art regen, land, live look
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  The shape the Rot and the Lantern Deeps both used, in order:
-prose:    infrastructure/state/items/DESERT_FAMILY_VERDICT_PASS_1.md
 
 ## BLUE_DESERT_LIFE_AUTHORING_1 Author the Blue Desert's commissioned hydrocarbon life - Swallowers, Burners, Pickers and the transparent fractal flora - 1029 tiles currently carrying ZERO fauna and ZERO flora because the owner-ratified biology was specced and never built
 state:    proposed

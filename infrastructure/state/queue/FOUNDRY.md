@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:41:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T18:47:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -246,7 +246,7 @@ prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    game-up
 target:   v1
 kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
@@ -606,7 +606,7 @@ prose:    infrastructure/state/items/LIQUID_THIRST_CHAIN_1.md
 ## WRECKED_DISTILLATION_MODULE_1 WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 summary:  A new WreckedMachines module in the existing wreck-tier grammar
@@ -849,7 +849,7 @@ prose:    infrastructure/state/items/FISH_BESTIARY_BUILD_1.md
 ## QUICKTEST_RIVER_WATER_MISSING_1 Quicktest maps generate zero river/lake water on any biome tried this session, blocking water-mechanism verification
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    game-up
 target:   v1
 kind:     investigation
 summary:  No design doc — this is an engine/tooling investigation, not a content build.
@@ -908,6 +908,42 @@ target:   v1
 kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
+
+## DESERT_FORAGEDFOOD_INERT_1 RUT_Desert forageability is inert with no foragedFood set
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DESERTFORAGEDFOODINERT1 — RUTDesert forageability is inert, no foragedFood set
+prose:    infrastructure/state/items/DESERT_FORAGEDFOOD_INERT_1.md
+
+## DESERT_ROUND2_IMPORTS_UNLANDED_1 Wire the landed round-2 desert imports, port the rest
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DESERTROUND2IMPORTSUNLANDED1 — wire the landed round-2 imports, port the rest
+prose:    infrastructure/state/items/DESERT_ROUND2_IMPORTS_UNLANDED_1.md
+
+## BLODDLE_DUNE_SEA_EYE_TEST_1 Verify bloddle's green/leafy look against dune_sea's no-green ban
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  BLODDLEDUNESEAEYETEST1 — verify bloddle against dunesea's no-green ban
+prose:    infrastructure/state/items/BLODDLE_DUNE_SEA_EYE_TEST_1.md
+
+## DESERT_DEF_HEADER_STALE_COUNTS_1 Desert def header comments carry stale tile counts and donor names
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DESERTDEFHEADERSTALECOUNTS1 — def header comments carry stale counts and donor names
+prose:    infrastructure/state/items/DESERT_DEF_HEADER_STALE_COUNTS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1385,26 +1421,6 @@ thin:     no ## spec
 summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
 prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
 
-## DESERT_FORAGEDFOOD_INERT_1 RUT_Desert forageability is inert with no foragedFood set
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTFORAGEDFOODINERT1 — RUTDesert forageability is inert, no foragedFood set
-prose:    infrastructure/state/items/DESERT_FORAGEDFOOD_INERT_1.md
-
-## DESERT_ROUND2_IMPORTS_UNLANDED_1 Wire the landed round-2 desert imports, port the rest
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTROUND2IMPORTSUNLANDED1 — wire the landed round-2 imports, port the rest
-prose:    infrastructure/state/items/DESERT_ROUND2_IMPORTS_UNLANDED_1.md
-
 ## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
 state:    proposed
 row:      unassigned
@@ -1418,7 +1434,7 @@ prose:    infrastructure/state/items/EXTREME_DESERT_SUBSURFACE_PREDATOR_1.md
 ## EXTREME_DESERT_UNRULED_VERMIN_1 Owner card: rule the 12 Fall Line vermin rows for extreme desert
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec
@@ -1444,16 +1460,6 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
 prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
-
-## BLODDLE_DUNE_SEA_EYE_TEST_1 Verify bloddle's green/leafy look against dune_sea's no-green ban
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  BLODDLEDUNESEAEYETEST1 — verify bloddle against dunesea's no-green ban
-prose:    infrastructure/state/items/BLODDLE_DUNE_SEA_EYE_TEST_1.md
 
 ## DESERT_SHADE_GRID_KEYSTONE_1 Build the ShadeAt MapComponent the desert's whole AI design depends on
 state:    proposed
@@ -1504,16 +1510,6 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTBURSTPREDATORFLAGSHIP1 — the desert's burst-predator flagship
 prose:    infrastructure/state/items/DESERT_BURST_PREDATOR_FLAGSHIP_1.md
-
-## DESERT_DEF_HEADER_STALE_COUNTS_1 Desert def header comments carry stale tile counts and donor names
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTDEFHEADERSTALECOUNTS1 — def header comments carry stale counts and donor names
-prose:    infrastructure/state/items/DESERT_DEF_HEADER_STALE_COUNTS_1.md
 
 ## PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians
 state:    proposed

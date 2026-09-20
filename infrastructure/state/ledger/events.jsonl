@@ -10260,3 +10260,16 @@
 {"seat":"BENCH","event":"note","id":"BIOME_ENRICHMENT_DESERT_WASTELAND_1","text":"Provenance: the unblock was executed with --seat OWNER by a BENCH subagent, because the tool refuses a cross-seat unblock. The RULING is genuinely the owner's, given 2026-09-20 on a decision card - raising the frequency of existing desert-legal terrain features counts as building the wide gaps. But the ACTOR was BENCH, not the owner at a keyboard. Recorded so the OWNER attribution on that event is not read as him working the item.","ts":"2026-09-20T18:39:09Z"}
 {"seat":"FOUNDRY","event":"file","id":"PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1","title":"Regenerate + deploy PlantTolerances_Ashkarr.xml now that sheet_demands() sees real sheet medians","kind":"task","target":"v1","needs":"deploy","caused_by":"PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1","for":"FOUNDRY","ts":"2026-09-20T18:41:11Z"}
 {"seat":"FOUNDRY","event":"close","id":"PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1","sha":"a9222beead6e5bd2e2a01542d4113e017a226d2c","reason":"fixed: _climate_lookup() resolves live defName -> rosters/*.json slug -> climate.json sheet entry; verify() now reports total=109 (was silently 0). Also corrected item's own false claim that the WRITE path was unaffected -- sheet_demands() shared the same bug; filed PLANT_TOLERANCE_REGEN_AFTER_KEY_FIX_1 to regenerate+deploy the now-wider patch.","ts":"2026-09-20T18:41:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_DEF_HEADER_STALE_COUNTS_1","ts":"2026-09-20T18:46:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_DEF_HEADER_STALE_COUNTS_1","ts":"2026-09-20T18:46:02Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BLODDLE_DUNE_SEA_EYE_TEST_1","ts":"2026-09-20T18:46:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_FORAGEDFOOD_INERT_1","ts":"2026-09-20T18:46:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"BLODDLE_DUNE_SEA_EYE_TEST_1","ts":"2026-09-20T18:46:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_FORAGEDFOOD_INERT_1","ts":"2026-09-20T18:46:11Z"}
+{"seat":"BENCH","event":"needs","id":"EXTREME_DESERT_UNRULED_VERMIN_1","to":"offline","ts":"2026-09-20T18:47:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_ROUND2_IMPORTS_UNLANDED_1","ts":"2026-09-20T18:47:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_ROUND2_IMPORTS_UNLANDED_1","ts":"2026-09-20T18:47:10Z"}
+{"seat":"BENCH","event":"supersede","id":"DESERT_FAMILY_VERDICT_PASS_1","by":"DESERT_FAMILY_PORT_EXECUTION_1","reason":"Superseded by the owner's blanket REPLACE ruling of 2026-09-20 - all 109 desert rows keep+replace, executed as DESERT_FAMILY_PORT_EXECUTION_1 - and by the 18-gap desert review of the same day, whose rows are filed as their own items. Re-serving this sheet would ask him to re-decide what he settled in one sentence.","ts":"2026-09-20T18:47:12Z"}
+{"seat":"BENCH","event":"needs","id":"QUICKTEST_RIVER_WATER_MISSING_1","to":"game-up","ts":"2026-09-20T18:47:40Z"}
+{"seat":"BENCH","event":"needs","id":"SHOKKWEAVE_SOLE_SOURCE_1","to":"game-up","ts":"2026-09-20T18:47:41Z"}
+{"seat":"BENCH","event":"needs","id":"WRECKED_DISTILLATION_MODULE_1","to":"offline","ts":"2026-09-20T18:47:41Z"}
