@@ -14998,10 +14998,10 @@
     "sha": "640d910a8"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "cf9a8730b0798d80db8dadb40f91322600473d353391258562607fd334b62d37",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-20",
+    "hash": "95a5d33ac00aa5ebeb8a275002a059cdfa453ed8a75e6112cc5f5c1f41a8208f",
+    "sha": "06e1703d7"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_FurnaceCap.xml": {
     "cleanCount": 2,
