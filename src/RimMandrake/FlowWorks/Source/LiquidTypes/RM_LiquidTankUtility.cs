@@ -28,7 +28,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public static bool TryFindTankToDrain(Pawn pawn, RM_ContainerSize size,
             out Building_LiquidTank tank, out LiquidDef liquid, float maxDist = 60f)
         {
-            LiquidDef foundLiquid = null;
+            // Bug fixed here: this used to capture `candidate.storedLiquid` into a
+            // closure variable every time the predicate returned true, including
+            // for candidates later rejected by TryFindTank's own distance/reach/
+            // reservation checks. Since the predicate runs (and can overwrite that
+            // variable) for every qualifying candidate encountered, not just the
+            // one that ends up chosen, the reported liquid could belong to a
+            // different tank than the one actually returned in `tank` whenever a
+            // farther or unreachable qualifying tank was enumerated after a closer
+            // valid one. Deriving `liquid` from the chosen `tank` itself after the
+            // search returns makes the two outputs correct by construction.
             bool found = TryFindTank(pawn, maxDist, out tank, candidate =>
             {
                 if (candidate.Empty)
@@ -40,14 +49,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     return false;
                 }
                 int units = candidate.storedLiquid.UnitsFor(size);
-                if (!candidate.CanProvide(units))
-                {
-                    return false;
-                }
-                foundLiquid = candidate.storedLiquid;
-                return true;
+                return candidate.CanProvide(units);
             });
-            liquid = found ? foundLiquid : null;
+            liquid = found ? tank.storedLiquid : null;
             return found;
         }
 
