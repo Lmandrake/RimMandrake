@@ -118,8 +118,8 @@ result is behaviourally identical, without porting the abstract chain.
 
 	<ThingDef ParentName="EggUnfertBase">
 		<defName>RSW_SandstriderEggUnfertilized</defName>
-		<label>sandstrider egg (unfert.)</label>
-		<description>Unfertilized sandstrider egg. Edible raw, much better cooked.</description>
+		<label>ossik egg (unfert.)</label>
+		<description>Unfertilized ossik egg. Edible raw, much better cooked.</description>
 		<graphicData>
 			<color>(125,138,97)</color>
 			<drawSize>1.2</drawSize>
@@ -131,8 +131,8 @@ result is behaviourally identical, without porting the abstract chain.
 
 	<ThingDef ParentName="EggFertBase">
 		<defName>RSW_SandstriderEggFertilized</defName>
-		<label>sandstrider egg (fert.)</label>
-		<description>Fertilized sandstrider egg. If all goes well, it should hatch into a baby sandstrider.</description>
+		<label>ossik egg (fert.)</label>
+		<description>Fertilized ossik egg. If all goes well, it should hatch into a baby ossik.</description>
 		<graphicData>
 			<color>(125,138,97)</color>
 			<drawSize>1.2</drawSize>
@@ -150,8 +150,8 @@ result is behaviourally identical, without porting the abstract chain.
 
 	<ThingDef ParentName="EggUnfertBase">
 		<defName>RSW_TuskcoilEggUnfertilized</defName>
-		<label>tuskcoil egg (unfert.)</label>
-		<description>Unfertilized tuskcoil egg. Edible raw, much better cooked.</description>
+		<label>ulgga egg (unfert.)</label>
+		<description>Unfertilized ulgga egg. Edible raw, much better cooked.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
 			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
@@ -165,8 +165,8 @@ result is behaviourally identical, without porting the abstract chain.
 
 	<ThingDef ParentName="EggFertBase">
 		<defName>RSW_TuskcoilEggFertilized</defName>
-		<label>tuskcoil egg (fert.)</label>
-		<description>Fertilized tuskcoil egg. If all goes well, it should hatch into a tuskcoil.</description>
+		<label>ulgga egg (fert.)</label>
+		<description>Fertilized ulgga egg. If all goes well, it should hatch into a ulgga.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
 			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>

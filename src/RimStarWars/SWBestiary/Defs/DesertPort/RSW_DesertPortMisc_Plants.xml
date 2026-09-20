@@ -35,7 +35,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_Dunegrass</defName>
-		<label>dune grass</label>
+		<label>surra grass</label>
 		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
 		<statBases>
 			<MaxHitPoints>85</MaxHitPoints>
@@ -64,7 +64,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_Scrubgrass</defName>
-		<label>scrubgrass</label>
+		<label>jekka grass</label>
 		<description>Wild grass that grows in arid regions where there is little light and minimally fertile ground.</description>
 		<statBases>
 			<MaxHitPoints>85</MaxHitPoints>
@@ -93,7 +93,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_Starvine</defName>
-		<label>starvine</label>
+		<label>tanni vine</label>
 		<description>Wild ivy with star-shaped leaves. Takes a long time to grow, but is very frost-resistant.</description>
 		<statBases>
 			<MaxHitPoints>120</MaxHitPoints>
@@ -123,7 +123,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_EmberCarpet</defName>
-		<label>ember carpet</label>
+		<label>ruzzo carpet</label>
 		<description>A wild crimson-colored carpet plant. Takes a long time to grow, but is very frost-resistant.</description>
 		<statBases>
 			<MaxHitPoints>120</MaxHitPoints>
@@ -154,7 +154,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_Whirlbloom</defName>
-		<label>whirlbloom</label>
+		<label>quissa bloom</label>
 		<description>A beautiful bluish flower. Prized for its color where it can be found growing wild.</description>
 		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_Dervish) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
 		<graphicData>
@@ -215,7 +215,7 @@ evidence the path is good) but was fixed here on the same evidence.
 
 	<ThingDef ParentName="TreeBase">
 		<defName>RSW_SweetbarkTree</defName>
-		<label>sweetbark tree</label>
+		<label>dommo tree</label>
 		<description>A whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections. Lures animals and colonists alike.</description>
 		<descriptionHyperlinks>
 			<ThingDef>WoodLog</ThingDef>
