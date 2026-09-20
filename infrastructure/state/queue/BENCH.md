@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T21:55:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T22:11:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -652,3 +652,13 @@ kind:     task
 thin:     no ## spec
 summary:  DEADBIOMEDEFSINPROSE1 — the repaint cleaned the table, not the prose
 prose:    infrastructure/state/items/DEAD_BIOME_DEFS_IN_PROSE_1.md
+
+## FALL_LINE_ARRIVAL_MECHANISM_1 Build the Fall Line arrival mechanism for the 15 species pulled from ambient wildAnimals
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  FALLLINEARRIVALMECHANISM1 — build the Fall Line arrival delivery for the 15 species pulled from ambient wildA…
+prose:    infrastructure/state/items/FALL_LINE_ARRIVAL_MECHANISM_1.md

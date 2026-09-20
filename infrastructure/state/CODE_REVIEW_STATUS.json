@@ -881,11 +881,23 @@
     "hash": "d15125b00f2ccce8dca747b80a2efe666dbb0e64275d01939fea3d21170969c6",
     "sha": "3bcf80ccf"
   },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompGrappler.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "ff01f9e387c97e439da063781eb6a913486d1a3848b246f98130a945cea9e110",
+    "sha": "8aca07749"
+  },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompPlantAlarm.cs": {
     "cleanCount": 1,
     "date": "2026-09-18",
     "hash": "b0bcdca296fc9d7e0a39e3f2f76705f96576c284f5eee598a84bf49dfcaed4b7",
     "sha": "009b887ef"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_Grappler.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "f338169ee4515d9e8c73136691b7e6aa99f50ffc053d128dd63f9d73e9581547",
+    "sha": "8aca07749"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShardArmor.cs": {
     "cleanCount": 1,
@@ -964,6 +976,12 @@
     "date": "2026-09-18",
     "hash": "9342b3330f3f541d5116b726895cbc61a3fcd8bd71a56ab2e8ee1c0f0a6f1cc3",
     "sha": "504ead829"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_Grappled.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "ecee5b440d041edf565461ebfc9ad32b8c8cfc9fa8ec33a3ac36464ef3f9de3c",
+    "sha": "8aca07749"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_SunScald.cs": {
     "cleanCount": 2,
@@ -1672,6 +1690,12 @@
     "date": "2026-09-14",
     "hash": "c46811ada2e049847e23bf331f56e97581a309c53c8cd8fd27dce5c01821b373",
     "sha": "3901f320b"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingProduce.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "236705d5b76a9155f6f7bd0371b8f010ad71e98e5fb0b475025fcb7b0a9d669f",
+    "sha": "8aca07749"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs": {
     "cleanCount": 1,
