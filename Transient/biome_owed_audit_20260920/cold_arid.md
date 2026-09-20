@@ -105,7 +105,49 @@ several):
    admitted and now present in the def (confirmed above).
 
 ## desert.md
-(pending)
+
+Owed section (4 bullets) plus one inline 🔑 line from §10 (not under the Owed heading,
+but explicitly unbuilt work per the brief's instruction to check inline 🔴/⚠️/🔑 lines) —
+6 work items total.
+
+1. 🔴 **THE HEADLINE FINDING, not from the Owed section at all.** §10's own text: *"🔑 The
+   shade grid is the keystone and we must build it. One `MapComponent` computing
+   `ShadeAt(IntVec3)`; shade-seeking AI, the burst hediff, crossing heat load and
+   megafauna thermal mass all read from that one grid."* This is the single mechanic the
+   whole biome's design depends on (§9's "sudden committed sprint across the light,
+   deciding" signature moment, shade-seeking fauna, the burst-then-recover hediff,
+   megafauna heat, filter-feeding sand — the §10 table's five behaviour rows all cite
+   `ShadeAt` or sit downstream of it). **UNFILED (CONFIRMED)** — no ledger item, no C#.
+   Searched: `ShadeAt`, `shade grid`, `MapComponent.*shade`/`ShadeSeek`/`ShadeComp`/
+   `DesertShade`, `burst hediff`, `megafauna heat`, `filter-feeding sand` — zero hits in
+   `infrastructure/state/items/`, `.../closed/`, or `src/`. Ranking this worst on the
+   sheet: **Desert is one of the two largest land biomes and the starting biome** (see
+   item #3 below — 2,390 tiles), and without `ShadeAt` every one of its headline gameplay
+   behaviours (shade-seeking, the burst sprint, megafauna heat, filter-feeding) simply
+   does not exist — it plays as reskinned flat terrain with no distinct mechanic, the
+   same shape of gap the Blue Desert had, just for the *core* desert rather than a rare
+   variant.
+2. **Names** (cycle plant/staggerseed?, the prepared seed dish, the glitter-birds;
+   Ultracactus already named and stands) — cosmetic naming placeholders, not build work.
+   Searched `staggerseed`, `prepared seed dish`, `glitter-bird` — zero ledger hits. Not
+   ranking as a finding; too small to matter next to #1.
+3. **`WORLDMAP_DESERT_BAND_REPAIR_1`** — **FILED, DONE.** `show`: state `done`, closed
+   `d2f0e37d8`. Retyped the mislabelled bands (arc <60 → `ExtremeDesert`, arc >88 →
+   `Wasteland`); current Desert tile count is 2,390 per the enrichment item's fresh
+   re-measure (item #4).
+4. **Wide gaps as named world features + patch-chain connectivity** — **FILED**, rides
+   `BIOME_ENRICHMENT_DESERT_WASTELAND_1` (state `doing`, **BLOCKED**). That item's own
+   note explains why nothing has been placed yet: `desert.md` "names zero RimWorld
+   defNames" for its wide-gap/toll-point/shade-patch kit — it's narrative description,
+   not a placeable mutator/landmark list — so the item is correctly blocked on an owner
+   naming pass rather than silently stalled. Not counting this as unfiled; it is filed
+   and honestly blocked, but flagging it as a second thing worth the owner's eye given
+   today's question — it is a live example of the same failure mode (a sheet's Owed
+   prose with no def-level follow-through) almost slipping through, caught only because
+   FOUNDRY refused to guess defNames.
+5. *(Sheet-internal note, not a work item)*: the shade table's wording that "an earlier
+   draft modelled the shade as a connected network... superseded by the patch-and-dash
+   model" is itself an amendment record, not owed work — no action needed.
 
 ## deep_desert.md
 (pending)
