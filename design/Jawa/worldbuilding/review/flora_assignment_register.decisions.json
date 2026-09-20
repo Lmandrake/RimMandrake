@@ -1816,8 +1816,8 @@
       "prefill": "in"
     },
     "ledger:forsaken_crags:dusk-rat-art-redo": {
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "SUPERSEDED by creature_art_register.decisions.json c:AA_DuskRat (decision: approve) — that channel already cleared AA_DuskRat's current art; this redo does not get queued. Owner ruling 2026-09-20, SHEET_ORPHAN_CONSUMPTION_1.",
       "prefill": "in"
     },
     "ledger:forsaken_crags:skarnix": {
@@ -2277,6 +2277,10 @@
       "prefill": "in"
     }
   },
+  "frozen": true,
+  "frozenBy": "FOUNDRY (owner ruling, SHEET_ORPHAN_CONSUMPTION_1)",
+  "frozenMeaning": "FROZEN by FOUNDRY 2026-09-20, on the owner's word closing SHEET_ORPHAN_CONSUMPTION_1 (all five 2026-09-10 sheet-verdict channels consumed: fauna decision=out cut, flora decision=move/out applied, flora art:improve re-derived and filed, the 118-row NEW-ART/DEF ledger measured and its 85 genuinely-owed rows filed as COMMISSION_LEDGER_CLEANUP_1, and the 12 OWED sizeBin corrections applied per the owner's verbatim ruling). Do NOT regenerate this file with gen_flora_assignment_sheet.py's decisions-writing path (guard_decisions() already refuses on this 'frozen' key) - it would replace these landed owner decisions and corrections with a fresh agent prefill. The sheet HTML itself (flora_assignment_register.html) stays free to regenerate with --sheet-only; only the decisions-file write path is frozen.",
+  "frozenOn": "2026-09-20",
   "generatedBy": "gen_flora_assignment_sheet.py (2026-09-09 rulings rebuild)",
   "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json",
   "invented": [
