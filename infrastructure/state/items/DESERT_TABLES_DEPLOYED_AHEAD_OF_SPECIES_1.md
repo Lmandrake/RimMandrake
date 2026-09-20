@@ -62,36 +62,22 @@ time, not BENCH's to force.
 
 ## what is still owed
 
-1. ~~**Deploy SWBestiary**~~ — DONE, see above. What remains is the 5-file gap:
-   deploy `RSW_GreatDevourer`, `RSW_Groundrunner`, `RSW_MatureFleshbeast`,
-   `RSW_AADesertPort_Bodies.xml` and `RSW_GreatDevourerEggs.xml`, and lift both
-   biome-table holds in the SAME sitting. Never one without the other. SWBestiary now carries an assembly
-   (`RimMandrakeBeastMechanicsRSW.dll`, `PORTED_BEAST_MECHANICS_REBUILD_1`), so
-   this needs the **game down** — a DLL cannot be written while RimWorld runs.
-   ⛔ Do not deploy the defs without the DLL: three of the dangling names
-   (`RSW_Ferroclaw`, `RSW_Voltmaw`, `RSW_Cindermite`) carry comps from it, and a
-   missing comp type discards the whole def silently.
-2. ✅ **DONE 2026-09-20** — `src/RimMandrake/Utils/selftest_deployed_biome_refs.py`
-   (`427acdbae`), auto-discovered by `run_selftests.py`. Currently **PASS, 0 of 499
-   deployed entries dangling, 38s warm.**
+**NOTHING — CLOSED 2026-09-20 (BENCH), MEASURED.** Both halves landed in the same
+sitting the item demanded, with the game DOWN:
 
-   🔑 **It asserts on the DEPLOYED tables and only WARNS on the repo ones.** The repo
-   half prints `WOULD-FAIL-ON-DEPLOY` with every row named, and is deliberately not a
-   failure: four threads share this tree and a permanently-red suite blocks every
-   commit. That warning is what currently names the three defs above.
+- `SWBestiary` (defs + `RimMandrakeBeastMechanicsRSW.dll`) reports **in sync**,
+  2410 files, 96 held — the 5-file gap (`RSW_GreatDevourer`, `RSW_Groundrunner`,
+  `RSW_MatureFleshbeast`, `RSW_AADesertPort_Bodies.xml`, `RSW_GreatDevourerEggs.xml`)
+  is closed.
+- Both desert biome-table holds are lifted in `src/DEPLOY_HOLD.txt` (line 406), and
+  the 14 drifted `UtinniPatches` biome files — 13 `RUT_*` BiomeDefs plus
+  `Patches/BiomeFlora_Ashkarr.xml` — were deployed together and verified in sync.
+- `selftest_deployed_biome_refs.py` re-run against the NEW deployed content:
+  **499 deployed entries checked, 0 unresolved; 463 repo entries checked, 0
+  WOULD-FAIL-ON-DEPLOY.** The repo-side figure was 3 before this sitting.
 
-   🔴 **Two false numbers were produced while building it, both of which read as
-   findings.** Recorded because both will be made again:
-   - Resolving against `Mods/` + `Data/` alone reported **339 dangling, 100% false**.
-     ~500 of the ~618 active mods are Steam Workshop subscriptions under
-     `steamapps/workshop/content/294100/`, a wholly separate root. A subagent then
-     asserted it had "verified several of the missing packageIds are absent from the
-     Workshop cache too" — that claim was false; one `grep` found `sarg.alphaanimals`
-     immediately in a root holding 1271 folders.
-   - A block regex matching **across an XML comment** reported **17 tag names**
-     (`defName`, `label`, `texture`…) as dangling animals, because
-     `RUT_PropaneLake.xml` mentions `<wildAnimals />` inside a 92-line comment and the
-     per-block comment strip had no opening `<!--` left to anchor on.
+⚠️ **The deployed defs need a restart to take.** RimWorld parses defs only at
+startup; the 14 files are on disk but not in any running game.
 
 ## Watch out
 
