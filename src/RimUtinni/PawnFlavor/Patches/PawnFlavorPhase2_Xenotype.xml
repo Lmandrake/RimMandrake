@@ -2169,30 +2169,30 @@
         <li Class="PatchOperationSequence">
           <operations>
             <li Class="PatchOperationConditional">
-              <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]/label</xpath>
+              <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]/label</xpath>
               <match Class="PatchOperationReplace">
-                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]/label</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]/label</xpath>
                 <value>
                   <label>Sith Kissai (Red Sith)</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
-                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]</xpath>
                 <value>
                   <label>Sith Kissai (Red Sith)</label>
                 </value>
               </nomatch>
             </li>
             <li Class="PatchOperationConditional">
-              <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]/description</xpath>
+              <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]/description</xpath>
               <match Class="PatchOperationReplace">
-                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]/description</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]/description</xpath>
                 <value>
                   <description>Red skin, priest-caste bearing, and a way of talking about the dark side like it's a tool on a belt rather than a story. Rare out this far — if one's trading with you, they want something specific, and it's worth finding out what before the deal closes.</description>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
-                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissaiPureblood"]</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithKissai"]</xpath>
                 <value>
                   <description>Red skin, priest-caste bearing, and a way of talking about the dark side like it's a tool on a belt rather than a story. Rare out this far — if one's trading with you, they want something specific, and it's worth finding out what before the deal closes.</description>
                 </value>

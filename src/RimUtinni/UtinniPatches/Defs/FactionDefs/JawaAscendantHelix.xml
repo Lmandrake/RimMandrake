@@ -149,7 +149,7 @@
         <RSW_RimMandrakeKelDor MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeKelDor>
         <RSW_RimMandrakeKubaz MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeKubaz>
         <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeRakata>
-        <RSW_RimMandrakeSithKissaiPureblood MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithKissaiPureblood>
+        <RSW_RimMandrakeSithKissai MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithKissai>
         <RSW_RimMandrakeSithMassassi MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithMassassi>
         <RSW_RimMandrakeSithZ MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithZ>
       </xenotypeChances>

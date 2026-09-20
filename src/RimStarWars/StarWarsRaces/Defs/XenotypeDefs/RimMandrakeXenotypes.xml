@@ -1667,7 +1667,7 @@
     </genes>
   </XenotypeDef>
   <XenotypeDef>
-    <defName>RSW_RimMandrakeSithKissaiPureblood</defName>
+    <defName>RSW_RimMandrakeSithKissai</defName>
     <label>Sith Kissai (Red Sith)</label>
     <description>Kissai are a subspecies of the Sith race most notably known for their aptitude in the dark side of the force and function as a caste of dark priests and sorcerers.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
