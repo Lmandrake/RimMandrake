@@ -96,6 +96,13 @@ def main(argv=None):
                         help="also print WARN findings (UNKNOWN_ID, BAD_FILE), "
                              "which never affect the exit code")
 
+    p_floor = sub.add_parser("floor", help="the visual/settings floor triage "
+                                           "-- read-only, no bridge, no "
+                                           "ModsConfig.xml write")
+    p_floor.add_argument("--all", action="store_true", required=True,
+                         help="every mod with a validation walk, one row "
+                              "each (the only mode today)")
+
     sub.add_parser("doctor", help="the five registries keyed on a mod's folder "
                                   "name must agree with disk. Reports and "
                                   "stops -- never repairs; the ownership calls "
@@ -126,6 +133,17 @@ def main(argv=None):
         print("%d FAIL, %d WARN%s"
               % (n_fail, n_warn, "" if args.warn else "  (--warn to see WARNs)"))
         return 1 if n_fail else 0
+
+    if args.cmd == "floor":
+        import floor
+        import runner
+        rows, footer = floor.triage(runner.ROOT)
+        if not rows:
+            print("UNMEASURED: no validation walks found -- this is a query "
+                  "bug, not a clean repo. Refusing to report zero rows.")
+            return 2
+        print(floor.format_triage(rows, footer))
+        return 0
 
     if args.cmd == "status":
         import status
