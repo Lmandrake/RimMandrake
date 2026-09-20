@@ -147,6 +147,39 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "beastmechanics": {
+        "why": "Live-verify PORTED_BEAST_MECHANICS_REBUILD_1's three rebuilt donor "
+               "mechanics (steel-eating ferroclaw, two chemfuel ejectors) on "
+               "RSW_Ferroclaw / RSW_Voltmaw / RSW_Cindermite. 🔑 Those three carry "
+               "comps from RimMandrakeBeastMechanicsRSW.dll, and a missing comp TYPE "
+               "discards the whole def silently -- so criterion 1 (no 'Could not find "
+               "type named') is the first thing this tier exists to answer. "
+               "sarg.alphaanimals is a REQUIRED dependency, not a convenience: "
+               "removing it breaks ScenPart_StartingAnimal because some SWBestiary "
+               "defs inherit an Alpha-Animals parent (MEASURED, ruled out as a "
+               "workaround by BRIDGE_PAWN_SPAWN_CRASHES_VEF_1).",
+        "want": [
+            BRIDGE,
+            "mandrake.rsw.swbestiary",
+            "sarg.alphaanimals",
+            "mlie.starwarsanimalcollection",
+            # 🔴 BOTH of these are REQUIRED by SWBestiary and INVISIBLE to
+            # dependency closure. MEASURED live 2026-09-20 on this tier:
+            #  - mandrake.rm.creaturebehaviors supplies five RM_CompProperties_*
+            #    classes. It is listed only under <loadAfter>, which is an
+            #    ORDERING hint, not a dependency -- so closure (which walks
+            #    <modDependencies>) skips it, the comp types fail to resolve, and
+            #    a missing comp type DISCARDS THE WHOLE DEF silently. That ate
+            #    RSW_Drazzik, RSW_WraidAlpha and the BiomesTeamPort races.
+            #  - OskarPotocki.VFE.Insectoid2 is not declared anywhere at all, yet
+            #    owns the ONLY copy of Things/Pawn/Animal/Fuelmite/* -- the texPath
+            #    RSW_Cindermite (zhakka) binds to. Without it the creature spawns
+            #    fine and renders as a magenta X.
+            "mandrake.rm.creaturebehaviors",
+            "oskarpotocki.vfe.insectoid2",
+        ],
+        "dlc": True,
+    },
     "warlab": {
         "why": "Prove ANCIENT_WAR_LAB_1's KCSG dungeon (RUT_WarLab_Complex) "
                "spawns, guardians/fauna present, connectivity holds -- "
