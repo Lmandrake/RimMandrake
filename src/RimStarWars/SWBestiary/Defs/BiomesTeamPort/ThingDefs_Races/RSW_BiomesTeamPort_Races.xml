@@ -5684,7 +5684,7 @@ copied verbatim from the donor mods' own Textures trees.
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalWeevil/FungalWeevil</texPath>
+          <texPath>RotSpecies/FungalWeevil/FungalWeevil</texPath>
           <drawSize>1.0</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
@@ -5699,7 +5699,7 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalWeevil/FungalWeevil</texPath>
+          <texPath>RotSpecies/FungalWeevil/FungalWeevil</texPath>
           <drawSize>1.4</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
@@ -5714,7 +5714,7 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalWeevil/FungalWeevil</texPath>
+          <texPath>RotSpecies/FungalWeevil/FungalWeevil</texPath>
           <drawSize>4</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>

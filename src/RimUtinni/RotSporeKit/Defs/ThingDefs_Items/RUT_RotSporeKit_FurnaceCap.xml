@@ -15,8 +15,9 @@
     doesn't survive being left out much past three weeks (daysToRotStart 20,
     a hair over one 15-day quadrum).
 
-    ART OWED: texPath is a PLACEHOLDER reusing RotSporeKit's mortal-morel
-    item art.
+    Art landed 2026-09-20 (rut_livingfurnacecap_v1, ROT_ART_WAVE_1) — own
+    folder RotSporeKit/Things/Item/Crops/LivingFurnaceCap, no longer sharing
+    the RUT_MortalMorelPlant item texPath.
   -->
 
   <ThingDef ParentName="ResourceBase">
@@ -24,7 +25,7 @@
     <label>living thurrom hearth</label>
     <description>A furnace cap taken whole and still alive, warm to hold and slightly damp. Packed into a frame it will keep burning its own tissue for heat until there is nothing left of it.</description>
     <graphicData>
-      <texPath>RotSporeKit/Things/Item/Crops/MortalMorel</texPath>
+      <texPath>RotSporeKit/Things/Item/Crops/LivingFurnaceCap</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>

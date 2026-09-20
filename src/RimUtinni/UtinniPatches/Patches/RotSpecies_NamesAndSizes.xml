@@ -470,4 +470,182 @@
     </match>
   </Operation>
 
+  <!-- ============== Art landing, 2026-09-20 (ROT_ART_WAVE_1 + ROT_FLORA_FAUNA_VERDICTS_1 STEP 5) ==============
+       texPath overrides for the donor AB_/AA_ defs above whose art has now landed.
+       Same PatchOperationConditional gate as the label/size blocks (absent def -> xpath
+       doesn't match -> silent no-op). New art lives under this mod's own
+       Textures/RotSpecies/<Name>/ , never inside the donor mod's own folder. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/AgaricusDomeCap</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/Agarilux</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/ArbuscularMycorrhiza</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/Bryolux</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/DribblingCap</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/GiantAgarilux</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/GlowingAgarilux</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/Glowstool</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/LilacBeacon</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/SlimyPholiota</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/texPath</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/texPath</xpath>
+      <value><texPath>RotSpecies/WitchesOyster</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
 </Patch>

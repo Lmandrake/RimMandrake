@@ -85,7 +85,7 @@
       <DeteriorationRate>0</DeteriorationRate>
     </statBases>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
+      <texPath>RotSporeKit/Things/Plant/AgelessCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <ingestible>
@@ -132,7 +132,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown</texPath>
+      <texPath>RotSporeKit/Things/Plant/RegenerantVeil</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <ingestible>
@@ -202,7 +202,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/FruitingBodies</texPath>
+      <texPath>RotSporeKit/Things/Plant/FalseFruit</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <ingestible>
