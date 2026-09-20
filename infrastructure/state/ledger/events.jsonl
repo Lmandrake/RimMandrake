@@ -10342,3 +10342,11 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"skin-colour pass then the naked-races grid screenshot (XENOTYPE_CANON_CORRECTION_1 step 4); owner: 'Continue and take bridge', FOUNDRY idle 60min","override":"took the bridge with --force while FOUNDRY still held it","ts":"2026-09-20T21:25:16Z"}
 {"seat":"FOUNDRY","event":"file","id":"BRIDGE_PAWN_SPAWN_CRASHES_VEF_1","title":"rimworld/spawn_thing and Spawn Pawn... debug action NPE on ANY pawn spawn (VEF CompShieldField SpawnSetup postfix)","kind":"bug","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-09-20T21:26:15Z"}
 {"seat":"FOUNDRY","event":"block","id":"PORTED_BEAST_MECHANICS_REBUILD_1","reason":"C# build + deploy already done (0 errors, DLL live since 10:29). Live verification (criteria 2-6) blocked: BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 -- rimworld/spawn_thing NPEs on ANY pawn right now, so RSW_Ferroclaw/Voltmaw/Cindermite cannot be spawned to test. Also bridge now held by BENCH for an unrelated task. Next FOUNDRY pass: once BRIDGE_PAWN_SPAWN_CRASHES_VEF_1 closes, quicktest and close this.","ts":"2026-09-20T21:26:47Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-09-20T21:31:38Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-20T21:32:03Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-20T21:32:16Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-20T21:33:05Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-20T21:35:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROSTER_VALIDATOR_STALE_REFS_1","ts":"2026-09-20T21:36:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROSTER_VALIDATOR_STALE_REFS_1","ts":"2026-09-20T21:36:31Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROSTER_VALIDATOR_STALE_REFS_1","sha":"ac8b64d1c49494275554ac3164c7a277c51614cf","ts":"2026-09-20T21:55:39Z"}
