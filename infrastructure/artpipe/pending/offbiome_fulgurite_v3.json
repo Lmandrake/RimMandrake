@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T16:56:11Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "offbiome_fulgurite_v3",
+  "priority": 60,
+  "prompt": "RimWorld ground-item icon, painterly vanilla-RimWorld item art style: a fulgurite -- a chunk of desert sand fused into glass by a lightning strike, hollow and branching like a fossilized root or lightning bolt frozen in glass. Pale frosted glass with cream, tan and pale-blue translucent streaks, a rough sand-crusted matte exterior with a smooth glassy interior visible at the broken/hollow ends, irregular branching root-like shape. Single object, centered, resting on the ground, no background scenery, no creature, no animal. Heavy, clean black outline around the whole silhouette and internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "OFFBIOME_SHEET_RERENDERS_1",
+  "style_notes": "Owner ruling 2026-09-16: 'this can't be right' -- the current deployed texture (src/RimMandrake/Pyrelands/Textures/Things/Item/Resource/RM_FE_Fulgurite.png) shows a hairy white creature with claws, completely unrelated to the def's own description (sand fused to glass by a lightning strike). Confirmed by viewing the file directly. This is a ground item (Graphic_Single, rotatable false, ResourceBase) not a creature -- one facing only."
+}

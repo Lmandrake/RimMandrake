@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T18:08:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_scratches_p1",
+  "priority": 70,
+  "prompt": "A single icon of three to four long claw-scratch gouge marks torn into a hard surface, in the exact style of a scraped/gouged scratch mark: thin, jagged, irregular-width tears with a rough scraped-stone or scraped-metal texture inside each gouge, dark charcoal-grey to black rough edges. Marks radiate from roughly one direction like a beast's claw rake, slightly varied length and spacing. Centered, no background, no color other than greyscale/charcoal tones, no lettering, no words, no readable text of any kind.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VARIANT_COUNTS_1",
+  "style_notes": "Match src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Scratches/scratches_0.png's style (thin jagged scraped-texture claw marks, transparent background) but a DIFFERENT claw configuration/angle -- this is variant 3 of what will be 6, raising Graphic_Random parity toward Vandal's existing 6."
+}

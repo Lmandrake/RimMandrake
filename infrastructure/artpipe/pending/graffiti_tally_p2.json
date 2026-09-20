@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T18:08:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_tally_p2",
+  "priority": 70,
+  "prompt": "A single icon of prisoner tally marks scratched into a surface: three groups of five vertical scratch-marks, each group of four parallel vertical lines crossed by one diagonal fifth line, arranged in a loose uneven row. Thin, pale, scraped/etched-in linework (not painted), faint scratchy texture along each line, off-white to pale grey color. Centered, no background, no other colors, no lettering, no numerals, no readable text of any kind other than the tally strokes themselves.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VARIANT_COUNTS_1",
+  "style_notes": "Same family, a denser three-group count -- variant 4 of 6."
+}

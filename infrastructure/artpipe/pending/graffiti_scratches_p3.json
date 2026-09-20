@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 640,
+    "width": 640
+  },
+  "channel": "gemini",
+  "created": "2026-09-19T18:08:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "graffiti_scratches_p3",
+  "priority": 70,
+  "prompt": "A single icon of two long parallel claw-scratch gouge marks torn into a hard surface, short and stubby, in the exact style of a scraped/gouged scratch mark: thin, jagged, irregular-width tears with a rough scraped-stone or scraped-metal texture inside each gouge, dark charcoal-grey to black rough edges. Shorter and more compact than a full claw rake. Centered, no background, no color other than greyscale/charcoal tones, no lettering, no words, no readable text of any kind.",
+  "reference": null,
+  "rimflow_item_id": "GRAFFITI_VARIANT_COUNTS_1",
+  "style_notes": "Same family, a shorter/stubbier configuration -- variant 5 of 6."
+}
