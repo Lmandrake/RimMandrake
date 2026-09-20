@@ -42,10 +42,10 @@
     "sha": "43f96b1b"
   },
   ".claude/hooks/queue_lint.py": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "cad2f93fff512e395cdb6b796250ebc61b38115522941764da84ad5fb4c169b2",
-    "sha": "d966fa898"
+    "cleanCount": 4,
+    "date": "2026-09-20",
+    "hash": "2df64992ae601ec04556d609e37b21a6f00afb4375b54a58442075af856381db",
+    "sha": "91c3f95e8"
   },
   ".claude/hooks/selftest_block_agent_without_model.py": {
     "cleanCount": 1,
@@ -84,10 +84,10 @@
     "sha": "43f96b1b"
   },
   ".claude/hooks/selftest_queue_lint.py": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "a99c66fe5dca7c0366e3dc2c14665c827781ecd7ee2d9f64cd0e5516c0c0ab3b",
-    "sha": "d966fa898"
+    "cleanCount": 3,
+    "date": "2026-09-20",
+    "hash": "cd2bbd9914af5d4a13cbbb61e30168409dbaa50c72fc8048f8aed2feaa579d69",
+    "sha": "91c3f95e8"
   },
   ".claude/hooks/selftest_warn_skill_unwired.py": {
     "cleanCount": 1,
