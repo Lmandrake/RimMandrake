@@ -252,6 +252,11 @@
       "def": "AA_Thunderbeast",
       "disposition": "move:RUT_BlueDesert",
       "reason": "owner review 2026-09 (round2 move mapping): blue desert"
+    },
+    {
+      "def": "AB_SlimyPholiota",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved (already resident at the_rot, this was a duplicate listing); owner review 2026-09-20 (move); the_slime → the_rot; only the rot",
+      "disposition": "move:the_rot"
     }
   ],
   "fauna": [
@@ -357,11 +362,6 @@
     {
       "commonality": 0.5,
       "def": "AB_SlimyFern",
-      "law": "donor suite kept"
-    },
-    {
-      "commonality": 0.4,
-      "def": "AB_SlimyPholiota",
       "law": "donor suite kept"
     },
     {

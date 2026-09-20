@@ -480,6 +480,11 @@
       "commonality": 6,
       "def": "AB_MangrovePalm",
       "law": "§3 mangal family, donor weight kept"
+    },
+    {
+      "def": "RUT_Nogtyl",
+      "commonality": 0.4,
+      "law": "owner review 2026-09-20 (move); the_rot → the_miasma; miasma"
     }
   ],
   "flora_purged": [

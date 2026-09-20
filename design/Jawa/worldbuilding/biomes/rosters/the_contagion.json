@@ -420,6 +420,11 @@
       "commonality": 0.15,
       "def": "AB_AlienTree_Polluted",
       "law": "donor mutated variant — downslope front-line texture"
+    },
+    {
+      "def": "RUT_RustPuff",
+      "commonality": 0.3,
+      "law": "owner review 2026-09-20 (move); the_rot → the_contagion; The Contagion... and hatches occular creature when damaged"
     }
   ],
   "flora_purged": [

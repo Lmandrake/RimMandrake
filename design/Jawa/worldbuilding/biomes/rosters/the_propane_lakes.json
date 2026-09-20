@@ -220,6 +220,11 @@
       "def": "AA_TetraSlug",
       "disposition": "move:ExtremeDesert",
       "reason": "a dune-sea keep (prep §1.2: barely-moving giant); not sheet-named here"
+    },
+    {
+      "def": "AB_CrystalFlower",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved (already resident at poison_forest, this was a duplicate listing); owner review 2026-09-20 (move); the_propane_lakes → poison_forest; This was placed elsewhere, so it can't also be here (elsewhere = poison_forest, kept)",
+      "disposition": "move:poison_forest"
     }
   ],
   "fauna": [
@@ -277,11 +282,6 @@
       "law": "the_propane_lakes §0/§4: donor crystal flora kept — regrows daily from the fuel snow; ban 2: none of it is kyber (verified: plant_pool.csv row, growth −60..10 °C)"
     },
     {
-      "commonality": 0.8,
-      "def": "AB_CrystalFlower",
-      "law": "same — donor crystal flora; crystal wood source (§7)"
-    },
-    {
       "commonality": 0.6,
       "def": "AB_FrostLeaf",
       "law": "same — donor crystal flora"
@@ -290,6 +290,11 @@
       "commonality": 0.4,
       "def": "AB_RimeNodules",
       "law": "the_propane_lakes §0: 'extracts propane from the surrounding landscape... consumed as a very mild euphoric' — §7's rime-nodule euphoric; kept rarer than the structural crystals"
+    },
+    {
+      "def": "PoisonShrub",
+      "commonality": 0.35,
+      "law": "owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes"
     }
   ],
   "flora_def_exclusions": [

@@ -245,6 +245,26 @@
       "def": "AA_FissionMouse",
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
       "disposition": "cut-for-real"
+    },
+    {
+      "def": "AB_GiantToxicFlower",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → poison_forest; poison forest",
+      "disposition": "move:poison_forest"
+    },
+    {
+      "def": "AB_ToxiGrass",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare",
+      "disposition": "move:the_blue_desert"
+    },
+    {
+      "def": "PoisonPlantTallGrass",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare",
+      "disposition": "move:the_blue_desert"
+    },
+    {
+      "def": "PoisonShrub",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes",
+      "disposition": "move:the_propane_lakes"
     }
   ],
   "fauna": [
@@ -379,24 +399,9 @@
       "law": "contamination-marked"
     },
     {
-      "commonality": 0.6,
-      "def": "AB_ToxiGrass",
-      "law": "contamination-marked"
-    },
-    {
       "commonality": 0.35,
       "def": "Plant_GrayGrass",
       "law": "Biotech pollution flora — the donor spine the sheet's Owed names (prep §4.4)"
-    },
-    {
-      "commonality": 0.35,
-      "def": "PoisonShrub",
-      "law": "poison-marked shrub"
-    },
-    {
-      "commonality": 0.4,
-      "def": "PoisonPlantTallGrass",
-      "law": "poison-marked ground cover"
     },
     {
       "commonality": 0.3,
@@ -412,11 +417,6 @@
       "commonality": 0.1,
       "def": "AB_ToxiBulb",
       "law": "contamination-marked"
-    },
-    {
-      "commonality": 0.08,
-      "def": "AB_GiantToxicFlower",
-      "law": "contamination-marked point-source of wrong light (§9)"
     },
     {
       "commonality": 0.2,

@@ -330,6 +330,16 @@
       "def": "BMT_CaveSpider",
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")",
       "disposition": "cut-for-real"
+    },
+    {
+      "def": "RUT_Nogtyl",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); the_rot → the_miasma; miasma",
+      "disposition": "move:the_miasma"
+    },
+    {
+      "def": "RUT_RustPuff",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); the_rot → the_contagion; The Contagion... and hatches occular creature when damaged",
+      "disposition": "move:the_contagion"
     }
   ],
   "fauna": [
@@ -568,11 +578,6 @@
     },
     {
       "commonality": 0.4,
-      "def": "RUT_Nogtyl",
-      "law": "§7b marsh fungi (tree-form)"
-    },
-    {
-      "commonality": 0.4,
       "def": "RUT_Arpeau",
       "law": "§7b marsh fungi (tree-form)"
     },
@@ -589,11 +594,6 @@
     {
       "commonality": 0.3,
       "def": "RUT_Pusmelon",
-      "law": "§7b ingested"
-    },
-    {
-      "commonality": 0.3,
-      "def": "RUT_RustPuff",
       "law": "§7b ingested"
     },
     {

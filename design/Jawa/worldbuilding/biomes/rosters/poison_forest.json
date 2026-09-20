@@ -220,6 +220,11 @@
       "def": "SW_Grenadierworm",
       "disposition": "homeless-reserve",
       "reason": "no wanted archetype claims it; homeless default (owner card 2)"
+    },
+    {
+      "def": "AB_CrystalHorn",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); poison_forest → the_blue_desert; propane lakes and blue desert only",
+      "disposition": "move:the_blue_desert"
     }
   ],
   "fauna": [
@@ -421,11 +426,6 @@
     },
     {
       "commonality": 0.4,
-      "def": "AB_CrystalHorn",
-      "law": "crystal/mineral growth lane (sheet roster consequences)"
-    },
-    {
-      "commonality": 0.4,
       "def": "AB_BloodBouquet",
       "law": "dark red phototroph palette (§4: black/purple/blood-red, never green)"
     },
@@ -448,6 +448,11 @@
       "commonality": 0.2,
       "def": "AB_KeeningCordax",
       "law": "alien filter-form, no conventional crown (§6 ban 3)"
+    },
+    {
+      "def": "AB_GiantToxicFlower",
+      "commonality": 0.08,
+      "law": "owner review 2026-09-20 (move); wasteland → poison_forest; poison forest"
     }
   ],
   "flora_purged": [

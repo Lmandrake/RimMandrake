@@ -93,7 +93,23 @@
     "list": [],
     "ruling": "no fish — zero water, zero rivers (§0 MEASURED); at -42 °C median there is no liquid water on the def at all, and §6 ban 1 forbids water-based life besides"
   },
-  "flora": [],
+  "flora": [
+    {
+      "def": "AB_CrystalHorn",
+      "commonality": 0.4,
+      "law": "owner review 2026-09-20 (move); poison_forest → the_blue_desert; propane lakes and blue desert only"
+    },
+    {
+      "def": "AB_ToxiGrass",
+      "commonality": 0.6,
+      "law": "owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
+    },
+    {
+      "def": "PoisonPlantTallGrass",
+      "commonality": 0.4,
+      "law": "owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
+    }
+  ],
   "flora_note": "Empty of existing defs by the same law: §6 ban 1 (no water-based plants) plus ban 2 (no cultivation) plus ban 3 (warm-detonation behaviour required) exclude the whole 669-row plant pool — no donor plant carries a warm-detonation comp. The Blareebian tree/cactus silhouettes are shape references only (§0). Thin-to-empty is doctrine here, not a gap.",
   "flora_purged": [
     {
