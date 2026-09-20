@@ -98,6 +98,8 @@
     <Compile Include="RM_HediffComp_ShadeDrivenSeverity.cs" />
     <Compile Include="RM_CompProperties_HeatBurstPredator.cs" />
     <Compile Include="RM_CompHeatBurstPredator.cs" />
+    <Compile Include="RM_CompProperties_DrumLure.cs" />
+    <Compile Include="RM_CompDrumLure.cs" />
   </ItemGroup>
 
   <ItemGroup>
