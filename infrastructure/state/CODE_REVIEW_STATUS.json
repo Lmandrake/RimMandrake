@@ -2213,6 +2213,30 @@
     "hash": "30c4652a06dd169a6207fe33faf5f371348bdb529484e2be8d38eef128accc02",
     "sha": "b32878458"
   },
+  "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "6b062c8a0e08afbb0b6efaec9a407ff6a9e98c4225dd62c3f74cb57194355cbb",
+    "sha": "fd63f4e21"
+  },
+  "src/RimMandrake/FlowWorks/Source/Drilling/RM_LiquidDrillExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "7e5269fcb7cae1e52854570766e257c18c80614cd47743e3e6438981a165cc89",
+    "sha": "fd63f4e21"
+  },
+  "src/RimMandrake/FlowWorks/Source/Drilling/RM_MapComponent_SubsurfaceLiquid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "bc54e14ae0677038b2ea391906eb65aaf0f188e31a9ee3ab710d0ccecd74a07c",
+    "sha": "fd63f4e21"
+  },
+  "src/RimMandrake/FlowWorks/Source/Drilling/RM_SubsurfaceLiquidBiomeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-20",
+    "hash": "aa1263cada56a1d12aa6df9ebdbe872e380e02a063010c2a41d56a208a4674aa",
+    "sha": "fd63f4e21"
+  },
   "src/RimMandrake/FlowWorks/Source/Flood_FlowWorks.cs": {
     "cleanCount": 1,
     "date": "2026-09-17",
