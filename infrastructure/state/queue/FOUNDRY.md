@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:04:00Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-20T23:34:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -431,15 +431,6 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
-
-## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
-prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
 
 ## BIOME_WORLD_SWITCH_WAVE_1 World-switch every donor/vanilla-painted tile to its owned RUT_ successor: MEASURED 2026-09-12 live export, 17,889 of 21,872 tiles (82%) still on 23 donor/vanilla defs (ExtremeDesert 3969, AB_PropaneLakes 2531, Desert 2390, AB_MycoticJungle 2204, Wasteland 1853 ...) — BIOME_OWNERSHIP_WAVE_1 closed on def authoring only, the tile switch was never filed
 state:    doing
@@ -1447,6 +1438,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COMMISSION_LEDGER_CLEANUP_1.md yet — write one when you have something to say)
+thin:     no ## spec
+summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
