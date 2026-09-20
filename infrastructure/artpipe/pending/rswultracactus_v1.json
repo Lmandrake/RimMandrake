@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-20T19:19:45Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rswultracactus_v1",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a broad, flat, pale green cactus pad lying almost flush with pale desert sand, keeping most of its body buried underground and presenting only a thin rind above the surface -- no tall stalks, no spines standing proud, low and inconspicuous, like a shallow buried patch of pale green flesh visible at the sand's surface. Single organism, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow at its rim, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_SIGNATURE_FLORA_1",
+  "style_notes": "RSW_Ultracactus, DESERT_SIGNATURE_FLORA_1. desert.md SS4b: broad, flat, pale green, keeps most of itself under the sand, flush with the ground -- 'you would walk across a stand of them and register nothing.' Also covers the harvested item RSW_RawUltracactus (a cut pale-green pulp pad)."
+}

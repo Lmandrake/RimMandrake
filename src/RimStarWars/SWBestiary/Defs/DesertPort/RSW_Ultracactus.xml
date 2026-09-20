@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Ultracactus.xml                            DESERT_SIGNATURE_FLORA_1
+
+  Authors the desert's named signature ground plant, in place of no def at
+  all — desert.md §4b named it and §7 lists it as "uniquely available"
+  ("harvestable from open ground nothing else uses") with no ThingDef ever
+  written for it. FROZEN sheet: design/Jawa/worldbuilding/biomes/desert.md
+  (BIOME_FREEZE_FABLE_REVIEW_1).
+
+    §4b "The buried canopy — the ultracactus": broad, flat, PALE GREEN,
+    keeping most of itself under the sand, flush with the ground to take the
+    raking light — "you would walk across a stand of them and register
+    nothing." Grows NEAR shade but does not require it, outcompeted wherever
+    the aggressive shade plants (DESERT_SHADE_PLANTS_DESIGN_1, filed
+    separately, this item) can reach — so it holds the OPEN ground by
+    tolerance, ringing every patch just beyond the shade plants' reach.
+
+  Pure XML, no C#, no name card (owner's name already stands, per the item).
+  Modelled on RSW_LightPipeNub's shape one door down in this same mod
+  (RSW_ExtremeDesertSignatureFlora.xml, EXTREME_DESERT_SIGNATURE_FLORA_1) —
+  same "flush with the sand, near-zero footprint, no leaves to lose" plant
+  block and the item's own required fertilityMin 0.05 (so it takes Sand) —
+  plus a harvested resource, since this item explicitly calls for one and
+  LightPipeNub's ingestible-only shape does not carry one. Harvest resource
+  shaped on RSW_RawBloddle (PlantFoodRawBase) in RSW_DesertPortB_Plants.xml,
+  one door down.
+
+  Art: no existing render found for "ultracactus" in
+  infrastructure/artpipe/{done,_artsrc,registry.jsonl,art_status.json}
+  (checked 2026-09-20 per CLAUDE.md's "Check for existing regenerated art
+  before queuing more"). Job filed this pass (rswultracactus_v1); texPaths
+  below are the paths that render will land at (validate_patch.py will flag
+  them as pending, expected until the artpipe daemon lands the job).
+-->
+<Defs>
+
+  <!-- ============== Ultracactus — the open ground's buried canopy ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RSW_Ultracactus</defName>
+    <label>ultracactus</label>
+    <description>A broad, flat pad of pale green flesh that keeps almost all of itself under the sand, presenting only a thin rind flush with the ground to take the raking light. Walk across a stand of them and you would register nothing — there is no canopy to see, no shade to stand in, nothing standing proud enough to cast one. It holds the open ground by tolerance rather than strength, ringing every shaded patch just beyond the reach of the thornier things that would otherwise crowd it out, and thinning into the bare pavement past that.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.15</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- No existing render found (checked done/_artsrc/registry.jsonl/art_status.json, 2026-09-20). Job rswultracactus_v1 filed. -->
+      <texPath>Things/Plant/RSW_Ultracactus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(176,196,158)</color>
+      <!-- pale green, per desert.md §4b -->
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>4</pathCost>
+    <ingestible />
+    <plant>
+      <!-- Item-specified: fertilityMin 0.05, so it takes Sand. Flush with the sand and
+           near-zero footprint, same as RSW_LightPipeNub — but harvestable and clustered
+           more widely, since §7 makes it the open ground's general food source rather
+           than a single-tile curiosity. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>10</maxMeshCount>
+      <visualSizeRange>0.35~0.65</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RSW_RawUltracactus</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Raw ultracactus — the harvested item ============== -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_RawUltracactus</defName>
+    <label>ultracactus pulp</label>
+    <description>Pale, faintly sweet pulp cut from an ultracactus pad. It bruises fast once out of the ground, but nothing else grows this reliably on open sand nobody else can use.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- No existing render found (checked 2026-09-20). Job rswultracactus_v1 covers
+           both the growing plant and this harvested item. -->
+      <texPath>Things/Item/Plant/RSW_RawUltracactus</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+      <specialThoughtAsIngredient>AteUltracactus</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

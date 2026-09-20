@@ -52,8 +52,16 @@
 
     NOT this pass's scope: painting this def onto the world (a separate live-bridge
     step, `BLUE_DESERT_WORLD_SWITCH_1`'s own template); the shade-grid MapComponent,
-    burst-predator staged statFactors, filter-feeding megafauna, ultracactus and
-    staggerseed defs (all SS10/SS4b/SS4c "Owed" — design and art not authored here).
+    burst-predator staged statFactors, filter-feeding megafauna, and staggerseed
+    (all SS10/SS4b/SS4c "Owed" — design and art not authored here; staggerseed
+    filed separately as DESERT_STAGGERSEED_BUILD_1, gated on an owner name card).
+
+    DESERT_SIGNATURE_FLORA_1 (2026-09-20): the ultracactus (§4b/§7) now has a def
+    (RSW_Ultracactus, RSW_ExtremeDesertSignatureFlora.xml's neighbour
+    RSW_Ultracactus.xml) and is wired into wildPlants below — the note above that
+    it was undefined is now false and was corrected in this commit. The two "shade
+    plants, which defend" (§4b) still have no def — thorn/contact damage has no
+    native CompProperties equivalent — filed as DESERT_SHADE_PLANTS_DESIGN_1.
 
   -->
 
@@ -215,6 +223,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
+      <RSW_Ultracactus MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ultracactus>  <!-- ultracactus: the buried canopy holding the open ground, DESERT_SIGNATURE_FLORA_1 -->
       <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
       <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
