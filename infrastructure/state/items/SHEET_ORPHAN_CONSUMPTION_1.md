@@ -222,3 +222,56 @@ A first pass reported **7** rows as "NOT IN LIVE DEFS": the five `BMT_*` and the
 ⇒ **A donor defName absent from the live set does NOT mean the content is gone.**
 This repo absorbs donors routinely and the absorbed def usually keeps a recognisable
 name. Always check the `RSW_` form before reporting an absence.
+
+
+## 🔴 The 148 flora regens: 96 ALREADY DONE. Re-measured by BENCH 2026-09-20.
+
+The owner's condition was *"please make sure nobody has already done so before you."*
+A subagent audit answered **3 done / 4 queued / 141 owed** and stated *"no BMT_/AB_
+prefixes in this flora set"*.
+
+**That statement is false and the counts built on it are wrong.** MEASURED: **115 of
+the 148 rows carry a donor prefix** — `AB_` 64, `BMT_` 42, plus `AG_`, `RG_`, `VRE_`.
+The `RSW_`/rename check the audit was briefed to run therefore never actually ran.
+
+**Corrected, matching each row against `infrastructure/artpipe/done/` and
+`pending/` allowing artpipe's own slug shape (it DROPS the donor prefix and may add
+a wave prefix — e.g. `AB_Aaklac` → `aaklac_v1`, `Plant_Bloddle` →
+`desertportb_plant_bloddle`):**
+
+| status | count |
+|---|---:|
+| **ALREADY DONE** | **96** |
+| already queued | 3 |
+| **genuinely OWED** | **37** |
+
+⇒ **Queue 37, not 148.** Filing the full set would have re-generated 96 existing
+renders and produced two ungraded candidates for each.
+
+### The 37 owed
+`AB_AlienTree_Polluted` · `AB_TentacularPlant` · `AB_ToxiGrass` ·
+`BMT_Plant_Doomsprout` · `BMT_Plant_EclipsusFlower` · `BMT_Plant_EclipsusLeaves` ·
+`BMT_Plant_GutterPlantain` · `BMT_Plant_PoxSorghum` · `BMT_Plant_ScorchedStars` ·
+`BMT_Plant_SewerReed` · `BMT_Plant_Snaketails` · `BMT_Plant_ToxicIvy` ·
+`BMT_Plant_TreeMartyr` · `BMT_Plant_TreeTanglerootMangrove` ·
+`BMT_Plant_TreeTwistingThornwood` · `BMT_Plant_TumorbulbHyacinth` ·
+`BMT_Plant_TwistedDandelion` · `BMT_Plant_TwistingThorngrass` ·
+`BMT_Plant_TwistingThornweed` · `BMT_Plant_WildRashroot` ·
+`Plant_Bubblespore_Wild` · `Plant_FelucianGlowspore_Wild` · `Plant_HealrootWild` ·
+`Plant_HydenockTree_Wild` · `Plant_JoganTree_Wild` · `Plant_MujaFruit_Wild` ·
+`Plant_TookeTrap_Wild` · `Plant_TreePolux` · `Plant_YellowGrass` ·
+`Plant_YellowTallGrass` · `RG_Plant_AridGrass` · `RG_Plant_CreepStern` ·
+`RG_Plant_CrimsonCushion` · `RG_Plant_Dervish` · `RG_Plant_TallToxiGrass` ·
+`RG_Plant_ToxiGrass` · `RG_Plant_TropicalChokevine`
+
+⚠️ **Before filing these 37, check `BMT_FLORA_ABSORPTION_1`** — 20 of them are
+`BMT_Plant_*`, and that item is FOUNDRY's live work on exactly those defs. Some may
+be about to be renamed or cut, which would waste the render.
+
+### 🔑 The method note that matters
+
+**An artpipe slug is not the defName.** It lowercases, drops the donor prefix, may
+carry a wave prefix, and appends `_v<n>`. A membership test written against defNames
+finds almost nothing and reports it as "owed" — which is exactly the failure above,
+and it fails in the expensive direction. Match on the STEM, both directions, before
+concluding any art is missing.
