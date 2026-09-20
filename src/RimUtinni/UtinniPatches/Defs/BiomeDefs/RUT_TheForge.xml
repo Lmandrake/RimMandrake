@@ -145,6 +145,14 @@
       <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow, keep -->
       <Beldon MayRequire="mlie.starwarsanimalcollection">0.08</Beldon>  <!-- beldon - sky-herd, keep -->
       <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>  <!-- maguana - ground-slow, ported out of Caverns (CAVERNS_PARITY_BUILD_1 r5, owner: the Forge keeps its creature); donor commonality -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           43.4% small. This addition is already an OWNER-RULED member of this exact
+           biome's fauna list (design/Jawa/worldbuilding/biomes/rosters/the_forge.json
+           "fauna", 0.5) that was never wired — not invented. AA_CrescendoAnole
+           (bodySize 0.3) is small; the roster's other two unwired entries
+           (AA_ColossalAerofleet bodySize 2, Tibidee bodySize 12) are both LARGE and are
+           left out on purpose. -->
+      <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ruled -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

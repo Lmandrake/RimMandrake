@@ -122,7 +122,14 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Ollopom MayRequire="mlie.starwarsanimalcollection">0.7</Ollopom>  <!-- ollopom - small-resident, keep -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           44.4% small. This biome's own frozen roster
+           (design/Jawa/worldbuilding/biomes/rosters/weeping_stones.json) already
+           matches every entry wired below one-for-one — no unwired fauna to draw on —
+           so the fix raises the grain already here, same shape as the Gizka fix:
+           Ollopom, already the roster's own small-resident, becomes more common, no
+           megafauna cut. -->
+      <Ollopom MayRequire="mlie.starwarsanimalcollection">1.3</Ollopom>  <!-- ollopom - small-resident, keep; boosted from 0.7 for the ecosystem pyramid law -->
       <Fanback MayRequire="mlie.starwarsanimalcollection">0.5</Fanback>  <!-- fanback - large-resident, adjust-keep -->
       <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal, not zylle.morevanillabiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
       <Dewback MayRequire="mlie.starwarsanimalcollection">0.4</Dewback>  <!-- dewback - large-resident, import -->

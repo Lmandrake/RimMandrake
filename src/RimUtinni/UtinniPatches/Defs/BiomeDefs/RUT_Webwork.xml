@@ -134,7 +134,14 @@
     <wildAnimals>
       <Wyyyschokk MayRequire="mlie.starwarsanimalcollection">0.4</Wyyyschokk>  <!-- wyyyschokk - owner, import -->
       <RSW_JewelBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_JewelBeetle>  <!-- jewel beetle - anchor-beetle, import -->
-      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.2</Kreetle>  <!-- kreetle - trace-prey, adjust-keep -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           36.4% small. This biome's own frozen roster
+           (design/Jawa/worldbuilding/biomes/rosters/the_webwork.json) offers no unwired
+           small fauna (its two unwired entries, AA_Feralisk and GR_Chickenspider, are
+           bodySize 1.0 and 1.1 — both LARGE, so adding them would move the ratio the
+           wrong way). Kreetle is raised instead, same shape as the Gizka fix: no
+           megafauna cut. -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - trace-prey, adjust-keep; boosted from 0.2 for the ecosystem pyramid law -->
       <Shyrack MayRequire="mlie.starwarsanimalcollection">0.2</Shyrack>  <!-- shyrack - trace-flier, keep -->
     </wildAnimals>
     <coastalWildAnimals />

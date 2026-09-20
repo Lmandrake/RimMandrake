@@ -104,8 +104,15 @@
       <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_DuskRat MayRequire="sarg.alphaanimals">0.5</AA_DuskRat>  <!-- dusk rat - small, keep -->
-      <AA_Murkling MayRequire="sarg.alphaanimals">0.5</AA_Murkling>  <!-- murkling - small, keep -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           33.3% small (the worst real, non-near-empty roster in the sweep). No unwired
+           small fauna exists in this biome's own frozen roster
+           (design/Jawa/worldbuilding/biomes/rosters/forsaken_crags.json) to add instead,
+           so the fix raises the grain already here, same shape as the Gizka fix in
+           Pyrelands (ECOSYSTEM_PYRAMID_LAW_1's first application): the two existing
+           small residents become more common, no megafauna cut. -->
+      <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
+      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
       <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
       <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->

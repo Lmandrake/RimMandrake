@@ -136,6 +136,14 @@
       <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native, adjust-keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native, adjust-keep -->
       <RSW_FungalMantis MayRequire="mandrake.rsw.swbestiary">0.15</RSW_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
+      <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
+           35.9% small. Both additions are already OWNER-RULED members of this exact
+           biome's fauna list (design/Jawa/worldbuilding/biomes/rosters/the_rot.json
+           "fauna", 0.5 each) that were never wired — not invented. AA_AngelMoth
+           (bodySize 0.75) and Snoruuk (bodySize 0.5, canonically a mobile mushroom —
+           fits a fungal rot swamp directly) are both small. -->
+      <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small, ruled -->
+      <Snoruuk MayRequire="mlie.starwarsanimalcollection">0.5</Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
