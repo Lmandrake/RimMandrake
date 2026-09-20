@@ -11,8 +11,10 @@
     `BiomeCast_Ashkarr.xml`, and third-party retexture patches all touch this donor
     def); a def we author stops being a patch collision.
 
-    MEASURED (sheet SS0): 3,932 tiles, arc 60-88 deg (sun 14.4 deg above horizon),
-    temp median 25.5 C, hilliness 2.0. Sheet's thematic handle: "the long shade" —
+    MEASURED (sheet SS0): arc 60-88 deg (sun 14.4 deg above horizon), temp median
+    25.5 C, hilliness 2.0. Tile count is not restated here — it is repainted by
+    world edits and drifts; read it live from `world/ASHKARR_WORLDMAP_tiles.csv`.
+    Sheet's thematic handle: "the long shade" —
     shade is patchy, permanent and never moves; nothing here pursues (ban 3); nothing
     is nocturnal (ban 1, no day/night geometry to key off).
 
@@ -36,12 +38,17 @@
     rosters/desert.json, which is this sheet's own landed fauna/flora pass
     (BIOME_FAUNA_ASSIGNMENT_SITTING_1, 2026-09-09).
 
-    foragedFood: left UNSET. The donor's RawAgave points at Plant_Agave, which
-    desert.json's flora_purged list explicitly cuts as Earth-nameable — carrying the
-    donor value forward would forage from a plant this sheet evicted. No frozen sheet
-    or roster field names the correct replacement defName (candidate: the wild hubba
-    gourd's ForagedFood item, not verified here) — left unset rather than guessed,
-    flagged in the item report.
+    foragedFood: DESERT_FORAGEDFOOD_INERT_1 (2026-09-20). The donor's RawAgave points
+    at Plant_Agave, which desert.json's flora_purged list explicitly cuts as
+    Earth-nameable, so the donor value was never carried forward — but leaving
+    foragedFood unset makes forageability 0.25 inert (MEASURED: engine's
+    GetForagedFoodCountPerInterval returns 0 with no foragedFood set, regardless of
+    forageability). Set to RSW_RawHubbaGourd, the wild hubba gourd's own harvested
+    item (RSW_Plant_HubbaGourd_Wild is already in this def's own wildPlants list) —
+    MayRequire-guarded to match every other mandrake.rsw.swbestiary reference in this
+    file, since that mod is only a loadAfter here, not a hard modDependency.
+    wildPlantsCareAboutLocalFertility/lakeBeachTerrain added to match vanilla Core
+    Desert's own fields, absent from this def until now.
 
     NOT this pass's scope: painting this def onto the world (a separate live-bridge
     step, `BLUE_DESERT_WORLD_SWITCH_1`'s own template); the shade-grid MapComponent,
@@ -62,6 +69,9 @@
     <animalDensity>0.4</animalDensity>
     <plantDensity>0.05</plantDensity>
     <forageability>0.25</forageability>
+    <foragedFood MayRequire="mandrake.rsw.swbestiary">RSW_RawHubbaGourd</foragedFood>
+    <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
     <movementDifficulty>1</movementDifficulty>
     <texture>World/Biomes/Desert</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
@@ -197,14 +207,19 @@
       <RSW_DW_OuterRim_DestroyerDroid MayRequire="mandrake.rsw.droidworks">0.02</RSW_DW_OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
       <RSW_Tuskcoil MayRequire="mandrake.rsw.swbestiary">0.015</RSW_Tuskcoil>  <!-- mammoth worm - subsurface-slow, keep -->
       <RSW_Horax MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Horax>  <!-- horax - megafauna, import -->
+      <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import rows
+           (rosters/desert.json "fauna", owner review 2026-09, commonality 0.5 each)
+           wired for the first time. -->
+      <RSW_Stoneback MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Stoneback>  <!-- bokka - anywhere on the dayside, import -->
+      <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- hardy grass -->
+      <RSW_Dunegrass MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Dunegrass>  <!-- surra grass -->
       <RSW_Plant_Chakroot_Wild MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
       <RSW_Plant_HubbaGourd_Wild MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
-      <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- aaklac -->
-      <RSW_SweetbarkTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_SweetbarkTree>  <!-- dessert tree - tree -->
+      <RSW_VellaraBloom MayRequire="mandrake.rsw.swbestiary">0.12</RSW_VellaraBloom>  <!-- vellara bloom -->
+      <RSW_SweetbarkTree MayRequire="mandrake.rsw.swbestiary">0.06</RSW_SweetbarkTree>  <!-- dommo tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 
