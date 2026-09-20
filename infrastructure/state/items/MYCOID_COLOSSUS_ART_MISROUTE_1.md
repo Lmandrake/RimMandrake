@@ -34,20 +34,26 @@ Caught by the owner on the size re-judge sheet, 2026-09-19, verbatim:
 
 ## owed
 
-1. 🔴 **Undeploy is NOT done.** The live copy at
-   `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MycoidColossusArtOverride\Textures\...`
-   still holds the droid, and `deploy_custom_mods.py` does not auto-delete an
-   already-deployed file that stops being shipped. Until it is removed by hand, the
-   game still renders a droid. The game was cycling and another window held the
-   bridge, so this was deliberately left.
-2. **Regenerate the art** to the owner's brief: *a huge multi-legged purplish entity
+1. **Regenerate the art** to the owner's brief: *a huge multi-legged purplish entity
    with glowing mushrooms sprouting from its back*. Three facings, at the same
-   texPath. ⚠️ The art channel is refusing — Codex weekly quota resets **Mon
-   2026-09-21 09:32**, which is what failed the other 82 jobs.
-3. **Size 12.** His ruling on this row is `resize` with note `Size 12`. The live
-   `bodyGraphicData.drawSize` is **4** — note that the earlier 15 from
-   `df261b2bc` is NOT what the running game carries, so whoever applies this should
-   set 12 against the measured 4, not against 15.
+   texPath `Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus_<facing>.png`.
+   ⚠️ The art channel is refusing — Codex weekly quota resets **Mon 2026-09-21
+   09:32**, which is what failed the other 82 jobs. This is the whole remaining
+   scope of this item.
+
+**Size 12 is NOT owed here.** His `resize` ruling on this row belongs to
+`ROT_SIZE_REJUDGE_APPLY_1`, which applies all 11 re-judged Rot sizes as one wave.
+🔴 Whoever applies it: the live `bodyGraphicData.drawSize` is **4** (MEASURED from the
+running game's def data), so set 12 against 4 — the 15 in `df261b2bc` is not what the
+running game carries. No drawSize patch for `AA_MycoidColossus` exists in `src/` today.
+
+## undeploy — DONE, verified 2026-09-20
+
+The live mod at
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MycoidColossusArtOverride\`
+holds exactly `LICENSE` and `About/About.xml` — no `Textures/` tree, no droid PNGs —
+and its `About.xml` is byte-identical to the repo's. The game no longer renders a droid;
+the donor's own colossus art wins until the regeneration lands.
 
 ## the bigger question — needs the owner
 
