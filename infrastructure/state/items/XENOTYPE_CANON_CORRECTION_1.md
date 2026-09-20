@@ -473,3 +473,65 @@ the `nelvaan` hits are `horax` creature jobs, not heads.
 
 🔑 Head SHAPE does not depend on the colour verification — the four heads are the
 wrong species' regardless of what the web says about hue.
+
+---
+
+# 🔴 STEP 3 + 4 DONE — skin colours applied, grid captured, 2026-09-20
+
+## Three owner rulings, now DATA and GUARDED
+
+They live in `infrastructure/state/species_skin_rulings.json`, asserted by
+`Utils/selftest_species_skin_rulings.py` in the normal sweep.
+
+| species | ruled | his words |
+|---|---|---|
+| **Ugnaught** | 2026-09-17 | *"Make it dull pink for Ugnaught. Ruling from canon from movies."* |
+| **Umbaran** | 2026-09-20 | *"Umbaran too, greyish skin with a faint blue tone."* |
+| **Chagrian** | 2026-09-20 | *"2 shades of blue by choice."* |
+
+🔴 **Why the guard exists.** The Ugnaught ruling was made on 2026-09-17, applied to
+the def, and STILL did not stick — the only record was a commit message, so this
+entry's `## ruling` section read *"(empty — owner has not reviewed this race yet)"*
+for three days and an agent then "corrected" the entry without noticing. Owner:
+*"I definitely have said this before. Please make it stick this time, record it."*
+
+⛔ **Two of the three are DELIBERATE departures from canon** and a correctness sweep
+will find both. **Chagrian**: the canon infobox carries blue AND orange; he chose
+blue-only knowing that. **Ugnaught**: the canon infobox image looks dun grey-brown;
+he ruled pink from the films. Neither is a defect. Same shape as Gungan's
+`poor intellectual` and the Fall Line `Rat`.
+
+## Skin data applied — ADDITIONS ONLY (`9234b1db4`)
+
+Ithorian `+PaleBrown` · Abednedo `+MidGray` · Ewok `+Hair_DarkBlack, +Hair_Gray` ·
+Lasat `+PaleBrown, +MidGray` · Mimbanese `+Brown, +MidGray`. Nothing deleted: the
+2026-09-17 deletion of Chagrian's two oranges was made on a FALSE library line, and
+that is the lesson. Anything that looks surplus goes to him as a question.
+
+## The grid (`2e9d9f689`)
+
+`Transient/xenotype_review/xenotype_skin_palette_sheet.png`, keeper save
+`XENOTYPE_SKIN_REVIEW_2026-09-20.rws` (verified on disk, 10.7 MB).
+
+🔴 **It is 4 pawns per species, not 1, and that is not cosmetic.** A xenotype carries
+several skin genes and each pawn rolls exactly ONE — MEASURED: Abednedo **9**,
+Ithorian **6**, Bith **5**; only Ugnaught, Nelvaanian and Umbaran carry exactly 1. A
+one-pawn grid would have had him ruling on a single dice roll believing it was the
+species.
+
+New tooling: `Utils/stage_xenotype_grid.py`, and a `xenotypes` tier in
+`modset_builder.py` — **16 dependency-closed mods, bridge up 45 s after launch**
+against ~15 minutes on the full 618. That is what makes an appearance pass cheap
+enough to iterate.
+
+## ⏭️ What is owed next
+
+1. ⚠️ **Ithorian rolled dark brown 4 of 4** despite six genes. Canon is brown / green /
+   light brown / orange. Either the pool is weighted dark or the pale values are rare —
+   **re-draw before anyone judges it.** Not yet put to the owner.
+2. **Head shapes** — step 5. Art is already rendering: 12 artpipe jobs for the four
+   borrowed heads (Lasat←Cathar, Nelvaanian←Bothan, Ortolan←Kubaz, Mimbanese←Tusken).
+   Then the second grid.
+3. ⚠️ `ModsConfig.xml` is the **16-mod xenotypes tier**. Restore with
+   `python3 src/RimMandrake/Utils/modset_builder.py --restore` before a real session;
+   the full list is backed up at `deployed/config/ModsConfig.before-tier-xenotypes.xml`.
