@@ -10273,3 +10273,5 @@
 {"seat":"BENCH","event":"needs","id":"QUICKTEST_RIVER_WATER_MISSING_1","to":"game-up","ts":"2026-09-20T18:47:40Z"}
 {"seat":"BENCH","event":"needs","id":"SHOKKWEAVE_SOLE_SOURCE_1","to":"game-up","ts":"2026-09-20T18:47:41Z"}
 {"seat":"BENCH","event":"needs","id":"WRECKED_DISTILLATION_MODULE_1","to":"offline","ts":"2026-09-20T18:47:41Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_FORAGEDFOOD_INERT_1","sha":"ba753d6e1","ts":"2026-09-20T18:47:59Z"}
+{"seat":"FOUNDRY","event":"file","id":"AA_JOE_DESERT_PORT_BATCH_1","title":"Port AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast + absorb JOE_Cephalope, as one batch (round-2 desert imports)","kind":"build","target":"v1","needs":"offline","caused_by":"DESERT_ROUND2_IMPORTS_UNLANDED_1","for":"FOUNDRY","ts":"2026-09-20T18:48:13Z"}
