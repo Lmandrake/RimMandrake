@@ -232,3 +232,109 @@ add `OskarPotocki.VFE.Insectoid2`.
 
 **Names, for whoever picks this up:** `RSW_Ferroclaw` is **khorrak**, the metal
 eater. `RSW_Cindermite` is **zhakka**. (Owner, 2026-09-20.)
+
+---
+
+## ✅ CRITERION 2 — PASS, DEFINITIVE (FOUNDRY, 2026-09-20, live)
+
+Fixed the previous session's blocker: `jawa/pawn_need`'s correct shape is
+`{action: "need", pawn, need, level}` — `action` must be one of
+`need|thought|list` (the tool's own error message names them); the earlier
+attempt omitted `action` entirely and silently defaulted to `list` (a read).
+
+Spawned a **fresh** `RSW_Ferroclaw` adjacent (1 cell) to an untouched
+`Steel x75` pile, set its Food need to 0.03 via `jawa/pawn_need
+{action:"need", need:"Food", level:0.03}`, then `step_game_ticks` in 150-tick
+increments while it stood still next to the pile:
+
+```
+tick 450: Steel x75, food pct 0.0298   (still hungry, not yet eating)
+tick 600: Steel x60, food pct 0.6962   (ate -- one bite)
+```
+
+**The pile dropped from 75 to 60 -- exactly a fifth of the stack (15/75)**,
+matching this item's own "eating numbers" section word for word ("a fifth of
+a full stack per bite"), and food need jumped from 3% to 69.6% in the same
+tick window while position never changed. This is unambiguous: the metal-eater
+JobDriver walked to (0 cells -- already adjacent), chewed, and consumed exactly
+the spec'd amount.
+
+A **separate** hungry Ferroclaw spawned far from any placed steel (150,150,
+food set low, no explicit pile within its immediate pathing radius) also had
+its food need jump from ~5% to ~72% after ~1500 ticks while never reaching
+the far-off placed pile (which stayed untouched) -- consistent with the
+"digs `ChunkSlagSteel` when the map has none nearby" half of the mechanic
+(the cell it was standing on when the jump occurred held nothing afterward,
+consistent with a dug-and-consumed chunk), though this second case is
+corroborating, not as clean as the first.
+
+**Criterion 2: PASS**, on the first (clean, unambiguous) test.
+
+## ✅ CRITERION 3 (core mechanic) — PASS; the Mod-Settings-toggle half UNTESTED
+
+`RSW_Ferroclaw`'s `foodType` is `VegetarianRoughAnimal` and its comp carries
+`blockNormalFood: true` (confirmed by reading `RSW_DesertPortMisc_Races.xml`
+directly). In both live tests above, food rose from single digits to 70%+
+with **no other food source available or consumed** -- no meal, hay or
+corpse was ever near either test subject, and `foodType` itself would refuse
+an `Ingest` job on Steel even if one were attempted. The only mechanism that
+could have produced that food-need jump is the custom `RSW_EatMetal` job.
+This is strong indirect confirmation that the Harmony prefix
+(`Patch_JobGiver_GetFood`) correctly suppresses the normal
+`JobGiver_GetFood.TryGiveJob` path for this pawn.
+
+**NOT tested this session**: the Mod Settings toggle that turns
+`blockNormalFood` off (would need to reach the in-game Mod Settings UI, which
+the bridge does not expose a route to click through) -- so the "does take a
+normal Ingest job when the toggle is off" half of criterion 3 is still open.
+
+## ⏸️ CRITERIA 4-6 — ATTEMPTED, NOT CONFIRMED. Honest account, not a guess.
+
+**What was tried:** spawned `RSW_Voltmaw` and `RSW_Cindermite` (both as
+hostile-faction and, separately, as `PlayerColony`-faction), stepped >1200
+ticks. `CompInnateAbility.CompTickRare` (read directly,
+`src/RimStarWars/SWBestiary/Source/BeastMechanics/CompInnateAbility.cs`)
+grants `Props.ability` unconditionally on the pawn's first rare tick, gated
+only by `RSW_BeastMechanicsSettings.innateAbilitiesEnabled` (default `true`)
+-- so the GRANT itself is code-guaranteed to have happened well before 1200
+ticks elapsed, for both creatures, in every spawn this session. No
+`Could not find type named` fired for either def across the whole
+~90-minute session (criterion 1's own check, still holding).
+
+**What could NOT be confirmed live:**
+- **The gizmo.** `rimworld/select_pawn` refused with
+  `Could not find player-controlled colonist id` for a wild or freshly
+  `PlayerColony`-faction ANIMAL (not merely player-faction -- it wants an
+  actual colonist/tamed-pet identity `ResolvePawn` recognises). No other
+  bridge tool (`rimworld/list_selected_gizmos` needs a prior successful
+  select) reaches a gizmo list for a non-colonist pawn.
+- **AI use on a hostile.** Spawned both as hostile-faction near an isolated,
+  undowned colonist (`Whistler`, who'd wandered in from an unrelated
+  wanderer-join event during the drum-lure ticks) at 10-13 cells. Over 1260
+  ticks neither predator closed distance or engaged -- Whistler fled and
+  neither creature pursued. **This is not evidence the ability doesn't
+  work** -- these two may simply have no drive to proactively hunt an
+  uninvolved colonist without being attacked first or entering a manhunter
+  state, and forcing manhunter on a non-colonist pawn hit the same
+  `ToolMapForPawns`-is-colonist-only wall as the gizmo route.
+- **Criterion 5** (cindermite cone leaves `Filth_Fuel`, starts no fire) is
+  downstream of getting the ability to fire at all -- untested for the same
+  reason.
+- **Criterion 6** (Mod Settings toggles survive save/load) -- untested; no
+  save/load cycle was run this session.
+
+⛔ **Do not read the "no engagement" observation as a mechanism failure.**
+Exactly the same caution this item already gives for the two invalid
+`pawn_need` attempts applies here: neither test ever put the ability in a
+position where it HAD to fire. Closing this out needs either a bridge tool
+that can select/force-mental-state a non-colonist pawn, or a scripted
+provocation (colonist attacks the creature first) that this session did not
+have time to build and verify safely.
+
+**This item stays BLOCKED.** Criterion 1 (prior session) and criterion 2
+(this session, definitive) PASS. Criterion 3's core mechanism PASSES; its
+settings-toggle half is untested. Criteria 4, 5 and 6 remain open -- next
+FOUNDRY pass should either find/build a way to force combat or gizmo access
+for a non-colonist pawn, or ask the owner whether a manual (human-driven)
+in-game check of the ability gizmo is an acceptable substitute for a bridge
+one.

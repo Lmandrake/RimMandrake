@@ -89,3 +89,72 @@ interacted with, and spawns a hostile newborn on interaction, observed live.
 
 The deep desert's two signature "the ground lies to you" mechanics (the lure,
 the trap-egg) are real, playable content, not prose.
+
+---
+
+## ✅ LIVE-VERIFIED 2026-09-20 (FOUNDRY) — BOTH MECHANICS CONFIRMED, CLOSING
+
+Bridge taken, `beastmechanics` tier (extended this session with
+`mandrake.rm.proximityhatch` — see `BRIDGE_PAWN_SPAWN_CRASHES_VEF_1.md`,
+required for the egg's real trap comp rather than falling back to
+`CompHatcher`'s vanilla timer) applied and cold-loaded via Steam, 15 mods.
+
+### Mechanic 1 — the vibration lure ambush: CONFIRMED
+
+Spawned `RSW_Drazzik` via `jawa/spawn_pawn` at (130,105), ~8-14 cells from
+three player colonists (Clara, Marjot, Alaska). Stepped `rimworld/
+step_game_ticks` in 90-tick increments (map left PAUSED throughout — ticks
+still advance and resolve jobs per the rimbridge skill's own note that
+stepping runs a pawn's normal tick logic regardless of UI pause state).
+
+Independently observed, not just `success: true`:
+
+1. **`RM_DrumLureLured` hediff appeared on Marjot** (`jawa/pawn_get` ->
+   `hediffs`) at tick 270 — the lure fired.
+2. **Position converged toward the drazzik, not randomly**: Marjot walked
+   (138,113) -> (134,109) -> (134,107) -> (134,105) -> (133,105) over the
+   following ticks, while the drazzik sat at (133-134,104-105) the whole
+   time — this is the "drawing closer" observable the item's own `## verify`
+   asks for.
+3. **The strike happened**: Marjot's hediffs gained `Stab`, `Scratch` and
+   `BloodLoss` (drazzik's claw/bite tools), and `rimworld/list_colonists`
+   read her `downed: true` at (133,105), 1.4 cells from the drazzik — inside
+   `ambushRangeCells` (1.9).
+
+Screenshot (post-ambush, Marjot downed next to the drazzik, "Colonist needs
+rescue" letter live):
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\drumlure_ambush_evidence.png.png`
+
+### Mechanic 2 — the egg-trap clutch: CONFIRMED
+
+First attempt (101,100) landed inside solid unwalkable rock (a mountain
+tile) — the egg silently failed to spawn there (a `rimworld/spawn_thing`
+silent failure on an impassable cell, worth its own trap-file entry someday,
+not filed here to keep this item scoped). Re-tested at a verified-walkable
+Sand cell (115,110) after checking `walkable: true` first.
+
+Spawned a `Chicken` at (115,110) and `RSW_DrazzikEggFertilized` at (116,110)
+(1 cell away, inside the egg's `triggerRadius` of 1.5). One `scanIntervalTicks`
+cycle later (60 ticks):
+
+- The egg was gone from its cell (`rimworld/get_cell_info` — no longer in
+  `things`).
+- A **new** `RSW_Nizzek` pawn (id `RSW_Nizzek9014`, confirmed NOT the same as
+  a pre-existing wildlife `RSW_Nizzek` elsewhere on the map — checked by id,
+  not just kindDef, after a false-positive first pass matched the wrong one)
+  appeared at exactly the egg's former cell, alongside `Filth_AmnioticFluid`
+  (vanilla `CompHatcher.Hatch()`'s own birth filth — confirms the vanilla
+  hatch path ran, not a custom spawn).
+- **Combat occurred**: after 2 more minutes of ticks, both the hatchling and
+  the chicken carried fresh `Bite` + `BloodLoss` hediffs — the newborn
+  attacked the triggering pawn ("sharp beaks and needle claws" per
+  `deep_desert.md` §4) and the chicken fought back. This is
+  `CompProximityHatch.Aggro()`'s forced `AttackMelee` + `ManhunterPermanent`
+  working exactly as built.
+
+Both of this item's two named mechanics are real, playable, and observed live
+— not prose. Closing.
+
+**Note for whoever reads `## Watch out` above:** the placeholder art and the
+drazzik name are both still exactly as drafted — this verification pass did
+not touch either, only the mechanics.
