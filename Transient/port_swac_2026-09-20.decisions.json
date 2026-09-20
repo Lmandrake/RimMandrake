@@ -1,0 +1,187 @@
+{
+  "posture": "blacklist",
+  "criterion": "Rows are sorted by total commonality summed across every biome it appears in (the 'footprint' number in each row's meta chip). That ranks how often a species would actually spawn if left alone \u2014 it is a proxy for FREQUENCY, not for whether the species is worth having. A rare, gorgeous, canon-important creature (low footprint) can rank near the bottom on this metric and still deserve 'replace'; the canon flag and the picture are there so the ranking doesn't stand in for the decision.",
+  "generatedBy": "build_sheet.py (agent pre-fill, not the owner's decisions yet)",
+  "decisions": {
+    "Plant_HydenockTree_Wild": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "High footprint flora (3.00 across 2 biome(s)) \u2014 load-bearing enough to own outright; not in the (fauna/droid-only) canon library. [canon: not tracked (library covers creatures/species/droids, not flora)]"
+    },
+    "Ollopom": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Canon entry exists in design/RimStarWars/canon_references but the owner has not ruled a visual yet \u2014 canon argues replace; his ruling on the specific look is still owed. [canon: entry exists, unreviewed]"
+    },
+    "Plant_JoganTree_Wild": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "High footprint flora (1.80 across 2 biome(s)) \u2014 load-bearing enough to own outright; not in the (fauna/droid-only) canon library. [canon: not tracked (library covers creatures/species/droids, not flora)]"
+    },
+    "Plant_MujaFruit_Wild": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "High footprint flora (1.00 across 1 biome(s)) \u2014 load-bearing enough to own outright; not in the (fauna/droid-only) canon library. [canon: not tracked (library covers creatures/species/droids, not flora)]"
+    },
+    "Neebray": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Not in our 137-entry library yet, but a real named Star Wars creature (Neebray Manta \u2014 appears on-screen in Star Wars Rebels (Malachor arc)) with real footprint (0.80) \u2014 worth owning. [canon: not in library. Neebray Manta \u2014 appears on-screen in Star Wars Rebels (Malachor arc); real canon, just not yet in our 137-entry library.]"
+    },
+    "Yobshrimp": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Not in our 137-entry library yet, but a real named Star Wars creature (Named background species (Bounty Hunter Wars-era Legends material)) with real footprint (0.80) \u2014 worth owning. [canon: not in library. Named background species (Bounty Hunter Wars-era Legends material); real but minor.]"
+    },
+    "Borcatu": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Plant_FelucianGlowspore_Wild": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Moderate footprint (0.60, single biome) \u2014 contested: worth porting for biome flavor, but not clearly load-bearing. Flora isn't tracked by canon_references at all. [canon: not tracked (library covers creatures/species/droids, not flora)]"
+    },
+    "Fanback": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Plant_Bubblespore_Wild": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Moderate footprint (0.50, single biome) \u2014 contested: worth porting for biome flavor, but not clearly load-bearing. Flora isn't tracked by canon_references at all. [canon: not tracked (library covers creatures/species/droids, not flora)]"
+    },
+    "Shiro": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "ShiroTrap": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Ambush form of Shiro (RULED canon, see Shiro row) \u2014 inherits that identity; port both together. [canon: shares Shiro's RULED entry (mechanical variant)]"
+    },
+    "Snoruuk": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Contested: real named SW creature but modest footprint (0.50, 1 biome(s)) and outside the curated library \u2014 could go either way. [canon: not in library. KOTOR-era Taris Undercity creature (Legends); real but deep-cut.]"
+    },
+    "Dewback": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Gelagrub": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Not in our 137-entry library yet, but a real named Star Wars creature (Named Legends background species) with real footprint (0.70) \u2014 worth owning. [canon: not in library. Named Legends background species; real but obscure.]"
+    },
+    "Klorslug": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Contested: real named SW creature but modest footprint (0.40, 1 biome(s)) and outside the curated library \u2014 could go either way. [canon: not in library. KOTOR-era cave slug that clamps onto hosts (Legends); real, mechanically distinctive.]"
+    },
+    "Mott": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Contested: real named SW creature but modest footprint (0.40, 1 biome(s)) and outside the curated library \u2014 could go either way. [canon: not in library. Small background creature seen around Scarif in Rogue One reference material; real but minor.]"
+    },
+    "Wyyyschokk": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Gornt": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Contested: real named SW creature but modest footprint (0.30, 1 biome(s)) and outside the curated library \u2014 could go either way. [canon: not in library. Tatooine livestock referenced in dialogue/novelizations (gornt meat); real but never shown on-screen.]"
+    },
+    "Kinrath": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Fambaa": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Canon entry exists in design/RimStarWars/canon_references but the owner has not ruled a visual yet \u2014 canon argues replace; his ruling on the specific look is still owed. [canon: entry exists, unreviewed]"
+    },
+    "LavaFlea": {
+      "decision": "undecided",
+      "prefill": "undecided",
+      "note": "Contested: real named SW creature but modest footprint (0.25, 1 biome(s)) and outside the curated library \u2014 could go either way. [canon: not in library. Named Mustafar-associated Legends species; real but deep-cut.]"
+    },
+    "CanCell": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "PekoPeko": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Dalgo": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Hawkbat": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Hssiss": {
+      "decision": "retire",
+      "prefill": "retire",
+      "note": "Tiny footprint (0.18, single biome) and outside the curated canon library \u2014 cut rather than port. [canon: not in library. KOTOR-era Sith hound (Legends); well-known among game-era fans, not in our library.]"
+    },
+    "Boma": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Dactillion": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Canon entry exists in design/RimStarWars/canon_references but the owner has not ruled a visual yet \u2014 canon argues replace; his ruling on the specific look is still owed. [canon: entry exists, unreviewed]"
+    },
+    "Dianoga": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Vornskyr": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Woolamander": {
+      "decision": "retire",
+      "prefill": "retire",
+      "note": "Tiny footprint (0.15, single biome) and outside the curated canon library \u2014 cut rather than port. [canon: not in library. Kashyyyk primate seen in Clone Wars-era material; real, moderately known.]"
+    },
+    "Dragonsnake": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Beldon": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    },
+    "Lylek": {
+      "decision": "retire",
+      "prefill": "retire",
+      "note": "Tiny footprint (0.05, single biome) and outside the curated canon library \u2014 cut rather than port. [canon: not in library. KOTOR-era Taris underground predator (Legends); well-known among game-era fans.]"
+    },
+    "Zakkeg": {
+      "decision": "replace",
+      "prefill": "replace",
+      "note": "Owner already RULED a canon reference target for this creature (2026-09-13/14, canon_references) \u2014 replace with art built to that ruling, not donor art. [canon: RULED]"
+    }
+  }
+}
