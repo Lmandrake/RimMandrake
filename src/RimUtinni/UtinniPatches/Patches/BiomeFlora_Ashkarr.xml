@@ -89,7 +89,7 @@
           <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
           <Plant_JoganTree_Wild>1.2</Plant_JoganTree_Wild> <!-- wild jogan tree - tree -->
           <Plant_MujaFruit_Wild>1.0</Plant_MujaFruit_Wild> <!-- wild muja fruit bush -->
-          <BMT_GiantLeaf>1.0</BMT_GiantLeaf> <!-- giant leaf -->
+          <RUT_GiantLeaf>1.0</RUT_GiantLeaf> <!-- giant leaf -->
           <Plant_HubbaGourd_Wild>0.8</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
           <Plant_FelucianGlowspore_Wild>0.6</Plant_FelucianGlowspore_Wild> <!-- wild felucian glowspore - tree -->
           <AB_SugarFamewort>0.6</AB_SugarFamewort> <!-- sugar famewort -->
@@ -160,7 +160,7 @@
         <wildPlants>
           <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
           <AB_KeeningCordax>1.2</AB_KeeningCordax> <!-- keening cordax - tree -->
-          <BMT_GiantLeaf>0.8</BMT_GiantLeaf> <!-- giant leaf -->
+          <RUT_GiantLeaf>0.8</RUT_GiantLeaf> <!-- giant leaf -->
           <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild> <!-- wild jogan tree - tree -->
           <AB_Iashiphus>0.5</AB_Iashiphus> <!-- iashiphus -->
           <AB_Gomphoeria>0.4</AB_Gomphoeria> <!-- gomphoeria -->
@@ -190,38 +190,38 @@
       <xpath>/Defs/BiomeDef[defName="RUT_TheRot"]/wildPlants</xpath>
       <value>
         <wildPlants>
-          <AB_Bryolux>10</AB_Bryolux> <!-- bryolux -->
-          <AB_Glowstool>3</AB_Glowstool> <!-- glowstool -->
-          <AB_Agarilux>2</AB_Agarilux> <!-- agarilux -->
-          <AB_GiantAgarilux>2</AB_GiantAgarilux> <!-- giant agarilux -->
-          <AB_GlowingAgarilux>1</AB_GlowingAgarilux> <!-- glowing agarilux -->
-          <AB_LilacBeacon>0.5</AB_LilacBeacon> <!-- lilac beacon -->
-          <AB_WitchesOyster>0.5</AB_WitchesOyster> <!-- witches' oyster -->
-          <BMT_Dewshrooms>0.5</BMT_Dewshrooms> <!-- dewshrooms -->
-          <BMT_FruitingBodies>0.5</BMT_FruitingBodies> <!-- mold fruiting bodies -->
-          <BMT_Nuitae>0.5</BMT_Nuitae> <!-- nuitae -->
-          <BMT_Wrinklecap>0.5</BMT_Wrinklecap> <!-- wrinklecap -->
-          <BMT_Arpeau>0.4</BMT_Arpeau> <!-- arpeau - tree -->
-          <BMT_Nogtyl>0.4</BMT_Nogtyl> <!-- nogtyl - tree -->
-          <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- recurved stropharia -->
-          <BMT_FlakespireFungus>0.3</BMT_FlakespireFungus> <!-- flakespire fungus - tree -->
-          <BMT_Pusmelon>0.3</BMT_Pusmelon> <!-- pusmelon -->
-          <BMT_RustPuff>0.3</BMT_RustPuff> <!-- rustpuff -->
-          <BMT_Sagecrust>0.3</BMT_Sagecrust> <!-- sagecrust -->
-          <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- arbuscular mycorrhiza -->
-          <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- slimy pholiota -->
-          <BMT_BleedingTooth>0.2</BMT_BleedingTooth> <!-- bleeding tooth -->
-          <BMT_Brightbells>0.2</BMT_Brightbells> <!-- brightbells -->
-          <BMT_CrimsonCap>0.2</BMT_CrimsonCap> <!-- crimson cap -->
-          <BMT_GreyLady>0.2</BMT_GreyLady> <!-- Grey Lady -->
-          <BMT_Shinecap>0.2</BMT_Shinecap> <!-- shine cap - tree -->
-          <BMT_VioletWimple>0.2</BMT_VioletWimple> <!-- violet wimple -->
-          <BMT_MortalMorelPlant>0.15</BMT_MortalMorelPlant> <!-- mortal morel -->
-          <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- agaricus domecap -->
-          <AB_DribblingCap>0.1</AB_DribblingCap> <!-- dribbling cap -->
-          <BMT_Skulltop>0.1</BMT_Skulltop> <!-- skulltop - tree -->
+          <AB_Bryolux>10</AB_Bryolux> <!-- hessuk moss -->
+          <AB_Glowstool>3</AB_Glowstool> <!-- nubbik stool -->
+          <AB_Agarilux>2</AB_Agarilux> <!-- tolluk cap -->
+          <AB_GiantAgarilux>2</AB_GiantAgarilux> <!-- vokkun pillar -->
+          <AB_GlowingAgarilux>1</AB_GlowingAgarilux> <!-- ithra glowcap -->
+          <AB_LilacBeacon>0.5</AB_LilacBeacon> <!-- quessa spire -->
+          <AB_WitchesOyster>0.5</AB_WitchesOyster> <!-- turrok shelf -->
+          <RUT_Dewshrooms>0.5</RUT_Dewshrooms> <!-- sikkra lure -->
+          <RUT_FruitingBodies>0.5</RUT_FruitingBodies> <!-- pimmik mold -->
+          <RUT_Nuitae>0.5</RUT_Nuitae> <!-- nissik gill -->
+          <RUT_Wrinklecap>0.5</RUT_Wrinklecap> <!-- rukka cap -->
+          <RUT_Arpeau>0.4</RUT_Arpeau> <!-- churrun mast - tree -->
+          <RUT_Nogtyl>0.4</RUT_Nogtyl> <!-- brommok timber - tree -->
+          <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia> <!-- orrusk crook -->
+          <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus> <!-- tarrusk spire - tree -->
+          <RUT_Pusmelon>0.3</RUT_Pusmelon> <!-- gubbra gourd -->
+          <RUT_RustPuff>0.3</RUT_RustPuff> <!-- rustpuff -->
+          <RUT_Sagecrust>0.3</RUT_Sagecrust> <!-- tavvik crust -->
+          <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza> <!-- bollusk trunk -->
+          <AB_SlimyPholiota>0.2</AB_SlimyPholiota> <!-- glissik slimecap -->
+          <RUT_BleedingTooth>0.2</RUT_BleedingTooth> <!-- rhukk tooth -->
+          <RUT_Brightbell>0.2</RUT_Brightbell> <!-- tinnik bell -->
+          <RUT_CrimsonCap>0.2</RUT_CrimsonCap> <!-- rhessa cap -->
+          <RUT_GreyLady>0.2</RUT_GreyLady> <!-- sylla lace -->
+          <RUT_Shinecap>0.2</RUT_Shinecap> <!-- dremmik cap - tree -->
+          <RUT_VioletWimple>0.2</RUT_VioletWimple> <!-- pursk hood -->
+          <RUT_MortalMorelPlant>0.15</RUT_MortalMorelPlant> <!-- vennik salve -->
+          <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- skarrow dome -->
+          <AB_DribblingCap>0.1</AB_DribblingCap> <!-- ruvvak weeper -->
+          <RUT_Skulltop>0.1</RUT_Skulltop> <!-- vekkra choker - tree -->
           <Boomshroom>0.05</Boomshroom> <!-- boomshroom -->
-          <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- Agarilux Prime -->
+          <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- grath elder -->
         </wildPlants>
       </value>
     </match>
@@ -252,7 +252,7 @@
         <wildPlants>
           <Plant_Reeds>1.0</Plant_Reeds> <!-- sarnreed -->
           <AB_GreenRockFern>0.4</AB_GreenRockFern> <!-- green rock fern -->
-          <BMT_Dewshrooms>0.4</BMT_Dewshrooms> <!-- dewshrooms -->
+          <RUT_Dewshrooms>0.4</RUT_Dewshrooms> <!-- sikkra lure -->
           <Plant_Ambrosia>0.12</Plant_Ambrosia> <!-- ambrosia bush -->
         </wildPlants>
       </value>
@@ -269,7 +269,7 @@
           <AB_SlimyFern>0.5</AB_SlimyFern> <!-- slimy fern -->
           <AB_SlimyTree>0.5</AB_SlimyTree> <!-- slimy tree -->
           <AB_Slimecasia>0.4</AB_Slimecasia> <!-- slimecasia -->
-          <AB_SlimyPholiota>0.4</AB_SlimyPholiota> <!-- slimy pholiota -->
+          <AB_SlimyPholiota>0.4</AB_SlimyPholiota> <!-- glissik slimecap -->
           <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree> <!-- large slimy tree -->
         </wildPlants>
       </value>
@@ -284,9 +284,9 @@
         <wildPlants>
           <Plant_Fireweed>0.9</Plant_Fireweed> <!-- fireweed -->
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
-          <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
+          <RUT_FireLavender>0.6</RUT_FireLavender> <!-- fire lavender -->
           <AG_Gamma>0.5</AG_Gamma> <!-- gamma -->
-          <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
+          <RUT_Sagecrust>0.4</RUT_Sagecrust> <!-- tavvik crust -->
           <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
           <AB_GiantGamma>0.3</AB_GiantGamma> <!-- giant gamma -->
           <AB_TinkleGrass>0.3</AB_TinkleGrass> <!-- tinkle grass -->
@@ -294,7 +294,7 @@
           <AG_Septimum>0.25</AG_Septimum> <!-- septimum -->
           <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
           <AB_FirevineTree>0.2</AB_FirevineTree> <!-- firevine tree - tree -->
-          <BMT_HeatsinkFungus>0.2</BMT_HeatsinkFungus> <!-- heatsink fungus - tree -->
+          <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus> <!-- heatsink fungus - tree -->
         </wildPlants>
       </value>
     </match>

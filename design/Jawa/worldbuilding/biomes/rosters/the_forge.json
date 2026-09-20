@@ -523,8 +523,8 @@
     },
     {
       "commonality": 0.6,
-      "def": "BMT_FireLavender",
-      "law": "§4 flash-interval flora; grow range 50–352 °C (MEASURED pool) — the one donor plant that literally lives at Forge temperatures"
+      "def": "RUT_FireLavender",
+      "law": "§4 flash-interval flora; grow range 50–352 °C (MEASURED pool) — the one donor plant that literally lives at Forge temperatures. Repointed BMT_FireLavender -> RUT_FireLavender (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired, ported field-for-field to src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml"
     },
     {
       "commonality": 0.7,
@@ -533,8 +533,8 @@
     },
     {
       "commonality": 0.2,
-      "def": "BMT_HeatsinkFungus",
-      "law": "§4 flash-interval flora; grow 50–352 °C (MEASURED pool); tree-class — the 'even trees of shocking tolerance'"
+      "def": "RUT_HeatsinkFungus",
+      "law": "§4 flash-interval flora; grow 50–352 °C (MEASURED pool); tree-class — the 'even trees of shocking tolerance'. Repointed BMT_HeatsinkFungus -> RUT_HeatsinkFungus (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired, ported field-for-field to src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml"
     },
     {
       "commonality": 0.2,
@@ -548,8 +548,8 @@
     },
     {
       "commonality": 0.4,
-      "def": "BMT_Sagecrust",
-      "law": "§4 'beautiful heat-resistant mosses' — crust form on the rock between flashes"
+      "def": "RUT_Sagecrust",
+      "law": "§4 'beautiful heat-resistant mosses' — crust form on the rock between flashes. Repointed BMT_Sagecrust -> RUT_Sagecrust (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired; RUT_Sagecrust already existed (RUT_RotSporeKit_Flora.xml), the roster just still named the donor's own defName"
     },
     {
       "commonality": 0.5,

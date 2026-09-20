@@ -341,6 +341,11 @@
       "commonality": 0.6,
       "def": "AB_SugarFamewort",
       "law": "§4 sweet free-calorie groundcover"
+    },
+    {
+      "commonality": 1.0,
+      "def": "RUT_GiantLeaf",
+      "law": "understory canopy leaf, the roster's top-weighted flora row. Un-purged (BMT_FLORA_ABSORPTION_1, 2026-09-20): biomesteam.biomescaverns retired 2026-09-19 cut BMT_GiantLeaf as a stopgap marked \"port/replace owed\"; ported field-for-field to src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml"
     }
   ],
   "flora_purged": [
@@ -391,10 +396,6 @@
     {
       "def": "TreeDragoberry",
       "reason": "GRim donor tree — sheet §0 replaced"
-    },
-    {
-      "def": "BMT_GiantLeaf",
-      "reason": "Biomes! Caverns retired (CAVERNS_PARITY_BUILD_1/CUT_FALLOUT_GENERATED_DATA_1, 2026-09-19) — no RUT_ port exists yet for this commonality-1.0 understory slot (unlike the_rot.json's 18 same-shape renames); cut-not-port stopgap so the roster stops naming a dead def, port/replace owed"
     }
   ],
   "law_sources": [

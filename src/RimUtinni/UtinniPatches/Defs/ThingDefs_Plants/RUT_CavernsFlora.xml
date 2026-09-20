@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    BMT_FLORA_ABSORPTION_1 — the 3 `biomesteam.biomescaverns` flora rows the roster
+    census (2026-09-20) found genuinely un-replaced: BMT_GiantLeaf (the_greentide.json /
+    the_fever_wood.json, purged 2026-09-19 as "port/replace owed" — the mangal family
+    already covering the_miasma.json's other three purged Caverns rows has no equivalent
+    here) and BMT_FireLavender / BMT_HeatsinkFungus (the_forge.json, still LIVE in the
+    roster against a def that no longer exists — the third live row, BMT_Sagecrust,
+    needed no new port: RUT_Sagecrust already exists in RotSporeKit, the roster just
+    still named the donor's own defName).
+
+    Ported field-for-field from vendor/mod_sources/BiomesCaverns_src
+    1.6/Defs/Plants/BMT_GiantLeaf.xml / BMT_FireLavender.xml / BMT_HeatsinkFungus.xml,
+    same precedent as RUT_PollutedFlora.xml and RUT_RotSporeKit_Flora.xml. Dropped on
+    ingest: every donor `thingClass>BMT.BiomesPlant<` override (BiomesCore-only class;
+    vanilla Plant behavior used instead) and HeatsinkFungus's `BMT_CaveTreeBase` parent,
+    whose harvestedThingDef/burnedThingDef/smashedThingDef/choppedThingDef point at
+    Caverns-only defs (BMT_MushroomLog etc.) — the donor plant itself already nulled
+    all four with Inherit="False", so it ported no wood/log identity to preserve;
+    ported directly onto plain TreeBase instead, which lets it inherit vanilla's own
+    WoodLog/BurnedTree/ChoppedStump/SmashedStump exactly like every other tree in this
+    project rather than re-deriving an abstract only to null the same four fields again.
+    HeatsinkFungus's sowTags/sowWork/sowMinSkill/sowResearchPrerequisites dropped too
+    (its only research gate, BMT_AdvancedFungi, does not exist here) — TreeBase's own
+    mustBeWildToSow=true already makes it wild-only, the same posture RUT_BlastpodShroom
+    ruled for an unsowable Caverns holdover (owner, 2026-09-06: "not so bad as long as
+    we're harvesting it").
+
+    GiantLeaf's `growMinGlow`/`growOptimalGlow` (0, i.e. cave-plant light tolerance) and
+    its description's "adapted to darkness" framing dropped — Greentide and FeverWood
+    are both sunlit jungle, not cave, so the donor's cave-plant identity does not carry
+    over; PlantBase's own light requirement is used instead and the description
+    rewritten for a jungle understory leaf. FireLavender and HeatsinkFungus keep the
+    donor's own temperature band (50–352.222 °C) verbatim — TheForge's own roster law
+    already cites FireLavender's donor numbers as "the one donor plant that literally
+    lives at Forge temperatures", and PlantTolerances_Ashkarr.xml refits both against
+    the biome's actual climate on generation regardless.
+
+    New art per the standing ruling (donor textures are not reused) — already generated
+    and validated, sitting unused in infrastructure/artpipe/done/ (giantleaf_v1,
+    firelavender_v1, heatsinkfungus_v1; giantleaf_v1's own rimflow_item_id is
+    ART_REGEN_FLORA_WAVE2_QUEUE_1, sourced from this exact roster row) — no new
+    fill_queue.py job needed. Deployed verbatim to the texPaths below. RUT_RawGiantLeaf
+    (the harvested item) reuses the plant's own art rather than spending a second job on
+    a minor crop icon.
+  -->
+
+  <!-- ============== Giant leaf — RUT_Greentide, RUT_FeverWood ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_GiantLeaf</defName>
+    <label>giant leaf</label>
+    <description>An enormous, glossy leaf that grows low in the jungle understory, broad enough to shelter a grown man from the rain. Edible when young, and gathered as much for the shade as the food.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.20</Nutrition>
+      <Flammability>1</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/GiantLeaf</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.1, 0.2, 0.1)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>10</pathCost>
+    <ingestible/>
+    <plant>
+      <fertilityMin>1</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>12</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>15</harvestYield>
+      <sowMinSkill>5</sowMinSkill>
+      <maxMeshCount>9</maxMeshCount>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_RawGiantLeaf</harvestedThingDef>
+      <visualSizeRange>0.5~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>100</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RUT_RawGiantLeaf</defName>
+    <label>giant leaf</label>
+    <description>A giant and very impressive leaf.</description>
+    <graphicData>
+      <texPath>Things/Plant/GiantLeaf/GiantLeaf_a</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.9</MarketValue>
+      <Mass>0.01</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+  </ThingDef>
+
+  <!-- ============== Fire lavender — RUT_TheForge ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_FireLavender</defName>
+    <label>fire lavender</label>
+    <description>A lavender that has adapted to survive off the glow of magma, thriving in heat that would kill any ordinary flower. Well loved for its beauty despite — or because of — the furnace it grows in.</description>
+    <graphicData>
+      <texPath>Things/Plant/FireLavender</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0.5</growMinGlow>
+      <growOptimalGlow>0.5</growOptimalGlow>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2.3</glowRadius>
+        <glowColor>(252,187,113,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Heatsink fungus — RUT_TheForge ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_HeatsinkFungus</defName>
+    <label>heatsink fungus</label>
+    <description>Using a complex mix of chemical reactions, this fungus draws in heat to fuel its own growth. Settlers build around it, or move it indoors, to take the edge off a scorching room.</description>
+    <graphicData>
+      <texPath>Things/Plant/HeatsinkFungus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Flammability>0.0</Flammability>
+      <Nutrition>1</Nutrition>
+    </statBases>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <growDays>5</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>1</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <purpose>Health</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>CompHeatPusherPowered</compClass>
+        <heatPerSecond>-20</heatPerSecond>
+        <heatPushMinTemperature>15</heatPushMinTemperature>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
