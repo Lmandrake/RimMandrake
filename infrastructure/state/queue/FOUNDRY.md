@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T18:58:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T19:12:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -909,6 +909,15 @@ kind:     task
 summary:  (no items/MYCOID_COLOSSUS_LIVE_LOOK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MYCOID_COLOSSUS_LIVE_LOOK_1.md
 
+## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
+prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
+
 ## DESERT_PORT_PLACEHOLDER_ART_1 16 desert species still carry donor texPaths, one renders wrong
 state:    doing
 row:      unassigned
@@ -1383,16 +1392,6 @@ thin:     no ## spec
 summary:  SWBESTIARYUNPREFIXEDDONORDEFS1 — donor names and dead bodies left in a shipping mod
 prose:    infrastructure/state/items/SWBESTIARY_UNPREFIXED_DONOR_DEFS_1.md
 
-## EXTREME_DESERT_SIGNATURE_FLORA_1 Author glass-nub light-pipe and silverbole flora for RUT_ExtremeDesert
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  EXTREMEDESERTSIGNATUREFLORA1 — author the extreme desert's own signature flora
-prose:    infrastructure/state/items/EXTREME_DESERT_SIGNATURE_FLORA_1.md
-
 ## EXTREME_DESERT_SUBSURFACE_PREDATOR_1 Replace AA_Dunealisk with a real subsurface strike predator
 state:    proposed
 row:      unassigned
@@ -1422,16 +1421,6 @@ kind:     task
 thin:     no ## spec
 summary:  DESERTSIGNATUREFLORA1 — author ultracactus, staggerseed, and shade plants
 prose:    infrastructure/state/items/DESERT_SIGNATURE_FLORA_1.md
-
-## DESERT_SHADE_GRID_KEYSTONE_1 Build the ShadeAt MapComponent the desert's whole AI design depends on
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DESERTSHADEGRIDKEYSTONE1 — build the ShadeAt MapComponent
-prose:    infrastructure/state/items/DESERT_SHADE_GRID_KEYSTONE_1.md
 
 ## EXTREME_DESERT_GIANT_COMMENSALS_1 Shade-commensal micro-fauna under giants, blocked on ShadeAt
 state:    proposed
