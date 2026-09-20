@@ -173,3 +173,62 @@ Deploy those in the same sitting as the quicktest. See
 ⛔ **BENCH did not move this item's state** — `rimflow unblock` correctly refuses to
 move work in flight for another seat. Correcting false prose is the part that is
 BENCH's, and this is that. FOUNDRY decides when to unblock and run it.
+
+---
+
+# 🔴 LIVE VERIFICATION, 2026-09-20 (BENCH, on the owner's instruction)
+
+Deployed the 5 owed SWBestiary files (`deploy_custom_mods.py --mod SWBestiary
+--apply`, VERIFIED in sync), built a 14-mod `beastmechanics` tier, cold-loaded in
+**45 s**, and spawned all three subjects.
+
+## ✅ CRITERION 1 — PASS
+
+All five `RimMandrake.StarWars.SWBestiary.*` classes resolved. `Player.log` holds
+**zero** `Could not find type named` entries naming any of them, and all three defs
+**spawned and stand on the map** (`RSW_Ferroclaw`, `RSW_Voltmaw`, `RSW_Cindermite`,
+pawn delta +3) — which is the proof that matters, since a missing comp type discards
+the whole def silently.
+
+🔑 Spawned with **`jawa/spawn_pawn`**, not `rimworld/spawn_thing`. See
+`BRIDGE_PAWN_SPAWN_CRASHES_VEF_1` — the blocker recorded on this item was false.
+
+## 🔴 TWO UNDECLARED DEPENDENCIES — the real finding, and it is SWBestiary's
+
+Both were invisible to dependency closure and both are silent:
+
+1. **`mandrake.rm.creaturebehaviors`** supplies five `RM_CompProperties_*` classes.
+   It is listed in `SWBestiary/About/About.xml` **only under `<loadAfter>`** — an
+   ORDERING hint, not a dependency — with a comment that literally says *"supplies
+   RM_CompProperties_…"*. Closure walks `<modDependencies>`, so it is skipped, the
+   types fail to resolve, and **the whole def is discarded**. MEASURED: 5 missing
+   types, eating `RSW_Drazzik` (`DRUM_LURE_PREDATOR_BUILD_1`'s own subject),
+   `RSW_WraidAlpha` and the BiomesTeamPort races.
+2. **`OskarPotocki.VFE.Insectoid2`** is declared **nowhere at all**, yet owns the
+   ONLY copy of `Things/Pawn/Animal/Fuelmite/*` — the texPath `RSW_Cindermite`
+   (**zhakka**) binds to. Without it the creature spawns fine and renders as a
+   **magenta X**. Confirmed by OS screenshot and by locating the PNGs: they exist
+   in exactly one workshop folder, `294100/3309003431`.
+
+⇒ **Neither is a player-visible bug in the shipping 618-mod list**, where both are
+active. Both are real defects in `About.xml` and both will bite the next person who
+builds a reduced tier. The tier now names them explicitly; **the About.xml is still
+owed the fix** — move `mandrake.rm.creaturebehaviors` into `<modDependencies>` and
+add `OskarPotocki.VFE.Insectoid2`.
+
+## ⏸️ CRITERIA 2–6 — NOT VERIFIED, and criterion 2 was tested WRONG twice
+
+- **First attempt invalid**: the ferroclaw sat at 73% food, so it had no reason to
+  eat anything. A sated animal proves nothing about a feeding mechanic.
+- **Second attempt also invalid**: `jawa/pawn_need` was called as
+  `{pawn, need, level}` and returned `action: "list"` — it **read the needs instead
+  of setting them**, and the food value never moved (0.7293 → 0.7133, ordinary
+  hunger drain). ⇒ The parameter shape is wrong and is UNRESOLVED; resolve it from
+  the tool schema before re-testing, exactly as `jawa/spawn_batch`'s `ops` had to be.
+- ⛔ **Do not read the two runs above as evidence the metal-eater does not work.**
+  Neither one ever made the animal hungry. The mechanic is UNTESTED, not failed.
+- Criteria 3–6 (blockNormalFood, ability gizmos once tamed, cindermite cone starting
+  no fire, Mod Settings surviving save/load) were not attempted.
+
+**Names, for whoever picks this up:** `RSW_Ferroclaw` is **khorrak**, the metal
+eater. `RSW_Cindermite` is **zhakka**. (Owner, 2026-09-20.)
