@@ -74,3 +74,15 @@ carrying `race.baseBodySize`** in the current dump. Either they are cut, or they
 mechanoids with no `race` block. Droids as wild animals may well be deliberate
 (scavenged desert junk that wanders), but they are silently outside this measurement
 either way. Not chased here.
+
+## ruling — owner, 2026-09-20
+
+Verbatim: **"50% small"**.
+
+The small-fauna floor is **50%**, not the 60% this item recommended. Against the
+measurement taken 2026-09-20, 15 of 24 habitats already pass; only the habitats
+still under 50% are offenders and need small fauna added. He did not ask for an
+exemption carve-out for the near-empty habitats, so none is created — a habitat
+with 1-6 animals is judged by the same 50% bar as any other.
+
+Any automatic checker built for this law uses 50%.
