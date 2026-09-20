@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T23:39:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T23:51:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,6 +116,15 @@ target:   v1
 kind:     build
 summary:  ROTSIZEREJUDGEAPPLY1
 prose:    infrastructure/state/items/ROT_SIZE_REJUDGE_APPLY_1.md
+
+## PYRELANDS_WRONG_BIOME_DEF_1 The Pyrelands content is wired to RM_FE_Pyrelands, which has ZERO tiles on the frozen world - the biome the player actually visits is ZBiome_Grasslands and it is missing the fauna roster, the ash weather and the fuel bed while keeping the donor's ordinary rain and snow
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  PYRELANDSWRONGBIOMEDEF1 — the Pyrelands was built onto a def nobody can reach
+prose:    infrastructure/state/items/PYRELANDS_WRONG_BIOME_DEF_1.md
 
 ## TITANOSLIME_SLIME_BIOME_1 Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
 state:    doing
@@ -541,16 +550,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  1. Author the GeneDefs for the accepted A-list and B-list. Read
 prose:    infrastructure/state/items/SLIME_GENE_ARCHIVE_BUILD_1.md
-
-## PYRELANDS_WRONG_BIOME_DEF_1 The Pyrelands content is wired to RM_FE_Pyrelands, which has ZERO tiles on the frozen world - the biome the player actually visits is ZBiome_Grasslands and it is missing the fauna roster, the ash weather and the fuel bed while keeping the donor's ordinary rain and snow
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  PYRELANDSWRONGBIOMEDEF1 — the Pyrelands was built onto a def nobody can reach
-prose:    infrastructure/state/items/PYRELANDS_WRONG_BIOME_DEF_1.md
 
 ## ROT_ROSTER_DEAD_DONOR_NAMES_1 The Rot's fauna roster still names 17 BMT_ species from Biomes! Caverns, a donor mod NOT in the 621-mod active list - they can never spawn, so the roster needs re-ruling (port to our own defs or drop), NOT wiring into the biome table
 state:    proposed
