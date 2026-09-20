@@ -33,7 +33,9 @@
       "xenotype_defName": "RSW_RimMandrakeUgnaught",
       "ruled": "2026-09-17",
       "owner_said": "Make it dull pink for Ugnaught. Ruling from canon from movies.",
-      "required_genes": ["RSW_Skin_DullPink"],
+      "required_genes": [
+        "RSW_Skin_DullPink"
+      ],
       "forbidden_genes": [],
       "applied_at": "b2a800d5c",
       "note": [
@@ -50,13 +52,15 @@
       "xenotype_defName": "RSW_RimMandrakeUmbaran",
       "ruled": "2026-09-20",
       "owner_said": "Umbaran too, greyish skin with a faint blue tone.",
-      "required_genes": ["RSW_Skin_GreyBlue"],
+      "required_genes": [
+        "RSW_Skin_GreyBlue"
+      ],
       "forbidden_genes": [
         "Outland_Skin_PaleBlue",
         "Outland_Skin_PaleAzure",
         "RSW_Skin_Lavender"
       ],
-      "applied_at": "pending-commit",
+      "applied_at": "2aa93993b",
       "note": [
         "He said he had ruled this before too. The def shipped Outland_Skin_PaleBlue +",
         "Outland_Skin_PaleAzure, fitted at f60d197b0 (2026-09-17) to the canon infobox's",
@@ -67,25 +71,36 @@
         "and 'violet' appear NOWHERE in the canon article (RE-VERIFIED 2026-09-20). It was",
         "only ever our own agent's read of one painted illustration."
       ]
-    }
-  ],
-  "needs_ruling": [
+    },
     {
       "species": "Chagrian",
       "xenotype_defName": "RSW_RimMandrakeChagrian",
-      "question": "Restore an orange skin gene, or keep Chagrians blue-only by choice?",
-      "why": [
-        "🔴 CONTENT WAS DELETED ON A CLAIM THAT IS FALSE. f60d197b0 (2026-09-17) dropped",
-        "BOTH Outland_Skin_DeepOrange and Skin_Orange, on the canon_references line",
-        "'Infobox skin color is blue only'. RE-VERIFIED 2026-09-20 against the canon",
-        "infobox wikitext: it carries TWO values, blue AND orange, orange cited to",
-        "Star Wars Adventures (2020) #6, 'The Incident, Part 2'.",
-        "So the deletion removed a genuinely canon colour. The library line was corrected",
-        "at 427acdbae; the DEF has not been touched, because restoring a colour he may not",
-        "want is his call, not a correctness fix.",
-        "Blue remains the dominant and causal value -- evolved radiation resistance under",
-        "an unstable sun -- so 'blue only, by choice' is a perfectly defensible answer."
+      "ruled": "2026-09-20",
+      "owner_said": "2 shades of blue by choice.",
+      "required_genes": [
+        "Skin_Blue",
+        "Outland_Skin_DeepAzure"
+      ],
+      "forbidden_genes": [
+        "Skin_Orange",
+        "Outland_Skin_DeepOrange"
+      ],
+      "applied_at": "already-shipped",
+      "note": [
+        "🔑 A DELIBERATE DEPARTURE FROM CANON, ruled with the canon in front of him.",
+        "The canon infobox carries TWO skin values, blue AND orange, orange cited to",
+        "Star Wars Adventures (2020) #6 (RE-VERIFIED 2026-09-20). He was shown that and",
+        "chose blue anyway, in two shades.",
+        "⛔ So a future canon-correctness sweep WILL find 'missing canon orange' and must",
+        "NOT add it. This is the same shape as Gungan's poor intellectual and the Fall",
+        "Line Rat: ruled in against the rule it violates.",
+        "Blue is also the causal value - evolved radiation resistance under an unstable",
+        "sun - which is why blue-only reads as a species trait rather than an omission.",
+        "The two oranges were originally deleted at f60d197b0 on a FALSE library line",
+        "('infobox skin color is blue only'). The line was false; the outcome is now",
+        "correct anyway, but for his reason and not that one."
       ]
     }
-  ]
+  ],
+  "needs_ruling": []
 }
