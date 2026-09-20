@@ -212,3 +212,62 @@ Full 621-mod cold load, confirmed via `Bridge token:`. `harvest_log.py` full swe
 **Not pulled this pass** (time-boxed, ~250 lines of the original ~350 remain
 untouched): crossref (185), stale Scribe (105 — largely the DeepStorage/CherryPicker
 advisory noise already root-caused in (3) above, likely unchanged).
+
+## (5) 2026-09-20 FOUNDRY (belt-mode reboot to deploy DESIGNATE_BATCH_OVER_DESIGNATES_1
+/ BRIDGETOOLS_TILE_LAYER_DROPPED_1) — re-confirmed live, same shape, crossref DOWN
+
+Fresh full 617-mod cold load, confirmed via `Bridge token:` then a second wait for the
+Player.log line count to stop growing (the bridge token fires mid-load, before mod
+static-constructor startup work like Combat Extended/ShowMeYourHands finishes — do not
+trust it alone as "load done" on a full list). `harvest_log.py` + `check_config_errors.py`:
+
+- **crossref: 38** (was 185 in entry (4), DOWN significantly — some closed work since
+  2026-09-19 clearly landed real fixes). Of the 38, the large majority are still the
+  same **BMT_* BiomePlantRecord** references (`BMT_Dewshrooms`, `BMT_FruitingBodies`,
+  `BMT_Nuitae`, `BMT_Wrinklecap`, `BMT_Arpeau`, `BMT_Nogtyl`, `BMT_FlakespireFungus`,
+  `BMT_Pusmelon`, `BMT_RustPuff`, `BMT_Sagecrust`, `BMT_BleedingTooth`,
+  `BMT_Brightbells`, `BMT_CrimsonCap`, `BMT_GreyLady`, `BMT_Shinecap`,
+  `BMT_VioletWimple`, `BMT_MortalMorelPlant`, `BMT_Skulltop`, `BMT_FireLavender`,
+  `BMT_GiantLeaf`, `BMT_HeatsinkFungus`), confirming `BMT_FAUNA_ABSORPTION_1` (still
+  `doing`/BLOCKED) is the dominant root cause — these `BiomePlantRecord` entries
+  already expect the ported BMT_ ThingDefs to exist. A smaller cluster (5 distinct
+  names: `RUT_DeadCreep`, `RUT_FoundrySalvageCache`, `RUT_FoundryTowerEntrance`,
+  `RUT_ScaldVent`, `RUT_TibannaGas`, plus one `Misc13` KeyBindingDef) traces to
+  `EnvironmentalHazards` GenSteps/scatterers/filth-trail comps referencing content
+  named in `FORGE_MECHANICS_1`/`SCALD_MECHANICS_1`/`SUMP_MECHANICS_1` (all still
+  `doing`, none built) — expected shape for specced-but-unbuilt biome-kit content, not
+  a new regression.
+- **stale Scribe: 105** — same DeepStorage/CherryPicker `TYR_*` advisory noise
+  root-caused in (3) above, unchanged in shape (not individually re-verified count-for-
+  count this pass, but the sampled lines are the same `Corpse_BMT_*`/`Meat_TYR_*`
+  family, i.e. also downstream of the same BMT absorption gap plus the known
+  third-party advisory noise — not new).
+- **patchfail: 80** (was 96 in entry (4)) — sampled lines confirm the same dominant
+  wave: `[RimUtinni Patches (Jawa campaign)] PatchOperationConditional(.../BMT_*/
+  statBases)` failures, same root cause as above.
+- **configerror: 149** (was 160) — `check_config_errors.py` sample is dominated by
+  the same two already-triaged/accepted classes: `RM_LiquidProperties does nothing
+  beyond documenting viscosity` (advisory, ruled acceptable per entry (2)'s liquid
+  spec §3) and the same BMT_/RUT_ crossref lines counted above.
+- **1 DEAD MOD, unchanged**: `JumppackForMeleeAI` — identical `HarmonyException` in
+  its static constructor, still third-party, still not investigated (flagging only,
+  third pass in a row seeing this exact line).
+- **5 DEFS DISCARDED, unchanged**: the same `Absorbed_KotorWeapons_WeaponRanged_
+  KotOR{Bowcaster,HeavyRepeater,LightRepeater}.xml` (missing type
+  `IgnoreConfigErrors.Ignore_ForcedMissRadius`) and `Absorbed_Kotorcore_
+  BTDKotORGravships_Gravship_{DynamicFreighter,KT400Freighter}.xml` (missing type
+  `SWCP.Core.ThingComps.CompProperties_HideShipRoof`) — same as entry (4), still not
+  investigated, now confirmed stable/reproducible across 3 loads rather than a
+  one-off.
+
+**Net read across three loads (09-18, 09-19, 09-20): everything in this item is
+downstream of two already-known, already-tracked root causes** —
+`BMT_FAUNA_ABSORPTION_1` (fauna/flora absorption not yet built) accounts for the
+large majority of crossref/patchfail/configerror/stale-Scribe volume, and the
+FORGE/SCALD/SUMP mechanics items account for the small `RUT_` EnvironmentalHazards
+cluster. Neither the dead mod nor the 5 discarded Absorbed_* defs have changed shape
+across three separate loads — genuinely stable, low-urgency, still unowned.
+**Recommend**: this item's remaining value is fully captured by pointing future
+readers at `BMT_FAUNA_ABSORPTION_1` for the dominant cause rather than re-triaging
+line-by-line on every future load; a real fix here is that item landing, not another
+harvest pass.
