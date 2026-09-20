@@ -226,4 +226,19 @@ none known — the repo has no Ugnaught art of any kind (no head, body, hair or 
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+🔴 **RULED — owner, 2026-09-17. Verbatim: *"Make it dull pink for Ugnaught. Ruling from
+canon from movies."***
+
+Shipped as `RSW_Skin_DullPink` (168,124,124) on `RSW_RimMandrakeUgnaught`.
+
+⛔ **This settles the canon-vs-canon conflict described in the Visual brief above, and
+that section is now history rather than an open question.** Both canon sources say
+pink — the infobox cited to *The Empire Strikes Back*, and the starwars.com Databank
+— while the infobox's own live-action image of Kuiil reads dun grey-brown. He ruled
+from the films. **Do not re-open this on the strength of the image.**
+
+⚠️ **This ruling was made on 2026-09-17 and this section still said "owner has not
+reviewed this race yet" on 2026-09-20**, because the only record of it was a commit
+message. It is now data at `infrastructure/state/species_skin_rulings.json`, asserted
+by `Utils/selftest_species_skin_rulings.py`. Owner, 2026-09-20: *"I definitely have
+said this before. Please make it stick this time, record it."*

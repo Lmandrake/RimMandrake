@@ -1,0 +1,91 @@
+{
+  "_README": [
+    "OWNER RULINGS ON SPECIES SKIN COLOUR. One entry per species he has actually ruled on.",
+    "",
+    "WHY THIS FILE EXISTS -- owner, 2026-09-20, verbatim: 'I definitely have said this",
+    "before. Please make it stick this time, record it.'",
+    "",
+    "He had ruled Ugnaught on 2026-09-17 ('Make it dull pink for Ugnaught. Ruling from",
+    "canon from movies.') and the ruling WAS applied to the def. It still failed to stick,",
+    "because the only place it was written down was a git commit message. Nothing reads a",
+    "commit message. So:",
+    "  - design/RimStarWars/canon_references/ugnaught/description.md kept its '## ruling'",
+    "    section reading '(empty -- owner has not reviewed this race yet)', which was",
+    "    false for three days;",
+    "  - the entry went on arguing the pink was wrong, and on 2026-09-20 an agent",
+    "    'corrected' that entry's provenance without noticing a ruling had settled it.",
+    "",
+    "THE RULE: a ruling here OUTRANKS canon, the canon_references library, an infobox and",
+    "any measurement. He is ruling on what the species looks like in OUR game. Canon is",
+    "the default, not the authority, and it loses to him every time.",
+    "",
+    "HOW IT IS ENFORCED: src/RimMandrake/Utils/selftest_species_skin_rulings.py reads this",
+    "file and asserts the SHIPPED xenotype def carries every required gene and none of the",
+    "forbidden ones. It runs in the normal run_selftests.py sweep. A future correctness",
+    "pass that 'fixes' a ruled species back toward canon fails the suite immediately.",
+    "",
+    "ADDING ONE: record his words verbatim in owner_said. Never paraphrase a ruling, and",
+    "never add an entry for a value he has not actually said."
+  ],
+  "rulings": [
+    {
+      "species": "Ugnaught",
+      "xenotype_defName": "RSW_RimMandrakeUgnaught",
+      "ruled": "2026-09-17",
+      "owner_said": "Make it dull pink for Ugnaught. Ruling from canon from movies.",
+      "required_genes": ["RSW_Skin_DullPink"],
+      "forbidden_genes": [],
+      "applied_at": "b2a800d5c",
+      "note": [
+        "Canon genuinely contradicts itself here and he cut the knot from the films.",
+        "The canon infobox says 'varying shades of pink' cited to The Empire Strikes",
+        "Back, and the starwars.com Databank agrees -- both first-hand canon",
+        "(RE-VERIFIED 2026-09-20). But the infobox's own live-action image, Kuiil from",
+        "The Mandalorian, reads dun grey-brown. He ruled dull pink. That ends it.",
+        "DO NOT re-open this on the strength of the image."
+      ]
+    },
+    {
+      "species": "Umbaran",
+      "xenotype_defName": "RSW_RimMandrakeUmbaran",
+      "ruled": "2026-09-20",
+      "owner_said": "Umbaran too, greyish skin with a faint blue tone.",
+      "required_genes": ["RSW_Skin_GreyBlue"],
+      "forbidden_genes": [
+        "Outland_Skin_PaleBlue",
+        "Outland_Skin_PaleAzure",
+        "RSW_Skin_Lavender"
+      ],
+      "applied_at": "pending-commit",
+      "note": [
+        "He said he had ruled this before too. The def shipped Outland_Skin_PaleBlue +",
+        "Outland_Skin_PaleAzure, fitted at f60d197b0 (2026-09-17) to the canon infobox's",
+        "'Pale and bluish'. His ruling is NARROWER than the infobox: grey dominant, blue",
+        "as a faint tone. RSW_Skin_GreyBlue is (158,163,172) -- 14 points of blue lift,",
+        "against RSW_Skin_SlateBlue's 25.",
+        "Lavender is forbidden for a separate reason and both agree: the words 'lavender'",
+        "and 'violet' appear NOWHERE in the canon article (RE-VERIFIED 2026-09-20). It was",
+        "only ever our own agent's read of one painted illustration."
+      ]
+    }
+  ],
+  "needs_ruling": [
+    {
+      "species": "Chagrian",
+      "xenotype_defName": "RSW_RimMandrakeChagrian",
+      "question": "Restore an orange skin gene, or keep Chagrians blue-only by choice?",
+      "why": [
+        "🔴 CONTENT WAS DELETED ON A CLAIM THAT IS FALSE. f60d197b0 (2026-09-17) dropped",
+        "BOTH Outland_Skin_DeepOrange and Skin_Orange, on the canon_references line",
+        "'Infobox skin color is blue only'. RE-VERIFIED 2026-09-20 against the canon",
+        "infobox wikitext: it carries TWO values, blue AND orange, orange cited to",
+        "Star Wars Adventures (2020) #6, 'The Incident, Part 2'.",
+        "So the deletion removed a genuinely canon colour. The library line was corrected",
+        "at 427acdbae; the DEF has not been touched, because restoring a colour he may not",
+        "want is his call, not a correctness fix.",
+        "Blue remains the dominant and causal value -- evolved radiation resistance under",
+        "an unstable sun -- so 'blue only, by choice' is a perfectly defensible answer."
+      ]
+    }
+  ]
+}

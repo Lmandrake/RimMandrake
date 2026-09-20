@@ -236,4 +236,20 @@ contradicted), `Outland_FamiliarScent` and `Outland_Eye_Orange` (see visual brie
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+⏸️ **AWAITING HIS RULING — and content was already deleted on a false premise.**
+
+🔴 `f60d197b0` (2026-09-17) dropped **both** `Outland_Skin_DeepOrange` and `Skin_Orange`
+from `RSW_RimMandrakeChagrian`, on this entry's own line *"Infobox skin color is blue
+only"*. **That line was false.** RE-VERIFIED 2026-09-20 against the canon infobox
+wikitext: it carries **two** values, blue **and** orange, orange cited to *Star Wars
+Adventures* (2020) #6, "The Incident, Part 2". The entry's text is corrected above.
+
+**The def has deliberately NOT been changed back.** Restoring a colour he may not want
+is his call, not a correctness fix — and "blue only, by choice" is defensible, since
+blue is both the dominant value and the causal one (evolved radiation resistance under
+an unstable sun). Filed in `infrastructure/state/species_skin_rulings.json` under
+`needs_ruling`.
+
+🔑 The lesson worth keeping: **a single wrong word in a reference entry deleted shipped
+content three days later.** Nothing in the pipeline re-checked the claim before acting
+on it.
