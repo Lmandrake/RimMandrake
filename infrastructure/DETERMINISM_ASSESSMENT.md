@@ -733,9 +733,14 @@ replaces, on today's evidence alone, is a bench sitting plus a full agent run pl
 
 ## 11a. What has SHIPPED (keep this current)
 
-- **C1 `modcheck lint` (walklint)** — shipped 2026-09-17. Reports 40 FAIL / 15 WARN today;
-  its suite gate is deliberately NOT armed while live findings exist.
-- **C2 `modcheck doctor`** — shipped 2026-09-17. 41 FAIL / 28 WARN.
+- **C1 `modcheck lint` (walklint)** — shipped 2026-09-17. **40 FAIL / 15 WARN**
+  (RE-MEASURED 2026-09-20, unchanged); its suite gate is deliberately NOT armed while live
+  findings exist.
+- **C2 `modcheck doctor`** — shipped 2026-09-17. **9 FAIL / 6 WARN** (RE-MEASURED
+  2026-09-20 by running it). The 41 / 28 this line carried was the figure on the day it
+  shipped; `WALK_FEATURE_KEY_1` (closed `07d349bc5`) taught `doctor` the `feature:` key,
+  which collapsed the ORPHAN_WALK and SUBJECT_COLLISION findings that made up most of it.
+  🔑 That drop is the fix landing, not findings being swept under a rug.
 - **C3 bar-scoped north-star hash** — 🔴 **DECLINED by the owner** 2026-09-17, see §5.
 - **C5 `validate` refuses a zero-bar section** — shipped 2026-09-17.
 - **C7 the phantom backlog** — shipped 2026-09-18 (`4de31d6f5`). `prune --apply` dropped 97;

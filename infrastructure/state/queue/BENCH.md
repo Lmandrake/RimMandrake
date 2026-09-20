@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-20T08:31:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-20T08:43:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -411,16 +411,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_SOUTH_TOPDOWN_REGEN_1.md
-
-## DETERMINISTIC_CHECKER_WAVE_1 walklint + modcheck doctor + bar-scoped north-star hash — C1/C2/C3 of the determinism assessment (owner picked 1+2+3, 2026-09-17)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DETERMINISTIC_CHECKER_WAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DETERMINISTIC_CHECKER_WAVE_1.md
 
 ## PIT_SUPERDEEP_COLLAPSE_1 Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room for prisoner storage, a ladder that works like a prison door, a sluice gate that works like a door (owner ruling 2026-09-17)
 state:    proposed
