@@ -100,7 +100,9 @@ Hand-authored (no prior job JSON existed for these — description written from 
 - `facingrepair_rutscarroach_v1_south.json`
 - `facingrepair_flamefang_v1_south.json`
 
-All 12 pending as of this writing — the daemon has not yet picked any of them up (`infrastructure/artpipe/active/` was empty at last check).
+All 12 pending as of this writing — the daemon has not yet picked any of them up (`infrastructure/artpipe/active/` was empty at last check, none in `done/` or `failed/` yet, 33 total jobs in `pending/` = 21 pre-existing + 12 mine). Per the owner's standing instruction not to idle-wait on quota, I am stopping here rather than polling; whoever picks this up next should check `infrastructure/artpipe/done/facingrepair_*.json` for completions.
+
+Commit: `748a01731` (report + audit log + 12 queued jobs), pushed to `main`.
 
 ## Installed
 
