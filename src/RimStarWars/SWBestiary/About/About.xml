@@ -34,6 +34,13 @@ LIVESTOCK_STARTER_TRIO_1 (2026-09-09) — `RSW_Onnik`, the kiln-belly: a feed-cy
       <displayName>RimWorld</displayName>
     </li>
     <li>
+      <!-- PORTED_BEAST_MECHANICS_REBUILD_1: RimMandrakeBeastMechanicsRSW.dll
+           carries one Harmony prefix (a metal-eating creature must not wander
+           off and graze), so Harmony is now a hard dependency of this mod. -->
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+    </li>
+    <li>
       <packageId>Ludeon.RimWorld.Odyssey</packageId>
       <displayName>Odyssey</displayName>
     </li>
@@ -48,6 +55,7 @@ LIVESTOCK_STARTER_TRIO_1 (2026-09-09) — `RSW_Onnik`, the kiln-belly: a feed-cy
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.proximityhatch</li>  <!-- Patches/ProximityHatch - supplies CompProperties_ProximityHatch, EGG_PROXIMITY_HATCH_TRIGGER_1 -->
     <li>mandrake.rm.creaturebehaviors</li>  <!-- supplies RM_CompProperties_FluidSacs/ProximityPsychicStun/ShardArmor/TameSootheAura + RM_Grappled/RM_Drained hediffs, DEEPS_FAUNA_MECHANICS_1 -->
     <li>biomesteam.biomespollutedlands</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->

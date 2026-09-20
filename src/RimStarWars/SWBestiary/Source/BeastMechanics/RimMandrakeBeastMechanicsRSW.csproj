@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PORTED_BEAST_MECHANICS_REBUILD_1 — owner, 2026-09-20: "Rebuild in our c#."
+
+    The three gameplay mechanics DESERT_FAMILY_PORT_EXECUTION_1 dropped when it
+    ported the desert family off its donor frameworks:
+      * RSW_Ferroclaw   steel diet      (was VEF.AnimalBehaviours.CompEatWeirdFood)
+      * RSW_Voltmaw     plasma volley   (was VEF.AnimalBehaviours.CompInitialAbility)
+      * RSW_Cindermite  chemfuel spew   (was CompInitialAbility + VFEInsectoids.CompAbilityFuelSpew)
+    Each file's own header says what the donor did and where that was measured.
+
+    Same net472 / NuGet-reference-assemblies shape as this mod's sibling
+    Livestock project (../Livestock/RimMandrakeLivestockRSW.csproj).
+
+    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Source\BeastMechanics\RimMandrakeBeastMechanicsRSW.csproj -c Release
+
+    Output lands in ../../Assemblies/ — the mod root's Assemblies folder, beside
+    JawaIkee.dll and RimMandrakeLivestockRSW.dll, which is where RimWorld looks.
+    Verify a fresh build lands THERE before trusting this comment: the Livestock
+    project was once found quietly building into a Source/Assemblies/ nobody
+    deploys.
+
+    0Harmony is compile-only: it is provided at runtime by brrainz.harmony,
+    which is already a hard dependency of the whole load set. Nothing but our
+    own DLL is ever copied next to the mod.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeBeastMechanicsRSW</AssemblyName>
+    <RootNamespace>RimMandrake.StarWars.SWBestiary</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CompMetalEater.cs" />
+    <Compile Include="JobGiver_EatMetal.cs" />
+    <Compile Include="JobDriver_EatMetal.cs" />
+    <Compile Include="Patch_JobGiver_GetFood.cs" />
+    <Compile Include="CompInnateAbility.cs" />
+    <Compile Include="CompAbilityEffect_FuelSpew.cs" />
+    <Compile Include="RSW_BeastMechanicsDefOf.cs" />
+    <Compile Include="RSW_BeastMechanicsSettings.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
