@@ -5238,10 +5238,10 @@
     "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
-    "cleanCount": 4,
-    "date": "2026-09-17",
-    "hash": "fdbc3e2223a8269825bcaec7cf6ade850085ff3d1fd06a038194bd8e66c77205",
-    "sha": "74e9d4953"
+    "cleanCount": 5,
+    "date": "2026-09-20",
+    "hash": "0c7f20471d67f43f2e74502e32b1216884a632c4d3d8dd56d469d55633f81f24",
+    "sha": "918c13ace"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
