@@ -15,8 +15,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <texPath>swplants/Chakroot</texPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render chakroot_v1 (ART_REGEN_FLORA_WAVE1_QUEUE_1), no more donor dependency -->
+      <texPath>Things/Plant/RSW_Plant_Chakroot_Wild</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -26,8 +26,8 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <sowTags Inherit="False" />
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <immatureGraphicPath>swplants/Chakroot_Immature</immatureGraphicPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: reuses the same landed render (no separate immature art authored) -->
+      <immatureGraphicPath>Things/Plant/RSW_Plant_Chakroot_Wild</immatureGraphicPath>
       <fertilitySensitivity>0.4</fertilitySensitivity>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>
@@ -95,8 +95,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <texPath>swplants/HubbaGourd</texPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render hubbagourd_v1 (ART_REGEN_FLORA_WAVE1_QUEUE_1), no more donor dependency -->
+      <texPath>Things/Plant/RSW_Plant_HubbaGourd_Wild</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -106,8 +106,8 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <sowTags Inherit="False" />
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <immatureGraphicPath>swplants/HubbaGourd_Immature</immatureGraphicPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: reuses the same landed render (no separate immature art authored) -->
+      <immatureGraphicPath>Things/Plant/RSW_Plant_HubbaGourd_Wild</immatureGraphicPath>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>
@@ -135,8 +135,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <texPath>swplants/Bloddle</texPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render bloddle_v1 (ART_REGEN_FLORA_WAVE1_QUEUE_1), no more donor dependency -->
+      <texPath>Things/Plant/RSW_Plant_Bloddle</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -144,8 +144,8 @@
     <ingestible />
     <plant>
       <fertilitySensitivity>0.4</fertilitySensitivity>
-      <!-- TEMP PLACEHOLDER: donor SWAC texture, replace when the RSW_ art job lands -->
-      <immatureGraphicPath>swplants/Bloddle_Immature</immatureGraphicPath>
+      <!-- DESERT_PORT_PLACEHOLDER_ART_1: reuses the same landed render (no separate immature art authored) -->
+      <immatureGraphicPath>Things/Plant/RSW_Plant_Bloddle</immatureGraphicPath>
       <dieIfLeafless>true</dieIfLeafless>
       <maxMeshCount>16</maxMeshCount>
       <harvestTag>Standard</harvestTag>
